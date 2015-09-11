@@ -46,7 +46,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Build\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,15 +57,14 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Fluent, Version=3.4.2.0, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Build\Fluent.dll</HintPath>
+    <Reference Include="Fluent">
+      <HintPath>bin\Debug\Fluent.dll</HintPath>
     </Reference>
     <Reference Include="ManagedWin32">
-      <HintPath>..\..\..\Develop\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
+      <HintPath>bin\Debug\ManagedWin32.dll</HintPath>
     </Reference>
     <Reference Include="SharpAvi">
-      <HintPath>..\Build\SharpAvi.dll</HintPath>
+      <HintPath>bin\Debug\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
