@@ -1,0 +1,92 @@
+﻿<Fluent:RibbonWindow x:Class="Captura.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:UI="clr-namespace:NBuild.UI"     
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        Title="Captura" Width="525" Height="300" MinHeight="300" MinWidth="525"
+        Closing="Window_Closing"
+        Icon="/Captura;component/Captura.ico">
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+    <DockPanel>
+        <Fluent:Ribbon AutomaticStateManagement="True" DockPanel.Dock="Top">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:Button Header="Last" Command="PreviousPage"/>
+                        <Fluent:BackstageTabItem Header="About" KeyTip="A">
+                            <StackPanel Margin="5">
+                                <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
+                                <Label Content="(c) Mathew Sachin. All Rights Reserved" 
+                                               FontFamily="Comic Sans MS" FontSize="12"/>
+                            </StackPanel>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:Button Header="Exit" KeyTip="X" Command="Close"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            
+            <Fluent:RibbonTabItem Header="Home">
+                <Fluent:RibbonGroupBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Fluent:TextBox Header="Output Directory" x:Name="OutPath" Width="300" IsReadOnly="True"/>
+                        <Button Content="..." Width="25" Background="White" Command="Open" />
+                    </StackPanel>
+                    <Fluent:ToggleButton Icon="/Captura;component/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
+                                         Header="Minimise On Capture Start" x:Name="MinOnStart" IsChecked="True"/>
+                    <Fluent:Button Margin="5,0" Header="Refresh" Command="Refresh" Size="Middle" Icon="/Captura;component/Refresh.ico"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Video">
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
+                    <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
+                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="/Captura;component/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
+                                         Icon="/Captura;component/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Encoder">
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="200" ItemWidth="200" ItemsSource="{Binding AvailableCodecs}"
+                                  SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Audio">
+                <Fluent:RibbonGroupBox Header="Devices">
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" ItemWidth="330" ItemsSource="{Binding AvailableAudioSources}"
+                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}"
+                                  SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:ToggleButton Size="Middle" Header="Encode Audio" IsEnabled="{Binding ReadyToRecord}" IsChecked="True" VerticalAlignment="Center" Name="EncodeAudio"/>
+                    <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
+                            IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
+                            AutoToolTipPlacement="None" Width="100" Margin="7,0"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
+            <Fluent:StatusBarItem HorizontalAlignment="Right">
+                <UI:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>
+            </Fluent:StatusBarItem>
+            <Fluent:StatusBarItem HorizontalAlignment="Left">
+                <Label Height="25" Name="Status" Content="Ready" Foreground="White" VerticalContentAlignment="Center" Background="Transparent" />
+            </Fluent:StatusBarItem>
+        </Fluent:StatusBar>
+
+        <StackPanel>
+            <Button Margin="0,5" Content="🔴 Record New" Background="#B7000000" Foreground="#FFFF6D69" Name="RecordControl" Click="RecordControl_Click" />
+            <ProgressBar Maximum="1" Minimum="0" Height="1" Foreground="DarkBlue" Name="LevelBar" />
+        </StackPanel>
+    </DockPanel>
+</Fluent:RibbonWindow>
