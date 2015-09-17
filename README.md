@@ -1,4 +1,22 @@
 # Captura
+(c) 2015 Mathew Sachin. All Rights Reserved
+Capture what's happering on your Screen along with audio from your microphone
+
+Features
+--------------------------------------------------------------
+Capture Screen
+Capture Microphone Audio
+Can Capture With/Without the Mouse Cursor
+Ctrl+Shift+R: From Anywhere to Start/Stop Recording
+
+MISSING FEATURE: LOOPBACK
+--------------------------------------------------------------
+Loopback requires Wasapi.
+Tried using it through Bass.Net and NAudio.
+Worked but the audio was lagging behind Video,
+due to slowness of Wasapi over WaveIn in interaction with a .Net environment.
+
+Help on the Same would be appreciated.
 
 Acknowledgements
 --------------------------------------------------------------
