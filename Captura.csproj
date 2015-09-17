@@ -53,7 +53,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Captura.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -117,7 +117,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Captura.ico" />
+    <Resource Include="Images\Captura.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -150,13 +150,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Cursor.ico" />
+    <Resource Include="Images\Cursor.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Minimize.ico" />
+    <Resource Include="Images\Minimize.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Refresh.ico" />
+    <Resource Include="Images\Refresh.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Record.png" />
+    <Resource Include="Images\Stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

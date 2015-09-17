@@ -8,11 +8,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ManagedWin32;
+using ManagedWin32.Api;
 using Microsoft.Win32;
 using NWaveIn;
 using SharpAvi;
 using SharpAvi.Codecs;
-using ManagedWin32.Api;
+using System.Windows.Media.Imaging;
 
 namespace Captura
 {
@@ -67,7 +68,7 @@ namespace Captura
             NavigationCommands.Refresh.Execute(this, this);
 
             KeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift);
-            KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => RecordControl_Click()));
+            KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => RecordControl_Click<int>()));
 
             OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
 
@@ -81,9 +82,9 @@ namespace Captura
         }
 
         #region Control
-        void RecordControl_Click(object sender = null, RoutedEventArgs e = null)
+        void RecordControl_Click<T>(object sender = null, T e = default(T))
         {
-            if (RecordControl.Content.ToString().Contains("Record")) StartRecording();
+            if (ReadyToRecord) StartRecording();
             else StopRecording();
         }
 
@@ -91,16 +92,23 @@ namespace Captura
         {
             IsCollapsed = true;
 
+            NewButton.Opacity = 0.1;
+            StopButton.Opacity = 0.7;
+
             if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
+
+            RecordThumb.Description = "Stop";
+            RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
 
             ReadyToRecord = false;
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".avi");
+            
             var bitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value);
+            
             recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
                 SelectedAudioSourceId, AudioWaveFormat, EncodeAudio.IsChecked.Value, bitRate, IncludeCursor.IsChecked.Value);
 
-            RecordControl.Content = "⬛ Stop";
             Status.Content = "Recording...";
 
             TimeManager.Reset();
@@ -111,6 +119,12 @@ namespace Captura
         {
             if (ReadyToRecord) throw new InvalidOperationException("Not recording.");
 
+            StopButton.Opacity = 0.1;
+            NewButton.Opacity = 0.7;
+
+            RecordThumb.Description = "Record";
+            RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
+
             recorder.Dispose();
             recorder = null;
 
@@ -118,10 +132,8 @@ namespace Captura
 
             WindowState = WindowState.Normal;
 
-            RecordControl.Content = "🔴 Record New";
             Status.Content = "Ready";
-            LevelBar.Value = 0;
-
+            
             TimeManager.Stop();
         }
         #endregion

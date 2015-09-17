@@ -1,11 +1,18 @@
 ﻿<Fluent:RibbonWindow x:Class="Captura.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:UI="clr-namespace:NBuild.UI"     
+        xmlns:UI="clr-namespace:NBuild.UI"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="300" MinHeight="300" MinWidth="525"
         Closing="Window_Closing"
-        Icon="/Captura;component/Captura.ico">
+        Icon="Images/Captura.ico">
+    <Fluent:RibbonWindow.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo x:Name="RecordThumb"  Description="Record" Click="RecordControl_Click" ImageSource="Images/Record.png"/>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Fluent:RibbonWindow.TaskbarItemInfo>
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,16 +37,16 @@
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
-            
+
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
                     <StackPanel Orientation="Horizontal">
                         <Fluent:TextBox Header="Output Directory" x:Name="OutPath" Width="300" IsReadOnly="True"/>
                         <Button Content="..." Width="25" Background="White" Command="Open" />
                     </StackPanel>
-                    <Fluent:ToggleButton Icon="/Captura;component/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
+                    <Fluent:ToggleButton Icon="Images/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
                                          Header="Minimise On Capture Start" x:Name="MinOnStart" IsChecked="True"/>
-                    <Fluent:Button Margin="5,0" Header="Refresh" Command="Refresh" Size="Middle" Icon="/Captura;component/Refresh.ico"/>
+                    <Fluent:Button Margin="5,0" Header="Refresh" Command="Refresh" Size="Middle" Icon="Images/Refresh.ico"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -47,8 +54,8 @@
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
                     <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
-                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="/Captura;component/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
-                                         Icon="/Captura;component/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
+                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
+                                         Icon="Images/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Encoder">
@@ -84,9 +91,22 @@
             </Fluent:StatusBarItem>
         </Fluent:StatusBar>
 
-        <StackPanel>
-            <Button Margin="0,5" Content="🔴 Record New" Background="#B7000000" Foreground="#FFFF6D69" Name="RecordControl" Click="RecordControl_Click" />
-            <ProgressBar Maximum="1" Minimum="0" Height="1" Foreground="DarkBlue" Name="LevelBar" />
-        </StackPanel>
+        <Border BorderThickness="1" BorderBrush="#37000000" VerticalAlignment="Top" Margin="5,20">
+            <StackPanel>
+                <Button Height="20" BorderBrush="White" Background="White" Name="NewButton" Opacity="0.7" Command="New">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Images/Record.png" Width="13"/>
+                        <TextBlock Text="Record" Margin="5,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Separator Background="#37000000" Height="0.8"/>
+                <Button Height="20" BorderBrush="White" Opacity="0.1" Background="White" Name="StopButton" Command="Stop">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Images/Stop.png" Width="13"/>
+                        <TextBlock Text="Stop" Margin="5,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
     </DockPanel>
 </Fluent:RibbonWindow>
