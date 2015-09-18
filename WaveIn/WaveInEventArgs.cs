@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NWaveIn
 {
@@ -9,8 +7,8 @@ namespace NWaveIn
     /// </summary>
     public class WaveInEventArgs : EventArgs
     {
-        private byte[] buffer;
-        private int bytes;
+        byte[] buffer;
+        int bytes;
 
         /// <summary>
         /// Creates new WaveInEventArgs
@@ -25,17 +23,11 @@ namespace NWaveIn
         /// Buffer containing recorded data. Note that it might not be completely
         /// full. <seealso cref="BytesRecorded"/>
         /// </summary>
-        public byte[] Buffer
-        {
-            get { return buffer; }
-        }
+        public byte[] Buffer { get { return buffer; } }
 
         /// <summary>
         /// The number of recorded bytes in Buffer. <seealso cref="Buffer"/>
         /// </summary>
-        public int BytesRecorded
-        {
-            get { return bytes; }
-        }
+        public int BytesRecorded { get { return bytes; } }
     }
 }

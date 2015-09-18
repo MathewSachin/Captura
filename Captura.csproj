@@ -85,15 +85,13 @@
     </ApplicationDefinition>
     <Compile Include="Recorder.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="WaveIn\MmeInterop\MmException.cs" />
-    <Compile Include="WaveIn\MmeInterop\MmResult.cs" />
-    <Compile Include="WaveIn\MmeInterop\MmTime.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveCallbackStrategy.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveHeader.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveHeaderFlags.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveInCapabilities.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveInEventArgs.cs" />
-    <Compile Include="WaveIn\MmeInterop\WaveInterop.cs" />
+    <Compile Include="WaveIn\MmException.cs" />
+    <Compile Include="WaveIn\MmResult.cs" />
+    <Compile Include="WaveIn\WaveHeader.cs" />
+    <Compile Include="WaveIn\WaveHeaderFlags.cs" />
+    <Compile Include="WaveIn\WaveInCapabilities.cs" />
+    <Compile Include="WaveIn\WaveInEventArgs.cs" />
+    <Compile Include="WaveIn\WaveInterop.cs" />
     <Compile Include="WaveIn\WaveFormat.cs" />
     <Compile Include="WaveIn\WaveInBuffer.cs" />
     <Compile Include="WaveIn\WaveInEvent.cs" />

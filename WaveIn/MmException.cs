@@ -23,10 +23,7 @@ namespace NWaveIn
         }
 
 
-        private static string ErrorMessage(MmResult result, string function)
-        {
-            return String.Format("{0} calling {1}", result, function);
-        }
+        static string ErrorMessage(MmResult result, string function) { return String.Format("{0} calling {1}", result, function); }
 
         /// <summary>
         /// Helper function to automatically raise an exception on failure
@@ -42,12 +39,6 @@ namespace NWaveIn
         /// <summary>
         /// Returns the Windows API result
         /// </summary>
-        public MmResult Result
-        {
-            get
-            {
-                return result;
-            }
-        }
+        public MmResult Result { get { return result; } }
     }
 }
