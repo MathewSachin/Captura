@@ -229,7 +229,7 @@ namespace Captura
                 bitmap.UnlockBits(bits);
             }
         }
-
+        
         void audioSource_DataAvailable(object sender, WaveInEventArgs e)
         {
             var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });

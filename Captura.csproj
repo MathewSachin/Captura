@@ -56,6 +56,9 @@
     <ApplicationIcon>Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>Captura.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fluent">
       <HintPath>bin\Debug\Fluent.dll</HintPath>

@@ -23,3 +23,11 @@ Acknowledgements
 Uses a part of Mark Heath's NAudio for WaveIn,
 SharpAvi.dll by Vasilli Masilov
 and is influenced by the accompanying Sample App - Screencasts
+
+Todo
+--------------------------------------------------------------
+1.  Save Output Folder in Settings
+2.  ScreenCapture of DirectX fullscreen windows (using DWM)
+3.  Wasapi Loopback Capture (NAudio) (including silence)
+4.  Wpf folder browse dialog
+5.  Capture Specific Window

@@ -107,7 +107,7 @@ namespace Captura
             var bitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value);
             
             recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
-                SelectedAudioSourceId, AudioWaveFormat, EncodeAudio.IsChecked.Value, bitRate, IncludeCursor.IsChecked.Value);
+               SelectedAudioSourceId, AudioWaveFormat, EncodeAudio.IsChecked.Value, bitRate, IncludeCursor.IsChecked.Value);
 
             Status.Content = "Recording...";
 
