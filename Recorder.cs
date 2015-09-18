@@ -256,7 +256,8 @@ namespace Captura
                     }
                 }
 
-                var bits = bitmap.LockBits(new Rectangle(0, 0, Params.ScreenWidth, Params.ScreenHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = bitmap.LockBits(new Rectangle(0, 0, Params.ScreenWidth, Params.ScreenHeight),
+                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 bitmap.UnlockBits(bits);
             }

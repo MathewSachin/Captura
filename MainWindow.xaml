@@ -66,6 +66,15 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
+            <Fluent:RibbonTabItem Header="Window">
+                <Fluent:RibbonGroupBox>
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" ItemWidth="500" ItemsSource="{Binding AvailableWindows}"
+                                  IsEnabled="{Binding ReadyToRecord}"
+                                  DisplayMemberPath="Title"
+                                  SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
             <Fluent:RibbonTabItem Header="Audio">
                 <Fluent:RibbonGroupBox Header="Devices">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" ItemWidth="330" ItemsSource="{Binding AvailableAudioSources}"
@@ -81,7 +90,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
-
+        
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
             <Fluent:StatusBarItem HorizontalAlignment="Right">
                 <UI:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>

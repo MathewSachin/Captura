@@ -32,7 +32,7 @@ namespace Captura
             InitializeComponent();
 
             DataContext = this;
-            
+
             #region Command Bindings
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => Close()));
 
@@ -50,8 +50,33 @@ namespace Captura
                 (s, e) => e.CanExecute = !string.IsNullOrWhiteSpace(lastFileName) && File.Exists(lastFileName)));
 
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) =>
-                    Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", InitAvailableCodecs(), InitAvailableAudioSources())
-                    , (s, e) => e.CanExecute = ReadyToRecord));
+                {
+                    Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", InitAvailableCodecs(), InitAvailableAudioSources());
+
+                    var list = new List<WindowHandler>();
+                    list.Add(WindowHandler.DesktopWindow);
+
+                    foreach (var win in WindowHandler.Enumerate())
+                    {
+                        var hWnd = win.Handle;
+                        if (!win.IsVisible) continue;
+                        if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
+                        {
+                            if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
+                                continue;
+                            if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
+                                continue;
+                            if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
+                                continue;
+                        }
+
+                        list.Add(win);
+                    }
+
+                    AvailableWindows = list;
+
+                    SelectedWindow = WindowHandler.DesktopWindow;
+                }, (s, e) => e.CanExecute = ReadyToRecord));
             #endregion
 
             SFD = new SaveFileDialog()
@@ -69,7 +94,7 @@ namespace Captura
             KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => RecordControl_Click<int>()));
 
             OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
-            
+
             AudioWaveFormat = SupportedWaveFormat.WAVE_FORMAT_44M16;
 
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
@@ -92,7 +117,7 @@ namespace Captura
 
             NewButton.Opacity = 0.1;
             StopButton.Opacity = 0.7;
-            
+
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
 
@@ -126,7 +151,7 @@ namespace Captura
             WindowState = WindowState.Normal;
 
             Status.Content = "Ready";
-            
+
             TimeManager.Stop();
         }
         #endregion
@@ -215,6 +240,17 @@ namespace Captura
             get { return UseStereo.IsChecked.Value ? audioFormats[1] : audioFormats[0]; }
             set { UseStereo.IsChecked = (value == audioFormats[1]); }
         }
+
+        public static readonly DependencyProperty SelectedWindowProperty =
+            DependencyProperty.Register("SelectedWindow", typeof(WindowHandler), typeof(MainWindow), new UIPropertyMetadata(WindowHandler.DesktopWindow));
+
+        public WindowHandler SelectedWindow
+        {
+            get { return (WindowHandler)GetValue(SelectedWindowProperty); }
+            set { SetValue(SelectedWindowProperty, value); }
+        }
+
+        public IEnumerable<WindowHandler> AvailableWindows { get; private set; }
 
         public IEnumerable<CodecInfo> AvailableCodecs { get; private set; }
 

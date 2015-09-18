@@ -64,14 +64,13 @@
       <HintPath>bin\Debug\Fluent.dll</HintPath>
     </Reference>
     <Reference Include="ManagedWin32">
-      <HintPath>bin\Debug\ManagedWin32.dll</HintPath>
+      <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
     </Reference>
     <Reference Include="SharpAvi">
       <HintPath>bin\Debug\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
