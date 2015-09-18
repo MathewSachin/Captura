@@ -193,6 +193,26 @@ namespace Captura
             stopThread.Close();
         }
 
+        public void Pause()
+        {
+            screenThread.Suspend();
+
+            if (audioSource != null) audioSource.StopRecording();
+        }
+
+        public void Resume()
+        {
+            //stopThread.Reset();
+            screenThread.Resume();
+
+            if (audioSource != null)
+            {
+                videoFrameWritten.Set();
+                audioBlockWritten.Reset();
+                audioSource.StartRecording();
+            }
+        }
+
         void RecordScreen()
         {
             var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);

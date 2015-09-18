@@ -4,8 +4,7 @@
         xmlns:UI="clr-namespace:NBuild.UI"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="300" MinHeight="300" MinWidth="525"
-        Closing="Window_Closing"
-        Icon="Images/Captura.ico">
+        Closing="Window_Closing" Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -108,6 +107,9 @@
                         <TextBlock Text="Record" Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+                <Separator Background="#37000000" Height="0.8"/>
+                <Button Content="Pause" Click="Pause"/>
+                <Button Content="Resume" Click="Resume"/>
                 <Separator Background="#37000000" Height="0.8"/>
                 <Button Height="20" BorderBrush="White" Opacity="0.1" Background="White" Name="StopButton" Command="Stop">
                     <StackPanel Orientation="Horizontal">

@@ -258,5 +258,17 @@ namespace Captura
 
         SupportedWaveFormat[] audioFormats = new[] { SupportedWaveFormat.WAVE_FORMAT_44M16, SupportedWaveFormat.WAVE_FORMAT_44S16 };
         #endregion
+
+        void Pause(object sender, RoutedEventArgs e)
+        {
+            recorder.Pause();
+            TimeManager.Stop();
+        }
+
+        void Resume(object sender, RoutedEventArgs e)
+        {
+            recorder.Resume();
+            TimeManager.Start();
+        }
     }
 }
