@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
@@ -13,13 +14,12 @@ using Microsoft.Win32;
 using NWaveIn;
 using SharpAvi;
 using SharpAvi.Codecs;
-using System.Windows.Media.Imaging;
 
 namespace Captura
 {
     public partial class MainWindow : Fluent.RibbonWindow
     {
-        #region Private Fields
+        #region Fields
         SaveFileDialog SFD;
         KeyboardHook KeyHook;
 
@@ -32,9 +32,7 @@ namespace Captura
             InitializeComponent();
 
             DataContext = this;
-
-            ReadyToRecord = true;
-
+            
             #region Command Bindings
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => Close()));
 
@@ -71,9 +69,7 @@ namespace Captura
             KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => RecordControl_Click<int>()));
 
             OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
-
-            Encoder = KnownFourCCs.Codecs.MotionJpeg;
-
+            
             AudioWaveFormat = SupportedWaveFormat.WAVE_FORMAT_44M16;
 
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
@@ -90,24 +86,21 @@ namespace Captura
 
         void StartRecording()
         {
+            if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
+
             IsCollapsed = true;
 
             NewButton.Opacity = 0.1;
             StopButton.Opacity = 0.7;
-
-            if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
-
+            
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
 
             ReadyToRecord = false;
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".avi");
-            
-            var bitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value);
-            
-            recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
-               SelectedAudioSourceId, AudioWaveFormat, EncodeAudio.IsChecked.Value, bitRate, IncludeCursor.IsChecked.Value);
+
+            recorder = new Recorder(new RecorderParams(lastFileName, FrameRate, Encoder, Quality, SelectedAudioSourceId, AudioWaveFormat, EncodeAudio, AudioQuality, IncludeCursor));
 
             Status.Content = "Recording...";
 
@@ -190,7 +183,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty ReadyToRecordProperty =
-            DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow));
+            DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow), new UIPropertyMetadata(true));
 
         public bool ReadyToRecord
         {
@@ -199,7 +192,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty EncoderProperty =
-            DependencyProperty.Register("Encoder", typeof(FourCC), typeof(MainWindow));
+            DependencyProperty.Register("Encoder", typeof(FourCC), typeof(MainWindow), new UIPropertyMetadata(KnownFourCCs.Codecs.MotionJpeg));
 
         public FourCC Encoder
         {
