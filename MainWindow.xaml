@@ -17,6 +17,28 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
+                <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
+                        Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                        <Image Margin="5" x:Name="ButtonImage" Opacity="0.6"
+                        Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                        ToolTip="{TemplateBinding ToolTip}"/>
+                    </StackPanel>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="true">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
     <DockPanel>
@@ -89,7 +111,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
-        
+
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
             <Fluent:StatusBarItem HorizontalAlignment="Right">
                 <this:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>
@@ -99,25 +121,14 @@
             </Fluent:StatusBarItem>
         </Fluent:StatusBar>
 
-        <Border BorderThickness="1" BorderBrush="#37000000" VerticalAlignment="Top" Margin="5,20">
-            <StackPanel>
-                <Button Height="20" BorderBrush="White" Background="White" Name="NewButton" Opacity="0.7" Command="New">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Images/Record.png" Width="13"/>
-                        <TextBlock Text="Record" Margin="5,0" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <Separator Background="#37000000" Height="0.8"/>
-                <Button Content="Pause" Command="this:MainWindow.PauseCommand"/>
-                <Button Content="Resume" Command="this:MainWindow.ResumeCommand"/>
-                <Separator Background="#37000000" Height="0.8"/>
-                <Button Height="20" BorderBrush="White" Opacity="0.1" Background="White" Name="StopButton" Command="Stop">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Images/Stop.png" Width="13"/>
-                        <TextBlock Text="Stop" Margin="5,0" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Border>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Height="60" Template="{StaticResource ImageButtonTemplate}" Command="New" Content="Images/Record.png"/>
+
+            <Button Height="60" Template="{StaticResource ImageButtonTemplate}" Command="this:MainWindow.PauseCommand" Content="Images/Pause.png"/>
+
+            <Button Height="60" Content="Resume" BorderBrush="White" Background="Transparent" Command="this:MainWindow.ResumeCommand"/>
+
+            <Button Height="60" Template="{StaticResource ImageButtonTemplate}" Command="Stop" Content="Images/Stop.png"/>
+        </StackPanel>
     </DockPanel>
 </Fluent:RibbonWindow>

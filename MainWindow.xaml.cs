@@ -175,10 +175,7 @@ namespace Captura
             if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
 
             IsCollapsed = true;
-            
-            NewButton.Opacity = 0.1;
-            StopButton.Opacity = 0.7;
-
+                        
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
 
@@ -197,10 +194,7 @@ namespace Captura
         void StopRecording()
         {
             if (ReadyToRecord) throw new InvalidOperationException("Not recording.");
-
-            StopButton.Opacity = 0.1;
-            NewButton.Opacity = 0.7;
-
+                        
             RecordThumb.Description = "Record";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
 
