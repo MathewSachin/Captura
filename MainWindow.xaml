@@ -1,7 +1,7 @@
 ﻿<Fluent:RibbonWindow x:Class="Captura.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:UI="clr-namespace:NBuild.UI"
+        xmlns:this="clr-namespace:Captura"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="300" MinHeight="300" MinWidth="525"
         Closing="Window_Closing" Icon="Images/Captura.ico">
@@ -92,7 +92,7 @@
         
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
             <Fluent:StatusBarItem HorizontalAlignment="Right">
-                <UI:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>
+                <this:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>
             </Fluent:StatusBarItem>
             <Fluent:StatusBarItem HorizontalAlignment="Left">
                 <Label Height="25" Name="Status" Content="Ready" Foreground="White" VerticalContentAlignment="Center" Background="Transparent" />
@@ -108,8 +108,8 @@
                     </StackPanel>
                 </Button>
                 <Separator Background="#37000000" Height="0.8"/>
-                <Button Content="Pause" Click="Pause"/>
-                <Button Content="Resume" Click="Resume"/>
+                <Button Content="Pause" Command="this:MainWindow.PauseCommand"/>
+                <Button Content="Resume" Command="this:MainWindow.ResumeCommand"/>
                 <Separator Background="#37000000" Height="0.8"/>
                 <Button Height="20" BorderBrush="White" Opacity="0.1" Background="White" Name="StopButton" Command="Stop">
                     <StackPanel Orientation="Horizontal">

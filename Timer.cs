@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace NBuild.UI
+namespace Captura
 {
     public partial class Timer : Label
     {

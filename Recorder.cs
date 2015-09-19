@@ -110,6 +110,7 @@ namespace Captura
         ManualResetEvent stopThread = new ManualResetEvent(false);
         AutoResetEvent videoFrameWritten = new AutoResetEvent(false),
             audioBlockWritten = new AutoResetEvent(false);
+        public bool IsPaused = false;
         #endregion
 
         public Recorder(RecorderParams Params)
@@ -178,6 +179,8 @@ namespace Captura
 
         public void Dispose()
         {
+            if (IsPaused) Resume();
+
             stopThread.Set();
             screenThread.Join();
 
@@ -195,21 +198,30 @@ namespace Captura
 
         public void Pause()
         {
-            screenThread.Suspend();
+            if (!IsPaused)
+            {
+                screenThread.Suspend();
 
-            if (audioSource != null) audioSource.StopRecording();
+                if (audioSource != null) audioSource.StopRecording();
+
+                IsPaused = true;
+            }
         }
 
         public void Resume()
         {
-            //stopThread.Reset();
-            screenThread.Resume();
-
-            if (audioSource != null)
+            if (IsPaused)
             {
-                videoFrameWritten.Set();
-                audioBlockWritten.Reset();
-                audioSource.StartRecording();
+                screenThread.Resume();
+
+                if (audioSource != null)
+                {
+                    videoFrameWritten.Set();
+                    audioBlockWritten.Reset();
+                    audioSource.StartRecording();
+                }
+
+                IsPaused = false;
             }
         }
 
