@@ -61,13 +61,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fluent">
-      <HintPath>bin\Debug\Fluent.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedWin32">
-      <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
+      <HintPath>..\#Binaries\Fluent.dll</HintPath>
     </Reference>
     <Reference Include="SharpAvi">
-      <HintPath>bin\Debug\SharpAvi.dll</HintPath>
+      <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -84,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="KeyboardHook.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="WaveIn\MmException.cs" />

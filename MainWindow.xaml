@@ -87,7 +87,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Window">
+            <Fluent:RibbonTabItem Header="Window" Visibility="Collapsed">
                 <Fluent:RibbonGroupBox>
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" ItemWidth="500" ItemsSource="{Binding AvailableWindows}"
                                   IsEnabled="{Binding ReadyToRecord}"

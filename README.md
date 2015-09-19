@@ -2,6 +2,13 @@
 (c) 2015 Mathew Sachin. All Rights Reserved
 Capture what's happering on your Screen along with audio from your microphone
 
+Depends On
+--------------------------------------------------------------
+Fluent.dll (Downloadable from https://github.com/fluentribbon/Fluent.Ribbon/releases)
+SharpAvi.dll (Buildable from https://github.com/MathewSachin/SharpAvi)
+ManagedWin32.dll (Buildable from https://github.com/MathewSachin/ManagedWin32)
+lameenc32.dll and lameenc64.dll (Contained in the Repository)
+
 Features
 --------------------------------------------------------------
 Capture Screen
@@ -23,6 +30,7 @@ Acknowledgements
 Uses a part of Mark Heath's NAudio for WaveIn,
 SharpAvi.dll by Vasilli Masilov
 and is influenced by the accompanying Sample App - Screencasts
+and Fluent.dll Interface
 
 Todo
 --------------------------------------------------------------

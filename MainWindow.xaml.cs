@@ -8,8 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ManagedWin32;
-using ManagedWin32.Api;
 using Microsoft.Win32;
 using NWaveIn;
 using SharpAvi;
@@ -55,16 +53,16 @@ namespace Captura
             set { SetValue(SelectedAudioSourceIdProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(WindowHandler), typeof(MainWindow), new UIPropertyMetadata(WindowHandler.DesktopWindow));
+        //public static readonly DependencyProperty SelectedWindowProperty =
+        //    DependencyProperty.Register("SelectedWindow", typeof(WindowHandler), typeof(MainWindow), new UIPropertyMetadata(WindowHandler.DesktopWindow));
 
-        public WindowHandler SelectedWindow
-        {
-            get { return (WindowHandler)GetValue(SelectedWindowProperty); }
-            set { SetValue(SelectedWindowProperty, value); }
-        }
+        //public WindowHandler SelectedWindow
+        //{
+        //    get { return (WindowHandler)GetValue(SelectedWindowProperty); }
+        //    set { SetValue(SelectedWindowProperty, value); }
+        //}
 
-        public IEnumerable<WindowHandler> AvailableWindows { get; private set; }
+        //public IEnumerable<WindowHandler> AvailableWindows { get; private set; }
 
         public IEnumerable<CodecInfo> AvailableCodecs { get; private set; }
 
@@ -149,29 +147,29 @@ namespace Captura
         {
             Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", InitAvailableCodecs(), InitAvailableAudioSources());
 
-            var list = new List<WindowHandler>();
-            list.Add(WindowHandler.DesktopWindow);
+            //var list = new List<WindowHandler>();
+            //list.Add(WindowHandler.DesktopWindow);
 
-            foreach (var win in WindowHandler.Enumerate())
-            {
-                var hWnd = win.Handle;
-                if (!win.IsVisible) continue;
-                if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
-                {
-                    if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
-                        continue;
-                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
-                        continue;
-                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
-                        continue;
-                }
+            //foreach (var win in WindowHandler.Enumerate())
+            //{
+            //    var hWnd = win.Handle;
+            //    if (!win.IsVisible) continue;
+            //    if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
+            //    {
+            //        if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
+            //            continue;
+            //        if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
+            //            continue;
+            //        if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
+            //            continue;
+            //    }
 
-                list.Add(win);
-            }
+            //    list.Add(win);
+            //}
 
-            AvailableWindows = list;
+            //AvailableWindows = list;
 
-            SelectedWindow = WindowHandler.DesktopWindow;
+            //SelectedWindow = WindowHandler.DesktopWindow;
         }
 
         void RecordControl_Click<T>(object sender = null, T e = default(T))

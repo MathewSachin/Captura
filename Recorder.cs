@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Fluent;
-using ManagedWin32;
 using NWaveIn;
 using SharpAvi;
 using SharpAvi.Codecs;
@@ -97,6 +96,28 @@ namespace Captura
 
         public WaveFormat WaveFormat { get; private set; }
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct IconInfo
+    {
+        public bool fIcon;         // Specifies whether this structure defines an icon or a cursor. A value of TRUE specifies 
+        public int xHotspot;     // Specifies the x-coordinate of a cursor's hot spot. If this structure defines an icon, the hot 
+        public int yHotspot;     // Specifies the y-coordinate of the cursor's hot spot. If this structure defines an icon, the hot 
+        public IntPtr hbmMask;     // (HBITMAP) Specifies the icon bitmask bitmap. If this structure defines a black and white icon, 
+        public IntPtr hbmColor;    // (HBITMAP) Handle to the icon color bitmap. This member can be optional if this 
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct CursorInfo
+    {
+        public int cbSize;        // Specifies the size, in bytes, of the structure. 
+        public int flags;         // Specifies the cursor state. This parameter can be one of the following values:
+        public IntPtr hCursor;          // Handle to the cursor. 
+        public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor. 
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct POINT { public int X, Y; }
 
     class Recorder : IDisposable
     {
@@ -277,8 +298,8 @@ namespace Captura
                     int cursorX = 0, cursorY = 0;
                     Bitmap cursorBMP;
 
-                    cursorBMP = ScreenCapture.CaptureCursor(ref cursorX, ref cursorY);
-
+                    cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
+                    
                     if (cursorBMP != null)
                     {
                         Rectangle r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
@@ -294,6 +315,45 @@ namespace Captura
                 bitmap.UnlockBits(bits);
             }
         }
+
+        public static Bitmap CaptureCursor(ref int x, ref int y)
+        {
+            Bitmap bmp;
+            IntPtr hicon;
+            CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
+
+            IconInfo icInfo;
+
+            if (GetCursorInfo(out ci))
+            {
+                const int CURSOR_SHOWING = 0x00000001;
+
+                if (ci.flags == CURSOR_SHOWING)
+                {
+                    hicon = CopyIcon(ci.hCursor);
+                    if (GetIconInfo(hicon, out icInfo))
+                    {
+                        x = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
+                        y = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
+
+                        Icon ic = Icon.FromHandle(hicon);
+                        bmp = ic.ToBitmap();
+                        return bmp;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool GetIconInfo(IntPtr hIcon, out IconInfo piconinfo);
+
+        [DllImport("user32.dll")]
+        static extern bool GetCursorInfo(out CursorInfo pci);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr CopyIcon(IntPtr hIcon);
 
         void AudioDataAvailable(object sender, WaveInEventArgs e)
         {
