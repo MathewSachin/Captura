@@ -107,6 +107,7 @@ namespace Captura
                     PauseButton.Command = ResumeCommand;
                     RotationEffect.Angle = 90;
                     Status.Content = "Paused";
+                    PauseButton.ToolTip = "Pause";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && !Recorder.IsPaused));
 
             CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
@@ -117,6 +118,7 @@ namespace Captura
                     PauseButton.Command = PauseCommand;
                     RotationEffect.Angle = 0;
                     Status.Content = "Recording...";
+                    PauseButton.ToolTip = "Resume";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder.IsPaused));
             #endregion
 
@@ -187,6 +189,9 @@ namespace Captura
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
 
+            RecordButton.ToolTip = "Stop";
+            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Stop.png";
+
             ReadyToRecord = false;
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".avi");
@@ -215,13 +220,16 @@ namespace Captura
 
             WindowState = WindowState.Normal;
 
-            Status.Content = "Ready";
+            Status.Content = "Saved to " + lastFileName;
 
             TimeManager.Stop();
 
             RecordButton.Command = ApplicationCommands.New;
             PauseButton.Command = PauseCommand;
+            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Record.png";
             RotationEffect.Angle = 0;
+            RecordButton.ToolTip = "Record";
+            PauseButton.ToolTip = "Pause";
         }
         
         void Window_Closing(object sender, EventArgs e)

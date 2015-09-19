@@ -119,62 +119,41 @@
             <Fluent:StatusBarItem HorizontalAlignment="Left">
                 <Label Height="25" Name="Status" Content="Ready" Foreground="White" VerticalContentAlignment="Center" Background="Transparent" />
             </Fluent:StatusBarItem>
+            <Fluent:StatusBar.ContextMenu>
+                <ContextMenu/>
+            </Fluent:StatusBar.ContextMenu>
         </Fluent:StatusBar>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <ToggleButton Content="Images/Record.png" Height="60" Name="RecordButton" Command="New">
-                <ToggleButton.Template>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
-                        Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
-                                <Image Margin="5" x:Name="ButtonImage" Opacity="0.7"
-                        Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
-                        ToolTip="{TemplateBinding ToolTip}"/>
-                            </StackPanel>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="ButtonImage" Property="Source" Value="Images/Stop.png"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </ToggleButton.Template>
-            </ToggleButton>
-
-            <ToggleButton Content="Images/Pause.png" Height="60" Name="PauseButton" Command="this:MainWindow.PauseCommand">
-                <ToggleButton.Template>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
+            <StackPanel.Resources>
+                <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
                                 Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
-                                <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
+                        <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
                                        Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
                                         ToolTip="{TemplateBinding ToolTip}"/>
-                            </StackPanel>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </ToggleButton.Template>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+                
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Height" Value="60"/>
+                    <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>
+                </Style>
+            </StackPanel.Resources>
+            <ToggleButton Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Command="New"/>
+
+            <ToggleButton Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
                 <ToggleButton.LayoutTransform>
                     <RotateTransform x:Name="RotationEffect" Angle="0"/>
                 </ToggleButton.LayoutTransform>
