@@ -2,12 +2,10 @@
 (c) 2015 Mathew Sachin. All Rights Reserved
 Capture what's happering on your Screen along with audio from your microphone
 
-Depends On
+Dependencies
 --------------------------------------------------------------
-Fluent.dll (Downloadable from https://github.com/fluentribbon/Fluent.Ribbon/releases)
-SharpAvi.dll (Buildable from https://github.com/MathewSachin/SharpAvi)
-ManagedWin32.dll (Buildable from https://github.com/MathewSachin/ManagedWin32)
-lameenc32.dll and lameenc64.dll (Contained in the Repository)
+Grab Release v1.0 to get all the Dependent Dll(s)
+You can THEN build the Library yourself.
 
 Features
 --------------------------------------------------------------
@@ -34,6 +32,7 @@ and Fluent.dll Interface
 
 Todo
 --------------------------------------------------------------
+0.  Fork Fluent and Compress it
 1.  Save Output Folder in Settings
 2.  ScreenCapture of DirectX fullscreen windows (using DWM)
 3.  Wasapi Loopback Capture (NAudio) (including silence)

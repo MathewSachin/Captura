@@ -15,7 +15,7 @@
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Office2013.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
