@@ -103,12 +103,20 @@ namespace Captura
                 {
                     Recorder.Pause();
                     TimeManager.Stop();
+
+                    PauseButton.Command = ResumeCommand;
+                    RotationEffect.Angle = 90;
+                    Status.Content = "Paused";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && !Recorder.IsPaused));
 
             CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
                 {
                     Recorder.Resume();
                     TimeManager.Start();
+
+                    PauseButton.Command = PauseCommand;
+                    RotationEffect.Angle = 0;
+                    Status.Content = "Recording...";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder.IsPaused));
             #endregion
 
@@ -189,6 +197,8 @@ namespace Captura
             TimeManager.Start();
 
             Recorder = new Recorder(new RecorderParams(lastFileName, FrameRate, Encoder, Quality, SelectedAudioSourceId, AudioWaveFormat, EncodeAudio, AudioQuality, IncludeCursor));
+
+            RecordButton.Command = ApplicationCommands.Stop;
         }
 
         void StopRecording()
@@ -208,6 +218,10 @@ namespace Captura
             Status.Content = "Ready";
 
             TimeManager.Stop();
+
+            RecordButton.Command = ApplicationCommands.New;
+            PauseButton.Command = PauseCommand;
+            RotationEffect.Angle = 0;
         }
         
         void Window_Closing(object sender, EventArgs e)
