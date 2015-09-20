@@ -1,4 +1,6 @@
-[#Captura](/Images/Logo.png)
+![Captura Logo](/Images/Logo.png)
+# Captura
+
 
 (c) 2015 Mathew Sachin. All Rights Reserved.
 Capture what's happening on your Screen along with audio from your microphone.
