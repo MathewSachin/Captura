@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.Win32;
-using NWaveIn;
 using SharpAvi;
 using SharpAvi.Codecs;
 
@@ -132,12 +131,10 @@ namespace Captura
             NavigationCommands.Refresh.Execute(this, this);
 
             KeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift);
-            KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => RecordControl_Click<int>()));
+            KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
 
             OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
-
-            AudioWaveFormat = SupportedWaveFormat.WAVE_FORMAT_44M16;
-
+                        
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
             AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
             AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
@@ -172,7 +169,7 @@ namespace Captura
             //SelectedWindow = WindowHandler.DesktopWindow;
         }
 
-        void RecordControl_Click<T>(object sender = null, T e = default(T))
+        void ToggleRecorderState<T>(object sender = null, T e = default(T))
         {
             if (ReadyToRecord) StartRecording();
             else StopRecording();
@@ -184,9 +181,9 @@ namespace Captura
 
             IsCollapsed = true;
                         
+            // UI Buttons
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
-
             RecordButton.ToolTip = "Stop";
             RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Stop.png";
 
@@ -199,18 +196,13 @@ namespace Captura
             TimeManager.Reset();
             TimeManager.Start();
 
-            Recorder = new Recorder(new RecorderParams(lastFileName, FrameRate, Encoder, Quality, SelectedAudioSourceId, AudioWaveFormat, EncodeAudio, AudioQuality, IncludeCursor));
-
-            RecordButton.Command = ApplicationCommands.Stop;
+            Recorder = new Recorder(new RecorderParams(lastFileName, FrameRate, Encoder, Quality, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio, AudioQuality, IncludeCursor));
         }
 
         void StopRecording()
         {
             if (ReadyToRecord) throw new InvalidOperationException("Not recording.");
-                        
-            RecordThumb.Description = "Record";
-            RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
-
+                       
             Recorder.Dispose();
             Recorder = null;
 
@@ -222,7 +214,9 @@ namespace Captura
 
             TimeManager.Stop();
 
-            RecordButton.Command = ApplicationCommands.New;
+            // UI Buttons
+            RecordThumb.Description = "Record";
+            RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
             PauseButton.Command = PauseCommand;
             RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Record.png";
             RotationEffect.Angle = 0;
@@ -237,7 +231,6 @@ namespace Captura
             if (!ReadyToRecord) StopRecording();
         }
 
-        #region Settings
         void OutputFolderBrowse()
         {
             var dlg = new System.Windows.Forms.FolderBrowserDialog()
@@ -266,11 +259,7 @@ namespace Captura
             deviceList.Add(-1, "(No Sound)");
 
             for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-            {
-                var caps = WaveInEvent.GetCapabilities(i);
-                if (audioFormats.All(caps.SupportsWaveFormat))
-                    deviceList.Add(i, caps.ProductName);
-            }
+                deviceList.Add(i, WaveInEvent.GetCapabilities(i).ProductName);
 
             //foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
             //    deviceList.Add(device.ID, device.FriendlyName + " (Loopback)");
@@ -280,15 +269,5 @@ namespace Captura
 
             return deviceList.Count - 1;
         }
-
-        public SupportedWaveFormat AudioWaveFormat
-        {
-            // TODO: Make wave format more adjustable
-            get { return UseStereo.IsChecked.Value ? audioFormats[1] : audioFormats[0]; }
-            set { UseStereo.IsChecked = (value == audioFormats[1]); }
-        }
-
-        SupportedWaveFormat[] audioFormats = new[] { SupportedWaveFormat.WAVE_FORMAT_44M16, SupportedWaveFormat.WAVE_FORMAT_44S16 };
-        #endregion
     }
 }

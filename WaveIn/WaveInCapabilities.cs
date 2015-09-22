@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NWaveIn
+namespace Captura
 {
     [Flags]
     public enum SupportedWaveFormat

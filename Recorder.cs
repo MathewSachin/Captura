@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Fluent;
-using NWaveIn;
+using Captura;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
@@ -19,7 +19,7 @@ namespace Captura
     class RecorderParams
     {
         public RecorderParams(string filename, Spinner FrameRate, FourCC Encoder, Spinner Quality,
-            int AudioSourceId, SupportedWaveFormat wf, ToggleButton EncodeAudio, System.Windows.Controls.Slider AudioQuality, ToggleButton IncludeCursor)
+            int AudioSourceId, bool UseStereo, ToggleButton EncodeAudio, System.Windows.Controls.Slider AudioQuality, ToggleButton IncludeCursor)
         {
             FileName = filename;
             FramesPerSecond = (int)FrameRate.Value;
@@ -37,15 +37,8 @@ namespace Captura
             ScreenHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
             ScreenWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
 
-            switch (wf)
-            {
-                case SupportedWaveFormat.WAVE_FORMAT_44M16:
-                    WaveFormat = new WaveFormat(44100, 16, 1);
-                    break;
-                case SupportedWaveFormat.WAVE_FORMAT_44S16:
-                    WaveFormat = new WaveFormat(44100, 16, 2);
-                    break;
-            }
+            WaveFormat = new WaveFormat(44100, 16, UseStereo ? 2 : 1);
+
         }
 
         string FileName;
@@ -133,6 +126,8 @@ namespace Captura
             audioBlockWritten = new AutoResetEvent(false);
         public bool IsPaused = false;
         #endregion
+
+        public Recorder() { }
 
         public Recorder(RecorderParams Params)
         {

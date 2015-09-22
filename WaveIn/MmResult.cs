@@ -1,6 +1,6 @@
 using System;
 
-namespace NWaveIn
+namespace Captura
 {
     /// <summary>
     /// Windows multimedia error codes from mmsystem.h.

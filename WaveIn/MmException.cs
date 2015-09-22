@@ -1,6 +1,6 @@
 using System;
 
-namespace NWaveIn
+namespace Captura
 {
     /// <summary>
     /// Summary description for MmException.

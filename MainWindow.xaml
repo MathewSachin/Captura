@@ -8,7 +8,7 @@
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo x:Name="RecordThumb"  Description="Record" Click="RecordControl_Click" ImageSource="Images/Record.png"/>
+                <ThumbButtonInfo x:Name="RecordThumb" Description="Record" Click="ToggleRecorderState" ImageSource="Images/Record.png"/>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Fluent:RibbonWindow.TaskbarItemInfo>
@@ -17,28 +17,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Office2013.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
-                <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
-                        Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
-                        <Image Margin="5" x:Name="ButtonImage" Opacity="0.6"
-                        Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
-                        ToolTip="{TemplateBinding ToolTip}"/>
-                    </StackPanel>
-                </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="true">
-                        <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="false">
-                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
     <DockPanel>
@@ -151,7 +129,7 @@
                     <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>
                 </Style>
             </StackPanel.Resources>
-            <ToggleButton Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Command="New"/>
+            <ToggleButton Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
 
             <ToggleButton Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
                 <ToggleButton.LayoutTransform>

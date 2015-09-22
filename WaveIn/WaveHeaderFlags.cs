@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NWaveIn
+namespace Captura
 {
     /// <summary>
     /// Wave Header Flags enumeration

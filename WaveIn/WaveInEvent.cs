@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace NWaveIn
+namespace Captura
 {
     /// <summary>
     /// Recording using waveIn api with event callbacks.
