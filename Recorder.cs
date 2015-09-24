@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Fluent;
-using Captura;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
@@ -280,7 +278,7 @@ namespace Captura
             if (!isFirstFrame) videoWriteTask.Wait();
         }
 
-        void Screenshot(byte[] Buffer)
+        public void Screenshot(byte[] Buffer)
         {
             using (var bitmap = new Bitmap(Params.ScreenWidth, Params.ScreenHeight))
             using (var graphics = Graphics.FromImage(bitmap))
@@ -294,7 +292,7 @@ namespace Captura
                     Bitmap cursorBMP;
 
                     cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
-                    
+
                     if (cursorBMP != null)
                     {
                         Rectangle r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.Win32;
@@ -134,7 +135,7 @@ namespace Captura
             KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
 
             OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
-                        
+
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
             AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
             AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
@@ -180,7 +181,7 @@ namespace Captura
             if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
 
             IsCollapsed = true;
-                        
+
             // UI Buttons
             RecordThumb.Description = "Stop";
             RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
@@ -202,7 +203,7 @@ namespace Captura
         void StopRecording()
         {
             if (ReadyToRecord) throw new InvalidOperationException("Not recording.");
-                       
+
             Recorder.Dispose();
             Recorder = null;
 
@@ -223,7 +224,7 @@ namespace Captura
             RecordButton.ToolTip = "Record";
             PauseButton.ToolTip = "Pause";
         }
-        
+
         void Window_Closing(object sender, EventArgs e)
         {
             KeyHook.Dispose();
@@ -268,6 +269,41 @@ namespace Captura
             SelectedAudioSourceId = -1;
 
             return deviceList.Count - 1;
+        }
+
+        void ScreenShot(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Media.Matrix toDevice;
+            using (var source = new HwndSource(new HwndSourceParameters()))
+                toDevice = source.CompositionTarget.TransformToDevice;
+
+            int ScreenHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22),
+            ScreenWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+
+            using (var bitmap = new Bitmap(ScreenWidth, ScreenHeight))
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                try { graphics.CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(ScreenWidth, ScreenHeight)); }
+                catch { }
+
+                if (IncludeCursor.IsChecked.Value)
+                {
+                    int cursorX = 0, cursorY = 0;
+                    Bitmap cursorBMP;
+
+                    cursorBMP = Recorder.CaptureCursor(ref cursorX, ref cursorY);
+
+                    if (cursorBMP != null)
+                    {
+                        Rectangle r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
+
+                        graphics.DrawImage(cursorBMP, r);
+                        graphics.Flush();
+                    }
+                }
+
+                bitmap.Save(Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png"), System.Drawing.Imaging.ImageFormat.Png);
+            }
         }
     }
 }

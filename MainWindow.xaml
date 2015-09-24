@@ -1,9 +1,9 @@
 ﻿<Fluent:RibbonWindow x:Class="Captura.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:this="clr-namespace:Captura"
+        xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
-        Title="Captura" Width="525" Height="300" MinHeight="300" MinWidth="525"
+        Title="Captura" Width="525" Height="300"
         Closing="Window_Closing" Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
@@ -15,7 +15,7 @@
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Office2013.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
@@ -129,6 +129,9 @@
                     <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>
                 </Style>
             </StackPanel.Resources>
+            
+            <Button Content="ScreenShot" Click="ScreenShot" />
+            
             <ToggleButton Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
 
             <ToggleButton Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
