@@ -59,17 +59,17 @@
 
                 <Fluent:RibbonGroupBox Header="Encoder">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="200" ItemWidth="200" ItemsSource="{Binding AvailableCodecs}"
-                                  SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}"
-                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
+                                  DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
                                   SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Window" Visibility="Collapsed">
+            <Fluent:RibbonTabItem Header="Window">
                 <Fluent:RibbonGroupBox>
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" ItemWidth="500" ItemsSource="{Binding AvailableWindows}"
-                                  IsEnabled="{Binding ReadyToRecord}"
-                                  DisplayMemberPath="Title"
+                                  IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                  Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
                                   SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
@@ -77,7 +77,8 @@
             <Fluent:RibbonTabItem Header="Audio">
                 <Fluent:RibbonGroupBox Header="Devices">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" ItemWidth="330" ItemsSource="{Binding AvailableAudioSources}"
-                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}"
+                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
+                                  SelectionChanged="DevicesGallery_SelectionChanged"
                                   SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
@@ -104,7 +105,7 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel.Resources>
-                <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type ToggleButton}">
+                <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
                     <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
                                 Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
                         <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
@@ -124,21 +125,21 @@
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
                 
-                <Style TargetType="ToggleButton">
+                <Style TargetType="Button">
                     <Setter Property="Height" Value="60"/>
                     <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>
                 </Style>
             </StackPanel.Resources>
             
-            <Button Content="ScreenShot" Click="ScreenShot" />
+            <Button Content="Images/ScreenShot.ico" Height="40" Width="40" ToolTip="ScreenShot" Click="ScreenShot" />
             
-            <ToggleButton Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
+            <Button Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
 
-            <ToggleButton Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
-                <ToggleButton.LayoutTransform>
+            <Button Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
+                <Button.LayoutTransform>
                     <RotateTransform x:Name="RotationEffect" Angle="0"/>
-                </ToggleButton.LayoutTransform>
-            </ToggleButton>
+                </Button.LayoutTransform>
+            </Button>
         </StackPanel>
     </DockPanel>
 </Fluent:RibbonWindow>

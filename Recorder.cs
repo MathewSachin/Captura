@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using Fluent;
+using ManagedWin32.Api;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
@@ -16,27 +16,40 @@ namespace Captura
 {
     class RecorderParams
     {
-        public RecorderParams(string filename, Spinner FrameRate, FourCC Encoder, Spinner Quality,
-            int AudioSourceId, bool UseStereo, ToggleButton EncodeAudio, System.Windows.Controls.Slider AudioQuality, ToggleButton IncludeCursor)
+        public IntPtr hWnd;
+
+        public RecorderParams(string filename, int FrameRate, FourCC Encoder, int Quality,
+            int AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, bool IncludeCursor, IntPtr hWnd)
         {
             FileName = filename;
-            FramesPerSecond = (int)FrameRate.Value;
+            FramesPerSecond = FrameRate;
             Codec = Encoder;
-            this.Quality = (int)Quality.Value;
+            this.Quality = Quality;
             this.AudioSourceId = AudioSourceId;
-            this.EncodeAudio = EncodeAudio.IsChecked.Value;
-            AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value);
-            this.IncludeCursor = IncludeCursor.IsChecked.Value;
+            this.EncodeAudio = EncodeAudio;
+            AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioQuality);
+            this.IncludeCursor = IncludeCursor;
+            this.hWnd = hWnd;
 
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
+            if (hWnd == IntPtr.Zero)
+            {
+                System.Windows.Media.Matrix toDevice;
+                using (var source = new HwndSource(new HwndSourceParameters()))
+                    toDevice = source.CompositionTarget.TransformToDevice;
 
-            ScreenHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
-            ScreenWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+                Height = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
+                Width = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+            }
+            else
+            {
+                var rect = new RECT();
+                User32.GetWindowRect(hWnd, ref rect);
+
+                Width = rect.Right - rect.Left;
+                Height = rect.Bottom - rect.Top;
+            }
 
             WaveFormat = new WaveFormat(44100, 16, UseStereo ? 2 : 1);
-
         }
 
         string FileName;
@@ -44,8 +57,8 @@ namespace Captura
         FourCC Codec;
         public bool EncodeAudio, IncludeCursor;
 
-        public int ScreenHeight { get; private set; }
-        public int ScreenWidth { get; private set; }
+        public int Height { get; private set; }
+        public int Width { get; private set; }
 
         public AviWriter CreateAviWriter()
         {
@@ -59,11 +72,11 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(ScreenWidth, ScreenHeight);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(ScreenWidth, ScreenHeight, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(Width, Height);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(Width, Height, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(ScreenWidth, ScreenHeight, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(Width, Height, (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,
@@ -87,29 +100,7 @@ namespace Captura
 
         public WaveFormat WaveFormat { get; private set; }
     }
-
-    [StructLayout(LayoutKind.Sequential)]
-    struct IconInfo
-    {
-        public bool fIcon;         // Specifies whether this structure defines an icon or a cursor. A value of TRUE specifies 
-        public int xHotspot;     // Specifies the x-coordinate of a cursor's hot spot. If this structure defines an icon, the hot 
-        public int yHotspot;     // Specifies the y-coordinate of the cursor's hot spot. If this structure defines an icon, the hot 
-        public IntPtr hbmMask;     // (HBITMAP) Specifies the icon bitmask bitmap. If this structure defines a black and white icon, 
-        public IntPtr hbmColor;    // (HBITMAP) Handle to the icon color bitmap. This member can be optional if this 
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    struct CursorInfo
-    {
-        public int cbSize;        // Specifies the size, in bytes, of the structure. 
-        public int flags;         // Specifies the cursor state. This parameter can be one of the following values:
-        public IntPtr hCursor;          // Handle to the cursor. 
-        public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor. 
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT { public int X, Y; }
-
+    
     class Recorder : IDisposable
     {
         #region Fields
@@ -124,8 +115,6 @@ namespace Captura
             audioBlockWritten = new AutoResetEvent(false);
         public bool IsPaused = false;
         #endregion
-
-        public Recorder() { }
 
         public Recorder(RecorderParams Params)
         {
@@ -242,7 +231,7 @@ namespace Captura
         void RecordScreen()
         {
             var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-            var buffer = new byte[Params.ScreenWidth * Params.ScreenHeight * 4];
+            var buffer = new byte[Params.Width * Params.Height * 4];
             Task videoWriteTask = null;
             var isFirstFrame = true;
             var timeTillNextFrame = TimeSpan.Zero;
@@ -280,33 +269,55 @@ namespace Captura
 
         public void Screenshot(byte[] Buffer)
         {
-            using (var bitmap = new Bitmap(Params.ScreenWidth, Params.ScreenHeight))
-            using (var graphics = Graphics.FromImage(bitmap))
+            using (Bitmap BMP = new Bitmap(Params.Width, Params.Height))
+            using (Graphics g = Graphics.FromImage(BMP))
             {
-                try { graphics.CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(Params.ScreenWidth, Params.ScreenHeight)); }
-                catch { }
+                Bitmap bmp;
 
-                if (Params.IncludeCursor)
+                if (Params.hWnd == IntPtr.Zero)
                 {
-                    int cursorX = 0, cursorY = 0;
-                    Bitmap cursorBMP;
-
-                    cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
-
-                    if (cursorBMP != null)
-                    {
-                        Rectangle r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
-
-                        graphics.DrawImage(cursorBMP, r);
-                        graphics.Flush();
-                    }
+                    bmp = Params.IncludeCursor ? ScreenCapture.CaptureDesktopWithCursor() :
+                       ScreenCapture.CaptureDesktop();
                 }
+                else bmp = ScreenCapture.Capture(Params.hWnd);
 
-                var bits = bitmap.LockBits(new Rectangle(0, 0, Params.ScreenWidth, Params.ScreenHeight),
-                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                if (bmp != null) g.DrawImage(bmp, new System.Drawing.Point(0, 0));
+
+                var bits = BMP.LockBits(new Rectangle(0, 0, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
-                bitmap.UnlockBits(bits);
+                BMP.UnlockBits(bits);
             }
+        }
+        
+        void AudioDataAvailable(object sender, WaveInEventArgs e)
+        {
+            var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
+            if (signalled == 0)
+            {
+                audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                audioBlockWritten.Set();
+            }
+        }
+    }
+
+    public static class ScreenCapture
+    {
+        public static Bitmap CaptureDesktop()
+        {
+            IntPtr hDC = User32.GetWindowDC(IntPtr.Zero),
+                hMemDC = Gdi32.CreateCompatibleDC(hDC),
+                hBitmap = Gdi32.CreateCompatibleBitmap(hDC, SystemParams.ScreenWidth, SystemParams.ScreenHeight);
+
+            if (hBitmap != IntPtr.Zero)
+            {
+                IntPtr hOld = Gdi32.SelectObject(hMemDC, hBitmap);
+
+                Gdi32.BitBlt(hMemDC, 0, 0, SystemParams.ScreenWidth, SystemParams.ScreenHeight, hDC, 0, 0, PatBltTypes.SRCCOPY);
+
+                Gdi32.SelectObject(hMemDC, hOld);
+                return Bitmap.FromHbitmap(hBitmap);
+            }
+            return null;
         }
 
         public static Bitmap CaptureCursor(ref int x, ref int y)
@@ -317,14 +328,12 @@ namespace Captura
 
             IconInfo icInfo;
 
-            if (GetCursorInfo(out ci))
+            if (User32.GetCursorInfo(out ci))
             {
-                const int CURSOR_SHOWING = 0x00000001;
-
-                if (ci.flags == CURSOR_SHOWING)
+                if (ci.flags == User32.CURSOR_SHOWING)
                 {
-                    hicon = CopyIcon(ci.hCursor);
-                    if (GetIconInfo(hicon, out icInfo))
+                    hicon = User32.CopyIcon(ci.hCursor);
+                    if (User32.GetIconInfo(hicon, out icInfo))
                     {
                         x = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
                         y = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
@@ -339,23 +348,66 @@ namespace Captura
             return null;
         }
 
-        [DllImport("user32.dll")]
-        static extern bool GetIconInfo(IntPtr hIcon, out IconInfo piconinfo);
-
-        [DllImport("user32.dll")]
-        static extern bool GetCursorInfo(out CursorInfo pci);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr CopyIcon(IntPtr hIcon);
-
-        void AudioDataAvailable(object sender, WaveInEventArgs e)
+        public static Bitmap CaptureDesktopWithCursor()
         {
-            var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
-            if (signalled == 0)
+            int cursorX = 0, cursorY = 0;
+            Bitmap desktopBMP, cursorBMP;
+            Graphics g;
+            Rectangle r;
+
+            desktopBMP = CaptureDesktop();
+            cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
+            if (desktopBMP != null)
             {
-                audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
-                audioBlockWritten.Set();
+                if (cursorBMP != null)
+                {
+                    r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
+                    g = Graphics.FromImage(desktopBMP);
+                    g.DrawImage(cursorBMP, r);
+                    g.Flush();
+
+                    return desktopBMP;
+                }
+                else return desktopBMP;
             }
+
+            return null;
+        }
+
+        public static Bitmap Capture(IntPtr Window)
+        {
+            IntPtr SourceDC = User32.GetWindowDC(Window),
+                MemoryDC = Gdi32.CreateCompatibleDC(SourceDC);
+
+            var rect = new RECT();
+            User32.GetWindowRect(Window, ref rect);
+
+            int Width = rect.Right - rect.Left,
+                    Height = rect.Bottom - rect.Top;
+
+            // Create a bitmap we can copy it to
+            IntPtr hBmp = Gdi32.CreateCompatibleBitmap(SourceDC, Width, Height);
+
+            if (hBmp != null)
+            {
+                try
+                {
+                    // select the bitmap object
+                    IntPtr hOld = Gdi32.SelectObject(MemoryDC, hBmp);
+
+                    // bitblt over
+                    Gdi32.BitBlt(MemoryDC, 0, 0, Width, Height, SourceDC, 0, 0, PatBltTypes.SRCCOPY);
+
+                    // restore selection
+                    Gdi32.SelectObject(MemoryDC, hOld);
+
+                    // get a .NET image object for it
+                    return Bitmap.FromHbitmap(hBmp);
+                }
+                finally { Gdi32.DeleteObject(hBmp); }
+            }
+
+            return null;
         }
     }
 }

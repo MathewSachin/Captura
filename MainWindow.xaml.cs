@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ManagedWin32;
+using ManagedWin32.Api;
 using Microsoft.Win32;
 using SharpAvi;
 using SharpAvi.Codecs;
@@ -45,7 +49,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedAudioSourceIdProperty =
-            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(int), typeof(MainWindow));
+            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(int), typeof(MainWindow), new UIPropertyMetadata(-1));
 
         public int SelectedAudioSourceId
         {
@@ -53,30 +57,38 @@ namespace Captura
             set { SetValue(SelectedAudioSourceIdProperty, value); }
         }
 
-        //public static readonly DependencyProperty SelectedWindowProperty =
-        //    DependencyProperty.Register("SelectedWindow", typeof(WindowHandler), typeof(MainWindow), new UIPropertyMetadata(WindowHandler.DesktopWindow));
+        public static readonly DependencyProperty SelectedWindowProperty =
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(IntPtr.Zero));
 
-        //public WindowHandler SelectedWindow
-        //{
-        //    get { return (WindowHandler)GetValue(SelectedWindowProperty); }
-        //    set { SetValue(SelectedWindowProperty, value); }
-        //}
-
-        //public IEnumerable<WindowHandler> AvailableWindows { get; private set; }
-
-        public IEnumerable<CodecInfo> AvailableCodecs { get; private set; }
-
-        public IEnumerable<KeyValuePair<int, string>> AvailableAudioSources { get; private set; }
+        public IntPtr SelectedWindow
+        {
+            get { return (IntPtr)GetValue(SelectedWindowProperty); }
+            set { SetValue(SelectedWindowProperty, value); }
+        }
         #endregion
 
+        #region Observable Collections
+        public ObservableCollection<KeyValuePair<IntPtr, string>> AvailableWindows { get; private set; }
+
+        public ObservableCollection<CodecInfo> AvailableCodecs { get; private set; }
+
+        public ObservableCollection<KeyValuePair<int, string>> AvailableAudioSources { get; private set; }
+        #endregion
+
+        #region RoutedUICommands
         public static readonly RoutedUICommand PauseCommand = new RoutedUICommand("Pause", "Pause", typeof(MainWindow)),
             ResumeCommand = new RoutedUICommand("Pause", "Pause", typeof(MainWindow));
+        #endregion
 
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = this;
+
+            AvailableCodecs = new ObservableCollection<CodecInfo>();
+            AvailableAudioSources = new ObservableCollection<KeyValuePair<int, string>>();
+            AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
 
             #region Command Bindings
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => Close(), (s, e) => e.CanExecute = ReadyToRecord));
@@ -143,31 +155,46 @@ namespace Captura
 
         void Refresh()
         {
-            Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", InitAvailableCodecs(), InitAvailableAudioSources());
+            // Available Codecs
+            AvailableCodecs.Clear();
+            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "(None)"));
+            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
+            foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
-            //var list = new List<WindowHandler>();
-            //list.Add(WindowHandler.DesktopWindow);
+            // Available Audio Sources
+            AvailableAudioSources.Clear();
 
-            //foreach (var win in WindowHandler.Enumerate())
-            //{
-            //    var hWnd = win.Handle;
-            //    if (!win.IsVisible) continue;
-            //    if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
-            //    {
-            //        if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
-            //            continue;
-            //        if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
-            //            continue;
-            //        if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
-            //            continue;
-            //    }
+            AvailableAudioSources.Add(new KeyValuePair<int, string>(-1, "(No Sound)"));
 
-            //    list.Add(win);
-            //}
+            for (var i = 0; i < WaveInEvent.DeviceCount; i++)
+                AvailableAudioSources.Add(new KeyValuePair<int, string>(i, WaveInEvent.GetCapabilities(i).ProductName));
 
-            //AvailableWindows = list;
+            //foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+            //    deviceList.Add(device.ID, device.FriendlyName + " (Loopback)");
 
-            //SelectedWindow = WindowHandler.DesktopWindow;
+            // Status
+            Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
+
+            // Available Windows
+            AvailableWindows.Clear();
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(IntPtr.Zero, "Desktop"));
+
+            foreach (var win in WindowHandler.Enumerate())
+            {
+                var hWnd = win.Handle;
+                if (!win.IsVisible) continue;
+                if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
+                {
+                    if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
+                        continue;
+                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
+                        continue;
+                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
+                        continue;
+                }
+
+                AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
+            }
         }
 
         void ToggleRecorderState<T>(object sender = null, T e = default(T))
@@ -197,7 +224,9 @@ namespace Captura
             TimeManager.Reset();
             TimeManager.Start();
 
-            Recorder = new Recorder(new RecorderParams(lastFileName, FrameRate, Encoder, Quality, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio, AudioQuality, IncludeCursor));
+            Recorder = new Recorder(new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
+                (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
+                (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow));
         }
 
         void StopRecording()
@@ -244,66 +273,30 @@ namespace Captura
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) OutPath.Text = dlg.SelectedPath;
         }
 
-        int InitAvailableCodecs()
-        {
-            var codecs = new List<CodecInfo>();
-            codecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "(none)"));
-            codecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
-            codecs.AddRange(Mpeg4VideoEncoderVcm.GetAvailableCodecs());
-            AvailableCodecs = codecs;
-            return codecs.Count - 1;
-        }
-
-        int InitAvailableAudioSources()
-        {
-            var deviceList = new Dictionary<int, string>();
-            deviceList.Add(-1, "(No Sound)");
-
-            for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-                deviceList.Add(i, WaveInEvent.GetCapabilities(i).ProductName);
-
-            //foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
-            //    deviceList.Add(device.ID, device.FriendlyName + " (Loopback)");
-
-            AvailableAudioSources = deviceList;
-            SelectedAudioSourceId = -1;
-
-            return deviceList.Count - 1;
-        }
-
         void ScreenShot(object sender, RoutedEventArgs e)
         {
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
+            Bitmap bmp;
 
-            int ScreenHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22),
-            ScreenWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
-
-            using (var bitmap = new Bitmap(ScreenWidth, ScreenHeight))
-            using (var graphics = Graphics.FromImage(bitmap))
+            if (SelectedWindow == IntPtr.Zero)
             {
-                try { graphics.CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(ScreenWidth, ScreenHeight)); }
-                catch { }
-
-                if (IncludeCursor.IsChecked.Value)
-                {
-                    int cursorX = 0, cursorY = 0;
-                    Bitmap cursorBMP;
-
-                    cursorBMP = Recorder.CaptureCursor(ref cursorX, ref cursorY);
-
-                    if (cursorBMP != null)
-                    {
-                        Rectangle r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
-
-                        graphics.DrawImage(cursorBMP, r);
-                        graphics.Flush();
-                    }
-                }
-
-                bitmap.Save(Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png"), System.Drawing.Imaging.ImageFormat.Png);
+                bmp = IncludeCursor.IsChecked.Value ? ScreenCapture.CaptureDesktopWithCursor() :
+                   ScreenCapture.CaptureDesktop();
             }
+            else bmp = ScreenCapture.Capture(SelectedWindow);
+
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
+
+            Status.Content = "Saved to " + lastFileName;
+
+            bmp.Save(lastFileName, ImageFormat.Png);
         }
+
+        #region Gallery Selection Changed Handlers
+        void EncodersGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (EncodersGallery.SelectedIndex == -1) EncodersGallery.SelectedIndex = 1; }
+
+        void WindowsGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (WindowsGallery.SelectedIndex == -1) WindowsGallery.SelectedIndex = 0; }
+
+        void DevicesGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (DevicesGallery.SelectedIndex == -1) DevicesGallery.SelectedIndex = 0; }
+        #endregion
     }
 }

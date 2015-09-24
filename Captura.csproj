@@ -63,6 +63,9 @@
     <Reference Include="Fluent">
       <HintPath>..\#Binaries\Fluent.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedWin32">
+      <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
+    </Reference>
     <Reference Include="SharpAvi">
       <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
     </Reference>
@@ -161,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ScreenShot.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
