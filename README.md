@@ -42,5 +42,5 @@ Todo
 - [X] Save Output Folder in Settings
 - [ ] ScreenCapture of DirectX fullscreen windows (using DWM)
 - [ ] Synchronized Wasapi Loopback Capture (NAudio/ManagedBass) (including silence)
-- [ ] Wpf folder browse dialog
+- [X] Wpf folder browse dialog
 - [X] Capture Specific Window
