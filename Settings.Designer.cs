@@ -34,5 +34,41 @@ namespace Captura {
                 this["OutputPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IncludeCursor {
+            get {
+                return ((bool)(this["IncludeCursor"]));
+            }
+            set {
+                this["IncludeCursor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MinimizeOnStart {
+            get {
+                return ((bool)(this["MinimizeOnStart"]));
+            }
+            set {
+                this["MinimizeOnStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EncodeAudio {
+            get {
+                return ((bool)(this["EncodeAudio"]));
+            }
+            set {
+                this["EncodeAudio"] = value;
+            }
+        }
     }
 }

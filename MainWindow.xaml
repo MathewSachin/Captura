@@ -45,7 +45,8 @@
                         <Button Content="..." Width="25" Background="White" Command="Open" />
                     </StackPanel>
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
-                                         Header="Minimise On Capture Start" x:Name="MinOnStart" IsChecked="True"/>
+                                         Header="Minimise On Capture Start" x:Name="MinOnStart" 
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
                     <Fluent:Button Margin="5,0" Header="Refresh" Command="Refresh" Size="Middle" Icon="Images/Refresh.ico"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
@@ -55,6 +56,7 @@
                     <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
                     <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
                     <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"
                                          Icon="Images/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
                 </Fluent:RibbonGroupBox>
 
@@ -84,7 +86,9 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"/>
-                    <Fluent:ToggleButton Size="Middle" Header="Encode Audio" IsEnabled="{Binding ReadyToRecord}" IsChecked="True" VerticalAlignment="Center" Name="EncodeAudio"/>
+                    <Fluent:ToggleButton Size="Middle" Header="Encode Audio" IsEnabled="{Binding ReadyToRecord}" 
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
+                                         VerticalAlignment="Center" Name="EncodeAudio"/>
                     <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
                             IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
                             AutoToolTipPlacement="None" Width="100" Margin="7,0"/>
