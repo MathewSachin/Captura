@@ -40,7 +40,8 @@
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
                     <StackPanel Orientation="Horizontal">
-                        <Fluent:TextBox Header="Output Directory" x:Name="OutPath" Width="300" IsReadOnly="True"/>
+                        <Fluent:TextBox Header="Output Directory" x:Name="OutPath" Width="300" IsReadOnly="True"
+                                        Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>
                         <Button Content="..." Width="25" Background="White" Command="Open" />
                     </StackPanel>
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"

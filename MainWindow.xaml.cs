@@ -146,7 +146,8 @@ namespace Captura
             KeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift);
             KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
 
-            OutPath.Text = Path.GetDirectoryName(new Uri(Assembly.GetEntryAssembly().Location).LocalPath);
+            if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+            if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
 
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
             AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
