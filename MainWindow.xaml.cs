@@ -264,14 +264,15 @@ namespace Captura
 
         void OutputFolderBrowse()
         {
-            var dlg = new System.Windows.Forms.FolderBrowserDialog()
+            var dlg = new FolderBrowserDialog()
             {
                 SelectedPath = OutPath.Text,
-                ShowNewFolderButton = true,
-                Description = "Select Output Folder"
+                Title = "Select Output Folder"
+                //ShowNewFolderButton = true,
+                //Description = "Select Output Folder"
             };
 
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) OutPath.Text = dlg.SelectedPath;
+            if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
         void ScreenShot(object sender, RoutedEventArgs e)
