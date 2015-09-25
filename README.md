@@ -19,9 +19,13 @@ Can Capture With/Without the Mouse Cursor.
 MISSING FEATURE: LOOPBACK
 --------------------------------------------------------------
 ```Loopback``` requires Wasapi.
-Tried using it through Bass.Net and NAudio.
+Tried using it through ManagedBass and NAudio.
 Worked but the audio was lagging behind Video,
 due to slowness of Wasapi over WaveIn in interaction with a .Net environment.
+
+And I was unable to Capture Silence through NAudio.
+
+Things would improve if we could control the wasapi loopback buffer length.
 
 Help on the Same would be appreciated.
 
@@ -35,8 +39,8 @@ and Fluent.dll Interface.
 Todo
 --------------------------------------------------------------
 - [x] Fork Fluent and Compress it
-- [ ] Save Output Folder in Settings
+- [X] Save Output Folder in Settings
 - [ ] ScreenCapture of DirectX fullscreen windows (using DWM)
 - [ ] Synchronized Wasapi Loopback Capture (NAudio/ManagedBass) (including silence)
 - [ ] Wpf folder browse dialog
-- [ ] Capture Specific Window
+- [X] Capture Specific Window

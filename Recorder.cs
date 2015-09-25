@@ -100,7 +100,7 @@ namespace Captura
 
         public WaveFormat WaveFormat { get; private set; }
     }
-    
+
     class Recorder : IDisposable
     {
         #region Fields
@@ -267,28 +267,73 @@ namespace Captura
             if (!isFirstFrame) videoWriteTask.Wait();
         }
 
+        // CaptureBlt ??
         public void Screenshot(byte[] Buffer)
         {
-            using (Bitmap BMP = new Bitmap(Params.Width, Params.Height))
-            using (Graphics g = Graphics.FromImage(BMP))
+            IntPtr hDC = User32.GetWindowDC(IntPtr.Zero),
+                hMemDC = Gdi32.CreateCompatibleDC(hDC),
+                hIcon = IntPtr.Zero;
+
+            int CursorX = 0, CursorY = 0;
+
+            IntPtr hBitmap = Gdi32.CreateCompatibleBitmap(hDC, Params.Width, Params.Height);
+
+            if (hBitmap != IntPtr.Zero)
             {
-                Bitmap bmp;
+                IntPtr hOld = Gdi32.SelectObject(hMemDC, hBitmap);
 
-                if (Params.hWnd == IntPtr.Zero)
-                {
-                    bmp = Params.IncludeCursor ? ScreenCapture.CaptureDesktopWithCursor() :
-                       ScreenCapture.CaptureDesktop();
-                }
-                else bmp = ScreenCapture.Capture(Params.hWnd);
+                Gdi32.BitBlt(hMemDC, 0, 0, Params.Width, Params.Height, hDC, 0, 0, PatBltTypes.SRCCOPY);
 
-                if (bmp != null) g.DrawImage(bmp, new System.Drawing.Point(0, 0));
-
-                var bits = BMP.LockBits(new Rectangle(0, 0, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
-                BMP.UnlockBits(bits);
+                Gdi32.SelectObject(hMemDC, hOld);
             }
+            
+            #region Include Cursor
+            if (Params.hWnd == IntPtr.Zero && Params.IncludeCursor)
+            {
+                CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
+
+                IconInfo icInfo;
+
+                if (User32.GetCursorInfo(out ci))
+                {
+                    if (ci.flags == User32.CURSOR_SHOWING)
+                    {
+                        hIcon = User32.CopyIcon(ci.hCursor);
+                        if (User32.GetIconInfo(hIcon, out icInfo))
+                        {
+                            CursorX = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
+                            CursorY = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
+                        }
+                    }
+                }
+            }
+            #endregion
+            
+            using (var BMP = new Bitmap(Params.Width, Params.Height))
+            {
+                using (var g = Graphics.FromImage(BMP))
+                {
+                    g.DrawImage(Bitmap.FromHbitmap(hBitmap), 0, 0);
+
+                    if (hIcon != IntPtr.Zero)
+                    {
+                        Bitmap CursorBMP = Icon.FromHandle(hIcon).ToBitmap();
+                        g.DrawImage(CursorBMP, CursorX, CursorY, CursorBMP.Width, CursorBMP.Height);
+                    }
+
+                    g.Flush();
+
+                    var bits = BMP.LockBits(new Rectangle(0, 0, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
+                    BMP.UnlockBits(bits);
+                }
+            }
+
+            Gdi32.DeleteObject(hBitmap);
+            Gdi32.DeleteDC(hMemDC);
+            User32.ReleaseDC(Params.hWnd, hDC);
         }
-        
+
         void AudioDataAvailable(object sender, WaveInEventArgs e)
         {
             var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
@@ -297,117 +342,6 @@ namespace Captura
                 audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
                 audioBlockWritten.Set();
             }
-        }
-    }
-
-    public static class ScreenCapture
-    {
-        public static Bitmap CaptureDesktop()
-        {
-            IntPtr hDC = User32.GetWindowDC(IntPtr.Zero),
-                hMemDC = Gdi32.CreateCompatibleDC(hDC),
-                hBitmap = Gdi32.CreateCompatibleBitmap(hDC, SystemParams.ScreenWidth, SystemParams.ScreenHeight);
-
-            if (hBitmap != IntPtr.Zero)
-            {
-                IntPtr hOld = Gdi32.SelectObject(hMemDC, hBitmap);
-
-                Gdi32.BitBlt(hMemDC, 0, 0, SystemParams.ScreenWidth, SystemParams.ScreenHeight, hDC, 0, 0, PatBltTypes.SRCCOPY);
-
-                Gdi32.SelectObject(hMemDC, hOld);
-                return Bitmap.FromHbitmap(hBitmap);
-            }
-            return null;
-        }
-
-        public static Bitmap CaptureCursor(ref int x, ref int y)
-        {
-            Bitmap bmp;
-            IntPtr hicon;
-            CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
-
-            IconInfo icInfo;
-
-            if (User32.GetCursorInfo(out ci))
-            {
-                if (ci.flags == User32.CURSOR_SHOWING)
-                {
-                    hicon = User32.CopyIcon(ci.hCursor);
-                    if (User32.GetIconInfo(hicon, out icInfo))
-                    {
-                        x = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
-                        y = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
-
-                        Icon ic = Icon.FromHandle(hicon);
-                        bmp = ic.ToBitmap();
-                        return bmp;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public static Bitmap CaptureDesktopWithCursor()
-        {
-            int cursorX = 0, cursorY = 0;
-            Bitmap desktopBMP, cursorBMP;
-            Graphics g;
-            Rectangle r;
-
-            desktopBMP = CaptureDesktop();
-            cursorBMP = CaptureCursor(ref cursorX, ref cursorY);
-            if (desktopBMP != null)
-            {
-                if (cursorBMP != null)
-                {
-                    r = new Rectangle(cursorX, cursorY, cursorBMP.Width, cursorBMP.Height);
-                    g = Graphics.FromImage(desktopBMP);
-                    g.DrawImage(cursorBMP, r);
-                    g.Flush();
-
-                    return desktopBMP;
-                }
-                else return desktopBMP;
-            }
-
-            return null;
-        }
-
-        public static Bitmap Capture(IntPtr Window)
-        {
-            IntPtr SourceDC = User32.GetWindowDC(Window),
-                MemoryDC = Gdi32.CreateCompatibleDC(SourceDC);
-
-            var rect = new RECT();
-            User32.GetWindowRect(Window, ref rect);
-
-            int Width = rect.Right - rect.Left,
-                    Height = rect.Bottom - rect.Top;
-
-            // Create a bitmap we can copy it to
-            IntPtr hBmp = Gdi32.CreateCompatibleBitmap(SourceDC, Width, Height);
-
-            if (hBmp != null)
-            {
-                try
-                {
-                    // select the bitmap object
-                    IntPtr hOld = Gdi32.SelectObject(MemoryDC, hBmp);
-
-                    // bitblt over
-                    Gdi32.BitBlt(MemoryDC, 0, 0, Width, Height, SourceDC, 0, 0, PatBltTypes.SRCCOPY);
-
-                    // restore selection
-                    Gdi32.SelectObject(MemoryDC, hOld);
-
-                    // get a .NET image object for it
-                    return Bitmap.FromHbitmap(hBmp);
-                }
-                finally { Gdi32.DeleteObject(hBmp); }
-            }
-
-            return null;
         }
     }
 }
