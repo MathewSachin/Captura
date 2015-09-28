@@ -1,4 +1,6 @@
-![Captura Logo](/Images/Logo.png) # Captura
+![Captura Logo](/Images/Logo.png) 
+
+# Captura
 
 
 (c) 2015 Mathew Sachin. All Rights Reserved.
@@ -38,9 +40,5 @@ and Fluent.dll Interface.
 
 Todo
 --------------------------------------------------------------
-- [x] Fork Fluent and Compress it
-- [X] Save Output Folder in Settings
 - [ ] ScreenCapture of DirectX fullscreen windows (using DWM)
 - [ ] Synchronized Wasapi Loopback Capture (NAudio/ManagedBass) (including silence)
-- [X] Wpf folder browse dialog
-- [X] Capture Specific Window
