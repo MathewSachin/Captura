@@ -11,12 +11,15 @@ using ManagedWin32.Api;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
+using ManagedWin32;
 
 namespace Captura
 {
     class RecorderParams
     {
         public IntPtr hWnd;
+
+        public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
 
         public RecorderParams(string filename, int FrameRate, FourCC Encoder, int Quality,
             int AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, bool IncludeCursor, IntPtr hWnd)
@@ -57,8 +60,8 @@ namespace Captura
         FourCC Codec;
         public bool EncodeAudio, IncludeCursor;
 
-        public int Height { get; private set; }
-        public int Width { get; private set; }
+        public int Height;
+        public int Width;
 
         public AviWriter CreateAviWriter()
         {
@@ -270,7 +273,7 @@ namespace Captura
         // CaptureBlt ??
         public void Screenshot(byte[] Buffer)
         {
-            IntPtr hDC = User32.GetWindowDC(IntPtr.Zero),
+            IntPtr hDC = User32.GetWindowDC(Params.hWnd),
                 hMemDC = Gdi32.CreateCompatibleDC(hDC),
                 hIcon = IntPtr.Zero;
 
@@ -281,6 +284,15 @@ namespace Captura
             if (hBitmap != IntPtr.Zero)
             {
                 IntPtr hOld = Gdi32.SelectObject(hMemDC, hBitmap);
+
+                if (Params.hWnd != RecorderParams.Desktop)
+                {
+                    var rect = new RECT();
+                    User32.GetWindowRect(Params.hWnd, ref rect);
+
+                    Params.Width = rect.Right - rect.Left;
+                    Params.Height = rect.Bottom - rect.Top;
+                }
 
                 Gdi32.BitBlt(hMemDC, 0, 0, Params.Width, Params.Height, hDC, 0, 0, PatBltTypes.SRCCOPY);
 

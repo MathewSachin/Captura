@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Captura {
+namespace Captura.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

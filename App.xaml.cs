@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using SharpAvi.Codecs;
+using Captura.Properties;
 
 namespace Captura
 {
