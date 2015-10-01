@@ -287,7 +287,7 @@ namespace Captura
         {
             Bitmap bmp;
 
-            if (SelectedWindow == IntPtr.Zero)
+            if (SelectedWindow == RecorderParams.Desktop)
             {
                 bmp = IncludeCursor.IsChecked.Value ? ScreenCapture.CaptureDesktopWithCursor() :
                    ScreenCapture.CaptureDesktop();
