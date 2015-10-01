@@ -16,6 +16,8 @@ using ManagedWin32.Api;
 using Microsoft.Win32;
 using SharpAvi;
 using SharpAvi.Codecs;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
 
 namespace Captura
 {
@@ -49,16 +51,16 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedAudioSourceIdProperty =
-            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(int), typeof(MainWindow), new UIPropertyMetadata(-1));
+            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(string), typeof(MainWindow), new UIPropertyMetadata("-1"));
 
-        public int SelectedAudioSourceId
+        public string SelectedAudioSourceId
         {
-            get { return (int)GetValue(SelectedAudioSourceIdProperty); }
+            get { return (string)GetValue(SelectedAudioSourceIdProperty); }
             set { SetValue(SelectedAudioSourceIdProperty, value); }
         }
 
         public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(IntPtr.Zero));
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(RecorderParams.Desktop));
 
         public IntPtr SelectedWindow
         {
@@ -72,7 +74,7 @@ namespace Captura
 
         public ObservableCollection<CodecInfo> AvailableCodecs { get; private set; }
 
-        public ObservableCollection<KeyValuePair<int, string>> AvailableAudioSources { get; private set; }
+        public ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; private set; }
         #endregion
 
         #region RoutedUICommands
@@ -87,7 +89,7 @@ namespace Captura
             DataContext = this;
 
             AvailableCodecs = new ObservableCollection<CodecInfo>();
-            AvailableAudioSources = new ObservableCollection<KeyValuePair<int, string>>();
+            AvailableAudioSources = new ObservableCollection<KeyValuePair<string, string>>();
             AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
 
             #region Command Bindings
@@ -165,20 +167,20 @@ namespace Captura
             // Available Audio Sources
             AvailableAudioSources.Clear();
 
-            AvailableAudioSources.Add(new KeyValuePair<int, string>(-1, "(No Sound)"));
+            AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "(No Sound)"));
 
             for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-                AvailableAudioSources.Add(new KeyValuePair<int, string>(i, WaveInEvent.GetCapabilities(i).ProductName));
+                AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
 
-            //foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
-            //    deviceList.Add(device.ID, device.FriendlyName + " (Loopback)");
+            foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+                AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
 
             // Status
             Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
 
             // Available Windows
             AvailableWindows.Clear();
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(IntPtr.Zero, "Desktop"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "Desktop"));
 
             foreach (var win in WindowHandler.Enumerate())
             {

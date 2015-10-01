@@ -66,6 +66,9 @@
     <Reference Include="ManagedWin32">
       <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\#Binaries\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="SharpAvi">
       <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
     </Reference>
@@ -90,16 +93,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Timer.cs" />
-    <Compile Include="WaveIn\MmException.cs" />
-    <Compile Include="WaveIn\MmResult.cs" />
-    <Compile Include="WaveIn\WaveHeader.cs" />
-    <Compile Include="WaveIn\WaveHeaderFlags.cs" />
-    <Compile Include="WaveIn\WaveInCapabilities.cs" />
-    <Compile Include="WaveIn\WaveInEventArgs.cs" />
-    <Compile Include="WaveIn\WaveInterop.cs" />
-    <Compile Include="WaveIn\WaveFormat.cs" />
-    <Compile Include="WaveIn\WaveInBuffer.cs" />
-    <Compile Include="WaveIn\WaveInEvent.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
