@@ -35,6 +35,7 @@ namespace Captura
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioQuality);
             this.IncludeCursor = IncludeCursor;
             this.hWnd = hWnd;
+            CaptureVideo = hWnd.ToInt32() != -1;
 
             if (hWnd == Desktop)
             {
@@ -60,7 +61,7 @@ namespace Captura
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
-        public bool EncodeAudio, IncludeCursor;
+        public bool EncodeAudio, IncludeCursor, CaptureVideo;
 
         public int Height;
         public int Width;
@@ -103,6 +104,8 @@ namespace Captura
             else return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample);
         }
 
+        public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(FileName, WaveFormat); }
+
         public WaveFormat WaveFormat;
     }
 
@@ -119,80 +122,102 @@ namespace Captura
         AutoResetEvent videoFrameWritten = new AutoResetEvent(false),
             audioBlockWritten = new AutoResetEvent(false);
         public bool IsPaused = false;
+        WaveFileWriter WaveWriter;
         #endregion
 
         public Recorder(RecorderParams Params)
         {
             this.Params = Params;
 
-            // Create AVI writer and specify FPS
-            writer = Params.CreateAviWriter();
+            if (Params.CaptureVideo)
+            {
+                // Create AVI writer and specify FPS
+                writer = Params.CreateAviWriter();
 
-            // Create video stream
-            videoStream = Params.CreateVideoStream(writer);
-            // Set only name. Other properties were when creating stream, 
-            // either explicitly by arguments or implicitly by the encoder used
-            videoStream.Name = "Captura";
+                // Create video stream
+                videoStream = Params.CreateVideoStream(writer);
+                // Set only name. Other properties were when creating stream, 
+                // either explicitly by arguments or implicitly by the encoder used
+                videoStream.Name = "Captura";
+            }
 
-                try
+            try
+            {
+                int AudioSourceId = int.Parse(Params.AudioSourceId);
+
+                if (AudioSourceId != -1)
                 {
-                    int AudioSourceId = int.Parse(Params.AudioSourceId);
+                    var waveFormat = Params.WaveFormat;
 
-                    if (AudioSourceId != -1)
+                    if (Params.CaptureVideo)
                     {
-                        var waveFormat = Params.WaveFormat;
-
                         audioStream = Params.CreateAudioStream(writer);
                         audioStream.Name = "Voice";
-
-                        audioSource = new WaveInEvent
-                        {
-                            DeviceNumber = AudioSourceId,
-                            WaveFormat = waveFormat,
-                            // Buffer size to store duration of 1 frame
-                            BufferMilliseconds = (int)Math.Ceiling(1000 / writer.FramesPerSecond),
-                            NumberOfBuffers = 3,
-                        };
                     }
-                }
-                catch
-                {
-                    var dev = new MMDeviceEnumerator().GetDevice(Params.AudioSourceId);
 
-                    if (dev.DataFlow == DataFlow.All || dev.DataFlow == DataFlow.Render)
+                    audioSource = new WaveInEvent
                     {
-                        Params.WaveFormat = dev.AudioClient.MixFormat;
+                        DeviceNumber = AudioSourceId,
+                        WaveFormat = waveFormat,
+                        // Buffer size to store duration of 1 frame
+                        BufferMilliseconds = (int)Math.Ceiling(1000 / writer.FramesPerSecond),
+                        NumberOfBuffers = 3,
+                    };
+                }
+            }
+            catch
+            {
+                var dev = new MMDeviceEnumerator().GetDevice(Params.AudioSourceId);
 
+                if (dev.DataFlow == DataFlow.All || dev.DataFlow == DataFlow.Render)
+                {
+                    Params.WaveFormat = dev.AudioClient.MixFormat;
+
+                    if (Params.CaptureVideo)
+                    {
                         audioStream = Params.CreateAudioStream(writer);
                         audioStream.Name = "Loopback";
-
-                        audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
                     }
-                }
 
-            screenThread = new Thread(RecordScreen)
+                    audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
+                }
+            }
+
+            if (Params.CaptureVideo)
             {
-                Name = typeof(Recorder).Name + ".RecordScreen",
-                IsBackground = true
-            };
+                screenThread = new Thread(RecordScreen)
+                {
+                    Name = typeof(Recorder).Name + ".RecordScreen",
+                    IsBackground = true
+                };
+            }
+            else WaveWriter = Params.CreateWaveWriter();
 
             if (audioSource != null)
             {
                 audioSource.DataAvailable += AudioDataAvailable;
 
-                videoFrameWritten.Set();
-                audioBlockWritten.Reset();
+                if (Params.CaptureVideo)
+                {
+                    videoFrameWritten.Set();
+                    audioBlockWritten.Reset();
+                }
+
                 audioSource.StartRecording();
             }
-            screenThread.Start();
+
+            if (Params.CaptureVideo) screenThread.Start();
         }
 
         public void Dispose()
         {
             if (IsPaused) Resume();
 
-            stopThread.Set();
-            screenThread.Join();
+            if (Params.CaptureVideo)
+            {
+                stopThread.Set();
+                screenThread.Join();
+            }
 
             if (audioSource != null)
             {
@@ -200,17 +225,21 @@ namespace Captura
                 audioSource.DataAvailable -= AudioDataAvailable;
             }
 
-            // Close writer: the remaining data is written to a file and file is closed
-            writer.Close();
+            if (Params.CaptureVideo)
+            {
+                // Close writer: the remaining data is written to a file and file is closed
+                writer.Close();
 
-            stopThread.Close();
+                stopThread.Close();
+            }
+            else WaveWriter.Dispose();
         }
 
         public void Pause()
         {
             if (!IsPaused)
             {
-                screenThread.Suspend();
+                if (Params.CaptureVideo) screenThread.Suspend();
 
                 if (audioSource != null) audioSource.StopRecording();
 
@@ -222,12 +251,15 @@ namespace Captura
         {
             if (IsPaused)
             {
-                screenThread.Resume();
+                if (Params.CaptureVideo) screenThread.Resume();
 
                 if (audioSource != null)
                 {
-                    videoFrameWritten.Set();
-                    audioBlockWritten.Reset();
+                    if (Params.CaptureVideo)
+                    {
+                        videoFrameWritten.Set();
+                        audioBlockWritten.Reset();
+                    }
                     audioSource.StartRecording();
                 }
 
@@ -300,7 +332,7 @@ namespace Captura
 
                 Gdi32.SelectObject(hMemDC, hOld);
             }
-            
+
             #region Include Cursor
             if (Params.hWnd == IntPtr.Zero && Params.IncludeCursor)
             {
@@ -322,7 +354,7 @@ namespace Captura
                 }
             }
             #endregion
-            
+
             using (var BMP = new Bitmap(Params.Width, Params.Height))
             {
                 using (var g = Graphics.FromImage(BMP))
@@ -350,12 +382,16 @@ namespace Captura
 
         void AudioDataAvailable(object sender, WaveInEventArgs e)
         {
-            var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
-            if (signalled == 0)
+            if (Params.CaptureVideo)
             {
-                audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
-                audioBlockWritten.Set();
+                var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
+                if (signalled == 0)
+                {
+                    audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                    audioBlockWritten.Set();
+                }
             }
+            else WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
         }
     }
 }

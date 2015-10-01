@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,10 +13,10 @@ using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
 using Microsoft.Win32;
-using SharpAvi;
-using SharpAvi.Codecs;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using SharpAvi;
+using SharpAvi.Codecs;
 
 namespace Captura
 {
@@ -180,6 +179,7 @@ namespace Captura
 
             // Available Windows
             AvailableWindows.Clear();
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "None"));
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "Desktop"));
 
             foreach (var win in WindowHandler.Enumerate())
@@ -208,6 +208,12 @@ namespace Captura
 
         void StartRecording()
         {
+            if (WindowsGallery.SelectedIndex == 0 && DevicesGallery.SelectedIndex == 0)
+            {
+                Status.Content = "Nothing to Record! Selected a Window(probably Desktop), Audio Device or both";
+                return;
+            }
+
             if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
 
             IsCollapsed = true;
@@ -220,13 +226,13 @@ namespace Captura
 
             ReadyToRecord = false;
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".avi");
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((WindowsGallery.SelectedIndex == 0) ? ".wav" : ".avi"));
 
             Status.Content = "Recording...";
 
             TimeManager.Reset();
             TimeManager.Start();
-
+            
             Recorder = new Recorder(new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
                 (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow));
@@ -298,7 +304,7 @@ namespace Captura
         #region Gallery Selection Changed Handlers
         void EncodersGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (EncodersGallery.SelectedIndex == -1) EncodersGallery.SelectedIndex = 1; }
 
-        void WindowsGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (WindowsGallery.SelectedIndex == -1) WindowsGallery.SelectedIndex = 0; }
+        void WindowsGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (WindowsGallery.SelectedIndex == -1) WindowsGallery.SelectedIndex = 1; }
 
         void DevicesGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (DevicesGallery.SelectedIndex == -1) DevicesGallery.SelectedIndex = 0; }
         #endregion
