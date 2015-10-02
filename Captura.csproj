@@ -69,9 +69,8 @@
     <Reference Include="NAudio">
       <HintPath>..\#Binaries\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SharpAvi\SharpAvi\bin\Debug\SharpAvi.dll</HintPath>
+    <Reference Include="SharpAvi">
+      <HintPath>..\SharpAvi\bin\Release\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

@@ -53,16 +53,19 @@
 
             <Fluent:RibbonTabItem Header="Audio">
                 <Fluent:RibbonGroupBox Header="Devices">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="300" ItemWidth="300" ItemsSource="{Binding AvailableAudioSources}"
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
+                                  Width="300" ItemWidth="{Binding Width}"
+                                  ItemsSource="{Binding AvailableAudioSources}"
                                   DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
                                   SelectionChanged="DevicesGallery_SelectionChanged"
                                   SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="MP3 Encoding">
-                    <Fluent:ToggleButton Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}" 
+                    <Fluent:ToggleButton Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
                                          VerticalAlignment="Center" Name="EncodeAudio"/>
                     <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
@@ -81,7 +84,8 @@
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Encoder">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="200" ItemWidth="200" ItemsSource="{Binding AvailableCodecs}"
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
+                                  Width="200" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
                                   SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
                                   DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
                                   SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
@@ -90,14 +94,13 @@
 
             <Fluent:RibbonTabItem Header="Window">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" ItemWidth="500" ItemsSource="{Binding AvailableWindows}"
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
+                                  ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
                                   IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
                                   Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
                                   SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
-
         </Fluent:Ribbon>
 
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">

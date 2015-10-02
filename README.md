@@ -2,9 +2,8 @@
 
 # Captura
 
-
 (c) 2015 Mathew Sachin. All Rights Reserved.
-Capture what's happening on your Screen along with audio from your microphone.
+Capture what's happening on your Screen along with audio from your `Microphone` or your Speakers (`Loopback`).
 
 Dependencies
 --------------------------------------------------------------
@@ -16,29 +15,12 @@ Features
 Capture Screen.
 Capture Microphone Audio.
 Can Capture With/Without the Mouse Cursor.
-```Ctrl+Shift+R```: From Anywhere to Start/Stop Recording.
-
-MISSING FEATURE: LOOPBACK
---------------------------------------------------------------
-```Loopback``` requires Wasapi.
-Tried using it through ManagedBass and NAudio.
-Worked but the audio was lagging behind Video,
-due to slowness of Wasapi over WaveIn in interaction with a .Net environment.
-
-And I was unable to Capture Silence through NAudio.
-
-Things would improve if we could control the wasapi loopback buffer length.
-
-Help on the Same would be appreciated.
+Capture Specific Windows (`BETA`)
+`Ctrl+Shift+R`: From Anywhere to Start/Stop Recording.
 
 Acknowledgements
 --------------------------------------------------------------
-Uses a part of Mark Heath's NAudio for WaveIn,
-SharpAvi.dll by Vasilli Masilov.
+Uses Mark Heath's [NAudio](http://github.com/naudio/NAudio),
+and [my fork](http://github.com/MathewSachin/SharpAvi) of SharpAvi.dll by Vasilli Masilov.
 and is influenced by the accompanying Sample App - Screencasts
-and Fluent.dll Interface.
-
-Todo
---------------------------------------------------------------
-- [ ] ScreenCapture of DirectX fullscreen windows (using DWM)
-- [ ] Synchronized Wasapi Loopback Capture (NAudio/ManagedBass) (including silence)
+and [Fluent](https://github.com/fluentribbon/Fluent.Ribbon) Interface.
