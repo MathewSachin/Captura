@@ -109,6 +109,19 @@ namespace Captura
         public WaveFormat WaveFormat;
     }
 
+    class SilenceProvider : IWaveProvider
+    {
+        public SilenceProvider(WaveFormat wf) { this.WaveFormat = wf; }
+
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            buffer.Initialize();
+            return count;
+        }
+
+        public WaveFormat WaveFormat { get; private set; }
+    }
+
     class Recorder : IDisposable
     {
         #region Fields
@@ -123,6 +136,7 @@ namespace Captura
             audioBlockWritten = new AutoResetEvent(false);
         public bool IsPaused = false;
         WaveFileWriter WaveWriter;
+        IWavePlayer SilencePlayer;
         #endregion
 
         public Recorder(RecorderParams Params)
@@ -147,8 +161,6 @@ namespace Captura
 
                 if (AudioSourceId != -1)
                 {
-                    var waveFormat = Params.WaveFormat;
-
                     if (Params.CaptureVideo)
                     {
                         audioStream = Params.CreateAudioStream(writer);
@@ -158,7 +170,7 @@ namespace Captura
                     audioSource = new WaveInEvent
                     {
                         DeviceNumber = AudioSourceId,
-                        WaveFormat = waveFormat,
+                        WaveFormat = Params.WaveFormat,
                         // Buffer size to store duration of 1 frame
                         BufferMilliseconds = (int)Math.Ceiling(1000 / writer.FramesPerSecond),
                         NumberOfBuffers = 3,
@@ -172,6 +184,12 @@ namespace Captura
                 if (dev.DataFlow == DataFlow.All || dev.DataFlow == DataFlow.Render)
                 {
                     Params.WaveFormat = dev.AudioClient.MixFormat;
+
+                    SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
+
+                    SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
+
+                    SilencePlayer.Play();
 
                     if (Params.CaptureVideo)
                     {
@@ -213,6 +231,13 @@ namespace Captura
         {
             if (IsPaused) Resume();
 
+            if (SilencePlayer != null)
+            {
+                SilencePlayer.Stop();
+                SilencePlayer.Dispose();
+                SilencePlayer = null;
+            }
+
             if (Params.CaptureVideo)
             {
                 stopThread.Set();
@@ -239,6 +264,8 @@ namespace Captura
         {
             if (!IsPaused)
             {
+                if (SilencePlayer != null) SilencePlayer.Pause();
+
                 if (Params.CaptureVideo) screenThread.Suspend();
 
                 if (audioSource != null) audioSource.StopRecording();
@@ -251,6 +278,8 @@ namespace Captura
         {
             if (IsPaused)
             {
+                if (SilencePlayer != null) SilencePlayer.Play();
+
                 if (Params.CaptureVideo) screenThread.Resume();
 
                 if (audioSource != null)
