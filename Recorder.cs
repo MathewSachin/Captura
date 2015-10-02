@@ -9,11 +9,12 @@ using System.Windows;
 using System.Windows.Interop;
 using ManagedWin32;
 using ManagedWin32.Api;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
-using NAudio.CoreAudioApi;
+using System.Collections.Generic;
 
 namespace Captura
 {
@@ -55,16 +56,22 @@ namespace Captura
                 Height = rect.Bottom - rect.Top;
             }
 
-            WaveFormat = new WaveFormat(44100, 16, UseStereo ? 2 : 1);
+            int val;
+            IsLoopback = !int.TryParse(AudioSourceId, out val);
+
+            WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, UseStereo ? 2 : 1);
         }
+
+        public MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
         public bool EncodeAudio, IncludeCursor, CaptureVideo;
 
-        public int Height;
-        public int Width;
+        public int Height, Width;
+
+        public bool IsLoopback;
 
         public AviWriter CreateAviWriter()
         {
@@ -96,7 +103,8 @@ namespace Captura
         public IAviAudioStream CreateAudioStream(AviWriter writer)
         {
             // Create encoding or simple stream based on settings
-            if (EncodeAudio)
+            if (IsLoopback) return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);            
+            else if (EncodeAudio)
             {
                 // LAME DLL path is set in App.OnStartup()
                 return writer.AddMp3AudioStream(WaveFormat.Channels, WaveFormat.SampleRate, AudioBitRate);
@@ -106,7 +114,7 @@ namespace Captura
 
         public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(FileName, WaveFormat); }
 
-        public WaveFormat WaveFormat;
+        public WaveFormat WaveFormat { get; private set; }
     }
 
     class SilenceProvider : IWaveProvider
@@ -179,26 +187,21 @@ namespace Captura
             }
             catch
             {
-                var dev = new MMDeviceEnumerator().GetDevice(Params.AudioSourceId);
+                var dev = Params.LoopbackDevice;
 
-                if (dev.DataFlow == DataFlow.All || dev.DataFlow == DataFlow.Render)
+                SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
+
+                SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
+
+                SilencePlayer.Play();
+
+                if (Params.CaptureVideo)
                 {
-                    Params.WaveFormat = dev.AudioClient.MixFormat;
-
-                    SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
-
-                    SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
-
-                    SilencePlayer.Play();
-
-                    if (Params.CaptureVideo)
-                    {
-                        audioStream = Params.CreateAudioStream(writer);
-                        audioStream.Name = "Loopback";
-                    }
-
-                    audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
+                    audioStream = Params.CreateAudioStream(writer);
+                    audioStream.Name = "Loopback";
                 }
+
+                audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
             }
 
             if (Params.CaptureVideo)
@@ -417,6 +420,7 @@ namespace Captura
                 if (signalled == 0)
                 {
                     audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                    
                     audioBlockWritten.Set();
                 }
             }

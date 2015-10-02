@@ -51,6 +51,26 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
+            <Fluent:RibbonTabItem Header="Audio">
+                <Fluent:RibbonGroupBox Header="Devices">
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="300" ItemWidth="300" ItemsSource="{Binding AvailableAudioSources}"
+                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
+                                  SelectionChanged="DevicesGallery_SelectionChanged"
+                                  SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="MP3 Encoding">
+                    <Fluent:ToggleButton Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}" 
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
+                                         VerticalAlignment="Center" Name="EncodeAudio"/>
+                    <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
+                            IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
+                            AutoToolTipPlacement="None" Width="100" Margin="7,0"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
             <Fluent:RibbonTabItem Header="Video">
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
@@ -77,23 +97,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Audio">
-                <Fluent:RibbonGroupBox Header="Devices">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" ItemWidth="330" ItemsSource="{Binding AvailableAudioSources}"
-                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
-                                  SelectionChanged="DevicesGallery_SelectionChanged"
-                                  SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"/>
-                    <Fluent:ToggleButton Size="Middle" Header="Encode Audio" IsEnabled="{Binding ReadyToRecord}" 
-                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
-                                         VerticalAlignment="Center" Name="EncodeAudio"/>
-                    <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
-                            IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
-                            AutoToolTipPlacement="None" Width="100" Margin="7,0"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
+
         </Fluent:Ribbon>
 
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
@@ -129,15 +133,15 @@
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
-                
+
                 <Style TargetType="Button">
                     <Setter Property="Height" Value="60"/>
                     <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>
                 </Style>
             </StackPanel.Resources>
-            
+
             <Button Content="Images/ScreenShot.ico" Height="40" Width="40" ToolTip="ScreenShot" Click="ScreenShot" />
-            
+
             <Button Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
 
             <Button Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
