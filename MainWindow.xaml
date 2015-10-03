@@ -39,15 +39,17 @@
 
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
-                    <StackPanel Orientation="Horizontal">
-                        <Fluent:TextBox Header="Output Directory" x:Name="OutPath" Width="300" IsReadOnly="True"
-                                        Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>
-                        <Button Content="..." Width="25" Background="White" Command="Open" />
-                    </StackPanel>
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
                                          Header="Minimise On Capture Start" x:Name="MinOnStart" 
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
-                    <Fluent:Button Margin="5,0" Header="Refresh" Command="Refresh" Size="Middle" Icon="Images/Refresh.ico"/>
+                    <Fluent:Button Header="Refresh" Command="Refresh" Size="Middle" Icon="Images/Refresh.ico"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Window">
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" 
+                                  ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
+                                  IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                  Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
+                                  SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -91,16 +93,6 @@
                                   SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
-            <Fluent:RibbonTabItem Header="Window">
-                <Fluent:RibbonGroupBox>
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
-                                  ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
-                                  IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
-                                  Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
-                                  SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
@@ -114,6 +106,14 @@
                 <ContextMenu/>
             </Fluent:StatusBar.ContextMenu>
         </Fluent:StatusBar>
+
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button Content="..." Width="25" DockPanel.Dock="Right" Background="White" Command="Open" />
+            <Label Content="Output Path" DockPanel.Dock="Left" BorderThickness="0.5" BorderBrush="#B7000000" 
+                   VerticalContentAlignment="Center"/>
+            <TextBox x:Name="OutPath" IsReadOnly="True" VerticalContentAlignment="Center"
+                     Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>            
+        </DockPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel.Resources>
