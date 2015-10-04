@@ -159,14 +159,14 @@ namespace Captura
         {
             // Available Codecs
             AvailableCodecs.Clear();
-            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "(None)"));
+            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
             AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
             foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
             // Available Audio Sources
             AvailableAudioSources.Clear();
 
-            AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "(No Sound)"));
+            AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
 
             for (var i = 0; i < WaveInEvent.DeviceCount; i++)
                 AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
@@ -179,8 +179,8 @@ namespace Captura
 
             // Available Windows
             AvailableWindows.Clear();
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "None"));
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "Desktop"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "[Desktop]"));
 
             foreach (var win in WindowHandler.Enumerate())
             {
