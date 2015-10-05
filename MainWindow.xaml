@@ -78,7 +78,7 @@
 
             <Fluent:RibbonTabItem Header="Video">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
+                    <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
                     <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
                     <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"
@@ -87,7 +87,7 @@
 
                 <Fluent:RibbonGroupBox Header="Encoder">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
-                                  Width="200" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
+                                  Width="320" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
                                   SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
                                   DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
                                   SelectedValue="{Binding Encoder, Mode=TwoWay}"/>

@@ -366,7 +366,7 @@ namespace Captura
             }
 
             #region Include Cursor
-            if (Params.hWnd == IntPtr.Zero && Params.IncludeCursor)
+            if (Params.hWnd == RecorderParams.Desktop && Params.IncludeCursor)
             {
                 CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
 
