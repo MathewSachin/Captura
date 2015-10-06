@@ -15,9 +15,10 @@ Dependencies and Acknowledgements
 
 Features
 --------------------------------------------------------------
-* Capture Screen.
+* Capture Screen as Video or ScreenShot.
 * Capture Microphone/Loopback Audio.
 * Can Capture With/Without the Mouse Cursor.
 * Capture Specific Windows (`BETA`).
-* `Ctrl+Shift+R`: From Anywhere to Start/Stop Recording.
+* `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
+* `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
 * Supports Video Alone, Audio Alone Captures.

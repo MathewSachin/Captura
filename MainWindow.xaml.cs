@@ -24,7 +24,7 @@ namespace Captura
     {
         #region Fields
         SaveFileDialog SFD;
-        KeyboardHook KeyHook;
+        KeyboardHook RecordKeyHook, ScreenShotKeyHook;
 
         Recorder Recorder;
         string lastFileName;
@@ -144,8 +144,11 @@ namespace Captura
 
             NavigationCommands.Refresh.Execute(this, this);
 
-            KeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift);
-            KeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
+            RecordKeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
+            RecordKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
+
+            ScreenShotKeyHook = new KeyboardHook(this, VirtualKeyCodes.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
+            ScreenShotKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ScreenShot()));
 
             if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
@@ -265,7 +268,8 @@ namespace Captura
 
         void Window_Closing(object sender, EventArgs e)
         {
-            KeyHook.Dispose();
+            RecordKeyHook.Dispose();
+            ScreenShotKeyHook.Dispose();
 
             if (!ReadyToRecord) StopRecording();
         }
@@ -283,7 +287,7 @@ namespace Captura
             if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
-        void ScreenShot(object sender, RoutedEventArgs e)
+        void ScreenShot(object sender = null, RoutedEventArgs e = null)
         {
             Bitmap bmp;
 
