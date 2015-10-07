@@ -148,7 +148,7 @@ namespace Captura
             RecordKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
 
             ScreenShotKeyHook = new KeyboardHook(this, VirtualKeyCodes.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
-            ScreenShotKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ScreenShot()));
+            ScreenShotKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ScreenShot<int>()));
 
             if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
@@ -235,7 +235,7 @@ namespace Captura
 
             TimeManager.Reset();
             TimeManager.Start();
-            
+
             Recorder = new Recorder(new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
                 (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow));
@@ -287,7 +287,7 @@ namespace Captura
             if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
-        void ScreenShot(object sender = null, RoutedEventArgs e = null)
+        void ScreenShot<T>(object sender = null, T e = default(T))
         {
             Bitmap bmp;
 
@@ -312,5 +312,7 @@ namespace Captura
 
         void DevicesGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (DevicesGallery.SelectedIndex == -1) DevicesGallery.SelectedIndex = 0; }
         #endregion
+
+        void OpenOutputFolder(object sender, MouseButtonEventArgs e) { Process.Start("explorer.exe", OutPath.Text); }
     }
 }

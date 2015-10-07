@@ -9,6 +9,7 @@
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo x:Name="RecordThumb" Description="Record" Click="ToggleRecorderState" ImageSource="Images/Record.png"/>
+                <ThumbButtonInfo Description="ScreenShot" Click="ScreenShot" ImageSource="Images/ScreenShot.ico"/>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Fluent:RibbonWindow.TaskbarItemInfo>
@@ -114,7 +115,7 @@
         <DockPanel DockPanel.Dock="Bottom">
             <Button Content="..." Width="25" DockPanel.Dock="Right" Background="White" Command="Open" />
             <Label Content="Output Path" DockPanel.Dock="Left" BorderThickness="0.5" BorderBrush="#B7000000" 
-                   VerticalContentAlignment="Center"/>
+                   VerticalContentAlignment="Center" Cursor="Hand" MouseUp="OpenOutputFolder"/>
             <TextBox x:Name="OutPath" IsReadOnly="True" VerticalContentAlignment="Center"
                      Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>            
         </DockPanel>
