@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
-        Title="Captura" Width="525" Height="300"
+        Title="Captura" Width="525" Height="400"
         Closing="Window_Closing" Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
@@ -17,6 +17,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="{x:Static Fluent:MetroColors.ThemeColorKey}">
+                Chocolate
+            </Color>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
     <DockPanel>
