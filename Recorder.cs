@@ -14,7 +14,6 @@ using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
-using System.Collections.Generic;
 
 namespace Captura
 {
@@ -213,6 +212,8 @@ namespace Captura
                 };
             }
             else WaveWriter = Params.CreateWaveWriter();
+            
+            if (Params.CaptureVideo) screenThread.Start();
 
             if (audioSource != null)
             {
@@ -226,8 +227,6 @@ namespace Captura
 
                 audioSource.StartRecording();
             }
-
-            if (Params.CaptureVideo) screenThread.Start();
         }
 
         public void Dispose()
@@ -319,7 +318,7 @@ namespace Captura
                     videoFrameWritten.Set();
                 }
 
-                if (audioStream != null)
+                if (audioStream != null && !Params.IsLoopback)
                     if (WaitHandle.WaitAny(new WaitHandle[] { audioBlockWritten, stopThread }) == 1)
                         break;
 
@@ -416,12 +415,16 @@ namespace Captura
         {
             if (Params.CaptureVideo)
             {
-                var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
-                if (signalled == 0)
+                if (Params.IsLoopback) audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                else 
                 {
-                    audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
-                    
-                    audioBlockWritten.Set();
+                    var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
+                    if (signalled == 0)
+                    {
+                        audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+
+                        audioBlockWritten.Set();
+                    }
                 }
             }
             else WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
