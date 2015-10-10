@@ -10,8 +10,8 @@ Dependencies and Acknowledgements
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
 * [My Fork](http://github.com/MathewSachin/SharpAvi) of SharpAvi by Vasilli Masilov
-* lameenc32.dll, lameenc64.dll included in source
-* [ManagedWin32](http://github.com/MathewSachin/ManagedWin32) by [Me](http://github.com/MathewSachin)
+* lameenc32.dll, lameenc64.dll included in source (`Need to be Licensed for Commercial Use`)
+* [ManagedWin32](http://github.com/MathewSachin/ManagedWin32)
 
 Features
 --------------------------------------------------------------
