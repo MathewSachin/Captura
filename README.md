@@ -1,6 +1,8 @@
 ![Captura Logo](/Images/Logo.png) 
 
 # Captura
+
+[![Join the chat at https://gitter.im/MathewSachin/Captura](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MathewSachin/Captura?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 (c) 2015 Mathew Sachin. All Rights Reserved.
 
 Capture what's happening on your Screen along with audio from your `Microphone` or your Speakers (`Loopback`).
