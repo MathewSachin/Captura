@@ -5,7 +5,7 @@
 
 Capture what's happening on your Screen along with audio from your `Microphone` or your Speakers (`Loopback`).
 
-Dependencies and Acknowledgements
+Dependencies (available in Latest [Release](http://github.com/MathewSachin/Captura/Releases)) and Acknowledgements
 --------------------------------------------------------------
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
