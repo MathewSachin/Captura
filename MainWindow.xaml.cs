@@ -144,10 +144,10 @@ namespace Captura
 
             NavigationCommands.Refresh.Execute(this, this);
 
-            RecordKeyHook = new KeyboardHook(this, VirtualKeyCodes.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
+            RecordKeyHook = new KeyboardHook(this, KeyCode.VK_R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
             RecordKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
 
-            ScreenShotKeyHook = new KeyboardHook(this, VirtualKeyCodes.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
+            ScreenShotKeyHook = new KeyboardHook(this, KeyCode.VK_S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
             ScreenShotKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ScreenShot<int>()));
 
             if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
