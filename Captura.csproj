@@ -157,9 +157,6 @@
     <Resource Include="Images\Minimize.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Refresh.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Record.png" />
     <Resource Include="Images\Stop.png" />
   </ItemGroup>
@@ -168,6 +165,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ScreenShot.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Refresh.png" />
+    <Resource Include="Images\Speaker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MP3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

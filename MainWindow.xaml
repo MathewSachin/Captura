@@ -44,10 +44,13 @@
 
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Icon="Images/Minimize.ico" Size="Middle" Margin="0,5" IsEnabled="{Binding ReadyToRecord}"
-                                         Header="Minimise On Capture Start" x:Name="MinOnStart" 
+                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Large"
+                                         IsEnabled="{Binding ReadyToRecord}"
+                                         Header="Minimise On Capture Start" x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
-                    <Fluent:Button Header="Refresh" Command="Refresh" Size="Middle" Icon="Images/Refresh.ico"/>
+                    <Fluent:Button Header="Refresh" Command="Refresh" Size="Large" 
+                                   Icon="Images/Refresh.png"
+                                   LargeIcon="Images/Refresh.png"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Window">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" 
@@ -67,14 +70,14 @@
                                   SelectionChanged="DevicesGallery_SelectionChanged"
                                   SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" IsEnabled="{Binding ReadyToRecord}"
-                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
-                </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="MP3 Encoding">
-                    <Fluent:ToggleButton Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
-                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
-                                         VerticalAlignment="Center" Name="EncodeAudio"/>
+                    <Fluent:ToggleButton LargeIcon="Images/MP3.png"
+                        Size="Large" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
+                        IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
+                        VerticalAlignment="Center" Name="EncodeAudio"/>
+                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" 
+                                         IsEnabled="{Binding ReadyToRecord}" Icon="Images/Speaker.png"
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
                     <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
                             IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
                             AutoToolTipPlacement="None" Width="100" Margin="7,0"/>

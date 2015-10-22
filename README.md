@@ -6,6 +6,8 @@
 
 Capture what's happening on your Screen along with audio from your `Microphone` or your Speakers (`Loopback`).
 
+Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
+
 Dependencies (available in Latest [Release](https://github.com/MathewSachin/Captura/releases)) and Acknowledgements
 --------------------------------------------------------------
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
