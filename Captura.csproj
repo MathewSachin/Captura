@@ -70,7 +70,7 @@
       <HintPath>..\#Binaries\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="SharpAvi">
-      <HintPath>..\SharpAvi\bin\Release\SharpAvi.dll</HintPath>
+      <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
