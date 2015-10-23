@@ -1,4 +1,6 @@
-﻿using System;
+// Taken from SharpAvi by Vasilli Masillov
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
