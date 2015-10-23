@@ -54,7 +54,7 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
-                    <!--<Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>-->
+                    <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -112,10 +112,11 @@
 
         <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
             <Fluent:StatusBarItem HorizontalAlignment="Right">
-                <this:Timer x:Name="TimeManager" VerticalContentAlignment="Center" Width="40" Foreground="White" HorizontalContentAlignment="Center"/>
+                <Label x:Name="TimeManager" Content="00:00" Foreground="White"/>
             </Fluent:StatusBarItem>
             <Fluent:StatusBarItem HorizontalAlignment="Left">
-                <Label Height="25" Name="Status" Content="Ready" Foreground="White" VerticalContentAlignment="Center" Background="Transparent" />
+                <Label Height="25" Name="Status" Content="Ready" Foreground="White" 
+                       VerticalContentAlignment="Center" Background="Transparent" />
             </Fluent:StatusBarItem>
             <Fluent:StatusBar.ContextMenu>
                 <ContextMenu/>

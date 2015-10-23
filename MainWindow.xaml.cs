@@ -23,6 +23,10 @@ namespace Captura
 {
     public partial class MainWindow : Fluent.RibbonWindow
     {
+        DispatcherTimer DTimer;
+        int Seconds = 0, Minutes = 0;
+        int Duration = 0;
+
         #region Fields
         SaveFileDialog SFD;
         KeyboardHook RecordKeyHook, ScreenShotKeyHook;
@@ -88,6 +92,25 @@ namespace Captura
 
             DataContext = this;
 
+            #region Init Timer
+            DTimer = new DispatcherTimer();
+            DTimer.Interval = TimeSpan.FromSeconds(1);
+            DTimer.Tick += (s, e) =>
+            {
+                Seconds++;
+
+                if (Seconds == 60)
+                {
+                    Seconds = 0;
+                    Minutes++;
+                }
+
+                if (Duration > 0 && (Minutes * 60 + Seconds >= Duration)) StopRecording();
+
+                TimeManager.Content = string.Format("{0:D2}:{1:D2}", Minutes, Seconds);
+            };
+            #endregion
+
             AvailableCodecs = new ObservableCollection<CodecInfo>();
             AvailableAudioSources = new ObservableCollection<KeyValuePair<string, string>>();
             AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
@@ -114,7 +137,7 @@ namespace Captura
             CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
                 {
                     Recorder.Pause();
-                    TimeManager.Stop();
+                    DTimer.Stop();
 
                     PauseButton.Command = ResumeCommand;
                     RotationEffect.Angle = 90;
@@ -125,7 +148,7 @@ namespace Captura
             CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
                 {
                     Recorder.Resume();
-                    TimeManager.Start();
+                    DTimer.Start();
 
                     PauseButton.Command = PauseCommand;
                     RotationEffect.Angle = 0;
@@ -234,8 +257,12 @@ namespace Captura
 
             Status.Content = "Recording...";
 
-            TimeManager.Reset();
-            TimeManager.Start();
+            DTimer.Stop();
+            Seconds = Minutes = 0;
+            TimeManager.Content = "00:00";
+            DTimer.Start();
+
+            Duration = (int)CaptureDuration.Value;
 
             var Params = new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
@@ -257,7 +284,7 @@ namespace Captura
 
             Status.Content = "Saved to " + lastFileName;
 
-            TimeManager.Stop();
+            DTimer.Stop();
 
             // UI Buttons
             RecordThumb.Description = "Record";
