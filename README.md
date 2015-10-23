@@ -8,7 +8,7 @@ Capture what's happening on your Screen along with audio from your `Microphone` 
 
 Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
 
-Dependencies (available in Latest [Release](https://github.com/MathewSachin/Captura/releases)) and Acknowledgements
+Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/download/v2.3/Captura.zip)) and Acknowledgements
 --------------------------------------------------------------
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
