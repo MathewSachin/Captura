@@ -22,11 +22,12 @@ namespace Captura
     class RecorderParams
     {
         public IntPtr hWnd;
+        public int StartDelay;
 
         public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
 
         public RecorderParams(string filename, int FrameRate, FourCC Encoder, int Quality,
-            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, bool IncludeCursor, IntPtr hWnd)
+            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, bool IncludeCursor, IntPtr hWnd, int StartDelay)
         {
             FileName = filename;
             FramesPerSecond = FrameRate;
@@ -38,6 +39,7 @@ namespace Captura
             this.IncludeCursor = IncludeCursor;
             this.hWnd = hWnd;
             CaptureVideo = hWnd.ToInt32() != -1;
+            this.StartDelay = StartDelay;
 
             System.Windows.Media.Matrix toDevice;
             using (var source = new HwndSource(new HwndSourceParameters()))
@@ -140,6 +142,8 @@ namespace Captura
         public Recorder(RecorderParams Params)
         {
             this.Params = Params;
+
+            Thread.Sleep(Params.StartDelay);
 
             if (Params.CaptureVideo)
             {

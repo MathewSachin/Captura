@@ -41,7 +41,7 @@
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
-
+            
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Large"
@@ -52,15 +52,22 @@
                                    Icon="Images/Refresh.png"
                                    LargeIcon="Images/Refresh.png"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Window">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="330" 
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
+                    <!--<Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>-->
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Window">
+                <Fluent:RibbonGroupBox>
+                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
                                   ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
                                   IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
                                   Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
                                   SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
+            
             <Fluent:RibbonTabItem Header="Audio">
                 <Fluent:RibbonGroupBox Header="Devices">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 

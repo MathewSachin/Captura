@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -119,7 +120,7 @@ namespace Captura
                     RotationEffect.Angle = 90;
                     Status.Content = "Paused";
                     PauseButton.ToolTip = "Pause";
-                }, (s, e) => e.CanExecute = !ReadyToRecord && !Recorder.IsPaused));
+                }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? !Recorder.IsPaused : true)));
 
             CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
                 {
@@ -130,7 +131,7 @@ namespace Captura
                     RotationEffect.Angle = 0;
                     Status.Content = "Recording...";
                     PauseButton.ToolTip = "Resume";
-                }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder.IsPaused));
+                }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? Recorder.IsPaused : false)));
             #endregion
 
             SFD = new SaveFileDialog()
@@ -236,9 +237,11 @@ namespace Captura
             TimeManager.Reset();
             TimeManager.Start();
 
-            Recorder = new Recorder(new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
+            var Params = new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
-                (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow));
+                (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow, (int)StartDelay.Value);
+
+            new Thread(new ThreadStart(() => Recorder = new Recorder(Params))).Start();
         }
 
         void StopRecording()
