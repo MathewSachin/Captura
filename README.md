@@ -25,3 +25,4 @@ Features
 * `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
 * `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
 * Supports Video Alone, Audio Alone Captures.
+* Specify Start Delay
