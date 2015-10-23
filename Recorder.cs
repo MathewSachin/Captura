@@ -37,23 +37,12 @@ namespace Captura
             this.hWnd = hWnd;
             CaptureVideo = hWnd.ToInt32() != -1;
 
-            if (hWnd == Desktop)
-            {
-                System.Windows.Media.Matrix toDevice;
-                using (var source = new HwndSource(new HwndSourceParameters()))
-                    toDevice = source.CompositionTarget.TransformToDevice;
+            System.Windows.Media.Matrix toDevice;
+            using (var source = new HwndSource(new HwndSourceParameters()))
+                toDevice = source.CompositionTarget.TransformToDevice;
 
-                Height = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
-                Width = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
-            }
-            else
-            {
-                var rect = new RECT();
-                User32.GetWindowRect(hWnd, ref rect);
-
-                Width = rect.Right - rect.Left;
-                Height = rect.Bottom - rect.Top;
-            }
+            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
+            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
 
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
@@ -68,7 +57,7 @@ namespace Captura
         FourCC Codec;
         public bool EncodeAudio, IncludeCursor, CaptureVideo;
 
-        public int Height, Width;
+        public int DesktopHeight, DesktopWidth;
 
         public bool IsLoopback;
 
@@ -84,11 +73,11 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(Width, Height);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(Width, Height, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(DesktopWidth, DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(DesktopWidth, DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(Width, Height, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(DesktopWidth, DesktopHeight, (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,
@@ -102,7 +91,7 @@ namespace Captura
         public IAviAudioStream CreateAudioStream(AviWriter writer)
         {
             // Create encoding or simple stream based on settings
-            if (IsLoopback) return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);            
+            if (IsLoopback) return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);
             else if (EncodeAudio)
             {
                 // LAME DLL path is set in App.OnStartup()
@@ -212,7 +201,7 @@ namespace Captura
                 };
             }
             else WaveWriter = Params.CreateWaveWriter();
-            
+
             if (Params.CaptureVideo) screenThread.Start();
 
             if (audioSource != null)
@@ -301,7 +290,7 @@ namespace Captura
         void RecordScreen()
         {
             var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-            var buffer = new byte[Params.Width * Params.Height * 4];
+            var buffer = new byte[Params.DesktopWidth * Params.DesktopHeight * 4];
             Task videoWriteTask = null;
             var isFirstFrame = true;
             var timeTillNextFrame = TimeSpan.Zero;
@@ -335,80 +324,62 @@ namespace Captura
             if (!isFirstFrame) videoWriteTask.Wait();
         }
 
-        // CaptureBlt ??
         public void Screenshot(byte[] Buffer)
         {
-            IntPtr hDC = User32.GetWindowDC(Params.hWnd),
-                hMemDC = Gdi32.CreateCompatibleDC(hDC),
-                hIcon = IntPtr.Zero;
-
             int CursorX = 0, CursorY = 0;
+            Rectangle Rect = default(Rectangle);
 
-            IntPtr hBitmap = Gdi32.CreateCompatibleBitmap(hDC, Params.Width, Params.Height);
-
-            if (hBitmap != IntPtr.Zero)
+            if (Params.hWnd != RecorderParams.Desktop)
             {
-                IntPtr hOld = Gdi32.SelectObject(hMemDC, hBitmap);
+                var rect = new RECT();
+                User32.GetWindowRect(Params.hWnd, ref rect);
 
-                if (Params.hWnd != RecorderParams.Desktop)
-                {
-                    var rect = new RECT();
-                    User32.GetWindowRect(Params.hWnd, ref rect);
-
-                    Params.Width = rect.Right - rect.Left;
-                    Params.Height = rect.Bottom - rect.Top;
-                }
-
-                Gdi32.BitBlt(hMemDC, 0, 0, Params.Width, Params.Height, hDC, 0, 0, PatBltTypes.SRCCOPY);
-
-                Gdi32.SelectObject(hMemDC, hOld);
+                Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             }
+            else Rect = new Rectangle(0, 0, Params.DesktopWidth, Params.DesktopHeight);
 
-            #region Include Cursor
-            if (Params.hWnd == RecorderParams.Desktop && Params.IncludeCursor)
-            {
-                CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
-
-                IconInfo icInfo;
-
-                if (User32.GetCursorInfo(out ci))
-                {
-                    if (ci.flags == User32.CURSOR_SHOWING)
-                    {
-                        hIcon = User32.CopyIcon(ci.hCursor);
-                        if (User32.GetIconInfo(hIcon, out icInfo))
-                        {
-                            CursorX = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
-                            CursorY = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
-                        }
-                    }
-                }
-            }
-            #endregion
-
-            using (var BMP = new Bitmap(Params.Width, Params.Height))
+            using (var BMP = new Bitmap(Params.DesktopWidth, Params.DesktopHeight))
             {
                 using (var g = Graphics.FromImage(BMP))
                 {
-                    g.DrawImage(Bitmap.FromHbitmap(hBitmap), 0, 0);
+                    g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
-                    if (hIcon != IntPtr.Zero)
+                    #region Include Cursor
+                    if (Params.IncludeCursor)
                     {
-                        Bitmap CursorBMP = Icon.FromHandle(hIcon).ToBitmap();
-                        g.DrawImage(CursorBMP, CursorX, CursorY, CursorBMP.Width, CursorBMP.Height);
+                        IntPtr hIcon = IntPtr.Zero;
+                        CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
+
+                        IconInfo icInfo;
+
+                        if (User32.GetCursorInfo(out ci))
+                        {
+                            if (ci.flags == User32.CURSOR_SHOWING)
+                            {
+                                hIcon = User32.CopyIcon(ci.hCursor);
+                                if (User32.GetIconInfo(hIcon, out icInfo))
+                                {
+                                    CursorX = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
+                                    CursorY = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
+                                }
+                            }
+                        }
+
+                        if (hIcon != IntPtr.Zero)
+                        {
+                            Bitmap CursorBMP = Icon.FromHandle(hIcon).ToBitmap();
+                            g.DrawImage(CursorBMP, CursorX, CursorY, CursorBMP.Width, CursorBMP.Height);
+                        }
                     }
+                    #endregion
 
                     g.Flush();
 
-                    var bits = BMP.LockBits(new Rectangle(0, 0, Params.Width, Params.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    var bits = BMP.LockBits(new Rectangle(0, 0, Params.DesktopWidth, Params.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                     Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                     BMP.UnlockBits(bits);
                 }
             }
-
-            Gdi32.DeleteObject(hBitmap);
-            Gdi32.DeleteDC(hMemDC);
-            User32.ReleaseDC(Params.hWnd, hDC);
         }
 
         void AudioDataAvailable(object sender, WaveInEventArgs e)
@@ -416,7 +387,7 @@ namespace Captura
             if (Params.CaptureVideo)
             {
                 if (Params.IsLoopback) audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
-                else 
+                else
                 {
                     var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
                     if (signalled == 0)
