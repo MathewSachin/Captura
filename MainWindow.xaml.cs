@@ -64,7 +64,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(RecorderParams.Desktop));
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(App.Desktop));
 
         public IntPtr SelectedWindow
         {
@@ -209,7 +209,7 @@ namespace Captura
             // Available Windows
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "[Desktop]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(App.Desktop, "[Desktop]"));
 
             foreach (var win in WindowHandler.Enumerate())
             {
@@ -266,11 +266,13 @@ namespace Captura
 
             Duration = (int)CaptureDuration.Value;
 
-            var Params = new RecorderParams(this, lastFileName, (int)FrameRate.Value, Encoder,
-                (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
-                (int)AudioQuality.Value, (int)StartDelay.Value);
+            var Params = new RecorderParams(this, lastFileName);
 
-            new Thread(new ThreadStart(() => Recorder = new Recorder(Params))).Start();
+            new Thread(new ParameterizedThreadStart((object Delay) =>
+                {
+                    Thread.Sleep((int)Delay);
+                    Recorder = new Recorder(Params);
+                })).Start((int)StartDelay.Value);
         }
 
         void StopRecording()
@@ -323,7 +325,7 @@ namespace Captura
         {
             Bitmap bmp;
 
-            if (SelectedWindow == RecorderParams.Desktop)
+            if (SelectedWindow == App.Desktop)
             {
                 bmp = IncludeCursor.IsChecked.Value ? ScreenCapture.CaptureDesktopWithCursor() :
                    ScreenCapture.CaptureDesktop();

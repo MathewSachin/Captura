@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
-using System.Windows.Interop;
-using ManagedWin32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
@@ -13,42 +10,25 @@ namespace Captura
 {
     class RecorderParams
     {
-        public int StartDelay;
         public MainWindow MainWindow;
 
-        public static readonly int DesktopHeight, DesktopWidth;
-
-        public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
-
-        static RecorderParams()
-        {
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
-
-            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
-            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
-        }
-
-        public RecorderParams(MainWindow MainWindow, string filename, int FrameRate, FourCC Encoder, int Quality,
-            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, int StartDelay)
+        public RecorderParams(MainWindow MainWindow, string filename)
         {
             this.MainWindow = MainWindow;
 
             FileName = filename;
-            FramesPerSecond = FrameRate;
-            Codec = Encoder;
-            this.Quality = Quality;
-            this.AudioSourceId = AudioSourceId;
-            this.EncodeAudio = EncodeAudio;
-            AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioQuality);
+            FramesPerSecond = (int)MainWindow.FrameRate.Value;
+            Codec = MainWindow.Encoder;
+            this.Quality = (int)MainWindow.Quality.Value;
+            this.AudioSourceId = MainWindow.SelectedAudioSourceId;
+            this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
+            AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1;
-            this.StartDelay = StartDelay;
-
+            
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
 
-            WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, UseStereo ? 2 : 1);
+            WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, MainWindow.UseStereo.IsChecked.Value ? 2 : 1);
         }
 
         public bool IncludeCursor
@@ -88,11 +68,11 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(DesktopWidth, DesktopHeight);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(DesktopWidth, DesktopHeight, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(App.DesktopWidth, App.DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(App.DesktopWidth, App.DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(DesktopWidth, DesktopHeight, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(App.DesktopWidth, App.DesktopHeight, (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,

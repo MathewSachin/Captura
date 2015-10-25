@@ -39,8 +39,6 @@ namespace Captura
         {
             this.Params = Params;
 
-            Thread.Sleep(Params.StartDelay);
-
             if (Params.CaptureVideo)
             {
                 // Create AVI writer and specify FPS
@@ -133,7 +131,9 @@ namespace Captura
 
             if (Params.CaptureVideo)
             {
-                stopThread.Set();
+                if (!stopThread.SafeWaitHandle.IsClosed 
+                    && !stopThread.SafeWaitHandle.IsInvalid) 
+                    stopThread.Set();
                 screenThread.Abort();
             }
 
@@ -148,7 +148,7 @@ namespace Captura
                 // Close writer: the remaining data is written to a file and file is closed
                 writer.Close();
 
-                stopThread.Close();
+                if (!stopThread.SafeWaitHandle.IsClosed) stopThread.Close();
             }
             else WaveWriter.Dispose();
         }
@@ -194,7 +194,7 @@ namespace Captura
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-                var buffer = new byte[RecorderParams.DesktopWidth * RecorderParams.DesktopHeight * 4];
+                var buffer = new byte[App.DesktopWidth * App.DesktopHeight * 4];
                 Task videoWriteTask = null;
                 var isFirstFrame = true;
                 var timeTillNextFrame = TimeSpan.Zero;
@@ -240,16 +240,16 @@ namespace Captura
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
 
-            if (Params.hWnd != RecorderParams.Desktop)
+            if (Params.hWnd != App.Desktop)
             {
                 var rect = new RECT();
                 User32.GetWindowRect(Params.hWnd, ref rect);
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             }
-            else Rect = new Rectangle(0, 0, RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
+            else Rect = new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight);
 
-            using (var BMP = new Bitmap(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight))
+            using (var BMP = new Bitmap(App.DesktopWidth, App.DesktopHeight))
             {
                 using (var g = Graphics.FromImage(BMP))
                 {
@@ -286,7 +286,7 @@ namespace Captura
 
                     g.Flush();
 
-                    var bits = BMP.LockBits(new Rectangle(0, 0, RecorderParams.DesktopWidth, RecorderParams.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    var bits = BMP.LockBits(new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                     Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                     BMP.UnlockBits(bits);
                 }
