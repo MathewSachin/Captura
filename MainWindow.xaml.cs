@@ -264,9 +264,9 @@ namespace Captura
 
             Duration = (int)CaptureDuration.Value;
 
-            var Params = new RecorderParams(lastFileName, (int)FrameRate.Value, Encoder,
+            var Params = new RecorderParams(this, lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
-                (int)AudioQuality.Value, IncludeCursor.IsChecked.Value, SelectedWindow, (int)StartDelay.Value);
+                (int)AudioQuality.Value, SelectedWindow, (int)StartDelay.Value);
 
             new Thread(new ThreadStart(() => Recorder = new Recorder(Params))).Start();
         }

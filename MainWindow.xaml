@@ -95,7 +95,7 @@
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
                     <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
-                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico" IsEnabled="{Binding ReadyToRecord}"
+                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"
                                          Icon="Images/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
                 </Fluent:RibbonGroupBox>

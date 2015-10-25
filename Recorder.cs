@@ -1,4 +1,4 @@
-// Taken from SharpAvi by Vasilli Masillov
+// Adopted from SharpAvi Screencast Sample by Vasilli Masillov
 
 using System;
 using System.Drawing;
@@ -23,12 +23,27 @@ namespace Captura
     {
         public IntPtr hWnd;
         public int StartDelay;
+        public MainWindow MainWindow;
+
+        public static readonly int DesktopHeight, DesktopWidth;
 
         public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
 
-        public RecorderParams(string filename, int FrameRate, FourCC Encoder, int Quality,
-            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, bool IncludeCursor, IntPtr hWnd, int StartDelay)
+        static RecorderParams()
         {
+            System.Windows.Media.Matrix toDevice;
+            using (var source = new HwndSource(new HwndSourceParameters()))
+                toDevice = source.CompositionTarget.TransformToDevice;
+
+            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
+            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+        }
+
+        public RecorderParams(MainWindow MainWindow, string filename, int FrameRate, FourCC Encoder, int Quality,
+            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, IntPtr hWnd, int StartDelay)
+        {
+            this.MainWindow = MainWindow;
+
             FileName = filename;
             FramesPerSecond = FrameRate;
             Codec = Encoder;
@@ -36,17 +51,9 @@ namespace Captura
             this.AudioSourceId = AudioSourceId;
             this.EncodeAudio = EncodeAudio;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioQuality);
-            this.IncludeCursor = IncludeCursor;
             this.hWnd = hWnd;
             CaptureVideo = hWnd.ToInt32() != -1;
             this.StartDelay = StartDelay;
-
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
-
-            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
-            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
 
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
@@ -54,14 +61,14 @@ namespace Captura
             WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, UseStereo ? 2 : 1);
         }
 
+        public bool IncludeCursor { get { return (bool)MainWindow.Dispatcher.Invoke(new Func<bool>(() => MainWindow.IncludeCursor.IsChecked.Value)); } }
+
         public MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
-        public bool EncodeAudio, IncludeCursor, CaptureVideo;
-
-        public int DesktopHeight, DesktopWidth;
+        public bool EncodeAudio, CaptureVideo;
 
         public bool IsLoopback;
 
@@ -105,19 +112,6 @@ namespace Captura
         }
 
         public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(FileName, WaveFormat); }
-
-        public WaveFormat WaveFormat { get; private set; }
-    }
-
-    class SilenceProvider : IWaveProvider
-    {
-        public SilenceProvider(WaveFormat wf) { this.WaveFormat = wf; }
-
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            buffer.Initialize();
-            return count;
-        }
 
         public WaveFormat WaveFormat { get; private set; }
     }
@@ -238,7 +232,7 @@ namespace Captura
             if (Params.CaptureVideo)
             {
                 stopThread.Set();
-                screenThread.Join();
+                screenThread.Abort();
             }
 
             if (audioSource != null)
@@ -296,7 +290,7 @@ namespace Captura
         void RecordScreen()
         {
             var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-            var buffer = new byte[Params.DesktopWidth * Params.DesktopHeight * 4];
+            var buffer = new byte[RecorderParams.DesktopWidth * RecorderParams.DesktopHeight * 4];
             Task videoWriteTask = null;
             var isFirstFrame = true;
             var timeTillNextFrame = TimeSpan.Zero;
@@ -342,9 +336,9 @@ namespace Captura
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             }
-            else Rect = new Rectangle(0, 0, Params.DesktopWidth, Params.DesktopHeight);
+            else Rect = new Rectangle(0, 0, RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
 
-            using (var BMP = new Bitmap(Params.DesktopWidth, Params.DesktopHeight))
+            using (var BMP = new Bitmap(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight))
             {
                 using (var g = Graphics.FromImage(BMP))
                 {
@@ -381,7 +375,7 @@ namespace Captura
 
                     g.Flush();
 
-                    var bits = BMP.LockBits(new Rectangle(0, 0, Params.DesktopWidth, Params.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    var bits = BMP.LockBits(new Rectangle(0, 0, RecorderParams.DesktopWidth, RecorderParams.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                     Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                     BMP.UnlockBits(bits);
                 }
