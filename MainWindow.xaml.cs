@@ -131,8 +131,7 @@ namespace Captura
                 (s, e) => Process.Start("explorer.exe", string.Format("/select, \"{0}\"", lastFileName)),
                 (s, e) => e.CanExecute = !string.IsNullOrWhiteSpace(lastFileName) && File.Exists(lastFileName)));
 
-            CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh(),
-                (s, e) => e.CanExecute = ReadyToRecord));
+            CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
 
             CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
                 {
@@ -184,25 +183,28 @@ namespace Captura
 
         void Refresh()
         {
-            // Available Codecs
-            AvailableCodecs.Clear();
-            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
-            AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
-            foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
+            if (ReadyToRecord)
+            {
+                // Available Codecs
+                AvailableCodecs.Clear();
+                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
+                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
+                foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
-            // Available Audio Sources
-            AvailableAudioSources.Clear();
+                // Available Audio Sources
+                AvailableAudioSources.Clear();
 
-            AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
+                AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
 
-            for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-                AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
+                for (var i = 0; i < WaveInEvent.DeviceCount; i++)
+                    AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
 
-            foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
-                AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
+                foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+                    AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
 
-            // Status
-            Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
+                // Status
+                Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
+            }
 
             // Available Windows
             AvailableWindows.Clear();
@@ -266,7 +268,7 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName, (int)FrameRate.Value, Encoder,
                 (int)Quality.Value, SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
-                (int)AudioQuality.Value, SelectedWindow, (int)StartDelay.Value);
+                (int)AudioQuality.Value, (int)StartDelay.Value);
 
             new Thread(new ThreadStart(() => Recorder = new Recorder(Params))).Start();
         }

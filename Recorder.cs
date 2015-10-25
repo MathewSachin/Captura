@@ -21,7 +21,6 @@ namespace Captura
 {
     class RecorderParams
     {
-        public IntPtr hWnd;
         public int StartDelay;
         public MainWindow MainWindow;
 
@@ -40,7 +39,7 @@ namespace Captura
         }
 
         public RecorderParams(MainWindow MainWindow, string filename, int FrameRate, FourCC Encoder, int Quality,
-            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, IntPtr hWnd, int StartDelay)
+            string AudioSourceId, bool UseStereo, bool EncodeAudio, int AudioQuality, int StartDelay)
         {
             this.MainWindow = MainWindow;
 
@@ -51,7 +50,6 @@ namespace Captura
             this.AudioSourceId = AudioSourceId;
             this.EncodeAudio = EncodeAudio;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioQuality);
-            this.hWnd = hWnd;
             CaptureVideo = hWnd.ToInt32() != -1;
             this.StartDelay = StartDelay;
 
@@ -61,7 +59,21 @@ namespace Captura
             WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, UseStereo ? 2 : 1);
         }
 
-        public bool IncludeCursor { get { return (bool)MainWindow.Dispatcher.Invoke(new Func<bool>(() => MainWindow.IncludeCursor.IsChecked.Value)); } }
+        public bool IncludeCursor
+        {
+            get
+            {
+                return (bool)MainWindow.Dispatcher.Invoke(new Func<bool>(() => MainWindow.IncludeCursor.IsChecked.Value));
+            }
+        }
+
+        public IntPtr hWnd
+        {
+            get
+            {
+                return (IntPtr)MainWindow.Dispatcher.Invoke(new Func<IntPtr>(() => MainWindow.SelectedWindow));
+            }
+        }
 
         public MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 

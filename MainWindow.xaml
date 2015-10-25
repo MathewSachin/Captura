@@ -62,7 +62,7 @@
                 <Fluent:RibbonGroupBox>
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
                                   ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
-                                  IsEnabled="{Binding ReadyToRecord}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                  DisplayMemberPath="Value" SelectedValuePath="Key"
                                   Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
                                   SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
