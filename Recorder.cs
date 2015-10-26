@@ -126,8 +126,8 @@ namespace Captura
 
             if (Params.CaptureVideo)
             {
-                if (!stopThread.SafeWaitHandle.IsClosed 
-                    && !stopThread.SafeWaitHandle.IsInvalid) 
+                if (!stopThread.SafeWaitHandle.IsClosed
+                    && !stopThread.SafeWaitHandle.IsInvalid)
                     stopThread.Set();
                 screenThread.Abort();
             }
@@ -198,7 +198,7 @@ namespace Captura
                 {
                     var timestamp = DateTime.Now;
 
-                    Screenshot(buffer);
+                    ScreenShot(buffer);
 
                     // Wait for the previous frame is written
                     if (!isFirstFrame)
@@ -230,61 +230,69 @@ namespace Captura
             }
         }
 
-        public void Screenshot(byte[] Buffer)
+        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor)
         {
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
 
-            if (Params.hWnd != App.Desktop)
+            if (hWnd != App.Desktop)
             {
                 var rect = new RECT();
-                User32.GetWindowRect(Params.hWnd, ref rect);
+                User32.GetWindowRect(hWnd, ref rect);
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             }
             else Rect = new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight);
 
-            using (var BMP = new Bitmap(App.DesktopWidth, App.DesktopHeight))
+            var BMP = new Bitmap(App.DesktopWidth, App.DesktopHeight);
+            using (var g = Graphics.FromImage(BMP))
             {
-                using (var g = Graphics.FromImage(BMP))
+                g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
+
+                #region Include Cursor
+                if (IncludeCursor)
                 {
-                    g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
+                    IntPtr hIcon = IntPtr.Zero;
+                    CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
 
-                    #region Include Cursor
-                    if (Params.IncludeCursor)
+                    IconInfo icInfo;
+
+                    if (User32.GetCursorInfo(out ci))
                     {
-                        IntPtr hIcon = IntPtr.Zero;
-                        CursorInfo ci = new CursorInfo() { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
-
-                        IconInfo icInfo;
-
-                        if (User32.GetCursorInfo(out ci))
+                        if (ci.flags == User32.CURSOR_SHOWING)
                         {
-                            if (ci.flags == User32.CURSOR_SHOWING)
+                            hIcon = User32.CopyIcon(ci.hCursor);
+                            if (User32.GetIconInfo(hIcon, out icInfo))
                             {
-                                hIcon = User32.CopyIcon(ci.hCursor);
-                                if (User32.GetIconInfo(hIcon, out icInfo))
-                                {
-                                    CursorX = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
-                                    CursorY = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
-                                }
+                                CursorX = ci.ptScreenPos.X - ((int)icInfo.xHotspot);
+                                CursorY = ci.ptScreenPos.Y - ((int)icInfo.yHotspot);
                             }
                         }
-
-                        if (hIcon != IntPtr.Zero)
-                        {
-                            Bitmap CursorBMP = Icon.FromHandle(hIcon).ToBitmap();
-                            g.DrawImage(CursorBMP, CursorX, CursorY, CursorBMP.Width, CursorBMP.Height);
-                        }
                     }
-                    #endregion
 
-                    g.Flush();
-
-                    var bits = BMP.LockBits(new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                    Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
-                    BMP.UnlockBits(bits);
+                    if (hIcon != IntPtr.Zero)
+                    {
+                        Bitmap CursorBMP = Icon.FromHandle(hIcon).ToBitmap();
+                        g.DrawImage(CursorBMP, CursorX, CursorY, CursorBMP.Width, CursorBMP.Height);
+                    }
                 }
+                #endregion
+
+                g.Flush();
+
+            }
+
+            return BMP;
+        }
+
+        public void ScreenShot(byte[] Buffer)
+        {
+            using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor))
+            {
+                var bits = BMP.LockBits(new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight),
+                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
+                BMP.UnlockBits(bits);
             }
         }
 

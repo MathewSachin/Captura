@@ -313,20 +313,14 @@ namespace Captura
 
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
-            Bitmap bmp;
-
-            if (SelectedWindow == App.Desktop)
-            {
-                bmp = IncludeCursor.IsChecked.Value ? ScreenCapture.CaptureDesktopWithCursor() :
-                   ScreenCapture.CaptureDesktop();
-            }
-            else bmp = ScreenCapture.Capture(SelectedWindow);
+            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value);
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
 
-            Status.Content = "Saved to " + lastFileName;
+            try { BMP.Save(lastFileName, ImageFormat.Png); }
+            catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
 
-            bmp.Save(lastFileName, ImageFormat.Png);
+            Status.Content = "Saved to " + lastFileName;
         }
 
         #region Gallery Selection Changed Handlers
