@@ -241,6 +241,8 @@ namespace Captura
                 User32.GetWindowRect(hWnd, ref rect);
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+
+                if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
             else Rect = App.DesktopRect;
 
@@ -283,6 +285,8 @@ namespace Captura
                 g.Flush();
 
             }
+
+            if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-2), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
 
             return BMP;
         }
