@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -13,6 +14,8 @@ namespace Captura
     {
         public static readonly int DesktopHeight, DesktopWidth;
 
+        public static readonly Rectangle DesktopRect;
+
         public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
 
         static App()
@@ -23,6 +26,8 @@ namespace Captura
 
             DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
             DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+
+            DesktopRect = new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight);
         }
 
         void Application_Startup(object sender, StartupEventArgs e)

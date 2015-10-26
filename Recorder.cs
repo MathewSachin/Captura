@@ -230,7 +230,7 @@ namespace Captura
             }
         }
 
-        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor)
+        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting = true)
         {
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
@@ -242,11 +242,13 @@ namespace Captura
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             }
-            else Rect = new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight);
+            else Rect = App.DesktopRect;
 
             var BMP = new Bitmap(App.DesktopWidth, App.DesktopHeight);
             using (var g = Graphics.FromImage(BMP))
             {
+                if (ScreenCasting) g.FillRectangle(Brushes.White, App.DesktopRect);
+
                 g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
                 #region Include Cursor
@@ -289,8 +291,7 @@ namespace Captura
         {
             using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor))
             {
-                var bits = BMP.LockBits(new Rectangle(0, 0, App.DesktopWidth, App.DesktopHeight),
-                    ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = BMP.LockBits(App.DesktopRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 BMP.UnlockBits(bits);
             }

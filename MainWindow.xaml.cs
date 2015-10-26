@@ -313,7 +313,7 @@ namespace Captura
 
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
-            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value);
+            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false);
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
 

@@ -48,6 +48,8 @@ namespace Captura
 
     public class KeyboardHookList : IDisposable
     {
+        Random R;
+
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
@@ -65,11 +67,13 @@ namespace Captura
             host = new WindowInteropHelper(Window);
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
+
+            R = new Random(DateTime.Now.Millisecond);
         }
 
         public void Register(KeyCode Key, ModifierKeyCodes Modifiers, Action Callback)
         {
-            int Identifier = new Random().Next(DateTime.Now.Millisecond * Keys.Count);
+            int Identifier = R.Next();
 
             RegisterHotKey(host.Handle, Identifier, Modifiers, Key);
 
