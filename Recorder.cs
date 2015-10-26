@@ -2,18 +2,13 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
-using ManagedWin32;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using SharpAvi;
-using SharpAvi.Codecs;
 using SharpAvi.Output;
 
 namespace Captura

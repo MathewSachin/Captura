@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
-using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
@@ -23,13 +22,12 @@ namespace Captura
 {
     public partial class MainWindow : Fluent.RibbonWindow
     {
+        #region Fields
         DispatcherTimer DTimer;
         int Seconds = 0, Minutes = 0;
         int Duration = 0;
 
-        #region Fields
-        SaveFileDialog SFD;
-        KeyboardHook RecordKeyHook, ScreenShotKeyHook;
+        KeyboardHookList KeyHook;
 
         Recorder Recorder;
         string lastFileName;
@@ -155,23 +153,18 @@ namespace Captura
                     PauseButton.ToolTip = "Resume";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? Recorder.IsPaused : false)));
             #endregion
-
-            SFD = new SaveFileDialog()
-            {
-                AddExtension = true,
-                Title = "Output",
-                ValidateNames = true,
-                DefaultExt = ".avi",
-                Filter = "Avi Video|*.avi"
-            };
-
+            
             NavigationCommands.Refresh.Execute(this, this);
 
-            RecordKeyHook = new KeyboardHook(this, KeyCode.VK_R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
-            RecordKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>()));
+            #region KeyHook
+            KeyHook = new KeyboardHookList(this);
+            
+            KeyHook.Register(KeyCode.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt, 
+                () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>())));
 
-            ScreenShotKeyHook = new KeyboardHook(this, KeyCode.VK_S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt);
-            ScreenShotKeyHook.Triggered += () => Dispatcher.Invoke(new Action(() => ScreenShot<int>()));
+            KeyHook.Register(KeyCode.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
+                () => Dispatcher.Invoke(new Action(() => ScreenShot<int>())));
+            #endregion
 
             if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
@@ -302,8 +295,7 @@ namespace Captura
 
         void Window_Closing(object sender, EventArgs e)
         {
-            RecordKeyHook.Dispose();
-            ScreenShotKeyHook.Dispose();
+            KeyHook.Dispose();
 
             if (!ReadyToRecord) StopRecording();
         }
@@ -314,8 +306,6 @@ namespace Captura
             {
                 SelectedPath = OutPath.Text,
                 Title = "Select Output Folder"
-                //ShowNewFolderButton = true,
-                //Description = "Select Output Folder"
             };
 
             if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
