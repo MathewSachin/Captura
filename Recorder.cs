@@ -189,7 +189,7 @@ namespace Captura
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-                var buffer = new byte[App.DesktopWidth * App.DesktopHeight * 4];
+                var buffer = new byte[RecorderParams.DesktopWidth * RecorderParams.DesktopHeight * 4];
                 Task videoWriteTask = null;
                 var isFirstFrame = true;
                 var timeTillNextFrame = TimeSpan.Zero;
@@ -235,7 +235,7 @@ namespace Captura
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
 
-            if (hWnd != App.Desktop)
+            if (hWnd != RecorderParams.Desktop)
             {
                 var rect = new RECT();
                 User32.GetWindowRect(hWnd, ref rect);
@@ -244,12 +244,12 @@ namespace Captura
 
                 if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
-            else Rect = App.DesktopRect;
+            else Rect = RecorderParams.DesktopRect;
 
-            var BMP = new Bitmap(App.DesktopWidth, App.DesktopHeight);
+            var BMP = new Bitmap(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
             using (var g = Graphics.FromImage(BMP))
             {
-                if (ScreenCasting) g.FillRectangle(Brushes.White, App.DesktopRect);
+                if (ScreenCasting) g.FillRectangle(Brushes.White, RecorderParams.DesktopRect);
 
                 g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
@@ -295,7 +295,7 @@ namespace Captura
         {
             using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor))
             {
-                var bits = BMP.LockBits(App.DesktopRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = BMP.LockBits(RecorderParams.DesktopRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 BMP.UnlockBits(bits);
             }

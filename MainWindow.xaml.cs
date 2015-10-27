@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
@@ -17,6 +16,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
+using System.Windows.Media;
 
 namespace Captura
 {
@@ -62,7 +62,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(App.Desktop));
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(RecorderParams.Desktop));
 
         public IntPtr SelectedWindow
         {
@@ -84,10 +84,12 @@ namespace Captura
             ResumeCommand = new RoutedUICommand("Pause", "Pause", typeof(MainWindow));
         #endregion
 
+        RegionSelector RegionSelector = new RegionSelector();
+
         public MainWindow()
         {
             InitializeComponent();
-            
+
             DataContext = this;
 
             #region Init Timer
@@ -153,13 +155,15 @@ namespace Captura
                     PauseButton.ToolTip = "Resume";
                 }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? Recorder.IsPaused : false)));
             #endregion
-            
+
             NavigationCommands.Refresh.Execute(this, this);
+
+            RegionSelector.Closed += RegionSelecterReInit;
 
             #region KeyHook
             KeyHook = new KeyboardHookList(this);
-            
-            KeyHook.Register(KeyCode.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt, 
+
+            KeyHook.Register(KeyCode.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
                 () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>())));
 
             KeyHook.Register(KeyCode.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
@@ -172,6 +176,13 @@ namespace Captura
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
             AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
             AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
+        }
+
+        void RegionSelecterReInit(object sender, EventArgs e)
+        {
+            RegionSelector.Closed -= RegionSelecterReInit;
+            RegionSelector = new RegionSelector();
+            RegionSelector.Closed += RegionSelecterReInit;
         }
 
         void Refresh()
@@ -202,7 +213,7 @@ namespace Captura
             // Available Windows
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(App.Desktop, "[Desktop]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "[Desktop]"));
 
             foreach (var win in WindowHandler.Enumerate())
             {
@@ -293,13 +304,6 @@ namespace Captura
             PauseButton.ToolTip = "Pause";
         }
 
-        void Window_Closing(object sender, EventArgs e)
-        {
-            KeyHook.Dispose();
-
-            if (!ReadyToRecord) StopRecording();
-        }
-
         void OutputFolderBrowse()
         {
             var dlg = new FolderBrowserDialog()
@@ -332,11 +336,21 @@ namespace Captura
         #endregion
 
         void OpenOutputFolder(object sender, MouseButtonEventArgs e) { Process.Start("explorer.exe", OutPath.Text); }
-        
+
         void ShowRegionSelector(object sender, RoutedEventArgs e)
         {
-            new RegionSelector().Show();
+            RegionSelector.Show();
             Refresh();
+        }
+
+        void RibbonWindow_Closed(object sender, EventArgs e)
+        {
+            KeyHook.Dispose();
+
+            RegionSelector.Closed -= RegionSelecterReInit;
+            RegionSelector.Close();
+
+            if (!ReadyToRecord) StopRecording();
         }
     }
 }

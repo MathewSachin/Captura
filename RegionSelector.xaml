@@ -3,6 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="RegionSelector" Height="300" Width="300"
         WindowStyle="None" AllowsTransparency="True" Topmost="True" Opacity="0.1"
-        ResizeMode="CanResizeWithGrip" PreviewMouseLeftButtonDown="DockPanel_PreviewMouseLeftButtonDown">
+        ResizeMode="CanResizeWithGrip" PreviewMouseLeftButtonDown="DockPanel_PreviewMouseLeftButtonDown" Icon="/Captura;component/Images/Minimize.ico">
     <Border Opacity="1" BorderThickness="3" BorderBrush="Black"/>
 </Window>

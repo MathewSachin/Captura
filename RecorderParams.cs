@@ -5,12 +5,34 @@ using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
+using System.Drawing;
+using ManagedWin32;
+using System.Windows.Interop;
+using System.Windows;
 
 namespace Captura
 {
     class RecorderParams
     {
         public MainWindow MainWindow;
+
+        public static readonly int DesktopHeight, DesktopWidth;
+
+        public static readonly Rectangle DesktopRect;
+
+        public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
+
+        static RecorderParams()
+        {
+            System.Windows.Media.Matrix toDevice;
+            using (var source = new HwndSource(new HwndSourceParameters()))
+                toDevice = source.CompositionTarget.TransformToDevice;
+
+            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
+            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
+
+            DesktopRect = new Rectangle(0, 0, DesktopWidth, DesktopHeight);
+        }
 
         public RecorderParams(MainWindow MainWindow, string filename)
         {
@@ -68,11 +90,11 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(App.DesktopWidth, App.DesktopHeight);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(App.DesktopWidth, App.DesktopHeight, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(App.DesktopWidth, App.DesktopHeight, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight, (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,

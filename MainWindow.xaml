@@ -4,7 +4,7 @@
         xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="400"
-        Closing="Window_Closing" Icon="Images/Captura.ico">
+        Closed="RibbonWindow_Closed" Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -41,7 +41,7 @@
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
-            
+
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Large"
@@ -58,6 +58,9 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Button Header="Show Region Selector" Click="ShowRegionSelector"/>
+                    <Fluent:DropDownButton Visibility="Collapsed" Header="Background Color">
+                        <Fluent:ColorGallery x:Name="BgCol" Mode="ThemeColors"/>
+                    </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -70,7 +73,7 @@
                                   SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
+
             <Fluent:RibbonTabItem Header="Audio">
                 <Fluent:RibbonGroupBox Header="Devices">
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
@@ -131,7 +134,7 @@
             <Label Content="Output Path" DockPanel.Dock="Left" BorderThickness="0.5" BorderBrush="#B7000000" 
                    VerticalContentAlignment="Center" Cursor="Hand" MouseUp="OpenOutputFolder"/>
             <TextBox x:Name="OutPath" IsReadOnly="True" VerticalContentAlignment="Center"
-                     Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>            
+                     Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>
         </DockPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
