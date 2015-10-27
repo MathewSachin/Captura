@@ -17,6 +17,7 @@ using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace Captura
 {
@@ -84,7 +85,22 @@ namespace Captura
             ResumeCommand = new RoutedUICommand("Pause", "Pause", typeof(MainWindow));
         #endregion
 
+        #region RegionSelector
         RegionSelector RegionSelector = new RegionSelector();
+        bool WindowClosing = false;
+
+        void ShowRegionSelector(object sender, RoutedEventArgs e)
+        {
+            RegionSelector.Show();
+            Refresh();
+        }
+
+        void HideRegionSelector(object sender, RoutedEventArgs e)
+        {
+            RegionSelector.Hide();
+            Refresh();
+        }
+        #endregion
 
         public MainWindow()
         {
@@ -158,7 +174,14 @@ namespace Captura
 
             NavigationCommands.Refresh.Execute(this, this);
 
-            RegionSelector.Closed += RegionSelecterReInit;
+            RegionSelector.Closing += (s, e) =>
+                {
+                    if (!WindowClosing)
+                    {
+                        RegSelBox.IsChecked = false;
+                        e.Cancel = true;
+                    }
+                };
 
             #region KeyHook
             KeyHook = new KeyboardHookList(this);
@@ -176,13 +199,6 @@ namespace Captura
             AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
             AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
             AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
-        }
-
-        void RegionSelecterReInit(object sender, EventArgs e)
-        {
-            RegionSelector.Closed -= RegionSelecterReInit;
-            RegionSelector = new RegionSelector();
-            RegionSelector.Closed += RegionSelecterReInit;
         }
 
         void Refresh()
@@ -337,17 +353,11 @@ namespace Captura
 
         void OpenOutputFolder(object sender, MouseButtonEventArgs e) { Process.Start("explorer.exe", OutPath.Text); }
 
-        void ShowRegionSelector(object sender, RoutedEventArgs e)
-        {
-            RegionSelector.Show();
-            Refresh();
-        }
-
-        void RibbonWindow_Closed(object sender, EventArgs e)
+        void RibbonWindow_Closing(object sender, CancelEventArgs e)
         {
             KeyHook.Dispose();
 
-            RegionSelector.Closed -= RegionSelecterReInit;
+            WindowClosing = true;
             RegionSelector.Close();
 
             if (!ReadyToRecord) StopRecording();

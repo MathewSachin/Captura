@@ -4,7 +4,7 @@
         xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="400"
-        Closed="RibbonWindow_Closed" Icon="Images/Captura.ico">
+        Closing="RibbonWindow_Closing" Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -57,7 +57,7 @@
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:Button Header="Show Region Selector" Click="ShowRegionSelector"/>
+                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
                     <Fluent:DropDownButton Visibility="Collapsed" Header="Background Color">
                         <Fluent:ColorGallery x:Name="BgCol" Mode="ThemeColors"/>
                     </Fluent:DropDownButton>
