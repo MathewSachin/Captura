@@ -46,12 +46,16 @@ namespace Captura
             this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1;
-            
+
+            BgColor = MainWindow.ConvertColor(MainWindow.ThemeColor);
+
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
 
             WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, MainWindow.UseStereo.IsChecked.Value ? 2 : 1);
         }
+
+        public Color BgColor;
 
         public bool IncludeCursor
         {

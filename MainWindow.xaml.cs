@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
@@ -16,12 +18,10 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
-using System.Windows.Media;
-using System.ComponentModel;
 
 namespace Captura
 {
-    public partial class MainWindow : Fluent.RibbonWindow
+    public partial class MainWindow : Fluent.RibbonWindow, INotifyPropertyChanged
     {
         #region Fields
         DispatcherTimer DTimer;
@@ -102,11 +102,24 @@ namespace Captura
         }
         #endregion
 
+        Color themeColor;
+        public Color ThemeColor
+        {
+            get { return this.themeColor; }
+            set
+            {
+                this.themeColor = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ThemeColor"));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = this;
+
+            ThemeColor = Colors.Transparent;
 
             #region Init Timer
             DTimer = new DispatcherTimer();
@@ -331,9 +344,11 @@ namespace Captura
             if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
+        public System.Drawing.Color ConvertColor(Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
+
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
-            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false);
+            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, ConvertColor(ThemeColor));
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
 
@@ -362,5 +377,7 @@ namespace Captura
 
             if (!ReadyToRecord) StopRecording();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

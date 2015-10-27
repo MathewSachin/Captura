@@ -58,8 +58,22 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
-                    <Fluent:DropDownButton Visibility="Collapsed" Header="Background Color">
-                        <Fluent:ColorGallery x:Name="BgCol" Mode="ThemeColors"/>
+                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Grid>
+                                <Rectangle Height="20" Width="20">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ThemeColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Fluent:DropDownButton.LargeIcon>
+                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
+                                                 Mode="ThemeColors"
+                                                 StandardColorGridRows="10"
+                                                 Columns="10"
+                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
+                        </Fluent:ColorGallery>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
