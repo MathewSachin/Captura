@@ -56,6 +56,9 @@
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button Header="Show Region Selector" Click="ShowRegionSelector"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="Window">

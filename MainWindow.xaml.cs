@@ -87,7 +87,7 @@ namespace Captura
         public MainWindow()
         {
             InitializeComponent();
-
+            
             DataContext = this;
 
             #region Init Timer
@@ -332,5 +332,11 @@ namespace Captura
         #endregion
 
         void OpenOutputFolder(object sender, MouseButtonEventArgs e) { Process.Start("explorer.exe", OutPath.Text); }
+        
+        void ShowRegionSelector(object sender, RoutedEventArgs e)
+        {
+            new RegionSelector().Show();
+            Refresh();
+        }
     }
 }

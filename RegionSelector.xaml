@@ -1,0 +1,8 @@
+﻿<Window x:Class="Captura.RegionSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RegionSelector" Height="300" Width="300"
+        WindowStyle="None" AllowsTransparency="True" Topmost="True" Opacity="0.1"
+        ResizeMode="CanResizeWithGrip" PreviewMouseLeftButtonDown="DockPanel_PreviewMouseLeftButtonDown">
+    <Border Opacity="1" BorderThickness="3" BorderBrush="Black"/>
+</Window>
