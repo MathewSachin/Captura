@@ -350,12 +350,32 @@ namespace Captura
         {
             var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, ConvertColor(ThemeColor));
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
+            if (SaveToClipboard.IsChecked.Value)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    BMP.Save(ms, ImageFormat.Png);
 
-            try { BMP.Save(lastFileName, ImageFormat.Png); }
-            catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
+                    var Decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
-            Status.Content = "Saved to " + lastFileName;
+                    if (Decoder.Frames.Count > 0)
+                    {
+                        Clipboard.SetImage(Decoder.Frames[0]);
+
+                        Status.Content = "Saved to Clipboard";
+                    }
+                    else Status.Content = "Not Saved";
+                }
+            }
+            else
+            {
+                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
+
+                try { BMP.Save(lastFileName, ImageFormat.Png); }
+                catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
+
+                Status.Content = "Saved to " + lastFileName;
+            }
         }
 
         #region Gallery Selection Changed Handlers

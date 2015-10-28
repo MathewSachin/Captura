@@ -78,6 +78,13 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
+            <Fluent:RibbonTabItem Header="ScreenShot">
+                <Fluent:RibbonGroupBox Header="Save To">
+                    <Fluent:RadioButton GroupName="SaveTo" Name="SaveToClipboard" Header="Clipboard"/>
+                    <Fluent:RadioButton GroupName="SaveTo" Header="Disk" IsChecked="True"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            
             <Fluent:RibbonTabItem Header="Window">
                 <Fluent:RibbonGroupBox>
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
