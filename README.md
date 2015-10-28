@@ -4,7 +4,7 @@
 [![Join the chat at https://gitter.im/MathewSachin/Captura](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MathewSachin/Captura?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  
 (c) 2015 Mathew Sachin. All Rights Reserved.
 
-Capture what's happening on your Screen (ScreenCast) along with audio from your `Microphone` or your Speakers (`Loopback`).
+A Capture application which captures the `whole` or `Selected part` of the screen as `ScreenShot` or as a `ScreenCast` along with audio from `Microphone` or `WasapiLoopback` and the Mouse `Cursor`
 
 Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
 
