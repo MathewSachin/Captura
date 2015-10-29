@@ -363,6 +363,30 @@ namespace Captura
                     ImgFmt = ImageFormat.Bmp;
                     Extension = "bmp";
                     break;
+                case 3:
+                    ImgFmt = ImageFormat.Tiff;
+                    Extension = "tiff";
+                    break;
+                case 4:
+                    ImgFmt = ImageFormat.Gif;
+                    Extension = "gif";
+                    break;
+                case 5:
+                    ImgFmt = ImageFormat.Emf;
+                    Extension = "emf";
+                    break;
+                case 6:
+                    ImgFmt = ImageFormat.Exif;
+                    Extension = "exif";
+                    break;
+                case 7:
+                    ImgFmt = ImageFormat.Icon;
+                    Extension = "ico";
+                    break;
+                case 8:
+                    ImgFmt = ImageFormat.Wmf;
+                    Extension = "wmf";
+                    break;
                 default:
                 case 0:
                     ImgFmt = ImageFormat.Png;

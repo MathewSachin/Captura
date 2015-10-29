@@ -90,6 +90,12 @@
                         <Fluent:GalleryItem Content="Png"/>
                         <Fluent:GalleryItem Content="Jpeg"/>
                         <Fluent:GalleryItem Content="Bmp"/>
+                        <Fluent:GalleryItem Content="Tiff"/>
+                        <Fluent:GalleryItem Content="Gif"/>
+                        <Fluent:GalleryItem Content="Emf"/>
+                        <Fluent:GalleryItem Content="Exif"/>
+                        <Fluent:GalleryItem Content="Icon"/>
+                        <Fluent:GalleryItem Content="Wmf"/>
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
