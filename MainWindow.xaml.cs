@@ -350,11 +350,31 @@ namespace Captura
         {
             var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, ConvertColor(ThemeColor));
 
+            ImageFormat ImgFmt;
+            string Extension;
+
+            switch (ScreenShotFileFormat.SelectedIndex)
+            {
+                case 1:
+                    ImgFmt = ImageFormat.Jpeg;
+                    Extension = "jpg";
+                    break;
+                case 2:
+                    ImgFmt = ImageFormat.Bmp;
+                    Extension = "bmp";
+                    break;
+                default:
+                case 0:
+                    ImgFmt = ImageFormat.Png;
+                    Extension = "png";
+                    break;
+            }
+
             if (SaveToClipboard.IsChecked.Value)
             {
                 using (var ms = new MemoryStream())
                 {
-                    BMP.Save(ms, ImageFormat.Png);
+                    BMP.Save(ms, ImgFmt);
 
                     var Decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
@@ -369,9 +389,9 @@ namespace Captura
             }
             else
             {
-                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".png");
+                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
-                try { BMP.Save(lastFileName, ImageFormat.Png); }
+                try { BMP.Save(lastFileName, ImgFmt); }
                 catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
 
                 Status.Content = "Saved to " + lastFileName;

@@ -1,10 +1,10 @@
-![Captura Logo](/Images/Logo.png) 
+![Captura Logo](/Images/Logo.png)
 
 # Captura
 [![Join the chat at https://gitter.im/MathewSachin/Captura](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MathewSachin/Captura?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  
 (c) 2015 Mathew Sachin. All Rights Reserved.
 
-A Capture application which captures the `whole` or `Selected part` of the screen as `ScreenShot` or as a `ScreenCast` along with audio from `Microphone` or `WasapiLoopback` and the Mouse `Cursor`
+A Capture application which captures the `whole` or `Selected part` of the screen as `ScreenShot` or as a `ScreenCast` along with audio from `Microphone` or `Wasapi Loopback` and the Mouse `Cursor`
 
 Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
 
@@ -27,3 +27,5 @@ Features
 * Supports `Video Alone`, `Audio Alone` Captures.
 * Specify `Start Delay` if you want a few Seconds to Get Started.
 * Set `Capture Duration` and Captura will automatically Stop after the specified time.
+* Set `BackgroundColor` for cases like `SpecificWindowCapture`
+* Capture ScreenShots to Disk or to Clipboard

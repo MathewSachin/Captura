@@ -83,6 +83,15 @@
                     <Fluent:RadioButton GroupName="SaveTo" Name="SaveToClipboard" Header="Clipboard"/>
                     <Fluent:RadioButton GroupName="SaveTo" Header="Disk" IsChecked="True"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="File Format">
+                    <Fluent:InRibbonGallery Name="ScreenShotFileFormat" MaxItemsInRow="1" MaxItemsInDropDownRow="1"
+                                            Width="100" ItemWidth="{Binding Width}"
+                                            SelectedIndex="0">
+                        <Fluent:GalleryItem Content="Png"/>
+                        <Fluent:GalleryItem Content="Jpeg"/>
+                        <Fluent:GalleryItem Content="Bmp"/>
+                    </Fluent:InRibbonGallery>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             
             <Fluent:RibbonTabItem Header="Window">
