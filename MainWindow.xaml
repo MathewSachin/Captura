@@ -4,7 +4,9 @@
         xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="400"
-        Closing="RibbonWindow_Closing" Icon="Images/Captura.ico">
+        Closing="RibbonWindow_Closing" 
+        Icon="Images/Captura.ico"
+        StateChanged="RibbonWindow_StateChanged">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -56,25 +58,9 @@
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
-                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
-                        <Fluent:DropDownButton.LargeIcon>
-                            <Grid>
-                                <Rectangle Height="20" Width="20">
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{Binding ThemeColor}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Grid>
-                        </Fluent:DropDownButton.LargeIcon>
-                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
-                                                 Mode="ThemeColors"
-                                                 StandardColorGridRows="10"
-                                                 Columns="10"
-                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
-                        </Fluent:ColorGallery>
-                    </Fluent:DropDownButton>
+                <Fluent:RibbonGroupBox Header="Minimize to">
+                    <Fluent:RadioButton GroupName="MinTo" Header="Taskbar" IsChecked="True"/>
+                    <Fluent:RadioButton GroupName="MinTo" Name="Min2SysTray" Header="System Tray"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -98,8 +84,28 @@
                         <Fluent:GalleryItem Content="Wmf"/>
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
+                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Grid>
+                                <Rectangle Height="20" Width="20">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ThemeColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Fluent:DropDownButton.LargeIcon>
+                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
+                                                 Mode="ThemeColors"
+                                                 StandardColorGridRows="10"
+                                                 Columns="10"
+                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
+                        </Fluent:ColorGallery>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            
+
             <Fluent:RibbonTabItem Header="Window">
                 <Fluent:RibbonGroupBox>
                     <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 

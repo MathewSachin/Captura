@@ -32,6 +32,7 @@ namespace Captura
 
         Recorder Recorder;
         string lastFileName;
+        NotifyIcon SystemTray;
         #endregion
 
         #region DependencyProperties
@@ -195,6 +196,16 @@ namespace Captura
                         e.Cancel = true;
                     }
                 };
+
+            SystemTray = new NotifyIcon();
+            SystemTray.Visibility = Visibility.Collapsed;
+            SystemTray.TrayLeftMouseUp += (s, e) =>
+                {
+                    SystemTray.Visibility = Visibility.Collapsed;
+                    Show();
+                    WindowState = WindowState.Normal;
+                };
+            SystemTray.IconSource = Icon;
 
             #region KeyHook
             KeyHook = new KeyboardHookList(this);
@@ -446,5 +457,14 @@ namespace Captura
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        void RibbonWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
+            {
+                Hide();
+                SystemTray.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
