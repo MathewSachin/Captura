@@ -432,8 +432,29 @@ namespace Captura
 
                 if (SaveToClipboard.IsChecked.Value)
                 {
-                    System.Windows.Forms.Clipboard.SetImage(BMP);
-                    Status.Content = "Saved to Clipboard";
+                    if (ImgFmt == ImageFormat.Png)
+                    {
+                        using (var PngStream = new MemoryStream())
+                        {
+                            BMP.Save(PngStream, ImageFormat.Png);
+                            var pngClipboardData = new DataObject("PNG", PngStream);
+
+                            var whiteS = new System.Drawing.Bitmap(BMP.Width, BMP.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                            using (var graphics = System.Drawing.Graphics.FromImage(whiteS))
+                            {
+                                graphics.Clear(System.Drawing.Color.White);
+                                graphics.DrawImage(BMP, 0, 0, BMP.Width, BMP.Height);
+                            }
+
+                            // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
+                            pngClipboardData.SetData(DataFormats.Bitmap, whiteS);
+
+                            System.Windows.Forms.Clipboard.Clear();
+                            System.Windows.Forms.Clipboard.SetDataObject(pngClipboardData, true);
+                            Status.Content = "Saved to Clipboard";
+                        }
+                    }
+                    else System.Windows.Forms.Clipboard.SetImage(BMP);
                 }
                 else
                 {
