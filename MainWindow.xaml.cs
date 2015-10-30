@@ -18,7 +18,6 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
-using System.Windows.Interop;
 
 namespace Captura
 {
@@ -65,7 +64,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(RecorderParams.Desktop));
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(Commons.DesktopHandle));
 
         public IntPtr SelectedWindow
         {
@@ -243,7 +242,7 @@ namespace Captura
                 // Available Codecs
                 AvailableCodecs.Clear();
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
-                AvailableCodecs.Add(new CodecInfo(RecorderParams.GifFourCC, "[Gif]"));
+                AvailableCodecs.Add(new CodecInfo(Commons.GifFourCC, "[Gif]"));
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
                 foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
@@ -269,7 +268,7 @@ namespace Captura
             // Available Windows
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(RecorderParams.Desktop, "[Desktop]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Commons.DesktopHandle, "[Desktop]"));
 
             foreach (var win in WindowHandler.Enumerate())
             {
@@ -288,7 +287,7 @@ namespace Captura
                 AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
             }
 
-            SelectedWindow = RecorderParams.Desktop;
+            SelectedWindow = Commons.DesktopHandle;
         }
 
         void ToggleRecorderState<T>(object sender = null, T e = default(T))
@@ -319,7 +318,7 @@ namespace Captura
 
             string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav" : ".avi";
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((Encoder == RecorderParams.GifFourCC) ? ".gif" : Extension));
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((Encoder == Commons.GifFourCC) ? ".gif" : Extension));
 
             Status.Content = "Recording...";
 
@@ -424,42 +423,19 @@ namespace Captura
             if (!SaveToClipboard.IsChecked.Value)
                 lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
-            if (SelectedWindow == RecorderParams.Desktop
+            if (SelectedWindow == Commons.DesktopHandle
                 || SelectedWindow == RegionSelector.Handle
                 || !UseDWM.IsChecked.Value)
             {
-                var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, RecorderParams.ConvertColor(ThemeColor));
+                var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, Commons.ConvertColor(ThemeColor));
 
                 if (SaveToClipboard.IsChecked.Value)
                 {
-                    if (ImgFmt == ImageFormat.Png)
-                    {
-                        using (var PngStream = new MemoryStream())
-                        {
-                            BMP.Save(PngStream, ImageFormat.Png);
-                            var pngClipboardData = new DataObject("PNG", PngStream);
-
-                            var whiteS = new System.Drawing.Bitmap(BMP.Width, BMP.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                            using (var graphics = System.Drawing.Graphics.FromImage(whiteS))
-                            {
-                                graphics.Clear(System.Drawing.Color.White);
-                                graphics.DrawImage(BMP, 0, 0, BMP.Width, BMP.Height);
-                            }
-
-                            // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
-                            pngClipboardData.SetData(DataFormats.Bitmap, whiteS);
-
-                            System.Windows.Forms.Clipboard.Clear();
-                            System.Windows.Forms.Clipboard.SetDataObject(pngClipboardData, true);
-                            Status.Content = "Saved to Clipboard";
-                        }
-                    }
-                    else System.Windows.Forms.Clipboard.SetImage(BMP);
+                    BMP.WriteToClipboard(ImgFmt == ImageFormat.Png);
+                    Status.Content = "Saved to Clipboard";
                 }
                 else
                 {
-                    lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
-
                     try { BMP.Save(lastFileName, ImgFmt); }
                     catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
 

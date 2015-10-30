@@ -87,9 +87,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commons.cs" />
     <Compile Include="Core\GifWriter.cs" />
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="Core\ScreenShotTask.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

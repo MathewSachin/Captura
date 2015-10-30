@@ -2,9 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Interop;
-using ManagedWin32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
@@ -16,27 +13,6 @@ namespace Captura
     class RecorderParams
     {
         public MainWindow MainWindow;
-        public static readonly FourCC GifFourCC = new FourCC("_gif");
-
-        public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
-
-        public static readonly int DesktopHeight, DesktopWidth;
-
-        public static readonly Rectangle DesktopRect;
-
-        public static readonly IntPtr Desktop = WindowHandler.DesktopWindow.Handle;
-
-        static RecorderParams()
-        {
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
-
-            DesktopHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * toDevice.M22);
-            DesktopWidth = (int)Math.Round(SystemParameters.PrimaryScreenWidth * toDevice.M11);
-
-            DesktopRect = new Rectangle(0, 0, DesktopWidth, DesktopHeight);
-        }
 
         public RecorderParams(MainWindow MainWindow, string filename)
         {
@@ -49,9 +25,9 @@ namespace Captura
             this.AudioSourceId = MainWindow.SelectedAudioSourceId;
             this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
-            CaptureVideo = hWnd.ToInt32() != -1 && Codec != GifFourCC;
+            CaptureVideo = hWnd.ToInt32() != -1 && Codec != Commons.GifFourCC;
 
-            BgColor = ConvertColor(MainWindow.ThemeColor);
+            BgColor = Commons.ConvertColor(MainWindow.ThemeColor);
 
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
@@ -79,7 +55,7 @@ namespace Captura
 
         public MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 
-        public bool IsGif { get { return Codec == GifFourCC; } }
+        public bool IsGif { get { return Codec == Commons.GifFourCC; } }
 
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
@@ -105,11 +81,11 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(Commons.DesktopWidth, Commons.DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(Commons.DesktopWidth, Commons.DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(Commons.DesktopWidth, Commons.DesktopHeight, (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,
