@@ -254,7 +254,7 @@ namespace Captura
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-                var buffer = new byte[RecorderParams.DesktopWidth * RecorderParams.DesktopHeight * 4];
+                var buffer = new byte[Commons.DesktopWidth * Commons.DesktopHeight * 4];
                 Task videoWriteTask = null;
                 var isFirstFrame = true;
                 var timeTillNextFrame = TimeSpan.Zero;
@@ -341,21 +341,21 @@ namespace Captura
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
 
-            if (hWnd != RecorderParams.Desktop)
+            if (hWnd != Commons.DesktopHandle)
             {
-                var rect = new RECT();
+                var rect = new Rectangle();
                 User32.GetWindowRect(hWnd, ref rect);
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
 
                 if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
-            else Rect = RecorderParams.DesktopRect;
+            else Rect = Commons.DesktopRectangle;
 
-            var BMP = new Bitmap(RecorderParams.DesktopWidth, RecorderParams.DesktopHeight);
+            var BMP = new Bitmap(Commons.DesktopWidth, Commons.DesktopHeight);
             using (var g = Graphics.FromImage(BMP))
             {
-                g.FillRectangle(new SolidBrush(BgColor), RecorderParams.DesktopRect);
+                g.FillRectangle(new SolidBrush(BgColor), Commons.DesktopRectangle);
 
                 g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
@@ -401,7 +401,7 @@ namespace Captura
         {
             using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor))
             {
-                var bits = BMP.LockBits(RecorderParams.DesktopRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = BMP.LockBits(Commons.DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 BMP.UnlockBits(bits);
             }
