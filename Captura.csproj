@@ -40,7 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -50,7 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\Captura.ico</ApplicationIcon>
@@ -74,6 +74,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -86,19 +87,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GifWriter.cs" />
-    <Compile Include="KeyboardHookList.cs" />
-    <Compile Include="Recorder.cs" />
+    <Compile Include="Core\GifWriter.cs" />
+    <Compile Include="Core\KeyboardHookList.cs" />
+    <Compile Include="Core\Recorder.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RecorderParams.cs" />
-    <Compile Include="RegionSelector.xaml.cs">
+    <Compile Include="Core\RecorderParams.cs" />
+    <Compile Include="Core\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SilenceProvider.cs" />
+    <Compile Include="Core\Screenshot.cs" />
+    <Compile Include="Core\SilenceProvider.cs" />
+    <Compile Include="Core\UnsafeBitmap.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,7 +114,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RegionSelector.xaml">
+    <Page Include="Core\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

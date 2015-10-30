@@ -16,7 +16,9 @@ namespace Captura
     class RecorderParams
     {
         public MainWindow MainWindow;
-        public static readonly FourCC GifFourCC = new FourCC("gif");
+        public static readonly FourCC GifFourCC = new FourCC("_gif");
+
+        public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
 
         public static readonly int DesktopHeight, DesktopWidth;
 
@@ -49,7 +51,7 @@ namespace Captura
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1 && Codec != GifFourCC;
 
-            BgColor = MainWindow.ConvertColor(MainWindow.ThemeColor);
+            BgColor = ConvertColor(MainWindow.ThemeColor);
 
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);

@@ -18,6 +18,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
+using System.Windows.Interop;
 
 namespace Captura
 {
@@ -89,6 +90,7 @@ namespace Captura
         #region RegionSelector
         RegionSelector RegionSelector = new RegionSelector();
         bool WindowClosing = false;
+        HwndSource RegSelhWnd;
 
         void ShowRegionSelector(object sender, RoutedEventArgs e)
         {
@@ -197,6 +199,11 @@ namespace Captura
                     }
                 };
 
+            RegionSelector.Show();
+            RegSelhWnd = (HwndSource)HwndSource.FromVisual(RegionSelector);
+            RegionSelector.Hide();
+
+            #region SystemTray
             SystemTray = new NotifyIcon();
             SystemTray.Visibility = Visibility.Collapsed;
             SystemTray.TrayLeftMouseUp += (s, e) =>
@@ -206,6 +213,15 @@ namespace Captura
                     WindowState = WindowState.Normal;
                 };
             SystemTray.IconSource = Icon;
+            StateChanged += (s, e) =>
+                {
+                    if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
+                    {
+                        Hide();
+                        SystemTray.Visibility = Visibility.Visible;
+                    }
+                };
+            #endregion
 
             #region KeyHook
             KeyHook = new KeyboardHookList(this);
@@ -236,6 +252,8 @@ namespace Captura
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
                 foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
+                Encoder = KnownFourCCs.Codecs.MotionJpeg;
+
                 // Available Audio Sources
                 AvailableAudioSources.Clear();
 
@@ -246,6 +264,8 @@ namespace Captura
 
                 foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
                     AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
+
+                SelectedAudioSourceId = "-1";
 
                 // Status
                 Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
@@ -272,6 +292,8 @@ namespace Captura
 
                 AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
             }
+
+            SelectedWindow = RecorderParams.Desktop;
         }
 
         void ToggleRecorderState<T>(object sender = null, T e = default(T))
@@ -358,12 +380,8 @@ namespace Captura
             if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
-        public System.Drawing.Color ConvertColor(Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
-
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
-            var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, ConvertColor(ThemeColor));
-
             ImageFormat ImgFmt;
             string Extension;
 
@@ -408,31 +426,45 @@ namespace Captura
                     break;
             }
 
-            if (SaveToClipboard.IsChecked.Value)
+            if (!SaveToClipboard.IsChecked.Value)
+                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
+
+            if (SelectedWindow == RecorderParams.Desktop || SelectedWindow == RegSelhWnd.Handle)
             {
-                using (var ms = new MemoryStream())
+                var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, RecorderParams.ConvertColor(ThemeColor));
+
+                if (SaveToClipboard.IsChecked.Value)
                 {
-                    BMP.Save(ms, ImgFmt);
-
-                    var Decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-
-                    if (Decoder.Frames.Count > 0)
+                    using (var ms = new MemoryStream())
                     {
-                        Clipboard.SetImage(Decoder.Frames[0]);
+                        BMP.Save(ms, ImgFmt);
 
-                        Status.Content = "Saved to Clipboard";
+                        var Decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+
+                        if (Decoder.Frames.Count > 0)
+                        {
+                            Clipboard.SetImage(Decoder.Frames[0]);
+
+                            Status.Content = "Saved to Clipboard";
+                        }
+                        else Status.Content = "Not Saved";
                     }
-                    else Status.Content = "Not Saved";
+                }
+                else
+                {
+                    lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
+
+                    try { BMP.Save(lastFileName, ImgFmt); }
+                    catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
+
+                    Status.Content = "Saved to " + lastFileName;
                 }
             }
             else
             {
-                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
+                var Task = new AeroShot.ScreenshotTask(this, lastFileName, ImgFmt);
 
-                try { BMP.Save(lastFileName, ImgFmt); }
-                catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
-
-                Status.Content = "Saved to " + lastFileName;
+                AeroShot.Screenshot.CaptureWindow(ref Task);
             }
         }
 
@@ -457,14 +489,5 @@ namespace Captura
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        void RibbonWindow_StateChanged(object sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
-            {
-                Hide();
-                SystemTray.Visibility = Visibility.Visible;
-            }
-        }
     }
 }

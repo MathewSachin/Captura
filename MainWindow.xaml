@@ -5,8 +5,7 @@
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         Title="Captura" Width="525" Height="400"
         Closing="RibbonWindow_Closing" 
-        Icon="Images/Captura.ico"
-        StateChanged="RibbonWindow_StateChanged">
+        Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
