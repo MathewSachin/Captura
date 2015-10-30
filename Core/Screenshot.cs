@@ -3,23 +3,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Captura;
 using ManagedWin32.Api;
 
-namespace AeroShot
+namespace Captura
 {
     struct ScreenshotTask
     {
-        public enum BackgroundType
-        {
-            Transparent,
-            Checkerboard
-        }
-
-        public BackgroundType Background;
         public bool CaptureMouse;
         public int CheckerboardSize;
         public bool ClipboardNotDisk;
@@ -34,9 +25,9 @@ namespace AeroShot
         {
             WindowHandle = MainWindow.SelectedWindow;
             ClipboardNotDisk = MainWindow.SaveToClipboard.IsChecked.Value;
-            DoResize = false;
-            ResizeX = ResizeY = 0;
-            Background = BackgroundType.Transparent;
+            DoResize = MainWindow.DoResize.IsChecked.Value;
+            ResizeX = (int)MainWindow.ResizeWidth.Value;
+            ResizeY = (int)MainWindow.ResizeHeight.Value;
             CheckerboardSize = 0;
             CaptureMouse = MainWindow.IncludeCursor.IsChecked.Value;
 
@@ -51,117 +42,100 @@ namespace AeroShot
         const long WS_SIZEBOX = 0x00040000L;
         const uint SWP_SHOWWINDOW = 0x0040;
 
-        public static void CaptureWindow(ref ScreenshotTask data)
+        public static void CaptureWindow(MainWindow MainWindow, string FileName, ImageFormat ImageFormat)
         {
+            var data = new ScreenshotTask(MainWindow, FileName, ImageFormat);
+
             IntPtr start = User32.FindWindow("Button", "Start");
             IntPtr taskbar = User32.FindWindow("Shell_TrayWnd", null);
 
-            //try
-            //{
-            // Hide the taskbar, just incase it gets in the way
-            if (data.WindowHandle != start && data.WindowHandle != taskbar)
+            try
             {
-                User32.ShowWindow(start, 0);
-                User32.ShowWindow(taskbar, 0);
-                Application.DoEvents();
-            }
-            if (User32.IsIconic(data.WindowHandle))
-            {
-                User32.ShowWindow(data.WindowHandle, 1);
-                Thread.Sleep(300); // Wait for window to be restored
-            }
-            else
-            {
-                User32.ShowWindow(data.WindowHandle, 5);
-                Thread.Sleep(100);
-            }
-            User32.SetForegroundWindow(data.WindowHandle);
-
-            var r = new RECT();
-            if (data.DoResize)
-            {
-                SmartResizeWindow(ref data, out r);
-                Thread.Sleep(100);
-            }
-
-            int length = User32.GetWindowTextLength(data.WindowHandle);
-            var sb = new StringBuilder(length + 1);
-            User32.GetWindowText(data.WindowHandle, sb, sb.Capacity);
-
-            string name = sb.ToString();
-
-            foreach (char inv in Path.GetInvalidFileNameChars())
-                name = name.Replace(inv.ToString(), string.Empty);
-
-            Bitmap s = CaptureCompositeScreenshot(ref data);
-
-            // Show the taskbar again
-            if (data.WindowHandle != start && data.WindowHandle != taskbar)
-            {
-                User32.ShowWindow(start, 1);
-                User32.ShowWindow(taskbar, 1);
-            }
-
-            if (s == null)
-                MessageBox.Show("The screenshot taken was blank, it will not be saved.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            else
-            {
-                if (data.ClipboardNotDisk && data.Background != ScreenshotTask.BackgroundType.Transparent)
-                    // Screenshot is already opaque, don't need to modify it
-                    Clipboard.SetImage(s);
-                else if (data.ClipboardNotDisk)
+                // Hide the taskbar, just incase it gets in the way
+                if (data.WindowHandle != start && data.WindowHandle != taskbar)
                 {
-                    var whiteS = new Bitmap(s.Width, s.Height, PixelFormat.Format24bppRgb);
-                    using (Graphics graphics = Graphics.FromImage(whiteS))
-                    {
-                        graphics.Clear(Color.White);
-                        graphics.DrawImage(s, 0, 0, s.Width, s.Height);
-                    }
-                    using (var stream = new MemoryStream())
-                    {
-                        // Save screenshot in clipboard as PNG which some applications support (eg. Microsoft Office)
-                        s.Save(stream, ImageFormat.Png);
-                        var pngClipboardData = new DataObject("PNG", stream);
-
-                        // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
-                        pngClipboardData.SetData(DataFormats.Bitmap, whiteS);
-                        Clipboard.Clear();
-                        Clipboard.SetDataObject(pngClipboardData, true);
-                    }
-                    whiteS.Dispose();
+                    User32.ShowWindow(start, 0);
+                    User32.ShowWindow(taskbar, 0);
+                    Application.DoEvents();
+                }
+                if (User32.IsIconic(data.WindowHandle))
+                {
+                    User32.ShowWindow(data.WindowHandle, 1);
+                    Thread.Sleep(300); // Wait for window to be restored
                 }
                 else
                 {
-                    name = name.Trim();
-                    if (name == string.Empty)
-                        name = "AeroShot";
-
-                    s.Save(data.FileName, data.ImageFormat);
+                    User32.ShowWindow(data.WindowHandle, 5);
+                    Thread.Sleep(100);
                 }
-                s.Dispose();
-            }
+                User32.SetForegroundWindow(data.WindowHandle);
 
-            if (data.DoResize)
-            {
-                if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) == WS_SIZEBOX)
+                var r = new RECT();
+                if (data.DoResize)
                 {
-                    User32.SetWindowPos(data.WindowHandle,
-                                            (IntPtr)0, r.Left, r.Top,
-                                            r.Right - r.Left,
-                                            r.Bottom - r.Top,
-                                            SetWindowPositionFlags.ShowWindow);
+                    SmartResizeWindow(ref data, out r);
+                    Thread.Sleep(100);
+                }
+
+                Bitmap s = CaptureCompositeScreenshot(ref data);
+
+                // Show the taskbar again
+                if (data.WindowHandle != start && data.WindowHandle != taskbar)
+                {
+                    User32.ShowWindow(start, 1);
+                    User32.ShowWindow(taskbar, 1);
+                }
+
+                if (s == null)
+                    MessageBox.Show("The screenshot taken was blank, it will not be saved.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                else
+                {
+                    if (data.ClipboardNotDisk)
+                    {
+                        var whiteS = new Bitmap(s.Width, s.Height, PixelFormat.Format24bppRgb);
+                        using (Graphics graphics = Graphics.FromImage(whiteS))
+                        {
+                            graphics.Clear(Color.White);
+                            graphics.DrawImage(s, 0, 0, s.Width, s.Height);
+                        }
+                        using (var stream = new MemoryStream())
+                        {
+                            // Save screenshot in clipboard as PNG which some applications support (eg. Microsoft Office)
+                            s.Save(stream, ImageFormat.Png);
+                            var pngClipboardData = new DataObject("PNG", stream);
+
+                            // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
+                            pngClipboardData.SetData(DataFormats.Bitmap, whiteS);
+                            Clipboard.Clear();
+                            Clipboard.SetDataObject(pngClipboardData, true);
+                        }
+                        whiteS.Dispose();
+                    }
+                    else s.Save(data.FileName, data.ImageFormat);
+                    s.Dispose();
+                }
+
+                if (data.DoResize)
+                {
+                    if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) == WS_SIZEBOX)
+                    {
+                        User32.SetWindowPos(data.WindowHandle,
+                                                (IntPtr)0, r.Left, r.Top,
+                                                r.Right - r.Left,
+                                                r.Bottom - r.Top,
+                                                SetWindowPositionFlags.ShowWindow);
+                    }
                 }
             }
-            //}
-            //finally
-            //{
-            if (data.WindowHandle != start && data.WindowHandle != taskbar)
+            finally
             {
-                User32.ShowWindow(start, 1);
-                User32.ShowWindow(taskbar, 1);
+                if (data.WindowHandle != start && data.WindowHandle != taskbar)
+                {
+                    User32.ShowWindow(start, 1);
+                    User32.ShowWindow(taskbar, 1);
+                }
             }
-            //}
         }
 
         static void SmartResizeWindow(ref ScreenshotTask data, out RECT oldWindowSize)
@@ -192,7 +166,7 @@ namespace AeroShot
         static unsafe Bitmap CaptureCompositeScreenshot(ref ScreenshotTask data)
         {
             Color tmpColour = Color.White;
-            
+
             var backdrop = new Form
             {
                 AllowTransparency = true,
@@ -241,39 +215,22 @@ namespace AeroShot
 
             // Capture screenshot with white background
             Bitmap whiteShot = CaptureScreenRegion(new Rectangle(rct.Left, rct.Top, rct.Right - rct.Left, rct.Bottom - rct.Top));
-            
+
             backdrop.BackColor = Color.Black;
             Application.DoEvents();
 
             // Capture screenshot with black background
-            Bitmap blackShot =
-                CaptureScreenRegion(new Rectangle(rct.Left, rct.Top,
-                                                  rct.Right - rct.Left,
-                                                  rct.Bottom - rct.Top));
+            Bitmap blackShot = CaptureScreenRegion(new Rectangle(rct.Left, rct.Top, rct.Right - rct.Left, rct.Bottom - rct.Top));
 
             backdrop.Dispose();
 
             Bitmap transparentImage = DifferentiateAlpha(whiteShot, blackShot);
-            if (data.CaptureMouse)
-                DrawCursorToBitmap(transparentImage,
-                                   new Point(rct.Left, rct.Top));
-            transparentImage = CropEmptyEdges(transparentImage,
-                                              Color.FromArgb(0, 0, 0, 0));
+            if (data.CaptureMouse) DrawCursorToBitmap(transparentImage, new Point(rct.Left, rct.Top));
+            transparentImage = CropEmptyEdges(transparentImage, Color.FromArgb(0, 0, 0, 0));
 
             whiteShot.Dispose();
             blackShot.Dispose();
 
-            if (data.Background == ScreenshotTask.BackgroundType.Checkerboard)
-            {
-                var final = new Bitmap(transparentImage.Width, transparentImage.Height, PixelFormat.Format24bppRgb);
-                Graphics finalGraphics = Graphics.FromImage(final);
-                var brush = new TextureBrush(GenerateChecker(data.CheckerboardSize));
-                finalGraphics.FillRectangle(brush, finalGraphics.ClipBounds);
-                finalGraphics.DrawImageUnscaled(transparentImage, 0, 0);
-                finalGraphics.Dispose();
-                transparentImage.Dispose();
-                return final;
-            }
             // Returns a bitmap with transparency, calculated by differentiating the white and black screenshots
             return transparentImage;
         }
@@ -327,35 +284,6 @@ namespace AeroShot
             Gdi32.DeleteDC(hSrc);
 
             return bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.Format24bppRgb);
-        }
-
-        static unsafe Bitmap GenerateChecker(int s)
-        {
-            var b1 = new Bitmap(s * 2, s * 2, PixelFormat.Format24bppRgb);
-            var b = new UnsafeBitmap(b1);
-            b.LockImage();
-            PixelData* pixel;
-            for (int x = 0, y = 0; x < s * 2 && y < s * 2; )
-            {
-                pixel = b.GetPixel(x, y);
-                if ((x >= 0 && x <= s - 1) && (y >= 0 && y <= s - 1))
-                    pixel->SetAll(255);
-                if ((x >= s && x <= s * 2 - 1) && (y >= 0 && y <= s - 1))
-                    pixel->SetAll(200);
-                if ((x >= 0 && x <= s - 1) && (y >= s && y <= s * 2 - 1))
-                    pixel->SetAll(200);
-                if ((x >= s && x <= s * 2 - 1) && (y >= s && y <= s * 2 - 1))
-                    pixel->SetAll(255);
-                if (x == s * 2 - 1)
-                {
-                    y++;
-                    x = 0;
-                    continue;
-                }
-                x++;
-            }
-            b.UnlockImage();
-            return b1;
         }
 
         static unsafe Bitmap CropEmptyEdges(Bitmap b1, Color trimColour)

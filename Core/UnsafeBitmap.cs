@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace AeroShot
+namespace Captura
 {
     [StructLayout(LayoutKind.Sequential)]
     struct PixelData

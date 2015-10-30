@@ -90,7 +90,7 @@ namespace Captura
         #region RegionSelector
         RegionSelector RegionSelector = new RegionSelector();
         bool WindowClosing = false;
-        
+
         void ShowRegionSelector(object sender, RoutedEventArgs e)
         {
             RegionSelector.Show();
@@ -445,12 +445,7 @@ namespace Captura
                     Status.Content = "Saved to " + lastFileName;
                 }
             }
-            else
-            {
-                var Task = new AeroShot.ScreenshotTask(this, lastFileName, ImgFmt);
-
-                AeroShot.Screenshot.CaptureWindow(ref Task);
-            }
+            else Screenshot.CaptureWindow(this, lastFileName, ImgFmt);
         }
 
         #region Gallery Selection Changed Handlers
