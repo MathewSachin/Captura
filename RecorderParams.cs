@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Interop;
+using ManagedWin32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
-using System.Drawing;
-using ManagedWin32;
-using System.Windows.Interop;
-using System.Windows;
 
 namespace Captura
 {
     class RecorderParams
     {
         public MainWindow MainWindow;
+        public static readonly FourCC GifFourCC = new FourCC("gif");
 
         public static readonly int DesktopHeight, DesktopWidth;
 
@@ -45,7 +47,7 @@ namespace Captura
             this.AudioSourceId = MainWindow.SelectedAudioSourceId;
             this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
-            CaptureVideo = hWnd.ToInt32() != -1;
+            CaptureVideo = hWnd.ToInt32() != -1 && Codec != GifFourCC;
 
             BgColor = MainWindow.ConvertColor(MainWindow.ThemeColor);
 
@@ -75,6 +77,8 @@ namespace Captura
 
         public MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 
+        public bool IsGif { get { return Codec == GifFourCC; } }
+
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
@@ -89,6 +93,11 @@ namespace Captura
                 FramesPerSecond = FramesPerSecond,
                 EmitIndex1 = true,
             };
+        }
+
+        public GifWriter CreateGifWriter()
+        {
+            return new GifWriter(FileName, 1000 / FramesPerSecond, 1);
         }
 
         public IAviVideoStream CreateVideoStream(AviWriter writer)
@@ -121,7 +130,7 @@ namespace Captura
             else return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample);
         }
 
-        public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(FileName, WaveFormat); }
+        public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(IsGif ? Path.ChangeExtension(FileName, "wav") : FileName, WaveFormat); }
 
         public WaveFormat WaveFormat { get; private set; }
     }

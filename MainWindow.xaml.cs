@@ -221,6 +221,7 @@ namespace Captura
                 // Available Codecs
                 AvailableCodecs.Clear();
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
+                AvailableCodecs.Add(new CodecInfo(RecorderParams.GifFourCC, "[Gif]"));
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
                 foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
@@ -288,7 +289,9 @@ namespace Captura
 
             ReadyToRecord = false;
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((WindowsGallery.SelectedIndex == 0) ? ".wav" : ".avi"));
+            string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav" : ".avi";
+
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((Encoder == RecorderParams.GifFourCC) ? ".gif" : Extension));
 
             Status.Content = "Recording...";
 

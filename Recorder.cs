@@ -28,12 +28,70 @@ namespace Captura
         public bool IsPaused = false;
         WaveFileWriter WaveWriter;
         IWavePlayer SilencePlayer;
+        GifWriter GifWriter;
         #endregion
 
         public Recorder(RecorderParams Params)
         {
             this.Params = Params;
 
+            if (!Params.IsGif) InitSharpAvi(Params);
+            else InitGif(Params);
+        }
+
+        void InitGif(RecorderParams Params)
+        {
+            GifWriter = Params.CreateGifWriter();
+
+            if (Params.IsLoopback)
+            {
+                var dev = Params.LoopbackDevice;
+
+                SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
+
+                SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
+
+                SilencePlayer.Play();
+
+                audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
+            }
+            else
+            {
+                int AudioSourceId = int.Parse(Params.AudioSourceId);
+
+                if (AudioSourceId != -1)
+                {
+                    audioSource = new WaveInEvent
+                    {
+                        DeviceNumber = AudioSourceId,
+                        WaveFormat = Params.WaveFormat,
+                        // Buffer size to store duration of 1 frame
+                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)Params.FramesPerSecond),
+                        NumberOfBuffers = 3,
+                    };
+                }
+            }
+
+            screenThread = new Thread(RecordScreenAsGif)
+            {
+                Name = typeof(GifWriter).Name + ".RecordScreen",
+                IsBackground = true
+            };
+
+            screenThread.Start();
+
+            if (audioSource != null)
+            {
+                WaveWriter = Params.CreateWaveWriter();
+
+                audioSource.DataAvailable += AudioDataAvailable;
+
+                audioSource.StartRecording();
+            }
+        }
+
+        void InitSharpAvi(RecorderParams Params)
+        {
             if (Params.CaptureVideo)
             {
                 // Create AVI writer and specify FPS
@@ -46,29 +104,7 @@ namespace Captura
                 videoStream.Name = "Captura";
             }
 
-            try
-            {
-                int AudioSourceId = int.Parse(Params.AudioSourceId);
-
-                if (AudioSourceId != -1)
-                {
-                    if (Params.CaptureVideo)
-                    {
-                        audioStream = Params.CreateAudioStream(writer);
-                        audioStream.Name = "Voice";
-                    }
-
-                    audioSource = new WaveInEvent
-                    {
-                        DeviceNumber = AudioSourceId,
-                        WaveFormat = Params.WaveFormat,
-                        // Buffer size to store duration of 1 frame
-                        BufferMilliseconds = (int)Math.Ceiling(1000 / writer.FramesPerSecond),
-                        NumberOfBuffers = 3,
-                    };
-                }
-            }
-            catch
+            if (Params.IsLoopback)
             {
                 var dev = Params.LoopbackDevice;
 
@@ -85,6 +121,28 @@ namespace Captura
                 }
 
                 audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
+            }
+            else
+            {
+                int AudioSourceId = int.Parse(Params.AudioSourceId);
+
+                if (AudioSourceId != -1)
+                {
+                    if (Params.CaptureVideo)
+                    {
+                        audioStream = Params.CreateAudioStream(writer);
+                        audioStream.Name = "Voice";
+                    }
+
+                    audioSource = new WaveInEvent
+                    {
+                        DeviceNumber = AudioSourceId,
+                        WaveFormat = Params.WaveFormat,
+                        // Buffer size to store duration of 1 frame
+                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)Params.FramesPerSecond),
+                        NumberOfBuffers = 3,
+                    };
+                }
             }
 
             if (Params.CaptureVideo)
@@ -124,12 +182,13 @@ namespace Captura
                 SilencePlayer = null;
             }
 
-            if (Params.CaptureVideo)
+            if (Params.CaptureVideo || Params.IsGif)
             {
                 if (!stopThread.SafeWaitHandle.IsClosed
                     && !stopThread.SafeWaitHandle.IsInvalid)
                     stopThread.Set();
-                screenThread.Abort();
+                screenThread.Join(500);
+                if (screenThread.IsAlive) screenThread.Abort();
             }
 
             if (audioSource != null)
@@ -145,6 +204,12 @@ namespace Captura
 
                 if (!stopThread.SafeWaitHandle.IsClosed) stopThread.Close();
             }
+            else if (Params.IsGif)
+            {
+                GifWriter.Dispose();
+                if (!stopThread.SafeWaitHandle.IsClosed) stopThread.Close();
+                if (WaveWriter != null) WaveWriter.Dispose();
+            }
             else WaveWriter.Dispose();
         }
 
@@ -154,7 +219,7 @@ namespace Captura
             {
                 if (SilencePlayer != null) SilencePlayer.Pause();
 
-                if (Params.CaptureVideo) screenThread.Suspend();
+                if (Params.CaptureVideo || Params.IsGif) screenThread.Suspend();
 
                 if (audioSource != null) audioSource.StopRecording();
 
@@ -168,7 +233,7 @@ namespace Captura
             {
                 if (SilencePlayer != null) SilencePlayer.Play();
 
-                if (Params.CaptureVideo) screenThread.Resume();
+                if (Params.CaptureVideo || Params.IsGif) screenThread.Resume();
 
                 if (audioSource != null)
                 {
@@ -230,6 +295,47 @@ namespace Captura
             }
         }
 
+        void RecordScreenAsGif()
+        {
+            try
+            {
+                var frameInterval = TimeSpan.FromMilliseconds(GifWriter.DefaultFrameDelay);
+                var timeTillNextFrame = TimeSpan.Zero;
+                Task GifWriteTask = null;
+                var isFirstFrame = true;
+                Image ScreenshotImage;
+
+                while (!stopThread.WaitOne(timeTillNextFrame))
+                {
+                    var timestamp = DateTime.Now;
+
+                    ScreenshotImage = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor);
+
+                    if (!isFirstFrame) GifWriteTask.Wait();
+
+                    if (audioStream != null)
+                        if (WaitHandle.WaitAny(new WaitHandle[] { audioBlockWritten, stopThread }) == 1)
+                            break;
+
+                    // Start asynchronous (encoding and) writing of the new frame
+                    GifWriteTask = GifWriter.WriteFrameAsync(ScreenshotImage);
+
+                    timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
+                    if (timeTillNextFrame < TimeSpan.Zero) timeTillNextFrame = TimeSpan.Zero;
+
+                    isFirstFrame = false;
+                }
+
+                // Wait for the last frame is written
+                if (!isFirstFrame) GifWriteTask.Wait();
+            }
+            catch
+            {
+                Dispose();
+                throw;
+            }
+        }
+
         public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting, Color BgColor)
         {
             int CursorX = 0, CursorY = 0;
@@ -241,7 +347,7 @@ namespace Captura
                 User32.GetWindowRect(hWnd, ref rect);
 
                 Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
-                
+
                 if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
             else Rect = RecorderParams.DesktopRect;

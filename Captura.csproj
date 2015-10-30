@@ -86,6 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GifWriter.cs" />
     <Compile Include="KeyboardHookList.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
