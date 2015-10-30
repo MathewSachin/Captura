@@ -9,33 +9,6 @@ using ManagedWin32.Api;
 
 namespace Captura
 {
-    struct ScreenshotTask
-    {
-        public bool CaptureMouse;
-        public int CheckerboardSize;
-        public bool ClipboardNotDisk;
-        public string FileName;
-        public ImageFormat ImageFormat;
-        public bool DoResize;
-        public int ResizeX;
-        public int ResizeY;
-        public IntPtr WindowHandle;
-
-        public ScreenshotTask(MainWindow MainWindow, string FileName, ImageFormat ImageFormat)
-        {
-            WindowHandle = MainWindow.SelectedWindow;
-            ClipboardNotDisk = MainWindow.SaveToClipboard.IsChecked.Value;
-            DoResize = MainWindow.DoResize.IsChecked.Value;
-            ResizeX = (int)MainWindow.ResizeWidth.Value;
-            ResizeY = (int)MainWindow.ResizeHeight.Value;
-            CheckerboardSize = 0;
-            CaptureMouse = MainWindow.IncludeCursor.IsChecked.Value;
-
-            this.FileName = FileName;
-            this.ImageFormat = ImageFormat;
-        }
-    }
-
     static class Screenshot
     {
         const int GWL_STYLE = -16;
@@ -60,17 +33,17 @@ namespace Captura
                 }
                 if (User32.IsIconic(data.WindowHandle))
                 {
-                    User32.ShowWindow(data.WindowHandle, 1);
+                    User32.ShowWindow(data.WindowHandle, (ShowWindowFlags)1);
                     Thread.Sleep(300); // Wait for window to be restored
                 }
                 else
                 {
-                    User32.ShowWindow(data.WindowHandle, 5);
+                    User32.ShowWindow(data.WindowHandle, (ShowWindowFlags)5);
                     Thread.Sleep(100);
                 }
                 User32.SetForegroundWindow(data.WindowHandle);
 
-                var r = new RECT();
+                var r = new Rectangle();
                 if (data.DoResize)
                 {
                     SmartResizeWindow(ref data, out r);
@@ -82,8 +55,8 @@ namespace Captura
                 // Show the taskbar again
                 if (data.WindowHandle != start && data.WindowHandle != taskbar)
                 {
-                    User32.ShowWindow(start, 1);
-                    User32.ShowWindow(taskbar, 1);
+                    User32.ShowWindow(start, (ShowWindowFlags)1);
+                    User32.ShowWindow(taskbar, (ShowWindowFlags)1);
                 }
 
                 if (s == null)
@@ -91,27 +64,7 @@ namespace Captura
 
                 else
                 {
-                    if (data.ClipboardNotDisk)
-                    {
-                        var whiteS = new Bitmap(s.Width, s.Height, PixelFormat.Format24bppRgb);
-                        using (Graphics graphics = Graphics.FromImage(whiteS))
-                        {
-                            graphics.Clear(Color.White);
-                            graphics.DrawImage(s, 0, 0, s.Width, s.Height);
-                        }
-                        using (var stream = new MemoryStream())
-                        {
-                            // Save screenshot in clipboard as PNG which some applications support (eg. Microsoft Office)
-                            s.Save(stream, ImageFormat.Png);
-                            var pngClipboardData = new DataObject("PNG", stream);
-
-                            // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
-                            pngClipboardData.SetData(DataFormats.Bitmap, whiteS);
-                            Clipboard.Clear();
-                            Clipboard.SetDataObject(pngClipboardData, true);
-                        }
-                        whiteS.Dispose();
-                    }
+                    if (data.ClipboardNotDisk) s.WriteToClipboard(true);
                     else s.Save(data.FileName, data.ImageFormat);
                     s.Dispose();
                 }
@@ -132,19 +85,19 @@ namespace Captura
             {
                 if (data.WindowHandle != start && data.WindowHandle != taskbar)
                 {
-                    User32.ShowWindow(start, 1);
-                    User32.ShowWindow(taskbar, 1);
+                    User32.ShowWindow(start, (ShowWindowFlags)1);
+                    User32.ShowWindow(taskbar, (ShowWindowFlags)1);
                 }
             }
         }
 
-        static void SmartResizeWindow(ref ScreenshotTask data, out RECT oldWindowSize)
+        static void SmartResizeWindow(ref ScreenshotTask data, out Rectangle oldWindowSize)
         {
-            oldWindowSize = new RECT();
+            oldWindowSize = new Rectangle();
             if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) != WS_SIZEBOX)
                 return;
 
-            var r = new RECT();
+            var r = new Rectangle();
             User32.GetWindowRect(data.WindowHandle, ref r);
             oldWindowSize = r;
 
@@ -181,32 +134,22 @@ namespace Captura
             foreach (Screen s in Screen.AllScreens)
                 totalSize = Rectangle.Union(totalSize, s.Bounds);
 
-            var rct = new RECT();
+            var rct = new Rectangle();
 
-            if (DWMApi.DwmGetWindowAttribute(data.WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(RECT)) != 0)
+            if (DWMApi.DwmGetWindowAttribute(data.WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(Rectangle)) != 0)
                 // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
                 User32.GetWindowRect(data.WindowHandle, ref rct);
             else
             {
                 // DwmGetWindowAttribute() succeeded
                 // Add a 100px margin for window shadows. Excess transparency is trimmed out later
-                rct.Left -= 100;
-                rct.Right += 100;
-                rct.Top -= 100;
-                rct.Bottom += 100;
+                rct = Commons.CreateRectangle(rct.Left - 100, rct.Top - 100, rct.Right + 100, rct.Bottom + 100);
             }
 
             // These next 4 checks handle if the window is outside of the visible screen
-            if (rct.Left < totalSize.Left)
-                rct.Left = totalSize.Left;
-            if (rct.Right > totalSize.Right)
-                rct.Right = totalSize.Right;
-            if (rct.Top < totalSize.Top)
-                rct.Top = totalSize.Top;
-            if (rct.Bottom > totalSize.Bottom)
-                rct.Bottom = totalSize.Bottom;
+            rct = Rectangle.Intersect(rct, totalSize);
 
-            User32.ShowWindow(backdrop.Handle, 4);
+            User32.ShowWindow(backdrop.Handle, (ShowWindowFlags)4);
             User32.SetWindowPos(backdrop.Handle, data.WindowHandle, rct.Left,
                                     rct.Top, rct.Right - rct.Left,
                                     rct.Bottom - rct.Top, SetWindowPositionFlags.SWP_NOACTIVATE);
