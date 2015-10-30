@@ -90,8 +90,7 @@ namespace Captura
         #region RegionSelector
         RegionSelector RegionSelector = new RegionSelector();
         bool WindowClosing = false;
-        HwndSource RegSelhWnd;
-
+        
         void ShowRegionSelector(object sender, RoutedEventArgs e)
         {
             RegionSelector.Show();
@@ -198,10 +197,6 @@ namespace Captura
                         e.Cancel = true;
                     }
                 };
-
-            RegionSelector.Show();
-            RegSelhWnd = (HwndSource)HwndSource.FromVisual(RegionSelector);
-            RegionSelector.Hide();
 
             #region SystemTray
             SystemTray = new NotifyIcon();
@@ -429,28 +424,16 @@ namespace Captura
             if (!SaveToClipboard.IsChecked.Value)
                 lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
-            if (SelectedWindow == RecorderParams.Desktop 
-                || SelectedWindow == RegSelhWnd.Handle
+            if (SelectedWindow == RecorderParams.Desktop
+                || SelectedWindow == RegionSelector.Handle
                 || !UseDWM.IsChecked.Value)
             {
                 var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, RecorderParams.ConvertColor(ThemeColor));
 
                 if (SaveToClipboard.IsChecked.Value)
                 {
-                    using (var ms = new MemoryStream())
-                    {
-                        BMP.Save(ms, ImgFmt);
-
-                        var Decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-
-                        if (Decoder.Frames.Count > 0)
-                        {
-                            Clipboard.SetImage(Decoder.Frames[0]);
-
-                            Status.Content = "Saved to Clipboard";
-                        }
-                        else Status.Content = "Not Saved";
-                    }
+                    System.Windows.Forms.Clipboard.SetImage(BMP);
+                    Status.Content = "Saved to Clipboard";
                 }
                 else
                 {
