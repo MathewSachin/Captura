@@ -429,7 +429,9 @@ namespace Captura
             if (!SaveToClipboard.IsChecked.Value)
                 lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
-            if (SelectedWindow == RecorderParams.Desktop || SelectedWindow == RegSelhWnd.Handle)
+            if (SelectedWindow == RecorderParams.Desktop 
+                || SelectedWindow == RegSelhWnd.Handle
+                || !UseDWM.IsChecked.Value)
             {
                 var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, RecorderParams.ConvertColor(ThemeColor));
 

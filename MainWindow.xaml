@@ -103,6 +103,9 @@
                         </Fluent:ColorGallery>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton Header="Use DWM" Name="UseDWM" IsChecked="True"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="Window">
