@@ -18,10 +18,11 @@ Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/
 
 Features
 --------------------------------------------------------------
-* Capture Screen as Video (`ScreenCast`) or `ScreenShot`.
+* Capture Screen as Video (`ScreenCast` - `Avi` or `Gif`) or `ScreenShot`.
 * Capture `Microphone/Loopback` Audio.
 * Can Capture With/Without the `Mouse Cursor`.
 * Capture `Specific Windows`.
+* Minimize to `System Tray`.
 * `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
 * `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
 * Supports `Video Alone`, `Audio Alone` Captures.
