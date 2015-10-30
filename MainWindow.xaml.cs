@@ -18,6 +18,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
+using Gma.System.MouseKeyHook;
 
 namespace Captura
 {
@@ -102,6 +103,8 @@ namespace Captura
             Refresh();
         }
         #endregion
+
+        IKeyboardMouseEvents ClickHook;
 
         Color themeColor;
         public Color ThemeColor
@@ -331,6 +334,12 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
+            //if (Params.CaptureMouseClicks)
+            {
+                ClickHook = Hook.GlobalEvents();
+                ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+            }
+
             new Thread(new ParameterizedThreadStart((object Delay) =>
                 {
                     Thread.Sleep((int)Delay);
@@ -344,6 +353,8 @@ namespace Captura
 
             Recorder.Dispose();
             Recorder = null;
+
+            if (KeyHook != null) KeyHook.Dispose();
 
             ReadyToRecord = true;
 

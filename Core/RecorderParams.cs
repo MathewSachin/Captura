@@ -60,7 +60,7 @@ namespace Captura
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
-        public bool EncodeAudio, CaptureVideo;
+        public bool EncodeAudio, CaptureVideo, CaptureMouseClicks = true;
 
         public bool IsLoopback;
 

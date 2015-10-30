@@ -63,6 +63,9 @@
     <Reference Include="Fluent">
       <HintPath>..\#Binaries\Fluent.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.System.MouseKeyHook">
+      <HintPath>..\globalmousekeyhook\MouseKeyHook\bin\Debug\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
     <Reference Include="ManagedWin32">
       <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
     </Reference>
