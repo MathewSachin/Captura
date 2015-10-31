@@ -394,7 +394,7 @@ namespace Captura
                 if (ScreenCasting && Params.CaptureMouseClicks && Commons.MouseClicked)
                 {
                     var curPos = User32.CursorPosition;
-                    g.DrawArc(new Pen(Color.Black, 10), curPos.X - 100, curPos.Y - 100, 200, 200, 0, 360);
+                    g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
 
                     Commons.MouseClicked = false;
                 }
