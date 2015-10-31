@@ -4,7 +4,7 @@
 [![Join the chat at https://gitter.im/MathewSachin/Captura](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MathewSachin/Captura?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  
 (c) 2015 Mathew Sachin. All Rights Reserved.
 
-A Capture application which captures the `whole` or `Selected part` of the screen as `ScreenShot` or as a `ScreenCast` along with audio from `Microphone` or `Wasapi Loopback` and the Mouse `Cursor`
+A Capture application which captures the `whole` or `Selected part` of the screen as `ScreenShot` or as a `ScreenCast` along with audio from `Microphone` or `Wasapi Loopback`, Mouse `Cursor`, `KeyStrokes` and Mouse `Clicks`.
 
 Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
 
@@ -23,6 +23,8 @@ Features
 * Capture `Microphone/Loopback` Audio.
 * Can Capture With/Without the `Mouse Cursor`.
 * Capture `Specific Windows`.
+* Capture `KeyStrokes`.
+* Capture Mouse `Clicks`.
 * Minimize to `System Tray`.
 * `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
 * `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
