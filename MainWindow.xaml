@@ -145,7 +145,6 @@
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
                     <Fluent:Spinner Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
                                     Header="Audio Quality" Interval="1"/>
-                    <!--Style="{StaticResource ZoomSliderStyle}"-->
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

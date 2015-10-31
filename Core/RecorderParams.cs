@@ -21,9 +21,9 @@ namespace Captura
             FileName = filename;
             FramesPerSecond = (int)MainWindow.FrameRate.Value;
             Codec = MainWindow.Encoder;
-            this.Quality = (int)MainWindow.Quality.Value;
-            this.AudioSourceId = MainWindow.SelectedAudioSourceId;
-            this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
+            Quality = (int)MainWindow.Quality.Value;
+            AudioSourceId = MainWindow.SelectedAudioSourceId;
+            EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1 && Codec != Commons.GifFourCC;
             CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked.Value;
