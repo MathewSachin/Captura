@@ -36,7 +36,7 @@ namespace Captura
         public Recorder(RecorderParams Params)
         {
             this.Params = Params;
-            
+
             if (!Params.IsGif) InitSharpAvi(Params);
             else InitGif(Params);
         }
@@ -176,7 +176,7 @@ namespace Captura
         public void Dispose()
         {
             if (IsPaused) Resume();
-            
+
             if (SilencePlayer != null)
             {
                 SilencePlayer.Stop();
@@ -250,7 +250,7 @@ namespace Captura
                 IsPaused = false;
             }
         }
-        
+
         void RecordScreen()
         {
             try
@@ -397,6 +397,18 @@ namespace Captura
                     g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
 
                     Commons.MouseClicked = false;
+                }
+                #endregion
+
+                #region KeyStrokes
+                if (ScreenCasting && Params.CaptureKeyStrokes
+                    && Commons.LastKeyPressed != System.Windows.Forms.Keys.None)
+                {
+                    g.DrawString(Commons.LastKeyPressed.ToString(),
+                        new Font(FontFamily.GenericMonospace, 100),
+                        new SolidBrush(Color.Black), 100, 100);
+
+                    Commons.LastKeyPressed = System.Windows.Forms.Keys.None;
                 }
                 #endregion
 

@@ -12,13 +12,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Gma.System.MouseKeyHook;
 using ManagedWin32;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
-using Gma.System.MouseKeyHook;
 
 namespace Captura
 {
@@ -334,10 +334,11 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
-            if (CaptureMouseClicks.IsChecked.Value)
+            if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
             {
                 ClickHook = Hook.GlobalEvents();
-                ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
             }
 
             new Thread(new ParameterizedThreadStart((object Delay) =>

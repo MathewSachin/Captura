@@ -50,7 +50,12 @@
                                          IsEnabled="{Binding ReadyToRecord}"
                                          Header="Minimise On Capture Start" x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
-                    <Fluent:ToggleButton Header="Capture Mouse Clicks" Margin="0,2" Size="Middle" Name="CaptureMouseClicks" />
+                    <Fluent:ToggleButton Header="Capture Mouse Clicks" 
+                                         Size="Middle" Name="CaptureMouseClicks"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:ToggleButton Header="Capture Keystrokes" 
+                                         Size="Middle" Name="CaptureKeyStrokes"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>

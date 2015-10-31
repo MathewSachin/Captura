@@ -12,6 +12,7 @@ namespace Captura
     public static class Commons
     {
         public static bool MouseClicked = false;
+        public static Keys LastKeyPressed = Keys.None; 
 
         public static readonly FourCC GifFourCC = new FourCC("_gif");
 
