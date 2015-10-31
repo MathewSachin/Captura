@@ -334,7 +334,7 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
-            //if (Params.CaptureMouseClicks)
+            if (CaptureMouseClicks.IsChecked.Value)
             {
                 ClickHook = Hook.GlobalEvents();
                 ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
@@ -354,7 +354,7 @@ namespace Captura
             Recorder.Dispose();
             Recorder = null;
 
-            if (KeyHook != null) KeyHook.Dispose();
+            if (ClickHook != null) ClickHook.Dispose();
 
             ReadyToRecord = true;
 

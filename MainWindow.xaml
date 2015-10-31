@@ -61,6 +61,9 @@
                     <Fluent:RadioButton GroupName="MinTo" Header="Taskbar" IsChecked="True"/>
                     <Fluent:RadioButton GroupName="MinTo" Name="Min2SysTray" Header="System Tray"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton Header="Capture Mouse Clicks" Size="Middle" Name="CaptureMouseClicks" />
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="ScreenShot">
