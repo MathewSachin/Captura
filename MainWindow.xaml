@@ -45,7 +45,6 @@
                                          Size="Middle" Name="CaptureKeyStrokes"
                                          IsEnabled="{Binding ReadyToRecord}"/>
                     <Fluent:MenuItem IsCheckable="True"  GroupName="MinTo" Name="Min2SysTray" Header="Use SystemTray"/>
-                    <Fluent:MenuItem Header="Exit" KeyTip="X" Command="Close"/>
                 </Fluent:ApplicationMenu>
             </Fluent:Ribbon.Menu>
 
@@ -103,12 +102,16 @@
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Header="Use DWM" Name="UseDWM" IsChecked="True"/>
+                    <Fluent:ToggleButton Header="Use DWM" Name="UseDWM" IsChecked="True">
+                        <Fluent:ToggleButton.LargeIcon>
+                            <TextBlock Text="DWM" Foreground="Orange"/>
+                        </Fluent:ToggleButton.LargeIcon>
+                    </Fluent:ToggleButton>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Resize">
-                    <Fluent:ToggleButton Header="Do Resize" Size="Middle" Name="DoResize"/>
-                    <Fluent:Spinner Minimum="0" Header="Width" Name="ResizeWidth" Value="640"/>
-                    <Fluent:Spinner Minimum="0" Header="Height" Name="ResizeHeight" Value="400"/>
+                    <Fluent:ToggleButton Header="Do Resize" LargeIcon="Images/Resize.ico" Name="DoResize"/>
+                    <Fluent:Spinner Minimum="0" Header="Width" Name="ResizeWidth" Margin="0,5" Value="640"/>
+                    <Fluent:Spinner Minimum="0" Header="Height" Name="ResizeHeight" Margin="0,5" Value="400"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -131,17 +134,15 @@
                                   SelectionChanged="DevicesGallery_SelectionChanged"
                                   SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="MP3 Encoding">
-                    <Fluent:ToggleButton Icon="Images/MP3.png"
-                        Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton LargeIcon="Images/MP3.png"
+                        Header="Encode Mp3" IsEnabled="{Binding ReadyToRecord}"
                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
                         Name="EncodeAudio"/>
-                    <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" 
-                                         Margin="0,2"
-                                         IsEnabled="{Binding ReadyToRecord}" Icon="Images/Speaker.png"
+                    <Fluent:ToggleButton Header="Stereo" Name="UseStereo"
+                                         IsEnabled="{Binding ReadyToRecord}" LargeIcon="Images/Speaker.png"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
-                    <Fluent:Spinner Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
-                                    Header="Audio Quality" Interval="1"/>
+                    <Fluent:Spinner Header="Quality" Name="AudioQuality" Height="65" Margin="5,0" IsEnabled="{Binding ReadyToRecord}" Interval="1"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
