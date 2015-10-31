@@ -15,6 +15,7 @@ Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/
 * [My Fork](http://github.com/MathewSachin/SharpAvi) of SharpAvi by Vasilli Masilov
 * lameenc32.dll, lameenc64.dll included in source (`Need to be Licensed for Commercial Use`)
 * [ManagedWin32](http://github.com/MathewSachin/ManagedWin32)
+* [GlobalMouseKeyHook](https://github.com/gmamaladze/globalmousekeyhook) by George Mamaladze
 
 Features
 --------------------------------------------------------------

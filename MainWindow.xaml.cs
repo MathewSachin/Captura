@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Gma.System.MouseKeyHook;
 using ManagedWin32;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
@@ -102,6 +103,8 @@ namespace Captura
             Refresh();
         }
         #endregion
+
+        IKeyboardMouseEvents ClickHook;
 
         Color themeColor;
         public Color ThemeColor
@@ -331,6 +334,13 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
+            if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
+            {
+                ClickHook = Hook.GlobalEvents();
+                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
+            }
+
             new Thread(new ParameterizedThreadStart((object Delay) =>
                 {
                     Thread.Sleep((int)Delay);
@@ -344,6 +354,8 @@ namespace Captura
 
             Recorder.Dispose();
             Recorder = null;
+
+            if (ClickHook != null) ClickHook.Dispose();
 
             ReadyToRecord = true;
 

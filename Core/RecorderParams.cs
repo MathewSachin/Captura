@@ -21,11 +21,13 @@ namespace Captura
             FileName = filename;
             FramesPerSecond = (int)MainWindow.FrameRate.Value;
             Codec = MainWindow.Encoder;
-            this.Quality = (int)MainWindow.Quality.Value;
-            this.AudioSourceId = MainWindow.SelectedAudioSourceId;
-            this.EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
+            Quality = (int)MainWindow.Quality.Value;
+            AudioSourceId = MainWindow.SelectedAudioSourceId;
+            EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1 && Codec != Commons.GifFourCC;
+            CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked.Value;
+            CaptureKeyStrokes = MainWindow.CaptureKeyStrokes.IsChecked.Value;
 
             BgColor = Commons.ConvertColor(MainWindow.ThemeColor);
 
@@ -60,7 +62,7 @@ namespace Captura
         public string FileName, AudioSourceId;
         public int FramesPerSecond, Quality, AudioBitRate;
         FourCC Codec;
-        public bool EncodeAudio, CaptureVideo;
+        public bool EncodeAudio, CaptureVideo, CaptureMouseClicks, CaptureKeyStrokes;
 
         public bool IsLoopback;
 

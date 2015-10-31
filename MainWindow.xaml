@@ -30,7 +30,7 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
                     <Fluent:BackstageTabControl>
-                        <Fluent:Button Header="Last" Command="PreviousPage"/>
+                        <Fluent:Button Header="Last" Command="PreviousPage"/>                        
                         <Fluent:BackstageTabItem Header="About" KeyTip="A">
                             <StackPanel Margin="5">
                                 <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
@@ -38,6 +38,7 @@
                                                FontFamily="Comic Sans MS" FontSize="12"/>
                             </StackPanel>
                         </Fluent:BackstageTabItem>
+                        <Fluent:Button Header="Refresh" Command="Refresh" Icon="Images/Refresh.png"/>
                         <Fluent:Button Header="Exit" KeyTip="X" Command="Close"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
@@ -45,13 +46,16 @@
 
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Large"
+                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Middle"
                                          IsEnabled="{Binding ReadyToRecord}"
                                          Header="Minimise On Capture Start" x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
-                    <Fluent:Button Header="Refresh" Command="Refresh" Size="Large" 
-                                   Icon="Images/Refresh.png"
-                                   LargeIcon="Images/Refresh.png"/>
+                    <Fluent:ToggleButton Header="Capture Mouse Clicks" 
+                                         Size="Middle" Name="CaptureMouseClicks"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:ToggleButton Header="Capture Keystrokes" 
+                                         Size="Middle" Name="CaptureKeyStrokes"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
@@ -60,6 +64,9 @@
                 <Fluent:RibbonGroupBox Header="Minimize to">
                     <Fluent:RadioButton GroupName="MinTo" Header="Taskbar" IsChecked="True"/>
                     <Fluent:RadioButton GroupName="MinTo" Name="Min2SysTray" Header="System Tray"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -133,16 +140,16 @@
                                   SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="MP3 Encoding">
-                    <Fluent:ToggleButton LargeIcon="Images/MP3.png"
-                        Size="Large" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
+                    <Fluent:ToggleButton Icon="Images/MP3.png"
+                        Size="Middle" Header="Encode" IsEnabled="{Binding ReadyToRecord}"
                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
-                        VerticalAlignment="Center" Name="EncodeAudio"/>
+                        Name="EncodeAudio"/>
                     <Fluent:ToggleButton Header="Stereo" Size="Middle" Name="UseStereo" 
+                                         Margin="0,2"
                                          IsEnabled="{Binding ReadyToRecord}" Icon="Images/Speaker.png"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
-                    <Slider Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
-                            IsSnapToTickEnabled="True" TickFrequency="1" SmallChange="1" LargeChange="1"
-                            AutoToolTipPlacement="None" Width="100" Margin="7,0"/>
+                    <Fluent:Spinner Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}"
+                                    Header="Audio Quality" Interval="1"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 

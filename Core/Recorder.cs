@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Gma.System.MouseKeyHook;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
@@ -29,6 +30,7 @@ namespace Captura
         WaveFileWriter WaveWriter;
         IWavePlayer SilencePlayer;
         GifWriter GifWriter;
+        IKeyboardMouseEvents KeyHook;
         #endregion
 
         public Recorder(RecorderParams Params)
@@ -336,7 +338,7 @@ namespace Captura
             }
         }
 
-        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting, Color BgColor)
+        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting, Color BgColor, RecorderParams Params = null)
         {
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
@@ -355,7 +357,7 @@ namespace Captura
             var BMP = new Bitmap(Commons.DesktopWidth, Commons.DesktopHeight);
             using (var g = Graphics.FromImage(BMP))
             {
-                g.FillRectangle(new SolidBrush(BgColor), Commons.DesktopRectangle);
+                if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), Commons.DesktopRectangle);
 
                 g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
@@ -388,8 +390,29 @@ namespace Captura
                 }
                 #endregion
 
-                g.Flush();
+                #region MouseClicks
+                if (ScreenCasting && Params.CaptureMouseClicks && Commons.MouseClicked)
+                {
+                    var curPos = User32.CursorPosition;
+                    g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
 
+                    Commons.MouseClicked = false;
+                }
+                #endregion
+
+                #region KeyStrokes
+                if (ScreenCasting && Params.CaptureKeyStrokes
+                    && Commons.LastKeyPressed != System.Windows.Forms.Keys.None)
+                {
+                    g.DrawString(Commons.LastKeyPressed.ToString(),
+                        new Font(FontFamily.GenericMonospace, 100),
+                        new SolidBrush(Color.Black), 100, 100);
+
+                    Commons.LastKeyPressed = System.Windows.Forms.Keys.None;
+                }
+                #endregion
+
+                g.Flush();
             }
 
             if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-2), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
@@ -399,7 +422,7 @@ namespace Captura
 
         public void ScreenShot(byte[] Buffer)
         {
-            using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor))
+            using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor, Params))
             {
                 var bits = BMP.LockBits(Commons.DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
