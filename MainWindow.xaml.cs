@@ -212,7 +212,7 @@ namespace Captura
             SystemTray.IconSource = Icon;
             StateChanged += (s, e) =>
                 {
-                    if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
+                    if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked)
                     {
                         Hide();
                         SystemTray.Visibility = Visibility.Visible;
@@ -334,11 +334,11 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
-            if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
+            if (CaptureMouseClicks.IsChecked || CaptureKeyStrokes.IsChecked)
             {
                 ClickHook = Hook.GlobalEvents();
-                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
-                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
+                if (CaptureMouseClicks.IsChecked) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+                if (CaptureKeyStrokes.IsChecked) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
             }
 
             new Thread(new ParameterizedThreadStart((object Delay) =>

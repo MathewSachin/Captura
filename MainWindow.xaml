@@ -28,45 +28,57 @@
     <DockPanel>
         <Fluent:Ribbon AutomaticStateManagement="True" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage>
-                    <Fluent:BackstageTabControl>
-                        <Fluent:Button Header="Last" Command="PreviousPage"/>                        
-                        <Fluent:BackstageTabItem Header="About" KeyTip="A">
-                            <StackPanel Margin="5">
-                                <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
-                                <Label Content="(c) Mathew Sachin. All Rights Reserved" 
+                <Fluent:ApplicationMenu Header="File">
+                    <Fluent:ApplicationMenu.RightPaneContent>
+                        <StackPanel Margin="5">
+                            <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
+                            <Label Content="(c) Mathew Sachin. All Rights Reserved" 
                                                FontFamily="Comic Sans MS" FontSize="12"/>
-                            </StackPanel>
-                        </Fluent:BackstageTabItem>
-                        <Fluent:Button Header="Refresh" Command="Refresh" Icon="Images/Refresh.png"/>
-                        <Fluent:Button Header="Exit" KeyTip="X" Command="Close"/>
-                    </Fluent:BackstageTabControl>
-                </Fluent:Backstage>
+                        </StackPanel>
+                    </Fluent:ApplicationMenu.RightPaneContent>
+                    <Fluent:MenuItem Header="Last" Command="PreviousPage"/>
+                    <Fluent:MenuItem Header="Refresh" Command="Refresh" Icon="Images/Refresh.png"/>
+                    <Fluent:MenuItem Header="Capture Mouse Clicks" IsCheckable="True"
+                                         Size="Middle" Name="CaptureMouseClicks"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:MenuItem Header="Capture Keystrokes" IsCheckable="True"
+                                         Size="Middle" Name="CaptureKeyStrokes"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:MenuItem IsCheckable="True"  GroupName="MinTo" Name="Min2SysTray" Header="Use SystemTray"/>
+                    <Fluent:MenuItem Header="Exit" KeyTip="X" Command="Close"/>
+                </Fluent:ApplicationMenu>
             </Fluent:Ribbon.Menu>
 
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico" Size="Middle"
+                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico"
                                          IsEnabled="{Binding ReadyToRecord}"
                                          Header="Minimise On Capture Start" x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
-                    <Fluent:ToggleButton Header="Capture Mouse Clicks" 
-                                         Size="Middle" Name="CaptureMouseClicks"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
-                    <Fluent:ToggleButton Header="Capture Keystrokes" 
-                                         Size="Middle" Name="CaptureKeyStrokes"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Minimize to">
-                    <Fluent:RadioButton GroupName="MinTo" Header="Taskbar" IsChecked="True"/>
-                    <Fluent:RadioButton GroupName="MinTo" Name="Min2SysTray" Header="System Tray"/>
-                </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    
+                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
+                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Grid>
+                                <Rectangle Height="20" Width="20" Stroke="Black">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ThemeColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Fluent:DropDownButton.LargeIcon>
+                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
+                                                 Mode="ThemeColors"
+                                                 StandardColorGridRows="10"
+                                                 Columns="10"
+                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
+                        </Fluent:ColorGallery>
+                    </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -89,26 +101,6 @@
                         <Fluent:GalleryItem Content="Icon"/>
                         <Fluent:GalleryItem Content="Wmf"/>
                     </Fluent:InRibbonGallery>
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
-                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
-                        <Fluent:DropDownButton.LargeIcon>
-                            <Grid>
-                                <Rectangle Height="20" Width="20">
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{Binding ThemeColor}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Grid>
-                        </Fluent:DropDownButton.LargeIcon>
-                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
-                                                 Mode="ThemeColors"
-                                                 StandardColorGridRows="10"
-                                                 Columns="10"
-                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
-                        </Fluent:ColorGallery>
-                    </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Header="Use DWM" Name="UseDWM" IsChecked="True"/>

@@ -26,8 +26,8 @@ namespace Captura
             EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1 && Codec != Commons.GifFourCC;
-            CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked.Value;
-            CaptureKeyStrokes = MainWindow.CaptureKeyStrokes.IsChecked.Value;
+            CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked;
+            CaptureKeyStrokes = MainWindow.CaptureKeyStrokes.IsChecked;
 
             BgColor = Commons.ConvertColor(MainWindow.ThemeColor);
 
@@ -43,7 +43,8 @@ namespace Captura
         {
             get
             {
-                return (bool)MainWindow.Dispatcher.Invoke(new Func<bool>(() => MainWindow.IncludeCursor.IsChecked.Value));
+                return (bool)MainWindow.Dispatcher.Invoke(
+                    new Func<bool>(() => MainWindow.IncludeCursor.IsChecked.Value));
             }
         }
 
@@ -51,7 +52,8 @@ namespace Captura
         {
             get
             {
-                return (IntPtr)MainWindow.Dispatcher.Invoke(new Func<IntPtr>(() => MainWindow.SelectedWindow));
+                return (IntPtr)MainWindow.Dispatcher.Invoke(
+                    new Func<IntPtr>(() => MainWindow.SelectedWindow));
             }
         }
 
@@ -83,11 +85,14 @@ namespace Captura
         public IAviVideoStream CreateVideoStream(AviWriter writer)
         {
             // Select encoder type based on FOURCC of codec
-            if (Codec == KnownFourCCs.Codecs.Uncompressed) return writer.AddUncompressedVideoStream(Commons.DesktopWidth, Commons.DesktopHeight);
-            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) return writer.AddMotionJpegVideoStream(Commons.DesktopWidth, Commons.DesktopHeight, Quality);
+            if (Codec == KnownFourCCs.Codecs.Uncompressed) 
+                return writer.AddUncompressedVideoStream(Commons.DesktopWidth, Commons.DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg) 
+                return writer.AddMotionJpegVideoStream(Commons.DesktopWidth, Commons.DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(Commons.DesktopWidth, Commons.DesktopHeight, (double)writer.FramesPerSecond,
+                return writer.AddMpeg4VideoStream(Commons.DesktopWidth, Commons.DesktopHeight,
+                    (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
                     quality: Quality,
@@ -101,16 +106,25 @@ namespace Captura
         public IAviAudioStream CreateAudioStream(AviWriter writer)
         {
             // Create encoding or simple stream based on settings
-            if (IsLoopback) return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);
-            else if (EncodeAudio)
-            {
-                // LAME DLL path is set in App.OnStartup()
-                return writer.AddMp3AudioStream(WaveFormat.Channels, WaveFormat.SampleRate, AudioBitRate);
-            }
-            else return writer.AddAudioStream(WaveFormat.Channels, WaveFormat.SampleRate, WaveFormat.BitsPerSample);
+            if (IsLoopback) 
+                return writer.AddAudioStream(WaveFormat.Channels,
+                    WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);
+
+            // LAME DLL path is set in App.OnStartup()
+            else if (EncodeAudio)            
+                return writer.AddMp3AudioStream(WaveFormat.Channels,
+                    WaveFormat.SampleRate, AudioBitRate);
+            
+            else return writer.AddAudioStream(WaveFormat.Channels,
+                WaveFormat.SampleRate, WaveFormat.BitsPerSample);
         }
 
-        public WaveFileWriter CreateWaveWriter() { return new WaveFileWriter(IsGif ? Path.ChangeExtension(FileName, "wav") : FileName, WaveFormat); }
+        public WaveFileWriter CreateWaveWriter() 
+        {
+            return new WaveFileWriter(IsGif 
+                ? Path.ChangeExtension(FileName, "wav") 
+                : FileName, WaveFormat);
+        }
 
         public WaveFormat WaveFormat { get; private set; }
     }
