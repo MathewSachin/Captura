@@ -65,7 +65,7 @@ namespace Captura
         }
 
         public static readonly DependencyProperty SelectedWindowProperty =
-            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(Commons.DesktopHandle));
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(Recorder.DesktopHandle));
 
         public IntPtr SelectedWindow
         {
@@ -241,7 +241,7 @@ namespace Captura
                 // Available Codecs
                 AvailableCodecs.Clear();
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
-                AvailableCodecs.Add(new CodecInfo(Commons.GifFourCC, "[Gif]"));
+                AvailableCodecs.Add(new CodecInfo(Recorder.GifFourCC, "[Gif]"));
                 AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
                 foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
 
@@ -267,7 +267,7 @@ namespace Captura
             // Available Windows
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
-            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Commons.DesktopHandle, "[Desktop]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Recorder.DesktopHandle, "[Desktop]"));
 
             foreach (var win in WindowHandler.Enumerate())
             {
@@ -286,7 +286,7 @@ namespace Captura
                 AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
             }
 
-            SelectedWindow = Commons.DesktopHandle;
+            SelectedWindow = Recorder.DesktopHandle;
         }
 
         void ToggleRecorderState<T>(object sender = null, T e = default(T))
@@ -316,7 +316,7 @@ namespace Captura
             ReadyToRecord = false;
 
             string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav"
-                : (Encoder == Commons.GifFourCC ? ".gif" : ".avi");
+                : (Encoder == Recorder.GifFourCC ? ".gif" : ".avi");
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + Extension);
 
@@ -332,8 +332,8 @@ namespace Captura
             if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
             {
                 ClickHook = Hook.GlobalEvents();
-                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
-                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
+                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Recorder.MouseClicked = true;
+                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Recorder.LastKeyPressed = e.KeyCode;
             }
 
             Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
@@ -343,16 +343,19 @@ namespace Captura
                         () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor.IsChecked.Value)),
                         () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));
 
+            Recorder.Error += (E) => Dispatcher.Invoke(new Action(() => 
+                {
+                    Status.Content = "Error - " + E.Message;
+                    OnStopped();
+                }));
+
             Recorder.Start((int)StartDelay.Value);
 
             RecentPanel.Children.Add(new RecentButton(lastFileName));
         }
 
-        void StopRecording()
+        void OnStopped()
         {
-            if (ReadyToRecord) throw new InvalidOperationException("Not recording.");
-
-            Recorder.Dispose();
             Recorder = null;
 
             if (ClickHook != null) ClickHook.Dispose();
@@ -373,6 +376,12 @@ namespace Captura
             RotationEffect.Angle = 0;
             RecordButton.ToolTip = "Record";
             PauseButton.ToolTip = "Pause";
+        }
+
+        void StopRecording()
+        {
+            Recorder.Dispose();
+            OnStopped();
         }
 
         void OutputFolderBrowse()
@@ -436,7 +445,7 @@ namespace Captura
             if (!SaveToClipboard.IsChecked.Value)
                 FileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
-            if (SelectedWindow == Commons.DesktopHandle
+            if (SelectedWindow == Recorder.DesktopHandle
                 || SelectedWindow == RegionSelector.Handle
                 || !UseDWM.IsChecked.Value)
             {

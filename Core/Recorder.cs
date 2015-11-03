@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Interop;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
@@ -18,6 +20,29 @@ namespace Captura
 {
     class Recorder : IDisposable
     {
+        public static readonly int DesktopHeight, DesktopWidth;
+
+        public static readonly Rectangle DesktopRectangle;
+
+        public static readonly IntPtr DesktopHandle = User32.GetDesktopWindow();
+
+        static Recorder()
+        {
+            System.Windows.Media.Matrix toDevice;
+            using (var source = new HwndSource(new HwndSourceParameters()))
+                toDevice = source.CompositionTarget.TransformToDevice;
+
+            DesktopHeight = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenHeight * toDevice.M22);
+            DesktopWidth = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenWidth * toDevice.M11);
+
+            DesktopRectangle = new Rectangle(0, 0, DesktopWidth, DesktopHeight);
+        }
+
+        public static bool MouseClicked = false;
+        public static Keys LastKeyPressed = Keys.None;
+
+        public static readonly FourCC GifFourCC = new FourCC("_gif");
+
         #region Fields
         AviWriter writer;
         IAviVideoStream videoStream;
@@ -38,7 +63,7 @@ namespace Captura
 
         MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
 
-        bool IsGif { get { return Codec == Commons.GifFourCC; } }
+        bool IsGif { get { return Codec == GifFourCC; } }
 
         string FileName, AudioSourceId;
         int FramesPerSecond, Quality, AudioBitRate;
@@ -65,12 +90,12 @@ namespace Captura
         {
             // Select encoder type based on FOURCC of codec
             if (Codec == KnownFourCCs.Codecs.Uncompressed)
-                return writer.AddUncompressedVideoStream(Commons.DesktopWidth, Commons.DesktopHeight);
+                return writer.AddUncompressedVideoStream(DesktopWidth, DesktopHeight);
             else if (Codec == KnownFourCCs.Codecs.MotionJpeg)
-                return writer.AddMotionJpegVideoStream(Commons.DesktopWidth, Commons.DesktopHeight, Quality);
+                return writer.AddMotionJpegVideoStream(DesktopWidth, DesktopHeight, Quality);
             else
             {
-                return writer.AddMpeg4VideoStream(Commons.DesktopWidth, Commons.DesktopHeight,
+                return writer.AddMpeg4VideoStream(DesktopWidth, DesktopHeight,
                     (double)writer.FramesPerSecond,
                     // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
                     // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
@@ -111,6 +136,8 @@ namespace Captura
         Func<bool> IncludeCursor;
         Func<IntPtr> hWnd;
 
+        public event Action<Exception> Error;
+
         public Recorder(string FileName, int FramesPerSecond, FourCC Codec, int VideoQuality, string AudioSourceId, bool StereoAudio,
             bool EncodeMp3, int AudioBitRate, bool CaptureMouseClicks, bool CaptureKeyStrokes, Color BgColor,
             Func<bool> IncludeCursor, Func<IntPtr> hWnd)
@@ -133,7 +160,7 @@ namespace Captura
             int val;
             IsLoopback = !int.TryParse(AudioSourceId, out val);
 
-            this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Commons.GifFourCC;
+            this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Recorder.GifFourCC;
 
             WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, StereoAudio ? 2 : 1);
         }
@@ -142,11 +169,14 @@ namespace Captura
         {
             new Thread(new ParameterizedThreadStart((e) =>
                 {
-                    Thread.Sleep((int)e);
+                    try
+                    {
+                        Thread.Sleep((int)e);
 
-                    if (!IsGif) InitSharpAvi();
-                    else InitGif();
-
+                        if (!IsGif) InitSharpAvi();
+                        else InitGif();
+                    }
+                    catch (Exception E) { if (Error != null) Error(E); }
                 })).Start(Delay);
         }
 
@@ -197,7 +227,7 @@ namespace Captura
             else
             {
                 int Id = int.Parse(AudioSourceId);
-                
+
                 if (Id != -1)
                 {
                     if (CaptureVideo)
@@ -343,7 +373,7 @@ namespace Captura
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1 / (double)writer.FramesPerSecond);
-                var buffer = new byte[Commons.DesktopWidth * Commons.DesktopHeight * 4];
+                var buffer = new byte[DesktopWidth * DesktopHeight * 4];
                 Task videoWriteTask = null;
                 var isFirstFrame = true;
                 var timeTillNextFrame = TimeSpan.Zero;
@@ -377,10 +407,10 @@ namespace Captura
                 // Wait for the last frame is written
                 if (!isFirstFrame) videoWriteTask.Wait();
             }
-            catch
+            catch (Exception E)
             {
                 Dispose();
-                throw;
+                if (Error != null) Error.Invoke(E);
             }
         }
 
@@ -418,10 +448,10 @@ namespace Captura
                 // Wait for the last frame is written
                 if (!isFirstFrame) GifWriteTask.Wait();
             }
-            catch
+            catch (Exception E)
             {
                 Dispose();
-                throw;
+                if (Error != null) Error.Invoke(E);
             }
         }
 
@@ -431,7 +461,7 @@ namespace Captura
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
 
-            if (hWnd != Commons.DesktopHandle)
+            if (hWnd != DesktopHandle)
             {
                 var rect = new Rectangle();
                 User32.GetWindowRect(hWnd, ref rect);
@@ -440,12 +470,12 @@ namespace Captura
 
                 if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
-            else Rect = Commons.DesktopRectangle;
+            else Rect = DesktopRectangle;
 
-            var BMP = new Bitmap(Commons.DesktopWidth, Commons.DesktopHeight);
+            var BMP = new Bitmap(DesktopWidth, DesktopHeight);
             using (var g = Graphics.FromImage(BMP))
             {
-                if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), Commons.DesktopRectangle);
+                if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), DesktopRectangle);
 
                 g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
 
@@ -479,24 +509,24 @@ namespace Captura
                 #endregion
 
                 #region MouseClicks
-                if (ScreenCasting && CaptureMouseClicks && Commons.MouseClicked)
+                if (ScreenCasting && CaptureMouseClicks && MouseClicked)
                 {
                     var curPos = User32.CursorPosition;
                     g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
 
-                    Commons.MouseClicked = false;
+                    MouseClicked = false;
                 }
                 #endregion
 
                 #region KeyStrokes
                 if (ScreenCasting && CaptureKeyStrokes
-                    && Commons.LastKeyPressed != System.Windows.Forms.Keys.None)
+                    && LastKeyPressed != System.Windows.Forms.Keys.None)
                 {
-                    g.DrawString(Commons.LastKeyPressed.ToString(),
+                    g.DrawString(LastKeyPressed.ToString(),
                         new Font(FontFamily.GenericMonospace, 100),
                         new SolidBrush(Color.Black), 100, 100);
 
-                    Commons.LastKeyPressed = System.Windows.Forms.Keys.None;
+                    LastKeyPressed = System.Windows.Forms.Keys.None;
                 }
                 #endregion
 
@@ -512,7 +542,7 @@ namespace Captura
         {
             using (var BMP = ScreenShot(hWnd(), IncludeCursor(), true, BgColor, CaptureMouseClicks, CaptureKeyStrokes))
             {
-                var bits = BMP.LockBits(Commons.DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = BMP.LockBits(DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 BMP.UnlockBits(bits);
             }

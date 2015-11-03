@@ -11,34 +11,11 @@ namespace Captura
 {
     public static class Commons
     {
-        public static bool MouseClicked = false;
-        public static Keys LastKeyPressed = Keys.None; 
-
-        public static readonly FourCC GifFourCC = new FourCC("_gif");
-
         public static Rectangle CreateRectangle(int Left, int Top, int Right, int Bottom) 
         {
             return new Rectangle(Left, Top, Right - Left, Bottom - Top);
         }
-
-        public static readonly int DesktopHeight, DesktopWidth;
-
-        public static readonly Rectangle DesktopRectangle;
-
-        public static readonly IntPtr DesktopHandle = User32.GetDesktopWindow();
-
-        static Commons()
-        {
-            System.Windows.Media.Matrix toDevice;
-            using (var source = new HwndSource(new HwndSourceParameters()))
-                toDevice = source.CompositionTarget.TransformToDevice;
-
-            DesktopHeight = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenHeight * toDevice.M22);
-            DesktopWidth = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenWidth * toDevice.M11);
-
-            DesktopRectangle = new Rectangle(0, 0, DesktopWidth, DesktopHeight);
-        }
-
+        
         public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
 
         public static void WriteToClipboard(this Bitmap BMP, bool PreserveTransparency)
