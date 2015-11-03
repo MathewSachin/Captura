@@ -110,6 +110,16 @@
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Name="Min2SysTray" Header="Use SystemTray" LargeIcon="Images/SysTray.png"/>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Audio">
+                    <Fluent:ToggleButton Icon="Images/MP3.png" Size="Middle"
+                        Header="Encode Mpeg3" IsEnabled="{Binding ReadyToRecord}"
+                        IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
+                        Name="EncodeAudio"/>
+                    <Fluent:ToggleButton Header="Capture Stereo" Name="UseStereo" Size="Middle"
+                                         IsEnabled="{Binding ReadyToRecord}" Icon="Images/Speaker.png"
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
+                    <Fluent:Spinner Header="Quality" Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}" Interval="1"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="ScreenShot">
@@ -143,19 +153,6 @@
                     <Fluent:ToggleButton Header="Do Resize" LargeIcon="Images/Resize.ico" Name="DoResize"/>
                     <Fluent:Spinner Minimum="0" Header="Width" Name="ResizeWidth" Margin="0,5" Value="640"/>
                     <Fluent:Spinner Minimum="0" Header="Height" Name="ResizeHeight" Margin="0,5" Value="400"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-
-            <Fluent:RibbonTabItem Header="Audio">
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton LargeIcon="Images/MP3.png"
-                        Header="Encode Mp3" IsEnabled="{Binding ReadyToRecord}"
-                        IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
-                        Name="EncodeAudio"/>
-                    <Fluent:ToggleButton Header="Stereo" Name="UseStereo"
-                                         IsEnabled="{Binding ReadyToRecord}" LargeIcon="Images/Speaker.png"
-                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
-                    <Fluent:Spinner Header="Quality" Name="AudioQuality" Height="65" Margin="5,0" IsEnabled="{Binding ReadyToRecord}" Interval="1"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
