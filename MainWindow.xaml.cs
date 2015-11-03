@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Threading;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -159,7 +159,7 @@ namespace Captura
 
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OutputFolderBrowse(),
                 (s, e) => e.CanExecute = ReadyToRecord));
-            
+
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
 
             CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
@@ -315,11 +315,11 @@ namespace Captura
 
             ReadyToRecord = false;
 
-            string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav" 
+            string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav"
                 : (Encoder == Commons.GifFourCC ? ".gif" : ".avi");
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") +  Extension);
-            
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + Extension);
+
             Status.Content = "Recording...";
 
             DTimer.Stop();
@@ -329,8 +329,6 @@ namespace Captura
 
             Duration = (int)CaptureDuration.Value;
 
-            var Params = new RecorderParams(this, lastFileName);
-
             if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
             {
                 ClickHook = Hook.GlobalEvents();
@@ -338,11 +336,14 @@ namespace Captura
                 if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
             }
 
-            new Thread(new ParameterizedThreadStart((object Delay) =>
-                {
-                    Thread.Sleep((int)Delay);
-                    Recorder = new Recorder(Params);
-                })).Start((int)StartDelay.Value);
+            Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
+                        SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
+                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value),
+                        CaptureMouseClicks.IsChecked.Value, CaptureKeyStrokes.IsChecked.Value, Commons.ConvertColor(themeColor),
+                        () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor.IsChecked.Value)),
+                        () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));
+
+            Recorder.Start((int)StartDelay.Value);
 
             RecentPanel.Children.Add(new RecentButton(lastFileName));
         }

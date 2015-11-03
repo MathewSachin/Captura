@@ -2,14 +2,16 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Gma.System.MouseKeyHook;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using SharpAvi;
+using SharpAvi.Codecs;
 using SharpAvi.Output;
 
 namespace Captura
@@ -18,7 +20,6 @@ namespace Captura
     {
         #region Fields
         AviWriter writer;
-        RecorderParams Params;
         IAviVideoStream videoStream;
         IAviAudioStream audioStream;
         IWaveIn audioSource;
@@ -32,46 +33,128 @@ namespace Captura
         GifWriter GifWriter;
         #endregion
 
-        public Recorder(RecorderParams Params)
-        {
-            this.Params = Params;
+        #region Params
+        Color BgColor;
 
-            if (!Params.IsGif) InitSharpAvi(Params);
-            else InitGif(Params);
+        MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
+
+        bool IsGif { get { return Codec == Commons.GifFourCC; } }
+
+        string FileName, AudioSourceId;
+        int FramesPerSecond, Quality, AudioBitRate;
+        FourCC Codec;
+        bool EncodeAudio, CaptureVideo, CaptureMouseClicks, CaptureKeyStrokes;
+
+        bool IsLoopback;
+
+        AviWriter CreateAviWriter()
+        {
+            return new AviWriter(FileName)
+            {
+                FramesPerSecond = FramesPerSecond,
+                EmitIndex1 = true,
+            };
         }
 
-        void InitGif(RecorderParams Params)
+        GifWriter CreateGifWriter()
         {
-            GifWriter = Params.CreateGifWriter();
+            return new GifWriter(FileName, 1000 / FramesPerSecond, 1);
+        }
 
-            if (Params.IsLoopback)
-            {
-                var dev = Params.LoopbackDevice;
-
-                SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
-
-                SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
-
-                SilencePlayer.Play();
-
-                audioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
-            }
+        IAviVideoStream CreateVideoStream(AviWriter writer)
+        {
+            // Select encoder type based on FOURCC of codec
+            if (Codec == KnownFourCCs.Codecs.Uncompressed)
+                return writer.AddUncompressedVideoStream(Commons.DesktopWidth, Commons.DesktopHeight);
+            else if (Codec == KnownFourCCs.Codecs.MotionJpeg)
+                return writer.AddMotionJpegVideoStream(Commons.DesktopWidth, Commons.DesktopHeight, Quality);
             else
             {
-                int AudioSourceId = int.Parse(Params.AudioSourceId);
-
-                if (AudioSourceId != -1)
-                {
-                    audioSource = new WaveInEvent
-                    {
-                        DeviceNumber = AudioSourceId,
-                        WaveFormat = Params.WaveFormat,
-                        // Buffer size to store duration of 1 frame
-                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)Params.FramesPerSecond),
-                        NumberOfBuffers = 3,
-                    };
-                }
+                return writer.AddMpeg4VideoStream(Commons.DesktopWidth, Commons.DesktopHeight,
+                    (double)writer.FramesPerSecond,
+                    // It seems that all tested MPEG-4 VfW codecs ignore the quality affecting parameters passed through VfW API
+                    // They only respect the settings from their own configuration dialogs, and Mpeg4VideoEncoder currently has no support for this
+                    quality: Quality,
+                    codec: Codec,
+                    // Most of VfW codecs expect single-threaded use, so we wrap this encoder to special wrapper
+                    // Thus all calls to the encoder (including its instantiation) will be invoked on a single thread although encoding (and writing) is performed asynchronously
+                    forceSingleThreadedAccess: true);
             }
+        }
+
+        IAviAudioStream CreateAudioStream(AviWriter writer)
+        {
+            // Create encoding or simple stream based on settings
+            if (IsLoopback)
+                return writer.AddAudioStream(WaveFormat.Channels,
+                    WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);
+
+            // LAME DLL path is set in App.OnStartup()
+            else if (EncodeAudio)
+                return writer.AddMp3AudioStream(WaveFormat.Channels,
+                    WaveFormat.SampleRate, AudioBitRate);
+
+            else return writer.AddAudioStream(WaveFormat.Channels,
+                WaveFormat.SampleRate, WaveFormat.BitsPerSample);
+        }
+
+        WaveFileWriter CreateWaveWriter()
+        {
+            return new WaveFileWriter(IsGif
+                ? Path.ChangeExtension(FileName, "wav")
+                : FileName, WaveFormat);
+        }
+
+        WaveFormat WaveFormat;
+        #endregion
+
+        Func<bool> IncludeCursor;
+        Func<IntPtr> hWnd;
+
+        public Recorder(string FileName, int FramesPerSecond, FourCC Codec, int VideoQuality, string AudioSourceId, bool StereoAudio,
+            bool EncodeMp3, int AudioBitRate, bool CaptureMouseClicks, bool CaptureKeyStrokes, Color BgColor,
+            Func<bool> IncludeCursor, Func<IntPtr> hWnd)
+        {
+            this.FileName = FileName;
+            this.FramesPerSecond = FramesPerSecond;
+            this.Codec = Codec;
+            this.Quality = VideoQuality;
+            this.EncodeAudio = EncodeMp3;
+            this.AudioBitRate = AudioBitRate;
+            this.AudioSourceId = AudioSourceId;
+
+            this.IncludeCursor = IncludeCursor;
+            this.hWnd = hWnd;
+
+            this.CaptureMouseClicks = CaptureMouseClicks;
+            this.CaptureKeyStrokes = CaptureKeyStrokes;
+            this.BgColor = BgColor;
+
+            int val;
+            IsLoopback = !int.TryParse(AudioSourceId, out val);
+
+            this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Commons.GifFourCC;
+
+            WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, StereoAudio ? 2 : 1);
+        }
+
+        public void Start(int Delay)
+        {
+            new Thread(new ParameterizedThreadStart((e) =>
+                {
+                    Thread.Sleep((int)e);
+
+                    if (!IsGif) InitSharpAvi();
+                    else InitGif();
+
+                })).Start(Delay);
+        }
+
+        void InitGif()
+        {
+            GifWriter = CreateGifWriter();
+
+            InitAudio();
 
             screenThread = new Thread(RecordScreenAsGif)
             {
@@ -83,7 +166,7 @@ namespace Captura
 
             if (audioSource != null)
             {
-                WaveWriter = Params.CreateWaveWriter();
+                WaveWriter = CreateWaveWriter();
 
                 audioSource.DataAvailable += AudioDataAvailable;
 
@@ -91,33 +174,21 @@ namespace Captura
             }
         }
 
-        void InitSharpAvi(RecorderParams Params)
+        void InitAudio()
         {
-            if (Params.CaptureVideo)
+            if (IsLoopback)
             {
-                // Create AVI writer and specify FPS
-                writer = Params.CreateAviWriter();
-
-                // Create video stream
-                videoStream = Params.CreateVideoStream(writer);
-                // Set only name. Other properties were when creating stream, 
-                // either explicitly by arguments or implicitly by the encoder used
-                videoStream.Name = "Captura";
-            }
-
-            if (Params.IsLoopback)
-            {
-                var dev = Params.LoopbackDevice;
+                var dev = LoopbackDevice;
 
                 SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
 
-                SilencePlayer.Init(new SilenceProvider(Params.WaveFormat));
+                SilencePlayer.Init(new SilenceProvider(WaveFormat));
 
                 SilencePlayer.Play();
 
-                if (Params.CaptureVideo)
+                if (CaptureVideo)
                 {
-                    audioStream = Params.CreateAudioStream(writer);
+                    audioStream = CreateAudioStream(writer);
                     audioStream.Name = "Loopback";
                 }
 
@@ -125,28 +196,45 @@ namespace Captura
             }
             else
             {
-                int AudioSourceId = int.Parse(Params.AudioSourceId);
-
-                if (AudioSourceId != -1)
+                int Id = int.Parse(AudioSourceId);
+                
+                if (Id != -1)
                 {
-                    if (Params.CaptureVideo)
+                    if (CaptureVideo)
                     {
-                        audioStream = Params.CreateAudioStream(writer);
+                        audioStream = CreateAudioStream(writer);
                         audioStream.Name = "Voice";
                     }
 
                     audioSource = new WaveInEvent
                     {
-                        DeviceNumber = AudioSourceId,
-                        WaveFormat = Params.WaveFormat,
+                        DeviceNumber = Id,
+                        WaveFormat = WaveFormat,
                         // Buffer size to store duration of 1 frame
-                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)Params.FramesPerSecond),
+                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)FramesPerSecond),
                         NumberOfBuffers = 3,
                     };
                 }
             }
+        }
 
-            if (Params.CaptureVideo)
+        void InitSharpAvi()
+        {
+            if (CaptureVideo)
+            {
+                // Create AVI writer and specify FPS
+                writer = CreateAviWriter();
+
+                // Create video stream
+                videoStream = CreateVideoStream(writer);
+                // Set only name. Other properties were when creating stream, 
+                // either explicitly by arguments or implicitly by the encoder used
+                videoStream.Name = "Captura";
+            }
+
+            InitAudio();
+
+            if (CaptureVideo)
             {
                 screenThread = new Thread(RecordScreen)
                 {
@@ -154,15 +242,15 @@ namespace Captura
                     IsBackground = true
                 };
             }
-            else WaveWriter = Params.CreateWaveWriter();
+            else WaveWriter = CreateWaveWriter();
 
-            if (Params.CaptureVideo) screenThread.Start();
+            if (CaptureVideo) screenThread.Start();
 
             if (audioSource != null)
             {
                 audioSource.DataAvailable += AudioDataAvailable;
 
-                if (Params.CaptureVideo)
+                if (CaptureVideo)
                 {
                     videoFrameWritten.Set();
                     audioBlockWritten.Reset();
@@ -183,7 +271,7 @@ namespace Captura
                 SilencePlayer = null;
             }
 
-            if (Params.CaptureVideo || Params.IsGif)
+            if (CaptureVideo || IsGif)
             {
                 if (!stopThread.SafeWaitHandle.IsClosed
                     && !stopThread.SafeWaitHandle.IsInvalid)
@@ -198,14 +286,14 @@ namespace Captura
                 audioSource.DataAvailable -= AudioDataAvailable;
             }
 
-            if (Params.CaptureVideo)
+            if (CaptureVideo)
             {
                 // Close writer: the remaining data is written to a file and file is closed
                 writer.Close();
 
                 if (!stopThread.SafeWaitHandle.IsClosed) stopThread.Close();
             }
-            else if (Params.IsGif)
+            else if (IsGif)
             {
                 GifWriter.Dispose();
                 if (!stopThread.SafeWaitHandle.IsClosed) stopThread.Close();
@@ -220,7 +308,7 @@ namespace Captura
             {
                 if (SilencePlayer != null) SilencePlayer.Pause();
 
-                if (Params.CaptureVideo || Params.IsGif) screenThread.Suspend();
+                if (CaptureVideo || IsGif) screenThread.Suspend();
 
                 if (audioSource != null) audioSource.StopRecording();
 
@@ -234,11 +322,11 @@ namespace Captura
             {
                 if (SilencePlayer != null) SilencePlayer.Play();
 
-                if (Params.CaptureVideo || Params.IsGif) screenThread.Resume();
+                if (CaptureVideo || IsGif) screenThread.Resume();
 
                 if (audioSource != null)
                 {
-                    if (Params.CaptureVideo)
+                    if (CaptureVideo)
                     {
                         videoFrameWritten.Set();
                         audioBlockWritten.Reset();
@@ -273,7 +361,7 @@ namespace Captura
                         videoFrameWritten.Set();
                     }
 
-                    if (audioStream != null && !Params.IsLoopback)
+                    if (audioStream != null && !IsLoopback)
                         if (WaitHandle.WaitAny(new WaitHandle[] { audioBlockWritten, stopThread }) == 1)
                             break;
 
@@ -310,7 +398,7 @@ namespace Captura
                 {
                     var timestamp = DateTime.Now;
 
-                    ScreenshotImage = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor);
+                    ScreenshotImage = ScreenShot(hWnd(), IncludeCursor(), true, BgColor, CaptureMouseClicks, CaptureKeyStrokes);
 
                     if (!isFirstFrame) GifWriteTask.Wait();
 
@@ -337,7 +425,8 @@ namespace Captura
             }
         }
 
-        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting, Color BgColor, RecorderParams Params = null)
+        public static Bitmap ScreenShot(IntPtr hWnd, bool IncludeCursor, bool ScreenCasting, Color BgColor,
+            bool CaptureMouseClicks = false, bool CaptureKeyStrokes = false)
         {
             int CursorX = 0, CursorY = 0;
             Rectangle Rect = default(Rectangle);
@@ -390,7 +479,7 @@ namespace Captura
                 #endregion
 
                 #region MouseClicks
-                if (ScreenCasting && Params.CaptureMouseClicks && Commons.MouseClicked)
+                if (ScreenCasting && CaptureMouseClicks && Commons.MouseClicked)
                 {
                     var curPos = User32.CursorPosition;
                     g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
@@ -400,7 +489,7 @@ namespace Captura
                 #endregion
 
                 #region KeyStrokes
-                if (ScreenCasting && Params.CaptureKeyStrokes
+                if (ScreenCasting && CaptureKeyStrokes
                     && Commons.LastKeyPressed != System.Windows.Forms.Keys.None)
                 {
                     g.DrawString(Commons.LastKeyPressed.ToString(),
@@ -421,7 +510,7 @@ namespace Captura
 
         public void ScreenShot(byte[] Buffer)
         {
-            using (var BMP = ScreenShot(Params.hWnd, Params.IncludeCursor, true, Params.BgColor, Params))
+            using (var BMP = ScreenShot(hWnd(), IncludeCursor(), true, BgColor, CaptureMouseClicks, CaptureKeyStrokes))
             {
                 var bits = BMP.LockBits(Commons.DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
@@ -431,9 +520,9 @@ namespace Captura
 
         void AudioDataAvailable(object sender, WaveInEventArgs e)
         {
-            if (Params.CaptureVideo)
+            if (CaptureVideo)
             {
-                if (Params.IsLoopback) audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                if (IsLoopback) audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
                 else
                 {
                     var signalled = WaitHandle.WaitAny(new WaitHandle[] { videoFrameWritten, stopThread });
