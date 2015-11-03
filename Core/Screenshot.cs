@@ -43,7 +43,7 @@ namespace Captura
                 }
                 User32.SetForegroundWindow(data.WindowHandle);
 
-                var r = new Rectangle();
+                var r = new RECT();
                 if (data.DoResize)
                 {
                     SmartResizeWindow(ref data, out r);
@@ -91,13 +91,13 @@ namespace Captura
             }
         }
 
-        static void SmartResizeWindow(ref ScreenshotTask data, out Rectangle oldWindowSize)
+        static void SmartResizeWindow(ref ScreenshotTask data, out RECT oldWindowSize)
         {
-            oldWindowSize = new Rectangle();
+            oldWindowSize = new RECT();
             if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) != WS_SIZEBOX)
                 return;
 
-            var r = new Rectangle();
+            var r = new RECT();
             User32.GetWindowRect(data.WindowHandle, ref r);
             oldWindowSize = r;
 
@@ -134,20 +134,27 @@ namespace Captura
             foreach (Screen s in Screen.AllScreens)
                 totalSize = Rectangle.Union(totalSize, s.Bounds);
 
-            var rct = new Rectangle();
+            var rct = new RECT();
 
-            if (DWMApi.DwmGetWindowAttribute(data.WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(Rectangle)) != 0)
+            if (DWMApi.DwmGetWindowAttribute(data.WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(RECT)) != 0)
                 // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
                 User32.GetWindowRect(data.WindowHandle, ref rct);
             else
             {
                 // DwmGetWindowAttribute() succeeded
                 // Add a 100px margin for window shadows. Excess transparency is trimmed out later
-                rct = Commons.CreateRectangle(rct.Left - 100, rct.Top - 100, rct.Right + 100, rct.Bottom + 100);
+                rct = new RECT(rct.Left - 100, rct.Top - 100, rct.Right + 100, rct.Bottom + 100);
             }
 
             // These next 4 checks handle if the window is outside of the visible screen
-            rct = Rectangle.Intersect(rct, totalSize);
+            if (rct.Left < totalSize.Left)
+                rct.Left = totalSize.Left;
+            if (rct.Top < totalSize.Top)
+                rct.Top = totalSize.Top;
+            if (rct.Right > totalSize.Right)
+                rct.Right = totalSize.Right;
+            if (rct.Bottom > totalSize.Bottom)
+                rct.Bottom = totalSize.Bottom;
 
             User32.ShowWindow(backdrop.Handle, (ShowWindowFlags)4);
             User32.SetWindowPos(backdrop.Handle, data.WindowHandle, rct.Left,

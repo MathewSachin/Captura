@@ -23,7 +23,7 @@ namespace Captura
         #region Public Static
         public static readonly int DesktopHeight, DesktopWidth;
 
-        public static readonly Rectangle DesktopRectangle;
+        public static readonly RECT DesktopRectangle;
 
         public static readonly IntPtr DesktopHandle = User32.GetDesktopWindow();
 
@@ -36,7 +36,7 @@ namespace Captura
             DesktopHeight = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenHeight * toDevice.M22);
             DesktopWidth = (int)Math.Round(System.Windows.SystemParameters.PrimaryScreenWidth * toDevice.M11);
 
-            DesktopRectangle = new Rectangle(0, 0, DesktopWidth, DesktopHeight);
+            DesktopRectangle = new RECT(0, 0, DesktopWidth, DesktopHeight);
         }
 
         public static bool MouseClicked = false;
@@ -44,6 +44,11 @@ namespace Captura
 
         public static readonly FourCC GifFourCC = new FourCC("_gif");
         #endregion
+
+        static Rectangle CreateRectangle(RECT r)
+        {
+            return new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top);
+        }
 
         #region Fields
         AviWriter AviWriter;
@@ -463,26 +468,26 @@ namespace Captura
             bool CaptureMouseClicks = false, bool CaptureKeyStrokes = false)
         {
             int CursorX = 0, CursorY = 0;
-            Rectangle Rect = default(Rectangle);
+            
+            RECT Rect = DesktopRectangle;
 
             if (hWnd != DesktopHandle)
             {
-                var rect = new Rectangle();
-                User32.GetWindowRect(hWnd, ref rect);
-
-                Rect = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+                User32.GetWindowRect(hWnd, ref Rect);
 
                 if (!ScreenCasting) User32.SetWindowPos(hWnd, (IntPtr)(-1), 0, 0, 0, 0, SetWindowPositionFlags.NoMove | SetWindowPositionFlags.NoSize);
             }
-            else Rect = DesktopRectangle;
 
             var BMP = new Bitmap(DesktopWidth, DesktopHeight);
+
             using (var g = Graphics.FromImage(BMP))
             {
-                if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), DesktopRectangle);
+                if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), CreateRectangle(DesktopRectangle));
 
-                g.CopyFromScreen(Rect.Location, Rect.Location, Rect.Size, CopyPixelOperation.SourceCopy);
-
+                g.CopyFromScreen(Rect.Left, Rect.Top, Rect.Left, Rect.Top, 
+                    new System.Drawing.Size(Rect.Right - Rect.Left, Rect.Bottom - Rect.Top), 
+                    CopyPixelOperation.SourceCopy);
+                
                 #region Include Cursor
                 if (IncludeCursor)
                 {
@@ -546,7 +551,7 @@ namespace Captura
         {
             using (var BMP = ScreenShot(hWnd(), IncludeCursor(), true, BackgroundColor, CaptureMouseClicks, CaptureKeyStrokes))
             {
-                var bits = BMP.LockBits(DesktopRectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                var bits = BMP.LockBits(CreateRectangle(DesktopRectangle), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
                 Marshal.Copy(bits.Scan0, Buffer, 0, Buffer.Length);
                 BMP.UnlockBits(bits);
             }
