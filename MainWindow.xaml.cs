@@ -219,10 +219,10 @@ namespace Captura
             #region KeyHook
             KeyHook = new KeyboardHookList(this);
 
-            KeyHook.Register(KeyCode.R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
+            KeyHook.Register(KeyCode.VK_R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
                 () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>())));
 
-            KeyHook.Register(KeyCode.S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
+            KeyHook.Register(KeyCode.VK_S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
                 () => Dispatcher.Invoke(new Action(() => ScreenShot<int>())));
             #endregion
 

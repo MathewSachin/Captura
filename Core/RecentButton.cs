@@ -7,10 +7,10 @@ namespace Captura
 {
     public class RecentButton : Fluent.Button
     {
-        static readonly SolidColorBrush AviBack = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B7000000")),
+        static readonly SolidColorBrush AviBack = new SolidColorBrush(Colors.Black),
             GifBack = new SolidColorBrush(Colors.DarkGreen),
             WavBack = new SolidColorBrush(Colors.DarkOrange),
-            OtherBack = new SolidColorBrush(Colors.DarkViolet);
+            OtherBack = new SolidColorBrush(Colors.Chocolate);
 
         public RoutedUICommand RecentButtonClick = new RoutedUICommand();
 
