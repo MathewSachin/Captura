@@ -159,11 +159,7 @@ namespace Captura
 
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OutputFolderBrowse(),
                 (s, e) => e.CanExecute = ReadyToRecord));
-
-            CommandBindings.Add(new CommandBinding(NavigationCommands.PreviousPage,
-                (s, e) => Process.Start(lastFileName),
-                (s, e) => e.CanExecute = !string.IsNullOrWhiteSpace(lastFileName) && File.Exists(lastFileName)));
-
+            
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
 
             CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
@@ -319,10 +315,11 @@ namespace Captura
 
             ReadyToRecord = false;
 
-            string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav" : ".avi";
+            string Extension = (WindowsGallery.SelectedIndex == 0) ? ".wav" 
+                : (Encoder == Commons.GifFourCC ? ".gif" : ".avi");
 
-            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ((Encoder == Commons.GifFourCC) ? ".gif" : Extension));
-
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") +  Extension);
+            
             Status.Content = "Recording...";
 
             DTimer.Stop();
@@ -346,6 +343,8 @@ namespace Captura
                     Thread.Sleep((int)Delay);
                     Recorder = new Recorder(Params);
                 })).Start((int)StartDelay.Value);
+
+            RecentPanel.Children.Add(new RecentButton(lastFileName));
         }
 
         void StopRecording()
@@ -388,6 +387,7 @@ namespace Captura
 
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
+            string FileName = null;
             ImageFormat ImgFmt;
             string Extension;
 
@@ -433,7 +433,7 @@ namespace Captura
             }
 
             if (!SaveToClipboard.IsChecked.Value)
-                lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
+                FileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
             if (SelectedWindow == Commons.DesktopHandle
                 || SelectedWindow == RegionSelector.Handle
@@ -448,13 +448,15 @@ namespace Captura
                 }
                 else
                 {
-                    try { BMP.Save(lastFileName, ImgFmt); }
+                    try { BMP.Save(FileName, ImgFmt); }
                     catch (Exception E) { Status.Content = "Not Saved. " + E.Message; }
 
-                    Status.Content = "Saved to " + lastFileName;
+                    Status.Content = "Saved to " + FileName;
                 }
             }
-            else Screenshot.CaptureWindow(this, lastFileName, ImgFmt);
+            else Screenshot.CaptureWindow(this, FileName, ImgFmt);
+
+            RecentPanel.Children.Add(new RecentButton(FileName));
         }
 
         #region Gallery Selection Changed Handlers

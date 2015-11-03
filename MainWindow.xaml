@@ -84,10 +84,11 @@
                             </StackPanel>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Recent">
-                            <StackPanel>
-                                <Fluent:Button Foreground="#B7000000" Header="Last" Command="PreviousPage"/>
-                                <Fluent:Button Header="Output Folder" Foreground="#B7000000" Click="OpenOutputFolder"/>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Name="RecentPanel">
+                                    <Fluent:Button Header="Output Folder" Foreground="DarkBlue" Click="OpenOutputFolder"/>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Fluent:BackstageTabItem>
                         <Fluent:SeparatorTabItem/>
                         <Fluent:Button Header="Close" Command="Close"/>
