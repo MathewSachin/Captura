@@ -30,7 +30,6 @@ namespace Captura
         WaveFileWriter WaveWriter;
         IWavePlayer SilencePlayer;
         GifWriter GifWriter;
-        IKeyboardMouseEvents KeyHook;
         #endregion
 
         public Recorder(RecorderParams Params)

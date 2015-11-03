@@ -212,7 +212,7 @@ namespace Captura
             SystemTray.IconSource = Icon;
             StateChanged += (s, e) =>
                 {
-                    if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked)
+                    if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
                     {
                         Hide();
                         SystemTray.Visibility = Visibility.Visible;
@@ -238,7 +238,7 @@ namespace Captura
             AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
         }
 
-        void Refresh()
+        void Refresh(object sender = null, RoutedEventArgs e = null)
         {
             if (ReadyToRecord)
             {
@@ -334,11 +334,11 @@ namespace Captura
 
             var Params = new RecorderParams(this, lastFileName);
 
-            if (CaptureMouseClicks.IsChecked || CaptureKeyStrokes.IsChecked)
+            if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
             {
                 ClickHook = Hook.GlobalEvents();
-                if (CaptureMouseClicks.IsChecked) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
-                if (CaptureKeyStrokes.IsChecked) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
+                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Commons.MouseClicked = true;
+                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Commons.LastKeyPressed = e.KeyCode;
             }
 
             new Thread(new ParameterizedThreadStart((object Delay) =>
@@ -465,7 +465,7 @@ namespace Captura
         void DevicesGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (DevicesGallery.SelectedIndex == -1) DevicesGallery.SelectedIndex = 0; }
         #endregion
 
-        void OpenOutputFolder(object sender, MouseButtonEventArgs e) { Process.Start("explorer.exe", OutPath.Text); }
+        void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", OutPath.Text); }
 
         void RibbonWindow_Closing(object sender, CancelEventArgs e)
         {

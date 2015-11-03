@@ -19,33 +19,80 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Color x:Key="{x:Static Fluent:MetroColors.ThemeColorKey}">
-                Chocolate
-            </Color>
+            <Color x:Key="{x:Static Fluent:MetroColors.ThemeColorKey}">Chocolate</Color>
+            <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
+                <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
+                                Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
+                                       Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                                        ToolTip="{TemplateBinding ToolTip}"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="true">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
     <DockPanel>
         <Fluent:Ribbon AutomaticStateManagement="True" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
-                <Fluent:ApplicationMenu Header="File">
-                    <Fluent:ApplicationMenu.RightPaneContent>
-                        <StackPanel Margin="5">
-                            <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
-                            <Label Content="(c) Mathew Sachin. All Rights Reserved" 
+                <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Dashboard">
+                            <StackPanel>
+                                <DockPanel>
+                                    <Button Content="Images/Refresh.png" Click="Refresh"
+                                            Height="40" Margin="0,0,10,0"
+                                            Template="{StaticResource ImageButtonTemplate}"
+                                            DockPanel.Dock="Right" ToolTip="Refresh"/>
+                                    <StackPanel Margin="5">
+                                        <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
+                                        <Label Content="(c) Mathew Sachin. All Rights Reserved" 
                                                FontFamily="Comic Sans MS" FontSize="12"/>
-                        </StackPanel>
-                    </Fluent:ApplicationMenu.RightPaneContent>
-                    <Fluent:MenuItem Header="Last" Command="PreviousPage"/>
-                    <Fluent:MenuItem Header="Refresh" Command="Refresh" Icon="Images/Refresh.png"/>
-                    <Fluent:MenuItem Header="Capture Mouse Clicks" IsCheckable="True"
-                                         Size="Middle" Name="CaptureMouseClicks"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
-                    <Fluent:MenuItem Header="Capture Keystrokes" IsCheckable="True"
-                                         Size="Middle" Name="CaptureKeyStrokes"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
-                    <Fluent:MenuItem IsCheckable="True"  GroupName="MinTo" Name="Min2SysTray" Header="Use SystemTray"/>
-                </Fluent:ApplicationMenu>
+                                    </StackPanel>
+                                </DockPanel>
+                                <Fluent:RibbonGroupBox Header="Video Source Window">
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="380" 
+                                        ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
+                                        DisplayMemberPath="Value" SelectedValuePath="Key"
+                                        Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
+                                        SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
+                                </Fluent:RibbonGroupBox>
+                                <Fluent:RibbonGroupBox Header="Audio Capture Devices">
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
+                                        ItemWidth="{Binding Width}" Width="380"
+                                        ItemsSource="{Binding AvailableAudioSources}"
+                                        DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
+                                        SelectionChanged="DevicesGallery_SelectionChanged"
+                                        SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
+                                </Fluent:RibbonGroupBox>
+                                <Fluent:RibbonGroupBox Header="Video Encoder">
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
+                                        Width="380" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
+                                        SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
+                                        DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
+                                        SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
+                                </Fluent:RibbonGroupBox>
+                            </StackPanel>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:BackstageTabItem Header="Recent">
+                            <StackPanel>
+                                <Fluent:Button Foreground="#B7000000" Header="Last" Command="PreviousPage"/>
+                                <Fluent:Button Header="Output Folder" Foreground="#B7000000" Click="OpenOutputFolder"/>
+                            </StackPanel>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:SeparatorTabItem/>
+                        <Fluent:Button Header="Close" Command="Close"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
 
             <Fluent:RibbonTabItem Header="Home">
@@ -60,24 +107,7 @@
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
-                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
-                        <Fluent:DropDownButton.LargeIcon>
-                            <Grid>
-                                <Rectangle Height="20" Width="20" Stroke="Black">
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{Binding ThemeColor}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Grid>
-                        </Fluent:DropDownButton.LargeIcon>
-                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
-                                                 Mode="ThemeColors"
-                                                 StandardColorGridRows="10"
-                                                 Columns="10"
-                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
-                        </Fluent:ColorGallery>
-                    </Fluent:DropDownButton>
+                    <Fluent:ToggleButton Name="Min2SysTray" Header="Use SystemTray"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -115,25 +145,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="Window">
-                <Fluent:RibbonGroupBox>
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="500" 
-                                  ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
-                                  DisplayMemberPath="Value" SelectedValuePath="Key"
-                                  Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
-                                  SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-
             <Fluent:RibbonTabItem Header="Audio">
-                <Fluent:RibbonGroupBox Header="Devices">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
-                                  Width="300" ItemWidth="{Binding Width}"
-                                  ItemsSource="{Binding AvailableAudioSources}"
-                                  DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
-                                  SelectionChanged="DevicesGallery_SelectionChanged"
-                                  SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
-                </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton LargeIcon="Images/MP3.png"
                         Header="Encode Mp3" IsEnabled="{Binding ReadyToRecord}"
@@ -154,13 +166,33 @@
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"
                                          Icon="Images/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
                 </Fluent:RibbonGroupBox>
-
-                <Fluent:RibbonGroupBox Header="Encoder">
-                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
-                                  Width="320" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
-                                  SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
-                                  DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
-                                  SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
+                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Grid>
+                                <Rectangle Height="20" Width="20" Stroke="Black">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ThemeColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Fluent:DropDownButton.LargeIcon>
+                        <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
+                                                 Mode="ThemeColors"
+                                                 StandardColorGridRows="10"
+                                                 Columns="10"
+                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
+                        </Fluent:ColorGallery>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox>
+                    <Fluent:ToggleButton Header="Capture Mouse Clicks"
+                                         Name="CaptureMouseClicks"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
+                    <Fluent:ToggleButton Header="Capture Keystrokes"
+                                         Name="CaptureKeyStrokes"
+                                         IsEnabled="{Binding ReadyToRecord}"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
@@ -188,26 +220,6 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel.Resources>
-                <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
-                    <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
-                                Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
-                                       Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
-                                        ToolTip="{TemplateBinding ToolTip}"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.8" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="ButtonImage" Property="Opacity" Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.3" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-
                 <Style TargetType="Button">
                     <Setter Property="Height" Value="60"/>
                     <Setter Property="Template" Value="{StaticResource ImageButtonTemplate}"/>

@@ -26,8 +26,8 @@ namespace Captura
             EncodeAudio = MainWindow.EncodeAudio.IsChecked.Value;
             AudioBitRate = Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)MainWindow.AudioQuality.Value);
             CaptureVideo = hWnd.ToInt32() != -1 && Codec != Commons.GifFourCC;
-            CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked;
-            CaptureKeyStrokes = MainWindow.CaptureKeyStrokes.IsChecked;
+            CaptureMouseClicks = MainWindow.CaptureMouseClicks.IsChecked.Value;
+            CaptureKeyStrokes = MainWindow.CaptureKeyStrokes.IsChecked.Value;
 
             BgColor = Commons.ConvertColor(MainWindow.ThemeColor);
 
