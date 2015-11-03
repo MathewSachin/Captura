@@ -182,9 +182,6 @@
     <Resource Include="Images\Pause.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ScreenShot.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Refresh.png" />
     <Resource Include="Images\Speaker.png" />
   </ItemGroup>
@@ -196,6 +193,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Resize.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Click.png" />
+    <Resource Include="Images\Keystroke.png" />
+    <Resource Include="Images\Screenshot.png" />
+    <Resource Include="Images\SysTray.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

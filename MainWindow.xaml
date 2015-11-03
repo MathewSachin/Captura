@@ -10,7 +10,7 @@
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo x:Name="RecordThumb" Description="Record" Click="ToggleRecorderState" ImageSource="Images/Record.png"/>
-                <ThumbButtonInfo Description="ScreenShot" Click="ScreenShot" ImageSource="Images/ScreenShot.ico"/>
+                <ThumbButtonInfo Description="ScreenShot" Click="ScreenShot" ImageSource="Images/ScreenShot.png"/>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Fluent:RibbonWindow.TaskbarItemInfo>
@@ -107,7 +107,7 @@
                     <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Name="Min2SysTray" Header="Use SystemTray"/>
+                    <Fluent:ToggleButton Name="Min2SysTray" Header="Use SystemTray" LargeIcon="Images/SysTray.png"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -189,10 +189,12 @@
                 <Fluent:RibbonGroupBox>
                     <Fluent:ToggleButton Header="Capture Mouse Clicks"
                                          Name="CaptureMouseClicks"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
+                                         IsEnabled="{Binding ReadyToRecord}"
+                                         LargeIcon="Images/Click.png"/>
                     <Fluent:ToggleButton Header="Capture Keystrokes"
                                          Name="CaptureKeyStrokes"
-                                         IsEnabled="{Binding ReadyToRecord}"/>
+                                         IsEnabled="{Binding ReadyToRecord}"
+                                         LargeIcon="Images/Keystroke.png"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
@@ -226,7 +228,7 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Button Content="Images/ScreenShot.ico" Height="40" Width="40" ToolTip="ScreenShot" Click="ScreenShot" />
+            <Button Content="Images/ScreenShot.png" Height="40" Width="40" ToolTip="ScreenShot" Click="ScreenShot" />
 
             <Button Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
 
