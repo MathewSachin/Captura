@@ -8,7 +8,20 @@ A Capture application which captures the `whole` or `Selected part` of the scree
 
 Icons generated with: [NIco](http://github.com/MathewSachin/NIco)
 
-Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/download/v2.3/Captura.zip)) and Acknowledgements
+Features
+--------------------------------------------------------------
+* Capture Screen as Video (`ScreenCast` - `Avi` or `Gif`) or `ScreenShot`(Also to Clipboard).
+* Capture `Microphone/Loopback` Audio.
+* Can Capture With/Without the `Mouse Cursor`.
+* Capture `Specific Windows`.
+* Capture `KeyStrokes` and Mouse `Clicks`.
+* `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
+* `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
+* Specify `Start Delay` if you want a few Seconds to Get Started.
+* Set `Capture Duration` and Captura will automatically Stop after the specified time.
+* Set `BackgroundColor` for cases like `SpecificWindowCapture`
+
+Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/download/v2.3/Captura.zip))
 --------------------------------------------------------------
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
@@ -17,19 +30,8 @@ Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/
 * [ManagedWin32](http://github.com/MathewSachin/ManagedWin32)
 * [GlobalMouseKeyHook](https://github.com/gmamaladze/globalmousekeyhook) by George Mamaladze
 
-Features
+Acknowledgements
 --------------------------------------------------------------
-* Capture Screen as Video (`ScreenCast` - `Avi` or `Gif`) or `ScreenShot`.
-* Capture `Microphone/Loopback` Audio.
-* Can Capture With/Without the `Mouse Cursor`.
-* Capture `Specific Windows`.
-* Capture `KeyStrokes`.
-* Capture Mouse `Clicks`.
-* Minimize to `System Tray`.
-* `Ctrl+Alt+Shift+R`: From Anywhere to Start/Stop Recording.
-* `Ctrl+Alt+Shift+S`: From Anywhere for ScreenShot.
-* Supports `Video Alone`, `Audio Alone` Captures.
-* Specify `Start Delay` if you want a few Seconds to Get Started.
-* Set `Capture Duration` and Captura will automatically Stop after the specified time.
-* Set `BackgroundColor` for cases like `SpecificWindowCapture`
-* Capture ScreenShots to Disk or to Clipboard
+* Recorder.cs adopted from SharpAvi ScreenCast Sample
+* ScreenShot.cs adopted from Aeroshot
+* GifWriter.cs adopted from Bumpkit

@@ -161,7 +161,7 @@ namespace Captura
                 (s, e) => e.CanExecute = ReadyToRecord));
 
             CommandBindings.Add(new CommandBinding(NavigationCommands.PreviousPage,
-                (s, e) => Process.Start("explorer.exe", string.Format("/select, \"{0}\"", lastFileName)),
+                (s, e) => Process.Start(lastFileName),
                 (s, e) => e.CanExecute = !string.IsNullOrWhiteSpace(lastFileName) && File.Exists(lastFileName)));
 
             CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
