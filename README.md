@@ -21,7 +21,7 @@ Features
 * Set `Capture Duration` and Captura will automatically Stop after the specified time.
 * Set `BackgroundColor` for cases like `SpecificWindowCapture`
 
-Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/tag/Dependencies))
+Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/latest))
 --------------------------------------------------------------
 * [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
