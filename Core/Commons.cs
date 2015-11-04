@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace Captura
 {
     public static class Commons
-    {        
+    {
         public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
 
         public static void WriteToClipboard(this Bitmap BMP, bool PreserveTransparency)

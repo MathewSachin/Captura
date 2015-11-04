@@ -171,18 +171,18 @@ namespace Captura
                     RotationEffect.Angle = 90;
                     Status.Content = "Paused";
                     PauseButton.ToolTip = "Pause";
-                }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? !Recorder.IsPaused : true)));
+                }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder != null));
 
             CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
                 {
-                    Recorder.Resume();
+                    Recorder.Start();
                     DTimer.Start();
 
                     PauseButton.Command = PauseCommand;
                     RotationEffect.Angle = 0;
                     Status.Content = "Recording...";
                     PauseButton.ToolTip = "Resume";
-                }, (s, e) => e.CanExecute = !ReadyToRecord && (Recorder != null ? Recorder.IsPaused : false)));
+                }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder != null));
             #endregion
 
             NavigationCommands.Refresh.Execute(this, this);
@@ -305,6 +305,8 @@ namespace Captura
 
             if (MinOnStart.IsChecked.Value) WindowState = WindowState.Minimized;
 
+            WindowsGallery.IsEnabled = WindowsGallery.SelectedIndex != 0;
+
             IsCollapsed = true;
 
             // UI Buttons
@@ -343,7 +345,7 @@ namespace Captura
                         () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor.IsChecked.Value)),
                         () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));
 
-            Recorder.Error += (E) => Dispatcher.Invoke(new Action(() => 
+            Recorder.Error += (E) => Dispatcher.Invoke(new Action(() =>
                 {
                     Status.Content = "Error - " + E.Message;
                     OnStopped();
@@ -359,6 +361,8 @@ namespace Captura
             Recorder = null;
 
             if (ClickHook != null) ClickHook.Dispose();
+
+            WindowsGallery.IsEnabled = true;
 
             ReadyToRecord = true;
 
@@ -380,7 +384,7 @@ namespace Captura
 
         void StopRecording()
         {
-            Recorder.Dispose();
+            Recorder.Stop();
             OnStopped();
         }
 
