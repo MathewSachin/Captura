@@ -130,13 +130,17 @@
             </Fluent:Ribbon.Menu>
 
             <Fluent:RibbonTabItem Header="Home">
-                <Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Minimize">
                     <Fluent:ToggleButton Icon="Images/Minimize.ico" 
                                          LargeIcon="Images/Minimize.ico"
                                          IsEnabled="{Binding ReadyToRecord}"
-                                         Header="Minimise On Capture Start" 
+                                         Header="On Capture Start" 
                                          x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
+                        <Fluent:ToggleButton Name="Min2SysTray" 
+                                         Header="To SystemTray" 
+                                         LargeIcon="Images/SysTray.png"
+                                         Icon="Images/SysTray.png"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
                     <Fluent:Spinner Header="Start Delay (in ms)" 
@@ -151,12 +155,6 @@
                                     x:Name="CaptureDuration" 
                                     Value="0" 
                                     Minimum="0"/>
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Name="Min2SysTray" 
-                                         Header="Use SystemTray" 
-                                         LargeIcon="Images/SysTray.png"
-                                         Icon="Images/SysTray.png"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Audio">
                     <Fluent:ToggleButton Icon="Images/MP3.png"
