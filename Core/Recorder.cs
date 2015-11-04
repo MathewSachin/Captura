@@ -45,10 +45,7 @@ namespace Captura
         public static readonly FourCC GifFourCC = new FourCC("_gif");
         #endregion
 
-        static Rectangle CreateRectangle(RECT r)
-        {
-            return new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top);
-        }
+        static Rectangle CreateRectangle(RECT r) { return new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top); }
 
         #region Fields
         AviWriter AviWriter;
@@ -63,9 +60,9 @@ namespace Captura
         ManualResetEvent StopThread = new ManualResetEvent(false);
         AutoResetEvent VideoFrameWritten = new AutoResetEvent(false),
             AudioBlockWritten = new AutoResetEvent(false);
-        
+
         public bool IsPaused = false;
-        
+
         GifWriter GifWriter;
         Color BackgroundColor;
 
@@ -468,7 +465,7 @@ namespace Captura
             bool CaptureMouseClicks = false, bool CaptureKeyStrokes = false)
         {
             int CursorX = 0, CursorY = 0;
-            
+
             RECT Rect = DesktopRectangle;
 
             if (hWnd != DesktopHandle)
@@ -484,10 +481,10 @@ namespace Captura
             {
                 if (BgColor != Color.Transparent) g.FillRectangle(new SolidBrush(BgColor), CreateRectangle(DesktopRectangle));
 
-                g.CopyFromScreen(Rect.Left, Rect.Top, Rect.Left, Rect.Top, 
-                    new System.Drawing.Size(Rect.Right - Rect.Left, Rect.Bottom - Rect.Top), 
+                g.CopyFromScreen(Rect.Left, Rect.Top, Rect.Left, Rect.Top,
+                    new System.Drawing.Size(Rect.Right - Rect.Left, Rect.Bottom - Rect.Top),
                     CopyPixelOperation.SourceCopy);
-                
+
                 #region Include Cursor
                 if (IncludeCursor)
                 {

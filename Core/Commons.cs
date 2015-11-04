@@ -1,21 +1,12 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using System.Windows.Interop;
-using ManagedWin32.Api;
-using SharpAvi;
 
 namespace Captura
 {
     public static class Commons
-    {
-        public static Rectangle CreateRectangle(int Left, int Top, int Right, int Bottom) 
-        {
-            return new Rectangle(Left, Top, Right - Left, Bottom - Top);
-        }
-        
+    {        
         public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
 
         public static void WriteToClipboard(this Bitmap BMP, bool PreserveTransparency)

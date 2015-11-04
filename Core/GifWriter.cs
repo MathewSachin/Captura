@@ -64,7 +64,7 @@ namespace Captura
         /// <param name="Image">The image to add</param>
         /// <param name="XOffset">The positioning x offset this image should be displayed at.</param>
         /// <param name="YOffset">The positioning y offset this image should be displayed at.</param>
-        public Task WriteFrameAsync(Image Image, double? FrameDelay = null, int XOffset = 0, int YOffset = 0)
+        public Task WriteFrameAsync(Image Image, int FrameDelay = 0, int XOffset = 0, int YOffset = 0)
         {
             var Task = new Task(() =>
                 {
@@ -75,7 +75,8 @@ namespace Captura
                         // Steal the global color table info
                         if (FirstFrame) InitHeader(gifStream, Writer, Image.Width, Image.Height);
 
-                        WriteGraphicControlBlock(gifStream, Writer, FrameDelay ?? DefaultFrameDelay);
+                        WriteGraphicControlBlock(gifStream, Writer, 
+                            FrameDelay == 0 ? DefaultFrameDelay : FrameDelay);
                         WriteImageBlock(gifStream, Writer, !FirstFrame, XOffset, YOffset, Image.Width, Image.Height);
                     }
 
@@ -86,7 +87,7 @@ namespace Captura
             return Task;
         }
 
-        public Task WriteFrameAsync(string FilePath, double? frameDelay = null, int XOffset = 0, int YOffset = 0)
+        public Task WriteFrameAsync(string FilePath, int frameDelay = 0, int XOffset = 0, int YOffset = 0)
         {
             return WriteFrameAsync(new Bitmap(FilePath), frameDelay, XOffset, YOffset);
         }
@@ -125,7 +126,7 @@ namespace Captura
             Writer.Write(colorTable, 0, colorTable.Length);
         }
 
-        void WriteGraphicControlBlock(Stream sourceGif, BinaryWriter Writer, double frameDelay)
+        void WriteGraphicControlBlock(Stream sourceGif, BinaryWriter Writer, int frameDelay)
         {
             sourceGif.Position = SourceGraphicControlExtensionPosition; // Locating the source GCE
             var blockhead = new byte[SourceGraphicControlExtensionLength];
