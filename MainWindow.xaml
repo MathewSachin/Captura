@@ -1,16 +1,22 @@
 ﻿<Fluent:RibbonWindow x:Class="Captura.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:this="clr-namespace:Captura" ResizeMode="CanMinimize"
+        xmlns:this="clr-namespace:Captura"
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        ResizeMode="CanMinimize"
         Title="Captura" Width="525" Height="400"
         Closing="RibbonWindow_Closing" 
         Icon="Images/Captura.ico">
     <Fluent:RibbonWindow.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo x:Name="RecordThumb" Description="Record" Click="ToggleRecorderState" ImageSource="Images/Record.png"/>
-                <ThumbButtonInfo Description="ScreenShot" Click="ScreenShot" ImageSource="Images/ScreenShot.png"/>
+                <ThumbButtonInfo x:Name="RecordThumb" 
+                                 Description="Record" 
+                                 Click="ToggleRecorderState" 
+                                 ImageSource="Images/Record.png"/>
+                <ThumbButtonInfo Description="ScreenShot" 
+                                 Click="ScreenShot" 
+                                 ImageSource="Images/ScreenShot.png"/>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Fluent:RibbonWindow.TaskbarItemInfo>
@@ -19,13 +25,18 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2013/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Color x:Key="{x:Static Fluent:MetroColors.ThemeColorKey}">Chocolate</Color>
+            <Color x:Key="{x:Static Fluent:MetroColors.ThemeColorKey}">
+                Chocolate
+            </Color>
             <ControlTemplate x:Key="ImageButtonTemplate" TargetType="{x:Type Button}">
-                <Grid x:Name="Grid" Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
-                                Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
-                    <Image Margin="5" x:Name="ButtonImage" Opacity="0.6" 
-                                       Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
-                                        ToolTip="{TemplateBinding ToolTip}"/>
+                <Grid x:Name="Grid" 
+                      Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" 
+                      Width="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Margin="5" 
+                           x:Name="ButtonImage" 
+                           Opacity="0.6" 
+                           Source="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                           ToolTip="{TemplateBinding ToolTip}"/>
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
@@ -49,44 +60,66 @@
                         <Fluent:BackstageTabItem Header="Dashboard">
                             <StackPanel>
                                 <DockPanel>
-                                    <Button Content="Images/Refresh.png" Click="Refresh"
-                                            Height="40" Margin="0,0,10,0"
+                                    <Button Content="Images/Refresh.png" 
+                                            Click="Refresh"
+                                            Height="40"
+                                            Margin="0,0,10,0"
                                             Template="{StaticResource ImageButtonTemplate}"
-                                            DockPanel.Dock="Right" ToolTip="Refresh"/>
+                                            DockPanel.Dock="Right" 
+                                            ToolTip="Refresh"/>
                                     <StackPanel Margin="5">
-                                        <Label Content="Captura" FontSize="18" Foreground="DarkBlue"/>
+                                        <Label Content="Captura"
+                                               FontSize="18" 
+                                               Foreground="DarkBlue"/>
                                         <Label Content="(c) Mathew Sachin. All Rights Reserved" 
-                                               FontFamily="Comic Sans MS" FontSize="12"/>
+                                               FontFamily="Comic Sans MS" 
+                                               FontSize="12"/>
                                     </StackPanel>
                                 </DockPanel>
                                 <Fluent:RibbonGroupBox Header="Video Source Window">
-                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" Width="380" 
-                                        ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableWindows}"
-                                        DisplayMemberPath="Value" SelectedValuePath="Key"
-                                        Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
-                                        SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1"
+                                                            MaxItemsInDropDownRow="1" 
+                                                            Width="380"                                                            
+                                                            ItemWidth="{Binding Width}"
+                                                            ItemsSource="{Binding AvailableWindows}"          
+                                                            DisplayMemberPath="Value" SelectedValuePath="Key"
+                                                            Name="WindowsGallery" SelectionChanged="WindowsGallery_SelectionChanged"
+                                                            SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"/>
                                 </Fluent:RibbonGroupBox>
                                 <Fluent:RibbonGroupBox Header="Audio Capture Devices">
-                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
-                                        ItemWidth="{Binding Width}" Width="380"
-                                        ItemsSource="{Binding AvailableAudioSources}"
-                                        DisplayMemberPath="Value" IsEnabled="{Binding ReadyToRecord}" Name="DevicesGallery"
-                                        SelectionChanged="DevicesGallery_SelectionChanged"
-                                        SelectedValuePath="Key" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1"
+                                                            MaxItemsInDropDownRow="1" 
+                                                            ItemWidth="{Binding Width}"
+                                                            Width="380"
+                                                            ItemsSource="{Binding AvailableAudioSources}"
+                                                            DisplayMemberPath="Value"
+                                                            IsEnabled="{Binding ReadyToRecord}" 
+                                                            Name="DevicesGallery"
+                                                            SelectionChanged="DevicesGallery_SelectionChanged"
+                                                            SelectedValuePath="Key"
+                                                            SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"/>
                                 </Fluent:RibbonGroupBox>
                                 <Fluent:RibbonGroupBox Header="Video Encoder">
-                                    <Fluent:InRibbonGallery MaxItemsInRow="1" MaxItemsInDropDownRow="1" 
-                                        Width="380" ItemWidth="{Binding Width}" ItemsSource="{Binding AvailableCodecs}"
-                                        SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersGallery"
-                                        DisplayMemberPath="Name" SelectionChanged="EncodersGallery_SelectionChanged"
-                                        SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
+                                    <Fluent:InRibbonGallery MaxItemsInRow="1"
+                                                            MaxItemsInDropDownRow="1" 
+                                                            Width="380" 
+                                                            ItemWidth="{Binding Width}"
+                                                            ItemsSource="{Binding AvailableCodecs}"
+                                                            SelectedValuePath="Codec" 
+                                                            IsEnabled="{Binding ReadyToRecord}"
+                                                            Name="EncodersGallery"
+                                                            DisplayMemberPath="Name"
+                                                            SelectionChanged="EncodersGallery_SelectionChanged"
+                                                            SelectedValue="{Binding Encoder, Mode=TwoWay}"/>
                                 </Fluent:RibbonGroupBox>
                             </StackPanel>
                         </Fluent:BackstageTabItem>
                         <Fluent:BackstageTabItem Header="Recent">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel Name="RecentPanel">
-                                    <Fluent:Button Header="Output Folder" Foreground="DarkBlue" Click="OpenOutputFolder"/>
+                                    <Fluent:Button Header="Output Folder" 
+                                                   Foreground="DarkBlue"
+                                                   Click="OpenOutputFolder"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Fluent:BackstageTabItem>
@@ -98,38 +131,68 @@
 
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Icon="Images/Minimize.ico" LargeIcon="Images/Minimize.ico"
+                    <Fluent:ToggleButton Icon="Images/Minimize.ico" 
+                                         LargeIcon="Images/Minimize.ico"
                                          IsEnabled="{Binding ReadyToRecord}"
-                                         Header="Minimise On Capture Start" x:Name="MinOnStart"
+                                         Header="Minimise On Capture Start" 
+                                         x:Name="MinOnStart"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:Spinner Header="Start Delay (in ms)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="StartDelay" Value="0" Minimum="0"/>
-                    <Fluent:Spinner Header="Capture Duration (in seconds)" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="CaptureDuration" Value="0" Minimum="0"/>
+                    <Fluent:Spinner Header="Start Delay (in ms)" 
+                                    IsEnabled="{Binding ReadyToRecord}" 
+                                    Margin="0,5" 
+                                    x:Name="StartDelay" 
+                                    Value="0" 
+                                    Minimum="0"/>
+                    <Fluent:Spinner Header="Capture Duration (in seconds)"
+                                    IsEnabled="{Binding ReadyToRecord}" 
+                                    Margin="0,5"
+                                    x:Name="CaptureDuration" 
+                                    Value="0" 
+                                    Minimum="0"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Name="Min2SysTray" Header="Use SystemTray" LargeIcon="Images/SysTray.png"/>
+                    <Fluent:ToggleButton Name="Min2SysTray" 
+                                         Header="Use SystemTray" 
+                                         LargeIcon="Images/SysTray.png"
+                                         Icon="Images/SysTray.png"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Audio">
-                    <Fluent:ToggleButton Icon="Images/MP3.png" Size="Middle"
-                        Header="Encode Mpeg3" IsEnabled="{Binding ReadyToRecord}"
-                        IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
-                        Name="EncodeAudio"/>
-                    <Fluent:ToggleButton Header="Capture Stereo" Name="UseStereo" Size="Middle"
-                                         IsEnabled="{Binding ReadyToRecord}" Icon="Images/Speaker.png"
+                    <Fluent:ToggleButton Icon="Images/MP3.png"
+                                         Size="Middle"
+                                         Header="Encode Mpeg3" 
+                                         IsEnabled="{Binding ReadyToRecord}"
+                                         IsChecked="{Binding Source={StaticResource Settings}, Path=Default.EncodeAudio}"
+                                         Name="EncodeAudio"/>
+                    <Fluent:ToggleButton Header="Capture Stereo" 
+                                         Name="UseStereo"
+                                         Size="Middle"
+                                         IsEnabled="{Binding ReadyToRecord}" 
+                                         Icon="Images/Speaker.png"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.UseStereo}"/>
-                    <Fluent:Spinner Header="Quality" Name="AudioQuality" IsEnabled="{Binding ReadyToRecord}" Interval="1"/>
+                    <Fluent:Spinner Header="Quality" 
+                                    Name="AudioQuality" 
+                                    IsEnabled="{Binding ReadyToRecord}"
+                                    Interval="1"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="ScreenShot">
                 <Fluent:RibbonGroupBox Header="Save To">
-                    <Fluent:RadioButton GroupName="SaveTo" Name="SaveToClipboard" Header="Clipboard"/>
-                    <Fluent:RadioButton GroupName="SaveTo" Header="Disk" IsChecked="True"/>
+                    <Fluent:RadioButton GroupName="SaveTo" 
+                                        Name="SaveToClipboard" 
+                                        Header="Clipboard"/>
+                    <Fluent:RadioButton GroupName="SaveTo" 
+                                        Header="Disk" 
+                                        IsChecked="True"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="File Format">
-                    <Fluent:InRibbonGallery Name="ScreenShotFileFormat" MaxItemsInRow="1" MaxItemsInDropDownRow="1"
-                                            Width="100" ItemWidth="{Binding Width}"
+                    <Fluent:InRibbonGallery Name="ScreenShotFileFormat"
+                                            MaxItemsInRow="1"
+                                            MaxItemsInDropDownRow="1"
+                                            Width="100"
+                                            ItemWidth="{Binding Width}"
                                             SelectedIndex="0">
                         <Fluent:GalleryItem Content="Png"/>
                         <Fluent:GalleryItem Content="Jpeg"/>
@@ -143,33 +206,71 @@
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton Header="Use DWM" Name="UseDWM" IsChecked="True">
+                    <Fluent:ToggleButton Header="Use DWM" 
+                                         Name="UseDWM" 
+                                         IsChecked="True">
                         <Fluent:ToggleButton.LargeIcon>
                             <TextBlock Text="DWM" Foreground="Orange"/>
                         </Fluent:ToggleButton.LargeIcon>
                     </Fluent:ToggleButton>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Resize">
-                    <Fluent:ToggleButton Header="Do Resize" LargeIcon="Images/Resize.ico" Name="DoResize"/>
-                    <Fluent:Spinner Minimum="0" Header="Width" Name="ResizeWidth" Margin="0,5" Value="640"/>
-                    <Fluent:Spinner Minimum="0" Header="Height" Name="ResizeHeight" Margin="0,5" Value="400"/>
+                    <Fluent:ToggleButton Header="Do Resize" 
+                                         LargeIcon="Images/Resize.ico" 
+                                         Name="DoResize"
+                                         Icon="Images/Resize.ico"/>
+                    <Fluent:Spinner Minimum="0"
+                                    Header="Width"
+                                    Name="ResizeWidth"
+                                    Margin="0,5"
+                                    Value="640"/>
+                    <Fluent:Spinner Minimum="0"
+                                    Header="Height"
+                                    Name="ResizeHeight"
+                                    Margin="0,5" 
+                                    Value="400"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="Video">
                 <Fluent:RibbonGroupBox>
-                    <Fluent:Spinner Header="Frame Rate" IsEnabled="{Binding ReadyToRecord}" Margin="0,5" x:Name="FrameRate" Value="10" Minimum="1" Maximum="30"/>
-                    <Fluent:Spinner Minimum="1" Maximum="100" IsEnabled="{Binding ReadyToRecord}" Header="Quality" Value="70" Name="Quality"/>
-                    <Fluent:ToggleButton Header="Include Cursor" Size="Large" LargeIcon="Images/Cursor.ico"
+                    <Fluent:Spinner Header="Frame Rate" 
+                                    IsEnabled="{Binding ReadyToRecord}"
+                                    Margin="0,5"
+                                    x:Name="FrameRate" 
+                                    Value="10" 
+                                    Minimum="1" 
+                                    Maximum="30"/>
+                    <Fluent:Spinner Minimum="1"
+                                    Maximum="100"
+                                    IsEnabled="{Binding ReadyToRecord}"
+                                    Header="Quality"
+                                    Value="70"
+                                    Name="Quality"/>
+                    <Fluent:ToggleButton Header="Include Cursor"
+                                         Size="Large"
+                                         LargeIcon="Images/Cursor.ico"
                                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"
-                                         Icon="Images/Cursor.ico" Margin="3,0" x:Name="IncludeCursor"/>
+                                         Icon="Images/Cursor.ico"
+                                         Margin="3,0"
+                                         x:Name="IncludeCursor"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox>
-                    <Fluent:ToggleButton LargeIcon="Images/Frame.png" Header="Region Selector" Name="RegSelBox" Checked="ShowRegionSelector" Unchecked="HideRegionSelector"/>
-                    <Fluent:DropDownButton Name="BgColor" Header="Background Color" MaxDropDownHeight="500">
+                    <Fluent:ToggleButton LargeIcon="Images/Frame.png"
+                                         Header="Region Selector"
+                                         Icon="Images/Frame.png"
+                                         Name="RegSelBox" 
+                                         Checked="ShowRegionSelector"
+                                         Unchecked="HideRegionSelector"/>
+                    <Fluent:DropDownButton Name="BgColor"
+                                           Header="Background Color"
+                                           MaxDropDownHeight="500"
+                                           Icon="{Binding LargeIcon}">
                         <Fluent:DropDownButton.LargeIcon>
                             <Grid>
-                                <Rectangle Height="20" Width="20" Stroke="Black">
+                                <Rectangle Height="20" 
+                                           Width="20"
+                                           Stroke="Black">
                                     <Rectangle.Fill>
                                         <SolidColorBrush Color="{Binding ThemeColor}" />
                                     </Rectangle.Fill>
@@ -177,10 +278,11 @@
                             </Grid>
                         </Fluent:DropDownButton.LargeIcon>
                         <Fluent:ColorGallery SelectedColor="{Binding ThemeColor, Mode=TwoWay}"
-                                                 Mode="ThemeColors"
-                                                 StandardColorGridRows="10"
-                                                 Columns="10"
-                                                 IsNoColorButtonVisible="True" IsAutomaticColorButtonVisible="False">
+                                             Mode="ThemeColors"
+                                             StandardColorGridRows="10"
+                                             Columns="10"
+                                             IsNoColorButtonVisible="True"
+                                             IsAutomaticColorButtonVisible="False">
                         </Fluent:ColorGallery>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
@@ -188,22 +290,31 @@
                     <Fluent:ToggleButton Header="Capture Mouse Clicks"
                                          Name="CaptureMouseClicks"
                                          IsEnabled="{Binding ReadyToRecord}"
-                                         LargeIcon="Images/Click.png"/>
+                                         LargeIcon="Images/Click.png"
+                                         Icon="Images/Click.png"/>
                     <Fluent:ToggleButton Header="Capture Keystrokes"
                                          Name="CaptureKeyStrokes"
                                          IsEnabled="{Binding ReadyToRecord}"
-                                         LargeIcon="Images/Keystroke.png"/>
+                                         LargeIcon="Images/Keystroke.png"
+                                         Icon="Images/Keystroke.png"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
-        <Fluent:StatusBar DockPanel.Dock="Bottom" Visibility="Visible">
+        <Fluent:StatusBar DockPanel.Dock="Bottom"
+                          Visibility="Visible">
             <Fluent:StatusBarItem HorizontalAlignment="Right">
-                <Label x:Name="TimeManager" Content="00:00" Foreground="White"/>
+                <Label x:Name="TimeManager" 
+                       Content="00:00" 
+                       Foreground="White"/>
             </Fluent:StatusBarItem>
             <Fluent:StatusBarItem HorizontalAlignment="Left">
-                <Label Height="25" Name="Status" Content="Ready" Foreground="White" 
-                       VerticalContentAlignment="Center" Background="Transparent" />
+                <Label Height="25"
+                       Name="Status" 
+                       Content="Ready" 
+                       Foreground="White" 
+                       VerticalContentAlignment="Center"
+                       Background="Transparent" />
             </Fluent:StatusBarItem>
             <Fluent:StatusBar.ContextMenu>
                 <ContextMenu/>
@@ -211,14 +322,27 @@
         </Fluent:StatusBar>
 
         <DockPanel DockPanel.Dock="Bottom">
-            <Button Content="..." Width="25" DockPanel.Dock="Right" Background="White" Command="Open" />
-            <Label Content="Output Path" DockPanel.Dock="Left" BorderThickness="0.5" BorderBrush="#B7000000" 
-                   VerticalContentAlignment="Center" Cursor="Hand" MouseUp="OpenOutputFolder"/>
-            <TextBox x:Name="OutPath" IsReadOnly="True" VerticalContentAlignment="Center"
+            <Button Content="..." 
+                    Width="25"
+                    DockPanel.Dock="Right" 
+                    Background="White" 
+                    Command="Open" />
+            <Label Content="Output Path" 
+                   DockPanel.Dock="Left" 
+                   BorderThickness="0.5"
+                   BorderBrush="#B7000000" 
+                   VerticalContentAlignment="Center" 
+                   Cursor="Hand" 
+                   MouseUp="OpenOutputFolder"/>
+            <TextBox x:Name="OutPath" 
+                     IsReadOnly="True" 
+                     VerticalContentAlignment="Center"
                      Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath}"/>
         </DockPanel>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Height" Value="60"/>
@@ -226,11 +350,20 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Button Content="Images/ScreenShot.png" Height="40" Width="40" ToolTip="ScreenShot" Click="ScreenShot" />
+            <Button Content="Images/ScreenShot.png" 
+                    Height="40"
+                    Width="40" 
+                    ToolTip="ScreenShot" 
+                    Click="ScreenShot" />
 
-            <Button Content="Images/Record.png" ToolTip="Record" Name="RecordButton" Click="ToggleRecorderState"/>
+            <Button Content="Images/Record.png"
+                    ToolTip="Record" 
+                    Name="RecordButton"
+                    Click="ToggleRecorderState"/>
 
-            <Button Content="Images/Pause.png" Name="PauseButton" Command="this:MainWindow.PauseCommand">
+            <Button Content="Images/Pause.png" 
+                    Name="PauseButton" 
+                    Command="this:MainWindow.PauseCommand">
                 <Button.LayoutTransform>
                     <RotateTransform x:Name="RotationEffect" Angle="0"/>
                 </Button.LayoutTransform>
