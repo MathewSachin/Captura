@@ -181,7 +181,7 @@ namespace Captura
             InitVideo();
 
             // Not Actually Started, Waits for ContinueThread to be Set
-            ScreenThread.Start();
+            if (ScreenThread != null) ScreenThread.Start();
         }
 
         #region Init
@@ -381,7 +381,7 @@ namespace Captura
                 ContinueCapturing.WaitOne();
 
                 while (!StopCapturing.WaitOne(TimeTillNextFrame))
-                {   
+                {
                     var Timestamp = DateTime.Now;
 
                     if (IsGif) ScreenshotImage = ScreenShot(hWnd(), IncludeCursor());
