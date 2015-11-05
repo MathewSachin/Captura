@@ -27,17 +27,28 @@ namespace Captura
     {
         #region Fields
         DispatcherTimer DTimer;
-        int Seconds = 0, Minutes = 0;
-        int Duration = 0;
+        int Seconds = 0, Minutes = 0, Duration = 0;
 
         KeyboardHookList KeyHook;
 
         Recorder Recorder;
         string lastFileName;
         NotifyIcon SystemTray;
+
+        Color themeColor;
         #endregion
 
         #region DependencyProperties
+        public Color ThemeColor
+        {
+            get { return this.themeColor; }
+            set
+            {
+                this.themeColor = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ThemeColor"));
+            }
+        }
+
         public static readonly DependencyProperty ReadyToRecordProperty =
             DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow), new UIPropertyMetadata(true));
 
@@ -104,17 +115,6 @@ namespace Captura
             Refresh();
         }
         #endregion
-
-        Color themeColor;
-        public Color ThemeColor
-        {
-            get { return this.themeColor; }
-            set
-            {
-                this.themeColor = value;
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ThemeColor"));
-            }
-        }
 
         public MainWindow()
         {
@@ -196,15 +196,19 @@ namespace Captura
                 };
 
             #region SystemTray
-            SystemTray = new NotifyIcon();
-            SystemTray.Visibility = Visibility.Collapsed;
+            SystemTray = new NotifyIcon()
+            {
+                Visibility = Visibility.Collapsed,
+                IconSource = Icon
+            };
+
             SystemTray.TrayLeftMouseUp += (s, e) =>
                 {
                     SystemTray.Visibility = Visibility.Collapsed;
                     Show();
                     WindowState = WindowState.Normal;
                 };
-            SystemTray.IconSource = Icon;
+
             StateChanged += (s, e) =>
                 {
                     if (WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
@@ -267,7 +271,8 @@ namespace Captura
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Recorder.DesktopHandle, "[Desktop]"));
-
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(User32.FindWindow("Shell_TrayWnd", null), "[Taskbar]"));
+            
             foreach (var win in WindowHandler.Enumerate())
             {
                 var hWnd = win.Handle;
@@ -329,7 +334,7 @@ namespace Captura
             DTimer.Start();
 
             Duration = (int)CaptureDuration.Value;
-            
+
             Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
                         SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
                         Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value),
@@ -472,7 +477,7 @@ namespace Captura
                     Status.Content = "Saved to " + FileName;
                 }
             }
-            else Screenshot.CaptureWindow(this, FileName, ImgFmt);
+            else new Screenshot().CaptureWindow(this, FileName, ImgFmt);
 
             RecentPanel.Children.Add(new RecentButton(FileName));
         }

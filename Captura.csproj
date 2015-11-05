@@ -83,7 +83,6 @@
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\RecentButton.cs" />
     <Compile Include="Core\Recorder.cs" />
-    <Compile Include="Core\ScreenShotTask.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

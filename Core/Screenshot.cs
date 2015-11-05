@@ -9,15 +9,29 @@ using ManagedWin32.Api;
 
 namespace Captura
 {
-    static class Screenshot
+    class Screenshot
     {
         const int GWL_STYLE = -16;
         const long WS_SIZEBOX = 0x00040000L;
         const uint SWP_SHOWWINDOW = 0x0040;
 
-        public static void CaptureWindow(MainWindow MainWindow, string FileName, ImageFormat ImageFormat)
+        public bool CaptureMouse, ClipboardNotDisk, DoResize;
+        public string FileName;
+        public ImageFormat ImageFormat;
+        public int ResizeX, ResizeY;
+        public IntPtr WindowHandle;
+
+        public void CaptureWindow(MainWindow MainWindow, string FileName, ImageFormat ImageFormat)
         {
-            var data = new ScreenshotTask(MainWindow, FileName, ImageFormat);
+            WindowHandle = MainWindow.SelectedWindow;
+            ClipboardNotDisk = MainWindow.SaveToClipboard.IsChecked.Value;
+            DoResize = MainWindow.DoResize.IsChecked.Value;
+            ResizeX = (int)MainWindow.ResizeWidth.Value;
+            ResizeY = (int)MainWindow.ResizeHeight.Value;
+            CaptureMouse = MainWindow.IncludeCursor.IsChecked.Value;
+
+            this.FileName = FileName;
+            this.ImageFormat = ImageFormat;
 
             IntPtr start = User32.FindWindow("Button", "Start");
             IntPtr taskbar = User32.FindWindow("Shell_TrayWnd", null);
@@ -25,35 +39,35 @@ namespace Captura
             try
             {
                 // Hide the taskbar, just incase it gets in the way
-                if (data.WindowHandle != start && data.WindowHandle != taskbar)
+                if (WindowHandle != start && WindowHandle != taskbar)
                 {
                     User32.ShowWindow(start, 0);
                     User32.ShowWindow(taskbar, 0);
                     Application.DoEvents();
                 }
-                if (User32.IsIconic(data.WindowHandle))
+                if (User32.IsIconic(WindowHandle))
                 {
-                    User32.ShowWindow(data.WindowHandle, (ShowWindowFlags)1);
+                    User32.ShowWindow(WindowHandle, (ShowWindowFlags)1);
                     Thread.Sleep(300); // Wait for window to be restored
                 }
                 else
                 {
-                    User32.ShowWindow(data.WindowHandle, (ShowWindowFlags)5);
+                    User32.ShowWindow(WindowHandle, (ShowWindowFlags)5);
                     Thread.Sleep(100);
                 }
-                User32.SetForegroundWindow(data.WindowHandle);
+                User32.SetForegroundWindow(WindowHandle);
 
                 var r = new RECT();
-                if (data.DoResize)
+                if (DoResize)
                 {
-                    SmartResizeWindow(ref data, out r);
+                    SmartResizeWindow(out r);
                     Thread.Sleep(100);
                 }
 
-                Bitmap s = CaptureCompositeScreenshot(ref data);
+                Bitmap s = CaptureCompositeScreenshot();
 
                 // Show the taskbar again
-                if (data.WindowHandle != start && data.WindowHandle != taskbar)
+                if (WindowHandle != start && WindowHandle != taskbar)
                 {
                     User32.ShowWindow(start, (ShowWindowFlags)1);
                     User32.ShowWindow(taskbar, (ShowWindowFlags)1);
@@ -64,16 +78,16 @@ namespace Captura
 
                 else
                 {
-                    if (data.ClipboardNotDisk) s.WriteToClipboard(true);
-                    else s.Save(data.FileName, data.ImageFormat);
+                    if (ClipboardNotDisk) s.WriteToClipboard(true);
+                    else s.Save(FileName, ImageFormat);
                     s.Dispose();
                 }
 
-                if (data.DoResize)
+                if (DoResize)
                 {
-                    if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) == WS_SIZEBOX)
+                    if ((User32.GetWindowLong(WindowHandle, GWL_STYLE) & WS_SIZEBOX) == WS_SIZEBOX)
                     {
-                        User32.SetWindowPos(data.WindowHandle,
+                        User32.SetWindowPos(WindowHandle,
                                                 (IntPtr)0, r.Left, r.Top,
                                                 r.Right - r.Left,
                                                 r.Bottom - r.Top,
@@ -83,7 +97,7 @@ namespace Captura
             }
             finally
             {
-                if (data.WindowHandle != start && data.WindowHandle != taskbar)
+                if (WindowHandle != start && WindowHandle != taskbar)
                 {
                     User32.ShowWindow(start, (ShowWindowFlags)1);
                     User32.ShowWindow(taskbar, (ShowWindowFlags)1);
@@ -91,32 +105,32 @@ namespace Captura
             }
         }
 
-        static void SmartResizeWindow(ref ScreenshotTask data, out RECT oldWindowSize)
+        void SmartResizeWindow(out RECT oldWindowSize)
         {
             oldWindowSize = new RECT();
-            if ((User32.GetWindowLong(data.WindowHandle, GWL_STYLE) & WS_SIZEBOX) != WS_SIZEBOX)
+            if ((User32.GetWindowLong(WindowHandle, GWL_STYLE) & WS_SIZEBOX) != WS_SIZEBOX)
                 return;
 
             var r = new RECT();
-            User32.GetWindowRect(data.WindowHandle, ref r);
+            User32.GetWindowRect(WindowHandle, ref r);
             oldWindowSize = r;
 
-            Bitmap f = CaptureCompositeScreenshot(ref data);
+            Bitmap f = CaptureCompositeScreenshot();
             if (f != null)
             {
-                User32.SetWindowPos(data.WindowHandle, (IntPtr)0, r.Left,
+                User32.SetWindowPos(WindowHandle, (IntPtr)0, r.Left,
                                         r.Top,
-                                        data.ResizeX -
+                                        ResizeX -
                                         (f.Width - (r.Right - r.Left)),
-                                        data.ResizeY -
+                                        ResizeY -
                                         (f.Height - (r.Bottom - r.Top)),
                                         SetWindowPositionFlags.ShowWindow);
                 f.Dispose();
             }
-            else User32.SetWindowPos(data.WindowHandle, (IntPtr)0, r.Left, r.Top, data.ResizeX, data.ResizeY, SetWindowPositionFlags.ShowWindow);
+            else User32.SetWindowPos(WindowHandle, (IntPtr)0, r.Left, r.Top, ResizeX, ResizeY, SetWindowPositionFlags.ShowWindow);
         }
 
-        static unsafe Bitmap CaptureCompositeScreenshot(ref ScreenshotTask data)
+        unsafe Bitmap CaptureCompositeScreenshot()
         {
             Color tmpColour = Color.White;
 
@@ -136,9 +150,9 @@ namespace Captura
 
             var rct = new RECT();
 
-            if (DWMApi.DwmGetWindowAttribute(data.WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(RECT)) != 0)
+            if (DWMApi.DwmGetWindowAttribute(WindowHandle, DwmWindowAttribute.ExtendedFrameBounds, ref rct, sizeof(RECT)) != 0)
                 // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
-                User32.GetWindowRect(data.WindowHandle, ref rct);
+                User32.GetWindowRect(WindowHandle, ref rct);
             else
             {
                 // DwmGetWindowAttribute() succeeded
@@ -157,7 +171,7 @@ namespace Captura
                 rct.Bottom = totalSize.Bottom;
 
             User32.ShowWindow(backdrop.Handle, (ShowWindowFlags)4);
-            User32.SetWindowPos(backdrop.Handle, data.WindowHandle, rct.Left,
+            User32.SetWindowPos(backdrop.Handle, WindowHandle, rct.Left,
                                     rct.Top, rct.Right - rct.Left,
                                     rct.Bottom - rct.Top, SetWindowPositionFlags.SWP_NOACTIVATE);
             backdrop.Opacity = 1;
@@ -175,7 +189,7 @@ namespace Captura
             backdrop.Dispose();
 
             Bitmap transparentImage = DifferentiateAlpha(whiteShot, blackShot);
-            if (data.CaptureMouse) DrawCursorToBitmap(transparentImage, new Point(rct.Left, rct.Top));
+            if (CaptureMouse) DrawCursorToBitmap(transparentImage, new Point(rct.Left, rct.Top));
             transparentImage = CropEmptyEdges(transparentImage, Color.FromArgb(0, 0, 0, 0));
 
             whiteShot.Dispose();
