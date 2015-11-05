@@ -80,24 +80,13 @@ namespace Captura
 
         Func<bool> IncludeCursor;
         Func<IntPtr> hWnd;
-        #endregion
 
         IKeyboardMouseEvents ClickHook;
         bool MouseClicked = false;
         Keys LastKeyPressed = Keys.None;
+        #endregion
 
         #region Create
-        void CreateAviWriter()
-        {
-            AviWriter = new AviWriter(FileName)
-            {
-                FramesPerSecond = FramesPerSecond,
-                EmitIndex1 = true,
-            };
-        }
-
-        void CreateGifWriter() { GifWriter = new GifWriter(FileName, 1000 / FramesPerSecond, 1); }
-
         IAviVideoStream CreateVideoStream()
         {
             // Select encoder type based on FOURCC of codec
@@ -133,13 +122,6 @@ namespace Captura
 
             else return AviWriter.AddAudioStream(WaveFormat.Channels,
                 WaveFormat.SampleRate, WaveFormat.BitsPerSample);
-        }
-
-        void CreateWaveWriter()
-        {
-            WaveWriter = new WaveFileWriter(IsGif
-                ? Path.ChangeExtension(FileName, "wav")
-                : FileName, WaveFormat);
         }
         #endregion
 
@@ -228,7 +210,10 @@ namespace Captura
 
             if (AudioSource != null)
             {
-                if (IsGif) CreateWaveWriter();
+                if (IsGif || !CaptureVideo)
+                    WaveWriter = new WaveFileWriter(IsGif
+                        ? Path.ChangeExtension(FileName, "wav")
+                        : FileName, WaveFormat);
                 AudioSource.DataAvailable += AudioDataAvailable;
             }
         }
@@ -237,12 +222,16 @@ namespace Captura
         {
             if (CaptureVideo)
             {
-                CreateAviWriter();
+                AviWriter = new AviWriter(FileName)
+                {
+                    FramesPerSecond = FramesPerSecond,
+                    EmitIndex1 = true,
+                };
 
                 VideoStream = CreateVideoStream();
                 VideoStream.Name = "Captura";
             }
-            else if (IsGif) CreateGifWriter();
+            else if (IsGif) GifWriter = new GifWriter(FileName, 1000 / FramesPerSecond, 1);
 
             InitAudio();
 
@@ -254,7 +243,6 @@ namespace Captura
                     IsBackground = true
                 };
             }
-            else CreateWaveWriter();
         }
         #endregion
 
