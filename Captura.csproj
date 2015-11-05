@@ -13,7 +13,8 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>  
+    <WarningLevel>4</WarningLevel>
+    <ProjectGuid>{0B496E01-F328-4969-832C-C75977B4F4E6}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -49,6 +50,9 @@
     </Reference>
     <Reference Include="Gma.System.MouseKeyHook">
       <HintPath>..\globalmousekeyhook\MouseKeyHook\bin\Debug\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedLame">
+      <HintPath>..\ManagedLame\bin\Release\ManagedLame.dll</HintPath>
     </Reference>
     <Reference Include="ManagedWin32">
       <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>

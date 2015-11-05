@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Gma.System.MouseKeyHook;
 using ManagedWin32;
 using ManagedWin32.Api;
 using NAudio.CoreAudioApi;
@@ -105,8 +104,6 @@ namespace Captura
             Refresh();
         }
         #endregion
-
-        IKeyboardMouseEvents ClickHook;
 
         Color themeColor;
         public Color ThemeColor
@@ -332,14 +329,7 @@ namespace Captura
             DTimer.Start();
 
             Duration = (int)CaptureDuration.Value;
-
-            if (CaptureMouseClicks.IsChecked.Value || CaptureKeyStrokes.IsChecked.Value)
-            {
-                ClickHook = Hook.GlobalEvents();
-                if (CaptureMouseClicks.IsChecked.Value) ClickHook.MouseDown += (s, e) => Recorder.MouseClicked = true;
-                if (CaptureKeyStrokes.IsChecked.Value) ClickHook.KeyDown += (s, e) => Recorder.LastKeyPressed = e.KeyCode;
-            }
-
+            
             Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
                         SelectedAudioSourceId, UseStereo.IsChecked.Value, EncodeAudio.IsChecked.Value,
                         Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value),
@@ -361,8 +351,6 @@ namespace Captura
         void OnStopped()
         {
             Recorder = null;
-
-            if (ClickHook != null) ClickHook.Dispose();
 
             WindowsGallery.IsEnabled = true;
 

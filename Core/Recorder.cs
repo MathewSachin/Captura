@@ -15,6 +15,7 @@ using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
+using Gma.System.MouseKeyHook;
 
 namespace Captura
 {
@@ -38,9 +39,6 @@ namespace Captura
 
             DesktopRectangle = new RECT(0, 0, DesktopWidth, DesktopHeight);
         }
-
-        public bool MouseClicked = false;
-        public Keys LastKeyPressed = Keys.None;
 
         public static readonly FourCC GifFourCC = new FourCC("_gif");
         #endregion
@@ -83,6 +81,10 @@ namespace Captura
         Func<bool> IncludeCursor;
         Func<IntPtr> hWnd;
         #endregion
+
+        IKeyboardMouseEvents ClickHook;
+        bool MouseClicked = false;
+        Keys LastKeyPressed = Keys.None;
 
         #region Create
         void CreateAviWriter()
@@ -168,6 +170,13 @@ namespace Captura
             this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Recorder.GifFourCC;
 
             WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, StereoAudio ? 2 : 1);
+
+            if (CaptureMouseClicks || CaptureKeyStrokes)
+            {
+                ClickHook = Hook.GlobalEvents();
+                if (CaptureMouseClicks) ClickHook.MouseDown += (s, e) => MouseClicked = true;
+                if (CaptureKeyStrokes) ClickHook.KeyDown += (s, e) => LastKeyPressed = e.KeyCode;
+            }
 
             InitVideo();
 
@@ -298,6 +307,8 @@ namespace Captura
                 SilencePlayer.Dispose();
                 SilencePlayer = null;
             }
+
+            if (ClickHook != null) ClickHook.Dispose();
 
             // Video
             if (CaptureVideo || IsGif)
