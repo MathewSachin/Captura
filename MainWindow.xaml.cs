@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
+using Color = System.Windows.Media.Color;
 
 namespace Captura
 {
@@ -453,7 +455,21 @@ namespace Captura
                 || SelectedWindow == RegionSelector.Handle
                 || !UseDWM.IsChecked.Value)
             {
-                var BMP = Recorder.ScreenShot(SelectedWindow, IncludeCursor.IsChecked.Value, false, Commons.ConvertColor(ThemeColor));
+                RECT Rect = Recorder.DesktopRectangle;
+
+                if (SelectedWindow != Recorder.DesktopHandle)
+                    User32.GetWindowRect(SelectedWindow, ref Rect);
+
+                var BMP = new Bitmap(Rect.Right - Rect.Left, Rect.Bottom - Rect.Top);
+
+                using (var g = Graphics.FromImage(BMP))
+                {
+                    g.CopyFromScreen(Rect.Left, Rect.Top, 0, 0,
+                        new System.Drawing.Size(Rect.Right - Rect.Left, Rect.Bottom - Rect.Top),
+                        CopyPixelOperation.SourceCopy);
+
+                    g.Flush();
+                }
 
                 if (SaveToClipboard.IsChecked.Value)
                 {
