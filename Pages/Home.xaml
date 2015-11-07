@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Captura.Home"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="CAPTURA by Mathew Sachin" Style="{StaticResource Heading1}" Margin="0,0,0,8"/>
+                    <mui:BBCodeBlock BBCode="[b]Captura[/b], a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio for Microphone or Loopback, Mouse Clicks and Keystrokes." Margin="0,0,0,32" />
+                    <TextBlock Text="APPEARANCE" Style="{StaticResource Heading2}" />
+                    <mui:BBCodeBlock BBCode="The appearance of Modern UI styled windows can be changed on the fly. Make sure you visit the [url=Pages/Settings.xaml]settings[/url] to adapt the appearance to your preference." Margin="0,0,0,32"/>
+                </StackPanel>
+                <Label Content="Ready" Name="Status" DockPanel.Dock="Bottom"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Button Content="ScreenShot" Margin="5" Click="ScreenShot"/>
+                    <Button Content="Record" Margin="5" Name="RecordButton"/>
+                    <Button Content="Pause" Margin="5"/>
+                </StackPanel>
+            </DockPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

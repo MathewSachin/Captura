@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Windows.Media;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Captura
 {
-    public class RecentButton : Fluent.Button
+    public class RecentButton : Button
     {
         static readonly SolidColorBrush AviBack = new SolidColorBrush(Colors.Black),
             GifBack = new SolidColorBrush(Colors.DarkGreen),
@@ -16,7 +17,7 @@ namespace Captura
 
         public RecentButton(string FilePath)
         {
-            Header = Path.GetFileName(FilePath);
+            Content = Path.GetFileName(FilePath);
             Foreground = GetColor(FilePath);
 
             DataContext = this;

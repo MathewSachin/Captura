@@ -45,8 +45,9 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fluent">
-      <HintPath>..\#Binaries\Fluent.dll</HintPath>
+    <Reference Include="FirstFloor.ModernUI, Version=1.0.6.0, Culture=neutral, PublicKeyToken=2d21ec3cd074c59a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Downloads\ModernUI.1.0.6\net40\FirstFloor.ModernUI.dll</HintPath>
     </Reference>
     <Reference Include="Gma.System.MouseKeyHook">
       <HintPath>..\globalmousekeyhook\MouseKeyHook\bin\Debug\Gma.System.MouseKeyHook.dll</HintPath>
@@ -80,6 +81,18 @@
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\RecentButton.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="Pages\SettingsVideo.xaml.cs">
+      <DependentUpon>SettingsVideo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsScreenShot.xaml.cs">
+      <DependentUpon>SettingsScreenShot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Recent.xaml.cs">
+      <DependentUpon>Recent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -91,6 +104,26 @@
     <Compile Include="Core\Screenshot.cs" />
     <Compile Include="Core\SilenceProvider.cs" />
     <Compile Include="Core\UnsafeBitmap.cs" />
+    <Compile Include="Pages\SettingsAppearance.xaml.cs">
+      <DependentUpon>SettingsAppearance.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsAppearanceViewModel.cs" />
+    <Page Include="Pages\SettingsVideo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SettingsScreenShot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Recent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Home.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +140,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SettingsAppearance.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -115,7 +156,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Images\Captura.ico" />
+    <Resource Include="Images\Captura.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

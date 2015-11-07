@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System;
 
 namespace Captura
 {
@@ -9,7 +9,11 @@ namespace Captura
     {
         HwndSource RegSelhWnd;
 
-        public RegionSelector() 
+        public static RegionSelector Instance { get; private set; }
+
+        static RegionSelector() { Instance = new RegionSelector(); }
+
+        RegionSelector() 
         {
             InitializeComponent();
 

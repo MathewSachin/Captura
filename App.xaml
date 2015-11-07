@@ -6,6 +6,13 @@
              StartupUri="MainWindow.xaml" 
              Startup="Application_Startup">
     <Application.Resources>
-        <this:Settings x:Key="Settings"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Rectangle"/>
+            <this:Settings x:Key="Settings"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
