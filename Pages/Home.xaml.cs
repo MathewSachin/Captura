@@ -4,23 +4,33 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Controls;
 using ManagedWin32.Api;
+using ManagedWin32;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace Captura
 {
-    partial class Home : UserControl
+    partial class Home : UserControl, INotifyPropertyChanged
     {
-        public Home() { InitializeComponent(); }
+        public Home()
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
+
+            Refresh();
+        }
 
         void ScreenShot<T>(object sender = null, T e = default(T))
         {
-            IntPtr SelectedWindow = SettingsVideo.SelectedWindow;
-
             string FileName = null;
-            ImageFormat ImgFmt = SettingsScreenShot.SelectedImageFormat;
+            ImageFormat ImgFmt = ScreenShotSettings.SelectedImageFormat;
             string Extension = ImgFmt == ImageFormat.Icon ? "ico"
                 : ImgFmt == ImageFormat.Jpeg ? "jpg"
                 : ImgFmt.ToString();
-            bool SaveToClipboard = SettingsScreenShot.SaveToClipboard;
+            bool SaveToClipboard = ScreenShotSettings.SaveToClipboard;
 
             if (!SaveToClipboard)
                 FileName = Path.Combine(Properties.Settings.Default.OutputPath,
@@ -28,7 +38,7 @@ namespace Captura
 
             if (SelectedWindow == Recorder.DesktopHandle
                 || SelectedWindow == RegionSelector.Instance.Handle
-                || !SettingsScreenShot.UseDWM)
+                || !ScreenShotSettings.UseDWM)
             {
                 RECT Rect = Recorder.DesktopRectangle;
 
@@ -54,7 +64,7 @@ namespace Captura
                 else
                 {
                     try { BMP.Save(FileName, ImgFmt); }
-                    catch (Exception E) 
+                    catch (Exception E)
                     {
                         Status.Content = "Not Saved. " + E.Message;
                         return;
@@ -63,9 +73,62 @@ namespace Captura
                     Status.Content = "Saved to " + FileName;
                 }
             }
-            //else new Screenshot().CaptureWindow(this, FileName, ImgFmt);
+            else new Screenshot().CaptureWindow(SelectedWindow, SaveToClipboard, IncludeCursor, FileName, ImgFmt);
 
             if (FileName != null && !SaveToClipboard) Recent.Add(FileName);
         }
+
+        public static IntPtr SelectedWindow = Recorder.DesktopHandle;
+        public static bool IncludeCursor { get { return Properties.Settings.Default.IncludeCursor; } }
+
+        public ObservableCollection<KeyValuePair<IntPtr, string>> AvailableWindows { get; private set; }
+
+        public IntPtr _SelectedWindow
+        {
+            get { return SelectedWindow; }
+            set
+            {
+                if (SelectedWindow != value)
+                {
+                    SelectedWindow = value;
+                    OnPropertyChanged("_SelectedWindow");
+                }
+            }
+        }
+
+        public void Refresh()
+        {
+            AvailableWindows.Clear();
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Recorder.DesktopHandle, "[Desktop]"));
+            AvailableWindows.Add(new KeyValuePair<IntPtr, string>(User32.FindWindow("Shell_TrayWnd", null), "[Taskbar]"));
+
+            foreach (var win in WindowHandler.Enumerate())
+            {
+                var hWnd = win.Handle;
+                if (!win.IsVisible) continue;
+                if (!(User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_APPWINDOW)))
+                {
+                    if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
+                        continue;
+                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_EXSTYLE).HasFlag(WindowStyles.WS_EX_TOOLWINDOW))
+                        continue;
+                    if (User32.GetWindowLong(hWnd, GetWindowLongValue.GWL_STYLE).HasFlag(WindowStyles.WS_CHILD))
+                        continue;
+                }
+
+                AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
+            }
+
+            _SelectedWindow = Recorder.DesktopHandle;
+        }
+
+        void OnPropertyChanged(string e)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(e));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

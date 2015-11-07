@@ -3,16 +3,16 @@
 namespace Captura
 {
     /// <summary>
-    /// Interaction logic for SettingsAppearance.xaml
+    /// Interaction logic for AppearanceSettings.xaml
     /// </summary>
-    public partial class SettingsAppearance : UserControl
+    public partial class AppearanceSettings : UserControl
     {
-        public SettingsAppearance()
+        public AppearanceSettings()
         {
             InitializeComponent();
 
             // a simple view model for appearance configuration
-            this.DataContext = new SettingsAppearanceViewModel();
+            this.DataContext = new AppearanceSettingsViewModel();
         }
     }
 }

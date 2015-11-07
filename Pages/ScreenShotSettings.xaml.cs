@@ -5,11 +5,11 @@ using System.Windows.Controls;
 namespace Captura
 {
     /// <summary>
-    /// Interaction logic for SettingsAppearance.xaml
+    /// Interaction logic for AppearanceSettings.xaml
     /// </summary>
-    public partial class SettingsScreenShot : UserControl, INotifyPropertyChanged
+    public partial class ScreenShotSettings : UserControl, INotifyPropertyChanged
     {
-        public SettingsScreenShot()
+        public ScreenShotSettings()
         {
             InitializeComponent();
 

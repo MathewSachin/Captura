@@ -7,7 +7,33 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
-        <ScrollViewer>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="1"/>
+        <StackPanel Grid.Column="2" Margin="{StaticResource SplitRight}">
+            <TextBlock Text="CONFIGURE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+            <CheckBox Margin="0,5" Content="Include Cursor" ToolTip="Include the Mouse Cursor in ScreenShots and ScreenCasts"
+                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"/>
+
+            <Grid HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition MinWidth="120"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Source:" VerticalAlignment="Center" Margin="0,0,16,4" />
+                <ComboBox Name="WindowBox" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                              ItemsSource="{Binding AvailableWindows}" SelectedValue="{Binding _SelectedWindow, Mode=TwoWay}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value"/>
+            </Grid>
+        </StackPanel>
+        <ScrollViewer Margin="{StaticResource SplitLeft}">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top">
                     <TextBlock Text="CAPTURA by Mathew Sachin" Style="{StaticResource Heading1}" Margin="0,0,0,8"/>
@@ -17,7 +43,7 @@
                 </StackPanel>
                 <Label Content="Ready" Name="Status" DockPanel.Dock="Bottom"/>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <Button Content="ScreenShot" Margin="5" Click="ScreenShot"/>
+                    <Button Margin="5" Click="ScreenShot" Content="ScreenShot"/>
                     <Button Content="Record" Margin="5" Name="RecordButton"/>
                     <Button Content="Pause" Margin="5"/>
                 </StackPanel>

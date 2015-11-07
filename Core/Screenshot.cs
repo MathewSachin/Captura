@@ -21,14 +21,13 @@ namespace Captura
         public int ResizeX, ResizeY;
         public IntPtr WindowHandle;
 
-        public void CaptureWindow(MainWindow MainWindow, string FileName, ImageFormat ImageFormat)
+        public void CaptureWindow(IntPtr hWnd, bool ToClipboard, bool IncludeCursor, string FileName, ImageFormat ImageFormat)
         {
-            //WindowHandle = MainWindow.SelectedWindow;
-            //ClipboardNotDisk = MainWindow.SaveToClipboard.IsChecked.Value;
-            //DoResize = MainWindow.DoResize.IsChecked.Value;
-            //ResizeX = (int)MainWindow.ResizeWidth.Value;
-            //ResizeY = (int)MainWindow.ResizeHeight.Value;
-            //CaptureMouse = MainWindow.IncludeCursor.IsChecked.Value;
+            WindowHandle = hWnd;
+            ClipboardNotDisk = ToClipboard;
+            DoResize = false;
+            ResizeX = ResizeY = 0;
+            CaptureMouse = IncludeCursor;
 
             this.FileName = FileName;
             this.ImageFormat = ImageFormat;

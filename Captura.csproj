@@ -81,14 +81,11 @@
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\RecentButton.cs" />
     <Compile Include="Core\Recorder.cs" />
-    <Compile Include="Pages\SettingsVideo.xaml.cs">
-      <DependentUpon>SettingsVideo.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsScreenShot.xaml.cs">
-      <DependentUpon>SettingsScreenShot.xaml</DependentUpon>
+    <Compile Include="Pages\ScreenShotSettings.xaml.cs">
+      <DependentUpon>ScreenShotSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Recent.xaml.cs">
       <DependentUpon>Recent.xaml</DependentUpon>
@@ -104,15 +101,11 @@
     <Compile Include="Core\Screenshot.cs" />
     <Compile Include="Core\SilenceProvider.cs" />
     <Compile Include="Core\UnsafeBitmap.cs" />
-    <Compile Include="Pages\SettingsAppearance.xaml.cs">
-      <DependentUpon>SettingsAppearance.xaml</DependentUpon>
+    <Compile Include="Pages\AppearanceSettings.xaml.cs">
+      <DependentUpon>AppearanceSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsAppearanceViewModel.cs" />
-    <Page Include="Pages\SettingsVideo.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\SettingsScreenShot.xaml">
+    <Compile Include="Pages\AppearanceSettingsViewModel.cs" />
+    <Page Include="Pages\ScreenShotSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -144,7 +137,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\SettingsAppearance.xaml">
+    <Page Include="Pages\AppearanceSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

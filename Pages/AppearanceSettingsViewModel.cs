@@ -8,7 +8,7 @@ namespace Captura
     /// <summary>
     /// A simple view model for configuring theme, font and accent colors.
     /// </summary>
-    public class SettingsAppearanceViewModel : NotifyPropertyChanged
+    public class AppearanceSettingsViewModel : NotifyPropertyChanged
     {
         const string FontSmall = "small";
         const string FontLarge = "large";
@@ -62,14 +62,14 @@ namespace Captura
         static Link selectedTheme;
         static string selectedFontSize;
 
-        static SettingsAppearanceViewModel()
+        static AppearanceSettingsViewModel()
         {
             // add the default themes
             themes.Add(new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource });
             themes.Add(new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource });
         }
 
-        public SettingsAppearanceViewModel()
+        public AppearanceSettingsViewModel()
         {
             this.SelectedFontSize = AppearanceManager.Current.FontSize == FontSize.Large ? FontLarge : FontSmall;
             SyncThemeAndColor();
