@@ -25,21 +25,9 @@ namespace Captura
 {
     public partial class MainWindow : FirstFloor.ModernUI.Windows.Controls.ModernWindow//, INotifyPropertyChanged
     {
-        //        #region Fields
-        //        DispatcherTimer DTimer;
-        //        int Seconds = 0, Minutes = 0, Duration = 0;
-
-        //        KeyboardHookList KeyHook;
-
-        //        Recorder Recorder;
-        //        string lastFileName;
-        //        NotifyIcon SystemTray;
-
-        //        Color themeColor;
-        //        #endregion
-
         //        #region DependencyProperties
-        //        public Color ThemeColor
+        // //        Color themeColor;       
+        // public Color ThemeColor
         //        {
         //            get { return this.themeColor; }
         //            set
@@ -79,16 +67,9 @@ namespace Captura
         //        public static readonly DependencyProperty SelectedWindowProperty =
         //            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(Recorder.DesktopHandle));
 
-        //        public IntPtr SelectedWindow
-        //        {
-        //            get { return (IntPtr)GetValue(SelectedWindowProperty); }
-        //            set { SetValue(SelectedWindowProperty, value); }
-        //        }
         //        #endregion
 
         //        #region Observable Collections
-        //        public ObservableCollection<KeyValuePair<IntPtr, string>> AvailableWindows { get; private set; }
-
         //        public ObservableCollection<CodecInfo> AvailableCodecs { get; private set; }
 
         //        public ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; private set; }
@@ -155,10 +136,7 @@ namespace Captura
 
         //            CommandBindings.Add(new CommandBinding(ApplicationCommands.Stop, (s, e) => StopRecording(),
         //                (s, e) => e.CanExecute = !ReadyToRecord));
-
-        //            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OutputFolderBrowse(),
-        //                (s, e) => e.CanExecute = ReadyToRecord));
-
+        
         //            CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
 
         //            CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
@@ -358,18 +336,6 @@ namespace Captura
         //            OnStopped();
         //        }
 
-        //void OutputFolderBrowse()
-        //{
-        //    var dlg = new FolderBrowserDialog()
-        //    {
-        //        SelectedPath = OutPath.Text,
-        //        Title = "Select Output Folder"
-        //    };
-
-        //    if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
-        //}
-
-        
         //        #region Gallery Selection Changed Handlers
         //        void EncodersGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (EncodersGallery.SelectedIndex == -1) EncodersGallery.SelectedIndex = 1; }
 
@@ -377,19 +343,7 @@ namespace Captura
 
         //        void DevicesGallery_SelectionChanged(object sender, SelectionChangedEventArgs e) { if (DevicesGallery.SelectedIndex == -1) DevicesGallery.SelectedIndex = 0; }
         //        #endregion
-
-        //        void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", OutPath.Text); }
-
-        //        void RibbonWindow_Closing(object sender, CancelEventArgs e)
-        //        {
-        //            KeyHook.Dispose();
-
-        //            WindowClosing = true;
-        //            RegionSelector.Close();
-
-        //            if (!ReadyToRecord) StopRecording();
-        //        }
-
+       
         //        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -1,26 +1,66 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Controls;
-using ManagedWin32.Api;
+using System.Windows.Threading;
 using ManagedWin32;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
+using ManagedWin32.Api;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace Captura
 {
     partial class Home : UserControl, INotifyPropertyChanged
     {
+        #region Fields
+        DispatcherTimer DTimer;
+        int Seconds = 0, Minutes = 0, Duration = 0;
+
+        KeyboardHookList KeyHook;
+
+        Recorder Recorder;
+        string lastFileName;
+        NotifyIcon SystemTray;
+        #endregion
+
         public Home()
         {
             InitializeComponent();
+
             DataContext = this;
 
             AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
 
             Refresh();
+
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OutputFolderBrowse()));
+        }
+
+        //~Home()
+        //{   
+        //    if (KeyHook != null) KeyHook.Dispose();
+
+        //    WindowClosing = true;
+        //    RegionSelector.Close();
+
+        //    if (!ReadyToRecord) StopRecording();
+        //}
+
+        void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", OutPath.Text); }
+
+        void OutputFolderBrowse()
+        {
+            var dlg = new FolderBrowserDialog()
+            {
+                SelectedPath = OutPath.Text,
+                Title = "Select Output Folder"
+            };
+
+            if (dlg.ShowDialog().Value) OutPath.Text = dlg.SelectedPath;
         }
 
         void ScreenShot<T>(object sender = null, T e = default(T))
@@ -96,7 +136,7 @@ namespace Captura
             }
         }
 
-        public void Refresh()
+        public void Refresh(object sender = null, EventArgs e = null)
         {
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
@@ -121,6 +161,8 @@ namespace Captura
             }
 
             _SelectedWindow = Recorder.DesktopHandle;
+
+            WindowBox.SelectedIndex = 1;
         }
 
         void OnPropertyChanged(string e)
