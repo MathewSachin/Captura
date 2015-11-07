@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:this="clr-namespace:Captura.Properties" 
              Exit="Application_Exit"
+             ShutdownMode="OnMainWindowClose"
              StartupUri="MainWindow.xaml" 
              Startup="Application_Startup">
     <Application.Resources>

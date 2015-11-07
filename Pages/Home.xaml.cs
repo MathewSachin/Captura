@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
-using System.Diagnostics;
-using System.Windows.Input;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
+using SharpAvi;
+using SharpAvi.Codecs;
 
 namespace Captura
 {
@@ -33,6 +38,8 @@ namespace Captura
 
             DataContext = this;
 
+            AvailableCodecs = new ObservableCollection<CodecInfo>();
+            AvailableAudioSources = new ObservableCollection<KeyValuePair<string, string>>();
             AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
 
             Refresh();
@@ -49,6 +56,37 @@ namespace Captura
 
         //    if (!ReadyToRecord) StopRecording();
         //}
+
+        public static readonly DependencyProperty ReadyToRecordProperty =
+                    DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow), new UIPropertyMetadata(true));
+
+        public bool ReadyToRecord
+        {
+            get { return (bool)GetValue(ReadyToRecordProperty); }
+            set { SetValue(ReadyToRecordProperty, value); }
+        }
+
+        public ObservableCollection<CodecInfo> AvailableCodecs { get; private set; }
+
+        public ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; private set; }
+
+        public static readonly DependencyProperty EncoderProperty =
+                    DependencyProperty.Register("Encoder", typeof(FourCC), typeof(Home), new UIPropertyMetadata(KnownFourCCs.Codecs.MotionJpeg));
+
+        public FourCC Encoder
+        {
+            get { return (FourCC)GetValue(EncoderProperty); }
+            set { SetValue(EncoderProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedAudioSourceIdProperty =
+            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(string), typeof(Home), new UIPropertyMetadata("-1"));
+
+        public string SelectedAudioSourceId
+        {
+            get { return (string)GetValue(SelectedAudioSourceIdProperty); }
+            set { SetValue(SelectedAudioSourceIdProperty, value); }
+        }
 
         void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", OutPath.Text); }
 
@@ -118,26 +156,51 @@ namespace Captura
             if (FileName != null && !SaveToClipboard) Recent.Add(FileName);
         }
 
-        public static IntPtr SelectedWindow = Recorder.DesktopHandle;
         public static bool IncludeCursor { get { return Properties.Settings.Default.IncludeCursor; } }
 
         public ObservableCollection<KeyValuePair<IntPtr, string>> AvailableWindows { get; private set; }
+        
+        public static readonly DependencyProperty SelectedWindowProperty =
+            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(Home), new UIPropertyMetadata(Recorder.DesktopHandle));
 
-        public IntPtr _SelectedWindow
+        public IntPtr SelectedWindow
         {
-            get { return SelectedWindow; }
-            set
-            {
-                if (SelectedWindow != value)
-                {
-                    SelectedWindow = value;
-                    OnPropertyChanged("_SelectedWindow");
-                }
-            }
+            get { return (IntPtr)GetValue(SelectedWindowProperty); }
+            set { SetValue(SelectedWindowProperty, value); }
         }
 
         public void Refresh(object sender = null, EventArgs e = null)
         {
+            if (ReadyToRecord)
+            {
+                // Available Codecs
+                AvailableCodecs.Clear();
+                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
+                AvailableCodecs.Add(new CodecInfo(Recorder.GifFourCC, "[Gif]"));
+                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
+                foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
+
+                Encoder = KnownFourCCs.Codecs.MotionJpeg;
+                EncodersBox.SelectedIndex = 2;
+
+                // Available Audio Sources
+                AvailableAudioSources.Clear();
+
+                AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
+
+                for (var i = 0; i < WaveInEvent.DeviceCount; i++)
+                    AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
+
+                foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+                    AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
+
+                SelectedAudioSourceId = "-1";
+                AudioSourcesBox.SelectedIndex = 0;
+
+                // Status
+                Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
+            }
+
             AvailableWindows.Clear();
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>((IntPtr)(-1), "[No Video]"));
             AvailableWindows.Add(new KeyValuePair<IntPtr, string>(Recorder.DesktopHandle, "[Desktop]"));
@@ -160,7 +223,7 @@ namespace Captura
                 AvailableWindows.Add(new KeyValuePair<IntPtr, string>(hWnd, win.Title));
             }
 
-            _SelectedWindow = Recorder.DesktopHandle;
+            SelectedWindow = Recorder.DesktopHandle;
 
             WindowBox.SelectedIndex = 1;
         }

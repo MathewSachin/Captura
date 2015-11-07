@@ -43,12 +43,26 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Source:" VerticalAlignment="Center" Margin="0,0,16,4" />
+                    <TextBlock Text="Video Source:" VerticalAlignment="Center" Margin="0,0,16,4" />
                     <ComboBox Name="WindowBox" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
-                              ItemsSource="{Binding AvailableWindows}" SelectedValue="{Binding _SelectedWindow, Mode=TwoWay}"
+                              ItemsSource="{Binding AvailableWindows}" SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"
                               SelectedValuePath="Key" DisplayMemberPath="Value"/>
+
+                    <TextBlock Text="Video Encoder:" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,16,4" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                              ItemsSource="{Binding AvailableCodecs}" SelectedValue="{Binding Encoder, Mode=TwoWay}"
+                              SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersBox" DisplayMemberPath="Name"/>
+
+                    <TextBlock Text="Audio Source:" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,16,4" />
+                    <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                              ItemsSource="{Binding AvailableAudioSources}" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"
+                              SelectedValuePath="Key" IsEnabled="{Binding ReadyToRecord}" Name="AudioSourcesBox"
+                              DisplayMemberPath="Value"/>
+                        
                 </Grid>
             </StackPanel>
             <ScrollViewer Margin="{StaticResource SplitLeft}">

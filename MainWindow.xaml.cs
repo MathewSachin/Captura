@@ -25,7 +25,6 @@ namespace Captura
 {
     public partial class MainWindow : FirstFloor.ModernUI.Windows.Controls.ModernWindow//, INotifyPropertyChanged
     {
-        //        #region DependencyProperties
         // //        Color themeColor;       
         // public Color ThemeColor
         //        {
@@ -36,44 +35,6 @@ namespace Captura
         //                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ThemeColor"));
         //            }
         //        }
-
-        //        public static readonly DependencyProperty ReadyToRecordProperty =
-        //            DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow), new UIPropertyMetadata(true));
-
-        //        public bool ReadyToRecord
-        //        {
-        //            get { return (bool)GetValue(ReadyToRecordProperty); }
-        //            set { SetValue(ReadyToRecordProperty, value); }
-        //        }
-
-        //        public static readonly DependencyProperty EncoderProperty =
-        //            DependencyProperty.Register("Encoder", typeof(FourCC), typeof(MainWindow), new UIPropertyMetadata(KnownFourCCs.Codecs.MotionJpeg));
-
-        //        public FourCC Encoder
-        //        {
-        //            get { return (FourCC)GetValue(EncoderProperty); }
-        //            set { SetValue(EncoderProperty, value); }
-        //        }
-
-        //        public static readonly DependencyProperty SelectedAudioSourceIdProperty =
-        //            DependencyProperty.Register("SelectedAudioSourceIndex", typeof(string), typeof(MainWindow), new UIPropertyMetadata("-1"));
-
-        //        public string SelectedAudioSourceId
-        //        {
-        //            get { return (string)GetValue(SelectedAudioSourceIdProperty); }
-        //            set { SetValue(SelectedAudioSourceIdProperty, value); }
-        //        }
-
-        //        public static readonly DependencyProperty SelectedWindowProperty =
-        //            DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(MainWindow), new UIPropertyMetadata(Recorder.DesktopHandle));
-
-        //        #endregion
-
-        //        #region Observable Collections
-        //        public ObservableCollection<CodecInfo> AvailableCodecs { get; private set; }
-
-        //        public ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; private set; }
-        //        #endregion
 
         //        #region RoutedUICommands
         //        public static readonly RoutedUICommand PauseCommand = new RoutedUICommand("Pause", "Pause", typeof(MainWindow)),
@@ -123,11 +84,7 @@ namespace Captura
         //                TimeManager.Content = string.Format("{0:D2}:{1:D2}", Minutes, Seconds);
         //            };
         //            #endregion
-
-        //            AvailableCodecs = new ObservableCollection<CodecInfo>();
-        //            AvailableAudioSources = new ObservableCollection<KeyValuePair<string, string>>();
-        //            AvailableWindows = new ObservableCollection<KeyValuePair<IntPtr, string>>();
-
+                
         //            #region Command Bindings
         //            CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => Close(), (s, e) => e.CanExecute = ReadyToRecord));
 
@@ -217,33 +174,7 @@ namespace Captura
 
         //        void Refresh(object sender = null, RoutedEventArgs e = null)
         //        {
-        //            if (ReadyToRecord)
-        //            {
-        //                // Available Codecs
-        //                AvailableCodecs.Clear();
-        //                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.Uncompressed, "[Uncompressed]"));
-        //                AvailableCodecs.Add(new CodecInfo(Recorder.GifFourCC, "[Gif]"));
-        //                AvailableCodecs.Add(new CodecInfo(KnownFourCCs.Codecs.MotionJpeg, "Motion JPEG"));
-        //                foreach (var Codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs()) AvailableCodecs.Add(Codec);
-
-        //                Encoder = KnownFourCCs.Codecs.MotionJpeg;
-
-        //                // Available Audio Sources
-        //                AvailableAudioSources.Clear();
-
-        //                AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
-
-        //                for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-        //                    AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
-
-        //                foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
-        //                    AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
-
-        //                SelectedAudioSourceId = "-1";
-
-        //                // Status
-        //                Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found", AvailableCodecs.Count - 1, AvailableAudioSources.Count - 1);
-        //            }            
+        //                        
         //        }
 
         //        void ToggleRecorderState<T>(object sender = null, T e = default(T))
