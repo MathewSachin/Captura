@@ -23,7 +23,7 @@ Features
 
 Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/latest))
 --------------------------------------------------------------
-* [Fluent.Ribbon](https://github.com/fluentribbon/Fluent.Ribbon) by batzen
+* [MUI](https://github.com/firstfloorsoftware/mui) by FirstFloorSoftware
 * [NAudio](http://github.com/naudio/NAudio) by Mark Heath
 * [My Fork](http://github.com/MathewSachin/SharpAvi) of SharpAvi by Vasilli Masilov
 * lameenc32.dll, lameenc64.dll included in source (`Need to be Licensed for Commercial Use`)
@@ -35,3 +35,4 @@ Acknowledgements
 * Recorder.cs adopted from SharpAvi ScreenCast Sample
 * ScreenShot.cs adopted from Aeroshot
 * GifWriter.cs adopted from Bumpkit
+* VectorIcons from http://muiicons.com
