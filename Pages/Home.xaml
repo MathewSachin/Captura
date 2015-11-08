@@ -49,6 +49,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="CONFIGURE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
@@ -96,6 +97,12 @@
                                     x:Name="CaptureDuration" 
                                     Value="0" 
                                     Minimum="0"/>
+
+                <CheckBox Content="Region Selector"
+                          Grid.Row="9"
+                          Name="RegSelBox" 
+                          Checked="ShowRegionSelector"
+                          Unchecked="HideRegionSelector"/>
             </Grid>
             <ScrollViewer Margin="{StaticResource SplitLeft}">
                 <DockPanel>
@@ -107,8 +114,8 @@
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                         <Button Margin="5" Click="ScreenShot" Content="ScreenShot"/>
-                        <Button Content="Record" Margin="5" Name="RecordButton"/>
-                        <Button Content="Pause" Margin="5">
+                        <Button Content="Record" Margin="5" Name="RecordButton" Click="ToggleRecorderState"/>
+                        <Button Content="Pause" Margin="5" Name="PauseButton" Command="this:Home.PauseCommand">
                             <Button.LayoutTransform>
                                 <RotateTransform x:Name="RotationEffect" Angle="0"/>
                             </Button.LayoutTransform>

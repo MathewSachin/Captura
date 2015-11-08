@@ -406,9 +406,9 @@ namespace Captura
 
             Duration = (int)CaptureDuration.Value;
 
-            Recorder = new Recorder(lastFileName, AudioVideoSettings.FrameRate, Encoder, (int)AudioVideoSettings.Instance.VideoQuality.Value,
+            Recorder = new Recorder(lastFileName, AudioVideoSettings.FrameRate, Encoder, AudioVideoSettings.VideoQuality,
                         SelectedAudioSourceId, AudioVideoSettings.Stereo, AudioVideoSettings.EncodeAudio,
-                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioVideoSettings.Instance.AudioQuality.Value),
+                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt(AudioVideoSettings.AudioQuality),
                         AudioVideoSettings.CaptureClicks, AudioVideoSettings.CaptureKeystrokes, Commons.ConvertColor(BackgroundColor),
                         () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor)),
                         () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));

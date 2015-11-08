@@ -19,7 +19,7 @@
                 
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
-                    <Slider Minimum="0" Maximum="100"/>
+                    <Slider Interval="1" Minimum="0" Maximum="100" Value="{Binding _VideoQuality, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <CheckBox Margin="0,5" Content="Capture Mouse Clicks" IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
@@ -32,7 +32,7 @@
 
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
-                    <Slider Minimum="0"/>
+                    <Slider Name="AudioQualitySlider" Value="{Binding _AudioQuality, Mode=TwoWay}" Interval="1" Minimum="0"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

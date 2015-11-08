@@ -4,7 +4,7 @@
     {
         public static MainWindow Instance { get; private set; }
 
-        MainWindow()
+        public MainWindow()
         {
             InitializeComponent();
 

@@ -1,19 +1,50 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
+using SharpAvi.Codecs;
 
 namespace Captura
 {
     public partial class AudioVideoSettings : UserControl, INotifyPropertyChanged
     {
+        static readonly int MaxAudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
+
         public AudioVideoSettings()
         {
             InitializeComponent();
 
             DataContext = this;
 
-            AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
-            AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
-            AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
+            AudioQualitySlider.Maximum = MaxAudioQuality;
+        }
+
+        public static int AudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length / 2;
+
+        public double _AudioQuality
+        {
+            get { return AudioQuality; }
+            set
+            {
+                if (AudioQuality != (int)value)
+                {
+                    AudioQuality = (int)value;
+                    OnPropertyChanged("_AudioQuality");
+                }
+            }
+        }
+
+        public static int VideoQuality = 70;
+
+        public double _VideoQuality
+        {
+            get { return VideoQuality; }
+            set
+            {
+                if (VideoQuality != (int)value)
+                {
+                    VideoQuality = (int)value;
+                    OnPropertyChanged("_VideoQuality");
+                }
+            }
         }
 
         public static int FrameRate = 10;
