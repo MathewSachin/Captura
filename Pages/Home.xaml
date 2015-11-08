@@ -7,6 +7,14 @@
              xmlns:this="clr-namespace:Captura"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <EllipseGeometry RadiusX="50" RadiusY="50" x:Key="RecordIcon"/>
+        <RectangleGeometry x:Key="StopIcon">
+            <RectangleGeometry.Rect>
+                <Rect Height="50" Width="50"/>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
+    </UserControl.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
             <Label x:Name="TimeManager" 
@@ -14,6 +22,7 @@
                        Foreground="White"
                        DockPanel.Dock="Right"/>
             <Label Content="Ready" Name="Status"/>
+
         </DockPanel>
         <GridSplitter Height="1" DockPanel.Dock="Bottom" Margin="0,5,0,2"/>
         <DockPanel DockPanel.Dock="Bottom">
@@ -115,8 +124,12 @@
                         <mui:BBCodeBlock BBCode="The appearance of Modern UI styled windows can be changed on the fly. Make sure you visit the [url=Pages/Settings.xaml]settings[/url] to adapt the appearance to your preference." Margin="0,0,0,32"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                        <Button Margin="5" Click="ScreenShot" Content="ScreenShot"/>
-                        <Button Content="Record" Margin="5" Name="RecordButton" Click="ToggleRecorderState"/>
+                        <mui:ModernButton IconHeight="30" IconWidth="30" EllipseDiameter="60"
+                                Margin="5" Click="ScreenShot" ToolTip="ScreenShot"
+                                IconData="F1 M 30,27C 30,24.3766 32.3767,22 35,22L 41,22C 43.6234,22 46,24.3766 46,27L 50.9999,27.0001C 53.7613,27.0001 55.9999,29.2387 55.9999,32.0001L 55.9999,46.0001C 55.9999,48.7615 53.7613,51.0001 50.9999,51.0001L 25,51.0001C 22.2385,51.0001 20,48.7615 20,46.0001L 20,32.0001C 20,29.2387 22.2385,27.0001 25,27.0001L 30,27 Z M 25.5,30C 24.6716,30 24,30.8954 24,32C 24,33.1046 24.6716,34 25.5,34C 26.3284,34 27,33.1046 27,32C 27,30.8954 26.3284,30 25.5,30 Z M 38,32C 34.134,32 31,35.134 31,39C 31,42.866 34.134,46 38,46C 41.866,46 45,42.866 45,39C 45,35.134 41.866,32 38,32 Z M 38,34.5C 40.4853,34.5 42.5,36.5147 42.5,39C 42.5,41.4853 40.4853,43.5 38,43.5C 35.5147,43.5 33.5,41.4853 33.5,39C 33.5,36.5147 35.5147,34.5 38,34.5 Z "/>
+                        <mui:ModernButton IconHeight="30" IconWidth="30" EllipseDiameter="60"
+                                          ToolTip="Record" Margin="5" Name="RecordButton" Click="ToggleRecorderState"
+                                          IconData="{StaticResource RecordIcon}"/>
                         <mui:ModernButton IconHeight="30" IconWidth="30" EllipseDiameter="60"
                                           ToolTip="Pause" Margin="5" Name="PauseButton" Command="this:Home.PauseCommand"
                                           IconData="F1 M 26.9167,23.75L 33.25,23.75L 33.25,52.25L 26.9167,52.25L 26.9167,23.75 Z M 42.75,23.75L 49.0833,23.75L 49.0833,52.25L 42.75,52.25L 42.75,23.75 Z">

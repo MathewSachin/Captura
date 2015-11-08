@@ -42,7 +42,7 @@ namespace Captura
 
         public static readonly FourCC GifFourCC = new FourCC("_gif");
         #endregion
-
+        
         static Rectangle CreateRectangle(RECT r) { return new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top); }
 
         #region Fields

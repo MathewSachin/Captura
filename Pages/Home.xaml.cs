@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
@@ -154,15 +155,18 @@ namespace Captura
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
         }
 
-        //~Home()
-        //{   
-        //    if (KeyHook != null) KeyHook.Dispose();
+        ~Home()
+        {
+            Dispatcher.Invoke(new Action(() =>
+                {
+                    if (KeyHook != null) KeyHook.Dispose();
 
-        //    WindowClosing = true;
-        //    RegionSelector.Close();
+                    WindowClosing = true;
+                    RegionSelector.Close();
 
-        //    if (!ReadyToRecord) StopRecording();
-        //}
+                    if (!ReadyToRecord) StopRecording();
+                }));
+        }
 
         public static readonly DependencyProperty BackgroundColorProperty =
             DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(Home), new UIPropertyMetadata(Colors.Transparent));
@@ -387,7 +391,8 @@ namespace Captura
             // UI Buttons
             MainWindow.Instance.RecordThumb.Description = "Stop";
             MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
-            RecordButton.Content = "Stop";
+            RecordButton.ToolTip = "Stop";
+            RecordButton.IconData = (RectangleGeometry)FindResource("StopIcon");
 
             ReadyToRecord = false;
 
@@ -442,7 +447,8 @@ namespace Captura
             MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
             PauseButton.Command = PauseCommand;
             RotationEffect.Angle = 0;
-            RecordButton.Content = "Record";
+            RecordButton.ToolTip = "Record";
+            RecordButton.IconData = (Geometry)FindResource("RecordIcon");
             PauseButton.ToolTip = "Pause";
         }
 

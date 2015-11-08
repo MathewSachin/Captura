@@ -12,6 +12,7 @@ namespace Captura
 
         #region Fields
         WindowInteropHelper host;
+        IntPtr Handle;
         bool IsDisposed = false;
         Dictionary<int, Action> Keys = new Dictionary<int, Action>();
         #endregion
@@ -19,6 +20,7 @@ namespace Captura
         public KeyboardHookList(Window Window)
         {
             host = new WindowInteropHelper(Window);
+            Handle = host.Handle;
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
 
@@ -29,7 +31,7 @@ namespace Captura
         {
             int Identifier = R.Next();
 
-            User32.RegisterHotKey(host.Handle, Identifier, Modifiers, Key);
+            User32.RegisterHotKey(Handle, Identifier, Modifiers, Key);
 
             Keys.Add(Identifier, Callback);
         }
@@ -49,7 +51,7 @@ namespace Captura
                 ComponentDispatcher.ThreadPreprocessMessage -= ProcessMessage;
 
                 foreach (var Identifier in Keys.Keys)
-                    User32.UnregisterHotKey(host.Handle, Identifier);
+                    User32.UnregisterHotKey(Handle, Identifier);
                 host = null;
             }
             IsDisposed = true;

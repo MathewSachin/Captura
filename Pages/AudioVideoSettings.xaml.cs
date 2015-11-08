@@ -48,7 +48,20 @@ namespace Captura
         }
 
         public static int FrameRate = 10;
-        
+
+        public int _FrameRate
+        {
+            get { return FrameRate; }
+            set
+            {
+                if (FrameRate != value)
+                {
+                    FrameRate = value;
+                    OnPropertyChanged("_FrameRate");
+                }
+            }
+        }
+
         public static bool EncodeAudio = true;
                 
         public bool _EncodeAudio
@@ -116,10 +129,5 @@ namespace Captura
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        void DigitBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            FrameRate = (sender as DigitBox).Value;
-        }
     }
 }

@@ -10,11 +10,12 @@
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
-                <TextBlock Text="VIDEO" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                <TextBlock Text="VIDEO" Style="{StaticResource Heading2}"/>
 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Frame Rate:  " DockPanel.Dock="Left"/>
-                    <this:DigitBox TextChanged="DigitBox_TextChanged"  Value="10" Minimum="0"/>
+                    <TextBlock Text="Frame Rate:" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding Value, ElementName=FrameRateSlider, StringFormat={}{0:N}}" Margin="3,0"/>
+                    <Slider Name="FrameRateSlider"  Minimum="1" Maximum="30" Value="{Binding _FrameRate}" Interval="1"/>
                 </DockPanel>
                 
                 <DockPanel Margin="0,5">

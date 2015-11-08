@@ -195,20 +195,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Cursor.ico" />
-    <Resource Include="Images\Minimize.ico" />
     <Resource Include="Images\Record.png" />
     <Resource Include="Images\Stop.png" />
-    <Resource Include="Images\Pause.png" />
-    <Resource Include="Images\Refresh.png" />
-    <Resource Include="Images\Speaker.png" />
-    <Resource Include="Images\MP3.png" />
-    <Resource Include="Images\Frame.png" />
-    <Resource Include="Images\Resize.ico" />
-    <Resource Include="Images\Click.png" />
-    <Resource Include="Images\Keystroke.png" />
     <Resource Include="Images\Screenshot.png" />
-    <Resource Include="Images\SysTray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Minimize.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
