@@ -48,20 +48,7 @@ namespace Captura
         }
 
         public static int FrameRate = 10;
-
-        public int _FrameRate
-        {
-            get { return FrameRate; }
-            set
-            {
-                if (FrameRate != value)
-                {
-                    FrameRate = value;
-                    OnPropertyChanged("_FrameRate");
-                }
-            }
-        }
-
+        
         public static bool EncodeAudio = true;
                 
         public bool _EncodeAudio
@@ -77,7 +64,7 @@ namespace Captura
             }
         }
 
-        public static bool Stereo = true;
+        public static bool Stereo = false;
 
         public bool _Stereo
         {
@@ -92,7 +79,7 @@ namespace Captura
             }
         }
 
-        public static bool CaptureClicks = true;
+        public static bool CaptureClicks = false;
 
         public bool _CaptureClicks
         {
@@ -107,7 +94,7 @@ namespace Captura
             }
         }
 
-        public static bool CaptureKeystrokes = true;
+        public static bool CaptureKeystrokes = false;
 
         public bool _CaptureKeystrokes
         {
@@ -129,5 +116,10 @@ namespace Captura
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        void DigitBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FrameRate = (sender as DigitBox).Value;
+        }
     }
 }

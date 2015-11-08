@@ -13,13 +13,13 @@
                 <TextBlock Text="VIDEO" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Frame Rate:" DockPanel.Dock="Left"/>
-                    <this:MaskedTextBox Value="{Binding _FrameRate, Mode=TwoWay}" Minimum="0"/>
+                    <TextBlock Text="Frame Rate:  " DockPanel.Dock="Left"/>
+                    <this:DigitBox TextChanged="DigitBox_TextChanged"  Value="10" Minimum="0"/>
                 </DockPanel>
                 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
-                    <Slider Interval="1" Minimum="0" Maximum="100" Value="{Binding _VideoQuality, Mode=TwoWay}"/>
+                    <TextBlock Text="Quality:  " DockPanel.Dock="Left"/>
+                    <Slider Minimum="0" Maximum="100" Value="{Binding _VideoQuality, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <CheckBox Margin="0,5" Content="Capture Mouse Clicks" IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
@@ -31,8 +31,8 @@
                 <CheckBox Margin="0,5" Content="Stereo" IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
-                    <Slider Name="AudioQualitySlider" Value="{Binding _AudioQuality, Mode=TwoWay}" Interval="1" Minimum="0"/>
+                    <TextBlock Text="Quality:  " DockPanel.Dock="Left"/>
+                    <Slider Name="AudioQualitySlider" Value="{Binding _AudioQuality, Mode=TwoWay}" Minimum="0"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

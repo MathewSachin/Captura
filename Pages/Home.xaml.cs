@@ -387,8 +387,7 @@ namespace Captura
             // UI Buttons
             MainWindow.Instance.RecordThumb.Description = "Stop";
             MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
-            RecordButton.ToolTip = "Stop";
-            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Stop.png";
+            RecordButton.Content = "Stop";
 
             ReadyToRecord = false;
 
@@ -404,7 +403,7 @@ namespace Captura
             TimeManager.Content = "00:00";
             DTimer.Start();
 
-            Duration = (int)CaptureDuration.Value;
+            Duration = CaptureDuration.Value;
 
             Recorder = new Recorder(lastFileName, AudioVideoSettings.FrameRate, Encoder, AudioVideoSettings.VideoQuality,
                         SelectedAudioSourceId, AudioVideoSettings.Stereo, AudioVideoSettings.EncodeAudio,
@@ -442,9 +441,8 @@ namespace Captura
             MainWindow.Instance.RecordThumb.Description = "Record";
             MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
             PauseButton.Command = PauseCommand;
-            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Record.png";
             RotationEffect.Angle = 0;
-            RecordButton.ToolTip = "Record";
+            RecordButton.Content = "Record";
             PauseButton.ToolTip = "Pause";
         }
 

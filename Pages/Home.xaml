@@ -31,13 +31,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1"/>
             <Grid Grid.Column="2" Margin="{StaticResource SplitRight}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
@@ -47,8 +47,8 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
@@ -85,18 +85,20 @@
                           Grid.Row="6"/>
 
                 <TextBlock Text="Start Delay (in ms)" Grid.Row="7"/>
-                <this:MaskedTextBox Grid.Row="7"
-                                    Grid.Column="1"
-                                    x:Name="StartDelay" 
-                                    Value="0" 
-                                    Minimum="0"/>
+                <this:DigitBox Grid.Row="7"
+                          Margin="0,3"
+                          Grid.Column="1"
+                          x:Name="StartDelay" 
+                          Value="0" 
+                          Minimum="0"/>
 
                 <TextBlock Text="Capture Duration (in seconds)" Grid.Row="8"/>
-                <this:MaskedTextBox Grid.Row="8"
-                                    Grid.Column="1"
-                                    x:Name="CaptureDuration" 
-                                    Value="0" 
-                                    Minimum="0"/>
+                <this:DigitBox Grid.Row="8"
+                          Margin="0,3"
+                          Grid.Column="1"
+                          x:Name="CaptureDuration" 
+                          Value="0" 
+                          Minimum="0"/>
 
                 <CheckBox Content="Region Selector"
                           Grid.Row="9"
@@ -107,19 +109,21 @@
             <ScrollViewer Margin="{StaticResource SplitLeft}">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top">
-                        <TextBlock Text="CAPTURA by Mathew Sachin" Style="{StaticResource Heading1}" Margin="0,0,0,8"/>
-                        <mui:BBCodeBlock BBCode="[b]Captura[/b], a WPF application to Capture Screen as [b]Picture(ScreenShots)[/b] or as [b]Video(ScreenCasts)[/b] along with/without Mouse [b]Cursor[/b], Audio from [b]Microphone[/b] or [b]Loopback[/b], Mouse [b]Clicks[/b] and [b]Keystrokes[/b]." Margin="0,0,0,32" />
+                        <TextBlock Text="CAPTURA" Style="{StaticResource Heading1}" Margin="0,0,0,8"/>
+                        <mui:BBCodeBlock BBCode="[b]Captura[/b], by [url=https://github.com/MathewSachin]Mathew Sachin[/url], a WPF application to Capture Screen as [b]Picture(ScreenShots)[/b] or as [b]Video(ScreenCasts)[/b] along with/without Mouse [b]Cursor[/b], Audio from [b]Microphone[/b] or [b]Loopback[/b], Mouse [b]Clicks[/b] and [b]Keystrokes[/b]." Margin="0,0,0,32" />
                         <TextBlock Text="APPEARANCE" Style="{StaticResource Heading2}" />
                         <mui:BBCodeBlock BBCode="The appearance of Modern UI styled windows can be changed on the fly. Make sure you visit the [url=Pages/Settings.xaml]settings[/url] to adapt the appearance to your preference." Margin="0,0,0,32"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                         <Button Margin="5" Click="ScreenShot" Content="ScreenShot"/>
                         <Button Content="Record" Margin="5" Name="RecordButton" Click="ToggleRecorderState"/>
-                        <Button Content="Pause" Margin="5" Name="PauseButton" Command="this:Home.PauseCommand">
-                            <Button.LayoutTransform>
+                        <mui:ModernButton IconHeight="30" IconWidth="30" EllipseDiameter="60"
+                                          ToolTip="Pause" Margin="5" Name="PauseButton" Command="this:Home.PauseCommand"
+                                          IconData="F1 M 26.9167,23.75L 33.25,23.75L 33.25,52.25L 26.9167,52.25L 26.9167,23.75 Z M 42.75,23.75L 49.0833,23.75L 49.0833,52.25L 42.75,52.25L 42.75,23.75 Z">
+                            <mui:ModernButton.LayoutTransform>
                                 <RotateTransform x:Name="RotationEffect" Angle="0"/>
-                            </Button.LayoutTransform>
-                        </Button>
+                            </mui:ModernButton.LayoutTransform>
+                        </mui:ModernButton>
                     </StackPanel>
                 </DockPanel>
             </ScrollViewer>
