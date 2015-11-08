@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:this="clr-namespace:Captura"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -11,13 +12,28 @@
             <StackPanel x:Name="Panel" MinWidth="150">
                 <TextBlock Text="VIDEO" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
 
+                <DockPanel Margin="0,5">
+                    <TextBlock Text="Frame Rate:" DockPanel.Dock="Left"/>
+                    <this:MaskedTextBox Value="{Binding _FrameRate, Mode=TwoWay}" Minimum="0"/>
+                </DockPanel>
+                
+                <DockPanel Margin="0,5">
+                    <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
+                    <Slider Minimum="0" Maximum="100"/>
+                </DockPanel>
+
                 <CheckBox Margin="0,5" Content="Capture Mouse Clicks" IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" Content="Capture Keystrokes" IsChecked="{Binding _CaptureKeystrokes, Mode=TwoWay}"/>
-
+                
                 <TextBlock Text="AUDIO" Style="{StaticResource Heading2}" Margin="0,8,0,8" />
 
                 <CheckBox Margin="0,5" Content="Encode Mp3" IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" Content="Stereo" IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
+
+                <DockPanel Margin="0,5">
+                    <TextBlock Text="Quality:" DockPanel.Dock="Left"/>
+                    <Slider Minimum="0"/>
+                </DockPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

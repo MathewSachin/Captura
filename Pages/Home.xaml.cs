@@ -152,10 +152,6 @@ namespace Captura
 
             if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
-
-            AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
-            AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
-            AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
         }
 
         //~Home()
@@ -410,9 +406,9 @@ namespace Captura
 
             Duration = (int)CaptureDuration.Value;
 
-            Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
+            Recorder = new Recorder(lastFileName, AudioVideoSettings.FrameRate, Encoder, (int)AudioVideoSettings.Instance.VideoQuality.Value,
                         SelectedAudioSourceId, AudioVideoSettings.Stereo, AudioVideoSettings.EncodeAudio,
-                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value),
+                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioVideoSettings.Instance.AudioQuality.Value),
                         AudioVideoSettings.CaptureClicks, AudioVideoSettings.CaptureKeystrokes, Commons.ConvertColor(BackgroundColor),
                         () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor)),
                         () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));

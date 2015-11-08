@@ -10,6 +10,25 @@ namespace Captura
             InitializeComponent();
 
             DataContext = this;
+
+            AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
+            AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
+            AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
+        }
+
+        public static int FrameRate = 10;
+
+        public int _FrameRate
+        {
+            get { return FrameRate; }
+            set
+            {
+                if (FrameRate != value)
+                {
+                    FrameRate = value;
+                    OnPropertyChanged("_FrameRate");
+                }
+            }
         }
 
         public static bool EncodeAudio = true;
