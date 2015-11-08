@@ -81,6 +81,10 @@
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\RecentButton.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="MaskedTextBox.cs" />
+    <Compile Include="Pages\AudioVideoSettings.xaml.cs">
+      <DependentUpon>AudioVideoSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -105,6 +109,10 @@
       <DependentUpon>AppearanceSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AppearanceSettingsViewModel.cs" />
+    <Page Include="Pages\AudioVideoSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\ScreenShotSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

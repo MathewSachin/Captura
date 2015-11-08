@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
@@ -16,10 +17,12 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
 
 namespace Captura
 {
-    partial class Home : UserControl, INotifyPropertyChanged
+    partial class Home : UserControl
     {
         #region Fields
         DispatcherTimer DTimer;
@@ -36,6 +39,9 @@ namespace Captura
         {
             InitializeComponent();
 
+            MainWindow.Instance.RecordThumb.Click += ToggleRecorderState;
+            MainWindow.Instance.ScreenShotThumb.Click += ScreenShot;
+
             DataContext = this;
 
             AvailableCodecs = new ObservableCollection<CodecInfo>();
@@ -44,7 +50,112 @@ namespace Captura
 
             Refresh();
 
+            #region Init Timer
+            DTimer = new DispatcherTimer();
+            DTimer.Interval = TimeSpan.FromSeconds(1);
+            DTimer.Tick += (s, e) =>
+            {
+                Seconds++;
+
+                if (Seconds == 60)
+                {
+                    Seconds = 0;
+                    Minutes++;
+                }
+
+                if (Duration > 0 && (Minutes * 60 + Seconds >= Duration)) StopRecording();
+
+                TimeManager.Content = string.Format("{0:D2}:{1:D2}", Minutes, Seconds);
+            };
+            #endregion
+
+            #region Command Bindings
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) => OutputFolderBrowse()));
+
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => MainWindow.Instance.Close(), (s, e) => e.CanExecute = ReadyToRecord));
+
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.New, (s, e) => StartRecording(),
+                (s, e) => e.CanExecute = ReadyToRecord));
+
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Stop, (s, e) => StopRecording(),
+                (s, e) => e.CanExecute = !ReadyToRecord));
+
+            CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, (s, e) => Refresh()));
+
+            CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) =>
+                {
+                    Recorder.Pause();
+                    DTimer.Stop();
+
+                    PauseButton.Command = ResumeCommand;
+                    RotationEffect.Angle = 90;
+                    Status.Content = "Paused";
+                    PauseButton.ToolTip = "Pause";
+                }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder != null));
+
+            CommandBindings.Add(new CommandBinding(ResumeCommand, (s, e) =>
+                {
+                    Recorder.Start();
+                    DTimer.Start();
+
+                    PauseButton.Command = PauseCommand;
+                    RotationEffect.Angle = 0;
+                    Status.Content = "Recording...";
+                    PauseButton.ToolTip = "Resume";
+                }, (s, e) => e.CanExecute = !ReadyToRecord && Recorder != null));
+            #endregion
+
+            NavigationCommands.Refresh.Execute(this, this);
+
+            RegionSelector.Closing += (s, e) =>
+                {
+                    if (!WindowClosing)
+                    {
+                        RegSelBox.IsChecked = false;
+                        e.Cancel = true;
+                    }
+                };
+
+            #region SystemTray
+            SystemTray = new NotifyIcon()
+            {
+                Visibility = Visibility.Collapsed,
+                IconSource = MainWindow.Instance.Icon
+            };
+
+            SystemTray.TrayLeftMouseUp += (s, e) =>
+                {
+                    SystemTray.Visibility = Visibility.Collapsed;
+                    MainWindow.Instance.Show();
+                    MainWindow.Instance.WindowState = WindowState.Normal;
+                };
+
+            MainWindow.Instance.StateChanged += (s, e) =>
+                {
+                    if (MainWindow.Instance.WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
+                    {
+                        MainWindow.Instance.Hide();
+                        SystemTray.Visibility = Visibility.Visible;
+                    }
+                };
+            #endregion
+
+            #region KeyHook
+            KeyHook = new KeyboardHookList(MainWindow.Instance);
+
+            KeyHook.Register(KeyCode.VK_R, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
+                () => Dispatcher.Invoke(new Action(() => ToggleRecorderState<int>())));
+
+            KeyHook.Register(KeyCode.VK_S, ModifierKeyCodes.Control | ModifierKeyCodes.Shift | ModifierKeyCodes.Alt,
+                () => Dispatcher.Invoke(new Action(() => ScreenShot<int>())));
+            #endregion
+
+            if (string.IsNullOrWhiteSpace(OutPath.Text)) OutPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+            if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
+
+            AudioQuality.Maximum = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
+            AudioQuality.Value = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
+            AudioQuality.Value = (AudioQuality.Maximum + 1) / 2;
         }
 
         //~Home()
@@ -57,8 +168,39 @@ namespace Captura
         //    if (!ReadyToRecord) StopRecording();
         //}
 
+        public static readonly DependencyProperty BackgroundColorProperty =
+            DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(Home), new UIPropertyMetadata(Colors.Transparent));
+
+        public Color BackgroundColor
+        {
+            get { return (Color)GetValue(BackgroundColorProperty); }
+            set { SetValue(BackgroundColorProperty, value); }
+        }
+
+        #region RoutedUICommands
+        public static readonly RoutedUICommand PauseCommand = new RoutedUICommand("Pause", "Pause", typeof(Home)),
+            ResumeCommand = new RoutedUICommand("Pause", "Pause", typeof(Home));
+        #endregion
+
+        #region RegionSelector
+        RegionSelector RegionSelector = RegionSelector.Instance;
+        bool WindowClosing = false;
+
+        void ShowRegionSelector(object sender, RoutedEventArgs e)
+        {
+            RegionSelector.Show();
+            Refresh();
+        }
+
+        void HideRegionSelector(object sender, RoutedEventArgs e)
+        {
+            RegionSelector.Hide();
+            Refresh();
+        }
+        #endregion
+
         public static readonly DependencyProperty ReadyToRecordProperty =
-                    DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(MainWindow), new UIPropertyMetadata(true));
+                    DependencyProperty.Register("ReadyToRecord", typeof(bool), typeof(Home), new UIPropertyMetadata(true));
 
         public bool ReadyToRecord
         {
@@ -159,7 +301,7 @@ namespace Captura
         public static bool IncludeCursor { get { return Properties.Settings.Default.IncludeCursor; } }
 
         public ObservableCollection<KeyValuePair<IntPtr, string>> AvailableWindows { get; private set; }
-        
+
         public static readonly DependencyProperty SelectedWindowProperty =
             DependencyProperty.Register("SelectedWindow", typeof(IntPtr), typeof(Home), new UIPropertyMetadata(Recorder.DesktopHandle));
 
@@ -228,12 +370,92 @@ namespace Captura
             WindowBox.SelectedIndex = 1;
         }
 
-        void OnPropertyChanged(string e)
+        void ToggleRecorderState<T>(object sender = null, T e = default(T))
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            if (ReadyToRecord) StartRecording();
+            else StopRecording();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        void StartRecording()
+        {
+            if (WindowBox.SelectedIndex == 0 && AudioSourcesBox.SelectedIndex == 0)
+            {
+                Status.Content = "Nothing to Record! Selected a Window(probably Desktop), Audio Device or both";
+                return;
+            }
+
+            if (MinOnStart.IsChecked.Value) MainWindow.Instance.WindowState = WindowState.Minimized;
+
+            WindowBox.IsEnabled = WindowBox.SelectedIndex != 0;
+            
+            // UI Buttons
+            MainWindow.Instance.RecordThumb.Description = "Stop";
+            MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
+            RecordButton.ToolTip = "Stop";
+            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Stop.png";
+
+            ReadyToRecord = false;
+
+            string Extension = (WindowBox.SelectedIndex == 0) ? ".wav"
+                : (Encoder == Recorder.GifFourCC ? ".gif" : ".avi");
+
+            lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + Extension);
+
+            Status.Content = "Recording...";
+
+            DTimer.Stop();
+            Seconds = Minutes = 0;
+            TimeManager.Content = "00:00";
+            DTimer.Start();
+
+            Duration = (int)CaptureDuration.Value;
+
+            Recorder = new Recorder(lastFileName, (int)FrameRate.Value, Encoder, (int)Quality.Value,
+                        SelectedAudioSourceId, AudioVideoSettings.Stereo, AudioVideoSettings.EncodeAudio,
+                        Mp3AudioEncoderLame.SupportedBitRates.OrderBy(br => br).ElementAt((int)AudioQuality.Value),
+                        AudioVideoSettings.CaptureClicks, AudioVideoSettings.CaptureKeystrokes, Commons.ConvertColor(BackgroundColor),
+                        () => (bool)Dispatcher.Invoke(new Func<bool>(() => IncludeCursor)),
+                        () => (IntPtr)Dispatcher.Invoke(new Func<IntPtr>(() => SelectedWindow)));
+
+            Recorder.Error += (E) => Dispatcher.Invoke(new Action(() =>
+                {
+                    Status.Content = "Error - " + E.Message;
+                    OnStopped();
+                }));
+
+            Recorder.Start((int)StartDelay.Value);
+
+            Recent.Add(lastFileName);
+        }
+
+        void OnStopped()
+        {
+            Recorder = null;
+
+            WindowBox.IsEnabled = true;
+
+            ReadyToRecord = true;
+
+            MainWindow.Instance.WindowState = WindowState.Normal;
+
+            Status.Content = "Saved to " + lastFileName;
+
+            DTimer.Stop();
+
+            // UI Buttons
+            MainWindow.Instance.RecordThumb.Description = "Record";
+            MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Record.png"));
+            PauseButton.Command = PauseCommand;
+            RecordButton.Content = "pack://application:,,,/Captura;Component/Images/Record.png";
+            RotationEffect.Angle = 0;
+            RecordButton.ToolTip = "Record";
+            PauseButton.ToolTip = "Pause";
+        }
+
+        void StopRecording()
+        {
+            Recorder.Stop();
+            OnStopped();
+        }
     }
 }

@@ -4,10 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:this="clr-namespace:Captura"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <Label Content="Ready" Name="Status" DockPanel.Dock="Bottom"/>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Label x:Name="TimeManager" 
+                       Content="00:00" 
+                       Foreground="White"
+                       DockPanel.Dock="Right"/>
+            <Label Content="Ready" Name="Status"/>
+        </DockPanel>
+        <GridSplitter Height="1" DockPanel.Dock="Bottom" Margin="0,5,0,2"/>
         <DockPanel DockPanel.Dock="Bottom">
             <Button Content="..."
                     DockPanel.Dock="Right"
@@ -21,62 +29,90 @@
         </DockPanel>
         <Grid Style="{StaticResource ContentRoot}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1"/>
-            <StackPanel Grid.Column="2" Margin="{StaticResource SplitRight}">
-                <DockPanel>
-                    <mui:ModernButton DockPanel.Dock="Right"  Margin="3,5,0,5" HorizontalAlignment="Right" ToolTip="Refresh"  Click="Refresh"
-                                  IconData="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " />
-                    <TextBlock Text="CONFIGURE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
-                </DockPanel>
+            <Grid Grid.Column="2" Margin="{StaticResource SplitRight}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
 
-                <CheckBox Margin="3,5" Content="Include Cursor" ToolTip="Include the Mouse Cursor in ScreenShots and ScreenCasts"
+                <TextBlock Text="CONFIGURE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                <mui:ModernButton Grid.Column="1"  Margin="3,5,0,5" HorizontalAlignment="Right" ToolTip="Refresh" Click="Refresh"
+                                  IconData="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " />
+
+                <CheckBox Grid.Row="1" Margin="3,5" Content="Include Cursor" ToolTip="Include the Mouse Cursor in ScreenShots and ScreenCasts"
                           IsChecked="{Binding Source={StaticResource Settings}, Path=Default.IncludeCursor}"/>
 
-                <Grid HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="140"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Video Source:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <ComboBox Name="WindowBox" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                <TextBlock Grid.Row="2" Text="Video Source:" VerticalAlignment="Center" Margin="0,0,16,4" />
+                <ComboBox Grid.Row="2" Name="WindowBox" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
                               ItemsSource="{Binding AvailableWindows}" SelectedValue="{Binding SelectedWindow, Mode=TwoWay}"
                               SelectedValuePath="Key" DisplayMemberPath="Value"/>
 
-                    <TextBlock Text="Video Encoder:" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                <TextBlock Text="Video Encoder:" Grid.Row="3" VerticalAlignment="Center" Margin="0,0,16,4" />
+                <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
                               ItemsSource="{Binding AvailableCodecs}" SelectedValue="{Binding Encoder, Mode=TwoWay}"
                               SelectedValuePath="Codec" IsEnabled="{Binding ReadyToRecord}" Name="EncodersBox" DisplayMemberPath="Name"/>
 
-                    <TextBlock Text="Audio Source:" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
+                <TextBlock Text="Audio Source:" Grid.Row="4" VerticalAlignment="Center" Margin="0,0,16,4" />
+                <ComboBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,4"
                               ItemsSource="{Binding AvailableAudioSources}" SelectedValue="{Binding SelectedAudioSourceIndex, Mode=TwoWay}"
                               SelectedValuePath="Key" IsEnabled="{Binding ReadyToRecord}" Name="AudioSourcesBox"
                               DisplayMemberPath="Value"/>
-                        
-                </Grid>
-            </StackPanel>
+
+                <CheckBox Content="Minimize On Capture Start"
+                          Grid.Row="5"
+                          x:Name="MinOnStart"
+                          IsChecked="{Binding Source={StaticResource Settings}, Path=Default.MinimizeOnStart}"/>
+
+                <CheckBox Name="Min2SysTray" 
+                          Content="Minimize To SystemTray"
+                          Grid.Row="6"/>
+
+                <TextBlock Text="Start Delay (in ms)" Grid.Row="7"/>
+                <this:MaskedTextBox Grid.Row="7"
+                                    Grid.Column="1"
+                                    x:Name="StartDelay" 
+                                    Value="0" 
+                                    Minimum="0"/>
+
+                <TextBlock Text="Capture Duration (in seconds)" Grid.Row="8"/>
+                <this:MaskedTextBox Grid.Row="8"
+                                    Grid.Column="1"
+                                    x:Name="CaptureDuration" 
+                                    Value="0" 
+                                    Minimum="0"/>
+            </Grid>
             <ScrollViewer Margin="{StaticResource SplitLeft}">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top">
                         <TextBlock Text="CAPTURA by Mathew Sachin" Style="{StaticResource Heading1}" Margin="0,0,0,8"/>
-                        <mui:BBCodeBlock BBCode="[b]Captura[/b], a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio for Microphone or Loopback, Mouse Clicks and Keystrokes." Margin="0,0,0,32" />
+                        <mui:BBCodeBlock BBCode="[b]Captura[/b], a WPF application to Capture Screen as [b]Picture(ScreenShots)[/b] or as [b]Video(ScreenCasts)[/b] along with/without Mouse [b]Cursor[/b], Audio from [b]Microphone[/b] or [b]Loopback[/b], Mouse [b]Clicks[/b] and [b]Keystrokes[/b]." Margin="0,0,0,32" />
                         <TextBlock Text="APPEARANCE" Style="{StaticResource Heading2}" />
                         <mui:BBCodeBlock BBCode="The appearance of Modern UI styled windows can be changed on the fly. Make sure you visit the [url=Pages/Settings.xaml]settings[/url] to adapt the appearance to your preference." Margin="0,0,0,32"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                         <Button Margin="5" Click="ScreenShot" Content="ScreenShot"/>
                         <Button Content="Record" Margin="5" Name="RecordButton"/>
-                        <Button Content="Pause" Margin="5"/>
+                        <Button Content="Pause" Margin="5">
+                            <Button.LayoutTransform>
+                                <RotateTransform x:Name="RotationEffect" Angle="0"/>
+                            </Button.LayoutTransform>
+                        </Button>
                     </StackPanel>
                 </DockPanel>
             </ScrollViewer>

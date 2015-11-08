@@ -10,6 +10,7 @@
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="Appearance" Source="Pages/AppearanceSettings.xaml" />
                 <mui:Link DisplayName="ScreenShot" Source="Pages/ScreenShotSettings.xaml" />
+                <mui:Link DisplayName="Audio &amp; Video" Source="Pages/AudioVideoSettings.xaml" />
             </mui:ModernTab.Links>
         </mui:ModernTab>
     </Grid>

@@ -4,16 +4,12 @@ using System.Windows.Controls;
 
 namespace Captura
 {
-    /// <summary>
-    /// Interaction logic for AppearanceSettings.xaml
-    /// </summary>
     public partial class ScreenShotSettings : UserControl, INotifyPropertyChanged
     {
         public ScreenShotSettings()
         {
             InitializeComponent();
 
-            // a simple view model for appearance configuration
             DataContext = this;
         }
 
