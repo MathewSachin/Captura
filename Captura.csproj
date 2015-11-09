@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="NAudio">
       <HintPath>..\#Binaries\NAudio.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SharpAvi">
       <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
@@ -80,6 +81,7 @@
     <Compile Include="Core\GifWriter.cs" />
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="NAudioFacade.cs" />
     <Compile Include="Pages\AudioVideoSettings.xaml.cs">
       <DependentUpon>AudioVideoSettings.xaml</DependentUpon>
     </Compile>

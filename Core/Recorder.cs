@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using Gma.System.MouseKeyHook;
 using ManagedWin32.Api;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
-using Gma.System.MouseKeyHook;
 
 namespace Captura
 {
@@ -42,7 +40,7 @@ namespace Captura
 
         public static readonly FourCC GifFourCC = new FourCC("_gif");
         #endregion
-        
+
         static Rectangle CreateRectangle(RECT r) { return new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top); }
 
         #region Fields
@@ -50,15 +48,7 @@ namespace Captura
         IAviVideoStream VideoStream;
         IAviAudioStream AudioStream;
 
-        IWaveIn AudioSource;
-        WaveFileWriter WaveWriter;
-        IWavePlayer SilencePlayer;
-        string AudioSourceId;
-        MMDevice LoopbackDevice { get { return new MMDeviceEnumerator().GetDevice(AudioSourceId); } }
-        bool EncodeAudio,
-            IsLoopback;
-        int AudioBitRate;
-        WaveFormat WaveFormat;
+        NAudioFacade NAudioFacade = null;
 
         Thread ScreenThread;
         string FileName;
@@ -67,6 +57,8 @@ namespace Captura
         bool CaptureVideo,
             CaptureMouseClicks,
             CaptureKeyStrokes;
+
+        bool EncodeMp3;
 
         ManualResetEvent StopCapturing = new ManualResetEvent(false),
             ContinueCapturing = new ManualResetEvent(false);
@@ -111,17 +103,17 @@ namespace Captura
         IAviAudioStream CreateAudioStream()
         {
             // Create encoding or simple stream based on settings
-            if (IsLoopback)
-                return AviWriter.AddAudioStream(WaveFormat.Channels,
-                    WaveFormat.SampleRate, WaveFormat.BitsPerSample, AudioFormats.Float);
+            if (NAudioFacade.IsLoopback)
+                return AviWriter.AddAudioStream(NAudioFacade.Channels,
+                    NAudioFacade.SampleRate, NAudioFacade.BitsPerSample, AudioFormats.Float);
 
             // LAME DLL path is set in App.OnStartup()
-            else if (EncodeAudio)
-                return AviWriter.AddMp3AudioStream(WaveFormat.Channels,
-                    WaveFormat.SampleRate, AudioBitRate);
+            else if (EncodeMp3)
+                return AviWriter.AddMp3AudioStream(NAudioFacade.Channels,
+                    NAudioFacade.SampleRate, NAudioFacade.AudioBitRate);
 
-            else return AviWriter.AddAudioStream(WaveFormat.Channels,
-                WaveFormat.SampleRate, WaveFormat.BitsPerSample);
+            else return AviWriter.AddAudioStream(NAudioFacade.Channels,
+                NAudioFacade.SampleRate, NAudioFacade.BitsPerSample);
         }
         #endregion
 
@@ -135,9 +127,9 @@ namespace Captura
             this.FramesPerSecond = FramesPerSecond;
             this.Codec = Codec;
             this.Quality = VideoQuality;
-            this.EncodeAudio = EncodeMp3;
-            this.AudioBitRate = AudioBitRate;
-            this.AudioSourceId = AudioSourceId;
+            this.EncodeMp3 = EncodeMp3;
+
+            if (AudioSourceId != "-1") NAudioFacade = new NAudioFacade(AudioSourceId, StereoAudio, AudioBitRate);
 
             this.IncludeCursor = IncludeCursor;
             this.hWnd = hWnd;
@@ -146,12 +138,7 @@ namespace Captura
             this.CaptureKeyStrokes = CaptureKeyStrokes;
             this.BackgroundColor = BackgroundColor;
 
-            int val;
-            IsLoopback = !int.TryParse(AudioSourceId, out val);
-
             this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Recorder.GifFourCC;
-
-            WaveFormat = IsLoopback ? LoopbackDevice.AudioClient.MixFormat : new WaveFormat(44100, 16, StereoAudio ? 2 : 1);
 
             if (CaptureMouseClicks || CaptureKeyStrokes)
             {
@@ -169,13 +156,9 @@ namespace Captura
         #region Init
         void InitAudio()
         {
-            if (IsLoopback)
+            if (NAudioFacade.IsLoopback)
             {
-                var dev = LoopbackDevice;
-
-                SilencePlayer = new WasapiOut(dev, AudioClientShareMode.Shared, false, 100);
-
-                SilencePlayer.Init(new SilenceProvider(WaveFormat));
+                NAudioFacade.InitSilencePlayer();
 
                 if (CaptureVideo)
                 {
@@ -183,39 +166,25 @@ namespace Captura
                     AudioStream.Name = "Loopback";
                 }
 
-                AudioSource = new WasapiLoopbackCapture(dev) { ShareMode = AudioClientShareMode.Shared };
+                NAudioFacade.InitLoopback();
             }
             else
             {
-                int Id = int.Parse(AudioSourceId);
-
-                if (Id != -1)
+                if (CaptureVideo)
                 {
-                    if (CaptureVideo)
-                    {
-                        AudioStream = CreateAudioStream();
-                        AudioStream.Name = "Voice";
-                    }
-
-                    AudioSource = new WaveInEvent
-                    {
-                        DeviceNumber = Id,
-                        WaveFormat = WaveFormat,
-                        // Buffer size to store duration of 1 frame
-                        BufferMilliseconds = (int)Math.Ceiling(1000 / (decimal)FramesPerSecond),
-                        NumberOfBuffers = 3,
-                    };
+                    AudioStream = CreateAudioStream();
+                    AudioStream.Name = "Voice";
                 }
+
+                NAudioFacade.InitRecording(FramesPerSecond);
             }
 
-            if (AudioSource != null)
-            {
-                if (IsGif || !CaptureVideo)
-                    WaveWriter = new WaveFileWriter(IsGif
-                        ? Path.ChangeExtension(FileName, "wav")
-                        : FileName, WaveFormat);
-                AudioSource.DataAvailable += AudioDataAvailable;
-            }
+            if (IsGif || !CaptureVideo)
+                NAudioFacade.CreateWaveWriter(IsGif
+                    ? Path.ChangeExtension(FileName, "wav")
+                    : FileName);
+
+            NAudioFacade.DataAvailable += AudioDataAvailable;
         }
 
         void InitVideo()
@@ -233,7 +202,7 @@ namespace Captura
             }
             else if (IsGif) GifWriter = new GifWriter(FileName, 1000 / FramesPerSecond, 1);
 
-            InitAudio();
+            if (NAudioFacade != null) InitAudio();
 
             if (CaptureVideo || IsGif)
             {
@@ -253,21 +222,21 @@ namespace Captura
                 {
                     try
                     {
-                        Thread.Sleep((int)e);
-
-                        if (SilencePlayer != null) SilencePlayer.Play();
+                        Thread.Sleep((int)e);                        
 
                         if (CaptureVideo || IsGif) ContinueCapturing.Set();
 
-                        if (AudioSource != null)
+                        if (NAudioFacade != null)
                         {
+                            NAudioFacade.PlaySilence();
+
                             if (CaptureVideo)
                             {
                                 VideoFrameWritten.Set();
                                 AudioBlockWritten.Reset();
                             }
 
-                            AudioSource.StartRecording();
+                            NAudioFacade.StartRecording();
                         }
                     }
                     catch (Exception E) { if (Error != null) Error(E); }
@@ -275,12 +244,15 @@ namespace Captura
         }
 
         public void Pause()
-        {
-            if (SilencePlayer != null) SilencePlayer.Pause();
-
+        {            
             if (CaptureVideo || IsGif) ContinueCapturing.Reset();
 
-            if (AudioSource != null) AudioSource.StopRecording();
+            if (NAudioFacade != null)
+            {
+                NAudioFacade.StopRecording();
+
+                NAudioFacade.PauseSilence();
+            }
         }
 
         public void Stop()
@@ -289,13 +261,6 @@ namespace Captura
             ContinueCapturing.Set();
 
             // Silence
-            if (SilencePlayer != null)
-            {
-                SilencePlayer.Stop();
-                SilencePlayer.Dispose();
-                SilencePlayer = null;
-            }
-
             if (ClickHook != null) ClickHook.Dispose();
 
             // Video
@@ -310,12 +275,10 @@ namespace Captura
             }
 
             // Audio Source
-            if (AudioSource != null)
+            if (NAudioFacade != null)
             {
-                AudioSource.StopRecording();
-                AudioSource.DataAvailable -= AudioDataAvailable;
-                AudioSource.Dispose();
-                AudioSource = null;
+                NAudioFacade.Dispose();
+                NAudioFacade = null;
             }
 
             // WaitHandles
@@ -342,13 +305,7 @@ namespace Captura
             {
                 GifWriter.Dispose();
                 GifWriter = null;
-            }
-
-            if (WaveWriter != null)
-            {
-                WaveWriter.Dispose();
-                WaveWriter = null;
-            }
+            }            
         }
         #endregion
 
@@ -382,7 +339,7 @@ namespace Captura
                         if (!IsGif) VideoFrameWritten.Set();
                     }
 
-                    if (!IsGif && AudioStream != null && !IsLoopback)
+                    if (!IsGif && AudioStream != null && !NAudioFacade.IsLoopback)
                         if (WaitHandle.WaitAny(new WaitHandle[] { AudioBlockWritten, StopCapturing }) == 1)
                             break;
 
@@ -492,23 +449,23 @@ namespace Captura
             }
         }
 
-        void AudioDataAvailable(object sender, WaveInEventArgs e)
+        void AudioDataAvailable(byte[] Buffer, int BytesRecorded)
         {
             if (CaptureVideo)
             {
-                if (IsLoopback) AudioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                if (NAudioFacade.IsLoopback) AudioStream.WriteBlock(Buffer, 0, BytesRecorded);
                 else
                 {
                     var signalled = WaitHandle.WaitAny(new WaitHandle[] { VideoFrameWritten, StopCapturing });
                     if (signalled == 0)
                     {
-                        AudioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                        AudioStream.WriteBlock(Buffer, 0, BytesRecorded);
 
                         AudioBlockWritten.Set();
                     }
                 }
             }
-            else WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
+            else NAudioFacade.WaveWrite(Buffer, BytesRecorded);
         }
         #endregion
     }

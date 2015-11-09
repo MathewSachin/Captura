@@ -14,8 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ManagedWin32;
 using ManagedWin32.Api;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
 using SharpAvi;
 using SharpAvi.Codecs;
 using Color = System.Windows.Media.Color;
@@ -330,11 +328,9 @@ namespace Captura
 
                 AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
 
-                for (var i = 0; i < WaveInEvent.DeviceCount; i++)
-                    AvailableAudioSources.Add(new KeyValuePair<string, string>(i.ToString(), WaveInEvent.GetCapabilities(i).ProductName));
-
-                foreach (var device in new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
-                    AvailableAudioSources.Add(new KeyValuePair<string, string>(device.ID, device.FriendlyName + " (Loopback)"));
+                if (App.IsNAudioPresent)
+                    foreach (var Dev in NAudioFacade.EnumerateAudioDevices())
+                        AvailableAudioSources.Add(Dev);
 
                 SelectedAudioSourceId = "-1";
                 AudioSourcesBox.SelectedIndex = 0;
@@ -387,7 +383,7 @@ namespace Captura
             if (MinOnStart.IsChecked.Value) MainWindow.Instance.WindowState = WindowState.Minimized;
 
             WindowBox.IsEnabled = WindowBox.SelectedIndex != 0;
-            
+
             // UI Buttons
             MainWindow.Instance.RecordThumb.Description = "Stop";
             MainWindow.Instance.RecordThumb.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Captura;Component/Images/Stop.png"));
@@ -456,6 +452,11 @@ namespace Captura
         {
             Recorder.Stop();
             OnStopped();
+        }
+
+        void AudioVideoSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RecordButton.IsEnabled = !(SelectedWindow == (IntPtr)(-1) && SelectedAudioSourceId == "-1");
         }
     }
 }

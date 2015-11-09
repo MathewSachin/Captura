@@ -26,6 +26,8 @@ namespace Captura
 
             DataContext = this;
 
+            AudioPanel.IsEnabled = App.IsNAudioPresent;
+
             if (App.IsLamePresent) AudioQualitySlider.Maximum = MaxAudioQuality;
             else
             {

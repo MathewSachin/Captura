@@ -17,7 +17,7 @@
                     <TextBlock Text="{Binding Value, ElementName=FrameRateSlider, StringFormat={}{0:N}}" Margin="3,0"/>
                     <Slider Name="FrameRateSlider"  Minimum="1" Maximum="30" Value="{Binding _FrameRate}" Interval="1"/>
                 </DockPanel>
-                
+
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Quality:  " DockPanel.Dock="Left"/>
                     <Slider Minimum="0" Maximum="100" Value="{Binding _VideoQuality, Mode=TwoWay}"/>
@@ -25,16 +25,18 @@
 
                 <CheckBox Margin="0,5" Content="Capture Mouse Clicks" IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" Content="Capture Keystrokes" IsChecked="{Binding _CaptureKeystrokes, Mode=TwoWay}"/>
-                
-                <TextBlock Text="AUDIO" Style="{StaticResource Heading2}" Margin="0,8,0,8" />
 
-                <CheckBox Name="EncodeMp3Box" Margin="0,5" Content="Encode Mp3" IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
-                <CheckBox Margin="0,5" Content="Stereo" IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
+                <StackPanel Name="AudioPanel">
+                    <TextBlock Text="AUDIO" Style="{StaticResource Heading2}" Margin="0,8,0,8" />
 
-                <DockPanel Margin="0,5">
-                    <TextBlock Text="Quality:  " DockPanel.Dock="Left"/>
-                    <Slider Name="AudioQualitySlider" Value="{Binding _AudioQuality, Mode=TwoWay}" Minimum="0"/>
-                </DockPanel>
+                    <CheckBox Name="EncodeMp3Box" Margin="0,5" Content="Encode Mp3" IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
+                    <CheckBox Margin="0,5" Content="Stereo" IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
+
+                    <DockPanel Margin="0,5">
+                        <TextBlock Text="Quality:  " DockPanel.Dock="Left"/>
+                        <Slider Name="AudioQualitySlider" Value="{Binding _AudioQuality, Mode=TwoWay}" Minimum="0"/>
+                    </DockPanel>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>
