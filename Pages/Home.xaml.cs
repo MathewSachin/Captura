@@ -253,7 +253,7 @@ namespace Captura
             bool SaveToClipboard = ScreenShotSettings.SaveToClipboard;
 
             if (!SaveToClipboard)
-                FileName = Path.Combine(Properties.Settings.Default.OutputPath,
+                FileName = Path.Combine(OutPath.Text,
                     DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + Extension);
 
             if (SelectedWindow == Recorder.DesktopHandle

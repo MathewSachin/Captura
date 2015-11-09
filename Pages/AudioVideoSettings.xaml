@@ -28,7 +28,7 @@
                 
                 <TextBlock Text="AUDIO" Style="{StaticResource Heading2}" Margin="0,8,0,8" />
 
-                <CheckBox Margin="0,5" Content="Encode Mp3" IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
+                <CheckBox Name="EncodeMp3Box" Margin="0,5" Content="Encode Mp3" IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" Content="Stereo" IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,5">

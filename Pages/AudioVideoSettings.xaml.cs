@@ -6,7 +6,19 @@ namespace Captura
 {
     public partial class AudioVideoSettings : UserControl, INotifyPropertyChanged
     {
-        static readonly int MaxAudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
+        static readonly int MaxAudioQuality = 0;
+
+        public static int AudioQuality = 0;
+
+        static AudioVideoSettings()
+        {
+            if (!App.IsLamePresent) EncodeAudio = false;
+            else
+            {
+                MaxAudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
+                AudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length / 2;
+            }
+        }
 
         public AudioVideoSettings()
         {
@@ -14,10 +26,13 @@ namespace Captura
 
             DataContext = this;
 
-            AudioQualitySlider.Maximum = MaxAudioQuality;
-        }
-
-        public static int AudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length / 2;
+            if (App.IsLamePresent) AudioQualitySlider.Maximum = MaxAudioQuality;
+            else
+            {
+                AudioQualitySlider.IsEnabled = false;
+                EncodeMp3Box.IsEnabled = false;
+            }
+        }        
 
         public double _AudioQuality
         {
