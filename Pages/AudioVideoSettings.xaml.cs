@@ -17,7 +17,7 @@ namespace Captura
             {
                 MaxAudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length - 1;
                 AudioQuality = Mp3AudioEncoderLame.SupportedBitRates.Length / 2;
-            }
+            }            
         }
 
         public AudioVideoSettings()
@@ -34,6 +34,8 @@ namespace Captura
                 AudioQualitySlider.IsEnabled = false;
                 EncodeMp3Box.IsEnabled = false;
             }
+
+            HookPanel.IsEnabled = App.IsMouseKeyHookPresent;
         }        
 
         public double _AudioQuality

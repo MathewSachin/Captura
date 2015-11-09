@@ -7,9 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Interop;
-using Gma.System.MouseKeyHook;
 using ManagedWin32.Api;
 using SharpAvi;
 using SharpAvi.Codecs;
@@ -54,9 +52,7 @@ namespace Captura
         string FileName;
         int FramesPerSecond, Quality;
         FourCC Codec;
-        bool CaptureVideo,
-            CaptureMouseClicks,
-            CaptureKeyStrokes;
+        bool CaptureVideo;
 
         bool EncodeMp3;
 
@@ -73,9 +69,7 @@ namespace Captura
         Func<bool> IncludeCursor;
         Func<IntPtr> hWnd;
 
-        IKeyboardMouseEvents ClickHook;
-        bool MouseClicked = false;
-        Keys LastKeyPressed = Keys.None;
+        MouseKeyHookFacade MouseKeyHookFacade = null;
         #endregion
 
         #region Create
@@ -134,19 +128,13 @@ namespace Captura
             this.IncludeCursor = IncludeCursor;
             this.hWnd = hWnd;
 
-            this.CaptureMouseClicks = CaptureMouseClicks;
-            this.CaptureKeyStrokes = CaptureKeyStrokes;
+            if (CaptureMouseClicks || CaptureKeyStrokes)
+                MouseKeyHookFacade = new MouseKeyHookFacade(CaptureMouseClicks, CaptureKeyStrokes);
+
             this.BackgroundColor = BackgroundColor;
 
             this.CaptureVideo = hWnd().ToInt32() != -1 && Codec != Recorder.GifFourCC;
-
-            if (CaptureMouseClicks || CaptureKeyStrokes)
-            {
-                ClickHook = Hook.GlobalEvents();
-                if (CaptureMouseClicks) ClickHook.MouseDown += (s, e) => MouseClicked = true;
-                if (CaptureKeyStrokes) ClickHook.KeyDown += (s, e) => LastKeyPressed = e.KeyCode;
-            }
-
+            
             InitVideo();
 
             // Not Actually Started, Waits for ContinueThread to be Set
@@ -260,8 +248,7 @@ namespace Captura
             // Resume if Paused
             ContinueCapturing.Set();
 
-            // Silence
-            if (ClickHook != null) ClickHook.Dispose();
+            if (MouseKeyHookFacade != null) MouseKeyHookFacade.Dispose();
 
             // Video
             if (CaptureVideo || IsGif)
@@ -412,26 +399,7 @@ namespace Captura
                 }
                 #endregion
 
-                #region MouseClicks
-                if (CaptureMouseClicks && MouseClicked)
-                {
-                    var curPos = User32.CursorPosition;
-                    g.DrawArc(new Pen(Color.Black, 1), curPos.X - 40, curPos.Y - 40, 80, 80, 0, 360);
-
-                    MouseClicked = false;
-                }
-                #endregion
-
-                #region KeyStrokes
-                if (CaptureKeyStrokes && LastKeyPressed != Keys.None)
-                {
-                    g.DrawString(LastKeyPressed.ToString(),
-                        new Font(FontFamily.GenericMonospace, 100),
-                        new SolidBrush(Color.Black), 100, 100);
-
-                    LastKeyPressed = Keys.None;
-                }
-                #endregion
+                if (MouseKeyHookFacade != null) MouseKeyHookFacade.Draw(g);
 
                 g.Flush();
             }

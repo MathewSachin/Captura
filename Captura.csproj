@@ -51,13 +51,14 @@
     </Reference>
     <Reference Include="Gma.System.MouseKeyHook">
       <HintPath>..\globalmousekeyhook\MouseKeyHook\bin\Debug\Gma.System.MouseKeyHook.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ManagedWin32">
       <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
     </Reference>
     <Reference Include="NAudio">
       <HintPath>..\#Binaries\NAudio.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SharpAvi">
       <HintPath>..\#Binaries\SharpAvi.dll</HintPath>
@@ -81,6 +82,7 @@
     <Compile Include="Core\GifWriter.cs" />
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="MouseKeyHookFacade.cs" />
     <Compile Include="NAudioFacade.cs" />
     <Compile Include="Pages\AudioVideoSettings.xaml.cs">
       <DependentUpon>AudioVideoSettings.xaml</DependentUpon>

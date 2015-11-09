@@ -13,6 +13,8 @@ namespace Captura
 
         public static bool IsNAudioPresent { get; private set; }
 
+        public static bool IsMouseKeyHookPresent { get; private set; }
+
         string Dir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 
         void Application_Startup(object sender, StartupEventArgs e)
@@ -27,6 +29,8 @@ namespace Captura
             }
 
             IsNAudioPresent = File.Exists(Path.Combine(Dir, "NAudio.dll"));
+
+            IsMouseKeyHookPresent = File.Exists(Path.Combine(Dir, "Gma.System.MouseKeyHook.dll"));
         }
 
         void Application_Exit(object sender, ExitEventArgs e) { Settings.Default.Save(); }
