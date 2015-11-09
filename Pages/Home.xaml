@@ -95,20 +95,22 @@
                           Grid.Row="6"/>
 
                 <TextBlock Text="Start Delay (in ms)" Grid.Row="7"/>
-                <this:DigitBox Grid.Row="7"
+                <TextBox Grid.Row="7"
                           Margin="0,3"
                           Grid.Column="1"
-                          x:Name="StartDelay" 
-                          Value="0" 
-                          Minimum="0"/>
+                          Text="0" FontSize="12"
+                          HorizontalContentAlignment="Right"
+                          VerticalContentAlignment="Center"
+                          x:Name="StartDelay"/>
 
                 <TextBlock Text="Capture Duration (in seconds)" Grid.Row="8"/>
-                <this:DigitBox Grid.Row="8"
+                <TextBox Grid.Row="8"
                           Margin="0,3"
+                          Text="0" FontSize="12"
+                          HorizontalContentAlignment="Right"
+                          VerticalContentAlignment="Center"
                           Grid.Column="1"
-                          x:Name="CaptureDuration" 
-                          Value="0" 
-                          Minimum="0"/>
+                          x:Name="CaptureDuration"/>
 
                 <CheckBox Content="Region Selector"
                           Grid.Row="9"

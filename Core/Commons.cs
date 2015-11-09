@@ -9,6 +9,12 @@ namespace Captura
     {
         public static Color ConvertColor(System.Windows.Media.Color C) { return System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B); }
 
+        public static int Value(this System.Windows.Controls.TextBox T)
+        {
+            try { return int.Parse(T.Text); }
+            catch { return 0; }
+        }
+
         public static void WriteToClipboard(this Bitmap BMP, bool PreserveTransparency)
         {
             if (PreserveTransparency)

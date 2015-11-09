@@ -408,7 +408,7 @@ namespace Captura
             TimeManager.Content = "00:00";
             DTimer.Start();
 
-            Duration = CaptureDuration.Value;
+            Duration = CaptureDuration.Value();
 
             Recorder = new Recorder(lastFileName, AudioVideoSettings.FrameRate, Encoder, AudioVideoSettings.VideoQuality,
                         SelectedAudioSourceId, AudioVideoSettings.Stereo, AudioVideoSettings.EncodeAudio,
@@ -423,7 +423,7 @@ namespace Captura
                     OnStopped();
                 }));
 
-            Recorder.Start((int)StartDelay.Value);
+            Recorder.Start(StartDelay.Value());
 
             Recent.Add(lastFileName);
         }
