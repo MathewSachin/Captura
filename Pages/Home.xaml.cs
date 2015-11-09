@@ -12,12 +12,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ManagedWin32;
-using ManagedWin32.Api;
 using SharpAvi;
 using SharpAvi.Codecs;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
+using NotifyIcon = System.Windows.Forms.NotifyIcon;
+using System.Reflection;
 
 namespace Captura
 {
@@ -118,13 +118,13 @@ namespace Captura
             #region SystemTray
             SystemTray = new NotifyIcon()
             {
-                Visibility = Visibility.Collapsed,
-                IconSource = MainWindow.Instance.Icon
+                Visible = false,
+                Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location)
             };
 
-            SystemTray.TrayLeftMouseUp += (s, e) =>
+            SystemTray.Click += (s, e) =>
                 {
-                    SystemTray.Visibility = Visibility.Collapsed;
+                    SystemTray.Visible = false;
                     MainWindow.Instance.Show();
                     MainWindow.Instance.WindowState = WindowState.Normal;
                 };
@@ -134,7 +134,7 @@ namespace Captura
                     if (MainWindow.Instance.WindowState == WindowState.Minimized && Min2SysTray.IsChecked.Value)
                     {
                         MainWindow.Instance.Hide();
-                        SystemTray.Visibility = Visibility.Visible;
+                        SystemTray.Visible = true;
                     }
                 };
             #endregion

@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using ManagedWin32.Api;
 
 namespace Captura
 {
@@ -46,12 +45,12 @@ namespace Captura
                 }
                 if (User32.IsIconic(WindowHandle))
                 {
-                    User32.ShowWindow(WindowHandle, (ShowWindowFlags)1);
+                    User32.ShowWindow(WindowHandle, 1);
                     Thread.Sleep(300); // Wait for window to be restored
                 }
                 else
                 {
-                    User32.ShowWindow(WindowHandle, (ShowWindowFlags)5);
+                    User32.ShowWindow(WindowHandle, 5);
                     Thread.Sleep(100);
                 }
                 User32.SetForegroundWindow(WindowHandle);
@@ -68,8 +67,8 @@ namespace Captura
                 // Show the taskbar again
                 if (WindowHandle != start && WindowHandle != taskbar)
                 {
-                    User32.ShowWindow(start, (ShowWindowFlags)1);
-                    User32.ShowWindow(taskbar, (ShowWindowFlags)1);
+                    User32.ShowWindow(start, 1);
+                    User32.ShowWindow(taskbar, 1);
                 }
 
                 if (s == null)
@@ -98,8 +97,8 @@ namespace Captura
             {
                 if (WindowHandle != start && WindowHandle != taskbar)
                 {
-                    User32.ShowWindow(start, (ShowWindowFlags)1);
-                    User32.ShowWindow(taskbar, (ShowWindowFlags)1);
+                    User32.ShowWindow(start, 1);
+                    User32.ShowWindow(taskbar, 1);
                 }
             }
         }
@@ -169,10 +168,10 @@ namespace Captura
             if (rct.Bottom > totalSize.Bottom)
                 rct.Bottom = totalSize.Bottom;
 
-            User32.ShowWindow(backdrop.Handle, (ShowWindowFlags)4);
+            User32.ShowWindow(backdrop.Handle, 4);
             User32.SetWindowPos(backdrop.Handle, WindowHandle, rct.Left,
                                     rct.Top, rct.Right - rct.Left,
-                                    rct.Bottom - rct.Top, SetWindowPositionFlags.SWP_NOACTIVATE);
+                                    rct.Bottom - rct.Top, SetWindowPositionFlags.NoActivate);
             backdrop.Opacity = 1;
             Application.DoEvents();
 

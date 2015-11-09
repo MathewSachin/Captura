@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using ManagedWin32.Api;
 using SharpAvi;
 using SharpAvi.Codecs;
 using SharpAvi.Output;

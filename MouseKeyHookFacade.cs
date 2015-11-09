@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
-using ManagedWin32.Api;
 
 namespace Captura
 {

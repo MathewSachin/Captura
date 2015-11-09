@@ -53,9 +53,6 @@
       <HintPath>..\globalmousekeyhook\MouseKeyHook\bin\Debug\Gma.System.MouseKeyHook.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ManagedWin32">
-      <HintPath>..\ManagedWin32\bin\Release\ManagedWin32.dll</HintPath>
-    </Reference>
     <Reference Include="NAudio">
       <HintPath>..\#Binaries\NAudio.dll</HintPath>
       <Private>True</Private>
@@ -82,6 +79,11 @@
     <Compile Include="Core\GifWriter.cs" />
     <Compile Include="Core\KeyboardHookList.cs" />
     <Compile Include="Core\Recorder.cs" />
+    <Compile Include="ManagedWin32\DWMApi.cs" />
+    <Compile Include="ManagedWin32\FolderBrowserDialog.cs" />
+    <Compile Include="ManagedWin32\Gdi32.cs" />
+    <Compile Include="ManagedWin32\User32.cs" />
+    <Compile Include="ManagedWin32\WindowHandler.cs" />
     <Compile Include="MouseKeyHookFacade.cs" />
     <Compile Include="NAudioFacade.cs" />
     <Compile Include="Pages\AudioVideoSettings.xaml.cs">
