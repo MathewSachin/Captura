@@ -24,11 +24,10 @@ Features
 Dependencies (available [here](https://github.com/MathewSachin/Captura/releases/latest))
 --------------------------------------------------------------
 * [MUI](https://github.com/firstfloorsoftware/mui) by FirstFloorSoftware
-* [NAudio](http://github.com/naudio/NAudio) by Mark Heath
+* [NAudio](http://github.com/naudio/NAudio) by Mark Heath (Not Necessary)
 * [My Fork](http://github.com/MathewSachin/SharpAvi) of SharpAvi by Vasilli Masilov
-* lameenc32.dll, lameenc64.dll included in source (`Need to be Licensed for Commercial Use`)
-* [ManagedWin32](http://github.com/MathewSachin/ManagedWin32)
-* [GlobalMouseKeyHook](https://github.com/gmamaladze/globalmousekeyhook) by George Mamaladze
+* lameenc32.dll, lameenc64.dll included in source (`Need to be Licensed for Commercial Use`) (Not Necessary)
+* [GlobalMouseKeyHook](https://github.com/gmamaladze/globalmousekeyhook) by George Mamaladze (Not Necessary)
 
 Acknowledgements
 --------------------------------------------------------------
