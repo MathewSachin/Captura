@@ -79,7 +79,6 @@
     <Compile Include="Core\Commons.cs" />
     <Compile Include="Core\GifWriter.cs" />
     <Compile Include="Core\KeyboardHookList.cs" />
-    <Compile Include="Core\RecentButton.cs" />
     <Compile Include="Core\Recorder.cs" />
     <Compile Include="Pages\AudioVideoSettings.xaml.cs">
       <DependentUpon>AudioVideoSettings.xaml</DependentUpon>

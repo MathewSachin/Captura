@@ -9,8 +9,8 @@
     <Grid>
         <ScrollViewer>
             <DockPanel>
-                <Button DockPanel.Dock="Top" Content="Open Output Folder" Click="OpenOutputFolder"/>
-                <ListView DisplayMemberPath="Content" ItemsSource="{Binding RecentList, Mode=TwoWay}"/>
+                <Button DockPanel.Dock="Top" Foreground="{StaticResource Accent}" Content="Open Output Folder" Click="OpenOutputFolder"/>
+                <ListView Margin="0,10,0,0" DisplayMemberPath="Content" ItemsSource="{Binding RecentList, Mode=TwoWay}"/>
             </DockPanel>
         </ScrollViewer>
     </Grid>

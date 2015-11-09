@@ -4,6 +4,10 @@
     {
         public static MainWindow Instance { get; private set; }
 
+        // ToDo
+        // * ScreenShot BackgroundColor
+        // * ScreenShot Resize Window
+        
         public MainWindow()
         {
             InitializeComponent();
