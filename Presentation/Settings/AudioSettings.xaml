@@ -5,30 +5,41 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI">
     <Grid>
         <ScrollViewer>
-            <StackPanel MinWidth="150">
-                <TextBlock Text="AUDIO"
-                               Style="{StaticResource Heading2}"
-                               Margin="0,8,0,8" />
+            <StackPanel MinWidth="150"
+                        Margin="10">
+                <DockPanel>
+                    <TextBlock Text="Audio Source:"
+                               VerticalAlignment="Center" 
+                               Margin="0,0,16,4" />
+                    <ComboBox VerticalAlignment="Center" 
+                              Margin="0,0,0,4"
+                              ItemsSource="{Binding _AvailableAudioSources}"
+                              SelectedValue="{Binding _SelectedAudioSourceId, Mode=TwoWay}"
+                              SelectedValuePath="Key"
+                              Name="AudioSourcesBox"
+                              DisplayMemberPath="Value"
+                              SelectionChanged="AudioVideoSelectionChanged"/>
+                </DockPanel>
 
                 <CheckBox Name="EncodeMp3Box" 
-                              Margin="0,5"
-                              Content="Encode Mp3"
-                              IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
+                          Margin="0,5"
+                          Content="Encode Mp3"
+                          IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" 
-                              Content="Stereo"
-                              IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
+                          Content="Stereo"
+                          IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Quality:  "
-                                   DockPanel.Dock="Left"/>
+                               DockPanel.Dock="Left"/>
                     <TextBlock Text="{Binding Value, ElementName=AudioQualitySlider, StringFormat={}{0:N0} / }"
-                                   Margin="3,0,0,0"/>
+                               Margin="3,0,0,0"/>
                     <TextBlock Text="{Binding Maximum, ElementName=AudioQualitySlider, StringFormat={}{0:N0}}"
-                                   Margin="4,0"/>
+                               Margin="4,0"/>
                     <Slider Name="AudioQualitySlider"
-                                IsEnabled="{Binding IsChecked, ElementName=EncodeMp3Box}"
-                                Value="{Binding _AudioQuality, Mode=TwoWay}" 
-                                Minimum="0"/>
+                            IsEnabled="{Binding IsChecked, ElementName=EncodeMp3Box}"
+                            Value="{Binding _AudioQuality, Mode=TwoWay}" 
+                            Minimum="0"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

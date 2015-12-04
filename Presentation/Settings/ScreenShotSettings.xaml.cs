@@ -1,21 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Windows.Controls;
-using System;
 
 namespace Captura
 {
     public partial class ScreenShotSettings : UserControl, INotifyPropertyChanged
     {
-        static ScreenShotSettings Instance;
-
         public ScreenShotSettings()
         {
             InitializeComponent();
 
             DataContext = this;
-
-            Instance = this;
         }
 
         static string selectedSaveTo = "Disk";
@@ -71,9 +66,9 @@ namespace Captura
             }
         }
 
-        public static bool DoResize;
-
         #region Resize
+        public static bool DoResize;
+        
         public bool _DoResize
         {
             get { return DoResize; }
@@ -87,23 +82,31 @@ namespace Captura
             }
         }
 
-        public static int ResizeWidth
+        public static int ResizeWidth = 640, ResizeHeight = 400;
+
+        public int _ResizeWidth
         {
-            get
+            get { return ResizeWidth; }
+            set
             {
-                return Instance == null ? 640
-                    : (int)Instance.ResizeWidthBox.Dispatcher.Invoke(
-                    new Func<int>(() => Instance.ResizeWidthBox.Value));
+                if (ResizeWidth != value)
+                {
+                    ResizeWidth = value;
+                    OnPropertyChanged("_ResizeWidth");
+                }
             }
         }
 
-        public static int ResizeHeight
+        public int _ResizeHeight
         {
-            get
+            get { return ResizeHeight; }
+            set
             {
-                return Instance == null ? 400
-                    : (int)Instance.ResizeHeightBox.Dispatcher.Invoke(
-                    new Func<int>(() => Instance.ResizeHeightBox.Value));
+                if (ResizeHeight != value)
+                {
+                    ResizeHeight = value;
+                    OnPropertyChanged("_ResizeHeight");
+                }
             }
         }
         #endregion

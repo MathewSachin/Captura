@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}" />
+        <Setter Property="Foreground" Value="{DynamicResource WindowText}" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+                        <Border x:Name="CheckBorder" Width="16" Height="16" Margin="0,1,4,0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Path x:Name="CheckMark" Width="10" Height="10" Margin="2" Visibility="Collapsed" Stretch="Fill" Fill="{TemplateBinding Foreground}" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z "/>
+                                <Rectangle x:Name="Indeterminate" Width="8" Height="8" Margin="4" Fill="{TemplateBinding Foreground}" Visibility="Hidden"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsThreeState}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Value="{x:Null}" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}" />
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="Indeterminate" Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Indeterminate" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CheckBorder" Property="Background" Value="{DynamicResource ButtonBackgroundHover}" />
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}" />
+                            <Setter TargetName="CheckMark" Property="Fill" Value="{DynamicResource ButtonTextHover}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="CheckBorder" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}" />
+                            <Setter TargetName="CheckMark" Property="Fill" Value="{DynamicResource ButtonTextPressed}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource Accent}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

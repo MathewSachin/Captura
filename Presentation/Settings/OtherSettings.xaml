@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Captura.OtherSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:this="clr-namespace:Captura">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel MinWidth="150"
+                        Margin="10">                
+                <CheckBox Grid.Row="1"
+                          Margin="0,5"
+                          Content="Include Cursor" 
+                          ToolTip="Include the Mouse Cursor in ScreenShots and ScreenCasts"
+                          IsChecked="{Binding _IncludeCursor}"/>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Start Delay (in ms)"/>
+                    <this:NumericBox Grid.Column="1"
+                                     Value="{Binding _StartDelay, Mode=TwoWay}"
+                                     Margin="0,3"/>
+
+                    <TextBlock Grid.Row="1"
+                               Text="Capture Duration (in seconds)"/>
+                    <this:NumericBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     Value="{Binding _CaptureDuration, Mode=TwoWay}"
+                                     Margin="0,3"/>
+
+                    <CheckBox Content="Region Selector"
+                              Grid.Row="2"                              
+                              Name="RegSelBox" 
+                              Checked="ShowRegionSelector"
+                              Unchecked="HideRegionSelector"/>
+                    <CheckBox Content="Static Region Capture" 
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              IsChecked="{Binding _StaticRegionCapture, Mode=TwoWay}"/>
+
+                    <CheckBox Grid.Row="3"
+                              Content="Capture Mouse Clicks" 
+                              IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
+                    <CheckBox Grid.Row="3"
+                              Grid.Column="1"                              
+                              Content="Capture Keystrokes" 
+                              IsChecked="{Binding _CaptureKeystrokes, Mode=TwoWay}"/>
+
+                    <CheckBox Content="Minimize On Capture Start"
+                              Grid.Row="4"
+                              IsChecked="{Binding _MinOnStart, Mode=TwoWay}"/>
+                    <CheckBox IsChecked="{Binding _MinToSysTray, Mode=TwoWay}"
+                              Grid.Row="4"
+                              Grid.Column="1"
+                              Content="Minimize To SystemTray"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

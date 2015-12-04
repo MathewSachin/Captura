@@ -1,13 +1,32 @@
-﻿using System;
+﻿using Screna;
+using Screna.Avi;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Captura
 {
+    public enum VideoSourceKind { NoVideo, Window, Screen }
+
     public partial class VideoSettings : UserControl, INotifyPropertyChanged
     {
-        static VideoSettings Instance;
+        public static VideoSettings Instance { get; private set; }
+
+        static VideoSettings()
+        {
+            AvailableVideoSourceKinds = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>();
+
+            AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"));
+            AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"));
+
+            if (ScreenVSLI.Count > 1)
+                AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
+
+            AvailableCodecs = new ObservableCollection<AviCodec>();
+            AvailableVideoSources = new ObservableCollection<IVideoSourceListItem>();
+        }
 
         public VideoSettings()
         {
@@ -16,8 +35,133 @@ namespace Captura
             DataContext = this;
 
             Instance = this;
+
+            _AvailableCodecs = AvailableCodecs;
+            _AvailableVideoSourceKinds = AvailableVideoSourceKinds;
+            _AvailableVideoSources = AvailableVideoSources;
+
+            RefreshCodecs();
+
+            RefreshVideoSources();
         }
-        
+
+        public static void RefreshVideoSources()
+        {
+            AvailableVideoSources.Clear();
+
+            switch (SelectedVideoSourceKind)
+            {
+                case VideoSourceKind.Window:
+                    AvailableVideoSources.Add(WindowVSLI.Desktop);
+                    AvailableVideoSources.Add(WindowVSLI.TaskBar);
+
+                    foreach (var win in WindowHandler.EnumerateVisible())
+                        AvailableVideoSources.Add(new WindowVSLI(win.Handle));
+                    break;
+
+                case VideoSourceKind.Screen:
+                    foreach (var Screen in ScreenVSLI.Enumerate())
+                        AvailableVideoSources.Add(Screen);
+                    break;
+            }
+
+            if (Instance != null && SelectedVideoSourceKind != VideoSourceKind.NoVideo)
+                Instance.VideoSourceBox.SelectedIndex = 0;
+        }
+
+        public static void RefreshCodecs()
+        {
+            // Available Codecs
+            AvailableCodecs.Clear();
+            AvailableCodecs.Add(new AviCodec("Gif"));
+
+            foreach (var Codec in AviWriter.EnumerateEncoders())
+                AvailableCodecs.Add(Codec);
+
+            if (Instance != null)
+                Instance.EncodersBox.SelectedIndex = 2;
+        }
+
+        void VideoSourceKindBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckFunctionalityAvailability();
+
+            RefreshVideoSources();
+        }
+
+        void AudioVideoSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckFunctionalityAvailability();
+        }
+
+        public void CheckFunctionalityAvailability()
+        {
+            bool AudioAvailable = AudioSettings.SelectedAudioSourceId != "-1",
+                VideoAvailable = SelectedVideoSourceKind == VideoSourceKind.Window
+                    || SelectedVideoSourceKind == VideoSourceKind.Screen;
+
+            MainWindow.Instance.RecordButton.IsEnabled = AudioAvailable || VideoAvailable;
+
+            MainWindow.Instance.ScreenShotButton.IsEnabled = VideoAvailable;
+        }
+
+        public static ObservableCollection<AviCodec> AvailableCodecs { get; private set; }
+
+        public ObservableCollection<AviCodec> _AvailableCodecs { get; private set; }
+
+        public static ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; private set; }
+
+        public ObservableCollection<KeyValuePair<VideoSourceKind, string>> _AvailableVideoSourceKinds { get; private set; }
+
+        public static ObservableCollection<IVideoSourceListItem> AvailableVideoSources { get; private set; }
+
+        public ObservableCollection<IVideoSourceListItem> _AvailableVideoSources { get; private set; }
+
+        public static VideoSourceKind SelectedVideoSourceKind = VideoSourceKind.Window;
+
+        public VideoSourceKind _SelectedVideoSourceKind
+        {
+            get { return SelectedVideoSourceKind; }
+            set
+            {
+                if (SelectedVideoSourceKind != value)
+                {
+                    SelectedVideoSourceKind = value;
+                    OnPropertyChanged("_SelectedVideoSourceKind");
+                }
+            }
+        }
+
+        public static IVideoSourceListItem SelectedVideoSource = WindowVSLI.Desktop;
+
+        public IVideoSourceListItem _SelectedVideoSource
+        {
+            get { return SelectedVideoSource; }
+            set
+            {
+                if (SelectedVideoSource != value)
+                {
+                    SelectedVideoSource = value;
+                    OnPropertyChanged("_SelectedVideoSource");
+                }
+            }
+        }
+
+        public static AviCodec Encoder = AviCodec.MotionJpeg;
+
+        public AviCodec _Encoder
+        {
+            get { return Encoder; }
+            set
+            {
+                if (Encoder != value)
+                {
+                    Encoder = value;
+                    OnPropertyChanged("_Encoder");
+                }
+            }
+        }
+
         #region Video
         public static int VideoQuality = 70;
 
@@ -49,93 +193,15 @@ namespace Captura
             }
         }
         #endregion
-        
-        #region MouseKeyHooks
-        public static bool CaptureClicks = false;
-
-        public bool _CaptureClicks
-        {
-            get { return CaptureClicks; }
-            set
-            {
-                if (CaptureClicks != value)
-                {
-                    CaptureClicks = value;
-                    OnPropertyChanged("_CaptureClicks");
-                }
-            }
-        }
-
-        public static bool CaptureKeystrokes = false;
-
-        public bool _CaptureKeystrokes
-        {
-            get { return CaptureKeystrokes; }
-            set
-            {
-                if (CaptureKeystrokes != value)
-                {
-                    CaptureKeystrokes = value;
-                    OnPropertyChanged("_CaptureKeystrokes");
-                }
-            }
-        }
-        #endregion
-
-        public static bool StaticRegionCapture = false;
-
-        public bool _StaticRegionCapture
-        {
-            get { return StaticRegionCapture; }
-            set
-            {
-                if (StaticRegionCapture != value)
-                {
-                    StaticRegionCapture = value;
-                    OnPropertyChanged("_StaticRegionCapture");
-                }
-            }
-        }
 
         public static Color BackgroundColor
         {
             get
             {
-                return Instance == null 
+                return Instance == null
                     || Instance.BgPicker.SelectedColor == null
                     ? Colors.Transparent
-                    : (Color)Instance.BgPicker.Dispatcher.Invoke(
-                    new Func<Color>(() => (Instance.BgPicker.SelectedColor as SolidColorBrush).Color));
-            }
-        }
-
-        public static bool MinimizeToSysTray = false;
-
-        public bool _MinToSysTray
-        {
-            get { return MinimizeToSysTray; }
-            set
-            {
-                if (MinimizeToSysTray != value)
-                {
-                    MinimizeToSysTray = value;
-                    OnPropertyChanged("_MinToSysTray");
-                }
-            }
-        }
-
-        public static bool MinimizeOnStart = false;
-
-        public bool _MinOnStart
-        {
-            get { return MinimizeOnStart; }
-            set
-            {
-                if (MinimizeOnStart != value)
-                {
-                    MinimizeOnStart = value;
-                    OnPropertyChanged("_MinOnStart");
-                }
+                    : Instance.BgPicker.Dispatcher.Invoke<Color>(() => (Instance.BgPicker.SelectedColor as SolidColorBrush).Color);
             }
         }
 

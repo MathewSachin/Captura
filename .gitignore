@@ -1,4 +1,5 @@
 bin/
 obj/
+packages/
 publish/
 *.suo

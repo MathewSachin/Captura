@@ -5,10 +5,61 @@
              xmlns:this="clr-namespace:Captura">
     <Grid>
         <ScrollViewer>
-            <StackPanel MinWidth="150">
-                <TextBlock Text="VIDEO"
-                           Style="{StaticResource Heading2}"/>
+            <StackPanel MinWidth="150"
+                        Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Video Source Kind:" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,16,4" />
+                    <ComboBox Name="VideoSourceKindBox"
+                          VerticalAlignment="Center" 
+                          Margin="0,0,0,4"
+                          Grid.Column="1"
+                          ItemsSource="{Binding _AvailableVideoSourceKinds}" 
+                          SelectedValue="{Binding _SelectedVideoSourceKind, Mode=TwoWay}"
+                          DisplayMemberPath="Value" 
+                          SelectedValuePath="Key"
+                          SelectionChanged="VideoSourceKindBox_SelectionChanged"/>
 
+                    <TextBlock Text="Video Source:" 
+                               Grid.Row="1"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,4" />
+                    <ComboBox Name="VideoSourceBox"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              VerticalAlignment="Center" 
+                              Margin="0,0,0,4"
+                              ItemsSource="{Binding _AvailableVideoSources}" 
+                              SelectedValue="{Binding _SelectedVideoSource, Mode=TwoWay}"
+                              DisplayMemberPath="Name" 
+                              SelectionChanged="AudioVideoSelectionChanged"/>
+
+                    <TextBlock Text="Video Encoder:" 
+                               Grid.Row="2"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,4" />
+                    <ComboBox VerticalAlignment="Center"
+                              Margin="0,0,0,4"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              ItemsSource="{Binding _AvailableCodecs}" 
+                              SelectedValue="{Binding _Encoder, Mode=TwoWay}" 
+                              IsEnabled="{Binding ReadyToRecord}" 
+                              Name="EncodersBox"
+                              DisplayMemberPath="Name"/>
+                </Grid>
+                                
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Frame Rate:"
                                Margin="0,0,5,0"/>
@@ -37,24 +88,6 @@
                             IsSelectionRangeEnabled="True"
                             Value="{Binding _VideoQuality, Mode=TwoWay}"/>
                 </DockPanel>
-
-                <CheckBox Margin="0,5" 
-                          Content="Capture Mouse Clicks" 
-                          IsChecked="{Binding _CaptureClicks, Mode=TwoWay}"/>
-                <CheckBox Margin="0,5"
-                          Content="Capture Keystrokes" 
-                          IsChecked="{Binding _CaptureKeystrokes, Mode=TwoWay}"/>
-                <CheckBox Margin="0,5"
-                          Content="Static Region Capture" 
-                          IsChecked="{Binding _StaticRegionCapture, Mode=TwoWay}"/>
-
-                <CheckBox Content="Minimize On Capture Start"
-                          Margin="0,5"
-                          IsChecked="{Binding _MinOnStart, Mode=TwoWay}"/>
-
-                <CheckBox IsChecked="{Binding _MinToSysTray, Mode=TwoWay}"
-                          Margin="0,5"
-                          Content="Minimize To SystemTray"/>
 
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Background Color"

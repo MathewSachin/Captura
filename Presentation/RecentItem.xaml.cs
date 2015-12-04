@@ -4,21 +4,23 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using FirstFloor.ModernUI.Windows.Controls;
 
 namespace Captura
 {
     public partial class RecentItem : UserControl
     {
+        string FilePath;
+
         public RecentItem(string FileName)
         {
             InitializeComponent();
 
-            UrlButton.Content = FileName;
+            FilePath = FileName;
+            UrlButton.Content = Path.GetFileName(FileName);
 
-            UrlButton.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open,
-                (s, e) => Process.Start(UrlButton.Content as string),
-                (s, e) => e.CanExecute = File.Exists(UrlButton.Content as string)));
+            UrlButton.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage,
+                (s, e) => Process.Start(FilePath),
+                (s, e) => e.CanExecute = File.Exists(FilePath)));
         }
 
         public event Action Remove;
@@ -27,19 +29,13 @@ namespace Captura
 
         void PrintButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(UrlButton.Content as string) { Verb = "Print" });
+            Process.Start(new ProcessStartInfo(FilePath) { Verb = "Print" });
         }
 
         void Delete_Click(object sender, RoutedEventArgs e)
         {
-            var MD = new ModernDialog() { Content = "Are you Sure?" };
-            MD.Buttons = new Button[] { MD.OkButton, MD.CancelButton };
-
-            if (MD.ShowDialog().Value)
-            {
-                File.Delete(UrlButton.Content as string);
-                if (Remove != null) Remove();
-            }
+            File.Delete(FilePath);
+            if (Remove != null) Remove();
         }
     }
 }

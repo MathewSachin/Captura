@@ -1,0 +1,114 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="{x:Type TextBoxBase}" TargetType="{x:Type TextBoxBase}" BasedOn="{x:Null}">
+        <Setter Property="Foreground" Value="{DynamicResource InputText}"/>
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="2,1,1,1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource Accent}" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border BorderThickness="1" BorderBrush="#FFdc000c" VerticalAlignment="Top">
+                            <Grid>
+                                <AdornedElementPlaceholder x:Name="adorner" Margin="-1"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="errorBorder" Background="#FFdc000c" Margin="8,0,0,0"
+                                Opacity="0" CornerRadius="0"
+                                IsHitTestVisible="False"
+                                MinHeight="24" >
+                            <TextBlock Text="{Binding ElementName=adorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                                       Foreground="White" Margin="8,2,8,3" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <Binding ElementName="adorner" Path="AdornedElement.IsKeyboardFocused" />
+                            </DataTrigger.Binding>
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard x:Name="fadeInStoryboard">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00.15"
+                                                         Storyboard.TargetName="errorBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="fadeInStoryboard"/>
+                                <BeginStoryboard x:Name="fadeOutStoryBoard">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00"
+                                                         Storyboard.TargetName="errorBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border x:Name="Bd"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost" RenderOptions.ClearTypeHint="Enabled"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="true">
+                            <Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Accent}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsReadOnly" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource {x:Type TextBoxBase}}" TargetType="{x:Type TextBox}">
+    </Style>
+    <Style BasedOn="{StaticResource {x:Type TextBoxBase}}" TargetType="{x:Type RichTextBox}">
+    </Style>
+
+    <!-- text-in-datagrid styles-->
+    <Style x:Key="DataGridTextStyle" TargetType="TextBlock" >
+        <Setter Property="Margin" Value="2,0" />
+    </Style>
+
+    <Style x:Key="DataGridEditingTextStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+</ResourceDictionary>

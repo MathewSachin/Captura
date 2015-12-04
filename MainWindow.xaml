@@ -1,37 +1,207 @@
-﻿<mui:ModernWindow x:Class="Captura.MainWindow"
-                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-                  Title="Captura" 
-                  IsTitleVisible="True"
-                  Height="600"
-                  Width="600"
-                  ContentSource="Presentation/Home.xaml"
-                  LogoData="M82 157L82 156C49.5192 145.718 37.5818 103.256 52.1312 75C64.6381 50.7109 92.6537 37.7308 119 43.6651C127.652 45.6139 136.357 50.3468 143 56.1844C150.206 62.5162 156.65 69.9207 160 79C161.839 73.018 158.37 64.6348 156.189 59C148.771 39.8364 133.429 25.1361 114 18.3449C62.024 0.177368 8.3648 45.4427 18.8048 100C21.4208 113.671 28.021 127.165 38.0147 136.961C49.4439 148.164 65.7852 156.665 82 157M57 16L58 17L57 16M55 17C33.3049 30.2805 15.7165 48.6274 12.2894 75C6.67786 118.182 40.8576 169.938 89 161L89 160C46.9159 160 10.9309 121.402 15.1705 79C17.7762 52.9404 34.1451 31.4386 56 18L55 17M60 71L61 71C78.4965 48.0363 100.578 47.061 126 54L126 55L123 55L123 56C137.234 61.9276 148.022 73.3805 153 88L154 88L153 83L160 84C144.676 44.503 82.374 26.0835 60 71M104 52L104 53L109 53L104 52M110 52L111 53L110 52M95.6667 53.3333L96.3333 53.6667L95.6667 53.3333M115 53L115 54L118 54L115 53M91.6667 54.3333L92.3333 54.6667L91.6667 54.3333M119 54L119 55L122 55L119 54M89 55L90 56L89 55z M126 55L127 56L126 55z M144 133C126.918 144.669 110.01 154.1 89 145.546C50.5413 129.888 49.5334 73.6009 88 57C83.227 56.205 77.5743 60.38 74 63.3287C63.6536 71.8642 56.0861 84.4145 55.0903 98C51.6496 144.938 114.853 174.263 144 133M96 58.4645C62.7012 64.4682 51.3911 107.512 72.3256 131.985C82.3879 143.749 100.17 148.058 115 145.384C143.566 140.234 158.914 106.427 145.507 81C135.895 62.7707 115.832 54.8888 96 58.4645M58 73L59 74L58 73M57 75L58 76L57 75M161 89L162 90L161 89M163 89L164 90L163 89M75 147L76 148L75 147M80 150L81 151L80 150z"
-                  Icon="/Captura.ico">
-    <mui:ModernWindow.TitleLinks>
-        <mui:Link DisplayName="Home" 
-                  Source="Presentation/Home.xaml" />
-        <mui:Link DisplayName="Settings" 
-                  Source="Presentation/Settings/Settings.xaml" />
-        <mui:Link DisplayName="Help" 
-                  Source="https://github.com/MathewSachin/Captura/wiki" />
-    </mui:ModernWindow.TitleLinks>
-    <mui:ModernWindow.MenuLinkGroups>
-        <mui:LinkGroup DisplayName="Welcome">
-            <mui:LinkGroup.Links>
-                <mui:Link DisplayName="Home" 
-                          Source="Presentation/Home.xaml" />
-                <mui:Link DisplayName="Recent" 
-                          Source="Presentation/Recent.xaml" />
-                <mui:Link DisplayName="Settings" 
-                          Source="Presentation/Settings/Settings.xaml" />
-            </mui:LinkGroup.Links>
-        </mui:LinkGroup>
-        <mui:LinkGroup DisplayName="About">
-            <mui:LinkGroup.Links>
-                <mui:Link Source="Presentation/About.xaml" />
-            </mui:LinkGroup.Links>
-        </mui:LinkGroup>
-    </mui:ModernWindow.MenuLinkGroups>
-</mui:ModernWindow>
+﻿<Window x:Class="Captura.MainWindow"
+        xmlns:this="clr-namespace:Captura"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="Captura.ico"
+        MinHeight="143"
+        MinWidth="400"
+        Title="Captura"
+        Height="500"
+        Width="400">
+    <Window.Resources>
+        <EllipseGeometry RadiusX="50" 
+                         RadiusY="50"
+                         x:Key="RecordIcon"/>
+        <RectangleGeometry x:Key="StopIcon">
+            <RectangleGeometry.Rect>
+                <Rect Height="50"
+                      Width="50"/>
+            </RectangleGeometry.Rect>
+        </RectangleGeometry>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid Name="Panel">
+                            <Label Content="{TemplateBinding Header}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Name="HeaderLabel"
+                                   Margin="10,2"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Panel" 
+                                     Property="IsMouseOver" 
+                                     Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="Panel"
+                                        Value="#EEFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" 
+                                     Value="True">
+                                <Setter TargetName="Panel" 
+                                        Property="Background"
+                                        Value="{DynamicResource Accent}" />
+                                <Setter TargetName="HeaderLabel"
+                                        Property="Foreground" 
+                                        Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Rectangle Height="96" 
+                   HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1" Opacity=".1">
+                    <GradientStop Offset="0" Color="{DynamicResource AccentColor}" />
+                    <GradientStop Offset=".3" Color="{DynamicResource AccentColor}" />
+                    <GradientStop Offset="1" Color="Transparent" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Bottom"
+                       Background="{DynamicResource Accent}">
+                <DockPanel DockPanel.Dock="Bottom"
+                           Margin="5,0,5,5">
+                    <Label x:Name="TimeManager" 
+                           Content="00:00"
+                           Foreground="White"
+                           DockPanel.Dock="Right"/>
+                    <Label Content="Ready"
+                           Name="Status"
+                           Foreground="White"/>
+                </DockPanel>
+                <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Margin="0,10">
+                    <StackPanel.Resources>
+                        <SolidColorBrush x:Key="ModernButtonBorder" Color="Transparent" />
+                        <SolidColorBrush x:Key="ModernButtonBorderHover" Color="#31FFFFFF" />
+                        <SolidColorBrush x:Key="ModernButtonBorderPressed" Color="#31FFFFFF" />
+                        <SolidColorBrush x:Key="ModernButtonBorderDisabled" Color="Transparent" />
+                        <SolidColorBrush x:Key="ModernButtonIconBackgroundPressed" Color="#77FFFFFF" />
+                        <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" Color="#B7000000" />
+                    </StackPanel.Resources>
+                    <this:ModernButton IconHeight="30"
+                                  IconWidth="30"
+                                  EllipseDiameter="60"
+                                  ToolTip="Refresh"
+                                  Command="Refresh"
+                                  Margin="5,0"
+                                  Foreground="White"
+                                  IconData="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " />
+                    <this:ModernButton IconHeight="30"
+                                  IconWidth="30"
+                                  EllipseDiameter="60"
+                                  Foreground="White"
+                                  Margin="5,0"
+                                  x:Name="ScreenShotButton"
+                                  ToolTip="ScreenShot"
+                                  Click="CaptureScreenShot"
+                                  IconData="F1 M 30,27C 30,24.3766 32.3767,22 35,22L 41,22C 43.6234,22 46,24.3766 46,27L 50.9999,27.0001C 53.7613,27.0001 55.9999,29.2387 55.9999,32.0001L 55.9999,46.0001C 55.9999,48.7615 53.7613,51.0001 50.9999,51.0001L 25,51.0001C 22.2385,51.0001 20,48.7615 20,46.0001L 20,32.0001C 20,29.2387 22.2385,27.0001 25,27.0001L 30,27 Z M 25.5,30C 24.6716,30 24,30.8954 24,32C 24,33.1046 24.6716,34 25.5,34C 26.3284,34 27,33.1046 27,32C 27,30.8954 26.3284,30 25.5,30 Z M 38,32C 34.134,32 31,35.134 31,39C 31,42.866 34.134,46 38,46C 41.866,46 45,42.866 45,39C 45,35.134 41.866,32 38,32 Z M 38,34.5C 40.4853,34.5 42.5,36.5147 42.5,39C 42.5,41.4853 40.4853,43.5 38,43.5C 35.5147,43.5 33.5,41.4853 33.5,39C 33.5,36.5147 35.5147,34.5 38,34.5 Z "/>
+                    <this:ModernButton IconHeight="30"
+                                  IconWidth="30"
+                                  EllipseDiameter="60"
+                                  Foreground="White"
+                                  ToolTip="Record"
+                                  Margin="5,0"
+                                  x:Name="RecordButton" 
+                                  Click="ToggleRecorderState"
+                                  IconData="{StaticResource RecordIcon}"/>
+                    <this:ModernButton IconHeight="30" 
+                                  IconWidth="30"
+                                  EllipseDiameter="60"
+                                  ToolTip="Pause" 
+                                  Margin="5,0"
+                                  Foreground="White"
+                                  x:Name="PauseButton" 
+                                  Command="this:MainWindow.PauseCommand"
+                                  IconData="F1 M 26.9167,23.75L 33.25,23.75L 33.25,52.25L 26.9167,52.25L 26.9167,23.75 Z M 42.75,23.75L 49.0833,23.75L 49.0833,52.25L 42.75,52.25L 42.75,23.75 Z">
+                        <this:ModernButton.LayoutTransform>
+                            <RotateTransform x:Name="RotationEffect" 
+                                             Angle="0"/>
+                        </this:ModernButton.LayoutTransform>
+                    </this:ModernButton>
+                </StackPanel>
+            </DockPanel>
+            <GridSplitter Height="1"
+                          DockPanel.Dock="Bottom"/>
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button Content="..."
+                        DockPanel.Dock="Right"
+                        Command="Open" />
+                <Label Target="OutPath"
+                       Content="Output Path: " 
+                       DockPanel.Dock="Left"
+                       Padding="5,0"
+                       VerticalContentAlignment="Center"
+                       MouseUp="OpenOutputFolder"/>
+                <TextBox x:Name="OutPath"
+                         IsReadOnly="True" 
+                         Text="{Binding Source={StaticResource Settings}, Path=Default.OutputPath, Mode=TwoWay}"/>
+            </DockPanel>
+            <GridSplitter Height="1"
+                          DockPanel.Dock="Bottom"/>
+            <TabControl Background="Transparent">
+                <TabItem Header="Video">
+                    <this:VideoSettings/>
+                </TabItem>
+                <TabItem Header="Appearance">
+                    <this:AppearanceSettings/>
+                </TabItem>
+                <TabItem Header="ScreenShot">
+                    <this:ScreenShotSettings/>
+                </TabItem>
+                <TabItem Header="Gif">
+                    <this:GifSettings/>
+                </TabItem>
+                <TabItem Header="Audio">
+                    <this:AudioSettings/>
+                </TabItem>
+                <TabItem Header="Other">
+                    <this:OtherSettings/>
+                </TabItem>
+                <TabItem Header="Recent">
+                    <this:Recent/>
+                </TabItem>
+                <TabItem Header="About">
+                    <Grid>
+                        <ScrollViewer Margin="10">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap"
+                                           Margin="0,0,0,10">
+                                Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
+                                </TextBlock>
+
+                                <TextBlock>
+                                <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
+                                </TextBlock>
+
+                                <TextBlock TextWrapping="Wrap"
+                                           Margin="0,10">
+                                Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
+                                </TextBlock>
+
+                                <TextBlock Text="PLUGINS"
+                                           Style="{StaticResource Heading2}"
+                                           Margin="0,0,0,5"/>
+                                <TextBlock Text="Plugins, if present, extend the functionality of Captura"
+                                           Margin="0,0,0,5"/>
+                                <TextBlock>
+                                <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> - Mp3 Audio Compression
+                                </TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,4 +1,4 @@
-﻿using ScreenWorks;
+﻿using Screna;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace Captura
 {
     public interface IVideoSourceListItem { string Name { get; } }
-    
+
     class WindowVSLI : IVideoSourceListItem
     {
         public IntPtr Handle { get; private set; }
@@ -53,7 +53,7 @@ namespace Captura
             {
                 g.CopyFromScreen(Rectangle.Location, Point.Empty, Rectangle.Size, CopyPixelOperation.SourceCopy);
 
-                if (Cursor) g.DrawCursor(Rectangle.Location);
+                if (Cursor) new MouseCursor().Draw(g, Rectangle.Location);
 
                 g.Flush();
             }
@@ -70,5 +70,5 @@ namespace Captura
         }
 
         public string Name { get; private set; }
-    }    
+    }
 }

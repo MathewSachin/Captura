@@ -41,6 +41,6 @@ namespace Captura
             _RecentList.Add(I);
         }
 
-        void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", Settings.Default.OutputPath); }
+        void OpenOutputFolder(object sender, RoutedEventArgs e) { Process.Start("explorer.exe", Settings.Default.OutputPath); }
     }
 }

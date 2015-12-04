@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
-using Microsoft.Win32;
 
 namespace Captura
 {
@@ -36,10 +36,6 @@ namespace Captura
         [SecurityCritical, DllImport("shell32")]
         static extern int SHGetFolderLocation(IntPtr hwndOwner, Int32 nFolder, IntPtr hToken, uint dwReserved,
             out IntPtr ppidl);
-
-        [SecurityCritical, DllImport("shell32")]
-        static extern int SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string pszName, IntPtr pbc,
-            out IntPtr ppidl, uint sfgaoIn, out uint psfgaoOut);
 
         [SecurityCritical, DllImport("shell32")]
         static extern IntPtr SHBrowseForFolder(ref BROWSEINFO lbpi);
@@ -143,9 +139,20 @@ namespace Captura
         /// Initializes a new instance of the <see cref="FolderBrowserDialog" /> class.
         /// </summary>
         [SecurityCritical]
-        public FolderBrowserDialog() { Initialize(); }
+        public FolderBrowserDialog() { Init(); }
 
-        #region Methods
+        void Init()
+        {
+            Title = string.Empty;
+
+            // default options
+            _dialogOptions = FolderBrowserOptions.ShowEditBox
+                             | FolderBrowserOptions.UseNewStyle
+                             | FolderBrowserOptions.BrowseShares
+                             | FolderBrowserOptions.ShowStatusText
+                             | FolderBrowserOptions.ValidateResult;
+        }
+
         /// <summary>
         /// Resets the properties of a common dialog to their default values.
         /// </summary>
@@ -154,7 +161,7 @@ namespace Captura
         {
             new FileIOPermission(PermissionState.Unrestricted).Demand();
 
-            Initialize();
+            Init();
         }
 
         /// <summary>
@@ -177,12 +184,7 @@ namespace Captura
 
             try
             {
-                if (UseSpecialFolderRoot) SHGetFolderLocation(hwndOwner, (int)RootSpecialFolder, IntPtr.Zero, 0, out pidlRoot);
-                else // RootType == Path
-                {
-                    uint iAttribute;
-                    SHParseDisplayName(RootPath, IntPtr.Zero, out pidlRoot, 0, out iAttribute);
-                }
+                SHGetFolderLocation(hwndOwner, (int)Environment.SpecialFolder.Desktop, IntPtr.Zero, 0, out pidlRoot);
 
                 var browseInfo = new BROWSEINFO
                 {
@@ -224,55 +226,6 @@ namespace Captura
             return result;
         }
 
-        [SecurityCritical]
-        void Initialize()
-        {
-            UseSpecialFolderRoot = true;
-            RootSpecialFolder = Environment.SpecialFolder.Desktop;
-            RootPath = string.Empty;
-            Title = string.Empty;
-
-            // default options
-            _dialogOptions = FolderBrowserOptions.ShowEditBox
-                             | FolderBrowserOptions.UseNewStyle
-                             | FolderBrowserOptions.BrowseShares
-                             | FolderBrowserOptions.ShowStatusText
-                             | FolderBrowserOptions.ValidateResult;
-        }
-
-        bool GetOption(FolderBrowserOptions option)
-        {
-            return ((_dialogOptions & option) != FolderBrowserOptions.None);
-        }
-
-        void SetOption(FolderBrowserOptions option, bool value)
-        {
-            if (value) _dialogOptions |= option;
-            else _dialogOptions &= ~option;
-        }
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Gets or sets the type of the root.
-        /// </summary>
-        /// <value>The type of the root.</value>
-        public bool UseSpecialFolderRoot { get; set; }
-
-        /// <summary>
-        /// Gets or sets the root path.
-        /// <remarks>Valid only if RootType is set to Path.</remarks>
-        /// </summary>
-        /// <value>The root path.</value>
-        public string RootPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the root special folder.
-        /// <remarks>Valid only if RootType is set to SpecialFolder.</remarks>
-        /// </summary>
-        /// <value>The root special folder.</value>
-        public Environment.SpecialFolder RootSpecialFolder { get; set; }
-
         /// <summary>
         /// Gets or sets the display name.
         /// </summary>
@@ -284,56 +237,5 @@ namespace Captura
         /// </summary>
         /// <value>The title.</value>
         public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether browsing files is allowed.
-        /// </summary>
-        public bool BrowseFiles
-        {
-            get { return GetOption(FolderBrowserOptions.BrowseFiles); }
-            [SecurityCritical]
-            set { SetOption(FolderBrowserOptions.BrowseFiles, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show an edit box.
-        /// </summary>
-        public bool ShowEditBox
-        {
-            get { return GetOption(FolderBrowserOptions.ShowEditBox); }
-            [SecurityCritical]
-            set { SetOption(FolderBrowserOptions.ShowEditBox, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether browsing shares is allowed.
-        /// </summary>
-        public bool BrowseShares
-        {
-            get { return GetOption(FolderBrowserOptions.BrowseShares); }
-            [SecurityCritical]
-            set { SetOption(FolderBrowserOptions.BrowseShares, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show status text.
-        /// </summary>
-        public bool ShowStatusText
-        {
-            get { return GetOption(FolderBrowserOptions.ShowStatusText); }
-            [SecurityCritical]
-            set { SetOption(FolderBrowserOptions.ShowStatusText, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to validate the result.
-        /// </summary>
-        public bool ValidateResult
-        {
-            get { return GetOption(FolderBrowserOptions.ValidateResult); }
-            [SecurityCritical]
-            set { SetOption(FolderBrowserOptions.ValidateResult, value); }
-        }
-        #endregion
     }
 }

@@ -3,83 +3,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:this="clr-namespace:Captura">
-    <Grid>
-        <ScrollViewer>
-            <StackPanel x:Name="Panel"
-                        MinWidth="150">
-                <TextBlock Text="SCREENSHOT"
-                           Style="{StaticResource Heading2}"
-                           Margin="0,0,0,8" />
+    <ScrollViewer Margin="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition MinWidth="120"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
 
-                <Grid HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition MinWidth="120"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2*"/>
-                    </Grid.RowDefinitions>
+            <TextBlock Text="Save To:" 
+                       VerticalAlignment="Center"
+                       Margin="0,0,16,4" />
+            <ComboBox Grid.Column="1" 
+                      VerticalAlignment="Center" 
+                      Margin="0,0,0,4"
+                      ItemsSource="{Binding SaveTo}"
+                      SelectedItem="{Binding _SelectedSaveTo, Mode=TwoWay}"/>
 
-                    <TextBlock Text="Save To:" 
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,4" />
-                    <ComboBox Grid.Column="1" 
-                              VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
-                              ItemsSource="{Binding SaveTo}"
-                              SelectedItem="{Binding _SelectedSaveTo, Mode=TwoWay}"/>
+            <TextBlock Text="File Format:" 
+                       Grid.Row="1" 
+                       VerticalAlignment="Center" 
+                       Margin="0,0,16,4" />
+            <ComboBox Grid.Row="1" 
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="0,0,0,4"
+                      ItemsSource="{Binding ImageFormats}"
+                      SelectedItem="{Binding _SelectedImageFormat, Mode=TwoWay}"/>
 
-                    <TextBlock Text="File Format:" 
-                               Grid.Row="1" 
-                               VerticalAlignment="Center" 
-                               Margin="0,0,16,4" />
-                    <ComboBox Grid.Row="1" 
-                              Grid.Column="1"
-                              VerticalAlignment="Center"
-                              Margin="0,0,0,4"
-                              ItemsSource="{Binding ImageFormats}"
-                              SelectedItem="{Binding _SelectedImageFormat, Mode=TwoWay}"/>
+            <CheckBox Content="Do Resize"
+                      IsChecked="{Binding _DoResize, Mode=TwoWay}"
+                      Grid.Row="2"
+                      Margin="0,5,16,4"
+                      VerticalAlignment="Top"/>
 
-                    <CheckBox Content="Do Resize"
-                              IsChecked="{Binding _DoResize, Mode=TwoWay}"
-                              Grid.Row="2"
-                              Margin="0,5,16,4"
-                              VerticalAlignment="Top"/>
+            <Grid Margin="0,5,0,4"
+                  Grid.Row="2"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                    <Grid Margin="0,5,0,4"
-                          Grid.Row="2"
-                          Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                <Label Content="Width:"
+                       Margin="0,3"/>
+                <this:NumericBox Value="{Binding _ResizeWidth, Mode=TwoWay}"
+                                 Grid.Column="1"
+                                 Margin="0,3"
+                                 IsEnabled="{Binding _DoResize}"/>
 
-                        <Label Content="Width:"
-                               Margin="0,3"/>
-                        <this:NumericBox x:Name="ResizeWidthBox"
-                                         Value="640"
-                                         Grid.Column="1"
-                                         Margin="0,3"
-                                         IsEnabled="{Binding _DoResize}"/>
-
-                        <Label Content="Height:"
-                               Grid.Row="1"
-                               Margin="0,3"/>
-                        <this:NumericBox x:Name="ResizeHeightBox"
-                                         Value="400"
-                                         Grid.Row="1"
-                                         Grid.Column="1"
-                                         Margin="0,3"
-                                         IsEnabled="{Binding _DoResize}"/>
-                    </Grid>
-                </Grid>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+                <Label Content="Height:"
+                       Grid.Row="1"
+                       Margin="0,3"/>
+                <this:NumericBox Value="{Binding _ResizeHeight, Mode=TwoWay}"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 Margin="0,3"
+                                 IsEnabled="{Binding _DoResize}"/>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

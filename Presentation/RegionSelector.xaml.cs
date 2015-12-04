@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Microsoft.Windows.Shell;
 
 namespace Captura
 {
@@ -21,13 +21,11 @@ namespace Captura
             Show();
             RegSelhWnd = (HwndSource)HwndSource.FromVisual(this);
             Hide();
-
-            var Chrome = new WindowChrome() { ResizeBorderThickness = new Thickness(3) };
-
-            WindowChrome.SetWindowChrome(this, Chrome);
         }
 
         public IntPtr Handle { get { return RegSelhWnd.Handle; } }
+
+        public Rectangle Rectangle { get { return new Rectangle((int)Left, (int)Top, (int)Width, (int)Height); } }
 
         void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { DragMove(); }
 

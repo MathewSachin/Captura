@@ -5,11 +5,11 @@
              xmlns:this="clr-namespace:Captura">
     <Grid>
         <StackPanel x:Name="Panel"
+                    Margin="10"
                     MinWidth="150">
-            <TextBlock Text="GIF"
-                       Style="{StaticResource Heading2}"
-                       Margin="0,8,0,8" />
-
+            <TextBlock TextWrapping="Wrap"
+                       Text="To Capture a Gif, Select (Gif) as Encoder in Video Tab"
+                       Margin="0,0,0,10"/>
             <CheckBox Margin="0,5"
                       Content="Unconstrained FrameRate"
                       IsChecked="{Binding _UnconstrainedGif, Mode=TwoWay}"/>

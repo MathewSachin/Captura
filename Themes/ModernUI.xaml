@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Button.xaml" />
+        <ResourceDictionary Source="CheckBox.xaml" />
+        <ResourceDictionary Source="ComboBox.xaml" />
+        <ResourceDictionary Source="ContextMenu.xaml" />
+        <ResourceDictionary Source="GridSplitter.xaml" />
+        <ResourceDictionary Source="Hyperlink.xaml" />
+        <ResourceDictionary Source="Label.xaml" />
+        <ResourceDictionary Source="ListBox.xaml" />
+        <ResourceDictionary Source="ListView.xaml" />
+        <ResourceDictionary Source="MenuItem.xaml" />
+        <ResourceDictionary Source="ModernButton.xaml" />
+        <ResourceDictionary Source="RadioButton.xaml" />
+        <ResourceDictionary Source="ScrollBar.xaml" />
+        <ResourceDictionary Source="Slider.xaml" />
+        <ResourceDictionary Source="TextBlock.xaml" />
+        <ResourceDictionary Source="TextBox.xaml" />
+        <ResourceDictionary Source="ToolTip.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- default accent colors and brushes -->
+    <Color x:Key="AccentColor">#1ba1e2</Color>
+    <SolidColorBrush x:Key="Accent" Color="{DynamicResource AccentColor}" />
+
+    <!-- font settings -->
+    <FontFamily x:Key="DefaultFontFamily">Segoe UI</FontFamily>
+    <sys:Double x:Key="DefaultFontSize">13</sys:Double>
+
+    <FontFamily x:Key="FixedFontFamily">Consolas</FontFamily>
+    <sys:Double x:Key="FixedFontSize">13.333</sys:Double>
+
+    <sys:Double x:Key="SmallFontSize">11</sys:Double>
+
+    <!-- layout margins -->
+    <Thickness x:Key="RootMargin">-42,-8,-16,-16</Thickness>
+    <Thickness x:Key="ContentMargin">16,28,16,16</Thickness>
+    <Thickness x:Key="StatusMargin">-16,16,0,0</Thickness>
+    <Thickness x:Key="HeaderMargin">0,-28,44,0</Thickness>
+
+    <Thickness x:Key="SplitLeft">0,0,0,0</Thickness>
+    <Thickness x:Key="SplitRight">16,0,0,0</Thickness>    
+    
+    <Style x:Key="ContentRoot" TargetType="FrameworkElement">
+        <Setter Property="Margin" Value="{StaticResource ContentMargin}" />
+    </Style>
+</ResourceDictionary>

@@ -7,16 +7,23 @@
         Width="300"
         WindowStyle="None"
         AllowsTransparency="True" 
-        Topmost="True" 
+        Topmost="True"
         BorderBrush="#27000000"
         BorderThickness="3"
         ResizeMode="CanResize"  
         Icon="/Captura;component/Captura.ico">
-        <StackPanel>
-            <Label Cursor="SizeAll"
-                   Height="20"
-                   Background="#01FFFFFF"
-                   MouseDoubleClick="HeaderMouseDoubleClick"
-                   PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"/>
-        </StackPanel>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0"
+                      ResizeBorderThickness="3"
+                      GlassFrameThickness="1"
+                      UseAeroCaptionButtons="False"
+                      NonClientFrameEdges="None"/>
+    </WindowChrome.WindowChrome>
+    <StackPanel>
+        <Label Cursor="SizeAll"
+               Height="20"
+               Background="#01FFFFFF"
+               MouseDoubleClick="HeaderMouseDoubleClick"
+               PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"/>
+    </StackPanel>
 </Window>
