@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Captura.RecentItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+    <DockPanel>
+        <Button Content="x"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                DockPanel.Dock="Right"
+                Name="RemoveButton"
+                Height="25"
+                FontSize="12"
+                Click="RemoveButton_Click"/>
+        <Button Content="Url"
+                Name="UrlButton"
+                HorizontalContentAlignment="Left"
+                Background="Transparent"
+                Command="Open"
+                FontSize="12"
+                Height="25">
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Visibility="Collapsed"
+                              Name="PrintButton"
+                              Header="Print"
+                              Click="PrintButton_Click"/>
+                    <MenuItem Header="Delete"
+                              Click="Delete_Click"/>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,37 @@
+﻿<mui:ModernWindow x:Class="Captura.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  Title="Captura" 
+                  IsTitleVisible="True"
+                  Height="600"
+                  Width="600"
+                  ContentSource="Presentation/Home.xaml"
+                  LogoData="M82 157L82 156C49.5192 145.718 37.5818 103.256 52.1312 75C64.6381 50.7109 92.6537 37.7308 119 43.6651C127.652 45.6139 136.357 50.3468 143 56.1844C150.206 62.5162 156.65 69.9207 160 79C161.839 73.018 158.37 64.6348 156.189 59C148.771 39.8364 133.429 25.1361 114 18.3449C62.024 0.177368 8.3648 45.4427 18.8048 100C21.4208 113.671 28.021 127.165 38.0147 136.961C49.4439 148.164 65.7852 156.665 82 157M57 16L58 17L57 16M55 17C33.3049 30.2805 15.7165 48.6274 12.2894 75C6.67786 118.182 40.8576 169.938 89 161L89 160C46.9159 160 10.9309 121.402 15.1705 79C17.7762 52.9404 34.1451 31.4386 56 18L55 17M60 71L61 71C78.4965 48.0363 100.578 47.061 126 54L126 55L123 55L123 56C137.234 61.9276 148.022 73.3805 153 88L154 88L153 83L160 84C144.676 44.503 82.374 26.0835 60 71M104 52L104 53L109 53L104 52M110 52L111 53L110 52M95.6667 53.3333L96.3333 53.6667L95.6667 53.3333M115 53L115 54L118 54L115 53M91.6667 54.3333L92.3333 54.6667L91.6667 54.3333M119 54L119 55L122 55L119 54M89 55L90 56L89 55z M126 55L127 56L126 55z M144 133C126.918 144.669 110.01 154.1 89 145.546C50.5413 129.888 49.5334 73.6009 88 57C83.227 56.205 77.5743 60.38 74 63.3287C63.6536 71.8642 56.0861 84.4145 55.0903 98C51.6496 144.938 114.853 174.263 144 133M96 58.4645C62.7012 64.4682 51.3911 107.512 72.3256 131.985C82.3879 143.749 100.17 148.058 115 145.384C143.566 140.234 158.914 106.427 145.507 81C135.895 62.7707 115.832 54.8888 96 58.4645M58 73L59 74L58 73M57 75L58 76L57 75M161 89L162 90L161 89M163 89L164 90L163 89M75 147L76 148L75 147M80 150L81 151L80 150z"
+                  Icon="/Captura.ico">
+    <mui:ModernWindow.TitleLinks>
+        <mui:Link DisplayName="Home" 
+                  Source="Presentation/Home.xaml" />
+        <mui:Link DisplayName="Settings" 
+                  Source="Presentation/Settings/Settings.xaml" />
+        <mui:Link DisplayName="Help" 
+                  Source="https://github.com/MathewSachin/Captura/wiki" />
+    </mui:ModernWindow.TitleLinks>
+    <mui:ModernWindow.MenuLinkGroups>
+        <mui:LinkGroup DisplayName="Welcome">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Home" 
+                          Source="Presentation/Home.xaml" />
+                <mui:Link DisplayName="Recent" 
+                          Source="Presentation/Recent.xaml" />
+                <mui:Link DisplayName="Settings" 
+                          Source="Presentation/Settings/Settings.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="About">
+            <mui:LinkGroup.Links>
+                <mui:Link Source="Presentation/About.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+    </mui:ModernWindow.MenuLinkGroups>
+</mui:ModernWindow>

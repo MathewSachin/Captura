@@ -1,0 +1,19 @@
+﻿<Application x:Class="Captura.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:this="clr-namespace:Captura.Properties" 
+             Exit="Application_Exit"
+             ShutdownMode="OnMainWindowClose"
+             StartupUri="MainWindow.xaml" 
+             Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Rectangle"/>
+            <this:Settings x:Key="Settings"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

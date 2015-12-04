@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Captura.GifSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:this="clr-namespace:Captura">
+    <Grid>
+        <StackPanel x:Name="Panel"
+                    MinWidth="150">
+            <TextBlock Text="GIF"
+                       Style="{StaticResource Heading2}"
+                       Margin="0,8,0,8" />
+
+            <CheckBox Margin="0,5"
+                      Content="Unconstrained FrameRate"
+                      IsChecked="{Binding _UnconstrainedGif, Mode=TwoWay}"/>
+
+            <DockPanel Margin="0,5">
+                <CheckBox Content="Repeat"
+                          Margin="0,0,5,0"
+                          DockPanel.Dock="Left"
+                          IsChecked="{Binding _GifRepeat, Mode=TwoWay}"/>
+
+                <this:NumericBox IsEnabled="{Binding _GifRepeat}"
+                                 Value="{Binding _RepeatCount, Mode=TwoWay}"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

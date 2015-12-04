@@ -1,0 +1,21 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+    <Grid Style="{StaticResource ContentRoot}">
+        <mui:ModernTab SelectedSource="Presentation/Settings/AppearanceSettings.xaml"
+                       Layout="List">
+            <mui:ModernTab.Links>
+                <mui:Link DisplayName="Appearance"
+                          Source="Presentation/Settings/AppearanceSettings.xaml"/>
+                <mui:Link DisplayName="ScreenShot"
+                          Source="Presentation/Settings/ScreenShotSettings.xaml"/>
+                <mui:Link DisplayName="Video"
+                          Source="Presentation/Settings/VideoSettings.xaml"/>
+                <mui:Link DisplayName="Gif"
+                          Source="Presentation/Settings/GifSettings.xaml"/>
+                <mui:Link DisplayName="Audio"
+                          Source="Presentation/Settings/AudioSettings.xaml"/>
+            </mui:ModernTab.Links>
+        </mui:ModernTab>
+    </Grid>
+</UserControl>
