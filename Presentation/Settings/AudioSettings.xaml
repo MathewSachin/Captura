@@ -20,14 +20,13 @@
                               DisplayMemberPath="Value"
                               SelectionChanged="AudioVideoSelectionChanged"/>
                 </DockPanel>
-
-                <CheckBox Name="EncodeMp3Box" 
-                          Margin="0,5"
-                          Content="Encode Mp3"
-                          IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
                 <CheckBox Margin="0,5" 
                           Content="Stereo"
                           IsChecked="{Binding _Stereo, Mode=TwoWay}"/>
+                <CheckBox x:Name="EncodeMp3Box" 
+                          Margin="0,5"
+                          Content="Encode Mp3"
+                          IsChecked="{Binding _EncodeAudio, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Quality:  "

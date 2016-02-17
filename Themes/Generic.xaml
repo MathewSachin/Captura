@@ -18,8 +18,6 @@
     <SolidColorBrush x:Key="ButtonTextDisabled" Color="#a1a1a1" />
 
     <SolidColorBrush x:Key="Hyperlink" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="HyperlinkHover" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="HyperlinkDisabled" Color="#919191" />
     
     <SolidColorBrush x:Key="InputBackground" Color="#ffffff" />
     <SolidColorBrush x:Key="InputBackgroundHover" Color="#ffffff" />
