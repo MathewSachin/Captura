@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -113,7 +114,7 @@ namespace Captura
                 if (_SelectedAccentColor != value)
                 {
                     _SelectedAccentColor = value;
-                    OnPropertyChanged("SelectedAccentColor");
+                    OnPropertyChanged();
 
                     AccentColor = value;
                 }
@@ -121,7 +122,7 @@ namespace Captura
         }
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

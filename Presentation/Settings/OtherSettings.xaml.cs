@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -31,7 +32,7 @@ namespace Captura
                 if (CaptureDuration != value)
                 {
                     CaptureDuration = value;
-                    OnPropertyChanged("_CaptureDuration");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -46,7 +47,7 @@ namespace Captura
                 if (StartDelay != value)
                 {
                     StartDelay = value;
-                    OnPropertyChanged("_StartDelay");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -78,7 +79,7 @@ namespace Captura
                 if (CaptureClicks != value)
                 {
                     CaptureClicks = value;
-                    OnPropertyChanged("_CaptureClicks");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -93,7 +94,7 @@ namespace Captura
                 if (CaptureKeystrokes != value)
                 {
                     CaptureKeystrokes = value;
-                    OnPropertyChanged("_CaptureKeystrokes");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -109,7 +110,7 @@ namespace Captura
                 if (StaticRegionCapture != value)
                 {
                     StaticRegionCapture = value;
-                    OnPropertyChanged("_StaticRegionCapture");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -124,7 +125,7 @@ namespace Captura
                 if (IncludeCursor != value)
                 {
                     IncludeCursor = value;
-                    OnPropertyChanged("_IncludeCursor");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -139,7 +140,7 @@ namespace Captura
                 if (MinimizeToSysTray != value)
                 {
                     MinimizeToSysTray = value;
-                    OnPropertyChanged("_MinToSysTray");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -154,13 +155,13 @@ namespace Captura
                 if (MinimizeOnStart != value)
                 {
                     MinimizeOnStart = value;
-                    OnPropertyChanged("_MinOnStart");
+                    OnPropertyChanged();
                 }
             }
         }
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

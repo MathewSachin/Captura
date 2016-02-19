@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
 namespace Captura
@@ -25,7 +26,7 @@ namespace Captura
                 if (UnconstrainedGif != value)
                 {
                     UnconstrainedGif = value;
-                    OnPropertyChanged("_UnconstrainedGif");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -40,7 +41,7 @@ namespace Captura
                 if (GifRepeat != value)
                 {
                     GifRepeat = value;
-                    OnPropertyChanged("_GifRepeat");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -55,13 +56,13 @@ namespace Captura
                 if (GifRepeatCount != value)
                 {
                     GifRepeatCount = value;
-                    OnPropertyChanged("_RepeatCount");
+                    OnPropertyChanged();
                 }
             }
         }
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

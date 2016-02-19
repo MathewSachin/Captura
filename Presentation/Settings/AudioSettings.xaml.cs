@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
 namespace Captura
@@ -80,7 +81,7 @@ namespace Captura
                 if (SelectedAudioSourceId != value)
                 {
                     SelectedAudioSourceId = value;
-                    OnPropertyChanged("_SelectedAudioSourceId");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -98,7 +99,7 @@ namespace Captura
                 if (AudioQuality != (int)value)
                 {
                     AudioQuality = (int)value;
-                    OnPropertyChanged("_AudioQuality");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -113,7 +114,7 @@ namespace Captura
                 if (EncodeAudio != value)
                 {
                     EncodeAudio = value;
-                    OnPropertyChanged("_EncodeAudio");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -128,14 +129,14 @@ namespace Captura
                 if (Stereo != value)
                 {
                     Stereo = value;
-                    OnPropertyChanged("_Stereo");
+                    OnPropertyChanged();
                 }
             }
         }
         #endregion
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

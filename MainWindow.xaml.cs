@@ -451,8 +451,7 @@ namespace Captura
 
         void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
+            Process.Start(e.Uri.AbsoluteUri);
         }
     }
 }

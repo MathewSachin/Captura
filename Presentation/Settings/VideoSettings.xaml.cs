@@ -3,6 +3,7 @@ using Screna.Avi;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -127,7 +128,7 @@ namespace Captura
                 if (SelectedVideoSourceKind != value)
                 {
                     SelectedVideoSourceKind = value;
-                    OnPropertyChanged("_SelectedVideoSourceKind");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -142,7 +143,7 @@ namespace Captura
                 if (SelectedVideoSource != value)
                 {
                     SelectedVideoSource = value;
-                    OnPropertyChanged("_SelectedVideoSource");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -157,7 +158,7 @@ namespace Captura
                 if (Encoder != value)
                 {
                     Encoder = value;
-                    OnPropertyChanged("_Encoder");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -173,7 +174,7 @@ namespace Captura
                 if (VideoQuality != (int)value)
                 {
                     VideoQuality = (int)value;
-                    OnPropertyChanged("_VideoQuality");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -188,12 +189,13 @@ namespace Captura
                 if (FrameRate != value)
                 {
                     FrameRate = value;
-                    OnPropertyChanged("_FrameRate");
+                    OnPropertyChanged();
                 }
             }
         }
         #endregion
 
+        // TODO: Try binding here
         public static Color BackgroundColor
         {
             get
@@ -206,7 +208,7 @@ namespace Captura
         }
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
 namespace Captura
@@ -48,7 +49,7 @@ namespace Captura
                 if (selectedSaveTo != value)
                 {
                     selectedSaveTo = value;
-                    OnPropertyChanged("_SelectedSaveTo");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -61,7 +62,7 @@ namespace Captura
                 if (SelectedImageFormat != value)
                 {
                     SelectedImageFormat = value;
-                    OnPropertyChanged("_SelectedImageFormat");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -77,7 +78,7 @@ namespace Captura
                 if (DoResize != value)
                 {
                     DoResize = value;
-                    OnPropertyChanged("_DoResize");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -92,7 +93,7 @@ namespace Captura
                 if (ResizeWidth != value)
                 {
                     ResizeWidth = value;
-                    OnPropertyChanged("_ResizeWidth");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -105,13 +106,13 @@ namespace Captura
                 if (ResizeHeight != value)
                 {
                     ResizeHeight = value;
-                    OnPropertyChanged("_ResizeHeight");
+                    OnPropertyChanged();
                 }
             }
         }
         #endregion
 
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));
