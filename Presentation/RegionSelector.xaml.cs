@@ -6,7 +6,7 @@ using System.Windows.Interop;
 
 namespace Captura
 {
-    public partial class RegionSelector : Window
+    public partial class RegionSelector
     {
         HwndSource RegSelhWnd;
 
@@ -19,13 +19,13 @@ namespace Captura
             InitializeComponent();
 
             Show();
-            RegSelhWnd = (HwndSource)HwndSource.FromVisual(this);
+            RegSelhWnd = (HwndSource)PresentationSource.FromVisual(this);
             Hide();
         }
 
-        public IntPtr Handle { get { return RegSelhWnd.Handle; } }
+        public IntPtr Handle => RegSelhWnd.Handle;
 
-        public Rectangle Rectangle { get { return new Rectangle((int)Left, (int)Top, (int)Width, (int)Height); } }
+        public Rectangle Rectangle => new Rectangle((int)Left, (int)Top, (int)Width, (int)Height);
 
         void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { DragMove(); }
 

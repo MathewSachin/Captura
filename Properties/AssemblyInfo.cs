@@ -1,4 +1,3 @@
-﻿using System.Windows.Markup;
-using System.Reflection;
+﻿using System.Reflection;
 
 [assembly: AssemblyTitleAttribute("Captura")]

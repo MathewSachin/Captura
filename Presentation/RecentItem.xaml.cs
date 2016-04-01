@@ -2,12 +2,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Captura
 {
-    public partial class RecentItem : UserControl
+    public partial class RecentItem
     {
         string FilePath;
 
@@ -25,7 +24,7 @@ namespace Captura
 
         public event Action Remove;
 
-        void RemoveButton_Click(object sender, RoutedEventArgs e) { if (Remove != null) Remove(); }
+        void RemoveButton_Click(object sender, RoutedEventArgs e) => Remove?.Invoke();
 
         void PrintButton_Click(object sender, RoutedEventArgs e)
         {
@@ -35,7 +34,7 @@ namespace Captura
         void Delete_Click(object sender, RoutedEventArgs e)
         {
             File.Delete(FilePath);
-            if (Remove != null) Remove();
+            Remove?.Invoke();
         }
     }
 }

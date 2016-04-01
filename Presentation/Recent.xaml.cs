@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Captura.Properties;
 using System.Windows;
@@ -14,7 +13,7 @@ namespace Captura
         Audio
     }
 
-    partial class Recent : UserControl
+    partial class Recent
     {
         static ObservableCollection<RecentItem> _RecentList = new ObservableCollection<RecentItem>();
 

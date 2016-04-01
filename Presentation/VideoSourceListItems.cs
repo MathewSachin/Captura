@@ -10,29 +10,29 @@ namespace Captura
 
     class WindowVSLI : IVideoSourceListItem
     {
-        public IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; }
 
         public static readonly WindowVSLI Desktop = new WindowVSLI(WindowProvider.DesktopHandle, "[Desktop]"),
             TaskBar = new WindowVSLI(WindowProvider.TaskbarHandle, "[TaskBar]");
 
         public WindowVSLI(IntPtr hWnd)
         {
-            this.Handle = hWnd;
+            Handle = hWnd;
             Name = new WindowHandler(Handle).Title;
         }
 
         public WindowVSLI(IntPtr hWnd, string Name)
         {
-            this.Handle = hWnd;
+            Handle = hWnd;
             this.Name = Name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     class ScreenVSLI : IVideoSourceListItem
     {
-        public Screen Screen { get; private set; }
+        public Screen Screen { get; }
 
         ScreenVSLI(int i)
         {
@@ -41,7 +41,7 @@ namespace Captura
             Name = "Screen " + i;
         }
 
-        public static int Count { get { return Screen.AllScreens.Length; } }
+        public static int Count => Screen.AllScreens.Length;
 
         public Bitmap Capture(bool Cursor)
         {
@@ -63,12 +63,12 @@ namespace Captura
 
         public static IEnumerable<ScreenVSLI> Enumerate()
         {
-            int n = Count;
+            var n = Count;
 
-            for (int i = 0; i < n; ++i)
+            for (var i = 0; i < n; ++i)
                 yield return new ScreenVSLI(i);
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 }

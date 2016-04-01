@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Captura.VideoSettings"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:this="clr-namespace:Captura">
     <Grid>
         <ScrollViewer>

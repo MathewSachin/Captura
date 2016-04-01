@@ -26,7 +26,7 @@ namespace Captura
         {
             get
             {
-                var Location = RegSel.Dispatcher.Invoke<Point>(() => new Point((int)RegSel.Left, (int)RegSel.Top));
+                var Location = RegSel.Dispatcher.Invoke(() => new Point((int)RegSel.Left, (int)RegSel.Top));
                 return new Rectangle(Location.X, Location.Y, Width, Height);
             }
         }
@@ -42,9 +42,9 @@ namespace Captura
             return BMP;
         }
 
-        public int Height { get; private set; }
+        public int Height { get; }
 
-        public int Width { get; private set; }
+        public int Width { get; }
         
         public void Dispose() { RegSel.ResizeMode = ResizeMode.CanResize; }
     }

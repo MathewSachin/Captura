@@ -29,7 +29,7 @@ namespace Captura
         #region Fields
         WindowInteropHelper host;
         IntPtr Handle;
-        bool IsDisposed = false;
+        bool IsDisposed;
         Dictionary<int, Action> Keys = new Dictionary<int, Action>();
         #endregion
 
@@ -47,7 +47,7 @@ namespace Captura
 
         public void Register(KeyCode Key, ModifierKeyCodes Modifiers, Action Callback)
         {
-            int Identifier = R.Next();
+            var Identifier = R.Next();
 
             RegisterHotKey(Handle, Identifier, Modifiers, Key);
 

@@ -18,21 +18,21 @@ using NotifyIcon = System.Windows.Forms.NotifyIcon;
 
 namespace Captura
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public static MainWindow Instance { get; private set; }
 
         #region Fields
         DispatcherTimer DTimer;
-        int Seconds = 0, Minutes = 0, Delay = 0, Duration = 0;
+        int _seconds, _minutes, _delay, _duration;
 
         KeyboardHookList KeyHook;
 
         IRecorder Recorder;
         string lastFileName;
-        NotifyIcon SystemTray;
+        readonly NotifyIcon SystemTray;
 
-        MouseCursor cursor;
+        readonly MouseCursor cursor;
         #endregion
 
         public MainWindow()
@@ -46,27 +46,27 @@ namespace Captura
                 DispatcherPriority.Normal,
                 (s, e) =>
                 {
-                    Seconds++;
+                    _seconds++;
 
-                    if (Seconds == 60)
+                    if (_seconds == 60)
                     {
-                        Seconds = 0;
-                        Minutes++;
+                        _seconds = 0;
+                        _minutes++;
                     }
 
                     // If Capture Duration is set
-                    if (Duration > 0 && (Minutes * 60 + Seconds >= Duration))
+                    if (_duration > 0 && (_minutes * 60 + _seconds >= _duration))
                     {
                         StopRecording();
                         SystemSounds.Exclamation.Play();
 
                         // SystemTray Notification
                         if (SystemTray.Visible) SystemTray.ShowBalloonTip(3000, "Capture Completed",
-                            string.Format("Capture Completed in {0} seconds", OtherSettings.CaptureDuration),
+                            $"Capture Completed in {OtherSettings.CaptureDuration} seconds",
                             System.Windows.Forms.ToolTipIcon.None);
                     }
 
-                    TimeManager.Content = string.Format("{0:D2}:{1:D2}", Minutes, Seconds);
+                    TimeManager.Content = $"{_minutes:D2}:{_seconds:D2}";
                 },
                 TimeManager.Dispatcher) { IsEnabled = false };
             #endregion
@@ -77,18 +77,18 @@ namespace Captura
             #region Command Bindings
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (s, e) =>
             {
-                var dlg = new FolderBrowserDialog()
+                var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = OutPath.Text,
                     Title = "Select Output Folder"
                 };
 
-                if (dlg.ShowDialog().Value)
-                {
-                    OutPath.Text = dlg.SelectedPath;
-                    Settings.Default.OutputPath = dlg.SelectedPath;
-                    Settings.Default.Save();
-                }
+                if (!dlg.ShowDialog().Value)
+                    return;
+
+                OutPath.Text = dlg.SelectedPath;
+                Settings.Default.OutputPath = dlg.SelectedPath;
+                Settings.Default.Save();
             }));
 
             CommandBindings.Add(new CommandBinding(ApplicationCommands.New, (s, e) => StartRecording(),
@@ -123,7 +123,7 @@ namespace Captura
             #endregion
 
             #region SystemTray
-            SystemTray = new NotifyIcon()
+            SystemTray = new NotifyIcon
             {
                 Visible = false,
                 Text = "Captura",
@@ -166,7 +166,7 @@ namespace Captura
             Settings.Default.OutputPath = OutPath.Text;
             Settings.Default.Save();
 
-            Closed += (s, e) => App.Current.Shutdown();
+            Closed += (s, e) => Application.Current.Shutdown();
 
             cursor = new MouseCursor(OtherSettings.IncludeCursor);
             OtherSettings.Instance.PropertyChanged += (s, e) =>
@@ -177,18 +177,18 @@ namespace Captura
 
         }
 
-        void OpenOutputFolder<T>(object sender, T e) { Process.Start("explorer.exe", OutPath.Text); }
+        void OpenOutputFolder(object sender, MouseButtonEventArgs MouseButtonEventArgs) { Process.Start("explorer.exe", OutPath.Text); }
 
         void CaptureScreenShot(object sender = null, RoutedEventArgs e = null)
         {
             if (!Directory.Exists(OutPath.Text)) Directory.CreateDirectory(OutPath.Text);
 
             string FileName = null;
-            ImageFormat ImgFmt = ScreenShotSettings.SelectedImageFormat;
-            string Extension = ImgFmt == ImageFormat.Icon ? "ico"
+            var ImgFmt = ScreenShotSettings.SelectedImageFormat;
+            var Extension = ImgFmt == ImageFormat.Icon ? "ico"
                 : ImgFmt == ImageFormat.Jpeg ? "jpg"
                 : ImgFmt.ToString().ToLower();
-            bool SaveToClipboard = ScreenShotSettings.SaveToClipboard;
+            var SaveToClipboard = ScreenShotSettings.SaveToClipboard;
 
             if (!SaveToClipboard)
                 FileName = Path.Combine(OutPath.Text,
@@ -198,21 +198,25 @@ namespace Captura
 
             var SelectedVideoSourceKind = VideoSettings.SelectedVideoSourceKind;
             var SelectedVideoSource = VideoSettings.SelectedVideoSource;
-            var IncludeCursor = Properties.Settings.Default.IncludeCursor;
+            var IncludeCursor = Settings.Default.IncludeCursor;
 
-            if (SelectedVideoSourceKind == VideoSourceKind.Window)
+            switch (SelectedVideoSourceKind)
             {
-                IntPtr hWnd = (SelectedVideoSource as WindowVSLI).Handle;
+                case VideoSourceKind.Window:
+                    var hWnd = (SelectedVideoSource as WindowVSLI).Handle;
 
-                if (hWnd == WindowProvider.DesktopHandle)
-                    BMP = ScreenShot.Capture(IncludeCursor);
-                else if (hWnd == RegionSelector.Instance.Handle)
-                    BMP = ScreenShot.Capture(RegionSelector.Instance.Rectangle, IncludeCursor);
-                else BMP = ScreenShot.CaptureTransparent(hWnd, IncludeCursor,
-                    ScreenShotSettings.DoResize, ScreenShotSettings.ResizeWidth, ScreenShotSettings.ResizeHeight);
+                    if (hWnd == WindowProvider.DesktopHandle)
+                        BMP = ScreenShot.Capture(IncludeCursor);
+                    else if (hWnd == RegionSelector.Instance.Handle)
+                        BMP = ScreenShot.Capture(RegionSelector.Instance.Rectangle, IncludeCursor);
+                    else BMP = ScreenShot.CaptureTransparent(hWnd, IncludeCursor,
+                        ScreenShotSettings.DoResize, ScreenShotSettings.ResizeWidth, ScreenShotSettings.ResizeHeight);
+                    break;
+
+                case VideoSourceKind.Screen:
+                    BMP = (SelectedVideoSource as ScreenVSLI).Capture(IncludeCursor);
+                    break;
             }
-            else if (SelectedVideoSourceKind == VideoSourceKind.Screen)
-                BMP = (SelectedVideoSource as ScreenVSLI).Capture(IncludeCursor);
 
             // Save to Disk or Clipboard
             if (BMP != null)
@@ -255,10 +259,10 @@ namespace Captura
             var SelectedVideoSource = VideoSettings.SelectedVideoSource;
             var Encoder = VideoSettings.Encoder;
 
-            Duration = OtherSettings.CaptureDuration;
-            Delay = OtherSettings.StartDelay;
+            _duration = OtherSettings.CaptureDuration;
+            _delay = OtherSettings.StartDelay;
 
-            if (Duration != 0 && (Delay * 1000 > Duration))
+            if (_duration != 0 && (_delay * 1000 > _duration))
             {
                 Status.Content = "Delay cannot be greater than Duration";
                 SystemSounds.Asterisk.Play();
@@ -278,24 +282,24 @@ namespace Captura
 
             int temp;
 
-            string Extension = SelectedVideoSourceKind == VideoSourceKind.NoVideo
+            var Extension = SelectedVideoSourceKind == VideoSourceKind.NoVideo
                 ? (AudioSettings.EncodeAudio && int.TryParse(SelectedAudioSourceId, out temp) ? ".mp3" : ".wav")
                 : (Encoder.Name == "Gif" ? ".gif" : ".avi");
 
             lastFileName = Path.Combine(OutPath.Text, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + Extension);
 
-            Status.Content = Delay > 0 ? string.Format("Recording from t={0}ms...", Delay) : "Recording...";
+            Status.Content = _delay > 0 ? $"Recording from t={_delay}ms..." : "Recording...";
 
             DTimer.Stop();
-            Seconds = Minutes = 0;
+            _seconds = _minutes = 0;
             TimeManager.Content = "00:00";
 
             DTimer.Start();
 
-            int AudioBitRate = App.IsLamePresent ? Mp3EncoderLame.SupportedBitRates[AudioSettings.AudioQuality] : 0;
+            var AudioBitRate = App.IsLamePresent ? Mp3EncoderLame.SupportedBitRates[AudioSettings.AudioQuality] : 0;
 
             IAudioProvider AudioSource = null;
-            WaveFormat wf = new WaveFormat(44100, 16, AudioSettings.Stereo ? 2 : 1);
+            var wf = new WaveFormat(44100, 16, AudioSettings.Stereo ? 2 : 1);
 
             if (SelectedAudioSourceId != "-1")
             {
@@ -304,7 +308,7 @@ namespace Captura
                     AudioSource = new WaveIn(i, VideoSettings.FrameRate, wf);
                 else
                 {
-                    AudioSource = new WasapiLoopbackCapture(WasapiAudioDevice.Get(SelectedAudioSourceId), true);
+                    AudioSource = new WasapiLoopbackCapture(WasapiAudioDevice.Get(SelectedAudioSourceId));
                     wf = AudioSource.WaveFormat;
                 }
             }
@@ -312,32 +316,36 @@ namespace Captura
             #region ImageProvider
             IImageProvider ImgProvider = null;
 
-            Func<System.Windows.Media.Color, System.Drawing.Color> ConvertColor = (C) => System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B);
+            Func<System.Windows.Media.Color, System.Drawing.Color> ConvertColor = C => System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B);
 
             var mouseKeyHook = new MouseKeyHook(OtherSettings.CaptureClicks,
                                                 OtherSettings.CaptureKeystrokes);
 
-            if (SelectedVideoSourceKind == VideoSourceKind.Window)
+            switch (SelectedVideoSourceKind)
             {
-                var Src = SelectedVideoSource as WindowVSLI;
+                case VideoSourceKind.Window:
+                    var Src = SelectedVideoSource as WindowVSLI;
 
-                if (Src.Handle == RegionSelector.Instance.Handle
-                    && OtherSettings.StaticRegionCapture)
-                {
-                    ImgProvider = new StaticRegionProvider(RegionSelector.Instance,
-                                                           cursor,
-                                                           mouseKeyHook);
-                    VideoSettings.Instance.VideoSourceBox.IsEnabled = false;
-                }
-                else ImgProvider = new WindowProvider(() => (VideoSettings.SelectedVideoSource as WindowVSLI).Handle,
-                                                            ConvertColor(VideoSettings.BackgroundColor),
-                                                            cursor,
-                                                            mouseKeyHook);
+                    if (Src.Handle == RegionSelector.Instance.Handle
+                        && OtherSettings.StaticRegionCapture)
+                    {
+                        ImgProvider = new StaticRegionProvider(RegionSelector.Instance,
+                            cursor,
+                            mouseKeyHook);
+                        VideoSettings.Instance.VideoSourceBox.IsEnabled = false;
+                    }
+                    else ImgProvider = new WindowProvider(() => (VideoSettings.SelectedVideoSource as WindowVSLI).Handle,
+                        ConvertColor(VideoSettings.BackgroundColor),
+                        cursor,
+                        mouseKeyHook);
+                    break;
+
+                case VideoSourceKind.Screen:
+                    ImgProvider = new ScreenProvider((SelectedVideoSource as ScreenVSLI).Screen,
+                        cursor,
+                        mouseKeyHook);
+                    break;
             }
-            else if (SelectedVideoSourceKind == VideoSourceKind.Screen)
-                ImgProvider = new ScreenProvider((SelectedVideoSource as ScreenVSLI).Screen,
-                                                 cursor,
-                                                 mouseKeyHook);
             #endregion
 
             #region VideoEncoder
@@ -369,15 +377,13 @@ namespace Captura
             if (Recorder == null)
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.NoVideo)
-                {
-                    if (AudioSettings.EncodeAudio)
-                        Recorder = new AudioRecorder(AudioSource, new EncodedAudioFileWriter(lastFileName, new Mp3EncoderLame(wf.Channels, wf.SampleRate, AudioBitRate)));
-                    else Recorder = new AudioRecorder(AudioSource, new WaveFileWriter(lastFileName, wf));
-                }
+                    Recorder = AudioSettings.EncodeAudio ? new AudioRecorder(AudioSource, new EncodedAudioFileWriter(lastFileName, new Mp3EncoderLame(wf.Channels, wf.SampleRate, AudioBitRate))) 
+                                                         : new AudioRecorder(AudioSource, new WaveFileWriter(lastFileName, wf));
+                
                 else Recorder = new Recorder(VideoEncoder, ImgProvider, AudioSource);
             }
 
-            Recorder.RecordingStopped += (E) => Dispatcher.Invoke(() =>
+            Recorder.RecordingStopped += E => Dispatcher.Invoke(() =>
             {
                 OnStopped();
 
@@ -388,7 +394,7 @@ namespace Captura
                 }
             });
 
-            Recorder.Start(Delay);
+            Recorder.Start(_delay);
 
             Recent.Add(lastFileName,
                        VideoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
@@ -444,9 +450,8 @@ namespace Captura
             AudioSettings.RefreshAudioSources();
 
             // Status
-            Status.Content = string.Format("{0} Encoder(s) and {1} AudioDevice(s) found",
-                VideoSettings.AvailableCodecs.Count,
-                AudioSettings.AvailableAudioSources.Count - 1);
+            Status.Content =
+                $"{VideoSettings.AvailableCodecs.Count} Encoder(s) and {AudioSettings.AvailableAudioSources.Count - 1} AudioDevice(s) found";
         }
 
         void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

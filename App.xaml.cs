@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Captura
 {
-    public partial class App : Application
+    public partial class App
     {
         public static bool IsLamePresent { get; private set; }
 
@@ -23,7 +23,7 @@ namespace Captura
             OtherSettings.IncludeCursor = Settings.Default.IncludeCursor;
             #endregion
             
-            string LamePath = Path.Combine(Dir, string.Format("lameenc{0}.dll", Environment.Is64BitProcess ? "64" : "32"));
+            var LamePath = Path.Combine(Dir, $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll");
 
             if (!File.Exists(LamePath)) IsLamePresent = false;
             else

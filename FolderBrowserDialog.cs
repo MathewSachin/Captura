@@ -22,7 +22,7 @@ namespace Captura
             ShowEditBox = 0x0010,
             ValidateResult = 0x0020,
             UseNewStyle = 0x0040,
-            UseNewStyleWithEditBox = (UseNewStyle | ShowEditBox),
+            UseNewStyleWithEditBox = UseNewStyle | ShowEditBox,
             AllowUrls = 0x0080,
             ShowUsageHint = 0x0100,
             HideNewFolderButton = 0x0200,
@@ -34,7 +34,7 @@ namespace Captura
         }
 
         [SecurityCritical, DllImport("shell32")]
-        static extern int SHGetFolderLocation(IntPtr hwndOwner, Int32 nFolder, IntPtr hToken, uint dwReserved,
+        static extern int SHGetFolderLocation(IntPtr hwndOwner, int nFolder, IntPtr hToken, uint dwReserved,
             out IntPtr ppidl);
 
         [SecurityCritical, DllImport("shell32")]
@@ -122,7 +122,7 @@ namespace Captura
         [SecurityCritical]
         static IMalloc GetSHMalloc()
         {
-            IMalloc[] ppMalloc = new IMalloc[1];
+            var ppMalloc = new IMalloc[1];
             SHGetMalloc(ppMalloc);
             return ppMalloc[0];
         }
@@ -174,7 +174,7 @@ namespace Captura
         [SecuritySafeCritical]
         protected override bool RunDialog(IntPtr hwndOwner)
         {
-            bool result = false;
+            var result = false;
 
             IntPtr pidlRoot = IntPtr.Zero,
                 pszPath = IntPtr.Zero,
@@ -212,7 +212,7 @@ namespace Captura
             }
             finally // release all unmanaged resources
             {
-                IMalloc malloc = GetSHMalloc();
+                var malloc = GetSHMalloc();
 
                 if (pidlRoot != IntPtr.Zero) malloc.Free(pidlRoot);
 

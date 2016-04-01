@@ -11,16 +11,18 @@ namespace Captura
 {
     public enum VideoSourceKind { NoVideo, Window, Screen }
 
-    public partial class VideoSettings : UserControl, INotifyPropertyChanged
+    public partial class VideoSettings : INotifyPropertyChanged
     {
         public static VideoSettings Instance { get; private set; }
 
         static VideoSettings()
         {
-            AvailableVideoSourceKinds = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>();
+            AvailableVideoSourceKinds = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>
+            {
+                new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
+                new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window")
+            };
 
-            AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"));
-            AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"));
 
             if (ScreenVSLI.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
@@ -95,7 +97,7 @@ namespace Captura
             CheckFunctionalityAvailability();
         }
 
-        public void CheckFunctionalityAvailability()
+        public static void CheckFunctionalityAvailability()
         {
             bool AudioAvailable = AudioSettings.SelectedAudioSourceId != "-1",
                 VideoAvailable = SelectedVideoSourceKind == VideoSourceKind.Window
@@ -106,15 +108,15 @@ namespace Captura
             MainWindow.Instance.ScreenShotButton.IsEnabled = VideoAvailable;
         }
 
-        public static ObservableCollection<AviCodec> AvailableCodecs { get; private set; }
+        public static ObservableCollection<AviCodec> AvailableCodecs { get; }
 
         public ObservableCollection<AviCodec> _AvailableCodecs { get; private set; }
 
-        public static ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; private set; }
+        public static ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; }
 
         public ObservableCollection<KeyValuePair<VideoSourceKind, string>> _AvailableVideoSourceKinds { get; private set; }
 
-        public static ObservableCollection<IVideoSourceListItem> AvailableVideoSources { get; private set; }
+        public static ObservableCollection<IVideoSourceListItem> AvailableVideoSources { get; }
 
         public ObservableCollection<IVideoSourceListItem> _AvailableVideoSources { get; private set; }
 
@@ -125,11 +127,11 @@ namespace Captura
             get { return SelectedVideoSourceKind; }
             set
             {
-                if (SelectedVideoSourceKind != value)
-                {
-                    SelectedVideoSourceKind = value;
-                    OnPropertyChanged();
-                }
+                if (SelectedVideoSourceKind == value)
+                    return;
+
+                SelectedVideoSourceKind = value;
+                OnPropertyChanged();
             }
         }
 
@@ -140,11 +142,11 @@ namespace Captura
             get { return SelectedVideoSource; }
             set
             {
-                if (SelectedVideoSource != value)
-                {
-                    SelectedVideoSource = value;
-                    OnPropertyChanged();
-                }
+                if (SelectedVideoSource == value)
+                    return;
+
+                SelectedVideoSource = value;
+                OnPropertyChanged();
             }
         }
 
@@ -155,11 +157,11 @@ namespace Captura
             get { return Encoder; }
             set
             {
-                if (Encoder != value)
-                {
-                    Encoder = value;
-                    OnPropertyChanged();
-                }
+                if (Encoder == value)
+                    return;
+
+                Encoder = value;
+                OnPropertyChanged();
             }
         }
 
@@ -171,11 +173,11 @@ namespace Captura
             get { return VideoQuality; }
             set
             {
-                if (VideoQuality != (int)value)
-                {
-                    VideoQuality = (int)value;
-                    OnPropertyChanged();
-                }
+                if (VideoQuality == (int) value)
+                    return;
+
+                VideoQuality = (int)value;
+                OnPropertyChanged();
             }
         }
 
@@ -186,11 +188,11 @@ namespace Captura
             get { return FrameRate; }
             set
             {
-                if (FrameRate != value)
-                {
-                    FrameRate = value;
-                    OnPropertyChanged();
-                }
+                if (FrameRate == value)
+                    return;
+
+                FrameRate = value;
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -200,18 +202,16 @@ namespace Captura
         {
             get
             {
-                return Instance == null
-                    || Instance.BgPicker.SelectedColor == null
+                return Instance?.BgPicker.SelectedColor == null
                     ? Colors.Transparent
-                    : Instance.BgPicker.Dispatcher.Invoke<Color>(() => (Instance.BgPicker.SelectedColor as SolidColorBrush).Color);
+                    : Instance.BgPicker.Dispatcher.Invoke(() => (Instance.BgPicker.SelectedColor as SolidColorBrush).Color);
             }
         }
 
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

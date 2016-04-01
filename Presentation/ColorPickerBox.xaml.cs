@@ -1,10 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class ColorPickerBox : UserControl
+    public partial class ColorPickerBox
     {
         public ColorPickerBox()
         {

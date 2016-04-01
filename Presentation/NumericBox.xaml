@@ -1,8 +1,6 @@
 ﻿<UserControl x:Class="Captura.NumericBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:this="clr-namespace:Captura"
-             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              Height="23">
     <DockPanel>
         <TextBox Name="TextBOX"

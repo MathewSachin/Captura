@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace Captura
 {
-    public partial class NumericBox : UserControl
+    public partial class NumericBox
     {
         public static readonly ICommand IncreaseCommand = new RoutedUICommand(),
             DecreaseCommand = new RoutedUICommand();
@@ -61,7 +61,7 @@ namespace Captura
             }
         }
 
-        int Last = 0;
+        int Last;
 
         void TextBOX_TextChanged(object sender, TextChangedEventArgs e)
         {

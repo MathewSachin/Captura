@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 
 namespace Captura
 {
     /// <summary>
     /// Interaction logic for GifSettings.xaml
     /// </summary>
-    public partial class GifSettings : UserControl, INotifyPropertyChanged
+    public partial class GifSettings : INotifyPropertyChanged
     {
         public GifSettings()
         {
@@ -16,56 +15,55 @@ namespace Captura
             DataContext = this;
         }
 
-        public static bool UnconstrainedGif = false;
+        public static bool UnconstrainedGif;
 
         public bool _UnconstrainedGif
         {
             get { return UnconstrainedGif; }
             set
             {
-                if (UnconstrainedGif != value)
-                {
-                    UnconstrainedGif = value;
-                    OnPropertyChanged();
-                }
+                if (UnconstrainedGif == value)
+                    return;
+
+                UnconstrainedGif = value;
+                OnPropertyChanged();
             }
         }
 
-        public static bool GifRepeat = false;
+        public static bool GifRepeat;
 
         public bool _GifRepeat
         {
             get { return GifRepeat; }
             set
             {
-                if (GifRepeat != value)
-                {
-                    GifRepeat = value;
-                    OnPropertyChanged();
-                }
+                if (GifRepeat == value)
+                    return;
+
+                GifRepeat = value;
+                OnPropertyChanged();
             }
         }
 
-        public static int GifRepeatCount = 0;
+        public static int GifRepeatCount;
 
         public int _RepeatCount
         {
             get { return GifRepeatCount; }
             set
             {
-                if (GifRepeatCount != value)
-                {
-                    GifRepeatCount = value;
-                    OnPropertyChanged();
-                }
+                if (GifRepeatCount == value)
+                    return;
+
+                GifRepeatCount = value;
+                OnPropertyChanged();
             }
         }
 
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

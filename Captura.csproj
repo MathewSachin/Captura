@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Screna, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.1.1\lib\Screna.dll</HintPath>
+      <HintPath>packages\Screna.0.1.3\lib\Screna.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

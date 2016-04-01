@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Captura
 {
-    public partial class OtherSettings : UserControl, INotifyPropertyChanged
+    public partial class OtherSettings : INotifyPropertyChanged
     {
         public static OtherSettings Instance { get; private set; }
 
@@ -22,33 +21,33 @@ namespace Captura
             };
         }
 
-        public static int CaptureDuration = 0;
+        public static int CaptureDuration;
 
         public int _CaptureDuration
         {
             get { return CaptureDuration; }
             set
             {
-                if (CaptureDuration != value)
-                {
-                    CaptureDuration = value;
-                    OnPropertyChanged();
-                }
+                if (CaptureDuration == value)
+                    return;
+
+                CaptureDuration = value;
+                OnPropertyChanged();
             }
         }
 
-        public static int StartDelay = 0;
+        public static int StartDelay;
 
         public int _StartDelay
         {
             get { return StartDelay; }
             set
             {
-                if (StartDelay != value)
-                {
-                    StartDelay = value;
-                    OnPropertyChanged();
-                }
+                if (StartDelay == value)
+                    return;
+
+                StartDelay = value;
+                OnPropertyChanged();
             }
         }
 
@@ -69,7 +68,7 @@ namespace Captura
         #endregion
 
         #region MouseKeyHooks
-        public static bool CaptureClicks = false;
+        public static bool CaptureClicks;
 
         public bool _CaptureClicks
         {
@@ -84,7 +83,7 @@ namespace Captura
             }
         }
 
-        public static bool CaptureKeystrokes = false;
+        public static bool CaptureKeystrokes;
 
         public bool _CaptureKeystrokes
         {
@@ -100,71 +99,70 @@ namespace Captura
         }
         #endregion
 
-        public static bool StaticRegionCapture = false;
+        public static bool StaticRegionCapture;
 
         public bool _StaticRegionCapture
         {
             get { return StaticRegionCapture; }
             set
             {
-                if (StaticRegionCapture != value)
-                {
-                    StaticRegionCapture = value;
-                    OnPropertyChanged();
-                }
+                if (StaticRegionCapture == value)
+                    return;
+
+                StaticRegionCapture = value;
+                OnPropertyChanged();
             }
         }
 
-        public static bool IncludeCursor = false;
+        public static bool IncludeCursor;
 
         public bool _IncludeCursor
         {
             get { return IncludeCursor; }
             set
             {
-                if (IncludeCursor != value)
-                {
-                    IncludeCursor = value;
-                    OnPropertyChanged();
-                }
+                if (IncludeCursor == value)
+                    return;
+
+                IncludeCursor = value;
+                OnPropertyChanged();
             }
         }
 
-        public static bool MinimizeToSysTray = false;
+        public static bool MinimizeToSysTray;
 
         public bool _MinToSysTray
         {
             get { return MinimizeToSysTray; }
             set
             {
-                if (MinimizeToSysTray != value)
-                {
-                    MinimizeToSysTray = value;
-                    OnPropertyChanged();
-                }
+                if (MinimizeToSysTray == value)
+                    return;
+
+                MinimizeToSysTray = value;
+                OnPropertyChanged();
             }
         }
 
-        public static bool MinimizeOnStart = false;
+        public static bool MinimizeOnStart;
 
         public bool _MinOnStart
         {
             get { return MinimizeOnStart; }
             set
             {
-                if (MinimizeOnStart != value)
-                {
-                    MinimizeOnStart = value;
-                    OnPropertyChanged();
-                }
+                if (MinimizeOnStart == value)
+                    return;
+
+                MinimizeOnStart = value;
+                OnPropertyChanged();
             }
         }
 
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

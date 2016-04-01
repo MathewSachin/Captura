@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 
 namespace Captura
 {
-    public partial class ScreenShotSettings : UserControl, INotifyPropertyChanged
+    public partial class ScreenShotSettings : INotifyPropertyChanged
     {
         public ScreenShotSettings()
         {
@@ -18,29 +17,23 @@ namespace Captura
 
         public static ImageFormat SelectedImageFormat = ImageFormat.Png;
         
-        public static bool SaveToClipboard { get { return selectedSaveTo == "Clipboard"; } }
+        public static bool SaveToClipboard => selectedSaveTo == "Clipboard";
 
-        public string[] SaveTo { get { return new string[] { "Disk", "Clipboard" }; } }
+        public string[] SaveTo => new[] { "Disk", "Clipboard" };
 
-        public ImageFormat[] ImageFormats
+        public ImageFormat[] ImageFormats => new[]
         {
-            get
-            {
-                return new ImageFormat[]
-                {
-                    ImageFormat.Png,
-                    ImageFormat.Jpeg,
-                    ImageFormat.Bmp,
-                    ImageFormat.Tiff,
-                    ImageFormat.Wmf,
-                    ImageFormat.Exif,
-                    ImageFormat.Gif,
-                    ImageFormat.Icon,
-                    ImageFormat.Emf
-                };
-            }
-        }
-        
+            ImageFormat.Png,
+            ImageFormat.Jpeg,
+            ImageFormat.Bmp,
+            ImageFormat.Tiff,
+            ImageFormat.Wmf,
+            ImageFormat.Exif,
+            ImageFormat.Gif,
+            ImageFormat.Icon,
+            ImageFormat.Emf
+        };
+
         public string _SelectedSaveTo
         {
             get { return selectedSaveTo; }
@@ -114,8 +107,7 @@ namespace Captura
 
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

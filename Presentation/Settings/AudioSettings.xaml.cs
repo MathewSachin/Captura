@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace Captura
 {
-    public partial class AudioSettings : UserControl, INotifyPropertyChanged
+    public partial class AudioSettings : INotifyPropertyChanged
     {
         public static AudioSettings Instance;
 
@@ -49,10 +49,10 @@ namespace Captura
 
         void AudioVideoSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            VideoSettings.Instance.CheckFunctionalityAvailability();
+            VideoSettings.CheckFunctionalityAvailability();
         }
 
-        public static ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; private set; }
+        public static ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; }
 
         public ObservableCollection<KeyValuePair<string, string>> _AvailableAudioSources { get; private set; }
 
@@ -78,18 +78,18 @@ namespace Captura
             get { return SelectedAudioSourceId; }
             set
             {
-                if (SelectedAudioSourceId != value)
-                {
-                    SelectedAudioSourceId = value;
-                    OnPropertyChanged();
-                }
+                if (SelectedAudioSourceId == value)
+                    return;
+
+                SelectedAudioSourceId = value;
+                OnPropertyChanged();
             }
         }
 
         #region Audio
-        static readonly int MaxAudioQuality = 0;
+        static readonly int MaxAudioQuality;
 
-        public static int AudioQuality = 0;
+        public static int AudioQuality;
 
         public double _AudioQuality
         {
@@ -119,7 +119,7 @@ namespace Captura
             }
         }
 
-        public static bool Stereo = false;
+        public static bool Stereo;
 
         public bool _Stereo
         {
@@ -138,8 +138,7 @@ namespace Captura
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

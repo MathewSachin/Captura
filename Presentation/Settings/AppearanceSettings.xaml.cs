@@ -3,12 +3,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class AppearanceSettings : UserControl, INotifyPropertyChanged
+    public partial class AppearanceSettings : INotifyPropertyChanged
     {
         const string KeyAccentColor = "AccentColor",
             KeyAccent = "Accent";
@@ -21,14 +20,7 @@ namespace Captura
                     select dict).FirstOrDefault();
         }
 
-        static Uri GetThemeSource()
-        {
-            var dict = GetThemeDictionary();
-            if (dict != null) return dict.Source;
-
-            // could not determine the theme dictionary
-            return null;
-        }
+        static Uri GetThemeSource() => GetThemeDictionary()?.Source;
 
         static void SetThemeSource(Uri source)
         {
@@ -46,7 +38,8 @@ namespace Captura
             dictionaries.Add(themeDict);
 
             // remove old theme
-            if (oldThemeDict != null) dictionaries.Remove(oldThemeDict);
+            if (oldThemeDict != null)
+                dictionaries.Remove(oldThemeDict);
         }
 
         /// <summary>
@@ -58,11 +51,7 @@ namespace Captura
             {
                 var accentColor = Application.Current.Resources[KeyAccentColor] as Color?;
 
-                if (accentColor.HasValue)
-                    return accentColor.Value;
-
-                // default color: Blue
-                return Color.FromRgb(0x33, 0x99, 0xff);
+                return accentColor ?? Color.FromRgb(0x33, 0x99, 0xff);
             }
             set
             {
@@ -72,7 +61,8 @@ namespace Captura
 
                 // re-apply theme to ensure brushes referencing AccentColor are updated
                 var themeSource = GetThemeSource();
-                if (themeSource != null) SetThemeSource(themeSource);
+                if (themeSource != null)
+                    SetThemeSource(themeSource);
             }
         }
 
@@ -83,7 +73,7 @@ namespace Captura
             DataContext = this;
         }
 
-        static readonly Color[] AccentColorCollection = new Color[]
+        static readonly Color[] AccentColorCollection = 
         {
             Color.FromArgb(0xd7, 0x8c, 0xbf, 0x26),   // lime
             Color.FromArgb(0xd7, 0x33, 0x99, 0x33),   // green  
@@ -99,10 +89,10 @@ namespace Captura
             Color.FromArgb(0xd7, 0xff, 0x45, 0x00),   // orange red
             Color.FromArgb(0xd7, 0xe5, 0x14, 0x00),   // red
             Color.FromArgb(0xd7, 0xa2, 0x00, 0x25),   // crimson
-            Color.FromArgb(0xd7, 0x82, 0x5a, 0x2c),   // brown
+            Color.FromArgb(0xd7, 0x82, 0x5a, 0x2c)    // brown
         };
 
-        public Color[] AccentColors { get { return AccentColorCollection; } }
+        public Color[] AccentColors => AccentColorCollection;
 
         static Color _SelectedAccentColor = AccentColor;
 
@@ -111,21 +101,20 @@ namespace Captura
             get { return _SelectedAccentColor; }
             set
             {
-                if (_SelectedAccentColor != value)
-                {
-                    _SelectedAccentColor = value;
-                    OnPropertyChanged();
+                if (_SelectedAccentColor == value)
+                    return;
 
-                    AccentColor = value;
-                }
+                _SelectedAccentColor = value;
+                OnPropertyChanged();
+
+                AccentColor = value;
             }
         }
 
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
