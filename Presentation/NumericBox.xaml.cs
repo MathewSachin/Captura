@@ -53,11 +53,11 @@ namespace Captura
             get { return (int)GetValue(ValueProperty); }
             set 
             {
-                if (Value != value)
-                {
-                    TextBOX.Text = value.ToString();
-                    SetValue(ValueProperty, value);
-                }
+                if (Value == value)
+                    return;
+
+                TextBOX.Text = value.ToString();
+                SetValue(ValueProperty, value);
             }
         }
 

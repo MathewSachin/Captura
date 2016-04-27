@@ -7,45 +7,45 @@ namespace Captura
 {
     class StaticRegionProvider : IImageProvider
     {
-        RegionSelector RegSel;
-        IOverlay[] Overlays;
+        readonly RegionSelector _regSel;
+        readonly IOverlay[] _overlays;
 
         public StaticRegionProvider(RegionSelector RegSel, params IOverlay[] Overlays)
         {
-            this.RegSel = RegSel;
+            _regSel = RegSel;
 
-            Height = (int)RegSel.Height;
-            Width = (int)RegSel.Width;
+            Height = (int) RegSel.Height;
+            Width = (int) RegSel.Width;
 
             RegSel.ResizeMode = ResizeMode.NoResize;
 
-            this.Overlays = Overlays;
+            _overlays = Overlays;
         }
 
         Rectangle Rectangle
         {
             get
             {
-                var Location = RegSel.Dispatcher.Invoke(() => new Point((int)RegSel.Left, (int)RegSel.Top));
-                return new Rectangle(Location.X, Location.Y, Width, Height);
+                var location = _regSel.Dispatcher.Invoke(() => new Point((int) _regSel.Left, (int) _regSel.Top));
+                return new Rectangle(location.X, location.Y, Width, Height);
             }
         }
 
         public Bitmap Capture()
         {
-            var BMP = ScreenShot.Capture(Rectangle);
+            var bmp = ScreenShot.Capture(Rectangle);
 
-            using (var g = Graphics.FromImage(BMP))
-                foreach (var overlay in Overlays)
+            using (var g = Graphics.FromImage(bmp))
+                foreach (var overlay in _overlays)
                     overlay.Draw(g, Rectangle.Location);
 
-            return BMP;
+            return bmp;
         }
 
         public int Height { get; }
 
         public int Width { get; }
-        
-        public void Dispose() { RegSel.ResizeMode = ResizeMode.CanResize; }
+
+        public void Dispose() => _regSel.ResizeMode = ResizeMode.CanResize;
     }
 }

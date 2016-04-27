@@ -99,7 +99,7 @@ namespace Captura
 
         public static void CheckFunctionalityAvailability()
         {
-            bool AudioAvailable = AudioSettings.SelectedAudioSourceId != "-1",
+            bool AudioAvailable = AudioSettings.SelectedAudioSource.ToString() != "[No Sound]",
                 VideoAvailable = SelectedVideoSourceKind == VideoSourceKind.Window
                     || SelectedVideoSourceKind == VideoSourceKind.Screen;
 

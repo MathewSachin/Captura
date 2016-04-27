@@ -52,7 +52,7 @@ namespace Captura
         }
 
         #region RegionSelector
-        public static RegionSelector RegionSelector = RegionSelector.Instance;
+        public static readonly RegionSelector RegionSelector = RegionSelector.Instance;
 
         void ShowRegionSelector(object sender, RoutedEventArgs e)
         {
@@ -75,11 +75,11 @@ namespace Captura
             get { return CaptureClicks; }
             set
             {
-                if (CaptureClicks != value)
-                {
-                    CaptureClicks = value;
-                    OnPropertyChanged();
-                }
+                if (CaptureClicks == value)
+                    return;
+
+                CaptureClicks = value;
+                OnPropertyChanged();
             }
         }
 
@@ -90,11 +90,11 @@ namespace Captura
             get { return CaptureKeystrokes; }
             set
             {
-                if (CaptureKeystrokes != value)
-                {
-                    CaptureKeystrokes = value;
-                    OnPropertyChanged();
-                }
+                if (CaptureKeystrokes == value)
+                    return;
+
+                CaptureKeystrokes = value;
+                OnPropertyChanged();
             }
         }
         #endregion

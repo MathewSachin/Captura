@@ -15,15 +15,14 @@ namespace Captura
 
     partial class Recent
     {
-        static ObservableCollection<RecentItem> _RecentList = new ObservableCollection<RecentItem>();
+        static readonly ObservableCollection<RecentItem> _RecentList = new ObservableCollection<RecentItem>();
 
-        public ObservableCollection<RecentItem> RecentList { get; private set; }
+        public ObservableCollection<RecentItem> RecentList { get; private set; } = _RecentList;
 
         public static RoutedUICommand RecentButtonClick = new RoutedUICommand();
 
         public Recent()
         {
-            RecentList = _RecentList;
             InitializeComponent();
 
             DataContext = this;
@@ -33,13 +32,14 @@ namespace Captura
         {
             var I = new RecentItem(FileName);
 
-            if (Type == RecentItemType.Image) I.PrintButton.Visibility = Visibility.Visible;
+            if (Type == RecentItemType.Image)
+                I.PrintButton.Visibility = Visibility.Visible;
 
             I.Remove += () => _RecentList.Remove(I);
 
             _RecentList.Add(I);
         }
 
-        void OpenOutputFolder(object sender, RoutedEventArgs e) { Process.Start("explorer.exe", Settings.Default.OutputPath); }
+        void OpenOutputFolder(object sender, RoutedEventArgs e) => Process.Start("explorer.exe", Settings.Default.OutputPath);
     }
 }

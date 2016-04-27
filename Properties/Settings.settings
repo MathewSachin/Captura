@@ -17,8 +17,5 @@
     <Setting Name="UseStereo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MUIThemeColor" Type="System.Windows.Media.Color" Scope="User">
-      <Value Profile="(Default)">#FF0050EF</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

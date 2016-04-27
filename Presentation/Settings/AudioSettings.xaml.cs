@@ -1,40 +1,40 @@
-﻿using Screna.Audio;
-using System.Collections.Generic;
+﻿using Screna.NAudio;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
+using Screna.Lame;
 
 namespace Captura
 {
     public partial class AudioSettings : INotifyPropertyChanged
     {
-        public static AudioSettings Instance;
+        static AudioSettings Instance;
 
         #region Init
         static AudioSettings()
         {
-            if (!App.IsLamePresent) EncodeAudio = false;
+            if (!App.IsLamePresent)
+                EncodeAudio = false;
             else
             {
                 MaxAudioQuality = Mp3EncoderLame.SupportedBitRates.Length - 1;
                 AudioQuality = Mp3EncoderLame.SupportedBitRates.Length / 2;
             }
 
-            AvailableAudioSources = new ObservableCollection<KeyValuePair<string, string>>();
+            AvailableAudioSources = new ObservableCollection<object>();
         }
 
         public AudioSettings()
         {
-            _AvailableAudioSources = AvailableAudioSources;
-
             InitializeComponent();
 
             DataContext = this;
 
             Instance = this;
 
-            if (App.IsLamePresent) AudioQualitySlider.Maximum = MaxAudioQuality;
+            if (App.IsLamePresent)
+                AudioQualitySlider.Maximum = MaxAudioQuality;
             else
             {
                 AudioQualitySlider.IsEnabled = false;
@@ -52,36 +52,37 @@ namespace Captura
             VideoSettings.CheckFunctionalityAvailability();
         }
 
-        public static ObservableCollection<KeyValuePair<string, string>> AvailableAudioSources { get; }
+        public static ObservableCollection<object> AvailableAudioSources { get; }
 
-        public ObservableCollection<KeyValuePair<string, string>> _AvailableAudioSources { get; private set; }
+        public ObservableCollection<object> _AvailableAudioSources { get; } = AvailableAudioSources;
 
-        public static string SelectedAudioSourceId = "-1";
+        public static object SelectedAudioSource = "[No Sound]";
 
         public static void RefreshAudioSources()
         {
             AvailableAudioSources.Clear();
 
-            AvailableAudioSources.Add(new KeyValuePair<string, string>("-1", "[No Sound]"));
+            AvailableAudioSources.Add("[No Sound]");
 
-            foreach (var Dev in WaveInDevice.Enumerate())
-                AvailableAudioSources.Add(new KeyValuePair<string, string>(Dev.DeviceNumber.ToString(), Dev.Name));
+            foreach (var dev in WaveInDevice.Enumerate())
+                AvailableAudioSources.Add(dev);
 
-            foreach (var Dev in WasapiLoopbackCapture.EnumerateDevices())
-                AvailableAudioSources.Add(new KeyValuePair<string, string>(Dev.ID, Dev.Name + " (Loopback)"));
+            foreach (var dev in LoopbackProvider.EnumerateDevices())
+                AvailableAudioSources.Add(dev);
 
-            if (Instance != null) Instance.AudioSourcesBox.SelectedIndex = 0;
+            if (Instance != null)
+                Instance.AudioSourcesBox.SelectedIndex = 0;
         }
 
-        public string _SelectedAudioSourceId
+        public object _SelectedAudioSource
         {
-            get { return SelectedAudioSourceId; }
+            get { return SelectedAudioSource; }
             set
             {
-                if (SelectedAudioSourceId == value)
+                if (SelectedAudioSource == value)
                     return;
 
-                SelectedAudioSourceId = value;
+                SelectedAudioSource = value;
                 OnPropertyChanged();
             }
         }
@@ -96,11 +97,11 @@ namespace Captura
             get { return AudioQuality; }
             set
             {
-                if (AudioQuality != (int)value)
-                {
-                    AudioQuality = (int)value;
-                    OnPropertyChanged();
-                }
+                if (AudioQuality == (int) value)
+                    return;
+
+                AudioQuality = (int)value;
+                OnPropertyChanged();
             }
         }
 
@@ -111,11 +112,11 @@ namespace Captura
             get { return EncodeAudio; }
             set
             {
-                if (EncodeAudio != value)
-                {
-                    EncodeAudio = value;
-                    OnPropertyChanged();
-                }
+                if (EncodeAudio == value)
+                    return;
+
+                EncodeAudio = value;
+                OnPropertyChanged();
             }
         }
 
@@ -126,11 +127,11 @@ namespace Captura
             get { return Stereo; }
             set
             {
-                if (Stereo != value)
-                {
-                    Stereo = value;
-                    OnPropertyChanged();
-                }
+                if (Stereo == value)
+                    return;
+
+                Stereo = value;
+                OnPropertyChanged();
             }
         }
         #endregion

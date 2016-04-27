@@ -12,10 +12,8 @@
                     <ComboBox VerticalAlignment="Center" 
                               Margin="0,0,0,4"
                               ItemsSource="{Binding _AvailableAudioSources}"
-                              SelectedValue="{Binding _SelectedAudioSourceId, Mode=TwoWay}"
-                              SelectedValuePath="Key"
+                              SelectedValue="{Binding _SelectedAudioSource, Mode=TwoWay}"
                               Name="AudioSourcesBox"
-                              DisplayMemberPath="Value"
                               SelectionChanged="AudioVideoSelectionChanged"/>
                 </DockPanel>
                 <CheckBox Margin="0,5" 

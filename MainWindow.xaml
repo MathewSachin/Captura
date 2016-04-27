@@ -153,9 +153,6 @@
                 <TabItem Header="Video">
                     <this:VideoSettings/>
                 </TabItem>
-                <TabItem Header="Appearance">
-                    <this:AppearanceSettings/>
-                </TabItem>
                 <TabItem Header="ScreenShot">
                     <this:ScreenShotSettings/>
                 </TabItem>

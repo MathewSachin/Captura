@@ -8,18 +8,18 @@ namespace Captura
 {
     public partial class RecentItem
     {
-        string FilePath;
+        readonly string _filePath;
 
         public RecentItem(string FileName)
         {
             InitializeComponent();
 
-            FilePath = FileName;
+            _filePath = FileName;
             UrlButton.Content = Path.GetFileName(FileName);
 
             UrlButton.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage,
-                (s, e) => Process.Start(FilePath),
-                (s, e) => e.CanExecute = File.Exists(FilePath)));
+                (s, e) => Process.Start(_filePath),
+                (s, e) => e.CanExecute = File.Exists(_filePath)));
         }
 
         public event Action Remove;
@@ -28,12 +28,12 @@ namespace Captura
 
         void PrintButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(FilePath) { Verb = "Print" });
+            Process.Start(new ProcessStartInfo(_filePath) { Verb = "Print" });
         }
 
         void Delete_Click(object sender, RoutedEventArgs e)
         {
-            File.Delete(FilePath);
+            File.Delete(_filePath);
             Remove?.Invoke();
         }
     }

@@ -8,26 +8,24 @@ namespace Captura
 {
     public partial class RegionSelector
     {
-        HwndSource RegSelhWnd;
+        readonly HwndSource _regSelhWnd;
 
-        public static RegionSelector Instance { get; private set; }
-
-        static RegionSelector() { Instance = new RegionSelector(); }
+        public static RegionSelector Instance { get; } = new RegionSelector();
 
         RegionSelector()
         {
             InitializeComponent();
 
             Show();
-            RegSelhWnd = (HwndSource)PresentationSource.FromVisual(this);
+            _regSelhWnd = (HwndSource)PresentationSource.FromVisual(this);
             Hide();
         }
 
-        public IntPtr Handle => RegSelhWnd.Handle;
+        public IntPtr Handle => _regSelhWnd.Handle;
 
         public Rectangle Rectangle => new Rectangle((int)Left, (int)Top, (int)Width, (int)Height);
 
-        void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { DragMove(); }
+        void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         void HeaderMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

@@ -13,11 +13,11 @@ namespace Captura
             DataContext = this;
         }
 
-        static string selectedSaveTo = "Disk";
+        static string _selectedSaveTo = "Disk";
 
         public static ImageFormat SelectedImageFormat = ImageFormat.Png;
         
-        public static bool SaveToClipboard => selectedSaveTo == "Clipboard";
+        public static bool SaveToClipboard => _selectedSaveTo == "Clipboard";
 
         public string[] SaveTo => new[] { "Disk", "Clipboard" };
 
@@ -36,14 +36,14 @@ namespace Captura
 
         public string _SelectedSaveTo
         {
-            get { return selectedSaveTo; }
+            get { return _selectedSaveTo; }
             set
             {
-                if (selectedSaveTo != value)
-                {
-                    selectedSaveTo = value;
-                    OnPropertyChanged();
-                }
+                if (_selectedSaveTo == value)
+                    return;
+
+                _selectedSaveTo = value;
+                OnPropertyChanged();
             }
         }
 
@@ -52,11 +52,11 @@ namespace Captura
             get { return SelectedImageFormat; }
             set
             {
-                if (SelectedImageFormat != value)
-                {
-                    SelectedImageFormat = value;
-                    OnPropertyChanged();
-                }
+                if (SelectedImageFormat == value)
+                    return;
+
+                SelectedImageFormat = value;
+                OnPropertyChanged();
             }
         }
 
@@ -68,11 +68,11 @@ namespace Captura
             get { return DoResize; }
             set
             {
-                if (DoResize != value)
-                {
-                    DoResize = value;
-                    OnPropertyChanged();
-                }
+                if (DoResize == value)
+                    return;
+
+                DoResize = value;
+                OnPropertyChanged();
             }
         }
 
@@ -83,11 +83,11 @@ namespace Captura
             get { return ResizeWidth; }
             set
             {
-                if (ResizeWidth != value)
-                {
-                    ResizeWidth = value;
-                    OnPropertyChanged();
-                }
+                if (ResizeWidth == value)
+                    return;
+
+                ResizeWidth = value;
+                OnPropertyChanged();
             }
         }
 
@@ -96,11 +96,11 @@ namespace Captura
             get { return ResizeHeight; }
             set
             {
-                if (ResizeHeight != value)
-                {
-                    ResizeHeight = value;
-                    OnPropertyChanged();
-                }
+                if (ResizeHeight == value)
+                    return;
+
+                ResizeHeight = value;
+                OnPropertyChanged();
             }
         }
         #endregion

@@ -18,59 +18,61 @@ namespace Captura
 
     public class KeyboardHookList : IDisposable
     {
-        Random R;
+        readonly Random _r;
 
         [DllImport("user32.dll")]
-        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeyCodes fdModifiers, KeyCode vk);
+        static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeyCodes fdModifiers, KeyCode vk);
 
         #region Fields
-        WindowInteropHelper host;
-        IntPtr Handle;
-        bool IsDisposed;
-        Dictionary<int, Action> Keys = new Dictionary<int, Action>();
+        WindowInteropHelper _host;
+        readonly IntPtr _handle;
+        bool _isDisposed;
+        readonly Dictionary<int, Action> _keys = new Dictionary<int, Action>();
         #endregion
 
         ~KeyboardHookList() { Dispose(); }
 
         public KeyboardHookList(Window Window)
         {
-            host = new WindowInteropHelper(Window);
-            Handle = host.Handle;
+            _host = new WindowInteropHelper(Window);
+            _handle = _host.Handle;
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
 
-            R = new Random(DateTime.Now.Millisecond);
+            _r = new Random(DateTime.Now.Millisecond);
         }
 
         public void Register(KeyCode Key, ModifierKeyCodes Modifiers, Action Callback)
         {
-            var Identifier = R.Next();
+            var identifier = _r.Next();
 
-            RegisterHotKey(Handle, Identifier, Modifiers, Key);
+            RegisterHotKey(_handle, identifier, Modifiers, Key);
 
-            Keys.Add(Identifier, Callback);
+            _keys.Add(identifier, Callback);
         }
 
         void ProcessMessage(ref MSG msg, ref bool handled)
         {
-            if (msg.message == 786)
-                foreach (var Key in Keys)
-                    if (msg.wParam.ToInt32() == Key.Key)
-                        Key.Value();
+            if (msg.message != 786)
+                return;
+
+            foreach (var key in _keys)
+                if (msg.wParam.ToInt32() == key.Key)
+                    key.Value();
         }
 
         public void Dispose()
         {
-            if (!IsDisposed)
+            if (!_isDisposed)
             {
-                foreach (var Identifier in Keys.Keys)
-                    UnregisterHotKey(Handle, Identifier);
-                host = null;
+                foreach (var identifier in _keys.Keys)
+                    UnregisterHotKey(_handle, identifier);
+                _host = null;
             }
-            IsDisposed = true;
+            _isDisposed = true;
         }
     }
 }

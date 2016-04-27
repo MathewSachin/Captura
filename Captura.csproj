@@ -47,8 +47,24 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Screna, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.1.3\lib\Screna.dll</HintPath>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Screna, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.0.2.0\lib\net40\Screna.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Screna.Lame, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.Lame.0.2.2\lib\net40\Screna.Lame.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -66,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DWMApi.cs" />
     <Compile Include="ModernButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -90,8 +107,16 @@
     <Compile Include="Presentation\Settings\GifSettings.xaml.cs">
       <DependentUpon>GifSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screna\MouseKeyHook\MouseKeyHook.cs" />
+    <Compile Include="Screna\NAudio\LoopbackProvider.cs" />
+    <Compile Include="Screna\NAudio\SilenceProvider.cs" />
+    <Compile Include="Screna\NAudio\WaveInDevice.cs" />
+    <Compile Include="Screna\NAudio\WaveInProvider.cs" />
+    <Compile Include="Screna\SharpAvi\AviCodec.cs" />
+    <Compile Include="Screna\SharpAvi\AviWriter.cs" />
+    <Compile Include="Screna\SharpAvi\IAudioEncoderWrapper.cs" />
+    <Compile Include="Screna\SharpAvi\IAudioProviderWrapper.cs" />
     <Compile Include="StaticRegionProvider.cs" />
-    <Compile Include="FolderBrowserDialog.cs" />
     <Compile Include="Presentation\Settings\VideoSettings.xaml.cs">
       <DependentUpon>VideoSettings.xaml</DependentUpon>
     </Compile>
@@ -108,9 +133,6 @@
     </Compile>
     <Compile Include="Presentation\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Settings\AppearanceSettings.xaml.cs">
-      <DependentUpon>AppearanceSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\VideoSourceListItems.cs" />
     <Page Include="Themes\Button.xaml">
@@ -228,10 +250,6 @@
     <Page Include="Presentation\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Presentation\Settings\AppearanceSettings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
