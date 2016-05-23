@@ -1,4 +1,4 @@
-﻿using Captura.Properties;
+﻿//using Captura.Properties;
 using System;
 using System.IO;
 using System.Reflection;
@@ -21,9 +21,9 @@ namespace Captura
             Current.Resources["AccentColor"] = color;
             Current.Resources["Accent"] = new SolidColorBrush(color);
 
-            OtherSettings.MinimizeOnStart = Settings.Default.MinimizeOnStart;
+            //OtherSettings.MinimizeOnStart = Settings.Default.MinimizeOnStart;
 
-            OtherSettings.IncludeCursor = Settings.Default.IncludeCursor;
+            //OtherSettings.IncludeCursor = Settings.Default.IncludeCursor;
             #endregion
             
             IsLamePresent = File.Exists(Path.Combine(_dir, $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll"));
@@ -59,11 +59,11 @@ namespace Captura
 
         void Application_Exit(object sender, ExitEventArgs e)
         {
-            Settings.Default.MinimizeOnStart = OtherSettings.MinimizeOnStart;
+            //Settings.Default.MinimizeOnStart = OtherSettings.MinimizeOnStart;
 
-            Settings.Default.IncludeCursor = OtherSettings.IncludeCursor;
+            //Settings.Default.IncludeCursor = OtherSettings.IncludeCursor;
 
-            Settings.Default.Save(); 
+            //Settings.Default.Save(); 
         }
     }
 }

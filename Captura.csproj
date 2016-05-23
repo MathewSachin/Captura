@@ -82,30 +82,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DWMApi.cs" />
-    <Compile Include="ModernButton.cs" />
+    <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
+    <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Utility\DWMApi.cs" />
+    <Compile Include="Utility\ModernButton.cs" />
+    <Compile Include="Utility\RecentItemType.cs" />
+    <Compile Include="ViewModels\AudioViewModel.cs" />
+    <Compile Include="Utility\DelegateCommand.cs" />
+    <Compile Include="ViewModels\GifViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\OthersViewModel.cs" />
+    <Compile Include="ViewModels\RecentViewModel.cs" />
+    <Compile Include="ViewModels\ScreenShotViewModel.cs" />
+    <Compile Include="Utility\VideoSourceKind.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\ColorPickerBox.xaml.cs">
+    <Compile Include="Utility\ColorPickerBox.xaml.cs">
       <DependentUpon>ColorPickerBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\NumericBox.xaml.cs">
+    <Compile Include="Utility\NumericBox.xaml.cs">
       <DependentUpon>NumericBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\RecentItem.xaml.cs">
+    <Compile Include="Utility\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Settings\AudioSettings.xaml.cs">
-      <DependentUpon>AudioSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KeyboardHookList.cs" />
-    <Compile Include="Presentation\Settings\OtherSettings.xaml.cs">
-      <DependentUpon>OtherSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Settings\GifSettings.xaml.cs">
-      <DependentUpon>GifSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screna\MouseKeyHook\MouseKeyHook.cs" />
     <Compile Include="Screna\NAudio\LoopbackProvider.cs" />
@@ -116,25 +119,16 @@
     <Compile Include="Screna\SharpAvi\AviWriter.cs" />
     <Compile Include="Screna\SharpAvi\IAudioEncoderWrapper.cs" />
     <Compile Include="Screna\SharpAvi\IAudioProviderWrapper.cs" />
-    <Compile Include="StaticRegionProvider.cs" />
-    <Compile Include="Presentation\Settings\VideoSettings.xaml.cs">
-      <DependentUpon>VideoSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Settings\ScreenShotSettings.xaml.cs">
-      <DependentUpon>ScreenShotSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Recent.xaml.cs">
-      <DependentUpon>Recent.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Utility\StaticRegionProvider.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\RegionSelector.xaml.cs">
+    <Compile Include="Utility\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\VideoSourceListItems.cs" />
+    <Compile Include="Utility\VideoSourceListItems.cs" />
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -207,39 +201,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\ColorPickerBox.xaml">
+    <Page Include="Utility\ColorPickerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\NumericBox.xaml">
+    <Page Include="Utility\NumericBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\RecentItem.xaml">
+    <Page Include="Utility\RecentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Settings\AudioSettings.xaml">
+    <Page Include="Views\AudioView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Settings\OtherSettings.xaml">
+    <Page Include="Views\OthersView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Settings\GifSettings.xaml">
+    <Page Include="Views\GifView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Settings\VideoSettings.xaml">
+    <Page Include="Views\VideoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Settings\ScreenShotSettings.xaml">
+    <Page Include="Views\ScreenShotView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Recent.xaml">
+    <Page Include="Views\RecentView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -247,7 +241,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Presentation\RegionSelector.xaml">
+    <Page Include="Utility\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

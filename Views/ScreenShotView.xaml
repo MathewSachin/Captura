@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="Captura.ScreenShotSettings"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:this="clr-namespace:Captura">
+﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Captura"
+      DataContext="{Binding ScreenShotViewModel, Source={StaticResource MainViewModel}}">
     <ScrollViewer Margin="10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
                       VerticalAlignment="Center" 
                       Margin="0,0,0,4"
                       ItemsSource="{Binding SaveTo}"
-                      SelectedItem="{Binding _SelectedSaveTo, Mode=TwoWay}"/>
+                      SelectedItem="{Binding SelectedSaveTo, Mode=TwoWay}"/>
 
             <TextBlock Text="File Format:" 
                        Grid.Row="1" 
@@ -32,10 +32,10 @@
                       VerticalAlignment="Center"
                       Margin="0,0,0,4"
                       ItemsSource="{Binding ImageFormats}"
-                      SelectedItem="{Binding _SelectedImageFormat, Mode=TwoWay}"/>
+                      SelectedItem="{Binding SelectedImageFormat, Mode=TwoWay}"/>
 
             <CheckBox Content="Do Resize"
-                      IsChecked="{Binding _DoResize, Mode=TwoWay}"
+                      IsChecked="{Binding DoResize, Mode=TwoWay}"
                       Grid.Row="2"
                       Margin="0,5,16,4"
                       VerticalAlignment="Top"/>
@@ -54,20 +54,20 @@
 
                 <Label Content="Width:"
                        Margin="0,3"/>
-                <this:NumericBox Value="{Binding _ResizeWidth, Mode=TwoWay}"
-                                 Grid.Column="1"
-                                 Margin="0,3"
-                                 IsEnabled="{Binding _DoResize}"/>
+                <local:NumericBox Value="{Binding ResizeWidth, Mode=TwoWay}"
+                                  Grid.Column="1"
+                                  Margin="0,3"
+                                  IsEnabled="{Binding DoResize}"/>
 
                 <Label Content="Height:"
                        Grid.Row="1"
                        Margin="0,3"/>
-                <this:NumericBox Value="{Binding _ResizeHeight, Mode=TwoWay}"
-                                 Grid.Row="1"
-                                 Grid.Column="1"
-                                 Margin="0,3"
-                                 IsEnabled="{Binding _DoResize}"/>
+                <local:NumericBox Value="{Binding ResizeHeight, Mode=TwoWay}"
+                                  Grid.Row="1"
+                                  Grid.Column="1"
+                                  Margin="0,3"
+                                  IsEnabled="{Binding DoResize}"/>
             </Grid>
         </Grid>
     </ScrollViewer>
-</UserControl>
+</Page>
