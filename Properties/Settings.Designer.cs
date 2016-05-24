@@ -49,7 +49,7 @@ namespace Captura.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool MinimizeOnStart {
             get {
                 return ((bool)(this["MinimizeOnStart"]));
@@ -61,7 +61,7 @@ namespace Captura.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool EncodeAudio {
             get {
                 return ((bool)(this["EncodeAudio"]));
@@ -80,6 +80,66 @@ namespace Captura.Properties {
             }
             set {
                 this["UseStereo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        public int VideoQuality {
+            get {
+                return ((int)(this["VideoQuality"]));
+            }
+            set {
+                this["VideoQuality"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int FrameRate {
+            get {
+                return ((int)(this["FrameRate"]));
+            }
+            set {
+                this["FrameRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MouseClicks {
+            get {
+                return ((bool)(this["MouseClicks"]));
+            }
+            set {
+                this["MouseClicks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KeyStrokes {
+            get {
+                return ((bool)(this["KeyStrokes"]));
+            }
+            set {
+                this["KeyStrokes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GifUnconstrained {
+            get {
+                return ((bool)(this["GifUnconstrained"]));
+            }
+            set {
+                this["GifUnconstrained"] = value;
             }
         }
     }

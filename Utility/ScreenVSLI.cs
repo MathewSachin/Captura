@@ -1,35 +1,10 @@
-﻿using Screna;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Screna;
 
 namespace Captura
 {
-    public interface IVideoSourceListItem { string Name { get; } }
-
-    class WindowVSLI : IVideoSourceListItem
-    {
-        public IntPtr Handle { get; }
-
-        public static readonly WindowVSLI Desktop = new WindowVSLI(WindowProvider.DesktopHandle, "[Desktop]"),
-            TaskBar = new WindowVSLI(WindowProvider.TaskbarHandle, "[TaskBar]");
-
-        public WindowVSLI(IntPtr hWnd)
-        {
-            Handle = hWnd;
-            Name = new WindowHandler(Handle).Title;
-        }
-
-        public WindowVSLI(IntPtr hWnd, string Name)
-        {
-            Handle = hWnd;
-            this.Name = Name;
-        }
-
-        public string Name { get; }
-    }
-
     class ScreenVSLI : IVideoSourceListItem
     {
         public Screen Screen { get; }

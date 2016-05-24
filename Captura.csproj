@@ -85,8 +85,10 @@
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\DWMApi.cs" />
+    <Compile Include="Utility\IVideoSourceListItem.cs" />
     <Compile Include="Utility\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
+    <Compile Include="Utility\ScreenVSLI.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Utility\DelegateCommand.cs" />
     <Compile Include="ViewModels\GifViewModel.cs" />
@@ -128,7 +130,7 @@
     <Compile Include="Utility\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\VideoSourceListItems.cs" />
+    <Compile Include="Utility\WindowVSLI.cs" />
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,7 +1,4 @@
-﻿//using Captura.Properties;
-using System;
-using System.IO;
-using System.Reflection;
+﻿using Captura.Properties;
 using System.Windows;
 using System.Windows.Media;
 
@@ -9,24 +6,14 @@ namespace Captura
 {
     public partial class App
     {
-        public static bool IsLamePresent { get; private set; }
-
-        readonly string _dir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
-
         void Application_Startup(object sender, StartupEventArgs e)
         {
-            #region Settings
+            #region Color
             var color = DWMApi.ColorizationColor;
 
             Current.Resources["AccentColor"] = color;
             Current.Resources["Accent"] = new SolidColorBrush(color);
-
-            //OtherSettings.MinimizeOnStart = Settings.Default.MinimizeOnStart;
-
-            //OtherSettings.IncludeCursor = Settings.Default.IncludeCursor;
             #endregion
-            
-            IsLamePresent = File.Exists(Path.Combine(_dir, $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll"));
 
 #if !DEBUG
             Current.DispatcherUnhandledException += (s, args) =>
@@ -57,13 +44,6 @@ namespace Captura
 #endif
         }
 
-        void Application_Exit(object sender, ExitEventArgs e)
-        {
-            //Settings.Default.MinimizeOnStart = OtherSettings.MinimizeOnStart;
-
-            //Settings.Default.IncludeCursor = OtherSettings.IncludeCursor;
-
-            //Settings.Default.Save(); 
-        }
+        void Application_Exit(object sender, ExitEventArgs e) => Settings.Default.Save();
     }
 }

@@ -6,7 +6,7 @@
         <ResourceDictionary>
             <ObjectDataProvider MethodName="GetType" 
                                 ObjectType="{x:Type sys:Type}" 
-                                x:Key="colorsTypeOdp">
+                                x:Key="ColorsTypeOdp">
                 <ObjectDataProvider.MethodParameters>
                     <sys:String>
                         System.Windows.Media.Colors,
@@ -17,7 +17,7 @@
                     </sys:String>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider ObjectInstance="{StaticResource colorsTypeOdp}"  
+            <ObjectDataProvider ObjectInstance="{StaticResource ColorsTypeOdp}"  
                                 MethodName="GetProperties"
                                 x:Key="colorPropertiesOdp">
             </ObjectDataProvider>
@@ -26,7 +26,7 @@
     <Grid>
         <ComboBox ItemsSource="{Binding Source={StaticResource colorPropertiesOdp}}"
                   SelectedValuePath="Name"
-                  SelectedValue="{Binding SelectedColor}">
+                  SelectedValue="{Binding SelectedColor, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>

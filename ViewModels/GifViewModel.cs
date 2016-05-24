@@ -1,18 +1,18 @@
+using Captura.Properties;
+
 namespace Captura
 {
     public class GifViewModel : ViewModelBase
     {
-        bool _unconstrained;
-
         public bool Unconstrained
         {
-            get { return _unconstrained; }
+            get { return Settings.Default.GifUnconstrained; }
             set
             {
-                if (_unconstrained == value)
+                if (Unconstrained == value)
                     return;
 
-                _unconstrained = value;
+                Settings.Default.GifUnconstrained = value;
 
                 OnPropertyChanged();
             }

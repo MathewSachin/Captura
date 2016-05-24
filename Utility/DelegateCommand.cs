@@ -5,8 +5,8 @@ namespace Captura
 {
     public class DelegateCommand : ICommand
     {
-        Action _execute;
-        Func<bool> _canExecute;
+        readonly Action _execute;
+        readonly Func<bool> _canExecute;
 
         public DelegateCommand(Action OnExecute, Func<bool> OnCanExecute = null)
         {

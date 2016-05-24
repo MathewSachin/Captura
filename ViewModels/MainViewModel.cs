@@ -7,9 +7,7 @@ using System.Media;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Captura.Properties;
-using NAudio.CoreAudioApi;
 using Screna;
 using Screna.Audio;
 using Screna.Avi;
@@ -23,7 +21,7 @@ namespace Captura
         #region Fields
         readonly Timer _timer;
         IRecorder _recorder;
-        string _lastFileName;
+        string _currentFileName;
         readonly MouseCursor _cursor;
         #endregion
 
@@ -98,13 +96,15 @@ namespace Captura
         
         void CheckFunctionalityAvailability()
         {
-            bool AudioAvailable = AudioViewModel.SelectedAudioSource.ToString() != "[No Sound]",
-                VideoAvailable = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window
-                    || VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Screen;
+            var audioAvailable = AudioViewModel.SelectedAudioSource != null
+                                 && AudioViewModel.SelectedAudioSource.ToString() != "[No Sound]";
 
-            _canRecord = AudioAvailable || VideoAvailable;
+            var videoAvailable = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window
+                                 || VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Screen;
 
-            _canScreenShot = VideoAvailable;
+            _canRecord = audioAvailable || videoAvailable;
+
+            _canScreenShot = videoAvailable;
         }
 
         #region Commands
@@ -184,15 +184,14 @@ namespace Captura
                     DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
             Bitmap bmp = null;
-
-            var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
+            
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
             var includeCursor = Settings.Default.IncludeCursor;
 
-            switch (selectedVideoSourceKind)
+            switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    var hWnd = (selectedVideoSource as WindowVSLI).Handle;
+                    var hWnd = (selectedVideoSource as WindowVSLI)?.Handle ?? WindowProvider.DesktopHandle;
 
                     if (hWnd == WindowProvider.DesktopHandle)
                         bmp = ScreenShot.Capture(includeCursor);
@@ -234,11 +233,6 @@ namespace Captura
 
         void StartRecording()
         {
-            var selectedAudioSource = AudioViewModel.SelectedAudioSource;
-            var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
-            var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var encoder = VideoViewModel.SelectedCodec;
-
             var duration = OthersViewModel.Duration;
             var delay = OthersViewModel.StartDelay;
 
@@ -253,98 +247,31 @@ namespace Captura
                 WindowState = WindowState.Minimized;
             
             ReadyToRecord = false;
+            
+            var noVideo = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo;
+            
+            var extension = noVideo
+                ? (AudioViewModel.Encode && AudioViewModel.SelectedAudioSource is WaveInDevice ? ".mp3" : ".wav")
+                : (VideoViewModel.SelectedCodec.Name == "Gif" ? ".gif" : ".avi");
 
-            var extension = selectedVideoSourceKind == VideoSourceKind.NoVideo
-                ? (AudioViewModel.Encode && selectedAudioSource is WaveInDevice ? ".mp3" : ".wav")
-                : (encoder.Name == "Gif" ? ".gif" : ".avi");
+            _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
-            _lastFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
-
-            Status = delay > 0 ? $"Recording from t={delay}ms..." : "Recording...";
+            Status = delay > 0 ? $"Recording from t = {delay} ms..." : "Recording...";
 
             _timer.Stop();
             TimeSpan = TimeSpan.Zero;
+            
+            WaveFormat wf;
+            var audioSource = AudioViewModel.GetAudioSource(VideoViewModel.FrameRate, out wf);
 
-            _timer.Start();
-
-            var audioBitRate = App.IsLamePresent ? Mp3EncoderLame.SupportedBitRates[AudioViewModel.Quality] : 0;
-
-            IAudioProvider audioSource = null;
-            var wf = new WaveFormat(44100, 16, AudioViewModel.Stereo ? 2 : 1);
-
-            if (selectedAudioSource.ToString() != "[No Sound]")
-            {
-                if (selectedAudioSource is WaveInDevice)
-                    audioSource = new WaveInProvider(selectedAudioSource as WaveInDevice, VideoViewModel.FrameRate, wf);
-                else if (selectedAudioSource is MMDevice)
-                {
-                    audioSource = new LoopbackProvider(selectedAudioSource as MMDevice);
-                    wf = audioSource.WaveFormat;
-                }
-            }
-
-            #region ImageProvider
-            IImageProvider imgProvider = null;
-
-            Func<System.Windows.Media.Color, System.Drawing.Color> convertColor = C => System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B);
-
-            var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks,
-                                                OthersViewModel.KeyStrokes);
-
-            switch (selectedVideoSourceKind)
-            {
-                case VideoSourceKind.Window:
-                    var src = selectedVideoSource as WindowVSLI;
-
-                    if (src.Handle == RegionSelector.Instance.Handle
-                        && OthersViewModel.StaticRegion)
-                    {
-                        imgProvider = new StaticRegionProvider(RegionSelector.Instance,
-                            _cursor,
-                            mouseKeyHook);
-                    }
-                    else imgProvider = new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Handle,
-                        convertColor(VideoViewModel.BackgroundColor),
-                        _cursor,
-                        mouseKeyHook);
-                    break;
-
-                case VideoSourceKind.Screen:
-                    imgProvider = new ScreenProvider((selectedVideoSource as ScreenVSLI).Screen,
-                        _cursor,
-                        mouseKeyHook);
-                    break;
-            }
-            #endregion
-
-            #region VideoEncoder
-            IVideoFileWriter videoEncoder = null;
-            encoder.Quality = VideoViewModel.Quality;
-
-            if (encoder.Name == "Gif")
-            {
-                if (GifViewModel.Unconstrained)
-                    _recorder = new UnconstrainedFrameRateGifRecorder(
-                               new GifWriter(_lastFileName,
-                                             Repeat: GifViewModel.Repeat ? GifViewModel.RepeatCount : -1),
-                                             imgProvider);
-
-                else videoEncoder = new GifWriter(_lastFileName, 1000 / VideoViewModel.FrameRate,
-                                                   GifViewModel.Repeat ? GifViewModel.RepeatCount : -1);
-            }
-
-            else if (selectedVideoSourceKind != VideoSourceKind.NoVideo)
-                videoEncoder = new AviWriter(_lastFileName,
-                                             encoder,
-                                             audioBitRate == 0 ? null
-                                                               : new Mp3EncoderLame(wf.Channels, wf.SampleRate, audioBitRate));
-            #endregion
-
+            var imgProvider = GetImageProvider();
+            
+            var videoEncoder = GetVideoFileWriter(imgProvider, AudioViewModel.BitRate, wf);
+            
             if (_recorder == null)
             {
-                if (selectedVideoSourceKind == VideoSourceKind.NoVideo)
-                    _recorder = AudioViewModel.Encode ? new AudioRecorder(audioSource, new EncodedAudioFileWriter(_lastFileName, new Mp3EncoderLame(wf.Channels, wf.SampleRate, audioBitRate)))
-                                                      : new AudioRecorder(audioSource, new WaveFileWriter(_lastFileName, wf));
+                if (noVideo)
+                    _recorder = new AudioRecorder(audioSource, AudioViewModel.GetAudioFileWriter(_currentFileName, wf));
 
                 else _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
             }
@@ -360,9 +287,79 @@ namespace Captura
                 MessageBox.Show(E.ToString());
             };
 
+            RecentViewModel.Add(_currentFileName, videoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
+
             _recorder.Start(delay);
 
-            RecentViewModel.Add(_lastFileName, videoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
+            _timer.Start();
+        }
+
+        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, int AudioBitRate, WaveFormat Wf)
+        {
+            var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
+            var encoder = VideoViewModel.SelectedCodec;
+
+            IVideoFileWriter videoEncoder = null;
+            encoder.Quality = VideoViewModel.Quality;
+
+            if (encoder.Name == "Gif")
+            {
+                if (GifViewModel.Unconstrained)
+                    _recorder = new UnconstrainedFrameRateGifRecorder(
+                        new GifWriter(_currentFileName,
+                            Repeat: GifViewModel.Repeat ? GifViewModel.RepeatCount : -1),
+                        ImgProvider);
+
+                else
+                    videoEncoder = new GifWriter(_currentFileName, 1000/VideoViewModel.FrameRate,
+                        GifViewModel.Repeat ? GifViewModel.RepeatCount : -1);
+            }
+
+            else if (selectedVideoSourceKind != VideoSourceKind.NoVideo)
+                videoEncoder = new AviWriter(_currentFileName,
+                    encoder,
+                    AudioBitRate == 0
+                        ? null
+                        : new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, AudioBitRate));
+            return videoEncoder;
+        }
+        
+        IImageProvider GetImageProvider()
+        {
+            IImageProvider imgProvider = null;
+
+            Func<System.Windows.Media.Color, System.Drawing.Color> convertColor =
+                C => System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B);
+
+            var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks,
+                OthersViewModel.KeyStrokes);
+
+            switch (VideoViewModel.SelectedVideoSourceKind)
+            {
+                case VideoSourceKind.Window:
+                    var src = VideoViewModel.SelectedVideoSource as WindowVSLI;
+
+                    if (src.Handle == RegionSelector.Instance.Handle
+                        && OthersViewModel.StaticRegion)
+                    {
+                        imgProvider = new StaticRegionProvider(RegionSelector.Instance,
+                            _cursor,
+                            mouseKeyHook);
+                    }
+                    else imgProvider = new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Handle,
+                            convertColor(VideoViewModel.BackgroundColor),
+                            _cursor,
+                            mouseKeyHook);
+                    break;
+
+                case VideoSourceKind.Screen:
+                    imgProvider = new ScreenProvider((VideoViewModel.SelectedVideoSource as ScreenVSLI).Screen,
+                        _cursor,
+                        mouseKeyHook);
+                    break;
+            }
+
+            return imgProvider;
         }
 
         void OnStopped()
@@ -403,18 +400,16 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        string _outPath;
-
+        
         public string OutPath
         {
-            get { return _outPath; }
+            get { return Settings.Default.OutputPath; }
             set
             {
-                if (_outPath == value)
+                if (OutPath == value)
                     return;
 
-                _outPath = value;
+                Settings.Default.OutputPath = value;
 
                 OnPropertyChanged();
             }

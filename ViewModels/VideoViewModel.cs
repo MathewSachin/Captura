@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using Captura.Properties;
 using Screna;
 using Screna.Avi;
 
@@ -81,7 +82,7 @@ namespace Captura
 
         public IVideoSourceListItem SelectedVideoSource
         {
-            get { return _videoSource; }
+            get { return _videoSource ?? WindowVSLI.Desktop; }
             set
             {
                 if (_videoSource == value)
@@ -97,7 +98,7 @@ namespace Captura
 
         public AviCodec SelectedCodec
         {
-            get { return _codec; }
+            get { return _codec ?? AviCodec.MotionJpeg; }
             set
             {
                 if (_codec == value)
@@ -108,34 +109,30 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        int _quality = 70;
-
+        
         public int Quality
         {
-            get { return _quality; }
+            get { return Settings.Default.VideoQuality; }
             set
             {
-                if (_quality == value)
+                if (Quality == value)
                     return;
 
-                _quality = value;
+                Settings.Default.VideoQuality = value;
                 
                 OnPropertyChanged();
             }
         }
-
-        int _frameRate = 10;
-
+        
         public int FrameRate
         {
-            get { return _frameRate; }
+            get { return Settings.Default.FrameRate; }
             set
             {
-                if (_frameRate == value)
+                if (FrameRate == value)
                     return;
 
-                _frameRate = value;
+                Settings.Default.FrameRate = value;
 
                 OnPropertyChanged();
             }

@@ -1,4 +1,6 @@
-﻿namespace Captura
+﻿using Captura.Properties;
+
+namespace Captura
 {
     public class OthersViewModel : ViewModelBase
     {
@@ -61,34 +63,30 @@
                 OnPropertyChanged();
             }
         }
-
-        bool _mouseClicks;
-
+        
         public bool MouseClicks
         {
-            get { return _mouseClicks; }
+            get { return Settings.Default.MouseClicks; }
             set
             {
-                if (_mouseClicks == value)
+                if (MouseClicks == value)
                     return;
 
-                _mouseClicks = value;
+                Settings.Default.MouseClicks = value;
 
                 OnPropertyChanged();
             }
         }
-
-        bool _keyStrokes;
-
+        
         public bool KeyStrokes
         {
-            get { return _keyStrokes; }
+            get { return Settings.Default.KeyStrokes; }
             set
             {
-                if (_keyStrokes == value)
+                if (KeyStrokes == value)
                     return;
 
-                _keyStrokes = value;
+                Settings.Default.KeyStrokes = value;
 
                 OnPropertyChanged();
             }
@@ -109,34 +107,30 @@
                 OnPropertyChanged();
             }
         }
-
-        bool _cursor;
-
+        
         public bool Cursor
         {
-            get { return _cursor; }
+            get { return Settings.Default.IncludeCursor; }
             set
             {
-                if (_cursor == value)
+                if (Cursor == value)
                     return;
 
-                _cursor = value;
+                Settings.Default.IncludeCursor = value;
 
                 OnPropertyChanged();
             }
         }
         
-        bool _minOnStart;
-
         public bool MinimizeOnStart
         {
-            get { return _minOnStart; }
+            get { return Settings.Default.MinimizeOnStart; }
             set
             {
-                if (_minOnStart == value)
+                if (MinimizeOnStart == value)
                     return;
 
-                _minOnStart = value;
+                Settings.Default.MinimizeOnStart = value;
 
                 OnPropertyChanged();
             }

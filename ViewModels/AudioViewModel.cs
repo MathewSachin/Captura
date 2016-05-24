@@ -1,4 +1,9 @@
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using Captura.Properties;
+using NAudio.CoreAudioApi;
+using Screna.Audio;
 using Screna.Lame;
 using Screna.NAudio;
 
@@ -6,11 +11,20 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
+        public static bool IsLamePresent { get; private set; } = File.Exists
+        (
+            Path.Combine
+            (
+                Path.GetDirectoryName(typeof(AudioViewModel).Assembly.Location),
+                $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll"
+            )
+        );
+
         public AudioViewModel()
         {
-            CanEncode = App.IsLamePresent;
+            CanEncode = IsLamePresent;
 
-            if (!App.IsLamePresent)
+            if (!IsLamePresent)
                 Encode = false;
             else
             {
@@ -27,7 +41,7 @@ namespace Captura
 
         public object SelectedAudioSource
         {
-            get { return _audioSource; }
+            get { return _audioSource ?? "[No Sound]"; }
             set
             {
                 if (_audioSource == value)
@@ -70,18 +84,16 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        bool _encode;
-
+        
         public bool Encode
         {
-            get { return _encode; }
+            get { return Settings.Default.EncodeAudio; }
             set
             {
-                if (_encode == value)
+                if (Encode == value)
                     return;
 
-                _encode = value;
+                Settings.Default.EncodeAudio = value;
 
                 OnPropertyChanged();
             }
@@ -103,17 +115,15 @@ namespace Captura
             }
         }
     
-        bool _stereo;
-
         public bool Stereo
         {
-            get { return _stereo; }
+            get { return Settings.Default.UseStereo; }
             set
             {
-                if (_stereo == value)
+                if (Stereo == value)
                     return;
 
-                _stereo = value;
+                Settings.Default.UseStereo = value;
 
                 OnPropertyChanged();
             }
@@ -130,6 +140,33 @@ namespace Captura
 
             foreach (var dev in LoopbackProvider.EnumerateDevices())
                 AvailableAudioSources.Add(dev);
+        }
+
+        public int BitRate => IsLamePresent ? Mp3EncoderLame.SupportedBitRates[Quality] : 0;
+
+        public IAudioProvider GetAudioSource(int FrameRate, out WaveFormat Wf)
+        {
+            Wf = new WaveFormat(44100, 16, Stereo ? 2 : 1);
+            
+            if (SelectedAudioSource is WaveInDevice)
+                return new WaveInProvider(SelectedAudioSource as WaveInDevice, FrameRate, Wf);
+
+            if (SelectedAudioSource is MMDevice)
+            {
+                var audioSource = new LoopbackProvider(SelectedAudioSource as MMDevice);
+
+                Wf = audioSource.WaveFormat;
+
+                return audioSource;
+            }
+
+            return null;
+        }
+
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
+        {
+            return Encode ? (IAudioFileWriter)new EncodedAudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate))
+                          : new WaveFileWriter(FileName, Wf);
         }
     }
 }
