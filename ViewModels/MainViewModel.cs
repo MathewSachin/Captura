@@ -372,7 +372,7 @@ namespace Captura
                 WindowState = WindowState.Normal;
 
             Status = "Saved to Disk";
-
+            
             _timer.Stop();
             
             IsPaused = false;

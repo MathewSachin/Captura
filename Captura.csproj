@@ -56,7 +56,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Screna, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.2.0\lib\net40\Screna.dll</HintPath>
+      <HintPath>packages\Screna.0.2.1\lib\net40\Screna.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Screna.Lame, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
