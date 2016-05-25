@@ -31,11 +31,15 @@ namespace Captura
 
                     foreach (var win in WindowHandler.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowVSLI(win.Handle));
+
+                    SelectedVideoSource = WindowVSLI.Desktop;
                     break;
 
                 case VideoSourceKind.Screen:
-                    foreach (var Screen in ScreenVSLI.Enumerate())
-                        AvailableVideoSources.Add(Screen);
+                    foreach (var screen in ScreenVSLI.Enumerate())
+                        AvailableVideoSources.Add(screen);
+
+                    SelectedVideoSource = AvailableVideoSources[0];
                     break;
             }
         }
@@ -48,6 +52,8 @@ namespace Captura
 
             foreach (var Codec in AviWriter.EnumerateEncoders())
                 AvailableCodecs.Add(Codec);
+
+            SelectedCodec = AviCodec.MotionJpeg;
         }
 
         public ObservableCollection<AviCodec> AvailableCodecs { get; } = new ObservableCollection<AviCodec>();
@@ -82,13 +88,10 @@ namespace Captura
 
         public IVideoSourceListItem SelectedVideoSource
         {
-            get { return _videoSource ?? WindowVSLI.Desktop; }
+            get { return _videoSource; }
             set
             {
-                if (_videoSource == value)
-                    return;
-
-                _videoSource = value;
+                _videoSource = value ?? WindowVSLI.Desktop;
 
                 OnPropertyChanged();
             }
@@ -98,13 +101,10 @@ namespace Captura
 
         public AviCodec SelectedCodec
         {
-            get { return _codec ?? AviCodec.MotionJpeg; }
+            get { return _codec; }
             set
             {
-                if (_codec == value)
-                    return;
-
-                _codec = value;
+                _codec = value ?? AviCodec.MotionJpeg;
 
                 OnPropertyChanged();
             }

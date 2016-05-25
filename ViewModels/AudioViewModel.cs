@@ -11,7 +11,7 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        public static bool IsLamePresent { get; private set; } = File.Exists
+        public static bool IsLamePresent { get; } = File.Exists
         (
             Path.Combine
             (
@@ -41,13 +41,10 @@ namespace Captura
 
         public object SelectedAudioSource
         {
-            get { return _audioSource ?? "[No Sound]"; }
+            get { return _audioSource; }
             set
             {
-                if (_audioSource == value)
-                    return;
-
-                _audioSource = value;
+                _audioSource = value ?? "[No Sound]";
                 
                 OnPropertyChanged();
             }
@@ -140,6 +137,8 @@ namespace Captura
 
             foreach (var dev in LoopbackProvider.EnumerateDevices())
                 AvailableAudioSources.Add(dev);
+
+            SelectedAudioSource = "[No Sound]";
         }
 
         public int BitRate => IsLamePresent ? Mp3EncoderLame.SupportedBitRates[Quality] : 0;
