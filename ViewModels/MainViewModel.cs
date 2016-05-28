@@ -30,9 +30,7 @@ namespace Captura
             _timer = new Timer(1000);
             _timer.Elapsed += TimerOnElapsed;
 
-            //Populate Available Codecs, Audio and Video Sources ComboBoxes
-            RefreshCommand.Execute(null);
-
+            #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot, () => _canScreenShot);
 
             RecordCommand = new DelegateCommand(() =>
@@ -41,6 +39,59 @@ namespace Captura
                     StartRecording();
                 else StopRecording();
             }, () => _canRecord);
+
+            RefreshCommand = new DelegateCommand(() =>
+            {
+                VideoViewModel.RefreshVideoSources();
+
+                VideoViewModel.RefreshCodecs();
+
+                AudioViewModel.RefreshAudioSources();
+
+                Status = $"{VideoViewModel.AvailableCodecs.Count} Encoder(s) and {AudioViewModel.AvailableAudioSources.Count - 1} AudioDevice(s) found";
+            });
+
+            OpenOutputFolderCommand = new DelegateCommand(() => Process.Start("explorer.exe", OutPath));
+
+            PauseCommand = new DelegateCommand(() =>
+            {
+                if (IsPaused)
+                {
+                    _recorder.Start();
+                    _timer.Start();
+
+                    IsPaused = false;
+                    Status = "Recording...";
+                }
+                else
+                {
+                    _recorder.Pause();
+                    _timer.Stop();
+
+                    IsPaused = true;
+                    Status = "Paused";
+                }
+            }, () => !ReadyToRecord && _recorder != null);
+
+            SelectOutputFolderCommand = new DelegateCommand(() =>
+            {
+                var dlg = new System.Windows.Forms.FolderBrowserDialog
+                {
+                    SelectedPath = OutPath,
+                    Description = "Select Output Folder"
+                };
+
+                if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                    return;
+
+                OutPath = dlg.SelectedPath;
+                Settings.Default.OutputPath = dlg.SelectedPath;
+                Settings.Default.Save();
+            });
+            #endregion
+
+            //Populate Available Codecs, Audio and Video Sources ComboBoxes
+            RefreshCommand.Execute(null);
 
             AudioViewModel.PropertyChanged += (Sender, Args) =>
             {
@@ -114,54 +165,13 @@ namespace Captura
 
         public ICommand RecordCommand { get; }
 
-        public ICommand RefreshCommand => new DelegateCommand(() =>
-        {
-            VideoViewModel.RefreshVideoSources();
+        public ICommand RefreshCommand { get; }
 
-            VideoViewModel.RefreshCodecs();
+        public ICommand OpenOutputFolderCommand { get; }
 
-            AudioViewModel.RefreshAudioSources();
-            
-            Status = $"{VideoViewModel.AvailableCodecs.Count} Encoder(s) and {AudioViewModel.AvailableAudioSources.Count - 1} AudioDevice(s) found";
-        });
+        public ICommand PauseCommand { get; }
 
-        public ICommand OpenOutputFolderCommand => new DelegateCommand(() => Process.Start("explorer.exe", OutPath));
-
-        public ICommand PauseCommand => new DelegateCommand(() =>
-        {
-            if (IsPaused)
-            {
-                _recorder.Start();
-                _timer.Start();
-
-                IsPaused = false;
-                Status = "Recording...";
-            }
-            else
-            {
-                _recorder.Pause();
-                _timer.Stop();
-
-                IsPaused = true;
-                Status = "Paused";
-            }
-        }, () => !ReadyToRecord && _recorder != null);
-
-        public ICommand SelectOutputFolderCommand => new DelegateCommand(() =>
-        {
-            var dlg = new System.Windows.Forms.FolderBrowserDialog
-            {
-                SelectedPath = OutPath,
-                Description = "Select Output Folder"
-            };
-
-            if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                return;
-
-            OutPath = dlg.SelectedPath;
-            Settings.Default.OutputPath = dlg.SelectedPath;
-            Settings.Default.Save();
-        });
+        public ICommand SelectOutputFolderCommand { get; }
         #endregion
 
         void CaptureScreenShot()
