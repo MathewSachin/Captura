@@ -55,12 +55,20 @@
       <HintPath>packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Screna, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Screna\Core\bin\Debug\Screna.dll</HintPath>
+    <Reference Include="Screna, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.0.3.1\lib\net40\Screna.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Screna.Lame, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.Lame.0.2.2\lib\net40\Screna.Lame.dll</HintPath>
+    <Reference Include="Screna.MouseKeyHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.MouseKeyHook.0.2.0\lib\net40\Screna.MouseKeyHook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Screna.NAudio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.NAudio.0.2.0\lib\net40\Screna.NAudio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Screna.SharpAvi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.SharpAvi.0.2.0\lib\net40\Screna.SharpAvi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -112,15 +120,6 @@
     <Compile Include="Utility\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screna\MouseKeyHook\MouseKeyHook.cs" />
-    <Compile Include="Screna\NAudio\LoopbackProvider.cs" />
-    <Compile Include="Screna\NAudio\SilenceProvider.cs" />
-    <Compile Include="Screna\NAudio\WaveInDevice.cs" />
-    <Compile Include="Screna\NAudio\WaveInProvider.cs" />
-    <Compile Include="Screna\SharpAvi\AviCodec.cs" />
-    <Compile Include="Screna\SharpAvi\AviWriter.cs" />
-    <Compile Include="Screna\SharpAvi\IAudioEncoderWrapper.cs" />
-    <Compile Include="Screna\SharpAvi\IAudioProviderWrapper.cs" />
     <Compile Include="Utility\StaticRegionProvider.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -11,7 +11,7 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        public static bool IsLamePresent { get; } = File.Exists
+        static bool IsLamePresent { get; } = File.Exists
         (
             Path.Combine
             (
@@ -164,8 +164,8 @@ namespace Captura
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            return Encode ? (IAudioFileWriter)new EncodedAudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate))
-                          : new WaveFileWriter(FileName, Wf);
+            return Encode ? new AudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate))
+                          : new AudioFileWriter(FileName, Wf);
         }
     }
 }

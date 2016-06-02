@@ -6,6 +6,7 @@ using System.IO;
 using System.Media;
 using System.Timers;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Captura.Properties;
 using Screna;
@@ -13,6 +14,9 @@ using Screna.Audio;
 using Screna.Avi;
 using Screna.Lame;
 using Screna.NAudio;
+using WColor = System.Windows.Media.Color;
+using MessageBox = System.Windows.MessageBox;
+using Timer = System.Timers.Timer;
 
 namespace Captura
 {
@@ -75,13 +79,13 @@ namespace Captura
 
             SelectOutputFolderCommand = new DelegateCommand(() =>
             {
-                var dlg = new System.Windows.Forms.FolderBrowserDialog
+                var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = OutPath,
                     Description = "Select Output Folder"
                 };
 
-                if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                if (dlg.ShowDialog() != DialogResult.OK)
                     return;
 
                 OutPath = dlg.SelectedPath;
@@ -212,7 +216,7 @@ namespace Captura
                     break;
 
                 case VideoSourceKind.Screen:
-                    bmp = (selectedVideoSource as ScreenVSLI).Capture(includeCursor);
+                    bmp = (selectedVideoSource as ScreenVSLI)?.Capture(includeCursor);
                     break;
             }
 
@@ -338,8 +342,8 @@ namespace Captura
         {
             IImageProvider imgProvider = null;
 
-            Func<System.Windows.Media.Color, System.Drawing.Color> convertColor =
-                C => System.Drawing.Color.FromArgb(C.A, C.R, C.G, C.B);
+            Func<WColor, Color> convertColor =
+                C => Color.FromArgb(C.A, C.R, C.G, C.B);
 
             var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks,
                 OthersViewModel.KeyStrokes);
