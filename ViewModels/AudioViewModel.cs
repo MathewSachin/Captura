@@ -146,17 +146,19 @@ namespace Captura
         public IAudioProvider GetAudioSource(int FrameRate, out WaveFormat Wf)
         {
             Wf = new WaveFormat(44100, 16, Stereo ? 2 : 1);
-            
+
+            IAudioEncoder audioEncoder = BitRate == 0 ? null : new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate);
+
             if (SelectedAudioSource is WaveInDevice)
                 return new WaveInProvider(SelectedAudioSource as WaveInDevice, FrameRate, Wf);
 
             if (SelectedAudioSource is MMDevice)
             {
-                var audioSource = new LoopbackProvider(SelectedAudioSource as MMDevice);
+                IAudioProvider audioSource = new LoopbackProvider(SelectedAudioSource as MMDevice);
 
                 Wf = audioSource.WaveFormat;
 
-                return audioSource;
+                return audioEncoder == null ? audioSource : new EncodedAudioProvider(audioSource, audioEncoder);
             }
 
             return null;

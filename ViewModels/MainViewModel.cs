@@ -280,7 +280,7 @@ namespace Captura
 
             var imgProvider = GetImageProvider();
             
-            var videoEncoder = GetVideoFileWriter(imgProvider, AudioViewModel.BitRate, wf);
+            var videoEncoder = GetVideoFileWriter(imgProvider);
             
             if (_recorder == null)
             {
@@ -308,7 +308,7 @@ namespace Captura
             _timer.Start();
         }
 
-        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, int AudioBitRate, WaveFormat Wf)
+        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider)
         {
             var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
             var encoder = VideoViewModel.SelectedCodec;
@@ -330,11 +330,7 @@ namespace Captura
             }
 
             else if (selectedVideoSourceKind != VideoSourceKind.NoVideo)
-                videoEncoder = new AviWriter(_currentFileName,
-                    encoder,
-                    AudioBitRate == 0
-                        ? null
-                        : new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, AudioBitRate));
+                videoEncoder = new AviWriter(_currentFileName, encoder);
             return videoEncoder;
         }
         
