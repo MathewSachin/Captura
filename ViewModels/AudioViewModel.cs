@@ -26,11 +26,6 @@ namespace Captura
 
             if (!IsLamePresent)
                 Encode = false;
-            else
-            {
-                MaxQuality = Mp3EncoderLame.SupportedBitRates.Length - 1;
-                Quality = Mp3EncoderLame.SupportedBitRates.Length / 2;
-            }
             
             RefreshAudioSources();
         }
@@ -50,33 +45,19 @@ namespace Captura
             }
         }
 
-        int _maxQuality;
+        public int[] SupportedBitRates { get; } = Mp3EncoderLame.SupportedBitRates;
 
-        public int MaxQuality
+        int _bitrate = Mp3EncoderLame.SupportedBitRates[1];
+
+        public int SelectedBitRate
         {
-            get { return _maxQuality; }
+            get { return _bitrate; }
             set
             {
-                if (_maxQuality == value)
+                if (_bitrate == value)
                     return;
 
-                _maxQuality = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        int _quality;
-
-        public int Quality
-        {
-            get { return _quality; }
-            set
-            {
-                if (_quality == value)
-                    return;
-
-                _quality = value;
+                _bitrate = value;
 
                 OnPropertyChanged();
             }
@@ -140,33 +121,29 @@ namespace Captura
 
             SelectedAudioSource = "[No Sound]";
         }
-
-        public int BitRate => IsLamePresent ? Mp3EncoderLame.SupportedBitRates[Quality] : 0;
-
+        
         public IAudioProvider GetAudioSource(int FrameRate, out WaveFormat Wf)
         {
             Wf = new WaveFormat(44100, 16, Stereo ? 2 : 1);
 
-            IAudioEncoder audioEncoder = BitRate == 0 ? null : new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate);
+            IAudioEncoder audioEncoder = SelectedBitRate != 0 && IsLamePresent && Encode ? new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate) : null;
 
             if (SelectedAudioSource is WaveInDevice)
                 return new WaveInProvider(SelectedAudioSource as WaveInDevice, Wf, FrameRate);
 
-            if (SelectedAudioSource is MMDevice)
-            {
-                IAudioProvider audioSource = new LoopbackProvider(SelectedAudioSource as MMDevice);
+            if (!(SelectedAudioSource is MMDevice))
+                return null;
 
-                Wf = audioSource.WaveFormat;
+            IAudioProvider audioSource = new LoopbackProvider((MMDevice)SelectedAudioSource);
 
-                return audioEncoder == null ? audioSource : new EncodedAudioProvider(audioSource, audioEncoder);
-            }
+            Wf = audioSource.WaveFormat;
 
-            return null;
+            return audioEncoder == null ? audioSource : new EncodedAudioProvider(audioSource, audioEncoder);
         }
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            return Encode ? new AudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, BitRate))
+            return Encode ? new AudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate))
                           : new AudioFileWriter(FileName, Wf);
         }
     }

@@ -24,16 +24,14 @@
 
                 <DockPanel Margin="0,5"
                            IsEnabled="{Binding CanEncode}">
-                    <TextBlock Text="Quality:  "
-                               DockPanel.Dock="Left"/>
-                    <TextBlock Text="{Binding Quality, StringFormat={}{0:N0} / }"
-                               Margin="3,0,0,0"/>
-                    <TextBlock Text="{Binding MaxQuality, StringFormat={}{0:N0}}"
-                               Margin="4,0"/>
-                    <Slider IsEnabled="{Binding Encode}"
-                            Value="{Binding Quality, Mode=TwoWay}"
-                            Maximum="{Binding MaxQuality}"
-                            Minimum="0"/>
+                    <Label Content="Quality:  "
+                           DockPanel.Dock="Left"/>
+                    <Label Content="  kbps"
+                           DockPanel.Dock="Right"/>
+                    <ComboBox ItemsSource="{Binding SupportedBitRates}"
+                              SelectedValue="{Binding SelectedBitRate, Mode=TwoWay}"
+                              IsEnabled="{Binding Encode}"
+                              HorizontalContentAlignment="Right"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>
