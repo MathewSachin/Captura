@@ -12,11 +12,11 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using Screna.Avi;
-using Screna.Lame;
 using Screna.NAudio;
 using WColor = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 using Timer = System.Timers.Timer;
+using Window = Screna.Window;
 
 namespace Captura
 {
@@ -205,11 +205,11 @@ namespace Captura
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    var hWnd = (selectedVideoSource as WindowVSLI)?.Handle ?? WindowProvider.DesktopHandle;
+                    var hWnd = (selectedVideoSource as WindowVSLI)?.Window ?? Window.DesktopWindow;
 
-                    if (hWnd == WindowProvider.DesktopHandle)
+                    if (hWnd == Window.DesktopWindow)
                         bmp = ScreenShot.Capture(includeCursor);
-                    else if (hWnd == RegionSelector.Instance.Handle)
+                    else if (hWnd == RegionSelector.Instance.Window)
                         bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
                     else bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
                         ScreenShotViewModel.DoResize, ScreenShotViewModel.ResizeWidth, ScreenShotViewModel.ResizeHeight);
@@ -349,14 +349,14 @@ namespace Captura
                 case VideoSourceKind.Window:
                     var src = VideoViewModel.SelectedVideoSource as WindowVSLI;
 
-                    if (src.Handle == RegionSelector.Instance.Handle
+                    if (src.Window == RegionSelector.Instance.Window
                         && OthersViewModel.StaticRegion)
                     {
                         imgProvider = new StaticRegionProvider(RegionSelector.Instance,
                             _cursor,
                             mouseKeyHook);
                     }
-                    else imgProvider = new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Handle,
+                    else imgProvider = new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
                             convertColor(VideoViewModel.BackgroundColor),
                             _cursor,
                             mouseKeyHook);

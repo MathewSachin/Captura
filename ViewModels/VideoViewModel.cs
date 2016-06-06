@@ -29,8 +29,8 @@ namespace Captura
                     AvailableVideoSources.Add(WindowVSLI.Desktop);
                     AvailableVideoSources.Add(WindowVSLI.TaskBar);
 
-                    foreach (var win in WindowHandler.EnumerateVisible())
-                        AvailableVideoSources.Add(new WindowVSLI(win.Handle));
+                    foreach (var win in Window.EnumerateVisible())
+                        AvailableVideoSources.Add(new WindowVSLI(win));
 
                     SelectedVideoSource = WindowVSLI.Desktop;
                     break;

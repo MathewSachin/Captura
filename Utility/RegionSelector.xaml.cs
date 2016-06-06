@@ -1,8 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Window = Screna.Window;
 
 namespace Captura
 {
@@ -18,10 +18,11 @@ namespace Captura
 
             Show();
             _regSelhWnd = (HwndSource)PresentationSource.FromVisual(this);
+            Window = new Window(_regSelhWnd.Handle);
             Hide();
         }
 
-        public IntPtr Handle => _regSelhWnd.Handle;
+        public Window Window { get; }
 
         public Rectangle Rectangle => new Rectangle((int)Left, (int)Top, (int)Width, (int)Height);
 

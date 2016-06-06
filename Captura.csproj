@@ -55,8 +55,8 @@
       <HintPath>packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Screna, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.4.0\lib\net40\Screna.dll</HintPath>
+    <Reference Include="Screna, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Screna.0.5.1\lib\net40\Screna.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Screna.MouseKeyHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -64,11 +64,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Screna.NAudio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.NAudio.0.2.0\lib\net40\Screna.NAudio.dll</HintPath>
+      <HintPath>packages\Screna.NAudio.0.3.0\lib\net40\Screna.NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Screna.SharpAvi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.SharpAvi.0.3.0\lib\net40\Screna.SharpAvi.dll</HintPath>
+      <HintPath>packages\Screna.SharpAvi.0.3.1\lib\net40\Screna.SharpAvi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">

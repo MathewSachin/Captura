@@ -1,24 +1,23 @@
 ﻿using Screna;
-using System;
 
 namespace Captura
 {
     class WindowVSLI : IVideoSourceListItem
     {
-        public IntPtr Handle { get; }
+        public Window Window { get; }
 
-        public static readonly WindowVSLI Desktop = new WindowVSLI(WindowProvider.DesktopHandle, "[Desktop]"),
-            TaskBar = new WindowVSLI(WindowProvider.TaskbarHandle, "[TaskBar]");
+        public static readonly WindowVSLI Desktop = new WindowVSLI(Window.DesktopWindow, "[Desktop]"),
+            TaskBar = new WindowVSLI(Window.Taskbar, "[TaskBar]");
 
-        public WindowVSLI(IntPtr hWnd)
+        public WindowVSLI(Window Window)
         {
-            Handle = hWnd;
-            Name = new WindowHandler(Handle).Title;
+            this.Window = Window;
+            Name = Window.Title;
         }
 
-        public WindowVSLI(IntPtr hWnd, string Name)
+        public WindowVSLI(Window Window, string Name)
         {
-            Handle = hWnd;
+            this.Window = Window;
             this.Name = Name;
         }
 

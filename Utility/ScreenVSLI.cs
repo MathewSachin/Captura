@@ -13,27 +13,27 @@ namespace Captura
         {
             Screen = Screen.AllScreens[i];
 
-            Name = "Screen " + i;
+            Name = Screen.DeviceName;
         }
 
         public static int Count => Screen.AllScreens.Length;
 
         public Bitmap Capture(bool Cursor)
         {
-            var Rectangle = Screen.Bounds;
+            var rectangle = Screen.Bounds;
 
-            var BMP = new Bitmap(Rectangle.Width, Rectangle.Height);
+            var bmp = new Bitmap(rectangle.Width, rectangle.Height);
 
-            using (var g = Graphics.FromImage(BMP))
+            using (var g = Graphics.FromImage(bmp))
             {
-                g.CopyFromScreen(Rectangle.Location, Point.Empty, Rectangle.Size, CopyPixelOperation.SourceCopy);
+                g.CopyFromScreen(rectangle.Location, Point.Empty, rectangle.Size, CopyPixelOperation.SourceCopy);
 
-                if (Cursor) new MouseCursor().Draw(g, Rectangle.Location);
+                if (Cursor) new MouseCursor().Draw(g, rectangle.Location);
 
                 g.Flush();
             }
 
-            return BMP;
+            return bmp;
         }
 
         public static IEnumerable<ScreenVSLI> Enumerate()
