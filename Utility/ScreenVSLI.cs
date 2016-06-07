@@ -5,15 +5,13 @@ using Screna;
 
 namespace Captura
 {
-    class ScreenVSLI : IVideoSourceListItem
+    class ScreenVSLI
     {
         public Screen Screen { get; }
 
         ScreenVSLI(int i)
         {
             Screen = Screen.AllScreens[i];
-
-            Name = Screen.DeviceName;
         }
 
         public static int Count => Screen.AllScreens.Length;
@@ -44,6 +42,6 @@ namespace Captura
                 yield return new ScreenVSLI(i);
         }
 
-        public string Name { get; }
+        public override string ToString() => Screen.DeviceName;
     }
 }

@@ -8,12 +8,7 @@ namespace Captura
 
         public OthersViewModel()
         {
-            _regionSelector.Closing += (Sender, Args) =>
-            {
-                OnPropertyChanged(nameof(RegionSelectorVisible));
-
-                Args.Cancel = true;
-            };
+            _regionSelector.Closing += (Sender, Args) => Args.Cancel = true;
         }
 
         public bool RegionSelectorVisible

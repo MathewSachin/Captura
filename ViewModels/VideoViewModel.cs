@@ -49,9 +49,9 @@ namespace Captura
             // Available Codecs
             AvailableCodecs.Clear();
             AvailableCodecs.Add(new AviCodec("Gif"));
-
-            foreach (var Codec in AviWriter.EnumerateEncoders())
-                AvailableCodecs.Add(Codec);
+            
+            foreach (var codec in AviWriter.EnumerateEncoders())
+                AvailableCodecs.Add(codec);
 
             SelectedCodec = AviCodec.MotionJpeg;
         }
@@ -64,7 +64,7 @@ namespace Captura
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window")
         };
 
-        public ObservableCollection<IVideoSourceListItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoSourceListItem>();
+        public ObservableCollection<object> AvailableVideoSources { get; } = new ObservableCollection<object>();
 
         VideoSourceKind _videoSourceKind = VideoSourceKind.Window;
 
@@ -84,9 +84,9 @@ namespace Captura
             }
         }
 
-        IVideoSourceListItem _videoSource = WindowVSLI.Desktop;
+        object _videoSource = WindowVSLI.Desktop;
 
-        public IVideoSourceListItem SelectedVideoSource
+        public object SelectedVideoSource
         {
             get { return _videoSource; }
             set

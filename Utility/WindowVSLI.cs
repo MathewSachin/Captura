@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    class WindowVSLI : IVideoSourceListItem
+    class WindowVSLI
     {
         public Window Window { get; }
 
@@ -12,15 +12,17 @@ namespace Captura
         public WindowVSLI(Window Window)
         {
             this.Window = Window;
-            Name = Window.Title;
+            _name = Window.Title;
         }
 
         public WindowVSLI(Window Window, string Name)
         {
             this.Window = Window;
-            this.Name = Name;
+            _name = Name;
         }
 
-        public string Name { get; }
+        readonly string _name;
+        
+        public override string ToString() => _name;
     }
 }

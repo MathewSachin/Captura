@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Media;
+using System.Security.AccessControl;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
@@ -152,7 +153,7 @@ namespace Captura
         void CheckFunctionalityAvailability()
         {
             var audioAvailable = AudioViewModel.SelectedAudioSource != null
-                                 && AudioViewModel.SelectedAudioSource.ToString() != "[No Sound]";
+                                 && AudioViewModel.SelectedAudioSource.ToString() != AudioViewModel.NoSoundSource;
 
             var videoAvailable = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window
                                  || VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Screen;
@@ -187,8 +188,8 @@ namespace Captura
 
             var imgFmt = ScreenShotViewModel.SelectedImageFormat;
 
-            var extension = imgFmt == ImageFormat.Icon ? "ico"
-                : imgFmt == ImageFormat.Jpeg ? "jpg"
+            var extension = imgFmt.Equals(ImageFormat.Icon) ? "ico"
+                : imgFmt.Equals(ImageFormat.Jpeg) ? "jpg"
                 : imgFmt.ToString().ToLower();
 
             var saveToClipboard = ScreenShotViewModel.SelectedSaveTo == "Clipboard";
@@ -200,7 +201,7 @@ namespace Captura
             Bitmap bmp = null;
             
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var includeCursor = Settings.Default.IncludeCursor;
+            var includeCursor = OthersViewModel.Cursor;
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
@@ -225,7 +226,7 @@ namespace Captura
             {
                 if (saveToClipboard)
                 {
-                    bmp.WriteToClipboard(imgFmt == ImageFormat.Png);
+                    bmp.WriteToClipboard(imgFmt.Equals(ImageFormat.Png));
                     Status = "Image Saved to Clipboard";
                 }
                 else
@@ -336,13 +337,7 @@ namespace Captura
         
         IImageProvider GetImageProvider()
         {
-            IImageProvider imgProvider = null;
-
-            Func<WColor, Color> convertColor =
-                C => Color.FromArgb(C.A, C.R, C.G, C.B);
-
-            var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks,
-                OthersViewModel.KeyStrokes);
+            var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
@@ -352,24 +347,26 @@ namespace Captura
                     if (src.Window == RegionSelector.Instance.Window
                         && OthersViewModel.StaticRegion)
                     {
-                        imgProvider = new StaticRegionProvider(RegionSelector.Instance,
+                        return new StaticRegionProvider(RegionSelector.Instance,
                             _cursor,
                             mouseKeyHook);
                     }
-                    else imgProvider = new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
+
+                    Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
+
+                    return new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
                             convertColor(VideoViewModel.BackgroundColor),
                             _cursor,
                             mouseKeyHook);
-                    break;
 
                 case VideoSourceKind.Screen:
-                    imgProvider = new ScreenProvider((VideoViewModel.SelectedVideoSource as ScreenVSLI).Screen,
+                    return new ScreenProvider((VideoViewModel.SelectedVideoSource as ScreenVSLI).Screen,
                         _cursor,
                         mouseKeyHook);
-                    break;
-            }
 
-            return imgProvider;
+                default:
+                    return null;
+            }
         }
 
         void OnStopped()

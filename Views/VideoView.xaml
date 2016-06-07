@@ -38,8 +38,7 @@
                               VerticalAlignment="Center" 
                               Margin="0,0,0,4"
                               ItemsSource="{Binding AvailableVideoSources}" 
-                              SelectedValue="{Binding SelectedVideoSource, Mode=TwoWay}"
-                              DisplayMemberPath="Name"/>
+                              SelectedValue="{Binding SelectedVideoSource, Mode=TwoWay}"/>
 
                     <TextBlock Text="Video Encoder:" 
                                Grid.Row="2"

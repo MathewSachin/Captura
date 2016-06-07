@@ -93,7 +93,6 @@
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\DWMApi.cs" />
-    <Compile Include="Utility\IVideoSourceListItem.cs" />
     <Compile Include="Utility\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
     <Compile Include="Utility\ScreenVSLI.cs" />

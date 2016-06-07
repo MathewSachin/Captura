@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Captura.Properties;
@@ -11,6 +12,8 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
+        public const string NoSoundSource = "[No Sound]";
+
         static bool IsLamePresent { get; } = File.Exists
         (
             Path.Combine
@@ -32,20 +35,20 @@ namespace Captura
 
         public ObservableCollection<object> AvailableAudioSources { get; } = new ObservableCollection<object>();
 
-        object _audioSource = "[No Sound]";
+        object _audioSource = NoSoundSource;
 
         public object SelectedAudioSource
         {
             get { return _audioSource; }
             set
             {
-                _audioSource = value ?? "[No Sound]";
+                _audioSource = value ?? NoSoundSource;
                 
                 OnPropertyChanged();
             }
         }
 
-        public int[] SupportedBitRates { get; } = Mp3EncoderLame.SupportedBitRates;
+        public IEnumerable<int> SupportedBitRates { get; } = Mp3EncoderLame.SupportedBitRates;
 
         int _bitrate = Mp3EncoderLame.SupportedBitRates[1];
 
@@ -111,7 +114,7 @@ namespace Captura
         {
             AvailableAudioSources.Clear();
 
-            AvailableAudioSources.Add("[No Sound]");
+            AvailableAudioSources.Add(NoSoundSource);
 
             foreach (var dev in WaveInDevice.Enumerate())
                 AvailableAudioSources.Add(dev);
@@ -119,7 +122,7 @@ namespace Captura
             foreach (var dev in LoopbackProvider.EnumerateDevices())
                 AvailableAudioSources.Add(dev);
 
-            SelectedAudioSource = "[No Sound]";
+            SelectedAudioSource = NoSoundSource;
         }
         
         public IAudioProvider GetAudioSource(int FrameRate, out WaveFormat Wf)
