@@ -3,10 +3,6 @@
 __Captura__
 Copyright (c) Mathew Sachin.  
 
->This Copyright and License Does not apply to SharpAvi, NAudio, Lame, ModernUI Icons and MouseKeyHooks.  
-These are Trademarks of their respective owners.  
-See respective folders for Linceses.
-
 Permission is hereby granted, free of charge,
  to any person obtaining a copy of this software and associated documentation files (the "Software"),
  to deal in the Software without restriction,
