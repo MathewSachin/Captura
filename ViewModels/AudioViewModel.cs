@@ -27,9 +27,13 @@ namespace Captura
         {
             CanEncode = IsLamePresent;
 
-            if (!IsLamePresent)
-                Encode = false;
-            
+            if (IsLamePresent)
+            {
+                SupportedBitRates = Mp3EncoderLame.SupportedBitRates;
+                _bitrate = Mp3EncoderLame.SupportedBitRates[1];
+            }
+            else Encode = false;
+
             RefreshAudioSources();
         }
 
@@ -48,9 +52,9 @@ namespace Captura
             }
         }
 
-        public IEnumerable<int> SupportedBitRates { get; } = Mp3EncoderLame.SupportedBitRates;
+        public IEnumerable<int> SupportedBitRates { get; }
 
-        int _bitrate = Mp3EncoderLame.SupportedBitRates[1];
+        int _bitrate;
 
         public int SelectedBitRate
         {
