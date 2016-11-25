@@ -28,10 +28,8 @@ namespace Captura
                 var opaque = true;
 
                 DwmGetColorizationColor(ref color, ref opaque);
-
-                var c = System.Drawing.Color.FromArgb(color);
-
-                return  Color.FromArgb(c.A, c.R, c.G, c.B);
+                
+                return Color.FromArgb(255, (byte)(color >> 16), (byte)(color >> 8), (byte)color);
             }
         }
     }
