@@ -8,5 +8,5 @@ Powered by [Screna](https://github.com/MathewSachin/Screna) (available on [NuGet
 
 ### LAME Mp3 Encoding
 _lameenc32.dll_, _lameenc64.dll_ optionally provide Mp3 audio encoding support.
-NOT included in source (download from http://lame.sourforge.net).  
+NOT included in source (download from http://lame.sourceforge.net).  
 `Need to be Licensed for Commercial Use`.
