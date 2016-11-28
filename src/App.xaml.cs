@@ -1,4 +1,5 @@
-﻿using Captura.Properties;
+﻿using System;
+using Captura.Properties;
 using System.Windows;
 using System.Windows.Media;
 
