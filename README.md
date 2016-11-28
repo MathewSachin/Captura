@@ -1,12 +1,24 @@
 # Captura
-(c) 2016 Mathew Sachin.
+&copy; [Copyright 2016](LICENSE.md) Mathew Sachin
 
-A Capture application which captures the _whole_ or _Selected part_ of the screen as _ScreenShot_ or as a _ScreenCast_
-along with audio from _Microphone_ or _Wasapi Loopback_, Mouse _Cursor_, _KeyStrokes_ and Mouse _Clicks_.
+Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-Powered by [Screna](https://github.com/MathewSachin/Screna) (available on [NuGet](http://nuget.org/packages/Screna)).
+Powered by [Screna](https://github.com/MathewSachin/Screna) (distributed on [NuGet](http://nuget.org/packages/Screna)).
 
-### LAME Mp3 Encoding
+![ScreenShot](ScreenShot.png)
+
+# Features
+- Take ScreenShots
+- Capture ScreenCasts (Avi/Gif)
+- Capture with/without Mouse Cursor
+- Capture Specific Regions
+- Capture Specific Windows
+- Record Audio from Microphone
+- Capture Mouse Clicks
+- Captura Keystrokes
+- Record Speaker Output (Wasapi Loopback)
+
+## LAME Mp3 Encoding
 _lameenc32.dll_, _lameenc64.dll_ optionally provide Mp3 audio encoding support.
 NOT included in source (download from http://lame.sourceforge.net).  
 `Need to be Licensed for Commercial Use`.
