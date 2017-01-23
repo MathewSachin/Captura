@@ -136,7 +136,7 @@ namespace Captura
             IAudioEncoder audioEncoder = SelectedBitRate != 0 && IsLamePresent && Encode ? new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate) : null;
 
             if (SelectedAudioSource is WaveInDevice)
-                return new WaveInProvider(SelectedAudioSource as WaveInDevice, Wf, FrameRate);
+                return new WaveInProvider(SelectedAudioSource as WaveInDevice, Wf);
 
             if (!(SelectedAudioSource is MMDevice))
                 return null;
