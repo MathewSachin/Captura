@@ -15,7 +15,6 @@
     <WarningLevel>4</WarningLevel>
     <ProjectGuid>{0B496E01-F328-4969-832C-C75977B4F4E6}</ProjectGuid>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -42,17 +41,17 @@
       <HintPath>packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ManagedBass.1.0.1\lib\net45\ManagedBass.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
     </Reference>
     <Reference Include="Screna, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Screna.0.6.0\lib\net40\Screna.dll</HintPath>
     </Reference>
     <Reference Include="Screna.MouseKeyHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Screna.MouseKeyHook.0.2.0\lib\net40\Screna.MouseKeyHook.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna.NAudio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.NAudio.0.4.0\lib\net40\Screna.NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Screna.SharpAvi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Screna.SharpAvi.0.4.0\lib\net40\Screna.SharpAvi.dll</HintPath>
@@ -76,6 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MixedAudioProvider.cs" />
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\DWMApi.cs" />
