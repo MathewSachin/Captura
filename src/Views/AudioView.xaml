@@ -38,26 +38,7 @@
                               DisplayMemberPath="Value"
                               Grid.Row="1"
                               Grid.Column="1"/>
-                </Grid>
-                <CheckBox Margin="0,5" 
-                          Content="Stereo"
-                          IsChecked="{Binding Stereo, Mode=TwoWay}"/>
-                <CheckBox Margin="0,5"
-                          Content="Encode Mp3"
-                          IsEnabled="{Binding CanEncode}"
-                          IsChecked="{Binding Encode, Mode=TwoWay}"/>
-
-                <DockPanel Margin="0,5"
-                           IsEnabled="{Binding CanEncode}">
-                    <Label Content="Quality:  "
-                           DockPanel.Dock="Left"/>
-                    <Label Content="  kbps"
-                           DockPanel.Dock="Right"/>
-                    <ComboBox ItemsSource="{Binding SupportedBitRates}"
-                              SelectedValue="{Binding SelectedBitRate, Mode=TwoWay}"
-                              IsEnabled="{Binding Encode}"
-                              HorizontalContentAlignment="Right"/>
-                </DockPanel>
+                </Grid>                
             </StackPanel>
         </ScrollViewer>
     </Grid>
