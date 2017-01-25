@@ -7,8 +7,6 @@ Powered by [Screna](https://github.com/MathewSachin/Screna) (distributed on [NuG
 
 ![ScreenShot](ScreenShot.png)
 
-> Dropped support for LAME Mp3 Encoding. May look for alternatives in future.
-
 # Features
 - Take ScreenShots
 - Capture ScreenCasts (Avi/Gif)
@@ -19,3 +17,7 @@ Powered by [Screna](https://github.com/MathewSachin/Screna) (distributed on [NuG
 - Capture Mouse Clicks
 - Captura Keystrokes
 - Record Speaker Output (Wasapi Loopback)
+
+## LAME Mp3 Encoding (`Need to be Licensed for Commercial Use`)
+_lameenc32.dll_, _lameenc64.dll_ optionally provide Mp3 audio encoding support.
+NOT included in source (download from http://lame.sourceforge.net).
