@@ -21,6 +21,7 @@ namespace Captura
             if (RecordingDevice != null)
             {
                 Bass.RecordInit(RecordingDevice.Value);
+                Bass.CurrentRecordingDevice = RecordingDevice.Value;
                 
                 _recording = Bass.RecordStart(44100, 2, BassFlags.Float | BassFlags.RecordPause, null);
 
@@ -29,12 +30,16 @@ namespace Captura
 
             if (LoopbackDevice != null)
             {
-                var info = Bass.RecordGetDeviceInfo(LoopbackDevice.Value);
+                var playbackDevice = FindPlaybackDevice(LoopbackDevice.Value);
 
-                // TODO: select device here
+                Bass.Init(playbackDevice);
+                Bass.CurrentDevice = playbackDevice;
+
                 _silence = Bass.CreateStream(44100, 2, BassFlags.Float, ManagedBass.Extensions.SilenceStreamProcedure);
 
                 Bass.RecordInit(LoopbackDevice.Value);
+                Bass.CurrentRecordingDevice = LoopbackDevice.Value;
+
                 _loopback = Bass.RecordStart(44100, 2, BassFlags.Float | BassFlags.RecordPause, null);
 
                 BassMix.MixerAddChannel(_mixer, _loopback, BassFlags.MixerDownMix);
@@ -44,6 +49,18 @@ namespace Captura
             Bass.ChannelSetAttribute(_mixer, ChannelAttribute.Volume, 0);
 
             Bass.ChannelSetDSP(_mixer, Procedure);
+        }
+
+        int FindPlaybackDevice(int LoopbackDevice)
+        {
+            var driver = Bass.RecordGetDeviceInfo(LoopbackDevice).Driver;
+
+            DeviceInfo info;
+            for (int i = 0; Bass.GetDeviceInfo(i, out info); ++i)
+                if (info.Driver == driver)
+                    return i;
+
+            return 0;
         }
 
         byte[] _buffer;
