@@ -161,16 +161,16 @@
                             <StackPanel>
                                 <TextBlock TextWrapping="Wrap"
                                            Margin="0,0,0,10">
-                                Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
+                                    Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
                                 </TextBlock>
 
                                 <TextBlock>
-                                <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
                                 </TextBlock>
 
                                 <TextBlock TextWrapping="Wrap"
                                            Margin="0,10">
-                                Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
+                                    Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
                                 </TextBlock>
 
                                 <TextBlock Text="PLUGINS"
@@ -179,7 +179,7 @@
                                 <TextBlock Text="Plugins, if present, extend the functionality of Captura"
                                            Margin="0,0,0,5"/>
                                 <TextBlock>
-                                <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> - Mp3 Audio Compression
+                                    <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> - Mp3 Audio Compression
                                 </TextBlock>
                             </StackPanel>
                         </ScrollViewer>

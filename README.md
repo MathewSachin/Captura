@@ -18,7 +18,6 @@ Powered by [Screna](https://github.com/MathewSachin/Screna) (distributed on [NuG
 - Captura Keystrokes
 - Record Speaker Output (Wasapi Loopback)
 
-## LAME Mp3 Encoding
+## LAME Mp3 Encoding (`Need to be Licensed for Commercial Use`)
 _lameenc32.dll_, _lameenc64.dll_ optionally provide Mp3 audio encoding support.
-NOT included in source (download from http://lame.sourceforge.net).  
-`Need to be Licensed for Commercial Use`.
+NOT included in source (download from http://lame.sourceforge.net).

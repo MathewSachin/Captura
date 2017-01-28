@@ -2,6 +2,7 @@
 using Captura.Properties;
 using System.Windows;
 using System.Windows.Media;
+using ManagedBass;
 
 namespace Captura
 {
@@ -43,6 +44,10 @@ namespace Captura
                 Current.Shutdown();
             };
 #endif
+
+            Bass.Init();
+
+            Bass.Configure(Configuration.LoopbackRecording, true);
         }
 
         void Application_Exit(object sender, ExitEventArgs e) => Settings.Default.Save();

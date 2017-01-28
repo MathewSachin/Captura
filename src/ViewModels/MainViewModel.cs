@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Media;
-using System.Security.AccessControl;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
@@ -13,7 +12,6 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using Screna.Avi;
-using Screna.NAudio;
 using WColor = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 using Timer = System.Timers.Timer;
@@ -53,7 +51,8 @@ namespace Captura
 
                 AudioViewModel.RefreshAudioSources();
 
-                Status = $"{VideoViewModel.AvailableCodecs.Count} Encoder(s) and {AudioViewModel.AvailableAudioSources.Count - 1} AudioDevice(s) found";
+                Status = $"{VideoViewModel.AvailableCodecs.Count} Encoder(s) and " + 
+                    $"{AudioViewModel.AvailableRecordingSources.Count + AudioViewModel.AvailableLoopbackSources.Count - 2} AudioDevice(s) found";
             });
 
             OpenOutputFolderCommand = new DelegateCommand(() => Process.Start("explorer.exe", OutPath));
@@ -100,7 +99,8 @@ namespace Captura
 
             AudioViewModel.PropertyChanged += (Sender, Args) =>
             {
-                if (Args.PropertyName == nameof(AudioViewModel.SelectedAudioSource))
+                if (Args.PropertyName == nameof(AudioViewModel.SelectedRecordingSource)
+                || Args.PropertyName == nameof(AudioViewModel.SelectedLoopbackSource))
                     CheckFunctionalityAvailability();
             };
 
@@ -152,8 +152,7 @@ namespace Captura
         
         void CheckFunctionalityAvailability()
         {
-            var audioAvailable = AudioViewModel.SelectedAudioSource != null
-                                 && AudioViewModel.SelectedAudioSource.ToString() != AudioViewModel.NoSoundSource;
+            var audioAvailable = AudioViewModel.SelectedRecordingSource != null || AudioViewModel.SelectedLoopbackSource != null;
 
             var videoAvailable = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window
                                  || VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Screen;
@@ -266,7 +265,8 @@ namespace Captura
             var noVideo = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo;
             
             var extension = noVideo
-                ? (AudioViewModel.Encode && AudioViewModel.SelectedAudioSource is WaveInDevice ? ".mp3" : ".wav")
+                //? (AudioViewModel.Encode && AudioViewModel.SelectedAudioSource is WaveInDevice ? ".mp3" : ".wav")
+                ? ".wav"
                 : (VideoViewModel.SelectedCodec.Name == "Gif" ? ".gif" : ".avi");
 
             _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
@@ -276,8 +276,7 @@ namespace Captura
             _timer.Stop();
             TimeSpan = TimeSpan.Zero;
             
-            WaveFormat wf;
-            var audioSource = AudioViewModel.GetAudioSource(VideoViewModel.FrameRate, out wf);
+            var audioSource = AudioViewModel.GetAudioSource();
 
             var imgProvider = GetImageProvider();
             
@@ -286,7 +285,7 @@ namespace Captura
             if (_recorder == null)
             {
                 if (noVideo)
-                    _recorder = new AudioRecorder(audioSource, AudioViewModel.GetAudioFileWriter(_currentFileName, wf));
+                    _recorder = new AudioRecorder(audioSource, AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat));
 
                 else _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
             }

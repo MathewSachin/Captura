@@ -1,19 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using Captura.Properties;
-using NAudio.CoreAudioApi;
 using Screna.Audio;
+using ManagedBass;
+using System.IO;
+using System;
 using Screna.Lame;
-using Screna.NAudio;
+using Captura.Properties;
 
 namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        public const string NoSoundSource = "[No Sound]";
-
         static bool IsLamePresent { get; } = File.Exists
         (
             Path.Combine
@@ -26,7 +23,7 @@ namespace Captura
         public AudioViewModel()
         {
             CanEncode = IsLamePresent;
-
+            
             if (IsLamePresent)
             {
                 SupportedBitRates = Mp3EncoderLame.SupportedBitRates;
@@ -37,23 +34,35 @@ namespace Captura
             RefreshAudioSources();
         }
 
-        public ObservableCollection<object> AvailableAudioSources { get; } = new ObservableCollection<object>();
+        public ObservableCollection<KeyValuePair<int?, string>> AvailableRecordingSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
+        public ObservableCollection<KeyValuePair<int?, string>> AvailableLoopbackSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
 
-        object _audioSource = NoSoundSource;
+        int? _recordingSource, _loopbackSource;
 
-        public object SelectedAudioSource
+        public int? SelectedRecordingSource
         {
-            get { return _audioSource; }
+            get { return _recordingSource; }
             set
             {
-                _audioSource = value ?? NoSoundSource;
+                _recordingSource = value;
                 
                 OnPropertyChanged();
             }
         }
 
-        public IEnumerable<int> SupportedBitRates { get; }
+        public int? SelectedLoopbackSource
+        {
+            get { return _loopbackSource; }
+            set
+            {
+                _loopbackSource = value;
 
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<int> SupportedBitRates { get; }
+ 
         int _bitrate;
 
         public int SelectedBitRate
@@ -99,59 +108,39 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-    
-        public bool Stereo
-        {
-            get { return Settings.Default.UseStereo; }
-            set
-            {
-                if (Stereo == value)
-                    return;
-
-                Settings.Default.UseStereo = value;
-
-                OnPropertyChanged();
-            }
-        }
-
+               
         public void RefreshAudioSources()
         {
-            AvailableAudioSources.Clear();
+            AvailableRecordingSources.Clear();
+            AvailableLoopbackSources.Clear();
 
-            AvailableAudioSources.Add(NoSoundSource);
+            AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
+            AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
+            
+            DeviceInfo info;
 
-            foreach (var dev in WaveInDevice.Enumerate())
-                AvailableAudioSources.Add(dev);
+            for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); ++i)
+            {
+                if (info.IsLoopback)
+                    AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(i, info.Name));
+                else AvailableRecordingSources.Add(new KeyValuePair<int?, string>(i, info.Name));
+            }
 
-            foreach (var dev in LoopbackProvider.EnumerateDevices())
-                AvailableAudioSources.Add(dev);
-
-            SelectedAudioSource = NoSoundSource;
+            SelectedRecordingSource = SelectedLoopbackSource = null;
         }
         
-        public IAudioProvider GetAudioSource(int FrameRate, out WaveFormat Wf)
+        public IAudioProvider GetAudioSource()
         {
-            Wf = new WaveFormat(44100, 16, Stereo ? 2 : 1);
-
-            IAudioEncoder audioEncoder = SelectedBitRate != 0 && IsLamePresent && Encode ? new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate) : null;
-
-            if (SelectedAudioSource is WaveInDevice)
-                return new WaveInProvider(SelectedAudioSource as WaveInDevice, Wf);
-
-            if (!(SelectedAudioSource is MMDevice))
+            if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            IAudioProvider audioSource = new LoopbackProvider((MMDevice)SelectedAudioSource);
-
-            Wf = audioSource.WaveFormat;
-
-            return audioEncoder == null ? audioSource : new EncodedAudioProvider(audioSource, audioEncoder);
+            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
 
-        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
+        public IAudioFileWriter GetAudioFileWriter(string FileName, Screna.Audio.WaveFormat Wf)
         {
             return Encode ? new AudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate))
-                          : new AudioFileWriter(FileName, Wf);
+                          : new AudioFileWriter(FileName, Wf);            
         }
     }
 }
