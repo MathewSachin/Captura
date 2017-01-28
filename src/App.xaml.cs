@@ -3,6 +3,8 @@ using Captura.Properties;
 using System.Windows;
 using System.Windows.Media;
 using ManagedBass;
+using System.Threading;
+using System.Globalization;
 
 namespace Captura
 {
@@ -48,6 +50,8 @@ namespace Captura
             Bass.Init();
 
             Bass.Configure(Configuration.LoopbackRecording, true);
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
         }
 
         void Application_Exit(object sender, ExitEventArgs e) => Settings.Default.Save();

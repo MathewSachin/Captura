@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <v:String x:Key="s_Title">Captura</v:String>
+    <v:String x:Key="s_About">About</v:String>
+    <v:String x:Key="s_Recent">Recent</v:String>
+    <v:String x:Key="s_Other">Other</v:String>
+    <v:String x:Key="s_Audio">Audio</v:String>
+    <v:String x:Key="s_Video">Video</v:String>
+    <v:String x:Key="s_ScreenShot">ScreenShot</v:String>
+    <v:String x:Key="s_OutputFolder">Output Folder</v:String>
+</ResourceDictionary>

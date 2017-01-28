@@ -82,6 +82,7 @@
     <Compile Include="Utility\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
     <Compile Include="Utility\ScreenVSLI.cs" />
+    <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Utility\DelegateCommand.cs" />
     <Compile Include="ViewModels\GifViewModel.cs" />
@@ -115,6 +116,22 @@
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\WindowVSLI.cs" />
+    <Page Include="Languages\default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Languages\lang.ml-IN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Languages\lang.hi-IN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Languages\lang.en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -198,6 +215,10 @@
     <Page Include="Utility\RecentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AudioView.xaml">
       <Generator>MSBuild:Compile</Generator>

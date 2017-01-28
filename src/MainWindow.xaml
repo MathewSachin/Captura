@@ -7,7 +7,7 @@
         Icon="Captura.ico"
         MinHeight="143"
         MinWidth="400"
-        Title="Captura"
+        Title="{DynamicResource s_Title}"
         Height="500"
         Width="400">
     <Window.Resources>
@@ -95,7 +95,7 @@
                                        EllipseDiameter="60"
                                        Foreground="White"
                                        Margin="5,0"
-                                       ToolTip="ScreenShot"
+                                       ToolTip="{DynamicResource s_ScreenShot}"
                                        Command="{Binding ScreenShotCommand}"
                                        IconData="F1 M 30,27C 30,24.3766 32.3767,22 35,22L 41,22C 43.6234,22 46,24.3766 46,27L 50.9999,27.0001C 53.7613,27.0001 55.9999,29.2387 55.9999,32.0001L 55.9999,46.0001C 55.9999,48.7615 53.7613,51.0001 50.9999,51.0001L 25,51.0001C 22.2385,51.0001 20,48.7615 20,46.0001L 20,32.0001C 20,29.2387 22.2385,27.0001 25,27.0001L 30,27 Z M 25.5,30C 24.6716,30 24,30.8954 24,32C 24,33.1046 24.6716,34 25.5,34C 26.3284,34 27,33.1046 27,32C 27,30.8954 26.3284,30 25.5,30 Z M 38,32C 34.134,32 31,35.134 31,39C 31,42.866 34.134,46 38,46C 41.866,46 45,42.866 45,39C 45,35.134 41.866,32 38,32 Z M 38,34.5C 40.4853,34.5 42.5,36.5147 42.5,39C 42.5,41.4853 40.4853,43.5 38,43.5C 35.5147,43.5 33.5,41.4853 33.5,39C 33.5,36.5147 35.5147,34.5 38,34.5 Z "/>
                     <local:ModernButton IconHeight="30"
@@ -126,7 +126,8 @@
                 <Button Content="..."
                         DockPanel.Dock="Right"
                         Command="{Binding SelectOutputFolderCommand}"/>
-                <Button Content="Output Path: "
+                <Button Content="{DynamicResource s_OutputFolder}"
+                        ContentStringFormat="{}{0}: "
                         DockPanel.Dock="Left"
                         Padding="5,0"
                         VerticalContentAlignment="Center"
@@ -137,53 +138,26 @@
             <GridSplitter Height="1"
                           DockPanel.Dock="Bottom"/>
             <TabControl Background="Transparent">
-                <TabItem Header="Video">
+                <TabItem Header="{DynamicResource s_Video}">
                     <Frame Source="Views/VideoView.xaml"/>
                 </TabItem>
-                <TabItem Header="ScreenShot">
+                <TabItem Header="{DynamicResource s_ScreenShot}">
                     <Frame Source="Views/ScreenShotView.xaml"/>
                 </TabItem>
                 <TabItem Header="Gif">
                     <Frame Source="Views/GifView.xaml"/>
                 </TabItem>
-                <TabItem Header="Audio">
+                <TabItem Header="{DynamicResource s_Audio}">
                     <Frame Source="Views/AudioView.xaml"/>
                 </TabItem>
-                <TabItem Header="Other">
+                <TabItem Header="{DynamicResource s_Other}">
                     <Frame Source="Views/OthersView.xaml"/>
                 </TabItem>
-                <TabItem Header="Recent">
+                <TabItem Header="{DynamicResource s_Recent}">
                     <Frame Source="Views/RecentView.xaml"/>
                 </TabItem>
-                <TabItem Header="About">
-                    <Grid>
-                        <ScrollViewer Margin="10">
-                            <StackPanel>
-                                <TextBlock TextWrapping="Wrap"
-                                           Margin="0,0,0,10">
-                                    Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
-                                </TextBlock>
-
-                                <TextBlock>
-                                    <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
-                                </TextBlock>
-
-                                <TextBlock TextWrapping="Wrap"
-                                           Margin="0,10">
-                                    Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
-                                </TextBlock>
-
-                                <TextBlock Text="PLUGINS"
-                                           Style="{StaticResource Heading2}"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="Plugins, if present, extend the functionality of Captura"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock>
-                                    <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> - Mp3 Audio Compression
-                                </TextBlock>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Grid>
+                <TabItem Header="{DynamicResource s_About}">
+                    <Frame Source="Views/AboutView.xaml"/>
                 </TabItem>
             </TabControl>
         </DockPanel>

@@ -11,6 +11,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="Languages/default.xaml" />
+                <ResourceDictionary Source="Languages/lang.en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <props:Settings x:Key="Settings"/>
             <local:MainViewModel x:Key="MainViewModel"/>
