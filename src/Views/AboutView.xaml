@@ -1,5 +1,6 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      x:Class="Captura.AboutView"
       DataContext="{Binding AboutViewModel, Source={StaticResource MainViewModel}}">
     <Grid>
         <ScrollViewer>
@@ -7,7 +8,7 @@
                         Margin="10">
                 <TextBlock TextWrapping="Wrap"
                            Margin="0,0,0,10">
-                     Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
+                     Captura, by <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>, a WPF application to Capture Screen as Picture(ScreenShots) or as Video(ScreenCasts) along with/without Mouse Cursor, Audio from Microphone or Loopback, Mouse Clicks and Keystrokes.
                 </TextBlock>
 
                 <DockPanel>
@@ -22,12 +23,12 @@
                 </DockPanel>
 
                 <TextBlock>
-                     <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/">View On GitHub</Hyperlink>
+                     <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
                 </TextBlock>
 
                 <TextBlock TextWrapping="Wrap"
                            Margin="0,10">
-                           Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
+                           Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
                 </TextBlock>
 
                 <TextBlock Text="PLUGINS"

@@ -116,6 +116,9 @@
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\WindowVSLI.cs" />
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Languages\default.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

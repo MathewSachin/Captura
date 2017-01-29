@@ -12,7 +12,5 @@ namespace Captura
             
             Closed += (s, e) => Application.Current.Shutdown();
         }
-        
-        void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e) => Process.Start(e.Uri.AbsoluteUri);
     }
 }
