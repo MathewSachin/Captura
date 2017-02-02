@@ -3,8 +3,6 @@
 
 Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https://github.com/MathewSachin/Screna).
 
-![ScreenShot](ScreenShot.png)
-
 # Features
 - Take ScreenShots
 - Capture ScreenCasts (Avi/Gif)
@@ -12,6 +10,14 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 - Capture Specific Regions or Windows
 - Capture Mouse Clicks or Keystrokes
 - Record Audio from Microphone **AND/OR** Speaker Output (Wasapi Loopback)
+
+# ScreenShots
+
+## Main UI
+![ScreenShot](screenshot.png)
+
+## Configuration
+![ScreenShot - Configure](screenshot-config.png)
 
 # Build Requirements
 1. [Visual Studio 2015](https://visualstudio.com) or greater.
