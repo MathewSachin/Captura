@@ -20,3 +20,8 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 3. Download [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) (**Optional**) (need licensing for commercial use) (_lameenc32.dll_ and _lameenc64.dll_) and place in build output folder.
 
 > The dependency libraries for x64 can be found in [Releases](https://github.com/MathewSachin/Captura/releases).
+
+# Acknowledgements
+- [SharpAvi](https://github.com/bassill/sharpavi) for helping improve the idea.
+- [Material Design Icons](https://materialdesignicons.com) for the Icons.
+- [Modern UI](https://github.com/firstfloorsoftware/mui) for the styles.

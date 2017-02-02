@@ -7,8 +7,6 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Foreground" Value="{DynamicResource ModernButtonText}" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="Margin" Value="10"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -29,7 +27,7 @@
                             <Setter Property="Opacity" TargetName="icon" Value="1"/>
                             <Setter Property="LayoutTransform" TargetName="icon">
                                 <Setter.Value>
-                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
+                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -39,7 +37,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}" />
-                            <Setter TargetName="icon" Property="Opacity" Value="0.2" />
+                            <Setter TargetName="icon" Property="Opacity" Value="0.3" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -1,12 +1,53 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ModernUI.xaml"/>    
+        <ResourceDictionary Source="Button.xaml" />
+        <ResourceDictionary Source="CheckBox.xaml" />
+        <ResourceDictionary Source="ComboBox.xaml" />
+        <ResourceDictionary Source="ContextMenu.xaml" />
+        <ResourceDictionary Source="Hyperlink.xaml" />
+        <ResourceDictionary Source="Label.xaml" />
+        <ResourceDictionary Source="ListBox.xaml" />
+        <ResourceDictionary Source="MenuItem.xaml" />
+        <ResourceDictionary Source="ModernButton.xaml" />
+        <ResourceDictionary Source="RadioButton.xaml" />
+        <ResourceDictionary Source="ScrollBar.xaml" />
+        <ResourceDictionary Source="Slider.xaml" />
+        <ResourceDictionary Source="TextBlock.xaml" />
+        <ResourceDictionary Source="TextBox.xaml" />
+        <ResourceDictionary Source="ToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Color x:Key="WindowBackgroundColor">#ffffff</Color>
+    <!-- default accent colors and brushes -->
+    <Color x:Key="AccentColor">#006fc7</Color>
+    <SolidColorBrush x:Key="Accent" Color="{DynamicResource AccentColor}" />
 
-    <SolidColorBrush x:Key="ButtonBackground" Color="#ffffff" />
+    <!-- font settings -->
+    <FontFamily x:Key="DefaultFontFamily">Segoe UI</FontFamily>
+    <sys:Double x:Key="DefaultFontSize">13</sys:Double>
+
+    <FontFamily x:Key="FixedFontFamily">Consolas</FontFamily>
+    <sys:Double x:Key="FixedFontSize">13.333</sys:Double>
+
+    <sys:Double x:Key="SmallFontSize">11</sys:Double>
+
+    <!-- layout margins -->
+    <Thickness x:Key="RootMargin">-42,-8,-16,-16</Thickness>
+    <Thickness x:Key="ContentMargin">16,28,16,16</Thickness>
+    <Thickness x:Key="StatusMargin">-16,16,0,0</Thickness>
+    <Thickness x:Key="HeaderMargin">0,-28,44,0</Thickness>
+
+    <Thickness x:Key="SplitLeft">0,0,0,0</Thickness>
+    <Thickness x:Key="SplitRight">16,0,0,0</Thickness>
+
+    <Style x:Key="ContentRoot" TargetType="FrameworkElement">
+        <Setter Property="Margin" Value="{StaticResource ContentMargin}" />
+    </Style>
+
+    <Color x:Key="WindowBackgroundColor">White</Color>
+
+    <SolidColorBrush x:Key="ButtonBackground" Color="White" />
     <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#dddddd" />
     <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="ButtonBorder" Color="#cccccc" />
@@ -14,13 +55,13 @@
     <SolidColorBrush x:Key="ButtonBorderPressed" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="ButtonText" Color="#333333" />
     <SolidColorBrush x:Key="ButtonTextHover" Color="#333333" />
-    <SolidColorBrush x:Key="ButtonTextPressed" Color="#ffffff" />
+    <SolidColorBrush x:Key="ButtonTextPressed" Color="White" />
     <SolidColorBrush x:Key="ButtonTextDisabled" Color="#a1a1a1" />
 
     <SolidColorBrush x:Key="Hyperlink" Color="{DynamicResource AccentColor}" />
     
-    <SolidColorBrush x:Key="InputBackground" Color="#ffffff" />
-    <SolidColorBrush x:Key="InputBackgroundHover" Color="#ffffff" />
+    <SolidColorBrush x:Key="InputBackground" Color="White" />
+    <SolidColorBrush x:Key="InputBackgroundHover" Color="White" />
     <SolidColorBrush x:Key="InputBorder" Color="#cccccc" />
     <SolidColorBrush x:Key="InputBorderHover" Color="#cccccc" />
     <SolidColorBrush x:Key="InputText" Color="#333333" />
@@ -31,7 +72,7 @@
     <SolidColorBrush x:Key="ItemBackgroundSelected" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="ItemBorder" Color="#cccccc" />
     <SolidColorBrush x:Key="ItemText" Color="#333333" />
-    <SolidColorBrush x:Key="ItemTextSelected" Color="#ffffff" />
+    <SolidColorBrush x:Key="ItemTextSelected" Color="White" />
     <SolidColorBrush x:Key="ItemTextHover" Color="#333333" />
     <SolidColorBrush x:Key="ItemTextDisabled" Color="#919191" />
 
@@ -44,18 +85,14 @@
     <SolidColorBrush x:Key="MenuTextHover" Color="#bb000000" />
     <SolidColorBrush x:Key="MenuTextSelected" Color="#333333" />
 
-    <SolidColorBrush x:Key="ModernButtonBorder" Color="#919191" />
-    <SolidColorBrush x:Key="ModernButtonBorderHover" Color="#333333" />
-    <SolidColorBrush x:Key="ModernButtonBorderPressed" Color="#333333" />
-    <SolidColorBrush x:Key="ModernButtonBorderDisabled" Color="#919191" />
     <SolidColorBrush x:Key="ModernButtonIconBackgroundPressed" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" Color="#ffffff" />
-    <SolidColorBrush x:Key="ModernButtonText" Color="#333333" />
+    <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" Color="White" />
+    <SolidColorBrush x:Key="ModernButtonText" Color="White" />
     <SolidColorBrush x:Key="ModernButtonTextHover" Color="#333333" />
     <SolidColorBrush x:Key="ModernButtonTextPressed" Color="#333333" />
     <SolidColorBrush x:Key="ModernButtonTextDisabled" Color="#a1a1a1" />
 
-    <SolidColorBrush x:Key="PopupBackground" Color="#ffffff" />
+    <SolidColorBrush x:Key="PopupBackground" Color="White" />
 
     <SolidColorBrush x:Key="ProgressBackground" Color="#dddddd" />
 
@@ -72,7 +109,7 @@
 
     <SolidColorBrush x:Key="SliderSelectionBackground" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="SliderSelectionBorder" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="SliderThumbBackground" Color="#ffffff" />
+    <SolidColorBrush x:Key="SliderThumbBackground" Color="White" />
     <SolidColorBrush x:Key="SliderThumbBackgroundDragging" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="SliderThumbBackgroundHover" Color="#dddddd" />
     <SolidColorBrush x:Key="SliderThumbBackgroundDisabled" Color="#cccccc" />

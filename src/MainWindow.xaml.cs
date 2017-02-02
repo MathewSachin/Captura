@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Captura
 {
@@ -25,5 +26,11 @@ namespace Captura
             _configWindow.Show();
             _configWindow.Focus();
         }
+
+        void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+
+        void MinButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+        void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

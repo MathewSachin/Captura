@@ -81,7 +81,6 @@
     <Compile Include="MixedAudioProvider.cs" />
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
-    <Compile Include="Utility\DWMApi.cs" />
     <Compile Include="Utility\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
     <Compile Include="Utility\ScreenVSLI.cs" />
@@ -179,10 +178,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\ModernUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

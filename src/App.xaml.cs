@@ -1,7 +1,6 @@
 ﻿using System;
 using Captura.Properties;
 using System.Windows;
-using System.Windows.Media;
 using ManagedBass;
 using System.Threading;
 using System.Globalization;
@@ -12,13 +11,6 @@ namespace Captura
     {
         void Application_Startup(object sender, StartupEventArgs e)
         {
-            #region Color
-            var color = DWMApi.ColorizationColor;
-
-            Current.Resources["AccentColor"] = color;
-            Current.Resources["Accent"] = new SolidColorBrush(color);
-            #endregion
-
 #if !DEBUG
             Current.DispatcherUnhandledException += (s, args) =>
             {

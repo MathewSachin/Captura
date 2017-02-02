@@ -43,6 +43,9 @@
     </Window.Resources>
     <Grid>
         <DockPanel>
+            <Label Content="{Binding Status}"
+                   DockPanel.Dock="Bottom"
+                   Margin="3"/>
             <Button DockPanel.Dock="Bottom"
                     Content="Refresh"
                     Command="{Binding RefreshCommand}"/>
