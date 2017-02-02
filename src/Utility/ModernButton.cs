@@ -10,14 +10,6 @@ namespace Captura
     public class ModernButton : Button
     {
         /// <summary>
-        /// Identifies the EllipseDiameter property.
-        /// </summary>
-        public static readonly DependencyProperty EllipseDiameterProperty = DependencyProperty.Register("EllipseDiameter", typeof(double), typeof(ModernButton), new PropertyMetadata(22D));
-        /// <summary>
-        /// Identifies the EllipseStrokeThickness property.
-        /// </summary>
-        public static readonly DependencyProperty EllipseStrokeThicknessProperty = DependencyProperty.Register("EllipseStrokeThickness", typeof(double), typeof(ModernButton), new PropertyMetadata(1D));
-        /// <summary>
         /// Identifies the IconData property.
         /// </summary>
         public static readonly DependencyProperty IconDataProperty = DependencyProperty.Register("IconData", typeof(Geometry), typeof(ModernButton));
@@ -34,25 +26,7 @@ namespace Captura
         /// Initializes a new instance of the <see cref="ModernButton"/> class.
         /// </summary>
         public ModernButton() { DefaultStyleKey = typeof(ModernButton); }
-
-        /// <summary>
-        /// Gets or sets the ellipse diameter.
-        /// </summary>
-        public double EllipseDiameter
-        {
-            get { return (double)GetValue(EllipseDiameterProperty); }
-            set { SetValue(EllipseDiameterProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the ellipse stroke thickness.
-        /// </summary>
-        public double EllipseStrokeThickness
-        {
-            get { return (double)GetValue(EllipseStrokeThicknessProperty); }
-            set { SetValue(EllipseStrokeThicknessProperty, value); }
-        }
-
+                
         /// <summary>
         /// Gets or sets the icon path data.
         /// </summary>

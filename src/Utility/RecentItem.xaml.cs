@@ -17,8 +17,11 @@ namespace Captura
             _filePath = FileName;
             UrlButton.Content = Path.GetFileName(FileName);
 
-            UrlButton.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage,
-                (s, e) => Process.Start(_filePath),
+            UrlButton.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage, (s, e) => 
+                {
+                    try { Process.Start(_filePath); }
+                    catch { }
+                },
                 (s, e) => e.CanExecute = File.Exists(_filePath)));
         }
 

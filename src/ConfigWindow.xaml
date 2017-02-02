@@ -1,0 +1,89 @@
+﻿<Window x:Class="Captura.ConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{StaticResource MainViewModel}"
+        ShowInTaskbar="False"
+        Title="Configure"
+        Height="500"
+        Width="400">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid Name="Panel">
+                            <Label Content="{TemplateBinding Header}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Name="HeaderLabel"
+                                   Margin="10,2"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Panel" 
+                                     Property="IsMouseOver" 
+                                     Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="Panel"
+                                        Value="#EEFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" 
+                                     Value="True">
+                                <Setter TargetName="Panel" 
+                                        Property="Background"
+                                        Value="{DynamicResource Accent}" />
+                                <Setter TargetName="HeaderLabel"
+                                        Property="Foreground" 
+                                        Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <DockPanel>
+            <Button DockPanel.Dock="Bottom"
+                    Content="Refresh"
+                    Command="{Binding RefreshCommand}"/>
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button Content="..."
+                        DockPanel.Dock="Right"
+                        Command="{Binding SelectOutputFolderCommand}"/>
+                <Button Content="{DynamicResource s_OutputFolder}"
+                        ContentStringFormat="{}{0}: "
+                        DockPanel.Dock="Left"
+                        Padding="5,0"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding OpenOutputFolderCommand}"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding OutPath}"/>
+            </DockPanel>
+            <GridSplitter Height="1"
+                          DockPanel.Dock="Bottom"/>
+            <TabControl Background="Transparent">
+                <TabItem Header="{DynamicResource s_Video}">
+                    <Frame Source="Views/VideoView.xaml"/>
+                </TabItem>
+                <TabItem Header="{DynamicResource s_ScreenShot}">
+                    <Frame Source="Views/ScreenShotView.xaml"/>
+                </TabItem>
+                <TabItem Header="Gif">
+                    <Frame Source="Views/GifView.xaml"/>
+                </TabItem>
+                <TabItem Header="{DynamicResource s_Audio}">
+                    <Frame Source="Views/AudioView.xaml"/>
+                </TabItem>
+                <TabItem Header="{DynamicResource s_Other}">
+                    <Frame Source="Views/OthersView.xaml"/>
+                </TabItem>
+                <TabItem Header="{DynamicResource s_Recent}">
+                    <Frame Source="Views/RecentView.xaml"/>
+                </TabItem>
+                <TabItem Header="{DynamicResource s_About}">
+                    <Frame Source="Views/AboutView.xaml"/>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</Window>

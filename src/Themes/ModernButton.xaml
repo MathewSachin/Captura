@@ -2,54 +2,44 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Captura">
 
-    <Style TargetType="controls:ModernButton">
+    <Style TargetType="controls:ModernButton" x:Key="ModernButtonStyle">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Foreground" Value="{DynamicResource ModernButtonText}" />
         <Setter Property="Padding" Value="1" />
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModernButton">
-                    <Grid x:Name="grid" Background="Transparent" Margin="{TemplateBinding Padding}" >
-                        <Grid Width="{TemplateBinding EllipseDiameter}"
-                              Height="{TemplateBinding EllipseDiameter}">
-                            <Ellipse x:Name="ellipse"
-                                     Stroke="{DynamicResource ModernButtonBorder}"
-                                     StrokeThickness="{TemplateBinding EllipseStrokeThickness}"
-                                     VerticalAlignment="Stretch" />
-                            <Path x:Name="icon"
-                                  Data="{TemplateBinding IconData}" 
-                                  Width="{TemplateBinding IconWidth}"
-                                  Height="{TemplateBinding IconHeight}"
-                                  Fill="{TemplateBinding Foreground}"
-                                  Stretch="Uniform" HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                        </Grid>
+                    <Grid x:Name="grid" Background="Transparent">
+                        <Path x:Name="icon"
+                              Data="{TemplateBinding IconData}" 
+                              Width="{TemplateBinding IconWidth}"
+                              Height="{TemplateBinding IconHeight}"
+                              Fill="{TemplateBinding Foreground}"
+                              Stretch="Uniform" HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Opacity="0.8"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}" />
-                            <Setter Property="LayoutTransform" TargetName="icon">       
+                            <Setter Property="Opacity" TargetName="icon" Value="1"/>
+                            <Setter Property="LayoutTransform" TargetName="icon">
                                 <Setter.Value>
-                                    <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="ellipse" Property="Stroke" Value="{DynamicResource ModernButtonBorderHover}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextPressed}" />
-                            <Setter TargetName="ellipse" Property="Stroke" Value="{DynamicResource ModernButtonBorderPressed}" />
-                            <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource ModernButtonIconBackgroundPressed}" />
                             <Setter TargetName="icon" Property="Fill" Value="{DynamicResource ModernButtonIconForegroundPressed}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}" />
-                            <Setter TargetName="ellipse" Property="Stroke" Value="{DynamicResource ModernButtonBorderDisabled}" />
-                            <Setter TargetName="icon" Property="Opacity" Value="0.3" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="true">
-                            <Setter TargetName="ellipse" Property="StrokeThickness" Value="2" />
+                            <Setter TargetName="icon" Property="Opacity" Value="0.2" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
