@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Captura">
 
-    <Style TargetType="controls:ModernButton">
+    <Style TargetType="controls:ModernToggleButton">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -11,7 +11,7 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:ModernButton">
+                <ControlTemplate TargetType="controls:ModernToggleButton">
                     <Grid x:Name="grid"
                           Background="{TemplateBinding Background}"
                           MinHeight="40"
@@ -43,6 +43,9 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}" />
                             <Setter TargetName="icon" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Fill" Value="Green" TargetName="icon"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

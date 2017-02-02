@@ -11,6 +11,7 @@
         <ResourceDictionary Source="ListBox.xaml" />
         <ResourceDictionary Source="MenuItem.xaml" />
         <ResourceDictionary Source="ModernButton.xaml" />
+        <ResourceDictionary Source="ModernToggleButton.xaml"/>
         <ResourceDictionary Source="RadioButton.xaml" />
         <ResourceDictionary Source="ScrollBar.xaml" />
         <ResourceDictionary Source="Slider.xaml" />
