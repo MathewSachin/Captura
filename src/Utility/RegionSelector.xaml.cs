@@ -16,8 +16,8 @@ namespace Captura
 
         public Window Window { get; }
 
-        // Ignoring Borders
-        public Rectangle Rectangle => Dispatcher.Invoke(() => new Rectangle((int)Left + 3, (int)Top + 3, (int)Width - 6, (int)Height - 6));
+        // Ignoring Borders and Header
+        public Rectangle Rectangle => Dispatcher.Invoke(() => new Rectangle((int)Left + 3, (int)Top + 23, (int)Width - 6, (int)Height - 26));
 
         void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 
