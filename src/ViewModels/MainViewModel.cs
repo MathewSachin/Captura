@@ -116,10 +116,6 @@ namespace Captura
             {
                 switch (Args.PropertyName)
                 {
-                    case nameof(OthersViewModel.RegionSelectorVisible):
-                        VideoViewModel.RefreshVideoSources();
-                        break;
-
                     case nameof(OthersViewModel.Cursor):
                         _cursor.Include = OthersViewModel.Cursor;
                         break;
@@ -154,8 +150,7 @@ namespace Captura
         {
             var audioAvailable = AudioViewModel.SelectedRecordingSource != null || AudioViewModel.SelectedLoopbackSource != null;
 
-            var videoAvailable = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window
-                                 || VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Screen;
+            var videoAvailable = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
 
             _canRecord = audioAvailable || videoAvailable;
 
@@ -209,14 +204,16 @@ namespace Captura
 
                     if (hWnd == Window.DesktopWindow)
                         bmp = ScreenShot.Capture(includeCursor);
-                    else if (hWnd == RegionSelector.Instance.Window)
-                        bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
                     else bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
                         ScreenShotViewModel.DoResize, ScreenShotViewModel.ResizeWidth, ScreenShotViewModel.ResizeHeight);
                     break;
 
                 case VideoSourceKind.Screen:
                     bmp = (selectedVideoSource as ScreenVSLI)?.Capture(includeCursor);
+                    break;
+
+                case VideoSourceKind.Region:
+                    bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
                     break;
             }
 
@@ -337,35 +334,8 @@ namespace Captura
         IImageProvider GetImageProvider()
         {
             var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
-
-            switch (VideoViewModel.SelectedVideoSourceKind)
-            {
-                case VideoSourceKind.Window:
-                    var src = VideoViewModel.SelectedVideoSource as WindowVSLI;
-
-                    if (src.Window == RegionSelector.Instance.Window
-                        && OthersViewModel.StaticRegion)
-                    {
-                        return new StaticRegionProvider(RegionSelector.Instance,
-                            _cursor,
-                            mouseKeyHook);
-                    }
-
-                    Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
-
-                    return new WindowProvider(() => (VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
-                            convertColor(VideoViewModel.BackgroundColor),
-                            _cursor,
-                            mouseKeyHook);
-
-                case VideoSourceKind.Screen:
-                    return new ScreenProvider((VideoViewModel.SelectedVideoSource as ScreenVSLI).Screen,
-                        _cursor,
-                        mouseKeyHook);
-
-                default:
-                    return null;
-            }
+            
+            return VideoViewModel.SelectedVideoSource?.GetImageProvider(_cursor, mouseKeyHook);
         }
 
         void OnStopped()

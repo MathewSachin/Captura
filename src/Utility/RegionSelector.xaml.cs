@@ -1,30 +1,23 @@
 ﻿using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using Window = Screna.Window;
 
 namespace Captura
 {
     public partial class RegionSelector
     {
-        readonly HwndSource _regSelhWnd;
-
         public static RegionSelector Instance { get; } = new RegionSelector();
 
         RegionSelector()
         {
             InitializeComponent();
-
-            Show();
-            _regSelhWnd = (HwndSource)PresentationSource.FromVisual(this);
-            Window = new Window(_regSelhWnd.Handle);
-            Hide();
         }
 
         public Window Window { get; }
 
-        public Rectangle Rectangle => new Rectangle((int)Left, (int)Top, (int)Width, (int)Height);
+        // Ignoring Borders
+        public Rectangle Rectangle => Dispatcher.Invoke(() => new Rectangle((int)Left + 3, (int)Top + 3, (int)Width - 6, (int)Height - 6));
 
         void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 

@@ -36,14 +36,6 @@
                                      Value="{Binding Duration, Mode=TwoWay}"
                                      Margin="0,3"/>
 
-                    <CheckBox Content="Region Selector"
-                              Grid.Row="2"
-                              IsChecked="{Binding RegionSelectorVisible, Mode=TwoWay}"/>
-                    <CheckBox Content="Static Region Capture" 
-                              Grid.Row="2"
-                              Grid.Column="1"
-                              IsChecked="{Binding StaticRegion, Mode=TwoWay}"/>
-
                     <CheckBox Grid.Row="3"
                               Content="Capture Mouse Clicks" 
                               IsChecked="{Binding MouseClicks, Mode=TwoWay}"/>

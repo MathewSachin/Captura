@@ -41,7 +41,17 @@ namespace Captura
 
                     SelectedVideoSource = AvailableVideoSources[0];
                     break;
+
+                case VideoSourceKind.Region:
+                    AvailableVideoSources.Add(new RegionVSLI());
+
+                    SelectedVideoSource = AvailableVideoSources[0];
+                    break;
             }
+
+            if (SelectedVideoSourceKind == VideoSourceKind.Region)
+                RegionSelector.Instance.Show();
+            else RegionSelector.Instance.Hide();
         }
 
         public void RefreshCodecs()
@@ -61,10 +71,11 @@ namespace Captura
         public ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; } = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>
         {
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window")
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"),
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
         };
 
-        public ObservableCollection<object> AvailableVideoSources { get; } = new ObservableCollection<object>();
+        public ObservableCollection<IVSLI> AvailableVideoSources { get; } = new ObservableCollection<IVSLI>();
 
         VideoSourceKind _videoSourceKind = VideoSourceKind.Window;
 
@@ -84,14 +95,17 @@ namespace Captura
             }
         }
 
-        object _videoSource = WindowVSLI.Desktop;
+        IVSLI _videoSource = WindowVSLI.Desktop;
 
-        public object SelectedVideoSource
+        public IVSLI SelectedVideoSource
         {
             get { return _videoSource; }
             set
             {
-                _videoSource = value ?? WindowVSLI.Desktop;
+                if (value == null && AvailableVideoSources.Count > 0)
+                    value = AvailableVideoSources[0];
+
+                _videoSource = value;
 
                 OnPropertyChanged();
             }

@@ -81,10 +81,12 @@
     <Compile Include="MixedAudioProvider.cs" />
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Utility\VSLI\IVSLI.cs" />
     <Compile Include="Utility\ModernToggleButton.cs" />
     <Compile Include="Utility\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
-    <Compile Include="Utility\ScreenVSLI.cs" />
+    <Compile Include="Utility\VSLI\RegionVSLI.cs" />
+    <Compile Include="Utility\VSLI\ScreenVSLI.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Utility\DelegateCommand.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Utility\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\WindowVSLI.cs" />
+    <Compile Include="Utility\VSLI\WindowVSLI.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>

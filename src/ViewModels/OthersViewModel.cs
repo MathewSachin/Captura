@@ -10,23 +10,7 @@ namespace Captura
         {
             _regionSelector.Closing += (Sender, Args) => Args.Cancel = true;
         }
-
-        public bool RegionSelectorVisible
-        {
-            get { return _regionSelector.IsVisible; }
-            set
-            {
-                if (RegionSelectorVisible == value)
-                    return;
-                
-                if (value)
-                    _regionSelector.Show();
-                else _regionSelector.Hide();
-
-                OnPropertyChanged();
-            }
-        }
-
+        
         int _duration;
 
         public int Duration
@@ -82,22 +66,6 @@ namespace Captura
                     return;
 
                 Settings.Default.KeyStrokes = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        bool _staticRegion;
-
-        public bool StaticRegion
-        {
-            get { return _staticRegion; }
-            set
-            {
-                if (_staticRegion == value)
-                    return;
-
-                _staticRegion = value;
 
                 OnPropertyChanged();
             }

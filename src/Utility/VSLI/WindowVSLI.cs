@@ -1,8 +1,11 @@
-﻿using Screna;
+﻿using System;
+using Screna;
+using System.Drawing;
+using WColor = System.Windows.Media.Color;
 
 namespace Captura
 {
-    class WindowVSLI
+    class WindowVSLI : IVSLI
     {
         public Window Window { get; }
 
@@ -24,5 +27,13 @@ namespace Captura
         readonly string _name;
         
         public override string ToString() => _name;
+
+        public IImageProvider GetImageProvider(params IOverlay[] Overlays)
+        {
+            Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
+
+            return new WindowProvider(() => (App.MainViewModel.VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
+                    convertColor(App.MainViewModel.VideoViewModel.BackgroundColor), Overlays);
+        }
     }
 }

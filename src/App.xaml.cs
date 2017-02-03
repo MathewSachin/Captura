@@ -9,8 +9,12 @@ namespace Captura
 {
     public partial class App
     {
+        public static MainViewModel MainViewModel { get; private set; }
+
         void Application_Startup(object sender, StartupEventArgs e)
         {
+            MainViewModel = FindResource(nameof(MainViewModel)) as MainViewModel;
+
 #if !DEBUG
             Current.DispatcherUnhandledException += (s, args) =>
             {

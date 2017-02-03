@@ -5,7 +5,7 @@ using Screna;
 
 namespace Captura
 {
-    class ScreenVSLI
+    class ScreenVSLI : IVSLI
     {
         public Screen Screen { get; }
 
@@ -43,5 +43,10 @@ namespace Captura
         }
 
         public override string ToString() => Screen.DeviceName;
+
+        public IImageProvider GetImageProvider(params IOverlay[] Overlays)
+        {
+            return new ScreenProvider(Screen, Overlays);
+        }
     }
 }

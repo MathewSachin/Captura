@@ -1,4 +1,4 @@
 namespace Captura
 {
-    public enum VideoSourceKind { NoVideo, Window, Screen }
+    public enum VideoSourceKind { NoVideo, Window, Screen, Region }
 }
