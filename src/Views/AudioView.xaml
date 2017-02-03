@@ -39,22 +39,19 @@
                               Grid.Row="1"
                               Grid.Column="1"/>
                 </Grid>
-                
-                <CheckBox Margin="0,5"
-                          Content="Encode Mp3"
-                          IsEnabled="{Binding CanEncode}"
-                          IsChecked="{Binding Encode, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,5"
                            IsEnabled="{Binding CanEncode}">
-                    <Label Content="Quality:  "
-                           DockPanel.Dock="Left"/>
-                    <Label Content="  kbps"
-                           DockPanel.Dock="Right"/>
+                    <CheckBox Content="Encode Mp3:"
+                              IsChecked="{Binding Encode, Mode=TwoWay}"/>
+                    <Label Content="kbps"
+                           DockPanel.Dock="Right"
+                           VerticalContentAlignment="Center"/>
                     <ComboBox ItemsSource="{Binding SupportedBitRates}"
                               SelectedValue="{Binding SelectedBitRate, Mode=TwoWay}"
                               IsEnabled="{Binding Encode}"
-                              HorizontalContentAlignment="Right"/>
+                              HorizontalContentAlignment="Right"
+                              Margin="5,0"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>
