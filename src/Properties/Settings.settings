@@ -6,7 +6,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="IncludeCursor" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MinimizeOnStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
