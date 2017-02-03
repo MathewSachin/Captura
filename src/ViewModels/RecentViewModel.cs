@@ -18,8 +18,8 @@ namespace Captura
                 I.PrintButton.Visibility = Visibility.Visible;
 
             I.Remove += () => RecentList.Remove(I);
-
-            RecentList.Add(I);
+            
+            RecentList.Insert(0, I);
         }
 
         public ICommand OpenOutputFolderCommand => new DelegateCommand(() => Process.Start("explorer.exe", Settings.Default.OutputPath));
