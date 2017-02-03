@@ -131,6 +131,21 @@
                               Grid.Column="2"/>
                 </Grid>
                 <DockPanel Margin="0,5">
+                    <Path Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M17,19V13L14,15.2V13H7V19H14V16.8L17,19Z"
+                          Fill="White"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          ToolTip="Video Encoder"/>
+                    <ComboBox VerticalAlignment="Center"
+                              Margin="7,0"
+                              ItemsSource="{Binding VideoViewModel.AvailableCodecs}" 
+                              SelectedValue="{Binding VideoViewModel.SelectedCodec, Mode=TwoWay}"
+                              DisplayMemberPath="Name"/>
+                </DockPanel>
+                <DockPanel Margin="0,5">
                     <Path Data="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"
                           Fill="White"
                           Width="15"
