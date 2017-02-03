@@ -5,41 +5,6 @@
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Microphone:"
-                               VerticalAlignment="Center" 
-                               Margin="0,0,16,4"/>
-                    <ComboBox VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
-                              ItemsSource="{Binding AvailableRecordingSources}"
-                              SelectedValue="{Binding SelectedRecordingSource, Mode=TwoWay}"
-                              SelectedValuePath="Key"
-                              DisplayMemberPath="Value"
-                              Grid.Column="1"/>
-
-                    <TextBlock Text="Loopback:"
-                               VerticalAlignment="Center" 
-                               Margin="0,0,16,4"
-                               Grid.Row="1"/>
-                    <ComboBox VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
-                              ItemsSource="{Binding AvailableLoopbackSources}"
-                              SelectedValue="{Binding SelectedLoopbackSource, Mode=TwoWay}"
-                              SelectedValuePath="Key"
-                              DisplayMemberPath="Value"
-                              Grid.Row="1"
-                              Grid.Column="1"/>
-                </Grid>
-
                 <DockPanel Margin="0,5"
                            IsEnabled="{Binding CanEncode}">
                     <CheckBox Content="Encode Mp3:"

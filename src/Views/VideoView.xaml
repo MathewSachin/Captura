@@ -6,53 +6,6 @@
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    
-                    <TextBlock Text="Video Source Kind:" 
-                           VerticalAlignment="Center"
-                           Margin="0,0,16,4" />
-                    <ComboBox VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
-                              Grid.Column="1"
-                              IsEnabled="{Binding ReadyToRecord}"
-                              ItemsSource="{Binding AvailableVideoSourceKinds}" 
-                              SelectedValue="{Binding SelectedVideoSourceKind, Mode=TwoWay}"
-                              DisplayMemberPath="Value" 
-                              SelectedValuePath="Key"/>
-
-                    <TextBlock Text="Video Source:" 
-                               Grid.Row="1"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,4" />
-                    <ComboBox Grid.Row="1"
-                              Grid.Column="1"
-                              VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
-                              ItemsSource="{Binding AvailableVideoSources}" 
-                              SelectedValue="{Binding SelectedVideoSource, Mode=TwoWay}"/>
-
-                    <TextBlock Text="Video Encoder:" 
-                               Grid.Row="2"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,4" />
-                    <ComboBox VerticalAlignment="Center"
-                              Margin="0,0,0,4"
-                              Grid.Row="2"
-                              Grid.Column="1"
-                              ItemsSource="{Binding AvailableCodecs}" 
-                              SelectedValue="{Binding SelectedCodec, Mode=TwoWay}"
-                              DisplayMemberPath="Name"/>
-                </Grid>
-                                
                 <DockPanel Margin="0,5">
                     <TextBlock Text="Frame Rate:"
                                Margin="0,0,5,0"/>

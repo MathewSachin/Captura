@@ -3,71 +3,60 @@
       xmlns:local="clr-namespace:Captura"
       DataContext="{Binding ScreenShotViewModel, Source={StaticResource MainViewModel}}">
     <ScrollViewer Margin="10">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition MinWidth="120"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="70"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="Save To:" 
-                       VerticalAlignment="Center"
-                       Margin="0,0,16,4" />
-            <ComboBox Grid.Column="1" 
-                      VerticalAlignment="Center" 
-                      Margin="0,0,0,4"
-                      ItemsSource="{Binding SaveTo}"
-                      SelectedItem="{Binding SelectedSaveTo, Mode=TwoWay}"/>
-
-            <TextBlock Text="File Format:" 
-                       Grid.Row="1" 
-                       VerticalAlignment="Center" 
-                       Margin="0,0,16,4" />
-            <ComboBox Grid.Row="1" 
-                      Grid.Column="1"
-                      VerticalAlignment="Center"
-                      Margin="0,0,0,4"
-                      ItemsSource="{Binding ImageFormats}"
-                      SelectedItem="{Binding SelectedImageFormat, Mode=TwoWay}"/>
-
-            <CheckBox Content="Do Resize"
-                      IsChecked="{Binding DoResize, Mode=TwoWay}"
-                      Grid.Row="2"
-                      Margin="0,5,16,4"
-                      VerticalAlignment="Top"/>
-
-            <Grid Margin="0,5,0,4"
-                  Grid.Row="2"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <StackPanel>
+            <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                
+                <Label VerticalContentAlignment="Center"
+                       Content="Save ScreenShots to"
+                       Margin="0,0,5,0"/>
 
-                <Label Content="Width:"
-                       Margin="0,3"/>
+                <ComboBox VerticalAlignment="Center" 
+                          Grid.Column="1"
+                          ItemsSource="{Binding SaveTo}"
+                          SelectedItem="{Binding SelectedSaveTo, Mode=TwoWay}"/>
+
+                <Label Content="as"
+                       Grid.Column="2"
+                       Margin="5,0"
+                       VerticalAlignment="Center"/>
+
+                <ComboBox VerticalAlignment="Center"
+                          Grid.Column="3"
+                          ItemsSource="{Binding ImageFormats}"
+                          SelectedItem="{Binding SelectedImageFormat, Mode=TwoWay}"/>
+            </Grid>
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <CheckBox Content="Resize"
+                          IsChecked="{Binding DoResize, Mode=TwoWay}"
+                          Margin="0,0,5,0"/>
+
                 <local:NumericBox Value="{Binding ResizeWidth, Mode=TwoWay}"
                                   Grid.Column="1"
-                                  Margin="0,3"
                                   IsEnabled="{Binding DoResize}"/>
 
-                <Label Content="Height:"
-                       Grid.Row="1"
-                       Margin="0,3"/>
+                <Label Content="x"
+                       VerticalContentAlignment="Center"
+                       Grid.Column="2"
+                       Margin="5,0"/>
+
                 <local:NumericBox Value="{Binding ResizeHeight, Mode=TwoWay}"
-                                  Grid.Row="1"
-                                  Grid.Column="1"
+                                  Grid.Column="3"
                                   Margin="0,3"
                                   IsEnabled="{Binding DoResize}"/>
             </Grid>
-        </Grid>
+        </StackPanel>
     </ScrollViewer>
 </Page>

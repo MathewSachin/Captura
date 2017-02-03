@@ -177,6 +177,9 @@
                               SelectedValuePath="Key"
                               DisplayMemberPath="Value"/>
                 </DockPanel>
+                <Label Margin="0,5"
+                       Content="{Binding Status}"
+                       Foreground="#77FFFFFF"/>
             </StackPanel>
         </Expander>
     </Grid>

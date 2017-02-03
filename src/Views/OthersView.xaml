@@ -6,11 +6,6 @@
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">                
-                <CheckBox Margin="0,5"
-                          Content="Include Cursor" 
-                          ToolTip="Include the Mouse Cursor in ScreenShots and ScreenCasts"
-                          IsChecked="{Binding Cursor}"/>
-                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="170"/>
@@ -21,31 +16,24 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Start Delay (in ms)"/>
+                    <TextBlock Text="Start Delay (in ms)"
+                               VerticalAlignment="Center"/>
                     <local:NumericBox Grid.Column="1"
                                      Value="{Binding StartDelay, Mode=TwoWay}"
                                      Margin="0,3"/>
 
                     <TextBlock Grid.Row="1"
-                               Text="Capture Duration (in seconds)"/>
+                               Text="Capture Duration (in seconds)"
+                               VerticalAlignment="Center"/>
                     <local:NumericBox Grid.Row="1"
                                      Grid.Column="1"
                                      Value="{Binding Duration, Mode=TwoWay}"
                                      Margin="0,3"/>
 
-                    <CheckBox Grid.Row="3"
-                              Content="Capture Mouse Clicks" 
-                              IsChecked="{Binding MouseClicks, Mode=TwoWay}"/>
-                    <CheckBox Grid.Row="3"
-                              Grid.Column="1"                              
-                              Content="Capture Keystrokes" 
-                              IsChecked="{Binding KeyStrokes, Mode=TwoWay}"/>
-
                     <CheckBox Content="Minimize On Capture Start"
-                              Grid.Row="4"
+                              Grid.Row="3"
                               IsChecked="{Binding MinimizeOnStart, Mode=TwoWay}"/>
                 </Grid>
             </StackPanel>
