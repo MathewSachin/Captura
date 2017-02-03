@@ -14,8 +14,8 @@
                 <ControlTemplate TargetType="controls:ModernButton">
                     <Grid x:Name="grid"
                           Background="{TemplateBinding Background}"
-                          MinHeight="40"
-                          MinWidth="40">
+                          MinHeight="36"
+                          MinWidth="36">
                         <Path x:Name="icon"
                               Data="{TemplateBinding IconData}" 
                               Width="15"

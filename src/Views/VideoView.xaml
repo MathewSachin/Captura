@@ -7,10 +7,12 @@
             <StackPanel MinWidth="150"
                         Margin="10">
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Frame Rate:"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding FrameRate, StringFormat={}{0:N0}}"
-                               Margin="3,0"/>
+                    <Label Content="Frame Rate:"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+                    <Label Content="{Binding FrameRate, StringFormat={}{0:N0}}"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
                     <Slider Minimum="1"
                             Maximum="30" 
                             SelectionStart="8"
@@ -21,10 +23,13 @@
                 </DockPanel>
 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Quality:  " 
-                               DockPanel.Dock="Left"/>
-                    <TextBlock Text="{Binding Quality, StringFormat={}{0:N0} %}"
-                               Margin="3,0"/>
+                    <Label Content="Quality:  " 
+                           VerticalContentAlignment="Center"
+                           DockPanel.Dock="Left"/>
+                    <Label Content="{Binding Quality}"
+                           ContentStringFormat="{}{0:N0}%"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
                     <Slider Minimum="1" 
                             Maximum="100"
                             SelectionStart="60"
@@ -34,8 +39,9 @@
                 </DockPanel>
 
                 <DockPanel Margin="0,5">
-                    <TextBlock Text="Background Color"
-                               Margin="0,0,5,0"/>
+                    <Label Content="Background Color"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
                     <local:ColorPickerBox SelectedColor="{Binding BackgroundColor, Mode=TwoWay}"/>
                 </DockPanel>
             </StackPanel>
