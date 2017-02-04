@@ -1,0 +1,15 @@
+version: 1.0.{build}
+
+install:
+  # Update Submodules
+  - git submodule init
+  - git submodule update
+
+  # Restore packages for Screna
+  - nuget restore Screna/src/Screna.sln
+
+  # Restore packages for Captura
+  - nuget restore src/Captura.sln
+
+build: off
+  project: src\Captura.sln

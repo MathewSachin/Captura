@@ -24,9 +24,9 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 3. Fetch Submodules: `git submodule init` and `git submodule update`.
 4. Restore NuGet packages for `Screna.sln` in `Screna` folder.
 5. Restore NuGet packages for `Captura.sln` in `src` folder.
-4. Download [BASS Audio library](http://www.un4seen.com/download.php?bass24) (*bass.dll* - x86/x64 as required) and place in build output folder.
-5. Download [BASSmix](http://www.un4seen.com/download.php?bassmix24) (*bassmix.dll* - x86/x64 as required) and place in build output folder.
-6. Download [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) (**Optional**) (need licensing for commercial use) (_lameenc32.dll_ and _lameenc64.dll_) and place in build output folder.
+6. Download [BASS Audio library](http://www.un4seen.com/download.php?bass24) (*bass.dll* - x86/x64 as required) and place in build output folder.
+7. Download [BASSmix](http://www.un4seen.com/download.php?bassmix24) (*bassmix.dll* - x86/x64 as required) and place in build output folder.
+8. Download [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) (**Optional**) (need licensing for commercial use) (_lameenc32.dll_ and _lameenc64.dll_) and place in build output folder.
 
 > The dependency libraries for x64 can be found in [Releases](https://github.com/MathewSachin/Captura/releases).
 
