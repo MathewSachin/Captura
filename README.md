@@ -1,4 +1,7 @@
 # Captura
+[![Build status](https://ci.appveyor.com/api/projects/status/cgobcowf79uc5dx0/branch/master??svg=true)](https://ci.appveyor.com/project/MathewSachin/captura)
+![MIT License](https://img.shields.io/github/license/MathewSachin/Captura.svg)
+[![Gitter](https://badges.gitter.im/MathewSachin/Screna.svg)](https://gitter.im/MathewSachin/Screna)  
 &copy; [Copyright 2016](LICENSE.md) Mathew Sachin
 
 Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https://github.com/MathewSachin/Screna).
