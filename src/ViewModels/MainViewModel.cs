@@ -12,7 +12,6 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using Screna.Avi;
-using WColor = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -204,8 +203,15 @@ namespace Captura
 
                     if (hWnd == Window.DesktopWindow)
                         bmp = ScreenShot.Capture(includeCursor);
-                    else bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
-                        ScreenShotViewModel.DoResize, ScreenShotViewModel.ResizeWidth, ScreenShotViewModel.ResizeHeight);
+                    else
+                    {
+                        bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
+                                 ScreenShotViewModel.DoResize, ScreenShotViewModel.ResizeWidth, ScreenShotViewModel.ResizeHeight);
+
+                        // Capture without Transparency
+                        if (bmp == null)
+                            bmp = ScreenShot.Capture(hWnd, includeCursor);
+                    }
                     break;
 
                 case VideoSourceKind.Screen:
