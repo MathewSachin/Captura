@@ -12,12 +12,11 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 - Record Audio from Microphone **AND/OR** Speaker Output (Wasapi Loopback)
 
 # ScreenShots
+![Main](ScreenShots/main.png)
 
-## Main UI
-![ScreenShot](screenshot.png)
+![Expanded](ScreenShots/expanded.png)
 
-## Configuration
-![ScreenShot - Configure](screenshot-config.png)
+![Config](ScreenShots/config.png)
 
 # Getting Started
 1. [Visual Studio 2015](https://visualstudio.com) or greater is required.

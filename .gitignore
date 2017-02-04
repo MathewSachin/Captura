@@ -2,5 +2,6 @@ bin/
 obj/
 packages/
 publish/
+.vs/
 *.suo
 *.user
