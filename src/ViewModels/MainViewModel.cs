@@ -262,8 +262,7 @@ namespace Captura
             var noVideo = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo;
             
             var extension = noVideo
-                //? (AudioViewModel.Encode && AudioViewModel.SelectedAudioSource is WaveInDevice ? ".mp3" : ".wav")
-                ? ".wav"
+                ? (AudioViewModel.Encode ? ".mp3" : ".wav")
                 : (VideoViewModel.SelectedCodec.Name == "Gif" ? ".gif" : ".avi");
 
             _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);

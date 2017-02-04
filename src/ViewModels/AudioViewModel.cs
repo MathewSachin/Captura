@@ -134,7 +134,11 @@ namespace Captura
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
+            var audioProvider = new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
+
+            return Encode ? (IAudioProvider)new EncodedAudioProvider(audioProvider, 
+                new Mp3EncoderLame(audioProvider.WaveFormat.Channels, audioProvider.WaveFormat.SampleRate, SelectedBitRate))
+                : audioProvider;
         }
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, Screna.Audio.WaveFormat Wf)

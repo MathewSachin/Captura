@@ -16,7 +16,7 @@ namespace Captura
             if (RecordingDevice == null && LoopbackDevice == null)
                 throw new InvalidOperationException("Nothing to Record.");
 
-            _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Float);
+            _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
             
             if (RecordingDevice != null)
             {
@@ -75,7 +75,7 @@ namespace Captura
             DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, Length));
         }
         
-        public Screna.Audio.WaveFormat WaveFormat => Screna.Audio.WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+        public Screna.Audio.WaveFormat WaveFormat => new Screna.Audio.WaveFormat(44100, 16, 2);
 
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
         public event EventHandler<EndEventArgs> RecordingStopped;
