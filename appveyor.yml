@@ -11,5 +11,5 @@ install:
   # Restore packages for Captura
   - nuget restore src/Captura.sln
 
-build: off
+build:
   project: src\Captura.sln
