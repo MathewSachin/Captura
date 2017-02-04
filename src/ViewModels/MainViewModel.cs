@@ -333,8 +333,12 @@ namespace Captura
         IImageProvider GetImageProvider()
         {
             var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
+
+            Func<System.Drawing.Point> offset = () => System.Drawing.Point.Empty;
+
+            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(out offset);
             
-            return VideoViewModel.SelectedVideoSource?.GetImageProvider(_cursor, mouseKeyHook);
+            return new OverlayedImageProvider(imageProvider, offset, _cursor, mouseKeyHook);
         }
 
         void OnStopped()

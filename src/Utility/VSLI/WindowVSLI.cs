@@ -28,12 +28,14 @@ namespace Captura
         
         public override string ToString() => _name;
 
-        public IImageProvider GetImageProvider(params IOverlay[] Overlays)
+        public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
+            Offset = () => Point.Empty;
+
             Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
 
             return new WindowProvider(() => (App.MainViewModel.VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
-                    convertColor(App.MainViewModel.VideoViewModel.BackgroundColor), Overlays);
+                    convertColor(App.MainViewModel.VideoViewModel.BackgroundColor));
         }
     }
 }

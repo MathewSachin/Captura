@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Screna;
+using System;
 
 namespace Captura
 {
@@ -44,9 +45,11 @@ namespace Captura
 
         public override string ToString() => Screen.DeviceName;
 
-        public IImageProvider GetImageProvider(params IOverlay[] Overlays)
+        public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
-            return new ScreenProvider(Screen, Overlays);
+            Offset = () => Screen.Bounds.Location;
+
+            return new ScreenProvider(Screen);
         }
     }
 }

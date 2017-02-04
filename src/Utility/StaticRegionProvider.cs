@@ -7,9 +7,8 @@ namespace Captura
     class StaticRegionProvider : IImageProvider
     {
         readonly RegionSelector _regSel;
-        readonly IOverlay[] _overlays;
 
-        public StaticRegionProvider(RegionSelector RegSel, params IOverlay[] Overlays)
+        public StaticRegionProvider(RegionSelector RegSel)
         {
             _regSel = RegSel;
 
@@ -17,21 +16,11 @@ namespace Captura
             Width = (int) RegSel.Width;
 
             RegSel.ResizeMode = ResizeMode.NoResize;
-
-            _overlays = Overlays;
         }
         
         public Bitmap Capture()
         {
-            var rect = _regSel.Rectangle;
-
-            var bmp = ScreenShot.Capture(rect);
-
-            using (var g = Graphics.FromImage(bmp))
-                foreach (var overlay in _overlays)
-                    overlay.Draw(g, rect.Location);
-
-            return bmp;
+            return ScreenShot.Capture(_regSel.Rectangle);
         }
 
         public int Height { get; }

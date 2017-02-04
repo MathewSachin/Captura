@@ -37,28 +37,11 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ManagedBass.1.0.1\lib\net45\ManagedBass.dll</HintPath>
+      <HintPath>packages\ManagedBass.1.0.2\lib\net45\ManagedBass.dll</HintPath>
     </Reference>
     <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.6.0\lib\net40\Screna.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna.MouseKeyHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.MouseKeyHook.0.2.0\lib\net40\Screna.MouseKeyHook.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna.SharpAvi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.SharpAvi.0.4.0\lib\net40\Screna.SharpAvi.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -261,6 +244,20 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Screna\src\Core\Screna.csproj">
+      <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
+      <Name>Screna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.MouseKeyHook\Screna.MouseKeyHook.csproj">
+      <Project>{bfa19237-2364-484e-8c95-166409769081}</Project>
+      <Name>Screna.MouseKeyHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.SharpAvi\Screna.SharpAvi.csproj">
+      <Project>{38aa61f3-ec21-4722-b36e-fa52df1a28ab}</Project>
+      <Name>Screna.SharpAvi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

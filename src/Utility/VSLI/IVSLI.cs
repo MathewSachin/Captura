@@ -1,9 +1,11 @@
 ﻿using Screna;
+using System;
+using System.Drawing;
 
 namespace Captura
 {
     public interface IVSLI
     {
-        IImageProvider GetImageProvider(params IOverlay[] Overlays);
+        IImageProvider GetImageProvider(out Func<Point> OverlayOffset);
     }
 }
