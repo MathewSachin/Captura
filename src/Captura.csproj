@@ -61,7 +61,6 @@
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MixedAudioProvider.cs" />
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\VSLI\IVSLI.cs" />
@@ -249,6 +248,10 @@
     <ProjectReference Include="..\Screna\src\Core\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
       <Name>Screna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.Bass\Screna.Bass.csproj">
+      <Project>{3ebfe614-c01a-4680-8ef4-5ba144511788}</Project>
+      <Name>Screna.Bass</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\src\Extensions\Screna.MouseKeyHook\Screna.MouseKeyHook.csproj">
       <Project>{bfa19237-2364-484e-8c95-166409769081}</Project>

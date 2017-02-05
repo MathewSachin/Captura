@@ -1,9 +1,9 @@
 ﻿using System;
 using Captura.Properties;
 using System.Windows;
-using ManagedBass;
 using System.Threading;
 using System.Globalization;
+using Screna.Audio;
 
 namespace Captura
 {
@@ -43,9 +43,7 @@ namespace Captura
             };
 #endif
 
-            Bass.Init();
-
-            Bass.Configure(Configuration.LoopbackRecording, true);
+            MixedAudioProvider.Init();
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
         }
