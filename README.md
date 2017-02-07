@@ -22,7 +22,7 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 ![Config](ScreenShots/config.png)
 
 # Getting Started
-1. [Visual Studio 2015](https://visualstudio.com) or greater is required.
+1. [Visual Studio 2017](https://visualstudio.com) or greater is required.
 2. Clone the repository: `git clone https://github.com/MathewSachin/Captura.git`.
 3. Fetch Submodules: `git submodule init` and `git submodule update`.
 4. Restore NuGet packages for `Screna.sln` in `Screna` folder.
@@ -32,6 +32,12 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 8. Download [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) (**Optional**) (need licensing for commercial use) (_lameenc32.dll_ and _lameenc64.dll_) and place in build output folder.
 
 > The dependency libraries for x64 can be found in [Releases](https://github.com/MathewSachin/Captura/releases).
+
+# Some Issues playing Avi files on Windows Media Player
+- Videos shorter than 9 seconds show error.
+- Videos greater than 9 seconds play well but show increased duration.
+
+VLC MediaPlayer was tested with the same files and worked flawlessly.
 
 # Acknowledgements
 - [SharpAvi](https://github.com/bassill/sharpavi) for helping improve the idea.

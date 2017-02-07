@@ -12,7 +12,6 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using Screna.Avi;
-using MessageBox = System.Windows.MessageBox;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
@@ -68,7 +67,7 @@ namespace Captura
                 }
                 else
                 {
-                    _recorder.Pause();
+                    _recorder.Stop();
                     _timer.Stop();
 
                     IsPaused = true;
@@ -282,7 +281,7 @@ namespace Captura
 
             var imgProvider = GetImageProvider();
             
-            var videoEncoder = GetVideoFileWriter(imgProvider);
+            var videoEncoder = GetVideoFileWriter(imgProvider, audioSource);
             
             if (_recorder == null)
             {
@@ -292,7 +291,7 @@ namespace Captura
                 else _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
             }
 
-            _recorder.RecordingStopped += (s, E) =>
+            /*_recorder.RecordingStopped += (s, E) =>
             {
                 OnStopped();
 
@@ -301,16 +300,17 @@ namespace Captura
 
                 Status = "Error";
                 MessageBox.Show(E.ToString());
-            };
+            };*/
 
             RecentViewModel.Add(_currentFileName, videoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
 
-            _recorder.Start(delay);
+            //_recorder.Start(delay);
+            _recorder.Start();
 
             _timer.Start();
         }
 
-        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider)
+        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
             var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
             var encoder = VideoViewModel.SelectedCodec;
@@ -332,7 +332,7 @@ namespace Captura
             }
 
             else if (selectedVideoSourceKind != VideoSourceKind.NoVideo)
-                videoEncoder = new AviWriter(_currentFileName, encoder);
+                videoEncoder = new AviWriter(_currentFileName, encoder, ImgProvider, VideoViewModel.FrameRate, AudioProvider);
             return videoEncoder;
         }
         
@@ -344,7 +344,7 @@ namespace Captura
 
             var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(out offset);
             
-            return new OverlayedImageProvider(imageProvider, offset, _cursor, mouseKeyHook);
+            return imageProvider == null ? null : new OverlayedImageProvider(imageProvider, offset, _cursor, mouseKeyHook);
         }
 
         void OnStopped()
@@ -365,7 +365,7 @@ namespace Captura
 
         void StopRecording()
         {
-            _recorder.Stop();
+            _recorder.Dispose();
             OnStopped();
         }
 
