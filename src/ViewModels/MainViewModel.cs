@@ -286,7 +286,7 @@ namespace Captura
             if (_recorder == null)
             {
                 if (noVideo)
-                    _recorder = new AudioRecorder(audioSource, AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat));
+                    _recorder = new Recorder(AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
 
                 else _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
             }
