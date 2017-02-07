@@ -1,11 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Keys = System.Windows.Forms.Keys;
 
 namespace Captura
 {
     public partial class MainWindow
     {
         ConfigWindow _configWindow;
+        HotKey _recordStopHotkey;
 
         public MainWindow()
         {
@@ -17,8 +19,21 @@ namespace Captura
                 _configWindow.Hide();
                 e.Cancel = true;
             };
+
+            _recordStopHotkey = new HotKey(this, Keys.R, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
+            _recordStopHotkey.Triggered += () =>
+            {
+                var command = App.MainViewModel.RecordCommand;
+
+                if (command.CanExecute(null))
+                    command.Execute(null);
+            };
             
-            Closed += (s, e) => Application.Current.Shutdown();
+            Closed += (s, e) =>
+            {
+                _recordStopHotkey.Dispose();
+                Application.Current.Shutdown();
+            };
         }
 
         void ConfigButton_Click(object sender, RoutedEventArgs e)

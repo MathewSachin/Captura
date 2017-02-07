@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Utility\HotKey.cs" />
     <Compile Include="Utility\VSLI\IVSLI.cs" />
     <Compile Include="Utility\ModernToggleButton.cs" />
     <Compile Include="Utility\ModernButton.cs" />
