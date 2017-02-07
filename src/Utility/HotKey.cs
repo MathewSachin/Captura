@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 
@@ -19,22 +18,14 @@ namespace Captura
         public const int Alt = 1;
         public const int Ctrl = 2;
         public const int Shift = 4;
-
-        #region Fields
-        WindowInteropHelper _host;
-        readonly IntPtr _hWnd;
-        bool _isDisposed;
+        
         readonly int _identifier;
-        #endregion
-
-        public HotKey(Window Window, Keys Key, int Modifiers)
+        
+        public HotKey(Keys Key, int Modifiers)
         {
-            _host = new WindowInteropHelper(Window);
-            _hWnd = _host.Handle;
-
             _identifier = new Random().Next();
 
-            if (!RegisterHotKey(_hWnd, _identifier, Modifiers, (int)Key))
+            if (!RegisterHotKey(IntPtr.Zero, _identifier, Modifiers, (int)Key))
                 throw new Exception("Unable to register hotkey!");
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
@@ -50,14 +41,7 @@ namespace Captura
 
         public void Dispose()
         {
-            if (!_isDisposed)
-            {
-                UnregisterHotKey(_hWnd, _identifier);
-                _host = null;
-            }
-
-            _isDisposed = true;
-            Triggered = null;
+            UnregisterHotKey(IntPtr.Zero, _identifier);
         }
     }
 }

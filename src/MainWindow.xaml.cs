@@ -20,7 +20,7 @@ namespace Captura
                 e.Cancel = true;
             };
 
-            _recordStopHotkey = new HotKey(this, Keys.R, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
+            _recordStopHotkey = new HotKey(Keys.R, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
             _recordStopHotkey.Triggered += () =>
             {
                 var command = App.MainViewModel.RecordCommand;
