@@ -61,13 +61,13 @@
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
-    <Compile Include="Utility\BoolToTaskbarOverlayConverter.cs" />
-    <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Utility\ValueConverter\BoolToPauseButtonAngleConverter.cs" />
+    <Compile Include="Utility\ValueConverter\BoolToTaskbarOverlayConverter.cs" />
+    <Compile Include="Utility\ValueConverter\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\HotKey.cs" />
     <Compile Include="Utility\VSLI\IVSLI.cs" />
-    <Compile Include="Utility\ModernToggleButton.cs" />
-    <Compile Include="Utility\ModernButton.cs" />
+    <Compile Include="Utility\Controls\ModernToggleButton.cs" />
+    <Compile Include="Utility\Controls\ModernButton.cs" />
     <Compile Include="Utility\RecentItemType.cs" />
     <Compile Include="Utility\VSLI\RegionVSLI.cs" />
     <Compile Include="Utility\VSLI\ScreenVSLI.cs" />
@@ -86,13 +86,13 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ColorPickerBox.xaml.cs">
+    <Compile Include="Utility\Controls\ColorPickerBox.xaml.cs">
       <DependentUpon>ColorPickerBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\NumericBox.xaml.cs">
+    <Compile Include="Utility\Controls\NumericBox.xaml.cs">
       <DependentUpon>NumericBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\RecentItem.xaml.cs">
+    <Compile Include="Utility\Controls\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\StaticRegionProvider.cs" />
@@ -101,7 +101,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Utility\RegionSelector.xaml.cs">
+    <Compile Include="Utility\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\VSLI\WindowVSLI.cs" />
@@ -200,15 +200,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ColorPickerBox.xaml">
+    <Page Include="Utility\Controls\ColorPickerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Utility\NumericBox.xaml">
+    <Page Include="Utility\Controls\NumericBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\RecentItem.xaml">
+    <Page Include="Utility\Controls\RecentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,7 +224,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Utility\RegionSelector.xaml">
+    <Page Include="Utility\Controls\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,5 +264,6 @@
       <Name>Screna.SharpAvi</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
