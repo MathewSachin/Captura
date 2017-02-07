@@ -62,6 +62,7 @@
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
+    <Compile Include="Utility\BoolToTaskbarOverlayConverter.cs" />
     <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\HotKey.cs" />
     <Compile Include="Utility\VSLI\IVSLI.cs" />

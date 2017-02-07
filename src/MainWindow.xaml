@@ -14,7 +14,11 @@
     <Window.Resources>
         <local:BoolToPauseButtonAngleConverter x:Key="BoolToPauseButtonAngleConverter"/>
         <local:BoolToRecordButtonGeometryConverter x:Key="BoolToRecordButtonGeometryConverter"/>
+        <local:BoolToTaskbarOverlayConverter x:Key="BoolToTaskbarOverlayConverter"/>
     </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Overlay="{Binding ReadyToRecord, Converter={StaticResource BoolToTaskbarOverlayConverter}}"/>
+    </Window.TaskbarItemInfo>
     <Grid Background="#E7000000">
         <Expander Padding="5,0,0,0">
             <Expander.Header>

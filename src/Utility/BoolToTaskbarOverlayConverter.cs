@@ -6,14 +6,14 @@ using System.Windows.Media;
 
 namespace Captura
 {
-    public class BoolToRecordButtonGeometryConverter : IValueConverter
+    public class BoolToTaskbarOverlayConverter : IValueConverter
     {
-        Geometry _recordGeometry = new EllipseGeometry(new Point(), 50, 50),
-            _stopGeometry = new RectangleGeometry(new Rect(new Point(), new Size(50, 50)));
+        DrawingImage _taskbarOverlay = new DrawingImage(new GeometryDrawing(new SolidColorBrush(Color.FromArgb(175, 255, 0, 0)), new Pen(Brushes.White, 10),
+                new EllipseGeometry(new Point(), 25, 25)));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? _recordGeometry : _stopGeometry;
+            return (bool)value ? null : _taskbarOverlay;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

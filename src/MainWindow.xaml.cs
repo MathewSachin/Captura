@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Keys = System.Windows.Forms.Keys;
 
 namespace Captura
@@ -8,7 +9,7 @@ namespace Captura
     {
         ConfigWindow _configWindow;
         HotKey _recordStopHotkey;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -19,7 +20,7 @@ namespace Captura
                 _configWindow.Hide();
                 e.Cancel = true;
             };
-
+            
             _recordStopHotkey = new HotKey(Keys.R, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
             _recordStopHotkey.Triggered += () =>
             {
