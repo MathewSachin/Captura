@@ -8,7 +8,7 @@
         WindowStyle="None"
         AllowsTransparency="True" 
         Topmost="True"
-        BorderBrush="#27000000"
+        BorderBrush="#B7000000"
         BorderThickness="3"
         ResizeMode="CanResize"  
         Icon="/Captura;component/Captura.ico">
@@ -22,7 +22,9 @@
     <StackPanel>
         <Label Cursor="SizeAll"
                Height="20"
-               Background="#01FFFFFF"
+               Background="#B7FFFFFF"
+               Content="Region Selector"
+               HorizontalContentAlignment="Center"
                MouseDoubleClick="HeaderMouseDoubleClick"
                PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"/>
     </StackPanel>

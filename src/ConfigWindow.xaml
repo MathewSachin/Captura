@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         DataContext="{StaticResource MainViewModel}"
-        ShowInTaskbar="False"
         Title="Configure"
         Height="500"
         Width="400">
