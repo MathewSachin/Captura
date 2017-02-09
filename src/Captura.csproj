@@ -61,9 +61,11 @@
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ValueConverter\BoolToPauseButtonAngleConverter.cs" />
-    <Compile Include="Utility\ValueConverter\BoolToTaskbarOverlayConverter.cs" />
-    <Compile Include="Utility\ValueConverter\BoolToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Utility\RecorderState.cs" />
+    <Compile Include="Utility\ValueConverter\StateToPauseButtonAngleConverter.cs" />
+    <Compile Include="Utility\ValueConverter\StateToTaskbarOverlayConverter.cs" />
+    <Compile Include="Utility\ValueConverter\NotRecordingConverter.cs" />
+    <Compile Include="Utility\ValueConverter\StateToRecordButtonGeometryConverter.cs" />
     <Compile Include="Utility\HotKey.cs" />
     <Compile Include="Utility\VSLI\IVSLI.cs" />
     <Compile Include="Utility\Controls\ModernToggleButton.cs" />

@@ -36,7 +36,7 @@ namespace Captura
 
             RecordCommand = new DelegateCommand(() =>
             {
-                if (ReadyToRecord)
+                if (RecorderState == RecorderState.NotRecording)
                     StartRecording();
                 else StopRecording();
             }, () => _canRecord);
@@ -57,12 +57,12 @@ namespace Captura
 
             PauseCommand = new DelegateCommand(() =>
             {
-                if (IsPaused)
+                if (RecorderState == RecorderState.Paused)
                 {
                     _recorder.Start();
                     _timer.Start();
 
-                    IsPaused = false;
+                    RecorderState = RecorderState.Recording;
                     Status = "Recording...";
                 }
                 else
@@ -70,10 +70,10 @@ namespace Captura
                     _recorder.Stop();
                     _timer.Stop();
 
-                    IsPaused = true;
+                    RecorderState = RecorderState.Paused;
                     Status = "Paused";
                 }
-            }, () => !ReadyToRecord && _recorder != null);
+            }, () => RecorderState != RecorderState.NotRecording && _recorder != null);
 
             SelectOutputFolderCommand = new DelegateCommand(() =>
             {
@@ -261,8 +261,8 @@ namespace Captura
 
             if (OthersViewModel.MinimizeOnStart)
                 WindowState = WindowState.Minimized;
-            
-            ReadyToRecord = false;
+
+            RecorderState = RecorderState.Recording;
             
             var noVideo = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo;
             
@@ -350,8 +350,8 @@ namespace Captura
         void OnStopped()
         {
             _recorder = null;
-            
-            ReadyToRecord = true;
+
+            RecorderState = RecorderState.NotRecording;
 
             if (OthersViewModel.MinimizeOnStart)
                 WindowState = WindowState.Normal;
@@ -359,8 +359,6 @@ namespace Captura
             Status = "Saved to Disk";
             
             _timer.Stop();
-            
-            IsPaused = false;
         }
 
         void StopRecording()
@@ -433,17 +431,17 @@ namespace Captura
             }
         }
 
-        bool _isPaused;
+        RecorderState _recorderState = RecorderState.NotRecording;
 
-        public bool IsPaused
+        public RecorderState RecorderState
         {
-            get { return _isPaused; }
-            private set
+            get { return _recorderState; }
+            set
             {
-                if (_isPaused == value)
+                if (_recorderState == value)
                     return;
 
-                _isPaused = value;
+                _recorderState = value;
 
                 OnPropertyChanged();
             }

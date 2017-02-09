@@ -12,12 +12,12 @@
         AllowsTransparency="True"
         Background="Transparent">
     <Window.Resources>
-        <local:BoolToPauseButtonAngleConverter x:Key="BoolToPauseButtonAngleConverter"/>
-        <local:BoolToRecordButtonGeometryConverter x:Key="BoolToRecordButtonGeometryConverter"/>
-        <local:BoolToTaskbarOverlayConverter x:Key="BoolToTaskbarOverlayConverter"/>
+        <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
+        <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
+        <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Overlay="{Binding ReadyToRecord, Converter={StaticResource BoolToTaskbarOverlayConverter}}"/>
+        <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"/>
     </Window.TaskbarItemInfo>
     <Grid Background="#E7000000">
         <Expander Padding="5,0,0,0">
@@ -31,12 +31,12 @@
                     <local:ModernButton ToolTip="Record|Stop"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding ReadyToRecord, Converter={StaticResource BoolToRecordButtonGeometryConverter}}"/>
+                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="Pause|Resume" 
                                         Command="{Binding PauseCommand}"
                                         IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
                         <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding IsPaused, Converter={StaticResource BoolToPauseButtonAngleConverter}}"/>
+                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
                     <Grid Background="#57222222"
@@ -122,7 +122,6 @@
                     <ComboBox VerticalAlignment="Center" 
                               Margin="7,0,0,0"
                               Grid.Column="1"
-                              IsEnabled="{Binding ReadyToRecord}"
                               ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}" 
                               SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
                               DisplayMemberPath="Value" 
