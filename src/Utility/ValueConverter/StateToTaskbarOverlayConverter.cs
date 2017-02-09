@@ -8,12 +8,27 @@ namespace Captura
 {
     public class StateToTaskbarOverlayConverter : IValueConverter
     {
-        DrawingImage _taskbarOverlay = new DrawingImage(new GeometryDrawing(new SolidColorBrush(Color.FromArgb(175, 255, 0, 0)), new Pen(Brushes.White, 10),
-                new EllipseGeometry(new Point(), 25, 25)));
+        DrawingImage _recordingOverlay = ToDrawingImage(new EllipseGeometry(new Point(), 25, 25), 175, 10),
+            _pausedOverlay = ToDrawingImage(Geometry.Parse("M14,19H18V5H14M6,19H10V5H6V19Z"), 230, 0.6);
+
+        static DrawingImage ToDrawingImage(Geometry G, byte Alpha, double StrokeWidth)
+        {
+            return new DrawingImage(new GeometryDrawing(new SolidColorBrush(Color.FromArgb(Alpha, 255, 0, 0)), new Pen(Brushes.White, StrokeWidth), G));
+        }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (RecorderState)value == RecorderState.Recording ? _taskbarOverlay : null;
+            switch(value)
+            {
+                case RecorderState.Recording:
+                    return _recordingOverlay;
+
+                case RecorderState.Paused:
+                    return _pausedOverlay;
+
+                default:
+                    return null;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
