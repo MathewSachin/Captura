@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Keys = System.Windows.Forms.Keys;
 
 namespace Captura
@@ -8,7 +7,7 @@ namespace Captura
     public partial class MainWindow
     {
         ConfigWindow _configWindow;
-        HotKey _recordStopHotkey;
+        HotKey _recordStopHotkey, _pauseHotkey;
         
         public MainWindow()
         {
@@ -29,10 +28,20 @@ namespace Captura
                 if (command.CanExecute(null))
                     command.Execute(null);
             };
+
+            _pauseHotkey = new HotKey(Keys.P, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
+            _pauseHotkey.Triggered += () =>
+            {
+                var command = App.MainViewModel.PauseCommand;
+
+                if (command.CanExecute(null))
+                    command.Execute(null);
+            };
             
             Closed += (s, e) =>
             {
                 _recordStopHotkey.Dispose();
+                _pauseHotkey.Dispose();
                 Application.Current.Shutdown();
             };
         }
