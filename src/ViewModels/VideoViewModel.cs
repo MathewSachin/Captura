@@ -11,7 +11,7 @@ namespace Captura
     {
         public VideoViewModel()
         {
-            if (ScreenVSLI.Count > 1)
+            if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
 
             RefreshCodecs();
@@ -26,24 +26,24 @@ namespace Captura
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    AvailableVideoSources.Add(WindowVSLI.Desktop);
-                    AvailableVideoSources.Add(WindowVSLI.TaskBar);
+                    AvailableVideoSources.Add(WindowItem.Desktop);
+                    AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     foreach (var win in Window.EnumerateVisible())
-                        AvailableVideoSources.Add(new WindowVSLI(win));
+                        AvailableVideoSources.Add(new WindowItem(win));
 
-                    SelectedVideoSource = WindowVSLI.Desktop;
+                    SelectedVideoSource = WindowItem.Desktop;
                     break;
 
                 case VideoSourceKind.Screen:
-                    foreach (var screen in ScreenVSLI.Enumerate())
+                    foreach (var screen in ScreenItem.Enumerate())
                         AvailableVideoSources.Add(screen);
 
                     SelectedVideoSource = AvailableVideoSources[0];
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(new RegionVSLI());
+                    AvailableVideoSources.Add(new RegionItem());
 
                     SelectedVideoSource = AvailableVideoSources[0];
                     break;
@@ -75,7 +75,7 @@ namespace Captura
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
         };
 
-        public ObservableCollection<IVSLI> AvailableVideoSources { get; } = new ObservableCollection<IVSLI>();
+        public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
 
         VideoSourceKind _videoSourceKind = VideoSourceKind.Window;
 
@@ -95,9 +95,9 @@ namespace Captura
             }
         }
 
-        IVSLI _videoSource = WindowVSLI.Desktop;
+        IVideoItem _videoSource = WindowItem.Desktop;
 
-        public IVSLI SelectedVideoSource
+        public IVideoItem SelectedVideoSource
         {
             get { return _videoSource; }
             set

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Captura
 {
-    public interface IVSLI
+    public interface IVideoItem
     {
         IImageProvider GetImageProvider(out Func<Point> OverlayOffset);
     }

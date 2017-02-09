@@ -5,20 +5,20 @@ using WColor = System.Windows.Media.Color;
 
 namespace Captura
 {
-    class WindowVSLI : IVSLI
+    class WindowItem : IVideoItem
     {
         public Window Window { get; }
 
-        public static readonly WindowVSLI Desktop = new WindowVSLI(Window.DesktopWindow, "[Desktop]"),
-            TaskBar = new WindowVSLI(Window.Taskbar, "[TaskBar]");
+        public static readonly WindowItem Desktop = new WindowItem(Window.DesktopWindow, "[Desktop]"),
+            TaskBar = new WindowItem(Window.Taskbar, "[TaskBar]");
 
-        public WindowVSLI(Window Window)
+        public WindowItem(Window Window)
         {
             this.Window = Window;
             _name = Window.Title;
         }
 
-        public WindowVSLI(Window Window, string Name)
+        public WindowItem(Window Window, string Name)
         {
             this.Window = Window;
             _name = Name;
@@ -34,7 +34,7 @@ namespace Captura
 
             Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
 
-            return new WindowProvider(() => (App.MainViewModel.VideoViewModel.SelectedVideoSource as WindowVSLI).Window,
+            return new WindowProvider(() => (App.MainViewModel.VideoViewModel.SelectedVideoSource as WindowItem).Window,
                     convertColor(App.MainViewModel.VideoViewModel.BackgroundColor));
         }
     }

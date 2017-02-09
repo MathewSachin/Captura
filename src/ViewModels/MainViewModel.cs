@@ -198,7 +198,7 @@ namespace Captura
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    var hWnd = (selectedVideoSource as WindowVSLI)?.Window ?? Window.DesktopWindow;
+                    var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
 
                     if (hWnd == Window.DesktopWindow)
                         bmp = ScreenShot.Capture(includeCursor);
@@ -214,7 +214,7 @@ namespace Captura
                     break;
 
                 case VideoSourceKind.Screen:
-                    bmp = (selectedVideoSource as ScreenVSLI)?.Capture(includeCursor);
+                    bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
                     break;
 
                 case VideoSourceKind.Region:

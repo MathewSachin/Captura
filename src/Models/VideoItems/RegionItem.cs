@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Captura
 {
-    class RegionVSLI : IVSLI
+    class RegionItem : IVideoItem
     {
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {

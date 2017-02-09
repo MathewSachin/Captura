@@ -6,11 +6,11 @@ using System;
 
 namespace Captura
 {
-    class ScreenVSLI : IVSLI
+    class ScreenItem : IVideoItem
     {
         public Screen Screen { get; }
 
-        ScreenVSLI(int i)
+        ScreenItem(int i)
         {
             Screen = Screen.AllScreens[i];
         }
@@ -35,12 +35,12 @@ namespace Captura
             return bmp;
         }
 
-        public static IEnumerable<ScreenVSLI> Enumerate()
+        public static IEnumerable<ScreenItem> Enumerate()
         {
             var n = Count;
 
             for (var i = 0; i < n; ++i)
-                yield return new ScreenVSLI(i);
+                yield return new ScreenItem(i);
         }
 
         public override string ToString() => Screen.DeviceName;
