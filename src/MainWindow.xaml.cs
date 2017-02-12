@@ -7,7 +7,7 @@ namespace Captura
     public partial class MainWindow
     {
         ConfigWindow _configWindow;
-        HotKey _recordStopHotkey, _pauseHotkey;
+        HotKey _recordStopHotkey, _pauseHotkey, _screenShotHotKey;
         
         public MainWindow()
         {
@@ -33,6 +33,15 @@ namespace Captura
             _pauseHotkey.Triggered += () =>
             {
                 var command = App.MainViewModel.PauseCommand;
+
+                if (command.CanExecute(null))
+                    command.Execute(null);
+            };
+
+            _screenShotHotKey = new HotKey(Keys.S, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
+            _screenShotHotKey.Triggered += () =>
+            {
+                var command = App.MainViewModel.ScreenShotCommand;
 
                 if (command.CanExecute(null))
                     command.Execute(null);
