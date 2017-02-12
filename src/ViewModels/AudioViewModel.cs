@@ -116,10 +116,8 @@ namespace Captura
 
             AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
             AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
-            
-            DeviceInfo info;
 
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); ++i)
+            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
                 if (info.IsLoopback)
                     AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(i, info.Name));
