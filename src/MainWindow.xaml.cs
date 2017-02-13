@@ -1,13 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Keys = System.Windows.Forms.Keys;
 
 namespace Captura
 {
     public partial class MainWindow
     {
         ConfigWindow _configWindow;
-        HotKey _recordStopHotkey, _pauseHotkey, _screenShotHotKey;
         
         public MainWindow()
         {
@@ -19,38 +17,12 @@ namespace Captura
                 _configWindow.Hide();
                 e.Cancel = true;
             };
-            
-            _recordStopHotkey = new HotKey(Keys.R, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
-            _recordStopHotkey.Triggered += () =>
-            {
-                var command = App.MainViewModel.RecordCommand;
 
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            };
-
-            _pauseHotkey = new HotKey(Keys.P, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
-            _pauseHotkey.Triggered += () =>
-            {
-                var command = App.MainViewModel.PauseCommand;
-
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            };
-
-            _screenShotHotKey = new HotKey(Keys.S, HotKey.Alt | HotKey.Ctrl | HotKey.Shift);
-            _screenShotHotKey.Triggered += () =>
-            {
-                var command = App.MainViewModel.ScreenShotCommand;
-
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            };
+            HotKey.RegisterAll();
             
             Closed += (s, e) =>
             {
-                _recordStopHotkey.Dispose();
-                _pauseHotkey.Dispose();
+                HotKey.UnRegisterAll();
                 Application.Current.Shutdown();
             };
         }

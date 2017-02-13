@@ -5,7 +5,7 @@ using System.Windows.Interop;
 
 namespace Captura
 {
-    class HotKey : IDisposable
+    static class HotKey
     {
         const string DllName = "user32";
 
@@ -15,33 +15,69 @@ namespace Captura
         [DllImport(DllName)]
         static extern bool RegisterHotKey(IntPtr Hwnd, int Id, int Modifiers, int VirtualKey);
 
-        public const int Alt = 1;
-        public const int Ctrl = 2;
-        public const int Shift = 4;
+        const int Alt = 1;
+        const int Ctrl = 2;
+        const int Shift = 4;
         
-        readonly int _identifier;
+        static int _recordId, _pauseId, _screenShotId;
         
-        public HotKey(Keys Key, int Modifiers)
+        public static void RegisterAll()
         {
-            _identifier = new Random().Next();
+            var r = new Random();
 
-            if (!RegisterHotKey(IntPtr.Zero, _identifier, Modifiers, (int)Key))
+            _recordId = r.Next();
+
+            if (!RegisterHotKey(IntPtr.Zero, _recordId, Ctrl | Alt | Shift, (int)Keys.R))
+                throw new Exception("Unable to register hotkey!");
+            
+            _pauseId = r.Next();
+
+            if (!RegisterHotKey(IntPtr.Zero, _pauseId, Ctrl | Alt | Shift, (int)Keys.P))
+                throw new Exception("Unable to register hotkey!");
+            
+            _screenShotId = r.Next();
+
+            if (!RegisterHotKey(IntPtr.Zero, _screenShotId, Ctrl | Alt | Shift, (int)Keys.S))
                 throw new Exception("Unable to register hotkey!");
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
         }
-
-        void ProcessMessage(ref MSG Message, ref bool Handled)
+        
+        static void ProcessMessage(ref MSG Message, ref bool Handled)
         {
-            if ((Message.message == 786) && (Message.wParam.ToInt32() == _identifier))
-                Triggered?.Invoke();
+            if (Message.message == 786)
+            {
+                var id = Message.wParam.ToInt32();
+                
+                if (id == _recordId)
+                {
+                    var command = App.MainViewModel.RecordCommand;
+
+                    if (command.CanExecute(null))
+                        command.Execute(null);
+                }
+                else if (id == _pauseId)
+                {
+                    var command = App.MainViewModel.PauseCommand;
+
+                    if (command.CanExecute(null))
+                        command.Execute(null);
+                }
+                else if (id == _screenShotId)
+                {
+                    var command = App.MainViewModel.ScreenShotCommand;
+
+                    if (command.CanExecute(null))
+                        command.Execute(null);
+                }
+            }
         }
-
-        public event Action Triggered;
-
-        public void Dispose()
+        
+        public static void UnRegisterAll()
         {
-            UnregisterHotKey(IntPtr.Zero, _identifier);
+            UnregisterHotKey(IntPtr.Zero, _recordId);
+            UnregisterHotKey(IntPtr.Zero, _pauseId);
+            UnregisterHotKey(IntPtr.Zero, _screenShotId);
         }
     }
 }
