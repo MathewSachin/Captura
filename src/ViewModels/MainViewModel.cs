@@ -49,8 +49,7 @@ namespace Captura
 
                 AudioViewModel.RefreshAudioSources();
 
-                Status = $"{VideoViewModel.AvailableCodecs.Count} Encoder(s) and " + 
-                    $"{AudioViewModel.AvailableRecordingSources.Count + AudioViewModel.AvailableLoopbackSources.Count - 2} AudioDevice(s) found";
+                Status = "Refreshed";
             });
 
             OpenOutputFolderCommand = new DelegateCommand(() => Process.Start("explorer.exe", OutPath));
@@ -268,7 +267,7 @@ namespace Captura
             
             var extension = noVideo
                 ? (AudioViewModel.Encode ? ".mp3" : ".wav")
-                : (VideoViewModel.SelectedCodec.Name == "Gif" ? ".gif" : ".avi");
+                : VideoViewModel.SelectedVideoWriter.Extension;
 
             _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
@@ -312,27 +311,29 @@ namespace Captura
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
-            var selectedVideoSourceKind = VideoViewModel.SelectedVideoSourceKind;
-            var encoder = VideoViewModel.SelectedCodec;
-
+            if (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo)
+                return null;
+            
             IVideoFileWriter videoEncoder = null;
-            encoder.Quality = VideoViewModel.Quality;
 
-            if (encoder.Name == "Gif")
+            // VideoVideoModel.Quality not used for now
+
+            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, VideoViewModel.FrameRate, ImgProvider, AudioProvider);
+
+            switch (encoder)
             {
-                if (GifViewModel.Unconstrained)
-                    _recorder = new UnconstrainedFrameRateGifRecorder(
-                        new GifWriter(_currentFileName,
-                            Repeat: GifViewModel.Repeat ? GifViewModel.RepeatCount : -1),
-                        ImgProvider);
+                case GifWriter gif:
+                    if (GifViewModel.Unconstrained)
+                        _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
 
-                else
-                    videoEncoder = new GifWriter(_currentFileName, 1000/VideoViewModel.FrameRate,
-                        GifViewModel.Repeat ? GifViewModel.RepeatCount : -1);
+                    else videoEncoder = gif;
+                    break;
+
+                case AviWriter avi:
+                    videoEncoder = avi;
+                    break;
             }
 
-            else if (selectedVideoSourceKind != VideoSourceKind.NoVideo)
-                videoEncoder = new AviWriter(_currentFileName, encoder, ImgProvider, VideoViewModel.FrameRate, AudioProvider);
             return videoEncoder;
         }
         

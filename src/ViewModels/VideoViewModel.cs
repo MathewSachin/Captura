@@ -57,17 +57,56 @@ namespace Captura
         public void RefreshCodecs()
         {
             // Available Codecs
-            AvailableCodecs.Clear();
-            AvailableCodecs.Add(new AviCodec("Gif"));
-            
-            foreach (var codec in AviWriter.EnumerateEncoders())
-                AvailableCodecs.Add(codec);
+            AvailableVideoWriters.Clear();
 
-            SelectedCodec = AviCodec.MotionJpeg;
+            switch (SelectedVideoWriterKind)
+            {
+                case VideoWriterKind.SharpAvi:
+                    foreach (var codec in AviWriter.EnumerateEncoders())
+                    {
+                        var item = new SharpAviItem(codec);
+
+                        AvailableVideoWriters.Add(item);
+
+                        if (codec == AviCodec.MotionJpeg)
+                            SelectedVideoWriter = item;
+                    }
+                    break;
+
+                case VideoWriterKind.Gif:
+                    AvailableVideoWriters.Add(GifItem.Instance);
+
+                    SelectedVideoWriter = GifItem.Instance;
+                    break;
+            }
         }
 
-        public ObservableCollection<AviCodec> AvailableCodecs { get; } = new ObservableCollection<AviCodec>();
+        public ObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; } = new ObservableCollection<VideoWriterKind>
+        {
+            VideoWriterKind.Gif,
+            VideoWriterKind.SharpAvi
+        };
 
+        public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
+
+        VideoWriterKind _writerKind = VideoWriterKind.SharpAvi;
+
+        public VideoWriterKind SelectedVideoWriterKind
+        {
+            get { return _writerKind; }
+            set
+            {
+                if (_writerKind == value)
+                    return;
+
+                _writerKind = value;
+
+                OnPropertyChanged();
+
+                RefreshCodecs();
+            }
+        }
+        
         public ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; } = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>
         {
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
@@ -111,14 +150,14 @@ namespace Captura
             }
         }
 
-        AviCodec _codec = AviCodec.MotionJpeg;
+        IVideoWriterItem _writer;
 
-        public AviCodec SelectedCodec
+        public IVideoWriterItem SelectedVideoWriter
         {
-            get { return _codec; }
+            get { return _writer; }
             set
             {
-                _codec = value ?? AviCodec.MotionJpeg;
+                _writer = value ?? (AvailableVideoWriters.Count == 0 ? null : AvailableVideoWriters[0]);
 
                 OnPropertyChanged();
             }

@@ -63,6 +63,10 @@
     </Compile>
     <Compile Include="Models\FFMpegVideoWriter.cs" />
     <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
+    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
+    <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
+    <Compile Include="Models\VideoWriterKind.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
