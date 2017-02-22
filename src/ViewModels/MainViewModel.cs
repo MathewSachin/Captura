@@ -248,6 +248,8 @@ namespace Captura
 
         void StartRecording()
         {
+            ConfigWindow.HideInstance();
+
             var duration = OthersViewModel.Duration;
             var delay = OthersViewModel.StartDelay;
 

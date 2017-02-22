@@ -20,7 +20,7 @@ namespace Captura
             };
         }
 
-        void ConfigButton_Click(object sender, RoutedEventArgs e) => ConfigWindow.ShowFocused();
+        void ConfigButton_Click(object sender, RoutedEventArgs e) => ConfigWindow.ShowInstance();
 
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

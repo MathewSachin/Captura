@@ -18,6 +18,7 @@
         <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
         <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
         <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
+        <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"/>
@@ -28,14 +29,14 @@
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
-                    <local:ModernButton ToolTip="{DynamicResource s_ScreenShot}"
+                    <local:ModernButton ToolTip="ScreenShot - Ctrl + Alt + Shift + S"
                                         Command="{Binding ScreenShotCommand}"
                                         IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
-                    <local:ModernButton ToolTip="Record|Stop"
+                    <local:ModernButton ToolTip="Record|Stop - Ctrl + Alt + Shift + R"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
-                    <local:ModernButton ToolTip="Pause|Resume" 
+                    <local:ModernButton ToolTip="Pause|Resume - Ctrl + Alt + Shift + P" 
                                         Command="{Binding PauseCommand}"
                                         IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
                         <local:ModernButton.LayoutTransform>
@@ -86,13 +87,15 @@
                                 DockPanel.Dock="Right">
                         <local:ModernButton ToolTip="Refresh"
                                             Command="{Binding RefreshCommand}"
-                                            IconData="M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z"/>
+                                            IconData="M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z"
+                                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                         <local:ModernButton ToolTip="Open Output Folder"
                                             Command="{Binding OpenOutputFolderCommand}"
                                             IconData="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
                         <local:ModernButton ToolTip="Configure"
                                             Click="ConfigButton_Click"
-                                            IconData="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                                            IconData="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+                                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <local:ModernToggleButton ToolTip="Include Cursor"
@@ -100,10 +103,12 @@
                                                   IsChecked="{Binding OthersViewModel.Cursor, Mode=TwoWay}"/>
                         <local:ModernToggleButton ToolTip="Include Mouse Clicks"
                                                   IconData="M10,2A2,2 0 0,1 12,4V8.5C12,8.5 14,8.25 14,9.25C14,9.25 16,9 16,10C16,10 18,9.75 18,10.75C18,10.75 20,10.5 20,11.5V15C20,16 17,21 17,22H9C9,22 7,15 4,13C4,13 3,7 8,12V4A2,2 0 0,1 10,2Z"
-                                                  IsChecked="{Binding OthersViewModel.MouseClicks, Mode=TwoWay}"/>
+                                                  IsChecked="{Binding OthersViewModel.MouseClicks, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                         <local:ModernToggleButton ToolTip="Include Keystrokes"
                                                   IconData="M6,16H18V18H6V16M6,13V15H2V13H6M7,15V13H10V15H7M11,15V13H13V15H11M14,15V13H17V15H14M18,15V13H22V15H18M2,10H5V12H2V10M19,12V10H22V12H19M18,12H16V10H18V12M8,12H6V10H8V12M12,12H9V10H12V12M15,12H13V10H15V12M2,9V7H4V9H2M5,9V7H7V9H5M8,9V7H10V9H8M11,9V7H13V9H11M14,9V7H16V9H14M17,9V7H22V9H17Z"
-                                                  IsChecked="{Binding OthersViewModel.KeyStrokes, Mode=TwoWay}"/>
+                                                  IsChecked="{Binding OthersViewModel.KeyStrokes, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     </StackPanel>
                 </DockPanel>
                 <Grid Margin="0,5">
@@ -128,7 +133,8 @@
                               ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}" 
                               SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
                               DisplayMemberPath="Value" 
-                              SelectedValuePath="Key"/>
+                              SelectedValuePath="Key"
+                              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     
                     <ComboBox VerticalAlignment="Center" 
                               Margin="3,0,7,0"
@@ -155,13 +161,15 @@
                               Margin="7,0,0,0"
                               Grid.Column="1"
                               ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
-                              SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"/>
+                              SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     
                     <ComboBox VerticalAlignment="Center"
                               Margin="3,0,7,0"
                               ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                               SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
-                              Grid.Column="2"/>
+                              Grid.Column="2"
+                              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 </Grid>
                 <DockPanel Margin="0,5">
                     <Path Data="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"
@@ -177,7 +185,8 @@
                               ItemsSource="{Binding AudioViewModel.AvailableRecordingSources}"
                               SelectedValue="{Binding AudioViewModel.SelectedRecordingSource, Mode=TwoWay}"
                               SelectedValuePath="Key"
-                              DisplayMemberPath="Value"/>
+                              DisplayMemberPath="Value"
+                              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 </DockPanel>
                 <DockPanel Margin="0,5">
                     <Path Data="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"
@@ -193,7 +202,8 @@
                               ItemsSource="{Binding AudioViewModel.AvailableLoopbackSources}"
                               SelectedValue="{Binding AudioViewModel.SelectedLoopbackSource, Mode=TwoWay}"
                               SelectedValuePath="Key"
-                              DisplayMemberPath="Value"/>
+                              DisplayMemberPath="Value"
+                              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 </DockPanel>
                 <Label Margin="0,5"
                        Content="{Binding Status}"

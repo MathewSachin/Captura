@@ -15,13 +15,25 @@
             };
         }
 
-        public static void ShowFocused()
+        public static void ShowInstance()
         {
-            if (_instance == null)
-                _instance = new ConfigWindow();
+            Ensure();
 
             _instance.Show();
             _instance.Focus();
+        }
+
+        static void Ensure()
+        {
+            if (_instance == null)
+                _instance = new ConfigWindow();
+        }
+
+        public static void HideInstance()
+        {
+            Ensure();
+
+            _instance.Hide();
         }
     }
 }
