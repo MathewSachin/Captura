@@ -12,8 +12,8 @@ namespace Captura
         {
             _regSel = RegSel;
 
-            Height = (int) RegSel.Height;
-            Width = (int) RegSel.Width;
+            Height = (int)RegSel.Height - 26;
+            Width = (int)RegSel.Width - 6;
 
             RegSel.ResizeMode = ResizeMode.NoResize;
         }
