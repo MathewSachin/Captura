@@ -13,6 +13,8 @@ namespace Captura
 
         void Application_Startup(object sender, StartupEventArgs e)
         {
+            MixedAudioProvider.Init();
+
             MainViewModel = FindResource(nameof(MainViewModel)) as MainViewModel;
 
 #if !DEBUG
@@ -42,9 +44,7 @@ namespace Captura
                 Current.Shutdown();
             };
 #endif
-
-            MixedAudioProvider.Init();
-
+            
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
         }
 
