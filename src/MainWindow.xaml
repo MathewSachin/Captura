@@ -10,7 +10,10 @@
         SizeToContent="WidthAndHeight"
         Title="{DynamicResource s_Title}"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseMove="Window_MouseMove">
     <Window.Resources>
         <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
         <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
