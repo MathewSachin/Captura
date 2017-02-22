@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Screna.Audio;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -22,6 +23,7 @@ namespace Screna.FFMpeg
         int _fileIndex;
         readonly string _fileNameFormat;
         readonly int _frameRate;
+        AudioFileWriter _audioWriter;
 
         static FFMpegVideoWriter()
         {
@@ -34,7 +36,7 @@ namespace Screna.FFMpeg
         /// </summary>
         /// <param name="FileName">Path for the output file... Output video type is determined by the file extension (e.g. ".avi", ".mp4", ".mov").</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
-        public FFMpegVideoWriter(string FileName, int FrameRate)
+        public FFMpegVideoWriter(string FileName, int FrameRate, IAudioProvider AudioProvider = null)
         {
             _outFile = FileName;
             _frameRate = FrameRate;
@@ -48,6 +50,9 @@ namespace Screna.FFMpeg
             Directory.CreateDirectory(_path);
 
             _fileNameFormat = Path.Combine(_path, "img-{0}.png");
+
+            if (AudioProvider != null)
+                _audioWriter = new AudioFileWriter(Path.Combine(_path, "audio.wav"), AudioProvider.WaveFormat);
         }
 
         /// <summary>
@@ -57,16 +62,18 @@ namespace Screna.FFMpeg
         {
             var ffmpeg = File.Exists(FFMpegPath) ? FFMpegPath : "ffmpeg.exe";
 
-            var p = Process.Start(ffmpeg, $"-r {_frameRate} -i {Path.Combine(_path, "img-%d.png")} {_outFile}");
+            var audioInput = _audioWriter != null ? $"-i {Path.Combine(_path, "audio.wav")}" : "";
+
+            var p = Process.Start(ffmpeg, $"-r {_frameRate} -i {Path.Combine(_path, "img-%d.png")} {audioInput} {_outFile}");
 
             // TODO: Files are not deleted!!!
             p.Exited += (Sender, Args) => Directory.Delete(_path, true);
         }
-        
+
         /// <summary>
         /// Gets whether audio is supported.
         /// </summary>
-        public bool SupportsAudio { get; } = false;
+        public bool SupportsAudio { get; } = true;
         
         /// <summary>
         /// Write audio block to Audio Stream.
@@ -75,7 +82,7 @@ namespace Screna.FFMpeg
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
-            throw new NotImplementedException();
+            _audioWriter?.Write(Buffer, 0, Length);
         }
 
         /// <summary>
