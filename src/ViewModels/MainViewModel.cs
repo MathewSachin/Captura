@@ -14,6 +14,7 @@ using Screna.Audio;
 using Screna.Avi;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
+using System.Threading.Tasks;
 
 namespace Captura
 {
@@ -253,6 +254,9 @@ namespace Captura
             var duration = OthersViewModel.Duration;
             var delay = OthersViewModel.StartDelay;
 
+            if (delay < 0)
+                delay = 0;
+
             if (duration != 0 && (delay * 1000 > duration))
             {
                 Status = "Delay cannot be greater than Duration";
@@ -305,8 +309,16 @@ namespace Captura
 
             RecentViewModel.Add(_currentFileName, videoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
 
-            //_recorder.Start(delay);
-            _recorder.Start();
+            if (delay > 0)
+            {
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(delay);
+
+                    _recorder.Start();
+                });
+            }
+            else _recorder.Start();
 
             _timer.Start();
         }
