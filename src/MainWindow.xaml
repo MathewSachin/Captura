@@ -140,6 +140,7 @@
                               Margin="3,0,7,0"
                               ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                               SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
+                              IsEnabled="{Binding CanChangeVideoSource}"
                               Grid.Column="2"/>
                 </Grid>
                 <Grid Margin="0,5">

@@ -251,6 +251,8 @@ namespace Captura
         {
             ConfigWindow.HideInstance();
 
+            CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
+
             var duration = OthersViewModel.Duration;
             var delay = OthersViewModel.StartDelay;
 
@@ -368,6 +370,8 @@ namespace Captura
 
             RecorderState = RecorderState.NotRecording;
 
+            CanChangeVideoSource = true;
+
             if (OthersViewModel.MinimizeOnStart)
                 WindowState = WindowState.Normal;
 
@@ -398,7 +402,23 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
+
+        bool _canChangeVideoSource = true;
         
+        public bool CanChangeVideoSource
+        {
+            get { return _canChangeVideoSource; }
+            set
+            {
+                if (_canChangeVideoSource == value)
+                    return;
+
+                _canChangeVideoSource = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         public string OutPath
         {
             get { return Settings.Default.OutputPath; }
