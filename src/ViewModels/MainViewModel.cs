@@ -380,9 +380,12 @@ namespace Captura
             _timer.Stop();
         }
 
-        void StopRecording()
+        async void StopRecording()
         {
-            _recorder.Dispose();
+            Status = "Saving...";
+
+            await Task.Run(() => _recorder.Dispose());
+
             OnStopped();
         }
 

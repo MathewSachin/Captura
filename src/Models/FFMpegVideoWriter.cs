@@ -68,25 +68,19 @@ namespace Screna
         /// </summary>
         public void Dispose()
         {
-            Task.Run(() =>
+            using (var p = new Process())
             {
-                using (var p = new Process())
-                {
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.FileName = "ffmpeg.exe";
-                    p.StartInfo.Arguments = _ffmpegArgs;
-                    p.Start();
-                    p.WaitForExit();
-                    
-                    Debug.WriteLine(p.StandardOutput.ReadToEnd());
-                }
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.FileName = "ffmpeg.exe";
+                p.StartInfo.Arguments = _ffmpegArgs;
+                p.Start();
+                p.WaitForExit();
+            }
 
-                _audioWriter?.Dispose();
+            _audioWriter?.Dispose();
 
-                Directory.Delete(_path, true);
-            });
+            Directory.Delete(_path, true);
         }
 
         /// <summary>
