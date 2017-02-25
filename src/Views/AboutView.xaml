@@ -31,13 +31,22 @@
                            Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
                 </TextBlock>
 
-                <TextBlock Text="PLUGINS"
+                <TextBlock Text="LAME (Optional)"
                            Style="{StaticResource Heading2}"
                            Margin="0,0,0,5"/>
-                <TextBlock Text="Plugins, if present, extend the functionality of Captura"
+                <TextBlock Text="Mp3 Audio Encoding"
                            Margin="0,0,0,5"/>
-                <TextBlock>
-                     <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> - Mp3 Audio Compression
+                <TextBlock TextWrapping="Wrap">
+                     <Bold>lameenc32.dll</Bold> or <Bold>lameenc64.dll</Bold> to be placed in build output directory.
+                </TextBlock>
+
+                <TextBlock Text="FFMpeg (Optional)"
+                           Style="{StaticResource Heading2}"
+                           Margin="0,10,0,5"/>
+                <TextBlock Text="Provides high-quality video encoding support"
+                           Margin="0,0,0,5"/>
+                <TextBlock TextWrapping="Wrap">
+                     <Bold>ffmpeg.exe</Bold> to be placed in build output directory.
                 </TextBlock>
             </StackPanel>
         </ScrollViewer>

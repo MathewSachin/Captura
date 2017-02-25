@@ -4,6 +4,8 @@ using System.Windows.Media;
 using Captura.Properties;
 using Screna;
 using Screna.Avi;
+using System.IO;
+using System;
 
 namespace Captura
 {
@@ -13,6 +15,9 @@ namespace Captura
         {
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
+
+            if (File.Exists(Path.Combine(Environment.CurrentDirectory, "ffmpeg.exe")))
+                AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
 
             RefreshCodecs();
 
@@ -77,6 +82,12 @@ namespace Captura
                     AvailableVideoWriters.Add(GifItem.Instance);
 
                     SelectedVideoWriter = GifItem.Instance;
+                    break;
+
+                case VideoWriterKind.FFMpeg:
+                    AvailableVideoWriters.Add(FFMpegItem.Instance);
+
+                    SelectedVideoWriter = FFMpegItem.Instance;
                     break;
             }
         }

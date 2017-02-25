@@ -3,6 +3,7 @@
     public enum VideoWriterKind
     {
         Gif,
-        SharpAvi
+        SharpAvi,
+        FFMpeg
     }
 }

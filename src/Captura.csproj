@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Models\FFMpegVideoWriter.cs" />
     <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />

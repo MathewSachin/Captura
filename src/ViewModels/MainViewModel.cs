@@ -345,8 +345,8 @@ namespace Captura
                     else videoEncoder = gif;
                     break;
 
-                case AviWriter avi:
-                    videoEncoder = avi;
+                default:
+                    videoEncoder = encoder;
                     break;
             }
 
