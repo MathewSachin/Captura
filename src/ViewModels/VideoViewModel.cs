@@ -85,9 +85,10 @@ namespace Captura
                     break;
 
                 case VideoWriterKind.FFMpeg:
-                    AvailableVideoWriters.Add(FFMpegItem.Instance);
+                    foreach (var item in FFMpegItem.Items)
+                        AvailableVideoWriters.Add(item);
 
-                    SelectedVideoWriter = FFMpegItem.Instance;
+                    SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
             }
         }
