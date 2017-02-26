@@ -11,7 +11,6 @@ using System.Windows.Input;
 using Captura.Properties;
 using Screna;
 using Screna.Audio;
-using Screna.Avi;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 using System.Threading.Tasks;
@@ -341,7 +340,7 @@ namespace Captura
                 case GifWriter gif:
                     if (GifViewModel.Unconstrained)
                         _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
-
+                    
                     else videoEncoder = gif;
                     break;
 

@@ -16,8 +16,12 @@ namespace Captura
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
 
-            if (File.Exists(Path.Combine(Environment.CurrentDirectory, "ffmpeg.exe")))
+            if (File.Exists("ffmpeg.exe"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
+
+            if (File.Exists("Screna.SharpAvi.dll") && File.Exists("SharpAvi.dll"))
+                AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
+            else SelectedVideoWriterKind = VideoWriterKind.Gif;
 
             RefreshCodecs();
 
@@ -59,6 +63,20 @@ namespace Captura
             else RegionSelector.Instance.Hide();
         }
 
+        // Separate method required for SharpAvi to be optional.
+        void InitSharpAviCodecs()
+        {
+            foreach (var codec in AviWriter.EnumerateEncoders())
+            {
+                var item = new SharpAviItem(codec);
+
+                AvailableVideoWriters.Add(item);
+
+                if (codec == AviCodec.MotionJpeg)
+                    SelectedVideoWriter = item;
+            }
+        }
+
         public void RefreshCodecs()
         {
             // Available Codecs
@@ -67,15 +85,7 @@ namespace Captura
             switch (SelectedVideoWriterKind)
             {
                 case VideoWriterKind.SharpAvi:
-                    foreach (var codec in AviWriter.EnumerateEncoders())
-                    {
-                        var item = new SharpAviItem(codec);
-
-                        AvailableVideoWriters.Add(item);
-
-                        if (codec == AviCodec.MotionJpeg)
-                            SelectedVideoWriter = item;
-                    }
+                    InitSharpAviCodecs();
                     break;
 
                 case VideoWriterKind.Gif:
@@ -95,8 +105,7 @@ namespace Captura
 
         public ObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; } = new ObservableCollection<VideoWriterKind>
         {
-            VideoWriterKind.Gif,
-            VideoWriterKind.SharpAvi
+            VideoWriterKind.Gif
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
