@@ -11,9 +11,12 @@ namespace Captura
     {
         public static MainViewModel MainViewModel { get; private set; }
 
+        void InitBass() => MixedAudioProvider.Init();
+
         void Application_Startup(object sender, StartupEventArgs e)
         {
-            MixedAudioProvider.Init();
+            if (ViewModelBase.AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll"))
+                InitBass();
 
             MainViewModel = FindResource(nameof(MainViewModel)) as MainViewModel;
 

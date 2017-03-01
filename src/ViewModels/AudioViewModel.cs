@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Screna.Audio;
-using ManagedBass;
 using System.IO;
 using System;
 using Screna.Lame;
@@ -11,8 +10,7 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        static bool IsLamePresent { get; } = File.Exists("Screna.SharpAvi.dll") && File.Exists("SharpAvi.dll")
-            && File.Exists($"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll");
+        static bool IsLamePresent { get; } = AllExist("Screna.SharpAvi.dll", "SharpAvi.dll", $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll");
 
         public AudioViewModel()
         {
@@ -115,14 +113,28 @@ namespace Captura
             AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
             AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
 
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
-            {
-                if (info.IsLoopback)
-                    AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(i, info.Name));
-                else AvailableRecordingSources.Add(new KeyValuePair<int?, string>(i, info.Name));
-            }
+            if (AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll"))
+                LoadBassDevices();
 
             SelectedRecordingSource = SelectedLoopbackSource = null;
+        }
+
+        // Separate method required for BASS to be optional.
+        void LoadBassDevices()
+        {
+            MixedAudioProvider.GetDevices(out var recs, out var loops);
+
+            foreach (var rec in recs)
+                AvailableRecordingSources.Add(rec);
+
+            foreach (var loop in loops)
+                AvailableLoopbackSources.Add(loop);
+        }
+
+        // Separate method required for BASS to be optional.
+        IAudioProvider GetMixedAudioProvider(int? RecordingSource, int? LoopbackSource)
+        {
+            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
 
         // Separate method required for SharpAvi to be optional.
@@ -136,7 +148,7 @@ namespace Captura
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            var audioProvider = new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
+            var audioProvider = GetMixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
 
             return Encode ? (IAudioProvider)new EncodedAudioProvider(audioProvider, GetLameEncoder(audioProvider.WaveFormat))
                 : audioProvider;

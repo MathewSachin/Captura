@@ -19,7 +19,7 @@ namespace Captura
             if (File.Exists("ffmpeg.exe"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
 
-            if (File.Exists("Screna.SharpAvi.dll") && File.Exists("SharpAvi.dll"))
+            if (AllExist("Screna.SharpAvi.dll", "SharpAvi.dll"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
             else SelectedVideoWriterKind = VideoWriterKind.Gif;
 

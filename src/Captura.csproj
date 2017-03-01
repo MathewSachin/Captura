@@ -37,12 +37,6 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ManagedBass.1.0.2\lib\net45\ManagedBass.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
