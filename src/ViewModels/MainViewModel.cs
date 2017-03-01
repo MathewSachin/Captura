@@ -24,6 +24,7 @@ namespace Captura
         IRecorder _recorder;
         string _currentFileName;
         readonly MouseCursor _cursor;
+        bool isVideo;
         #endregion
 
         public MainViewModel()
@@ -250,6 +251,9 @@ namespace Captura
         {
             ConfigWindow.HideInstance();
 
+            if (OthersViewModel.MinimizeOnStart)
+                WindowState = WindowState.Minimized;
+            
             CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
 
             var duration = OthersViewModel.Duration;
@@ -265,16 +269,13 @@ namespace Captura
                 return;
             }
 
-            if (OthersViewModel.MinimizeOnStart)
-                WindowState = WindowState.Minimized;
-
             RecorderState = RecorderState.Recording;
             
-            var noVideo = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo;
+            isVideo = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
             
-            var extension = noVideo
-                ? (AudioViewModel.Encode ? ".mp3" : ".wav")
-                : VideoViewModel.SelectedVideoWriter.Extension;
+            var extension = isVideo
+                ? VideoViewModel.SelectedVideoWriter.Extension
+                : (AudioViewModel.Encode ? ".mp3" : ".wav");
 
             _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
@@ -291,10 +292,10 @@ namespace Captura
             
             if (_recorder == null)
             {
-                if (noVideo)
-                    _recorder = new Recorder(AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
+                if (isVideo)
+                    _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
 
-                else _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
+                else _recorder = new Recorder(AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
             }
 
             /*_recorder.RecordingStopped += (s, E) =>
@@ -307,9 +308,7 @@ namespace Captura
                 Status = "Error";
                 MessageBox.Show(E.ToString());
             };*/
-
-            RecentViewModel.Add(_currentFileName, videoEncoder == null ? RecentItemType.Audio : RecentItemType.Video);
-
+            
             if (delay > 0)
             {
                 Task.Factory.StartNew(async () =>
@@ -362,30 +361,30 @@ namespace Captura
             
             return imageProvider == null ? null : new OverlayedImageProvider(imageProvider, offset, _cursor, mouseKeyHook);
         }
-
-        void OnStopped()
+        
+        async void StopRecording()
         {
-            _recorder = null;
+            Status = "Stopped";
 
+            var savingRecentItem = RecentViewModel.AddTemp(_currentFileName);
+            
             RecorderState = RecorderState.NotRecording;
 
             CanChangeVideoSource = true;
-
+            
             if (OthersViewModel.MinimizeOnStart)
                 WindowState = WindowState.Normal;
 
-            Status = "Saved to Disk";
-            
             _timer.Stop();
-        }
 
-        async void StopRecording()
-        {
-            Status = "Saving...";
+            var rec = _recorder;
+            _recorder = null;
 
-            await Task.Run(() => _recorder.Dispose());
+            await Task.Run(() => rec.Dispose());
 
-            OnStopped();
+            // After Save
+            RecentViewModel.Remove(savingRecentItem);
+            RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio);
         }
 
         #region Properties

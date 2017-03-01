@@ -104,7 +104,12 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-               
+        
+        public static bool BassExists()
+        {
+            return AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
+        }
+
         public void RefreshAudioSources()
         {
             AvailableRecordingSources.Clear();
@@ -113,7 +118,7 @@ namespace Captura
             AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
             AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
 
-            if (AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll"))
+            if (BassExists())
                 LoadBassDevices();
 
             SelectedRecordingSource = SelectedLoopbackSource = null;

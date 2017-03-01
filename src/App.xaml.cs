@@ -15,7 +15,7 @@ namespace Captura
 
         void Application_Startup(object sender, StartupEventArgs e)
         {
-            if (ViewModelBase.AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll"))
+            if (AudioViewModel.BassExists())
                 InitBass();
 
             MainViewModel = FindResource(nameof(MainViewModel)) as MainViewModel;
