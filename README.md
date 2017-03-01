@@ -1,6 +1,6 @@
 # Captura
 [![Build status](https://ci.appveyor.com/api/projects/status/cgobcowf79uc5dx0/branch/master??svg=true)](https://ci.appveyor.com/project/MathewSachin/captura)
-![MIT License](https://img.shields.io/github/license/MathewSachin/Captura.svg)
+[![MIT License](https://img.shields.io/github/license/MathewSachin/Captura.svg)](LICENSE.md)
 [![Gitter](https://badges.gitter.im/MathewSachin/Screna.svg)](https://gitter.im/MathewSachin/Screna)  
 &copy; [Copyright 2017](LICENSE.md) Mathew Sachin
 
@@ -27,18 +27,16 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 3. Fetch Submodules: `git submodule init` and `git submodule update`.
 4. Restore NuGet packages for `Screna.sln` in `Screna` folder.
 5. Restore NuGet packages for `Captura.sln` in `src` folder.
-6. Download [BASS Audio library](http://www.un4seen.com/download.php?bass24) (*bass.dll* - x86/x64 as required) and place in build output folder.
-7. Download [BASSmix](http://www.un4seen.com/download.php?bassmix24) (*bassmix.dll* - x86/x64 as required) and place in build output folder.
-8. Download [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) (**Optional**) (need licensing for commercial use) (_lameenc32.dll_ and _lameenc64.dll_) and place in build output folder.
-9. Download [FFMpeg](https://ffmpeg.zeranoe.com/builds/) (**Optional**) (*ffmpeg.exe* - x86/x64 as required) (Static build recommended) and place in build output folder.
 
-> The dependency libraries for x64 can be found in [Releases](https://github.com/MathewSachin/Captura/releases).
+## Optional Native Libraries
+Download and place in build output directory (x86 or x64 as required).
+These may need licensing for commercial use.
+x64 libraries are available in [Releases](https://github.com/MathewSachin/Captura/releases).
 
-# Some Issues playing Avi files on Windows Media Player
-- Videos shorter than 9 seconds show error.
-- Videos greater than 9 seconds play well but show increased duration.
-
-VLC MediaPlayer was tested with the same files and worked flawlessly.
+- [BASS Audio library](http://www.un4seen.com/download.php?bass24) - *bass.dll*.
+- [BASSmix](http://www.un4seen.com/download.php?bassmix24) - *bassmix.dll*.
+- [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) - _lameenc32.dll_ or _lameenc64.dll_.
+- [FFMpeg](https://ffmpeg.zeranoe.com/builds/) - *ffmpeg.exe* (Static build recommended).
 
 # Acknowledgements
 - [SharpAvi](https://github.com/bassill/sharpavi) for helping improve the idea.
