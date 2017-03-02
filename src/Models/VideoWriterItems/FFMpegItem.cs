@@ -40,7 +40,10 @@ namespace Captura
 
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, IImageProvider ImageProvider, IAudioProvider AudioProvider)
         {
-            return new FFMpegVideoWriter(FileName, FrameRate, this, AudioProvider);
+            if (AudioProvider == null)
+                return new FFMpegVideoWriter(FileName, FrameRate, this);
+
+            return new FFMpegMuxedWriter(FileName, FrameRate, this, AudioProvider);
         }
 
         public FFMpegArgsProvider ArgsProvider { get; }

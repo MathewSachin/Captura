@@ -10,11 +10,11 @@ namespace Captura
         Process ffmpegProcess;
         Stream ffmpegIn;
 
-        public FFMpegAudioWriter(string FileName)
+        public FFMpegAudioWriter(string FileName, int Frequency = 44100, int Channels = 2)
         {
             ffmpegProcess = new Process();
             ffmpegProcess.StartInfo.FileName = "ffmpeg.exe";
-            ffmpegProcess.StartInfo.Arguments = $"-f s16le -acodec pcm_s16le -ar 44100 -ac 2 -i - -vn -acodec mp3 {FileName}";
+            ffmpegProcess.StartInfo.Arguments = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn -acodec mp3 \"{FileName}\"";
             ffmpegProcess.StartInfo.UseShellExecute = false;
             ffmpegProcess.StartInfo.CreateNoWindow = true;
             ffmpegProcess.StartInfo.RedirectStandardInput = true;
@@ -27,7 +27,6 @@ namespace Captura
         public void Dispose()
         {
             Flush();
-
             ffmpegIn.Close();
             ffmpegProcess.WaitForExit();
         }

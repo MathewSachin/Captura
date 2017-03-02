@@ -1,6 +1,4 @@
 ﻿using Screna;
-using Screna.Audio;
-using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -13,55 +11,29 @@ namespace Captura
     /// </summary>
     public class FFMpegVideoWriter : IVideoFileWriter
     {
-        readonly string _path;
-        static readonly Random Random = new Random();
-        static readonly string BaseDir = Path.Combine(Path.GetTempPath(), "Screna.FFMpeg");
-        int _fileIndex;
-        readonly string _fileNameFormat;
-        AudioFileWriter _audioWriter;
-        string _ffmpegArgs;
-
-        static FFMpegVideoWriter()
-        {
-            if (!Directory.Exists(BaseDir))
-                Directory.CreateDirectory(BaseDir);
-        }
-
+        Process ffmpegProcess;
+        Stream ffmpegIn;
+                
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
         /// </summary>
         /// <param name="FileName">Path for the output file.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
-        public FFMpegVideoWriter(string FileName, int FrameRate, FFMpegItem FFMpegItem, IAudioProvider AudioProvider = null)
+        public FFMpegVideoWriter(string FileName, int FrameRate, FFMpegItem FFMpegItem)
         {
-            int val;
-
-            do val = Random.Next();
-            while (Directory.Exists(Path.Combine(BaseDir, val.ToString())));
-
-            _path = Path.Combine(BaseDir, val.ToString());
-            Directory.CreateDirectory(_path);
-
-            _fileNameFormat = Path.Combine(_path, "img-{0}.png");
-
-            if (AudioProvider != null)
-                _audioWriter = new AudioFileWriter(Path.Combine(_path, "audio.wav"), AudioProvider.WaveFormat);
+            ffmpegProcess = new Process();
+            ffmpegProcess.StartInfo.FileName = "ffmpeg.exe";
 
             FFMpegItem.ArgsProvider(out var audioConfig, out var videoConfig);
 
-            _ffmpegArgs = $"-r {FrameRate}";
+            ffmpegProcess.StartInfo.Arguments = $"-r {FrameRate} -f image2pipe -i - {videoConfig} \"{FileName}\"";
+            ffmpegProcess.StartInfo.UseShellExecute = false;
+            ffmpegProcess.StartInfo.CreateNoWindow = true;
+            ffmpegProcess.StartInfo.RedirectStandardInput = true;
 
-            _ffmpegArgs += $" -i \"{Path.Combine(_path, "img-%d.png")}\"";
+            ffmpegProcess.Start();
 
-            if (AudioProvider != null)
-                _ffmpegArgs += $" -i \"{Path.Combine(_path, "audio.wav")}\"";
-
-            _ffmpegArgs += " " + videoConfig;
-
-            if (AudioProvider != null)
-                _ffmpegArgs += " " + audioConfig;
-
-            _ffmpegArgs += $" \"{FileName}\"";
+            ffmpegIn = ffmpegProcess.StandardInput.BaseStream;
         }
 
         /// <summary>
@@ -69,35 +41,22 @@ namespace Captura
         /// </summary>
         public void Dispose()
         {
-            _audioWriter?.Dispose();
-
-            using (var p = new Process())
-            {
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.FileName = "ffmpeg.exe";
-                p.StartInfo.Arguments = _ffmpegArgs;
-                p.Start();
-                p.WaitForExit();
-            }
-            
-            Directory.Delete(_path, true);
+            ffmpegIn.Flush();
+            ffmpegIn.Close();
+            ffmpegProcess.WaitForExit();
         }
 
         /// <summary>
         /// Gets whether audio is supported.
         /// </summary>
-        public bool SupportsAudio { get; } = true;
+        public bool SupportsAudio { get; } = false;
         
         /// <summary>
         /// Write audio block to Audio Stream.
         /// </summary>
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
-        public void WriteAudio(byte[] Buffer, int Length)
-        {
-            _audioWriter?.Write(Buffer, 0, Length);
-        }
+        public void WriteAudio(byte[] Buffer, int Length) { }
 
         /// <summary>
         /// Writes an Image frame.
@@ -105,7 +64,7 @@ namespace Captura
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            Image.Save(string.Format(_fileNameFormat, ++_fileIndex), ImageFormat.Png);
+            Image.Save(ffmpegIn, ImageFormat.Png);
             Image.Dispose();
         }
     }

@@ -56,6 +56,7 @@
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\FFMpegAudioWriter.cs" />
+    <Compile Include="Models\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpegVideoWriter.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
