@@ -13,6 +13,7 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 - Capture Specific Regions or Windows
 - Capture Mouse Clicks or Keystrokes
 - Record Audio from Microphone **AND/OR** Speaker Output (Wasapi Loopback)
+- Modular (Only _Screna.dll_ is a required dependency).
 
 # ScreenShots
 ![Main](ScreenShots/main.png)
@@ -33,8 +34,11 @@ Download and place in build output directory (x86 or x64 as required).
 These may need licensing for commercial use.
 x64 libraries are available in [Releases](https://github.com/MathewSachin/Captura/releases).
 
+### Audio Recording/Loopback and Mixing
 - [BASS Audio library](http://www.un4seen.com/download.php?bass24) - *bass.dll*.
 - [BASSmix](http://www.un4seen.com/download.php?bassmix24) - *bassmix.dll*.
+
+### Video and/or Audio Encoding
 - [FFMpeg](https://ffmpeg.zeranoe.com/builds/) - *ffmpeg.exe* (Static build recommended).
 
 # Acknowledgements
