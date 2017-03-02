@@ -35,7 +35,6 @@ x64 libraries are available in [Releases](https://github.com/MathewSachin/Captur
 
 - [BASS Audio library](http://www.un4seen.com/download.php?bass24) - *bass.dll*.
 - [BASSmix](http://www.un4seen.com/download.php?bassmix24) - *bassmix.dll*.
-- [Lame Mp3 Encoding libraries](http://lame.sourceforge.net) - _lameenc32.dll_ or _lameenc64.dll_.
 - [FFMpeg](https://ffmpeg.zeranoe.com/builds/) - *ffmpeg.exe* (Static build recommended).
 
 # Acknowledgements

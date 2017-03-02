@@ -19,6 +19,7 @@
         <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
         <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
         <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"/>
@@ -206,6 +207,12 @@
                               DisplayMemberPath="Value"
                               IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 </DockPanel>
+                <CheckBox Visibility="{Binding AudioViewModel.CanEncode, Converter={StaticResource boolToVisibilityConverter}}"
+                          Margin="0,8"
+                          Content="Encode Mp3 when only Audio"
+                          Foreground="#bbbbbb"
+                          IsChecked="{Binding AudioViewModel.Encode, Mode=TwoWay}"
+                          HorizontalAlignment="Center"/>
                 <Label Margin="0,5"
                        Content="{Binding Status}"
                        Foreground="#77FFFFFF"/>

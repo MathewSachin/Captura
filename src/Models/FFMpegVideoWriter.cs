@@ -69,6 +69,8 @@ namespace Captura
         /// </summary>
         public void Dispose()
         {
+            _audioWriter?.Dispose();
+
             using (var p = new Process())
             {
                 p.StartInfo.UseShellExecute = false;
@@ -78,9 +80,7 @@ namespace Captura
                 p.Start();
                 p.WaitForExit();
             }
-
-            _audioWriter?.Dispose();
-
+            
             Directory.Delete(_path, true);
         }
 

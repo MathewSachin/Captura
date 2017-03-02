@@ -120,22 +120,6 @@
                                           IsChecked="{Binding OthersViewModel.MinimizeOnStart, Mode=TwoWay}"
                                           Margin="0,2"/>
 
-                                <TextBlock Margin="0,7,0,3"><Bold>Audio</Bold></TextBlock>
-
-                                <DockPanel IsEnabled="{Binding AudioViewModel.CanEncode}"
-                                           Margin="0,2">
-                                    <CheckBox Content="Encode Mp3:"
-                                              IsChecked="{Binding AudioViewModel.Encode, Mode=TwoWay}"/>
-                                    <Label Content="kbps"
-                                           DockPanel.Dock="Right"
-                                           VerticalContentAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding AudioViewModel.SupportedBitRates}"
-                                              SelectedValue="{Binding AudioViewModel.SelectedBitRate, Mode=TwoWay}"
-                                              IsEnabled="{Binding AudioViewModel.Encode}"
-                                              HorizontalContentAlignment="Right"
-                                              Margin="5,0"/>
-                                </DockPanel>
-
                                 <TextBlock Margin="0,7,0,3"><Bold>Gif</Bold></TextBlock>
 
                                 <CheckBox Margin="0,2"

@@ -3,33 +3,22 @@ using System.Collections.ObjectModel;
 using Screna.Audio;
 using System.IO;
 using System;
-using Screna.Lame;
 using Captura.Properties;
 
 namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        static bool IsLamePresent { get; } = AllExist("Screna.SharpAvi.dll", "SharpAvi.dll", $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll");
-
         public AudioViewModel()
         {
-            CanEncode = IsLamePresent;
+            CanEncode = File.Exists("ffmpeg.exe");
 
-            if (IsLamePresent)
-                InitLame();
-            else Encode = false;
+            if (!CanEncode)
+                Encode = false;
 
             RefreshAudioSources();
         }
-
-        // Separate method required for SharpAvi to be optional.
-        void InitLame()
-        {
-            SupportedBitRates = Mp3EncoderLame.SupportedBitRates;
-            _bitrate = Mp3EncoderLame.SupportedBitRates[1];
-        }
-
+        
         public ObservableCollection<KeyValuePair<int?, string>> AvailableRecordingSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
         public ObservableCollection<KeyValuePair<int?, string>> AvailableLoopbackSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
 
@@ -56,25 +45,7 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        public IEnumerable<int> SupportedBitRates { get; private set; }
- 
-        int _bitrate;
-
-        public int SelectedBitRate
-        {
-            get { return _bitrate; }
-            set
-            {
-                if (_bitrate == value)
-                    return;
-
-                _bitrate = value;
-
-                OnPropertyChanged();
-            }
-        }
-        
+                
         public bool Encode
         {
             get { return Settings.Default.EncodeAudio; }
@@ -141,27 +112,18 @@ namespace Captura
         {
             return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
-
-        // Separate method required for SharpAvi to be optional.
-        IAudioEncoder GetLameEncoder(Screna.Audio.WaveFormat Wf)
-        {
-            return new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate);
-        }
-
+        
         public IAudioProvider GetAudioSource()
         {
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            var audioProvider = GetMixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
-
-            return Encode ? (IAudioProvider)new EncodedAudioProvider(audioProvider, GetLameEncoder(audioProvider.WaveFormat))
-                : audioProvider;
+            return GetMixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
 
-        public IAudioFileWriter GetAudioFileWriter(string FileName, Screna.Audio.WaveFormat Wf)
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            return Encode ? new AudioFileWriter(FileName, GetLameEncoder(Wf))
+            return Encode ? (IAudioFileWriter)new FFMpegAudioWriter(FileName)
                           : new AudioFileWriter(FileName, Wf);
         }
     }
