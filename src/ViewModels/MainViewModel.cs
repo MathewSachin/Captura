@@ -14,6 +14,7 @@ using Screna.Audio;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Captura
 {
@@ -350,16 +351,29 @@ namespace Captura
 
             return videoEncoder;
         }
-        
+
+        // Separate method required for MouseKeyHook to be optional.
+        IOverlay GetMouseKeyHook()
+        {
+            return new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
+        }
+
         IImageProvider GetImageProvider()
         {
-            var mouseKeyHook = new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
-
             Func<System.Drawing.Point> offset = () => System.Drawing.Point.Empty;
 
             var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(out offset);
-            
-            return imageProvider == null ? null : new OverlayedImageProvider(imageProvider, offset, _cursor, mouseKeyHook);
+
+            if (imageProvider == null)
+                return null;
+
+            var overlays = new List<IOverlay>();
+            overlays.Add(_cursor);
+
+            if (OthersViewModel.MouseKeyHookAvailable)
+                overlays.Add(GetMouseKeyHook());
+
+            return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
         }
         
         async void StopRecording()
