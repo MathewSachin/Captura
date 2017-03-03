@@ -179,7 +179,7 @@
                           Margin="0,8"
                           Content="Encode Mp3 when only Audio"
                           Foreground="#bbbbbb"
-                          Background="Black"
+                          Background="Transparent"
                           IsChecked="{Binding AudioViewModel.Encode, Mode=TwoWay}"
                           HorizontalAlignment="Center"/>
                 <DockPanel Margin="0,5">

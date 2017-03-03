@@ -3,7 +3,6 @@ using Screna.Audio;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace Captura
@@ -13,49 +12,35 @@ namespace Captura
     /// </summary>
     public class FFMpegMuxedWriter : IVideoFileWriter
     {
-        readonly string _path;
-        static readonly Random Random = new Random();
         static readonly string BaseDir = Path.Combine(Path.GetTempPath(), "Screna.FFMpeg");
-        int _fileIndex;
-        readonly string _fileNameFormat;
         AudioFileWriter _audioWriter;
-        string _ffmpegArgs;
-
-        static FFMpegMuxedWriter()
-        {
-            if (!Directory.Exists(BaseDir))
-                Directory.CreateDirectory(BaseDir);
-        }
+        FFMpegVideoWriter _videoWriter;
+        readonly string _ffmpegArgs, tempVideoPath, tempAudioPath;
 
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegMuxedWriter"/>.
         /// </summary>
-        /// <param name="FileName">Path for the output file.</param>
+        /// <param name="FilePath">Path for the output file.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
-        public FFMpegMuxedWriter(string FileName, int FrameRate, FFMpegItem FFMpegItem, IAudioProvider AudioProvider)
+        public FFMpegMuxedWriter(string FilePath, int FrameRate, FFMpegItem FFMpegItem, IAudioProvider AudioProvider)
         {
             if (AudioProvider == null)
                 throw new ArgumentNullException(nameof(AudioProvider), $"{nameof(AudioProvider)} can't be null. Use {nameof(FFMpegVideoWriter)} instead.");
 
-            int val;
+            if (!Directory.Exists(BaseDir))
+                Directory.CreateDirectory(BaseDir);
 
-            do val = Random.Next();
-            while (Directory.Exists(Path.Combine(BaseDir, val.ToString())));
-
-            _path = Path.Combine(BaseDir, val.ToString());
-            Directory.CreateDirectory(_path);
-
-            _fileNameFormat = Path.Combine(_path, "img-{0}.png");
+            var fileName = Path.GetFileName(FilePath);
+            tempVideoPath = Path.Combine(BaseDir, fileName);
+            tempAudioPath = Path.Combine(BaseDir, Path.ChangeExtension(fileName, ".wav"));
             
-            _audioWriter = new AudioFileWriter(Path.Combine(_path, "audio.wav"), AudioProvider.WaveFormat);
+            _audioWriter = new AudioFileWriter(tempAudioPath, AudioProvider.WaveFormat);
+
+            _videoWriter = new FFMpegVideoWriter(tempVideoPath, FrameRate, FFMpegItem);
             
-            _ffmpegArgs = $"-r {FrameRate} -i \"{Path.Combine(_path, "img-%d.png")}\"";
-
-            _ffmpegArgs += $" -i \"{Path.Combine(_path, "audio.wav")}\"";
-
             FFMpegItem.ArgsProvider(out var audioConfig, out var videoConfig);
 
-            _ffmpegArgs += $" {videoConfig} {audioConfig} \"{FileName}\"";
+            _ffmpegArgs = $"-i {tempVideoPath} -i {tempAudioPath} {audioConfig} \"{FilePath}\"";
         }
 
         /// <summary>
@@ -63,19 +48,22 @@ namespace Captura
         /// </summary>
         public void Dispose()
         {
-            _audioWriter?.Dispose();
+            _audioWriter.Dispose();
+            _videoWriter.Dispose();
 
-            using (var p = new Process())
+            using (var ffmpegProcess = new Process())
             {
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.FileName = "ffmpeg.exe";
-                p.StartInfo.Arguments = _ffmpegArgs;
-                p.Start();
-                p.WaitForExit();
+                ffmpegProcess.StartInfo.FileName = "ffmpeg.exe";
+                ffmpegProcess.StartInfo.Arguments = _ffmpegArgs;
+                ffmpegProcess.StartInfo.UseShellExecute = false;
+                ffmpegProcess.StartInfo.CreateNoWindow = true;
+
+                ffmpegProcess.Start();
+                ffmpegProcess.WaitForExit();
             }
-            
-            Directory.Delete(_path, true);
+
+            File.Delete(tempAudioPath);
+            File.Delete(tempVideoPath);
         }
 
         /// <summary>
@@ -97,10 +85,6 @@ namespace Captura
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
-        public void WriteFrame(Bitmap Image)
-        {
-            Image.Save(string.Format(_fileNameFormat, ++_fileIndex), ImageFormat.Png);
-            Image.Dispose();
-        }
+        public void WriteFrame(Bitmap Image) => _videoWriter.WriteFrame(Image);
     }
 }
