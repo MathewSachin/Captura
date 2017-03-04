@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace Captura
 {
-    public partial class AboutView : Page
+    public partial class AboutView
     {
         void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {

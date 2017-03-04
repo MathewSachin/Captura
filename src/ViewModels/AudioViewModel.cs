@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Screna.Audio;
 using System.IO;
-using System;
 using Captura.Properties;
 
 namespace Captura
@@ -108,7 +107,7 @@ namespace Captura
         }
 
         // Separate method required for BASS to be optional.
-        IAudioProvider GetMixedAudioProvider(int? RecordingSource, int? LoopbackSource)
+        IAudioProvider GetMixedAudioProvider()
         {
             return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
@@ -118,7 +117,7 @@ namespace Captura
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            return GetMixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
+            return GetMixedAudioProvider();
         }
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)

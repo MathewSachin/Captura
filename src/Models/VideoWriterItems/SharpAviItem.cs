@@ -6,7 +6,7 @@ namespace Captura
 {
     public class SharpAviItem : IVideoWriterItem
     {
-        AviCodec _codec;
+        readonly AviCodec _codec;
 
         public SharpAviItem(AviCodec Codec)
         {

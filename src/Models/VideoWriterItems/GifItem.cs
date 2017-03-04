@@ -1,23 +1,11 @@
-﻿using System;
-using Screna;
+﻿using Screna;
 using Screna.Audio;
 
 namespace Captura
 {
     public class GifItem : IVideoWriterItem
     {
-        static GifItem _instance;
-
-        public static GifItem Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new GifItem();
-
-                return _instance;
-            }
-        }
+        public static GifItem Instance { get; } = new GifItem();
 
         GifItem() { }
 

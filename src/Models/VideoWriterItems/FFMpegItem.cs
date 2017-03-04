@@ -35,7 +35,7 @@ namespace Captura
 
         public string Extension { get; }
 
-        string _name;
+        readonly string _name;
         public override string ToString() => _name;
 
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, IImageProvider ImageProvider, IAudioProvider AudioProvider)

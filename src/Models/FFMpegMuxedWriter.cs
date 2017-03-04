@@ -13,8 +13,8 @@ namespace Captura
     public class FFMpegMuxedWriter : IVideoFileWriter
     {
         static readonly string BaseDir = Path.Combine(Path.GetTempPath(), "Screna.FFMpeg");
-        AudioFileWriter _audioWriter;
-        FFMpegVideoWriter _videoWriter;
+        readonly AudioFileWriter _audioWriter;
+        readonly FFMpegVideoWriter _videoWriter;
         readonly string _ffmpegArgs, tempVideoPath, tempAudioPath;
 
         /// <summary>
@@ -51,17 +51,20 @@ namespace Captura
             _audioWriter.Dispose();
             _videoWriter.Dispose();
 
-            using (var ffmpegProcess = new Process())
+            var ffmpegProcess = new Process
             {
-                ffmpegProcess.StartInfo.FileName = "ffmpeg.exe";
-                ffmpegProcess.StartInfo.Arguments = _ffmpegArgs;
-                ffmpegProcess.StartInfo.UseShellExecute = false;
-                ffmpegProcess.StartInfo.CreateNoWindow = true;
+                StartInfo =
+                {
+                    FileName = "ffmpeg.exe",
+                    Arguments = _ffmpegArgs,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
 
-                ffmpegProcess.Start();
-                ffmpegProcess.WaitForExit();
-            }
-
+            ffmpegProcess.Start();
+            ffmpegProcess.WaitForExit();
+            
             File.Delete(tempAudioPath);
             File.Delete(tempVideoPath);
         }

@@ -367,8 +367,7 @@ namespace Captura
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay>();
-            overlays.Add(_cursor);
+            var overlays = new List<IOverlay> { _cursor };
 
             if (OthersViewModel.MouseKeyHookAvailable)
                 overlays.Add(GetMouseKeyHook());

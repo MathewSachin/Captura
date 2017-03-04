@@ -11,8 +11,8 @@ namespace Captura
     /// </summary>
     public class FFMpegVideoWriter : IVideoFileWriter
     {
-        Process ffmpegProcess;
-        Stream ffmpegIn;
+        readonly Process _ffmpegProcess;
+        readonly Stream _ffmpegIn;
                 
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
@@ -21,19 +21,23 @@ namespace Captura
         /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegVideoWriter(string FileName, int FrameRate, FFMpegItem FFMpegItem)
         {
-            ffmpegProcess = new Process();
-            ffmpegProcess.StartInfo.FileName = "ffmpeg.exe";
-
             FFMpegItem.ArgsProvider(out var audioConfig, out var videoConfig);
 
-            ffmpegProcess.StartInfo.Arguments = $"-r {FrameRate} -f image2pipe -i - {videoConfig} \"{FileName}\"";
-            ffmpegProcess.StartInfo.UseShellExecute = false;
-            ffmpegProcess.StartInfo.CreateNoWindow = true;
-            ffmpegProcess.StartInfo.RedirectStandardInput = true;
+            _ffmpegProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "ffmpeg.exe",
+                    Arguments = $"-r {FrameRate} -f image2pipe -i - {videoConfig} \"{FileName}\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true
+                }
+            };
 
-            ffmpegProcess.Start();
+            _ffmpegProcess.Start();
 
-            ffmpegIn = ffmpegProcess.StandardInput.BaseStream;
+            _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
         }
 
         /// <summary>
@@ -41,9 +45,9 @@ namespace Captura
         /// </summary>
         public void Dispose()
         {
-            ffmpegIn.Flush();
-            ffmpegIn.Close();
-            ffmpegProcess.WaitForExit();
+            _ffmpegIn.Flush();
+            _ffmpegIn.Close();
+            _ffmpegProcess.WaitForExit();
         }
 
         /// <summary>
@@ -64,7 +68,7 @@ namespace Captura
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            Image.Save(ffmpegIn, ImageFormat.Png);
+            Image.Save(_ffmpegIn, ImageFormat.Png);
             Image.Dispose();
         }
     }

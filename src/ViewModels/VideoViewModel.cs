@@ -5,7 +5,6 @@ using Captura.Properties;
 using Screna;
 using Screna.Avi;
 using System.IO;
-using System;
 
 namespace Captura
 {
