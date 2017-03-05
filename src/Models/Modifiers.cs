@@ -3,7 +3,7 @@ using System;
 namespace Captura
 {
     [Flags]
-    enum Modifiers
+    public enum Modifiers
     {
         Alt = 1,
         Ctrl = 2,

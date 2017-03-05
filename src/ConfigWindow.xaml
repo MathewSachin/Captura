@@ -198,6 +198,23 @@
                 <TabItem Header="{DynamicResource s_Recent}">
                     <Frame Source="Views/RecentView.xaml"/>
                 </TabItem>
+                <TabItem Header="Hotkeys">
+                    <TabItem.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                        <Style TargetType="local:HotkeySelector">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                    </TabItem.Resources>
+                    <Grid Name="HotkeyGrid" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </TabItem>
                 <TabItem Header="{DynamicResource s_About}">
                     <Frame Source="Views/AboutView.xaml"/>
                 </TabItem>

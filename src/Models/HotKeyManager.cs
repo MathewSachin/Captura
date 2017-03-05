@@ -6,11 +6,11 @@ namespace Captura
 {
     static class HotKeyManager
     {
-        static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
+        public static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
         
         public static void RegisterAll()
         {
-            Hotkeys.Add(new Hotkey(Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.R, () =>
+            Hotkeys.Add(new Hotkey("Start/Stop Recording", Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.R, () =>
             {
                 var command = MainViewModel.Instance.RecordCommand;
 
@@ -18,7 +18,7 @@ namespace Captura
                     command.Execute(null);
             }));
             
-            Hotkeys.Add(new Hotkey(Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.P, () =>
+            Hotkeys.Add(new Hotkey("Pause/Resume Recording", Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.P, () =>
             {
                 var command = MainViewModel.Instance.PauseCommand;
 
@@ -26,7 +26,7 @@ namespace Captura
                     command.Execute(null);
             }));
             
-            Hotkeys.Add(new Hotkey(Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.S, () =>
+            Hotkeys.Add(new Hotkey("ScreenShot", Modifiers.Ctrl | Modifiers.Alt | Modifiers.Shift, Keys.S, () =>
             {
                 var command = MainViewModel.Instance.ScreenShotCommand;
 

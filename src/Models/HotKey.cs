@@ -4,12 +4,13 @@ using System.Windows.Forms;
 
 namespace Captura
 {
-    class Hotkey
+    public class Hotkey
     {
         public Action Work { get; }
 
-        public Hotkey(Modifiers Modifiers, Keys Key, Action Work)
+        public Hotkey(string Description, Modifiers Modifiers, Keys Key, Action Work)
         {
+            this.Description = Description;
             this.Key = Key;
             this.Modifiers = Modifiers;
             this.Work = Work;
@@ -23,11 +24,11 @@ namespace Captura
 
         public void Register()
         {
+            if (IsRegistered || Key == Keys.None)
+                return;
+
             var uid = Guid.NewGuid().ToString("N");
             ID = GlobalAddAtom(uid);
-
-            if (IsRegistered)
-                return;
             
             if (RegisterHotKey(IntPtr.Zero, ID, Modifiers, Key))
             {
@@ -40,9 +41,21 @@ namespace Captura
             }
         }
 
-        public Keys Key { get; set; }
+        public string Description { get; }
 
-        public Modifiers Modifiers { get; set; }
+        public Keys Key { get; private set; }
+
+        public Modifiers Modifiers { get; private set; }
+
+        public void Change(Keys Key, Modifiers Modifiers)
+        {
+            Unregister();
+
+            this.Key = Key;
+            this.Modifiers = Modifiers;
+
+            Register();
+        }
 
         public void Unregister()
         {
@@ -73,5 +86,27 @@ namespace Captura
         [DllImport(User32)]
         static extern bool RegisterHotKey(IntPtr Hwnd, int Id, Modifiers Modifiers, Keys VirtualKey);
         #endregion
+
+        public override string ToString()
+        {
+            var text = "";
+
+            if (Modifiers.HasFlag(Modifiers.Ctrl))
+                text += "Ctrl + ";
+
+            if (Modifiers.HasFlag(Modifiers.Alt))
+                text += "Alt + ";
+
+            if (Modifiers.HasFlag(Modifiers.Shift))
+                text += "Shift + ";
+
+            if (Key >= Keys.D0 && Key <= Keys.D9)
+                text += (Key - Keys.D0);
+            else if (Key >= Keys.NumPad0 && Key <= Keys.NumPad9)
+                text += (Key - Keys.NumPad0);
+            else text += Key;
+
+            return text;
+        }
     }
 }
