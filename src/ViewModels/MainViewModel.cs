@@ -28,7 +28,9 @@ namespace Captura
         bool isVideo;
         #endregion
 
-        public MainViewModel()
+        public static MainViewModel Instance { get; } = new MainViewModel();
+
+        MainViewModel()
         {
             _timer = new Timer(1000);
             _timer.Elapsed += TimerOnElapsed;

@@ -1,6 +1,7 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      DataContext="{Binding RecentViewModel, Source={StaticResource MainViewModel}}">
+      xmlns:local="clr-namespace:Captura"
+      DataContext="{Binding RecentViewModel, Source={x:Static local:MainViewModel.Instance}}">
     <Grid>
         <ScrollViewer>
             <DockPanel Margin="10">

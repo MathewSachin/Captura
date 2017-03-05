@@ -51,21 +51,21 @@ namespace Captura
                 
                 if (id == _recordId)
                 {
-                    var command = App.MainViewModel.RecordCommand;
+                    var command = MainViewModel.Instance.RecordCommand;
 
                     if (command.CanExecute(null))
                         command.Execute(null);
                 }
                 else if (id == _pauseId)
                 {
-                    var command = App.MainViewModel.PauseCommand;
+                    var command = MainViewModel.Instance.PauseCommand;
 
                     if (command.CanExecute(null))
                         command.Execute(null);
                 }
                 else if (id == _screenShotId)
                 {
-                    var command = App.MainViewModel.ScreenShotCommand;
+                    var command = MainViewModel.Instance.ScreenShotCommand;
 
                     if (command.CanExecute(null))
                         command.Execute(null);

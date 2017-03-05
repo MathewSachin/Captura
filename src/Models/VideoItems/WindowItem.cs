@@ -34,8 +34,8 @@ namespace Captura
 
             Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
 
-            return new WindowProvider(() => (App.MainViewModel.VideoViewModel.SelectedVideoSource as WindowItem).Window,
-                    convertColor(App.MainViewModel.VideoViewModel.BackgroundColor));
+            return new WindowProvider(() => (MainViewModel.Instance.VideoViewModel.SelectedVideoSource as WindowItem).Window,
+                    convertColor(MainViewModel.Instance.VideoViewModel.BackgroundColor));
         }
     }
 }

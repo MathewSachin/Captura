@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         WindowState="{Binding WindowState}"
-        DataContext="{StaticResource MainViewModel}"
+        DataContext="{x:Static local:MainViewModel.Instance}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
