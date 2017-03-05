@@ -8,6 +8,14 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
+        static void InitBass() => MixedAudioProvider.Init();
+
+        static AudioViewModel()
+        {
+            if (BassExists())
+                InitBass();
+        }
+
         public AudioViewModel()
         {
             CanEncode = File.Exists("ffmpeg.exe");
