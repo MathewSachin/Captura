@@ -58,6 +58,8 @@
     <Compile Include="Models\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpegVideoWriter.cs" />
+    <Compile Include="Models\HotKeyManager.cs" />
+    <Compile Include="Models\Modifiers.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />

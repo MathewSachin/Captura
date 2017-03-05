@@ -1,83 +1,77 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Interop;
 
 namespace Captura
 {
-    static class HotKey
+    class Hotkey
     {
-        const string DllName = "user32";
+        public Action Work { get; }
 
-        [DllImport(DllName)]
-        static extern bool UnregisterHotKey(IntPtr Hwnd, int Id);
-
-        [DllImport(DllName)]
-        static extern bool RegisterHotKey(IntPtr Hwnd, int Id, int Modifiers, int VirtualKey);
-
-        const int Alt = 1;
-        const int Ctrl = 2;
-        const int Shift = 4;
-        
-        static int _recordId, _pauseId, _screenShotId;
-        
-        public static void RegisterAll()
+        public Hotkey(Modifiers Modifiers, Keys Key, Action Work)
         {
-            var r = new Random();
+            this.Key = Key;
+            this.Modifiers = Modifiers;
+            this.Work = Work;
 
-            _recordId = r.Next();
-
-            if (!RegisterHotKey(IntPtr.Zero, _recordId, Ctrl | Alt | Shift, (int)Keys.R))
-                throw new Exception("Unable to register hotkey!");
-            
-            _pauseId = r.Next();
-
-            if (!RegisterHotKey(IntPtr.Zero, _pauseId, Ctrl | Alt | Shift, (int)Keys.P))
-                throw new Exception("Unable to register hotkey!");
-            
-            _screenShotId = r.Next();
-
-            if (!RegisterHotKey(IntPtr.Zero, _screenShotId, Ctrl | Alt | Shift, (int)Keys.S))
-                throw new Exception("Unable to register hotkey!");
-
-            ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
+            Register();
         }
         
-        static void ProcessMessage(ref MSG Message, ref bool Handled)
+        public bool IsRegistered { get; private set; }
+
+        public ushort ID { get; private set; }
+
+        public void Register()
         {
-            if (Message.message == 786)
+            var uid = Guid.NewGuid().ToString("N");
+            ID = GlobalAddAtom(uid);
+
+            if (IsRegistered)
+                return;
+            
+            if (RegisterHotKey(IntPtr.Zero, ID, Modifiers, Key))
             {
-                var id = Message.wParam.ToInt32();
-                
-                if (id == _recordId)
-                {
-                    var command = MainViewModel.Instance.RecordCommand;
-
-                    if (command.CanExecute(null))
-                        command.Execute(null);
-                }
-                else if (id == _pauseId)
-                {
-                    var command = MainViewModel.Instance.PauseCommand;
-
-                    if (command.CanExecute(null))
-                        command.Execute(null);
-                }
-                else if (id == _screenShotId)
-                {
-                    var command = MainViewModel.Instance.ScreenShotCommand;
-
-                    if (command.CanExecute(null))
-                        command.Execute(null);
-                }
+                IsRegistered = true;
+            }
+            else
+            {
+                GlobalDeleteAtom(ID);
+                ID = 0;
             }
         }
-        
-        public static void UnRegisterAll()
+
+        public Keys Key { get; set; }
+
+        public Modifiers Modifiers { get; set; }
+
+        public void Unregister()
         {
-            UnregisterHotKey(IntPtr.Zero, _recordId);
-            UnregisterHotKey(IntPtr.Zero, _pauseId);
-            UnregisterHotKey(IntPtr.Zero, _screenShotId);
+            if (!IsRegistered)
+                return;
+
+            if (UnregisterHotKey(IntPtr.Zero, ID))
+            {
+                IsRegistered = false;
+
+                GlobalDeleteAtom(ID);
+                ID = 0;
+            }
         }
+
+        #region Native
+        const string User32 = "user32", Kernel32 = "kernel32.dll";
+
+        [DllImport(Kernel32)]
+        static extern ushort GlobalAddAtom(string Text);
+
+        [DllImport(Kernel32)]
+        static extern ushort GlobalDeleteAtom(ushort Atom);
+
+        [DllImport(User32)]
+        static extern bool UnregisterHotKey(IntPtr Hwnd, int Id);
+
+        [DllImport(User32)]
+        static extern bool RegisterHotKey(IntPtr Hwnd, int Id, Modifiers Modifiers, Keys VirtualKey);
+        #endregion
     }
 }

@@ -11,11 +11,11 @@ namespace Captura
         {
             InitializeComponent();
             
-            HotKey.RegisterAll();
+            HotKeyManager.RegisterAll();
             
             Closed += (s, e) =>
             {
-                HotKey.UnRegisterAll();
+                HotKeyManager.UnRegisterAll();
                 Application.Current.Shutdown();
             };
         }
