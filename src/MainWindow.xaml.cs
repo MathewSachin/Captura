@@ -15,7 +15,7 @@ namespace Captura
             
             Closed += (s, e) =>
             {
-                HotKeyManager.UnRegisterAll();
+                HotKeyManager.Dispose();
                 Application.Current.Shutdown();
             };
         }
