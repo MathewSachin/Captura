@@ -39,7 +39,7 @@ namespace Captura
 
             _editing = !_editing;
 
-            Content = _editing ? "Press Hotkey" : _hotkey.ToString();
+            Content = _editing ? "Press new Hotkey..." : _hotkey.ToString();
         }
 
         protected override void OnLostFocus(RoutedEventArgs e)
@@ -51,6 +51,15 @@ namespace Captura
                 _editing = false;
                 Content = _hotkey.ToString();
             }
+        }
+
+        static bool IsValid(KeyEventArgs e)
+        {
+            return e.Key != Key.None 
+                && !e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
+                && e.Key != Key.LeftCtrl && e.Key != Key.RightCtrl
+                && e.Key != Key.LeftAlt && e.Key != Key.RightAlt
+                && e.Key != Key.LeftShift && e.Key != Key.RightShift;
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -66,16 +75,25 @@ namespace Captura
                 e.Handled = true;
                 
                 if (e.Key == Key.Escape)
-                {                
+                {
                     _newKey = Keys.None;
                     _newModifiers = 0;
 
                     HotkeyEdited();
                 }
-                else if (e.Key != Key.None && !e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows)
-                    && e.Key != Key.LeftCtrl && e.Key != Key.RightCtrl
-                    && e.Key != Key.LeftAlt && e.Key != Key.RightAlt
-                    && e.Key != Key.LeftShift && e.Key != Key.RightShift)
+                else if (e.Key == Key.System)
+                {
+                    if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+                        Content = "Alt + ...";
+                    else
+                    {
+                        _newKey = (Keys) KeyInterop.VirtualKeyFromKey(e.SystemKey);
+                        _newModifiers = Modifiers.Alt;
+                        
+                        HotkeyEdited();
+                    }
+                }
+                else if (IsValid(e))
                 {
                     _newKey = (Keys) KeyInterop.VirtualKeyFromKey(e.Key);
                     _newModifiers = (Modifiers)e.KeyboardDevice.Modifiers;
@@ -102,6 +120,34 @@ namespace Captura
             }
 
             base.OnPreviewKeyDown(e);
+        }
+
+        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        {
+            if (e.IsRepeat)
+                return;
+
+            if (_editing)
+            {
+                e.Handled = true;
+
+                if (e.Key == Key.Snapshot)
+                {
+                    _newKey = Keys.PrintScreen;
+                    _newModifiers = (Modifiers)e.KeyboardDevice.Modifiers;
+
+                    HotkeyEdited();
+                }
+                else if (e.Key == Key.System && e.SystemKey == Key.Snapshot)
+                {
+                    _newKey = Keys.PrintScreen;
+                    _newModifiers = Modifiers.Alt;
+                    
+                    HotkeyEdited();
+                }
+            }
+
+            base.OnPreviewKeyUp(e);
         }
     }
 }
