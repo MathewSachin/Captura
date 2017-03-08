@@ -151,6 +151,7 @@ namespace Captura
 
             SystemTray.DoubleClick += (s, e) =>
             {
+                App.Current.MainWindow.Show();
                 WindowState = WindowState.Normal;
                 App.Current.MainWindow.Focus();
             };
@@ -543,6 +544,9 @@ namespace Captura
                 _windowState = value;
 
                 OnPropertyChanged();
+
+                if (WindowState == WindowState.Minimized && OthersViewModel.MinimizeToTray)
+                    App.Current.MainWindow.Hide();
             }
         }
 

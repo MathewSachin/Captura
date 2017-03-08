@@ -35,5 +35,6 @@
     <v:String x:Key="s_StartDelay">Start Delay (in ms)</v:String>
     <v:String x:Key="s_CaptureDuration">Capture Duration (in seconds)</v:String>
     <v:String x:Key="s_MinCaptureStart">Minimize on Capture Start</v:String>
+    <v:String x:Key="s_MinTray">Minimize to System Tray</v:String>
     <v:String x:Key="s_OutputFolder">Output Folder</v:String>
 </ResourceDictionary>

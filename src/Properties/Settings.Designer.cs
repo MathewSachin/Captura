@@ -226,5 +226,17 @@ namespace Captura.Properties {
                 this["ScreenShotHotkeyMod"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinTray {
+            get {
+                return ((bool)(this["MinTray"]));
+            }
+            set {
+                this["MinTray"] = value;
+            }
+        }
     }
 }

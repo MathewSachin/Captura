@@ -102,5 +102,19 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
+
+        public bool MinimizeToTray
+        {
+            get { return Settings.Default.MinTray; }
+            set
+            {
+                if (Settings.Default.MinTray == value)
+                    return;
+
+                Settings.Default.MinTray = value;
+
+                OnPropertyChanged();
+            }
+        }
     }
 }

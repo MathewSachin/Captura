@@ -65,6 +65,10 @@
                                           IsChecked="{Binding OthersViewModel.MinimizeOnStart, Mode=TwoWay}"
                                           Margin="0,2"/>
 
+                <CheckBox Content="{DynamicResource s_MinTray}"
+                                          IsChecked="{Binding OthersViewModel.MinimizeToTray, Mode=TwoWay}"
+                                          Margin="0,2"/>
+
                 <TextBlock Margin="0,7,0,3"
                                            Text="{DynamicResource s_Gif}"
                                            FontWeight="Bold"/>
