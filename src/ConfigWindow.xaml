@@ -59,12 +59,13 @@
             <GridSplitter Height="1"
                           DockPanel.Dock="Bottom"/>
             <TabControl Background="Transparent">
-                <TabItem Header="Config">
+                <TabItem Header="{DynamicResource s_Configure}">
                     <Grid>
                         <ScrollViewer>
                             <StackPanel Margin="3">
                                 <DockPanel Margin="0,2">
-                                    <Label Content="Frame Rate:"
+                                    <Label Content="{DynamicResource s_FrameRate}"
+                                           ContentStringFormat="{}{0}:"
                                            VerticalContentAlignment="Center"
                                            Margin="0,0,5,0"/>
                                     <Label Content="{Binding VideoViewModel.FrameRate, StringFormat={}{0:N0}}"
@@ -80,9 +81,10 @@
                                 </DockPanel>
 
                                 <DockPanel Margin="0,2">
-                                    <Label Content="Quality:  " 
+                                    <Label Content="{DynamicResource s_Quality}"
+                                           ContentStringFormat="{}{0}:"
                                            VerticalContentAlignment="Center"
-                                           DockPanel.Dock="Left"/>
+                                           Margin="0,0,5,0"/>
                                     <Label Content="{Binding VideoViewModel.Quality}"
                                            ContentStringFormat="{}{0:N0}%"
                                            VerticalContentAlignment="Center"
@@ -96,38 +98,40 @@
                                 </DockPanel>
 
                                 <DockPanel Margin="0,2">
-                                    <Label Content="Background Color"
+                                    <Label Content="{DynamicResource s_BgColor}"
                                            VerticalContentAlignment="Center"
                                            Margin="0,0,5,0"/>
                                     <local:ColorPickerBox SelectedColor="{Binding VideoViewModel.BackgroundColor, Mode=TwoWay}"/>
                                 </DockPanel>
 
                                 <DockPanel Margin="0,2">
-                                    <Label Content="Start Delay (in ms)"
+                                    <Label Content="{DynamicResource s_StartDelay}"
                                            VerticalContentAlignment="Center"
                                            Margin="0,0,5,0"/>
                                     <local:NumericBox Value="{Binding OthersViewModel.StartDelay, Mode=TwoWay}"/>
                                 </DockPanel>
 
                                 <DockPanel Margin="0,2">
-                                    <Label Content="Capture Duration (in seconds)"
+                                    <Label Content="{DynamicResource s_CaptureDuration}"
                                            VerticalContentAlignment="Center"
                                            Margin="0,0,5,0"/>
                                     <local:NumericBox Value="{Binding OthersViewModel.Duration, Mode=TwoWay}"/>
                                 </DockPanel>
 
-                                <CheckBox Content="Minimize On Capture Start"
+                                <CheckBox Content="{DynamicResource s_MinCaptureStart}"
                                           IsChecked="{Binding OthersViewModel.MinimizeOnStart, Mode=TwoWay}"
                                           Margin="0,2"/>
 
-                                <TextBlock Margin="0,7,0,3"><Bold>Gif</Bold></TextBlock>
+                                <TextBlock Margin="0,7,0,3"
+                                           Text="{DynamicResource s_Gif}"
+                                           FontWeight="Bold"/>
 
                                 <CheckBox Margin="0,2"
-                                          Content="Unconstrained FrameRate"
+                                          Content="{DynamicResource s_GifUnconstrained}"
                                           IsChecked="{Binding GifViewModel.Unconstrained, Mode=TwoWay}"/>
 
                                 <DockPanel Margin="0,2">
-                                    <CheckBox Content="Repeat"
+                                    <CheckBox Content="{DynamicResource s_Repeat}"
                                               Margin="0,0,5,0"
                                               DockPanel.Dock="Left"
                                               IsChecked="{Binding GifViewModel.Repeat, Mode=TwoWay}"/>
@@ -136,7 +140,9 @@
                                                       Value="{Binding GifViewModel.RepeatCount, Mode=TwoWay}"/>
                                 </DockPanel>
 
-                                <TextBlock Margin="0,7,0,3"><Bold>ScreenShot</Bold></TextBlock>
+                                <TextBlock Margin="0,7,0,3"
+                                           Text="{DynamicResource s_ScreenShot}"
+                                           FontWeight="Bold"/>
 
                                 <Grid Margin="0,2">
                                     <Grid.ColumnDefinitions>
@@ -147,7 +153,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Label VerticalContentAlignment="Center"
-                                           Content="Save to"
+                                           Content="{DynamicResource s_SaveTo}"
                                            Margin="0,0,5,0"/>
 
                                     <ComboBox VerticalAlignment="Center" 
@@ -155,7 +161,7 @@
                                               ItemsSource="{Binding ScreenShotViewModel.SaveTo}"
                                               SelectedItem="{Binding ScreenShotViewModel.SelectedSaveTo, Mode=TwoWay}"/>
 
-                                    <Label Content="as"
+                                    <Label Content="{DynamicResource s_as}"
                                            Grid.Column="2"
                                            Margin="5,0"
                                            VerticalAlignment="Center"/>
@@ -173,7 +179,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Content="Resize"
+                                    <CheckBox Content="{DynamicResource s_Resize}"
                                               IsChecked="{Binding ScreenShotViewModel.DoResize, Mode=TwoWay}"
                                               Margin="0,0,5,0"/>
 
