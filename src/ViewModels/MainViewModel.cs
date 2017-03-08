@@ -75,6 +75,8 @@ namespace Captura
 
                     RecorderState = RecorderState.Paused;
                     Status = "Paused";
+
+                    ShowNotification("Recording Paused", " ", 500, null);
                 }
             }, () => RecorderState != RecorderState.NotRecording && _recorder != null);
 
@@ -147,7 +149,11 @@ namespace Captura
                 ContextMenu = new ContextMenu()
             };
 
-            SystemTray.DoubleClick += (s, e) => WindowState = WindowState.Minimized;
+            SystemTray.DoubleClick += (s, e) =>
+            {
+                WindowState = WindowState.Normal;
+                App.Current.MainWindow.Focus();
+            };
 
             SystemTray.BalloonTipClicked += (s, e) => _balloonAction?.Invoke();
 
@@ -168,17 +174,26 @@ namespace Captura
                 if (ScreenShotCommand.CanExecute(null))
                     ScreenShotCommand.Execute(null);
             });
+
+            var separator = new MenuItem
+            {
+                BarBreak = true
+            };
+
+            SystemTray.ContextMenu.MenuItems.Add(separator);
+
+            SystemTray.ContextMenu.MenuItems.Add("Exit", (s, e) => App.Current.Shutdown());
         }
 
         Action _balloonAction;
 
         public NotifyIcon SystemTray { get; private set; }
 
-        public void ShowNotification(string Title, string Text, Action ClickAction)
+        public void ShowNotification(string Title, string Text, int Duration, Action ClickAction)
         {
             _balloonAction = ClickAction;
             
-            SystemTray.ShowBalloonTip(3000, Title, Text, ToolTipIcon.None);
+            SystemTray.ShowBalloonTip(Duration, Title, Text, ToolTipIcon.None);
         }
         #endregion
 
@@ -287,6 +302,8 @@ namespace Captura
                         bmp.Save(fileName, imgFmt);
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image);
+
+                        ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
                     }
                     catch (Exception E)
                     {
@@ -445,6 +462,8 @@ namespace Captura
             // After Save
             RecentViewModel.Remove(savingRecentItem);
             RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio);
+
+            ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
         }
 
         #region Properties
