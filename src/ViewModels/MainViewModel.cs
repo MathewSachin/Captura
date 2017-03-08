@@ -252,8 +252,6 @@ namespace Captura
 
         void StartRecording()
         {
-            ConfigWindow.HideInstance();
-
             if (OthersViewModel.MinimizeOnStart)
                 WindowState = WindowState.Minimized;
             

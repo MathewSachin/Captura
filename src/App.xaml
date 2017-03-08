@@ -15,6 +15,11 @@
                 <ResourceDictionary Source="Languages/lang.en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <props:Settings x:Key="Settings"/>
+            <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
+            <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
+            <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
+            <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
