@@ -133,7 +133,54 @@ namespace Captura
 
             Settings.Default.OutputPath = OutPath;
             Settings.Default.Save();
+
+            InitSystemTray();
         }
+
+        #region System Tray
+        void InitSystemTray()
+        {
+            SystemTray = new NotifyIcon
+            {
+                Icon = Icon.ExtractAssociatedIcon("Captura.exe"),
+                Visible = true,
+                ContextMenu = new ContextMenu()
+            };
+
+            SystemTray.DoubleClick += (s, e) => WindowState = WindowState.Minimized;
+
+            SystemTray.BalloonTipClicked += (s, e) => _balloonAction?.Invoke();
+
+            SystemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) =>
+            {
+                if (RecordCommand.CanExecute(null))
+                    RecordCommand.Execute(null);
+            });
+
+            SystemTray.ContextMenu.MenuItems.Add("Pause/Resume Recording", (s, e) =>
+            {
+                if (PauseCommand.CanExecute(null))
+                    PauseCommand.Execute(null);
+            });
+
+            SystemTray.ContextMenu.MenuItems.Add("Take ScreenShot", (s, e) =>
+            {
+                if (ScreenShotCommand.CanExecute(null))
+                    ScreenShotCommand.Execute(null);
+            });
+        }
+
+        Action _balloonAction;
+
+        public NotifyIcon SystemTray { get; private set; }
+
+        public void ShowNotification(string Title, string Text, Action ClickAction)
+        {
+            _balloonAction = ClickAction;
+            
+            SystemTray.ShowBalloonTip(3000, Title, Text, ToolTipIcon.None);
+        }
+        #endregion
 
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
