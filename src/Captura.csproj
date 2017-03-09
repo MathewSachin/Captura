@@ -52,6 +52,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpegVideoWriter.cs" />

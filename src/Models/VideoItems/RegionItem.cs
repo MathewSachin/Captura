@@ -6,6 +6,11 @@ namespace Captura
 {
     class RegionItem : IVideoItem
     {
+        // Singleton
+        public static RegionItem Instance { get; } = new RegionItem();
+
+        RegionItem() { }
+
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
             Offset = () => RegionSelector.Instance.Rectangle.Location;

@@ -158,28 +158,13 @@ namespace Captura
 
             SystemTray.BalloonTipClicked += (s, e) => _balloonAction?.Invoke();
 
-            SystemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) =>
-            {
-                if (RecordCommand.CanExecute(null))
-                    RecordCommand.Execute(null);
-            });
+            SystemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) => RecordCommand.ExecuteIfCan());
 
-            SystemTray.ContextMenu.MenuItems.Add("Pause/Resume Recording", (s, e) =>
-            {
-                if (PauseCommand.CanExecute(null))
-                    PauseCommand.Execute(null);
-            });
+            SystemTray.ContextMenu.MenuItems.Add("Pause/Resume Recording", (s, e) => PauseCommand.ExecuteIfCan());
 
-            SystemTray.ContextMenu.MenuItems.Add("Take ScreenShot", (s, e) =>
-            {
-                if (ScreenShotCommand.CanExecute(null))
-                    ScreenShotCommand.Execute(null);
-            });
+            SystemTray.ContextMenu.MenuItems.Add("Take ScreenShot", (s, e) => ScreenShotCommand.ExecuteIfCan());
 
-            var separator = new MenuItem
-            {
-                BarBreak = true
-            };
+            var separator = new MenuItem { BarBreak = true };
 
             SystemTray.ContextMenu.MenuItems.Add(separator);
 

@@ -12,12 +12,15 @@ namespace Captura
     {
         public VideoViewModel()
         {
+            // Check if there are multiple Screens
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
 
+            // Check if FFMpeg is available
             if (File.Exists("ffmpeg.exe"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
 
+            // Check if SharpAvi is available, if not select Gif as default
             if (AllExist("Screna.SharpAvi.dll", "SharpAvi.dll"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
             else SelectedVideoWriterKind = VideoWriterKind.Gif;
@@ -34,29 +37,28 @@ namespace Captura
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
+                    // Desktop would be default
                     AvailableVideoSources.Add(WindowItem.Desktop);
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     foreach (var win in Window.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowItem(win));
-
-                    SelectedVideoSource = WindowItem.Desktop;
                     break;
 
                 case VideoSourceKind.Screen:
                     foreach (var screen in ScreenItem.Enumerate())
                         AvailableVideoSources.Add(screen);
-
-                    SelectedVideoSource = AvailableVideoSources[0];
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(new RegionItem());
-
-                    SelectedVideoSource = AvailableVideoSources[0];
+                    AvailableVideoSources.Add(RegionItem.Instance);
                     break;
             }
 
+            // Set first source as default
+            SelectedVideoSource = AvailableVideoSources[0];
+
+            // RegionSelector should only be shown on Region Capture.
             if (SelectedVideoSourceKind == VideoSourceKind.Region)
                 RegionSelector.Instance.Show();
             else RegionSelector.Instance.Hide();
@@ -71,6 +73,7 @@ namespace Captura
 
                 AvailableVideoWriters.Add(item);
 
+                // Set MotionJpeg as default
                 if (codec == AviCodec.MotionJpeg)
                     SelectedVideoWriter = item;
             }
@@ -104,11 +107,13 @@ namespace Captura
 
         public ObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; } = new ObservableCollection<VideoWriterKind>
         {
+            // Gif is always availble
             VideoWriterKind.Gif
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
 
+        // Give SharpAvi the default preference
         VideoWriterKind _writerKind = VideoWriterKind.SharpAvi;
 
         public VideoWriterKind SelectedVideoWriterKind

@@ -5,6 +5,7 @@ namespace Captura
 {
     public class GifItem : IVideoWriterItem
     {
+        // Singleton
         public static GifItem Instance { get; } = new GifItem();
 
         GifItem() { }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Windows.Interop;
 using Captura.Properties;
 
@@ -11,29 +10,14 @@ namespace Captura
         
         public static void RegisterAll()
         {
-            Hotkeys.Add(new Hotkey("Start/Stop Recording", (Modifiers) Settings.Default.RecordHotkeyMod, Settings.Default.RecordHotkey, () =>
-            {
-                var command = MainViewModel.Instance.RecordCommand;
-
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            }));
+            Hotkeys.Add(new Hotkey("Start/Stop Recording", (Modifiers) Settings.Default.RecordHotkeyMod, Settings.Default.RecordHotkey,
+                () => MainViewModel.Instance.RecordCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("Pause/Resume Recording", (Modifiers) Settings.Default.PauseHotkeyMod, Settings.Default.PauseHotkey, () =>
-            {
-                var command = MainViewModel.Instance.PauseCommand;
-
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            }));
+            Hotkeys.Add(new Hotkey("Pause/Resume Recording", (Modifiers) Settings.Default.PauseHotkeyMod, Settings.Default.PauseHotkey,
+                () => MainViewModel.Instance.PauseCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Default.ScreenShotHotkeyMod, Settings.Default.ScreenShotHotkey, () =>
-            {
-                var command = MainViewModel.Instance.ScreenShotCommand;
-
-                if (command.CanExecute(null))
-                    command.Execute(null);
-            }));
+            Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Default.ScreenShotHotkeyMod, Settings.Default.ScreenShotHotkey,
+                () => MainViewModel.Instance.ScreenShotCommand.ExecuteIfCan()));
 
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
         }
