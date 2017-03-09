@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Captura.Properties;
+using Screna;
+using Screna.Audio;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Media;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Captura.Properties;
-using Screna;
-using Screna.Audio;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Captura
 {
@@ -134,8 +134,7 @@ namespace Captura
                 Directory.CreateDirectory(OutPath);
 
             Settings.Default.OutputPath = OutPath;
-            Settings.Default.Save();
-
+            
             InitSystemTray();
         }
 

@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Captura.Properties;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
-using Captura.Properties;
-using System.Windows.Controls;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Captura
 {
@@ -14,7 +14,7 @@ namespace Captura
         
         public FrameworkElement AddTemp(string FileName)
         {
-            var i = new Button()
+            var i = new Button
             {
                 Content = "Saving " + Path.GetFileName(FileName),
                 IsEnabled = false

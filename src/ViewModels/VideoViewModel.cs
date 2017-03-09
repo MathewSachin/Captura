@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
 using Captura.Properties;
 using Screna;
 using Screna.Avi;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Media;
 
 namespace Captura
 {

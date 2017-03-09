@@ -1,8 +1,8 @@
+using Captura.Properties;
+using Screna.Audio;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Screna.Audio;
 using System.IO;
-using Captura.Properties;
 
 namespace Captura
 {
