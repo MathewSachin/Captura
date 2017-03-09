@@ -300,6 +300,8 @@ namespace Captura
                         Status = "Not Saved. " + E.Message;
                     }
                 }
+
+                bmp.Dispose();
             }
             else Status = "Not Saved - Image taken was Empty";
         }
