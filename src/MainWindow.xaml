@@ -7,7 +7,8 @@
         WindowStyle="None"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
-        SizeToContent="WidthAndHeight"
+        SizeToContent="Height"
+        Width="400"
         Title="{DynamicResource s_Title}"
         AllowsTransparency="True"
         Background="Transparent"
@@ -54,10 +55,15 @@
     </Window.TaskbarItemInfo>
     <Grid Background="#E7000000">
         <Expander Padding="5,0,0,0">
+            <Expander.HeaderTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
+                        <ContentPresenter Content="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
             <Expander.Header>
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
+                <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{DynamicResource s_ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
                                         IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
@@ -72,24 +78,25 @@
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
+                    <local:ModernButton ToolTip="{DynamicResource s_Close}"
+                                        Click="CloseButton_Click"
+                                        Foreground="#77ef5350"
+                                        IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                        DockPanel.Dock="Right"/>
+                    <local:ModernButton ToolTip="{DynamicResource s_Minimize}"
+                                        Click="MinButton_Click"
+                                        Foreground="#77FFFFFF"
+                                        IconData="M19,13H5V11H19V13Z"
+                                        DockPanel.Dock="Right"/>
                     <Grid Background="#57222222"
-                          Width="150"
                           Cursor="Hand"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding TimeSpan}"
                                Foreground="White"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                               VerticalContentAlignment="Center"
+                               HorizontalContentAlignment="Center"/>
                     </Grid>
-                    <local:ModernButton ToolTip="{DynamicResource s_Minimize}"
-                                        Click="MinButton_Click"
-                                        Foreground="#77FFFFFF"
-                                        IconData="M19,13H5V11H19V13Z"/>
-                    <local:ModernButton ToolTip="{DynamicResource s_Close}"
-                                        Click="CloseButton_Click"
-                                        Foreground="#77ef5350"
-                                        IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-                </StackPanel>
+                </DockPanel>
             </Expander.Header>
             <DockPanel Background="White"
                        Margin="-5,0,0,0"
