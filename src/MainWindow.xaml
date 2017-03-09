@@ -3,16 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         WindowState="{Binding WindowState}"
-        DataContext="{StaticResource MainViewModel}"
+        DataContext="{x:Static local:MainViewModel.Instance}"
+        WindowStyle="None"
+        ResizeMode="CanMinimize"
         Icon="Captura.ico"
-        MinHeight="143"
-        MinWidth="400"
+        SizeToContent="WidthAndHeight"
         Title="{DynamicResource s_Title}"
-        Height="500"
-        Width="400">
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseMove="Window_MouseMove">
     <Window.Resources>
-        <local:BoolToPauseButtonAngleConverter x:Key="BoolToPauseButtonAngleConverter"/>
-        <local:BoolToRecordButtonGeometryConverter x:Key="BoolToRecordButtonGeometryConverter"/>
         <Style TargetType="TabItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -47,119 +49,91 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
-        <Rectangle Height="96" 
-                   HorizontalAlignment="Stretch" 
-                   VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1" Opacity=".1">
-                    <GradientStop Offset="0" Color="{DynamicResource AccentColor}" />
-                    <GradientStop Offset=".3" Color="{DynamicResource AccentColor}" />
-                    <GradientStop Offset="1" Color="Transparent" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <DockPanel>
-            <DockPanel DockPanel.Dock="Bottom"
-                       Background="{DynamicResource Accent}">
-                <DockPanel DockPanel.Dock="Bottom"
-                           Margin="5,0,5,5">
-                    <Label Content="{Binding TimeSpan}"
-                           Foreground="White"
-                           DockPanel.Dock="Right"/>
-                    <Label Content="{Binding Status}"
-                           Foreground="White"/>
-                </DockPanel>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"/>
+    </Window.TaskbarItemInfo>
+    <Grid Background="#E7000000">
+        <Expander Padding="5,0,0,0">
+            <Expander.Header>
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Orientation="Horizontal"
-                            Margin="0,10">
-                    <StackPanel.Resources>
-                        <SolidColorBrush x:Key="ModernButtonBorder" Color="Transparent" />
-                        <SolidColorBrush x:Key="ModernButtonBorderHover" Color="#31FFFFFF" />
-                        <SolidColorBrush x:Key="ModernButtonBorderPressed" Color="#31FFFFFF" />
-                        <SolidColorBrush x:Key="ModernButtonBorderDisabled" Color="Transparent" />
-                        <SolidColorBrush x:Key="ModernButtonIconBackgroundPressed" Color="#77FFFFFF" />
-                        <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" Color="#B7000000" />
-                    </StackPanel.Resources>
-                    <local:ModernButton IconHeight="30"
-                                       IconWidth="30"
-                                       EllipseDiameter="60"
-                                       ToolTip="Refresh"
-                                       Command="{Binding RefreshCommand}"
-                                       Margin="5,0"
-                                       Foreground="White"
-                                       IconData="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " />
-                    <local:ModernButton IconHeight="30"
-                                       IconWidth="30"
-                                       EllipseDiameter="60"
-                                       Foreground="White"
-                                       Margin="5,0"
-                                       ToolTip="{DynamicResource s_ScreenShot}"
-                                       Command="{Binding ScreenShotCommand}"
-                                       IconData="F1 M 30,27C 30,24.3766 32.3767,22 35,22L 41,22C 43.6234,22 46,24.3766 46,27L 50.9999,27.0001C 53.7613,27.0001 55.9999,29.2387 55.9999,32.0001L 55.9999,46.0001C 55.9999,48.7615 53.7613,51.0001 50.9999,51.0001L 25,51.0001C 22.2385,51.0001 20,48.7615 20,46.0001L 20,32.0001C 20,29.2387 22.2385,27.0001 25,27.0001L 30,27 Z M 25.5,30C 24.6716,30 24,30.8954 24,32C 24,33.1046 24.6716,34 25.5,34C 26.3284,34 27,33.1046 27,32C 27,30.8954 26.3284,30 25.5,30 Z M 38,32C 34.134,32 31,35.134 31,39C 31,42.866 34.134,46 38,46C 41.866,46 45,42.866 45,39C 45,35.134 41.866,32 38,32 Z M 38,34.5C 40.4853,34.5 42.5,36.5147 42.5,39C 42.5,41.4853 40.4853,43.5 38,43.5C 35.5147,43.5 33.5,41.4853 33.5,39C 33.5,36.5147 35.5147,34.5 38,34.5 Z "/>
-                    <local:ModernButton IconHeight="30"
-                                       IconWidth="30"
-                                       EllipseDiameter="60"
-                                       Foreground="White"
-                                       ToolTip="Record|Stop"
-                                       Margin="5,0"
-                                       Command="{Binding RecordCommand}"
-                                       IconData="{Binding ReadyToRecord, Converter={StaticResource BoolToRecordButtonGeometryConverter}}"/>
-                    <local:ModernButton IconHeight="30" 
-                                       IconWidth="30"
-                                       EllipseDiameter="60"
-                                       ToolTip="Pause|Resume" 
-                                       Margin="5,0"
-                                       Foreground="White"
-                                       Command="{Binding PauseCommand}"
-                                       IconData="F1 M 26.9167,23.75L 33.25,23.75L 33.25,52.25L 26.9167,52.25L 26.9167,23.75 Z M 42.75,23.75L 49.0833,23.75L 49.0833,52.25L 42.75,52.25L 42.75,23.75 Z">
+                            Orientation="Horizontal">
+                    <local:ModernButton ToolTip="{DynamicResource s_ScreenShot}"
+                                        Command="{Binding ScreenShotCommand}"
+                                        IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
+                    <local:ModernButton ToolTip="{DynamicResource s_RecordStop}"
+                                        Command="{Binding RecordCommand}"
+                                        Foreground="#b71c1c"
+                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                    <local:ModernButton ToolTip="{DynamicResource s_PauseResume}" 
+                                        Command="{Binding PauseCommand}"
+                                        IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
                         <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding IsPaused, Converter={StaticResource BoolToPauseButtonAngleConverter}}"/>
+                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
+                    <Grid Background="#57222222"
+                          Width="150"
+                          Cursor="Hand"
+                          PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
+                        <Label Content="{Binding TimeSpan}"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                    </Grid>
+                    <local:ModernButton ToolTip="{DynamicResource s_Minimize}"
+                                        Click="MinButton_Click"
+                                        Foreground="#77FFFFFF"
+                                        IconData="M19,13H5V11H19V13Z"/>
+                    <local:ModernButton ToolTip="{DynamicResource s_Close}"
+                                        Click="CloseButton_Click"
+                                        Foreground="#77ef5350"
+                                        IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
                 </StackPanel>
+            </Expander.Header>
+            <DockPanel Background="White"
+                       Margin="-5,0,0,0"
+                       Height="450">
+                <Label Margin="5"
+                       Content="{Binding Status}"
+                       Opacity="0.9"
+                       DockPanel.Dock="Bottom"/>
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Button Content="..."
+                            DockPanel.Dock="Right"
+                            Command="{Binding SelectOutputFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                    <Button Content="{DynamicResource s_OutputFolder}"
+                            ContentStringFormat="{}{0}: "
+                            DockPanel.Dock="Left"
+                            Padding="5,0"
+                            VerticalContentAlignment="Center"
+                            Command="{Binding OpenOutputFolderCommand}"/>
+                    <TextBox IsReadOnly="True"
+                             Text="{Binding OutPath}"/>
+                </DockPanel>
+                <GridSplitter Height="1"
+                              DockPanel.Dock="Bottom"/>
+                <DockPanel>
+                    <TabControl Background="Transparent">
+                        <TabItem Header="Main">
+                            <Frame Source="Views/MainConfigView.xaml"/>
+                        </TabItem>
+                        <TabItem Header="{DynamicResource s_Configure}">
+                            <Frame Source="Views/ConfigView.xaml"/>
+                        </TabItem>
+                        <TabItem Header="{DynamicResource s_Recent}">
+                            <Frame Source="Views/RecentView.xaml"/>
+                        </TabItem>
+                        <TabItem Header="Hotkeys">
+                            <Frame Source="Views/HotkeyView.xaml"/>
+                        </TabItem>
+                        <TabItem Header="{DynamicResource s_About}">
+                            <Frame Source="Views/AboutView.xaml"/>
+                        </TabItem>
+                    </TabControl>
+                </DockPanel>
             </DockPanel>
-            <GridSplitter Height="1"
-                          DockPanel.Dock="Bottom"/>
-            <DockPanel DockPanel.Dock="Bottom">
-                <Button Content="..."
-                        DockPanel.Dock="Right"
-                        Command="{Binding SelectOutputFolderCommand}"/>
-                <Button Content="{DynamicResource s_OutputFolder}"
-                        ContentStringFormat="{}{0}: "
-                        DockPanel.Dock="Left"
-                        Padding="5,0"
-                        VerticalContentAlignment="Center"
-                        Command="{Binding OpenOutputFolderCommand}"/>
-                <TextBox IsReadOnly="True"
-                         Text="{Binding OutPath}"/>
-            </DockPanel>
-            <GridSplitter Height="1"
-                          DockPanel.Dock="Bottom"/>
-            <TabControl Background="Transparent">
-                <TabItem Header="{DynamicResource s_Video}">
-                    <Frame Source="Views/VideoView.xaml"/>
-                </TabItem>
-                <TabItem Header="{DynamicResource s_ScreenShot}">
-                    <Frame Source="Views/ScreenShotView.xaml"/>
-                </TabItem>
-                <TabItem Header="Gif">
-                    <Frame Source="Views/GifView.xaml"/>
-                </TabItem>
-                <TabItem Header="{DynamicResource s_Audio}">
-                    <Frame Source="Views/AudioView.xaml"/>
-                </TabItem>
-                <TabItem Header="{DynamicResource s_Other}">
-                    <Frame Source="Views/OthersView.xaml"/>
-                </TabItem>
-                <TabItem Header="{DynamicResource s_Recent}">
-                    <Frame Source="Views/RecentView.xaml"/>
-                </TabItem>
-                <TabItem Header="{DynamicResource s_About}">
-                    <Frame Source="Views/AboutView.xaml"/>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
+        </Expander>
     </Grid>
 </Window>

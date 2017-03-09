@@ -5,27 +5,15 @@ namespace Captura
     public class OthersViewModel : ViewModelBase
     {
         readonly RegionSelector _regionSelector = RegionSelector.Instance;
-
+        
         public OthersViewModel()
         {
+            MouseKeyHookAvailable = AllExist("Screna.MouseKeyHook.dll", "Gma.System.MouseKeyHook.dll");
+
             _regionSelector.Closing += (Sender, Args) => Args.Cancel = true;
         }
-
-        public bool RegionSelectorVisible
-        {
-            get { return _regionSelector.IsVisible; }
-            set
-            {
-                if (RegionSelectorVisible == value)
-                    return;
-                
-                if (value)
-                    _regionSelector.Show();
-                else _regionSelector.Hide();
-
-                OnPropertyChanged();
-            }
-        }
+        
+        public bool MouseKeyHookAvailable { get; }
 
         int _duration;
 
@@ -86,22 +74,6 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        bool _staticRegion;
-
-        public bool StaticRegion
-        {
-            get { return _staticRegion; }
-            set
-            {
-                if (_staticRegion == value)
-                    return;
-
-                _staticRegion = value;
-
-                OnPropertyChanged();
-            }
-        }
         
         public bool Cursor
         {
@@ -126,6 +98,20 @@ namespace Captura
                     return;
 
                 Settings.Default.MinimizeOnStart = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MinimizeToTray
+        {
+            get { return Settings.Default.MinTray; }
+            set
+            {
+                if (Settings.Default.MinTray == value)
+                    return;
+
+                Settings.Default.MinTray = value;
 
                 OnPropertyChanged();
             }

@@ -1,0 +1,16 @@
+version: 1.0.{build}
+
+install:
+  # Update Submodules
+  - git submodule init
+  - git submodule update
+
+  # Restore packages for Screna
+  - nuget restore Screna/src/Screna.sln
+
+  # Restore packages for Captura
+  - nuget restore src/Captura.sln
+
+# Build Off till AppVeyor supports VS 2017
+build: off
+  # project: src\Captura.sln

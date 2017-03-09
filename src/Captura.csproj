@@ -37,29 +37,6 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ManagedBass.1.0.1\lib\net45\ManagedBass.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.0.6.0\lib\net40\Screna.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna.MouseKeyHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.MouseKeyHook.0.2.0\lib\net40\Screna.MouseKeyHook.dll</HintPath>
-    </Reference>
-    <Reference Include="Screna.SharpAvi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Screna.SharpAvi.0.4.0\lib\net40\Screna.SharpAvi.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -75,47 +52,67 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MixedAudioProvider.cs" />
-    <Compile Include="Utility\BoolToPauseButtonAngleConverter.cs" />
-    <Compile Include="Utility\BoolToRecordButtonGeometryConverter.cs" />
-    <Compile Include="Utility\DWMApi.cs" />
-    <Compile Include="Utility\ModernButton.cs" />
-    <Compile Include="Utility\RecentItemType.cs" />
-    <Compile Include="Utility\ScreenVSLI.cs" />
+    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\FFMpegAudioWriter.cs" />
+    <Compile Include="Models\FFMpegMuxedWriter.cs" />
+    <Compile Include="Models\FFMpegVideoWriter.cs" />
+    <Compile Include="Models\HotKeyManager.cs" />
+    <Compile Include="Models\Modifiers.cs" />
+    <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
+    <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
+    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
+    <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
+    <Compile Include="Models\VideoWriterKind.cs" />
+    <Compile Include="Presentation\Controls\HotkeySelector.cs" />
+    <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
+    <Compile Include="Models\HotKey.cs" />
+    <Compile Include="Models\VideoItems\IVideoItem.cs" />
+    <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
+    <Compile Include="Presentation\Controls\ModernButton.cs" />
+    <Compile Include="Models\RecentItemType.cs" />
+    <Compile Include="Models\VideoItems\RegionItem.cs" />
+    <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
-    <Compile Include="Utility\DelegateCommand.cs" />
+    <Compile Include="Presentation\DelegateCommand.cs" />
     <Compile Include="ViewModels\GifViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OthersViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
     <Compile Include="ViewModels\ScreenShotViewModel.cs" />
-    <Compile Include="Utility\VideoSourceKind.cs" />
+    <Compile Include="Models\VideoSourceKind.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\ColorPickerBox.xaml.cs">
+    <Compile Include="Presentation\Controls\ColorPickerBox.xaml.cs">
       <DependentUpon>ColorPickerBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\NumericBox.xaml.cs">
+    <Compile Include="Presentation\Controls\NumericBox.xaml.cs">
       <DependentUpon>NumericBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\RecentItem.xaml.cs">
+    <Compile Include="Presentation\Controls\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\StaticRegionProvider.cs" />
+    <Compile Include="Models\StaticRegionProvider.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Utility\RegionSelector.xaml.cs">
+    <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility\WindowVSLI.cs" />
+    <Compile Include="Models\VideoItems\WindowItem.cs" />
+    <Compile Include="Views\HotkeyView.xaml.cs">
+      <DependentUpon>HotkeyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -135,71 +132,71 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Button.xaml">
+    <Page Include="Presentation\Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\CheckBox.xaml">
+    <Page Include="Presentation\Themes\CheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ComboBox.xaml">
+    <Page Include="Presentation\Themes\ComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ContextMenu.xaml">
+    <Page Include="Presentation\Themes\ContextMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Hyperlink.xaml">
+    <Page Include="Presentation\Themes\Hyperlink.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Label.xaml">
+    <Page Include="Presentation\Themes\Label.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ListBox.xaml">
+    <Page Include="Presentation\Themes\ListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\MenuItem.xaml">
+    <Page Include="Presentation\Themes\MenuItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ModernButton.xaml">
+    <Page Include="Presentation\Themes\ModernToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic.xaml">
+    <Page Include="Presentation\Themes\ModernButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ModernUI.xaml">
+    <Page Include="Presentation\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\RadioButton.xaml">
+    <Page Include="Presentation\Themes\RadioButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ScrollBar.xaml">
+    <Page Include="Presentation\Themes\ScrollBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Slider.xaml">
+    <Page Include="Presentation\Themes\Slider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\TextBlock.xaml">
+    <Page Include="Presentation\Themes\TextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\TextBox.xaml">
+    <Page Include="Presentation\Themes\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ToolTip.xaml">
+    <Page Include="Presentation\Themes\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -207,39 +204,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\ColorPickerBox.xaml">
+    <Page Include="Presentation\Controls\ColorPickerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Utility\NumericBox.xaml">
+    <Page Include="Presentation\Controls\NumericBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utility\RecentItem.xaml">
+    <Page Include="Presentation\Controls\RecentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HotkeyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AudioView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\OthersView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\GifView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VideoView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ScreenShotView.xaml">
+    <Page Include="Views\ConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -251,7 +240,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Utility\RegionSelector.xaml">
+    <Page Include="Presentation\Controls\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -273,5 +261,24 @@
   <ItemGroup>
     <SplashScreen Include="Logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Screna\src\Core\Screna.csproj">
+      <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
+      <Name>Screna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.Bass\Screna.Bass.csproj">
+      <Project>{3ebfe614-c01a-4680-8ef4-5ba144511788}</Project>
+      <Name>Screna.Bass</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.MouseKeyHook\Screna.MouseKeyHook.csproj">
+      <Project>{bfa19237-2364-484e-8c95-166409769081}</Project>
+      <Name>Screna.MouseKeyHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Extensions\Screna.SharpAvi\Screna.SharpAvi.csproj">
+      <Project>{38aa61f3-ec21-4722-b36e-fa52df1a28ab}</Project>
+      <Name>Screna.SharpAvi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

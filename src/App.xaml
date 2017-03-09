@@ -1,7 +1,6 @@
 ﻿<Application x:Class="Captura.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:props="clr-namespace:Captura.Properties"
              xmlns:local="clr-namespace:Captura"
              Exit="Application_Exit"
              ShutdownMode="OnMainWindowClose"
@@ -10,12 +9,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="Presentation/Themes/Generic.xaml" />
                 <ResourceDictionary Source="Languages/default.xaml" />
                 <ResourceDictionary Source="Languages/lang.en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <props:Settings x:Key="Settings"/>
-            <local:MainViewModel x:Key="MainViewModel"/>
+            <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
+            <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
+            <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
+            <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

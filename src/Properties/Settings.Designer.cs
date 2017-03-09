@@ -12,7 +12,7 @@ namespace Captura.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -37,7 +37,7 @@ namespace Captura.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IncludeCursor {
             get {
                 return ((bool)(this["IncludeCursor"]));
@@ -152,6 +152,90 @@ namespace Captura.Properties {
             }
             set {
                 this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("R")]
+        public global::System.Windows.Forms.Keys RecordHotkey {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["RecordHotkey"]));
+            }
+            set {
+                this["RecordHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int RecordHotkeyMod {
+            get {
+                return ((int)(this["RecordHotkeyMod"]));
+            }
+            set {
+                this["RecordHotkeyMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("P")]
+        public global::System.Windows.Forms.Keys PauseHotkey {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["PauseHotkey"]));
+            }
+            set {
+                this["PauseHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int PauseHotkeyMod {
+            get {
+                return ((int)(this["PauseHotkeyMod"]));
+            }
+            set {
+                this["PauseHotkeyMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public global::System.Windows.Forms.Keys ScreenShotHotkey {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ScreenShotHotkey"]));
+            }
+            set {
+                this["ScreenShotHotkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int ScreenShotHotkeyMod {
+            get {
+                return ((int)(this["ScreenShotHotkeyMod"]));
+            }
+            set {
+                this["ScreenShotHotkeyMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinTray {
+            get {
+                return ((bool)(this["MinTray"]));
+            }
+            set {
+                this["MinTray"] = value;
             }
         }
     }

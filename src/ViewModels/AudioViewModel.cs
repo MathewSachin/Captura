@@ -1,39 +1,32 @@
+using Captura.Properties;
+using Screna.Audio;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Screna.Audio;
-using ManagedBass;
 using System.IO;
-using System;
-using Screna.Lame;
-using Captura.Properties;
 
 namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        static bool IsLamePresent { get; } = File.Exists
-        (
-            Path.Combine
-            (
-                Path.GetDirectoryName(typeof(AudioViewModel).Assembly.Location),
-                $"lameenc{(Environment.Is64BitProcess ? "64" : "32")}.dll"
-            )
-        );
+        // Separate method required for BASS to be optional.
+        static void InitBass() => MixedAudioProvider.Init();
+
+        static AudioViewModel()
+        {
+            if (BassExists())
+                InitBass();
+        }
 
         public AudioViewModel()
         {
-            CanEncode = IsLamePresent;
-            
-            if (IsLamePresent)
-            {
-                SupportedBitRates = Mp3EncoderLame.SupportedBitRates;
-                _bitrate = Mp3EncoderLame.SupportedBitRates[1];
-            }
-            else Encode = false;
+            CanEncode = File.Exists("ffmpeg.exe");
+
+            if (!CanEncode)
+                Encode = false;
 
             RefreshAudioSources();
         }
-
+        
         public ObservableCollection<KeyValuePair<int?, string>> AvailableRecordingSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
         public ObservableCollection<KeyValuePair<int?, string>> AvailableLoopbackSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
 
@@ -60,25 +53,7 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        public IEnumerable<int> SupportedBitRates { get; }
- 
-        int _bitrate;
-
-        public int SelectedBitRate
-        {
-            get { return _bitrate; }
-            set
-            {
-                if (_bitrate == value)
-                    return;
-
-                _bitrate = value;
-
-                OnPropertyChanged();
-            }
-        }
-        
+                
         public bool Encode
         {
             get { return Settings.Default.EncodeAudio; }
@@ -108,7 +83,12 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-               
+        
+        static bool BassExists()
+        {
+            return AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
+        }
+
         public void RefreshAudioSources()
         {
             AvailableRecordingSources.Clear();
@@ -116,17 +96,29 @@ namespace Captura
 
             AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
             AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
-            
-            DeviceInfo info;
 
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); ++i)
-            {
-                if (info.IsLoopback)
-                    AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(i, info.Name));
-                else AvailableRecordingSources.Add(new KeyValuePair<int?, string>(i, info.Name));
-            }
+            if (BassExists())
+                LoadBassDevices();
 
             SelectedRecordingSource = SelectedLoopbackSource = null;
+        }
+
+        // Separate method required for BASS to be optional.
+        void LoadBassDevices()
+        {
+            MixedAudioProvider.GetDevices(out var recs, out var loops);
+
+            foreach (var rec in recs)
+                AvailableRecordingSources.Add(rec);
+
+            foreach (var loop in loops)
+                AvailableLoopbackSources.Add(loop);
+        }
+
+        // Separate method required for BASS to be optional.
+        IAudioProvider GetMixedAudioProvider()
+        {
+            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
         
         public IAudioProvider GetAudioSource()
@@ -134,13 +126,13 @@ namespace Captura
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
+            return GetMixedAudioProvider();
         }
 
-        public IAudioFileWriter GetAudioFileWriter(string FileName, Screna.Audio.WaveFormat Wf)
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            return Encode ? new AudioFileWriter(FileName, new Mp3EncoderLame(Wf.Channels, Wf.SampleRate, SelectedBitRate))
-                          : new AudioFileWriter(FileName, Wf);            
+            return Encode ? (IAudioFileWriter)new FFMpegAudioWriter(FileName)
+                          : new AudioFileWriter(FileName, Wf);
         }
     }
 }
