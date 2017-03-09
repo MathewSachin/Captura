@@ -8,13 +8,10 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
-        // Separate method required for BASS to be optional.
-        static void InitBass() => MixedAudioProvider.Init();
-
         static AudioViewModel()
         {
             if (BassExists())
-                InitBass();
+                MixedAudioProvider.Init();
         }
 
         public AudioViewModel()
@@ -86,7 +83,7 @@ namespace Captura
         
         static bool BassExists()
         {
-            return AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
+            return AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
         }
 
         public void RefreshAudioSources()
@@ -102,8 +99,7 @@ namespace Captura
 
             SelectedRecordingSource = SelectedLoopbackSource = null;
         }
-
-        // Separate method required for BASS to be optional.
+        
         void LoadBassDevices()
         {
             MixedAudioProvider.GetDevices(out var recs, out var loops);
@@ -114,19 +110,13 @@ namespace Captura
             foreach (var loop in loops)
                 AvailableLoopbackSources.Add(loop);
         }
-
-        // Separate method required for BASS to be optional.
-        IAudioProvider GetMixedAudioProvider()
-        {
-            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
-        }
         
         public IAudioProvider GetAudioSource()
         {
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)
                 return null;
 
-            return GetMixedAudioProvider();
+            return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)

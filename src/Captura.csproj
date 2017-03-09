@@ -40,6 +40,12 @@
     <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ManagedBass.1.0.2\lib\net45\ManagedBass.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -60,6 +66,7 @@
     <Compile Include="Models\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpegVideoWriter.cs" />
     <Compile Include="Models\HotKeyManager.cs" />
+    <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\Modifiers.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
@@ -271,10 +278,6 @@
     <ProjectReference Include="..\Screna\src\Core\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
       <Name>Screna</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Screna\src\Extensions\Screna.Bass\Screna.Bass.csproj">
-      <Project>{3ebfe614-c01a-4680-8ef4-5ba144511788}</Project>
-      <Name>Screna.Bass</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\src\Extensions\Screna.SharpAvi\Screna.SharpAvi.csproj">
       <Project>{38aa61f3-ec21-4722-b36e-fa52df1a28ab}</Project>
