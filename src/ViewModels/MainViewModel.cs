@@ -562,9 +562,7 @@ namespace Captura
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 
         public AudioViewModel AudioViewModel { get; } = new AudioViewModel();
-
-        public AboutViewModel AboutViewModel { get; } = new AboutViewModel();
-
+        
         public GifViewModel GifViewModel { get; } = new GifViewModel();
 
         public ScreenShotViewModel ScreenShotViewModel { get; } = new ScreenShotViewModel();
