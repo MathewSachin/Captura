@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura", "Captura.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna", "..\Screna\src\Core\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna.SharpAvi", "..\Screna\src\Extensions\Screna.SharpAvi\Screna.SharpAvi.csproj", "{38AA61F3-EC21-4722-B36E-FA52DF1A28AB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Screna", "Screna", "{82416D7D-4A91-466E-AEF5-3A28DDE97963}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,16 +21,8 @@ Global
 		{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38AA61F3-EC21-4722-B36E-FA52DF1A28AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38AA61F3-EC21-4722-B36E-FA52DF1A28AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38AA61F3-EC21-4722-B36E-FA52DF1A28AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38AA61F3-EC21-4722-B36E-FA52DF1A28AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{23CB9ADB-BA9F-4618-BD0C-589A00A532E5} = {82416D7D-4A91-466E-AEF5-3A28DDE97963}
-		{38AA61F3-EC21-4722-B36E-FA52DF1A28AB} = {82416D7D-4A91-466E-AEF5-3A28DDE97963}
 	EndGlobalSection
 EndGlobal

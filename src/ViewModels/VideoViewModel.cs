@@ -21,7 +21,7 @@ namespace Captura
                 AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
 
             // Check if SharpAvi is available, if not select Gif as default
-            if (AllExist("Screna.SharpAvi.dll", "SharpAvi.dll"))
+            if (File.Exists("SharpAvi.dll"))
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
             else SelectedVideoWriterKind = VideoWriterKind.Gif;
 
@@ -64,8 +64,7 @@ namespace Captura
                 RegionSelector.Instance.Show();
             else RegionSelector.Instance.Hide();
         }
-
-        // Separate method required for SharpAvi to be optional.
+        
         void InitSharpAviCodecs()
         {
             foreach (var codec in AviWriter.EnumerateEncoders())
