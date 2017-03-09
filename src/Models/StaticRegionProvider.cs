@@ -6,27 +6,25 @@ namespace Captura
 {
     class StaticRegionProvider : IImageProvider
     {
-        readonly RegionSelector _regSel;
-
-        public StaticRegionProvider(RegionSelector RegSel)
+        public StaticRegionProvider()
         {
-            _regSel = RegSel;
+            var regSel = RegionSelector.Instance;
 
-            Height = (int)RegSel.Height - 26;
-            Width = (int)RegSel.Width - 6;
+            var rect = regSel.Rectangle;
+            Height = rect.Height;
+            Width = rect.Width;
 
-            RegSel.ResizeMode = ResizeMode.NoResize;
+            // Prevent Resize
+            regSel.ResizeMode = ResizeMode.NoResize;
         }
         
-        public Bitmap Capture()
-        {
-            return ScreenShot.Capture(_regSel.Rectangle);
-        }
+        public Bitmap Capture() => ScreenShot.Capture(RegionSelector.Instance.Rectangle);
 
         public int Height { get; }
 
         public int Width { get; }
 
-        public void Dispose() => _regSel.ResizeMode = ResizeMode.CanResize;
+        // Make resizable again after capture, invoke on UI Thread
+        public void Dispose() => RegionSelector.Instance.Dispatcher.Invoke(() => RegionSelector.Instance.ResizeMode = ResizeMode.CanResize);
     }
 }

@@ -56,7 +56,8 @@ namespace Captura
             }
 
             // Set first source as default
-            SelectedVideoSource = AvailableVideoSources[0];
+            if (AvailableVideoSources.Count > 0)
+                SelectedVideoSource = AvailableVideoSources[0];
 
             // RegionSelector should only be shown on Region Capture.
             if (SelectedVideoSourceKind == VideoSourceKind.Region)

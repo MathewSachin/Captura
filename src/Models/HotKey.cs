@@ -27,13 +27,12 @@ namespace Captura
             if (IsRegistered || Key == Keys.None)
                 return;
 
+            // Generate Unique ID
             var uid = Guid.NewGuid().ToString("N");
             ID = GlobalAddAtom(uid);
             
             if (RegisterHotKey(IntPtr.Zero, ID, Modifiers, Key))
-            {
                 IsRegistered = true;
-            }
             else
             {
                 GlobalDeleteAtom(ID);
@@ -72,7 +71,7 @@ namespace Captura
         }
 
         #region Native
-        const string User32 = "user32", Kernel32 = "kernel32.dll";
+        const string User32 = "user32", Kernel32 = "kernel32";
 
         [DllImport(Kernel32)]
         static extern ushort GlobalAddAtom(string Text);

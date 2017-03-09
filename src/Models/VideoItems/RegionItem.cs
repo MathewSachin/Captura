@@ -15,7 +15,7 @@ namespace Captura
         {
             Offset = () => RegionSelector.Instance.Rectangle.Location;
 
-            return new StaticRegionProvider(RegionSelector.Instance);
+            return new StaticRegionProvider();
         }
 
         public override string ToString() => "RegionSelector";

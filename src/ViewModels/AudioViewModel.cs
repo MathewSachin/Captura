@@ -8,6 +8,7 @@ namespace Captura
 {
     public class AudioViewModel : ViewModelBase
     {
+        // Separate method required for BASS to be optional.
         static void InitBass() => MixedAudioProvider.Init();
 
         static AudioViewModel()
@@ -83,7 +84,7 @@ namespace Captura
             }
         }
         
-        public static bool BassExists()
+        static bool BassExists()
         {
             return AllExist("Screna.Bass.dll", "ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
         }
