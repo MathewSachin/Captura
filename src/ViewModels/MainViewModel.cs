@@ -183,7 +183,11 @@ namespace Captura
 
             SystemTray.ContextMenu.MenuItems.Add(separator);
 
-            SystemTray.ContextMenu.MenuItems.Add("Exit", (s, e) => App.Current.Shutdown());
+            SystemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
+            {
+                SystemTray.Visible = false;
+                App.Current.Shutdown();
+            });
         }
 
         Action _balloonAction;
