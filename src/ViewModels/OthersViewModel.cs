@@ -1,4 +1,5 @@
-﻿using Captura.Properties;
+﻿using System.IO;
+using Captura.Properties;
 
 namespace Captura
 {
@@ -8,7 +9,7 @@ namespace Captura
         
         public OthersViewModel()
         {
-            MouseKeyHookAvailable = AllExist("Screna.MouseKeyHook.dll", "Gma.System.MouseKeyHook.dll");
+            MouseKeyHookAvailable = File.Exists("Gma.System.MouseKeyHook.dll");
 
             _regionSelector.Closing += (Sender, Args) => Args.Cancel = true;
         }

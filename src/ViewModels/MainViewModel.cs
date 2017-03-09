@@ -406,13 +406,7 @@ namespace Captura
 
             return videoEncoder;
         }
-
-        // Separate method required for MouseKeyHook to be optional.
-        IOverlay GetMouseKeyHook()
-        {
-            return new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes);
-        }
-
+        
         IImageProvider GetImageProvider()
         {
             Func<System.Drawing.Point> offset = () => System.Drawing.Point.Empty;
@@ -425,7 +419,7 @@ namespace Captura
             var overlays = new List<IOverlay> { _cursor };
 
             if (OthersViewModel.MouseKeyHookAvailable)
-                overlays.Add(GetMouseKeyHook());
+                overlays.Add(new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes));
 
             return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
         }
