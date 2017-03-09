@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
-        Width="400"
+        Width="350"
         Title="{DynamicResource s_Title}"
         AllowsTransparency="True"
         Background="Transparent"

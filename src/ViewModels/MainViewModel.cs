@@ -36,14 +36,14 @@ namespace Captura
             _timer.Elapsed += TimerOnElapsed;
 
             #region Commands
-            ScreenShotCommand = new DelegateCommand(CaptureScreenShot, () => _canScreenShot);
+            ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
 
             RecordCommand = new DelegateCommand(() =>
             {
                 if (RecorderState == RecorderState.NotRecording)
                     StartRecording();
                 else StopRecording();
-            }, () => _canRecord);
+            });
 
             RefreshCommand = new DelegateCommand(() =>
             {
@@ -78,7 +78,7 @@ namespace Captura
 
                     ShowNotification("Recording Paused", " ", 500, null);
                 }
-            }, () => RecorderState != RecorderState.NotRecording && _recorder != null);
+            }, false);
 
             SelectOutputFolderCommand = new DelegateCommand(() =>
             {
@@ -204,25 +204,23 @@ namespace Captura
 
             var videoAvailable = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
 
-            _canRecord = audioAvailable || videoAvailable;
+            RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
 
-            _canScreenShot = videoAvailable;
+            ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
 
         #region Commands
-        bool _canScreenShot = true, _canRecord = true;
+        public DelegateCommand ScreenShotCommand { get; }
 
-        public ICommand ScreenShotCommand { get; }
+        public DelegateCommand RecordCommand { get; }
 
-        public ICommand RecordCommand { get; }
+        public DelegateCommand RefreshCommand { get; }
 
-        public ICommand RefreshCommand { get; }
+        public DelegateCommand OpenOutputFolderCommand { get; }
 
-        public ICommand OpenOutputFolderCommand { get; }
+        public DelegateCommand PauseCommand { get; }
 
-        public ICommand PauseCommand { get; }
-
-        public ICommand SelectOutputFolderCommand { get; }
+        public DelegateCommand SelectOutputFolderCommand { get; }
         #endregion
 
         void CaptureScreenShot()
@@ -545,6 +543,10 @@ namespace Captura
                     return;
 
                 _recorderState = value;
+
+                RefreshCommand.RaiseCanExecuteChanged(value == RecorderState.NotRecording);
+
+                PauseCommand.RaiseCanExecuteChanged(value != RecorderState.NotRecording);
 
                 OnPropertyChanged();
             }

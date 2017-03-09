@@ -6,30 +6,25 @@ namespace Captura
     public class DelegateCommand : ICommand
     {
         readonly Action _execute;
-        readonly Func<bool> _canExecute;
+        bool _canExecute;
 
-        public DelegateCommand(Action OnExecute, Func<bool> OnCanExecute = null)
+        public DelegateCommand(Action OnExecute, bool CanExecute = true)
         {
             _execute = OnExecute;
-            _canExecute = OnCanExecute;
+            _canExecute = CanExecute;
         }
 
-        public bool CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
+        public bool CanExecute(object Parameter) => _canExecute;
 
-        public void Execute(object parameter) => _execute?.Invoke();
+        public void Execute(object Parameter) => _execute?.Invoke();
 
-        public event EventHandler CanExecuteChanged
+        public void RaiseCanExecuteChanged(bool CanExecute)
         {
-            add
-            {
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested -= value;
-            }
+            _canExecute = CanExecute;
+
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        public event EventHandler CanExecuteChanged;
     }
 }
