@@ -98,7 +98,7 @@ namespace Screna
 
             _lastKeyRecord = keyRecord;
         }
-
+        
         /// <summary>
         /// Draws overlay.
         /// </summary>
@@ -119,8 +119,8 @@ namespace Screna
             
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
-
-            var keyStrokeRect = new Rectangle(100, 100, (int)(_output.Length * _keyStrokeFont.Size + 5), 35);
+            
+            var keyStrokeRect = new Rectangle(80, (int)g.VisibleClipBounds.Height - 200, (int)(_output.Length * _keyStrokeFont.Size + 5), 35);
             
             g.FillRectangle(_clickBrush, keyStrokeRect);
 
