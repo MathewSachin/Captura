@@ -1,16 +1,14 @@
-version: 1.0.{build}
+version: 2.0.{build}
+
+image: Visual Studio 2017
 
 install:
   # Update Submodules
   - git submodule init
   - git submodule update
 
-  # Restore packages for Screna
-  - nuget restore Screna/src/Screna.sln
-
-  # Restore packages for Captura
+  # Restore packages
   - nuget restore src/Captura.sln
 
-# Build Off till AppVeyor supports VS 2017
-build: off
-  # project: src\Captura.sln
+build:
+  project: src\Captura.sln

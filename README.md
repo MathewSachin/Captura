@@ -21,8 +21,6 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 1. [Visual Studio 2017](https://visualstudio.com) or greater is required.
 2. Clone the repository: `git clone https://github.com/MathewSachin/Captura.git`.
 3. Fetch Submodules: `git submodule init` and `git submodule update`.
-4. Restore NuGet packages for `Screna.sln` in `Screna` folder.
-5. Restore NuGet packages for `Captura.sln` in `src` folder.
 
 ## Optional Native Libraries
 Download and place in build output directory (x86 or x64 as required).
