@@ -64,22 +64,8 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        bool _canEncode;
-
-        public bool CanEncode
-        {
-            get { return _canEncode; }
-            set
-            {
-                if (_canEncode == value)
-                    return;
-
-                _canEncode = value;
-
-                OnPropertyChanged();
-            }
-        }
+        
+        public bool CanEncode { get; }
         
         static bool BassExists()
         {
@@ -121,8 +107,10 @@ namespace Captura
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            return Encode ? (IAudioFileWriter)new FFMpegAudioWriter(FileName)
-                          : new AudioFileWriter(FileName, Wf);
+            if (CanEncode && Encode)
+                return new FFMpegAudioWriter(FileName);
+
+            return new AudioFileWriter(FileName, Wf);
         }
     }
 }
