@@ -76,7 +76,7 @@ namespace Captura
                     RecorderState = RecorderState.Paused;
                     Status = "Paused";
 
-                    ShowNotification("Recording Paused", " ", 500, null);
+                    SystemTrayManager.ShowNotification("Recording Paused", " ", 500, null);
                 }
             }, false);
 
@@ -135,57 +135,9 @@ namespace Captura
 
             Settings.Default.OutputPath = OutPath;
             
-            InitSystemTray();
+            SystemTrayManager.Init();
         }
-
-        #region System Tray
-        void InitSystemTray()
-        {
-            SystemTray = new NotifyIcon
-            {
-                Icon = Icon.ExtractAssociatedIcon("Captura.exe"),
-                Visible = true,
-                ContextMenu = new ContextMenu()
-            };
-
-            SystemTray.DoubleClick += (s, e) =>
-            {
-                App.Current.MainWindow.Show();
-                WindowState = WindowState.Normal;
-                App.Current.MainWindow.Focus();
-            };
-
-            SystemTray.BalloonTipClicked += (s, e) => _balloonAction?.Invoke();
-
-            SystemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) => RecordCommand.ExecuteIfCan());
-
-            SystemTray.ContextMenu.MenuItems.Add("Pause/Resume Recording", (s, e) => PauseCommand.ExecuteIfCan());
-
-            SystemTray.ContextMenu.MenuItems.Add("Take ScreenShot", (s, e) => ScreenShotCommand.ExecuteIfCan());
-
-            var separator = new MenuItem { BarBreak = true };
-
-            SystemTray.ContextMenu.MenuItems.Add(separator);
-
-            SystemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
-            {
-                SystemTray.Visible = false;
-                App.Current.Shutdown();
-            });
-        }
-
-        Action _balloonAction;
-
-        public NotifyIcon SystemTray { get; private set; }
-
-        public void ShowNotification(string Title, string Text, int Duration, Action ClickAction)
-        {
-            _balloonAction = ClickAction;
-            
-            SystemTray.ShowBalloonTip(Duration, Title, Text, ToolTipIcon.None);
-        }
-        #endregion
-
+        
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             TimeSpan += _addend;
@@ -195,7 +147,6 @@ namespace Captura
 
             // If Capture Duration is set
             StopRecording();
-            SystemSounds.Exclamation.Play();
         }
         
         void CheckFunctionalityAvailability()
@@ -290,7 +241,7 @@ namespace Captura
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image);
 
-                        ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
+                        SystemTrayManager.ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
                     }
                     catch (Exception E)
                     {
@@ -446,9 +397,9 @@ namespace Captura
             RecentViewModel.Remove(savingRecentItem);
             RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio);
 
-            ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
+            SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
         }
-
+        
         #region Properties
         string _status = "Ready";
 
