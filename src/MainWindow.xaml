@@ -14,7 +14,8 @@
         Background="Transparent"
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        MouseMove="Window_MouseMove">
+        MouseMove="Window_MouseMove"
+        BorderThickness="1">
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Template">
@@ -81,7 +82,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid Background="#E7000000">
+    <Grid Background="#F2211B1B">
         <Expander Padding="5,0,0,0">
             <Expander.HeaderTemplate>
                 <DataTemplate>
@@ -118,6 +119,7 @@
                                         DockPanel.Dock="Right"/>
                     <Grid Background="#57222222"
                           Cursor="Hand"
+                          Margin="0,-1"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding TimeSpan}"
                                Foreground="White"
