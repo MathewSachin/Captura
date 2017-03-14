@@ -1,4 +1,3 @@
-using Captura.Properties;
 using Screna.Audio;
 using System;
 using System.Collections.Generic;
@@ -54,21 +53,7 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-                
-        public bool Encode
-        {
-            get { return Settings.Default.EncodeAudio; }
-            set
-            {
-                if (Encode == value)
-                    return;
 
-                Settings.Default.EncodeAudio = value;
-
-                OnPropertyChanged();
-            }
-        }
-        
         public bool CanEncode { get; }
         
         // Check if all BASS dependencies are present
@@ -98,7 +83,7 @@ namespace Captura
 
         public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
         {
-            if (CanEncode && Encode)
+            if (CanEncode && MainViewModel.Instance.Settings.EncodeAudio)
                 return new FFMpegAudioWriter(FileName);
 
             return new AudioFileWriter(FileName, Wf);

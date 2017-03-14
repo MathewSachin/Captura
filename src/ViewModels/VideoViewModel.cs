@@ -1,4 +1,3 @@
-using Captura.Properties;
 using Screna;
 using Screna.Avi;
 using System.Collections.Generic;
@@ -188,34 +187,6 @@ namespace Captura
             }
         }
         
-        public int Quality
-        {
-            get { return Settings.Default.VideoQuality; }
-            set
-            {
-                if (Quality == value)
-                    return;
-
-                Settings.Default.VideoQuality = value;
-                
-                OnPropertyChanged();
-            }
-        }
-        
-        public int FrameRate
-        {
-            get { return Settings.Default.FrameRate; }
-            set
-            {
-                if (FrameRate == value)
-                    return;
-
-                Settings.Default.FrameRate = value;
-
-                OnPropertyChanged();
-            }
-        }
-
         Color _bgColor = Colors.Transparent;
 
         public Color BackgroundColor

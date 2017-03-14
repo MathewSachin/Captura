@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using Screna;
+﻿using Screna;
 using Screna.Audio;
 using System;
 using System.Collections.Generic;
@@ -55,7 +54,12 @@ namespace Captura
                 Status = "Refreshed";
             });
 
-            OpenOutputFolderCommand = new DelegateCommand(() => Process.Start("explorer.exe", OutPath));
+            OpenOutputFolderCommand = new DelegateCommand(() => 
+            {
+                EnsureOutPath();
+
+                Process.Start("explorer.exe", Settings.OutPath);
+            });
 
             PauseCommand = new DelegateCommand(() =>
             {
@@ -83,16 +87,12 @@ namespace Captura
             {
                 var dlg = new FolderBrowserDialog
                 {
-                    SelectedPath = OutPath,
+                    SelectedPath = Settings.OutPath,
                     Description = "Select Output Folder"
                 };
 
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
-
-                OutPath = dlg.SelectedPath;
-                Settings.Default.OutputPath = dlg.SelectedPath;
-                Settings.Default.Save();
+                if (dlg.ShowDialog() == DialogResult.OK)
+                    Settings.OutPath = dlg.SelectedPath;
             });
             #endregion
 
@@ -112,29 +112,25 @@ namespace Captura
                     CheckFunctionalityAvailability();
             };
 
-            _cursor = new MouseCursor(OthersViewModel.Cursor);
+            _cursor = new MouseCursor(Settings.IncludeCursor);
 
-            OthersViewModel.PropertyChanged += (Sender, Args) =>
+            Settings.PropertyChanged += (Sender, Args) =>
             {
                 switch (Args.PropertyName)
                 {
-                    case nameof(OthersViewModel.Cursor):
-                        _cursor.Include = OthersViewModel.Cursor;
+                    case nameof(Settings.IncludeCursor):
+                        _cursor.Include = Settings.IncludeCursor;
                         break;
                 }
             };
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(OutPath))
-            {
-                OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
-
-                Settings.Default.OutputPath = OutPath;
-            }
-            
+            if (string.IsNullOrWhiteSpace(Settings.OutPath))
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+                        
             // Create the Output Directory if it does not exist
-            if (!Directory.Exists(OutPath))
-                Directory.CreateDirectory(OutPath);
+            if (!Directory.Exists(Settings.OutPath))
+                Directory.CreateDirectory(Settings.OutPath);
             
             HotKeyManager.RegisterAll();
             SystemTrayManager.Init();
@@ -147,6 +143,8 @@ namespace Captura
             SystemTrayManager.Dispose();
 
             AudioViewModel.Dispose();
+
+            Settings.Save();
         }
         
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
@@ -154,7 +152,7 @@ namespace Captura
             TimeSpan += _addend;
 
             // If Capture Duration is set and reached
-            if (OthersViewModel.Duration > 0 && TimeSpan.TotalSeconds >= OthersViewModel.Duration)
+            if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
                 StopRecording();
         }
         
@@ -185,8 +183,7 @@ namespace Captura
 
         void CaptureScreenShot()
         {
-            if (!Directory.Exists(OutPath))
-                Directory.CreateDirectory(OutPath);
+            EnsureOutPath();
 
             string fileName = null;
 
@@ -199,13 +196,13 @@ namespace Captura
             var saveToClipboard = ScreenShotViewModel.SelectedSaveTo == "Clipboard";
 
             if (!saveToClipboard)
-                fileName = Path.Combine(OutPath,
+                fileName = Path.Combine(Settings.OutPath,
                     DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
             Bitmap bmp = null;
-            
+
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var includeCursor = OthersViewModel.Cursor;
+            var includeCursor = Settings.IncludeCursor;
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
@@ -263,20 +260,25 @@ namespace Captura
             else Status = "Not Saved - Image taken was Empty";
         }
 
+        void EnsureOutPath()
+        {
+            if (!Directory.Exists(Settings.OutPath))
+                Directory.CreateDirectory(Settings.OutPath);
+        }
+
         void StartRecording()
         {
-            if (OthersViewModel.MinimizeOnStart)
+            if (Settings.MinimizeOnStart)
                 WindowState = WindowState.Minimized;
             
             CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
 
-            var duration = OthersViewModel.Duration;
-            var delay = OthersViewModel.StartDelay;
+            EnsureOutPath();
+            
+            if (StartDelay < 0)
+                StartDelay = 0;
 
-            if (delay < 0)
-                delay = 0;
-
-            if (duration != 0 && (delay * 1000 > duration))
+            if (Duration != 0 && (StartDelay * 1000 > Duration))
             {
                 Status = "Delay cannot be greater than Duration";
                 SystemSounds.Asterisk.Play();
@@ -289,11 +291,11 @@ namespace Captura
             
             var extension = isVideo
                 ? VideoViewModel.SelectedVideoWriter.Extension
-                : (AudioViewModel.Encode ? ".mp3" : ".wav");
+                : (Settings.EncodeAudio ? ".mp3" : ".wav");
 
-            _currentFileName = Path.Combine(OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
-            Status = delay > 0 ? $"Recording from t = {delay} ms..." : "Recording...";
+            Status = StartDelay > 0 ? $"Recording from t = {StartDelay} ms..." : "Recording...";
 
             _timer.Stop();
             TimeSpan = TimeSpan.Zero;
@@ -307,7 +309,7 @@ namespace Captura
             if (_recorder == null)
             {
                 if (isVideo)
-                    _recorder = new Recorder(videoEncoder, imgProvider, VideoViewModel.FrameRate, audioSource);
+                    _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
 
                 else _recorder = new Recorder(AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
             }
@@ -323,11 +325,11 @@ namespace Captura
                 MessageBox.Show(E.ToString());
             };*/
             
-            if (delay > 0)
+            if (StartDelay > 0)
             {
                 Task.Factory.StartNew(async () =>
                 {
-                    await Task.Delay(delay);
+                    await Task.Delay(StartDelay);
 
                     _recorder.Start();
                 });
@@ -346,12 +348,12 @@ namespace Captura
 
             // VideoVideoModel.Quality not used for now
 
-            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, VideoViewModel.FrameRate, ImgProvider, AudioProvider);
+            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.FrameRate, ImgProvider, AudioProvider);
 
             switch (encoder)
             {
                 case GifWriter gif:
-                    if (GifViewModel.Unconstrained)
+                    if (Settings.GifUnconstrained)
                         _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
@@ -376,8 +378,8 @@ namespace Captura
 
             var overlays = new List<IOverlay> { _cursor };
 
-            if (OthersViewModel.MouseKeyHookAvailable)
-                overlays.Add(new MouseKeyHook(OthersViewModel.MouseClicks, OthersViewModel.KeyStrokes));
+            if (MouseKeyHookAvailable)
+                overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
             return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
         }
@@ -392,7 +394,7 @@ namespace Captura
 
             CanChangeVideoSource = true;
             
-            if (OthersViewModel.MinimizeOnStart)
+            if (Settings.MinimizeOnStart)
                 WindowState = WindowState.Normal;
 
             _timer.Stop();
@@ -408,7 +410,9 @@ namespace Captura
 
             SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
         }
-        
+
+        bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
+
         #region Properties
         string _status = "Ready";
 
@@ -441,21 +445,7 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        public string OutPath
-        {
-            get { return Settings.Default.OutputPath; }
-            set
-            {
-                if (OutPath == value)
-                    return;
-
-                Settings.Default.OutputPath = value;
-
-                OnPropertyChanged();
-            }
-        }
-
+        
         TimeSpan _ts = TimeSpan.Zero;
         readonly TimeSpan _addend = TimeSpan.FromSeconds(1);
 
@@ -487,7 +477,7 @@ namespace Captura
 
                 OnPropertyChanged();
 
-                if (WindowState == WindowState.Minimized && OthersViewModel.MinimizeToTray)
+                if (WindowState == WindowState.Minimized && Settings.MinimizeToTray)
                     App.Current.MainWindow.Hide();
             }
         }
@@ -511,9 +501,43 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
+
+        int _duration;
+
+        public int Duration
+        {
+            get { return _duration; }
+            set
+            {
+                if (_duration == value)
+                    return;
+
+                _duration = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        int _startDelay;
+
+        public int StartDelay
+        {
+            get { return _startDelay; }
+            set
+            {
+                if (_startDelay == value)
+                    return;
+
+                _startDelay = value;
+
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Nested ViewModels
+        public SettingsViewModel Settings { get; } = new SettingsViewModel();
+
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 
         public AudioViewModel AudioViewModel { get; } = new AudioViewModel();
@@ -521,9 +545,7 @@ namespace Captura
         public GifViewModel GifViewModel { get; } = new GifViewModel();
 
         public ScreenShotViewModel ScreenShotViewModel { get; } = new ScreenShotViewModel();
-
-        public OthersViewModel OthersViewModel { get; } = new OthersViewModel();
-
+        
         public RecentViewModel RecentViewModel { get; } = new RecentViewModel();
         #endregion
     }

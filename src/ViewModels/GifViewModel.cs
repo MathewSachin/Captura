@@ -1,23 +1,7 @@
-using Captura.Properties;
-
 namespace Captura
 {
     public class GifViewModel : ViewModelBase
     {
-        public bool Unconstrained
-        {
-            get { return Settings.Default.GifUnconstrained; }
-            set
-            {
-                if (Unconstrained == value)
-                    return;
-
-                Settings.Default.GifUnconstrained = value;
-
-                OnPropertyChanged();
-            }
-        }
-
         bool _repeat;
 
         public bool Repeat

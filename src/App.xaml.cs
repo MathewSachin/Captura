@@ -12,8 +12,5 @@ namespace Captura
             // Localization
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
         }
-
-        // Save Settings
-        void Application_Exit(object sender, ExitEventArgs e) => Settings.Default.Save();
     }
 }

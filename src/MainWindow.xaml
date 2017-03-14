@@ -147,7 +147,7 @@
                             VerticalContentAlignment="Center"
                             Command="{Binding OpenOutputFolderCommand}"/>
                     <TextBox IsReadOnly="True"
-                             Text="{Binding OutPath}"/>
+                             Text="{Binding Settings.OutPath}"/>
                 </DockPanel>
                 <GridSplitter Height="1"
                               DockPanel.Dock="Bottom"/>

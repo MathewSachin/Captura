@@ -23,16 +23,16 @@
             <StackPanel Orientation="Horizontal">
                 <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeCursor}"
                                           IconData="M10.07,14.27C10.57,14.03 11.16,14.25 11.4,14.75L13.7,19.74L15.5,18.89L13.19,13.91C12.95,13.41 13.17,12.81 13.67,12.58L13.95,12.5L16.25,12.05L8,5.12V15.9L9.82,14.43L10.07,14.27M13.64,21.97C13.14,22.21 12.54,22 12.31,21.5L10.13,16.76L7.62,18.78C7.45,18.92 7.24,19 7,19A1,1 0 0,1 6,18V3A1,1 0 0,1 7,2C7.24,2 7.47,2.09 7.64,2.23L7.65,2.22L19.14,11.86C19.57,12.22 19.62,12.85 19.27,13.27C19.12,13.45 18.91,13.57 18.7,13.61L15.54,14.23L17.74,18.96C18,19.46 17.76,20.05 17.26,20.28L13.64,21.97Z"
-                                          IsChecked="{Binding OthersViewModel.Cursor, Mode=TwoWay}"/>
+                                          IsChecked="{Binding Settings.IncludeCursor, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeMouseClicks}"
-                                          Visibility="{Binding OthersViewModel.MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
+                                          Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="M10,2A2,2 0 0,1 12,4V8.5C12,8.5 14,8.25 14,9.25C14,9.25 16,9 16,10C16,10 18,9.75 18,10.75C18,10.75 20,10.5 20,11.5V15C20,16 17,21 17,22H9C9,22 7,15 4,13C4,13 3,7 8,12V4A2,2 0 0,1 10,2Z"
-                                          IsChecked="{Binding OthersViewModel.MouseClicks, Mode=TwoWay}"
+                                          IsChecked="{Binding Settings.MouseClicks, Mode=TwoWay}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeKeystrokes}"
-                                          Visibility="{Binding OthersViewModel.MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
+                                          Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="M6,16H18V18H6V16M6,13V15H2V13H6M7,15V13H10V15H7M11,15V13H13V15H11M14,15V13H17V15H14M18,15V13H22V15H18M2,10H5V12H2V10M19,12V10H22V12H19M18,12H16V10H18V12M8,12H6V10H8V12M12,12H9V10H12V12M15,12H13V10H15V12M2,9V7H4V9H2M5,9V7H7V9H5M8,9V7H10V9H8M11,9V7H13V9H11M14,9V7H16V9H14M17,9V7H22V9H17Z"
-                                          IsChecked="{Binding OthersViewModel.KeyStrokes, Mode=TwoWay}"
+                                          IsChecked="{Binding Settings.KeyStrokes, Mode=TwoWay}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
             </StackPanel>
         </DockPanel>
@@ -102,7 +102,7 @@
         <CheckBox Visibility="{Binding AudioViewModel.CanEncode, Converter={StaticResource BoolToVisibilityConverter}}"
                   Margin="0,8"
                   Content="{DynamicResource s_EncodeMp3}"
-                  IsChecked="{Binding AudioViewModel.Encode, Mode=TwoWay}"
+                  IsChecked="{Binding Settings.EncodeAudio, Mode=TwoWay}"
                   HorizontalAlignment="Center"
                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         <DockPanel Margin="0,5">

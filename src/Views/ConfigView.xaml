@@ -8,88 +8,88 @@
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_FrameRate}"
-                                           ContentStringFormat="{}{0}:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0"/>
-                    <Label Content="{Binding VideoViewModel.FrameRate, StringFormat={}{0:N0}}"
-                                           VerticalContentAlignment="Center"
-                                           Margin="3,0"/>
+                           ContentStringFormat="{}{0}:"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+                    <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
                     <Slider Minimum="1"
-                                            Maximum="30" 
-                                            SelectionStart="8"
-                                            SelectionEnd="12"
-                                            IsSelectionRangeEnabled="True"
-                                            Value="{Binding VideoViewModel.FrameRate, Mode=TwoWay}"
-                                            Interval="1"/>
+                            Maximum="30" 
+                            SelectionStart="8"
+                            SelectionEnd="12"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.FrameRate, Mode=TwoWay}"
+                            Interval="1"/>
                 </DockPanel>
 
                 <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_Quality}"
-                                           ContentStringFormat="{}{0}:"
-                                           VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0"/>
-                    <Label Content="{Binding VideoViewModel.Quality}"
-                                           ContentStringFormat="{}{0:N0}%"
-                                           VerticalContentAlignment="Center"
-                                           Margin="3,0"/>
+                           ContentStringFormat="{}{0}:"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+                    <Label Content="{Binding Settings.VideoQuality}"
+                           ContentStringFormat="{}{0:N0}%"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
                     <Slider Minimum="1" 
-                                            Maximum="100"
-                                            SelectionStart="60"
-                                            SelectionEnd="80"
-                                            IsSelectionRangeEnabled="True"
-                                            Value="{Binding VideoViewModel.Quality, Mode=TwoWay}"/>
+                            Maximum="100"
+                            SelectionStart="60"
+                            SelectionEnd="80"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_BgColor}"
-                                           VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0"/>
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
                     <local:ColorPickerBox SelectedColor="{Binding VideoViewModel.BackgroundColor, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_StartDelay}"
-                                           VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0"/>
-                    <local:NumericBox Value="{Binding OthersViewModel.StartDelay, Mode=TwoWay}"/>
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+                    <local:NumericBox Value="{Binding StartDelay, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_CaptureDuration}"
-                                           VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0"/>
-                    <local:NumericBox Value="{Binding OthersViewModel.Duration, Mode=TwoWay}"/>
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+                    <local:NumericBox Value="{Binding Duration, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <CheckBox Content="{DynamicResource s_MinCaptureStart}"
-                                          IsChecked="{Binding OthersViewModel.MinimizeOnStart, Mode=TwoWay}"
-                                          Margin="0,2"/>
+                          IsChecked="{Binding Settings.MinimizeOnStart, Mode=TwoWay}"
+                          Margin="0,2"/>
 
                 <CheckBox Content="{DynamicResource s_MinTray}"
-                                          IsChecked="{Binding OthersViewModel.MinimizeToTray, Mode=TwoWay}"
-                                          Margin="0,2"/>
+                          IsChecked="{Binding Settings.MinimizeToTray, Mode=TwoWay}"
+                          Margin="0,2"/>
 
                 <TextBlock Margin="0,7,0,3"
-                                           Text="{DynamicResource s_Gif}"
-                                           FontWeight="Bold"/>
+                           Text="{DynamicResource s_Gif}"
+                           FontWeight="Bold"/>
 
                 <CheckBox Margin="0,2"
-                                          Content="{DynamicResource s_GifUnconstrained}"
-                                          IsChecked="{Binding GifViewModel.Unconstrained, Mode=TwoWay}"/>
+                          Content="{DynamicResource s_GifUnconstrained}"
+                          IsChecked="{Binding Settings.GifUnconstrained, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,2">
                     <CheckBox Content="{DynamicResource s_Repeat}"
-                                              Margin="0,0,5,0"
-                                              DockPanel.Dock="Left"
-                                              IsChecked="{Binding GifViewModel.Repeat, Mode=TwoWay}"/>
+                              Margin="0,0,5,0"
+                              DockPanel.Dock="Left"
+                              IsChecked="{Binding GifViewModel.Repeat, Mode=TwoWay}"/>
 
                     <local:NumericBox IsEnabled="{Binding GifViewModel.Repeat}"
-                                                      Value="{Binding GifViewModel.RepeatCount, Mode=TwoWay}"/>
+                                      Value="{Binding GifViewModel.RepeatCount, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
-                                           Text="{DynamicResource s_ScreenShot}"
-                                           FontWeight="Bold"/>
+                           Text="{DynamicResource s_ScreenShot}"
+                           FontWeight="Bold"/>
 
                 <Grid Margin="0,2">
                     <Grid.ColumnDefinitions>
@@ -100,23 +100,23 @@
                     </Grid.ColumnDefinitions>
 
                     <Label VerticalContentAlignment="Center"
-                                           Content="{DynamicResource s_SaveTo}"
-                                           Margin="0,0,5,0"/>
+                           Content="{DynamicResource s_SaveTo}"
+                           Margin="0,0,5,0"/>
 
                     <ComboBox VerticalAlignment="Center" 
-                                              Grid.Column="1"
-                                              ItemsSource="{Binding ScreenShotViewModel.SaveTo}"
-                                              SelectedItem="{Binding ScreenShotViewModel.SelectedSaveTo, Mode=TwoWay}"/>
+                              Grid.Column="1"
+                              ItemsSource="{Binding ScreenShotViewModel.SaveTo}"
+                              SelectedItem="{Binding ScreenShotViewModel.SelectedSaveTo, Mode=TwoWay}"/>
 
                     <Label Content="{DynamicResource s_as}"
-                                           Grid.Column="2"
-                                           Margin="5,0"
-                                           VerticalAlignment="Center"/>
+                           Grid.Column="2"
+                           Margin="5,0"
+                           VerticalAlignment="Center"/>
 
                     <ComboBox VerticalAlignment="Center"
-                                              Grid.Column="3"
-                                              ItemsSource="{Binding ScreenShotViewModel.ImageFormats}"
-                                              SelectedItem="{Binding ScreenShotViewModel.SelectedImageFormat, Mode=TwoWay}"/>
+                              Grid.Column="3"
+                              ItemsSource="{Binding ScreenShotViewModel.ImageFormats}"
+                              SelectedItem="{Binding ScreenShotViewModel.SelectedImageFormat, Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="0,2">
                     <Grid.ColumnDefinitions>
@@ -127,22 +127,22 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{DynamicResource s_Resize}"
-                                              IsChecked="{Binding ScreenShotViewModel.DoResize, Mode=TwoWay}"
-                                              Margin="0,0,5,0"/>
+                              IsChecked="{Binding ScreenShotViewModel.DoResize, Mode=TwoWay}"
+                              Margin="0,0,5,0"/>
 
                     <local:NumericBox Value="{Binding ScreenShotViewModel.ResizeWidth, Mode=TwoWay}"
-                                                      Grid.Column="1"
-                                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
+                                      Grid.Column="1"
+                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
 
                     <Label Content="x"
-                                           VerticalContentAlignment="Center"
-                                           Grid.Column="2"
-                                           Margin="5,0"/>
+                           VerticalContentAlignment="Center"
+                           Grid.Column="2"
+                           Margin="5,0"/>
 
                     <local:NumericBox Value="{Binding ScreenShotViewModel.ResizeHeight, Mode=TwoWay}"
-                                                      Grid.Column="3"
-                                                      Margin="0,3"
-                                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
+                                      Grid.Column="3"
+                                      Margin="0,3"
+                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

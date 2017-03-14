@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -42,6 +41,6 @@ namespace Captura
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public ICommand OpenOutputFolderCommand => new DelegateCommand(() => Process.Start("explorer.exe", Settings.Default.OutputPath));
+        public ICommand OpenOutputFolderCommand => new DelegateCommand(() => Process.Start("explorer.exe", MainViewModel.Instance.Settings.OutPath));
     }
 }
