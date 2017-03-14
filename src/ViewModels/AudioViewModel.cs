@@ -11,23 +11,20 @@ namespace Captura
     {
         static AudioViewModel()
         {
-            if (BassExists())
+            if (BassExists)
                 MixedAudioProvider.Init();
         }
 
         public AudioViewModel()
         {
-            CanEncode = File.Exists("ffmpeg.exe");
-
-            if (!CanEncode)
-                Encode = false;
-
+            CanEncode = BassExists && File.Exists("ffmpeg.exe");
+            
             RefreshAudioSources();
         }
 
         public void Dispose()
         {
-            if (BassExists())
+            if (BassExists)
                 MixedAudioProvider.Free();
         }
         
@@ -74,10 +71,7 @@ namespace Captura
         
         public bool CanEncode { get; }
         
-        static bool BassExists()
-        {
-            return AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
-        }
+        static bool BassExists { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
         public void RefreshAudioSources()
         {
@@ -87,23 +81,12 @@ namespace Captura
             AvailableRecordingSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
             AvailableLoopbackSources.Add(new KeyValuePair<int?, string>(null, "[No Sound]"));
 
-            if (BassExists())
-                LoadBassDevices();
+            if (BassExists)
+                MixedAudioProvider.GetDevices(AvailableRecordingSources, AvailableLoopbackSources);
 
             SelectedRecordingSource = SelectedLoopbackSource = null;
         }
-        
-        void LoadBassDevices()
-        {
-            MixedAudioProvider.GetDevices(out var recs, out var loops);
-
-            foreach (var rec in recs)
-                AvailableRecordingSources.Add(rec);
-
-            foreach (var loop in loops)
-                AvailableLoopbackSources.Add(loop);
-        }
-        
+                
         public IAudioProvider GetAudioSource()
         {
             if (SelectedRecordingSource == null && SelectedLoopbackSource == null)

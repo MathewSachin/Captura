@@ -181,20 +181,14 @@ namespace Screna.Audio
         /// <summary>
         /// Gets Recording and Loopback Devices as (Index, Name).
         /// </summary>
-        public static void GetDevices(out IEnumerable<KeyValuePair<int?, string>> RecordingDevices, out IEnumerable<KeyValuePair<int?, string>> LoopbackDevices)
+        public static void GetDevices(IList<KeyValuePair<int?, string>> RecordingDevices, IList<KeyValuePair<int?, string>> LoopbackDevices)
         {
-            var rec = new List<KeyValuePair<int?, string>>();
-            var loop = new List<KeyValuePair<int?, string>>();
-
             for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
                 if (info.IsLoopback)
-                    loop.Add(new KeyValuePair<int?, string>(i, info.Name));
-                else rec.Add(new KeyValuePair<int?, string>(i, info.Name));
+                    LoopbackDevices.Add(new KeyValuePair<int?, string>(i, info.Name));
+                else RecordingDevices.Add(new KeyValuePair<int?, string>(i, info.Name));
             }
-
-            RecordingDevices = rec;
-            LoopbackDevices = loop;
         }
     }
 }
