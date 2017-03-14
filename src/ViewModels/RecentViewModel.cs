@@ -41,6 +41,6 @@ namespace Captura
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public ICommand OpenOutputFolderCommand => new DelegateCommand(() => Process.Start("explorer.exe", MainViewModel.Instance.Settings.OutPath));
+        public ICommand OpenOutputFolderCommand { get; } = new DelegateCommand(() => Process.Start("explorer.exe", MainViewModel.Instance.Settings.OutPath));
     }
 }

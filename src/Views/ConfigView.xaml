@@ -81,10 +81,10 @@
                     <CheckBox Content="{DynamicResource s_Repeat}"
                               Margin="0,0,5,0"
                               DockPanel.Dock="Left"
-                              IsChecked="{Binding GifViewModel.Repeat, Mode=TwoWay}"/>
+                              IsChecked="{Binding GifRepeat, Mode=TwoWay}"/>
 
-                    <local:NumericBox IsEnabled="{Binding GifViewModel.Repeat}"
-                                      Value="{Binding GifViewModel.RepeatCount, Mode=TwoWay}"/>
+                    <local:NumericBox IsEnabled="{Binding GifRepeat}"
+                                      Value="{Binding GifRepeatCount, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
@@ -105,8 +105,8 @@
 
                     <ComboBox VerticalAlignment="Center" 
                               Grid.Column="1"
-                              ItemsSource="{Binding ScreenShotViewModel.SaveTo}"
-                              SelectedItem="{Binding ScreenShotViewModel.SelectedSaveTo, Mode=TwoWay}"/>
+                              ItemsSource="{Binding ScreenShotSaveTo}"
+                              SelectedItem="{Binding SelectedScreenShotSaveTo, Mode=TwoWay}"/>
 
                     <Label Content="{DynamicResource s_as}"
                            Grid.Column="2"
@@ -115,8 +115,8 @@
 
                     <ComboBox VerticalAlignment="Center"
                               Grid.Column="3"
-                              ItemsSource="{Binding ScreenShotViewModel.ImageFormats}"
-                              SelectedItem="{Binding ScreenShotViewModel.SelectedImageFormat, Mode=TwoWay}"/>
+                              ItemsSource="{Binding ScreenShotImageFormats}"
+                              SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="0,2">
                     <Grid.ColumnDefinitions>
@@ -127,22 +127,22 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{DynamicResource s_Resize}"
-                              IsChecked="{Binding ScreenShotViewModel.DoResize, Mode=TwoWay}"
+                              IsChecked="{Binding ScreenShotDoResize, Mode=TwoWay}"
                               Margin="0,0,5,0"/>
 
-                    <local:NumericBox Value="{Binding ScreenShotViewModel.ResizeWidth, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding ScreenShotResizeWidth, Mode=TwoWay}"
                                       Grid.Column="1"
-                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
+                                      IsEnabled="{Binding ScreenShotDoResize}"/>
 
                     <Label Content="x"
                            VerticalContentAlignment="Center"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <local:NumericBox Value="{Binding ScreenShotViewModel.ResizeHeight, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding ScreenShotResizeHeight, Mode=TwoWay}"
                                       Grid.Column="3"
                                       Margin="0,3"
-                                      IsEnabled="{Binding ScreenShotViewModel.DoResize}"/>
+                                      IsEnabled="{Binding ScreenShotDoResize}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

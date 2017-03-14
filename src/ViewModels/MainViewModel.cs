@@ -16,7 +16,7 @@ using Window = Screna.Window;
 
 namespace Captura
 {
-    public class MainViewModel : ViewModelBase, IDisposable
+    public partial class MainViewModel : ViewModelBase, IDisposable
     {
         #region Fields
         readonly Timer _timer;
@@ -25,8 +25,6 @@ namespace Captura
         readonly MouseCursor _cursor;
         bool isVideo;
         #endregion
-
-        public static MainViewModel Instance { get; } = new MainViewModel();
 
         MainViewModel()
         {
@@ -166,34 +164,18 @@ namespace Captura
 
             ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
-
-        #region Commands
-        public DelegateCommand ScreenShotCommand { get; }
-
-        public DelegateCommand RecordCommand { get; }
-
-        public DelegateCommand RefreshCommand { get; }
-
-        public DelegateCommand OpenOutputFolderCommand { get; }
-
-        public DelegateCommand PauseCommand { get; }
-
-        public DelegateCommand SelectOutputFolderCommand { get; }
-        #endregion
-
+        
         void CaptureScreenShot()
         {
             EnsureOutPath();
 
             string fileName = null;
+            
+            var extension = SelectedScreenShotImageFormat.Equals(ImageFormat.Icon) ? "ico"
+                : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
+                : SelectedScreenShotImageFormat.ToString().ToLower();
 
-            var imgFmt = ScreenShotViewModel.SelectedImageFormat;
-
-            var extension = imgFmt.Equals(ImageFormat.Icon) ? "ico"
-                : imgFmt.Equals(ImageFormat.Jpeg) ? "jpg"
-                : imgFmt.ToString().ToLower();
-
-            var saveToClipboard = ScreenShotViewModel.SelectedSaveTo == "Clipboard";
+            var saveToClipboard = SelectedScreenShotSaveTo == "Clipboard";
 
             if (!saveToClipboard)
                 fileName = Path.Combine(Settings.OutPath,
@@ -214,7 +196,7 @@ namespace Captura
                     else
                     {
                         bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
-                                 ScreenShotViewModel.DoResize, ScreenShotViewModel.ResizeWidth, ScreenShotViewModel.ResizeHeight);
+                                 ScreenShotDoResize, ScreenShotResizeWidth, ScreenShotResizeHeight);
 
                         // Capture without Transparency
                         if (bmp == null)
@@ -236,14 +218,14 @@ namespace Captura
             {
                 if (saveToClipboard)
                 {
-                    bmp.WriteToClipboard(imgFmt.Equals(ImageFormat.Png));
+                    bmp.WriteToClipboard(SelectedScreenShotImageFormat.Equals(ImageFormat.Png));
                     Status = "Image Saved to Clipboard";
                 }
                 else
                 {
                     try
                     {
-                        bmp.Save(fileName, imgFmt);
+                        bmp.Save(fileName, SelectedScreenShotImageFormat);
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image);
 
@@ -410,143 +392,5 @@ namespace Captura
 
             SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
         }
-
-        bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
-
-        #region Properties
-        string _status = "Ready";
-
-        public string Status
-        {
-            get { return _status; }
-            set
-            {
-                if (_status == value)
-                    return;
-
-                _status = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        bool _canChangeVideoSource = true;
-        
-        public bool CanChangeVideoSource
-        {
-            get { return _canChangeVideoSource; }
-            set
-            {
-                if (_canChangeVideoSource == value)
-                    return;
-
-                _canChangeVideoSource = value;
-
-                OnPropertyChanged();
-            }
-        }
-        
-        TimeSpan _ts = TimeSpan.Zero;
-        readonly TimeSpan _addend = TimeSpan.FromSeconds(1);
-
-        public TimeSpan TimeSpan
-        {
-            get { return _ts; }
-            set
-            {
-                if (_ts == value)
-                    return;
-
-                _ts = value;
-
-                OnPropertyChanged();
-            }
-        }
-        
-        WindowState _windowState = WindowState.Normal;
-
-        public WindowState WindowState
-        {
-            get { return _windowState; }
-            set
-            {
-                if (_windowState == value)
-                    return;
-
-                _windowState = value;
-
-                OnPropertyChanged();
-
-                if (WindowState == WindowState.Minimized && Settings.MinimizeToTray)
-                    App.Current.MainWindow.Hide();
-            }
-        }
-
-        RecorderState _recorderState = RecorderState.NotRecording;
-
-        public RecorderState RecorderState
-        {
-            get { return _recorderState; }
-            set
-            {
-                if (_recorderState == value)
-                    return;
-
-                _recorderState = value;
-
-                RefreshCommand.RaiseCanExecuteChanged(value == RecorderState.NotRecording);
-
-                PauseCommand.RaiseCanExecuteChanged(value != RecorderState.NotRecording);
-
-                OnPropertyChanged();
-            }
-        }
-
-        int _duration;
-
-        public int Duration
-        {
-            get { return _duration; }
-            set
-            {
-                if (_duration == value)
-                    return;
-
-                _duration = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        int _startDelay;
-
-        public int StartDelay
-        {
-            get { return _startDelay; }
-            set
-            {
-                if (_startDelay == value)
-                    return;
-
-                _startDelay = value;
-
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        #region Nested ViewModels
-        public SettingsViewModel Settings { get; } = new SettingsViewModel();
-
-        public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
-
-        public AudioViewModel AudioViewModel { get; } = new AudioViewModel();
-        
-        public GifViewModel GifViewModel { get; } = new GifViewModel();
-
-        public ScreenShotViewModel ScreenShotViewModel { get; } = new ScreenShotViewModel();
-        
-        public RecentViewModel RecentViewModel { get; } = new RecentViewModel();
-        #endregion
     }
 }

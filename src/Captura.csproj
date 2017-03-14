@@ -98,10 +98,9 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Presentation\DelegateCommand.cs" />
-    <Compile Include="ViewModels\GifViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="ViewModels\ScreenShotViewModel.cs" />
     <Compile Include="Models\VideoSourceKind.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
