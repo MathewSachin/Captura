@@ -29,6 +29,30 @@ namespace Screna.Audio
         }
 
         /// <summary>
+        /// Frees all BASS devices.
+        /// </summary>
+        public static void Free()
+        {
+            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
+            {
+                if (info.IsInitialized)
+                {
+                    Bass.CurrentRecordingDevice = i;
+                    Bass.RecordFree();
+                }
+            }
+
+            for (int i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
+            {
+                if (info.IsInitialized)
+                {
+                    Bass.CurrentDevice = i;
+                    Bass.Free();
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
         /// <param name="RecordingDevice">Index of Recording Device. null = No Microphone Recording.</param>

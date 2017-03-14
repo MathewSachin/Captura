@@ -7,6 +7,7 @@ namespace Captura
 {
     static class SystemTrayManager
     {
+        // Balloon Click Callback
         static Action _balloonAction;
         static NotifyIcon _systemTray;
 
@@ -14,6 +15,7 @@ namespace Captura
         {
             _systemTray = new NotifyIcon
             {
+                // Use the icon from exe file
                 Icon = Icon.ExtractAssociatedIcon("Captura.exe"),
                 Visible = true,
                 ContextMenu = new ContextMenu()
@@ -40,7 +42,7 @@ namespace Captura
 
             _systemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
             {
-                _systemTray.Visible = false;
+                MainViewModel.Instance.Dispose();
                 App.Current.Shutdown();
             });
         }
@@ -54,7 +56,10 @@ namespace Captura
 
         public static void Dispose()
         {
+            // Hide the System Tray
             _systemTray.Visible = false;
+
+            _systemTray.Dispose();
         }
     }
 }

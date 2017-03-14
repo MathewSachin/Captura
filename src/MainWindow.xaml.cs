@@ -11,12 +11,9 @@ namespace Captura
         {
             InitializeComponent();
             
-            HotKeyManager.RegisterAll();
-            
             Closed += (s, e) =>
             {
-                HotKeyManager.Dispose();
-                SystemTrayManager.Dispose();
+                MainViewModel.Instance.Dispose();
                 Application.Current.Shutdown();
             };
         }

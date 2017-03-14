@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Interop;
 using Captura.Properties;
 
@@ -19,6 +20,7 @@ namespace Captura
             Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Default.ScreenShotHotkeyMod, Settings.Default.ScreenShotHotkey,
                 () => MainViewModel.Instance.ScreenShotCommand.ExecuteIfCan()));
 
+            // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
         }
 
@@ -26,26 +28,21 @@ namespace Captura
 
         static void ProcessMessage(ref MSG Message, ref bool Handled)
         {
+            // Is Hotkey Message
             if (Message.message == WmHotkey)
             {
                 var id = Message.wParam.ToInt32();
 
-                foreach (var hotkey in Hotkeys)
-                {
-                    if (hotkey.ID == id)
-                    {
-                        hotkey.Work();
-                        break;
-                    }
-                }
+                Hotkeys.SingleOrDefault(h => h.ID == id)?.Work();                
             }
         }
         
         public static void Dispose()
         {
-            foreach (var hotkey in Hotkeys)
-                hotkey.Unregister();
+            // Unregister All Hotkeys
+            Hotkeys.ForEach(h => h.Unregister());
 
+            // Save Hotkey configurations
             Settings.Default.RecordHotkey = Hotkeys[0].Key;
             Settings.Default.RecordHotkeyMod = (int) Hotkeys[0].Modifiers;
 

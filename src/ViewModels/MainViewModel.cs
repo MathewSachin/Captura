@@ -12,13 +12,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
 namespace Captura
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         #region Fields
         readonly Timer _timer;
@@ -134,8 +133,18 @@ namespace Captura
                 Directory.CreateDirectory(OutPath);
 
             Settings.Default.OutputPath = OutPath;
-            
+
+            HotKeyManager.RegisterAll();
             SystemTrayManager.Init();
+        }
+
+        // Call before Exit to free Resources
+        public void Dispose()
+        {
+            HotKeyManager.Dispose();
+            SystemTrayManager.Dispose();
+
+            AudioViewModel.Dispose();
         }
         
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)

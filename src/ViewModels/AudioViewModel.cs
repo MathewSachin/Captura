@@ -1,12 +1,13 @@
 using Captura.Properties;
 using Screna.Audio;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
 namespace Captura
 {
-    public class AudioViewModel : ViewModelBase
+    public class AudioViewModel : ViewModelBase, IDisposable
     {
         static AudioViewModel()
         {
@@ -22,6 +23,12 @@ namespace Captura
                 Encode = false;
 
             RefreshAudioSources();
+        }
+
+        public void Dispose()
+        {
+            if (BassExists())
+                MixedAudioProvider.Free();
         }
         
         public ObservableCollection<KeyValuePair<int?, string>> AvailableRecordingSources { get; } = new ObservableCollection<KeyValuePair<int?, string>>();
