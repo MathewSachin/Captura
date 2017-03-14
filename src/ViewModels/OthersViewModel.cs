@@ -6,15 +6,8 @@ namespace Captura
     public class OthersViewModel : ViewModelBase
     {
         readonly RegionSelector _regionSelector = RegionSelector.Instance;
-        
-        public OthersViewModel()
-        {
-            MouseKeyHookAvailable = File.Exists("Gma.System.MouseKeyHook.dll");
-
-            _regionSelector.Closing += (Sender, Args) => Args.Cancel = true;
-        }
-        
-        public bool MouseKeyHookAvailable { get; }
+                
+        public bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
 
         int _duration;
 

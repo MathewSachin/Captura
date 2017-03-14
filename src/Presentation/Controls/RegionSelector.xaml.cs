@@ -11,6 +11,9 @@ namespace Captura
         RegionSelector()
         {
             InitializeComponent();
+
+            // Prevent Closing by User
+            Closing += (s, e) => e.Cancel = true;
         }
         
         // Ignoring Borders and Header

@@ -71,6 +71,7 @@ namespace Captura
         
         public bool CanEncode { get; }
         
+        // Check if all BASS dependencies are present
         static bool BassExists { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
         public void RefreshAudioSources()

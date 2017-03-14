@@ -102,8 +102,7 @@ namespace Screna.Audio
         {
             var driver = Bass.RecordGetDeviceInfo(LoopbackDevice).Driver;
 
-            DeviceInfo info;
-            for (int i = 0; Bass.GetDeviceInfo(i, out info); ++i)
+            for (int i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
                 if (info.Driver == driver)
                     return i;
 

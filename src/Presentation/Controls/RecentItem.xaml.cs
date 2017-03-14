@@ -18,11 +18,13 @@ namespace Captura
             UrlButton.Content = Path.GetFileName(FileName);
 
             UrlButton.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage, (s, e) => 
+            {
+                try { Process.Start(_filePath); }
+                catch
                 {
-                    try { Process.Start(_filePath); }
-                    catch { }
-                },
-                (s, e) => e.CanExecute = File.Exists(_filePath)));
+                    // Suppress Errors
+                }
+            }, (s, e) => e.CanExecute = File.Exists(_filePath)));
         }
 
         public event Action Remove;
@@ -36,7 +38,9 @@ namespace Captura
 
         void Delete_Click(object sender, RoutedEventArgs e)
         {
-            File.Delete(_filePath);
+            try { File.Delete(_filePath); }
+            catch { MessageBox.Show($"Can't Delete {_filePath}"); }
+
             Remove?.Invoke();
         }
     }

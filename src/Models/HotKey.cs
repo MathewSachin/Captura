@@ -99,6 +99,7 @@ namespace Captura
             if (Modifiers.HasFlag(Modifiers.Shift))
                 text += "Shift + ";
 
+            // Handle Number keys
             if (Key >= Keys.D0 && Key <= Keys.D9)
                 text += (Key - Keys.D0);
             else if (Key >= Keys.NumPad0 && Key <= Keys.NumPad9)

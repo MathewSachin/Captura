@@ -18,7 +18,7 @@ namespace Screna
         public DateTime TimeStamp { get; }
 
         public Keys Key { get; }
-
+        
         public bool Control { get; }
         public bool Shift { get; }
         public bool Alt { get; }
@@ -27,7 +27,7 @@ namespace Screna
 
         public bool IsNum => (Key >= Keys.D0 && Key <= Keys.D9) || (Key >= Keys.NumPad0 && Key <= Keys.NumPad9);
 
-        public bool IsSpecialDPadCharacter => !Alt && !Control && Shift && IsNum;
+        public bool IsSpecialDPadCharacter => !Alt && !Control && Shift && (Key >= Keys.D0 && Key <= Keys.D9);
 
         public string AsSpecialDPadCharacter => new[]
         {

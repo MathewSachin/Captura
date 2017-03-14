@@ -28,7 +28,14 @@ namespace Captura
                 App.Current.MainWindow.Focus();
             };
 
-            _systemTray.BalloonTipClicked += (s, e) => _balloonAction?.Invoke();
+            _systemTray.BalloonTipClicked += (s, e) =>
+            {
+                try { _balloonAction?.Invoke(); }
+                catch
+                {
+                    // Suppress Errors
+                }
+            };
 
             _systemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) => MainViewModel.Instance.RecordCommand.ExecuteIfCan());
 

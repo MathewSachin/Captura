@@ -126,14 +126,16 @@ namespace Captura
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(OutPath))
+            {
                 OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+
+                Settings.Default.OutputPath = OutPath;
+            }
             
             // Create the Output Directory if it does not exist
             if (!Directory.Exists(OutPath))
                 Directory.CreateDirectory(OutPath);
-
-            Settings.Default.OutputPath = OutPath;
-
+            
             HotKeyManager.RegisterAll();
             SystemTrayManager.Init();
         }
@@ -150,12 +152,10 @@ namespace Captura
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             TimeSpan += _addend;
-            
-            if (OthersViewModel.Duration <= 0 || !(TimeSpan.TotalSeconds >= OthersViewModel.Duration))
-                return;
 
-            // If Capture Duration is set
-            StopRecording();
+            // If Capture Duration is set and reached
+            if (OthersViewModel.Duration > 0 && TimeSpan.TotalSeconds >= OthersViewModel.Duration)
+                StopRecording();
         }
         
         void CheckFunctionalityAvailability()
@@ -163,7 +163,7 @@ namespace Captura
             var audioAvailable = AudioViewModel.SelectedRecordingSource != null || AudioViewModel.SelectedLoopbackSource != null;
 
             var videoAvailable = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
-
+            
             RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
 
             ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
@@ -403,7 +403,7 @@ namespace Captura
             await Task.Run(() => rec.Dispose());
 
             // After Save
-            RecentViewModel.Remove(savingRecentItem);
+            RecentViewModel.RecentList.Remove(savingRecentItem);
             RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio);
 
             SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));

@@ -16,7 +16,7 @@ namespace Captura
         {
             var i = new Button
             {
-                Content = "Saving " + Path.GetFileName(FileName),
+                Content = $"Saving {Path.GetFileName(FileName)} ...",
                 IsEnabled = false
             };
 
@@ -24,20 +24,21 @@ namespace Captura
 
             return i;
         }
-
-        public void Remove(FrameworkElement Item) => RecentList.Remove(Item);
-
+        
         public void Add(string FileName, RecentItemType Type)
         {
             var I = new RecentItem(FileName);
 
+            // Show Print Command for Images
             if (Type == RecentItemType.Image)
                 I.PrintButton.Visibility = Visibility.Visible;
 
             I.Remove += () => RecentList.Remove(I);
             
+            // Insert on top
             RecentList.Insert(0, I);
 
+            // Refresh the Enabled state of RecentItems
             CommandManager.InvalidateRequerySuggested();
         }
 
