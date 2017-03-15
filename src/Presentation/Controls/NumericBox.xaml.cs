@@ -46,19 +46,17 @@ namespace Captura
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(NumericBox), new UIPropertyMetadata(0));
+            DependencyProperty.Register("Value", typeof(int), typeof(NumericBox), new UIPropertyMetadata(0, (s, e) =>
+            {
+                var numBox = s as NumericBox;
+
+                numBox.TextBOX.Text = e.NewValue.ToString();
+            }));
 
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
-            set 
-            {
-                if (Value == value)
-                    return;
-
-                TextBOX.Text = value.ToString();
-                SetValue(ValueProperty, value);
-            }
+            set { SetValue(ValueProperty, value); }
         }
 
         int Last;
@@ -69,7 +67,12 @@ namespace Captura
                 return;
 
             try { Value = int.Parse(TextBOX.Text); }
-            catch { Value = Last; }
+            catch
+            {
+                Value = Last;
+
+                TextBOX.Text = Last.ToString();
+            }
 
             if (Value > Maximum) Value = Maximum;
             else if (Value < Minimum) Value = Minimum;
