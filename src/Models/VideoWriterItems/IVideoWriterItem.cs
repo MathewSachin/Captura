@@ -8,6 +8,7 @@ namespace Captura
     /// </summary>
     public interface IVideoWriterItem
     {
+        // file extension including the leading dot
         string Extension { get; }
 
         IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider);

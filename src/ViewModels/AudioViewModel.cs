@@ -16,7 +16,11 @@ namespace Captura
 
         public AudioViewModel()
         {
-            CanEncode = BassExists && File.Exists("ffmpeg.exe");
+            if (BassExists && File.Exists("ffmpeg.exe"))
+            {
+                foreach (var item in FFMpegAudioWriterItem.Items)
+                    AvailableAudioWriters.Add(item);
+            }
             
             RefreshAudioSources();
         }
@@ -81,12 +85,22 @@ namespace Captura
             return new MixedAudioProvider(SelectedRecordingSource, SelectedLoopbackSource);
         }
 
-        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
+        public ObservableCollection<IAudioWriterItem> AvailableAudioWriters { get; } = new ObservableCollection<IAudioWriterItem>
         {
-            if (CanEncode && MainViewModel.Instance.Settings.EncodeAudio)
-                return new FFMpegAudioWriter(FileName);
+            WaveWriterItem.Instance
+        };
 
-            return new AudioFileWriter(FileName, Wf);
+        IAudioWriterItem _audioWriterItem = WaveWriterItem.Instance;
+
+        public IAudioWriterItem SelectedAudioWriter
+        {
+            get { return _audioWriterItem; }
+            set
+            {
+                _audioWriterItem = value;
+
+                OnPropertyChanged();
+            }
         }
     }
 }

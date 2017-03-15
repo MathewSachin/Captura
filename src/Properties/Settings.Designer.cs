@@ -62,18 +62,6 @@ namespace Captura.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EncodeAudio {
-            get {
-                return ((bool)(this["EncodeAudio"]));
-            }
-            set {
-                this["EncodeAudio"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool UseStereo {
             get {
                 return ((bool)(this["UseStereo"]));

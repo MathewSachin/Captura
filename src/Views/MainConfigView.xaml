@@ -99,12 +99,43 @@
                       Grid.Column="2"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </Grid>
-        <CheckBox Visibility="{Binding AudioViewModel.CanEncode, Converter={StaticResource BoolToVisibilityConverter}}"
-                  Margin="0,8"
-                  Content="{DynamicResource s_EncodeMp3}"
-                  IsChecked="{Binding Settings.EncodeAudio, Mode=TwoWay}"
-                  HorizontalAlignment="Center"
-                  IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+        
+        <DockPanel Margin="10,5,0,5"
+                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <Label Content="{DynamicResource s_FrameRate}"
+                           ContentStringFormat="{}{0}:"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+            <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
+            <Slider Minimum="1"
+                            Maximum="30" 
+                            SelectionStart="8"
+                            SelectionEnd="12"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.FrameRate, Mode=TwoWay}"
+                            Interval="1"/>
+        </DockPanel>
+
+        <DockPanel Margin="10,5,0,5"
+                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <Label Content="{DynamicResource s_Quality}"
+                           ContentStringFormat="{}{0}:"
+                           VerticalContentAlignment="Center"
+                           Margin="0,0,5,0"/>
+            <Label Content="{Binding Settings.VideoQuality}"
+                           ContentStringFormat="{}{0:N0}%"
+                           VerticalContentAlignment="Center"
+                           Margin="3,0"/>
+            <Slider Minimum="1" 
+                            Maximum="100"
+                            SelectionStart="60"
+                            SelectionEnd="80"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
+        </DockPanel>
+        
         <DockPanel Margin="0,5">
             <Path Data="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"
                   Width="15"
@@ -139,6 +170,16 @@
                       SelectedValue="{Binding AudioViewModel.SelectedLoopbackSource, Mode=TwoWay}"
                       SelectedValuePath="Key"
                       DisplayMemberPath="Value"
+                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+        </DockPanel>
+        <DockPanel Margin="0,5">
+            <Label Content="Audio Only:"
+                   Margin="10,0,0,0"
+                   VerticalContentAlignment="Center"/>
+            <ComboBox Margin="7,0"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding AudioViewModel.AvailableAudioWriters}"
+                      SelectedValue="{Binding AudioViewModel.SelectedAudioWriter, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
     </StackPanel>

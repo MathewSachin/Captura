@@ -33,21 +33,7 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-
-        public bool EncodeAudio
-        {
-            get { return _provider.EncodeAudio; }
-            set
-            {
-                if (EncodeAudio == value)
-                    return;
-
-                _provider.EncodeAudio = value;
-
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool GifUnconstrained
         {
             get { return _provider.GifUnconstrained; }

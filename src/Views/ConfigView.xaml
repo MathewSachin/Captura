@@ -7,40 +7,6 @@
             <StackPanel Margin="3"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <DockPanel Margin="0,2">
-                    <Label Content="{DynamicResource s_FrameRate}"
-                           ContentStringFormat="{}{0}:"
-                           VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
-                    <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
-                           VerticalContentAlignment="Center"
-                           Margin="3,0"/>
-                    <Slider Minimum="1"
-                            Maximum="30" 
-                            SelectionStart="8"
-                            SelectionEnd="12"
-                            IsSelectionRangeEnabled="True"
-                            Value="{Binding Settings.FrameRate, Mode=TwoWay}"
-                            Interval="1"/>
-                </DockPanel>
-
-                <DockPanel Margin="0,2">
-                    <Label Content="{DynamicResource s_Quality}"
-                           ContentStringFormat="{}{0}:"
-                           VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
-                    <Label Content="{Binding Settings.VideoQuality}"
-                           ContentStringFormat="{}{0:N0}%"
-                           VerticalContentAlignment="Center"
-                           Margin="3,0"/>
-                    <Slider Minimum="1" 
-                            Maximum="100"
-                            SelectionStart="60"
-                            SelectionEnd="80"
-                            IsSelectionRangeEnabled="True"
-                            Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
-                </DockPanel>
-
-                <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_StartDelay}"
                            VerticalContentAlignment="Center"
                            Margin="0,0,5,0"/>

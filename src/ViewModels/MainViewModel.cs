@@ -273,7 +273,7 @@ namespace Captura
             
             var extension = isVideo
                 ? VideoViewModel.SelectedVideoWriter.Extension
-                : (Settings.EncodeAudio ? ".mp3" : ".wav");
+                : AudioViewModel.SelectedAudioWriter.Extension;
 
             _currentFileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
@@ -293,7 +293,7 @@ namespace Captura
                 if (isVideo)
                     _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
 
-                else _recorder = new Recorder(AudioViewModel.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
+                else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
             }
 
             /*_recorder.RecordingStopped += (s, E) =>
