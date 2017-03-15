@@ -10,6 +10,6 @@ namespace Captura
     {
         string Extension { get; }
 
-        IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, IImageProvider ImageProvider, IAudioProvider AudioProvider);
+        IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider);
     }
 }

@@ -327,10 +327,8 @@ namespace Captura
                 return null;
             
             IVideoFileWriter videoEncoder = null;
-
-            // VideoVideoModel.Quality not used for now
-
-            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.FrameRate, ImgProvider, AudioProvider);
+            
+            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.FrameRate, Settings.VideoQuality, ImgProvider, AudioProvider);
 
             switch (encoder)
             {

@@ -15,17 +15,13 @@ namespace Captura
 
         public string Extension { get; } = ".avi";
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, IImageProvider ImageProvider, IAudioProvider AudioProvider)
+        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider)
         {
+            _codec.Quality = Quality;
+
             return new AviWriter(FileName, _codec, ImageProvider, FrameRate, AudioProvider);
         }
-
-        public int Quality
-        {
-            get => _codec.Quality;
-            set => _codec.Quality = value;
-        }
-
+        
         public override string ToString() => _codec.Name;
     }
 }
