@@ -226,5 +226,17 @@ namespace Captura.Properties {
                 this["MinTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int AudioQuality {
+            get {
+                return ((int)(this["AudioQuality"]));
+            }
+            set {
+                this["AudioQuality"] = value;
+            }
+        }
     }
 }

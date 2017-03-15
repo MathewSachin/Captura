@@ -7,6 +7,6 @@ namespace Captura
         string Extension { get; }
 
         // file extension including the leading dot
-        IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf);
+        IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality);
     }
 }

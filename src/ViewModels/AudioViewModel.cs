@@ -20,6 +20,8 @@ namespace Captura
             {
                 foreach (var item in FFMpegAudioWriterItem.Items)
                     AvailableAudioWriters.Add(item);
+
+                SelectedAudioWriter = FFMpegAudioWriterItem.Mp3;
             }
             
             RefreshAudioSources();

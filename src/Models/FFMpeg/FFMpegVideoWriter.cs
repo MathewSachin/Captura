@@ -21,7 +21,8 @@ namespace Captura
         /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegVideoWriter(string FileName, int FrameRate, int Quality, FFMpegItem FFMpegItem)
         {
-            FFMpegItem.ArgsProvider(Quality, out var audioConfig, out var videoConfig);
+            // use dummy value for audio quality
+            FFMpegItem.ArgsProvider(Quality, out var videoConfig, 1, out var audioConfig);
 
             _ffmpegProcess = new Process
             {

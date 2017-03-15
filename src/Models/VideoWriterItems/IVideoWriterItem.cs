@@ -11,6 +11,6 @@ namespace Captura
         // file extension including the leading dot
         string Extension { get; }
 
-        IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider);
+        IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider);
     }
 }

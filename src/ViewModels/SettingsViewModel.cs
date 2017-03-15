@@ -20,6 +20,20 @@ namespace Captura
             }
         }
 
+        public int AudioQuality
+        {
+            get { return _provider.AudioQuality; }
+            set
+            {
+                if (AudioQuality == value)
+                    return;
+
+                _provider.AudioQuality = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         public int FrameRate
         {
             get { return _provider.FrameRate; }

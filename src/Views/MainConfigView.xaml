@@ -10,6 +10,7 @@
             <SolidColorBrush x:Key="ModernButtonTextPressed" Color="#333333" />
             <SolidColorBrush x:Key="ModernButtonTextDisabled" Color="#a1a1a1" />
         </StackPanel.Resources>
+        
         <DockPanel>
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
@@ -36,6 +37,7 @@
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
             </StackPanel>
         </DockPanel>
+        
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -69,6 +71,7 @@
                       IsEnabled="{Binding CanChangeVideoSource}"
                       Grid.Column="2"/>
         </Grid>
+        
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -103,37 +106,37 @@
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{DynamicResource s_FrameRate}"
-                           ContentStringFormat="{}{0}:"
-                           VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
+                   ContentStringFormat="{}{0}:"
+                   VerticalContentAlignment="Center"
+                   Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
-                           VerticalContentAlignment="Center"
-                           Margin="3,0"/>
+                   VerticalContentAlignment="Center"
+                   Margin="3,0"/>
             <Slider Minimum="1"
-                            Maximum="30" 
-                            SelectionStart="8"
-                            SelectionEnd="12"
-                            IsSelectionRangeEnabled="True"
-                            Value="{Binding Settings.FrameRate, Mode=TwoWay}"
-                            Interval="1"/>
+                    Maximum="30" 
+                    SelectionStart="8"
+                    SelectionEnd="12"
+                    IsSelectionRangeEnabled="True"
+                    Value="{Binding Settings.FrameRate, Mode=TwoWay}"
+                    Interval="1"/>
         </DockPanel>
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{DynamicResource s_Quality}"
-                           ContentStringFormat="{}{0}:"
-                           VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
+                   ContentStringFormat="{}{0}:"
+                   VerticalContentAlignment="Center"
+                   Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.VideoQuality}"
-                           ContentStringFormat="{}{0:N0}%"
-                           VerticalContentAlignment="Center"
-                           Margin="3,0"/>
+                   ContentStringFormat="{}{0:N0}%"
+                   VerticalContentAlignment="Center"
+                   Margin="3,0"/>
             <Slider Minimum="1" 
-                            Maximum="100"
-                            SelectionStart="60"
-                            SelectionEnd="80"
-                            IsSelectionRangeEnabled="True"
-                            Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
+                    Maximum="100"
+                    SelectionStart="60"
+                    SelectionEnd="80"
+                    IsSelectionRangeEnabled="True"
+                    Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
         </DockPanel>
         
         <DockPanel Margin="0,5">
@@ -154,6 +157,7 @@
                       DisplayMemberPath="Value"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
+        
         <DockPanel Margin="0,5">
             <Path Data="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"
                   Width="15"
@@ -172,15 +176,34 @@
                       DisplayMemberPath="Value"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
-        <DockPanel Margin="0,5">
+        
+        <DockPanel Margin="0,5"
+                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="Audio Only:"
                    Margin="10,0,0,0"
                    VerticalContentAlignment="Center"/>
             <ComboBox Margin="7,0"
                       VerticalAlignment="Center"
                       ItemsSource="{Binding AudioViewModel.AvailableAudioWriters}"
-                      SelectedValue="{Binding AudioViewModel.SelectedAudioWriter, Mode=TwoWay}"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                      SelectedValue="{Binding AudioViewModel.SelectedAudioWriter, Mode=TwoWay}"/>
+        </DockPanel>
+
+        <DockPanel Margin="10,5,0,5"
+                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <Label Content="Audio Quality"
+                   ContentStringFormat="{}{0}:"
+                   VerticalContentAlignment="Center"
+                   Margin="0,0,5,0"/>
+            <Label Content="{Binding Settings.AudioQuality}"
+                   ContentStringFormat="{}{0:N0}%"
+                   VerticalContentAlignment="Center"
+                   Margin="3,0"/>
+            <Slider Minimum="1" 
+                    Maximum="100"
+                    SelectionStart="40"
+                    SelectionEnd="60"
+                    IsSelectionRangeEnabled="True"
+                    Value="{Binding Settings.AudioQuality, Mode=TwoWay}"/>
         </DockPanel>
     </StackPanel>
 </Page>

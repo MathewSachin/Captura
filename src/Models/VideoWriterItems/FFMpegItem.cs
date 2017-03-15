@@ -8,25 +8,25 @@ namespace Captura
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
-            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", (int VideoQuality, out string AudioConfig, out string VideoConfig) =>
+            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", (int VideoQuality, out string VideoConfig, int AudioQuality, out string AudioConfig) =>
             {
                 // quality: 51 (lowest) to 0 (highest)
                 var crf = (51 * (100 - VideoQuality)) / 99;
 
                 VideoConfig = $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p";
 
-                AudioConfig = "-acodec aac -strict -2 -ac 2 -b:a 192k";
+                AudioConfig = FFMpegAudioWriterItem.Aac.AudioArgsProvider(AudioQuality);
             }),
 
             // Avi
-            new FFMpegItem("Avi (Xvid)", ".avi", (int VideoQuality, out string AudioConfig, out string VideoConfig) =>
+            new FFMpegItem("Avi (Xvid | Mp3)", ".avi", (int VideoQuality, out string VideoConfig, int AudioQuality, out string AudioConfig) =>
             {
                 // quality: 31 (lowest) to 1 (highest)
                 var qscale = 31 - ((VideoQuality - 1) * 30) / 99;
 
                 VideoConfig = $"-vcodec libxvid -qscale:v {qscale}";
 
-                AudioConfig = "";
+                AudioConfig = FFMpegAudioWriterItem.Mp3.AudioArgsProvider(AudioQuality);
             })
         };
 
@@ -42,12 +42,12 @@ namespace Captura
         readonly string _name;
         public override string ToString() => _name;
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider)
+        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
             if (AudioProvider == null)
-                return new FFMpegVideoWriter(FileName, FrameRate, Quality, this);
+                return new FFMpegVideoWriter(FileName, FrameRate, VideoQuality, this);
 
-            return new FFMpegMuxedWriter(FileName, FrameRate, Quality, this, AudioProvider);
+            return new FFMpegMuxedWriter(FileName, FrameRate, VideoQuality, this, AudioQuality, AudioProvider);
         }
 
         public FFMpegArgsProvider ArgsProvider { get; }

@@ -14,7 +14,7 @@ namespace Captura
 
         public override string ToString() => "Gif";
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int Quality, IImageProvider ImageProvider, IAudioProvider AudioProvider)
+        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
             var repeat = MainViewModel.Instance.GifRepeat ? MainViewModel.Instance.GifRepeatCount : -1;
             

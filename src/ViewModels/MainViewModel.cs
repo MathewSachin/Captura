@@ -293,7 +293,7 @@ namespace Captura
                 if (isVideo)
                     _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
 
-                else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat), audioSource);
+                else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
 
             /*_recorder.RecordingStopped += (s, E) =>
@@ -328,7 +328,7 @@ namespace Captura
             
             IVideoFileWriter videoEncoder = null;
             
-            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.FrameRate, Settings.VideoQuality, ImgProvider, AudioProvider);
+            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.FrameRate, Settings.VideoQuality, ImgProvider, Settings.AudioQuality, AudioProvider);
 
             switch (encoder)
             {

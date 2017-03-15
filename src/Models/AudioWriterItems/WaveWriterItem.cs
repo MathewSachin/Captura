@@ -12,7 +12,7 @@ namespace Captura
 
         public override string ToString() => "Wave";
 
-        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf)
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
         {
             return new AudioFileWriter(FileName, Wf);
         }
