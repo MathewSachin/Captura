@@ -186,21 +186,5 @@ namespace Captura
                 OnPropertyChanged();
             }
         }
-        
-        Color _bgColor = Colors.Transparent;
-
-        public Color BackgroundColor
-        {
-            get { return _bgColor; }
-            set
-            {
-                if (_bgColor == value)
-                    return;
-
-                _bgColor = value;
-
-                OnPropertyChanged();
-            }
-        }
     }
 }

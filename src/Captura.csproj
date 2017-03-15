@@ -109,9 +109,6 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\ColorPickerBox.xaml.cs">
-      <DependentUpon>ColorPickerBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Presentation\Controls\NumericBox.xaml.cs">
       <DependentUpon>NumericBox.xaml</DependentUpon>
     </Compile>
@@ -221,10 +218,6 @@
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Presentation\Controls\ColorPickerBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Controls\NumericBox.xaml">
       <SubType>Designer</SubType>

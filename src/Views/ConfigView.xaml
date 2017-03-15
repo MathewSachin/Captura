@@ -41,13 +41,6 @@
                 </DockPanel>
 
                 <DockPanel Margin="0,2">
-                    <Label Content="{DynamicResource s_BgColor}"
-                           VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
-                    <local:ColorPickerBox SelectedColor="{Binding VideoViewModel.BackgroundColor, Mode=TwoWay}"/>
-                </DockPanel>
-
-                <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_StartDelay}"
                            VerticalContentAlignment="Center"
                            Margin="0,0,5,0"/>
