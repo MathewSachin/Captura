@@ -1,1 +1,2 @@
-# Captura Web
+# Captura.web
+Website for Captura.

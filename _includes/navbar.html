@@ -1,0 +1,65 @@
+<style>
+.navbar-inverse
+{
+    background-color: #333333;
+    border-radius: 0px;
+    z-index: 20;
+}
+
+.icon-bar {
+    transition: 0.4s;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+    transform: rotate(-45deg) translate(-4px, 5px) ;
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+    opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+    transform: rotate(45deg) translate(-4px, -5px) ;
+}
+</style>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#Navbar"
+                onclick="navbarToggle(this)">
+        <span class="icon-bar bar1"></span>
+        <span class="icon-bar bar2"></span>
+        <span class="icon-bar bar3"></span>
+        </button>
+        <a href="/" class="navbar-brand">Captura</a>
+    </div>
+    <div class="collapse navbar-collapse"
+         id="Navbar">
+        <ul class="nav navbar-nav">
+            <li><a href="/blog"><span class="fa fa-rss"></span> Blog</a></li>
+            <li><a href="/blog/tags"><span class="fa fa-tags"></span> Tags</a></li>
+            <li><a href="/blog/archive"><span class="fa fa-archive"></span> Archive</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<script>
+function navbarToggle(x) {
+    x.classList.toggle("change");
+}
+
+$(function() {
+    // Closes the Responsive Menu on Menu Item Click
+    $('.navbar-collapse ul li a').click(function(){ 
+        $('.navbar-toggle:visible').click();
+    });
+});
+</script>

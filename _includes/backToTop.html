@@ -1,0 +1,43 @@
+<style>
+.back-to-top {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 100%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:.3s;
+    background-color:#F44336;
+    display: none;
+    padding: unset;
+    z-index: 10;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+
+.back-to-top:hover {
+    transform: scale(1.1);
+}
+</style>
+
+<button class="back-to-top"><i class="glyphicon glyphicon-menu-up"></i></button>
+
+<script>
+$(function() {
+    // Fade
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100)
+            $('.back-to-top').fadeIn(500);
+        else $('.back-to-top').fadeOut(500);
+    });
+
+    // Smooth scroll to top
+    $(".back-to-top").click(function()
+    {
+        $('html, body').animate({ scrollTop: 0 }, 900);
+    });
+});
+</script>
