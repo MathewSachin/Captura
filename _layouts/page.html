@@ -1,0 +1,34 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="{{ site.baseurl }}/styles/page.css">
+
+<div class="jumbotron jumbotron-fluid bg-teal">
+    <div class="container">
+        <h2>{{ page.title }}</h2>
+        {% if page.reading_time %}
+        <small> {% include readingTime.html %}</small>
+        <br>
+        {% endif %}
+        <br>
+        <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}">Edit this page</a></div>
+    </div>
+</div>
+
+<div class="container page-container">
+    <div class="row">
+        <div class="col-md-10 page-content">
+            <p>{{ content }}</p>
+
+            <br><hr><br>
+
+            {% include disqus.html %}
+        </div>
+        <div class="col-md-2">
+            <div class="sticky-top" style="top: 10px">
+            {% include adsense.html %}
+            </div>
+        </div>
+    </div>
+</div>
