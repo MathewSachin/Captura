@@ -1,9 +1,15 @@
 <style>
-.navbar-inverse
-{
-    background-color: #333333;
-    border-radius: 0px;
-    z-index: 20;
+.navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.navbar-nav li a:hover {
+    color: #1abc9c !important;
 }
 
 .icon-bar {
@@ -26,8 +32,8 @@
 }
 </style>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
+<nav class="navbar navbar-default">
+    <div class="container">
     <div class="navbar-header">
         <button type="button"
                 class="navbar-toggle"
@@ -38,14 +44,25 @@
         <span class="icon-bar bar2"></span>
         <span class="icon-bar bar3"></span>
         </button>
-        <a href="/" class="navbar-brand">Captura</a>
+        <a href="{{ site.url }}{{ site.baseurl }}" class="navbar-brand">Captura</a>
     </div>
     <div class="collapse navbar-collapse"
          id="Navbar">
-        <ul class="nav navbar-nav">
-            <li><a href="/blog"><span class="fa fa-rss"></span> Blog</a></li>
-            <li><a href="/blog/tags"><span class="fa fa-tags"></span> Tags</a></li>
-            <li><a href="/blog/archive"><span class="fa fa-archive"></span> Archive</a></li>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ site.url }}{{ site.baseurl }}/faq.html"><span class="fa fa-question"></span> FAQ</a></li>
+            <li><a href="{{ site.url }}{{ site.baseurl }}/ScreenShots"><span class="fa fa-picture-o"></span> SCREENSHOTS</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">MORE
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/dependencies.html">Dependencies</a></li>
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/contributing.html">Contributing</a></li>
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/changelog.html">Changelog</a></li>
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/acknowledgements.html">Acknowledgements</a></li>
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/getting-started.html">Getting Started</a></li>
+                    <li><a href="{{ site.url }}{{ site.baseurl }}/hotkeys.html">Hotkeys</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
     </div>
@@ -55,11 +72,4 @@
 function navbarToggle(x) {
     x.classList.toggle("change");
 }
-
-$(function() {
-    // Closes the Responsive Menu on Menu Item Click
-    $('.navbar-collapse ul li a').click(function(){ 
-        $('.navbar-toggle:visible').click();
-    });
-});
 </script>

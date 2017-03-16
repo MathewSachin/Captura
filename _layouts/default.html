@@ -4,12 +4,10 @@
   <body>
     {% include navbar.html %}
 
-    {% include forkMe.html %}
+    {{ content }}
+        
+    {% include footer.html %}
 
-    <div class="container-fluid" id="content">
-      {{ content }}
-    </div>
-    
     {% include backToTop.html %}
 
     {% include analytics.html %}    

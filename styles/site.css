@@ -1,0 +1,28 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+img {
+    max-width: 100%;
+}
+
+.bg-teal { 
+    background-color: #1abc9c;
+    color: #ffffff;
+}
+
+.bg-teal a {
+    color: #3D3D3D;
+}
+
+.btn-action {
+    border: 1px groove rgba(0, 0, 0, 0.5);
+    padding: 14px 28px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-action:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    text-decoration-line: none;
+}
