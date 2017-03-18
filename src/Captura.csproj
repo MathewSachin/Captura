@@ -46,6 +46,9 @@
     <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
     </Reference>
@@ -65,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\IAudioItem.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
     <Compile Include="Models\VideoWriterKind.cs" />
+    <Compile Include="Models\WaveInProvider.cs" />
     <Compile Include="Presentation\Controls\HotkeySelector.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />

@@ -12,6 +12,8 @@ namespace Captura
         {
             if (BassAudioSource.Available)
                 AudioSource = new BassAudioSource();
+            else if (NAudioSource.Available)
+                AudioSource = new NAudioSource();
             else AudioSource = NoAudioSource.Instance;
 
             AudioSource.Init();
