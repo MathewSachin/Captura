@@ -16,43 +16,6 @@ namespace Screna.Audio
         readonly int _silence, _loopback, _recording, _mixer;
         
         /// <summary>
-        /// Initialises BASS and enables Loopback Recording.
-        /// Call this method when your application starts.
-        /// </summary>
-        public static void Init()
-        {
-            // Initialises Default Playback Device.
-            Bass.Init();
-
-            // Enable Loopback Recording.
-            Bass.Configure(Configuration.LoopbackRecording, true);
-        }
-
-        /// <summary>
-        /// Frees all BASS devices.
-        /// </summary>
-        public static void Free()
-        {
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
-            {
-                if (info.IsInitialized)
-                {
-                    Bass.CurrentRecordingDevice = i;
-                    Bass.RecordFree();
-                }
-            }
-
-            for (int i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
-            {
-                if (info.IsInitialized)
-                {
-                    Bass.CurrentDevice = i;
-                    Bass.Free();
-                }
-            }
-        }
-
-        /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
         /// <param name="RecordingDevice">Index of Recording Device. null = No Microphone Recording.</param>
@@ -175,19 +138,6 @@ namespace Screna.Audio
             Bass.ChannelPause(_silence);
 
             RecordingStopped?.Invoke(this, new EndEventArgs(null));
-        }
-
-        /// <summary>
-        /// Gets Recording and Loopback Devices as (Index, Name).
-        /// </summary>
-        public static void GetDevices(IList<KeyValuePair<int?, string>> RecordingDevices, IList<KeyValuePair<int?, string>> LoopbackDevices)
-        {
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
-            {
-                if (info.IsLoopback)
-                    LoopbackDevices.Add(new KeyValuePair<int?, string>(i, info.Name));
-                else RecordingDevices.Add(new KeyValuePair<int?, string>(i, info.Name));
-            }
         }
     }
 }

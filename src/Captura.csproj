@@ -64,6 +64,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
+    <Compile Include="Models\IAudioItem.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="Models\Modifiers.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
+    <Compile Include="Models\NotifyPropertyChanged.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />

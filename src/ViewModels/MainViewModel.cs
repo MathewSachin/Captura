@@ -47,7 +47,7 @@ namespace Captura
 
                 VideoViewModel.RefreshCodecs();
 
-                AudioViewModel.RefreshAudioSources();
+                AudioViewModel.AudioSource.Refresh();
 
                 Status = "Refreshed";
             });
@@ -97,10 +97,10 @@ namespace Captura
             //Populate Available Codecs, Audio and Video Sources ComboBoxes
             RefreshCommand.Execute(null);
 
-            AudioViewModel.PropertyChanged += (Sender, Args) =>
+            AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
             {
-                if (Args.PropertyName == nameof(AudioViewModel.SelectedRecordingSource)
-                || Args.PropertyName == nameof(AudioViewModel.SelectedLoopbackSource))
+                if (Args.PropertyName == nameof(AudioViewModel.AudioSource.SelectedRecordingSource)
+                || Args.PropertyName == nameof(AudioViewModel.AudioSource.SelectedLoopbackSource))
                     CheckFunctionalityAvailability();
             };
 
@@ -156,7 +156,7 @@ namespace Captura
         
         void CheckFunctionalityAvailability()
         {
-            var audioAvailable = AudioViewModel.SelectedRecordingSource != null || AudioViewModel.SelectedLoopbackSource != null;
+            var audioAvailable = AudioViewModel.AudioSource.AudioAvailable;
 
             var videoAvailable = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
             
@@ -282,7 +282,7 @@ namespace Captura
             _timer.Stop();
             TimeSpan = TimeSpan.Zero;
             
-            var audioSource = AudioViewModel.GetAudioSource();
+            var audioSource = AudioViewModel.AudioSource.GetAudioSource();
 
             var imgProvider = GetImageProvider();
             
