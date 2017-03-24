@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -26,14 +25,14 @@ namespace Captura
         
         public CultureInfo Language
         {
-            get { return new CultureInfo(Settings.Default.Language); }
+            get { return new CultureInfo(Settings.Instance.Language); }
             set
             {
                 value = value ?? DefaultLanguage;
                                 
                 Thread.CurrentThread.CurrentUICulture = value;
 
-                Settings.Default.Language = value.Name;
+                Settings.Instance.Language = value.Name;
 
                 var dict = new ResourceDictionary()
                 {

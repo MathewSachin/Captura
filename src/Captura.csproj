@@ -110,6 +110,7 @@
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\VideoItems\RegionItem.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Presentation\DelegateCommand.cs" />
@@ -117,7 +118,6 @@
     <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
     <Compile Include="Models\VideoSourceKind.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,11 +131,6 @@
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\StaticRegionProvider.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
@@ -280,10 +275,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Logo.png" />

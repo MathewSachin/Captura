@@ -10,7 +10,7 @@ namespace Captura
     public class RecentViewModel : ViewModelBase
     {
         public ObservableCollection<FrameworkElement> RecentList { get; } = new ObservableCollection<FrameworkElement>();
-        
+
         public FrameworkElement AddTemp(string FileName)
         {
             var i = new Button
@@ -23,7 +23,7 @@ namespace Captura
 
             return i;
         }
-        
+
         public void Add(string FileName, RecentItemType Type)
         {
             var I = new RecentItem(FileName);
@@ -33,14 +33,12 @@ namespace Captura
                 I.PrintButton.Visibility = Visibility.Visible;
 
             I.Remove += () => RecentList.Remove(I);
-            
+
             // Insert on top
             RecentList.Insert(0, I);
 
             // Refresh the Enabled state of RecentItems
             CommandManager.InvalidateRequerySuggested();
         }
-
-        public ICommand OpenOutputFolderCommand { get; } = new DelegateCommand(() => Process.Start("explorer.exe", MainViewModel.Instance.Settings.OutPath));
     }
 }

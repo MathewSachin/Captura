@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System.Windows;
+﻿using System.Windows;
 using System.Threading;
 using System.Globalization;
 
@@ -10,7 +9,7 @@ namespace Captura
         void Application_Startup(object sender, StartupEventArgs e)
         {
             // Localization
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Instance.Language);
         }
     }
 }

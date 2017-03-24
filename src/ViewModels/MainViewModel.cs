@@ -56,7 +56,7 @@ namespace Captura
             {
                 EnsureOutPath();
 
-                Process.Start("explorer.exe", Settings.OutPath);
+                Process.Start(Settings.OutPath);
             });
 
             PauseCommand = new DelegateCommand(() =>

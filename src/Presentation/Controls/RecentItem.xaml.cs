@@ -39,7 +39,7 @@ namespace Captura
         void Delete_Click(object sender, RoutedEventArgs e)
         {
             try { File.Delete(_filePath); }
-            catch { MessageBox.Show($"Can't Delete {_filePath}"); }
+            catch { MessageBox.Show($"Can't Delete {_filePath}. It will still be removed from list.", "Delete Failed", MessageBoxButton.OK, MessageBoxImage.Warning); }
 
             Remove?.Invoke();
         }

@@ -56,7 +56,7 @@ namespace Captura
         
         public static void ShowNotification(string Title, string Text, int Duration, Action ClickAction)
         {
-            if (!Properties.Settings.Default.TrayNotify)
+            if (!Settings.Instance.TrayNotify)
                 return;
 
             _balloonAction = ClickAction;

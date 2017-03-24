@@ -279,7 +279,7 @@ namespace Captura
         #endregion
 
         #region Nested ViewModels
-        public SettingsViewModel Settings { get; } = new SettingsViewModel();
+        public Settings Settings { get; } = Settings.Instance;
 
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 

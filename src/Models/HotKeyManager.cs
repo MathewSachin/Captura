@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Interop;
-using Captura.Properties;
 
 namespace Captura
 {
@@ -11,13 +10,13 @@ namespace Captura
         
         public static void RegisterAll()
         {
-            Hotkeys.Add(new Hotkey("Start/Stop Recording", (Modifiers) Settings.Default.RecordHotkeyMod, Settings.Default.RecordHotkey,
+            Hotkeys.Add(new Hotkey("Start/Stop Recording", (Modifiers) Settings.Instance.RecordHotkeyMod, Settings.Instance.RecordHotkey,
                 () => MainViewModel.Instance.RecordCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("Pause/Resume Recording", (Modifiers) Settings.Default.PauseHotkeyMod, Settings.Default.PauseHotkey,
+            Hotkeys.Add(new Hotkey("Pause/Resume Recording", (Modifiers) Settings.Instance.PauseHotkeyMod, Settings.Instance.PauseHotkey,
                 () => MainViewModel.Instance.PauseCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Default.ScreenShotHotkeyMod, Settings.Default.ScreenShotHotkey,
+            Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Instance.ScreenShotHotkeyMod, Settings.Instance.ScreenShotHotkey,
                 () => MainViewModel.Instance.ScreenShotCommand.ExecuteIfCan()));
 
             // Register for Windows Messages
@@ -43,14 +42,14 @@ namespace Captura
             Hotkeys.ForEach(h => h.Unregister());
 
             // Save Hotkey configurations
-            Settings.Default.RecordHotkey = Hotkeys[0].Key;
-            Settings.Default.RecordHotkeyMod = (int) Hotkeys[0].Modifiers;
+            Settings.Instance.RecordHotkey = Hotkeys[0].Key;
+            Settings.Instance.RecordHotkeyMod = (int) Hotkeys[0].Modifiers;
 
-            Settings.Default.PauseHotkey = Hotkeys[1].Key;
-            Settings.Default.PauseHotkeyMod = (int) Hotkeys[1].Modifiers;
+            Settings.Instance.PauseHotkey = Hotkeys[1].Key;
+            Settings.Instance.PauseHotkeyMod = (int) Hotkeys[1].Modifiers;
 
-            Settings.Default.ScreenShotHotkey = Hotkeys[2].Key;
-            Settings.Default.ScreenShotHotkeyMod = (int) Hotkeys[2].Modifiers;
+            Settings.Instance.ScreenShotHotkey = Hotkeys[2].Key;
+            Settings.Instance.ScreenShotHotkeyMod = (int) Hotkeys[2].Modifiers;
         }
     }
 }
