@@ -146,6 +146,20 @@ namespace Captura
             }
         }
 
+        public bool TrayNotify
+        {
+            get { return Settings.Default.TrayNotify; }
+            set
+            {
+                if (TrayNotify == value)
+                    return;
+
+                Settings.Default.TrayNotify = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         public void Save() => _provider.Save();
     }
 }

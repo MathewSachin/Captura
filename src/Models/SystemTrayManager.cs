@@ -56,6 +56,9 @@ namespace Captura
         
         public static void ShowNotification(string Title, string Text, int Duration, Action ClickAction)
         {
+            if (!Properties.Settings.Default.TrayNotify)
+                return;
+
             _balloonAction = ClickAction;
 
             _systemTray.ShowBalloonTip(Duration, Title, Text, ToolTipIcon.None);

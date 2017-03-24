@@ -6,19 +6,32 @@
         <ScrollViewer>
             <StackPanel Margin="3"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <DockPanel Margin="0,2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
                     <Label Content="{DynamicResource s_StartDelay}"
                            VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
-                    <local:NumericBox Value="{Binding StartDelay, Mode=TwoWay}"/>
-                </DockPanel>
+                           Margin="0,2,5,2"/>
+                    <local:NumericBox Value="{Binding StartDelay, Mode=TwoWay}"
+                                      Grid.Column="1"
+                                      Margin="0,2"/>
 
-                <DockPanel Margin="0,2">
                     <Label Content="{DynamicResource s_CaptureDuration}"
                            VerticalContentAlignment="Center"
-                           Margin="0,0,5,0"/>
-                    <local:NumericBox Value="{Binding Duration, Mode=TwoWay}"/>
-                </DockPanel>
+                           Margin="0,2,5,2"
+                           Grid.Row="1"/>
+                    <local:NumericBox Value="{Binding Duration, Mode=TwoWay}"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,2"/>
+                </Grid>
 
                 <CheckBox Content="{DynamicResource s_MinCaptureStart}"
                           IsChecked="{Binding Settings.MinimizeOnStart, Mode=TwoWay}"
@@ -26,6 +39,10 @@
 
                 <CheckBox Content="{DynamicResource s_MinTray}"
                           IsChecked="{Binding Settings.MinimizeToTray, Mode=TwoWay}"
+                          Margin="0,2"/>
+
+                <CheckBox Content="Show System Tray Notifications"
+                          IsChecked="{Binding Settings.TrayNotify, Mode=TwoWay}"
                           Margin="0,2"/>
 
                 <TextBlock Margin="0,7,0,3"

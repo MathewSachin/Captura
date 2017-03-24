@@ -238,5 +238,17 @@ namespace Captura.Properties {
                 this["AudioQuality"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TrayNotify {
+            get {
+                return ((bool)(this["TrayNotify"]));
+            }
+            set {
+                this["TrayNotify"] = value;
+            }
+        }
     }
 }
