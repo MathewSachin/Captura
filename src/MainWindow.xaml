@@ -15,7 +15,8 @@
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MouseMove="Window_MouseMove"
-        BorderThickness="1">
+        BorderThickness="1"
+        BorderBrush="{DynamicResource Accent}">
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Template">
