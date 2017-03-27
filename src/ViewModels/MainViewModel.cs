@@ -196,7 +196,7 @@ namespace Captura
                     else
                     {
                         bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
-                                 ScreenShotDoResize, ScreenShotResizeWidth, ScreenShotResizeHeight);
+                                 Settings.ScreenShotDoResize, Settings.ScreenShotResizeWidth, Settings.ScreenShotResizeHeight);
 
                         // Capture without Transparency
                         if (bmp == null)

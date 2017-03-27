@@ -91,7 +91,7 @@
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
     <Compile Include="Models\SystemTrayManager.cs" />
-    <Compile Include="Models\VideoWriterItems\FFMpegArgsProvider.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegVideoArgsProvider.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />

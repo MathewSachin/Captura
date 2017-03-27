@@ -41,9 +41,8 @@ namespace Captura
 
                 var mergedDicts = Application.Current.Resources.MergedDictionaries;
 
-                var oldDict = (from d in mergedDicts
-                               where d.Source != null && d.Source.OriginalString.StartsWith("Languages/lang.")
-                               select d).First();
+                var oldDict = mergedDicts.Where(d => d.Source != null && d.Source.OriginalString.StartsWith("Languages/lang."))
+                                         .First();
 
                 if (oldDict?.Source == dict.Source)
                     return;

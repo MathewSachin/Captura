@@ -37,7 +37,13 @@
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
             </StackPanel>
         </DockPanel>
-        
+
+
+        <Label Content="Video"
+               FontWeight="Bold"
+               Margin="10,3"
+               FontSize="15"/>
+
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -138,7 +144,12 @@
                     IsSelectionRangeEnabled="True"
                     Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
         </DockPanel>
-        
+
+        <Label Content="Audio"
+               FontWeight="Bold"
+               Margin="10,15,0,3"
+               FontSize="15"/>
+
         <DockPanel Margin="0,5">
             <Path Data="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"
                   Width="15"
@@ -175,7 +186,7 @@
         
         <DockPanel Margin="0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="Audio Only:"
+            <Label Content="Audio Format when no Video:"
                    Margin="10,0,0,0"
                    VerticalContentAlignment="Center"/>
             <ComboBox Margin="7,0"
@@ -186,7 +197,7 @@
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="Audio Quality"
+            <Label Content="Quality"
                    ContentStringFormat="{}{0}:"
                    VerticalContentAlignment="Center"
                    Margin="0,0,5,0"/>

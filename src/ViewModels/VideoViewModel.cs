@@ -3,7 +3,6 @@ using Screna.Avi;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Media;
 
 namespace Captura
 {
@@ -15,15 +14,22 @@ namespace Captura
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
 
+            // Check if SharpAvi is available
+            if (File.Exists("SharpAvi.dll"))
+            {
+                AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
+
+                SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
+            }
+
             // Check if FFMpeg is available
             if (File.Exists("ffmpeg.exe"))
+            {
                 AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
 
-            // Check if SharpAvi is available, if not select Gif as default
-            if (File.Exists("SharpAvi.dll"))
-                AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
-            else SelectedVideoWriterKind = VideoWriterKind.Gif;
-
+                SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
+            }
+           
             RefreshCodecs();
 
             RefreshVideoSources();
@@ -113,7 +119,7 @@ namespace Captura
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
 
         // Give SharpAvi the default preference
-        VideoWriterKind _writerKind = VideoWriterKind.SharpAvi;
+        VideoWriterKind _writerKind = VideoWriterKind.Gif;
 
         public VideoWriterKind SelectedVideoWriterKind
         {

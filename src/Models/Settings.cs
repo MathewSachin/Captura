@@ -36,15 +36,7 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool UseStereo
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("70")]
         public int VideoQuality
@@ -93,6 +85,7 @@ namespace Captura
             set => Set(value);
         }
 
+        #region Hotkeys
         [UserScopedSetting]
         [DefaultSettingValue("R")]
         public Keys RecordHotkey
@@ -140,6 +133,7 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+        #endregion
 
         [UserScopedSetting]
         [DefaultSettingValue("False")]
@@ -164,5 +158,49 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
+
+        #region ScreenShot
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool ScreenShotDoResize
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("640")]
+        public int ScreenShotResizeWidth
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("400")]
+        public int ScreenShotResizeHeight
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+        #endregion
+
+        #region Gif
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool GifRepeat
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int GifRepeatCount
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+        #endregion
     }
 }

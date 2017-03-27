@@ -57,10 +57,10 @@
                     <CheckBox Content="{DynamicResource s_Repeat}"
                               Margin="0,0,5,0"
                               DockPanel.Dock="Left"
-                              IsChecked="{Binding GifRepeat, Mode=TwoWay}"/>
+                              IsChecked="{Binding Settings.GifRepeat, Mode=TwoWay}"/>
 
-                    <local:NumericBox IsEnabled="{Binding GifRepeat}"
-                                      Value="{Binding GifRepeatCount, Mode=TwoWay}"/>
+                    <local:NumericBox IsEnabled="{Binding Settings.GifRepeat}"
+                                      Value="{Binding Settings.GifRepeatCount, Mode=TwoWay}"/>
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
@@ -103,22 +103,22 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{DynamicResource s_Resize}"
-                              IsChecked="{Binding ScreenShotDoResize, Mode=TwoWay}"
+                              IsChecked="{Binding Settings.ScreenShotDoResize, Mode=TwoWay}"
                               Margin="0,0,5,0"/>
 
-                    <local:NumericBox Value="{Binding ScreenShotResizeWidth, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding Settings.ScreenShotResizeWidth, Mode=TwoWay}"
                                       Grid.Column="1"
-                                      IsEnabled="{Binding ScreenShotDoResize}"/>
+                                      IsEnabled="{Binding Settings.ScreenShotDoResize}"/>
 
                     <Label Content="x"
                            VerticalContentAlignment="Center"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <local:NumericBox Value="{Binding ScreenShotResizeHeight, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding Settings.ScreenShotResizeHeight, Mode=TwoWay}"
                                       Grid.Column="3"
                                       Margin="0,3"
-                                      IsEnabled="{Binding ScreenShotDoResize}"/>
+                                      IsEnabled="{Binding Settings.ScreenShotDoResize}"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

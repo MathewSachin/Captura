@@ -9,14 +9,14 @@ namespace Captura
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
 
-        public FFMpegAudioWriter(string FileName, int AudioQuality, FFMpegAudioWriterItem FFMpegItem, int Frequency = 44100, int Channels = 2)
+        public FFMpegAudioWriter(string FileName, int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider, int Frequency = 44100, int Channels = 2)
         {
             _ffmpegProcess = new Process
             {
                 StartInfo =
                 {
                     FileName = "ffmpeg.exe",
-                    Arguments = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn {FFMpegItem.AudioArgsProvider(AudioQuality)} \"{FileName}\"",
+                    Arguments = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn {AudioArgsProvider(AudioQuality)} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true

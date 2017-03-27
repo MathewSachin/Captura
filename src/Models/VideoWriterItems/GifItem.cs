@@ -16,7 +16,7 @@ namespace Captura
 
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
-            var repeat = MainViewModel.Instance.GifRepeat ? MainViewModel.Instance.GifRepeatCount : -1;
+            var repeat = Settings.Instance.GifRepeat ? Settings.Instance.GifRepeatCount : -1;
             
             return new GifWriter(FileName, 1000 / FrameRate, repeat);
         }

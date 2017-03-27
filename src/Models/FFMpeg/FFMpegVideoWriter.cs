@@ -19,17 +19,14 @@ namespace Captura
         /// </summary>
         /// <param name="FileName">Path for the output file.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
-        public FFMpegVideoWriter(string FileName, int FrameRate, int Quality, FFMpegItem FFMpegItem)
+        public FFMpegVideoWriter(string FileName, int FrameRate, int Quality, FFMpegVideoArgsProvider VideoArgsProvider)
         {
-            // use dummy value for audio quality
-            FFMpegItem.ArgsProvider(Quality, out var videoConfig, 1, out var audioConfig);
-
             _ffmpegProcess = new Process
             {
                 StartInfo =
                 {
                     FileName = "ffmpeg.exe",
-                    Arguments = $"-r {FrameRate} -f image2pipe -i - {videoConfig} \"{FileName}\"",
+                    Arguments = $"-r {FrameRate} -f image2pipe -i - {VideoArgsProvider(Quality)} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true

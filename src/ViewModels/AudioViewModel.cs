@@ -21,17 +21,18 @@ namespace Captura
             if (AudioSource != NoAudioSource.Instance && File.Exists("ffmpeg.exe"))
             {
                 foreach (var item in FFMpegAudioWriterItem.Items)
-                    AvailableAudioWriters.Add(item);
+                {
+                    if (item.Extension == ".mp3")
+                        SelectedAudioWriter = item;
 
-                SelectedAudioWriter = FFMpegAudioWriterItem.Mp3;
+                    AvailableAudioWriters.Add(item);
+                }
             }
 
             AudioSource.Refresh();
         }
 
         public void Dispose() => AudioSource.Dispose();
-                
-        public bool CanEncode { get; }
         
         public ObservableCollection<IAudioWriterItem> AvailableAudioWriters { get; } = new ObservableCollection<IAudioWriterItem>
         {
