@@ -141,7 +141,8 @@ namespace Captura
         {
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region"),
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.WebCam, "WebCam")
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();

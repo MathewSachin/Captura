@@ -6,18 +6,24 @@ namespace Captura
 {
     static class HotKeyManager
     {
-        public static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
+        public static readonly List<PersistedHotkey> Hotkeys = new List<PersistedHotkey>();
         
         public static void RegisterAll()
         {
-            Hotkeys.Add(new Hotkey("Start/Stop Recording", (Modifiers) Settings.Instance.RecordHotkeyMod, Settings.Instance.RecordHotkey,
+            Hotkeys.Add(new PersistedHotkey("Start/Stop Recording", nameof(Settings.RecordHotkeyMod), nameof(Settings.RecordHotkey),
                 () => MainViewModel.Instance.RecordCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("Pause/Resume Recording", (Modifiers) Settings.Instance.PauseHotkeyMod, Settings.Instance.PauseHotkey,
+            Hotkeys.Add(new PersistedHotkey("Pause/Resume Recording", nameof(Settings.PauseHotkeyMod), nameof(Settings.PauseHotkey),
                 () => MainViewModel.Instance.PauseCommand.ExecuteIfCan()));
             
-            Hotkeys.Add(new Hotkey("ScreenShot", (Modifiers) Settings.Instance.ScreenShotHotkeyMod, Settings.Instance.ScreenShotHotkey,
+            Hotkeys.Add(new PersistedHotkey("ScreenShot", nameof(Settings.ScreenShotHotkeyMod), nameof(Settings.ScreenShotHotkey),
                 () => MainViewModel.Instance.ScreenShotCommand.ExecuteIfCan()));
+
+            Hotkeys.Add(new PersistedHotkey("ScreenShot Active Window", nameof(Settings.ActiveScreenShotHotkeyMod), nameof(Settings.ActiveScreenShotHotkey),
+                () => MainViewModel.Instance.SaveScreenShot(MainViewModel.Instance.ScreenShotWindow(Screna.Window.ForegroundWindow))));
+            
+            Hotkeys.Add(new PersistedHotkey("ScreenShot Desktop", nameof(Settings.DesktopHotkeyMod), nameof(Settings.DesktopHotkey),
+                () => MainViewModel.Instance.SaveScreenShot(MainViewModel.Instance.ScreenShotWindow(Screna.Window.DesktopWindow))));
 
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
@@ -40,16 +46,6 @@ namespace Captura
         {
             // Unregister All Hotkeys
             Hotkeys.ForEach(h => h.Unregister());
-
-            // Save Hotkey configurations
-            Settings.Instance.RecordHotkey = Hotkeys[0].Key;
-            Settings.Instance.RecordHotkeyMod = (int) Hotkeys[0].Modifiers;
-
-            Settings.Instance.PauseHotkey = Hotkeys[1].Key;
-            Settings.Instance.PauseHotkeyMod = (int) Hotkeys[1].Modifiers;
-
-            Settings.Instance.ScreenShotHotkey = Hotkeys[2].Key;
-            Settings.Instance.ScreenShotHotkeyMod = (int) Hotkeys[2].Modifiers;
         }
     }
 }

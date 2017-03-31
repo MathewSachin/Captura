@@ -95,10 +95,10 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("7")]
-        public int RecordHotkeyMod
+        [DefaultSettingValue("Ctrl, Alt, Shift")]
+        public Modifiers RecordHotkeyMod
         {
-            get => Get<int>();
+            get => Get<Modifiers>();
             set => Set(value);
         }
 
@@ -111,10 +111,10 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("7")]
-        public int PauseHotkeyMod
+        [DefaultSettingValue("Ctrl, Alt, Shift")]
+        public Modifiers PauseHotkeyMod
         {
-            get => Get<int>();
+            get => Get<Modifiers>();
             set => Set(value);
         }
 
@@ -127,10 +127,42 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("7")]
-        public int ScreenShotHotkeyMod
+        [DefaultSettingValue("Ctrl, Alt, Shift")]
+        public Modifiers ScreenShotHotkeyMod
         {
-            get => Get<int>();
+            get => Get<Modifiers>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("PrintScreen")]
+        public Keys ActiveScreenShotHotkey
+        {
+            get => Get<Keys>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Alt")]
+        public Modifiers ActiveScreenShotHotkeyMod
+        {
+            get => Get<Modifiers>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("D")]
+        public Keys DesktopHotkey
+        {
+            get => Get<Keys>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Ctrl, Alt, Shift")]
+        public Modifiers DesktopHotkeyMod
+        {
+            get => Get<Modifiers>();
             set => Set(value);
         }
         #endregion

@@ -86,6 +86,7 @@
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
     <Compile Include="Models\NotifyPropertyChanged.cs" />
+    <Compile Include="Models\PersistedHotkey.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />

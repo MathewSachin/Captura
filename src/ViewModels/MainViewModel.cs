@@ -165,66 +165,28 @@ namespace Captura
             ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
         
-        void CaptureScreenShot()
+        public void SaveScreenShot(Bitmap bmp)
         {
-            EnsureOutPath();
-
-            string fileName = null;
-            
-            var extension = SelectedScreenShotImageFormat.Equals(ImageFormat.Icon) ? "ico"
-                : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
-                : SelectedScreenShotImageFormat.ToString().ToLower();
-
-            var saveToClipboard = SelectedScreenShotSaveTo == "Clipboard";
-
-            if (!saveToClipboard)
-                fileName = Path.Combine(Settings.OutPath,
-                    DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
-
-            Bitmap bmp = null;
-
-            var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var includeCursor = Settings.IncludeCursor;
-
-            switch (VideoViewModel.SelectedVideoSourceKind)
-            {
-                case VideoSourceKind.Window:
-                    var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
-
-                    if (hWnd == Window.DesktopWindow)
-                        bmp = ScreenShot.Capture(includeCursor);
-                    else
-                    {
-                        bmp = ScreenShot.CaptureTransparent(hWnd, includeCursor,
-                                 Settings.ScreenShotDoResize, Settings.ScreenShotResizeWidth, Settings.ScreenShotResizeHeight);
-
-                        // Capture without Transparency
-                        if (bmp == null)
-                            bmp = ScreenShot.Capture(hWnd, includeCursor);
-                    }
-                    break;
-
-                case VideoSourceKind.Screen:
-                    bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
-                    break;
-
-                case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
-                    break;
-            }
-
             // Save to Disk or Clipboard
             if (bmp != null)
             {
-                if (saveToClipboard)
+                if (SelectedScreenShotSaveTo == "Clipboard")
                 {
                     bmp.WriteToClipboard(SelectedScreenShotImageFormat.Equals(ImageFormat.Png));
                     Status = "Image Saved to Clipboard";
                 }
-                else
+                else // Save to Disk
                 {
                     try
                     {
+                        EnsureOutPath();
+                                             
+                        var extension = SelectedScreenShotImageFormat.Equals(ImageFormat.Icon) ? "ico"
+                            : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
+                            : SelectedScreenShotImageFormat.ToString().ToLower();
+
+                        var fileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
+
                         bmp.Save(fileName, SelectedScreenShotImageFormat);
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image);
@@ -240,6 +202,50 @@ namespace Captura
                 bmp.Dispose();
             }
             else Status = "Not Saved - Image taken was Empty";
+        }
+
+        public Bitmap ScreenShotWindow(Window hWnd)
+        {
+            if (hWnd == Window.DesktopWindow)
+                return ScreenShot.Capture(Settings.IncludeCursor);
+            else
+            {
+                var bmp = ScreenShot.CaptureTransparent(hWnd, Settings.IncludeCursor,
+                         Settings.ScreenShotDoResize, Settings.ScreenShotResizeWidth, Settings.ScreenShotResizeHeight);
+
+                // Capture without Transparency
+                if (bmp == null)
+                    bmp = ScreenShot.Capture(hWnd, Settings.IncludeCursor);
+
+                return bmp;
+            }
+        }
+
+        void CaptureScreenShot()
+        {
+            Bitmap bmp = null;
+
+            var selectedVideoSource = VideoViewModel.SelectedVideoSource;
+            var includeCursor = Settings.IncludeCursor;
+
+            switch (VideoViewModel.SelectedVideoSourceKind)
+            {
+                case VideoSourceKind.Window:
+                    var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
+
+                    bmp = ScreenShotWindow(hWnd);
+                    break;
+
+                case VideoSourceKind.Screen:
+                    bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
+                    break;
+
+                case VideoSourceKind.Region:
+                    bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
+                    break;
+            }
+
+            SaveScreenShot(bmp);
         }
 
         void EnsureOutPath()
@@ -356,7 +362,10 @@ namespace Captura
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay> { _cursor };
+            var overlays = new List<IOverlay>();
+
+            if (VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.WebCam)
+                overlays.Add(_cursor);
 
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));

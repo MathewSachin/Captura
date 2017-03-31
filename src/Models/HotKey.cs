@@ -8,9 +8,8 @@ namespace Captura
     {
         public Action Work { get; }
 
-        public Hotkey(string Description, Modifiers Modifiers, Keys Key, Action Work)
+        public Hotkey(Modifiers Modifiers, Keys Key, Action Work)
         {
-            this.Description = Description;
             this.Key = Key;
             this.Modifiers = Modifiers;
             this.Work = Work;
@@ -39,14 +38,12 @@ namespace Captura
                 ID = 0;
             }
         }
-
-        public string Description { get; }
-
+        
         public Keys Key { get; private set; }
 
         public Modifiers Modifiers { get; private set; }
 
-        public void Change(Keys Key, Modifiers Modifiers)
+        public virtual void Change(Keys Key, Modifiers Modifiers)
         {
             Unregister();
 
