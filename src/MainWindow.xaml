@@ -84,7 +84,8 @@
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Grid Background="#F2211B1B">
-        <Expander Padding="5,0,0,0">
+        <Expander Padding="5,0,0,0"
+                  IsExpanded="True">
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
