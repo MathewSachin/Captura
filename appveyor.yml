@@ -1,6 +1,7 @@
 version: 2.0.{build}
 
 image: Visual Studio 2017
+configuration: Release
 
 install:
   # Update Submodules
@@ -10,5 +11,19 @@ install:
   # Restore packages
   - nuget restore src/Captura.sln
 
+cache:
+  # preserve "packages" directory but reset if packages.config is modified
+  - src\packages -> **\packages.config
+
 build:
   project: src\Captura.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  verbosity: minimal
+
+after_build:
+  - ps: .\PackRelease.ps1
+
+artifacts:
+  - path: src/bin/Release/Captura.zip
+    name: Captura.zip
