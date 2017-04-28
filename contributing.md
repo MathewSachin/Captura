@@ -3,8 +3,9 @@ layout: page
 title: Contributing
 ---
 
-## Questions and Discussions - Gitter
-You can always [Chat on Gitter](https://gitter.im/MathewSachin/Screna).
+Want to Help? You can help by starring this repo, contributing code, testing, reporting bugs or [donating](donate.html).
+
+You can always [Chat on Gitter](https://gitter.im/MathewSachin/Screna) for Questions/Discussions.
 
 ## Reporting Bugs - Issues
 * Check the [FAQ](faq.html)
@@ -29,13 +30,3 @@ If you intend to make a big change, create a Pull Request early and include `(WI
 
 > You could still send a Pull Request even if you are uncomfortable with the guidelines.
 We would help you to make your code comply with our guidelines.
-
-## Stars
-The simplest way to contribute is to Star the repositories.
-
-## Test
-Testing the libraries would also be a huge help.
-
-## Gratipay
-Screna is made and maintained in personal time.
-If you feel generous, you could donate to the [Gratipay team](https://gratipay.com/Screna) or [Mathew Sachin on PayPal](https://www.paypal.me/MathewSachin) to show your support.

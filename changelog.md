@@ -3,6 +3,9 @@ layout: page
 title: Feature Changelog
 ---
 
+## April 2017
+* Expanded State on Launch.
+
 ## March 2017
 * Hotkeys for ScreenShot of Desktop and Active Window.
 * Option to disable system tray notifications.

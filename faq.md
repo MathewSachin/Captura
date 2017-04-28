@@ -3,13 +3,6 @@ layout: page
 title: Frequently Asked Questions
 ---
 
-<style>
-h3 {
-    margin-top: 60px;
-    margin-bottom: 25px;
-}
-</style>
-
 ### Will Captura support Linux or Mac?
 Captura is written using .NET Framework, which at present, is supported only on Windows.
 
