@@ -4,9 +4,11 @@
 [![Chat](https://img.shields.io/gitter/room/MathewSachin/Screna.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)  
 &copy; [Copyright 2017](LICENSE.md) Mathew Sachin
 
+http://mathewsachin.github.io/Captura/
+
 Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https://github.com/MathewSachin/Screna).
 
-![ScreenShot](http://mathewsachin.github.io/Captura/ScreenShots/img/expanded.png)
+![ScreenShot](http://mathewsachin.github.io/Captura/img/ScreenShots/expanded.png)
 
 [See more ScreenShots](http://mathewsachin.github.io/Captura/ScreenShots/)
 
