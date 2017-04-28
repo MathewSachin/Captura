@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Feature Changelog
+permalink: Changelog/
 ---
 
 ## April 2017

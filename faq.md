@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Frequently Asked Questions
+permalink: FAQ/
 ---
 
 ### Will Captura support Linux or Mac?

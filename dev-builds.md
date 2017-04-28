@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Dev Builds
+permalink: Dev-Builds/
 ---
 
 For every commit on GitHub, [AppVeyor CI](https://appveyor.com) automatically builds and prepares the Zip archive.
@@ -11,6 +12,6 @@ For every commit on GitHub, [AppVeyor CI](https://appveyor.com) automatically bu
 
 3. Download **Captura.zip**.
 
-![Dev Builds](img/dev-build.png)
+![Dev Builds]({{ site.url }}{{ site.baseurl }}/img/dev-build.png)
 
 **Warning: Dev builds can be unstable and should be used for testing purposes only.**

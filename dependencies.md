@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Dependencies
+permalink: Dependencies/
 ---
 
 <script src="scripts/nugetDownloadsBadge.js"></script>

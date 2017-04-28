@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Hotkeys
+permalink: Hotkeys/
 ---
 
 System-wide key combinations which work even when Captura is not in focus.
@@ -15,7 +16,7 @@ Take ScreenShot of Desktop       | Ctrl + Alt + Shift + D
 
 Hotkeys can be customized on the _Hotkeys_ tab.
 
-![Hotkey tab](ScreenShots/img/hotkey.png)
+![Hotkey tab]({{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png)
 
 To change a Hotkey:
 

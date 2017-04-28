@@ -1,6 +1,7 @@
 ---
 layout: page
-title: Licenses
+title: License
+permalink: License/
 ---
 
 ## Captura, Screna and ManagedBass

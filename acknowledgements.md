@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Acknowledgements
+permalink: Acknowledgements/
 ---
 
 - [SharpAvi](https://github.com/bassill/sharpavi) for initial idea of IRecorder.
