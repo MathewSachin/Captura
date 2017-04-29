@@ -6,7 +6,7 @@ permalink: Contributing/
 
 Want to Help? You can help by starring this repo, contributing code, testing, reporting bugs or [donating]({{ site.url }}{{ site.baseurl }}/Donate).
 
-You can always [Chat on Gitter](https://gitter.im/MathewSachin/Screna) for Questions/Discussions.
+You can always [Chat on Gitter]({{ site.links.gitter }}) for Questions/Discussions.
 
 ## Reporting Bugs - Issues
 * Check the [FAQ]({{ site.url }}{{ site.baseurl }}/FAQ)

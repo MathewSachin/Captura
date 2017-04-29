@@ -13,3 +13,7 @@ exclude: ["Gemfile", "Gemfile.lock", "README.md"]
 gems:
   - jekyll-seo-tag  # Search Engine Optimization
   - jekyll-sitemap # Site Map
+
+links:
+  gitter: https://gitter.im/MathewSachin/Screna
+  appveyor: https://ci.appveyor.com/project/MathewSachin/Captura

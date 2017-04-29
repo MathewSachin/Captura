@@ -6,7 +6,7 @@ permalink: Dev-Builds/
 
 For every commit on GitHub, [AppVeyor CI](https://appveyor.com) automatically builds and prepares the Zip archive.
 
-1. Go to [AppVeyor project](https://ci.appveyor.com/project/MathewSachin/captura) page.
+1. Go to [AppVeyor project]({{ site.links.appveyor }}) page.
 
 2. Open **Artifacts** tab.
 

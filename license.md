@@ -26,3 +26,6 @@ Copyright (c) 2004-2015, George Mamaladze
 All rights reserved.
 
 {% include bsd3.html %}
+
+## NAudio
+{% include mspl.html %}
