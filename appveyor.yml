@@ -1,12 +1,18 @@
 version: 2.0.{build}
 
 image: Visual Studio 2017
-configuration: Release
+
+configuration:
+- Debug
+- Release
+
+environment:
+  # Will be updated Before Build
+  AppVersion: 1.0.0
 
 install:
   # Update Submodules
-  - git submodule init
-  - git submodule update
+  - init.bat
 
   # Restore packages
   - nuget restore src/Captura.sln
@@ -15,15 +21,48 @@ cache:
   # preserve "packages" directory but reset if packages.config is modified
   - src\packages -> **\packages.config
 
+before_build:
+  # Retrieve version from AssemblyInfo.cs
+  - ps: >-
+      $content = Get-Content "src\Properties\AssemblyInfo.cs";
+      $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
+
+      if ($match.Success)
+      {
+        $env:AppVersion = $match.Groups[1].Value;
+        Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER";
+      }
+
 build:
+  parallel: true
   project: src\Captura.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
   verbosity: minimal
 
 after_build:
-  - ps: .\PackRelease.ps1
+  # Pack Deploy zip
+  - ps: >-
+      if ($env:configuration -eq 'Release')
+      {
+        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Compress-Archive -DestinationPath 'src/bin/Release/Captura.zip' -Force
+      }
+      elseif ($env:configuration -eq 'Debug')
+      {
+        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Compress-Archive -DestinationPath 'src/bin/Debug/Captura.zip' -Force
+      }
 
 artifacts:
-  - path: src/bin/Release/Captura.zip
+  - path: src/bin/$(configuration)/Captura.zip
     name: Captura.zip
+
+deploy:
+  provider: GitHub
+  tag: $(APPVEYOR_REPO_TAG_NAME)
+  release: Captura v$(AppVersion)
+  description: "[Changelog](https://mathewsachin.github.io/Captura/Changelog)"
+  auth_token:
+    secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
+  artifact: Captura.zip
+  draft: true
+  on:
+    configuration: Release
+    appveyor_repo_tag: true
