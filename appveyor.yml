@@ -24,13 +24,13 @@ cache:
 before_build:
   # Retrieve version from AssemblyInfo.cs
   - ps: >-
-      $content = Get-Content "src\Properties\AssemblyInfo.cs"
-      $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)')
+      $content = Get-Content "src\Properties\AssemblyInfo.cs";
+      $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
 
       if ($match.Success)
       {
-        $env:AppVersion = $match.Groups[1].Value
-        Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER"
+        $env:AppVersion = $match.Groups[1].Value;
+        Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER";
       }
 
 build:
