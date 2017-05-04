@@ -36,8 +36,6 @@ before_build:
 build:
   parallel: true
   project: src\Captura.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
   verbosity: minimal
 
 after_build:
