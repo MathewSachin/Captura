@@ -29,3 +29,7 @@ All rights reserved.
 
 ## NAudio
 {% include mspl.html %}
+
+## FFMpeg
+
+{% include lgpl.html %}
