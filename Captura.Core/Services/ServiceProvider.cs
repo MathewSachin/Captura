@@ -2,15 +2,24 @@
 
 namespace Captura
 {
+    /// <summary>
+    /// Kind of Dependency Injection
+    /// </summary>
     public static class ServiceProvider
     {
         static Dictionary<ServiceName, object> _services = new Dictionary<ServiceName, object>();
 
+        /// <summary>
+        /// Get the requested Service.
+        /// </summary>
         public static T Get<T>(ServiceName ServiceAction)
         {
             return (T)_services[ServiceAction];
         }
 
+        /// <summary>
+        /// Gets the Description of a Service.
+        /// </summary>
         public static string GetDescription(ServiceName ServiceName)
         {
             switch (ServiceName)
@@ -38,6 +47,9 @@ namespace Captura
             }
         }
 
+        /// <summary>
+        /// Registers a Service.
+        /// </summary>
         public static void Register<T>(ServiceName ServiceAction, T Action)
         {
             _services.Add(ServiceAction, Action);

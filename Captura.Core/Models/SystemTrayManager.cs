@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows;
 using System.Windows.Forms;
 
 namespace Captura
 {
-    static class SystemTrayManager
+    public static class SystemTrayManager
     {
         // Balloon Click Callback
         static Action _balloonAction;
@@ -23,9 +22,7 @@ namespace Captura
 
             _systemTray.DoubleClick += (s, e) =>
             {
-                App.Current.MainWindow.Show();
-                App.Current.MainWindow.WindowState = WindowState.Normal;
-                App.Current.MainWindow.Focus();
+                ServiceProvider.Get<Action>(ServiceName.Focus).Invoke();
             };
 
             _systemTray.BalloonTipClicked += (s, e) =>
@@ -46,8 +43,7 @@ namespace Captura
 
             _systemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
             {
-                MainViewModel.Instance.Dispose();
-                App.Current.Shutdown();
+                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
             });
         }
         

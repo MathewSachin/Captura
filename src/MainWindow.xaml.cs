@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Captura
@@ -9,12 +10,24 @@ namespace Captura
         
         public MainWindow()
         {
+            ServiceProvider.Register<Action>(ServiceName.Focus, () =>
+            {
+                Show();
+                WindowState = WindowState.Normal;
+                Focus();
+            });
+
             InitializeComponent();
-            
+
+            ServiceProvider.Register<Action>(ServiceName.Exit, () =>
+            {
+                (DataContext as MainViewModel).Dispose();
+                Application.Current.Shutdown();
+            });
+
             Closed += (s, e) =>
             {
-                MainViewModel.Instance.Dispose();
-                Application.Current.Shutdown();
+                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
             };
         }
         
