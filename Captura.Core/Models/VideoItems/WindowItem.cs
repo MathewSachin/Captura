@@ -1,11 +1,10 @@
 ﻿using System;
 using Screna;
 using System.Drawing;
-using WColor = System.Windows.Media.Color;
 
-namespace Captura
+namespace Captura.Models
 {
-    class WindowItem : IVideoItem
+    public class WindowItem : IVideoItem
     {
         public Window Window { get; }
 
@@ -31,9 +30,7 @@ namespace Captura
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
             Offset = () => Point.Empty;
-
-            Func<WColor, Color> convertColor = C => Color.FromArgb(C.A, C.R, C.G, C.B);
-
+            
             return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow));
         }
     }

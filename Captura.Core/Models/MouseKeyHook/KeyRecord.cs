@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Screna
+namespace Captura.Models
 {
-    class KeyRecord
+    public class KeyRecord
     {
         public KeyRecord(KeyEventArgs KeyEventArgs)
         {

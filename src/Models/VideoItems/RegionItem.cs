@@ -1,4 +1,5 @@
-﻿using Screna;
+﻿using Captura.Models;
+using Screna;
 using System;
 using System.Drawing;
 

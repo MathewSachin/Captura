@@ -1,3 +1,4 @@
+using Captura.Models;
 using Captura.ViewModels;
 using Screna;
 using Screna.Avi;

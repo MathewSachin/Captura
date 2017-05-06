@@ -1,4 +1,5 @@
-﻿using Screna.Audio;
+﻿using Captura.Models;
+using Screna.Audio;
 
 namespace Captura
 {

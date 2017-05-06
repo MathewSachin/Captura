@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 
-namespace Captura
+namespace Captura.Models
 {
     /// <summary>
     /// Items to show in Video Source List.

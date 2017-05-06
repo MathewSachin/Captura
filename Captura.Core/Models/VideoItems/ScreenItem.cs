@@ -4,9 +4,9 @@ using System.Windows.Forms;
 using Screna;
 using System;
 
-namespace Captura
+namespace Captura.Models
 {
-    class ScreenItem : IVideoItem
+    public class ScreenItem : IVideoItem
     {
         public Screen Screen { get; }
 

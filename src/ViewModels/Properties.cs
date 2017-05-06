@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.Models;
+using System;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;

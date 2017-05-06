@@ -1,4 +1,4 @@
-namespace Captura
+namespace Captura.Models
 {
     public enum VideoSourceKind
     {

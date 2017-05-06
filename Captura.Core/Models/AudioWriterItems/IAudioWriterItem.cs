@@ -1,6 +1,6 @@
 ﻿using Screna.Audio;
 
-namespace Captura
+namespace Captura.Models
 {
     public interface IAudioWriterItem
     {
