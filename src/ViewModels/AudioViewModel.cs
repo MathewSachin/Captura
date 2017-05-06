@@ -1,3 +1,5 @@
+using Captura.Models;
+using Captura.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;

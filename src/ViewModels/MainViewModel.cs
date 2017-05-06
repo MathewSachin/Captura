@@ -1,4 +1,6 @@
-﻿using Screna;
+﻿using Captura.Models;
+using Captura.ViewModels;
+using Screna;
 using Screna.Audio;
 using System;
 using System.Collections.Generic;
@@ -129,8 +131,17 @@ namespace Captura
             // Create the Output Directory if it does not exist
             if (!Directory.Exists(Settings.OutPath))
                 Directory.CreateDirectory(Settings.OutPath);
-            
+
+            // Register ActionServices
+            ServiceProvider.Register<Action>(ServiceName.Recording, () => RecordCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.Pause, () => PauseCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.ScreenShot, () => ScreenShotCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.ActiveScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
+            ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
+            ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
+
             HotKeyManager.RegisterAll();
+            
             SystemTrayManager.Init();
         }
 

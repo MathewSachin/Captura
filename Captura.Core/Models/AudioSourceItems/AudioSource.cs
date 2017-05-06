@@ -2,7 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace Captura
+namespace Captura.Models
 {
     // Users need to call Init and Dispose methods
     public abstract class AudioSource : NotifyPropertyChanged, IDisposable

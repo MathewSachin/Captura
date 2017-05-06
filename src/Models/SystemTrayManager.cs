@@ -37,12 +37,9 @@ namespace Captura
                 }
             };
 
-            _systemTray.ContextMenu.MenuItems.Add("Start/Stop Recording", (s, e) => MainViewModel.Instance.RecordCommand.ExecuteIfCan());
-
-            _systemTray.ContextMenu.MenuItems.Add("Pause/Resume Recording", (s, e) => MainViewModel.Instance.PauseCommand.ExecuteIfCan());
-
-            _systemTray.ContextMenu.MenuItems.Add("Take ScreenShot", (s, e) => MainViewModel.Instance.ScreenShotCommand.ExecuteIfCan());
-
+            foreach (var service in new[] { ServiceName.Recording, ServiceName.Pause, ServiceName.ScreenShot, ServiceName.ActiveScreenShot, ServiceName.DesktopScreenShot })
+                _systemTray.ContextMenu.MenuItems.Add(ServiceProvider.GetDescription(service), (s, e) => ServiceProvider.Get<Action>(service).Invoke());
+            
             var separator = new MenuItem { BarBreak = true };
 
             _systemTray.ContextMenu.MenuItems.Add(separator);

@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -85,87 +86,12 @@ namespace Captura
             set => Set(value);
         }
 
-        #region Hotkeys
         [UserScopedSetting]
-        [DefaultSettingValue("R")]
-        public Keys RecordHotkey
+        public List<HotkeyModel> Hotkeys
         {
-            get => Get<Keys>();
+            get => Get<List<HotkeyModel>>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Ctrl, Alt, Shift")]
-        public Modifiers RecordHotkeyMod
-        {
-            get => Get<Modifiers>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("P")]
-        public Keys PauseHotkey
-        {
-            get => Get<Keys>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Ctrl, Alt, Shift")]
-        public Modifiers PauseHotkeyMod
-        {
-            get => Get<Modifiers>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("S")]
-        public Keys ScreenShotHotkey
-        {
-            get => Get<Keys>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Ctrl, Alt, Shift")]
-        public Modifiers ScreenShotHotkeyMod
-        {
-            get => Get<Modifiers>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("PrintScreen")]
-        public Keys ActiveScreenShotHotkey
-        {
-            get => Get<Keys>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Alt")]
-        public Modifiers ActiveScreenShotHotkeyMod
-        {
-            get => Get<Modifiers>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("D")]
-        public Keys DesktopHotkey
-        {
-            get => Get<Keys>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Ctrl, Alt, Shift")]
-        public Modifiers DesktopHotkeyMod
-        {
-            get => Get<Modifiers>();
-            set => Set(value);
-        }
-        #endregion
 
         [UserScopedSetting]
         [DefaultSettingValue("False")]

@@ -67,27 +67,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
-    <Compile Include="Models\IAudioItem.cs" />
+    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
-    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
-    <Compile Include="Models\HotKeyManager.cs" />
+    <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
-    <Compile Include="Models\Modifiers.cs" />
+    <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
-    <Compile Include="Models\NotifyPropertyChanged.cs" />
-    <Compile Include="Models\PersistedHotkey.cs" />
     <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\Services\ServiceName.cs" />
+    <Compile Include="Models\Services\ServiceProvider.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
@@ -97,18 +94,17 @@
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
-    <Compile Include="Models\VideoWriterKind.cs" />
+    <Compile Include="Models\VideoWriterItems\VideoWriterKind.cs" />
     <Compile Include="Models\WaveInProvider.cs" />
     <Compile Include="Presentation\Controls\HotkeySelector.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
-    <Compile Include="Models\HotKey.cs" />
+    <Compile Include="Models\Hotkeys\HotKey.cs" />
     <Compile Include="Models\VideoItems\IVideoItem.cs" />
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
-    <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\VideoItems\RegionItem.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="Models\Settings.cs" />
@@ -118,9 +114,8 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="Models\VideoSourceKind.cs" />
+    <Compile Include="Models\VideoItems\VideoSourceKind.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -136,6 +131,9 @@
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\VideoItems\WindowItem.cs" />
+    <Compile Include="Views\AudioEditor.xaml.cs">
+      <DependentUpon>AudioEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HotkeyView.xaml.cs">
       <DependentUpon>HotkeyView.xaml</DependentUpon>
     </Compile>
@@ -238,6 +236,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AudioEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -281,6 +283,10 @@
     <SplashScreen Include="Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
+      <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
+      <Name>Captura.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Screna\src\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
       <Name>Screna</Name>

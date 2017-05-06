@@ -8,11 +8,17 @@ namespace Captura
     {
         public Action Work { get; }
 
-        public Hotkey(Modifiers Modifiers, Keys Key, Action Work)
+        public string Description { get; }
+
+        public ServiceName ServiceName { get; }
+
+        public Hotkey(HotkeyModel Model)
         {
-            this.Key = Key;
-            this.Modifiers = Modifiers;
-            this.Work = Work;
+            ServiceName = Model.ServiceName;
+            Key = Model.Key;
+            Modifiers = Model.Modifiers;
+            Work = ServiceProvider.Get<Action>(Model.ServiceName);
+            Description = ServiceProvider.GetDescription(Model.ServiceName);
 
             Register();
         }

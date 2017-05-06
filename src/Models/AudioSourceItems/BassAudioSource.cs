@@ -1,6 +1,7 @@
 ﻿using Screna.Audio;
 using ManagedBass;
 using System.IO;
+using Captura.Models;
 
 namespace Captura
 {

@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using Captura.Models;
+using Captura.ViewModels;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;

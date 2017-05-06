@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using Captura.Models;
+using NAudio.Wave;
 using Screna.Audio;
 using System.IO;
 
