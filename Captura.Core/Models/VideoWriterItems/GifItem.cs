@@ -1,8 +1,7 @@
-﻿using Captura.Models;
-using Screna;
+﻿using Screna;
 using Screna.Audio;
 
-namespace Captura
+namespace Captura.Models
 {
     public class GifItem : IVideoWriterItem
     {

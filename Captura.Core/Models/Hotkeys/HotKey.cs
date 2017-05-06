@@ -1,9 +1,8 @@
-﻿using Captura.Models;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Captura
+namespace Captura.Models
 {
     public class Hotkey
     {

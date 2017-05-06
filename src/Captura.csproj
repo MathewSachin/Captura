@@ -76,15 +76,12 @@
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
     <Compile Include="Models\SystemTrayManager.cs" />
-    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
     <Compile Include="Models\WaveInProvider.cs" />
     <Compile Include="Presentation\Controls\HotkeySelector.cs" />
-    <Compile Include="Models\Hotkeys\HotKey.cs" />
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\VideoItems\RegionItem.cs" />
-    <Compile Include="Models\Settings.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
