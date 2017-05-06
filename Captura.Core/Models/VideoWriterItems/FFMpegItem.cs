@@ -2,7 +2,7 @@
 using Screna;
 using Screna.Audio;
 
-namespace Captura
+namespace Captura.Models
 {
     public class FFMpegItem : IVideoWriterItem
     {

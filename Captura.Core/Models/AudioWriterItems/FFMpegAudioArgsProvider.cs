@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.Models
 {
     /// <summary>
     /// Provides FFMpeg Audio encoding Command-line args.

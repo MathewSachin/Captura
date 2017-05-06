@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Captura
+namespace Captura.Models
 {
     /// <summary>
     /// Encode Video using FFMpeg.exe

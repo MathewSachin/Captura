@@ -3,7 +3,6 @@ using ManagedBass;
 using ManagedBass.Mix;
 using System.Runtime.InteropServices;
 using Wf = Screna.Audio.WaveFormat;
-using System.Collections.Generic;
 
 namespace Screna.Audio
 {

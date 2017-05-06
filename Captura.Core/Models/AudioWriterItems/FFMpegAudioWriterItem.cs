@@ -1,7 +1,7 @@
 ﻿using Captura.Models;
 using Screna.Audio;
 
-namespace Captura
+namespace Captura.Models
 {
     public class FFMpegAudioWriterItem : IAudioWriterItem
     {

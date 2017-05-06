@@ -69,11 +69,6 @@
     </ApplicationDefinition>
     <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
-    <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
-    <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
-    <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
-    <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
-    <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
@@ -81,8 +76,6 @@
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
     <Compile Include="Models\SystemTrayManager.cs" />
-    <Compile Include="Models\VideoWriterItems\FFMpegVideoArgsProvider.cs" />
-    <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
     <Compile Include="Models\WaveInProvider.cs" />

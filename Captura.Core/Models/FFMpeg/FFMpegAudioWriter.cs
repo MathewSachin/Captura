@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace Captura
+namespace Captura.Models
 {
     class FFMpegAudioWriter : IAudioFileWriter
     {
