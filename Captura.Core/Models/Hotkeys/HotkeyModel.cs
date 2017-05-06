@@ -11,6 +11,9 @@ namespace Captura.Models
             this.Modifiers = Modifiers;
         }
 
+        // Default constructor required by Settings
+        public HotkeyModel() { }
+
         public ServiceName ServiceName { get; set; }
 
         public Keys Key { get; set; }
