@@ -1,6 +1,6 @@
 using System;
 
-namespace Captura
+namespace Captura.Models
 {
     [Flags]
     public enum Modifiers

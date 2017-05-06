@@ -69,7 +69,6 @@
     </ApplicationDefinition>
     <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
-    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
@@ -77,7 +76,6 @@
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
-    <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />

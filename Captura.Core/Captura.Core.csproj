@@ -42,6 +42,8 @@
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
+    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
+    <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.Models;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 

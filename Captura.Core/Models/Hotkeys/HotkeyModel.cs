@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Captura
+namespace Captura.Models
 {
     public class HotkeyModel
     {
