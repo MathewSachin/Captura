@@ -1,10 +1,9 @@
 using Captura.Models;
-using Captura.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace Captura
+namespace Captura.ViewModels
 {
     public class AudioViewModel : ViewModelBase, IDisposable
     {

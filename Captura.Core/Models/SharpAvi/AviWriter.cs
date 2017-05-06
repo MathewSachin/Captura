@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
+using Screna;
 
-namespace Screna.Avi
+namespace Captura.Models
 {
     /// <summary>
     /// Writes an AVI file.

@@ -1,9 +1,7 @@
-﻿using Captura.Models;
-using Screna;
+﻿using Screna;
 using Screna.Audio;
-using Screna.Avi;
 
-namespace Captura
+namespace Captura.Models
 {
     public class SharpAviItem : IVideoWriterItem
     {

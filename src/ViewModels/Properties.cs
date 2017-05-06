@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.ViewModels;
 using System;
 using System.Drawing.Imaging;
 using System.IO;

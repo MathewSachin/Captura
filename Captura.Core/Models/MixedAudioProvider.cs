@@ -3,8 +3,10 @@ using ManagedBass;
 using ManagedBass.Mix;
 using System.Runtime.InteropServices;
 using Wf = Screna.Audio.WaveFormat;
+using Screna.Audio;
+using Screna;
 
-namespace Screna.Audio
+namespace Captura.Models
 {
     /// <summary>
     /// Provides mixed audio from Microphone input and Speaker Output (Wasapi Loopback).

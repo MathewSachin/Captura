@@ -1,9 +1,8 @@
-﻿using Captura.Models;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using Screna.Audio;
 using System.IO;
 
-namespace Captura
+namespace Captura.Models
 {
     public class NAudioSource : AudioSource
     {

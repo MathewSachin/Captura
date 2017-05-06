@@ -1,8 +1,11 @@
 ﻿using System;
 using NAudio.Wave;
 using NWaveFormat = NAudio.Wave.WaveFormat;
+using WaveFormat = Screna.Audio.WaveFormat;
+using Screna.Audio;
+using Screna;
 
-namespace Screna.Audio
+namespace Captura.Models
 {
     /// <summary>
     /// Provides audio from Microphone using WaveIn API.

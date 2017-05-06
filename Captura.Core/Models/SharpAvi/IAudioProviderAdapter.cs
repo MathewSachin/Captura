@@ -3,7 +3,7 @@ using System.IO;
 using Screna.Audio;
 using IAudioEncoder = SharpAvi.Codecs.IAudioEncoder;
 
-namespace Screna.Avi
+namespace Captura.Models
 {
     /// <summary>
     /// Enables a Screna based Audio Provider to be used with SharpAvi.

@@ -1,10 +1,10 @@
-﻿using Captura.Models;
-using Gma.System.MouseKeyHook;
+﻿using Gma.System.MouseKeyHook;
+using Screna;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Screna
+namespace Captura.Models
 {
     /// <summary>
     /// Draws Mouse Clicks and/or Keystrokes on an Image.

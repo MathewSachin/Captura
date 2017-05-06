@@ -1,7 +1,6 @@
 using Captura.Models;
 using Captura.ViewModels;
 using Screna;
-using Screna.Avi;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
