@@ -1,11 +1,11 @@
 using Captura.Models;
-using Captura.ViewModels;
 using Screna;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace Captura
+namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
@@ -57,7 +57,7 @@ namespace Captura
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(RegionItem.Instance);
+                    AvailableVideoSources.Add(ServiceProvider.Get<IVideoItem>(ServiceName.RegionSource));
                     break;
             }
 
@@ -66,9 +66,7 @@ namespace Captura
                 SelectedVideoSource = AvailableVideoSources[0];
 
             // RegionSelector should only be shown on Region Capture.
-            if (SelectedVideoSourceKind == VideoSourceKind.Region)
-                RegionSelector.Instance.Show();
-            else RegionSelector.Instance.Hide();
+            ServiceProvider.Get<Action<bool>>(ServiceName.RegionSelectorVisibility).Invoke(SelectedVideoSourceKind == VideoSourceKind.Region);
         }
         
         void InitSharpAviCodecs()

@@ -40,6 +40,16 @@
         /// <summary>
         /// Exit Application (Action).
         /// </summary>
-        Exit
+        Exit,
+
+        /// <summary>
+        /// Get RegionItem Video source (IVideoItem).
+        /// </summary>
+        RegionSource,
+
+        /// <summary>
+        /// Control visibility of Region Selector (Action<bool>).
+        /// </summary>
+        RegionSelectorVisibility
     }
 }

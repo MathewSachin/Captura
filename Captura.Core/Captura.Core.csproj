@@ -91,6 +91,7 @@
     <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Models\WaveInProvider.cs" />
   </ItemGroup>

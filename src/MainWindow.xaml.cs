@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.Models;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -17,14 +18,23 @@ namespace Captura
                 Focus();
             });
 
-            InitializeComponent();
-
             ServiceProvider.Register<Action>(ServiceName.Exit, () =>
             {
                 (DataContext as MainViewModel).Dispose();
                 Application.Current.Shutdown();
             });
 
+            ServiceProvider.Register<IVideoItem>(ServiceName.RegionSource, RegionItem.Instance);
+
+            ServiceProvider.Register<Action<bool>>(ServiceName.RegionSelectorVisibility, visible =>
+            {
+                if (visible)
+                    RegionSelector.Instance.Show();
+                else RegionSelector.Instance.Hide();
+            });
+
+            InitializeComponent();
+            
             Closed += (s, e) =>
             {
                 ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
