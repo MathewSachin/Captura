@@ -33,6 +33,7 @@ Screna does the real work of capturing Screen.
 -----------------------------
 
 ## Optional Dependencies
+These dependencies are NOT required, but add extra features if present.
 
 ### FFMpeg
 Audio/Video encoding support.

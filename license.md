@@ -14,6 +14,8 @@ The MIT License
 ## BASS
 Licensing required for Commercial use.
 
+See [un4seen.com](https://un4seen.com/bass.html)
+
 ## SharpAvi
 The MIT License
 
