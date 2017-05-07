@@ -65,6 +65,7 @@
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKey.cs" />
+    <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />

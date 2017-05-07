@@ -2,11 +2,10 @@ using Captura.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Interop;
 
 namespace Captura
 {
-    static class HotKeyManager
+    public static class HotKeyManager
     {
         public static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
         
@@ -17,8 +16,7 @@ namespace Captura
             foreach (var model in Settings.Instance.Hotkeys)
                 Hotkeys.Add(new Hotkey(model));
 
-            // Register for Windows Messages
-            ComponentDispatcher.ThreadPreprocessMessage += ProcessMessage;
+            ServiceProvider.HotKeyPressed += ProcessHotkey;
         }
 
         static void InitStorage()
@@ -43,18 +41,10 @@ namespace Captura
                 new HotkeyModel(ServiceName.DesktopScreenShot, Keys.D, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift)
             });
         }
-
-        const int WmHotkey = 786;
-
-        static void ProcessMessage(ref MSG Message, ref bool Handled)
+        
+        static void ProcessHotkey(int Id)
         {
-            // Is Hotkey Message
-            if (Message.message == WmHotkey)
-            {
-                var id = Message.wParam.ToInt32();
-
-                Hotkeys.SingleOrDefault(h => h.ID == id)?.Work();                
-            }
+            Hotkeys.SingleOrDefault(h => h.ID == Id)?.Work();                
         }
         
         public static void Dispose()

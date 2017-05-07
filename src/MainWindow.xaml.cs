@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Captura
 {
@@ -32,6 +33,19 @@ namespace Captura
                     RegionSelector.Instance.Show();
                 else RegionSelector.Instance.Hide();
             });
+
+            // Register for Windows Messages
+            ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
+            {
+                const int WmHotkey = 786;
+
+                if (Message.message == WmHotkey)
+                {
+                    var id = Message.wParam.ToInt32();
+
+                    ServiceProvider.RaiseHotKeyPressed(id);
+                }
+            };
 
             InitializeComponent();
             

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Captura
 {
@@ -54,5 +55,18 @@ namespace Captura
         {
             _services.Add(ServiceAction, Action);
         }
+
+        /// <summary>
+        /// Raises the <see cref="HotKeyPressed"/> event with the Hotkey Id.
+        /// </summary>
+        public static void RaiseHotKeyPressed(int Id)
+        {
+            HotKeyPressed?.Invoke(Id);
+        }
+
+        /// <summary>
+        /// Fired (with ID) when a Hotkey is pressed.
+        /// </summary>
+        public static event Action<int> HotKeyPressed;
     }
 }
