@@ -1,5 +1,7 @@
 ﻿using Captura.Models;
+using Captura.ViewModels;
 using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -7,9 +9,7 @@ using System.Windows.Interop;
 namespace Captura
 {
     public partial class MainWindow
-    {
-        Point _moveOrigin;
-        
+    {        
         public MainWindow()
         {
             ServiceProvider.Register<Action>(ServiceName.Focus, () =>
@@ -34,6 +34,13 @@ namespace Captura
                 else RegionSelector.Instance.Hide();
             });
 
+            ServiceProvider.Register<Func<Rectangle>>(ServiceName.RegionRectangle, () => RegionSelector.Instance.Rectangle);
+
+            ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
+            {
+                WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
+            });
+
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
             {
@@ -54,7 +61,15 @@ namespace Captura
                 ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
             };
         }
-        
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+
+            if (WindowState == WindowState.Minimized && Settings.Instance.MinimizeToTray)
+                Hide();
+        }
+
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
@@ -65,27 +80,5 @@ namespace Captura
         void MinButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
-
-        void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (IsMouseCaptured)
-                ReleaseMouseCapture();
-        }
-
-        void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _moveOrigin = e.GetPosition(this);
-            CaptureMouse();
-        }
-
-        void Window_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                var offset = e.GetPosition(this) - _moveOrigin;
-                Left += offset.X;
-                Top += offset.Y;
-            }
-        }        
     }
 }

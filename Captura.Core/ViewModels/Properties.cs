@@ -1,16 +1,12 @@
 ﻿using Captura.Models;
-using Captura.ViewModels;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows;
 
-namespace Captura
+namespace Captura.ViewModels
 {
     public partial class MainViewModel
     {
-        public static MainViewModel Instance { get; } = new MainViewModel();
-
         bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
 
         string _status = "Ready";
@@ -95,26 +91,7 @@ namespace Captura
             }
         }
         #endregion
-
-        WindowState _windowState = WindowState.Normal;
-
-        public WindowState WindowState
-        {
-            get { return _windowState; }
-            set
-            {
-                if (_windowState == value)
-                    return;
-
-                _windowState = value;
-
-                OnPropertyChanged();
-
-                if (WindowState == WindowState.Minimized && Settings.MinimizeToTray)
-                    App.Current.MainWindow.Hide();
-            }
-        }
-
+        
         RecorderState _recorderState = RecorderState.NotRecording;
 
         public RecorderState RecorderState

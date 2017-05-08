@@ -50,6 +50,16 @@
         /// <summary>
         /// Control visibility of Region Selector (Action<bool>).
         /// </summary>
-        RegionSelectorVisibility
+        RegionSelectorVisibility,
+
+        /// <summary>
+        /// Get Region Rectangle (Func<Rectangle>).
+        /// </summary>
+        RegionRectangle,
+
+        /// <summary>
+        /// Minimize Main Window (Action<bool>).
+        /// </summary>
+        Minimize
     }
 }

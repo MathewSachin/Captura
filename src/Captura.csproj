@@ -77,8 +77,6 @@
     <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

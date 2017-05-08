@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.ViewModels;
 using Screna;
 using Screna.Audio;
 using System;
@@ -11,12 +10,11 @@ using System.IO;
 using System.Media;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows;
 using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
-namespace Captura
+namespace Captura.ViewModels
 {
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
@@ -28,7 +26,7 @@ namespace Captura
         bool isVideo;
         #endregion
 
-        MainViewModel()
+        public MainViewModel()
         {
             _timer = new Timer(1000);
             _timer.Elapsed += TimerOnElapsed;
@@ -191,7 +189,7 @@ namespace Captura
                     try
                     {
                         EnsureOutPath();
-                                             
+
                         var extension = SelectedScreenShotImageFormat.Equals(ImageFormat.Icon) ? "ico"
                             : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
                             : SelectedScreenShotImageFormat.ToString().ToLower();
@@ -252,7 +250,7 @@ namespace Captura
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(RegionSelector.Instance.Rectangle, includeCursor);
+                    bmp = ScreenShot.Capture(ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke(), includeCursor);
                     break;
             }
 
@@ -268,7 +266,7 @@ namespace Captura
         void StartRecording()
         {
             if (Settings.MinimizeOnStart)
-                WindowState = WindowState.Minimized;
+                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
             
             CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
 
@@ -394,15 +392,15 @@ namespace Captura
 
             CanChangeVideoSource = true;
             
-            if (Settings.MinimizeOnStart)
-                WindowState = WindowState.Normal;
-
             _timer.Stop();
 
             var rec = _recorder;
             _recorder = null;
 
             await Task.Run(() => rec.Dispose());
+
+            if (Settings.MinimizeOnStart)
+                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
 
             // After Save
             savingRecentItem.Saved();
