@@ -200,7 +200,7 @@ namespace Captura
 
                         bmp.Save(fileName, SelectedScreenShotImageFormat);
                         Status = "Image Saved to Disk";
-                        RecentViewModel.Add(fileName, RecentItemType.Image);
+                        RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
                         SystemTrayManager.ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
                     }
@@ -388,7 +388,7 @@ namespace Captura
         {
             Status = "Stopped";
 
-            var savingRecentItem = RecentViewModel.AddTemp(_currentFileName);
+            var savingRecentItem = RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
             
             RecorderState = RecorderState.NotRecording;
 
@@ -405,8 +405,7 @@ namespace Captura
             await Task.Run(() => rec.Dispose());
 
             // After Save
-            RecentViewModel.RecentList.Remove(savingRecentItem);
-            RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio);
+            savingRecentItem.Saved();
 
             SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
         }

@@ -10,9 +10,14 @@
                            Text="A List of files created in this session" 
                            Margin="0,0,0,10"/>
                 <ScrollViewer>
-                    <ItemsControl Margin="0,10,0,0" 
-                                  DisplayMemberPath="Content"
-                                  ItemsSource="{Binding RecentList}"/>
+                    <ItemsControl Margin="0,10,0,0"
+                                  ItemsSource="{Binding RecentList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:RecentItem DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </DockPanel>
         </ScrollViewer>
