@@ -6,13 +6,14 @@ configuration:
 - Debug
 - Release
 
-platform:
-- x86
-- x64
-
 environment:
   # Will be updated Before Build
   AppVersion: 1.0.0
+
+  # System Architecture
+  matrix:
+    - arch: x86
+    - arch: x64
 
 install:
   # Update Submodules
@@ -68,11 +69,11 @@ after_build:
 
   # Copy BASS
   - ps: >-
-      if ($env:platform -eq 'x86')
+      if ($env:arch -eq 'x86')
       {
         Copy-Item 'temp/bass/bass.dll' 'Output/'
       }
-      elseif ($env:platform -eq 'x64')
+      elseif ($env:arch -eq 'x64')
       {
         Copy-Item 'temp/bass/x64/bass.dll' 'Output/'
       }
@@ -82,7 +83,7 @@ after_build:
 
 artifacts:
   - path: Output/Captura.zip
-    name: Captura-$(configuration)-$(platform).zip
+    name: Captura-$(configuration)-$(arch).zip
 
 deploy:
   provider: GitHub
@@ -91,7 +92,7 @@ deploy:
   description: "[Changelog](https://mathewsachin.github.io/Captura/Changelog)"
   auth_token:
     secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
-  artifact: Captura-$(configuration)-$(platform).zip
+  artifact: Captura-$(configuration)-$(arch).zip
   draft: true
   on:
     configuration: Release
