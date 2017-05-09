@@ -34,17 +34,17 @@ namespace Captura
 
             Settings.Instance.Hotkeys.AddRange(new[]
             {
-                new HotkeyModel(ServiceName.Recording, Keys.R, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift),
-                new HotkeyModel(ServiceName.Pause, Keys.P, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift),
-                new HotkeyModel(ServiceName.ScreenShot, Keys.S, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift),
-                new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt),
-                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.D, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift)
+                new HotkeyModel(ServiceName.Recording, Keys.R, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.Pause, Keys.P, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.ScreenShot, Keys.S, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true),
+                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.D, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true)
             });
         }
         
         static void ProcessHotkey(int Id)
         {
-            Hotkeys.SingleOrDefault(h => h.ID == Id)?.Work();                
+            Hotkeys.SingleOrDefault(h => h.ID == Id)?.Work();
         }
         
         public static void Dispose()
@@ -57,7 +57,7 @@ namespace Captura
                 h.Unregister();
 
                 // Save
-                Settings.Instance.Hotkeys.Add(new HotkeyModel(h.ServiceName, h.Key, h.Modifiers));
+                Settings.Instance.Hotkeys.Add(new HotkeyModel(h.ServiceName, h.Key, h.Modifiers, h.IsActive));
             });
         }
     }

@@ -20,9 +20,26 @@ namespace Captura.Models
             Work = ServiceProvider.Get<Action>(Model.ServiceName);
             Description = ServiceProvider.GetDescription(Model.ServiceName);
 
-            Register();
+            IsActive = Model.IsActive;
         }
-        
+
+        bool _active;
+
+        public bool IsActive
+        {
+            get { return _active; }
+            set
+            {
+                _active = value;
+
+                if (value && !IsRegistered)
+                    Register();
+
+                else if (!value && IsRegistered)
+                    Unregister();
+            }
+        }
+
         public bool IsRegistered { get; private set; }
 
         public ushort ID { get; private set; }
