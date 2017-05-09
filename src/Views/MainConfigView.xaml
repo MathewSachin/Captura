@@ -2,8 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       DataContext="{StaticResource MainViewModel}">
-    <StackPanel Background="White"
-                Margin="-5,0,0,0">
+    <StackPanel Margin="-5,0,0,0">
         <StackPanel.Resources>
             <SolidColorBrush x:Key="ModernButtonText" Color="#111111" />
             <SolidColorBrush x:Key="ModernButtonTextHover" Color="#333333" />

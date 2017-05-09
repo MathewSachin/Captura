@@ -80,7 +80,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid Background="#F2211B1B">
+    <Grid Background="#BDBDBD">
         <Expander Padding="5,0,0,0"
                   IsExpanded="True">
             <Expander.HeaderTemplate>
@@ -94,6 +94,7 @@
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{DynamicResource s_ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
+                                        Foreground="#333333"
                                         IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
                     <local:ModernButton ToolTip="{DynamicResource s_RecordStop}"
                                         Command="{Binding RecordCommand}"
@@ -101,6 +102,7 @@
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{DynamicResource s_PauseResume}" 
                                         Command="{Binding PauseCommand}"
+                                        Foreground="#333333"
                                         IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
                         <local:ModernButton.LayoutTransform>
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
@@ -113,21 +115,22 @@
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{DynamicResource s_Minimize}"
                                         Click="MinButton_Click"
-                                        Foreground="#77FFFFFF"
+                                        Foreground="#77333333"
                                         IconData="M19,13H5V11H19V13Z"
                                         DockPanel.Dock="Right"/>
                     <Grid Background="#57222222"
                           Cursor="Hand"
-                          Margin="0,-1"
+                          Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding TimeSpan}"
                                Foreground="White"
+                               Margin="0,-1"
                                VerticalContentAlignment="Center"
                                HorizontalContentAlignment="Center"/>
                     </Grid>
                 </DockPanel>
             </Expander.Header>
-            <DockPanel Background="White"
+            <DockPanel Background="#F5F5F5"
                        Margin="-5,0,0,0"
                        Height="450">
                 <Label Margin="5"
