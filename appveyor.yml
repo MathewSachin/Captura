@@ -43,11 +43,11 @@ after_build:
   - ps: >-
       if ($env:configuration -eq 'Release')
       {
-        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Compress-Archive -DestinationPath 'src/bin/Release/Captura.zip' -Force
+        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Compress-Archive -DestinationPath 'src/bin/Release/Captura.zip'
       }
       elseif ($env:configuration -eq 'Debug')
       {
-        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Compress-Archive -DestinationPath 'src/bin/Debug/Captura.zip' -Force
+        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Compress-Archive -DestinationPath 'src/bin/Debug/Captura.zip'
       }
 
 artifacts:

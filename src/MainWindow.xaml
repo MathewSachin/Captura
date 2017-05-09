@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         WindowState="{Binding WindowState}"
-        DataContext="{x:Static local:MainViewModel.Instance}"
+        DataContext="{StaticResource MainViewModel}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
@@ -12,9 +12,6 @@
         Title="{DynamicResource s_Title}"
         AllowsTransparency="True"
         Background="Transparent"
-        MouseLeftButtonUp="Window_MouseLeftButtonUp"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        MouseMove="Window_MouseMove"
         BorderThickness="1"
         BorderBrush="{DynamicResource Accent}">
     <Window.Resources>

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProjectGuid>{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Captura</RootNamespace>
+    <AssemblyName>Captura.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\ManagedBass.1.0.2\lib\net45\ManagedBass.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
+    <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
+    <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
+    <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
+    <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
+    <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
+    <Compile Include="Models\Hotkeys\HotKey.cs" />
+    <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
+    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
+    <Compile Include="Models\Hotkeys\Modifiers.cs" />
+    <Compile Include="Models\MixedAudioProvider.cs" />
+    <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
+    <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
+    <Compile Include="Models\RecentItemType.cs" />
+    <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\SharpAvi\AviCodec.cs" />
+    <Compile Include="Models\SharpAvi\AviWriter.cs" />
+    <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
+    <Compile Include="Models\SystemTrayManager.cs" />
+    <Compile Include="Models\VideoItems\IVideoItem.cs" />
+    <Compile Include="Models\VideoItems\VideoSourceKind.cs" />
+    <Compile Include="Models\VideoItems\WindowItem.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegVideoArgsProvider.cs" />
+    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
+    <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
+    <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
+    <Compile Include="Models\VideoWriterItems\VideoWriterKind.cs" />
+    <Compile Include="NotifyPropertyChanged.cs" />
+    <Compile Include="Models\VideoItems\ScreenItem.cs" />
+    <Compile Include="Services\ServiceName.cs" />
+    <Compile Include="Services\ServiceProvider.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\AudioViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\Properties.cs" />
+    <Compile Include="ViewModels\RecentItemViewModel.cs" />
+    <Compile Include="ViewModels\RecentViewModel.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Models\WaveInProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Screna\src\Screna.csproj">
+      <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
+      <Name>Screna</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
