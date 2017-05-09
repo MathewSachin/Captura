@@ -8,7 +8,26 @@ namespace Captura
         public HotkeyView()
         {
             InitializeComponent();
-            
+
+            Render();
+        }
+
+        void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            HotKeyManager.Dispose();
+            Settings.Instance.Hotkeys.Clear();
+
+            HotKeyManager.Hotkeys.Clear();
+            HotKeyManager.Populate();
+
+            HotkeyGrid.RowDefinitions.Clear();
+            HotkeyGrid.Children.Clear();
+
+            Render();
+        }
+
+        void Render()
+        {
             for (int i = 0; i < HotKeyManager.Hotkeys.Count; ++i)
             {
                 var hotkey = HotKeyManager.Hotkeys[i];
@@ -20,7 +39,7 @@ namespace Captura
                     Content = hotkey.Description,
                     IsChecked = hotkey.IsActive
                 };
-                
+
                 HotkeyGrid.Children.Add(desc);
                 Grid.SetRow(desc, i);
 

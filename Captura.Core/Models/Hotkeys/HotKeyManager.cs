@@ -11,21 +11,21 @@ namespace Captura
         
         public static void RegisterAll()
         {
-            InitStorage();
-
-            foreach (var model in Settings.Instance.Hotkeys)
-                Hotkeys.Add(new Hotkey(model));
+            Populate();
 
             ServiceProvider.HotKeyPressed += ProcessHotkey;
         }
 
-        static void InitStorage()
+        public static void Populate()
         {
             if (Settings.Instance.Hotkeys == null)
                 Settings.Instance.Hotkeys = new List<HotkeyModel>();
 
             if (Settings.Instance.Hotkeys.Count == 0)
                 Reset();
+
+            foreach (var model in Settings.Instance.Hotkeys)
+                Hotkeys.Add(new Hotkey(model));
         }
 
         public static void Reset()
