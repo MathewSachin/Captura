@@ -80,11 +80,11 @@ after_build:
       }
 
   # Pack Deploy zip
-  - ps: Compress-Archive 'Output\*' 'Output\Captura.zip'
+  - ps: Compress-Archive 'Output\*' 'Output\Captura-$env:configuration-$env:arch.zip'
 
 artifacts:
-  - path: Output/Captura.zip
-    name: Captura-$(configuration)-$(arch).zip
+  - path: Output/Captura-$(configuration)-$(arch).zip
+    name: Captura.zip
 
 deploy:
   provider: GitHub
@@ -93,7 +93,7 @@ deploy:
   description: "[Changelog](https://mathewsachin.github.io/Captura/Changelog)"
   auth_token:
     secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
-  artifact: Captura-$(configuration)-$(arch).zip
+  artifact: Captura.zip
   draft: true
   on:
     configuration: Release
