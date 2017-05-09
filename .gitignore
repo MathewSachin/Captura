@@ -2,6 +2,8 @@ bin/
 obj/
 packages/
 publish/
+temp/
+Output/
 .vs/
 *.suo
 *.user
