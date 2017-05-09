@@ -10,6 +10,11 @@ environment:
   # Will be updated Before Build
   AppVersion: 1.0.0
 
+  # System Architecture
+  matrix:
+    - arch: x86
+    - arch: x64
+
 install:
   # Update Submodules
   - init.bat
@@ -39,8 +44,9 @@ build:
   verbosity: minimal
 
 after_build:
-  # Create output folder
+  # Create output and temp folder
   - md Output
+  - md temp
 
   # Copy licenses
   - xcopy /s licenses Output\licenses\
@@ -56,11 +62,30 @@ after_build:
         Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Copy-Item -Destination 'Output/'
       }
 
+  # Download BASS and BassMix
+  - ps: Invoke-WebRequest "http://www.un4seen.com/files/bass24.zip" -OutFile "temp/bass.zip"
+  - ps: Invoke-WebRequest "http://www.un4seen.com/files/bassmix24.zip" -OutFile "temp/bassmix.zip"
+
+  # Extract BASS and BassMix
+  - ps: Expand-Archive "temp/bass.zip" "temp/bass"
+  - ps: Expand-Archive "temp/bassmix.zip" "temp/bassmix"
+
+  # Copy BASS and BassMix
+  - ps: >-
+      if ($env:arch -eq 'x86')
+      {
+        Copy-Item 'temp/bass/bass.dll', 'temp/bassmix/bassmix.dll' 'Output/'
+      }
+      elseif ($env:arch -eq 'x64')
+      {
+        Copy-Item 'temp/bass/x64/bass.dll', 'temp/bassmix/x64/bassmix.dll' 'Output/'
+      }
+
   # Pack Deploy zip
-  - ps: Compress-Archive 'Output\*' 'Output\Captura.zip'
+  - ps: Compress-Archive 'Output\*' "Output\Captura-$env:configuration-$env:arch.zip"
 
 artifacts:
-  - path: Output/Captura.zip
+  - path: Output/Captura-$(configuration)-$(arch).zip
     name: Captura.zip
 
 deploy:
