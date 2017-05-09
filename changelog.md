@@ -4,23 +4,23 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
-## April 2017
+## v3.0.0
+* New Colors
+* Added a button to reset hotkeys
+* Hotkeys can be disabled.
 * Expanded State on Launch.
-
-## March 2017
 * Hotkeys for ScreenShot of Desktop and Active Window.
 * Option to disable system tray notifications.
 * NAudio fallback if BASS is not present.
-* Implemented Audio Quality for FFMpeg.
+* Implemented Audio and Video Quality for FFMpeg.
 * Fix errors in NumericBox.
 * Remove Video BackgroundColor.
 * Added Taskbar Thumb buttons.
 * Keystrokes displayed on lower left.
 * Embedded the Screna.* Extension libraries' code.
 * Multiple output formats for Audio only recording.
-* Implemented Video Quality for FFMpeg.
 
-## Making Captura Better ([#48](https://github.com/MathewSachin/Captura/pull/48))
+## v2.0.0
 - Only _Screna.dll_ is a required dependency.
 - Manually assignable Hotkeys for Starting/Stopping or Pausing/Resuming Recording and ScreenShot.
 - IncludeCursor defaults to True.
@@ -29,6 +29,8 @@ permalink: Changelog/
 - Added Fallback when Transparent Window ScreenShot fails.
 - Added Taskbar Overlay while Recording or Paused.
 - Disable Configuration during Capture.
+* Alpha support for Localisation.
+* Recording both Microphone input and Speaker output.
 
 #### System Tray
 - Video/Audio Recorded, ScreenShot Taken notifications.
@@ -49,7 +51,3 @@ permalink: Changelog/
 - Region Selector displays only when selected kind is Region.
 - Region Selector can be moved but not resized during capture.
 - Borders and Header of Region Selector are ignored in Region capture.
-
-## January 2017
-* Alpha support for Localisation.
-* Recording both Microphone input and Speaker output.

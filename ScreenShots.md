@@ -4,18 +4,19 @@ title: ScreenShots
 permalink: ScreenShots/
 ---
 
-### Collapsed
+### UI
 ![Collapsed]({{ site.url }}{{ site.baseurl }}/img/ScreenShots/main.png)
 
 <div class="row">
-    <div class="col-md-6">
-	    <h3>Expanded</h3>
-		<p><img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/expanded.png"/></p>
-	</div>
-    <div class="col-md-6">
-	    <h3>Hotkey Config</h3>
-		<p><img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png"/></p>
-	</div>
+    <div class="col-md-4">
+        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/expanded.png"/>
+    </div>
+    <div class="col-md-4">
+        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png"/>
+    </div>
+    <div class="col-md-4">
+        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/config.png"/>
+    </div>
 </div>
 
 ### Region Selector

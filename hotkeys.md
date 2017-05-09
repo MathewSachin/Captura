@@ -22,3 +22,7 @@ To change a Hotkey:
 
 1. Click on the Hotkey you want to change.
 2. Press the new Hotkey combination.
+
+You can enable/disable hotkeys using the checkboxes next to them.
+
+You can get back the Default hotkeys by pressing the Reset button.
