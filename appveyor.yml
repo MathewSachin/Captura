@@ -39,19 +39,28 @@ build:
   verbosity: minimal
 
 after_build:
-  # Pack Deploy zip
+  # Create output folder
+  - md Output
+
+  # Copy licenses
+  - xcopy /s licenses Output\licenses\
+
+  # Copy build output
   - ps: >-
       if ($env:configuration -eq 'Release')
       {
-        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Compress-Archive -DestinationPath 'src/bin/Release/Captura.zip'
+        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Copy-Item -Destination 'Output/'
       }
       elseif ($env:configuration -eq 'Debug')
       {
-        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Compress-Archive -DestinationPath 'src/bin/Debug/Captura.zip'
+        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Copy-Item -Destination 'Output/'
       }
 
+  # Pack Deploy zip
+  - ps: Compress-Archive 'Output\*' 'Output\Captura.zip'
+
 artifacts:
-  - path: src/bin/$(configuration)/Captura.zip
+  - path: Output/Captura.zip
     name: Captura.zip
 
 deploy:
