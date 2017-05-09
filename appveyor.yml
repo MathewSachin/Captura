@@ -44,8 +44,9 @@ build:
   verbosity: minimal
 
 after_build:
-  # Create output folder
+  # Create output and temp folder
   - md Output
+  - md temp
 
   # Copy licenses
   - xcopy /s licenses Output\licenses\
