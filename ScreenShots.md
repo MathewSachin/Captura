@@ -9,13 +9,13 @@ permalink: ScreenShots/
 
 <div class="row">
     <div class="col-md-4">
-        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/expanded.png"/>
+        <p><img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/expanded.png"/></p>
     </div>
     <div class="col-md-4">
-        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png"/>
+        <p><img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png"/></p>
     </div>
     <div class="col-md-4">
-        <img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/config.png"/>
+        <p><img src="{{ site.url }}{{ site.baseurl }}/img/ScreenShots/config.png"/></p>
     </div>
 </div>
 
