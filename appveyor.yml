@@ -84,14 +84,22 @@ after_build:
   # Pack Deploy zip
   - ps: Compress-Archive 'Output\*' "Output\Captura-$env:configuration-$env:arch.zip"
 
-  # Pack Chocolatey
-  - ps: choco pack choco/captura.nuspec --version $env:AppVersion
+  # Chocolatey
+  - ps: >-
+      if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
+      {
+        $installScript = "choco/tools/chocolateyinstall.ps1";
+
+        # Modify install script links
+        Set-Content $installScript ('$tag = ' + $env:APPVEYOR_REPO_TAG_NAME + "; " + (Get-Content $installScript));
+
+        choco pack choco/captura.nuspec --version $env:AppVersion;
+        Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
+      }
 
 artifacts:
   - path: Output/Captura-$(configuration)-$(arch).zip
     name: Captura.zip
-  - path: captura.*.nupkg
-    name: Chocolatey
 
 deploy:
   provider: GitHub
