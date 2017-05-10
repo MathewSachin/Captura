@@ -91,7 +91,7 @@ after_build:
         $installScript = "choco/tools/chocolateyinstall.ps1";
 
         # Modify install script links
-        Set-Content $installScript ('$tag = ' + $env:APPVEYOR_REPO_TAG_NAME + "; " + (Get-Content $installScript));
+        Set-Content $installScript ('$tag = "' + $env:APPVEYOR_REPO_TAG_NAME + '"; ' + (Get-Content $installScript));
 
         choco pack choco/captura.nuspec --version $env:AppVersion;
         Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
