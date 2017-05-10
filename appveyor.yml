@@ -29,7 +29,7 @@ cache:
 before_build:
   # Retrieve version from AssemblyInfo.cs
   - ps: >-
-      $content = Get-Content "src\Properties\AssemblyInfo.cs";
+      $content = Get-Content "src\Captura\Properties\AssemblyInfo.cs";
       $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
 
       if ($match.Success)
@@ -55,11 +55,11 @@ after_build:
   - ps: >-
       if ($env:configuration -eq 'Release')
       {
-        Get-ChildItem -Path 'src/bin/Release/*' -Include *.exe*, *.dll | Copy-Item -Destination 'Output/'
+        Get-ChildItem -Path 'src/Captura/bin/Release/*' -Include *.exe*, *.dll | Copy-Item -Destination 'Output/'
       }
       elseif ($env:configuration -eq 'Debug')
       {
-        Get-ChildItem -Path 'src/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Copy-Item -Destination 'Output/'
+        Get-ChildItem -Path 'src/Captura/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Copy-Item -Destination 'Output/'
       }
 
   # Download BASS and BassMix

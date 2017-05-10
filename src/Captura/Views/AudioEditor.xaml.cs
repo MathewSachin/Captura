@@ -39,11 +39,10 @@ namespace Captura
             {
                 _current = value;
 
-                if (_current > End)
-                    _current = End;
-
-                if (_current < Begin)
+                if (_current > End || _current < Begin)
                     _current = Begin;
+
+                _player.Position = _current;
 
                 OnPropertyChanged();
             }
@@ -63,20 +62,23 @@ namespace Captura
         public void Load(string FileName)
         {
             _player = new MediaPlayer();
-
+            
             _player.Open(new Uri(FileName));
 
             Begin = Current = TimeSpan.Zero;
-            End = Duration = _player.NaturalDuration.TimeSpan;
-
-            var c = _player.Clock;
-
-            c.CurrentTimeInvalidated += (s, e) => Current = c.CurrentTime.Value;
+            End = Duration = _player.NaturalDuration.TimeSpan;            
         }
 
         public void Save() { }
 
-        public void Reset() { }
+        public void Reset()
+        {
+            _player.Stop();
+
+            _player.Position = _begin = TimeSpan.Zero;
+
+            _end = _duration;
+        }
     }
 
     public partial class AudioEditor
