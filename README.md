@@ -26,10 +26,9 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 - Run `init.bat` after cloning the repository (clones submodules).
 
 ## Optional Native Libraries
-Download and place in build output directory (x86 or x64 as required).
+Download and place in build output directory.
 These may need licensing for commercial use.
-x64 libraries are available in [Releases](https://github.com/MathewSachin/Captura/releases).
 
-- [BASS Audio library](http://www.un4seen.com/download.php?bass24) for Audio Recording - *bass.dll*.
-- [BASSmix](http://www.un4seen.com/download.php?bassmix24) for Audio Mixing - *bassmix.dll*.
-- [FFMpeg](https://ffmpeg.zeranoe.com/builds/) for Audio/Video Encoding - *ffmpeg.exe* (Static build recommended).
+- [BASS Audio library](http://www.un4seen.com/download.php?bass24) for Audio Recording - *bass.dll* (x86).
+- [BASSmix](http://www.un4seen.com/download.php?bassmix24) for Audio Mixing - *bassmix.dll* (x86).
+- [FFMpeg](https://ffmpeg.zeranoe.com/builds/) for Audio/Video Encoding - *ffmpeg.exe* (Static build recommended) (x86 or x64 as per platform).
