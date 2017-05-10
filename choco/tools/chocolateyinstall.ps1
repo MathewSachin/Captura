@@ -1,0 +1,1 @@
+﻿Install-ChocolateyZipPackage 'Captura' -Url "https://github.com/MathewSachin/Captura/releases/download/$env:ChocolateyPackageVersion/Captura-Release-x86.zip" -UnzipLocation "$(Split-Path -parent $MyInvocation.MyCommand.Definition)" -Url64 "https://github.com/MathewSachin/Captura/releases/download/v$env:ChocolateyPackageVersion/Captura-Release-x64.zip"

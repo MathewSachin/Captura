@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>captura</id>
+    <version>3.0.0</version>
+    <title>Captura</title>
+    <authors>Mathew Sachin</authors>
+    <projectUrl>https://github.com/MathewSachin/Captura</projectUrl>
+    <tags>captura screen capture recording loopback screenshot screencast</tags>
+    <summary>Capture Screen/Audio/Cursor/Clicks/Keystrokes</summary>
+    <description>
+Captura is an application to capture Screen/Audio/Cursor/Clicks/Keystrokes.
+
+## Features
+- Take ScreenShots
+- Capture ScreenCasts (Avi/Gif/Mp4)
+- Capture with/without Mouse Cursor
+- Capture Specific Regions or Windows
+- Capture Mouse Clicks or Keystrokes
+- Record Audio from Microphone **AND/OR** Speaker Output (Wasapi Loopback)
+
+Download ffmpeg.exe and add to path for even more features.
+    </description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

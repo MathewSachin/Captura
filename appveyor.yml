@@ -84,9 +84,14 @@ after_build:
   # Pack Deploy zip
   - ps: Compress-Archive 'Output\*' "Output\Captura-$env:configuration-$env:arch.zip"
 
+  # Pack Chocolatey
+  - choco pack choco/captura.nuspec --version $env:AppVersion
+
 artifacts:
   - path: Output/Captura-$(configuration)-$(arch).zip
     name: Captura.zip
+  - path: choco\*.nupkg
+    name: Chocolatey
 
 deploy:
   provider: GitHub

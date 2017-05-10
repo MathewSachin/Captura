@@ -7,3 +7,4 @@ Output/
 .vs/
 *.suo
 *.user
+*.nupkg
