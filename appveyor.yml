@@ -85,7 +85,7 @@ after_build:
   - ps: Compress-Archive 'Output\*' "Output\Captura-$env:configuration-$env:arch.zip"
 
   # Pack Chocolatey
-  - choco pack choco/captura.nuspec --version $env:AppVersion
+  - ps: choco pack choco/captura.nuspec --version $env:AppVersion
 
 artifacts:
   - path: Output/Captura-$(configuration)-$(arch).zip
