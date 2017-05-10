@@ -90,7 +90,7 @@ after_build:
 artifacts:
   - path: Output/Captura-$(configuration)-$(arch).zip
     name: Captura.zip
-  - path: choco\*.nupkg
+  - path: captura.*.nupkg
     name: Chocolatey
 
 deploy:
