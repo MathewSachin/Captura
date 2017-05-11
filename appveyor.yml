@@ -12,7 +12,7 @@ environment:
 
 install:
   # Update Submodules
-  - init.bat
+  - git submodule update --init
 
   # Restore packages
   - nuget restore src/Captura.sln
