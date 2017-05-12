@@ -12,6 +12,6 @@ For every commit on GitHub, [AppVeyor CI](https://appveyor.com) automatically bu
 
 3. Download **Captura.zip**.
 
-![Dev Builds]({{ site.url }}{{ site.baseurl }}/img/dev-build.png)
+![Dev Builds]({{ site.baseurl }}/img/dev-build.png)
 
 **Warning: Dev builds can be unstable and should be used for testing purposes only.**

@@ -4,12 +4,12 @@ title: Contributing
 permalink: Contributing/
 ---
 
-Want to Help? You can help by starring this repo, contributing code, testing, reporting bugs or [donating]({{ site.url }}{{ site.baseurl }}/Donate).
+Want to Help? You can help by starring this repo, contributing code, testing, reporting bugs or [donating]({{ site.baseurl }}/Donate).
 
 You can always [Chat on Gitter]({{ site.links.gitter }}) for Questions/Discussions.
 
 ## Reporting Bugs - Issues
-* Check the [FAQ]({{ site.url }}{{ site.baseurl }}/FAQ)
+* Check the [FAQ]({{ site.baseurl }}/FAQ)
 * Check if a similar issue is already reported. If so then comment on that issue with details specific to your case.
 * Check if the issue is resolved on the latest commit.
 * If possible, Include **steps** to replicate the problem or a sample project.

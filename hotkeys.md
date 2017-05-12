@@ -16,7 +16,7 @@ Take ScreenShot of Desktop       | Ctrl + Alt + Shift + D
 
 Hotkeys can be customized on the _Hotkeys_ tab.
 
-![Hotkey tab]({{ site.url }}{{ site.baseurl }}/img/ScreenShots/hotkey.png)
+![Hotkey tab]({{ site.baseurl }}/img/ScreenShots/hotkey.png)
 
 To change a Hotkey:
 
