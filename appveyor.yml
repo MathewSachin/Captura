@@ -84,6 +84,14 @@ after_build:
         Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
       }
 
+  # Screna NuGet
+  - ps: >-
+      if ($env:configuration -eq 'Release')
+      {
+        nuget pack src/Screna/src/Screna.nuspec;
+        Get-ChildItem Screna.*.nupkg | % { Push-AppveyorArtifact $_.FullName -DeploymentName Screna };
+      }
+
 artifacts:
   - path: Output/Captura-$(configuration).zip
     name: Captura.zip
