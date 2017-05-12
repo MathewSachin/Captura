@@ -9,8 +9,12 @@ layout: default
 </div>
 
 <div class="container">
-    <p>{{ content }}</p>
-    
-    <hr>
-    {% include adsense.html %}
+    <div class="col-md-10">
+        <p>{{ content }}</p>
+
+        <hr>
+    </div>
+    <div class="col-md-2">
+        {% include adsense.html %}
+    </div>
 </div>
