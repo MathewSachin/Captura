@@ -1,0 +1,30 @@
+---
+layout: page
+title: Downloads
+permalink: Downloads/
+---
+
+<p>View <a href="{{ site.baseurl }}/Changelog">Changelog</a></p><br>
+
+<p class="download-list"></p>
+
+<script>
+$(function() {
+    $.getJSON("https://api.github.com/repos/" + "{{ site.accounts.github }}" + "/releases").done(function(json) {
+        for (var i = 0; i < json.length; ++i) {
+            var release = json[i];
+    
+            var asset = release.assets[0];
+            var size = Math.round(asset.size / 1024);
+
+            $(".download-list")
+                .append($("<h4>")
+                    .append($("<a>")
+                        .attr("href", asset.browser_download_url)
+                        .text(release.name + " (" + size + " KB)")
+                    )
+                );
+        }
+    });
+});
+</script>
