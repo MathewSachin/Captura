@@ -58,3 +58,7 @@ li {
 .gitter-chat-embed iframe {
     padding-top: 50px;
 }
+
+.feature-boxes div {
+    padding: 15px;
+}
