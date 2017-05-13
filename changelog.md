@@ -51,3 +51,6 @@ permalink: Changelog/
 - Region Selector displays only when selected kind is Region.
 - Region Selector can be moved but not resized during capture.
 - Borders and Header of Region Selector are ignored in Region capture.
+
+## Before v2.0.0
+Chagelog not maintained for versions before v2.0.0.
