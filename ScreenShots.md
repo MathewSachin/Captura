@@ -7,17 +7,11 @@ permalink: ScreenShots/
 ### UI
 ![Collapsed]({{ site.baseurl }}/img/ScreenShots/main.png)
 
-<div class="row">
-    <div class="col-md-4">
-        <p><img src="{{ site.baseurl }}/img/ScreenShots/expanded.png"/></p>
-    </div>
-    <div class="col-md-4">
-        <p><img src="{{ site.baseurl }}/img/ScreenShots/hotkey.png"/></p>
-    </div>
-    <div class="col-md-4">
-        <p><img src="{{ site.baseurl }}/img/ScreenShots/config.png"/></p>
-    </div>
-</div>
+![Expanded]({{ site.baseurl }}/img/ScreenShots/expanded.png)
+
+![Hotkey]({{ site.baseurl }}/img/ScreenShots/hotkey.png)
+
+![Config]({{ site.baseurl }}/img/ScreenShots/config.png)
 
 ### Region Selector
 ![Region Selector]({{ site.baseurl }}/img/ScreenShots/region.png)

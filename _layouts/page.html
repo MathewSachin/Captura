@@ -2,17 +2,19 @@
 layout: default
 ---
 
-<div class="jumbotron text-center bg-teal">
-    <h2>{{ page.title }}</h2>
-    <br>
-    <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}">Edit this page</a></div>
+<link rel="stylesheet" href="{{ site.baseurl }}/styles/page.css">
+
+<div class="jumbotron bg-teal">
+    <div class="container">
+        <h2>{{ page.title }}</h2>
+        <br>
+        <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}">Edit this page</a></div>
+    </div>
 </div>
 
-<div class="container">
-    <div class="col-md-10">
+<div class="container page-container">
+    <div class="col-md-10 page-content">
         <p>{{ content }}</p>
-
-        <hr>
     </div>
     <div class="col-md-2">
         {% include adsense.html %}
