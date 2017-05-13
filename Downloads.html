@@ -10,7 +10,7 @@ permalink: Downloads/
 
 <script>
 $(function() {
-    $.getJSON("https://api.github.com/repos/" + "{{ site.accounts.github }}" + "/releases").done(function(json) {
+    $.getJSON("https://api.github.com/repos/{{ site.accounts.github }}/releases").done(function(json) {
         for (var i = 0; i < json.length; ++i) {
             var release = json[i];
     
