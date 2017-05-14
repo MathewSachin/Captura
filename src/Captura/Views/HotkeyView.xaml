@@ -3,7 +3,7 @@
       xmlns:local="clr-namespace:Captura"
       x:Class="Captura.HotkeyView">
     <DockPanel Margin="5">
-        <Button Content="Reset"
+        <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
                 Click="Reset_Click"/>
         <Grid Name="HotkeyGrid" Margin="0,5">

@@ -16,14 +16,14 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="{DynamicResource s_StartDelay}"
+                    <Label Content="{local:Loc StartDelay}"
                            VerticalContentAlignment="Center"
                            Margin="0,2,5,2"/>
                     <local:NumericBox Value="{Binding StartDelay, Mode=TwoWay}"
                                       Grid.Column="1"
                                       Margin="0,2"/>
 
-                    <Label Content="{DynamicResource s_CaptureDuration}"
+                    <Label Content="{local:Loc CaptureDuration}"
                            VerticalContentAlignment="Center"
                            Margin="0,2,5,2"
                            Grid.Row="1"/>
@@ -33,28 +33,28 @@
                                       Margin="0,2"/>
                 </Grid>
 
-                <CheckBox Content="{DynamicResource s_MinCaptureStart}"
+                <CheckBox Content="{local:Loc MinCapture}"
                           IsChecked="{Binding Settings.MinimizeOnStart, Mode=TwoWay}"
                           Margin="0,2"/>
 
-                <CheckBox Content="{DynamicResource s_MinTray}"
+                <CheckBox Content="{local:Loc MinTray}"
                           IsChecked="{Binding Settings.MinimizeToTray, Mode=TwoWay}"
                           Margin="0,2"/>
 
-                <CheckBox Content="Show System Tray Notifications"
+                <CheckBox Content="{local:Loc ShowSysNotify}"
                           IsChecked="{Binding Settings.TrayNotify, Mode=TwoWay}"
                           Margin="0,2"/>
 
                 <TextBlock Margin="0,7,0,3"
-                           Text="{DynamicResource s_Gif}"
+                           Text="{local:Loc Gif}"
                            FontWeight="Bold"/>
 
                 <CheckBox Margin="0,2"
-                          Content="{DynamicResource s_GifUnconstrained}"
+                          Content="{local:Loc GifUnconstrained}"
                           IsChecked="{Binding Settings.GifUnconstrained, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,2">
-                    <CheckBox Content="{DynamicResource s_Repeat}"
+                    <CheckBox Content="{local:Loc Repeat}"
                               Margin="0,0,5,0"
                               DockPanel.Dock="Left"
                               IsChecked="{Binding Settings.GifRepeat, Mode=TwoWay}"/>
@@ -64,7 +64,7 @@
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
-                           Text="{DynamicResource s_ScreenShot}"
+                           Text="{local:Loc ScreenShot}"
                            FontWeight="Bold"/>
 
                 <Grid Margin="0,2">
@@ -76,7 +76,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label VerticalContentAlignment="Center"
-                           Content="{DynamicResource s_SaveTo}"
+                           Content="{local:Loc SaveTo}"
                            Margin="0,0,5,0"/>
 
                     <ComboBox VerticalAlignment="Center" 
@@ -84,7 +84,7 @@
                               ItemsSource="{Binding ScreenShotSaveTo}"
                               SelectedItem="{Binding SelectedScreenShotSaveTo, Mode=TwoWay}"/>
 
-                    <Label Content="{DynamicResource s_as}"
+                    <Label Content="{local:Loc As}"
                            Grid.Column="2"
                            Margin="5,0"
                            VerticalAlignment="Center"/>
@@ -102,7 +102,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <CheckBox Content="{DynamicResource s_Resize}"
+                    <CheckBox Content="{local:Loc Resize}"
                               IsChecked="{Binding Settings.ScreenShotDoResize, Mode=TwoWay}"
                               Margin="0,0,5,0"/>
 

@@ -2,14 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
-        WindowState="{Binding WindowState}"
         DataContext="{StaticResource MainViewModel}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
         Width="350"
-        Title="{DynamicResource s_Title}"
+        Title="{local:Loc AppName}"
         AllowsTransparency="True"
         Background="Transparent"
         BorderThickness="1"
@@ -51,10 +50,10 @@
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
-                         Description="Captura - Screen Capture">
+                         Description="{local:Loc AppName}">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
-                                 Description="{DynamicResource s_ScreenShot}"
+                                 Description="{local:Loc ScreenShot}"
                                  DismissWhenClicked="True">
                     <ThumbButtonInfo.ImageSource>
                         <DrawingImage>
@@ -66,7 +65,7 @@
                     </ThumbButtonInfo.ImageSource>
                 </ThumbButtonInfo>
                 <ThumbButtonInfo Command="{Binding RecordCommand}"
-                                 Description="{DynamicResource s_RecordStop}"
+                                 Description="{local:Loc RecordStop}"
                                  DismissWhenClicked="True">
                     <ThumbButtonInfo.ImageSource>
                         <DrawingImage>
@@ -92,15 +91,15 @@
             </Expander.HeaderTemplate>
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
-                    <local:ModernButton ToolTip="{DynamicResource s_ScreenShot}"
+                    <local:ModernButton ToolTip="{local:Loc ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
                                         Foreground="#333333"
                                         IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
-                    <local:ModernButton ToolTip="{DynamicResource s_RecordStop}"
+                    <local:ModernButton ToolTip="{local:Loc RecordStop}"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
-                    <local:ModernButton ToolTip="{DynamicResource s_PauseResume}" 
+                    <local:ModernButton ToolTip="{local:Loc PauseResume}" 
                                         Command="{Binding PauseCommand}"
                                         Foreground="#333333"
                                         IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
@@ -108,12 +107,12 @@
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
-                    <local:ModernButton ToolTip="{DynamicResource s_Close}"
+                    <local:ModernButton ToolTip="{local:Loc Close}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"
                                         IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
                                         DockPanel.Dock="Right"/>
-                    <local:ModernButton ToolTip="{DynamicResource s_Minimize}"
+                    <local:ModernButton ToolTip="{local:Loc Minimize}"
                                         Click="MinButton_Click"
                                         Foreground="#77333333"
                                         IconData="M19,13H5V11H19V13Z"
@@ -142,7 +141,7 @@
                             DockPanel.Dock="Right"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                    <Button Content="{DynamicResource s_OutputFolder}"
+                    <Button Content="{local:Loc OutFolder}"
                             ContentStringFormat="{}{0}: "
                             DockPanel.Dock="Left"
                             Padding="5,0"
@@ -155,19 +154,19 @@
                               DockPanel.Dock="Bottom"/>
                 <DockPanel>
                     <TabControl Background="Transparent">
-                        <TabItem Header="Main">
+                        <TabItem Header="{local:Loc Main}">
                             <Frame Source="Views/MainConfigView.xaml"/>
                         </TabItem>
-                        <TabItem Header="{DynamicResource s_Configure}">
+                        <TabItem Header="{local:Loc Configure}">
                             <Frame Source="Views/ConfigView.xaml"/>
                         </TabItem>
-                        <TabItem Header="{DynamicResource s_Recent}">
+                        <TabItem Header="{local:Loc Recent}">
                             <Frame Source="Views/RecentView.xaml"/>
                         </TabItem>
-                        <TabItem Header="Hotkeys">
+                        <TabItem Header="{local:Loc Hotkeys}">
                             <Frame Source="Views/HotkeyView.xaml"/>
                         </TabItem>
-                        <TabItem Header="{DynamicResource s_About}">
+                        <TabItem Header="{local:Loc About}">
                             <Frame Source="Views/AboutView.xaml"/>
                         </TabItem>
                     </TabControl>
