@@ -7,7 +7,7 @@
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
-        Width="350"
+        Width="400"
         Title="{local:Loc AppName}"
         AllowsTransparency="True"
         Background="Transparent"
@@ -131,7 +131,7 @@
             </Expander.Header>
             <DockPanel Background="#F5F5F5"
                        Margin="-5,0,0,0"
-                       Height="450">
+                       Height="500">
                 <Label Margin="5"
                        Content="{Binding Status}"
                        Opacity="0.9"
