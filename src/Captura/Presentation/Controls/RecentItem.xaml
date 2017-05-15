@@ -1,11 +1,12 @@
 ﻿<UserControl x:Class="Captura.RecentItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura">
     <DockPanel IsEnabled="{Binding IsSaving, Converter={StaticResource NegatingConverter}}">
         <GridSplitter Height="1"
                       DockPanel.Dock="Bottom"/>
         <Button DockPanel.Dock="Right"
-                ToolTip="Remove from List"
+                ToolTip="{local:Loc RemoveFromList}"
                 BorderBrush="Transparent"
                 Margin="5,0"
                 Command="{Binding RemoveCommand}">
@@ -25,9 +26,9 @@
                 Height="25">
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Print"
+                    <MenuItem Header="{local:Loc Print}"
                               Command="{Binding PrintCommand}"/>
-                    <MenuItem Header="Delete"
+                    <MenuItem Header="{local:Loc Delete}"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>
             </Button.ContextMenu>

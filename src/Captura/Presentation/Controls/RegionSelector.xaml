@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Captura.RegionSelector"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="RegionSelector"
+        xmlns:local="clr-namespace:Captura"
+        Title="{local:Loc RegionSelector}"
         Height="300"
         Background="Transparent"
         Width="300"
@@ -23,7 +24,7 @@
         <Label Cursor="SizeAll"
                Height="20"
                Background="#B7FFFFFF"
-               Content="Region Selector"
+               Content="{local:Loc RegionSelector}"
                HorizontalContentAlignment="Center"
                MouseDoubleClick="HeaderMouseDoubleClick"
                PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"/>

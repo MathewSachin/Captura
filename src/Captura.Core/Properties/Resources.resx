@@ -231,4 +231,22 @@
   <data name="ShowSysNotify" xml:space="preserve">
     <value>Show System Tray Notifications</value>
   </data>
+  <data name="AudioFormatWoVideo" xml:space="preserve">
+    <value>Audio Format when no Video</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="RecentDescription" xml:space="preserve">
+    <value>A List of files created in this session</value>
+  </data>
+  <data name="RegionSelector" xml:space="preserve">
+    <value>Region Selector</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Remove from List</value>
+  </data>
 </root>

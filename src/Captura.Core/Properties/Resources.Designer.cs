@@ -97,6 +97,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Format when no Video.
+        /// </summary>
+        public static string AudioFormatWoVideo {
+            get {
+                return ResourceManager.GetString("AudioFormatWoVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capture Duration (in seconds).
         /// </summary>
         public static string CaptureDuration {
@@ -120,6 +129,15 @@ namespace Captura.Properties {
         public static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -277,6 +295,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        public static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quality.
         /// </summary>
         public static string Quality {
@@ -295,6 +322,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A List of files created in this session.
+        /// </summary>
+        public static string RecentDescription {
+            get {
+                return ResourceManager.GetString("RecentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record | Stop.
         /// </summary>
         public static string RecordStop {
@@ -309,6 +345,24 @@ namespace Captura.Properties {
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Region Selector.
+        /// </summary>
+        public static string RegionSelector {
+            get {
+                return ResourceManager.GetString("RegionSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from List.
+        /// </summary>
+        public static string RemoveFromList {
+            get {
+                return ResourceManager.GetString("RemoveFromList", resourceCulture);
             }
         }
         
