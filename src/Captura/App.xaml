@@ -9,8 +9,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Presentation/Themes/Generic.xaml" />
-                <ResourceDictionary Source="Languages/default.xaml" />
-                <ResourceDictionary Source="Languages/lang.en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
             <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
