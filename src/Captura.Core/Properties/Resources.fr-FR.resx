@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>sur</value>
+    <value>Sur</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Captura</value>
   </data>
   <data name="Audio" xml:space="preserve">
-    <value>l'audio</value>
+    <value>L'audio</value>
   </data>
   <data name="CaptureDuration" xml:space="preserve">
-    <value>Capture Duration (in seconds)</value>
+    <value>Durée de capture (en secondes)</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>fermer</value>
+    <value>Fermer</value>
   </data>
   <data name="Configure" xml:space="preserve">
     <value>Configurer</value>
@@ -142,72 +142,105 @@
     <value>Gif</value>
   </data>
   <data name="IncludeClicks" xml:space="preserve">
-    <value>Include Mouse Clicks</value>
+    <value>Inclure les clics de la souris</value>
   </data>
   <data name="IncludeCursor" xml:space="preserve">
-    <value>Include Cursor</value>
+    <value>Inclure le curseur</value>
   </data>
   <data name="IncludeKeys" xml:space="preserve">
-    <value>Include KeyStrokes</value>
+    <value>Inclure les touches</value>
   </data>
   <data name="LoopbackSource" xml:space="preserve">
-    <value>WASAPI Loopback Source</value>
+    <value>Source de sortie du haut-parleur</value>
   </data>
   <data name="MicSource" xml:space="preserve">
-    <value>Microphone Source</value>
+    <value>Source de microphone</value>
   </data>
   <data name="MinCapture" xml:space="preserve">
-    <value>Minimize on Capture Start</value>
+    <value>Minimiser au début de la capture</value>
   </data>
   <data name="Minimize" xml:space="preserve">
-    <value>minimiser</value>
+    <value>Minimiser</value>
   </data>
   <data name="MinTray" xml:space="preserve">
-    <value>Minimize to System Tray</value>
+    <value>Minimiser à la barre d'état système</value>
   </data>
   <data name="OpenOutputFolder" xml:space="preserve">
-    <value>Open Output Folder</value>
+    <value>Ouvrez le dossier de sortie</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>autre</value>
+    <value>Autre</value>
   </data>
   <data name="OutFolder" xml:space="preserve">
-    <value>Output Folder</value>
+    <value>Dossier de sortie</value>
   </data>
   <data name="PauseResume" xml:space="preserve">
     <value>Pause | Resume</value>
   </data>
   <data name="Quality" xml:space="preserve">
-    <value>Quality</value>
+    <value>Qualité</value>
   </data>
   <data name="Recent" xml:space="preserve">
-    <value>Recent</value>
+    <value>Récent</value>
   </data>
   <data name="RecordStop" xml:space="preserve">
-    <value>Record | Stop</value>
+    <value>Record | Arrêtez</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Rafraîchir</value>
   </data>
   <data name="Repeat" xml:space="preserve">
-    <value>Repeat</value>
+    <value>Répéter</value>
   </data>
   <data name="Resize" xml:space="preserve">
-    <value>Resize</value>
+    <value>Redimensionner</value>
   </data>
   <data name="ScreenShot" xml:space="preserve">
-    <value>ScreenShot</value>
+    <value>Capture d'écran</value>
   </data>
   <data name="StartDelay" xml:space="preserve">
     <value>Start Delay (in ms)</value>
   </data>
   <data name="Video" xml:space="preserve">
-    <value>Video</value>
+    <value>Vidéo</value>
   </data>
   <data name="VideoEncoder" xml:space="preserve">
-    <value>Video Encoder</value>
+    <value>Codeur vidéo</value>
   </data>
   <data name="VideoSource" xml:space="preserve">
-    <value>Video Source</value>
+    <value>Source vidéo</value>
+  </data>
+  <data name="AudioFormatWoVideo" xml:space="preserve">
+    <value>Format audio quand aucune vidéo</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="Hotkeys" xml:space="preserve">
+    <value>Raccourcis clavier</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Principale</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Impression</value>
+  </data>
+  <data name="RecentDescription" xml:space="preserve">
+    <value>Une liste de fichiers créés dans cette session</value>
+  </data>
+  <data name="RegionSelector" xml:space="preserve">
+    <value>Sélecteur de région</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Supprimer de la liste</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="SaveTo" xml:space="preserve">
+    <value>Enregistrer dans</value>
+  </data>
+  <data name="ShowSysNotify" xml:space="preserve">
+    <value>Activer les notifications du plateau système</value>
   </data>
 </root>
