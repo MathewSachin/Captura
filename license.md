@@ -29,6 +29,9 @@ All rights reserved.
 
 {% include bsd3.html %}
 
+## ModernUI
+{% include mspl.html %}
+
 ## NAudio
 {% include mspl.html %}
 
