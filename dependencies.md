@@ -23,10 +23,10 @@ Screna does the real work of capturing Screen.
 ## Optional Dependencies
 These dependencies are NOT required, but add extra features if present.
 
-### FFMpeg
+### [FFMpeg](https://ffmpeg.zeranoe.com/builds/)
 Audio/Video encoding support.
 
-`ffmpeg.exe` needs to be placed in the same directory as `Captura.exe`.
+Download `ffmpeg.exe` and place in any folder in `PATH` environment variable or in the same directory as `Captura.exe`.
 
 ### [MouseKeyHook](https://github.com/gmamaladze/globalmousekeyhook)
 Capture Mouse Clicks and Keystrokes as Overlays.
@@ -47,7 +47,9 @@ Avi encodig support.
 ### [ManagedBass](https://github.com/ManagedBass/ManagedBass)
 Microphone Recording and Speaker Output (Wasapi Loopback) capture with mixing support.
 
-`bass.dll` and `bassmix.dll` need to be placed in the same directory as `Captura.exe`.
+Download [BASS Audio library](http://www.un4seen.com/download.php?bass24) and [BASSmix](http://www.un4seen.com/download.php?bassmix24).
+
+`bass.dll` and `bassmix.dll` (x86 versions, since Capture runs in `Prefer32Bit` mode) need to be placed in the same directory as `Captura.exe`.
 
 [![NuGet](https://img.shields.io/nuget/dt/ManagedBass.svg?style=flat-square&label=nuget)](https://nuget.org/packages/ManagedBass)
 [![Stars](https://img.shields.io/github/stars/ManagedBass/ManagedBass.svg?style=flat-square)](https://github.com/ManagedBass/ManagedBass/stargazers)

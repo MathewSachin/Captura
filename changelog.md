@@ -4,21 +4,24 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v3.1.0
+- `bass.dll` and `bassmix.dll` included in release.
+
 ## v3.0.0
-* New Colors
-* Added a button to reset hotkeys
-* Hotkeys can be disabled.
-* Expanded State on Launch.
-* Hotkeys for ScreenShot of Desktop and Active Window.
-* Option to disable system tray notifications.
-* NAudio fallback if BASS is not present.
-* Implemented Audio and Video Quality for FFMpeg.
-* Fix errors in NumericBox.
-* Remove Video BackgroundColor.
-* Added Taskbar Thumb buttons.
-* Keystrokes displayed on lower left.
-* Embedded the Screna.* Extension libraries' code.
-* Multiple output formats for Audio only recording.
+- New Colors
+- Added a button to reset hotkeys
+- Hotkeys can be disabled.
+- Expanded State on Launch.
+- Hotkeys for ScreenShot of Desktop and Active Window.
+- Option to disable system tray notifications.
+- NAudio fallback if BASS is not present.
+- Implemented Audio and Video Quality for FFMpeg.
+- Fix errors in NumericBox.
+- Remove Video BackgroundColor.
+- Added Taskbar Thumb buttons.
+- Keystrokes displayed on lower left.
+- Embedded the Screna.* Extension libraries' code.
+- Multiple output formats for Audio only recording.
 
 ## v2.0.0
 - Only _Screna.dll_ is a required dependency.
@@ -29,8 +32,8 @@ permalink: Changelog/
 - Added Fallback when Transparent Window ScreenShot fails.
 - Added Taskbar Overlay while Recording or Paused.
 - Disable Configuration during Capture.
-* Alpha support for Localisation.
-* Recording both Microphone input and Speaker output.
+- Alpha support for Localisation.
+- Recording both Microphone input and Speaker output.
 
 #### System Tray
 - Video/Audio Recorded, ScreenShot Taken notifications.
