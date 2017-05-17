@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.Properties;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
@@ -142,7 +143,11 @@ namespace Captura.ViewModels
             }
         }
 
-        public string[] ScreenShotSaveTo => new[] { "Disk", "Clipboard" };
+        public ObjectLocalizer<string>[] ScreenShotSaveTo => new[]
+        {
+            new ObjectLocalizer<string>("Disk", nameof(Resources.Disk)),
+            new ObjectLocalizer<string>("Clipboard", nameof(Resources.Clipboard))
+        };
 
         string _screenShotSaveTo = "Disk";
 

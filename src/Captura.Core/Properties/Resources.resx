@@ -249,4 +249,10 @@
   <data name="RemoveFromList" xml:space="preserve">
     <value>Remove from List</value>
   </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="Disk" xml:space="preserve">
+    <value>Disk</value>
+  </data>
 </root>
