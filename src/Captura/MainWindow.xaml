@@ -133,7 +133,7 @@
                        Margin="-5,0,0,0"
                        Height="500">
                 <Label Margin="5"
-                       Content="{Binding Status}"
+                       Content="{Binding Status.Display}"
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
                 <DockPanel DockPanel.Dock="Bottom">

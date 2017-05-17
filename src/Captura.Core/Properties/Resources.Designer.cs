@@ -106,6 +106,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Saved.
+        /// </summary>
+        public static string AudioSaved {
+            get {
+                return ResourceManager.GetString("AudioSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capture Duration (in seconds).
         /// </summary>
         public static string CaptureDuration {
@@ -138,6 +147,15 @@ namespace Captura.Properties {
         public static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delay cannot be greater than Duration.
+        /// </summary>
+        public static string DelayGtDuration {
+            get {
+                return ResourceManager.GetString("DelayGtDuration", resourceCulture);
             }
         }
         
@@ -192,6 +210,33 @@ namespace Captura.Properties {
         public static string Hotkeys {
             get {
                 return ResourceManager.GetString("Hotkeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Saved. Image taken was Empty.
+        /// </summary>
+        public static string ImgEmpty {
+            get {
+                return ResourceManager.GetString("ImgEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Saved to Clipboard.
+        /// </summary>
+        public static string ImgSavedClipboard {
+            get {
+                return ResourceManager.GetString("ImgSavedClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Saved to Disk.
+        /// </summary>
+        public static string ImgSavedDisk {
+            get {
+                return ResourceManager.GetString("ImgSavedDisk", resourceCulture);
             }
         }
         
@@ -277,6 +322,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Saved.
+        /// </summary>
+        public static string NotSaved {
+            get {
+                return ResourceManager.GetString("NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Output Folder.
         /// </summary>
         public static string OpenOutFolder {
@@ -300,6 +354,15 @@ namespace Captura.Properties {
         public static string OutFolder {
             get {
                 return ResourceManager.GetString("OutFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        public static string Paused {
+            get {
+                return ResourceManager.GetString("Paused", resourceCulture);
             }
         }
         
@@ -331,6 +394,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ready.
+        /// </summary>
+        public static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recent.
         /// </summary>
         public static string Recent {
@@ -349,6 +421,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording....
+        /// </summary>
+        public static string Recording {
+            get {
+                return ResourceManager.GetString("Recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record | Stop.
         /// </summary>
         public static string RecordStop {
@@ -363,6 +444,15 @@ namespace Captura.Properties {
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshed.
+        /// </summary>
+        public static string Refreshed {
+            get {
+                return ResourceManager.GetString("Refreshed", resourceCulture);
             }
         }
         
@@ -448,6 +538,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        public static string Stopped {
+            get {
+                return ResourceManager.GetString("Stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video.
         /// </summary>
         public static string Video {
@@ -466,11 +565,29 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video Saved.
+        /// </summary>
+        public static string VideoSaved {
+            get {
+                return ResourceManager.GetString("VideoSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video Source.
         /// </summary>
         public static string VideoSource {
             get {
                 return ResourceManager.GetString("VideoSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting....
+        /// </summary>
+        public static string Waiting {
+            get {
+                return ResourceManager.GetString("Waiting", resourceCulture);
             }
         }
     }

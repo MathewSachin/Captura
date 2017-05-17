@@ -255,4 +255,43 @@
   <data name="Disk" xml:space="preserve">
     <value>Disk</value>
   </data>
+  <data name="DelayGtDuration" xml:space="preserve">
+    <value>Delay cannot be greater than Duration</value>
+  </data>
+  <data name="ImgEmpty" xml:space="preserve">
+    <value>Not Saved. Image taken was Empty</value>
+  </data>
+  <data name="ImgSavedClipboard" xml:space="preserve">
+    <value>Image Saved to Clipboard</value>
+  </data>
+  <data name="ImgSavedDisk" xml:space="preserve">
+    <value>Image Saved to Disk</value>
+  </data>
+  <data name="NotSaved" xml:space="preserve">
+    <value>Not Saved</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Recording...</value>
+  </data>
+  <data name="Refreshed" xml:space="preserve">
+    <value>Refreshed</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Waiting...</value>
+  </data>
+  <data name="AudioSaved" xml:space="preserve">
+    <value>Audio Saved</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>Video Saved</value>
+  </data>
 </root>

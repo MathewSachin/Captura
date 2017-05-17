@@ -6,12 +6,24 @@ namespace Captura
     {
         public TextLocalizer(string LocalizationKey)
         {
-            _key = LocalizationKey;
+            this.LocalizationKey = LocalizationKey;
 
             TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
+        
+        string _key;
 
-        readonly string _key;
+        public string LocalizationKey
+        {
+            get => _key;
+            set
+            {
+                _key = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Display));
+            }
+        }
 
         public string Display => ToString();
 
