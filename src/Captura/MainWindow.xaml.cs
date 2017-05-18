@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using DPoint = System.Drawing.Point;
 
 namespace Captura
 {
@@ -36,9 +37,19 @@ namespace Captura
 
             ServiceProvider.Register<Func<Rectangle>>(ServiceName.RegionRectangle, () => RegionSelector.Instance.Rectangle);
 
+            ServiceProvider.Register<Action<Rectangle>>(ServiceName.SetRegionRectangle, rect => RegionSelector.Instance.Rectangle = rect);
+
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
+            });
+
+            ServiceProvider.Register<Func<DPoint>>(ServiceName.MainWindowLocation, () => new DPoint((int) Left, (int) Top));
+
+            ServiceProvider.Register<Action<DPoint>>(ServiceName.SetMainWindowLocation, point =>
+            {
+                Left = point.X;
+                Top = point.Y;
             });
 
             // Register for Windows Messages

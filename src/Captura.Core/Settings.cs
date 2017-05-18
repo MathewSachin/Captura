@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -14,6 +15,67 @@ namespace Captura
         T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
+
+        #region Remember
+        [UserScopedSetting]
+        [DefaultSettingValue("-1, -1")]
+        public Point MainWindowLocation
+        {
+            get => Get<Point>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("None")]
+        public VideoWriterKind LastVideoWriterKind
+        {
+            get => Get<VideoWriterKind>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastVideoWriterName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("None")]
+        public VideoSourceKind LastSourceKind
+        {
+            get => Get<VideoSourceKind>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastSourceName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastAudioWriterName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastMicName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastSpeakerName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+        #endregion
 
         [UserScopedSetting]
         public string OutPath

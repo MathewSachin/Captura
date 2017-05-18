@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Timers;
@@ -24,6 +25,7 @@ namespace Captura.ViewModels
         string _currentFileName;
         readonly MouseCursor _cursor;
         bool isVideo;
+        static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         #endregion
 
         public MainViewModel()
@@ -141,6 +143,80 @@ namespace Captura.ViewModels
             HotKeyManager.RegisterAll();
             
             SystemTrayManager.Init();
+
+            #region Restore Video Source
+            if (Settings.LastSourceKind == VideoSourceKind.Window)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+
+                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.LastSourceName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoSource = source;
+            }
+            else if (Settings.LastSourceKind == VideoSourceKind.Screen && ScreenItem.Count > 1)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
+
+                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(screen => screen.ToString() == Settings.LastSourceName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoSource = source;
+            }
+            else if (Settings.LastSourceKind == VideoSourceKind.Region)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                var rect = (Rectangle) RectangleConverter.ConvertFromString(Settings.LastSourceName);
+                ServiceProvider.Get<Action<Rectangle>>(ServiceName.SetRegionRectangle).Invoke(rect);
+            }
+            else if (Settings.LastSourceKind == VideoSourceKind.NoVideo)
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
+            #endregion
+
+            // Restore Video Codec
+            if (Settings.LastVideoWriterKind != VideoWriterKind.None
+                && VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.LastVideoWriterKind))
+            {
+                VideoViewModel.SelectedVideoWriterKind = Settings.LastVideoWriterKind;
+
+                var source = VideoViewModel.AvailableVideoWriters.FirstOrDefault(codec => codec.ToString() == Settings.LastVideoWriterName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoWriter = source;
+            }
+
+            // Restore Audio Codec
+            if (!string.IsNullOrEmpty(Settings.LastAudioWriterName))
+            {
+                var source = AudioViewModel.AvailableAudioWriters.FirstOrDefault(codec => codec.ToString() == Settings.LastAudioWriterName);
+
+                if (source != null)
+                    AudioViewModel.SelectedAudioWriter = source;
+            }
+
+            // Restore Microphone
+            if (!string.IsNullOrEmpty(Settings.LastMicName))
+            {
+                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(codec => codec.ToString() == Settings.LastMicName);
+
+                if (source != null)
+                    AudioViewModel.AudioSource.SelectedRecordingSource = source;
+            }
+
+            // Restore Loopback Speaker
+            if (!string.IsNullOrEmpty(Settings.LastSpeakerName))
+            {
+                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(codec => codec.ToString() == Settings.LastSpeakerName);
+
+                if (source != null)
+                    AudioViewModel.AudioSource.SelectedLoopbackSource = source;
+            }
+
+            // Restore Window Position
+            if (Settings.MainWindowLocation.X >= 0 && Settings.MainWindowLocation.Y >= 0)
+            {
+                ServiceProvider.Get<Action<Point>>(ServiceName.SetMainWindowLocation).Invoke(Settings.MainWindowLocation);
+            }
         }
 
         // Call before Exit to free Resources
@@ -151,6 +227,47 @@ namespace Captura.ViewModels
 
             AudioViewModel.Dispose();
 
+            #region Remember Video Source
+            switch (VideoViewModel.SelectedVideoSourceKind)
+            {
+                case VideoSourceKind.Window:
+                case VideoSourceKind.Screen:
+                    Settings.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
+                    Settings.LastSourceName = VideoViewModel.SelectedVideoSource.ToString();
+                    break;
+
+                case VideoSourceKind.Region:
+                    Settings.LastSourceKind = VideoSourceKind.Region;
+                    var rect = ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke();
+                    Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
+                    break;
+
+                case VideoSourceKind.NoVideo:
+                    Settings.LastSourceKind = VideoSourceKind.NoVideo;
+                    Settings.LastSourceName = "";
+                    break;
+
+                default:
+                    Settings.LastSourceKind = VideoSourceKind.None;
+                    Settings.LastSourceName = "";
+                    break;
+            }
+            #endregion
+
+            // Remember Video Codec
+            Settings.LastVideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
+            Settings.LastVideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
+
+            // Remember Audio Sources
+            Settings.LastMicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
+            Settings.LastSpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
+
+            // Remember Audio Codec
+            Settings.LastAudioWriterName = AudioViewModel.SelectedAudioWriter.ToString();
+
+            // Remember Window Position
+            Settings.MainWindowLocation = ServiceProvider.Get<Func<Point>>(ServiceName.MainWindowLocation).Invoke();
+            
             Settings.Save();
         }
         
