@@ -28,6 +28,7 @@
                     <MenuItem Header="Print"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="Delete"
+                              Foreground="DarkRed"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>
             </Button.ContextMenu>

@@ -24,7 +24,7 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 # Build Notes
 - [Visual Studio 2017](https://visualstudio.com) or greater is required.
 - .Net Framework v4.6.1 is required.
-- Run `init.bat` after cloning the repository (clones submodules).
+- **Clone submodules:** Open a terminal in the project folder and type `git submodule update --init`.
 
 ## Optional Native Libraries
 Download and place in build output directory.

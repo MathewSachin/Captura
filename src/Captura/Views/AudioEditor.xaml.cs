@@ -1,5 +1,6 @@
 ﻿using Captura.ViewModels;
 using System;
+using System.Diagnostics;
 using System.Windows.Media;
 
 namespace Captura
@@ -7,6 +8,7 @@ namespace Captura
     public class AudioEditorViewModel : ViewModelBase
     {
         TimeSpan _begin, _end, _current, _duration;
+        string _fileName;
 
         MediaPlayer _player;
 
@@ -61,6 +63,7 @@ namespace Captura
 
         public void Load(string FileName)
         {
+            _fileName = FileName;
             _player = new MediaPlayer();
             
             _player.Open(new Uri(FileName));
@@ -69,7 +72,10 @@ namespace Captura
             End = Duration = _player.NaturalDuration.TimeSpan;            
         }
 
-        public void Save() { }
+        public void Save()
+        {
+            Process.Start("ffmpeg.exe", $"-y -ss {_begin.TotalSeconds} -i {_fileName} -to {_end.TotalSeconds} -acodec copy {_fileName}");
+        }
 
         public void Reset()
         {

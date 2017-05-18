@@ -37,6 +37,8 @@ build:
   parallel: true
   project: src\Captura.sln
   verbosity: minimal
+  publish_nuget: true
+  publish_nuget_symbols: true
 
 after_build:
   # Create output and temp folder
@@ -82,14 +84,6 @@ after_build:
 
         choco pack choco/captura.nuspec --version $env:AppVersion;
         Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
-      }
-
-  # Screna NuGet
-  - ps: >-
-      if ($env:configuration -eq 'Release')
-      {
-        nuget pack src/Screna/src/Screna.nuspec;
-        Get-ChildItem Screna.*.nupkg | % { Push-AppveyorArtifact $_.FullName -DeploymentName Screna };
       }
 
 artifacts:
