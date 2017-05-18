@@ -17,6 +17,21 @@ namespace Captura
 
         [UserScopedSetting]
         [DefaultSettingValue("None")]
+        public VideoWriterKind LastVideoWriterKind
+        {
+            get => Get<VideoWriterKind>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastVideoWriterName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("None")]
         public VideoSourceKind LastSourceKind
         {
             get => Get<VideoSourceKind>();

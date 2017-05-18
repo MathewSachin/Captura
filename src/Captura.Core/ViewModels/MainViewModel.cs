@@ -163,6 +163,19 @@ namespace Captura.ViewModels
                     VideoViewModel.SelectedVideoSource = source;
             }
             #endregion
+
+            #region Restore Video Codec
+            if (Settings.LastVideoWriterKind != VideoWriterKind.None
+                && VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.LastVideoWriterKind))
+            {
+                VideoViewModel.SelectedVideoWriterKind = Settings.LastVideoWriterKind;
+
+                var source = VideoViewModel.AvailableVideoWriters.FirstOrDefault(codec => codec.ToString() == Settings.LastVideoWriterName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoWriter = source;
+            }
+            #endregion
         }
 
         // Call before Exit to free Resources
@@ -187,6 +200,11 @@ namespace Captura.ViewModels
                     Settings.LastSourceName = "";
                     break;
             }
+            #endregion
+
+            #region Remember Video Codec
+            Settings.LastVideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
+            Settings.LastVideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
             #endregion
 
             Settings.Save();
