@@ -52,6 +52,20 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        public string LastMicName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastSpeakerName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
         #endregion
 
         [UserScopedSetting]

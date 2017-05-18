@@ -193,6 +193,24 @@ namespace Captura.ViewModels
                 if (source != null)
                     AudioViewModel.SelectedAudioWriter = source;
             }
+
+            // Restore Microphone
+            if (!string.IsNullOrEmpty(Settings.LastMicName))
+            {
+                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(codec => codec.ToString() == Settings.LastMicName);
+
+                if (source != null)
+                    AudioViewModel.AudioSource.SelectedRecordingSource = source;
+            }
+
+            // Restore Loopback Speaker
+            if (!string.IsNullOrEmpty(Settings.LastSpeakerName))
+            {
+                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(codec => codec.ToString() == Settings.LastSpeakerName);
+
+                if (source != null)
+                    AudioViewModel.AudioSource.SelectedLoopbackSource = source;
+            }
         }
 
         // Call before Exit to free Resources
@@ -233,6 +251,10 @@ namespace Captura.ViewModels
             // Remember Video Codec
             Settings.LastVideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
             Settings.LastVideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
+
+            // Remember Audio Sources
+            Settings.LastMicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
+            Settings.LastSpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
 
             // Remember Audio Codec
             Settings.LastAudioWriterName = AudioViewModel.SelectedAudioWriter.ToString();
