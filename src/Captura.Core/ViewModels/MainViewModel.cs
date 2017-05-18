@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Timers;
@@ -141,6 +142,27 @@ namespace Captura.ViewModels
             HotKeyManager.RegisterAll();
             
             SystemTrayManager.Init();
+
+            #region Restore Video Source
+            if (Settings.LastSourceKind == VideoSourceKind.Window)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+
+                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.LastSourceName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoSource = source;
+            }
+            else if (Settings.LastSourceKind == VideoSourceKind.Screen && ScreenItem.Count > 1)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
+
+                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(screen => screen.ToString() == Settings.LastSourceName);
+
+                if (source != null)
+                    VideoViewModel.SelectedVideoSource = source;
+            }
+            #endregion
         }
 
         // Call before Exit to free Resources
@@ -150,6 +172,22 @@ namespace Captura.ViewModels
             SystemTrayManager.Dispose();
 
             AudioViewModel.Dispose();
+
+            #region Remember Video Source
+            switch (VideoViewModel.SelectedVideoSourceKind)
+            {
+                case VideoSourceKind.Window:
+                case VideoSourceKind.Screen:
+                    Settings.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
+                    Settings.LastSourceName = VideoViewModel.SelectedVideoSource.ToString();
+                    break;
+
+                default:
+                    Settings.LastSourceKind = VideoSourceKind.None;
+                    Settings.LastSourceName = "";
+                    break;
+            }
+            #endregion
 
             Settings.Save();
         }

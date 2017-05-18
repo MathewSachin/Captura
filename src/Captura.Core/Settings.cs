@@ -16,6 +16,21 @@ namespace Captura
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
         [UserScopedSetting]
+        [DefaultSettingValue("None")]
+        public VideoSourceKind LastSourceKind
+        {
+            get => Get<VideoSourceKind>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string LastSourceName
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         public string OutPath
         {
             get => Get<string>();
