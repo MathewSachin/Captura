@@ -12,6 +12,11 @@ Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https:
 
 [See more ScreenShots](http://mathewsachin.github.io/Captura/ScreenShots/)
 
+# Available on Chocolatey
+```
+choco install captura -y
+```
+
 # Features
 - Take ScreenShots
 - Capture ScreenCasts (Avi/Gif/Mp4)

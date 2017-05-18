@@ -77,10 +77,12 @@ after_build:
   - ps: >-
       if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
       {
+        $checksum = (Get-FileHash "Output/Captura-Release.zip").Hash;
+
         $installScript = "choco/tools/chocolateyinstall.ps1";
 
-        # Modify install script links
-        Set-Content $installScript ('$tag = "' + $env:APPVEYOR_REPO_TAG_NAME + '"; ' + (Get-Content $installScript));
+        # Update chocolatey install script
+        Set-Content $installScript (('$tag = "{0}";`n$checksum = "{1}";`n`n{2}') -f $env:APPVEYOR_REPO_TAG_NAME, $checksum, (Get-Content $installScript));
 
         choco pack choco/captura.nuspec --version $env:AppVersion;
         Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
