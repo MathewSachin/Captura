@@ -36,6 +36,8 @@ namespace Captura
 
             ServiceProvider.Register<Func<Rectangle>>(ServiceName.RegionRectangle, () => RegionSelector.Instance.Rectangle);
 
+            ServiceProvider.Register<Action<Rectangle>>(ServiceName.SetRegionRectangle, rect => RegionSelector.Instance.Rectangle = rect);
+
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;

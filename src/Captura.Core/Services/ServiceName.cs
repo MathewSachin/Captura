@@ -58,6 +58,11 @@
         RegionRectangle,
 
         /// <summary>
+        /// Set Region Rectangle (Action<Rectangle>).
+        /// </summary>
+        SetRegionRectangle,
+
+        /// <summary>
         /// Minimize Main Window (Action<bool>).
         /// </summary>
         Minimize

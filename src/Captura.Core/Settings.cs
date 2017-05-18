@@ -15,6 +15,7 @@ namespace Captura
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
+        #region Remember
         [UserScopedSetting]
         [DefaultSettingValue("None")]
         public VideoWriterKind LastVideoWriterKind
@@ -44,6 +45,7 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
+        #endregion
 
         [UserScopedSetting]
         public string OutPath

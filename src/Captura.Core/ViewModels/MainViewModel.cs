@@ -25,6 +25,7 @@ namespace Captura.ViewModels
         string _currentFileName;
         readonly MouseCursor _cursor;
         bool isVideo;
+        static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         #endregion
 
         public MainViewModel()
@@ -162,6 +163,14 @@ namespace Captura.ViewModels
                 if (source != null)
                     VideoViewModel.SelectedVideoSource = source;
             }
+            else if (Settings.LastSourceKind == VideoSourceKind.Region)
+            {
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                var rect = (Rectangle) RectangleConverter.ConvertFromString(Settings.LastSourceName);
+                ServiceProvider.Get<Action<Rectangle>>(ServiceName.SetRegionRectangle).Invoke(rect);
+            }
+            else if (Settings.LastSourceKind == VideoSourceKind.NoVideo)
+                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
             #endregion
 
             #region Restore Video Codec
@@ -193,6 +202,17 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     Settings.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
                     Settings.LastSourceName = VideoViewModel.SelectedVideoSource.ToString();
+                    break;
+
+                case VideoSourceKind.Region:
+                    Settings.LastSourceKind = VideoSourceKind.Region;
+                    var rect = ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke();
+                    Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
+                    break;
+
+                case VideoSourceKind.NoVideo:
+                    Settings.LastSourceKind = VideoSourceKind.NoVideo;
+                    Settings.LastSourceName = "";
                     break;
 
                 default:
