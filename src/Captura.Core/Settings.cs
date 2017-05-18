@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -16,6 +17,14 @@ namespace Captura
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
         #region Remember
+        [UserScopedSetting]
+        [DefaultSettingValue("-1, -1")]
+        public Point MainWindowLocation
+        {
+            get => Get<Point>();
+            set => Set(value);
+        }
+
         [UserScopedSetting]
         [DefaultSettingValue("None")]
         public VideoWriterKind LastVideoWriterKind

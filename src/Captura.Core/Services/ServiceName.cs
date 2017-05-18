@@ -65,6 +65,16 @@
         /// <summary>
         /// Minimize Main Window (Action<bool>).
         /// </summary>
-        Minimize
+        Minimize,
+
+        /// <summary>
+        /// Get MainWindow Location (Func<Point>).
+        /// </summary>
+        MainWindowLocation,
+
+        /// <summary>
+        /// Set MainWindow Location (Action<Point>).
+        /// </summary>
+        SetMainWindowLocation
     }
 }

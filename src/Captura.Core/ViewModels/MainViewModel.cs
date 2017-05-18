@@ -211,6 +211,12 @@ namespace Captura.ViewModels
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedLoopbackSource = source;
             }
+
+            // Restore Window Position
+            if (Settings.MainWindowLocation.X >= 0 && Settings.MainWindowLocation.Y >= 0)
+            {
+                ServiceProvider.Get<Action<Point>>(ServiceName.SetMainWindowLocation).Invoke(Settings.MainWindowLocation);
+            }
         }
 
         // Call before Exit to free Resources
@@ -258,6 +264,9 @@ namespace Captura.ViewModels
 
             // Remember Audio Codec
             Settings.LastAudioWriterName = AudioViewModel.SelectedAudioWriter.ToString();
+
+            // Remember Window Position
+            Settings.MainWindowLocation = ServiceProvider.Get<Func<Point>>(ServiceName.MainWindowLocation).Invoke();
             
             Settings.Save();
         }
