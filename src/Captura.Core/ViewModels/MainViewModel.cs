@@ -80,7 +80,7 @@ namespace Captura.ViewModels
                     RecorderState = RecorderState.Paused;
                     Status.LocalizationKey = nameof(Resources.Paused);
 
-                    SystemTrayManager.ShowNotification("Recording Paused", " ", 500, null);
+                    SystemTrayManager.ShowNotification(Resources.Paused, " ", 500, null);
                 }
             }, false);
 
@@ -89,7 +89,7 @@ namespace Captura.ViewModels
                 var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = Settings.OutPath,
-                    Description = "Select Output Folder"
+                    Description = Resources.SelectOutFolder
                 };
 
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -101,7 +101,7 @@ namespace Captura.ViewModels
                 var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = Settings.FFMpegFolder,
-                    Description = "Select FFMpeg Folder"
+                    Description = Resources.SelectFFMpegFolder
                 };
 
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -343,7 +343,7 @@ namespace Captura.ViewModels
                         Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
-                        SystemTrayManager.ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
+                        SystemTrayManager.ShowNotification(Resources.ScreenShotSaved, Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
                     }
                     catch (Exception E)
                     {

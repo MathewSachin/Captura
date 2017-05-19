@@ -187,6 +187,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FFMpeg Folder.
+        /// </summary>
+        public static string FFMpegFolder {
+            get {
+                return ResourceManager.GetString("FFMpegFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frame Rate.
         /// </summary>
         public static string FrameRate {
@@ -367,7 +376,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Paused.
+        ///   Looks up a localized string similar to Recording Paused.
         /// </summary>
         public static string Paused {
             get {
@@ -556,6 +565,33 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ScreenShot Saved.
+        /// </summary>
+        public static string ScreenShotSaved {
+            get {
+                return ResourceManager.GetString("ScreenShotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select FFMpeg Folder.
+        /// </summary>
+        public static string SelectFFMpegFolder {
+            get {
+                return ResourceManager.GetString("SelectFFMpegFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Output Folder.
+        /// </summary>
+        public static string SelectOutFolder {
+            get {
+                return ResourceManager.GetString("SelectOutFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show System Tray Notifications.
         /// </summary>
         public static string ShowSysNotify {
@@ -583,7 +619,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopped.
+        ///   Looks up a localized string similar to Recording Stopped.
         /// </summary>
         public static string Stopped {
             get {

@@ -139,7 +139,7 @@
                 <DockPanel DockPanel.Dock="Bottom">
                     <Button Content="..."
                             DockPanel.Dock="Right"
-                            ToolTip="Select Output Folder"
+                            ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     <Button Content="{local:Loc OutFolder}"
@@ -154,15 +154,15 @@
                 <DockPanel DockPanel.Dock="Bottom">
                     <Button Content="..."
                             DockPanel.Dock="Right"
-                            ToolTip="Select FFMpeg Folder"
+                            ToolTip="{local:Loc SelectFFMpegFolder}"
                             Command="{Binding SelectFFMpegFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     <Button Content="X"
                             DockPanel.Dock="Right"
-                            ToolTip="Reset"
+                            ToolTip="{local:Loc Reset}"
                             Command="{Binding ResetFFMpegFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                    <Label Content="FFMpeg Folder"
+                    <Label Content="{local:Loc FFMpegFolder}"
                            ContentStringFormat="{}{0}: "
                            DockPanel.Dock="Left"
                            Padding="5,0"

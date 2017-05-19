@@ -271,7 +271,7 @@
     <value>Not Saved</value>
   </data>
   <data name="Paused" xml:space="preserve">
-    <value>Paused</value>
+    <value>Recording Paused</value>
   </data>
   <data name="Ready" xml:space="preserve">
     <value>Ready</value>
@@ -283,7 +283,7 @@
     <value>Refreshed</value>
   </data>
   <data name="Stopped" xml:space="preserve">
-    <value>Stopped</value>
+    <value>Recording Stopped</value>
   </data>
   <data name="Waiting" xml:space="preserve">
     <value>Waiting...</value>
@@ -308,5 +308,17 @@
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="FFMpegFolder" xml:space="preserve">
+    <value>FFMpeg Folder</value>
+  </data>
+  <data name="SelectFFMpegFolder" xml:space="preserve">
+    <value>Select FFMpeg Folder</value>
+  </data>
+  <data name="SelectOutFolder" xml:space="preserve">
+    <value>Select Output Folder</value>
+  </data>
+  <data name="ScreenShotSaved" xml:space="preserve">
+    <value>ScreenShot Saved</value>
   </data>
 </root>
