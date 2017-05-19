@@ -179,19 +179,19 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedVideoWriterKind = Settings.LastVideoWriterKind;
 
-                var source = VideoViewModel.AvailableVideoWriters.FirstOrDefault(codec => codec.ToString() == Settings.LastVideoWriterName);
+                var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(c => c.ToString() == Settings.LastVideoWriterName);
 
-                if (source != null)
-                    VideoViewModel.SelectedVideoWriter = source;
+                if (codec != null)
+                    VideoViewModel.SelectedVideoWriter = codec;
             }
 
             // Restore Audio Codec
             if (!string.IsNullOrEmpty(Settings.LastAudioWriterName))
             {
-                var source = AudioViewModel.AvailableAudioWriters.FirstOrDefault(codec => codec.ToString() == Settings.LastAudioWriterName);
+                var codec = AudioViewModel.AvailableAudioWriters.FirstOrDefault(c => c.ToString() == Settings.LastAudioWriterName);
 
-                if (source != null)
-                    AudioViewModel.SelectedAudioWriter = source;
+                if (codec != null)
+                    AudioViewModel.SelectedAudioWriter = codec;
             }
 
             // Restore Microphone
@@ -216,6 +216,15 @@ namespace Captura.ViewModels
             if (Settings.MainWindowLocation.X >= 0 && Settings.MainWindowLocation.Y >= 0)
             {
                 ServiceProvider.Get<Action<Point>>(ServiceName.SetMainWindowLocation).Invoke(Settings.MainWindowLocation);
+            }
+
+            // Restore ScreenShot Format
+            if (!string.IsNullOrEmpty(Settings.LastScreenShotFormat))
+            {
+                var format = ScreenShotImageFormats.FirstOrDefault(f => f.ToString() == Settings.LastScreenShotFormat);
+
+                if (format != null)
+                    SelectedScreenShotImageFormat = format;
             }
         }
 
@@ -267,6 +276,9 @@ namespace Captura.ViewModels
 
             // Remember Window Position
             Settings.MainWindowLocation = ServiceProvider.Get<Func<Point>>(ServiceName.MainWindowLocation).Invoke();
+
+            // Remember ScreenShot Format
+            Settings.LastScreenShotFormat = SelectedScreenShotImageFormat.ToString();
             
             Settings.Save();
         }
@@ -296,7 +308,7 @@ namespace Captura.ViewModels
             // Save to Disk or Clipboard
             if (bmp != null)
             {
-                if (SelectedScreenShotSaveTo == "Clipboard")
+                if (Settings.ScreenShotSaveTo == "Clipboard")
                 {
                     bmp.WriteToClipboard(SelectedScreenShotImageFormat.Equals(ImageFormat.Png));
                     Status = "Image Saved to Clipboard";

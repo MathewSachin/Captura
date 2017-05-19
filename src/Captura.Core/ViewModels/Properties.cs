@@ -143,22 +143,6 @@ namespace Captura.ViewModels
         }
 
         public string[] ScreenShotSaveTo => new[] { "Disk", "Clipboard" };
-
-        string _screenShotSaveTo = "Disk";
-
-        public string SelectedScreenShotSaveTo
-        {
-            get { return _screenShotSaveTo; }
-            set
-            {
-                if (_screenShotSaveTo == value)
-                    return;
-
-                _screenShotSaveTo = value;
-
-                OnPropertyChanged();
-            }
-        }
         #endregion
         
         #region Commands

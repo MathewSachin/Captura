@@ -82,7 +82,7 @@
                     <ComboBox VerticalAlignment="Center" 
                               Grid.Column="1"
                               ItemsSource="{Binding ScreenShotSaveTo}"
-                              SelectedItem="{Binding SelectedScreenShotSaveTo, Mode=TwoWay}"/>
+                              SelectedItem="{Binding Settings.ScreenShotSaveTo, Mode=TwoWay}"/>
 
                     <Label Content="{DynamicResource s_as}"
                            Grid.Column="2"
