@@ -134,22 +134,6 @@ namespace Captura.ViewModels
             new ObjectLocalizer<string>("Disk", nameof(Resources.Disk)),
             new ObjectLocalizer<string>("Clipboard", nameof(Resources.Clipboard))
         };
-
-        string _screenShotSaveTo = "Disk";
-
-        public string SelectedScreenShotSaveTo
-        {
-            get { return _screenShotSaveTo; }
-            set
-            {
-                if (_screenShotSaveTo == value)
-                    return;
-
-                _screenShotSaveTo = value;
-
-                OnPropertyChanged();
-            }
-        }
         #endregion
         
         #region Commands

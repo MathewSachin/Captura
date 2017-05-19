@@ -82,7 +82,7 @@
                     <ComboBox VerticalAlignment="Center" 
                               Grid.Column="1"
                               ItemsSource="{Binding ScreenShotSaveTo}"
-                              SelectedValue="{Binding SelectedScreenShotSaveTo, Mode=TwoWay}"
+                              SelectedValue="{Binding Settings.ScreenShotSaveTo, Mode=TwoWay}"
                               SelectedValuePath="Source"
                               DisplayMemberPath="Display"/>
 

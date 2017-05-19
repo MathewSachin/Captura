@@ -18,6 +18,13 @@ namespace Captura
 
         #region Remember
         [UserScopedSetting]
+        public string LastScreenShotFormat
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("-1, -1")]
         public Point MainWindowLocation
         {
@@ -76,6 +83,14 @@ namespace Captura
             set => Set(value);
         }
         #endregion
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Disk")]
+        public string ScreenShotSaveTo
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
 
         [UserScopedSetting]
         public string OutPath
