@@ -16,13 +16,13 @@ namespace Captura
             {
                 // Use the icon from exe file
                 Icon = Icon.ExtractAssociatedIcon("Captura.exe"),
-                Visible = true,
+                //Visible = true,
                 ContextMenu = new ContextMenu()
             };
 
             _systemTray.DoubleClick += (s, e) =>
             {
-                ServiceProvider.Get<Action>(ServiceName.Focus).Invoke();
+                //ServiceProvider.Get<Action>(ServiceName.Focus).Invoke();
             };
 
             _systemTray.BalloonTipClicked += (s, e) =>
@@ -43,7 +43,7 @@ namespace Captura
 
             _systemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
             {
-                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
+                //ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
             });
         }
         
@@ -55,6 +55,12 @@ namespace Captura
             _balloonAction = ClickAction;
 
             _systemTray.ShowBalloonTip(Duration, Title, Text, ToolTipIcon.None);
+        }
+
+        public static void HideNotification()
+        {
+            _systemTray.Visible = false;
+            _systemTray.Visible = true;
         }
 
         public static void Dispose()

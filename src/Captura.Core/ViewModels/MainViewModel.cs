@@ -35,6 +35,10 @@ namespace Captura.ViewModels
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
+            
+            ScreenShotActiveCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
+
+            ScreenShotDesktopCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
             RecordCommand = new DelegateCommand(() =>
             {
@@ -65,6 +69,8 @@ namespace Captura.ViewModels
             {
                 if (RecorderState == RecorderState.Paused)
                 {
+                    SystemTrayManager.HideNotification();
+
                     _recorder.Start();
                     _timer.Start();
 
@@ -181,7 +187,8 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
                 var rect = (Rectangle) RectangleConverter.ConvertFromString(Settings.LastSourceName);
-                ServiceProvider.Get<Action<Rectangle>>(ServiceName.SetRegionRectangle).Invoke(rect);
+
+                VideoViewModel.RegionProvider.SelectedRegion = rect;
             }
             else if (Settings.LastSourceKind == VideoSourceKind.NoVideo)
                 VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
@@ -260,7 +267,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     Settings.LastSourceKind = VideoSourceKind.Region;
-                    var rect = ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke();
+                    var rect = VideoViewModel.RegionProvider.SelectedRegion;
                     Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
                     break;
 
@@ -357,6 +364,8 @@ namespace Captura.ViewModels
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
+            SystemTrayManager.HideNotification();
+
             if (hWnd == Window.DesktopWindow)
                 return ScreenShot.Capture(Settings.IncludeCursor);
             else
@@ -374,6 +383,8 @@ namespace Captura.ViewModels
 
         void CaptureScreenShot()
         {
+            SystemTrayManager.HideNotification();
+
             Bitmap bmp = null;
 
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
@@ -392,7 +403,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke(), includeCursor);
+                    bmp = ScreenShot.Capture(VideoViewModel.RegionProvider.SelectedRegion, includeCursor);
                     break;
             }
 
@@ -407,6 +418,8 @@ namespace Captura.ViewModels
 
         void StartRecording()
         {
+            SystemTrayManager.HideNotification();
+
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
             
@@ -506,7 +519,7 @@ namespace Captura.ViewModels
         
         IImageProvider GetImageProvider()
         {
-            Func<System.Drawing.Point> offset = () => System.Drawing.Point.Empty;
+            Func<Point> offset = () => Point.Empty;
 
             var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(out offset);
 

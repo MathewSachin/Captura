@@ -148,6 +148,10 @@ namespace Captura.ViewModels
         #region Commands
         public DelegateCommand ScreenShotCommand { get; }
 
+        public DelegateCommand ScreenShotActiveCommand { get; }
+
+        public DelegateCommand ScreenShotDesktopCommand { get; }
+
         public DelegateCommand RecordCommand { get; }
 
         public DelegateCommand RefreshCommand { get; }
