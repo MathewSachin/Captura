@@ -29,6 +29,7 @@
                     <MenuItem Header="{local:Loc Print}"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="{local:Loc Delete}"
+                              Foreground="DarkRed"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>
             </Button.ContextMenu>
