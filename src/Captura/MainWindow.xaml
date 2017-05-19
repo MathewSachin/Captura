@@ -147,6 +147,7 @@
                             DockPanel.Dock="Left"
                             Padding="5,0"
                             VerticalContentAlignment="Center"
+                            ToolTip="{local:Loc OpenOutFolder}"
                             Command="{Binding OpenOutputFolderCommand}"/>
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.OutPath}"/>

@@ -349,6 +349,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Video.
+        /// </summary>
+        public static string NoVideo {
+            get {
+                return ResourceManager.GetString("NoVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Output Folder.
         /// </summary>
         public static string OpenOutFolder {
@@ -484,6 +493,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Region.
+        /// </summary>
+        public static string Region {
+            get {
+                return ResourceManager.GetString("Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Region Selector.
         /// </summary>
         public static string RegionSelector {
@@ -534,6 +552,15 @@ namespace Captura.Properties {
         public static string SaveTo {
             get {
                 return ResourceManager.GetString("SaveTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Screen.
+        /// </summary>
+        public static string Screen {
+            get {
+                return ResourceManager.GetString("Screen", resourceCulture);
             }
         }
         
@@ -669,6 +696,24 @@ namespace Captura.Properties {
         public static string Waiting {
             get {
                 return ResourceManager.GetString("Waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebCam.
+        /// </summary>
+        public static string WebCam {
+            get {
+                return ResourceManager.GetString("WebCam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window.
+        /// </summary>
+        public static string Window {
+            get {
+                return ResourceManager.GetString("Window", resourceCulture);
             }
         }
     }

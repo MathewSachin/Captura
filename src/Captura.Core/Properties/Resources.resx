@@ -321,4 +321,19 @@
   <data name="ScreenShotSaved" xml:space="preserve">
     <value>ScreenShot Saved</value>
   </data>
+  <data name="NoVideo" xml:space="preserve">
+    <value>No Video</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="WebCam" xml:space="preserve">
+    <value>WebCam</value>
+  </data>
+  <data name="Window" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="Screen" xml:space="preserve">
+    <value>Screen</value>
+  </data>
 </root>

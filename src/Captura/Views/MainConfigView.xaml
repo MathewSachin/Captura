@@ -63,10 +63,10 @@
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
                       Grid.Column="1"
-                      ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}" 
+                      ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
-                      DisplayMemberPath="Value" 
-                      SelectedValuePath="Key"
+                      DisplayMemberPath="Display" 
+                      SelectedValuePath="Source"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center" 
