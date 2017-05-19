@@ -53,7 +53,7 @@ namespace Captura.Models
             {
                 StartInfo =
                 {
-                    FileName = "ffmpeg.exe",
+                    FileName = ServiceProvider.FFMpegExePath,
                     Arguments = _ffmpegArgs,
                     UseShellExecute = false,
                     CreateNoWindow = true

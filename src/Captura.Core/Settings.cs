@@ -18,6 +18,7 @@ namespace Captura
 
         #region Remember
         [UserScopedSetting]
+        [DefaultSettingValue("Png")]
         public string LastScreenShotFormat
         {
             get => Get<string>();
@@ -33,7 +34,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("None")]
+        [DefaultSettingValue("FFMpeg")]
         public VideoWriterKind LastVideoWriterKind
         {
             get => Get<VideoWriterKind>();
@@ -48,7 +49,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("None")]
+        [DefaultSettingValue("Window")]
         public VideoSourceKind LastSourceKind
         {
             get => Get<VideoSourceKind>();
@@ -63,6 +64,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [DefaultSettingValue("Mp3")]
         public string LastAudioWriterName
         {
             get => Get<string>();
@@ -97,6 +99,18 @@ namespace Captura
         {
             get => Get<string>();
             set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public string FFMpegFolder
+        {
+            get => Get<string>();
+            set
+            {
+                Set(value);
+
+                ServiceProvider.RaiseFFMpegPathChanged();
+            }
         }
 
         [UserScopedSetting]

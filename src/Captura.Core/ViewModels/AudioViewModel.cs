@@ -1,7 +1,6 @@
 using Captura.Models;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 
 namespace Captura.ViewModels
 {
@@ -19,18 +18,31 @@ namespace Captura.ViewModels
 
             AudioSource.Init();
 
-            if (AudioSource != NoAudioSource.Instance && File.Exists("ffmpeg.exe"))
+            RefreshFFMpeg();
+            
+            AudioSource.Refresh();
+
+            ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
+        }
+
+        public void RefreshFFMpeg()
+        {
+            if (ServiceProvider.FFMpegExists)
             {
                 foreach (var item in FFMpegAudioWriterItem.Items)
                 {
-                    if (item.Extension == ".mp3")
-                        SelectedAudioWriter = item;
-
-                    AvailableAudioWriters.Add(item);
+                    if (!AvailableAudioWriters.Contains(item))
+                        AvailableAudioWriters.Add(item);
                 }
             }
-
-            AudioSource.Refresh();
+            else
+            {
+                foreach (var item in FFMpegAudioWriterItem.Items)
+                {
+                    if (AvailableAudioWriters.Contains(item))
+                        AvailableAudioWriters.Remove(item);
+                }
+            }
         }
 
         public void Dispose() => AudioSource.Dispose();

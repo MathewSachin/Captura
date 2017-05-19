@@ -95,6 +95,20 @@ namespace Captura.ViewModels
                 if (dlg.ShowDialog() == DialogResult.OK)
                     Settings.OutPath = dlg.SelectedPath;
             });
+
+            SelectFFMpegFolderCommand = new DelegateCommand(() =>
+            {
+                var dlg = new FolderBrowserDialog
+                {
+                    SelectedPath = Settings.FFMpegFolder,
+                    Description = "Select FFMpeg Folder"
+                };
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                    Settings.FFMpegFolder = dlg.SelectedPath;
+            });
+
+            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpegFolder = "");
             #endregion
 
             //Populate Available Codecs, Audio and Video Sources ComboBoxes
@@ -175,8 +189,7 @@ namespace Captura.ViewModels
             #endregion
 
             // Restore Video Codec
-            if (Settings.LastVideoWriterKind != VideoWriterKind.None
-                && VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.LastVideoWriterKind))
+            if (VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.LastVideoWriterKind))
             {
                 VideoViewModel.SelectedVideoWriterKind = Settings.LastVideoWriterKind;
 
@@ -258,7 +271,7 @@ namespace Captura.ViewModels
                     break;
 
                 default:
-                    Settings.LastSourceKind = VideoSourceKind.None;
+                    Settings.LastSourceKind = VideoSourceKind.Window;
                     Settings.LastSourceName = "";
                     break;
             }
