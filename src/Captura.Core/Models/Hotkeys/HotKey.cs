@@ -8,7 +8,7 @@ namespace Captura.Models
     {
         public Action Work { get; }
 
-        public string Description { get; }
+        public TextLocalizer Description { get; }
 
         public ServiceName ServiceName { get; }
 
@@ -18,7 +18,7 @@ namespace Captura.Models
             Key = Model.Key;
             Modifiers = Model.Modifiers;
             Work = ServiceProvider.Get<Action>(Model.ServiceName);
-            Description = ServiceProvider.GetDescription(Model.ServiceName);
+            Description = new TextLocalizer(ServiceProvider.GetDescriptionKey(Model.ServiceName));
 
             IsActive = Model.IsActive;
         }

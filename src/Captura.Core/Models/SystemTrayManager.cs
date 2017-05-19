@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.Properties;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -35,13 +36,13 @@ namespace Captura
             };
 
             foreach (var service in new[] { ServiceName.Recording, ServiceName.Pause, ServiceName.ScreenShot, ServiceName.ActiveScreenShot, ServiceName.DesktopScreenShot })
-                _systemTray.ContextMenu.MenuItems.Add(ServiceProvider.GetDescription(service), (s, e) => ServiceProvider.Get<Action>(service).Invoke());
+                _systemTray.ContextMenu.MenuItems.Add(TranslationSource.Instance[ServiceProvider.GetDescriptionKey(service)], (s, e) => ServiceProvider.Get<Action>(service).Invoke());
             
             var separator = new MenuItem { BarBreak = true };
 
             _systemTray.ContextMenu.MenuItems.Add(separator);
 
-            _systemTray.ContextMenu.MenuItems.Add("Exit", (s, e) =>
+            _systemTray.ContextMenu.MenuItems.Add(Resources.Exit, (s, e) =>
             {
                 ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
             });

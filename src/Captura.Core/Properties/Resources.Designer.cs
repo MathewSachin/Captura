@@ -178,6 +178,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frame Rate.
         /// </summary>
         public static string FrameRate {
@@ -376,6 +385,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause/Resume Recording.
+        /// </summary>
+        public static string PauseResumeRecording {
+            get {
+                return ResourceManager.GetString("PauseResumeRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print.
         /// </summary>
         public static string Print {
@@ -520,6 +538,24 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ScreenShot Active Window.
+        /// </summary>
+        public static string ScreenShotActiveWindow {
+            get {
+                return ResourceManager.GetString("ScreenShotActiveWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ScreenShot Desktop.
+        /// </summary>
+        public static string ScreenShotDesktop {
+            get {
+                return ResourceManager.GetString("ScreenShotDesktop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show System Tray Notifications.
         /// </summary>
         public static string ShowSysNotify {
@@ -534,6 +570,15 @@ namespace Captura.Properties {
         public static string StartDelay {
             get {
                 return ResourceManager.GetString("StartDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start/Stop Recording.
+        /// </summary>
+        public static string StartStopRecording {
+            get {
+                return ResourceManager.GetString("StartStopRecording", resourceCulture);
             }
         }
         

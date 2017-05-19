@@ -294,4 +294,19 @@
   <data name="VideoSaved" xml:space="preserve">
     <value>Video Saved</value>
   </data>
+  <data name="PauseResumeRecording" xml:space="preserve">
+    <value>Pause/Resume Recording</value>
+  </data>
+  <data name="ScreenShotActiveWindow" xml:space="preserve">
+    <value>ScreenShot Active Window</value>
+  </data>
+  <data name="ScreenShotDesktop" xml:space="preserve">
+    <value>ScreenShot Desktop</value>
+  </data>
+  <data name="StartStopRecording" xml:space="preserve">
+    <value>Start/Stop Recording</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
 </root>

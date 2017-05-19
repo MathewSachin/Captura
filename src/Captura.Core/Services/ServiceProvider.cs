@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.Properties;
+using System;
 using System.Collections.Generic;
 
 namespace Captura
@@ -21,27 +22,24 @@ namespace Captura
         /// <summary>
         /// Gets the Description of a Service.
         /// </summary>
-        public static string GetDescription(ServiceName ServiceName)
+        public static string GetDescriptionKey(ServiceName ServiceName)
         {
             switch (ServiceName)
             {
                 case ServiceName.Recording:
-                    return "Start/Stop Recording";
+                    return nameof(Resources.StartStopRecording);
 
                 case ServiceName.Pause:
-                    return "Pause/Resume Recording";
+                    return nameof(Resources.PauseResumeRecording);
 
                 case ServiceName.ScreenShot:
-                    return "ScreenShot";
+                    return nameof(Resources.ScreenShot);
 
                 case ServiceName.ActiveScreenShot:
-                    return "ScreenShot Active Window";
+                    return nameof(Resources.ScreenShotActiveWindow);
 
                 case ServiceName.DesktopScreenShot:
-                    return "ScreenShot Desktop";
-
-                case ServiceName.SelectedWindow:
-                    return "Selected Window";
+                    return nameof(Resources.ScreenShotDesktop);
 
                 default:
                     return "Unknown";
