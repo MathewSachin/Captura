@@ -32,10 +32,10 @@
       <HintPath>..\packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
     <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.1.0.2\lib\net45\ManagedBass.dll</HintPath>
+      <HintPath>..\packages\ManagedBass.2.0.0\lib\net45\ManagedBass.dll</HintPath>
     </Reference>
     <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.Mix.1.0.1\lib\portable-net45+MonoAndroid+uap\ManagedBass.Mix.dll</HintPath>
+      <HintPath>..\packages\ManagedBass.Mix.2.0.0\lib\netstandard1.4\ManagedBass.Mix.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
@@ -48,7 +48,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateCommand.cs" />
