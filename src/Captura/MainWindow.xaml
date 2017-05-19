@@ -132,7 +132,7 @@
             </Expander.Header>
             <DockPanel Background="#F5F5F5"
                        Margin="-5,0,0,0"
-                       Height="450">
+                       Height="480">
                 <Label Margin="5"
                        Content="{Binding Status}"
                        Opacity="0.9"
@@ -140,6 +140,7 @@
                 <DockPanel DockPanel.Dock="Bottom">
                     <Button Content="..."
                             DockPanel.Dock="Right"
+                            ToolTip="Select Output Folder"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                     <Button Content="{DynamicResource s_OutputFolder}"
@@ -150,6 +151,25 @@
                             Command="{Binding OpenOutputFolderCommand}"/>
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.OutPath}"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Button Content="..."
+                            DockPanel.Dock="Right"
+                            ToolTip="Select FFMpeg Folder"
+                            Command="{Binding SelectFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                    <Button Content="X"
+                            DockPanel.Dock="Right"
+                            ToolTip="Reset"
+                            Command="{Binding ResetFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                    <Label Content="FFMpeg Folder"
+                           ContentStringFormat="{}{0}: "
+                           DockPanel.Dock="Left"
+                           Padding="5,0"
+                           VerticalContentAlignment="Center"/>
+                    <TextBox IsReadOnly="True"
+                             Text="{Binding Settings.FFMpegFolder}"/>
                 </DockPanel>
                 <GridSplitter Height="1"
                               DockPanel.Dock="Bottom"/>

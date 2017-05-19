@@ -24,16 +24,27 @@ namespace Captura.ViewModels
             }
 
             // Check if FFMpeg is available
-            if (File.Exists("ffmpeg.exe"))
-            {
-                AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
-
-                SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
-            }
-           
+            RefreshFFMpeg();
+                       
             RefreshCodecs();
 
             RefreshVideoSources();
+
+            ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
+        }
+
+        public void RefreshFFMpeg()
+        {
+            if (ServiceProvider.FFMpegExists)
+            {
+                if (!AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
+                    AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);                    
+            }
+            else
+            {
+                if (AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
+                    AvailableVideoWriterKinds.Remove(VideoWriterKind.FFMpeg);
+            }
         }
 
         public void RefreshVideoSources()

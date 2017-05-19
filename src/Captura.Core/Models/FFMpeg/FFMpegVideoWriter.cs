@@ -25,7 +25,7 @@ namespace Captura.Models
             {
                 StartInfo =
                 {
-                    FileName = "ffmpeg.exe",
+                    FileName = ServiceProvider.FFMpegExePath,
                     Arguments = $"-r {FrameRate} -f image2pipe -i - {VideoArgsProvider(Quality)} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,

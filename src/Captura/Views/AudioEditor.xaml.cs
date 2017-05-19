@@ -74,7 +74,7 @@ namespace Captura
 
         public void Save()
         {
-            Process.Start("ffmpeg.exe", $"-y -ss {_begin.TotalSeconds} -i {_fileName} -to {_end.TotalSeconds} -acodec copy {_fileName}");
+            Process.Start(ServiceProvider.FFMpegExePath, $"-y -ss {_begin.TotalSeconds} -i {_fileName} -to {_end.TotalSeconds} -acodec copy {_fileName}");
         }
 
         public void Reset()

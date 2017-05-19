@@ -157,6 +157,10 @@ namespace Captura.ViewModels
         public DelegateCommand PauseCommand { get; }
 
         public DelegateCommand SelectOutputFolderCommand { get; }
+
+        public DelegateCommand SelectFFMpegFolderCommand { get; }
+
+        public DelegateCommand ResetFFMpegFolderCommand { get; }
         #endregion
 
         #region Nested ViewModels

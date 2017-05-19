@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace Captura
 {
@@ -68,5 +70,43 @@ namespace Captura
         /// Fired (with ID) when a Hotkey is pressed.
         /// </summary>
         public static event Action<int> HotKeyPressed;
+
+        public static bool FFMpegExists
+        {
+            get
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = FFMpegExePath,
+                        Arguments = "-version",
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    });
+
+                    return true;
+                }
+                catch { return false; }
+            }
+        }
+
+        public static string FFMpegExePath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
+                    return "ffmpeg.exe";
+
+                return Path.Combine(Settings.Instance.FFMpegFolder, "ffmpeg.exe");
+            }
+        }
+
+        public static event Action FFMpegPathChanged;
+
+        public static void RaiseFFMpegPathChanged()
+        {
+            FFMpegPathChanged?.Invoke();
+        }
     }
 }
