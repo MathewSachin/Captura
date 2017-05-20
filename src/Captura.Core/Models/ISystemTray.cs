@@ -2,9 +2,9 @@
 
 namespace Captura.Models
 {
-    interface ISystemTray
+    public interface ISystemTray
     {
-        void ShowTextNotification(string Text, string Title, int Duration, Action OnClick = null);
+        void ShowTextNotification(string Text, int Duration, Action OnClick);
 
         void ShowScreenShotNotification(string FilePath);
 

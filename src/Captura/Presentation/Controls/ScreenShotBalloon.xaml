@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Captura.ScreenShotBalloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura"
+             x:Name="me"
+             Background="#333333"
+             Foreground="White"
+             Width="400"
+             Margin="30,60"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Accent}">
+    <DockPanel MouseEnter="grid_MouseEnter">
+        <DockPanel DockPanel.Dock="Top">
+            <local:ModernButton ToolTip="{DynamicResource s_Close}"
+                            Click="CloseButton_Click"
+                            Foreground="LightPink"
+                            IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                            DockPanel.Dock="Right"/>
+            <TextBlock Text="ScreenShot Saved"
+                       VerticalAlignment="Center"
+                       Margin="5"/>
+        </DockPanel>
+
+        <TextBlock Text="{Binding FileName, ElementName=me}"
+                   DockPanel.Dock="Bottom"
+                   Padding="5"/>
+        
+        <Image Source="{Binding FilePath, ElementName=me}"
+               Cursor="Hand"
+               MouseUp="Image_MouseUp"
+               Margin="5"/>
+    </DockPanel>
+</UserControl>

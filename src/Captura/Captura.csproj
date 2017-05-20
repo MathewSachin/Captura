@@ -57,6 +57,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\RegionProvider.cs" />
+    <Compile Include="Models\SystemTray.cs" />
+    <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
+      <DependentUpon>TextBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\ScreenShotBalloon.xaml.cs">
+      <DependentUpon>ScreenShotBalloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Controls\HotkeySelector.cs" />
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
@@ -105,6 +112,14 @@
     <Page Include="Languages\lang.en-US.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Controls\TextBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\ScreenShotBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>

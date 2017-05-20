@@ -50,6 +50,11 @@
         /// <summary>
         /// Set MainWindow Location (Action<Point>).
         /// </summary>
-        SetMainWindowLocation
+        SetMainWindowLocation,
+
+        /// <summary>
+        /// Gets the ISystemTray.
+        /// </summary>
+        SystemTray
     }
 }

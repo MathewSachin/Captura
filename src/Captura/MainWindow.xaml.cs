@@ -13,7 +13,7 @@ namespace Captura
         public MainWindow()
         {
             ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionProvider());
-
+            
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
@@ -41,7 +41,9 @@ namespace Captura
             };
 
             InitializeComponent();
-            
+
+            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
+
             Closed += (s, e) => MenuExit_Click();
         }
 

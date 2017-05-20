@@ -69,7 +69,7 @@ namespace Captura.ViewModels
             {
                 if (RecorderState == RecorderState.Paused)
                 {
-                    SystemTrayManager.HideNotification();
+                    SystemTrayManager.SystemTray.HideNotification();
 
                     _recorder.Start();
                     _timer.Start();
@@ -85,7 +85,7 @@ namespace Captura.ViewModels
                     RecorderState = RecorderState.Paused;
                     Status = "Paused";
 
-                    SystemTrayManager.ShowNotification("Recording Paused", " ", 500, null);
+                    SystemTrayManager.SystemTray.ShowTextNotification("Recording Paused", 3000, null);
                 }
             }, false);
 
@@ -162,8 +162,6 @@ namespace Captura.ViewModels
 
             HotKeyManager.RegisterAll();
             
-            SystemTrayManager.Init();
-
             #region Restore Video Source
             if (Settings.LastSourceKind == VideoSourceKind.Window)
             {
@@ -252,7 +250,6 @@ namespace Captura.ViewModels
         public void Dispose()
         {
             HotKeyManager.Dispose();
-            SystemTrayManager.Dispose();
 
             AudioViewModel.Dispose();
 
@@ -349,7 +346,7 @@ namespace Captura.ViewModels
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
-                        SystemTrayManager.ShowNotification("ScreenShot Saved", Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
+                        SystemTrayManager.SystemTray.ShowScreenShotNotification(fileName);
                     }
                     catch (Exception E)
                     {
@@ -364,7 +361,7 @@ namespace Captura.ViewModels
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
-            SystemTrayManager.HideNotification();
+            SystemTrayManager.SystemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
                 return ScreenShot.Capture(Settings.IncludeCursor);
@@ -383,7 +380,7 @@ namespace Captura.ViewModels
 
         void CaptureScreenShot()
         {
-            SystemTrayManager.HideNotification();
+            SystemTrayManager.SystemTray.HideNotification();
 
             Bitmap bmp = null;
 
@@ -418,7 +415,7 @@ namespace Captura.ViewModels
 
         void StartRecording()
         {
-            SystemTrayManager.HideNotification();
+            SystemTrayManager.SystemTray.HideNotification();
 
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
@@ -560,7 +557,14 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            SystemTrayManager.ShowNotification($"{(isVideo ? "Video" : "Audio")} Saved", Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
+            SystemTrayManager.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
+            {
+                try
+                {
+                    Process.Start(_currentFileName);
+                }
+                catch { }
+            });
         }
     }
 }
