@@ -31,37 +31,12 @@
         /// Get the Window selected in the Window list (Func<Window>).
         /// </summary>
         SelectedWindow,
-
+        
         /// <summary>
-        /// Brings the MainWindow to Focus (Action).
+        /// Get the IRegionProvider.
         /// </summary>
-        Focus,
-
-        /// <summary>
-        /// Exit Application (Action).
-        /// </summary>
-        Exit,
-
-        /// <summary>
-        /// Get RegionItem Video source (IVideoItem).
-        /// </summary>
-        RegionSource,
-
-        /// <summary>
-        /// Control visibility of Region Selector (Action<bool>).
-        /// </summary>
-        RegionSelectorVisibility,
-
-        /// <summary>
-        /// Get Region Rectangle (Func<Rectangle>).
-        /// </summary>
-        RegionRectangle,
-
-        /// <summary>
-        /// Set Region Rectangle (Action<Rectangle>).
-        /// </summary>
-        SetRegionRectangle,
-
+        RegionProvider,
+        
         /// <summary>
         /// Minimize Main Window (Action<bool>).
         /// </summary>
@@ -75,6 +50,11 @@
         /// <summary>
         /// Set MainWindow Location (Action<Point>).
         /// </summary>
-        SetMainWindowLocation
+        SetMainWindowLocation,
+
+        /// <summary>
+        /// Gets the ISystemTray.
+        /// </summary>
+        SystemTray
     }
 }

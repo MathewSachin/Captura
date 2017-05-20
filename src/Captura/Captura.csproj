@@ -38,6 +38,9 @@
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -53,6 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\RegionProvider.cs" />
+    <Compile Include="Models\SystemTray.cs" />
+    <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
+      <DependentUpon>TextBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\ScreenShotBalloon.xaml.cs">
+      <DependentUpon>ScreenShotBalloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Controls\HotkeySelector.cs" />
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
@@ -101,6 +112,14 @@
     <Page Include="Languages\lang.en-US.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Controls\TextBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\ScreenShotBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -223,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Logo.png" />
