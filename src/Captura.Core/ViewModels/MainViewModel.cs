@@ -36,6 +36,10 @@ namespace Captura.ViewModels
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
+            
+            ScreenShotActiveCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
+
+            ScreenShotDesktopCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
             RecordCommand = new DelegateCommand(() =>
             {
@@ -66,6 +70,8 @@ namespace Captura.ViewModels
             {
                 if (RecorderState == RecorderState.Paused)
                 {
+                    SystemTrayManager.SystemTray.HideNotification();
+
                     _recorder.Start();
                     _timer.Start();
 
@@ -80,7 +86,7 @@ namespace Captura.ViewModels
                     RecorderState = RecorderState.Paused;
                     Status.LocalizationKey = nameof(Resources.Paused);
 
-                    SystemTrayManager.ShowNotification(Resources.Paused, " ", 500, null);
+                    SystemTrayManager.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
                 }
             }, false);
 
@@ -157,8 +163,6 @@ namespace Captura.ViewModels
 
             HotKeyManager.RegisterAll();
             
-            SystemTrayManager.Init();
-
             #region Restore Video Source
             if (Settings.LastSourceKind == VideoSourceKind.Window)
             {
@@ -182,7 +186,8 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
                 var rect = (Rectangle) RectangleConverter.ConvertFromString(Settings.LastSourceName);
-                ServiceProvider.Get<Action<Rectangle>>(ServiceName.SetRegionRectangle).Invoke(rect);
+
+                VideoViewModel.RegionProvider.SelectedRegion = rect;
             }
             else if (Settings.LastSourceKind == VideoSourceKind.NoVideo)
                 VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
@@ -246,7 +251,6 @@ namespace Captura.ViewModels
         public void Dispose()
         {
             HotKeyManager.Dispose();
-            SystemTrayManager.Dispose();
 
             AudioViewModel.Dispose();
 
@@ -261,7 +265,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     Settings.LastSourceKind = VideoSourceKind.Region;
-                    var rect = ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke();
+                    var rect = VideoViewModel.RegionProvider.SelectedRegion;
                     Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
                     break;
 
@@ -343,7 +347,7 @@ namespace Captura.ViewModels
                         Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
-                        SystemTrayManager.ShowNotification(Resources.ScreenShotSaved, Path.GetFileName(fileName), 3000, () => Process.Start(fileName));
+                        SystemTrayManager.SystemTray.ShowScreenShotNotification(fileName);
                     }
                     catch (Exception E)
                     {
@@ -359,6 +363,8 @@ namespace Captura.ViewModels
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
+            SystemTrayManager.SystemTray.HideNotification();
+
             if (hWnd == Window.DesktopWindow)
                 return ScreenShot.Capture(Settings.IncludeCursor);
             else
@@ -376,6 +382,8 @@ namespace Captura.ViewModels
 
         void CaptureScreenShot()
         {
+            SystemTrayManager.SystemTray.HideNotification();
+
             Bitmap bmp = null;
 
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
@@ -394,7 +402,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(ServiceProvider.Get<Func<Rectangle>>(ServiceName.RegionRectangle).Invoke(), includeCursor);
+                    bmp = ScreenShot.Capture(VideoViewModel.RegionProvider.SelectedRegion, includeCursor);
                     break;
             }
 
@@ -409,6 +417,8 @@ namespace Captura.ViewModels
 
         void StartRecording()
         {
+            SystemTrayManager.SystemTray.HideNotification();
+
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
             
@@ -549,7 +559,14 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            SystemTrayManager.ShowNotification(isVideo ? Resources.VideoSaved : Resources.AudioSaved, Path.GetFileName(_currentFileName), 3000, () => Process.Start(_currentFileName));
+            SystemTrayManager.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () => 
+            {
+                try
+                {
+                    Process.Start(_currentFileName);
+                }
+                catch { }
+            });
         }
     }
 }

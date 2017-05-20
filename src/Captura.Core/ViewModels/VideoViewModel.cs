@@ -9,8 +9,12 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
+        public IRegionProvider RegionProvider { get; }
+
         public VideoViewModel()
         {
+            RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
+
             // Check if there are multiple Screens
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)));
@@ -68,7 +72,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(ServiceProvider.Get<IVideoItem>(ServiceName.RegionSource));
+                    AvailableVideoSources.Add(RegionProvider.VideoSource);
                     break;
             }
 
@@ -77,7 +81,7 @@ namespace Captura.ViewModels
                 SelectedVideoSource = AvailableVideoSources[0];
 
             // RegionSelector should only be shown on Region Capture.
-            ServiceProvider.Get<Action<bool>>(ServiceName.RegionSelectorVisibility).Invoke(SelectedVideoSourceKind == VideoSourceKind.Region);
+            RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
         }
         
         void InitSharpAviCodecs()

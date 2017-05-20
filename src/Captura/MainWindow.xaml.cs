@@ -1,7 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
 using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -13,32 +12,8 @@ namespace Captura
     {        
         public MainWindow()
         {
-            ServiceProvider.Register<Action>(ServiceName.Focus, () =>
-            {
-                Show();
-                WindowState = WindowState.Normal;
-                Focus();
-            });
-
-            ServiceProvider.Register<Action>(ServiceName.Exit, () =>
-            {
-                (DataContext as MainViewModel).Dispose();
-                Application.Current.Shutdown();
-            });
-
-            ServiceProvider.Register<IVideoItem>(ServiceName.RegionSource, RegionItem.Instance);
-
-            ServiceProvider.Register<Action<bool>>(ServiceName.RegionSelectorVisibility, visible =>
-            {
-                if (visible)
-                    RegionSelector.Instance.Show();
-                else RegionSelector.Instance.Hide();
-            });
-
-            ServiceProvider.Register<Func<Rectangle>>(ServiceName.RegionRectangle, () => RegionSelector.Instance.Rectangle);
-
-            ServiceProvider.Register<Action<Rectangle>>(ServiceName.SetRegionRectangle, rect => RegionSelector.Instance.Rectangle = rect);
-
+            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionProvider());
+            
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
@@ -66,11 +41,10 @@ namespace Captura
             };
 
             InitializeComponent();
-            
-            Closed += (s, e) =>
-            {
-                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
-            };
+
+            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
+
+            Closed += (s, e) => MenuExit_Click();
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -91,5 +65,25 @@ namespace Captura
         void MinButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+
+        void SystemTray_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+                Focus();
+            }
+        }
+
+        void MenuExit_Click(object sender = null, RoutedEventArgs e = null)
+        {
+            (DataContext as MainViewModel).Dispose();
+            SystemTray.Dispose();
+            Application.Current.Shutdown();
+        }
     }
 }
