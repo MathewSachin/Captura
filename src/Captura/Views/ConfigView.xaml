@@ -94,6 +94,11 @@
                               ItemsSource="{Binding ScreenShotImageFormats}"
                               SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"/>
                 </Grid>
+
+                <TextBlock Margin="0,7,0,3"
+                           Text="Transforms"
+                           FontWeight="Bold"/>
+
                 <Grid Margin="0,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -103,23 +108,44 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{DynamicResource s_Resize}"
-                              IsChecked="{Binding Settings.ScreenShotDoResize, Mode=TwoWay}"
+                              IsChecked="{Binding Settings.DoResize, Mode=TwoWay}"
                               Margin="0,0,5,0"/>
 
-                    <local:NumericBox Value="{Binding Settings.ScreenShotResizeWidth, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding Settings.ResizeWidth, Mode=TwoWay}"
                                       Grid.Column="1"
-                                      IsEnabled="{Binding Settings.ScreenShotDoResize}"/>
+                                      IsEnabled="{Binding Settings.DoResize}"/>
 
                     <Label Content="x"
                            VerticalContentAlignment="Center"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <local:NumericBox Value="{Binding Settings.ScreenShotResizeHeight, Mode=TwoWay}"
+                    <local:NumericBox Value="{Binding Settings.ResizeHeight, Mode=TwoWay}"
                                       Grid.Column="3"
                                       Margin="0,3"
-                                      IsEnabled="{Binding Settings.ScreenShotDoResize}"/>
+                                      IsEnabled="{Binding Settings.DoResize}"/>
                 </Grid>
+
+                <StackPanel Margin="0,2"
+                            Orientation="Horizontal">
+                    <CheckBox Content="Flip Horizontal"
+                              IsChecked="{Binding Settings.FlipHorizontal, Mode=TwoWay}"
+                              Margin="0,0,10,0"/>
+
+                    <CheckBox Grid.Column="1"
+                              Content="Flip Vertical"
+                              IsChecked="{Binding Settings.FlipVertical, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <DockPanel Margin="0,5">
+                    <Label Content="Rotate"
+                           ContentStringFormat="{}{0}: "/>
+                    <ComboBox Margin="5,0,0,0"
+                              ItemsSource="{Binding Rotations}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              SelectedValue="{Binding Settings.RotateBy, Mode=TwoWay}"/>
+                </DockPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

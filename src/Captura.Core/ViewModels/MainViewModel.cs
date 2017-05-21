@@ -366,17 +366,21 @@ namespace Captura.ViewModels
             SystemTrayManager.SystemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
-                return ScreenShot.Capture(Settings.IncludeCursor);
+            {
+                var bmp = ScreenShot.Capture(Settings.IncludeCursor);
+                
+                return TransformedImageProvider.Transform(bmp);
+            }
             else
             {
                 var bmp = ScreenShot.CaptureTransparent(hWnd, Settings.IncludeCursor,
-                         Settings.ScreenShotDoResize, Settings.ScreenShotResizeWidth, Settings.ScreenShotResizeHeight);
+                         Settings.DoResize, Settings.ResizeWidth, Settings.ResizeHeight);
 
                 // Capture without Transparency
                 if (bmp == null)
                     bmp = ScreenShot.Capture(hWnd, Settings.IncludeCursor);
 
-                return bmp;
+                return TransformedImageProvider.Transform(bmp, true);
             }
         }
 
@@ -399,10 +403,12 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Screen:
                     bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
+                    bmp = TransformedImageProvider.Transform(bmp);
                     break;
 
                 case VideoSourceKind.Region:
                     bmp = ScreenShot.Capture(VideoViewModel.RegionProvider.SelectedRegion, includeCursor);
+                    bmp = TransformedImageProvider.Transform(bmp);
                     break;
             }
 
@@ -533,7 +539,9 @@ namespace Captura.ViewModels
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
-            return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
+            var overlayed = new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
+
+            return new TransformedImageProvider(overlayed);
         }
         
         async void StopRecording()

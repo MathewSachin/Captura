@@ -215,10 +215,10 @@ namespace Captura
             set => Set(value);
         }
 
-        #region ScreenShot
+        #region Transforms
         [UserScopedSetting]
         [DefaultSettingValue("False")]
-        public bool ScreenShotDoResize
+        public bool DoResize
         {
             get => Get<bool>();
             set => Set(value);
@@ -226,7 +226,7 @@ namespace Captura
         
         [UserScopedSetting]
         [DefaultSettingValue("640")]
-        public int ScreenShotResizeWidth
+        public int ResizeWidth
         {
             get => Get<int>();
             set => Set(value);
@@ -234,9 +234,33 @@ namespace Captura
         
         [UserScopedSetting]
         [DefaultSettingValue("400")]
-        public int ScreenShotResizeHeight
+        public int ResizeHeight
         {
             get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool FlipHorizontal
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool FlipVertical
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("RotateNone")]
+        public RotateBy RotateBy
+        {
+            get => Get<RotateBy>();
             set => Set(value);
         }
         #endregion
