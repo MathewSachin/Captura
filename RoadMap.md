@@ -8,7 +8,6 @@ Here are some features we are looking forward to implement, feel free to help us
 
 ## Current Priorities
 - Make the app ready for translation ([#54](https://github.com/MathewSachin/Captura/pull/54)).
-- Change System Tray icon during Recording.
 - Encoding GIFs using FFMpeg.
 - Persist Recent files list.
 
