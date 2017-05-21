@@ -80,11 +80,11 @@
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
-                        ToolTipText="{DynamicResource s_Title}"
+                        ToolTipText="{local:Loc AppName}"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Start/Stop _Recording [R]"
+                    <MenuItem Header="{local:Loc StartStopRecording}"
                               Command="{Binding RecordCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource RecordStopImageSource}"
@@ -93,12 +93,12 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="_Pause/Resume Recording [P]"
+                    <MenuItem Header="{local:Loc PauseResumeRecording}"
                               Command="{Binding PauseCommand}"/>
 
                     <Separator/>
 
-                    <MenuItem Header="_ScreenShot [S]"
+                    <MenuItem Header="{local:Loc ScreenShot}"
                               Command="{Binding ScreenShotCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
@@ -107,15 +107,15 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="ScreenShot _Active Window [A]"
+                    <MenuItem Header="{local:Loc ScreenShotActiveWindow}"
                               Command="{Binding ScreenShotActiveCommand}"/>
 
-                    <MenuItem Header="ScreenShot _Desktop Window [D]"
+                    <MenuItem Header="{local:Loc ScreenShotDesktop}"
                               Command="{Binding ScreenShotDesktopCommand}"/>
 
                     <Separator/>
 
-                    <MenuItem Header="E_xit [X]"
+                    <MenuItem Header="{local:Loc Exit}"
                               Click="MenuExit_Click"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
