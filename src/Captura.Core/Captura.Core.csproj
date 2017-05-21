@@ -76,8 +76,11 @@
     <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
+    <Compile Include="Models\RecentItemModel.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
+    <Compile Include="Models\RotateBy.cs" />
+    <Compile Include="Models\TransformedImageProvider.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />

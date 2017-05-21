@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using Captura.Properties;
 using System;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 
@@ -78,6 +79,14 @@ namespace Captura.ViewModels
             }
         }
         #endregion
+
+        public KeyValuePair<RotateBy, string>[] Rotations { get; } = new[]
+        {
+            new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise"),
+        };
         
         RecorderState _recorderState = RecorderState.NotRecording;
 
