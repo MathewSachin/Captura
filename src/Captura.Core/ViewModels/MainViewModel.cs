@@ -253,6 +253,8 @@ namespace Captura.ViewModels
 
             AudioViewModel.Dispose();
 
+            RecentViewModel.Dispose();
+
             #region Remember Video Source
             switch (VideoViewModel.SelectedVideoSourceKind)
             {

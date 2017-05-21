@@ -16,6 +16,13 @@ namespace Captura
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
+        [UserScopedSetting]
+        public List<RecentItemModel> RecentItems
+        {
+            get => Get<List<RecentItemModel>>();
+            set => Set(value);
+        }
+
         #region Remember
         [UserScopedSetting]
         [DefaultSettingValue("Png")]
