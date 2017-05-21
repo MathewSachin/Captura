@@ -71,6 +71,7 @@
     <Compile Include="Presentation\ValueConverters\NegatingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\StateToTrayIconSourceConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
@@ -257,6 +258,8 @@
       <Name>Screna</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="record.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

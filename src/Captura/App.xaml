@@ -17,6 +17,7 @@
             <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
             <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
             <local:NegatingConverter x:Key="NegatingConverter"/>
+            <local:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <viewModels:MainViewModel x:Key="MainViewModel"/>
         </ResourceDictionary>
