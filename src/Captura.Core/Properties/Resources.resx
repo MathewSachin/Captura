@@ -336,4 +336,16 @@
   <data name="Screen" xml:space="preserve">
     <value>Screen</value>
   </data>
+  <data name="FlipX" xml:space="preserve">
+    <value>Flip Horizontal</value>
+  </data>
+  <data name="FlipY" xml:space="preserve">
+    <value>Flip Vertical</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Rotate</value>
+  </data>
+  <data name="Transforms" xml:space="preserve">
+    <value>Transforms</value>
+  </data>
 </root>

@@ -130,17 +130,17 @@
 
                 <StackPanel Margin="0,2"
                             Orientation="Horizontal">
-                    <CheckBox Content="Flip Horizontal"
+                    <CheckBox Content="{local:Loc FlipX}"
                               IsChecked="{Binding Settings.FlipHorizontal, Mode=TwoWay}"
                               Margin="0,0,10,0"/>
 
                     <CheckBox Grid.Column="1"
-                              Content="Flip Vertical"
+                              Content="{local:Loc FlipY}"
                               IsChecked="{Binding Settings.FlipVertical, Mode=TwoWay}"/>
                 </StackPanel>
 
                 <DockPanel Margin="0,5">
-                    <Label Content="Rotate"
+                    <Label Content="{local:Loc Rotate}"
                            ContentStringFormat="{}{0}: "/>
                     <ComboBox Margin="5,0,0,0"
                               ItemsSource="{Binding Rotations}"

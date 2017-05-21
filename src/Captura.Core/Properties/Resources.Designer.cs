@@ -196,6 +196,24 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flip Horizontal.
+        /// </summary>
+        public static string FlipX {
+            get {
+                return ResourceManager.GetString("FlipX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flip Vertical.
+        /// </summary>
+        public static string FlipY {
+            get {
+                return ResourceManager.GetString("FlipY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frame Rate.
         /// </summary>
         public static string FrameRate {
@@ -547,6 +565,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rotate.
+        /// </summary>
+        public static string Rotate {
+            get {
+                return ResourceManager.GetString("Rotate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save to.
         /// </summary>
         public static string SaveTo {
@@ -651,6 +678,15 @@ namespace Captura.Properties {
         public static string Stopped {
             get {
                 return ResourceManager.GetString("Stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transforms.
+        /// </summary>
+        public static string Transforms {
+            get {
+                return ResourceManager.GetString("Transforms", resourceCulture);
             }
         }
         
