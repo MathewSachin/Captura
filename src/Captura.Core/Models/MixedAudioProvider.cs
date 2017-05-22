@@ -33,8 +33,10 @@ namespace Captura.Models
             {
                 Bass.RecordInit(RecordingDevice.Value);
                 Bass.CurrentRecordingDevice = RecordingDevice.Value;
+
+                var info = Bass.RecordingInfo;
                 
-                _recording = Bass.RecordStart(44100, 2, BassFlags.Float | BassFlags.RecordPause, null);
+                _recording = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
 
                 BassMix.MixerAddChannel(_mixer, _recording, BassFlags.MixerDownMix);
             }
@@ -51,7 +53,9 @@ namespace Captura.Models
                 Bass.RecordInit(LoopbackDevice.Value);
                 Bass.CurrentRecordingDevice = LoopbackDevice.Value;
 
-                _loopback = Bass.RecordStart(44100, 2, BassFlags.Float | BassFlags.RecordPause, null);
+                var info = Bass.RecordingInfo;
+                
+                _loopback = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
 
                 BassMix.MixerAddChannel(_mixer, _loopback, BassFlags.MixerDownMix);
             }
