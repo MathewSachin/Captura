@@ -141,7 +141,8 @@
 
                 <DockPanel Margin="0,5">
                     <Label Content="{local:Loc Rotate}"
-                           ContentStringFormat="{}{0}: "/>
+                           ContentStringFormat="{}{0}: "
+                           VerticalContentAlignment="Center"/>
                     <ComboBox Margin="5,0,0,0"
                               ItemsSource="{Binding Rotations}"
                               SelectedValuePath="Key"

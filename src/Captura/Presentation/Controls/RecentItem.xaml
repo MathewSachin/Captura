@@ -8,6 +8,7 @@
         <Button DockPanel.Dock="Right"
                 ToolTip="{local:Loc RemoveFromList}"
                 BorderBrush="Transparent"
+                Background="Transparent"
                 Margin="5,0"
                 Command="{Binding RemoveCommand}">
             <Path Fill="#B7000000" 
