@@ -261,5 +261,8 @@
   <ItemGroup>
     <Resource Include="record.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pause.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
