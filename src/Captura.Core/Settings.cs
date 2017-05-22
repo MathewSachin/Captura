@@ -23,6 +23,14 @@ namespace Captura
             set => Set(value);
         }
 
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool WebCamVisible
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
         #region Remember
         [UserScopedSetting]
         [DefaultSettingValue("Png")]

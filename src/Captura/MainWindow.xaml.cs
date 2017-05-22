@@ -40,8 +40,11 @@ namespace Captura
                 }
             };
 
-            InitializeComponent();
+            // Ensure that WebCamWindows instance is created
+            WebCamWindow.Instance.GetType();
 
+            InitializeComponent();
+            
             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
 
             Closed += (s, e) => MenuExit_Click();

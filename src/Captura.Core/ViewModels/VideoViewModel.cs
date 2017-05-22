@@ -10,6 +10,8 @@ namespace Captura.ViewModels
     {
         public IRegionProvider RegionProvider { get; }
 
+        static readonly KeyValuePair<VideoSourceKind, string> WebCamKind = new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.WebCam, "WebCam");
+
         public VideoViewModel()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
@@ -18,6 +20,22 @@ namespace Captura.ViewModels
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
 
+            // WebCams
+            if (Settings.Instance.WebCamVisible)
+                AvailableVideoSourceKinds.Add(WebCamKind);
+
+            Settings.Instance.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Settings.WebCamVisible))
+                {
+                    if (Settings.Instance.WebCamVisible)
+                    {
+                        AvailableVideoSourceKinds.Add(WebCamKind);
+                    }
+                    else AvailableVideoSourceKinds.Remove(WebCamKind);
+                }
+            };
+
             // Check if SharpAvi is available
             if (File.Exists("SharpAvi.dll"))
             {
@@ -25,7 +43,7 @@ namespace Captura.ViewModels
 
                 SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
-
+            
             // Check if FFMpeg is available
             RefreshFFMpeg();
                        
@@ -154,8 +172,7 @@ namespace Captura.ViewModels
         {
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.WebCam, "WebCam")
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();

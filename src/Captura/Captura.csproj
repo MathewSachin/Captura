@@ -92,6 +92,7 @@
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\WebCamViewModel.cs" />
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
@@ -100,6 +101,9 @@
     </Compile>
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebCamWindow.xaml.cs">
+      <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Languages\default.xaml">
       <SubType>Designer</SubType>
@@ -234,6 +238,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Presentation\Controls\RegionSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WebCamWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
