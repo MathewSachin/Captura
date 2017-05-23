@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
     public class RecentViewModel : ViewModelBase, IDisposable
     {
         public ObservableCollection<RecentItemViewModel> RecentList { get; } = new ObservableCollection<RecentItemViewModel>();
-
-        int maxItemsToPersist = 30;
+        
+        public ICommand ClearCommand { get; }
 
         public RecentViewModel()
         {
@@ -21,6 +22,8 @@ namespace Captura.ViewModels
 
             foreach (var recent in Settings.Instance.RecentItems)
                 Add(recent.FilePath, recent.ItemType, false);
+
+            ClearCommand = new DelegateCommand(() => RecentList.Clear());
         }
 
         public RecentItemViewModel Add(string FilePath, RecentItemType ItemType, bool IsSaving)
@@ -39,7 +42,9 @@ namespace Captura.ViewModels
         {
             Settings.Instance.RecentItems.Clear();
 
-            for (int i = 0; i < RecentList.Count && i < maxItemsToPersist; ++i)
+            var max = Settings.Instance.RecentMax;
+
+            for (int i = 0; i < RecentList.Count && i < max; ++i)
                 Settings.Instance.RecentItems.Add(new RecentItemModel(RecentList[i].FilePath, RecentList[i].ItemType));
         }
     }

@@ -3,23 +3,30 @@
       xmlns:local="clr-namespace:Captura"
       DataContext="{StaticResource MainViewModel}">
     <Grid>
-        <ScrollViewer>
-            <DockPanel Margin="10">
-                <TextBlock TextWrapping="Wrap"
-                           DockPanel.Dock="Top"
-                           Text="A List of files created in this session" 
-                           Margin="0,0,0,10"/>
-                <ScrollViewer>
-                    <ItemsControl Margin="0,10,0,0"
-                                  ItemsSource="{Binding RecentViewModel.RecentList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <local:RecentItem DataContext="{Binding}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+        <DockPanel Margin="10">
+            <DockPanel DockPanel.Dock="Top"
+                       Margin="0,0,0,10">
+                <Button Content="Clear"
+                        ToolTip="Clear Recent List"
+                        DockPanel.Dock="Right"
+                        Command="{Binding RecentViewModel.ClearCommand}"/>
+                <Label Content="Max Items to persist"
+                       ContentStringFormat="{}{0}:"
+                       VerticalContentAlignment="Center"/>
+                <local:NumericBox Margin="5,0,10,0"
+                                  Minimum="0"
+                                  Value="{Binding Settings.RecentMax, Mode=TwoWay}"/>
             </DockPanel>
-        </ScrollViewer>
+            <ScrollViewer>
+                <ItemsControl Margin="0,10,0,0"
+                              ItemsSource="{Binding RecentViewModel.RecentList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:RecentItem DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
     </Grid>
 </Page>
