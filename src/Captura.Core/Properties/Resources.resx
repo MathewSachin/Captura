@@ -240,9 +240,6 @@
   <data name="Print" xml:space="preserve">
     <value>Print</value>
   </data>
-  <data name="RecentDescription" xml:space="preserve">
-    <value>A List of files created in this session</value>
-  </data>
   <data name="RegionSelector" xml:space="preserve">
     <value>Region Selector</value>
   </data>
@@ -347,5 +344,14 @@
   </data>
   <data name="Transforms" xml:space="preserve">
     <value>Transforms</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClearRecentList" xml:space="preserve">
+    <value>Clear Recent List</value>
+  </data>
+  <data name="MaxRecent" xml:space="preserve">
+    <value>Max items to persist</value>
   </data>
 </root>

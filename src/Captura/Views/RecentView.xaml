@@ -6,11 +6,11 @@
         <DockPanel Margin="10">
             <DockPanel DockPanel.Dock="Top"
                        Margin="0,0,0,10">
-                <Button Content="Clear"
-                        ToolTip="Clear Recent List"
+                <Button Content="{local:Loc Clear}"
+                        ToolTip="{local:Loc ClearRecentList}"
                         DockPanel.Dock="Right"
                         Command="{Binding RecentViewModel.ClearCommand}"/>
-                <Label Content="Max Items to persist"
+                <Label Content="{local:Loc MaxRecent}"
                        ContentStringFormat="{}{0}:"
                        VerticalContentAlignment="Center"/>
                 <local:NumericBox Margin="5,0,10,0"

@@ -124,6 +124,24 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Recent List.
+        /// </summary>
+        public static string ClearRecentList {
+            get {
+                return ResourceManager.GetString("ClearRecentList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clipboard.
         /// </summary>
         public static string Clipboard {
@@ -322,6 +340,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max items to persist.
+        /// </summary>
+        public static string MaxRecent {
+            get {
+                return ResourceManager.GetString("MaxRecent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Microphone Source.
         /// </summary>
         public static string MicSource {
@@ -462,15 +489,6 @@ namespace Captura.Properties {
         public static string Recent {
             get {
                 return ResourceManager.GetString("Recent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A List of files created in this session.
-        /// </summary>
-        public static string RecentDescription {
-            get {
-                return ResourceManager.GetString("RecentDescription", resourceCulture);
             }
         }
         
