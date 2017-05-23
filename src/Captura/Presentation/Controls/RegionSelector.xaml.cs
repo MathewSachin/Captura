@@ -19,16 +19,16 @@ namespace Captura
         // Ignoring Borders and Header
         public Rectangle Rectangle
         {
-            get => Dispatcher.Invoke(() => new Rectangle((int) Left + 3, (int) Top + 23, (int) Width - 6, (int) Height - 26));
+            get => Dispatcher.Invoke(() => new Rectangle((int) Left + 7, (int) Top + 37, (int) Width - 14, (int) Height - 44));
             set
             {
                 Dispatcher.Invoke(() =>
                 {
-                    Left = value.Left - 3;
-                    Top = value.Top - 23;
+                    Left = value.Left - 7;
+                    Top = value.Top - 37;
 
-                    Width = value.Width + 6;
-                    Height = value.Height + 26;
+                    Width = value.Width + 14;
+                    Height = value.Height + 44;
                 });
             }
         }
