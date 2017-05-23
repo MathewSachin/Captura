@@ -23,6 +23,14 @@ namespace Captura
             set => Set(value);
         }
 
+        [UserScopedSetting]
+        [DefaultSettingValue("30")]
+        public int RecentMax
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
         #region Remember
         [UserScopedSetting]
         [DefaultSettingValue("Png")]
