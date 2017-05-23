@@ -81,8 +81,10 @@ after_build:
 
         $installScript = "choco/tools/chocolateyinstall.ps1";
 
+        $scriptContent = "`n`n" + (Get-Content $installScript);
+
         # Update chocolatey install script
-        Set-Content $installScript (('$tag = "{0}";`n$checksum = "{1}";`n`n{2}') -f $env:APPVEYOR_REPO_TAG_NAME, $checksum, (Get-Content $installScript));
+        Set-Content $installScript (('$tag = "{0}"; $checksum = "{1}";{2}') -f $env:APPVEYOR_REPO_TAG_NAME, $checksum, $scriptContent);
 
         choco pack choco/captura.nuspec --version $env:AppVersion;
         Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
