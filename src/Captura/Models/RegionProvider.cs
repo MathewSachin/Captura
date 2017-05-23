@@ -24,5 +24,11 @@ namespace Captura
         }
 
         public IVideoItem VideoSource => RegionItem.Instance;
+
+        public bool SnapEnabled
+        {
+            get => RegionSelector.Instance.SnapEnabled;
+            set => RegionSelector.Instance.SnapEnabled = value;
+        }
     }
 }

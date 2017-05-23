@@ -57,6 +57,12 @@ namespace Captura
             }
         }
 
+        public bool SnapEnabled
+        {
+            get => Dispatcher.Invoke(() => Snapper.IsEnabled);
+            set => Dispatcher.Invoke(() => Snapper.IsEnabled = value);
+        }
+
         void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         void HeaderMouseDoubleClick(object sender, MouseButtonEventArgs e)

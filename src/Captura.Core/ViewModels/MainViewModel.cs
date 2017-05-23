@@ -423,6 +423,8 @@ namespace Captura.ViewModels
 
         void StartRecording()
         {
+            VideoViewModel.RegionProvider.SnapEnabled = false;
+
             SystemTrayManager.SystemTray.HideNotification();
 
             if (Settings.MinimizeOnStart)
@@ -575,6 +577,8 @@ namespace Captura.ViewModels
                 }
                 catch { }
             });
+
+            VideoViewModel.RegionProvider.SnapEnabled = true;
         }
     }
 }
