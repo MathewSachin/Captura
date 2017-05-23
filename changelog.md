@@ -4,6 +4,28 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v3.2.0
+- .Net 4.6.1 is required.
+- Remembers last used Audio/Video Codecs and Sources.
+- Remembers Window Location.
+- Remembers ScreenShot Save target and Image Format.
+- Experimetal Gif encoding using FFMpeg.
+- Rotate/Flip/Resize Transforms for ScreenShot/Video.
+- **fix:** FFMpeg Command-line args when encoding both audio and video.
+- **fix:** WASAPI Format error on loopback.
+
+#### Recent List
+- Recent List persists items (max items can be configured).
+- Added Recent list Clear button.
+- **fix:** Scolling in Recent List.
+
+#### System Tray
+- Icons in Context menu.
+- Double click to show/hide MainWindow.
+- Improved notifications.
+- ScreenShot notification displays the image.
+- Tray icon changes depending on the Recording state.
+
 ## v3.1.0
 - `bass.dll` and `bassmix.dll` included in release.
 
