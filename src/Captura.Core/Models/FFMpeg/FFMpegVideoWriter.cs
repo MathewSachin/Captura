@@ -13,6 +13,9 @@ namespace Captura.Models
     {
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
+
+        // x264 requires video dimensions to be even.
+        bool evenDimensions;
                 
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
@@ -21,6 +24,9 @@ namespace Captura.Models
         /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegVideoWriter(string FileName, int FrameRate, int Quality, FFMpegVideoArgsProvider VideoArgsProvider)
         {
+            if (VideoArgsProvider == FFMpegItem.Mp4)
+                evenDimensions = true;
+
             _ffmpegProcess = new Process
             {
                 StartInfo =
@@ -59,13 +65,30 @@ namespace Captura.Models
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length) { }
-
+        
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
+            if (evenDimensions)
+            {
+                var oldImage = Image;
+
+                var rect = new Rectangle(Point.Empty, Image.Size);
+
+                if (rect.Height % 2 == 1)
+                    --rect.Height;
+                
+                if (rect.Width % 2 == 1)
+                    --rect.Width;
+                
+                Image = Image.Clone(rect, Image.PixelFormat);
+
+                oldImage.Dispose();
+            }
+
             Image.Save(_ffmpegIn, ImageFormat.Png);
             Image.Dispose();
         }
