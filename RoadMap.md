@@ -12,7 +12,6 @@ Here are some features we are looking forward to implement, feel free to help us
 - Encoding GIFs using FFMpeg.
 - Use multiple buffers for audio recording or use offsets.
 - Region Selector: Snap to Window
-- Use a Regular window with transparency for Region Selector as the current one causes issues with snapping.
 
 ## For Future
 - Cropping Audio and Video files using FFMpeg.
