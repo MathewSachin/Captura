@@ -12,7 +12,17 @@ namespace Captura
         
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (RecorderState)value == RecorderState.NotRecording ? "Captura.ico" : "record.ico";
+            switch ((RecorderState)value)
+            {
+                case RecorderState.Recording:
+                    return "record.ico";
+
+                case RecorderState.Paused:
+                    return "pause.ico";
+
+                default:
+                    return "Captura.ico";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
