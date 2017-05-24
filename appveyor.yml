@@ -36,7 +36,7 @@ before_build:
         $env:AppVersion = ($env:APPVEYOR_REPO_TAG_NAME).Substring(1);
 
         $content = Get-Content $assemblyInfo;
-        $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(\"$env:AppVersion\")";
+        $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(`"$env:AppVersion`")";
         Set-Content $assemblyInfo $replaced;
       }
       else
