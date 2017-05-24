@@ -97,6 +97,9 @@
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WebCamWindow.xaml.cs">
+      <DependentUpon>WebCamWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HotkeyView.xaml.cs">
       <DependentUpon>HotkeyView.xaml</DependentUpon>
     </Compile>
