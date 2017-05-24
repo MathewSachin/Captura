@@ -24,7 +24,7 @@ build:
   publish_nuget_symbols: true
 
 after_build:
-  -ps: appveyor/Pack-Release.ps1
+  - ps: appveyor/Pack-Release.ps1
 
   - ps: appveyor/Choco.ps1
 
