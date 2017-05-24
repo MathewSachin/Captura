@@ -9,9 +9,42 @@ namespace Captura
 {
     public partial class RegionSelector
     {
+        #region Native
         [DllImport("user32.dll")]
         static extern IntPtr WindowFromPoint(Point Point);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetWindowDC(IntPtr hWnd);
         
+        [DllImport("gdi32.dll")]
+        static extern bool PatBlt(IntPtr hDC, int X, int Y, int Width, int Height, uint dwRop);
+        #endregion
+
+        const int DstInvert = 0x0055_0009,
+            borderThickness = 3;
+
+        static void ToggleBorder(IntPtr hWnd)
+        {
+            if (hWnd == IntPtr.Zero)
+                return;
+
+            var hdc = GetWindowDC(hWnd);
+
+            var rect = new Screna.Window(hWnd).Rectangle;
+            
+            // Top
+            PatBlt(hdc, 0, 0, rect.Width, borderThickness, DstInvert);
+
+            // Left
+            PatBlt(hdc, 0, borderThickness, borderThickness, rect.Height - 2 * borderThickness, DstInvert);
+
+            // Right
+            PatBlt(hdc, rect.Width - borderThickness, borderThickness, borderThickness, rect.Height - 2 * borderThickness, DstInvert);
+
+            // Bottom
+            PatBlt(hdc, 0, rect.Height - borderThickness, rect.Width, borderThickness, DstInvert);
+        }
+
         public static RegionSelector Instance { get; } = new RegionSelector();
 
         RegionSelector()
@@ -81,10 +114,12 @@ namespace Captura
 
             _captured = false;
 
+            ToggleBorder(win);
+
             try { Rectangle = new Screna.Window(win).Rectangle; }
-            catch
+            finally
             {
-                // Suppress errors
+                win = IntPtr.Zero;
             }
         }
 
@@ -94,7 +129,15 @@ namespace Captura
         {
             if (_captured)
             {
+                var oldwin = win;
+                
                 win = WindowFromPoint(new Point((int)Left - 1, (int)Top - 1));
+
+                if (oldwin != win)
+                {
+                    ToggleBorder(oldwin);
+                    ToggleBorder(win);
+                }
             }
         }
     }
