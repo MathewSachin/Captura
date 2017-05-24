@@ -9,5 +9,7 @@ namespace Captura.Models
         Rectangle SelectedRegion { get; set; }
 
         IVideoItem VideoSource { get; }
+
+        bool SnapEnabled { get; set; }
     }
 }
