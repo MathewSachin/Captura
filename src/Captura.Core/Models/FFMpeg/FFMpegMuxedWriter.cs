@@ -22,7 +22,7 @@ namespace Captura.Models
         /// </summary>
         /// <param name="FilePath">Path for the output file.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
-        public FFMpegMuxedWriter(string FilePath, int FrameRate, int VideoQuality, FFMpegVideoArgsProvider VideoArgsProvider, int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider, IAudioProvider AudioProvider)
+        public FFMpegMuxedWriter(string FilePath, IImageProvider ImageProvider, int FrameRate, int VideoQuality, FFMpegVideoArgsProvider VideoArgsProvider, int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider, IAudioProvider AudioProvider)
         {
             if (AudioProvider == null)
                 throw new ArgumentNullException(nameof(AudioProvider), $"{nameof(AudioProvider)} can't be null. Use {nameof(FFMpegVideoWriter)} instead.");
@@ -36,7 +36,7 @@ namespace Captura.Models
             
             _audioWriter = new AudioFileWriter(tempAudioPath, AudioProvider.WaveFormat);
 
-            _videoWriter = new FFMpegVideoWriter(tempVideoPath, FrameRate, VideoQuality, VideoArgsProvider);
+            _videoWriter = new FFMpegVideoWriter(tempVideoPath, ImageProvider, FrameRate, VideoQuality, VideoArgsProvider);
             
             _ffmpegArgs = $"-i {tempVideoPath} -i {tempAudioPath} {AudioArgsProvider(AudioQuality)} -vcodec copy \"{FilePath}\"";
         }
