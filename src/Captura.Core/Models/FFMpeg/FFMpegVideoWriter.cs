@@ -32,7 +32,7 @@ namespace Captura.Models
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-r {FrameRate} -f image2pipe -i - {VideoArgsProvider(Quality)} \"{FileName}\"",
+                    Arguments = $"-framerate {FrameRate} -f image2pipe -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true
@@ -65,7 +65,10 @@ namespace Captura.Models
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length) { }
-        
+
+        Rectangle resize;
+        bool? doResize;
+
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
@@ -74,19 +77,30 @@ namespace Captura.Models
         {
             if (evenDimensions)
             {
-                var oldImage = Image;
+                if (doResize == null)
+                {
+                    var size = Image.Size;
 
-                var rect = new Rectangle(Point.Empty, Image.Size);
+                    if (size.Height % 2 == 1)
+                        --size.Height;
 
-                if (rect.Height % 2 == 1)
-                    --rect.Height;
-                
-                if (rect.Width % 2 == 1)
-                    --rect.Width;
-                
-                Image = Image.Clone(rect, Image.PixelFormat);
+                    if (size.Width % 2 == 1)
+                        --size.Width;
 
-                oldImage.Dispose();
+                    doResize = size != Image.Size;
+
+                    if (doResize.Value)
+                        resize = new Rectangle(Point.Empty, size);
+                }
+
+                if (doResize.Value)
+                {
+                    var oldImage = Image;
+
+                    Image = Image.Clone(resize, Image.PixelFormat);
+
+                    oldImage.Dispose();
+                }
             }
 
             Image.Save(_ffmpegIn, ImageFormat.Png);
