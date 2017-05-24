@@ -9,9 +9,7 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         public IRegionProvider RegionProvider { get; }
-
-        static readonly KeyValuePair<VideoSourceKind, string> WebCamKind = new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.WebCam, "WebCam");
-
+        
         public VideoViewModel()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
@@ -19,23 +17,7 @@ namespace Captura.ViewModels
             // Check if there are multiple Screens
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
-
-            // WebCams
-            if (Settings.Instance.WebCamVisible)
-                AvailableVideoSourceKinds.Add(WebCamKind);
-
-            Settings.Instance.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(Settings.WebCamVisible))
-                {
-                    if (Settings.Instance.WebCamVisible)
-                    {
-                        AvailableVideoSourceKinds.Add(WebCamKind);
-                    }
-                    else AvailableVideoSourceKinds.Remove(WebCamKind);
-                }
-            };
-
+                    
             // Check if SharpAvi is available
             if (File.Exists("SharpAvi.dll"))
             {

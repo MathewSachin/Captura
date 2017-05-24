@@ -33,12 +33,19 @@ namespace Captura.ViewModels
                 if (value == null || SelectedCamera == value)
                     return;
 
-                _selectedCamera = value;
-
                 if (_camControl.IsCapturing)
                     _camControl.StopCapture();
 
-                _camControl.StartCapture(value);
+                try
+                {
+                    _camControl.StartCapture(value);
+
+                    _selectedCamera = value;
+                }
+                finally
+                {
+                    OnPropertyChanged();
+                }
             }
         }
 
