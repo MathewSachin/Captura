@@ -62,8 +62,12 @@ namespace Captura.ViewModels
                     AvailableVideoSources.Add(WindowItem.Desktop);
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
+                    // Prevent RegionSelector from showing here
+                    RegionProvider.SelectorVisible = false;
+
                     foreach (var win in Window.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowItem(win));
+                    
                     break;
 
                 case VideoSourceKind.Screen:
