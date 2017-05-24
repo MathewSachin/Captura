@@ -173,7 +173,7 @@
             </Expander.Header>
             <DockPanel Background="#F5F5F5"
                        Margin="-5,0,0,0"
-                       Height="480">
+                       Height="510">
                 <Label Margin="5"
                        Content="{Binding Status}"
                        Opacity="0.9"

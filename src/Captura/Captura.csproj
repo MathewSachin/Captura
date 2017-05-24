@@ -47,6 +47,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebEye.Controls.Wpf.WebCameraControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebEye.Controls.Wpf.WebCameraControl.1.0.1\lib\net40\WebEye.Controls.Wpf.WebCameraControl.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -89,6 +92,7 @@
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\WebCamViewModel.cs" />
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
@@ -97,6 +101,9 @@
     </Compile>
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebCamWindow.xaml.cs">
+      <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Languages\default.xaml">
       <SubType>Designer</SubType>
@@ -231,6 +238,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Presentation\Controls\RegionSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WebCamWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

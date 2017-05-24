@@ -9,7 +9,7 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         public IRegionProvider RegionProvider { get; }
-
+        
         public VideoViewModel()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
@@ -17,7 +17,7 @@ namespace Captura.ViewModels
             // Check if there are multiple Screens
             if (ScreenItem.Count > 1)
                 AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
-
+                    
             // Check if SharpAvi is available
             if (File.Exists("SharpAvi.dll"))
             {
@@ -25,7 +25,7 @@ namespace Captura.ViewModels
 
                 SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
-
+            
             // Check if FFMpeg is available
             RefreshFFMpeg();
                        
@@ -154,8 +154,7 @@ namespace Captura.ViewModels
         {
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
             new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.WebCam, "WebCam")
+            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();

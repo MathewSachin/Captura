@@ -5,7 +5,6 @@ namespace Captura.Models
         NoVideo,
         Window,
         Screen,
-        Region,
-        WebCam
+        Region
     }
 }

@@ -531,10 +531,10 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay>();
-
-            if (VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.WebCam)
-                overlays.Add(_cursor);
+            var overlays = new List<IOverlay>
+            {
+                _cursor
+            };
 
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
