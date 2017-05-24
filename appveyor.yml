@@ -6,32 +6,15 @@ configuration:
 - Debug
 - Release
 
-environment:
-  # Will be updated Before Build
-  AppVersion: 1.0.0
-
 install:
-  # Update Submodules
-  - git submodule update --init
-
-  # Restore packages
-  - nuget restore src/Captura.sln
+- ps: appveyor/Install.ps1
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified
   - src\packages -> **\packages.config
 
 before_build:
-  # Retrieve version from AssemblyInfo.cs
-  - ps: >-
-      $content = Get-Content "src\Captura\Properties\AssemblyInfo.cs";
-      $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
-
-      if ($match.Success)
-      {
-        $env:AppVersion = $match.Groups[1].Value;
-        Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER";
-      }
+  - ps: appveyor/Update-Version.ps1
 
 build:
   parallel: true
@@ -41,54 +24,9 @@ build:
   publish_nuget_symbols: true
 
 after_build:
-  # Create output and temp folder
-  - md Output
-  - md temp
+  - ps: appveyor/Pack-Release.ps1
 
-  # Copy licenses
-  - xcopy /s licenses Output\licenses\
-
-  # Copy build output
-  - ps: >-
-      if ($env:configuration -eq 'Release')
-      {
-        Get-ChildItem -Path 'src/Captura/bin/Release/*' -Include *.exe*, *.dll | Copy-Item -Destination 'Output/'
-      }
-      elseif ($env:configuration -eq 'Debug')
-      {
-        Get-ChildItem -Path 'src/Captura/bin/Debug/*' -Include *.exe*, *.dll, *.pdb, *.xml | Copy-Item -Destination 'Output/'
-      }
-
-  # Download BASS and BassMix
-  - ps: Invoke-WebRequest "http://www.un4seen.com/files/bass24.zip" -OutFile "temp/bass.zip"
-  - ps: Invoke-WebRequest "http://www.un4seen.com/files/bassmix24.zip" -OutFile "temp/bassmix.zip"
-
-  # Extract BASS and BassMix
-  - ps: Expand-Archive "temp/bass.zip" "temp/bass"
-  - ps: Expand-Archive "temp/bassmix.zip" "temp/bassmix"
-
-  # Copy BASS and BassMix
-  - ps: Copy-Item 'temp/bass/bass.dll', 'temp/bassmix/bassmix.dll' 'Output/'
-
-  # Pack Deploy zip
-  - ps: Compress-Archive 'Output\*' "Output\Captura-$env:configuration.zip"
-
-  # Chocolatey
-  - ps: >-
-      if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
-      {
-        $checksum = (Get-FileHash "Output/Captura-Release.zip").Hash;
-
-        $installScript = "choco/tools/chocolateyinstall.ps1";
-
-        $scriptContent = "`n`n" + (Get-Content $installScript);
-
-        # Update chocolatey install script
-        Set-Content $installScript (('$tag = "{0}"; $checksum = "{1}";{2}') -f $env:APPVEYOR_REPO_TAG_NAME, $checksum, $scriptContent);
-
-        choco pack choco/captura.nuspec --version $env:AppVersion;
-        Push-AppVeyorArtifact "captura.$env:AppVersion.nupkg" -DeploymentName Chocolatey;
-      }
+  - ps: appveyor/Choco.ps1
 
 artifacts:
   - path: Output/Captura-$(configuration).zip
