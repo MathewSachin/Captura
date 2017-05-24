@@ -24,14 +24,33 @@ cache:
 before_build:
   # Retrieve version from AssemblyInfo.cs
   - ps: >-
-      $content = Get-Content "src\Captura\Properties\AssemblyInfo.cs";
-      $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
+      $assemblyInfo = "src\Captura\Properties\AssemblyInfo.cs";
 
-      if ($match.Success)
+      if ($env:appveyor_repo_tag -eq 'true')
       {
-        $env:AppVersion = $match.Groups[1].Value;
-        Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER";
+        if (-not ($env:APPVEYOR_REPO_TAG_NAME -match '^v\d+\.\d+\.\d+$'))
+        {
+          throw 'Invalid Tag Format';
+        }
+
+        $env:AppVersion = ($env:APPVEYOR_REPO_TAG_NAME).Substring(1);
+
+        $content = Get-Content $assemblyInfo;
+        $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(\"$env:AppVersion\")";
+        Set-Content $assemblyInfo $replaced;
       }
+      else
+      {
+        $content = Get-Content $assemblyInfo;
+        $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)');
+
+        if ($match.Success)
+        {
+          $env:AppVersion = $match.Groups[1].Value;          
+        }
+      }
+
+      Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER";
 
 build:
   parallel: true
