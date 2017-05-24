@@ -1,0 +1,29 @@
+﻿<Window x:Class="Captura.WebCamWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Captura.ViewModels"
+        xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
+        Title="WebCam View"
+        Width="640"
+        Height="480"
+        MinWidth="400"
+        MinHeight="250"
+        Topmost="True"
+        Visibility="{Binding Settings.WebCamVisible, Source={StaticResource MainViewModel}, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
+    <Window.DataContext>
+        <vm:WebCamViewModel/>
+    </Window.DataContext>
+    <DockPanel Margin="5">
+        <DockPanel DockPanel.Dock="Bottom"
+                   Margin="0,5">
+            <Label Content="Camera"
+                   ContentStringFormat="{}{0}:"
+                   Margin="0,0,10,0"
+                   VerticalContentAlignment="Center"/>
+            <ComboBox DisplayMemberPath="Name"
+                      ItemsSource="{Binding AvailableCameras}"
+                      SelectedItem="{Binding SelectedCamera, Mode=TwoWay}"/>
+        </DockPanel>
+        <wpf:WebCameraControl x:Name="webCameraControl" />
+    </DockPanel>
+</Window>

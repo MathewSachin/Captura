@@ -10,7 +10,7 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         public IRegionProvider RegionProvider { get; }
-
+        
         public VideoViewModel()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
@@ -26,7 +26,7 @@ namespace Captura.ViewModels
 
                 SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
-
+            
             // Check if FFMpeg is available
             RefreshFFMpeg();
                        
@@ -155,8 +155,7 @@ namespace Captura.ViewModels
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.WebCam, nameof(Resources.WebCam))
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
