@@ -66,16 +66,22 @@ namespace Captura
             if (string.IsNullOrWhiteSpace(TextBOX.Text))
                 return;
 
-            try { Value = int.Parse(TextBOX.Text); }
-            catch
+            if (int.TryParse(TextBOX.Text, out var result))
+            {
+                Value = result;
+            }
+            else
             {
                 Value = Last;
 
                 TextBOX.Text = Last.ToString();
             }
 
-            if (Value > Maximum) Value = Maximum;
-            else if (Value < Minimum) Value = Minimum;
+            if (Value > Maximum)
+                Value = Maximum;
+
+            else if (Value < Minimum)
+                Value = Minimum;
 
             Last = Value;
         }

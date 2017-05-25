@@ -41,11 +41,7 @@ namespace Captura.ViewModels
                     // Remove from List
                     OnRemove?.Invoke();
                 }
-                catch (IOException E)
-                {
-                    ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
-                }
-                catch (UnauthorizedAccessException E)
+                catch (Exception E)
                 {
                     ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
                 }

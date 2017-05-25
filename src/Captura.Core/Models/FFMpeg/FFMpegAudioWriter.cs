@@ -1,4 +1,5 @@
 ﻿using Screna.Audio;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -8,6 +9,7 @@ namespace Captura.Models
     {
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
+        bool _error;
 
         public FFMpegAudioWriter(string FileName, int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider, int Frequency = 44100, int Channels = 2)
         {
@@ -23,8 +25,10 @@ namespace Captura.Models
                 }
             };
 
-            _ffmpegProcess.Start();
+            _ffmpegProcess.Exited += (s, e) => _error = _ffmpegProcess.ExitCode != 0;
 
+            _ffmpegProcess.Start();
+            
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
         }
 
@@ -42,6 +46,11 @@ namespace Captura.Models
 
         public void Write(byte[] Data, int Offset, int Count)
         {
+            if (_error)
+            {
+                throw new Exception("An Error Occured with FFMpeg");
+            }
+
             _ffmpegIn.Write(Data, Offset, Count);
         }
     }

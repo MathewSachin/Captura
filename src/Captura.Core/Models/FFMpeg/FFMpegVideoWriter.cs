@@ -1,4 +1,5 @@
 ﻿using Screna;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -16,6 +17,7 @@ namespace Captura.Models
         readonly Stream _ffmpegIn;
         readonly Rectangle? resize;
         readonly byte[] _videoBuffer;
+        bool _error;
         
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
@@ -54,6 +56,8 @@ namespace Captura.Models
                 }
             };
 
+            _ffmpegProcess.Exited += (s, e) => _error = _ffmpegProcess.ExitCode != 0;
+
             _ffmpegProcess.Start();
 
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
@@ -87,6 +91,11 @@ namespace Captura.Models
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
+            if (_error)
+            {
+                throw new Exception("An Error Occured with FFMpeg");
+            }
+
             if (resize != null)
             {
                 var oldImage = Image;
