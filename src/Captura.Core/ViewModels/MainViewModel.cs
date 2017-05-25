@@ -478,7 +478,8 @@ namespace Captura.ViewModels
                 StopRecording();
 
                 Status = "Error";
-                MessageBox.Show(E.ToString());
+
+                ServiceProvider.ShowError($"Error Occured\n\n{E}");
             };
             
             if (StartDelay > 0)
@@ -551,27 +552,33 @@ namespace Captura.ViewModels
             
             RecorderState = RecorderState.NotRecording;
 
-            CanChangeVideoSource = true;
-            
-            _timer.Stop();
-
+            // Set Recorder to null
             var rec = _recorder;
             _recorder = null;
 
-            await Task.Run(() => rec.Dispose());
+            var task = Task.Run(() => rec.Dispose());
 
+            _timer.Stop();
+
+            #region After Recording Tasks
+            CanChangeVideoSource = true;
+            
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
 
+            VideoViewModel.RegionProvider.SnapEnabled = true;
+            #endregion
+
+            // Ensure saved
+            await task;
+            
             // After Save
             savingRecentItem.Saved();
 
             ServiceProvider.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
-            });
-
-            VideoViewModel.RegionProvider.SnapEnabled = true;
+            });            
         }
     }
 }
