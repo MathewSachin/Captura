@@ -31,6 +31,9 @@ namespace Captura.ViewModels
 
             DeleteCommand = new DelegateCommand(() =>
             {
+                if (!ServiceProvider.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
+                    return;
+
                 try
                 {
                     File.Delete(FilePath);

@@ -128,5 +128,10 @@ namespace Captura
         {
             MessageBox.Show(Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        public static bool ShowYesNo(string Message, string Title)
+        {
+            return MessageBox.Show(Message, Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
+        }
     }
 }
