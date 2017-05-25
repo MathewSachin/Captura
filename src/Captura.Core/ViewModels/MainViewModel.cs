@@ -571,11 +571,7 @@ namespace Captura.ViewModels
 
             SystemTrayManager.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
             {
-                try
-                {
-                    Process.Start(_currentFileName);
-                }
-                catch { }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
             });
 
             VideoViewModel.RegionProvider.SnapEnabled = true;

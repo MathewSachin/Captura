@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -108,6 +109,19 @@ namespace Captura
         public static void RaiseFFMpegPathChanged()
         {
             FFMpegPathChanged?.Invoke();
+        }
+
+        public static void LaunchFile(ProcessStartInfo StartInfo)
+        {
+            try { Process.Start(StartInfo.FileName); }
+            catch (Win32Exception E) when (E.NativeErrorCode == 2)
+            {
+                ShowError($"Could not find file: {StartInfo.FileName}");
+            }
+            catch (Exception E)
+            {
+                ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
+            }
         }
 
         public static void ShowError(string Message)

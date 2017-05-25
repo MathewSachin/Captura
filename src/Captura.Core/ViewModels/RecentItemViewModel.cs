@@ -21,20 +21,12 @@ namespace Captura.ViewModels
 
             OpenCommand = new DelegateCommand(() =>
             {
-                try { Process.Start(FilePath); }
-                catch
-                {
-                    // TODO: Show MessageBox Service - file not found
-                }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath));
             }, !IsSaving);
 
             PrintCommand = new DelegateCommand(() =>
             {
-                try { Process.Start(new ProcessStartInfo(FilePath) { Verb = "Print" }); }
-                catch
-                {
-                    // Suppress error
-                }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath) { Verb = "Print" });
             }, CanPrint);
 
             DeleteCommand = new DelegateCommand(() =>

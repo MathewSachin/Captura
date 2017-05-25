@@ -6,7 +6,6 @@ using System.IO;
 using System.Diagnostics;
 using System;
 using System.Windows.Media.Imaging;
-using System.ComponentModel;
 
 namespace Captura
 {
@@ -51,15 +50,7 @@ namespace Captura
 
         void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            try { Process.Start(FilePath); }
-            catch (Win32Exception E) when (E.NativeErrorCode == 2)
-            {
-                ServiceProvider.ShowError($"Could not find file: {FilePath}");
-            }
-            catch (Exception E)
-            {
-                ServiceProvider.ShowError($"Could not open file: {FilePath}\n\n\n{E}");
-            }
+            ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath));
 
             CloseButton_Click();
         }
