@@ -11,8 +11,7 @@
                         DockPanel.Dock="Right"
                         Command="{Binding RecentViewModel.ClearCommand}"/>
                 <Label Content="Max Items to persist"
-                       ContentStringFormat="{}{0}:"
-                       VerticalContentAlignment="Center"/>
+                       ContentStringFormat="{}{0}:"/>
                 <local:NumericBox Margin="5,0,10,0"
                                   Minimum="0"
                                   Value="{Binding Settings.RecentMax, Mode=TwoWay}"/>

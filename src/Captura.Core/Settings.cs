@@ -17,6 +17,14 @@ namespace Captura
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
         [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool Expanded
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         public List<RecentItemModel> RecentItems
         {
             get => Get<List<RecentItemModel>>();

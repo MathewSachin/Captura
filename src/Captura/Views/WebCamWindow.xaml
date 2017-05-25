@@ -18,8 +18,7 @@
                    Margin="0,5">
             <Label Content="Camera"
                    ContentStringFormat="{}{0}:"
-                   Margin="0,0,10,0"
-                   VerticalContentAlignment="Center"/>
+                   Margin="0,0,10,0"/>
             <ComboBox DisplayMemberPath="Name"
                       ItemsSource="{Binding AvailableCameras}"
                       SelectedItem="{Binding SelectedCamera, Mode=TwoWay}"/>

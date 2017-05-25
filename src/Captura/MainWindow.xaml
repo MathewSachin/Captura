@@ -22,7 +22,6 @@
                     <ControlTemplate TargetType="TabItem">
                         <Grid Name="Panel">
                             <Label Content="{TemplateBinding Header}"
-                                   VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    Name="HeaderLabel"
                                    Margin="10,2"/>
@@ -123,7 +122,7 @@
         </tb:TaskbarIcon>
 
         <Expander Padding="5,0,0,0"
-                  IsExpanded="True">
+                  IsExpanded="{Binding Settings.Expanded, Mode=TwoWay}">
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
@@ -166,7 +165,6 @@
                         <Label Content="{Binding TimeSpan}"
                                Foreground="White"
                                Margin="0,-1"
-                               VerticalContentAlignment="Center"
                                HorizontalContentAlignment="Center"/>
                     </Grid>
                 </DockPanel>
@@ -207,8 +205,7 @@
                     <Label Content="FFMpeg Folder"
                            ContentStringFormat="{}{0}: "
                            DockPanel.Dock="Left"
-                           Padding="5,0"
-                           VerticalContentAlignment="Center"/>
+                           Padding="5,0"/>
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.FFMpegFolder}"/>
                 </DockPanel>

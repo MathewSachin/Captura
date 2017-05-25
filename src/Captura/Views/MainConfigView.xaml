@@ -116,10 +116,8 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{DynamicResource s_FrameRate}"
                    ContentStringFormat="{}{0}:"
-                   VerticalContentAlignment="Center"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
-                   VerticalContentAlignment="Center"
                    Margin="3,0"/>
             <Slider Minimum="1"
                     Maximum="30" 
@@ -134,11 +132,9 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{DynamicResource s_Quality}"
                    ContentStringFormat="{}{0}:"
-                   VerticalContentAlignment="Center"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.VideoQuality}"
                    ContentStringFormat="{}{0:N0}%"
-                   VerticalContentAlignment="Center"
                    Margin="3,0"/>
             <Slider Minimum="1" 
                     Maximum="100"
@@ -190,8 +186,7 @@
         <DockPanel Margin="0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="Audio Format when no Video:"
-                   Margin="10,0,0,0"
-                   VerticalContentAlignment="Center"/>
+                   Margin="10,0,0,0"/>
             <ComboBox Margin="7,0"
                       VerticalAlignment="Center"
                       ItemsSource="{Binding AudioViewModel.AvailableAudioWriters}"
@@ -202,11 +197,9 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="Quality"
                    ContentStringFormat="{}{0}:"
-                   VerticalContentAlignment="Center"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.AudioQuality}"
                    ContentStringFormat="{}{0:N0}%"
-                   VerticalContentAlignment="Center"
                    Margin="3,0"/>
             <Slider Minimum="1" 
                     Maximum="100"
