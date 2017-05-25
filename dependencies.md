@@ -4,6 +4,8 @@ title: Dependencies
 permalink: Dependencies/
 ---
 
+> THIS PAGE IS OUTDATED. THERE HAS BEEN AN ADDITION IN DEPENDENCIES.
+
 ## Required Dependencies
 
 ### [Screna](https://github.com/MathewSachin/Screna)

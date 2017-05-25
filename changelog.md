@@ -4,6 +4,16 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v3.3.0
+- **fix:** h264 (FFMpeg Mp4) encoder requires video dimensions to be even.
+- **Webcam Support:** Not as a Video Source but as a standalone window which can be captured using standard methods.
+- Redesigned RegionSelector.
+- Implemented RegionSelector **Snap to Window**.
+- **fix:** Prevent appearance of RegionSelector in Window list.
+- **fix:** Prevent RegionSelector from being Maximized.
+- **fix:** Heavy memory usage with FFMpeg.
+- Collapsed/Expanded state of Main Window is persistence.
+
 ## v3.2.0
 - .Net 4.6.1 is required.
 - Remembers last used Audio/Video Codecs and Sources.
