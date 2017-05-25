@@ -47,7 +47,7 @@ namespace Captura.Models
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
+                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true

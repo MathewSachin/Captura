@@ -38,7 +38,7 @@ namespace Captura.Models
 
             _videoWriter = new FFMpegVideoWriter(tempVideoPath, ImageProvider, FrameRate, VideoQuality, VideoArgsProvider);
             
-            _ffmpegArgs = $"-i {tempVideoPath} -i {tempAudioPath} {AudioArgsProvider(AudioQuality)} -vcodec copy \"{FilePath}\"";
+            _ffmpegArgs = $"-hide_banner -i {tempVideoPath} -i {tempAudioPath} {AudioArgsProvider(AudioQuality)} -vcodec copy \"{FilePath}\"";
         }
 
         /// <summary>
