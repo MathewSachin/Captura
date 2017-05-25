@@ -69,7 +69,7 @@ namespace Captura.ViewModels
             {
                 if (RecorderState == RecorderState.Paused)
                 {
-                    SystemTrayManager.SystemTray.HideNotification();
+                    ServiceProvider.SystemTray.HideNotification();
 
                     _recorder.Start();
                     _timer.Start();
@@ -85,7 +85,7 @@ namespace Captura.ViewModels
                     RecorderState = RecorderState.Paused;
                     Status = "Paused";
 
-                    SystemTrayManager.SystemTray.ShowTextNotification("Recording Paused", 3000, null);
+                    ServiceProvider.SystemTray.ShowTextNotification("Recording Paused", 3000, null);
                 }
             }, false);
 
@@ -348,7 +348,7 @@ namespace Captura.ViewModels
                         Status = "Image Saved to Disk";
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
-                        SystemTrayManager.SystemTray.ShowScreenShotNotification(fileName);
+                        ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
                     }
                     catch (Exception E)
                     {
@@ -363,7 +363,7 @@ namespace Captura.ViewModels
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
             {
@@ -386,7 +386,7 @@ namespace Captura.ViewModels
 
         void CaptureScreenShot()
         {
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             Bitmap bmp = null;
 
@@ -425,7 +425,7 @@ namespace Captura.ViewModels
         {
             VideoViewModel.RegionProvider.SnapEnabled = false;
 
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
@@ -569,7 +569,7 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            SystemTrayManager.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
+            ServiceProvider.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
             });
