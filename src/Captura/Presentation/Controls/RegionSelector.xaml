@@ -44,7 +44,6 @@
             <Label Cursor="SizeAll"
                    Background="#EEEEEE"
                    Content="{local:Loc RegionSelector}"
-                   VerticalContentAlignment="Center"
                    HorizontalContentAlignment="Center"
                    MouseDoubleClick="HeaderMouseDoubleClick"
                    PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"

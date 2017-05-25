@@ -10,7 +10,7 @@ namespace Captura.Models
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p";
+            return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
         };
 
         public static FFMpegVideoArgsProvider Avi { get; } = VideoQuality =>
@@ -56,9 +56,9 @@ namespace Captura.Models
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
             if (AudioProvider == null)
-                return new FFMpegVideoWriter(FileName, FrameRate, VideoQuality, _videoArgsProvider);
+                return new FFMpegVideoWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider);
 
-            return new FFMpegMuxedWriter(FileName, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider);
+            return new FFMpegMuxedWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider);
         }        
     }
 }

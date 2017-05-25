@@ -51,6 +51,13 @@ namespace Captura
         {
             InitializeComponent();
 
+            // Prevent being Maximized
+            StateChanged += (s, e) =>
+            {
+                if (WindowState == WindowState.Maximized)
+                    WindowState = WindowState.Normal;
+            };
+
             // Prevent Closing by User
             Closing += (s, e) => e.Cancel = true;
         }

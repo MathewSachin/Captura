@@ -17,14 +17,12 @@
                     </Grid.RowDefinitions>
 
                     <Label Content="{local:Loc StartDelay}"
-                           VerticalContentAlignment="Center"
                            Margin="0,2,5,2"/>
                     <local:NumericBox Value="{Binding StartDelay, Mode=TwoWay}"
                                       Grid.Column="1"
                                       Margin="0,2"/>
 
                     <Label Content="{local:Loc CaptureDuration}"
-                           VerticalContentAlignment="Center"
                            Margin="0,2,5,2"
                            Grid.Row="1"/>
                     <local:NumericBox Value="{Binding Duration, Mode=TwoWay}"
@@ -75,12 +73,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label VerticalContentAlignment="Center"
-                           Content="{local:Loc SaveTo}"
+                    <Label Content="{local:Loc SaveTo}"
                            Margin="0,0,5,0"/>
 
-                    <ComboBox VerticalAlignment="Center" 
-                              Grid.Column="1"
+                    <ComboBox Grid.Column="1"
                               ItemsSource="{Binding ScreenShotSaveTo}"
                               SelectedValue="{Binding Settings.ScreenShotSaveTo, Mode=TwoWay}"
                               SelectedValuePath="Source"
@@ -88,8 +84,7 @@
 
                     <Label Content="{local:Loc As}"
                            Grid.Column="2"
-                           Margin="5,0"
-                           VerticalAlignment="Center"/>
+                           Margin="5,0"/>
 
                     <ComboBox VerticalAlignment="Center"
                               Grid.Column="3"
@@ -118,7 +113,6 @@
                                       IsEnabled="{Binding Settings.DoResize}"/>
 
                     <Label Content="x"
-                           VerticalContentAlignment="Center"
                            Grid.Column="2"
                            Margin="5,0"/>
 
