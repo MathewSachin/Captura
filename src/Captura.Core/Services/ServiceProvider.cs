@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Captura
 {
@@ -107,6 +108,11 @@ namespace Captura
         public static void RaiseFFMpegPathChanged()
         {
             FFMpegPathChanged?.Invoke();
+        }
+
+        public static void ShowError(string Message)
+        {
+            MessageBox.Show(Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

@@ -41,10 +41,12 @@ namespace Captura.ViewModels
                     _camControl.StartCapture(value);
 
                     _selectedCamera = value;
-                }
-                finally
-                {
+
                     OnPropertyChanged();
+                }
+                catch (Exception E)
+                {
+                    ServiceProvider.ShowError($"Could not Start Capture\n\n\n{E}");
                 }
             }
         }

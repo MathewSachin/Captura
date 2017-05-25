@@ -510,7 +510,7 @@ namespace Captura.ViewModels
             switch (encoder)
             {
                 case GifWriter gif:
-                    if (Settings.GifUnconstrained)
+                    if (Settings.GifVariable)
                         _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;

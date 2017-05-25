@@ -39,13 +39,21 @@ namespace Captura.ViewModels
 
             DeleteCommand = new DelegateCommand(() =>
             {
-                try { File.Delete(FilePath); }
-                catch
+                try
                 {
-                    //MessageBox.Show($"Can't Delete {FilePath}. It will still be removed from list.", "Delete Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                    File.Delete(FilePath);
 
-                OnRemove?.Invoke();
+                    // Remove from List
+                    OnRemove?.Invoke();
+                }
+                catch (IOException E)
+                {
+                    ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
+                }
+                catch (UnauthorizedAccessException E)
+                {
+                    ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
+                }
             }, !IsSaving);
         }
 

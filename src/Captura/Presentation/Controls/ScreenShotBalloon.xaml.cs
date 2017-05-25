@@ -4,6 +4,9 @@ using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.IO;
 using System.Diagnostics;
+using System;
+using System.Windows.Media.Imaging;
+using System.ComponentModel;
 
 namespace Captura
 {
@@ -19,6 +22,14 @@ namespace Captura
             FileName = Path.GetFileName(FilePath);
 
             InitializeComponent();
+
+            // Do not assign image directly, cache it, else the file can't be deleted.
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(FilePath);
+            image.EndInit();
+            img.Source = image;
         }
 
         public void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
@@ -41,7 +52,14 @@ namespace Captura
         void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
             try { Process.Start(FilePath); }
-            catch { }
+            catch (Win32Exception E) when (E.NativeErrorCode == 2)
+            {
+                ServiceProvider.ShowError($"Could not find file: {FilePath}");
+            }
+            catch (Exception E)
+            {
+                ServiceProvider.ShowError($"Could not open file: {FilePath}\n\n\n{E}");
+            }
 
             CloseButton_Click();
         }
