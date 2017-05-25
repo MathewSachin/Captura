@@ -12,7 +12,7 @@ permalink: Changelog/
 - **fix:** Prevent appearance of RegionSelector in Window list.
 - **fix:** Prevent RegionSelector from being Maximized.
 - **fix:** Heavy memory usage with FFMpeg.
-- Collapsed/Expanded state of Main Window is persistence.
+- Collapsed/Expanded state of Main Window is persisted.
 
 ## v3.2.0
 - .Net 4.6.1 is required.
