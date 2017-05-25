@@ -473,16 +473,13 @@ namespace Captura.ViewModels
                 else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
 
-            /*_recorder.RecordingStopped += (s, E) =>
+            _recorder.ErrorOccured += E =>
             {
-                OnStopped();
-
-                if (E?.Error == null)
-                    return;
+                StopRecording();
 
                 Status = "Error";
                 MessageBox.Show(E.ToString());
-            };*/
+            };
             
             if (StartDelay > 0)
             {
@@ -511,7 +508,7 @@ namespace Captura.ViewModels
             {
                 case GifWriter gif:
                     if (Settings.GifVariable)
-                        _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
+                        _recorder = new VariableFrameRateGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
                     break;
