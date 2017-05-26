@@ -4,7 +4,6 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using DPoint = System.Drawing.Point;
 
 namespace Captura
 {
@@ -18,15 +17,7 @@ namespace Captura
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
             });
-
-            ServiceProvider.Register<Func<DPoint>>(ServiceName.MainWindowLocation, () => new DPoint((int) Left, (int) Top));
-
-            ServiceProvider.Register<Action<DPoint>>(ServiceName.SetMainWindowLocation, point =>
-            {
-                Left = point.X;
-                Top = point.Y;
-            });
-
+            
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
             {
