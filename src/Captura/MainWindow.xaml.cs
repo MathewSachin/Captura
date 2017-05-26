@@ -47,7 +47,11 @@ namespace Captura
             
             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
 
-            Closed += (s, e) => MenuExit_Click();
+            Closing += (s, e) =>
+            {
+                if (!TryExit())
+                    e.Cancel = true;
+            };
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -82,11 +86,26 @@ namespace Captura
             }
         }
 
-        void MenuExit_Click(object sender = null, RoutedEventArgs e = null)
+        bool TryExit()
         {
-            (DataContext as MainViewModel).Dispose();
+            var vm = DataContext as MainViewModel;
+
+            if (vm.RecorderState == RecorderState.Recording)
+            {
+                if (!ServiceProvider.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+
+            vm.Dispose();
             SystemTray.Dispose();
             Application.Current.Shutdown();
+
+            return true;
+        }
+
+        void MenuExit_Click(object sender, RoutedEventArgs e)
+        {
+            TryExit();
         }
     }
 }

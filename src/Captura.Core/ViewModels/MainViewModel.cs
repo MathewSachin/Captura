@@ -70,7 +70,7 @@ namespace Captura.ViewModels
             {
                 if (RecorderState == RecorderState.Paused)
                 {
-                    SystemTrayManager.SystemTray.HideNotification();
+                    ServiceProvider.SystemTray.HideNotification();
 
                     _recorder.Start();
                     _timer.Start();
@@ -86,7 +86,7 @@ namespace Captura.ViewModels
                     RecorderState = RecorderState.Paused;
                     Status.LocalizationKey = nameof(Resources.Paused);
 
-                    SystemTrayManager.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
+                    ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
                 }
             }, false);
 
@@ -349,7 +349,7 @@ namespace Captura.ViewModels
                         Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
-                        SystemTrayManager.SystemTray.ShowScreenShotNotification(fileName);
+                        ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
                     }
                     catch (Exception E)
                     {
@@ -365,7 +365,7 @@ namespace Captura.ViewModels
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
             {
@@ -388,7 +388,7 @@ namespace Captura.ViewModels
 
         void CaptureScreenShot()
         {
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             Bitmap bmp = null;
 
@@ -427,7 +427,7 @@ namespace Captura.ViewModels
         {
             VideoViewModel.RegionProvider.SnapEnabled = false;
 
-            SystemTrayManager.SystemTray.HideNotification();
+            ServiceProvider.SystemTray.HideNotification();
 
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
@@ -475,16 +475,14 @@ namespace Captura.ViewModels
                 else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
 
-            /*_recorder.RecordingStopped += (s, E) =>
+            _recorder.ErrorOccured += E =>
             {
-                OnStopped();
+                StopRecording();
 
-                if (E?.Error == null)
-                    return;
+                Status.LocalizationKey = nameof(Resources.ErrorOccured);
 
-                Status = "Error";
-                MessageBox.Show(E.ToString());
-            };*/
+                ServiceProvider.ShowError($"Error Occured\n\n{E}");
+            };
             
             if (StartDelay > 0)
             {
@@ -512,8 +510,8 @@ namespace Captura.ViewModels
             switch (encoder)
             {
                 case GifWriter gif:
-                    if (Settings.GifUnconstrained)
-                        _recorder = new UnconstrainedFrameRateGifRecorder(gif, ImgProvider);
+                    if (Settings.GifVariable)
+                        _recorder = new VariableFrameRateGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
                     break;
@@ -556,31 +554,33 @@ namespace Captura.ViewModels
             
             RecorderState = RecorderState.NotRecording;
 
-            CanChangeVideoSource = true;
-            
-            _timer.Stop();
-
+            // Set Recorder to null
             var rec = _recorder;
             _recorder = null;
 
-            await Task.Run(() => rec.Dispose());
+            var task = Task.Run(() => rec.Dispose());
 
+            _timer.Stop();
+
+            #region After Recording Tasks
+            CanChangeVideoSource = true;
+            
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
 
+            VideoViewModel.RegionProvider.SnapEnabled = true;
+            #endregion
+
+            // Ensure saved
+            await task;
+            
             // After Save
             savingRecentItem.Saved();
 
-            SystemTrayManager.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () => 
+            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () => 
             {
-                try
-                {
-                    Process.Start(_currentFileName);
-                }
-                catch { }
-            });
-
-            VideoViewModel.RegionProvider.SnapEnabled = true;
+                ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
+            });            
         }
     }
 }

@@ -48,8 +48,8 @@
                            FontWeight="Bold"/>
 
                 <CheckBox Margin="0,2"
-                          Content="{local:Loc GifUnconstrained}"
-                          IsChecked="{Binding Settings.GifUnconstrained, Mode=TwoWay}"/>
+                          Content="{local:Loc VarFrameRate}"
+                          IsChecked="{Binding Settings.GifVariable, Mode=TwoWay}"/>
 
                 <DockPanel Margin="0,2">
                     <CheckBox Content="{local:Loc Repeat}"

@@ -213,8 +213,8 @@
   <data name="As" xml:space="preserve">
     <value>as</value>
   </data>
-  <data name="GifUnconstrained" xml:space="preserve">
-    <value>Unconstrained Gif</value>
+  <data name="VarFrameRate" xml:space="preserve">
+    <value>Variable Frame Rate</value>
   </data>
   <data name="Hotkeys" xml:space="preserve">
     <value>Hotkeys</value>
@@ -353,5 +353,8 @@
   </data>
   <data name="MaxRecent" xml:space="preserve">
     <value>Max items to persist</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>An Error Occured</value>
   </data>
 </root>

@@ -196,6 +196,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An Error Occured.
+        /// </summary>
+        public static string ErrorOccured {
+            get {
+                return ResourceManager.GetString("ErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string Exit {
@@ -246,15 +255,6 @@ namespace Captura.Properties {
         public static string Gif {
             get {
                 return ResourceManager.GetString("Gif", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unconstrained Gif.
-        /// </summary>
-        public static string GifUnconstrained {
-            get {
-                return ResourceManager.GetString("GifUnconstrained", resourceCulture);
             }
         }
         
@@ -705,6 +705,15 @@ namespace Captura.Properties {
         public static string Transforms {
             get {
                 return ResourceManager.GetString("Transforms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable Frame Rate.
+        /// </summary>
+        public static string VarFrameRate {
+            get {
+                return ResourceManager.GetString("VarFrameRate", resourceCulture);
             }
         }
         

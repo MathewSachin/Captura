@@ -9,7 +9,7 @@ namespace Captura.ViewModels
 {
     public partial class MainViewModel
     {
-        bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
+        public bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
 
         public TextLocalizer Status { get; } = new TextLocalizer(Resources.Ready);
 

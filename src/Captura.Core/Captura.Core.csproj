@@ -84,7 +84,6 @@
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
-    <Compile Include="Models\SystemTrayManager.cs" />
     <Compile Include="Models\VideoItems\IVideoItem.cs" />
     <Compile Include="Models\VideoItems\VideoSourceKind.cs" />
     <Compile Include="Models\VideoItems\WindowItem.cs" />

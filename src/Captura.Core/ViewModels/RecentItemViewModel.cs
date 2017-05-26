@@ -21,31 +21,30 @@ namespace Captura.ViewModels
 
             OpenCommand = new DelegateCommand(() =>
             {
-                try { Process.Start(FilePath); }
-                catch
-                {
-                    // TODO: Show MessageBox Service - file not found
-                }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath));
             }, !IsSaving);
 
             PrintCommand = new DelegateCommand(() =>
             {
-                try { Process.Start(new ProcessStartInfo(FilePath) { Verb = "Print" }); }
-                catch
-                {
-                    // Suppress error
-                }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath) { Verb = "Print" });
             }, CanPrint);
 
             DeleteCommand = new DelegateCommand(() =>
             {
-                try { File.Delete(FilePath); }
-                catch
-                {
-                    //MessageBox.Show($"Can't Delete {FilePath}. It will still be removed from list.", "Delete Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                if (!ServiceProvider.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
+                    return;
 
-                OnRemove?.Invoke();
+                try
+                {
+                    File.Delete(FilePath);
+
+                    // Remove from List
+                    OnRemove?.Invoke();
+                }
+                catch (Exception E)
+                {
+                    ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
+                }
             }, !IsSaving);
         }
 
