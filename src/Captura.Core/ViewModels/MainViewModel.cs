@@ -353,7 +353,8 @@ namespace Captura.ViewModels
                     }
                     catch (Exception E)
                     {
-                        //Status = "Not Saved. " + E.Message;
+                        ServiceProvider.Messenger.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
+
                         Status.LocalizationKey = nameof(Resources.NotSaved);
                     }
                 }
@@ -481,7 +482,7 @@ namespace Captura.ViewModels
 
                 Status.LocalizationKey = nameof(Resources.ErrorOccured);
 
-                ServiceProvider.ShowError($"Error Occured\n\n{E}");
+                ServiceProvider.Messenger.ShowError($"Error Occured\n\n{E}");
             };
             
             if (StartDelay > 0)

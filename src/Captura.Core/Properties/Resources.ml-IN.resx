@@ -363,4 +363,13 @@
   <data name="WindowWidth" xml:space="preserve">
     <value>700</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>അല്ല</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ശരി</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>അതെ</value>
+  </data>
 </root>

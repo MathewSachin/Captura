@@ -55,6 +55,11 @@
         /// <summary>
         /// Gets the ISystemTray.
         /// </summary>
-        SystemTray
+        SystemTray,
+
+        /// <summary>
+        /// Gets the IMessageProvider.
+        /// </summary>
+        Message
     }
 }

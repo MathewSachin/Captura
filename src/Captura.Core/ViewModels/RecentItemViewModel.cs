@@ -31,7 +31,7 @@ namespace Captura.ViewModels
 
             DeleteCommand = new DelegateCommand(() =>
             {
-                if (!ServiceProvider.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
+                if (!ServiceProvider.Messenger.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
                     return;
 
                 try
@@ -43,7 +43,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception E)
                 {
-                    ServiceProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
+                    ServiceProvider.Messenger.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
                 }
             }, !IsSaving);
         }
