@@ -96,6 +96,11 @@
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />
+    <Compile Include="Properties\Resources.ml-IN.Designer.cs">
+      <DependentUpon>Resources.ml-IN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,6 +128,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.ml-IN.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ml-IN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
