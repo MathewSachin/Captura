@@ -788,5 +788,23 @@ namespace Captura.Properties {
                 return ResourceManager.GetString("Window", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 510.
+        /// </summary>
+        public static string WindowHeight {
+            get {
+                return ResourceManager.GetString("WindowHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 400.
+        /// </summary>
+        public static string WindowWidth {
+            get {
+                return ResourceManager.GetString("WindowWidth", resourceCulture);
+            }
+        }
     }
 }
