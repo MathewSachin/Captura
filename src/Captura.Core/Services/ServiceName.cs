@@ -50,6 +50,10 @@
         /// <summary>
         /// Gets the IMessageProvider.
         /// </summary>
-        Message
+        Message,
+
+        /// Gets the IWebCamProvider.
+        /// </summary>
+        WebCam
     }
 }
