@@ -79,15 +79,6 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to as.
-        /// </summary>
-        public static string As {
-            get {
-                return ResourceManager.GetString("As", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Audio.
         /// </summary>
         public static string Audio {
@@ -277,6 +268,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image Format.
+        /// </summary>
+        public static string ImgFormat {
+            get {
+                return ResourceManager.GetString("ImgFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Saved to Clipboard.
         /// </summary>
         public static string ImgSavedClipboard {
@@ -408,15 +408,6 @@ namespace Captura.Properties {
         public static string OpenOutFolder {
             get {
                 return ResourceManager.GetString("OpenOutFolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Other.
-        /// </summary>
-        public static string Other {
-            get {
-                return ResourceManager.GetString("Other", resourceCulture);
             }
         }
         
@@ -592,11 +583,11 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save to.
+        ///   Looks up a localized string similar to Save Location.
         /// </summary>
-        public static string SaveTo {
+        public static string SaveLocation {
             get {
-                return ResourceManager.GetString("SaveTo", resourceCulture);
+                return ResourceManager.GetString("SaveLocation", resourceCulture);
             }
         }
         

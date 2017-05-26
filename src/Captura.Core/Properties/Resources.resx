@@ -168,9 +168,6 @@
   <data name="OpenOutFolder" xml:space="preserve">
     <value>Open Output Folder</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>Other</value>
-  </data>
   <data name="OutFolder" xml:space="preserve">
     <value>Output Folder</value>
   </data>
@@ -210,8 +207,8 @@
   <data name="VideoSource" xml:space="preserve">
     <value>Video Source</value>
   </data>
-  <data name="As" xml:space="preserve">
-    <value>as</value>
+  <data name="ImgFormat" xml:space="preserve">
+    <value>Image Format</value>
   </data>
   <data name="VarFrameRate" xml:space="preserve">
     <value>Variable Frame Rate</value>
@@ -225,8 +222,8 @@
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
-  <data name="SaveTo" xml:space="preserve">
-    <value>Save to</value>
+  <data name="SaveLocation" xml:space="preserve">
+    <value>Save Location</value>
   </data>
   <data name="ShowSysNotify" xml:space="preserve">
     <value>Show System Tray Notifications</value>
