@@ -772,6 +772,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebCam View.
+        /// </summary>
+        public static string WebCamView {
+            get {
+                return ResourceManager.GetString("WebCamView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Window.
         /// </summary>
         public static string Window {

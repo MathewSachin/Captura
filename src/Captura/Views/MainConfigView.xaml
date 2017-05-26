@@ -78,7 +78,7 @@
         </Grid>
 
         <CheckBox Margin="10,3"
-                  Content="WebCam View"
+                  Content="{local:Loc WebCamView}"
                   IsChecked="{Binding Settings.WebCamVisible, Mode=TwoWay}"/>
 
         <Grid Margin="0,5">

@@ -357,4 +357,7 @@
   <data name="ErrorOccured" xml:space="preserve">
     <value>An Error Occured</value>
   </data>
+  <data name="WebCamView" xml:space="preserve">
+    <value>WebCam View</value>
+  </data>
 </root>
