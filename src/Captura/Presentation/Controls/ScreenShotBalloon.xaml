@@ -25,9 +25,9 @@
                    DockPanel.Dock="Bottom"
                    Padding="5"/>
         
-        <Image Source="{Binding FilePath, ElementName=me}"
-               Cursor="Hand"
+        <Image Cursor="Hand"
                MouseUp="Image_MouseUp"
-               Margin="5"/>
+               Margin="5"
+               Name="img"/>
     </DockPanel>
 </UserControl>
