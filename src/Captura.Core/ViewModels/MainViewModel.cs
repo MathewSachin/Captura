@@ -26,6 +26,18 @@ namespace Captura.ViewModels
         readonly MouseCursor _cursor;
         bool isVideo;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
+        IWebCamProvider _webCamProvider;
+
+        public bool WebCamVisible
+        {
+            get => _webCamProvider.IsVisible;
+            set
+            {
+                _webCamProvider.IsVisible = value;
+
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         public MainViewModel()
@@ -116,9 +128,6 @@ namespace Captura.ViewModels
             ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpegFolder = "");
             #endregion
 
-            //Populate Available Codecs, Audio and Video Sources ComboBoxes
-            RefreshCommand.Execute(null);
-
             AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
             {
                 if (Args.PropertyName == nameof(AudioViewModel.AudioSource.SelectedRecordingSource)
@@ -161,7 +170,10 @@ namespace Captura.ViewModels
             ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
 
             HotKeyManager.RegisterAll();
-            
+        }
+
+        void RestoreRemembered()
+        {
             #region Restore Video Source
             if (Settings.LastSourceKind == VideoSourceKind.Window)
             {
@@ -184,7 +196,7 @@ namespace Captura.ViewModels
             else if (Settings.LastSourceKind == VideoSourceKind.Region)
             {
                 VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
-                var rect = (Rectangle) RectangleConverter.ConvertFromString(Settings.LastSourceName);
+                var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.LastSourceName);
 
                 VideoViewModel.RegionProvider.SelectedRegion = rect;
             }
@@ -229,7 +241,7 @@ namespace Captura.ViewModels
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedLoopbackSource = source;
             }
-            
+
             // Restore ScreenShot Format
             if (!string.IsNullOrEmpty(Settings.LastScreenShotFormat))
             {
@@ -238,6 +250,17 @@ namespace Captura.ViewModels
                 if (format != null)
                     SelectedScreenShotImageFormat = format;
             }
+        }
+
+        public void MainWindowReady()
+        {
+            VideoViewModel.Init();
+
+            RestoreRemembered();
+
+            _webCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
+
+            _webCamProvider.IsVisibleChanged += () => OnPropertyChanged(nameof(WebCamVisible));
         }
 
         // Call before Exit to free Resources

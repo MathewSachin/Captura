@@ -8,9 +8,9 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
-        public IRegionProvider RegionProvider { get; }
+        public IRegionProvider RegionProvider { get; private set; }
         
-        public VideoViewModel()
+        public void Init()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
 

@@ -79,7 +79,7 @@
 
         <CheckBox Margin="10,3"
                   Content="WebCam View"
-                  IsChecked="{Binding Settings.WebCamVisible, Mode=TwoWay}"/>
+                  IsChecked="{Binding WebCamVisible, Mode=TwoWay}"/>
 
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>

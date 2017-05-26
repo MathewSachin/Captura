@@ -46,15 +46,7 @@ namespace Captura
             get => Get<List<RecentItemModel>>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool WebCamVisible
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("30")]
         public int RecentMax

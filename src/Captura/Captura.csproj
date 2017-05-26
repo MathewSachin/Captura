@@ -61,6 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\RegionProvider.cs" />
     <Compile Include="Models\SystemTray.cs" />
+    <Compile Include="Models\WebCamProvider.cs" />
     <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
       <DependentUpon>TextBalloon.xaml</DependentUpon>
     </Compile>

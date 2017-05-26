@@ -8,8 +8,7 @@
         Height="480"
         MinWidth="400"
         MinHeight="250"
-        Topmost="True"
-        Visibility="{Binding Settings.WebCamVisible, Source={StaticResource MainViewModel}, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
+        Topmost="True">
     <Window.DataContext>
         <vm:WebCamViewModel/>
     </Window.DataContext>

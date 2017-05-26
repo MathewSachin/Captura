@@ -73,6 +73,7 @@
     <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\IRegionProvider.cs" />
     <Compile Include="Models\ISystemTray.cs" />
+    <Compile Include="Models\IWebCamProvider.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />

@@ -12,12 +12,18 @@ namespace Captura
         public MainWindow()
         {
             ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionProvider());
-            
+
+            ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
+
+            InitializeComponent();
+
+            (DataContext as MainViewModel).MainWindowReady();
+
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
             });
-            
+
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
             {
@@ -31,11 +37,6 @@ namespace Captura
                 }
             };
 
-            // Ensure that WebCamWindows instance is created
-            WebCamWindow.Instance.GetType();
-
-            InitializeComponent();
-            
             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
 
             Closing += (s, e) =>

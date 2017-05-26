@@ -45,6 +45,11 @@
         /// <summary>
         /// Gets the ISystemTray.
         /// </summary>
-        SystemTray
+        SystemTray,
+
+        /// <summary>
+        /// Gets the IWebCamProvider.
+        /// </summary>
+        WebCam
     }
 }
