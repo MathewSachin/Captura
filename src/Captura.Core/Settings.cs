@@ -17,6 +17,22 @@ namespace Captura
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
 
         [UserScopedSetting]
+        [DefaultSettingValue("200")]
+        public int MainWindowLeft
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("200")]
+        public int MainWindowTop
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool Expanded
         {
@@ -55,15 +71,7 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("-1, -1")]
-        public Point MainWindowLocation
-        {
-            get => Get<Point>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("FFMpeg")]
         public VideoWriterKind LastVideoWriterKind
