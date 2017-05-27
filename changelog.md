@@ -4,7 +4,20 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v3.4.0
+- **fix:** App crashes on Startup in Release builds.
+- Expanded/Collapsed state is persisted.
+- Added MessageBoxes for showing some errors.
+- **fix:** Cache Images in `ScreenShotBalloon`. Fixes the unability to delete files.
+- Unconstrained Gif renamed to Variable Frame Rate.
+- Confirm RecentItem deletion.
+- **fix:** After recording tasks can run before saving is completed.
+- Asks before Exit during Recording.
+- **fix:** Hide Keystrokes and Clicks capture buttons when `MouseKeyHook` library is not present.
+
 ## v3.3.0
+> Know Issue: App may crash on Startup
+
 - **fix:** h264 (FFMpeg Mp4) encoder requires video dimensions to be even.
 - **Webcam Support:** Not as a Video Source but as a standalone window which can be captured using standard methods.
 - Redesigned RegionSelector.
