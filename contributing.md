@@ -14,6 +14,14 @@ You can always [Chat on Gitter]({{ site.links.gitter }}) for Questions/Discussio
 * Check if the issue is resolved on the latest commit.
 * If possible, Include **steps** to replicate the problem or a sample project.
 
+## Translations
+- Fork the repository.
+- Create a new branch.
+- Copy the `Resources.resx` file in `Captura.Core` project's `Properties` folder.
+- Rename it to `Resources.[CultureID].resx`. e.g. `Resources.en-US.resx`.
+- Do translation only if you know the language. Don't rely solely on some tool like Google Translate.
+- Commit, Push, Create Pull Request.
+
 ## Code - Pull Requests
 1. Fork a repository you want to contribute to.
 2. Create a new branch.
