@@ -1,6 +1,7 @@
 using Captura.Models;
+using Captura.Properties;
 using Screna;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -16,8 +17,8 @@ namespace Captura.ViewModels
 
             // Check if there are multiple Screens
             if (ScreenItem.Count > 1)
-                AvailableVideoSourceKinds.Add(new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Screen, "Screen"));
-                    
+                AvailableVideoSourceKinds.Add(new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)));
+
             // Check if SharpAvi is available
             if (File.Exists("SharpAvi.dll"))
             {
@@ -154,11 +155,11 @@ namespace Captura.ViewModels
             }
         }
         
-        public ObservableCollection<KeyValuePair<VideoSourceKind, string>> AvailableVideoSourceKinds { get; } = new ObservableCollection<KeyValuePair<VideoSourceKind, string>>
+        public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.NoVideo, "No Video"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Window, "Window"),
-            new KeyValuePair<VideoSourceKind, string>(VideoSourceKind.Region, "Region")
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();

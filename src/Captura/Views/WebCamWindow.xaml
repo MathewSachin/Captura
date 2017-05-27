@@ -2,8 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Captura.ViewModels"
+        xmlns:local="clr-namespace:Captura"
         xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
-        Title="WebCam View"
+        Title="{local:Loc WebCamView}"
         Width="640"
         Height="480"
         MinWidth="400"
@@ -15,7 +16,7 @@
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
-            <Label Content="Camera"
+            <Label Content="{local:Loc WebCam}"
                    ContentStringFormat="{}{0}:"
                    Margin="0,0,10,0"/>
             <ComboBox DisplayMemberPath="Name"

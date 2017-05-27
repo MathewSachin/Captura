@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Captura
 {
@@ -34,11 +35,18 @@ namespace Captura
 
                 HotkeyGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
+                var binding = new Binding
+                {
+                    Path = new PropertyPath(nameof(hotkey.Description.Display)),
+                    Source = hotkey.Description
+                };
+
                 var desc = new CheckBox
                 {
-                    Content = hotkey.Description,
                     IsChecked = hotkey.IsActive
                 };
+
+                BindingOperations.SetBinding(desc, ContentControl.ContentProperty, binding);
 
                 HotkeyGrid.Children.Add(desc);
                 Grid.SetRow(desc, i);
@@ -57,8 +65,7 @@ namespace Captura
                     hotkey.IsActive = true;
                     x.IsEnabled = true;
                 };
-
-
+                
                 desc.Unchecked += (s, e) =>
                 {
                     hotkey.IsActive = false;

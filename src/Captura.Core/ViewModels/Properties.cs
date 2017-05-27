@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -10,21 +11,7 @@ namespace Captura.ViewModels
     {
         public bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
 
-        string _status = "Ready";
-
-        public string Status
-        {
-            get { return _status; }
-            set
-            {
-                if (_status == value)
-                    return;
-
-                _status = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public TextLocalizer Status { get; } = new TextLocalizer(Resources.Ready);
 
         bool _canChangeVideoSource = true;
 
@@ -151,7 +138,11 @@ namespace Captura.ViewModels
             }
         }
 
-        public string[] ScreenShotSaveTo => new[] { "Disk", "Clipboard" };
+        public ObjectLocalizer<string>[] ScreenShotSaveTo => new[]
+        {
+            new ObjectLocalizer<string>("Disk", nameof(Resources.Disk)),
+            new ObjectLocalizer<string>("Clipboard", nameof(Resources.Clipboard))
+        };
         #endregion
         
         #region Commands

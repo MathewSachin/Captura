@@ -13,6 +13,8 @@ namespace Captura
         {
             ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionProvider());
 
+            ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new MessageProvider());
+
             ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
 
             InitializeComponent();
@@ -84,7 +86,7 @@ namespace Captura
 
             if (vm.RecorderState == RecorderState.Recording)
             {
-                if (!ServiceProvider.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                if (!ServiceProvider.Messenger.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                     return false;
             }
 

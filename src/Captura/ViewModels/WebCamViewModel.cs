@@ -46,7 +46,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception E)
                 {
-                    ServiceProvider.ShowError($"Could not Start Capture\n\n\n{E}");
+                    ServiceProvider.Messenger.ShowError($"Could not Start Capture\n\n\n{E}");
                 }
             }
         }

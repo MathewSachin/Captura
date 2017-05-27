@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using System;
@@ -67,7 +68,7 @@ namespace Captura.ViewModels
 
                 AudioViewModel.AudioSource.Refresh();
 
-                Status = "Refreshed";
+                Status.LocalizationKey = nameof(Resources.Refreshed);
             });
 
             OpenOutputFolderCommand = new DelegateCommand(() => 
@@ -87,7 +88,7 @@ namespace Captura.ViewModels
                     _timer.Start();
 
                     RecorderState = RecorderState.Recording;
-                    Status = "Recording...";
+                    Status.LocalizationKey = nameof(Resources.Recording);
                 }
                 else
                 {
@@ -95,9 +96,9 @@ namespace Captura.ViewModels
                     _timer.Stop();
 
                     RecorderState = RecorderState.Paused;
-                    Status = "Paused";
+                    Status.LocalizationKey = nameof(Resources.Paused);
 
-                    ServiceProvider.SystemTray.ShowTextNotification("Recording Paused", 3000, null);
+                    ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
                 }
             }, false);
 
@@ -106,7 +107,7 @@ namespace Captura.ViewModels
                 var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = Settings.OutPath,
-                    Description = "Select Output Folder"
+                    Description = Resources.SelectOutFolder
                 };
 
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -118,7 +119,7 @@ namespace Captura.ViewModels
                 var dlg = new FolderBrowserDialog
                 {
                     SelectedPath = Settings.FFMpegFolder,
-                    Description = "Select FFMpeg Folder"
+                    Description = Resources.SelectFFMpegFolder
                 };
 
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -344,7 +345,7 @@ namespace Captura.ViewModels
                 if (Settings.ScreenShotSaveTo == "Clipboard")
                 {
                     bmp.WriteToClipboard(SelectedScreenShotImageFormat.Equals(ImageFormat.Png));
-                    Status = "Image Saved to Clipboard";
+                    Status.LocalizationKey = nameof(Resources.ImgSavedClipboard);
                 }
                 else // Save to Disk
                 {
@@ -359,20 +360,22 @@ namespace Captura.ViewModels
                         var fileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
                         bmp.Save(fileName, SelectedScreenShotImageFormat);
-                        Status = "Image Saved to Disk";
+                        Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                         RecentViewModel.Add(fileName, RecentItemType.Image, false);
 
                         ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
                     }
                     catch (Exception E)
                     {
-                        Status = "Not Saved. " + E.Message;
+                        ServiceProvider.Messenger.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
+
+                        Status.LocalizationKey = nameof(Resources.NotSaved);
                     }
                 }
 
                 bmp.Dispose();
             }
-            else Status = "Not Saved - Image taken was Empty";
+            else Status.LocalizationKey = nameof(Resources.ImgEmpty);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -453,7 +456,7 @@ namespace Captura.ViewModels
 
             if (Duration != 0 && (StartDelay * 1000 > Duration))
             {
-                Status = "Delay cannot be greater than Duration";
+                Status.LocalizationKey = nameof(Resources.DelayGtDuration);
                 SystemSounds.Asterisk.Play();
                 return;
             }
@@ -468,7 +471,7 @@ namespace Captura.ViewModels
 
             _currentFileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
-            Status = StartDelay > 0 ? $"Recording from t = {StartDelay} ms..." : "Recording...";
+            Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 
             _timer.Stop();
             TimeSpan = TimeSpan.Zero;
@@ -491,9 +494,9 @@ namespace Captura.ViewModels
             {
                 StopRecording();
 
-                Status = "Error";
+                Status.LocalizationKey = nameof(Resources.ErrorOccured);
 
-                ServiceProvider.ShowError($"Error Occured\n\n{E}");
+                ServiceProvider.Messenger.ShowError($"Error Occured\n\n{E}");
             };
             
             if (StartDelay > 0)
@@ -560,7 +563,7 @@ namespace Captura.ViewModels
         
         async void StopRecording()
         {
-            Status = "Stopped";
+            Status.LocalizationKey = nameof(Resources.Stopped);
 
             var savingRecentItem = RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
             
@@ -589,7 +592,7 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            ServiceProvider.SystemTray.ShowTextNotification($"{(isVideo ? "Video" : "Audio")} Saved: " + Path.GetFileName(_currentFileName), 5000, () => 
+            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () => 
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
             });            

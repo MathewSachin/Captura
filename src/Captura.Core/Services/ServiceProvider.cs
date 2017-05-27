@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+using Captura.Properties;
+using Captura.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,27 +27,24 @@ namespace Captura
         /// <summary>
         /// Gets the Description of a Service.
         /// </summary>
-        public static string GetDescription(ServiceName ServiceName)
+        public static string GetDescriptionKey(ServiceName ServiceName)
         {
             switch (ServiceName)
             {
                 case ServiceName.Recording:
-                    return "Start/Stop Recording";
+                    return nameof(Resources.StartStopRecording);
 
                 case ServiceName.Pause:
-                    return "Pause/Resume Recording";
+                    return nameof(Resources.PauseResumeRecording);
 
                 case ServiceName.ScreenShot:
-                    return "ScreenShot";
+                    return nameof(Resources.ScreenShot);
 
                 case ServiceName.ActiveScreenShot:
-                    return "ScreenShot Active Window";
+                    return nameof(Resources.ScreenShotActiveWindow);
 
                 case ServiceName.DesktopScreenShot:
-                    return "ScreenShot Desktop";
-
-                case ServiceName.SelectedWindow:
-                    return "Selected Window";
+                    return nameof(Resources.ScreenShotDesktop);
 
                 default:
                     return "Unknown";
@@ -60,6 +58,9 @@ namespace Captura
         {
             if (ServiceAction == ServiceName.SystemTray)
                 SystemTray = (ISystemTray)Action;
+
+            else if (ServiceAction == ServiceName.Message)
+                Messenger = (IMessageProvider)Action;
 
             _services.Add(ServiceAction, Action);
         }
@@ -120,24 +121,16 @@ namespace Captura
             try { Process.Start(StartInfo.FileName); }
             catch (Win32Exception E) when (E.NativeErrorCode == 2)
             {
-                ShowError($"Could not find file: {StartInfo.FileName}");
+                Messenger.ShowError($"Could not find file: {StartInfo.FileName}");
             }
             catch (Exception E)
             {
-                ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
+                Messenger.ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
             }
         }
 
         public static ISystemTray SystemTray { get; private set; }
 
-        public static void ShowError(string Message)
-        {
-            MessageBox.Show(Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        public static bool ShowYesNo(string Message, string Title)
-        {
-            return MessageBox.Show(Message, Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
-        }
+        public static IMessageProvider Messenger { get; private set; }
     }
 }

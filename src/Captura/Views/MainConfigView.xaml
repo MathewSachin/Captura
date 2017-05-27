@@ -13,23 +13,23 @@
         <DockPanel>
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
-                <local:ModernButton ToolTip="{DynamicResource s_Refresh}"
+                <local:ModernButton ToolTip="{local:Loc Refresh}"
                                     Command="{Binding RefreshCommand}"
                                     IconData="M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z"/>
-                <local:ModernButton ToolTip="{DynamicResource s_OpenOutputFolder}"
+                <local:ModernButton ToolTip="{local:Loc OpenOutFolder}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeCursor}"
+                <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
                                           IconData="M10.07,14.27C10.57,14.03 11.16,14.25 11.4,14.75L13.7,19.74L15.5,18.89L13.19,13.91C12.95,13.41 13.17,12.81 13.67,12.58L13.95,12.5L16.25,12.05L8,5.12V15.9L9.82,14.43L10.07,14.27M13.64,21.97C13.14,22.21 12.54,22 12.31,21.5L10.13,16.76L7.62,18.78C7.45,18.92 7.24,19 7,19A1,1 0 0,1 6,18V3A1,1 0 0,1 7,2C7.24,2 7.47,2.09 7.64,2.23L7.65,2.22L19.14,11.86C19.57,12.22 19.62,12.85 19.27,13.27C19.12,13.45 18.91,13.57 18.7,13.61L15.54,14.23L17.74,18.96C18,19.46 17.76,20.05 17.26,20.28L13.64,21.97Z"
                                           IsChecked="{Binding Settings.IncludeCursor, Mode=TwoWay}"/>
-                <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeMouseClicks}"
+                <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="M10,2A2,2 0 0,1 12,4V8.5C12,8.5 14,8.25 14,9.25C14,9.25 16,9 16,10C16,10 18,9.75 18,10.75C18,10.75 20,10.5 20,11.5V15C20,16 17,21 17,22H9C9,22 7,15 4,13C4,13 3,7 8,12V4A2,2 0 0,1 10,2Z"
                                           IsChecked="{Binding Settings.MouseClicks, Mode=TwoWay}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                <local:ModernToggleButton ToolTip="{DynamicResource s_IncludeKeystrokes}"
+                <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="M6,16H18V18H6V16M6,13V15H2V13H6M7,15V13H10V15H7M11,15V13H13V15H11M14,15V13H17V15H14M18,15V13H22V15H18M2,10H5V12H2V10M19,12V10H22V12H19M18,12H16V10H18V12M8,12H6V10H8V12M12,12H9V10H12V12M15,12H13V10H15V12M2,9V7H4V9H2M5,9V7H7V9H5M8,9V7H10V9H8M11,9V7H13V9H11M14,9V7H16V9H14M17,9V7H22V9H17Z"
                                           IsChecked="{Binding Settings.KeyStrokes, Mode=TwoWay}"
@@ -38,7 +38,7 @@
         </DockPanel>
 
 
-        <Label Content="Video"
+        <Label Content="{local:Loc Video}"
                FontWeight="Bold"
                Margin="10,3"
                FontSize="15"/>
@@ -58,15 +58,15 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{DynamicResource s_VideoSource}"/>
+                  ToolTip="{local:Loc VideoSource}"/>
 
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
                       Grid.Column="1"
-                      ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}" 
+                      ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
-                      DisplayMemberPath="Value" 
-                      SelectedValuePath="Key"
+                      DisplayMemberPath="Display" 
+                      SelectedValuePath="Source"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center" 
@@ -78,7 +78,7 @@
         </Grid>
 
         <CheckBox Margin="10,3"
-                  Content="WebCam View"
+                  Content="{local:Loc WebCamView}"
                   IsChecked="{Binding WebCamVisible, Mode=TwoWay}"/>
 
         <Grid Margin="0,5">
@@ -95,7 +95,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{DynamicResource s_VideoEncoder}"/>
+                  ToolTip="{local:Loc VideoEncoder}"/>
 
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
@@ -114,7 +114,7 @@
         
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{DynamicResource s_FrameRate}"
+            <Label Content="{local:Loc FrameRate}"
                    ContentStringFormat="{}{0}:"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
@@ -130,7 +130,7 @@
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{DynamicResource s_Quality}"
+            <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.VideoQuality}"
@@ -144,7 +144,7 @@
                     Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
         </DockPanel>
 
-        <Label Content="Audio"
+        <Label Content="{local:Loc Audio}"
                FontWeight="Bold"
                Margin="10,15,0,3"
                FontSize="15"/>
@@ -158,7 +158,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{DynamicResource s_MicSource}"/>
+                  ToolTip="{local:Loc MicSource}"/>
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableRecordingSources}"
@@ -175,7 +175,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{DynamicResource s_LoopbackSource}"/>
+                  ToolTip="{local:Loc LoopbackSource}"/>
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableLoopbackSources}"
@@ -185,7 +185,8 @@
         
         <DockPanel Margin="0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="Audio Format when no Video:"
+            <Label Content="{local:Loc AudioFormatWoVideo}"
+                   ContentStringFormat="{}{0}:"
                    Margin="10,0,0,0"/>
             <ComboBox Margin="7,0"
                       VerticalAlignment="Center"
@@ -195,7 +196,7 @@
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="Quality"
+            <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"
                    Margin="0,0,5,0"/>
             <Label Content="{Binding Settings.AudioQuality}"

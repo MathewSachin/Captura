@@ -71,6 +71,7 @@
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\Hotkeys\Modifiers.cs" />
+    <Compile Include="Models\IMessageProvider.cs" />
     <Compile Include="Models\IRegionProvider.cs" />
     <Compile Include="Models\ISystemTray.cs" />
     <Compile Include="Models\IWebCamProvider.cs" />
@@ -96,9 +97,22 @@
     <Compile Include="Models\VideoWriterItems\VideoWriterKind.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
+    <Compile Include="ObjectLocalizer.cs" />
+    <Compile Include="Properties\Resources.ml-IN.Designer.cs">
+      <DependentUpon>Resources.ml-IN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\ServiceName.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TextLocalizer.cs" />
+    <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />
@@ -114,8 +128,16 @@
       <Name>Screna</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <EmbeddedResource Include="Properties\Resources.ml-IN.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ml-IN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

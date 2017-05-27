@@ -48,6 +48,10 @@
         SystemTray,
 
         /// <summary>
+        /// Gets the IMessageProvider.
+        /// </summary>
+        Message,
+
         /// Gets the IWebCamProvider.
         /// </summary>
         WebCam
