@@ -6,6 +6,10 @@ permalink: RoadMap/
 
 Here are some features we are looking forward to implement, feel free to help us.
 
+<div class="alert alert-info">
+We are accepting <a href="{{ site.baseurl }}/Contributing" class="alert-link">Translations</a>!
+</div>
+
 - Cropping Audio and Video files using FFMpeg.
 - Disable Recent items if files are not present.
 - Option to download `ffmpeg.exe`.
