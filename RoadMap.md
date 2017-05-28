@@ -7,7 +7,7 @@ permalink: RoadMap/
 Here are some features we are looking forward to implement, feel free to help us.
 
 <div class="alert alert-info">
-We are accepting <a href="{{ site.baseurl }}/Contributing" class="alert-link">Translations</a>!
+We are accepting <a href="{{ site.baseurl }}/Translation" class="alert-link">Translations</a>!
 </div>
 
 - Cropping Audio and Video files using FFMpeg.
