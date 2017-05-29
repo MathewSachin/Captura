@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 
 namespace Captura.ViewModels
@@ -20,8 +21,10 @@ namespace Captura.ViewModels
             // Reversion required to maintain order.
             Settings.Instance.RecentItems.Reverse();
 
+            // Restore only if File exists.
             foreach (var recent in Settings.Instance.RecentItems)
-                Add(recent.FilePath, recent.ItemType, false);
+                if (File.Exists(recent.FilePath))
+                    Add(recent.FilePath, recent.ItemType, false);
 
             ClearCommand = new DelegateCommand(() => RecentList.Clear());
         }
@@ -44,8 +47,10 @@ namespace Captura.ViewModels
 
             var max = Settings.Instance.RecentMax;
 
+            // Persist only if File exists.
             for (int i = 0; i < RecentList.Count && i < max; ++i)
-                Settings.Instance.RecentItems.Add(new RecentItemModel(RecentList[i].FilePath, RecentList[i].ItemType));
+                if (File.Exists(RecentList[i].FilePath))
+                    Settings.Instance.RecentItems.Add(new RecentItemModel(RecentList[i].FilePath, RecentList[i].ItemType));
         }
     }
 }
