@@ -1,6 +1,5 @@
 ﻿using NAudio.Wave;
 using Screna.Audio;
-using System.IO;
 
 namespace Captura.Models
 {
@@ -26,7 +25,7 @@ namespace Captura.Models
         }
 
         // Check if NAudio is present
-        public static bool Available { get; } = File.Exists("NAudio.dll");
+        public static bool Available { get; } = ServiceProvider.FileExists("NAudio.dll");
 
         public override IAudioProvider GetAudioSource()
         {
