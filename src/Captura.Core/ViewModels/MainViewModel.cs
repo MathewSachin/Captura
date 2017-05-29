@@ -41,6 +41,21 @@ namespace Captura.ViewModels
         }
         #endregion
 
+        static CommandLineOptions CommandLineOptions { get; }
+        
+        static MainViewModel()
+        {
+            #region Command Line
+            CommandLineOptions = new CommandLineOptions();
+            
+            if (CommandLine.Parser.Default.ParseArguments(Environment.GetCommandLineArgs(), CommandLineOptions))
+            {
+                if (CommandLineOptions.Reset)
+                    Settings.Instance.Reset();
+            }
+            #endregion
+        }
+
         public MainViewModel()
         {
             _timer = new Timer(1000);
