@@ -132,5 +132,7 @@ namespace Captura
         public static ISystemTray SystemTray { get; private set; }
 
         public static IMessageProvider Messenger { get; private set; }
+
+        public static CommandLineOptions CommandLineOptions { get; } = new CommandLineOptions();
     }
 }
