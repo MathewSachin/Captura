@@ -9,6 +9,10 @@ body {
     margin-bottom: 50px;
 }
 
+.page-content img {
+    padding: 15px;
+}
+
 @media (max-width: 767px) {
     .page-container {
         padding-left: 0;
