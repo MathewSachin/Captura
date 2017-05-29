@@ -21,6 +21,9 @@ namespace Captura
 
             (DataContext as MainViewModel).MainWindowReady();
 
+            if (ServiceProvider.CommandLineOptions.Tray)
+                Hide();
+
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
                 WindowState = minimize ? WindowState.Minimized : WindowState.Normal;

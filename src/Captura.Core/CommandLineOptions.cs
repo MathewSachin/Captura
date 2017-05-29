@@ -10,8 +10,11 @@ namespace Captura
 
         // Reset settings
         // omitting long name, default --reset
-        [Option(DefaultValue = false, HelpText = "Prints all messages to standard output.")]
+        [Option(DefaultValue = false, HelpText = "Reset all setting values to default.")]
         public bool Reset { get; set; }
+
+        [Option(DefaultValue = false, HelpText = "Start minimized into the system tray.")]
+        public bool Tray { get; set; }
 
         [ParserState]
         public IParserState LastParserState { get; set; }
