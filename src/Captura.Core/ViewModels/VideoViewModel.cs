@@ -1,9 +1,7 @@
 using Captura.Models;
 using Captura.Properties;
 using Screna;
-using System;
 using System.Collections.ObjectModel;
-using System.IO;
 
 namespace Captura.ViewModels
 {
@@ -20,7 +18,7 @@ namespace Captura.ViewModels
                 AvailableVideoSourceKinds.Add(new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)));
 
             // Check if SharpAvi is available
-            if (File.Exists("SharpAvi.dll"))
+            if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
 

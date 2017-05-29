@@ -3,13 +3,12 @@ using Captura.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace Captura.ViewModels
 {
     public partial class MainViewModel
     {
-        public bool MouseKeyHookAvailable { get; } = File.Exists("Gma.System.MouseKeyHook.dll");
+        public bool MouseKeyHookAvailable { get; } = ServiceProvider.FileExists("Gma.System.MouseKeyHook.dll");
 
         public TextLocalizer Status { get; } = new TextLocalizer(Resources.Ready);
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
+using System.Reflection;
 
 namespace Captura
 {
@@ -132,5 +132,10 @@ namespace Captura
         public static ISystemTray SystemTray { get; private set; }
 
         public static IMessageProvider Messenger { get; private set; }
+
+        public static bool FileExists(string FileName)
+        {
+            return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
+        }
     }
 }

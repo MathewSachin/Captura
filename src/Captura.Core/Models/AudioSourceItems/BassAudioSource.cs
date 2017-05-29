@@ -1,6 +1,5 @@
 ﻿using Screna.Audio;
 using ManagedBass;
-using System.IO;
 
 namespace Captura.Models
 {
@@ -28,7 +27,7 @@ namespace Captura.Models
         static bool AllExist(params string[] Paths)
         {
             foreach (var path in Paths)
-                if (!File.Exists(path))
+                if (!ServiceProvider.FileExists(path))
                     return false;
 
             return true;
