@@ -24,6 +24,13 @@ namespace Captura
             TextBOX.InputBindings.Add(new InputBinding(IncreaseCommand, new KeyGesture(Key.Up)));
             TextBOX.InputBindings.Add(new InputBinding(DecreaseCommand, new KeyGesture(Key.Down)));
 
+            MouseWheel += (s, e) =>
+            {
+                if (e.Delta > 0)
+                    IncreaseCommand.ExecuteIfCan();
+                else DecreaseCommand.ExecuteIfCan();
+            };
+
             Last = Value;
         }
 
