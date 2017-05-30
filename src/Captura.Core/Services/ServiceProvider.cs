@@ -161,6 +161,15 @@ namespace Captura
             
             if (CommandLineOptions.Reset)
                 Settings.Instance.Reset();
+
+            if (CommandLineOptions.Cursor.HasValue)
+                Settings.Instance.IncludeCursor = CommandLineOptions.Cursor.Value;
+
+            if (CommandLineOptions.Clicks.HasValue)
+                Settings.Instance.MouseClicks = CommandLineOptions.Clicks.Value;
+
+            if (CommandLineOptions.Keys.HasValue)
+                Settings.Instance.KeyStrokes = CommandLineOptions.Keys.Value;
         }
         
         public static bool FileExists(string FileName)
