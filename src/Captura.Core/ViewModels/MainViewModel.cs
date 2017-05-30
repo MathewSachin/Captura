@@ -470,7 +470,7 @@ namespace Captura.ViewModels
             if (StartDelay < 0)
                 StartDelay = 0;
 
-            if (Duration != 0 && (StartDelay * 1000 > Duration))
+            if (Duration != 0 && (StartDelay > Duration * 1000))
             {
                 Status.LocalizationKey = nameof(Resources.DelayGtDuration);
                 SystemSounds.Asterisk.Play();
