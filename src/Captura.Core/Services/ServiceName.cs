@@ -54,6 +54,11 @@
 
         /// Gets the IWebCamProvider.
         /// </summary>
-        WebCam
+        WebCam,
+
+        /// <summary>
+        /// Exit (Action).
+        /// </summary>
+        Exit
     }
 }

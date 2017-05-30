@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
@@ -27,6 +28,7 @@ namespace Captura.ViewModels
         readonly MouseCursor _cursor;
         bool isVideo;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
         IWebCamProvider _webCamProvider;
 
         public bool WebCamVisible
@@ -43,13 +45,7 @@ namespace Captura.ViewModels
                 
         static MainViewModel()
         {
-            #region Command Line            
-            if (CommandLine.Parser.Default.ParseArguments(Environment.GetCommandLineArgs(), ServiceProvider.CommandLineOptions))
-            {
-                if (ServiceProvider.CommandLineOptions.Reset)
-                    Settings.Instance.Reset();
-            }
-            #endregion
+            ServiceProvider.ParseCmdLine();
         }
 
         public MainViewModel()
@@ -276,6 +272,12 @@ namespace Captura.ViewModels
             _webCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
 
             _webCamProvider.IsVisibleChanged += () => OnPropertyChanged(nameof(WebCamVisible));
+
+            // Start Recording (Command-line)
+            if (ServiceProvider.CommandLineOptions is StartCmdOptions)
+            {
+                StartRecording();
+            }
         }
 
         // Call before Exit to free Resources
@@ -337,7 +339,7 @@ namespace Captura.ViewModels
 
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                StopRecording();
+                _syncContext.Post(state => StopRecording(), null);
         }
         
         void CheckFunctionalityAvailability()
@@ -606,10 +608,18 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () => 
+            // Exit (Command-line)
+            if (ServiceProvider.CommandLineOptions is StartCmdOptions)
             {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
-            });            
+                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
+            }
+            else
+            {
+                ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () =>
+                {
+                    ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
+                });
+            }
         }
     }
 }

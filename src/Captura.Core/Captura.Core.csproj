@@ -69,6 +69,8 @@
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
     <Compile Include="Models\CommandLine\CmdOptionsBase.cs" />
     <Compile Include="Models\CommandLine\CommonCmdOptions.cs" />
+    <Compile Include="Models\CommandLine\StartCmdOptions.cs" />
+    <Compile Include="Models\CommandLine\VerbCmdOptions.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />

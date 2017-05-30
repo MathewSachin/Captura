@@ -8,12 +8,12 @@ namespace Captura
         public bool Reset { get; set; }
 
         [Option("tray", DefaultValue = false, HelpText = "Start minimized into the system tray.")]
-        public bool Tray { get; set; }
+        public virtual bool Tray { get; set; }
 
         [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]
         public int Delay { get; set; }
 
         [Option("length", DefaultValue = 0, HelpText = "Length of Recording in seconds.")]
-        public int Length { get; set; }        
+        public virtual int Length { get; set; }
     }
 }

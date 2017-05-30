@@ -133,8 +133,36 @@ namespace Captura
 
         public static IMessageProvider Messenger { get; private set; }
 
-        public static CommonCmdOptions CommandLineOptions { get; } = new CommonCmdOptions();
+        public static CommonCmdOptions CommandLineOptions { get; private set; } = new CommonCmdOptions();
 
+        public static void ParseCmdLine()
+        {
+            var args = Environment.GetCommandLineArgs();
+
+            // Only Executable path
+            if (args.Length == 1)
+                return;
+
+            // Remove Executable path
+            Array.Copy(args, 1, args, 0, args.Length - 1);
+            args[args.Length - 1] = "";
+
+            if (args[0] == "start")
+            {
+                CommandLine.Parser.Default.ParseArguments(args, new VerbCmdOptions(), (verb, options) =>
+                {
+                    CommandLineOptions = options as StartCmdOptions;
+                });
+            }
+            else
+            {
+                CommandLine.Parser.Default.ParseArguments(args, CommandLineOptions);
+            }
+            
+            if (CommandLineOptions.Reset)
+                Settings.Instance.Reset();
+        }
+        
         public static bool FileExists(string FileName)
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
