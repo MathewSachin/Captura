@@ -4,37 +4,12 @@ title: License
 permalink: License/
 ---
 
-## Captura, Screna and ManagedBass
-The MIT License
-
-(c) Copyright 2017 Mathew Sachin.  
-
-{% include mit.html %}
-
-## BASS
-Licensing required for Commercial use.
-
-See [un4seen.com](https://un4seen.com/bass.html)
-
-## SharpAvi
-The MIT License
-
-Copyright (c) 2013-2014 Vasili Maslov
-
-{% include mit.html %}
-
-## MouseKeyHook
-Copyright (c) 2004-2015, George Mamaladze
-All rights reserved.
-
-{% include bsd3.html %}
-
-## ModernUI
-{% include mspl.html %}
-
-## NAudio
-{% include mspl.html %}
-
-## FFMpeg
-
-{% include lgpl.html %}
+Software     | License
+-------------|-----------
+Captura      | [MIT](https://github.com/MathewSachin/Captura/blob/master/LICENSE.md)
+Screna       | [MIT](https://github.com/MathewSachin/Screna/blob/master/LICENSE.md)
+ManagedBass  | [MIT](https://github.com/ManagedBass/Home/blob/master/LICENSE.md)
+SharpAvi     | [MIT](https://github.com/baSSiLL/SharpAvi/blob/master/LICENSE.md)
+MouseKeyHook | [BSD3](https://github.com/gmamaladze/globalmousekeyhook/blob/vNext/LICENSE.txt)
+MUI          | [MS-PL](https://github.com/firstfloorsoftware/mui/blob/master/LICENSE.md)
+FFMpeg       | [LGPL](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
