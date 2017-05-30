@@ -278,6 +278,14 @@ namespace Captura.ViewModels
             {
                 StartRecording();
             }
+
+            // ScreenShot and Exit (Command-line)
+            else if (ServiceProvider.CommandLineOptions is ShotCmdOptions)
+            {
+                CaptureScreenShot();
+
+                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
+            }
         }
 
         // Call before Exit to free Resources

@@ -147,11 +147,11 @@ namespace Captura
             Array.Copy(args, 1, args, 0, args.Length - 1);
             args[args.Length - 1] = "";
 
-            if (args[0] == "start")
+            if (args[0] == "start" || args[0] == "shot")
             {
                 CommandLine.Parser.Default.ParseArguments(args, new VerbCmdOptions(), (verb, options) =>
                 {
-                    CommandLineOptions = options as StartCmdOptions;
+                    CommandLineOptions = options as CommonCmdOptions;
                 });
             }
             else

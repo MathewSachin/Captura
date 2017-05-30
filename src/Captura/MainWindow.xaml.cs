@@ -18,7 +18,7 @@ namespace Captura
             ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
 
             ServiceProvider.Register<Action>(ServiceName.Exit, () => TryExit());
-
+            
             InitializeComponent();
             
             if (ServiceProvider.CommandLineOptions.Tray)
@@ -50,7 +50,7 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).MainWindowReady();
+            (DataContext as MainViewModel).MainWindowReady();            
         }
 
         protected override void OnStateChanged(EventArgs e)
