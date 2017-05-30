@@ -1,4 +1,7 @@
-﻿using System;
+﻿// NAudio code kept for reference.
+
+/*
+using System;
 using NAudio.Wave;
 using NWaveFormat = NAudio.Wave.WaveFormat;
 using WaveFormat = Screna.Audio.WaveFormat;
@@ -74,3 +77,4 @@ namespace Captura.Models
         public void Stop() => _waveInEvent?.StopRecording();
     }
 }
+*/

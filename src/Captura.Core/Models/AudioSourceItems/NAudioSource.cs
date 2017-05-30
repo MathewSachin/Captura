@@ -1,4 +1,7 @@
-﻿using NAudio.Wave;
+﻿// NAudio code kept for reference.
+
+/*
+using NAudio.Wave;
 using Screna.Audio;
 
 namespace Captura.Models
@@ -42,3 +45,4 @@ namespace Captura.Models
         }
     }
 }
+*/
