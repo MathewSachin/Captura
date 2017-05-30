@@ -57,6 +57,9 @@ namespace Captura.ViewModels
             _timer = new Timer(1000);
             _timer.Elapsed += TimerOnElapsed;
 
+            StartDelay = ServiceProvider.CommandLineOptions.Delay;
+            Duration = ServiceProvider.CommandLineOptions.Length;
+
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
             

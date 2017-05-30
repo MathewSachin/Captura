@@ -56,7 +56,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineOptions.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
@@ -68,6 +67,8 @@
     <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
+    <Compile Include="Models\CommandLine\CmdOptionsBase.cs" />
+    <Compile Include="Models\CommandLine\CommonCmdOptions.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />

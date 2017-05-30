@@ -133,7 +133,7 @@ namespace Captura
 
         public static IMessageProvider Messenger { get; private set; }
 
-        public static CommandLineOptions CommandLineOptions { get; } = new CommandLineOptions();
+        public static CommonCmdOptions CommandLineOptions { get; } = new CommonCmdOptions();
 
         public static bool FileExists(string FileName)
         {
