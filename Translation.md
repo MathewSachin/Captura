@@ -8,10 +8,10 @@ Captura is localized using Culture-specific RESX files.
 
 Currently supported locales:
 
-Name                        | Locale ID | Contributor
-----------------------------|-----------|----------------
-**English (United States)** | en-US     | Mathew Sachin
-Malayalam (India)           | ml-IN     | Mathew Sachin
+Name                        | Culture ID | Contributor
+----------------------------|------------|----------------
+**English (United States)** | en-US      | Mathew Sachin
+Malayalam (India)           | ml-IN      | Mathew Sachin
 
 ## Contributing Translations
 - Fork the repository.

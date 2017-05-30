@@ -10,6 +10,11 @@ Here are some features we are looking forward to implement, feel free to help us
 We are accepting <a href="{{ site.baseurl }}/Translation" class="alert-link">Translations</a>!
 </div>
 
+## In Progress
+- Command-line usage ([#65](https://github.com/MathewSachin/Captura/pull/65)).
+- Bug Hunting
+
+## Future
 - Cropping Audio and Video files using FFMpeg.
 - Disable Recent items if files are not present.
 - Option to download `ffmpeg.exe`.
