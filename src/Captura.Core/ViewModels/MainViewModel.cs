@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
@@ -27,6 +28,7 @@ namespace Captura.ViewModels
         readonly MouseCursor _cursor;
         bool isVideo;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
         IWebCamProvider _webCamProvider;
 
         public bool WebCamVisible
@@ -323,7 +325,7 @@ namespace Captura.ViewModels
 
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                StopRecording();
+                _syncContext.Post(state => StopRecording(), null);
         }
         
         void CheckFunctionalityAvailability()
