@@ -18,13 +18,13 @@ permalink: Changelog/
 ## v3.3.0
 > Know Issue: App may crash on Startup
 
-- **fix:** h264 (FFMpeg Mp4) encoder requires video dimensions to be even.
+- **fix:** h264 (FFmpeg Mp4) encoder requires video dimensions to be even.
 - **Webcam Support:** Not as a Video Source but as a standalone window which can be captured using standard methods.
 - Redesigned RegionSelector.
 - Implemented RegionSelector **Snap to Window**.
 - **fix:** Prevent appearance of RegionSelector in Window list.
 - **fix:** Prevent RegionSelector from being Maximized.
-- **fix:** Heavy memory usage with FFMpeg.
+- **fix:** Heavy memory usage with FFmpeg.
 - Collapsed/Expanded state of Main Window is persisted.
 
 ## v3.2.0
@@ -32,9 +32,9 @@ permalink: Changelog/
 - Remembers last used Audio/Video Codecs and Sources.
 - Remembers Window Location.
 - Remembers ScreenShot Save target and Image Format.
-- Experimetal Gif encoding using FFMpeg.
+- Experimetal Gif encoding using FFmpeg.
 - Rotate/Flip/Resize Transforms for ScreenShot/Video.
-- **fix:** FFMpeg Command-line args when encoding both audio and video.
+- **fix:** FFmpeg Command-line args when encoding both audio and video.
 - **fix:** WASAPI Format error on loopback.
 
 #### Recent List
@@ -60,7 +60,7 @@ permalink: Changelog/
 - Hotkeys for ScreenShot of Desktop and Active Window.
 - Option to disable system tray notifications.
 - NAudio fallback if BASS is not present.
-- Implemented Audio and Video Quality for FFMpeg.
+- Implemented Audio and Video Quality for FFmpeg.
 - Fix errors in NumericBox.
 - Remove Video BackgroundColor.
 - Added Taskbar Thumb buttons.
@@ -88,9 +88,9 @@ permalink: Changelog/
 
 #### Video/Audio Writers
 - Video Witers grouped by Kind.
-- Added FFMpeg encoding support (using ffmpeg.exe) (optional) (realtime when audio or video alone, post-processing when both).
+- Added FFmpeg encoding support (using ffmpeg.exe) (optional) (realtime when audio or video alone, post-processing when both).
 - Dropped SharpAvi LAME Mp3 encoding support.
-- Mp3 encoding supported using FFMpeg.
+- Mp3 encoding supported using FFmpeg.
 
 #### Region Capture
 - Region as Video Kind.

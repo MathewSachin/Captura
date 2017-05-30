@@ -15,10 +15,10 @@ We are accepting <a href="{{ site.baseurl }}/Translation" class="alert-link">Tra
 - Bug Hunting
 
 ## Future
-- Cropping Audio and Video files using FFMpeg.
+- Cropping Audio and Video files using FFmpeg.
 - Disable Recent items if files are not present.
 - Option to download `ffmpeg.exe`.
-- Processing FFMpeg output to find errors.
+- Processing FFmpeg output to find errors.
 - Do we need installer and updater?
 - Writing Canvas.
 - Setting Audio image tag.

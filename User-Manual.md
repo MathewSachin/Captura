@@ -42,9 +42,9 @@ It can be moved by holding the **Timer on Top bar** and dragging.
 ## Bottom Section
 ![Bottom Section]({{ site.baseurl }}/img/Manual/3.png)
 
-1. Displays the Selected folder where `ffmpeg.exe` is present. If this is empty, FFMpeg is used from the current folder or from the `PATH` environmental variable.
-2. **Reset FFMpeg Folder:** Resets the FFMpeg folder to empty.
-3. **Select FFMpeg Folder:** Shows a Folder Browser Dialog to select FFMpeg folder.
+1. Displays the Selected folder where `ffmpeg.exe` is present. If this is empty, FFmpeg is used from the current folder or from the `PATH` environmental variable.
+2. **Reset FFmpeg Folder:** Resets the FFmpeg folder to empty.
+3. **Select FFmpeg Folder:** Shows a Folder Browser Dialog to select FFmpeg folder.
 4. Displays the Selected output folder.
 5. **Select Output Folder:** Shows a Folder Browser Dialog to select Output folder.
 6. **Status Bar:** Displays status information.
@@ -90,7 +90,7 @@ The second Combo-box shows the available Video Sources of the selected type.
 Similar to Video Sources, the first Combo-box contains types of Video Encoders.
 The second Combo-box shows the available Video Sources of the selected type.
 - Gif
-- FFMpeg
+- FFmpeg
 - SharpAvi
 
 **9. Frame Rate:** No of frames captured per second (1 to 30) (Default is 10).
@@ -110,6 +110,6 @@ Audio from Microphone and Speaker output can be mixed together.
 - Aac
 - Ogg
 
-Audio encoders other than Wave use FFMpeg.
+Audio encoders other than Wave use FFmpeg.
 
 **D. Quality:** Quality of encoded audio (1% - 100%) (Default is 50%).
