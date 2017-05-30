@@ -263,7 +263,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public void MainWindowReady()
+        public async void MainWindowReady()
         {
             VideoViewModel.Init();
 
@@ -282,6 +282,8 @@ namespace Captura.ViewModels
             // ScreenShot and Exit (Command-line)
             else if (ServiceProvider.CommandLineOptions is ShotCmdOptions)
             {
+                await Task.Delay(500);
+
                 CaptureScreenShot();
 
                 ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
