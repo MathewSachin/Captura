@@ -1,7 +1,6 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -15,6 +14,14 @@ namespace Captura
         T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
+
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool UpdateRequired
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
 
         [UserScopedSetting]
         [DefaultSettingValue("200")]

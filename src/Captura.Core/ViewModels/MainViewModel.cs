@@ -43,6 +43,16 @@ namespace Captura.ViewModels
         }
         #endregion
 
+        static MainViewModel()
+        {
+            // Upgrade settings from Previous version
+            if (Settings.Instance.UpdateRequired)
+            {
+                Settings.Instance.Upgrade();
+                Settings.Instance.UpdateRequired = false;
+            }
+        }
+        
         public MainViewModel()
         {
             _timer = new Timer(1000);
