@@ -81,7 +81,7 @@ namespace Captura
             else
             {
                 Show();
-                Focus();
+                Activate();
             }
         }
 
