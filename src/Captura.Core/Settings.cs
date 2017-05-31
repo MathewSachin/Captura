@@ -9,6 +9,16 @@ namespace Captura
     {
         public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
 
+        static Settings()
+        {
+            // Upgrade settings from Previous version
+            if (Instance.UpdateRequired)
+            {
+                Instance.Upgrade();
+                Instance.UpdateRequired = false;
+            }
+        }
+
         Settings() { }
 
         T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
