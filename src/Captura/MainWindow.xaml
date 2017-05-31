@@ -176,61 +176,78 @@
                        Content="{Binding Status.Display}"
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
-                <DockPanel DockPanel.Dock="Bottom">
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- FFmpeg Folder -->
+                    <Label Content="{local:Loc FFMpegFolder}"
+                           ContentStringFormat="{}{0}: "
+                           DockPanel.Dock="Left"
+                           Padding="5,0"/>
+                    <TextBox IsReadOnly="True"
+                             Text="{Binding Settings.FFMpegFolder}"
+                             Grid.Column="1"/>
+                    <Button Content="X"
+                            DockPanel.Dock="Right"
+                            ToolTip="{local:Loc Reset}"
+                            Command="{Binding ResetFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Column="2"/>
                     <Button Content="..."
                             DockPanel.Dock="Right"
-                            ToolTip="{local:Loc SelectOutFolder}"
-                            Command="{Binding SelectOutputFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                            ToolTip="{local:Loc SelectFFMpegFolder}"
+                            Command="{Binding SelectFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Column="3"/>
+
+                    <!-- Outpu Folder -->
                     <Button Content="{local:Loc OutFolder}"
                             ContentStringFormat="{}{0}: "
                             DockPanel.Dock="Left"
                             Padding="5,0"
                             VerticalContentAlignment="Center"
                             ToolTip="{local:Loc OpenOutFolder}"
-                            Command="{Binding OpenOutputFolderCommand}"/>
+                            Command="{Binding OpenOutputFolderCommand}"
+                            Grid.Row="1"/>
                     <TextBox IsReadOnly="True"
-                             Text="{Binding Settings.OutPath}"/>
-                </DockPanel>
-                <DockPanel DockPanel.Dock="Bottom">
+                             Text="{Binding Settings.OutPath}"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="2"/>
                     <Button Content="..."
                             DockPanel.Dock="Right"
-                            ToolTip="{local:Loc SelectFFMpegFolder}"
-                            Command="{Binding SelectFFMpegFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                    <Button Content="X"
-                            DockPanel.Dock="Right"
-                            ToolTip="{local:Loc Reset}"
-                            Command="{Binding ResetFFMpegFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                    <Label Content="{local:Loc FFMpegFolder}"
-                           ContentStringFormat="{}{0}: "
-                           DockPanel.Dock="Left"
-                           Padding="5,0"/>
-                    <TextBox IsReadOnly="True"
-                             Text="{Binding Settings.FFMpegFolder}"/>
-                </DockPanel>
-                <GridSplitter Height="1"
-                              DockPanel.Dock="Bottom"/>
-                <DockPanel>
-                    <TabControl Background="Transparent">
-                        <TabItem Header="{local:Loc Main}">
-                            <Frame Source="Views/MainConfigView.xaml"/>
-                        </TabItem>
-                        <TabItem Header="{local:Loc Configure}">
-                            <Frame Source="Views/ConfigView.xaml"/>
-                        </TabItem>
-                        <TabItem Header="{local:Loc Recent}">
-                            <Frame Source="Views/RecentView.xaml"/>
-                        </TabItem>
-                        <TabItem Header="{local:Loc Hotkeys}">
-                            <Frame Source="Views/HotkeyView.xaml"/>
-                        </TabItem>
-                        <TabItem Header="{local:Loc About}">
-                            <Frame Source="Views/AboutView.xaml"/>
-                        </TabItem>
-                    </TabControl>
-                </DockPanel>
+                            ToolTip="{local:Loc SelectOutFolder}"
+                            Command="{Binding SelectOutputFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Row="1"
+                            Grid.Column="3"/>
+                </Grid>
+                <TabControl Background="Transparent">
+                    <TabItem Header="{local:Loc Main}">
+                        <Frame Source="Views/MainConfigView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Configure}">
+                        <Frame Source="Views/ConfigView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Recent}">
+                        <Frame Source="Views/RecentView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Hotkeys}">
+                        <Frame Source="Views/HotkeyView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc About}">
+                        <Frame Source="Views/AboutView.xaml"/>
+                    </TabItem>
+                </TabControl>
             </DockPanel>
         </Expander>
     </Grid>

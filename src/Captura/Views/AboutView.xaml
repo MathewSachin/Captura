@@ -6,33 +6,60 @@
         <local:AboutViewModel/>
     </Page.DataContext>
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
+                <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>
+            </Style>
+        </Grid.Resources>
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">
                 <TextBlock TextWrapping="Wrap"
-                           Margin="0,0,0,10">
-                     Captura<LineBreak/>
-                     (c) 2017 <Hyperlink NavigateUri="https://github.com/MathewSachin" RequestNavigate="Hyperlink_RequestNavigate">Mathew Sachin</Hyperlink>
+                           LineHeight="30">
+                    <Run FontSize="20">Captura</Run> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                    (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
-                <DockPanel>
-                    <TextBlock Text="Language (Alpha):"
+                <DockPanel Margin="0,0,0,10">
+                    <TextBlock DockPanel.Dock="Bottom"
+                               HorizontalAlignment="Right">
+                        <Hyperlink CommandParameter="https://mathewsachin.github.io/Captura/Translation">Want to Translate?</Hyperlink>
+                    </TextBlock>
+                    <TextBlock Text="Language:"
                                VerticalAlignment="Center" 
-                               Margin="0,0,16,4"/>
+                               Margin="0,0,16,5"/>
                     <ComboBox VerticalAlignment="Center" 
-                              Margin="0,0,0,4"
+                              Margin="0,0,0,5"
                               ItemsSource="{Binding Languages}"
                               SelectedValue="{Binding Language, Mode=TwoWay}"
                               DisplayMemberPath="DisplayName"/>
                 </DockPanel>
 
-                <TextBlock>
-                     <Hyperlink NavigateUri="https://github.com/MathewSachin/Captura/" RequestNavigate="Hyperlink_RequestNavigate">View On GitHub</Hyperlink>
-                </TextBlock>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://github.com/MathewSachin/Captura/"
+                            Content="Source"
+                            Margin="3"/>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://mathewsachin.github.io/Captura/Changelog"
+                            Content="Changelog"
+                            Grid.Column="1"
+                            Margin="3"/>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://mathewsachin.github.io/Captura/Donate"
+                            Content="Donate"
+                            Grid.Column="2"
+                            Margin="3"/>
+                </Grid>
 
                 <TextBlock TextWrapping="Wrap"
                            Margin="0,10">
-                           Powered by <Hyperlink NavigateUri="https://github.com/MathewSachin/Screna" RequestNavigate="Hyperlink_RequestNavigate">Screna</Hyperlink>
+                           Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
                 </TextBlock>
             </StackPanel>
         </ScrollViewer>
