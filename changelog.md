@@ -4,6 +4,15 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v3.5.0
+- **fix:** Crash when Recording stops automatically on reaching Duration.
+- **fix:** Recording cannot start if Delay is set.
+- **fix:** Optional libraries don't load on Chocolatey.
+- Localization using RESX files. [Translations]({{ site.baseurl }}/Translation) are welcome.
+- Scroll to change values in Number boxes.
+- Removed NAudio support.
+- Items in the Recent list are persisted only if the files exist.
+
 ## v3.4.0
 - **fix:** App crashes on Startup in Release builds.
 - Expanded/Collapsed state is persisted.
