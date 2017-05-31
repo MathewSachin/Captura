@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:Captura"
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

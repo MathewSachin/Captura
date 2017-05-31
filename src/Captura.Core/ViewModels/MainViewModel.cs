@@ -26,7 +26,7 @@ namespace Captura.ViewModels
         IRecorder _recorder;
         string _currentFileName;
         readonly MouseCursor _cursor;
-        bool isVideo;
+        bool isVideo, _console;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
         IWebCamProvider _webCamProvider;
@@ -42,19 +42,15 @@ namespace Captura.ViewModels
             }
         }
         #endregion
-                
-        static MainViewModel()
-        {
-            ServiceProvider.ParseCmdLine();
-        }
 
-        public MainViewModel()
+        public MainViewModel() : this(false) { }
+
+        public MainViewModel(bool Console)
         {
+            _console = Console;
+
             _timer = new Timer(1000);
             _timer.Elapsed += TimerOnElapsed;
-
-            StartDelay = ServiceProvider.CommandLineOptions.Delay;
-            Duration = ServiceProvider.CommandLineOptions.Length;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
@@ -180,7 +176,9 @@ namespace Captura.ViewModels
             ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
             ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
 
-            HotKeyManager.RegisterAll();
+            // Register Hotkeys if not console
+            if (!_console)
+                HotKeyManager.RegisterAll();
         }
 
         void RestoreRemembered()
@@ -263,42 +261,20 @@ namespace Captura.ViewModels
             }
         }
 
-        public async void MainWindowReady()
+        public void MainWindowReady()
         {
             VideoViewModel.Init();
 
-            RestoreRemembered();
+            if (!_console)
+                RestoreRemembered();
 
             _webCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
 
             _webCamProvider.IsVisibleChanged += () => OnPropertyChanged(nameof(WebCamVisible));
-
-            // Start Recording (Command-line)
-            if (ServiceProvider.CommandLineOptions is StartCmdOptions)
-            {
-                StartRecording();
-            }
-
-            // ScreenShot and Exit (Command-line)
-            else if (ServiceProvider.CommandLineOptions is ShotCmdOptions)
-            {
-                await Task.Delay(500);
-
-                CaptureScreenShot();
-
-                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
-            }
         }
 
-        // Call before Exit to free Resources
-        public void Dispose()
+        void Remember()
         {
-            HotKeyManager.Dispose();
-
-            AudioViewModel.Dispose();
-
-            RecentViewModel.Dispose();
-
             #region Remember Video Source
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
@@ -336,11 +312,28 @@ namespace Captura.ViewModels
 
             // Remember Audio Codec
             Settings.LastAudioWriterName = AudioViewModel.SelectedAudioWriter.ToString();
-            
+
             // Remember ScreenShot Format
             Settings.LastScreenShotFormat = SelectedScreenShotImageFormat.ToString();
+        }
+
+        // Call before Exit to free Resources
+        public void Dispose()
+        {
+            if (!_console)
+                HotKeyManager.Dispose();
+
+            AudioViewModel.Dispose();
+
+            RecentViewModel.Dispose();
+
+            // Remember things if not console.
+            if (!_console)
+                Remember();
             
-            Settings.Save();
+            // Save if not console
+            if (!_console)
+                Settings.Save();
         }
         
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
@@ -427,7 +420,7 @@ namespace Captura.ViewModels
             }
         }
 
-        void CaptureScreenShot()
+        public void CaptureScreenShot()
         {
             ServiceProvider.SystemTray.HideNotification();
 
@@ -464,7 +457,7 @@ namespace Captura.ViewModels
                 Directory.CreateDirectory(Settings.OutPath);
         }
 
-        void StartRecording()
+        public void StartRecording()
         {
             VideoViewModel.RegionProvider.SnapEnabled = false;
 
@@ -587,7 +580,7 @@ namespace Captura.ViewModels
             return new TransformedImageProvider(overlayed);
         }
         
-        async void StopRecording()
+        public async Task StopRecording()
         {
             Status.LocalizationKey = nameof(Resources.Stopped);
 
@@ -617,19 +610,11 @@ namespace Captura.ViewModels
             
             // After Save
             savingRecentItem.Saved();
-
-            // Exit (Command-line)
-            if (ServiceProvider.CommandLineOptions is StartCmdOptions)
+            
+            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () =>
             {
-                ServiceProvider.Get<Action>(ServiceName.Exit).Invoke();
-            }
-            else
-            {
-                ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () =>
-                {
-                    ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
-                });
-            }
+                ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
+            });
         }
     }
 }

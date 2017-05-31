@@ -28,9 +28,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MouseKeyHook.5.4.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
@@ -44,6 +41,7 @@
       <HintPath>..\packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
@@ -64,11 +62,6 @@
     <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
-    <Compile Include="Models\CommandLine\CmdOptionsBase.cs" />
-    <Compile Include="Models\CommandLine\CommonCmdOptions.cs" />
-    <Compile Include="Models\CommandLine\ShotCmdOptions.cs" />
-    <Compile Include="Models\CommandLine\StartCmdOptions.cs" />
-    <Compile Include="Models\CommandLine\VerbCmdOptions.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />

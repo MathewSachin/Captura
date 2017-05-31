@@ -20,6 +20,6 @@ namespace Captura
             return new StaticRegionProvider();
         }
 
-        public override string ToString() => TranslationSource.Instance[nameof(Resources.RegionSelector)];
+        public override string ToString() => Resources.RegionSelector;
     }
 }

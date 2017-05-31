@@ -16,12 +16,10 @@ namespace Captura
             ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new MessageProvider());
 
             ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
-
-            ServiceProvider.Register<Action>(ServiceName.Exit, () => TryExit());
-            
+                        
             InitializeComponent();
             
-            if (ServiceProvider.CommandLineOptions.Tray)
+            if (App.CmdOptions.Tray)
                 Hide();
 
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>

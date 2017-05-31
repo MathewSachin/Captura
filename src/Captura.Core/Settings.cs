@@ -8,23 +8,21 @@ namespace Captura
     public class Settings : ApplicationSettingsBase
     {
         public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
-
-        static Settings()
+        
+        Settings()
         {
             // Upgrade settings from Previous version
-            if (Instance.UpdateRequired)
+            if (UpdateRequired)
             {
-                Instance.Upgrade();
-                Instance.UpdateRequired = false;
+                Upgrade();
+                UpdateRequired = false;
             }
         }
-
-        Settings() { }
-
+        
         T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool UpdateRequired

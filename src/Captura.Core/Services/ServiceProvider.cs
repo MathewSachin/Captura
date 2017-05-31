@@ -132,46 +132,7 @@ namespace Captura
         public static ISystemTray SystemTray { get; private set; }
 
         public static IMessageProvider Messenger { get; private set; }
-
-        public static CommonCmdOptions CommandLineOptions { get; private set; } = new CommonCmdOptions();
-
-        public static void ParseCmdLine()
-        {
-            var args = Environment.GetCommandLineArgs();
-
-            // Only Executable path
-            if (args.Length == 1)
-                return;
-
-            // Remove Executable path
-            Array.Copy(args, 1, args, 0, args.Length - 1);
-            args[args.Length - 1] = "";
-
-            if (args[0] == "start" || args[0] == "shot")
-            {
-                CommandLine.Parser.Default.ParseArguments(args, new VerbCmdOptions(), (verb, options) =>
-                {
-                    CommandLineOptions = options as CommonCmdOptions;
-                });
-            }
-            else
-            {
-                CommandLine.Parser.Default.ParseArguments(args, CommandLineOptions);
-            }
-            
-            if (CommandLineOptions.Reset)
-                Settings.Instance.Reset();
-
-            if (CommandLineOptions.Cursor.HasValue)
-                Settings.Instance.IncludeCursor = CommandLineOptions.Cursor.Value;
-
-            if (CommandLineOptions.Clicks.HasValue)
-                Settings.Instance.MouseClicks = CommandLineOptions.Clicks.Value;
-
-            if (CommandLineOptions.Keys.HasValue)
-                Settings.Instance.KeyStrokes = CommandLineOptions.Keys.Value;
-        }
-        
+                
         public static bool FileExists(string FileName)
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
