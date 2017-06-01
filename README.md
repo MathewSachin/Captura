@@ -21,10 +21,10 @@ choco install captura -y
 - Take ScreenShots
 - Capture ScreenCasts (Avi/Gif/Mp4)
 - Capture with/without Mouse Cursor
-- Capture Specific Regions or Windows
+- Capture Specific Regions, Screens or Windows
 - Capture Mouse Clicks or Keystrokes
-- Record Audio from Microphone **AND/OR** Speaker Output (Wasapi Loopback)
-- Modular (Only _Screna.dll_ is a required dependency).
+- Mix Audio recorded from Microphone and Speaker Output
+- Capture from WebCams.
 
 # Build Notes
 - [Visual Studio 2017](https://visualstudio.com) or greater is required.
