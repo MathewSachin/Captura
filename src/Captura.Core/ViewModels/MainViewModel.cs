@@ -26,7 +26,7 @@ namespace Captura.ViewModels
         string _currentFileName;
         MouseCursor _cursor;
         bool isVideo;
-        static readonly RectangleConverter RectangleConverter = new RectangleConverter();
+        public static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
         IWebCamProvider _webCamProvider;
 

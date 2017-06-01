@@ -2,8 +2,10 @@
 using Captura.ViewModels;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +30,7 @@ namespace Captura.Console
                     {
                         using (var vm = new MainViewModel())
                         {
-                            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new FakeRegionProvider());
+                            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, FakeRegionProvider.Instance);
 
                             ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new FakeMessageProvider());
 
@@ -63,10 +65,40 @@ namespace Captura.Console
             }
         }
 
+        static void HandleVideoSource(MainViewModel ViewModel, CommonCmdOptions CommonOptions)
+        {
+            // Desktop
+            if (CommonOptions.Source == null || CommonOptions.Source == "desktop")
+                return;
+
+            // Region
+            if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
+            {
+                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromString(CommonOptions.Source);
+
+                FakeRegionProvider.Instance.SelectedRegion = rect;
+                ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+            }
+
+            // Screen
+            else if (ScreenItem.Count > 1 && Regex.IsMatch(CommonOptions.Source, @"screen:\d+"))
+            {
+                var index = int.Parse(CommonOptions.Source.Substring(7));
+
+                if (index < ScreenItem.Count)
+                {
+                    ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                    ViewModel.VideoViewModel.SelectedVideoSource = ViewModel.VideoViewModel.AvailableVideoSources[index];
+                }
+            }
+        }
+
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
         {
             if (ShotOptions.Cursor)
                 Settings.Instance.IncludeCursor = true;
+
+            HandleVideoSource(ViewModel, ShotOptions);
 
             ViewModel.CaptureScreenShot();
         }
@@ -81,6 +113,8 @@ namespace Captura.Console
 
             if (StartOptions.Keys)
                 Settings.Instance.KeyStrokes = true;
+
+            HandleVideoSource(ViewModel, StartOptions);
 
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);

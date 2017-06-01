@@ -5,6 +5,10 @@ namespace Captura.Console
 {
     class FakeRegionProvider : IRegionProvider
     {
+        FakeRegionProvider() { }
+
+        public static FakeRegionProvider Instance { get; } = new FakeRegionProvider();
+
         public bool SelectorVisible
         {
             get => false;

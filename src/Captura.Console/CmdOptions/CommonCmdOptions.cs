@@ -11,5 +11,8 @@ namespace Captura
         
         [Option("cursor", DefaultValue = false, HelpText = "Include Cursor in Recording.")]
         public bool Cursor { get; set; }
+
+        [Option("source", DefaultValue = null, HelpText = "Video source")]
+        public string Source { get; set; }
     }
 }
