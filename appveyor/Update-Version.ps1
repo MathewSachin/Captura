@@ -1,8 +1,15 @@
 # Path to AssemblyInfo.cs file
-$assemblyInfo = "src\Captura\Properties\AssemblyInfo.cs"
+$uiInfo = "src\Captura\Properties\AssemblyInfo.cs"
+$consoleInfo = "src\Captura.Console\Properties\AssemblyInfo.cs"
 
 # Default Version
 $env:AppVersion = "1.0.0"
+
+function Update-Version ($infoPath, $version) {
+    $content = Get-Content $infoPath
+    $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(`"$version`")"
+    Set-Content $infoPath $replaced
+}
 
 # For Tag build
 if ($env:appveyor_repo_tag -eq 'true')
@@ -17,14 +24,13 @@ if ($env:appveyor_repo_tag -eq 'true')
     $env:AppVersion = ($env:APPVEYOR_REPO_TAG_NAME).Substring(1)
 
     # Update AssemblyInfo.cs with Version from tag
-    $content = Get-Content $assemblyInfo
-    $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(`"$env:AppVersion`")"
-    Set-Content $assemblyInfo $replaced
+    Update-Version($uiInfo, $env:AppVersion);
+    Update-Version($consoleInfo, $env:AppVersion);
 }
 else
 {
     # Retrieve Version from AssemblyInfo.cs
-    $content = Get-Content $assemblyInfo
+    $content = Get-Content $uiInfo
     $match = [regex]::Match($content, 'AssemblyVersion\(\"(.+?)\"\)')
 
     if ($match.Success)
