@@ -12,7 +12,7 @@ namespace Captura
         [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]
         public int Delay { get; set; }
 
-        [Option("length", Required = true, HelpText = "Length of Recording in seconds.")]
+        [Option("length", DefaultValue = 0, HelpText = "Length of Recording in seconds.")]
         public int Length { get; set; }
         
         [Option("keys", DefaultValue = false, HelpText = "Include Keystrokes in Recording.")]

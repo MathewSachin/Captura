@@ -49,8 +49,11 @@ namespace Captura.ViewModels
         {
             _console = Console;
 
-            _timer = new Timer(1000);
-            _timer.Elapsed += TimerOnElapsed;
+            if (!_console)
+            {
+                _timer = new Timer(1000);
+                _timer.Elapsed += TimerOnElapsed;
+            }
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
@@ -91,7 +94,7 @@ namespace Captura.ViewModels
                     ServiceProvider.SystemTray.HideNotification();
 
                     _recorder.Start();
-                    _timer.Start();
+                    _timer?.Start();
 
                     RecorderState = RecorderState.Recording;
                     Status.LocalizationKey = nameof(Resources.Recording);
@@ -99,7 +102,7 @@ namespace Captura.ViewModels
                 else
                 {
                     _recorder.Stop();
-                    _timer.Stop();
+                    _timer?.Stop();
 
                     RecorderState = RecorderState.Paused;
                     Status.LocalizationKey = nameof(Resources.Paused);
@@ -506,7 +509,7 @@ namespace Captura.ViewModels
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 
-            _timer.Stop();
+            _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
             
             var audioSource = AudioViewModel.AudioSource.GetAudioSource();
@@ -543,7 +546,7 @@ namespace Captura.ViewModels
             }
             else _recorder.Start();
 
-            _timer.Start();
+            _timer?.Start();
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
@@ -608,7 +611,7 @@ namespace Captura.ViewModels
 
             var task = Task.Run(() => rec.Dispose());
 
-            _timer.Stop();
+            _timer?.Stop();
 
             #region After Recording Tasks
             CanChangeVideoSource = true;

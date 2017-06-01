@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -53,7 +54,30 @@ namespace Captura.Console
 
                                 vm.StartRecording();
 
-                                Thread.Sleep(startOptions.Length * 1000);
+                                if (startOptions.Length > 0)
+                                {
+                                    int elapsed = 0;
+
+                                    System.Console.Write(TimeSpan.Zero);
+
+                                    while (elapsed++ < startOptions.Length)
+                                    {
+                                        Thread.Sleep(1000);
+                                        System.Console.Write(new string('\b', 8) + TimeSpan.FromSeconds(elapsed));
+                                    }
+
+                                    System.Console.Write(new string('\b', 8));
+                                }
+                                else
+                                {
+                                    var text = "Press q to quit";
+
+                                    System.Console.Write(text);
+
+                                    while (System.Console.ReadKey(true).KeyChar != 'q') ;
+
+                                    System.Console.Write(new string('\b', text.Length));
+                                }
 
                                 Task.Run(async () => await vm.StopRecording()).Wait();
                             }
