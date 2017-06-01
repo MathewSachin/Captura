@@ -13,6 +13,7 @@ namespace Captura.Console
     {
         static void Main(string[] args)
         {
+            // Handle if args is empty
             switch (args.Length > 0 ? args[0] : "")
             {
                 case "start":
@@ -40,55 +41,13 @@ namespace Captura.Console
                             // Start Recording (Command-line)
                             if (options is StartCmdOptions startOptions)
                             {
-                                if (startOptions.Cursor)
-                                    Settings.Instance.IncludeCursor = true;
-
-                                if (startOptions.Clicks)
-                                    Settings.Instance.MouseClicks = true;
-
-                                if (startOptions.Keys)
-                                    Settings.Instance.KeyStrokes = true;
-                                
-                                if (startOptions.Delay > 0)
-                                    Thread.Sleep(startOptions.Delay);
-
-                                vm.StartRecording();
-
-                                if (startOptions.Length > 0)
-                                {
-                                    int elapsed = 0;
-
-                                    System.Console.Write(TimeSpan.Zero);
-
-                                    while (elapsed++ < startOptions.Length)
-                                    {
-                                        Thread.Sleep(1000);
-                                        System.Console.Write(new string('\b', 8) + TimeSpan.FromSeconds(elapsed));
-                                    }
-
-                                    System.Console.Write(new string('\b', 8));
-                                }
-                                else
-                                {
-                                    var text = "Press q to quit";
-
-                                    System.Console.Write(text);
-
-                                    while (System.Console.ReadKey(true).KeyChar != 'q') ;
-
-                                    System.Console.Write(new string('\b', text.Length));
-                                }
-
-                                Task.Run(async () => await vm.StopRecording()).Wait();
+                                Start(vm, startOptions);
                             }
 
                             // ScreenShot and Exit (Command-line)
                             else if (options is ShotCmdOptions shotOptions)
                             {
-                                if (shotOptions.Cursor)
-                                    Settings.Instance.IncludeCursor = true;
-
-                                vm.CaptureScreenShot();
+                                Shot(vm, shotOptions);
                             }
                         }
                     });
@@ -97,10 +56,63 @@ namespace Captura.Console
                         System.Console.WriteLine(verbs.GetUsage());
                     break;
 
+                // Launch UI passing arguments
                 default:
                     Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", args));
                     break;
             }
+        }
+
+        static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
+        {
+            if (ShotOptions.Cursor)
+                Settings.Instance.IncludeCursor = true;
+
+            ViewModel.CaptureScreenShot();
+        }
+
+        static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        {
+            if (StartOptions.Cursor)
+                Settings.Instance.IncludeCursor = true;
+
+            if (StartOptions.Clicks)
+                Settings.Instance.MouseClicks = true;
+
+            if (StartOptions.Keys)
+                Settings.Instance.KeyStrokes = true;
+
+            if (StartOptions.Delay > 0)
+                Thread.Sleep(StartOptions.Delay);
+
+            ViewModel.StartRecording();
+
+            if (StartOptions.Length > 0)
+            {
+                int elapsed = 0;
+
+                System.Console.Write(TimeSpan.Zero);
+
+                while (elapsed++ < StartOptions.Length)
+                {
+                    Thread.Sleep(1000);
+                    System.Console.Write(new string('\b', 8) + TimeSpan.FromSeconds(elapsed));
+                }
+
+                System.Console.Write(new string('\b', 8));
+            }
+            else
+            {
+                var text = "Press q to quit";
+
+                System.Console.Write(text);
+
+                while (System.Console.ReadKey(true).KeyChar != 'q') ;
+
+                System.Console.Write(new string('\b', text.Length));
+            }
+
+            Task.Run(async () => await ViewModel.StopRecording()).Wait();
         }
     }
 }
