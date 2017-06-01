@@ -35,7 +35,7 @@ namespace Captura.Console
 
                             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new FakeSystemTray());
 
-                            vm.Init(true);
+                            vm.Init(false, false, false, false);
 
                             // Start Recording (Command-line)
                             if (options is StartCmdOptions startOptions)

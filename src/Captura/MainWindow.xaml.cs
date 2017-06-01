@@ -48,7 +48,7 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).Init(false);            
+            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);            
         }
 
         protected override void OnStateChanged(EventArgs e)

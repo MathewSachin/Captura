@@ -25,7 +25,7 @@ namespace Captura.ViewModels
         IRecorder _recorder;
         string _currentFileName;
         MouseCursor _cursor;
-        bool isVideo, _console;
+        bool isVideo;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
         IWebCamProvider _webCamProvider;
@@ -175,11 +175,14 @@ namespace Captura.ViewModels
             }
         }
 
-        public void Init(bool Console)
-        {
-            _console = Console;
+        bool _persist, _hotkeys;
 
-            if (!_console)
+        public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)
+        {
+            _persist = Persist;
+            _hotkeys = Hotkeys;
+
+            if (Timer)
             {
                 _timer = new Timer(1000);
                 _timer.Elapsed += TimerOnElapsed;
@@ -241,12 +244,12 @@ namespace Captura.ViewModels
             ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
 
             // Register Hotkeys if not console
-            if (!_console)
+            if (_hotkeys)
                 HotKeyManager.RegisterAll();
 
             VideoViewModel.Init();
 
-            if (!_console)
+            if (Remembered)
                 RestoreRemembered();
 
             _webCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
@@ -301,7 +304,7 @@ namespace Captura.ViewModels
         // Call before Exit to free Resources
         public void Dispose()
         {
-            if (!_console)
+            if (_hotkeys)
                 HotKeyManager.Dispose();
 
             AudioViewModel.Dispose();
@@ -309,11 +312,11 @@ namespace Captura.ViewModels
             RecentViewModel.Dispose();
 
             // Remember things if not console.
-            if (!_console)
+            if (_persist)
                 Remember();
             
             // Save if not console
-            if (!_console)
+            if (_persist)
                 Settings.Save();
         }
         
