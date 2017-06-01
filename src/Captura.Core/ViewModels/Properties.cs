@@ -2,7 +2,9 @@
 using Captura.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace Captura.ViewModels
 {
@@ -155,15 +157,40 @@ namespace Captura.ViewModels
 
         public DelegateCommand RefreshCommand { get; }
 
-        public DelegateCommand OpenOutputFolderCommand { get; }
+        public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
+        {
+            EnsureOutPath();
+
+            Process.Start(Settings.Instance.OutPath);
+        });
 
         public DelegateCommand PauseCommand { get; }
 
-        public DelegateCommand SelectOutputFolderCommand { get; }
+        public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
+        {
+            var dlg = new FolderBrowserDialog
+            {
+                SelectedPath = Settings.Instance.OutPath,
+                Description = Resources.SelectOutFolder
+            };
 
-        public DelegateCommand SelectFFMpegFolderCommand { get; }
+            if (dlg.ShowDialog() == DialogResult.OK)
+                Settings.Instance.OutPath = dlg.SelectedPath;
+        });
 
-        public DelegateCommand ResetFFMpegFolderCommand { get; }
+        public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(() =>
+        {
+            var dlg = new FolderBrowserDialog
+            {
+                SelectedPath = Settings.Instance.FFMpegFolder,
+                Description = Resources.SelectFFMpegFolder
+            };
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+                Settings.Instance.FFMpegFolder = dlg.SelectedPath;
+        });
+
+        public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() => Settings.Instance.FFMpegFolder = "");
         #endregion
 
         #region Nested ViewModels

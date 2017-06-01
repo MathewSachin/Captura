@@ -48,7 +48,7 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).MainWindowReady();            
+            (DataContext as MainViewModel).Init(false);            
         }
 
         protected override void OnStateChanged(EventArgs e)

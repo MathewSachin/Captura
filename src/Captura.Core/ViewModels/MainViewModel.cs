@@ -13,7 +13,6 @@ using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
@@ -22,10 +21,10 @@ namespace Captura.ViewModels
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
         #region Fields
-        readonly Timer _timer;
+        Timer _timer;
         IRecorder _recorder;
         string _currentFileName;
-        readonly MouseCursor _cursor;
+        MouseCursor _cursor;
         bool isVideo, _console;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
@@ -42,19 +41,9 @@ namespace Captura.ViewModels
             }
         }
         #endregion
-
-        public MainViewModel() : this(false) { }
-
-        public MainViewModel(bool Console)
+        
+        public MainViewModel()
         {
-            _console = Console;
-
-            if (!_console)
-            {
-                _timer = new Timer(1000);
-                _timer.Elapsed += TimerOnElapsed;
-            }
-
             #region Commands
             ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
             
@@ -79,14 +68,7 @@ namespace Captura.ViewModels
 
                 Status.LocalizationKey = nameof(Resources.Refreshed);
             });
-
-            OpenOutputFolderCommand = new DelegateCommand(() => 
-            {
-                EnsureOutPath();
-
-                Process.Start(Settings.OutPath);
-            });
-
+            
             PauseCommand = new DelegateCommand(() =>
             {
                 if (RecorderState == RecorderState.Paused)
@@ -110,92 +92,7 @@ namespace Captura.ViewModels
                     ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
                 }
             }, false);
-
-            SelectOutputFolderCommand = new DelegateCommand(() =>
-            {
-                var dlg = new FolderBrowserDialog
-                {
-                    SelectedPath = Settings.OutPath,
-                    Description = Resources.SelectOutFolder
-                };
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.OutPath = dlg.SelectedPath;
-            });
-
-            SelectFFMpegFolderCommand = new DelegateCommand(() =>
-            {
-                var dlg = new FolderBrowserDialog
-                {
-                    SelectedPath = Settings.FFMpegFolder,
-                    Description = Resources.SelectFFMpegFolder
-                };
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.FFMpegFolder = dlg.SelectedPath;
-            });
-
-            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpegFolder = "");
             #endregion
-
-            AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(AudioViewModel.AudioSource.SelectedRecordingSource):
-                    case nameof(AudioViewModel.AudioSource.SelectedLoopbackSource):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }
-            };
-
-            VideoViewModel.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(VideoViewModel.SelectedVideoSource):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }                    
-            };
-
-            _cursor = new MouseCursor(Settings.IncludeCursor);
-
-            Settings.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(Settings.IncludeCursor):
-                    case null:
-                    case "":
-                        _cursor.Include = Settings.IncludeCursor;
-                        break;
-                }
-            };
-
-            // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(Settings.OutPath))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
-                        
-            // Create the Output Directory if it does not exist
-            if (!Directory.Exists(Settings.OutPath))
-                Directory.CreateDirectory(Settings.OutPath);
-
-            // Register ActionServices
-            ServiceProvider.Register<Action>(ServiceName.Recording, () => RecordCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.Pause, () => PauseCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.ScreenShot, () => ScreenShotCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.ActiveScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
-            ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
-            ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
-
-            // Register Hotkeys if not console
-            if (!_console)
-                HotKeyManager.RegisterAll();
         }
 
         void RestoreRemembered()
@@ -278,8 +175,75 @@ namespace Captura.ViewModels
             }
         }
 
-        public void MainWindowReady()
+        public void Init(bool Console)
         {
+            _console = Console;
+
+            if (!_console)
+            {
+                _timer = new Timer(1000);
+                _timer.Elapsed += TimerOnElapsed;
+            }
+
+            AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
+            {
+                switch (Args.PropertyName)
+                {
+                    case nameof(AudioViewModel.AudioSource.SelectedRecordingSource):
+                    case nameof(AudioViewModel.AudioSource.SelectedLoopbackSource):
+                    case null:
+                    case "":
+                        CheckFunctionalityAvailability();
+                        break;
+                }
+            };
+
+            VideoViewModel.PropertyChanged += (Sender, Args) =>
+            {
+                switch (Args.PropertyName)
+                {
+                    case nameof(VideoViewModel.SelectedVideoSource):
+                    case null:
+                    case "":
+                        CheckFunctionalityAvailability();
+                        break;
+                }
+            };
+
+            _cursor = new MouseCursor(Settings.IncludeCursor);
+
+            Settings.PropertyChanged += (Sender, Args) =>
+            {
+                switch (Args.PropertyName)
+                {
+                    case nameof(Settings.IncludeCursor):
+                    case null:
+                    case "":
+                        _cursor.Include = Settings.IncludeCursor;
+                        break;
+                }
+            };
+
+            // If Output Dircetory is not set. Set it to Documents\Captura\
+            if (string.IsNullOrWhiteSpace(Settings.OutPath))
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+
+            // Create the Output Directory if it does not exist
+            if (!Directory.Exists(Settings.OutPath))
+                Directory.CreateDirectory(Settings.OutPath);
+
+            // Register ActionServices
+            ServiceProvider.Register<Action>(ServiceName.Recording, () => RecordCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.Pause, () => PauseCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.ScreenShot, () => ScreenShotCommand.ExecuteIfCan());
+            ServiceProvider.Register<Action>(ServiceName.ActiveScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
+            ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
+            ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
+
+            // Register Hotkeys if not console
+            if (!_console)
+                HotKeyManager.RegisterAll();
+
             VideoViewModel.Init();
 
             if (!_console)
@@ -468,10 +432,10 @@ namespace Captura.ViewModels
             SaveScreenShot(bmp);
         }
 
-        void EnsureOutPath()
+        static void EnsureOutPath()
         {
-            if (!Directory.Exists(Settings.OutPath))
-                Directory.CreateDirectory(Settings.OutPath);
+            if (!Directory.Exists(Settings.Instance.OutPath))
+                Directory.CreateDirectory(Settings.Instance.OutPath);
         }
 
         public void StartRecording()

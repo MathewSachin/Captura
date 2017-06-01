@@ -25,7 +25,7 @@ namespace Captura.Console
 
                     var success = CommandLine.Parser.Default.ParseArguments(args, verbs, (verb, options) =>
                     {
-                        using (var vm = new MainViewModel(true))
+                        using (var vm = new MainViewModel())
                         {
                             ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new FakeRegionProvider());
 
@@ -35,7 +35,7 @@ namespace Captura.Console
 
                             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new FakeSystemTray());
 
-                            vm.MainWindowReady();
+                            vm.Init(true);
 
                             // Start Recording (Command-line)
                             if (options is StartCmdOptions startOptions)
