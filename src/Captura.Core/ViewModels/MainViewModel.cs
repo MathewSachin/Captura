@@ -137,15 +137,27 @@ namespace Captura.ViewModels
 
             AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
             {
-                if (Args.PropertyName == nameof(AudioViewModel.AudioSource.SelectedRecordingSource)
-                || Args.PropertyName == nameof(AudioViewModel.AudioSource.SelectedLoopbackSource))
-                    CheckFunctionalityAvailability();
+                switch (Args.PropertyName)
+                {
+                    case nameof(AudioViewModel.AudioSource.SelectedRecordingSource):
+                    case nameof(AudioViewModel.AudioSource.SelectedLoopbackSource):
+                    case null:
+                    case "":
+                        CheckFunctionalityAvailability();
+                        break;
+                }
             };
 
             VideoViewModel.PropertyChanged += (Sender, Args) =>
             {
-                if (Args.PropertyName == nameof(VideoViewModel.SelectedVideoSource))
-                    CheckFunctionalityAvailability();
+                switch (Args.PropertyName)
+                {
+                    case nameof(VideoViewModel.SelectedVideoSource):
+                    case null:
+                    case "":
+                        CheckFunctionalityAvailability();
+                        break;
+                }                    
             };
 
             _cursor = new MouseCursor(Settings.IncludeCursor);
@@ -155,6 +167,8 @@ namespace Captura.ViewModels
                 switch (Args.PropertyName)
                 {
                     case nameof(Settings.IncludeCursor):
+                    case null:
+                    case "":
                         _cursor.Include = Settings.IncludeCursor;
                         break;
                 }
