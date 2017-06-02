@@ -20,5 +20,11 @@ namespace Captura
 
         [Option("clicks", DefaultValue = false, HelpText = "Include Mouse Clicks in Recording.")]
         public bool Clicks { get; set; }
+
+        [Option("mic", DefaultValue = -1, HelpText = "Index of Microphone source.")]
+        public int Microphone { get; set; }
+
+        [Option("speaker", DefaultValue = -1, HelpText = "Index of Speaker output source.")]
+        public int Speaker { get; set; }
     }
 }

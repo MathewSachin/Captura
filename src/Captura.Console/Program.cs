@@ -120,6 +120,21 @@ namespace Captura.Console
             }
         }
 
+        static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        {
+            var source = ViewModel.AudioViewModel.AudioSource;
+
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count - 1)
+            {
+                source.SelectedRecordingSource = source.AvailableRecordingSources[StartOptions.Microphone + 1];
+            }
+
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count - 1)
+            {
+                source.SelectedLoopbackSource = source.AvailableLoopbackSources[StartOptions.Speaker + 1];
+            }
+        }
+
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
         {
             if (ShotOptions.Cursor)
@@ -142,6 +157,8 @@ namespace Captura.Console
                 Settings.Instance.KeyStrokes = true;
 
             HandleVideoSource(ViewModel, StartOptions);
+
+            HandleAudioSource(ViewModel, StartOptions);
 
             if (!ViewModel.RecordCommand.CanExecute(null))
             {
