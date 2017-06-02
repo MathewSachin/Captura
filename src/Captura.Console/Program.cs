@@ -76,25 +76,80 @@ namespace Captura.Console
 
                 vm.Init(false, false, false, false);
 
-                WriteLine($"FFmpeg Available: {(ServiceProvider.FFMpegExists ? "YES" : "NO")}");
+                var underline = $"\n{new string('-', 30)}";
+
+                var video = vm.VideoViewModel;
+
+                #region FFmpeg
+                var ffmpegExists = ServiceProvider.FFMpegExists;
+
+                WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
+
+                WriteLine();                
+
+                if (ffmpegExists)
+                {
+                    WriteLine("FFmpeg ENCODERS" + underline);
+
+                    video.SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
+
+                    for (int i = 0; i < video.AvailableVideoWriters.Count; ++i)
+                    {
+                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
+                    }
+
+                    WriteLine();
+                }
+                #endregion
+
+                #region SharpAvi
+                var sharpAviExists = ServiceProvider.FileExists("SharpAvi.dll");
+
+                WriteLine($"SharpAvi Available: {(sharpAviExists ? "YES" : "NO")}");
 
                 WriteLine();
 
-                var underline = $"\n{new string('-', 30)}";
+                if (sharpAviExists)
+                {
+                    WriteLine("SharpAvi ENCODERS" + underline);
 
+                    video.SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
+
+                    for (int i = 0; i < video.AvailableVideoWriters.Count; ++i)
+                    {
+                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
+                    }
+
+                    WriteLine();
+                }
+                #endregion
+
+                #region Windows
                 WriteLine("AVAILABLE WINDOWS" + underline);
 
-                vm.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+                video.SelectedVideoSourceKind = VideoSourceKind.Window;
 
-                foreach (var source in vm.VideoViewModel.AvailableVideoSources)
+                foreach (var source in video.AvailableVideoSources)
                 {
                     WriteLine($"{(source as WindowItem).Window.Handle.ToString().PadRight(10)}: {source}");
                 }
 
                 WriteLine();
+                #endregion
+
+                #region MouseKeyHook
+                WriteLine($"MouseKeyHook Available: {(vm.MouseKeyHookAvailable ? "YES" : "NO")}");
+
+                WriteLine();
+                #endregion
 
                 var audio = vm.AudioViewModel.AudioSource;
 
+                WriteLine($"ManagedBass Available: {(audio is BassAudioSource ? "YES" : "NO")}");
+
+                WriteLine();
+
+                #region Microphones
                 if (audio.AvailableRecordingSources.Count > 1)
                 {
                     WriteLine("AVAILABLE MICROPHONES" + underline);
@@ -106,7 +161,9 @@ namespace Captura.Console
 
                     WriteLine();
                 }
+                #endregion
 
+                #region Speaker
                 if (audio.AvailableLoopbackSources.Count > 1)
                 {
                     WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
@@ -118,6 +175,7 @@ namespace Captura.Console
 
                     WriteLine();
                 }
+                #endregion
             }
         }
 
