@@ -31,5 +31,8 @@ namespace Captura
 
         [Option('r', "framerate", HelpText = "Recording frame rate.")]
         public int FrameRate { get; set; }
+
+        [Option("encoder", DefaultValue = null, HelpText = "Video encoder to use.")]
+        public string Encoder { get; set; }
     }
 }

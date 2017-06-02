@@ -221,13 +221,15 @@ namespace Captura.Console
             if (CommonOptions.Source == null || CommonOptions.Source == "desktop")
                 return;
 
+            var video = ViewModel.VideoViewModel;
+
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
                 var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromString(CommonOptions.Source);
 
                 FakeRegionProvider.Instance.SelectedRegion = rect;
-                ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                video.SelectedVideoSourceKind = VideoSourceKind.Region;
             }
 
             // Screen
@@ -237,15 +239,15 @@ namespace Captura.Console
 
                 if (index < ScreenItem.Count)
                 {
-                    ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
-                    ViewModel.VideoViewModel.SelectedVideoSource = ViewModel.VideoViewModel.AvailableVideoSources[index];
+                    video.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                    video.SelectedVideoSource = video.AvailableVideoSources[index];
                 }
             }
 
             // No Video for Start
             else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
             {
-                ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
+                video.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
             }
 
             // Window for Screenshot
@@ -260,7 +262,7 @@ namespace Captura.Console
                     if (rect != Rectangle.Empty)
                     {
                         FakeRegionProvider.Instance.SelectedRegion = rect;
-                        ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                        video.SelectedVideoSourceKind = VideoSourceKind.Region;
                     }
                 }
                 catch
@@ -282,6 +284,39 @@ namespace Captura.Console
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count - 1)
             {
                 source.SelectedLoopbackSource = source.AvailableLoopbackSources[StartOptions.Speaker + 1];
+            }
+        }
+
+        static void HandleVideoEncoder(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        {
+            if (StartOptions.Encoder == null)
+                return;
+
+            var video = ViewModel.VideoViewModel;
+
+            if (ServiceProvider.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"ffmpeg:\d+"))
+            {
+                var index = int.Parse(StartOptions.Encoder.Substring(7));
+                
+                video.SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
+
+                if (index < video.AvailableVideoSources.Count)
+                    video.SelectedVideoWriter = video.AvailableVideoWriters[index];
+            }
+
+            else if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(StartOptions.Encoder, @"sharpavi:\d+"))
+            {
+                var index = int.Parse(StartOptions.Encoder.Substring(9));
+
+                video.SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
+
+                if (index < video.AvailableVideoSources.Count)
+                    video.SelectedVideoWriter = video.AvailableVideoWriters[index];
+            }
+
+            else if (StartOptions.Encoder == "gif")
+            {
+                video.SelectedVideoWriterKind = VideoWriterKind.Gif;
             }
         }
 
@@ -307,6 +342,8 @@ namespace Captura.Console
                 Settings.Instance.KeyStrokes = true;
 
             HandleVideoSource(ViewModel, StartOptions);
+
+            HandleVideoEncoder(ViewModel, StartOptions);
 
             HandleAudioSource(ViewModel, StartOptions);
 
