@@ -349,6 +349,9 @@ namespace Captura.Console
 
             Settings.Instance.FrameRate = StartOptions.FrameRate;
 
+            Settings.Instance.AudioQuality = StartOptions.AudioQuality;
+            Settings.Instance.VideoQuality = StartOptions.VideoQuality;
+
             if (!ViewModel.RecordCommand.CanExecute(null))
             {
                 WriteLine("Nothing to Record");

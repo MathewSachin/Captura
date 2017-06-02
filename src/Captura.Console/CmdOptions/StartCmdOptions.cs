@@ -9,6 +9,8 @@ namespace Captura
             Settings.Instance.KeyStrokes = Settings.Instance.MouseClicks = false;
 
             FrameRate = Settings.Instance.FrameRate;
+            VideoQuality = Settings.Instance.VideoQuality;
+            AudioQuality = Settings.Instance.AudioQuality;
         }
 
         [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]
@@ -34,5 +36,11 @@ namespace Captura
 
         [Option("encoder", DefaultValue = null, HelpText = "Video encoder to use.")]
         public string Encoder { get; set; }
+
+        [Option("vq", HelpText = "Video Quality")]
+        public int VideoQuality { get; set; }
+
+        [Option("aq", HelpText = "Audio Quality")]
+        public int AudioQuality { get; set; }
     }
 }
