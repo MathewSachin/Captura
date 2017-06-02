@@ -28,3 +28,10 @@ body {
 .jumbotron {
     padding-bottom: 100px;
 }
+
+.page-content h2 {
+    margin-top: 60px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
