@@ -20,9 +20,9 @@ There are many issues related to using a WPF application as a console app.
 - And more ...
 
 ## Implemented Verbs
-- [list](#verb_list)
-- [shot](#verb_shot)
-- [start](#verb_start)
+- [list](#verb-list)
+- [shot](#verb-shot)
+- [start](#verb-start)
 
 ## Without a Verb
 If a recognized verb is not used, `captura.exe` launches `captura.ui.exe` passing it the remaining arguments and exits.
@@ -71,7 +71,7 @@ Takes a screenshot
 Argument   | Description
 -----------|-------------------------------------
 `--cursor` | Include cursor in the screenshot
-`--source` | The source to take screenshot of. See [here](#using_the_source_argument).
+`--source` | The source to take screenshot of. See [here](#using-the-source-argument).
 
 e.g. Take a screenshot containing cursor.
 
@@ -95,11 +95,11 @@ Argument              | Description
 `--clicks`            | Include mouse clicks
 `--delay`             | Delay before starting recording (in ms)
 `--length`            | Length of recording (in s)
-`--source`            | The source to record from. See [here](#using_the_source_argument).
+`--source`            | The source to record from. See [here](#using-the-source-argument).
 `--mic`               | The microphone index to use. (-1 = none (**Default**)) (0 is first device).
 `--speaker`           | The speaker output index to use. (-1 = none (**Default**)) (0 is first device).
 `-r` or `--framerate` | Frame Rate (**Default** is 10).
-`--encoder`           | The video encoder to use. See [here](#using_the_encoder_argument).
+`--encoder`           | The video encoder to use. See [here](#using-the-encoder-argument).
 `--vq`                | Video Quality (1 to 100) (**Default** is 70).
 `--aq`                | Audio Quality (1 to 100) (**Default** is 50).
 
