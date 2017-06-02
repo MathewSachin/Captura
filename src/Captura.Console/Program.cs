@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace Captura.Console
 {
@@ -20,6 +21,8 @@ namespace Captura.Console
             {
                 case "start":
                 case "shot":
+                    Banner();
+
                     // Reset settings
                     Settings.Instance.Reset();
                     Settings.Instance.UpdateRequired = false;
@@ -30,13 +33,7 @@ namespace Captura.Console
                     {
                         using (var vm = new MainViewModel())
                         {
-                            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, FakeRegionProvider.Instance);
-
-                            ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new FakeMessageProvider());
-
-                            ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new FakeWebCamProvider());
-
-                            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new FakeSystemTray());
+                            RegisterFakes();
 
                             vm.Init(false, false, false, false);
 
@@ -55,7 +52,29 @@ namespace Captura.Console
                     });
 
                     if (!success)
-                        System.Console.WriteLine(verbs.GetUsage());
+                        WriteLine(verbs.GetUsage());
+                    break;
+
+                case "list":
+                    Banner();
+
+                    using (var vm = new MainViewModel())
+                    {
+                        RegisterFakes();
+
+                        vm.Init(false, false, false, false);
+                        
+                        WriteLine($"AVAILABLE WINDOWS\n{new string('-', 20)}");
+
+                        vm.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+
+                        foreach (var source in vm.VideoViewModel.AvailableVideoSources)
+                        {
+                            WriteLine($"{(source as WindowItem).Window.Handle.ToString().PadRight(10)}: {source}");
+                        }
+
+                        WriteLine();
+                    }
                     break;
 
                 // Launch UI passing arguments
@@ -63,6 +82,26 @@ namespace Captura.Console
                     Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", args));
                     break;
             }
+        }
+
+        static void RegisterFakes()
+        {
+            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, FakeRegionProvider.Instance);
+
+            ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new FakeMessageProvider());
+
+            ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new FakeWebCamProvider());
+
+            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new FakeSystemTray());
+        }
+
+        static void Banner()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+
+            WriteLine($@"Captura v{version}
+(c) 2017 Mathew Sachin
+");
         }
 
         static void HandleVideoSource(MainViewModel ViewModel, CommonCmdOptions CommonOptions)
@@ -162,7 +201,7 @@ namespace Captura.Console
 
             if (!ViewModel.RecordCommand.CanExecute(null))
             {
-                System.Console.WriteLine("Nothing to Record");
+                WriteLine("Nothing to Record");
 
                 return;
             }
@@ -176,25 +215,25 @@ namespace Captura.Console
             {
                 int elapsed = 0;
 
-                System.Console.Write(TimeSpan.Zero);
+                Write(TimeSpan.Zero);
 
                 while (elapsed++ < StartOptions.Length)
                 {
                     Thread.Sleep(1000);
-                    System.Console.Write(new string('\b', 8) + TimeSpan.FromSeconds(elapsed));
+                    Write(new string('\b', 8) + TimeSpan.FromSeconds(elapsed));
                 }
 
-                System.Console.Write(new string('\b', 8));
+                Write(new string('\b', 8));
             }
             else
             {
                 var text = "Press q to quit";
 
-                System.Console.Write(text);
+                Write(text);
 
-                while (System.Console.ReadKey(true).KeyChar != 'q') ;
+                while (ReadKey(true).KeyChar != 'q') ;
 
-                System.Console.Write(new string('\b', text.Length));
+                Write(new string('\b', text.Length));
             }
 
             Task.Run(async () => await ViewModel.StopRecording()).Wait();
