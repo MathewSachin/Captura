@@ -56,31 +56,68 @@ namespace Captura.Console
                     break;
 
                 case "list":
-                    Banner();
-
-                    using (var vm = new MainViewModel())
-                    {
-                        RegisterFakes();
-
-                        vm.Init(false, false, false, false);
-                        
-                        WriteLine($"AVAILABLE WINDOWS\n{new string('-', 20)}");
-
-                        vm.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
-
-                        foreach (var source in vm.VideoViewModel.AvailableVideoSources)
-                        {
-                            WriteLine($"{(source as WindowItem).Window.Handle.ToString().PadRight(10)}: {source}");
-                        }
-
-                        WriteLine();
-                    }
+                    List();
                     break;
 
                 // Launch UI passing arguments
                 default:
                     Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", args));
                     break;
+            }
+        }
+
+        static void List()
+        {
+            Banner();
+
+            using (var vm = new MainViewModel())
+            {
+                RegisterFakes();
+
+                vm.Init(false, false, false, false);
+
+                WriteLine($"FFmpeg Available: {(ServiceProvider.FFMpegExists ? "YES" : "NO")}");
+
+                WriteLine();
+
+                var underline = $"\n{new string('-', 30)}";
+
+                WriteLine("AVAILABLE WINDOWS" + underline);
+
+                vm.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+
+                foreach (var source in vm.VideoViewModel.AvailableVideoSources)
+                {
+                    WriteLine($"{(source as WindowItem).Window.Handle.ToString().PadRight(10)}: {source}");
+                }
+
+                WriteLine();
+
+                var audio = vm.AudioViewModel.AudioSource;
+
+                if (audio.AvailableRecordingSources.Count > 1)
+                {
+                    WriteLine("AVAILABLE MICROPHONES" + underline);
+
+                    for (int i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                    {
+                        WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
+                    }
+
+                    WriteLine();
+                }
+
+                if (audio.AvailableLoopbackSources.Count > 1)
+                {
+                    WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
+
+                    for (int i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                    {
+                        WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                    }
+
+                    WriteLine();
+                }
             }
         }
 
