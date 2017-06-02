@@ -294,6 +294,8 @@ namespace Captura.Console
 
             HandleAudioSource(ViewModel, StartOptions);
 
+            Settings.Instance.FrameRate = StartOptions.FrameRate;
+
             if (!ViewModel.RecordCommand.CanExecute(null))
             {
                 WriteLine("Nothing to Record");

@@ -7,6 +7,8 @@ namespace Captura
         public StartCmdOptions()
         {
             Settings.Instance.KeyStrokes = Settings.Instance.MouseClicks = false;
+
+            FrameRate = Settings.Instance.FrameRate;
         }
 
         [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]
@@ -26,5 +28,8 @@ namespace Captura
 
         [Option("speaker", DefaultValue = -1, HelpText = "Index of Speaker output source.")]
         public int Speaker { get; set; }
+
+        [Option('r', "framerate", HelpText = "Recording frame rate.")]
+        public int FrameRate { get; set; }
     }
 }
