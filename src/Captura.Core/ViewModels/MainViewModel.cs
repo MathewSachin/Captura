@@ -205,6 +205,7 @@ namespace Captura.ViewModels
             {
                 switch (Args.PropertyName)
                 {
+                    case nameof(VideoViewModel.SelectedVideoSourceKind):
                     case nameof(VideoViewModel.SelectedVideoSource):
                     case null:
                     case "":

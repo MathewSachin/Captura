@@ -91,6 +91,33 @@ namespace Captura.Console
                     ViewModel.VideoViewModel.SelectedVideoSource = ViewModel.VideoViewModel.AvailableVideoSources[index];
                 }
             }
+
+            // No Video for Start
+            else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
+            {
+                ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
+            }
+
+            // Window for Screenshot
+            else if (CommonOptions is ShotCmdOptions && Regex.IsMatch(CommonOptions.Source, @"win:\d+"))
+            {
+                var ptr = int.Parse(CommonOptions.Source.Substring(4));
+
+                try
+                {
+                    var rect = new Screna.Window(new IntPtr(ptr)).Rectangle;
+
+                    if (rect != Rectangle.Empty)
+                    {
+                        FakeRegionProvider.Instance.SelectedRegion = rect;
+                        ViewModel.VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                    }
+                }
+                catch
+                {
+                    // Suppress Errors
+                }
+            }
         }
 
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
@@ -115,6 +142,13 @@ namespace Captura.Console
                 Settings.Instance.KeyStrokes = true;
 
             HandleVideoSource(ViewModel, StartOptions);
+
+            if (!ViewModel.RecordCommand.CanExecute(null))
+            {
+                System.Console.WriteLine("Nothing to Record");
+
+                return;
+            }
 
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
