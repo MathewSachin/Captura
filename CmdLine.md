@@ -9,6 +9,8 @@ permalink: CmdLine/
 Added a new Console app project: `Captura.Console` which generates `captura.exe`.  
 The original WPF project generates `captura.ui.exe`.  
 
+We use the [CommandLineParser](https://nuget.org/packages/CommandLineParser) NuGet package.
+
 The console projects uses default settings with a few modifications and does not save settings.
 
 ## Why a separate Console app?
@@ -134,8 +136,9 @@ captura shot --source 100,100,300,400
 ```
 
 ### Screen
-Use `screen:<index>` as the argument. `index` is a zero-based index identifying the screen.
-Works with both `captura start` and `captura shot`.
+Use `screen:<index>` as the argument. `index` is a zero-based index identifying the screen.  
+Works with both `captura start` and `captura shot`.  
+You can use `captura list` to check screen indices.
 
 e.g.
 
@@ -144,13 +147,14 @@ captura start --source screen:1
 ```
 
 ### No Video
-Use `none` for No Video.
-Available only with `captura start`.
+Use `none` for No Video.  
+Available only with `captura start`.  
 Can be used for audio only recording.
 
 ### Window
- Use `win:<hWnd>` as the argument. `hWnd` is handle of the window.
-Available only with `captura shot`.
+Use `win:<hWnd>` as the argument. `hWnd` is handle of the window.  
+Available only with `captura shot`.  
+You can use `captura list` to check visible window handles.
 
 ## Using the Encoder argument
 
@@ -160,7 +164,9 @@ captura start --encoder gif
 ```
 
 ### SharpAvi
-Use `sharpavi:<index>` as argument.
+Use `sharpavi:<index>` as argument. `index` is a zero-based index identifying the encoder.  
+You can use `captura list` to check encoder indices.
 
 ### FFmpeg
-Use `ffmpeg:<index>` as argument.
+Use `ffmpeg:<index>` as argument. `index` is a zero-based index identifying the encoder.  
+You can use `captura list` to check encoder indices.
