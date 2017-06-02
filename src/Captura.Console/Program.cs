@@ -137,6 +137,22 @@ namespace Captura.Console
                 WriteLine();
                 #endregion
 
+                #region Screens
+                if (ScreenItem.Count > 1)
+                {
+                    WriteLine("AVAILABLE SCREENS" + underline);
+
+                    video.SelectedVideoSourceKind = VideoSourceKind.Screen;
+
+                    for (int i = 0; i < video.AvailableVideoSources.Count; ++i)
+                    {
+                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoSources[i]}");
+                    }
+
+                    WriteLine();
+                }
+                #endregion
+
                 #region MouseKeyHook
                 WriteLine($"MouseKeyHook Available: {(vm.MouseKeyHookAvailable ? "YES" : "NO")}");
 
