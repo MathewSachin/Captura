@@ -1,80 +1,48 @@
-<style>
-.navbar {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border: 0;
-    border-radius: 0;
-    margin-bottom: 0;
-    font-size: 14px;
-}
-
-.navbar-nav li a:hover {
-    color: #1abc9c !important;
-}
-
-.icon-bar {
-    transition: 0.4s;
-}
-
-/* Rotate first bar */
-.change .bar1 {
-    transform: rotate(-45deg) translate(-4px, 5px) ;
-}
-
-/* Fade out the second bar */
-.change .bar2 {
-    opacity: 0;
-}
-
-/* Rotate last bar */
-.change .bar3 {
-    transform: rotate(45deg) translate(-4px, -5px) ;
-}
-</style>
-
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
     <div class="container">
-    <div class="navbar-header">
-        <button type="button"
-                class="navbar-toggle"
-                data-toggle="collapse"
-                data-target="#Navbar"
-                onclick="navbarToggle(this)">
-        <span class="icon-bar bar1"></span>
-        <span class="icon-bar bar2"></span>
-        <span class="icon-bar bar3"></span>
-        </button>
-        <a href="{{ site.baseurl }}/" class="navbar-brand">Captura</a>
-    </div>
-    <div class="collapse navbar-collapse"
-         id="Navbar">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ site.baseurl }}/FAQ"><span class="fa fa-question"></span> FAQ</a></li>
-            <li><a href="{{ site.baseurl }}/Downloads"><span class="fa fa-download"></span> DOWNLOADS</a></li>
-            <li><a href="{{ site.baseurl }}/ScreenShots"><span class="fa fa-picture-o"></span> SCREENSHOTS</a></li>
-            <li><a href="{{ site.links.gitter }}"><span class="fa fa-comment-o"></span> CHAT</a></li>
-            <li><a href="{{ site.links.github }}"><span class="fa fa-github"></span> GITHUB</a></li>            
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">MORE
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ site.baseurl }}/Donate">Donate</a></li>
-                    <li><a href="{{ site.baseurl }}/RoadMap">RoadMap</a></li>
-                    <li><a href="{{ site.baseurl }}/Contributing">Contributing</a></li>
-                    <li><a href="{{ site.baseurl }}/Changelog">Changelog</a></li>
-                    <li><a href="{{ site.baseurl }}/CI">Continuous Integration</a></li>
-                    <li><a href="{{ site.baseurl }}/Getting-Started">Getting Started</a></li>
-                    <li><a href="{{ site.baseurl }}/Hotkeys">Hotkeys</a></li>
-                    <li><a href="{{ site.baseurl }}/License">Licenses</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+        <div class="d-flex justify-content-between">
+            <a href="{{ site.baseurl }}/" class="navbar-brand">Captura</a>
+            <button class="navbar-toggler"
+                    data-toggle="collapse"
+                    data-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>        
+    
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.baseurl }}/FAQ">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.baseurl }}/Downloads">Downloads</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.baseurl }}/ScreenShots">ScreenShots</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.links.gitter }}">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.links.github }}">GitHub</a>
+                </li>
+                <li class="nav-item btn-group">
+                    <a class="dropdown-toggle nav-link" style="cursor: pointer" data-toggle="dropdown">
+                        More
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Changelog">Changelog</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/CI">Continuous Integration</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Contributing">Contributing</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Donate">Donate</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Getting-Started">Getting Started</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Hotkeys">Hotkeys</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/License">Licenses</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/RoadMap">RoadMap</a>
+                        <a class="dropdown-item" href="{{ site.baseurl }}/Translation">Translation</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
-
-<script>
-function navbarToggle(x) {
-    x.classList.toggle("change");
-}
-</script>

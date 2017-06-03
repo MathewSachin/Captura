@@ -18,9 +18,9 @@ There are 3 ways to donate:
 ---
 
 <div class="row">
-    <div class="donation col-xs-4"><a href="{{ site.links.patreon }}"><img src="{{ site.baseurl }}/img/Patreon.png" alt="Patreon"></a></div>
-    <div class="donation col-xs-4"><a href="{{ site.links.gratipay }}"><img src="{{ site.baseurl }}/img/gratipay.png" alt="Gratipay"></a></div>
-    <div class="donation col-xs-4"><a href="{{ site.links.paypal }}"><img src="{{ site.baseurl }}/img/PayPal.png" alt="PayPal"></a></div>
+    <div class="col"><a href="{{ site.links.patreon }}"><img src="{{ site.baseurl }}/img/Patreon.png" alt="Patreon"></a></div>
+    <div class="col"><a href="{{ site.links.gratipay }}"><img src="{{ site.baseurl }}/img/gratipay.png" alt="Gratipay"></a></div>
+    <div class="col"><a href="{{ site.links.paypal }}"><img src="{{ site.baseurl }}/img/PayPal.png" alt="PayPal"></a></div>
 </div>
 
 ---

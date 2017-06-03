@@ -59,6 +59,21 @@ li {
     padding-top: 50px;
 }
 
-.feature-boxes div {
-    padding: 15px;
+.features div {
+    padding-bottom: 15px;
+}
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+  display: block;
+}
+
+.carousel-indicators li {
+  background-color: #999;
+  background-color: rgba(70,70,70,.25);
+}
+
+.carousel-indicators .active {
+  background-color: #444;
 }
