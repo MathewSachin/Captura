@@ -13,14 +13,16 @@ layout: default
 </div>
 
 <div class="container page-container">
-    <div class="col-md-10 page-content">
-        <p>{{ content }}</p>
+    <div class="row">
+        <div class="col-md-10 page-content">
+            <p>{{ content }}</p>
 
-        <br><hr><br>
+            <br><hr><br>
 
-        {% include disqus.html %}
-    </div>
-    <div class="col-md-2">
-        {% include adsense.html %}
+            {% include disqus.html %}
+        </div>
+        <div class="col-md-2">
+            {% include adsense.html %}
+        </div>
     </div>
 </div>
