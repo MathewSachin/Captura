@@ -14,23 +14,4 @@ permalink: Downloads/
 
 <p class="download-list"></p>
 
-<script>
-$(function() {
-    $.getJSON("https://api.github.com/repos/{{ site.accounts.github }}/releases").done(function(json) {
-        for (var i = 0; i < json.length; ++i) {
-            var release = json[i];
-    
-            var asset = release.assets[0];
-            var size = Math.round(asset.size / 1024);
-
-            $(".download-list")
-                .append($("<h4>")
-                    .append($("<a>")
-                        .attr("href", asset.browser_download_url)
-                        .text(release.name + " (" + size + " KB)")
-                    )
-                );
-        }
-    });
-});
-</script>
+<script src="{{ site.baseurl }}/scripts/downloads.js"></script>

@@ -13,18 +13,6 @@ body {
     padding: 15px;
 }
 
-@media (max-width: 767px) {
-    .page-container {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .page-content {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-}
-
 .jumbotron {
     padding-bottom: 100px;
 }
