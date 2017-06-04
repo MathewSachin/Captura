@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Methods for taking ScreenShots
+highlight: true
 ---
 
 ## GDI
