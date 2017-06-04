@@ -52,6 +52,8 @@ public class Gdi32
 }
 ```
 
+User32:
+
 ```csharp
 using System;
 using System.Runtime.InteropServices;
@@ -76,6 +78,8 @@ public class User32
     public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
 }
 ```
+
+Code to take screenshot of window, if its Handle is given:
 
 ```csharp
 using System;
