@@ -17,7 +17,7 @@ First, install the ManagedBass and ManagedBass.Mix NuGet packages:
 
 ```powershell
 Install-Package ManagedBass
-Install-Packahe ManagedBass.Mix
+Install-Package ManagedBass.Mix
 ```
 
 Add these using statements:
