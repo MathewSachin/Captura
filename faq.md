@@ -12,11 +12,14 @@ Software written using .NET Framework can work on Linux and Mac using Mono but t
 Also, the recently released .Net Core is viable only for console applications.
 
 ### Does Captura support DirectX Game Video Recording?
-No. Not currently.
-
-Games using DirectX run in a special mode where the current capture methods fail.
+Full Screen DirectX/OpenGL games CANNOT be recorded.
+They run in a special mode where the current capture methods fail.
 
 We have tried a good project: https://github.com/spazzarama/Direct3DHook but the performance needs to be tweaked before it can be used for Video Recording.
+
+There's a workaround:  
+If you can make the game run in windowed mode, you can capture it.
+It's great if the game supports windowed mode or you can use a tool like [DxWnd](https://sourceforge.net/projects/dxwnd/).
 
 ### Why is Recorded Video of the size of entire screen when I capture a specific Window?
 When capturing a specific Window, there is a possibility of that Window being moved or resized.
