@@ -1,5 +1,5 @@
 ---
-layout: manual
+layout: page
 title: User Manual
 permalink: User-Manual/
 ---
