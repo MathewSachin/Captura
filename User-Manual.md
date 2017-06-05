@@ -1,21 +1,8 @@
 ---
-layout: page
+layout: manual
 title: User Manual
 permalink: User-Manual/
 ---
-
-<style>
-@media (min-width: 600px) {
-  .page-content img {
-    max-width: 80%;
-  }
-}
-@media (min-width: 768px) {
-  .page-content img {
-    max-width: 70%;
-  }
-}
-</style>
 
 > THIS DOCUMENT IS CURRENTLY BEING WRITTEN.
 
