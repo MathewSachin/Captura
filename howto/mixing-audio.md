@@ -20,6 +20,8 @@ Install-Package ManagedBass
 Install-Package ManagedBass.Mix
 ```
 
+Download, `bass.dll` and `bassmix.dll` from [un4seen.com](https://un4seen.com/bass.html) and place in project output directory.
+
 Add these using statements:
 
 ```csharp
