@@ -20,8 +20,6 @@ Take ScreenShots                 | Ctrl + Shift + Alt + S
 Take ScreenShot of Active Window | Alt + PrintScreen
 Take ScreenShot of Desktop       | Ctrl + Alt + Shift + D
 
-
-
 ## Changing a Hotkey
 
 1. Click on the Hotkey you want to change.

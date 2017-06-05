@@ -7,7 +7,7 @@ title: Webcam View - User Manual
 
 ![WebCam View]({{ site.baseurl }}/img/Manual/webcam.png)
 
-Webcam preview is shown in a separate Topmost window.
+Webcam preview is shown in a separate **Topmost** window.
 
 Its visibility can be toggled using the `WebCam View` checkbox on the `Main` tab of Main Window.
 

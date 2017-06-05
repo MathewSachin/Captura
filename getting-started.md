@@ -18,7 +18,7 @@ permalink: Getting-Started/
 - Restore NuGet packages.
 
 ### Dependencies as Submodules
-- Screna
+- [Screna](https://github.com/MathewSachin/Screna)
 
 ### Dependencies installed from NuGet.
 - SharpAvi
