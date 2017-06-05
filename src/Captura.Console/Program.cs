@@ -29,7 +29,7 @@ namespace Captura.Console
 
                     var verbs = new VerbCmdOptions();
 
-                    var success = CommandLine.Parser.Default.ParseArguments(args, verbs, (verb, options) =>
+                    if (!CommandLine.Parser.Default.ParseArguments(args, verbs, (verb, options) =>
                     {
                         using (var vm = new MainViewModel())
                         {
@@ -49,10 +49,10 @@ namespace Captura.Console
                                 Shot(vm, shotOptions);
                             }
                         }
-                    });
-
-                    if (!success)
-                        WriteLine(verbs.GetUsage());
+                    }))
+                    {
+                        WriteLine("Invalid Arguments");
+                    }
                     break;
 
                 case "list":
