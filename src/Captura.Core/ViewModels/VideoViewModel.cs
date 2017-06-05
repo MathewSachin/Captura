@@ -123,13 +123,23 @@ namespace Captura.ViewModels
 
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
+
+                case VideoWriterKind.Folder:
+                    var folderItem = new FolderItem();
+
+                    AvailableVideoWriters.Add(folderItem);
+                    SelectedVideoWriter = folderItem;
+
+                    break;
             }
         }
 
         public ObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; } = new ObservableCollection<VideoWriterKind>
         {
             // Gif is always availble
-            VideoWriterKind.Gif
+            VideoWriterKind.Gif,
+
+            VideoWriterKind.Folder
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
