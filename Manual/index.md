@@ -43,3 +43,8 @@ It can be moved by holding the **Timer on Top bar** and dragging.
 - Recent
 - [Hotkeys](hotkeys.html)
 - About
+
+## Other
+- [Region Selector](region.html)
+- [WebCam View](webcam.html)
+- [System Tray](tray.html)

@@ -25,10 +25,10 @@ The second Combo-box shows the available Video Sources of the selected type.
   - **Desktop**
   - **Taskbar**
   - Other Visible Windows
-- **Region:** Displays Region Selector.
+- **Region:** Displays [Region Selector](region.html).
 - **Screen:** Only visible if more than one Screens are present.
 
-**7. WebCam View:** Toggle Visibility of WebCam View.
+**7. WebCam View:** Toggle Visibility of [WebCam View](webcam.html).
 
 **8. Video Encoder**  
 Similar to Video Sources, the first Combo-box contains types of Video Encoders.
