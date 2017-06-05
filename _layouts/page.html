@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="{{ site.baseurl }}/styles/page.css">
+
+<div class="jumbotron jumbotron-fluid bg-teal">
+    <div class="container">
+        <h2>{{ page.title }}</h2>        
+        <br>
+        <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}"><i class="glyphicon glyphicon-pencil"></i>&nbsp; Edit this page</a></div>
+    </div>
+</div>
+
+<div class="container page-container">
+    <div class="row">
+        <div class="col-md-10 page-content">
+            <p>{{ content }}</p>
+
+            <br><hr><br>
+
+            {% include disqus.html %}
+        </div>
+        <div class="col-md-2">
+            {% include adsense.html %}
+        </div>
+    </div>
+</div>
