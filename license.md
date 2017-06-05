@@ -2,7 +2,6 @@
 layout: page
 title: License
 permalink: License/
-redirect_from: Acknowledgements/
 ---
 
 Software                | License

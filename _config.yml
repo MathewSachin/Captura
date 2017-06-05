@@ -7,7 +7,6 @@ exclude: ["Gemfile", "Gemfile.lock", "README.md"]
 gems:
   - jekyll-seo-tag  # Search Engine Optimization
   - jekyll-sitemap # Site Map
-  - jekyll-redirect-from # Redirect
 
 accounts:
   gitter: "MathewSachin/Screna"
