@@ -8,12 +8,15 @@ namespace Captura
     public static class HotKeyManager
     {
         public static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
-        
+
+        static HotKeyManager()
+        {
+            ServiceProvider.HotKeyPressed += ProcessHotkey;
+        }
+
         public static void RegisterAll()
         {
             Populate();
-
-            ServiceProvider.HotKeyPressed += ProcessHotkey;
         }
 
         public static void Populate()

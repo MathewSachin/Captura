@@ -16,10 +16,11 @@ namespace Captura
             ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new MessageProvider());
 
             ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
-
+                        
             InitializeComponent();
-
-            (DataContext as MainViewModel).MainWindowReady();
+            
+            if (App.CmdOptions.Tray)
+                Hide();
 
             ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
             {
@@ -46,6 +47,8 @@ namespace Captura
                 if (!TryExit())
                     e.Cancel = true;
             };
+
+            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);            
         }
 
         protected override void OnStateChanged(EventArgs e)

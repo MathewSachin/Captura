@@ -12,7 +12,6 @@
         BorderBrush="#66333333"
         BorderThickness="1"
         ResizeMode="CanResize"
-        Icon="/Captura;component/Captura.ico"
         LocationChanged="Window_LocationChanged">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0"

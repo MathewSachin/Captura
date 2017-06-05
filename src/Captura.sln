@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura", "Captura\Captura.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.UI", "Captura\Captura.UI.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna", "Screna\src\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Core", "Captura.Core\Captura.Core.csproj", "{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

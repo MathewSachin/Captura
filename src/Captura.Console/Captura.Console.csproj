@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Captura.Console</RootNamespace>
+    <AssemblyName>captura</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\Captura\Captura.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CmdOptions\CmdOptionsBase.cs" />
+    <Compile Include="CmdOptions\CommonCmdOptions.cs" />
+    <Compile Include="Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Fakes\FakeRegionItem.cs" />
+    <Compile Include="Fakes\FakeRegionProvider.cs" />
+    <Compile Include="Fakes\FakeSystemTray.cs" />
+    <Compile Include="Fakes\FakeWebCamProvider.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CmdOptions\ShotCmdOptions.cs" />
+    <Compile Include="CmdOptions\StartCmdOptions.cs" />
+    <Compile Include="CmdOptions\VerbCmdOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
+      <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
+      <Name>Captura.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura\Captura.UI.csproj">
+      <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
+      <Name>Captura.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Screna\src\Screna.csproj">
+      <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
+      <Name>Screna</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Captura\Captura.ico">
+      <Link>Captura.ico</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
