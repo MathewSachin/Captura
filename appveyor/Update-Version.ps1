@@ -24,8 +24,8 @@ if ($env:appveyor_repo_tag -eq 'true')
     $env:AppVersion = ($env:APPVEYOR_REPO_TAG_NAME).Substring(1)
 
     # Update AssemblyInfo.cs with Version from tag
-    Update-Version($uiInfo, $env:AppVersion);
-    Update-Version($consoleInfo, $env:AppVersion);
+    Update-Version $uiInfo $env:AppVersion
+    Update-Version $consoleInfo $env:AppVersion
 }
 else
 {
