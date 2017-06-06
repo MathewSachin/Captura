@@ -8,11 +8,11 @@ layout: default
     <div class="container">
         <h2>{{ page.title }}</h2>
         {% if page.reading_time %}
+        <small> {% include readingTime.html %}</small>
         <br>
-        <small>{% include readingTime.html %}</small>
         {% endif %}
         <br>
-        <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}"><i class="glyphicon glyphicon-pencil"></i>&nbsp; Edit this page</a></div>
+        <div class="hidden-sm hidden-xs"><a href="{{site.links.github}}/blob/gh-pages/{{page.path}}">Edit this page</a></div>
     </div>
 </div>
 
