@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Command-line Usage - User Manual
+reading_time: true
 ---
 
 Added a new Console app project: `Captura.Console` which generates `captura.exe`.  
