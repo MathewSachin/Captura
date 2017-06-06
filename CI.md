@@ -2,6 +2,7 @@
 layout: page
 title: Continuous Integration
 permalink: CI/
+reading_time: true
 ---
 
 We use [AppVeyor](https://ci.appveyor.com) for Continuous Integration.

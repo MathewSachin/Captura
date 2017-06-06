@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Hotkeys Tab - User Manual
+reading_time: true
 ---
 
 ![Hotkey tab]({{ site.baseurl }}/img/Manual/hotkeys.png)

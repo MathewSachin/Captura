@@ -2,6 +2,7 @@
 layout: page
 title: Frequently Asked Questions
 permalink: FAQ/
+reading_time: true
 ---
 
 ### Will Captura support Linux or Mac?

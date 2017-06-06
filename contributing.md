@@ -2,6 +2,7 @@
 layout: page
 title: Contributing
 permalink: Contributing/
+reading_time: true
 ---
 
 Want to Help? You can help by starring this repo, contributing code, testing, reporting bugs or [donating]({{ site.baseurl }}/Donate).

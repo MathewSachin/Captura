@@ -2,6 +2,7 @@
 layout: page
 title: Getting Started
 permalink: Getting-Started/
+reading_time: true
 ---
 
 ## Want prebuilt libraries?

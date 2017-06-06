@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Main Tab - User Manual
+reading_time: true
 ---
 
 ![Main Tab]({{ site.baseurl }}/img/Manual/main.png)

@@ -2,6 +2,7 @@
 layout: page
 title: Mixing Microphone Input and Speaker Output
 highlight: true
+reading_time: true
 ---
 
 Mixing audio from Microphone input and Speaker output (obtained using WASAPI Loopback) was a commonly asked feature.

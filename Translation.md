@@ -2,6 +2,7 @@
 layout: page
 title: Translation
 permalink: Translation/
+reading_time: true
 ---
 
 Captura is localized using Culture-specific RESX files.
