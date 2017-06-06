@@ -11,8 +11,8 @@ We are accepting <a href="{{ site.baseurl }}/Translation" class="alert-link">Tra
 </div>
 
 ## In Progress
-- Command-line usage ([#65](https://github.com/MathewSachin/Captura/pull/65)).
 - Bug Hunting
+- Documentation
 
 ## Future
 - Cropping Audio and Video files using FFmpeg.
