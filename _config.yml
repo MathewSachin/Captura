@@ -2,6 +2,8 @@ name: Captura
 description: Capture Screen, Audio, Cursor, Mouse Clicks and Keystrokes
 author: Mathew Sachin
 
+baseurl: /GitHub/Captura.web/_site
+
 exclude: ["Gemfile", "Gemfile.lock", "README.md"]
 
 gems:

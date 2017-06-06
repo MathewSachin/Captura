@@ -1,6 +1,7 @@
 ---
 layout: page
 title: User Manual
+reading_time: true
 ---
 
 > THIS DOCUMENT IS CURRENTLY BEING WRITTEN.
