@@ -4,6 +4,9 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v4.0.0
+- Added [Command-line support]({{ site.baseurl }}/Manual/cmdline.html).
+
 ## v3.5.0
 - **fix:** Crash when Recording stops automatically on reaching Duration.
 - **fix:** Recording cannot start if Delay is set.
