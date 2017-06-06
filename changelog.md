@@ -5,9 +5,16 @@ permalink: Changelog/
 ---
 
 ## v4.0.0
+### Known Issues
+- High memory usage when encoding Gif.
+  **Workaround:** Use Variable Frame Rate.
+
+### What's New
 - Added [Command-line support]({{ site.baseurl }}/Manual/cmdline.html).
 
 ## v3.5.0
+
+### What's New
 - **fix:** Crash when Recording stops automatically on reaching Duration.
 - **fix:** Recording cannot start if Delay is set.
 - **fix:** Optional libraries don't load on Chocolatey.
@@ -17,6 +24,13 @@ permalink: Changelog/
 - Items in the Recent list are persisted only if the files exist.
 
 ## v3.4.0
+
+### Known Issues
+- Crash on recording stopped by Capture Duration.
+- Recording cannot start if delay is set.
+- Optional libraries don't load on Chocolatey.
+
+### What's New
 - **fix:** App crashes on Startup in Release builds.
 - Expanded/Collapsed state is persisted.
 - Added MessageBoxes for showing some errors.
@@ -28,8 +42,11 @@ permalink: Changelog/
 - **fix:** Hide Keystrokes and Clicks capture buttons when `MouseKeyHook` library is not present.
 
 ## v3.3.0
-> Know Issue: App may crash on Startup
 
+### Known Issues
+- App may crash on Startup
+
+### What's New
 - **fix:** h264 (FFmpeg Mp4) encoder requires video dimensions to be even.
 - **Webcam Support:** Not as a Video Source but as a standalone window which can be captured using standard methods.
 - Redesigned RegionSelector.
