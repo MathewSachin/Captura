@@ -31,7 +31,7 @@ after_build:
 
   - ps: appveyor/Choco.ps1
 
-  - ps: . "src/Captura.Console/$env:configuration/captura.exe" shot
+  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
 
   - ps: gci "$env:USERPROFILE/Documents/Captura" | % { Push-AppVeyorArtifact $_.FullName }
 
