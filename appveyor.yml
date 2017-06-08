@@ -10,7 +10,7 @@ install:
 - ps: appveyor/Install.ps1
 
 # Enable Desktop
-- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+# - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified
