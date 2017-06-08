@@ -35,6 +35,12 @@ after_build:
   - ps: sleep 1
   - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
 
+  - ps: sleep 1
+  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
+
+  - ps: sleep 1
+  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
+
 after_test:
   - ps: gci "$env:USERPROFILE/Documents/Captura" | % { Push-AppVeyorArtifact $_.FullName }
 
