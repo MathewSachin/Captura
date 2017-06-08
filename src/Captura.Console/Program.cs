@@ -248,28 +248,7 @@ namespace Captura.Console
             else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
             {
                 video.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
-            }
-
-            // Window for Screenshot
-            else if (CommonOptions is ShotCmdOptions && Regex.IsMatch(CommonOptions.Source, @"win:\d+"))
-            {
-                var ptr = int.Parse(CommonOptions.Source.Substring(4));
-
-                try
-                {
-                    var rect = new Screna.Window(new IntPtr(ptr)).Rectangle;
-
-                    if (rect != Rectangle.Empty)
-                    {
-                        FakeRegionProvider.Instance.SelectedRegion = rect;
-                        video.SelectedVideoSourceKind = VideoSourceKind.Region;
-                    }
-                }
-                catch
-                {
-                    // Suppress Errors
-                }
-            }
+            }            
         }
 
         static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
@@ -325,9 +304,28 @@ namespace Captura.Console
             if (ShotOptions.Cursor)
                 Settings.Instance.IncludeCursor = true;
 
-            HandleVideoSource(ViewModel, ShotOptions);
+            // Window for Screenshot
+            if (Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
+            {
+                var ptr = int.Parse(ShotOptions.Source.Substring(4));
 
-            ViewModel.CaptureScreenShot();
+                try
+                {
+                    var bmp = ViewModel.ScreenShotWindow(new Screna.Window(new IntPtr(ptr)));
+
+                    ViewModel.SaveScreenShot(bmp);
+                }
+                catch
+                {
+                    // Suppress Errors
+                }
+            }
+            else
+            {
+                HandleVideoSource(ViewModel, ShotOptions);
+
+                ViewModel.CaptureScreenShot();
+            }
         }
 
         static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
