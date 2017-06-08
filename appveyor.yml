@@ -28,20 +28,8 @@ after_build:
 
   - ps: appveyor/Choco.ps1
 
-  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe"
-
-# COULD WE UPDATE SCREENSHOTS ON WEB WITH EVERY TAG BUILD??????????????????????
-
-  - ps: sleep 1
-  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
-
-  - ps: sleep 1
-  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
-
-  - ps: sleep 1
-  - ps: . "src/Captura.Console/bin/$env:configuration/captura.exe" shot
-
 after_test:
+  # COULD WE UPDATE SCREENSHOTS ON WEB WITH EVERY TAG BUILD??????????????????????
   - ps: gci "$env:USERPROFILE/Documents/Captura" | % { Push-AppVeyorArtifact $_.FullName }
 
 artifacts:
