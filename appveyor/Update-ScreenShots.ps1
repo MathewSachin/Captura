@@ -4,9 +4,10 @@ if ($env:configuration -eq 'Release')# -and $env:appveyor_repo_tag -eq 'true')
     git checkout gh-pages
 
     # Copy
-    Get-ChildItem -Path 'src/UITests/bin/Release/*' -Include *.png | Copy-Item -Destination 'img/ScreenShots/Tabs/' -Force
+    Get-ChildItem -Path 'src/UITests/bin/Release/Tabs/*' -Include *.png | Copy-Item -Destination 'img/ScreenShots/Tabs/' -Force
 
     # Stage
+    git status
     git add img/ScreenShots/Tabs
 
     # Setup git credentials
