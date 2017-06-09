@@ -121,15 +121,20 @@ namespace Captura.Models
             
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
-                        
-            var keyStrokeRect = new Rectangle(80, (int)g.VisibleClipBounds.Height - 200, (int)(_output.Length * _keyStrokeFont.Size + 5), 35);
-            
-            g.FillRectangle(_keystrokesRectBrush, keyStrokeRect);
 
+            int paddingX = 25, paddingY = 25, left = 80, bottom = 200;
+            float height = g.VisibleClipBounds.Height;
+            
+            var size = g.MeasureString(_output, _keyStrokeFont);
+
+            var rectHeight = size.Height + 2 * paddingY;
+            var rect = new RectangleF(left, height - bottom - rectHeight, size.Width + 2 * paddingX, rectHeight);
+            g.FillRoundedRectangle(_keystrokesRectBrush, rect, 30);
+            
             g.DrawString(_output,
                 _keyStrokeFont,
                 _keyStrokeBrush,
-                keyStrokeRect);
+                new RectangleF(left + paddingX, rect.Top + paddingY, size.Width, size.Height));
         }
 
         /// <summary>
