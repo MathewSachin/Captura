@@ -304,8 +304,8 @@ namespace Captura.Console
             if (ShotOptions.Cursor)
                 Settings.Instance.IncludeCursor = true;
 
-            // Window for Screenshot
-            if (Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
+            // Screenshot Window with Transparency
+            if (ShotOptions.Source != null && Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
             {
                 var ptr = int.Parse(ShotOptions.Source.Substring(4));
 
@@ -313,7 +313,7 @@ namespace Captura.Console
                 {
                     var bmp = ViewModel.ScreenShotWindow(new Screna.Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp);
+                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName);
                 }
                 catch
                 {
@@ -324,7 +324,7 @@ namespace Captura.Console
             {
                 HandleVideoSource(ViewModel, ShotOptions);
 
-                ViewModel.CaptureScreenShot();
+                ViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
         }
 
@@ -360,7 +360,7 @@ namespace Captura.Console
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            ViewModel.StartRecording();
+            ViewModel.StartRecording(StartOptions.FileName);
 
             if (StartOptions.Length > 0)
             {

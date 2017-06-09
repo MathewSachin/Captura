@@ -45,7 +45,7 @@ namespace Captura.ViewModels
         public MainViewModel()
         {
             #region Commands
-            ScreenShotCommand = new DelegateCommand(CaptureScreenShot);
+            ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
             
             ScreenShotActiveCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
 
@@ -340,8 +340,8 @@ namespace Captura.ViewModels
 
             ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
-        
-        public void SaveScreenShot(Bitmap bmp)
+
+        public void SaveScreenShot(Bitmap bmp, string FileName = null)
         {
             // Save to Disk or Clipboard
             if (bmp != null)
@@ -361,7 +361,7 @@ namespace Captura.ViewModels
                             : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
                             : SelectedScreenShotImageFormat.ToString().ToLower();
 
-                        var fileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
+                        var fileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
                         bmp.Save(fileName, SelectedScreenShotImageFormat);
                         Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
@@ -405,7 +405,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public void CaptureScreenShot()
+        public void CaptureScreenShot(string FileName = null)
         {
             ServiceProvider.SystemTray.HideNotification();
 
@@ -433,7 +433,7 @@ namespace Captura.ViewModels
                     break;
             }
 
-            SaveScreenShot(bmp);
+            SaveScreenShot(bmp, FileName);
         }
 
         static void EnsureOutPath()
@@ -442,7 +442,7 @@ namespace Captura.ViewModels
                 Directory.CreateDirectory(Settings.Instance.OutPath);
         }
 
-        public void StartRecording()
+        public void StartRecording(string FileName = null)
         {
             VideoViewModel.RegionProvider.SnapEnabled = false;
 
@@ -473,7 +473,7 @@ namespace Captura.ViewModels
                 ? VideoViewModel.SelectedVideoWriter.Extension
                 : AudioViewModel.SelectedAudioWriter.Extension;
 
-            _currentFileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 
