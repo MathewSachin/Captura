@@ -2,36 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace Captura
 {
-    public class Settings : ApplicationSettingsBase
+    public partial class Settings : ApplicationSettingsBase
     {
-        public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
-        
-        Settings()
-        {
-            // Upgrade settings from Previous version
-            if (UpdateRequired)
-            {
-                Upgrade();
-                UpdateRequired = false;
-            }
-        }
-        
-        T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
-
-        void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool UpdateRequired
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
         [UserScopedSetting]
         [DefaultSettingValue("200")]
         public int MainWindowLeft
@@ -70,69 +45,7 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
-
-        #region Remember
-        [UserScopedSetting]
-        [DefaultSettingValue("Png")]
-        public string LastScreenShotFormat
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
         
-        [UserScopedSetting]
-        [DefaultSettingValue("FFMpeg")]
-        public VideoWriterKind LastVideoWriterKind
-        {
-            get => Get<VideoWriterKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastVideoWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Window")]
-        public VideoSourceKind LastSourceKind
-        {
-            get => Get<VideoSourceKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSourceName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Mp3")]
-        public string LastAudioWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastMicName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSpeakerName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-        #endregion
-
         [UserScopedSetting]
         [DefaultSettingValue("Disk")]
         public string ScreenShotSaveTo

@@ -110,7 +110,9 @@
     </Compile>
     <Compile Include="Services\ServiceName.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\Code.cs" />
+    <Compile Include="Settings\Remember.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
