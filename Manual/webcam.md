@@ -6,7 +6,7 @@ reading_time: true
 
 > THIS DOCUMENT IS CURRENTLY BEING WRITTEN.
 
-![WebCam View]({{ site.baseurl }}/img/Manual/webcam.png)
+![WebCam View]({{ site.baseurl }}/img/ScreenShots/WebCam.png)
 
 Webcam preview is shown in a separate **Topmost** window.
 
