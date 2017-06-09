@@ -48,6 +48,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
         <DrawingImage x:Key="RecordStopImageSource">
             <DrawingImage.Drawing>
                 <GeometryDrawing Geometry="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
