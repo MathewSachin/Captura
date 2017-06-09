@@ -360,7 +360,7 @@ namespace Captura.Console
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            ViewModel.StartRecording();
+            ViewModel.StartRecording(StartOptions.FileName);
 
             if (StartOptions.Length > 0)
             {

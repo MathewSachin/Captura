@@ -442,7 +442,7 @@ namespace Captura.ViewModels
                 Directory.CreateDirectory(Settings.Instance.OutPath);
         }
 
-        public void StartRecording()
+        public void StartRecording(string FileName = null)
         {
             VideoViewModel.RegionProvider.SnapEnabled = false;
 
@@ -473,7 +473,7 @@ namespace Captura.ViewModels
                 ? VideoViewModel.SelectedVideoWriter.Extension
                 : AudioViewModel.SelectedAudioWriter.Extension;
 
-            _currentFileName = Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 
