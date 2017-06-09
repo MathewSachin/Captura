@@ -1,4 +1,4 @@
-if ($env:configuration -eq 'Release')# -and $env:appveyor_repo_tag -eq 'true')
+if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 {
     # Switch to GitHub Pages branch
     git checkout gh-pages
@@ -7,7 +7,6 @@ if ($env:configuration -eq 'Release')# -and $env:appveyor_repo_tag -eq 'true')
     Get-ChildItem -Path 'src/UITests/bin/Release/Tabs/*' -Include *.png | Copy-Item -Destination 'img/ScreenShots/Tabs/' -Force
 
     # Stage
-    git status
     git add img/ScreenShots/Tabs
 
     # Setup git credentials
