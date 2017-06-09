@@ -14,5 +14,8 @@ namespace Captura
 
         [Option("source", DefaultValue = null, HelpText = "Video source")]
         public string Source { get; set; }
+
+        [Option('f', "file", DefaultValue = null, HelpText = "Output file path")]
+        public string FileName { get; set; }
     }
 }
