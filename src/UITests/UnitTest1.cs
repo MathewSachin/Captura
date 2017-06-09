@@ -8,6 +8,7 @@ using TestStack.White.UIItems.Finders;
 using System.Diagnostics;
 using TestStack.White.UIItems.WindowItems;
 using System.Threading;
+using System.IO;
 
 namespace UITests
 {
@@ -18,14 +19,14 @@ namespace UITests
 
         Window MainWindow;
 
-        void Shot()
+        void Shot(string FileName)
         {
             Thread.Sleep(500);
 
             var startInfo = new ProcessStartInfo
             {
                 FileName = "captura",
-                Arguments = $"shot --source win:{App.Process.MainWindowHandle}",
+                Arguments = $"shot --source win:{App.Process.MainWindowHandle} -f {FileName}",
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
@@ -39,7 +40,9 @@ namespace UITests
             App = Application.Launch("captura.ui.exe");
 
             MainWindow = App.GetWindow("Captura");
-            
+
+            Directory.CreateDirectory("Tabs");
+                        
             // ScreenShot of all tabs            
             foreach (var tabName in new[] { Resources.Main, Resources.Configure, Resources.Recent, Resources.Hotkeys, Resources.About })
             {
@@ -47,7 +50,7 @@ namespace UITests
 
                 tab.Select();
 
-                Shot();
+                Shot($"Tabs/{tabName}.png");
             }
 
             MainWindow.Close();

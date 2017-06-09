@@ -6,6 +6,10 @@ configuration:
 - Debug
 - Release
 
+environment:
+  access_token:
+    secure: c1r9fMnxBX4DW0SvZ4V/5Nucdi8pzA2YiQ/wsiyfjIY19q4RyKCYZTtU+2YQbiLT
+
 install:
 - ps: appveyor/Install.ps1
 
@@ -29,8 +33,7 @@ after_build:
   - ps: appveyor/Choco.ps1
 
 after_test:
-  # COULD WE UPDATE SCREENSHOTS ON WEB WITH EVERY TAG BUILD??????????????????????
-  - ps: gci "$env:USERPROFILE/Documents/Captura" | % { Push-AppVeyorArtifact $_.FullName }
+  - ps: appveyor/Update-ScreenShots.ps1
 
 artifacts:
   - path: Output/Captura-$(configuration).zip
