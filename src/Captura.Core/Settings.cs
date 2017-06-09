@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -206,15 +207,7 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool GifVariable
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("en-US")]
         public string Language
@@ -320,6 +313,78 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool GifVariable
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
         #endregion
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("DarkGray")]
+        public Color MouseClick_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("100")]
+        public int MouseClick_Alpha
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("25")]
+        public double MouseClick_Radius
+        {
+            get => Get<double>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color Keystrokes_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("DarkGray")]
+        public Color KeystrokesRect_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("100")]
+        public int KeystrokesRect_Alpha
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("20")]
+        public int Keystrokes_FontSize
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_MaxLength
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

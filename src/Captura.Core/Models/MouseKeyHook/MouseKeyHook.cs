@@ -19,10 +19,11 @@ namespace Captura.Models
         string _output = string.Empty;
         KeyRecord _lastKeyRecord;
 
-        readonly Brush _clickBrush = new SolidBrush(Color.FromArgb(100, Color.DarkGray));
-        readonly double _clickRadius = 25;
-        readonly Font _keyStrokeFont = new Font(FontFamily.GenericMonospace, 20);
-        readonly Brush _keyStrokeBrush = Brushes.Black;
+        readonly Brush _clickBrush = new SolidBrush(Color.FromArgb(Settings.Instance.MouseClick_Alpha, Settings.Instance.MouseClick_Color));
+        readonly Brush _keystrokesRectBrush = new SolidBrush(Color.FromArgb(Settings.Instance.KeystrokesRect_Alpha, Settings.Instance.KeystrokesRect_Color));
+        readonly double _clickRadius = Settings.Instance.MouseClick_Radius;
+        readonly Font _keyStrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
+        readonly Brush _keyStrokeBrush = new SolidBrush(Settings.Instance.Keystrokes_Color);
         #endregion
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Captura.Models
 
         void OnKeyPressed(object sender, KeyEventArgs e)
         {
-            if (_output.Length > 15)
+            if (_output.Length > Settings.Instance.Keystrokes_MaxLength)
                 _output = "";
 
             var keyRecord = new KeyRecord(e);
@@ -109,7 +110,7 @@ namespace Captura.Models
             {
                 var curPos = MouseCursor.CursorPosition;
                 var d = (float)(_clickRadius * 2);
-                
+
                 g.FillEllipse(_clickBrush,
                     curPos.X - (float)_clickRadius - Offset.X,
                     curPos.Y - (float)_clickRadius - Offset.Y,
@@ -120,10 +121,10 @@ namespace Captura.Models
             
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
-            
+                        
             var keyStrokeRect = new Rectangle(80, (int)g.VisibleClipBounds.Height - 200, (int)(_output.Length * _keyStrokeFont.Size + 5), 35);
             
-            g.FillRectangle(_clickBrush, keyStrokeRect);
+            g.FillRectangle(_keystrokesRectBrush, keyStrokeRect);
 
             g.DrawString(_output,
                 _keyStrokeFont,

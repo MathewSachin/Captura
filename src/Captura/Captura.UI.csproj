@@ -110,6 +110,9 @@
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MoreOptionsWindow.xaml.cs">
+      <DependentUpon>MoreOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
@@ -166,6 +169,10 @@
     <Page Include="Views\ConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MoreOptionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RecentView.xaml">
       <Generator>MSBuild:Compile</Generator>

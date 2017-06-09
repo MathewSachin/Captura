@@ -1,0 +1,118 @@
+﻿<Window x:Class="Captura.MoreOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Captura"
+        Title="Experimental"
+        DataContext="{StaticResource MainViewModel}"
+        Height="600"
+        Width="400">
+    <Grid>
+        <StackPanel Margin="10"
+                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <Label Content="Mouse Clicks"
+                   FontWeight="Bold"
+                   Margin="0,3"
+                   FontSize="15"/>
+            
+            <DockPanel Margin="0,5">
+                <Label Content="Radius"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.MouseClick_Radius}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="10"
+                        Maximum="100"
+                        IsSelectionRangeEnabled="True"
+                        SelectionStart="20"
+                        SelectionEnd="30"                        
+                        Value="{Binding Settings.MouseClick_Radius, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <TextBox Text="{Binding Settings.MouseClick_Color, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Alpha"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.MouseClick_Alpha}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="5"
+                        Maximum="255"
+                        IsSelectionRangeEnabled="True"
+                        SelectionStart="70"
+                        SelectionEnd="130"
+                        Value="{Binding Settings.MouseClick_Alpha, Mode=TwoWay}"/>
+            </DockPanel>
+
+            <Label Content="Keystrokes"
+                   FontWeight="Bold"
+                   Margin="0,3"
+                   FontSize="15"/>
+
+            <DockPanel Margin="0,5">
+                <Label Content="Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <TextBox Text="{Binding Settings.Keystrokes_Color, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Font Size"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.Keystrokes_FontSize}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="1"
+                        Maximum="60"
+                        IsSelectionRangeEnabled="True"
+                        SelectionStart="10"
+                        SelectionEnd="30"                        
+                        Value="{Binding Settings.Keystrokes_FontSize, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Max Length"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.Keystrokes_MaxLength}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="1"
+                        Maximum="30"
+                        IsSelectionRangeEnabled="True"
+                        SelectionStart="10"
+                        SelectionEnd="20"
+                        Value="{Binding Settings.Keystrokes_MaxLength, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Back Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <TextBox Text="{Binding Settings.KeystrokesRect_Color, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Back Alpha"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.KeystrokesRect_Alpha}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="5"
+                        Maximum="255"
+                        IsSelectionRangeEnabled="True"
+                        SelectionStart="70"
+                        SelectionEnd="130"
+                        Value="{Binding Settings.KeystrokesRect_Alpha, Mode=TwoWay}"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+    <Window.Resources>
+        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+</Window>
