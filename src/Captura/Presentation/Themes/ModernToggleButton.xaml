@@ -45,7 +45,7 @@
                             <Setter TargetName="icon" Property="Opacity" Value="0.3" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Fill" Value="Green" TargetName="icon"/>
+                            <Setter Property="Fill" Value="{DynamicResource Accent}" TargetName="icon"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
