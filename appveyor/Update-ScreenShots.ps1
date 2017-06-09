@@ -1,4 +1,4 @@
-#if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
+if ($env:configuration -eq 'Release')# -and $env:appveyor_repo_tag -eq 'true')
 {
     # Switch to GitHub Pages branch
     git checkout gh-pages
