@@ -4,14 +4,8 @@ title: ScreenShots
 permalink: ScreenShots/
 ---
 
-### UI
-![Collapsed]({{ site.baseurl }}/img/ScreenShots/main.png)
-
-![Expanded]({{ site.baseurl }}/img/ScreenShots/expanded.png)
-
-![Hotkey]({{ site.baseurl }}/img/ScreenShots/hotkey.png)
-
-![Config]({{ site.baseurl }}/img/ScreenShots/config.png)
+### Tabs
+{% include carousel.html %}
 
 ### Region Selector
 ![Region Selector]({{ site.baseurl }}/img/ScreenShots/region.png)
