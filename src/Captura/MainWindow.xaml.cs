@@ -79,6 +79,9 @@ namespace Captura
             else
             {
                 Show();
+
+                WindowState = WindowState.Normal;
+
                 Activate();
             }
         }
