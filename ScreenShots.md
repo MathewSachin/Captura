@@ -8,7 +8,10 @@ permalink: ScreenShots/
 {% include carousel.html %}
 
 ### Region Selector
-![Region Selector]({{ site.baseurl }}/img/ScreenShots/region.png)
+![Region Selector]({{ site.baseurl }}/img/ScreenShots/RegionSelector.png)
+
+### WebCam View
+![WebCam View]({{ site.baseurl }}/img/ScreenShots/WebCam.png)
 
 ### Taskbar Overlays
 ![Taskbar]({{ site.baseurl }}/img/ScreenShots/taskbar.png)
