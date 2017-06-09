@@ -108,6 +108,40 @@
                         SelectionEnd="130"
                         Value="{Binding Settings.KeystrokesRect_Alpha, Mode=TwoWay}"/>
             </DockPanel>
+
+            <DockPanel Margin="0,5">
+                <Label Content="Padding X"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.Keystrokes_PaddingX}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="0"
+                        Maximum="30"
+                        Value="{Binding Settings.Keystrokes_PaddingX, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Padding Y"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.Keystrokes_PaddingY}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="0"
+                        Maximum="30"
+                        Value="{Binding Settings.Keystrokes_PaddingY, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel Margin="0,5">
+                <Label Content="Corner Radius"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <Label Margin="0,0,5,0"
+                       Content="{Binding Settings.Keystrokes_CornerRadius}"
+                       ContentStringFormat="{}{0:N0}"/>
+                <Slider Minimum="0"
+                        Maximum="30"
+                        Value="{Binding Settings.Keystrokes_CornerRadius, Mode=TwoWay}"/>
+            </DockPanel>
         </StackPanel>
     </Grid>
     <Window.Resources>

@@ -122,14 +122,18 @@ namespace Captura.Models
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
 
-            int paddingX = 25, paddingY = 25, left = 80, bottom = 200;
+            int paddingX = Settings.Instance.Keystrokes_PaddingX,
+                paddingY = Settings.Instance.Keystrokes_PaddingY,
+                left = 80, bottom = 200;
+
             float height = g.VisibleClipBounds.Height;
             
             var size = g.MeasureString(_output, _keyStrokeFont);
 
             var rectHeight = size.Height + 2 * paddingY;
             var rect = new RectangleF(left, height - bottom - rectHeight, size.Width + 2 * paddingX, rectHeight);
-            g.FillRoundedRectangle(_keystrokesRectBrush, rect, 30);
+
+            g.FillRoundedRectangle(_keystrokesRectBrush, rect, Settings.Instance.Keystrokes_CornerRadius);
             
             g.DrawString(_output,
                 _keyStrokeFont,

@@ -299,5 +299,29 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_PaddingX
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_PaddingY
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("10")]
+        public int Keystrokes_CornerRadius
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }
