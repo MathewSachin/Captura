@@ -8,16 +8,18 @@ namespace Captura
 {
     class RegionItem : IVideoItem
     {
-        // Singleton
-        public static RegionItem Instance { get; } = new RegionItem();
+        readonly RegionSelector _selector;
 
-        RegionItem() { }
+        public RegionItem(RegionSelector RegionSelector)
+        {
+            _selector = RegionSelector;
+        }
 
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
-            Offset = () => RegionSelector.Instance.Rectangle.Location;
+            Offset = () => _selector.SelectedRegion.Location;
 
-            return new StaticRegionProvider();
+            return new StaticRegionProvider(_selector);
         }
 
         public override string ToString() => Resources.RegionSelector;

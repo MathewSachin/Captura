@@ -444,7 +444,7 @@ namespace Captura.ViewModels
 
         public void StartRecording(string FileName = null)
         {
-            VideoViewModel.RegionProvider.SnapEnabled = false;
+            VideoViewModel.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
 
@@ -587,7 +587,7 @@ namespace Captura.ViewModels
             if (Settings.MinimizeOnStart)
                 ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
 
-            VideoViewModel.RegionProvider.SnapEnabled = true;
+            VideoViewModel.RegionProvider.Release();
             #endregion
 
             // Ensure saved

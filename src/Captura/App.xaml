@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml"/>
+                <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/ModernButton.xaml" />
                 <ResourceDictionary Source="Presentation/Themes/ModernToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>

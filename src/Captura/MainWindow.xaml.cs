@@ -11,7 +11,7 @@ namespace Captura
     {        
         public MainWindow()
         {
-            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionProvider());
+            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionSelector());
 
             ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new MessageProvider());
 

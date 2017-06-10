@@ -1,30 +1,27 @@
 ﻿using Screna;
 using System.Drawing;
-using System.Windows;
 
 namespace Captura
 {
     class StaticRegionProvider : IImageProvider
     {
-        public StaticRegionProvider()
+        readonly RegionSelector _selector;
+
+        public StaticRegionProvider(RegionSelector RegionSelector)
         {
-            var regSel = RegionSelector.Instance;
+            _selector = RegionSelector;
 
-            var rect = regSel.Rectangle;
+            var rect = _selector.SelectedRegion;
             Height = rect.Height;
-            Width = rect.Width;
-
-            // Prevent Resize
-            regSel.ResizeMode = ResizeMode.NoResize;
+            Width = rect.Width;            
         }
         
-        public Bitmap Capture() => ScreenShot.Capture(RegionSelector.Instance.Rectangle);
+        public Bitmap Capture() => ScreenShot.Capture(_selector.SelectedRegion);
 
         public int Height { get; }
 
         public int Width { get; }
-
-        // Make resizable again after capture, invoke on UI Thread
-        public void Dispose() => RegionSelector.Instance.Dispatcher.Invoke(() => RegionSelector.Instance.ResizeMode = ResizeMode.CanResize);
+        
+        public void Dispose() { }
     }
 }
