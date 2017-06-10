@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -9,7 +10,11 @@ namespace Captura.Models
         Rectangle SelectedRegion { get; set; }
 
         IVideoItem VideoSource { get; }
+        
+        void Lock();
 
-        bool SnapEnabled { get; set; }
+        void Release();
+
+        event Action SelectorHidden;
     }
 }

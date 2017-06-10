@@ -26,6 +26,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -48,6 +49,16 @@
                    PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"
                    Grid.Column="1"
                    Margin="0,-5,0,0"/>
+
+
+            <local:ModernButton ToolTip="{local:Loc Close}"
+                                x:Name="CloseButton"
+                                Click="CloseButton_Click"
+                                Background="#EEEEEE"
+                                Foreground="#77ef5350"
+                                IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                Grid.Column="2"
+                                Margin="0,-5,0,0"/>
 
             <Border BorderThickness="1"
                     BorderBrush="#66333333"

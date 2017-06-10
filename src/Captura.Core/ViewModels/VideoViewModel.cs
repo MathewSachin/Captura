@@ -33,6 +33,12 @@ namespace Captura.ViewModels
             RefreshVideoSources();
 
             ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
+
+            RegionProvider.SelectorHidden += () =>
+            {
+                if (SelectedVideoSourceKind == VideoSourceKind.Region)
+                    SelectedVideoSourceKind = VideoSourceKind.Window;
+            };
         }
 
         public void RefreshFFMpeg()

@@ -47,7 +47,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>        
         <DrawingImage x:Key="RecordStopImageSource">
             <DrawingImage.Drawing>
                 <GeometryDrawing Geometry="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
