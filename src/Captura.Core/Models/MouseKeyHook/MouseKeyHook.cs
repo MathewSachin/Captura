@@ -155,7 +155,7 @@ namespace Captura.Models
                 _mouseClicked = false;
             }
             
-            if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
+            if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > Settings.Instance.Keystrokes_MaxSeconds)
                 return;
             
             var keystrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);

@@ -355,5 +355,13 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("2")]
+        public int Keystrokes_MaxSeconds
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

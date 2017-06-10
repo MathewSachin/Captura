@@ -154,6 +154,14 @@
                                   Grid.Row="1"
                                   Margin="0,3"/>
             </Grid>
+
+            <DockPanel Margin="0,3">
+                <Label Content="Max Seconds"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+                <local:NumericBox Value="{Binding Settings.Keystrokes_MaxSeconds, Mode=TwoWay}"
+                                  Minimum="1"/>
+            </DockPanel>
         </StackPanel>
     </Grid>
     <Window.Resources>
