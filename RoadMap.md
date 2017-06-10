@@ -11,6 +11,7 @@ We are accepting <a href="{{ site.baseurl }}/Translation" class="alert-link">Tra
 </div>
 
 ## In Progress
+- Customizing MouseKeyHook Overlays ([#68](https://github.com/MathewSachin/Captura/pull/68)).
 - Bug Hunting
 - Documentation
 
