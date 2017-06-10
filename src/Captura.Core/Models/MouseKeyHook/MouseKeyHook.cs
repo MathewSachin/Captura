@@ -94,6 +94,46 @@ namespace Captura.Models
 
             _lastKeyRecord = keyRecord;
         }
+
+        float GetLeft(float FullWidth, float TextWidth)
+        {
+            int x = Settings.Instance.Keystrokes_X;
+
+            switch (Settings.Instance.Keystrokes_XAlign)
+            {
+                case Alignment.Start:
+                    return x;
+
+                case Alignment.End:
+                    return FullWidth - x - TextWidth - 2 * Settings.Instance.Keystrokes_PaddingX;
+
+                case Alignment.Center:
+                    return FullWidth / 2 - x - TextWidth / 2 - Settings.Instance.Keystrokes_PaddingX;
+
+                default:
+                    return 0;
+            }
+        }
+
+        float GetTop(float FullHeight, float TextHeight)
+        {
+            int y = Settings.Instance.Keystrokes_Y;
+
+            switch (Settings.Instance.Keystrokes_YAlign)
+            {
+                case Alignment.Start:
+                    return y;
+
+                case Alignment.End:
+                    return FullHeight - y - TextHeight - 2 * Settings.Instance.Keystrokes_PaddingY;
+
+                case Alignment.Center:
+                    return FullHeight / 2 - y - TextHeight / 2 - Settings.Instance.Keystrokes_PaddingY;
+
+                default:
+                    return 0;
+            }
+        }
         
         /// <summary>
         /// Draws overlay.
@@ -117,20 +157,18 @@ namespace Captura.Models
             
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
-
-            int left = 80, bottom = 200;
-
-            float height = g.VisibleClipBounds.Height;
-
+            
             var keystrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
 
             var size = g.MeasureString(_output, keystrokeFont);
 
             int paddingX = Settings.Instance.Keystrokes_PaddingX,
                 paddingY = Settings.Instance.Keystrokes_PaddingY;
-
-            var rectHeight = size.Height + 2 * paddingY;
-            var rect = new RectangleF(left, height - bottom - rectHeight, size.Width + 2 * paddingX, rectHeight);
+            
+            var rect = new RectangleF(GetLeft(g.VisibleClipBounds.Width, size.Width),
+                GetTop(g.VisibleClipBounds.Height, size.Height),
+                size.Width + 2 * paddingX,
+                size.Height + 2 * paddingY);
 
             g.FillRoundedRectangle(new SolidBrush(Settings.Instance.KeystrokesRect_Color),
                 rect,
@@ -139,7 +177,7 @@ namespace Captura.Models
             g.DrawString(_output,
                 keystrokeFont,
                 new SolidBrush(Settings.Instance.Keystrokes_Color),
-                new RectangleF(left + paddingX, rect.Top + paddingY, size.Width, size.Height));
+                new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
         }
 
         /// <summary>

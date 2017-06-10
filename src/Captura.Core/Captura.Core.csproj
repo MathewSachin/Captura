@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Services\ServiceName.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
+    <Compile Include="Models\Alignment.cs" />
     <Compile Include="Settings\Code.cs" />
     <Compile Include="Settings\Remember.cs" />
     <Compile Include="Settings\Settings.cs" />
@@ -130,7 +131,6 @@
       <Name>Screna</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.ml-IN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

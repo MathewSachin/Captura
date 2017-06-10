@@ -113,6 +113,47 @@
                         Maximum="30"
                         Value="{Binding Settings.Keystrokes_CornerRadius, Mode=TwoWay}"/>
             </DockPanel>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="X: "
+                       Margin="0,3"/>
+                <ComboBox ItemsSource="{Binding Settings.XAlignments}"
+                          SelectedValue="{Binding Settings.Keystrokes_XAlign, Mode=TwoWay}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          Grid.Column="1"
+                          Margin="3"/>
+                <local:NumericBox Minimum="0"
+                                  Value="{Binding Settings.Keystrokes_X, Mode=TwoWay}"
+                                  Grid.Column="2"
+                                  Margin="0,3"/>
+
+                <Label Content="Y: "
+                       Grid.Row="1"
+                       Margin="0,3"/>
+                <ComboBox ItemsSource="{Binding Settings.YAlignments}"
+                          SelectedValue="{Binding Settings.Keystrokes_YAlign, Mode=TwoWay}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="3"/>
+                <local:NumericBox Minimum="0"
+                                  Value="{Binding Settings.Keystrokes_Y, Mode=TwoWay}"
+                                  Grid.Column="2"
+                                  Grid.Row="1"
+                                  Margin="0,3"/>
+            </Grid>
         </StackPanel>
     </Grid>
     <Window.Resources>
