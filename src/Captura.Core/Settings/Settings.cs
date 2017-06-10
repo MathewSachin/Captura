@@ -363,5 +363,13 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("#BDBDBD")]
+        public string TopBarColor
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
     }
 }
