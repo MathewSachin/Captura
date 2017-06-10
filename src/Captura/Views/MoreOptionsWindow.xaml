@@ -7,8 +7,7 @@
         Height="600"
         Width="400">
     <Grid>
-        <StackPanel Margin="10"
-                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+        <StackPanel Margin="10">
             <Label Content="Mouse Clicks"
                    FontWeight="Bold"
                    Margin="0,3"
@@ -32,21 +31,7 @@
                 <Label Content="Color"
                        ContentStringFormat="{}{0}: "
                        Margin="0,0,5,0"/>
-                <TextBox Text="{Binding Settings.MouseClick_Color, UpdateSourceTrigger=PropertyChanged}"/>
-            </DockPanel>
-            <DockPanel Margin="0,5">
-                <Label Content="Alpha"
-                       ContentStringFormat="{}{0}: "
-                       Margin="0,0,5,0"/>
-                <Label Margin="0,0,5,0"
-                       Content="{Binding Settings.MouseClick_Alpha}"
-                       ContentStringFormat="{}{0:N0}"/>
-                <Slider Minimum="5"
-                        Maximum="255"
-                        IsSelectionRangeEnabled="True"
-                        SelectionStart="70"
-                        SelectionEnd="130"
-                        Value="{Binding Settings.MouseClick_Alpha, Mode=TwoWay}"/>
+                <TextBox Text="{Binding Settings.MouseClick_Color, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorToHexConverter}}"/>
             </DockPanel>
 
             <Label Content="Keystrokes"
@@ -58,7 +43,7 @@
                 <Label Content="Color"
                        ContentStringFormat="{}{0}: "
                        Margin="0,0,5,0"/>
-                <TextBox Text="{Binding Settings.Keystrokes_Color, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Text="{Binding Settings.Keystrokes_Color, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorToHexConverter}}" />
             </DockPanel>
             <DockPanel Margin="0,5">
                 <Label Content="Font Size"
@@ -92,21 +77,7 @@
                 <Label Content="Back Color"
                        ContentStringFormat="{}{0}: "
                        Margin="0,0,5,0"/>
-                <TextBox Text="{Binding Settings.KeystrokesRect_Color, UpdateSourceTrigger=PropertyChanged}"/>
-            </DockPanel>
-            <DockPanel Margin="0,5">
-                <Label Content="Back Alpha"
-                       ContentStringFormat="{}{0}: "
-                       Margin="0,0,5,0"/>
-                <Label Margin="0,0,5,0"
-                       Content="{Binding Settings.KeystrokesRect_Alpha}"
-                       ContentStringFormat="{}{0:N0}"/>
-                <Slider Minimum="5"
-                        Maximum="255"
-                        IsSelectionRangeEnabled="True"
-                        SelectionStart="70"
-                        SelectionEnd="130"
-                        Value="{Binding Settings.KeystrokesRect_Alpha, Mode=TwoWay}"/>
+                <TextBox Text="{Binding Settings.KeystrokesRect_Color, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ColorToHexConverter}}"/>
             </DockPanel>
 
             <DockPanel Margin="0,5">

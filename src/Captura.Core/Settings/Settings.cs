@@ -245,18 +245,10 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("100")]
-        public int MouseClick_Alpha
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
         [DefaultSettingValue("25")]
-        public double MouseClick_Radius
+        public float MouseClick_Radius
         {
-            get => Get<double>();
+            get => Get<float>();
             set => Set(value);
         }
 
@@ -275,15 +267,7 @@ namespace Captura
             get => Get<Color>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("100")]
-        public int KeystrokesRect_Alpha
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("20")]
         public int Keystrokes_FontSize

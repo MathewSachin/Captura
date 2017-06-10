@@ -17,13 +17,7 @@ namespace Captura.Models
         bool _mouseClicked;
         
         string _output = string.Empty;
-        KeyRecord _lastKeyRecord;
-
-        readonly Brush _clickBrush = new SolidBrush(Color.FromArgb(Settings.Instance.MouseClick_Alpha, Settings.Instance.MouseClick_Color));
-        readonly Brush _keystrokesRectBrush = new SolidBrush(Color.FromArgb(Settings.Instance.KeystrokesRect_Alpha, Settings.Instance.KeystrokesRect_Color));
-        readonly double _clickRadius = Settings.Instance.MouseClick_Radius;
-        readonly Font _keyStrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
-        readonly Brush _keyStrokeBrush = new SolidBrush(Settings.Instance.Keystrokes_Color);
+        KeyRecord _lastKeyRecord;        
         #endregion
 
         /// <summary>
@@ -108,12 +102,14 @@ namespace Captura.Models
         {
             if (_mouseClicked)
             {
-                var curPos = MouseCursor.CursorPosition;
-                var d = (float)(_clickRadius * 2);
+                var _clickRadius = Settings.Instance.MouseClick_Radius;
 
-                g.FillEllipse(_clickBrush,
-                    curPos.X - (float)_clickRadius - Offset.X,
-                    curPos.Y - (float)_clickRadius - Offset.Y,
+                var curPos = MouseCursor.CursorPosition;
+                var d = _clickRadius * 2;
+
+                g.FillEllipse(new SolidBrush(Settings.Instance.MouseClick_Color),
+                    curPos.X - _clickRadius - Offset.X,
+                    curPos.Y - _clickRadius - Offset.Y,
                     d, d);
 
                 _mouseClicked = false;
@@ -122,22 +118,27 @@ namespace Captura.Models
             if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > 2)
                 return;
 
-            int paddingX = Settings.Instance.Keystrokes_PaddingX,
-                paddingY = Settings.Instance.Keystrokes_PaddingY,
-                left = 80, bottom = 200;
+            int left = 80, bottom = 200;
 
             float height = g.VisibleClipBounds.Height;
-            
-            var size = g.MeasureString(_output, _keyStrokeFont);
+
+            var keystrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
+
+            var size = g.MeasureString(_output, keystrokeFont);
+
+            int paddingX = Settings.Instance.Keystrokes_PaddingX,
+                paddingY = Settings.Instance.Keystrokes_PaddingY;
 
             var rectHeight = size.Height + 2 * paddingY;
             var rect = new RectangleF(left, height - bottom - rectHeight, size.Width + 2 * paddingX, rectHeight);
 
-            g.FillRoundedRectangle(_keystrokesRectBrush, rect, Settings.Instance.Keystrokes_CornerRadius);
+            g.FillRoundedRectangle(new SolidBrush(Settings.Instance.KeystrokesRect_Color),
+                rect,
+                Settings.Instance.Keystrokes_CornerRadius);
             
             g.DrawString(_output,
-                _keyStrokeFont,
-                _keyStrokeBrush,
+                keystrokeFont,
+                new SolidBrush(Settings.Instance.Keystrokes_Color),
                 new RectangleF(left + paddingX, rect.Top + paddingY, size.Width, size.Height));
         }
 

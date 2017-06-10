@@ -85,6 +85,7 @@
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Presentation\Loc.cs" />
+    <Compile Include="Presentation\ValueConverters\ColorToHexConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NegatingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
