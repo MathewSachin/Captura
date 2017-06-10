@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using System.Drawing;
+using System;
 
 namespace Captura.Console
 {
@@ -19,10 +20,10 @@ namespace Captura.Console
 
         public IVideoItem VideoSource => new FakeRegionItem(SelectedRegion);
 
-        public bool SnapEnabled
-        {
-            get => false;
-            set { }
-        }
+        public event Action SelectorHidden;
+
+        public void Lock() { }
+
+        public void Release() { }
     }
 }

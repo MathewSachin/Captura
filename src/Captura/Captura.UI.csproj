@@ -71,7 +71,6 @@
     </ApplicationDefinition>
     <Compile Include="Models\CmdOptions.cs" />
     <Compile Include="Models\MessageProvider.cs" />
-    <Compile Include="Models\RegionProvider.cs" />
     <Compile Include="Models\SystemTray.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
     <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
