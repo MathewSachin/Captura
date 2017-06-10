@@ -164,9 +164,4 @@
             </DockPanel>
         </StackPanel>
     </Grid>
-    <Window.Resources>
-        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>
-    </Window.Resources>
 </Window>
