@@ -20,7 +20,7 @@ namespace Captura.Models
         public Keys Key { get; }
         
         public bool Control { get; }
-        public bool Shift { get; }
+        public bool Shift { get; private set; }
         public bool Alt { get; }
         
         public bool IsAlpha => Key >= Keys.A && Key <= Keys.Z;
@@ -29,8 +29,9 @@ namespace Captura.Models
 
         public bool IsSpecialDPadCharacter => !Alt && !Control && Shift && (Key >= Keys.D0 && Key <= Keys.D9);
 
-        public string AsSpecialDPadCharacter => new[]
-        {
+        public bool IsOem => Key.ToString().Contains("Oem");
+
+        static readonly char[] DPadChars = {
             ')',
             '!',
             '@',
@@ -41,7 +42,9 @@ namespace Captura.Models
             '&',
             '*',
             '('
-        }[Key - Keys.D0].ToString();
+        };
+
+        public char AsSpecialDPadCharacter => DPadChars[Key - Keys.D0];
 
         public int AsNum
         {
@@ -54,17 +57,76 @@ namespace Captura.Models
             }
         }
         
+        string Oem(char ShiftChar, char NonShiftChar)
+        {
+            if (Shift)
+            {
+                Shift = false;
+
+                return ShiftChar.ToString();
+            }
+
+            return NonShiftChar.ToString();
+        }
+
+        public string AsOemChar
+        {
+            get
+            {
+                switch (Key)
+                {
+                    case Keys.Oemtilde:
+                        return Oem('~', '`');
+
+                    case Keys.OemMinus:
+                        return Oem('_', '-');
+
+                    case Keys.Oemplus:
+                        return Oem('+', '=');
+
+                    case Keys.Oem6:
+                        return Oem('}', ']');
+
+                    case Keys.OemOpenBrackets:
+                        return Oem('{', '[');
+
+                    case Keys.Oem5:
+                        return Oem('|', '\\');
+
+                    case Keys.Oem7:
+                        return Oem('\'', '"');
+
+                    case Keys.Oem1:
+                        return Oem(':', ';');
+
+                    case Keys.OemPeriod:
+                        return Oem('>', '.');
+
+                    case Keys.Oemcomma:
+                        return Oem('<', ',');
+
+                    case Keys.OemQuestion:
+                        return Oem('?', '/');
+                }
+
+                return Key.ToString();
+            }
+        }
+        
+        public string Modifiers => $"{(Control ? "Ctrl + " : "")}{(Shift ? "Shift + " : "")}{(Alt ? "Alt + " : "")}";
+
         public override string ToString()
         {
-            var modifiers = $"{(Control ? "Ctrl + " : "")}{(Shift ? "Shift + " : "")}{(Alt ? "Alt + " : "")}";
-
             var result = "";
 
             if (IsSpecialDPadCharacter)
-                result = AsSpecialDPadCharacter;
+                result = AsSpecialDPadCharacter.ToString();
+
+            else if (IsOem)
+                result = Modifiers + AsOemChar;
 
             else if (IsNum)
-                result = modifiers + AsNum;
+                result = Modifiers + AsNum;
 
             else if (IsAlpha)
             {
@@ -73,31 +135,25 @@ namespace Captura.Models
                 var keyString = Key.ToString();
 
                 if (Control || Alt)
-                    result = modifiers;
+                    result = Modifiers;
 
                 result += upperCase ? keyString.ToUpper() : keyString.ToLower();
             }
 
             else
             {
-                result = modifiers;
+                result = Modifiers;
 
                 switch (Key)
                 {
                     case Keys.Decimal:
-                    case Keys.OemPeriod:
                         result += ".";
-                        break;
-
-                    case Keys.Oemcomma:
-                        result += ",";
                         break;
 
                     case Keys.Add:
                         result += "+";
                         break;
 
-                    case Keys.OemMinus:
                     case Keys.Subtract:
                         result += "-";
                         break;
