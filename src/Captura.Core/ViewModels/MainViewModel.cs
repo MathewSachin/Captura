@@ -557,8 +557,9 @@ namespace Captura.ViewModels
                 _cursor
             };
 
+            // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable)
-                overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
+                overlays.Insert(0, new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
             var overlayed = new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
 
