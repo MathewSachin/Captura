@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Captura
 {
@@ -15,6 +16,9 @@ namespace Captura
                 Settings.Instance.Reset();
                 Settings.Instance.UpdateRequired = false;
             }
+
+            // A quick fix for MUI not being copied to bui;d output of console project
+            FirstFloor.ModernUI.Presentation.AppearanceManager.Current.ToString();
         }
     }
 }
