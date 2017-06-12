@@ -147,10 +147,21 @@ namespace Captura.Models
                 var curPos = MouseCursor.CursorPosition;
                 var d = _clickRadius * 2;
 
-                g.FillEllipse(new SolidBrush(Settings.Instance.MouseClick_Color),
-                    curPos.X - _clickRadius - Offset.X,
-                    curPos.Y - _clickRadius - Offset.Y,
-                    d, d);
+                var x = curPos.X - _clickRadius - Offset.X;
+                var y = curPos.Y - _clickRadius - Offset.Y;
+
+                g.FillEllipse(new SolidBrush(Settings.Instance.MouseClick_Color), x, y, d, d);
+
+                var border = Settings.Instance.MouseClick_Border;
+
+                if (border > 0)
+                {
+                    x -= border / 2;
+                    y -= border / 2;
+                    d += border;
+
+                    g.DrawEllipse(new Pen(Settings.Instance.MouseClick_BorderColor, border), x, y, d, d);
+                }
 
                 _mouseClicked = false;
             }

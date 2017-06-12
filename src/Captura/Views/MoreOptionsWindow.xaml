@@ -50,6 +50,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Radius"
@@ -67,6 +69,24 @@
                 <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClick_Color, Converter={StaticResource WpfColorConverter}}"
                                   Grid.Row="1"
                                   Grid.Column="1"/>
+
+                <Label Content="Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="2"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.MouseClick_Border, Mode=TwoWay}"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Border Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="3"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClick_BorderColor, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="3"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
             </Grid>            
                         
             <Label Content="Keystrokes"

@@ -261,6 +261,22 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public float MouseClick_Border
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color MouseClick_BorderColor
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("Black")]
         public Color Keystrokes_Color
         {
