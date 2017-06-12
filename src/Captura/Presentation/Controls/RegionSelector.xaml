@@ -63,7 +63,7 @@
             <Border BorderThickness="1"
                     BorderBrush="#66333333"
                     Grid.Row="1"
-                    Grid.ColumnSpan="2">
+                    Grid.ColumnSpan="3">
             </Border>
         </Grid>
     </Border>
