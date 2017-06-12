@@ -277,6 +277,22 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public float Keystrokes_Border
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color Keystrokes_BorderColor
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("Black")]
         public Color Keystrokes_Color
         {

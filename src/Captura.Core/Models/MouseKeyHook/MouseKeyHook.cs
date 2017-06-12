@@ -140,6 +140,49 @@ namespace Captura.Models
         /// </summary>
         public void Draw(Graphics g, Point Offset = default(Point))
         {
+            DrawClicks(g, Offset);
+            DrawKeys(g);
+        }
+
+        void DrawKeys(Graphics g)
+        {
+            if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > Settings.Instance.Keystrokes_MaxSeconds)
+                return;
+
+            var keystrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
+
+            var size = g.MeasureString(_output, keystrokeFont);
+
+            int paddingX = Settings.Instance.Keystrokes_PaddingX, paddingY = Settings.Instance.Keystrokes_PaddingY;
+
+            var rect = new RectangleF(GetLeft(g.VisibleClipBounds.Width, size.Width),
+                GetTop(g.VisibleClipBounds.Height, size.Height),
+                size.Width + 2 * paddingX,
+                size.Height + 2 * paddingY);
+
+            g.FillRoundedRectangle(new SolidBrush(Settings.Instance.KeystrokesRect_Color),
+                rect,
+                Settings.Instance.Keystrokes_CornerRadius);
+            
+            g.DrawString(_output,
+                keystrokeFont,
+                new SolidBrush(Settings.Instance.Keystrokes_Color),
+                new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
+
+            var border = Settings.Instance.Keystrokes_Border;
+
+            if (border > 0)
+            {
+                rect = new RectangleF(rect.Left - border / 2, rect.Top - border / 2, rect.Width + border, rect.Height + border);
+
+                g.DrawRoundedRectangle(new Pen(Settings.Instance.Keystrokes_BorderColor, border),
+                    rect,
+                    Settings.Instance.Keystrokes_CornerRadius);
+            }
+        }
+
+        void DrawClicks(Graphics g, Point Offset)
+        {
             if (_mouseClicked)
             {
                 var _clickRadius = Settings.Instance.MouseClick_Radius;
@@ -165,30 +208,6 @@ namespace Captura.Models
 
                 _mouseClicked = false;
             }
-            
-            if (_lastKeyRecord == null || (DateTime.Now - _lastKeyRecord.TimeStamp).TotalSeconds > Settings.Instance.Keystrokes_MaxSeconds)
-                return;
-            
-            var keystrokeFont = new Font(FontFamily.GenericMonospace, Settings.Instance.Keystrokes_FontSize);
-
-            var size = g.MeasureString(_output, keystrokeFont);
-
-            int paddingX = Settings.Instance.Keystrokes_PaddingX,
-                paddingY = Settings.Instance.Keystrokes_PaddingY;
-            
-            var rect = new RectangleF(GetLeft(g.VisibleClipBounds.Width, size.Width),
-                GetTop(g.VisibleClipBounds.Height, size.Height),
-                size.Width + 2 * paddingX,
-                size.Height + 2 * paddingY);
-
-            g.FillRoundedRectangle(new SolidBrush(Settings.Instance.KeystrokesRect_Color),
-                rect,
-                Settings.Instance.Keystrokes_CornerRadius);
-            
-            g.DrawString(_output,
-                keystrokeFont,
-                new SolidBrush(Settings.Instance.Keystrokes_Color),
-                new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
         }
 
         /// <summary>

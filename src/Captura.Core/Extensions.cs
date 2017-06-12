@@ -43,7 +43,7 @@ namespace Captura
             return path;
         }
 
-        public static void DrawRoundedRectangle(this Graphics Graphics, Pen Pen, Rectangle Bounds, int CornerRadius)
+        public static void DrawRoundedRectangle(this Graphics Graphics, Pen Pen, RectangleF Bounds, int CornerRadius)
         {
             using (var path = RoundedRect(Bounds, CornerRadius))
             {

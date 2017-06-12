@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:Captura"
         Title="Experimental"
         DataContext="{StaticResource MainViewModel}"
-        Height="600"
+        SizeToContent="Height"
         Width="400">
     <Grid>
         <StackPanel Margin="10">
@@ -108,6 +108,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Color"
@@ -182,6 +184,24 @@
                                     Grid.Row="7"
                                     Grid.Column="1"
                                     Margin="0,5"/>
+
+                <Label Content="Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="8"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_Border, Mode=TwoWay}"
+                                    Grid.Row="8"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Border Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="9"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.Keystrokes_BorderColor, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="9"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
             </Grid>
             
             <Grid>
