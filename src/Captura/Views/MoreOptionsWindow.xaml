@@ -9,13 +9,34 @@
         Width="400">
     <Grid>
         <StackPanel Margin="10">
-            <DockPanel Margin="0,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Accent"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"/>
+                <xctk:ColorPicker SelectedColor="{DynamicResource AccentColor}"
+                                  SelectedColorChanged="SelectedAccentColorChanged"
+                                  Margin="0,5"
+                                  Grid.Column="1"/>
+                
                 <Label Content="Top Bar Color"
                        ContentStringFormat="{}{0}: "
-                       Margin="0,0,5,0"/>
-                <xctk:ColorPicker SelectedColor="{Binding Settings.TopBarColor}"/>
-            </DockPanel>
-                        
+                       Margin="0,5,5,5"
+                       Grid.Row="1"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.TopBarColor}"
+                                  Margin="0,5"
+                                  Grid.Row="1"
+                                  Grid.Column="1"/>
+            </Grid>
+                                    
             <Label Content="Mouse Clicks"
                    FontWeight="Bold"
                    Margin="0,3"

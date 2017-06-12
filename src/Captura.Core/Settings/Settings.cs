@@ -8,6 +8,14 @@ namespace Captura
     public partial class Settings : ApplicationSettingsBase
     {
         [UserScopedSetting]
+        [DefaultSettingValue(null)]
+        public string AccentColor
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("200")]
         public int MainWindowLeft
         {

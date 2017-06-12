@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using FirstFloor.ModernUI.Presentation;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Captura
 {
@@ -16,8 +18,10 @@ namespace Captura
                 Settings.Instance.UpdateRequired = false;
             }
 
-            // A quick fix for MUI not being copied to build output of console project
-            FirstFloor.ModernUI.Presentation.AppearanceManager.Current.ToString();
+            var accent = Settings.Instance.AccentColor;
+
+            if (accent != null)
+                AppearanceManager.Current.AccentColor = (Color) ColorConverter.ConvertFromString(accent);
 
             // A quick fix for WpfToolkit not being copied to build output of console project
             Xceed.Wpf.Toolkit.ColorSortingMode.Alphabetical.ToString();
