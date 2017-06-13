@@ -30,14 +30,16 @@ namespace Captura.Models
             _hook = Hook.GlobalEvents();
 
             if (CaptureMouseClicks)
-                _hook.MouseDown += OnMouseDown;
+            {
+                _hook.MouseDown += (s, e) => _mouseClicked = true;
+
+                _hook.MouseUp += (s, e) => _mouseClicked = false;
+            }
             
             if (CaptureKeystrokes)
                 _hook.KeyDown += OnKeyPressed;
         }
-
-        void OnMouseDown(object sender, EventArgs e) => _mouseClicked = true;
-
+        
         void OnKeyPressed(object sender, KeyEventArgs e)
         {
             if (_output.Length > Settings.Instance.Keystrokes_MaxLength)
@@ -205,8 +207,6 @@ namespace Captura.Models
 
                     g.DrawEllipse(new Pen(Settings.Instance.MouseClick_BorderColor, border), x, y, d, d);
                 }
-
-                _mouseClicked = false;
             }
         }
 
@@ -215,9 +215,6 @@ namespace Captura.Models
         /// </summary>
         public void Dispose()
         {
-            _hook.MouseDown -= OnMouseDown;
-            _hook.KeyDown -= OnKeyPressed;
-
             _hook?.Dispose();
         }
     }
