@@ -17,6 +17,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Accent"
@@ -35,6 +36,16 @@
                                   Margin="0,5"
                                   Grid.Row="1"
                                   Grid.Column="1"/>
+
+                <Label Content="Region Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="2"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.RegionBorderThickness}"
+                                    Minimum="1"
+                                    Margin="0,5"
+                                    Grid.Row="2"
+                                    Grid.Column="1"/>
             </Grid>
                                     
             <Label Content="Mouse Clicks"

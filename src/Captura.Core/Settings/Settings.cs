@@ -411,5 +411,13 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("3")]
+        public int RegionBorderThickness
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

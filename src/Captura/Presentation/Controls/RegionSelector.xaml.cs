@@ -21,8 +21,7 @@ namespace Captura
         static extern bool PatBlt(IntPtr hDC, int X, int Y, int Width, int Height, uint dwRop);
         #endregion
 
-        const int DstInvert = 0x0055_0009,
-            borderThickness = 3;
+        const int DstInvert = 0x0055_0009;
 
         static void ToggleBorder(IntPtr hWnd)
         {
@@ -32,7 +31,9 @@ namespace Captura
             var hdc = GetWindowDC(hWnd);
 
             var rect = new Screna.Window(hWnd).Rectangle;
-            
+
+            var borderThickness = Settings.Instance.RegionBorderThickness;
+
             // Top
             PatBlt(hdc, 0, 0, rect.Width, borderThickness, DstInvert);
 
