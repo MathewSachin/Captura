@@ -18,6 +18,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Accent"
@@ -45,6 +46,16 @@
                                     Minimum="1"
                                     Margin="0,5"
                                     Grid.Row="2"
+                                    Grid.Column="1"/>
+
+                <Label Content="ScreenShot Notification Timeout"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="3"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotNotifyTimeout}"
+                                    Minimum="1000"
+                                    Margin="0,5"
+                                    Grid.Row="3"
                                     Grid.Column="1"/>
             </Grid>
                                     

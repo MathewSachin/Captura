@@ -419,5 +419,13 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("5000")]
+        public int ScreenShotNotifyTimeout
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }
