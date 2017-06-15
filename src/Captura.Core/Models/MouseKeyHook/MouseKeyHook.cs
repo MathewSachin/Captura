@@ -17,9 +17,9 @@ namespace Captura.Models
         bool _mouseClicked;
         
         string _output = string.Empty;
-        KeyRecord _lastKeyRecord;        
+        KeyRecord _lastKeyRecord;
         #endregion
-
+        
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
@@ -86,10 +86,10 @@ namespace Captura.Models
                         _output = "";
                     break;
             }
-
+            
             if (key.Length > 1 || (_lastKeyRecord != null &&
                                     (_lastKeyRecord.ToString().Length > 1 ||
-                                    (keyRecord.TimeStamp - _lastKeyRecord.TimeStamp).TotalSeconds > 2)))
+                                    (keyRecord.TimeStamp - _lastKeyRecord.TimeStamp).TotalSeconds > Settings.Instance.Keystrokes_MaxSeconds)))
                 _output = "";
 
             _output += key;
