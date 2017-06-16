@@ -40,7 +40,7 @@ namespace Captura.ViewModels
                     SelectedVideoSourceKind = VideoSourceKind.Window;
             };
         }
-
+        
         public void RefreshFFMpeg()
         {
             if (ServiceProvider.FFMpegExists)
@@ -50,6 +50,9 @@ namespace Captura.ViewModels
             }
             else
             {
+                if (SelectedVideoWriterKind == VideoWriterKind.FFMpeg)
+                    SelectedVideoWriterKind = VideoWriterKind.Gif;
+
                 if (AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
                     AvailableVideoWriterKinds.Remove(VideoWriterKind.FFMpeg);
             }
