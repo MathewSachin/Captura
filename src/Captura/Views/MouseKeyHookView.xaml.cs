@@ -4,9 +4,9 @@ using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class MoreOptionsWindow
+    public partial class MouseKeyHookView
     {
-        MoreOptionsWindow()
+        MouseKeyHookView()
         {
             InitializeComponent();
 
@@ -18,7 +18,7 @@ namespace Captura
             };
         }
 
-        public static MoreOptionsWindow Instance { get; } = new MoreOptionsWindow();
+        public static MouseKeyHookView Instance { get; } = new MouseKeyHookView();
 
         void SelectedAccentColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {

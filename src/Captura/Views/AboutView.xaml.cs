@@ -1,10 +1,17 @@
-﻿namespace Captura
+﻿using System.Windows;
+
+namespace Captura
 {
     public partial class AboutView
     {
-        void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        void OpenExtras(object sender, RoutedEventArgs e)
         {
-            new MoreOptionsWindow().Show();
+            MoreOptionsWindow.Instance.Show();
+        }
+
+        void OpenMouseKeyHook(object sender, RoutedEventArgs e)
+        {
+            MouseKeyHookView.Instance.Show();
         }
     }
 }

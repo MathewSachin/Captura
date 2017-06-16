@@ -62,8 +62,13 @@
                            Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
                 </TextBlock>
 
-                <Button Content="More Experimental Options ..."
-                        Click="Button_Click"/>
+                <Button Content="Customize Mouse Clicks and Keystrokes"
+                        Click="OpenMouseKeyHook"
+                        Margin="0,5"/>
+                
+                <Button Content="Extras"
+                        Click="OpenExtras"
+                        Margin="0,5"/>                
             </StackPanel>
         </ScrollViewer>
     </Grid>
