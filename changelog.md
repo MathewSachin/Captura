@@ -4,6 +4,16 @@ title: Feature Changelog
 permalink: Changelog/
 ---
 
+## v4.1.0
+- **fix:** Region Selector on High DPI.
+- **fix:** Selected Video Writer Kind null if FFMpeg folder is removed when currently selected as Video Writer Kind.
+- **fix:** Restores in normal state from `Minimize to Tray`.
+- Added a Close button on Region Selector. When closed, Selected Video Source Kind changes to Window.
+- Using MUI as a library.
+- Output FileName support for start and shot commands.
+- CommamdLine support for Transparent ScreenShots.
+- New Encoder: Encode to Folder.
+
 ## v4.0.0
 ### Known Issues
 - High memory usage when encoding Gif.
