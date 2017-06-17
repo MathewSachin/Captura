@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\CmdOptions.cs" />
+    <Compile Include="Models\Dpi.cs" />
     <Compile Include="Models\MessageProvider.cs" />
     <Compile Include="Models\SystemTray.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
