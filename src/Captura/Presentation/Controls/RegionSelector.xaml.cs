@@ -105,7 +105,7 @@ namespace Captura
             {
                 var oldwin = win;
                 
-                win = WindowFromPoint(new Point((int)Left - 1, (int)Top - 1));
+                win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
 
                 if (oldwin != win)
                 {
@@ -132,11 +132,14 @@ namespace Captura
         // Ignoring Borders and Header
         public Rectangle SelectedRegion
         {
-            get => Dispatcher.Invoke(() => new Rectangle((int)Left + 7, (int)Top + 37, (int)Width - 14, (int)Height - 44));
+            get => Dispatcher.Invoke(() => new Rectangle((int)Left + 7, (int)Top + 37, (int)Width - 14, (int)Height - 44)) * Dpi.Instance;
             set
             {
                 if (value == Rectangle.Empty)
                     return;
+
+                // High Dpi fix
+                value *= Dpi.Inverse;
 
                 Dispatcher.Invoke(() =>
                 {
