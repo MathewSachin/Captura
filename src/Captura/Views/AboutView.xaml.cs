@@ -4,14 +4,21 @@ namespace Captura
 {
     public partial class AboutView
     {
+        void ShowAndFocus(Window W)
+        {
+            W.Show();
+
+            W.Activate();
+        }
+
         void OpenExtras(object sender, RoutedEventArgs e)
         {
-            MoreOptionsWindow.Instance.Show();
+            ShowAndFocus(MoreOptionsWindow.Instance);
         }
 
         void OpenMouseKeyHook(object sender, RoutedEventArgs e)
         {
-            MouseKeyHookView.Instance.Show();
+            ShowAndFocus(MouseKeyHookView.Instance);
         }
     }
 }
