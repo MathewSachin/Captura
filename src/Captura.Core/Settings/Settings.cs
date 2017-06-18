@@ -1,33 +1,17 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace Captura
 {
-    public class Settings : ApplicationSettingsBase
+    public partial class Settings : ApplicationSettingsBase
     {
-        public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
-        
-        Settings()
-        {
-            // Upgrade settings from Previous version
-            if (UpdateRequired)
-            {
-                Upgrade();
-                UpdateRequired = false;
-            }
-        }
-        
-        T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
-
-        void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
-        
         [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool UpdateRequired
+        [DefaultSettingValue(null)]
+        public string AccentColor
         {
-            get => Get<bool>();
+            get => Get<string>();
             set => Set(value);
         }
 
@@ -69,69 +53,7 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
-
-        #region Remember
-        [UserScopedSetting]
-        [DefaultSettingValue("Png")]
-        public string LastScreenShotFormat
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
         
-        [UserScopedSetting]
-        [DefaultSettingValue("FFMpeg")]
-        public VideoWriterKind LastVideoWriterKind
-        {
-            get => Get<VideoWriterKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastVideoWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Window")]
-        public VideoSourceKind LastSourceKind
-        {
-            get => Get<VideoSourceKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSourceName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Mp3")]
-        public string LastAudioWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastMicName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSpeakerName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-        #endregion
-
         [UserScopedSetting]
         [DefaultSettingValue("Disk")]
         public string ScreenShotSaveTo
@@ -206,15 +128,7 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool GifVariable
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("en-US")]
         public string Language
@@ -320,6 +234,198 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool GifVariable
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
         #endregion
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("DarkGray")]
+        public Color MouseClick_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("25")]
+        public float MouseClick_Radius
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public float MouseClick_Border
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color MouseClick_BorderColor
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public float Keystrokes_Border
+        {
+            get => Get<float>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color Keystrokes_BorderColor
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color Keystrokes_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("DarkGray")]
+        public Color KeystrokesRect_Color
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("20")]
+        public int Keystrokes_FontSize
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_MaxLength
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_PaddingX
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("15")]
+        public int Keystrokes_PaddingY
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("10")]
+        public int Keystrokes_CornerRadius
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        // Not a Setting
+        public KeyValuePair<Alignment, string>[] XAlignments { get; } = new[]
+        {
+            new KeyValuePair<Alignment, string>(Alignment.Start, "Left"),
+            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
+            new KeyValuePair<Alignment, string>(Alignment.End, "Right")
+        };
+
+        // Not a Setting
+        public KeyValuePair<Alignment, string>[] YAlignments { get; } = new[]
+        {
+            new KeyValuePair<Alignment, string>(Alignment.Start, "Top"),
+            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
+            new KeyValuePair<Alignment, string>(Alignment.End, "Bottom")
+        };
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Start")]
+        public Alignment Keystrokes_XAlign
+        {
+            get => Get<Alignment>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("End")]
+        public Alignment Keystrokes_YAlign
+        {
+            get => Get<Alignment>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("80")]
+        public int Keystrokes_X
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("200")]
+        public int Keystrokes_Y
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("2")]
+        public int Keystrokes_MaxSeconds
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("#BDBDBD")]
+        public string TopBarColor
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("3")]
+        public int RegionBorderThickness
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("5000")]
+        public int ScreenShotNotifyTimeout
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

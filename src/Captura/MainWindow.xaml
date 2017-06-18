@@ -76,7 +76,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid Background="#BDBDBD">
+    <Grid Background="{Binding Settings.TopBarColor}">
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"

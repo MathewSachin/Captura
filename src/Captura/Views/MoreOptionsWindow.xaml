@@ -1,0 +1,63 @@
+﻿<Window x:Class="Captura.MoreOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Captura"
+        Title="Extras"
+        DataContext="{StaticResource MainViewModel}"
+        SizeToContent="Height"
+        Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Accent"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"/>
+                <xctk:ColorPicker SelectedColor="{DynamicResource AccentColor}"
+                                  SelectedColorChanged="SelectedAccentColorChanged"
+                                  Margin="0,5"
+                                  Grid.Column="1"/>
+                
+                <Label Content="Top Bar Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="1"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.TopBarColor}"
+                                  Margin="0,5"
+                                  Grid.Row="1"
+                                  Grid.Column="1"/>
+
+                <Label Content="Region Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="2"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.RegionBorderThickness}"
+                                    Minimum="1"
+                                    Margin="0,5"
+                                    Grid.Row="2"
+                                    Grid.Column="1"/>
+
+                <Label Content="ScreenShot Notification Timeout"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="3"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotNotifyTimeout}"
+                                    Minimum="1000"
+                                    Margin="0,5"
+                                    Grid.Row="3"
+                                    Grid.Column="1"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

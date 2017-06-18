@@ -21,6 +21,7 @@
             <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
             <local:NegatingConverter x:Key="NegatingConverter"/>
             <local:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
+            <local:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <viewModels:MainViewModel x:Key="MainViewModel"/>
         </ResourceDictionary>
