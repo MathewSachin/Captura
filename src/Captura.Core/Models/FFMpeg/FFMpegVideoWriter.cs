@@ -27,7 +27,7 @@ namespace Captura.Models
         public FFMpegVideoWriter(string FileName, IImageProvider ImageProvider, int FrameRate, int Quality, FFMpegVideoArgsProvider VideoArgsProvider)
         {
             // x264 requires video dimensions to be even.
-            if (VideoArgsProvider == FFMpegItem.Mp4)
+            if (VideoArgsProvider == FFMpegItem.x264 || VideoArgsProvider == FFMpegItem.x265)
             {
                 int h = ImageProvider.Height,
                     w = ImageProvider.Width;
