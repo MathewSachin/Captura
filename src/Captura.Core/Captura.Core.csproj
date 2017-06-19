@@ -69,6 +69,9 @@
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\Hotkeys\Modifiers.cs" />
+    <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
+    <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
+    <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
     <Compile Include="Models\IMessageProvider.cs" />
     <Compile Include="Models\IRegionProvider.cs" />
     <Compile Include="Models\ISystemTray.cs" />

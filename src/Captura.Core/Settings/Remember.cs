@@ -64,5 +64,13 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Disk")]
+        public string LastScreenShotSaveTo
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
     }
 }

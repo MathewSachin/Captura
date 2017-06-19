@@ -138,12 +138,6 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ObjectLocalizer<string>[] ScreenShotSaveTo => new[]
-        {
-            new ObjectLocalizer<string>("Disk", nameof(Resources.Disk)),
-            new ObjectLocalizer<string>("Clipboard", nameof(Resources.Clipboard))
-        };
         #endregion
         
         #region Commands
@@ -159,7 +153,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            EnsureOutPath();
+            Settings.Instance.EnsureOutPath();
 
             Process.Start(Settings.Instance.OutPath);
         });

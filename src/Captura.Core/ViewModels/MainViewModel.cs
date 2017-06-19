@@ -173,6 +173,15 @@ namespace Captura.ViewModels
                 if (format != null)
                     SelectedScreenShotImageFormat = format;
             }
+
+            // Restore ScreenShot Target
+            if (!string.IsNullOrEmpty(Settings.LastScreenShotSaveTo))
+            {
+                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.LastScreenShotSaveTo);
+
+                if (saveTo != null)
+                    VideoViewModel.SelectedImageWriter = saveTo.Source;
+            }
         }
 
         bool _persist, _hotkeys;
@@ -300,6 +309,9 @@ namespace Captura.ViewModels
 
             // Remember ScreenShot Format
             Settings.LastScreenShotFormat = SelectedScreenShotImageFormat.ToString();
+
+            // Remember ScreenShot Target
+            Settings.LastScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
         }
 
         // Call before Exit to free Resources
@@ -346,36 +358,7 @@ namespace Captura.ViewModels
             // Save to Disk or Clipboard
             if (bmp != null)
             {
-                if (Settings.ScreenShotSaveTo == "Clipboard")
-                {
-                    bmp.WriteToClipboard(SelectedScreenShotImageFormat.Equals(ImageFormat.Png));
-                    Status.LocalizationKey = nameof(Resources.ImgSavedClipboard);
-                }
-                else // Save to Disk
-                {
-                    try
-                    {
-                        EnsureOutPath();
-
-                        var extension = SelectedScreenShotImageFormat.Equals(ImageFormat.Icon) ? "ico"
-                            : SelectedScreenShotImageFormat.Equals(ImageFormat.Jpeg) ? "jpg"
-                            : SelectedScreenShotImageFormat.ToString().ToLower();
-
-                        var fileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
-
-                        bmp.Save(fileName, SelectedScreenShotImageFormat);
-                        Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
-                        RecentViewModel.Add(fileName, RecentItemType.Image, false);
-
-                        ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
-                    }
-                    catch (Exception E)
-                    {
-                        ServiceProvider.Messenger.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
-
-                        Status.LocalizationKey = nameof(Resources.NotSaved);
-                    }
-                }
+                VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
 
                 bmp.Dispose();
             }
@@ -435,13 +418,7 @@ namespace Captura.ViewModels
 
             SaveScreenShot(bmp, FileName);
         }
-
-        static void EnsureOutPath()
-        {
-            if (!Directory.Exists(Settings.Instance.OutPath))
-                Directory.CreateDirectory(Settings.Instance.OutPath);
-        }
-
+        
         public void StartRecording(string FileName = null)
         {
             VideoViewModel.RegionProvider.Lock();
@@ -453,7 +430,7 @@ namespace Captura.ViewModels
             
             CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
 
-            EnsureOutPath();
+            Settings.Instance.EnsureOutPath();
             
             if (StartDelay < 0)
                 StartDelay = 0;

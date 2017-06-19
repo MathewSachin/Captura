@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -27,6 +28,12 @@ namespace Captura
         {
             get => Get<bool>();
             set => Set(value);
+        }
+
+        public void EnsureOutPath()
+        {
+            if (!Directory.Exists(OutPath))
+                Directory.CreateDirectory(OutPath);
         }
     }
 }

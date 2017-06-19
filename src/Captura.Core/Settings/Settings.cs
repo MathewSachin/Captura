@@ -55,20 +55,12 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("Disk")]
-        public string ScreenShotSaveTo
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
         public string OutPath
         {
             get => Get<string>();
             set => Set(value);
         }
-
+        
         [UserScopedSetting]
         public string FFMpegFolder
         {
