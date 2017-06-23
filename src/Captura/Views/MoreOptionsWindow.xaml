@@ -19,6 +19,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Accent"
@@ -57,6 +58,15 @@
                                     Margin="0,5"
                                     Grid.Row="3"
                                     Grid.Column="1"/>
+
+                <Label Content="Video Background Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="4"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
+                                  Margin="0,5"
+                                  Grid.Row="4"
+                                  Grid.Column="1"/>
             </Grid>
         </StackPanel>
     </Grid>

@@ -31,7 +31,7 @@ namespace Captura.Models
         {
             Offset = () => Point.Empty;
             
-            return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow));
+            return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow), Settings.Instance.VideoBackgroundColor);
         }
     }
 }

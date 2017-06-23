@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 
 namespace Captura
 {
@@ -256,6 +257,14 @@ namespace Captura
         public int ScreenShotNotifyTimeout
         {
             get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color VideoBackgroundColor
+        {
+            get => Get<Color>();
             set => Set(value);
         }
     }
