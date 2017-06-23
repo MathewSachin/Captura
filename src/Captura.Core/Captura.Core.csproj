@@ -115,6 +115,7 @@
     <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Models\Alignment.cs" />
     <Compile Include="Settings\Code.cs" />
+    <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Remember.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="TextLocalizer.cs" />
