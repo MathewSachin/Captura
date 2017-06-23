@@ -44,6 +44,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -69,6 +71,7 @@
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
     <Compile Include="Models\Hotkeys\Modifiers.cs" />
+    <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
