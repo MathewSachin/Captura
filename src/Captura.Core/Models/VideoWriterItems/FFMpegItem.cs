@@ -34,6 +34,14 @@ namespace Captura.Models
             return $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
         };
 
+        public static FFMpegVideoArgsProvider H264_QSV { get; } = VideoQuality =>
+        {
+            // quality: 51 (lowest) to 0 (highest)
+            var crf = (51 * (100 - VideoQuality)) / 99;
+
+            return $"-vcodec h264_qsv -preset:v faster";
+        };
+
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
@@ -46,7 +54,10 @@ namespace Captura.Models
             new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioWriterItem.Mp3),
 
             // MP4 (x265, AAC)
-            new FFMpegItem("Mp4 HEVC (x265 | AAC)", ".mp4", x265, FFMpegAudioWriterItem.Aac)
+            new FFMpegItem("Mp4 HEVC (x265 | AAC)", ".mp4", x265, FFMpegAudioWriterItem.Aac),
+
+            // MP4 Intel QSV (H.264, AAC)
+            new FFMpegItem("Mp4 Intel QSV (H.264 | AAC)", ".mp4", H264_QSV, FFMpegAudioWriterItem.Aac)
         };
         
         FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
