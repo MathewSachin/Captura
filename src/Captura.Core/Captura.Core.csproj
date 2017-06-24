@@ -53,6 +53,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiKeys.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />

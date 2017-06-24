@@ -26,9 +26,7 @@ namespace Captura.Models
 
                 using (var w = new WebClient())
                 {
-                    var clientId = "";
-
-                    w.Headers.Add("Authorization", $"Client-ID {clientId}");
+                    w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
 
                     var values = new NameValueCollection
                     {
