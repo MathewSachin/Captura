@@ -6,4 +6,4 @@
 [assembly: AssemblyProduct("Captura")]
 [assembly: AssemblyCopyright("(c) 2016 Mathew Sachin")]
 [assembly: AssemblyTrademark("Captura")]
-[assembly: AssemblyVersion("3.3.0")]
+[assembly: AssemblyVersion("4.2.0")]

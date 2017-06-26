@@ -48,11 +48,20 @@ namespace Captura.Models
             return $"-c:a libvorbis -qscale:a {qscale}";
         };
 
+        public static FFMpegAudioArgsProvider Opus { get; } = q =>
+        {
+            // quality: 0 (lowest) to 10 (highest)
+            var qscale = (10 * (q - 1)) / 99;
+
+            return $"-c:a libopus -compression_level {qscale}";
+        };
+
         public static FFMpegAudioWriterItem[] Items { get; } = new[]
         {
             new FFMpegAudioWriterItem("AAC", ".aac", Aac),
             new FFMpegAudioWriterItem("Mp3", ".mp3", Mp3),
-            new FFMpegAudioWriterItem("Vorbis", ".ogg", Vorbis)
+            new FFMpegAudioWriterItem("Vorbis", ".ogg", Vorbis),
+            new FFMpegAudioWriterItem("Opus", ".opus", Opus)
         };
     }
 }

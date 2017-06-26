@@ -93,6 +93,7 @@ namespace Captura.Models
         {
             if (_error)
             {
+                Image.Dispose();
                 throw new Exception("An Error Occured with FFMpeg");
             }
 

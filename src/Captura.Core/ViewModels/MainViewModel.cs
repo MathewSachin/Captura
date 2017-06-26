@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -471,14 +470,7 @@ namespace Captura.ViewModels
                 else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
 
-            _recorder.ErrorOccured += E =>
-            {
-                StopRecording();
-
-                Status.LocalizationKey = nameof(Resources.ErrorOccured);
-
-                ServiceProvider.Messenger.ShowError($"Error Occured\n\n{E}");
-            };
+            _recorder.ErrorOccured += E => _syncContext.Post(d => OnErrorOccured(E), null);
             
             if (StartDelay > 0)
             {
@@ -492,6 +484,27 @@ namespace Captura.ViewModels
             else _recorder.Start();
 
             _timer?.Start();
+        }
+
+        void OnErrorOccured(Exception E)
+        {
+            Status.LocalizationKey = nameof(Resources.ErrorOccured);
+
+            RecorderState = RecorderState.NotRecording;
+
+            // Set Recorder to null
+            _recorder = null;
+
+            _timer?.Stop();
+
+            CanChangeVideoSource = true;
+
+            if (Settings.MinimizeOnStart)
+                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
+
+            VideoViewModel.RegionProvider.Release();
+
+            ServiceProvider.Messenger.ShowError($"Error Occured\n\n{E}");
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)

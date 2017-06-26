@@ -16,25 +16,23 @@
                           Background="{TemplateBinding Background}"
                           MinHeight="36"
                           MinWidth="36">
+                        <Ellipse Width="30"
+                                 Height="30"
+                                 Name="bg"/>
                         <Path x:Name="icon"
                               Data="{TemplateBinding IconData}" 
-                              Width="15"
-                              Height="15"
+                              Width="14"
+                              Height="14"
                               Fill="{TemplateBinding Foreground}"
                               Stretch="Uniform"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Opacity="0.8"/>
+                              Opacity="0.7"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}" />
                             <Setter Property="Opacity" TargetName="icon" Value="1"/>
-                            <Setter Property="LayoutTransform" TargetName="icon">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
-                                </Setter.Value>
-                            </Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextPressed}" />
@@ -46,6 +44,7 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Fill" Value="{DynamicResource Accent}" TargetName="icon"/>
+                            <Setter Property="Stroke" Value="{DynamicResource Accent}" TargetName="bg"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
