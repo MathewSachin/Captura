@@ -7,7 +7,7 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
-        [DefaultSettingValue("DarkGray")]
+        [DefaultSettingValue("#FFFFDB74")]
         public Color MouseClick_Color
         {
             get => Get<Color>();
@@ -55,7 +55,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("Black")]
+        [DefaultSettingValue("White")]
         public Color Keystrokes_Color
         {
             get => Get<Color>();
@@ -63,7 +63,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("DarkGray")]
+        [DefaultSettingValue("#FF3384CB")]
         public Color KeystrokesRect_Color
         {
             get => Get<Color>();
@@ -103,7 +103,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("10")]
+        [DefaultSettingValue("30")]
         public int Keystrokes_CornerRadius
         {
             get => Get<int>();

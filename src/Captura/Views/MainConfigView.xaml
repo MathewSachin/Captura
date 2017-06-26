@@ -1,7 +1,8 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
-      DataContext="{StaticResource MainViewModel}">
+      DataContext="{StaticResource MainViewModel}"
+      x:Class="Captura.MainConfigView">
     <StackPanel Margin="-5,0,0,0">
         <StackPanel.Resources>
             <SolidColorBrush x:Key="ModernButtonText" Color="#111111" />
@@ -35,6 +36,9 @@
                                           IconData="M6,16H18V18H6V16M6,13V15H2V13H6M7,15V13H10V15H7M11,15V13H13V15H11M14,15V13H17V15H14M18,15V13H22V15H18M2,10H5V12H2V10M19,12V10H22V12H19M18,12H16V10H18V12M8,12H6V10H8V12M12,12H9V10H12V12M15,12H13V10H15V12M2,9V7H4V9H2M5,9V7H7V9H5M8,9V7H10V9H8M11,9V7H13V9H11M14,9V7H16V9H14M17,9V7H22V9H17Z"
                                           IsChecked="{Binding Settings.KeyStrokes, Mode=TwoWay}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                <local:ModernButton ToolTip="Customize Click and Keystrokes Overlays"
+                                    IconData="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"
+                                    Click="OpenMouseKeyHook"/>
             </StackPanel>
         </DockPanel>
 
