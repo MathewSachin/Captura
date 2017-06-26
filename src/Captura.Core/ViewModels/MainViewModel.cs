@@ -586,6 +586,9 @@ namespace Captura.ViewModels
             
             // After Save
             savingRecentItem.Saved();
+
+            if (Settings.CopyOutPathToClipboard)
+                _currentFileName.WriteToClipboard();
             
             ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () =>
             {

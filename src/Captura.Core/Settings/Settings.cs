@@ -8,6 +8,14 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool CopyOutPathToClipboard
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue(null)]
         public string AccentColor
         {
