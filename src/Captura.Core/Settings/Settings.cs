@@ -9,6 +9,14 @@ namespace Captura
     {
         [UserScopedSetting]
         [DefaultSettingValue("False")]
+        public bool MainWindowTopmost
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
         public bool CopyOutPathToClipboard
         {
             get => Get<bool>();
