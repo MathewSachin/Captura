@@ -35,7 +35,7 @@ namespace Captura
         {
             //the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon.CloseBalloon();
+            taskbarIcon?.CloseBalloon();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Captura
         {
             // the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon.ResetBalloonCloseTimer();
+            taskbarIcon?.ResetBalloonCloseTimer();
         }
 
         void Image_MouseUp(object sender, MouseButtonEventArgs e)
