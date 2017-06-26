@@ -209,7 +209,7 @@
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Column="3"/>
 
-                    <!-- Outpu Folder -->
+                    <!-- Output Folder -->
                     <Button Content="{local:Loc OutFolder}"
                             ContentStringFormat="{}{0}: "
                             DockPanel.Dock="Left"
@@ -221,15 +221,15 @@
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.OutPath}"
                              Grid.Row="1"
-                             Grid.Column="1"
-                             Grid.ColumnSpan="2"/>
+                             Grid.Column="1"/>
                     <Button Content="..."
                             DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Row="1"
-                            Grid.Column="3"/>
+                            Grid.ColumnSpan="2"
+                            Grid.Column="2"/>
                 </Grid>
                 <TabControl Background="Transparent">
                     <TabItem Header="{local:Loc Main}">
