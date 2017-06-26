@@ -5,14 +5,14 @@ namespace Captura.Models
 {
     public class FFMpegItem : IVideoWriterItem
     {
-        public static FFMpegVideoArgsProvider Mp4 { get; } = VideoQuality =>
+        public static FFMpegVideoArgsProvider x264 { get; } = VideoQuality =>
         {
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
             return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
         };
-
+        
         public static FFMpegVideoArgsProvider Avi { get; } = VideoQuality =>
         {
             // quality: 31 (lowest) to 1 (highest)
@@ -26,16 +26,27 @@ namespace Captura.Models
             return "";
         };
 
+        public static FFMpegVideoArgsProvider x265 { get; } = VideoQuality =>
+        {
+            // quality: 51 (lowest) to 0 (highest)
+            var crf = (51 * (100 - VideoQuality)) / 99;
+
+            return $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
+        };
+
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
-            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", Mp4, FFMpegAudioWriterItem.Aac),
+            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", x264, FFMpegAudioWriterItem.Aac),
 
             // Avi (Xvid, Mp3)
             new FFMpegItem("Avi (Xvid | Mp3)", ".avi", Avi, FFMpegAudioWriterItem.Mp3),
 
             // Gif (No Audio)
-            new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioWriterItem.Mp3)
+            new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioWriterItem.Mp3),
+
+            // MP4 (x265, AAC)
+            new FFMpegItem("Mp4 HEVC (x265 | AAC)", ".mp4", x265, FFMpegAudioWriterItem.Aac)
         };
         
         FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)

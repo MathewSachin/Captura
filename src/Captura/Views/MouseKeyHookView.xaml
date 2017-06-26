@@ -1,0 +1,219 @@
+﻿<Window x:Class="Captura.MouseKeyHookView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Captura"
+        Title="Clicks and Keystrokes"
+        DataContext="{StaticResource MainViewModel}"
+        SizeToContent="Height"
+        Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <Label Content="Mouse Clicks"
+                   FontWeight="Bold"
+                   Margin="0,3"
+                   FontSize="15"/>
+
+            <Grid Margin="0,3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Radius"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.MouseClick_Radius, Mode=TwoWay}"
+                                    Minimum="1"
+                                    Margin="0,5"
+                                    Grid.Column="1"/>
+
+                <Label Content="Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="1"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClick_Color, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="1"
+                                  Grid.Column="1"/>
+
+                <Label Content="Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="2"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.MouseClick_Border, Mode=TwoWay}"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Border Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="3"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClick_BorderColor, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="3"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
+            </Grid>            
+                        
+            <Label Content="Keystrokes"
+                   FontWeight="Bold"
+                   Margin="0,3"
+                   FontSize="15"/>
+
+            <Grid Margin="0,3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.Keystrokes_Color, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
+
+                <Label Content="Font Size"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="1"/>
+                <xctk:IntegerUpDown Minimum="1"
+                                    Value="{Binding Settings.Keystrokes_FontSize, Mode=TwoWay}"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Max Length"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="2"/>
+                <xctk:IntegerUpDown Minimum="1"
+                                    Value="{Binding Settings.Keystrokes_MaxLength, Mode=TwoWay}"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Back Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="3"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.KeystrokesRect_Color, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="3"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
+
+                <Label Content="Padding X"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="4"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_PaddingX, Mode=TwoWay}"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Padding Y"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="5"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_PaddingY, Mode=TwoWay}"
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Corner Radius"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="6"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_CornerRadius, Mode=TwoWay}"
+                                    Grid.Row="6"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Max Seconds"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="7"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_MaxSeconds, Mode=TwoWay}"
+                                    Minimum="1"
+                                    Grid.Row="7"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Border Thickness"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="8"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_Border, Mode=TwoWay}"
+                                    Grid.Row="8"
+                                    Grid.Column="1"
+                                    Margin="0,5"/>
+
+                <Label Content="Border Color"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,5,5,5"
+                       Grid.Row="9"/>
+                <xctk:ColorPicker SelectedColor="{Binding Settings.Keystrokes_BorderColor, Converter={StaticResource WpfColorConverter}}"
+                                  Grid.Row="9"
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
+            </Grid>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="X: "
+                       Margin="0,3"/>
+                <ComboBox ItemsSource="{Binding Settings.XAlignments}"
+                          SelectedValue="{Binding Settings.Keystrokes_XAlign, Mode=TwoWay}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          Grid.Column="1"
+                          Margin="3"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_X, Mode=TwoWay}"
+                                    Grid.Column="2"
+                                    Margin="0,3"/>
+
+                <Label Content="Y: "
+                       Grid.Row="1"
+                       Margin="0,3"/>
+                <ComboBox ItemsSource="{Binding Settings.YAlignments}"
+                          SelectedValue="{Binding Settings.Keystrokes_YAlign, Mode=TwoWay}"
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="3"/>
+                <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes_Y, Mode=TwoWay}"
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    Margin="0,3"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -25,7 +25,7 @@ namespace Captura.Models
 
             var popup = new ScreenShotBalloon(FilePath);
             
-            _trayIcon.ShowCustomBalloon(popup, PopupAnimation.Scroll, 5000);
+            _trayIcon.ShowCustomBalloon(popup, PopupAnimation.Scroll, Settings.Instance.ScreenShotNotifyTimeout);
         }
 
         public void ShowTextNotification(string Text, int Duration, Action OnClick)

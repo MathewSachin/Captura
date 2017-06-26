@@ -8,12 +8,12 @@ namespace Captura.Models
     {
         public void ShowError(string Message)
         {
-            CustomMessageBox.ShowOK(Message, Resources.ErrorOccured, Resources.Ok, MessageBoxImage.Error);
+            Application.Current.Dispatcher.Invoke(() => CustomMessageBox.ShowOK(Message, Resources.ErrorOccured, Resources.Ok, MessageBoxImage.Error));
         }
 
         public bool ShowYesNo(string Message, string Title)
         {
-            return CustomMessageBox.ShowYesNo(Message, Title, Resources.Yes, Resources.No, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+            return Application.Current.Dispatcher.Invoke(() => CustomMessageBox.ShowYesNo(Message, Title, Resources.Yes, Resources.No, MessageBoxImage.Warning) == MessageBoxResult.Yes);
         }
     }
 }

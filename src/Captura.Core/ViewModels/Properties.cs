@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.Properties;
+using Ookii.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -138,12 +139,6 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ObjectLocalizer<string>[] ScreenShotSaveTo => new[]
-        {
-            new ObjectLocalizer<string>("Disk", nameof(Resources.Disk)),
-            new ObjectLocalizer<string>("Clipboard", nameof(Resources.Clipboard))
-        };
         #endregion
         
         #region Commands
@@ -159,7 +154,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            EnsureOutPath();
+            Settings.Instance.EnsureOutPath();
 
             Process.Start(Settings.Instance.OutPath);
         });
@@ -168,7 +163,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var dlg = new FolderBrowserDialog
+            var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.OutPath,
                 Description = Resources.SelectOutFolder
@@ -180,7 +175,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var dlg = new FolderBrowserDialog
+            var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.FFMpegFolder,
                 Description = Resources.SelectFFMpegFolder

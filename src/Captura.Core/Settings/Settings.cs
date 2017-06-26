@@ -1,33 +1,17 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace Captura
 {
-    public class Settings : ApplicationSettingsBase
+    public partial class Settings
     {
-        public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
-        
-        Settings()
-        {
-            // Upgrade settings from Previous version
-            if (UpdateRequired)
-            {
-                Upgrade();
-                UpdateRequired = false;
-            }
-        }
-        
-        T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
-
-        void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
-        
         [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool UpdateRequired
+        [DefaultSettingValue(null)]
+        public string AccentColor
         {
-            get => Get<bool>();
+            get => Get<string>();
             set => Set(value);
         }
 
@@ -69,84 +53,14 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
-
-        #region Remember
-        [UserScopedSetting]
-        [DefaultSettingValue("Png")]
-        public string LastScreenShotFormat
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
         
-        [UserScopedSetting]
-        [DefaultSettingValue("FFMpeg")]
-        public VideoWriterKind LastVideoWriterKind
-        {
-            get => Get<VideoWriterKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastVideoWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Window")]
-        public VideoSourceKind LastSourceKind
-        {
-            get => Get<VideoSourceKind>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSourceName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Mp3")]
-        public string LastAudioWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastMicName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        public string LastSpeakerName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-        #endregion
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Disk")]
-        public string ScreenShotSaveTo
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
         [UserScopedSetting]
         public string OutPath
         {
             get => Get<string>();
             set => Set(value);
         }
-
+        
         [UserScopedSetting]
         public string FFMpegFolder
         {
@@ -206,15 +120,7 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool GifVariable
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("en-US")]
         public string Language
@@ -320,6 +226,46 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool GifVariable
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
         #endregion
+
+        [UserScopedSetting]
+        [DefaultSettingValue("#BDBDBD")]
+        public string TopBarColor
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("3")]
+        public int RegionBorderThickness
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("5000")]
+        public int ScreenShotNotifyTimeout
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("Black")]
+        public Color VideoBackgroundColor
+        {
+            get => Get<Color>();
+            set => Set(value);
+        }
     }
 }

@@ -227,5 +227,24 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } = new ObservableCollection<ObjectLocalizer<IImageWriterItem>>()
+        {
+            new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(Resources.Disk)),
+            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(Resources.Clipboard))
+        };
+
+        IImageWriterItem _imgWriter = DiskWriter.Instance;
+
+        public IImageWriterItem SelectedImageWriter
+        {
+            get => _imgWriter;
+            set
+            {
+                _imgWriter = value;
+
+                OnPropertyChanged();
+            }
+        }
     }
 }
