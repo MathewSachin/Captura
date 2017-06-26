@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace Captura
 {
-    public partial class Settings : ApplicationSettingsBase
+    public partial class Settings
     {
         [UserScopedSetting]
         [DefaultSettingValue("Png")]

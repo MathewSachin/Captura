@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.Properties;
+using Ookii.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -162,7 +163,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var dlg = new FolderBrowserDialog
+            var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.OutPath,
                 Description = Resources.SelectOutFolder
@@ -174,7 +175,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var dlg = new FolderBrowserDialog
+            var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.FFMpegFolder,
                 Description = Resources.SelectFFMpegFolder

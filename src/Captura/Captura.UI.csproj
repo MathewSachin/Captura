@@ -87,6 +87,9 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Views\MainConfigView.xaml.cs">
+      <DependentUpon>MainConfigView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Loc.cs" />
     <Compile Include="Presentation\ValueConverters\DrawingToWpfColorConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NegatingConverter.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\WpfExtensions.cs" />
     <Page Include="Presentation\Controls\TextBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
