@@ -29,6 +29,9 @@ namespace Captura.Models
                 Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                 Recents.Add(fileName, RecentItemType.Image, false);
 
+                if (Settings.Instance.CopyOutPathToClipboard)
+                    fileName.WriteToClipboard();
+
                 ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
             }
             catch (Exception E)
