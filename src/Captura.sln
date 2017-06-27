@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Core", "Captura.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests", "UITests\UITests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF998FD2-10BB-4CB2-802C-B44879776544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF998FD2-10BB-4CB2-802C-B44879776544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
