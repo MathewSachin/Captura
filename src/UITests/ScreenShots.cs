@@ -8,9 +8,6 @@ using System.Diagnostics;
 using TestStack.White.UIItems.WindowItems;
 using System.Threading;
 using System.IO;
-using System.Linq;
-using TestStack.White.UIItems.ListBoxItems;
-using TestStack.White.UIItems;
 
 namespace UITests
 {
@@ -55,16 +52,6 @@ namespace UITests
             if (process.ExitCode != 0)
                 Assert.Fail($"Error occured when taking ScreenShot, hWnd: {hWnd}, FileName: {FileName}, ExitCode: {process.ExitCode}");
         }
-        
-        static void VideoSourceKind(string Kind)
-        {
-            MainTab.Select();
-
-            // TODO: Explicit Index does not seem good
-            var videoSourceKind = MainTab.Get<ComboBox>(SearchCriteria.Indexed(0));
-            
-            videoSourceKind.Select(Kind);
-        }
 
         /// <summary>
         /// Take ScreenShot of all Tabs.
@@ -73,9 +60,7 @@ namespace UITests
         public void ScreenShotTabs()
         {
             Directory.CreateDirectory("Tabs");
-
-            VideoSourceKind(Resources.Window);
-
+            
             foreach (var tabName in new[] { Resources.Main, Resources.Configure, Resources.Recent, Resources.Hotkeys, Resources.About })
             {
                 var tab = MainWindow.Get<TabPage>(SearchCriteria.ByText(tabName));
@@ -84,39 +69,6 @@ namespace UITests
 
                 Shot($"Tabs/{tabName}.png", App.Process.MainWindowHandle);
             }
-        }
-
-        [TestMethod]
-        public void ScreenShotWebCamView()
-        {
-            MainTab.Select();
-
-            // TODO: Explicit Index does not seem good
-            var webCamView = MainTab.Get<CheckBox>(SearchCriteria.Indexed(3));
-
-            webCamView.Toggle();
-
-            Thread.Sleep(500);
-
-            var handle = Screna.Window.EnumerateVisible().FirstOrDefault(win => win.Title == Resources.WebCamView)?.Handle ?? IntPtr.Zero;
-            
-            Shot("WebCam.png", handle);
-
-            webCamView.Toggle();
-        }
-
-        [TestMethod]
-        public void ScreenShotRegionSelector()
-        {
-            VideoSourceKind(Resources.Region);
-            
-            Thread.Sleep(500);
-
-            var handle = Screna.Window.EnumerateVisible().FirstOrDefault(win => win.Title == Resources.RegionSelector)?.Handle ?? IntPtr.Zero;
-
-            Shot("RegionSelector.png", handle);
-
-            VideoSourceKind(Resources.Window);
         }
     }
 }
