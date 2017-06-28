@@ -244,7 +244,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("False")]
+        [DefaultSettingValue("True")]
         public bool GifVariable
         {
             get => Get<bool>();
