@@ -77,7 +77,7 @@ namespace DesktopDuplication
             }
         }
 
-        public Bitmap GetLatestFrame(DRectangle Rect)
+        public Bitmap GetLatestFrame(DRectangle? Rect = null)
         {
             // Try to get the latest frame; this may timeout
             if (!RetrieveFrame())
@@ -87,7 +87,7 @@ namespace DesktopDuplication
             {
                 RetrieveFrameMetadata();
 
-                return ProcessFrame(Rect);
+                return Rect == null ? ProcessFrame() : ProcessFrame(Rect.Value);
             }
             finally
             {
@@ -173,16 +173,46 @@ namespace DesktopDuplication
 
         Bitmap image;
 
+        // Capture full
         Bitmap ProcessFrame(DRectangle Rect)
+        {
+            // Get the desktop capture texture
+            var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
+
+            if (image == null)
+                image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
+
+            // Copy pixels from screen capture Texture to GDI bitmap
+            var mapDest = image.LockBits(new DRectangle(0, 0, Rect.Width, Rect.Height), ImageLockMode.ReadWrite, image.PixelFormat);
+
+            var srcPtr = mapSource.DataPointer + Rect.X * 4 + mapSource.RowPitch * Rect.Y;
+            var destPtr = mapDest.Scan0;
+
+            for (int y = 0; y < Rect.Height; ++y)
+            {
+                Utilities.CopyMemory(destPtr, srcPtr, Rect.Width * 4);
+
+                srcPtr += mapSource.RowPitch;
+                destPtr += mapDest.Stride;
+            }
+
+            // Release source and dest locks
+            image.UnlockBits(mapDest);
+            mDevice.ImmediateContext.UnmapSubresource(desktopImageTexture, 0);
+            return image?.Clone(new DRectangle(System.Drawing.Point.Empty, image.Size), image.PixelFormat);
+        }
+
+        // Capture full
+        Bitmap ProcessFrame()
         {
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
             
             if (image == null)
-                image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
+                image = new Bitmap(mOutputDesc.DesktopBounds.Width, mOutputDesc.DesktopBounds.Height, PixelFormat.Format32bppRgb);
             
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = image.LockBits(new DRectangle(System.Drawing.Point.Empty, Rect.Size), ImageLockMode.ReadWrite, image.PixelFormat);
+            var mapDest = image.LockBits(new DRectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, image.PixelFormat);
 
             foreach (var region in MovedRegions)
             {
