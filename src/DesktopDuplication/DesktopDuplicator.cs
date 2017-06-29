@@ -169,5 +169,12 @@ namespace DesktopDuplication
                 }
             }
         }
+
+        public void Dispose()
+        {
+            mDeskDupl.Dispose();
+            desktopImageTexture.Dispose();
+            mDevice.Dispose();
+        }
     }
 }

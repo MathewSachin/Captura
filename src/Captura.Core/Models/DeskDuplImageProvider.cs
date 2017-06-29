@@ -38,6 +38,9 @@ namespace Captura.Models
             }
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _dupl?.Dispose();
+        }
     }
 }
