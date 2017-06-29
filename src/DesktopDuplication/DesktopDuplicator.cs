@@ -12,7 +12,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
-    public class DesktopDuplicator
+    public class DesktopDuplicator : IDisposable
     {
         readonly Device mDevice;
         readonly Texture2DDescription mTextureDesc;
@@ -136,7 +136,7 @@ namespace DesktopDuplication
             var image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
             
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = image.LockBits(Rect, ImageLockMode.WriteOnly, image.PixelFormat);
+            var mapDest = image.LockBits(new DRectangle(System.Drawing.Point.Empty, Rect.Size), ImageLockMode.WriteOnly, image.PixelFormat);
 
             var srcPtr = mapSource.DataPointer + Rect.X + mapSource.RowPitch * Rect.Y;
             var destPtr = mapDest.Scan0;
@@ -172,9 +172,9 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
-            mDeskDupl.Dispose();
-            desktopImageTexture.Dispose();
-            mDevice.Dispose();
+            mDeskDupl?.Dispose();
+            desktopImageTexture?.Dispose();
+            mDevice?.Dispose();
         }
     }
 }
