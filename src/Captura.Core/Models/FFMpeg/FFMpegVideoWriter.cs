@@ -16,7 +16,7 @@ namespace Captura.Models
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
         readonly byte[] _videoBuffer;
-        bool _error;
+        bool _exited;
         
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
@@ -39,7 +39,7 @@ namespace Captura.Models
                 }
             };
 
-            _ffmpegProcess.Exited += (s, e) => _error = _ffmpegProcess.ExitCode != 0;
+            _ffmpegProcess.Exited += (s, e) => _exited = true;
 
             _ffmpegProcess.Start();
 
@@ -74,10 +74,10 @@ namespace Captura.Models
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            if (_error)
+            if (_exited)
             {
                 Image.Dispose();
-                throw new Exception("An Error Occured with FFMpeg");
+                throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
             
             var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
