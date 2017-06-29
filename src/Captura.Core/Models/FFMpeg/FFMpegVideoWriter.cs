@@ -15,7 +15,6 @@ namespace Captura.Models
     {
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
-        readonly Rectangle? resize;
         readonly byte[] _videoBuffer;
         bool _error;
         
@@ -26,30 +25,14 @@ namespace Captura.Models
         /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegVideoWriter(string FileName, IImageProvider ImageProvider, int FrameRate, int Quality, FFMpegVideoArgsProvider VideoArgsProvider)
         {
-            // x264 requires video dimensions to be even.
-            if (VideoArgsProvider == FFMpegItem.x264 || VideoArgsProvider == FFMpegItem.x265)
-            {
-                int h = ImageProvider.Height,
-                    w = ImageProvider.Width;
-
-                if (h % 2 == 1)
-                    --h;
-
-                if (w % 2 == 1)
-                    --w;
-
-                if (h != ImageProvider.Height || w != ImageProvider.Width)
-                    resize = new Rectangle(Point.Empty, new Size(w, h));
-            }
-
-            _videoBuffer = new byte[(resize?.Width ?? ImageProvider.Width) * (resize?.Height ?? ImageProvider.Height) * 4];
+            _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
 
             _ffmpegProcess = new Process
             {
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
+                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true
@@ -96,16 +79,7 @@ namespace Captura.Models
                 Image.Dispose();
                 throw new Exception("An Error Occured with FFMpeg");
             }
-
-            if (resize != null)
-            {
-                var oldImage = Image;
-
-                Image = Image.Clone(resize.Value, Image.PixelFormat);
-
-                oldImage.Dispose();
-            }
-
+            
             var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
             Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
             Image.UnlockBits(bits);
