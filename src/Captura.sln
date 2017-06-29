@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests", "UITests\UITests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
