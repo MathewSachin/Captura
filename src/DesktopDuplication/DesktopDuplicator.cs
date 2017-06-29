@@ -76,7 +76,7 @@ namespace DesktopDuplication
             }
         }
 
-        public Image GetLatestFrame(DRectangle Rect)
+        public Bitmap GetLatestFrame(DRectangle Rect)
         {
             // Try to get the latest frame; this may timeout
             if (!RetrieveFrame())
@@ -128,7 +128,7 @@ namespace DesktopDuplication
             return true;
         }
         
-        Image ProcessFrame(DRectangle Rect)
+        Bitmap ProcessFrame(DRectangle Rect)
         {
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
