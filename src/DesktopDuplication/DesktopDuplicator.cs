@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using Device = SharpDX.Direct3D11.Device;
 using DRectangle = System.Drawing.Rectangle;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
@@ -84,6 +85,8 @@ namespace DesktopDuplication
 
             try
             {
+                RetrieveFrameMetadata();
+
                 return ProcessFrame(Rect);
             }
             finally
@@ -127,32 +130,92 @@ namespace DesktopDuplication
 
             return true;
         }
-        
+
+        MovedRegion[] MovedRegions;
+        DRectangle[] UpdatedRegions;
+
+        void RetrieveFrameMetadata()
+        {
+            if (frameInfo.TotalMetadataBufferSize > 0)
+            {
+                // Get moved regions
+                var movedRectangles = new OutputDuplicateMoveRectangle[frameInfo.TotalMetadataBufferSize];
+                mDeskDupl.GetFrameMoveRects(movedRectangles.Length, movedRectangles, out int movedRegionsLength);
+
+                MovedRegions = new MovedRegion[movedRegionsLength / Marshal.SizeOf<OutputDuplicateMoveRectangle>()];
+
+                for (int i = 0; i < MovedRegions.Length; i++)
+                {
+                    MovedRegions[i] = new MovedRegion
+                    {
+                        Source = new System.Drawing.Point(movedRectangles[i].SourcePoint.X, movedRectangles[i].SourcePoint.Y),
+                        Destination = new DRectangle(movedRectangles[i].DestinationRect.X, movedRectangles[i].DestinationRect.Y, movedRectangles[i].DestinationRect.Width, movedRectangles[i].DestinationRect.Height)
+                    };
+                }
+
+                // Get dirty regions
+                var dirtyRectangles = new SharpDX.Rectangle[frameInfo.TotalMetadataBufferSize];
+                mDeskDupl.GetFrameDirtyRects(dirtyRectangles.Length, dirtyRectangles, out int dirtyRegionsLength);
+
+                UpdatedRegions = new DRectangle[dirtyRegionsLength / Marshal.SizeOf<SharpDX.Rectangle>()];
+
+                for (int i = 0; i < UpdatedRegions.Length; i++)
+                {
+                    UpdatedRegions[i] = new DRectangle(dirtyRectangles[i].X, dirtyRectangles[i].Y, dirtyRectangles[i].Width, dirtyRectangles[i].Height);
+                }
+            }
+            else
+            {
+                MovedRegions = new MovedRegion[0];
+                UpdatedRegions = new DRectangle[0];
+            }
+        }
+
+        Bitmap image;
+
         Bitmap ProcessFrame(DRectangle Rect)
         {
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
             
-            var image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
+            if (image == null)
+                image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
             
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = image.LockBits(new DRectangle(System.Drawing.Point.Empty, Rect.Size), ImageLockMode.ReadWrite, image.PixelFormat);
 
-            var srcPtr = mapSource.DataPointer + Rect.X * 4 + mapSource.RowPitch * Rect.Y;
-            var destPtr = mapDest.Scan0;
-
-            for (int y = 0; y < Rect.Height; ++y)
+            foreach (var region in MovedRegions)
             {
-                Utilities.CopyMemory(destPtr, srcPtr, Rect.Width * 4);
+                var srcPtr = mapDest.Scan0 + region.Source.X * 4 + mapDest.Stride * region.Source.Y;
+                var destPtr = mapDest.Scan0 + region.Destination.X * 4 + mapDest.Stride * region.Destination.Y;
 
-                destPtr += mapDest.Stride;
-                srcPtr += mapSource.RowPitch;
+                for (int y = 0; y < region.Destination.Height; ++y)
+                {
+                    Utilities.CopyMemory(destPtr, srcPtr, region.Destination.Width * 4);
+
+                    srcPtr += mapDest.Stride;
+                    destPtr += mapDest.Stride;
+                }
             }
-            
+
+            foreach (var region in UpdatedRegions)
+            {
+                var srcPtr = mapSource.DataPointer + region.X * 4 + mapSource.RowPitch * region.Y;
+                var destPtr = mapDest.Scan0 + region.X * 4 + mapDest.Stride * region.Y;
+
+                for (int y = 0; y < region.Height; ++y)
+                {
+                    Utilities.CopyMemory(destPtr, srcPtr, region.Width * 4);
+
+                    srcPtr += mapSource.RowPitch;
+                    destPtr += mapDest.Stride;
+                }
+            }
+
             // Release source and dest locks
             image.UnlockBits(mapDest);
             mDevice.ImmediateContext.UnmapSubresource(desktopImageTexture, 0);
-            return image;
+            return image?.Clone(new DRectangle(System.Drawing.Point.Empty, image.Size), image.PixelFormat);
         }
 
         void ReleaseFrame()
