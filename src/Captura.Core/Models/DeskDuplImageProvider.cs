@@ -6,20 +6,17 @@ namespace Captura.Models
 {
     public class DeskDuplImageProvider : IImageProvider
     {
-        Rectangle _rect;
         DesktopDuplicator _dupl;
+        int _monitor;
 
-        public DeskDuplImageProvider(Rectangle Rect)
+        public DeskDuplImageProvider(int Monitor = 0)
         {
-            _rect = Rect;
+            _monitor = Monitor;
 
-            Width = Rect.Width;
-            Height = Rect.Height;            
+            Width = WindowProvider.DesktopRectangle.Width;
+            Height = WindowProvider.DesktopRectangle.Height;
         }
-
-        public DeskDuplImageProvider()
-            : this(WindowProvider.DesktopRectangle) { }
-
+        
         public int Height { get; }
 
         public int Width { get; }
@@ -32,7 +29,7 @@ namespace Captura.Models
             }
             catch
             {
-                _dupl = new DesktopDuplicator(0);
+                _dupl = new DesktopDuplicator(_monitor);
 
                 return _dupl.GetLatestFrame();
             }
