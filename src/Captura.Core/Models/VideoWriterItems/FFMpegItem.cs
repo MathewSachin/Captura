@@ -5,12 +5,14 @@ namespace Captura.Models
 {
     public class FFMpegItem : IVideoWriterItem
     {
+        const string EvenDimensions = "-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\"";
+
         public static FFMpegVideoArgsProvider x264 { get; } = VideoQuality =>
         {
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return new FFMpegVideoArgs("", $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
+            return new FFMpegVideoArgs(EvenDimensions, $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
         };
         
         public static FFMpegVideoArgsProvider Avi { get; } = VideoQuality =>
@@ -31,7 +33,7 @@ namespace Captura.Models
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return new FFMpegVideoArgs("", $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
+            return new FFMpegVideoArgs(EvenDimensions, $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
         };
 
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>

@@ -15,9 +15,8 @@ namespace Captura.Models
     {
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
-        readonly Rectangle? resize;
         readonly byte[] _videoBuffer;
-        bool _error;
+        bool _exited;
         
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegVideoWriter"/>.
@@ -26,23 +25,7 @@ namespace Captura.Models
         /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegVideoWriter(string FileName, IImageProvider ImageProvider, int FrameRate, int Quality, FFMpegVideoArgsProvider VideoArgsProvider)
         {
-            // x264 requires video dimensions to be even.
-            if (VideoArgsProvider == FFMpegItem.x264 || VideoArgsProvider == FFMpegItem.x265)
-            {
-                int h = ImageProvider.Height,
-                    w = ImageProvider.Width;
-
-                if (h % 2 == 1)
-                    --h;
-
-                if (w % 2 == 1)
-                    --w;
-
-                if (h != ImageProvider.Height || w != ImageProvider.Width)
-                    resize = new Rectangle(Point.Empty, new Size(w, h));
-            }
-
-            _videoBuffer = new byte[(resize?.Width ?? ImageProvider.Width) * (resize?.Height ?? ImageProvider.Height) * 4];
+            _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
 
             var videoArgs = VideoArgsProvider(Quality);
 
@@ -51,14 +34,16 @@ namespace Captura.Models
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} {videoArgs.InputArgs} -i - {videoArgs.OutputArgs} -r {FrameRate} \"{FileName}\"",
+
+                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} {videoArgs.InputArgs} -i - {videoArgs.OutputArgs} -r {FrameRate} \"{FileName}\"",
+
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true
                 }
             };
 
-            _ffmpegProcess.Exited += (s, e) => _error = _ffmpegProcess.ExitCode != 0;
+            _ffmpegProcess.Exited += (s, e) => _exited = true;
 
             _ffmpegProcess.Start();
 
@@ -93,21 +78,12 @@ namespace Captura.Models
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            if (_error)
+            if (_exited)
             {
                 Image.Dispose();
-                throw new Exception("An Error Occured with FFMpeg");
+                throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
-
-            if (resize != null)
-            {
-                var oldImage = Image;
-
-                Image = Image.Clone(resize.Value, Image.PixelFormat);
-
-                oldImage.Dispose();
-            }
-
+            
             var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
             Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
             Image.UnlockBits(bits);
