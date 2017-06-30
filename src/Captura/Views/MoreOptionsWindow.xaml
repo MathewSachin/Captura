@@ -68,12 +68,22 @@
                                   Grid.Row="4"
                                   Grid.Column="1"/>
             </Grid>
+            
             <CheckBox Content="Copy Output file path to Clipboard"
                       IsChecked="{Binding Settings.CopyOutPathToClipboard, Mode=TwoWay}"
                       Margin="0,5"/>
+            
             <CheckBox Content="Main Window Always on Top"
                       IsChecked="{Binding Settings.MainWindowTopmost, Mode=TwoWay}"
                       Margin="0,5"/>
+
+            <CheckBox IsChecked="{Binding Settings.UseDeskDupl, Mode=TwoWay}"
+                      Margin="0,5">
+                <TextBlock TextWrapping="Wrap">
+                    Use Desktop Duplication API instead of GDI.<LineBreak/>
+                    Allows DirectX Full Screen Game Recording.
+                </TextBlock>
+            </CheckBox>
         </StackPanel>
     </Grid>
 </Window>

@@ -22,16 +22,22 @@ namespace Captura
 
         public Bitmap Capture()
         {
-            try
-            {
-                return _dupl.GetLatestFrame(_selector.SelectedRegion);
-            }
-            catch
-            {
-                _dupl = new DesktopDuplicator(0);
+            var region = _selector.SelectedRegion;
 
-                return _dupl.GetLatestFrame(_selector.SelectedRegion);
+            if (Settings.Instance.UseDeskDupl)
+            {
+                try
+                {
+                    return _dupl.GetLatestFrame(region);
+                }
+                catch
+                {
+                    _dupl = new DesktopDuplicator(0);
+
+                    return _dupl.GetLatestFrame(region);
+                }
             }
+            else return ScreenShot.Capture(region);
         }
 
         public int Height { get; }

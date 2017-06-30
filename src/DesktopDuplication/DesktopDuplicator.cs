@@ -85,9 +85,14 @@ namespace DesktopDuplication
 
             try
             {
-                RetrieveFrameMetadata();
+                if (Rect == null)
+                {
+                    // Moved and Updated Regions are used only for full capture.
+                    RetrieveFrameMetadata();
 
-                return Rect == null ? ProcessFrame() : ProcessFrame(Rect.Value);
+                    return ProcessFrame();
+                }
+                else return ProcessFrame(Rect.Value);
             }
             finally
             {
@@ -134,6 +139,7 @@ namespace DesktopDuplication
         MovedRegion[] MovedRegions;
         DRectangle[] UpdatedRegions;
 
+        // Information of Moved and Updated Regions
         void RetrieveFrameMetadata()
         {
             if (frameInfo.TotalMetadataBufferSize > 0)

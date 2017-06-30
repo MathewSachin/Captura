@@ -31,7 +31,7 @@ namespace Captura.Models
         {
             Offset = () => Point.Empty;
 
-            if (Window.Handle == Window.DesktopWindow.Handle)
+            if (Settings.Instance.UseDeskDupl && Window.Handle == Window.DesktopWindow.Handle)
                 return new DeskDuplImageProvider();
 
             return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow), Settings.Instance.VideoBackgroundColor);
