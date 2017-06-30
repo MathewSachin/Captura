@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace Captura
@@ -10,6 +11,11 @@ namespace Captura
         {
             if (Command.CanExecute(null))
                 Command.Execute(null);
+        }
+
+        public static void WriteToClipboard(this string S)
+        {
+            Clipboard.SetText(S);
         }
 
         static GraphicsPath RoundedRect(RectangleF bounds, int radius)

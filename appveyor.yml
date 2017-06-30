@@ -6,6 +6,10 @@ configuration:
 - Debug
 - Release
 
+environment:
+  access_token:
+    secure: c1r9fMnxBX4DW0SvZ4V/5Nucdi8pzA2YiQ/wsiyfjIY19q4RyKCYZTtU+2YQbiLT
+
 install:
 - ps: appveyor/Install.ps1
 
@@ -27,6 +31,9 @@ after_build:
   - ps: appveyor/Pack-Release.ps1
 
   - ps: appveyor/Choco.ps1
+
+after_test:
+  - ps: appveyor/Update-ScreenShots.ps1
 
 artifacts:
   - path: Output/Captura-$(configuration).zip

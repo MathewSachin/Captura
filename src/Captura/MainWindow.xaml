@@ -14,7 +14,8 @@
         Left="{Binding Settings.MainWindowLeft, Mode=TwoWay}"
         Top="{Binding Settings.MainWindowTop, Mode=TwoWay}"
         BorderThickness="1"
-        BorderBrush="{DynamicResource Accent}">
+        BorderBrush="{DynamicResource Accent}"
+        Topmost="{Binding Settings.MainWindowTopmost}">
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Template">
