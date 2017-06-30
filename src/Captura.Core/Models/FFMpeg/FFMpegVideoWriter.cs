@@ -44,12 +44,14 @@ namespace Captura.Models
 
             _videoBuffer = new byte[(resize?.Width ?? ImageProvider.Width) * (resize?.Height ?? ImageProvider.Height) * 4];
 
+            var videoArgs = VideoArgsProvider(Quality);
+
             _ffmpegProcess = new Process
             {
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
+                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {(resize?.Width ?? ImageProvider.Width)}x{(resize?.Height ?? ImageProvider.Height)} {videoArgs.InputArgs} -i - {videoArgs.OutputArgs} -r {FrameRate} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardInput = true

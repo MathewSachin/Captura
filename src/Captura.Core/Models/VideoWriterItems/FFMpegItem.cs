@@ -10,7 +10,7 @@ namespace Captura.Models
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
+            return new FFMpegVideoArgs("", $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
         };
         
         public static FFMpegVideoArgsProvider Avi { get; } = VideoQuality =>
@@ -18,12 +18,12 @@ namespace Captura.Models
             // quality: 31 (lowest) to 1 (highest)
             var qscale = 31 - ((VideoQuality - 1) * 30) / 99;
 
-            return $"-vcodec libxvid -qscale:v {qscale}";
+            return new FFMpegVideoArgs("", $"-vcodec libxvid -qscale:v {qscale}");
         };
 
         public static FFMpegVideoArgsProvider Gif { get; } = VideoQuality =>
         {
-            return "";
+            return new FFMpegVideoArgs("", "");
         };
 
         public static FFMpegVideoArgsProvider x265 { get; } = VideoQuality =>
@@ -31,15 +31,12 @@ namespace Captura.Models
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
+            return new FFMpegVideoArgs("", $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
         };
 
-        public static FFMpegVideoArgsProvider H264_QSV { get; } = VideoQuality =>
+        public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
         {
-            // quality: 51 (lowest) to 0 (highest)
-            var crf = (51 * (100 - VideoQuality)) / 99;
-
-            return $"-vcodec h264_qsv -preset:v faster";
+            return new FFMpegVideoArgs("-init_hw_device qsv -hwaccel qsv", $"-vcodec hevc_qsv -load_plugin hevc_hw -q 30 -preset:v faster");
         };
 
         public static FFMpegItem[] Items { get; } =
@@ -56,8 +53,8 @@ namespace Captura.Models
             // MP4 (x265, AAC)
             new FFMpegItem("Mp4 HEVC (x265 | AAC)", ".mp4", x265, FFMpegAudioWriterItem.Aac),
 
-            // MP4 Intel QSV (H.264, AAC)
-            new FFMpegItem("Mp4 Intel QSV (H.264 | AAC)", ".mp4", H264_QSV, FFMpegAudioWriterItem.Aac)
+            // MP4 HEVC Intel QSV (HEVC, AAC)
+            new FFMpegItem("Mp4 HEVC Intel QSV (HEVC | AAC)", ".mp4", HEVC_QSV, FFMpegAudioWriterItem.Aac)
         };
         
         FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
