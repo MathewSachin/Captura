@@ -13,16 +13,14 @@ namespace Captura
         {
             _selector = RegionSelector;
 
-            var rect = _selector.SelectedRegion;
+            var rect = _selector.SelectedRegion.Even();
             Height = rect.Height;
             Width = rect.Width;
         }
         
-        //public Bitmap Capture() => ScreenShot.Capture(_selector.SelectedRegion);
-
         public Bitmap Capture()
         {
-            var region = _selector.SelectedRegion;
+            var region = _selector.SelectedRegion.Even();
 
             if (Settings.Instance.UseDeskDupl)
             {

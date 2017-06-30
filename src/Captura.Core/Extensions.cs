@@ -18,6 +18,17 @@ namespace Captura
             Clipboard.SetText(S);
         }
 
+        public static Rectangle Even(this Rectangle Rect)
+        {
+            if (Rect.Width % 2 == 1)
+                --Rect.Width;
+
+            if (Rect.Height % 2 == 1)
+                --Rect.Height;
+
+            return Rect;
+        }
+
         static GraphicsPath RoundedRect(RectangleF bounds, int radius)
         {
             var diameter = radius * 2;
