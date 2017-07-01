@@ -168,6 +168,7 @@ namespace Captura.ViewModels
             var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.OutPath,
+                UseDescriptionForTitle = true,
                 Description = Resources.SelectOutFolder
             };
 
@@ -180,6 +181,7 @@ namespace Captura.ViewModels
             var dlg = new VistaFolderBrowserDialog
             {
                 SelectedPath = Settings.Instance.FFMpegFolder,
+                UseDescriptionForTitle = true,
                 Description = Resources.SelectFFMpegFolder
             };
 
