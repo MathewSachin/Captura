@@ -26,14 +26,6 @@ namespace Captura.Models
             return new FFMpegVideoArgs("", "");
         };
 
-        public static FFMpegVideoArgsProvider x265 { get; } = VideoQuality =>
-        {
-            // quality: 51 (lowest) to 0 (highest)
-            var crf = (51 * (100 - VideoQuality)) / 99;
-            
-            return new FFMpegVideoArgs("", $"-vcodec libx265 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
-        };
-
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
         {
             return new FFMpegVideoArgs("-init_hw_device qsv -hwaccel qsv", $"-vcodec hevc_qsv -load_plugin hevc_hw -q 30 -preset:v faster");
@@ -49,9 +41,6 @@ namespace Captura.Models
 
             // Gif (No Audio)
             new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioWriterItem.Mp3),
-
-            // MP4 (x265, AAC)
-            new FFMpegItem("Mp4 HEVC (x265 | AAC)", ".mp4", x265, FFMpegAudioWriterItem.Aac),
 
             // MP4 HEVC Intel QSV (HEVC, AAC)
             new FFMpegItem("Mp4 HEVC Intel QSV (HEVC | AAC)", ".mp4", HEVC_QSV, FFMpegAudioWriterItem.Aac)

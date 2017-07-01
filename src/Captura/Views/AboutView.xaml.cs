@@ -8,5 +8,10 @@ namespace Captura
         {
             MoreOptionsWindow.Instance.ShowAndFocus();
         }
+
+        void OpenFFMpegLog(object sender, RoutedEventArgs e)
+        {
+            FFMpegLogView.Instance.ShowAndFocus();
+        }
     }
 }

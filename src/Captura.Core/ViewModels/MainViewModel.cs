@@ -420,6 +420,8 @@ namespace Captura.ViewModels
         
         public void StartRecording(string FileName = null)
         {
+            FFMpegLog.Reset();
+
             VideoViewModel.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();

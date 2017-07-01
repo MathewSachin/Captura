@@ -15,6 +15,9 @@ namespace Captura
 
         public static void WriteToClipboard(this string S)
         {
+            if (S == null)
+                return;
+
             Clipboard.SetText(S);
         }
 

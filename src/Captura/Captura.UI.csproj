@@ -87,6 +87,9 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Views\FFMpegLogView.xaml.cs">
+      <DependentUpon>FFMpegLogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainConfigView.xaml.cs">
       <DependentUpon>MainConfigView.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AudioEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FFMpegLogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
