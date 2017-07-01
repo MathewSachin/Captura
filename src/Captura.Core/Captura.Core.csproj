@@ -67,6 +67,7 @@
     <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegLog.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKey.cs" />

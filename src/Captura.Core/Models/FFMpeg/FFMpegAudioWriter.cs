@@ -21,7 +21,8 @@ namespace Captura.Models
                     Arguments = $"-hide_banner -f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn {AudioArgsProvider(AudioQuality)} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    RedirectStandardInput = true
+                    RedirectStandardInput = true,
+                    RedirectStandardError = true
                 }
             };
 
@@ -30,6 +31,8 @@ namespace Captura.Models
             _ffmpegProcess.Start();
             
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
+
+            FFMpegLog.Instance.ReadLog(_ffmpegProcess.StandardError, "size=");
         }
 
         public void Dispose()

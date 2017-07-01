@@ -32,18 +32,21 @@ namespace Captura.Models
                 StartInfo =
                 {
                     FileName = ServiceProvider.FFMpegExePath,
-                    Arguments = $"-hide_banner -framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
+                    Arguments = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i - {VideoArgsProvider(Quality)} -r {FrameRate} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    RedirectStandardInput = true
+                    RedirectStandardInput = true,
+                    RedirectStandardError = true
                 }
             };
 
             _ffmpegProcess.Exited += (s, e) => _exited = true;
 
             _ffmpegProcess.Start();
-
+            
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
+
+            FFMpegLog.Instance.ReadLog(_ffmpegProcess.StandardError, "frame=");
         }
 
         /// <summary>

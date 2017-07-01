@@ -110,6 +110,8 @@ namespace Captura.ViewModels
             }
         }
 
+        public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
+
         #region ScreenShot
         public ImageFormat[] ScreenShotImageFormats => new[]
         {
