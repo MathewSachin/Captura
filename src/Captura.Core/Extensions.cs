@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -77,6 +78,57 @@ namespace Captura
             {
                 Graphics.FillPath(Brush, path);
             }
+        }
+
+        public static Bitmap Transform(this Bitmap Image, bool SkipResize = false)
+        {
+            #region Resize
+            if (Settings.Instance.DoResize && !SkipResize)
+            {
+                var ratio = Math.Min(Settings.Instance.ResizeWidth / Image.Width, Settings.Instance.ResizeHeight / Image.Height);
+
+                var _resizeWidth = Image.Width * ratio;
+                var _resizeHeight = Image.Height * ratio;
+
+                var nonResized = Image;
+
+                Image = new Bitmap(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
+
+                using (var g = Graphics.FromImage(Image))
+                {
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+
+                    var _backgroundColor = Settings.Instance.VideoBackgroundColor;
+
+                    if (_backgroundColor != Color.Transparent)
+                        g.FillRectangle(new SolidBrush(_backgroundColor), 0, 0, Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
+
+                    using (nonResized)
+                        g.DrawImage(nonResized, 0, 0, _resizeWidth, _resizeHeight);
+                }
+            }
+            #endregion
+
+            #region Rotate Flip
+            var flip = "Flip";
+
+            if (!Settings.Instance.FlipHorizontal && !Settings.Instance.FlipVertical)
+                flip += "None";
+
+            if (Settings.Instance.FlipHorizontal)
+                flip += "X";
+
+            if (Settings.Instance.FlipVertical)
+                flip += "Y";
+
+            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), Settings.Instance.RotateBy.ToString() + flip);
+
+            Image.RotateFlip(rotateFlip);
+            #endregion
+
+            return Image;
         }
     }
 }
