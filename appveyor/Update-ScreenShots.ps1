@@ -1,10 +1,17 @@
 if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 {
+    # Copy ScreenShots to temporary location
+    md ../Tabs
+    Get-ChildItem -Path 'src/UITests/bin/Release/Tabs/*' -Include *.png | Copy-Item -Destination '../Tabs/' -Force
+
+    # Stash to prevent conflicts when checking out
+    git stash
+
     # Switch to GitHub Pages branch
     git checkout gh-pages
 
-    # Copy
-    Get-ChildItem -Path 'src/UITests/bin/Release/Tabs/*' -Include *.png | Copy-Item -Destination 'img/ScreenShots/Tabs/' -Force
+    # Copy ScreenShots to Target location
+    Get-ChildItem -Path '../Tabs/*' -Include *.png | Copy-Item -Destination 'img/ScreenShots/Tabs/' -Force
 
     # Stage
     git add img/ScreenShots/Tabs
