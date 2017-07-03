@@ -4,16 +4,10 @@ author: Mathew Sachin
 
 exclude: ["Gemfile", "Gemfile.lock", "README.md"]
 
-gems:
-  - jekyll-seo-tag  # Search Engine Optimization
-  - jekyll-sitemap # Site Map
-
 accounts:
   gitter: "MathewSachin/Screna"
   github: "MathewSachin/Captura"
   google-analytics: "UA-70778035-3"
-  adsense: "ca-pub-4251360406988977"
-  disqus: "mathewsachin"
 
 links:
   gitter: https://gitter.im/MathewSachin/Screna

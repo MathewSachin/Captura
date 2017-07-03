@@ -7,15 +7,15 @@ layout: default
   <p>Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes</p> 
 
   <a href="{{ site.links.appveyor }}"><img src="https://img.shields.io/appveyor/ci/MathewSachin/Captura.svg?style=flat-square" alt="Build Status"></a>
-  <a href="License"><img src="https://img.shields.io/github/license/MathewSachin/Captura.svg?style=flat-square" alt="MIT License"></a>
+  <a href="{{ site.links.github }}/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/MathewSachin/Captura.svg?style=flat-square" alt="MIT License"></a>
   <a href="{{ site.links.gitter }}"><img src="https://img.shields.io/gitter/room/MathewSachin/Screna.svg?style=flat-square" alt="Chat"></a>
 
   <br><br>
 
   <div>
-    <a href="Downloads" class="btn btn-action"><i class="fa fa-download fa-lg"></i> Download</a>
+    <a href="{{ site.links.github }}/releases/latest" class="btn btn-action"><i class="fa fa-download fa-lg"></i> Download</a>
     <a href="{{ site.links.github }}" class="btn btn-action"><i class="fa fa-code-fork fa-lg"></i> Source Code</a>
-    <a href="Donate" class="btn btn-action"><i class="fa fa-credit-card fa-lg"></i> Donate</a>
+    <a href="{{ site.links.github }}/wiki/Donate" class="btn btn-action"><i class="fa fa-credit-card fa-lg"></i> Donate</a>
   </div>
 </div>
 
@@ -24,7 +24,7 @@ layout: default
     <div class="col-md-6 col-lg-4">
       {% include carousel.html %}
       <br><br>
-      <a class="btn btn-primary btn-block" href="ScreenShots">View More ScreenShots</a>
+      <a class="btn btn-primary btn-block" href="{{ site.links.github }}/wiki/ScreenShots">View More ScreenShots</a>
     </div>
     <div class="col-md-6 col-lg-8">
       <br><br>
@@ -37,17 +37,13 @@ layout: default
 
       <br>
 
-      <div class="alert alert-info">
-        We are accepting <a href="Translation" class="alert-link">Translations</a>!
-      </div>
-
       <h3>Now Available on Chocolatey!</h3>
       <pre><code>choco install captura -y</code></pre>
 
       <p class="text-center">
-        <a href="Getting-Started" class="btn btn-action">Getting Started</a>
-        <a href="FAQ" class="btn btn-action">FAQ</a>
-        <a href="Changelog" class="btn btn-action">Changelog</a>
+        <a href="{{ site.links.github }}/wiki" class="btn btn-action">Getting Started</a>
+        <a href="{{ site.links.github }}/wiki/FAQ" class="btn btn-action">FAQ</a>
+        <a href="{{ site.links.github }}/wiki/Changelog" class="btn btn-action">Changelog</a>
       </p>
     </div>
   </div>
@@ -60,7 +56,7 @@ layout: default
     <div class="col-md-4 col-sm-6">
       <h4>Free</h4>
       <p>Captura is 100% free. You don't need to spend a penny.</p>
-      <p>You can support by <a href="Donate">donating</a> or just <a href="{{ site.links.github }}">starring</a> the repository.</p>
+      <p>You can support by <a href="{{ site.links.github }}/wiki/Donate">donating</a> or just <a href="{{ site.links.github }}">starring</a> the repository.</p>
     </div>
     <div class="col-md-4 col-sm-6">
       <h4>Open-Source</h4>
@@ -68,8 +64,7 @@ layout: default
     </div>
     <div class="col-md-4 col-sm-6">
       <h4>No Ads</h4>
-      <p>Although there are a few ads on this website, the app is completely ad-free.</p>
-      <p>We are planning to remove ads from this website once we reach out <a href="{{ site.links.patreon }}">Patreon goal</a>.</p>
+      <p>The app is completely ad-free.</p>
     </div>
   </div>
 
@@ -77,15 +72,15 @@ layout: default
 
   <div class="row features">
     <div class="col-md-4 col-sm-6">
-      <h4><a href="Manual/tray.html">System Tray</a></h4>
+      <h4><a href="{{ site.links.github }}/wiki/System-Tray">System Tray</a></h4>
       <p>Captura can run unobtrusively remaining minimized to the System Tray.</p>
     </div>
     <div class="col-md-4 col-sm-6">
-      <h4><a href="Manual/cmdline.html">Command-line Usage</a></h4>
-      <p>Hello developers! Captura can be used from your terminal.</p>
+      <h4><a href="{{ site.links.github }}/wiki/Command-line">Command-line Usage</a></h4>
+      <p>Hello developers! Captura can be used from your terminal. Only for Portable builds.</p>
     </div>
     <div class="col-md-4 col-sm-6">
-      <h4><a href="Manual/hotkeys.html">Hotkeys</a></h4>
+      <h4><a href="{{ site.links.github }}/wiki/Hotkeys">Hotkeys</a></h4>
       <p>Take ScreenShots and control recordings from the keyboard even when Captura is in System Tray using Configurable Hotkeys.</p>
     </div>
     <div class="col-md-4 col-sm-6">
@@ -93,18 +88,15 @@ layout: default
       <p>Captura can do the much demanded task of mixing Microphone input audio and Speaker output audio.</p>
     </div>
     <div class="col-md-4 col-sm-6">
-      <h4><a href="Manual/region.html">Region</a></h4>
+      <h4><a href="{{ site.links.github }}/wiki/Region">Region</a></h4>
       <p>Captura can capture specific regions using the Region Selector.</p>
       <p>It can even Snap to windows.</p>
     </div>
     <div class="col-md-4 col-sm-6">
-      <h4><a href="Manual/webcam.html">WebCam</a></h4>
+      <h4>WebCam</h4>
       <p>You can include WebCam view in your recordings. Perfect for making tutorials.</p>
     </div>
   </div>
 
   <br><br><br>
-
-  <hr>
-  {% include adsense.html %}
 </div>
