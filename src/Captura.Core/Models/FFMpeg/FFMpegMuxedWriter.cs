@@ -56,11 +56,17 @@ namespace Captura.Models
                     FileName = ServiceProvider.FFMpegExePath,
                     Arguments = _ffmpegArgs,
                     UseShellExecute = false,
-                    CreateNoWindow = true
+                    CreateNoWindow = true,
+                    RedirectStandardError = true
                 }
             };
-
+            
             ffmpegProcess.Start();
+
+            FFMpegLog.Instance.Content += Environment.NewLine + Environment.NewLine;
+
+            FFMpegLog.Instance.ReadLog(ffmpegProcess.StandardError, "frame=");
+
             ffmpegProcess.WaitForExit();
             
             File.Delete(tempAudioPath);

@@ -67,7 +67,7 @@
                            Text="{local:Loc ScreenShot}"
                            FontWeight="Bold"/>
 
-                <Grid Margin="0,2">
+                <Grid Margin="0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -100,11 +100,7 @@
                               Margin="0,5,0,0"/>
                 </Grid>
 
-                <TextBlock Margin="0,7,0,3"
-                           Text="Transforms"
-                           FontWeight="Bold"/>
-
-                <Grid Margin="0,2">
+                <Grid Margin="0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -129,7 +125,7 @@
                                         IsEnabled="{Binding Settings.DoResize}"/>
                 </Grid>
 
-                <StackPanel Margin="0,2"
+                <StackPanel Margin="0,5"
                             Orientation="Horizontal">
                     <CheckBox Content="{local:Loc FlipX}"
                               IsChecked="{Binding Settings.FlipHorizontal, Mode=TwoWay}"

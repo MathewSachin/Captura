@@ -64,7 +64,11 @@
                 
                 <Button Content="Extras"
                         Click="OpenExtras"
-                        Margin="0,5"/>                
+                        Margin="0,5"/>
+
+                <Button Content="FFMpeg Log"
+                        Click="OpenFFMpegLog"
+                        Margin="0,5"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
