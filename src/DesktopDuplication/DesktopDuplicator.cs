@@ -146,7 +146,7 @@ namespace DesktopDuplication
             var image = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = image.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.ReadWrite, image.PixelFormat);
+            var mapDest = image.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, image.PixelFormat);
 
             var srcPtr = mapSource.DataPointer;
             var destPtr = mapDest.Scan0;
