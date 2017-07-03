@@ -370,20 +370,22 @@ namespace Captura.ViewModels
 
             if (hWnd == Window.DesktopWindow)
             {
-                var bmp = ScreenShot.Capture(Settings.IncludeCursor);
-                
-                return TransformedImageProvider.Transform(bmp);
+                return ScreenShot.Capture(Settings.IncludeCursor).Transform();
             }
             else
             {
-                var bmp = ScreenShot.CaptureTransparent(hWnd, Settings.IncludeCursor,
-                         Settings.DoResize, Settings.ResizeWidth, Settings.ResizeHeight);
+                var bmp = ScreenShot.CaptureTransparent(hWnd,
+                    Settings.IncludeCursor,
+                    Settings.DoResize,
+                    Settings.ResizeWidth,
+                    Settings.ResizeHeight);
 
                 // Capture without Transparency
                 if (bmp == null)
-                    bmp = ScreenShot.Capture(hWnd, Settings.IncludeCursor);
-
-                return TransformedImageProvider.Transform(bmp, true);
+                {
+                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform();
+                }
+                else return bmp.Transform(true);
             }
         }
 
@@ -406,12 +408,12 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Screen:
                     bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
-                    bmp = TransformedImageProvider.Transform(bmp);
+                    bmp = bmp.Transform();
                     break;
 
                 case VideoSourceKind.Region:
                     bmp = ScreenShot.Capture(VideoViewModel.RegionProvider.SelectedRegion, includeCursor);
-                    bmp = TransformedImageProvider.Transform(bmp);
+                    bmp = bmp.Transform();
                     break;
             }
 
@@ -420,6 +422,8 @@ namespace Captura.ViewModels
         
         public void StartRecording(string FileName = null)
         {
+            FFMpegLog.Reset();
+
             VideoViewModel.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
@@ -551,9 +555,7 @@ namespace Captura.ViewModels
             if (MouseKeyHookAvailable)
                 overlays.Insert(0, new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
-            var overlayed = new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
-
-            return new TransformedImageProvider(overlayed);
+            return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
         }
         
         public async Task StopRecording()

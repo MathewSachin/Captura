@@ -68,6 +68,7 @@
     <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
     <Compile Include="Models\DeskDuplImageProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegLog.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKey.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
-    <Compile Include="Models\TransformedImageProvider.cs" />
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
