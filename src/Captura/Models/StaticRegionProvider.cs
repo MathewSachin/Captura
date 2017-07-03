@@ -26,6 +26,8 @@ namespace Captura
             {
                 try
                 {
+                    _dupl.UpdateRectLocation(region.Location);
+
                     return _dupl.GetLatestFrame();
                 }
                 catch

@@ -82,6 +82,11 @@ namespace DesktopDuplication
             }
         }
 
+        public void UpdateRectLocation(System.Drawing.Point P)
+        {
+            _rect.Location = P;
+        }
+
         public Bitmap GetLatestFrame()
         {
             // Try to get the latest frame; this may timeout
