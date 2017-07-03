@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DesktopDuplicator.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="MovedRegion.cs" />
   </ItemGroup>
   <ItemGroup>
