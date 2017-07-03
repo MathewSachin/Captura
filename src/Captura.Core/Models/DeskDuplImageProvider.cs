@@ -25,13 +25,13 @@ namespace Captura.Models
         {
             try
             {
-                return _dupl.GetLatestFrame(WindowProvider.DesktopRectangle);
+                return _dupl.GetLatestFrame();
             }
             catch
             {
-                _dupl = new DesktopDuplicator(_monitor);
+                _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _monitor);
 
-                return _dupl.GetLatestFrame(WindowProvider.DesktopRectangle);
+                return _dupl.GetLatestFrame();
             }
         }
 

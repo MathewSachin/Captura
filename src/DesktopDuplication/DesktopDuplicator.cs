@@ -22,10 +22,14 @@ namespace DesktopDuplication
 
         Texture2D _desktopImageTexture;
         OutputDuplicateFrameInformation _frameInfo;
+
+        DRectangle _rect;
         #endregion
 
-        public DesktopDuplicator(int Monitor, int Adapter = 0)
+        public DesktopDuplicator(DRectangle Rect, int Monitor, int Adapter = 0)
         {
+            _rect = Rect;
+
             Adapter1 adapter;
             try
             {
@@ -56,8 +60,8 @@ namespace DesktopDuplication
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = _outputDesc.DesktopBounds.Width,
-                Height = _outputDesc.DesktopBounds.Height,
+                Width = _rect.Width,
+                Height = _rect.Height,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
@@ -78,7 +82,7 @@ namespace DesktopDuplication
             }
         }
 
-        public Bitmap GetLatestFrame(DRectangle Rect)
+        public Bitmap GetLatestFrame()
         {
             // Try to get the latest frame; this may timeout
             if (!RetrieveFrame())
@@ -86,7 +90,7 @@ namespace DesktopDuplication
 
             try
             {
-                return ProcessFrame(Rect);
+                return ProcessFrame();
             }
             finally
             {
@@ -107,7 +111,7 @@ namespace DesktopDuplication
                 _deskDupl.AcquireNextFrame(500, out _frameInfo, out var desktopResource);
 
                 using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
-                    _device.ImmediateContext.CopyResource(tempTexture, _desktopImageTexture);
+                    _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1), _desktopImageTexture, 0);
 
                 desktopResource.Dispose();
 
@@ -129,22 +133,22 @@ namespace DesktopDuplication
             }
         }
         
-        Bitmap ProcessFrame(DRectangle Rect)
+        Bitmap ProcessFrame()
         {
             // Get the desktop capture texture
             var mapSource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
-            var image = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppRgb);
+            var image = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = image.LockBits(new DRectangle(0, 0, Rect.Width, Rect.Height), ImageLockMode.ReadWrite, image.PixelFormat);
+            var mapDest = image.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.ReadWrite, image.PixelFormat);
 
-            var srcPtr = mapSource.DataPointer + Rect.X * 4 + mapSource.RowPitch * Rect.Y;
+            var srcPtr = mapSource.DataPointer;
             var destPtr = mapDest.Scan0;
 
-            for (int y = 0; y < Rect.Height; ++y)
+            for (int y = 0; y < _rect.Height; ++y)
             {
-                Utilities.CopyMemory(destPtr, srcPtr, Rect.Width * 4);
+                Utilities.CopyMemory(destPtr, srcPtr, _rect.Width * 4);
 
                 srcPtr += mapSource.RowPitch;
                 destPtr += mapDest.Stride;

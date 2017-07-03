@@ -26,13 +26,13 @@ namespace Captura
             {
                 try
                 {
-                    return _dupl.GetLatestFrame(region);
+                    return _dupl.GetLatestFrame();
                 }
                 catch
                 {
-                    _dupl = new DesktopDuplicator(0);
+                    _dupl = new DesktopDuplicator(region, 0);
 
-                    return _dupl.GetLatestFrame(region);
+                    return _dupl.GetLatestFrame();
                 }
             }
             else return ScreenShot.Capture(region);
