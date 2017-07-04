@@ -50,11 +50,11 @@ namespace Captura.ViewModels
 
             ScreenShotDesktopCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
-            RecordCommand = new DelegateCommand(() =>
+            RecordCommand = new DelegateCommand(async () =>
             {
                 if (RecorderState == RecorderState.NotRecording)
                     StartRecording();
-                else StopRecording();
+                else await StopRecording();
             });
 
             RefreshCommand = new DelegateCommand(() =>
@@ -320,7 +320,7 @@ namespace Captura.ViewModels
 
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                _syncContext.Post(state => StopRecording(), null);
+                _syncContext.Post(async state => await StopRecording(), null);
         }
         
         void CheckFunctionalityAvailability()
