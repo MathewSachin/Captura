@@ -112,10 +112,7 @@ namespace Captura.ViewModels
                 case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
                 case VideoSourceKind.NoVideo:
-                    VideoSource();
-                    break;
-
-                case VideoSourceKind.Screen when (ScreenItem.Count > 1):
+                case VideoSourceKind.Screen:
                     VideoSource();
                     break;
 

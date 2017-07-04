@@ -12,11 +12,7 @@ namespace Captura.ViewModels
         public void Init()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
-
-            // Check if there are multiple Screens
-            if (ScreenItem.Count > 1)
-                AvailableVideoSourceKinds.Add(new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)));
-
+            
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
@@ -186,6 +182,7 @@ namespace Captura.ViewModels
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.FullScreen, nameof(Resources.FullScreen)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
         };

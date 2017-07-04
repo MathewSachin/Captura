@@ -138,19 +138,16 @@ namespace Captura.Console
                 #endregion
 
                 #region Screens
-                if (ScreenItem.Count > 1)
+                WriteLine("AVAILABLE SCREENS" + underline);
+
+                video.SelectedVideoSourceKind = VideoSourceKind.Screen;
+
+                for (int i = 0; i < video.AvailableVideoSources.Count; ++i)
                 {
-                    WriteLine("AVAILABLE SCREENS" + underline);
-
-                    video.SelectedVideoSourceKind = VideoSourceKind.Screen;
-
-                    for (int i = 0; i < video.AvailableVideoSources.Count; ++i)
-                    {
-                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoSources[i]}");
-                    }
-
-                    WriteLine();
+                    WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoSources[i]}");
                 }
+
+                WriteLine();
                 #endregion
 
                 #region MouseKeyHook
@@ -233,7 +230,7 @@ namespace Captura.Console
             }
 
             // Screen
-            else if (ScreenItem.Count > 1 && Regex.IsMatch(CommonOptions.Source, @"screen:\d+"))
+            else if (Regex.IsMatch(CommonOptions.Source, @"screen:\d+"))
             {
                 var index = int.Parse(CommonOptions.Source.Substring(7));
 
