@@ -64,9 +64,11 @@ namespace Captura.ViewModels
 
             switch (SelectedVideoSourceKind)
             {
+                case VideoSourceKind.FullScreen:
+                    AvailableVideoSources.Add(FullScreenItem.Instance);
+                    break;
+
                 case VideoSourceKind.Window:
-                    // Desktop would be default
-                    AvailableVideoSources.Add(WindowItem.Desktop);
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     // Prevent RegionSelector from showing here
@@ -175,13 +177,14 @@ namespace Captura.ViewModels
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.FullScreen, nameof(Resources.FullScreen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
 
-        VideoSourceKind _videoSourceKind = VideoSourceKind.Window;
+        VideoSourceKind _videoSourceKind = VideoSourceKind.FullScreen;
 
         public VideoSourceKind SelectedVideoSourceKind
         {
@@ -199,7 +202,7 @@ namespace Captura.ViewModels
             }
         }
 
-        IVideoItem _videoSource = WindowItem.Desktop;
+        IVideoItem _videoSource = FullScreenItem.Instance;
 
         public IVideoItem SelectedVideoSource
         {

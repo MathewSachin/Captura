@@ -97,33 +97,38 @@ namespace Captura.ViewModels
         void RestoreRemembered()
         {
             #region Restore Video Source
-            if (Settings.LastSourceKind == VideoSourceKind.Window)
+            void VideoSource()
             {
-                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Window;
+                VideoViewModel.SelectedVideoSourceKind = Settings.LastSourceKind;
 
                 var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.LastSourceName);
 
                 if (source != null)
                     VideoViewModel.SelectedVideoSource = source;
             }
-            else if (Settings.LastSourceKind == VideoSourceKind.Screen && ScreenItem.Count > 1)
+
+            switch (Settings.LastSourceKind)
             {
-                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                case VideoSourceKind.FullScreen:
+                case VideoSourceKind.Window:
+                    VideoSource();
+                    break;
 
-                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(screen => screen.ToString() == Settings.LastSourceName);
+                case VideoSourceKind.Screen when (ScreenItem.Count > 1):
+                    VideoSource();
+                    break;
 
-                if (source != null)
-                    VideoViewModel.SelectedVideoSource = source;
+                case VideoSourceKind.Region:
+                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
+                    var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.LastSourceName);
+
+                    VideoViewModel.RegionProvider.SelectedRegion = rect;
+                    break;
+
+                case VideoSourceKind.NoVideo:
+                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
+                    break;
             }
-            else if (Settings.LastSourceKind == VideoSourceKind.Region)
-            {
-                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
-                var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.LastSourceName);
-
-                VideoViewModel.RegionProvider.SelectedRegion = rect;
-            }
-            else if (Settings.LastSourceKind == VideoSourceKind.NoVideo)
-                VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
             #endregion
 
             // Restore Video Codec
@@ -271,6 +276,7 @@ namespace Captura.ViewModels
             #region Remember Video Source
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
+                case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
                 case VideoSourceKind.Screen:
                     Settings.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
