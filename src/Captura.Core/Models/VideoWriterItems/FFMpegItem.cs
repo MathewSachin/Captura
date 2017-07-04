@@ -43,7 +43,7 @@ namespace Captura.Models
             new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioItem.Mp3),
 
             // MP4 HEVC Intel QSV (HEVC, AAC)
-            new FFMpegItem("Mp4 HEVC Intel QSV (HEVC | AAC)", ".mp4", HEVC_QSV, FFMpegAudioWriterItem.Aac)
+            new FFMpegItem("Mp4 HEVC Intel QSV (HEVC | AAC)", ".mp4", HEVC_QSV, FFMpegAudioItem.Aac)
         };
         
         FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
