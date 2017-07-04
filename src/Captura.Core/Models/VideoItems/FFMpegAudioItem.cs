@@ -2,24 +2,17 @@
 
 namespace Captura.Models
 {
-    public class FFMpegAudioWriterItem : IAudioWriterItem
+    public class FFMpegAudioItem : NoVideoItem
     {
-        readonly string _name;
         FFMpegAudioArgsProvider _audioArgsProvider;
 
-        public string Extension { get; }
-
-        FFMpegAudioWriterItem(string Name, string Extension, FFMpegAudioArgsProvider AudioArgsProvider)
+        FFMpegAudioItem(string Name, string Extension, FFMpegAudioArgsProvider AudioArgsProvider)
+            : base($"{Name} (FFMpeg)", Extension)
         {
-            _name = Name;
             _audioArgsProvider = AudioArgsProvider;
-
-            this.Extension = Extension;            
         }
 
-        public override string ToString() => _name;
-        
-        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
+        public override IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
         {
             return new FFMpegAudioWriter(FileName, AudioQuality, _audioArgsProvider, Wf.SampleRate, Wf.Channels);
         }
@@ -56,12 +49,12 @@ namespace Captura.Models
             return $"-c:a libopus -compression_level {qscale}";
         };
 
-        public static FFMpegAudioWriterItem[] Items { get; } = new[]
+        public static FFMpegAudioItem[] Items { get; } = new[]
         {
-            new FFMpegAudioWriterItem("AAC", ".aac", Aac),
-            new FFMpegAudioWriterItem("Mp3", ".mp3", Mp3),
-            new FFMpegAudioWriterItem("Vorbis", ".ogg", Vorbis),
-            new FFMpegAudioWriterItem("Opus", ".opus", Opus)
+            new FFMpegAudioItem("AAC", ".aac", Aac),
+            new FFMpegAudioItem("Mp3", ".mp3", Mp3),
+            new FFMpegAudioItem("Vorbis", ".ogg", Vorbis),
+            new FFMpegAudioItem("Opus", ".opus", Opus)
         };
     }
 }

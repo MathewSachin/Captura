@@ -34,13 +34,13 @@ namespace Captura.Models
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
-            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", x264, FFMpegAudioWriterItem.Aac),
+            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", x264, FFMpegAudioItem.Aac),
 
             // Avi (Xvid, Mp3)
-            new FFMpegItem("Avi (Xvid | Mp3)", ".avi", Avi, FFMpegAudioWriterItem.Mp3),
+            new FFMpegItem("Avi (Xvid | Mp3)", ".avi", Avi, FFMpegAudioItem.Mp3),
 
             // Gif (No Audio)
-            new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioWriterItem.Mp3),
+            new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioItem.Mp3),
 
             // MP4 HEVC Intel QSV (HEVC, AAC)
             new FFMpegItem("Mp4 HEVC Intel QSV (HEVC | AAC)", ".mp4", HEVC_QSV, FFMpegAudioWriterItem.Aac)

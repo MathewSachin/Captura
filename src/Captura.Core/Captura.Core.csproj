@@ -62,10 +62,7 @@
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
     <Compile Include="Models\AudioSourceItems\NAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
-    <Compile Include="Models\AudioWriterItems\FFMpegAudioArgsProvider.cs" />
-    <Compile Include="Models\AudioWriterItems\FFMpegAudioWriterItem.cs" />
-    <Compile Include="Models\AudioWriterItems\IAudioWriterItem.cs" />
-    <Compile Include="Models\AudioWriterItems\WaveWriterItem.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegLog.cs" />
     <Compile Include="Models\FFMpeg\FFMpegMuxedWriter.cs" />
@@ -91,8 +88,12 @@
     <Compile Include="Models\SharpAvi\AviCodec.cs" />
     <Compile Include="Models\SharpAvi\AviWriter.cs" />
     <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
+    <Compile Include="Models\VideoItems\FFMpegAudioItem.cs" />
+    <Compile Include="Models\VideoItems\NoVideoItem.cs" />
     <Compile Include="Models\VideoItems\IVideoItem.cs" />
     <Compile Include="Models\VideoItems\VideoSourceKind.cs" />
+    <Compile Include="Models\VideoItems\FullScreenItem.cs" />
+    <Compile Include="Models\VideoItems\WaveItem.cs" />
     <Compile Include="Models\VideoItems\WindowItem.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegVideoArgsProvider.cs" />
@@ -147,6 +148,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
