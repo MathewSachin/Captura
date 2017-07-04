@@ -30,10 +30,7 @@ namespace Captura.Models
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
             Offset = () => Point.Empty;
-
-            if (Settings.Instance.UseDeskDupl && Window.Handle == Window.DesktopWindow.Handle)
-                return new DeskDuplImageProvider();
-
+            
             return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow), Settings.Instance.VideoBackgroundColor);
         }
     }
