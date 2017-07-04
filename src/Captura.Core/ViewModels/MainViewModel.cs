@@ -111,6 +111,7 @@ namespace Captura.ViewModels
             {
                 case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
+                case VideoSourceKind.NoVideo:
                     VideoSource();
                     break;
 
@@ -123,10 +124,6 @@ namespace Captura.ViewModels
                     var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.LastSourceName);
 
                     VideoViewModel.RegionProvider.SelectedRegion = rect;
-                    break;
-
-                case VideoSourceKind.NoVideo:
-                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
                     break;
             }
             #endregion
@@ -141,16 +138,7 @@ namespace Captura.ViewModels
                 if (codec != null)
                     VideoViewModel.SelectedVideoWriter = codec;
             }
-
-            // Restore Audio Codec
-            if (!string.IsNullOrEmpty(Settings.LastAudioWriterName))
-            {
-                var codec = AudioViewModel.AvailableAudioWriters.FirstOrDefault(c => c.ToString() == Settings.LastAudioWriterName);
-
-                if (codec != null)
-                    AudioViewModel.SelectedAudioWriter = codec;
-            }
-
+            
             // Restore Microphone
             if (!string.IsNullOrEmpty(Settings.LastMicName))
             {
@@ -279,6 +267,7 @@ namespace Captura.ViewModels
                 case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
                 case VideoSourceKind.Screen:
+                case VideoSourceKind.NoVideo:
                     Settings.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
                     Settings.LastSourceName = VideoViewModel.SelectedVideoSource.ToString();
                     break;
@@ -287,11 +276,6 @@ namespace Captura.ViewModels
                     Settings.LastSourceKind = VideoSourceKind.Region;
                     var rect = VideoViewModel.RegionProvider.SelectedRegion;
                     Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
-                    break;
-
-                case VideoSourceKind.NoVideo:
-                    Settings.LastSourceKind = VideoSourceKind.NoVideo;
-                    Settings.LastSourceName = "";
                     break;
 
                 default:
@@ -308,10 +292,7 @@ namespace Captura.ViewModels
             // Remember Audio Sources
             Settings.LastMicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
             Settings.LastSpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
-
-            // Remember Audio Codec
-            Settings.LastAudioWriterName = AudioViewModel.SelectedAudioWriter.ToString();
-
+            
             // Remember ScreenShot Format
             Settings.LastScreenShotFormat = SelectedScreenShotImageFormat.ToString();
 
@@ -455,9 +436,10 @@ namespace Captura.ViewModels
             
             isVideo = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
             
-            var extension = isVideo
-                ? VideoViewModel.SelectedVideoWriter.Extension
-                : AudioViewModel.SelectedAudioWriter.Extension;
+            var extension = VideoViewModel.SelectedVideoWriter.Extension;
+
+            if (VideoViewModel.SelectedVideoSource is NoVideoItem x)
+                extension = x.Extension;
 
             _currentFileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
@@ -477,7 +459,8 @@ namespace Captura.ViewModels
                 if (isVideo)
                     _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
 
-                else _recorder = new Recorder(AudioViewModel.SelectedAudioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
+                else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
+                    _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
 
             _recorder.ErrorOccured += E => _syncContext.Post(d => OnErrorOccured(E), null);

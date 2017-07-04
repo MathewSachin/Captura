@@ -187,17 +187,6 @@
                       SelectedValue="{Binding AudioViewModel.AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
-        
-        <DockPanel Margin="0,5"
-                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc AudioFormatWoVideo}"
-                   ContentStringFormat="{}{0}:"
-                   Margin="10,0,0,0"/>
-            <ComboBox Margin="7,0"
-                      VerticalAlignment="Center"
-                      ItemsSource="{Binding AudioViewModel.AvailableAudioWriters}"
-                      SelectedValue="{Binding AudioViewModel.SelectedAudioWriter, Mode=TwoWay}"/>
-        </DockPanel>
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">

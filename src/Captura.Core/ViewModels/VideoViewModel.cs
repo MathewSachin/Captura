@@ -87,6 +87,14 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Region:
                     AvailableVideoSources.Add(RegionProvider.VideoSource);
                     break;
+
+                case VideoSourceKind.NoVideo:
+                    AvailableVideoSources.Add(WaveItem.Instance);
+
+                    foreach (var item in FFMpegAudioItem.Items)
+                        AvailableVideoSources.Add(item);
+
+                    break;
             }
 
             // Set first source as default

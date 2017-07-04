@@ -42,15 +42,7 @@ namespace Captura
             get => Get<string>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Mp3")]
-        public string LastAudioWriterName
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         public string LastMicName
         {
