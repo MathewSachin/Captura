@@ -12,11 +12,7 @@ namespace Captura.ViewModels
         public void Init()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
-
-            // Check if there are multiple Screens
-            if (ScreenItem.Count > 1)
-                AvailableVideoSourceKinds.Add(new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)));
-
+            
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
@@ -65,8 +61,6 @@ namespace Captura.ViewModels
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    // Desktop would be default
-                    AvailableVideoSources.Add(WindowItem.Desktop);
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     // Prevent RegionSelector from showing here
@@ -78,12 +72,22 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Screen:
+                    AvailableVideoSources.Add(FullScreenItem.Instance);
+
                     foreach (var screen in ScreenItem.Enumerate())
                         AvailableVideoSources.Add(screen);
                     break;
 
                 case VideoSourceKind.Region:
                     AvailableVideoSources.Add(RegionProvider.VideoSource);
+                    break;
+
+                case VideoSourceKind.NoVideo:
+                    AvailableVideoSources.Add(WaveItem.Instance);
+
+                    foreach (var item in FFMpegAudioItem.Items)
+                        AvailableVideoSources.Add(item);
+
                     break;
             }
 
@@ -175,13 +179,14 @@ namespace Captura.ViewModels
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
 
-        VideoSourceKind _videoSourceKind = VideoSourceKind.Window;
+        VideoSourceKind _videoSourceKind = VideoSourceKind.Screen;
 
         public VideoSourceKind SelectedVideoSourceKind
         {
@@ -199,7 +204,7 @@ namespace Captura.ViewModels
             }
         }
 
-        IVideoItem _videoSource = WindowItem.Desktop;
+        IVideoItem _videoSource = FullScreenItem.Instance;
 
         public IVideoItem SelectedVideoSource
         {

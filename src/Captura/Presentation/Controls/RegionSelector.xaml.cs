@@ -91,7 +91,14 @@ namespace Captura
 
             ToggleBorder(win);
 
-            try { SelectedRegion = new Screna.Window(win).Rectangle; }
+            try
+            {
+                if (win == IntPtr.Zero)
+                    SelectWindow();
+
+                if (win != IntPtr.Zero)
+                    SelectedRegion = new Screna.Window(win).Rectangle;
+            }
             finally
             {
                 win = IntPtr.Zero;
@@ -100,19 +107,24 @@ namespace Captura
 
         IntPtr win;
         
+        void SelectWindow()
+        {
+            var oldwin = win;
+
+            win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+
+            if (oldwin != IntPtr.Zero && oldwin != win)
+            {
+                ToggleBorder(oldwin);
+                ToggleBorder(win);
+            }
+        }
+
         void Window_LocationChanged(object sender, EventArgs e)
         {
             if (_captured)
             {
-                var oldwin = win;
-                
-                win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
-
-                if (oldwin != win)
-                {
-                    ToggleBorder(oldwin);
-                    ToggleBorder(win);
-                }
+                SelectWindow();
             }
         }
 
