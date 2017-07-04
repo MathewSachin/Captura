@@ -60,10 +60,6 @@ namespace Captura.ViewModels
 
             switch (SelectedVideoSourceKind)
             {
-                case VideoSourceKind.FullScreen:
-                    AvailableVideoSources.Add(FullScreenItem.Instance);
-                    break;
-
                 case VideoSourceKind.Window:
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
@@ -76,6 +72,8 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Screen:
+                    AvailableVideoSources.Add(FullScreenItem.Instance);
+
                     foreach (var screen in ScreenItem.Enumerate())
                         AvailableVideoSources.Add(screen);
                     break;
@@ -181,7 +179,6 @@ namespace Captura.ViewModels
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.FullScreen, nameof(Resources.FullScreen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
@@ -189,7 +186,7 @@ namespace Captura.ViewModels
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
 
-        VideoSourceKind _videoSourceKind = VideoSourceKind.FullScreen;
+        VideoSourceKind _videoSourceKind = VideoSourceKind.Screen;
 
         public VideoSourceKind SelectedVideoSourceKind
         {

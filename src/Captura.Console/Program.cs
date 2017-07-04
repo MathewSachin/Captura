@@ -237,7 +237,9 @@ namespace Captura.Console
                 if (index < ScreenItem.Count)
                 {
                     video.SelectedVideoSourceKind = VideoSourceKind.Screen;
-                    video.SelectedVideoSource = video.AvailableVideoSources[index];
+
+                    // First item is Full Screen
+                    video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
                 }
             }
 

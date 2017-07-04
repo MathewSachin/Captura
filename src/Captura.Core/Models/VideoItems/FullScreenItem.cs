@@ -16,7 +16,7 @@ namespace Captura.Models
             _desktop = Window.DesktopWindow;
         }
                 
-        public override string ToString() => nameof(Resources.FullScreen);
+        public override string ToString() => Resources.FullScreen;
 
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {

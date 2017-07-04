@@ -14,7 +14,7 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("FFMpeg")]
+        [DefaultSettingValue(nameof(VideoWriterKind.FFMpeg))]
         public VideoWriterKind LastVideoWriterKind
         {
             get => Get<VideoWriterKind>();
@@ -29,7 +29,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("Window")]
+        [DefaultSettingValue(nameof(VideoSourceKind.Screen))]
         public VideoSourceKind LastSourceKind
         {
             get => Get<VideoSourceKind>();

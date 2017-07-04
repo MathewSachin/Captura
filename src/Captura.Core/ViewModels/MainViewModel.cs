@@ -109,7 +109,6 @@ namespace Captura.ViewModels
 
             switch (Settings.LastSourceKind)
             {
-                case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
                 case VideoSourceKind.NoVideo:
                 case VideoSourceKind.Screen:
@@ -261,7 +260,6 @@ namespace Captura.ViewModels
             #region Remember Video Source
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
-                case VideoSourceKind.FullScreen:
                 case VideoSourceKind.Window:
                 case VideoSourceKind.Screen:
                 case VideoSourceKind.NoVideo:
