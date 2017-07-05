@@ -26,14 +26,14 @@ namespace Captura.ViewModels
         bool isVideo;
         public static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
-        IWebCamProvider _webCamProvider;
 
-        public bool WebCamVisible
+        IWebCamProvider _cam;
+        public IWebCamProvider WebCamProvider
         {
-            get => _webCamProvider.IsVisible;
+            get => _cam;
             set
             {
-                _webCamProvider.IsVisible = value;
+                _cam = value;
 
                 OnPropertyChanged();
             }
@@ -235,9 +235,7 @@ namespace Captura.ViewModels
             if (Remembered)
                 RestoreRemembered();
 
-            _webCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
-
-            _webCamProvider.IsVisibleChanged += () => OnPropertyChanged(nameof(WebCamVisible));
+            WebCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
         }
 
         void Remember()

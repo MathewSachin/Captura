@@ -81,9 +81,21 @@
                       Grid.Column="2"/>
         </Grid>
 
-        <CheckBox Margin="10,3"
-                  Content="{local:Loc WebCamView}"
-                  IsChecked="{Binding WebCamVisible, Mode=TwoWay}"/>
+        <DockPanel Margin="0,5">
+            <Path Data="{StaticResource Icon_Webcam}"
+                  Width="15"
+                  Height="15"
+                  Margin="10,0,7,0"
+                  Fill="#B7000000"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  ToolTip="{local:Loc WebCam}"/>
+
+            <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
+                      SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
+                      Margin="0,0,7,0"/>
+        </DockPanel>
 
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>
