@@ -129,9 +129,9 @@ namespace Captura.Console
 
                 video.SelectedVideoSourceKind = VideoSourceKind.Window;
 
-                foreach (var source in video.AvailableVideoSources)
+                foreach (WindowItem source in video.AvailableVideoSources)
                 {
-                    WriteLine($"{(source as WindowItem).Window.Handle.ToString().PadRight(10)}: {source}");
+                    WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
                 }
 
                 WriteLine();
