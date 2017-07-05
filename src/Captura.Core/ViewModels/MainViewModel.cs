@@ -23,7 +23,6 @@ namespace Captura.ViewModels
         Timer _timer;
         IRecorder _recorder;
         string _currentFileName;
-        MouseCursor _cursor;
         bool isVideo;
         public static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
@@ -50,11 +49,11 @@ namespace Captura.ViewModels
 
             ScreenShotDesktopCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
-            RecordCommand = new DelegateCommand(() =>
+            RecordCommand = new DelegateCommand(async () =>
             {
                 if (RecorderState == RecorderState.NotRecording)
                     StartRecording();
-                else StopRecording();
+                else await StopRecording();
             });
 
             RefreshCommand = new DelegateCommand(() =>
@@ -210,21 +209,7 @@ namespace Captura.ViewModels
                         break;
                 }
             };
-
-            _cursor = new MouseCursor(Settings.IncludeCursor);
-
-            Settings.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(Settings.IncludeCursor):
-                    case null:
-                    case "":
-                        _cursor.Include = Settings.IncludeCursor;
-                        break;
-                }
-            };
-
+            
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(Settings.OutPath))
                 Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
@@ -274,7 +259,7 @@ namespace Captura.ViewModels
                     break;
 
                 default:
-                    Settings.LastSourceKind = VideoSourceKind.Window;
+                    Settings.LastSourceKind = VideoSourceKind.Screen;
                     Settings.LastSourceName = "";
                     break;
             }
@@ -320,7 +305,7 @@ namespace Captura.ViewModels
 
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                _syncContext.Post(state => StopRecording(), null);
+                _syncContext.Post(async state => await StopRecording(), null);
         }
         
         void CheckFunctionalityAvailability()
@@ -508,7 +493,7 @@ namespace Captura.ViewModels
             {
                 case GifWriter gif:
                     if (Settings.GifVariable)
-                        _recorder = new VariableFrameRateGifRecorder(gif, ImgProvider);
+                        _recorder = new VFRGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
                     break;
@@ -530,16 +515,19 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay>
-            {
-                _cursor
-            };
+            var overlays = new List<IOverlay>();
 
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable)
-                overlays.Insert(0, new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
+                overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
-            return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
+            if (Settings.IncludeCursor)
+                overlays.Add(MouseCursor.Instance);
+
+            if (overlays.Count > 0)
+                return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
+
+            return imageProvider;
         }
         
         public async Task StopRecording()

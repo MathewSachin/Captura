@@ -33,7 +33,7 @@ namespace Captura.ViewModels
             RegionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
-                    SelectedVideoSourceKind = VideoSourceKind.Window;
+                    SelectedVideoSourceKind = VideoSourceKind.Screen;
             };
         }
         
