@@ -260,7 +260,7 @@ namespace Captura.ViewModels
                     break;
 
                 default:
-                    Settings.LastSourceKind = VideoSourceKind.Window;
+                    Settings.LastSourceKind = VideoSourceKind.Screen;
                     Settings.LastSourceName = "";
                     break;
             }
