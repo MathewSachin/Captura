@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProjectGuid>{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Screna</RootNamespace>
+    <AssemblyName>Screna</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioFileWriters\AudioFileWriter.cs" />
+    <Compile Include="Audio\IAudioProvider.cs" />
+    <Compile Include="Audio\WaveFormat\WaveFormat.cs" />
+    <Compile Include="Audio\WaveFormat\WaveFormatEncoding.cs" />
+    <Compile Include="Audio\AudioFileWriters\IAudioFileWriter.cs" />
+    <Compile Include="EventArgs\DataAvailableEventArgs.cs" />
+    <Compile Include="EventArgs\EndEventArgs.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
+    <Compile Include="Recorder\IRecorder.cs" />
+    <Compile Include="Recorder\Recorder.cs" />
+    <Compile Include="VideoWriter\GifWriter.cs" />
+    <Compile Include="ImageProviders\ImageProviderBase.cs" />
+    <Compile Include="ImageProviders\RegionProvider.cs" />
+    <Compile Include="VideoWriter\IVideoFileWriter.cs" />
+    <Compile Include="ImageProviders\IImageProvider.cs" />
+    <Compile Include="ImageProviders\ScreenProvider.cs" />
+    <Compile Include="ImageProviders\WindowProvider.cs" />
+    <Compile Include="Overlays\MouseCursor.cs" />
+    <Compile Include="Native\Enums.cs" />
+    <Compile Include="Native\Gdi32.cs" />
+    <Compile Include="Native\Structs.cs" />
+    <Compile Include="Native\User32.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="Overlays\IOverlay.cs" />
+    <Compile Include="Recorder\VFRGifRecorder.cs" />
+    <Compile Include="ScreenShot.cs" />
+    <Compile Include="Native\UnsafeBitmap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

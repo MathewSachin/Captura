@@ -8,8 +8,7 @@ namespace Captura.Models
     {
         public Window Window { get; }
 
-        public static readonly WindowItem Desktop = new WindowItem(Window.DesktopWindow, "[Desktop]"),
-            TaskBar = new WindowItem(Window.Taskbar, "[TaskBar]");
+        public static readonly WindowItem TaskBar = new WindowItem(Window.Taskbar, "[TaskBar]");
 
         public WindowItem(Window Window)
         {
