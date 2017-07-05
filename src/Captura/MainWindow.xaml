@@ -136,7 +136,7 @@
                     <local:ModernButton ToolTip="{local:Loc ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
                                         Foreground="#333333"
-                                        IconData="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
+                                        IconData="{StaticResource Icon_Camera}"/>
                     <local:ModernButton ToolTip="{local:Loc RecordStop}"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
@@ -144,7 +144,7 @@
                     <local:ModernButton ToolTip="{local:Loc PauseResume}" 
                                         Command="{Binding PauseCommand}"
                                         Foreground="#333333"
-                                        IconData="M14,19H18V5H14M6,19H10V5H6V19Z">
+                                        IconData="{StaticResource Icon_Pause}">
                         <local:ModernButton.LayoutTransform>
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
@@ -152,12 +152,12 @@
                     <local:ModernButton ToolTip="{local:Loc Close}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"
-                                        IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                        IconData="{StaticResource Icon_Close}"
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{local:Loc Minimize}"
                                         Click="MinButton_Click"
                                         Foreground="#77333333"
-                                        IconData="M19,13H5V11H19V13Z"
+                                        IconData="{StaticResource Icon_Minimize}"
                                         DockPanel.Dock="Right"/>
                     <Grid Background="#57222222"
                           Cursor="Hand"
@@ -197,18 +197,28 @@
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.FFMpegFolder}"
                              Grid.Column="1"/>
-                    <Button Content="X"
-                            DockPanel.Dock="Right"
+                    <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc Reset}"
                             Command="{Binding ResetFFMpegFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Column="2"/>
-                    <Button Content="..."
-                            DockPanel.Dock="Right"
+                            Grid.Column="2">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="10"
+                              Width="10"
+                              Data="{StaticResource Icon_Close}"/>
+                    </Button>
+                    <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectFFMpegFolder}"
                             Command="{Binding SelectFFMpegFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Column="3"/>
+                            Grid.Column="3">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="5"
+                              Width="20"
+                              Data="{StaticResource Icon_More}"/>
+                    </Button>
 
                     <!-- Output Folder -->
                     <Button Content="{local:Loc OutFolder}"
@@ -223,14 +233,19 @@
                              Text="{Binding Settings.OutPath}"
                              Grid.Row="1"
                              Grid.Column="1"/>
-                    <Button Content="..."
-                            DockPanel.Dock="Right"
+                    <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Grid.Column="2"/>
+                            Grid.Column="2">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="5"
+                              Width="20"
+                              Data="{StaticResource Icon_More}"/>
+                    </Button>
                 </Grid>
                 <TabControl Background="Transparent">
                     <TabItem Header="{local:Loc Main}">

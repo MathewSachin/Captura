@@ -49,8 +49,8 @@ namespace Screna
                 AudioProvider.DataAvailable += AudioProvider_DataAvailable;
             else _audioProvider = null;
 
-            _recordTask = Task.Factory.StartNew(DoRecord);
-            _writeTask = Task.Factory.StartNew(DoWrite);
+            _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
+            _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
         }
 
         /// <summary>
@@ -72,16 +72,7 @@ namespace Screna
             {
                 while (!_frames.IsCompleted)
                 {
-                    object data = null;
-
-                    try
-                    {
-                        data = _frames.Take();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        continue;
-                    }
+                    _frames.TryTake(out var data, -1);
 
                     switch (data)
                     {
