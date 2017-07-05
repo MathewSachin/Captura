@@ -24,8 +24,6 @@ build:
   parallel: true
   project: src\Captura.sln
   verbosity: minimal
-  publish_nuget: true
-  publish_nuget_symbols: true
 
 after_build:
   - ps: appveyor/Pack-Release.ps1

@@ -28,9 +28,9 @@ choco install captura -y
 - Can be used from [Command-line](http://mathewsachin.github.io/Captura/Manual/cmdline.html).
 
 # Build Notes
-- [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be build using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
+- [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
 - .Net Framework v4.6.1 is required.
-- **Clone submodules:** Open a terminal in the project folder and type `git submodule update --init`.
+- ~~**Clone submodules:** Open a terminal in the project folder and type `git submodule update --init`.~~
 
 ## Optional Native Libraries
 Download and place in build output directory.

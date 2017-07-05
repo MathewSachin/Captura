@@ -493,7 +493,7 @@ namespace Captura.ViewModels
             {
                 case GifWriter gif:
                     if (Settings.GifVariable)
-                        _recorder = new VariableFrameRateGifRecorder(gif, ImgProvider);
+                        _recorder = new VFRGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
                     break;
