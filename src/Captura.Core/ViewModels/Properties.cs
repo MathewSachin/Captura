@@ -32,8 +32,7 @@ namespace Captura.ViewModels
         }
 
         #region Time
-        TimeSpan _ts = TimeSpan.Zero;
-        readonly TimeSpan _addend = TimeSpan.FromSeconds(1);
+        TimeSpan _ts;
 
         public TimeSpan TimeSpan
         {

@@ -113,7 +113,6 @@
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\WebCamViewModel.cs" />
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
