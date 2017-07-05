@@ -27,7 +27,8 @@ namespace Captura.Models
             {
                 g.CopyFromScreen(rectangle.Location, Point.Empty, rectangle.Size, CopyPixelOperation.SourceCopy);
 
-                if (Cursor) new MouseCursor().Draw(g, rectangle.Location);
+                if (Cursor)
+                    MouseCursor.Instance.Draw(g, rectangle.Location);
 
                 g.Flush();
             }

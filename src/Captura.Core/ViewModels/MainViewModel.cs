@@ -23,7 +23,6 @@ namespace Captura.ViewModels
         Timer _timer;
         IRecorder _recorder;
         string _currentFileName;
-        MouseCursor _cursor = new MouseCursor();
         bool isVideo;
         public static readonly RectangleConverter RectangleConverter = new RectangleConverter();
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
@@ -523,7 +522,7 @@ namespace Captura.ViewModels
                 overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
             if (Settings.IncludeCursor)
-                overlays.Add(_cursor);
+                overlays.Add(MouseCursor.Instance);
 
             if (overlays.Count > 0)
                 return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
