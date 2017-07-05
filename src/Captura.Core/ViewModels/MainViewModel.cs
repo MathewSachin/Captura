@@ -21,6 +21,7 @@ namespace Captura.ViewModels
     {
         #region Fields
         Timer _timer;
+        Timing _timing = new Timing();
         IRecorder _recorder;
         string _currentFileName;
         bool isVideo;
@@ -74,8 +75,9 @@ namespace Captura.ViewModels
                     ServiceProvider.SystemTray.HideNotification();
 
                     _recorder.Start();
+                    _timing?.Start();
                     _timer?.Start();
-
+                    
                     RecorderState = RecorderState.Recording;
                     Status.LocalizationKey = nameof(Resources.Recording);
                 }
@@ -83,6 +85,7 @@ namespace Captura.ViewModels
                 {
                     _recorder.Stop();
                     _timer?.Stop();
+                    _timing?.Pause();
 
                     RecorderState = RecorderState.Paused;
                     Status.LocalizationKey = nameof(Resources.Paused);
@@ -180,7 +183,7 @@ namespace Captura.ViewModels
 
             if (Timer)
             {
-                _timer = new Timer(1000);
+                _timer = new Timer(500);
                 _timer.Elapsed += TimerOnElapsed;
             }
 
@@ -299,8 +302,8 @@ namespace Captura.ViewModels
         
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
-            TimeSpan += _addend;
-
+            TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
+            
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
                 _syncContext.Post(async state => await StopRecording(), null);
@@ -454,6 +457,7 @@ namespace Captura.ViewModels
             }
             else _recorder.Start();
 
+            _timing?.Start();
             _timer?.Start();
         }
 
@@ -467,6 +471,7 @@ namespace Captura.ViewModels
             _recorder = null;
 
             _timer?.Stop();
+            _timing?.Stop();
 
             CanChangeVideoSource = true;
 
@@ -543,6 +548,7 @@ namespace Captura.ViewModels
             var task = Task.Run(() => rec.Dispose());
 
             _timer?.Stop();
+            _timing.Stop();
 
             #region After Recording Tasks
             CanChangeVideoSource = true;
