@@ -1,0 +1,1 @@
+Set-Content src/Captura.Core/ApiKeys.cs $env:api_keys

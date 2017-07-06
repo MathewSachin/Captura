@@ -9,6 +9,8 @@ configuration:
 environment:
   access_token:
     secure: c1r9fMnxBX4DW0SvZ4V/5Nucdi8pzA2YiQ/wsiyfjIY19q4RyKCYZTtU+2YQbiLT
+  api_keys:
+    secure: /h902KA2Ri4x+k+whUtfcEv1/evuFPyUnns3nYQ8fghSaUpFr0ZUG6SZvzdceQEiOM46kS1iOOyp7f1jWV/ItRdzBE4Vbqz7DJEHdLhvBIyI3dr4/dt94Hcj5jUT86sxR4dMVx08FUvAOog4PET5Fw==
 
 install:
 - ps: appveyor/Install.ps1
@@ -19,6 +21,7 @@ cache:
 
 before_build:
   - ps: appveyor/Update-Version.ps1
+  - ps: appveyor/Update-ApiKeys.ps1
 
 build:
   parallel: true

@@ -9,20 +9,15 @@ namespace Captura.Models
     {
         public static FullScreenItem Instance { get; } = new FullScreenItem();
 
-        Window _desktop;
-
-        FullScreenItem()
-        {
-            _desktop = Window.DesktopWindow;
-        }
+        FullScreenItem() { }
                 
         public override string ToString() => Resources.FullScreen;
 
         public IImageProvider GetImageProvider(out Func<Point> Offset)
         {
             Offset = () => Point.Empty;
-            
-            return new WindowProvider(() => _desktop, Settings.Instance.VideoBackgroundColor);
+
+            return new RegionProvider(WindowProvider.DesktopRectangle);
         }
     }
 }
