@@ -375,4 +375,16 @@
   <data name="FullScreen" xml:space="preserve">
     <value>Full Screen</value>
   </data>
+  <data name="Imgur" xml:space="preserve">
+    <value>Imgur</value>
+  </data>
+  <data name="ImgurFailed" xml:space="preserve">
+    <value>Imgur Upload Failed</value>
+  </data>
+  <data name="ImgurSuccess" xml:space="preserve">
+    <value>Imgur Upload Successful</value>
+  </data>
+  <data name="ImgurUploading" xml:space="preserve">
+    <value>Uploading to Imgur</value>
+  </data>
 </root>
