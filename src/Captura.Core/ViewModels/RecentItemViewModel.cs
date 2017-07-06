@@ -12,11 +12,16 @@ namespace Captura.ViewModels
         {
             this.FilePath = FilePath;
 
-            FileName = Path.GetFileName(FilePath);
+            Display = ItemType == RecentItemType.Link ? FilePath : Path.GetFileName(FilePath);
 
             this.IsSaving = IsSaving;
             this.ItemType = ItemType;
 
+            InitCommands();
+        }
+
+        void InitCommands()
+        {
             RemoveCommand = new DelegateCommand(() => OnRemove?.Invoke(), !IsSaving);
 
             OpenCommand = new DelegateCommand(() =>
@@ -31,7 +36,7 @@ namespace Captura.ViewModels
 
             DeleteCommand = new DelegateCommand(() =>
             {
-                if (!ServiceProvider.Messenger.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
+                if (!ServiceProvider.Messenger.ShowYesNo($"Are you sure you want to Delete: {FilePath}?", "Confirm Deletion"))
                     return;
 
                 try
@@ -50,9 +55,31 @@ namespace Captura.ViewModels
 
         bool CanPrint => !IsSaving && ItemType == RecentItemType.Image;
 
-        public string FilePath { get; }
+        string _filePath;
 
-        public string FileName { get; }
+        public string FilePath
+        {
+            get => _filePath;
+            set
+            {
+                _filePath = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        string _display;
+
+        public string Display
+        {
+            get => _display;
+            set
+            {
+                _display = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public RecentItemType ItemType { get; }
 
@@ -83,13 +110,13 @@ namespace Captura.ViewModels
             (PrintCommand as DelegateCommand).RaiseCanExecuteChanged(CanPrint);
         }
 
-        public ICommand RemoveCommand { get; }
+        public ICommand RemoveCommand { get; private set; }
 
-        public ICommand OpenCommand { get; }
+        public ICommand OpenCommand { get; private set; }
 
-        public ICommand PrintCommand { get; }
+        public ICommand PrintCommand { get; private set; }
 
-        public ICommand DeleteCommand { get; }
+        public ICommand DeleteCommand { get; private set; }
 
         public event Action OnRemove;
     }

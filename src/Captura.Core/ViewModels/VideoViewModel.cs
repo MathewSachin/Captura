@@ -236,7 +236,8 @@ namespace Captura.ViewModels
         public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } = new ObservableCollection<ObjectLocalizer<IImageWriterItem>>()
         {
             new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(Resources.Disk)),
-            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(Resources.Clipboard))
+            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(Resources.Clipboard)),
+            new ObjectLocalizer<IImageWriterItem>(ImgurWriter.Instance, nameof(Resources.Imgur))
         };
 
         IImageWriterItem _imgWriter = DiskWriter.Instance;
