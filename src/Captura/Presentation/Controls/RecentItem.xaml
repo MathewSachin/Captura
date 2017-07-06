@@ -16,7 +16,7 @@
                   Width="10"
                   Data="{StaticResource Icon_Close}"/>
         </Button>
-        <Button Content="{Binding FileName}"
+        <Button Content="{Binding Display}"
                 BorderThickness="0"
                 HorizontalContentAlignment="Left"
                 OverridesDefaultStyle="False"

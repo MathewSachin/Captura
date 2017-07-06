@@ -331,6 +331,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uploading to Imgur.
+        /// </summary>
+        public static string ImgurUploading {
+            get {
+                return ResourceManager.GetString("ImgurUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include Mouse Clicks.
         /// </summary>
         public static string IncludeClicks {

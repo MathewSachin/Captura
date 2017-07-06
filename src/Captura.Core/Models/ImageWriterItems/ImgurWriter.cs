@@ -23,6 +23,8 @@ namespace Captura.Models
             {
                 Image.Save(ms, Format);
 
+                var ritem = Recents.Add(Resources.ImgurUploading, RecentItemType.Link, true);
+                                
                 using (var w = new WebClient())
                 {
                     w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
@@ -55,7 +57,8 @@ namespace Captura.Models
                         if (Settings.Instance.CopyOutPathToClipboard)
                             link.WriteToClipboard();
 
-                        Recents.Add(link, RecentItemType.Link, false);
+                        ritem.FilePath = ritem.Display = link;
+                        ritem.Saved();
 
                         ServiceProvider.SystemTray.ShowTextNotification($"{Resources.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
 
@@ -65,6 +68,7 @@ namespace Captura.Models
                     {
                         ServiceProvider.SystemTray.ShowTextNotification(Resources.ImgurFailed, Settings.Instance.ScreenShotNotifyTimeout, null);
 
+                        ritem.Display = Resources.ImgurFailed;
                         Status.LocalizationKey = nameof(Resources.ImgurFailed);
                     }
                 }
