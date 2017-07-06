@@ -375,8 +375,16 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Screen:
-                    bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
-                    bmp = bmp.Transform();
+                    if (selectedVideoSource is FullScreenItem fullScreen)
+                    {
+                        bmp = ScreenShot.Capture();
+                    }
+                    else if (selectedVideoSource is ScreenItem screen)
+                    {
+                        bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
+                    }
+                    
+                    bmp = bmp?.Transform();
                     break;
 
                 case VideoSourceKind.Region:
