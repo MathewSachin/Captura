@@ -12,7 +12,7 @@ namespace Captura.ViewModels
         {
             this.FilePath = FilePath;
 
-            FileName = Path.GetFileName(FilePath);
+            FileName = ItemType == RecentItemType.Link ? FilePath : Path.GetFileName(FilePath);
 
             this.IsSaving = IsSaving;
             this.ItemType = ItemType;

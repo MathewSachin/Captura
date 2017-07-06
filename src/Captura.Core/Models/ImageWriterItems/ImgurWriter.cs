@@ -1,13 +1,12 @@
 ﻿using Captura.Properties;
 using Captura.ViewModels;
-using Screna;
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Captura.Models
@@ -41,16 +40,27 @@ namespace Captura.Models
                     
                     if (success)
                     {
-                        Status.LocalizationKey = nameof(Resources.ScreenShotSaved);
+                        var link = xdoc.Root.Element("link").Value;
+
+                        if (Settings.Instance.CopyOutPathToClipboard)
+                            link.WriteToClipboard();
+
+                        Recents.Add(link, RecentItemType.Link, false);
+                        
+                        ServiceProvider.SystemTray.ShowTextNotification($"{Resources.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
+
+                        Status.LocalizationKey = nameof(Resources.ImgurSuccess);
                     }
                     else
                     {
-                        Status.LocalizationKey = nameof(Resources.NotSaved);
+                        ServiceProvider.SystemTray.ShowTextNotification(Resources.ImgurFailed, Settings.Instance.ScreenShotNotifyTimeout, null);
+
+                        Status.LocalizationKey = nameof(Resources.ImgurFailed);
                     }
                 }
             }
         }
 
-        public override string ToString() => Resources.Clipboard;
+        public override string ToString() => Resources.Imgur;
     }
 }

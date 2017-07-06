@@ -21,9 +21,9 @@ namespace Captura.ViewModels
             // Reversion required to maintain order.
             Settings.Instance.RecentItems.Reverse();
 
-            // Restore only if File exists.
+            // Restore only if File exists or is a link.
             foreach (var recent in Settings.Instance.RecentItems)
-                if (File.Exists(recent.FilePath))
+                if (recent.ItemType == RecentItemType.Link || File.Exists(recent.FilePath))
                     Add(recent.FilePath, recent.ItemType, false);
 
             ClearCommand = new DelegateCommand(() => RecentList.Clear());
@@ -47,9 +47,9 @@ namespace Captura.ViewModels
 
             var max = Settings.Instance.RecentMax;
 
-            // Persist only if File exists.
+            // Persist only if File exists or is a link.
             for (int i = 0; i < RecentList.Count && i < max; ++i)
-                if (File.Exists(RecentList[i].FilePath))
+                if (RecentList[i].ItemType == RecentItemType.Link || File.Exists(RecentList[i].FilePath))
                     Settings.Instance.RecentItems.Add(new RecentItemModel(RecentList[i].FilePath, RecentList[i].ItemType));
         }
     }
