@@ -215,8 +215,8 @@
                             Grid.Column="3">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
-                              Height="5"
-                              Width="20"
+                              Height="4"
+                              Width="16"
                               Data="{StaticResource Icon_More}"/>
                     </Button>
 
@@ -242,8 +242,8 @@
                             Grid.Column="2">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
-                              Height="5"
-                              Width="20"
+                              Height="4"
+                              Width="16"
                               Data="{StaticResource Icon_More}"/>
                     </Button>
                 </Grid>

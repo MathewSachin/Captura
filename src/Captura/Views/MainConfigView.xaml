@@ -131,10 +131,11 @@
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc FrameRate}"
-                   ContentStringFormat="{}{0}:"
-                   Margin="0,0,5,0"/>
+                   ContentStringFormat="{}{0}:"                   />
             <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
-                   Margin="3,0"/>
+                   Margin="5,0"
+                   MinWidth="15"
+                   HorizontalContentAlignment="Right"/>
             <Slider Minimum="1"
                     Maximum="30" 
                     SelectionStart="8"
@@ -147,11 +148,12 @@
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
-                   ContentStringFormat="{}{0}:"
-                   Margin="0,0,5,0"/>
+                   ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.VideoQuality}"
                    ContentStringFormat="{}{0:N0}%"
-                   Margin="3,0"/>
+                   Margin="5,0"
+                   MinWidth="30"
+                   HorizontalContentAlignment="Right"/>
             <Slider Minimum="1" 
                     Maximum="100"
                     SelectionStart="60"
@@ -202,11 +204,12 @@
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
-                   ContentStringFormat="{}{0}:"
-                   Margin="0,0,5,0"/>
+                   ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.AudioQuality}"
                    ContentStringFormat="{}{0:N0}%"
-                   Margin="3,0"/>
+                   Margin="5,0"
+                   MinWidth="30"
+                   HorizontalContentAlignment="Right"/>
             <Slider Minimum="1" 
                     Maximum="100"
                     SelectionStart="40"
