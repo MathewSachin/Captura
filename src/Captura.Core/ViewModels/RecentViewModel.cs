@@ -49,8 +49,12 @@ namespace Captura.ViewModels
 
             // Persist only if File exists or is a link.
             for (int i = 0; i < RecentList.Count && i < max; ++i)
-                if (RecentList[i].ItemType == RecentItemType.Link || File.Exists(RecentList[i].FilePath))
-                    Settings.Instance.RecentItems.Add(new RecentItemModel(RecentList[i].FilePath, RecentList[i].ItemType));
+            {
+                var item = RecentList[i];
+                
+                if ((item.ItemType == RecentItemType.Link && !item.IsSaving) || File.Exists(item.FilePath))
+                    Settings.Instance.RecentItems.Add(new RecentItemModel(item.FilePath, item.ItemType));
+            }
         }
     }
 }
