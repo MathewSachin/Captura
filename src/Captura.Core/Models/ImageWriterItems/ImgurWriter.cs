@@ -32,12 +32,22 @@ namespace Captura.Models
                         { "image", Convert.ToBase64String(ms.ToArray()) }
                     };
 
-                    var response = await w.UploadValuesTaskAsync("https://api.imgur.com/3/upload.xml", values);
+                    var success = false;
+                    XDocument xdoc = null;
 
-                    var xdoc = XDocument.Load(new MemoryStream(response));
+                    try
+                    {
+                        var response = await w.UploadValuesTaskAsync("https://api.imgur.com/3/upload.xml", values);
 
-                    var success = int.Parse(xdoc.Root.Attribute("success").Value) == 1;
-                    
+                        xdoc = XDocument.Load(new MemoryStream(response));
+
+                        success = int.Parse(xdoc.Root.Attribute("success").Value) == 1;
+                    }
+                    catch
+                    {
+                        success = false;
+                    }
+
                     if (success)
                     {
                         var link = xdoc.Root.Element("link").Value;
@@ -46,7 +56,7 @@ namespace Captura.Models
                             link.WriteToClipboard();
 
                         Recents.Add(link, RecentItemType.Link, false);
-                        
+
                         ServiceProvider.SystemTray.ShowTextNotification($"{Resources.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
 
                         Status.LocalizationKey = nameof(Resources.ImgurSuccess);
