@@ -1,10 +1,14 @@
-﻿namespace Captura
+﻿using System;
+
+namespace Captura
 {
     /// <summary>
-    /// Api keys. Need to be updated before a production build.
+    /// Holds Api Keys.
+    /// On Development builds, Api Keys are retrieved from User Environment variables.
+    /// On Production builds, AppVeyor embeds Api Keys into the app.
     /// </summary>
     static class ApiKeys
     {
-        public const string ImgurClientId = "<IMGUR-CLIENT-ID>";
+        public static string ImgurClientId { get; } = Environment.GetEnvironmentVariable("imgur_client_id", EnvironmentVariableTarget.User) ?? "";
     }
 }
