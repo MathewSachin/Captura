@@ -55,10 +55,7 @@ namespace Captura.Models
 
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
-            if (AudioProvider == null)
-                return new FFMpegVideoWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider);
-
-            return new FFMpegMuxedWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider);
+            return new FFMpegWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider);
         }        
     }
 }
