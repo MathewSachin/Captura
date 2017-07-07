@@ -574,11 +574,11 @@ namespace Captura.ViewModels
             savingRecentItem.Saved();
 
             if (Settings.CopyOutPathToClipboard)
-                _currentFileName.WriteToClipboard();
+                savingRecentItem.FilePath.WriteToClipboard();
             
-            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(_currentFileName), 5000, () =>
+            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(_currentFileName));
+                ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });
         }
     }
