@@ -133,7 +133,6 @@
     <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="Models\Timing.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
