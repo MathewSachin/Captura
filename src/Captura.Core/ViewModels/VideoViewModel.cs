@@ -174,7 +174,7 @@ namespace Captura.ViewModels
         
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.OnlyAudio)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))

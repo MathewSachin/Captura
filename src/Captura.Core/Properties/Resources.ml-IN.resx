@@ -315,8 +315,8 @@
   <data name="ScreenShotSaved" xml:space="preserve">
     <value>സ്ക്രീൻഷോട്ട് സംരക്ഷിച്ചു</value>
   </data>
-  <data name="NoVideo" xml:space="preserve">
-    <value>വീഡിയോ ഇല്ല</value>
+  <data name="OnlyAudio" xml:space="preserve">
+    <value>ഓഡിയോ മാത്രം</value>
   </data>
   <data name="Region" xml:space="preserve">
     <value>ഭാഗം</value>

@@ -88,15 +88,6 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio Format when no Video.
-        /// </summary>
-        public static string AudioFormatWoVideo {
-            get {
-                return ResourceManager.GetString("AudioFormatWoVideo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Audio Saved.
         /// </summary>
         public static string AudioSaved {
@@ -448,20 +439,20 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Video.
-        /// </summary>
-        public static string NoVideo {
-            get {
-                return ResourceManager.GetString("NoVideo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only Audio.
+        /// </summary>
+        public static string OnlyAudio {
+            get {
+                return ResourceManager.GetString("OnlyAudio", resourceCulture);
             }
         }
         
