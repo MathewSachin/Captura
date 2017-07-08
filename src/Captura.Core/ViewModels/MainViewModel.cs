@@ -121,7 +121,7 @@ namespace Captura.ViewModels
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
                     var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.LastSourceName);
 
-                    VideoViewModel.RegionProvider.SelectedRegion = rect;
+                    ServiceProvider.RegionProvider.SelectedRegion = rect;
                     break;
             }
             #endregion
@@ -238,7 +238,7 @@ namespace Captura.ViewModels
             if (Remembered)
                 RestoreRemembered();
 
-            WebCamProvider = ServiceProvider.Get<IWebCamProvider>(ServiceName.WebCam);
+            WebCamProvider = ServiceProvider.WebCamProvider;
         }
 
         void Remember()
@@ -255,7 +255,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     Settings.LastSourceKind = VideoSourceKind.Region;
-                    var rect = VideoViewModel.RegionProvider.SelectedRegion;
+                    var rect = ServiceProvider.RegionProvider.SelectedRegion;
                     Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
                     break;
 
@@ -377,13 +377,13 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem fullScreen)
                     {
-                        var hider = Settings.HideOnFullScreenShot ? ServiceProvider.Get<Action<bool>>(ServiceName.MainWindowVisibility) : null;
-
-                        hider?.Invoke(false);
+                        if (Settings.HideOnFullScreenShot)
+                            ServiceProvider.MainWindow.IsVisible = false;
 
                         bmp = ScreenShot.Capture();
 
-                        hider?.Invoke(true);
+                        if (Settings.HideOnFullScreenShot)
+                            ServiceProvider.MainWindow.IsVisible = true;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
@@ -394,7 +394,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(VideoViewModel.RegionProvider.SelectedRegion, includeCursor);
+                    bmp = ScreenShot.Capture(ServiceProvider.RegionProvider.SelectedRegion, includeCursor);
                     bmp = bmp.Transform();
                     break;
             }
@@ -406,12 +406,12 @@ namespace Captura.ViewModels
         {
             FFMpegLog.Reset();
 
-            VideoViewModel.RegionProvider.Lock();
+            ServiceProvider.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
 
             if (Settings.MinimizeOnStart)
-                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(true);
+                ServiceProvider.MainWindow.IsMinimized = true;
             
             CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
 
@@ -490,11 +490,11 @@ namespace Captura.ViewModels
             CanChangeVideoSource = true;
 
             if (Settings.MinimizeOnStart)
-                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
+                ServiceProvider.MainWindow.IsMinimized = false;
 
-            VideoViewModel.RegionProvider.Release();
+            ServiceProvider.RegionProvider.Release();
 
-            ServiceProvider.Messenger.ShowError($"Error Occured\n\n{E}");
+            ServiceProvider.MessageProvider.ShowError($"Error Occured\n\n{E}");
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
@@ -568,9 +568,9 @@ namespace Captura.ViewModels
             CanChangeVideoSource = true;
             
             if (Settings.MinimizeOnStart)
-                ServiceProvider.Get<Action<bool>>(ServiceName.Minimize).Invoke(false);
+                ServiceProvider.MainWindow.IsMinimized = false;
 
-            VideoViewModel.RegionProvider.Release();
+            ServiceProvider.RegionProvider.Release();
             #endregion
 
             // Ensure saved

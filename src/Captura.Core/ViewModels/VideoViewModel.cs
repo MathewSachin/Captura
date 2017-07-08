@@ -7,12 +7,8 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
-        public IRegionProvider RegionProvider { get; private set; }
-        
         public void Init()
-        {
-            RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
-            
+        {            
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
@@ -30,7 +26,7 @@ namespace Captura.ViewModels
 
             ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
 
-            RegionProvider.SelectorHidden += () =>
+            ServiceProvider.RegionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
                     SelectedVideoSourceKind = VideoSourceKind.Screen;
@@ -64,7 +60,7 @@ namespace Captura.ViewModels
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     // Prevent RegionSelector from showing here
-                    RegionProvider.SelectorVisible = false;
+                    ServiceProvider.RegionProvider.SelectorVisible = false;
 
                     foreach (var win in Window.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowItem(win));
@@ -79,7 +75,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(RegionProvider.VideoSource);
+                    AvailableVideoSources.Add(ServiceProvider.RegionProvider.VideoSource);
                     break;
 
                 case VideoSourceKind.NoVideo:
@@ -96,7 +92,7 @@ namespace Captura.ViewModels
                 SelectedVideoSource = AvailableVideoSources[0];
 
             // RegionSelector should only be shown on Region Capture.
-            RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
         }
         
         void InitSharpAviCodecs()

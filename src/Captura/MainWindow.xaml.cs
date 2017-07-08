@@ -11,22 +11,19 @@ namespace Captura
     {        
         public MainWindow()
         {
-            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, new RegionSelector());
+            ServiceProvider.RegionProvider = new RegionSelector();
 
-            ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new MessageProvider());
+            ServiceProvider.MessageProvider = new MessageProvider();
 
-            ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new WebCamProvider());
-                        
-            InitializeComponent();
+            ServiceProvider.WebCamProvider = new WebCamProvider();
             
+            InitializeComponent();
+
+            ServiceProvider.MainWindow = new MainWindowProvider(this);
+
             if (App.CmdOptions.Tray)
                 Hide();
-
-            ServiceProvider.Register<Action<bool>>(ServiceName.Minimize, minimize =>
-            {
-                WindowState = minimize ? WindowState.Minimized : WindowState.Normal;
-            });
-
+            
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
             {
@@ -40,15 +37,8 @@ namespace Captura
                 }
             };
 
-            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
-
-            ServiceProvider.Register<Action<bool>>(ServiceName.MainWindowVisibility, visible =>
-            {
-                if (visible)
-                    Show();
-                else Hide();
-            });
-
+            ServiceProvider.SystemTray = new SystemTray(SystemTray);
+            
             Closing += (s, e) =>
             {
                 if (!TryExit())
@@ -99,7 +89,7 @@ namespace Captura
 
             if (vm.RecorderState == RecorderState.Recording)
             {
-                if (!ServiceProvider.Messenger.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                if (!ServiceProvider.MessageProvider.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                     return false;
             }
 

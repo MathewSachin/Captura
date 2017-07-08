@@ -56,12 +56,6 @@ namespace Captura
         /// </summary>
         public static void Register<T>(ServiceName ServiceAction, T Action)
         {
-            if (ServiceAction == ServiceName.SystemTray)
-                SystemTray = (ISystemTray)Action;
-
-            else if (ServiceAction == ServiceName.Message)
-                Messenger = (IMessageProvider)Action;
-
             _services.Add(ServiceAction, Action);
         }
 
@@ -121,17 +115,23 @@ namespace Captura
             try { Process.Start(StartInfo.FileName); }
             catch (Win32Exception E) when (E.NativeErrorCode == 2)
             {
-                Messenger.ShowError($"Could not find file: {StartInfo.FileName}");
+                MessageProvider.ShowError($"Could not find file: {StartInfo.FileName}");
             }
             catch (Exception E)
             {
-                Messenger.ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
+                MessageProvider.ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
             }
         }
 
-        public static ISystemTray SystemTray { get; private set; }
+        public static ISystemTray SystemTray { get; set; }
 
-        public static IMessageProvider Messenger { get; private set; }
+        public static IRegionProvider RegionProvider { get; set; }
+
+        public static IMessageProvider MessageProvider { get; set; }
+
+        public static IWebCamProvider WebCamProvider { get; set; }
+
+        public static IMainWindow MainWindow { get; set; }
                 
         public static bool FileExists(string FileName)
         {

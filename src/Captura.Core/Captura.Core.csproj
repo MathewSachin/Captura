@@ -76,6 +76,7 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Models\IMainWindow.cs" />
     <Compile Include="Models\IMessageProvider.cs" />
     <Compile Include="Models\IRegionProvider.cs" />
     <Compile Include="Models\ISystemTray.cs" />

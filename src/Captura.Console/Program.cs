@@ -194,13 +194,15 @@ namespace Captura.Console
 
         static void RegisterFakes()
         {
-            ServiceProvider.Register<IRegionProvider>(ServiceName.RegionProvider, FakeRegionProvider.Instance);
+            ServiceProvider.RegionProvider = FakeRegionProvider.Instance;
 
-            ServiceProvider.Register<IMessageProvider>(ServiceName.Message, new FakeMessageProvider());
+            ServiceProvider.MessageProvider = new FakeMessageProvider();
 
-            ServiceProvider.Register<IWebCamProvider>(ServiceName.WebCam, new FakeWebCamProvider());
+            ServiceProvider.WebCamProvider = new FakeWebCamProvider();
 
-            ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new FakeSystemTray());
+            ServiceProvider.SystemTray = new FakeSystemTray();
+
+            ServiceProvider.MainWindow = new FakeWindowProvider();
         }
 
         static void Banner()
