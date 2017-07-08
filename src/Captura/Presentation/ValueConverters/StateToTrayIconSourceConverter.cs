@@ -1,13 +1,12 @@
 using Captura.Models;
 using System;
 using System.Globalization;
-using System.Windows.Data;
 
 namespace Captura
 {
-    public class StateToTrayIconSourceConverter : IValueConverter
+    public class StateToTrayIconSourceConverter : OneWayConverter
     {        
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch ((RecorderState)value)
             {
@@ -20,11 +19,6 @@ namespace Captura
                 default:
                     return "Captura.ico";
             }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
         }
     }
 }
