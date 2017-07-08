@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -73,6 +74,7 @@ namespace Screna
             try
             {
                 var lastFrameWriteTime = DateTime.MinValue;
+                Bitmap lastFrame = null;
                 
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {
@@ -83,7 +85,11 @@ namespace Screna
 
                     lastFrameWriteTime = DateTime.Now;
 
-                    _videoEncoder.WriteFrame(frame, delay);
+                    // delay is the time between this and next frame
+                    if (lastFrame != null)
+                        _videoEncoder.WriteFrame(lastFrame, delay);
+
+                    lastFrame = frame;
                 }
             }
             catch (Exception E)
