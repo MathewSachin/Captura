@@ -54,6 +54,11 @@
 
         /// Gets the IWebCamProvider.
         /// </summary>
-        WebCam
+        WebCam,
+
+        /// <summary>
+        /// Set Main Window Visibility (Action<bool>).
+        /// </summary>
+        MainWindowVisibility
     }
 }

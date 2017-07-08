@@ -21,7 +21,7 @@ namespace Captura
         /// </summary>
         public static T Get<T>(ServiceName ServiceAction)
         {
-            return (T)_services[ServiceAction];
+            return _services.ContainsKey(ServiceAction) ? (T)_services[ServiceAction] : default(T);
         }
 
         /// <summary>

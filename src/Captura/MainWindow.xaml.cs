@@ -42,6 +42,13 @@ namespace Captura
 
             ServiceProvider.Register<ISystemTray>(ServiceName.SystemTray, new SystemTray(SystemTray));
 
+            ServiceProvider.Register<Action<bool>>(ServiceName.MainWindowVisibility, visible =>
+            {
+                if (visible)
+                    Show();
+                else Hide();
+            });
+
             Closing += (s, e) =>
             {
                 if (!TryExit())

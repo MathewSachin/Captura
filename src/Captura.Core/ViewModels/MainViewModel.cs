@@ -377,7 +377,13 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem fullScreen)
                     {
+                        var hider = Settings.HideOnFullScreenShot ? ServiceProvider.Get<Action<bool>>(ServiceName.MainWindowVisibility) : null;
+
+                        hider?.Invoke(false);
+
                         bmp = ScreenShot.Capture();
+
+                        hider?.Invoke(true);
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
