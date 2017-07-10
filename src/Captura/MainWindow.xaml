@@ -187,18 +187,17 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- FFmpeg Folder -->
                     <Label Content="{local:Loc FFMpegFolder}"
                            ContentStringFormat="{}{0}: "
-                           DockPanel.Dock="Left"
                            Padding="5,0"/>
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.FFMpegFolder}"
                              Grid.Column="1"/>
-                    <Button DockPanel.Dock="Right"
-                            ToolTip="{local:Loc Reset}"
+                    <Button ToolTip="{local:Loc Reset}"
                             Command="{Binding ResetFFMpegFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Column="2">
@@ -208,11 +207,19 @@
                               Width="10"
                               Data="{StaticResource Icon_Close}"/>
                     </Button>
-                    <Button DockPanel.Dock="Right"
-                            ToolTip="{local:Loc SelectFFMpegFolder}"
-                            Command="{Binding SelectFFMpegFolderCommand}"
+                    <Button ToolTip="Download"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Column="3">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="10"
+                              Width="8"
+                              Data="{StaticResource Icon_Download}"/>
+                    </Button>
+                    <Button ToolTip="{local:Loc SelectFFMpegFolder}"
+                            Command="{Binding SelectFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Column="4">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
                               Height="4"
@@ -232,14 +239,14 @@
                     <TextBox IsReadOnly="True"
                              Text="{Binding Settings.OutPath}"
                              Grid.Row="1"
-                             Grid.Column="1"/>
+                             Grid.Column="1"
+                             Grid.ColumnSpan="3"/>
                     <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                             Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Grid.Column="2">
+                            Grid.Column="4">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
                               Height="4"
