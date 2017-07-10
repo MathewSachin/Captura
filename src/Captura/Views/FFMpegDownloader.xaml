@@ -1,12 +1,16 @@
 ﻿<Window x:Class="Captura.Views.FFMpegDownloader"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Captura.Views"
-        mc:Ignorable="d"
-        Title="FFMpeg_Downloader" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        Title="FFMpeg Downloader"
+        Height="300"
+        Width="300"
+        ResizeMode="NoResize">
+    <Window.DataContext>
+        <vm:FFMpgDownloadViewModel/>
+    </Window.DataContext>
+    <StackPanel>
+        <ProgressBar Value="{Binding Progress}"/>
+        <Label Content="{Binding Status}"/>
+    </StackPanel>
 </Window>
