@@ -191,8 +191,8 @@ namespace Captura.ViewModels
             {
                 switch (Args.PropertyName)
                 {
-                    case nameof(AudioViewModel.AudioSource.SelectedRecordingSource):
-                    case nameof(AudioViewModel.AudioSource.SelectedLoopbackSource):
+                    case nameof(AudioSource.SelectedRecordingSource):
+                    case nameof(AudioSource.SelectedLoopbackSource):
                     case null:
                     case "":
                         CheckFunctionalityAvailability();
