@@ -3,12 +3,20 @@ using SharpCompress.Readers;
 using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Captura.ViewModels
 {
-    public class FFMpgDownloadViewModel : ViewModelBase
+    public class FFMpegDownloadViewModel : ViewModelBase
     {
-        public async void Start()
+        public DelegateCommand StartCommand { get; }
+
+        public FFMpegDownloadViewModel()
+        {
+            StartCommand = new DelegateCommand(async () => await Start());
+        }
+
+        async Task Start()
         {
             using (var web = new WebClient())
             {
@@ -52,7 +60,7 @@ namespace Captura.ViewModels
             }
         }
 
-        string _status;
+        string _status = "Ready";
 
         public string Status
         {

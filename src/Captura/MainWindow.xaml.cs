@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using Captura.Views;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -103,6 +104,11 @@ namespace Captura
         void MenuExit_Click(object sender, RoutedEventArgs e)
         {
             TryExit();
+        }
+
+        void FFDownload(object sender, RoutedEventArgs e)
+        {
+            new FFMpegDownloader().ShowDialog();
         }
     }
 }

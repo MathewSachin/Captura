@@ -3,14 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         Title="FFMpeg Downloader"
-        Height="300"
-        Width="300"
+        Height="400"
+        Width="600"
         ResizeMode="NoResize">
     <Window.DataContext>
-        <vm:FFMpgDownloadViewModel/>
+        <vm:FFMpegDownloadViewModel/>
     </Window.DataContext>
-    <StackPanel>
-        <ProgressBar Value="{Binding Progress}"/>
-        <Label Content="{Binding Status}"/>
-    </StackPanel>
+    <DockPanel Margin="5">
+        <Label Content="{Binding Status}"
+               DockPanel.Dock="Bottom"/>
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="15">
+            <Label Margin="0,0,10,0"
+                   Content="Download Progress"
+                   ContentStringFormat="{}{0}:"/>
+            <ProgressBar Value="{Binding Progress, Mode=OneWay}"
+                         Height="10"/>
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="0,5"
+                   TextAlignment="Center">
+            FFMpeg adds support for more output formats to Captura.<LineBreak/>
+            The Download size is nearly 30 MB.
+        </TextBlock>
+        <Button Content="Start Download"
+                Command="{Binding StartCommand}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+    </DockPanel>
 </Window>

@@ -209,7 +209,8 @@
                     </Button>
                     <Button ToolTip="Download"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Column="3">
+                            Grid.Column="3"
+                            Click="FFDownload">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
                               Height="10"
