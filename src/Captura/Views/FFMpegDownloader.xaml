@@ -26,6 +26,23 @@
             FFMpeg adds support for more output formats to Captura.<LineBreak/>
             The Download size is nearly 30 MB.
         </TextBlock>
+
+        <DockPanel DockPanel.Dock="Bottom"
+                   Margin="0,5">
+            <Button Content="Target Folder"
+                    ContentStringFormat="{}{0}: "/>
+            <Button DockPanel.Dock="Right"
+                    Command="{Binding SelectFolderCommand}">
+                <Path Fill="#B7000000" 
+                      Stretch="UniformToFill"
+                      Height="4"
+                      Width="16"
+                      Data="{StaticResource Icon_More}"/>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     Text="{Binding TargetFolder, Mode=OneWay}"/>
+        </DockPanel>
+        
         <Button Content="Start Download"
                 Command="{Binding StartCommand}"
                 HorizontalAlignment="Center"
