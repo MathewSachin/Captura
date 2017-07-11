@@ -293,11 +293,11 @@ namespace Captura.ViewModels
 
             // Remember things if not console.
             if (_persist)
+            {
                 Remember();
-            
-            // Save if not console
-            if (_persist)
+
                 Settings.Save();
+            }
         }
         
         void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
@@ -478,14 +478,20 @@ namespace Captura.ViewModels
         void OnErrorOccured(Exception E)
         {
             Status.LocalizationKey = nameof(Resources.ErrorOccured);
+                        
+            AfterRecording();
 
+            ServiceProvider.MessageProvider.ShowError($"{Resources.ErrorOccured}\n\n{E}");
+        }
+
+        void AfterRecording()
+        {
             RecorderState = RecorderState.NotRecording;
 
-            // Set Recorder to null
             _recorder = null;
 
             _timer?.Stop();
-            _timing?.Stop();
+            _timing.Stop();
 
             CanChangeVideoSource = true;
 
@@ -493,8 +499,6 @@ namespace Captura.ViewModels
                 ServiceProvider.MainWindow.IsMinimized = false;
 
             ServiceProvider.RegionProvider.Release();
-
-            ServiceProvider.MessageProvider.ShowError($"Error Occured\n\n{E}");
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
@@ -535,7 +539,7 @@ namespace Captura.ViewModels
             var overlays = new List<IOverlay>();
 
             // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable)
+            if (MouseKeyHookAvailable && (Settings.MouseClicks || Settings.KeyStrokes))
                 overlays.Add(new MouseKeyHook(Settings.MouseClicks, Settings.KeyStrokes));
 
             if (Settings.IncludeCursor)
@@ -553,25 +557,12 @@ namespace Captura.ViewModels
 
             var savingRecentItem = RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
             
-            RecorderState = RecorderState.NotRecording;
-
-            // Set Recorder to null
+            // Reference Recorder as it will be set to null
             var rec = _recorder;
-            _recorder = null;
-
-            var task = Task.Run(() => rec.Dispose());
-
-            _timer?.Stop();
-            _timing.Stop();
-
-            #region After Recording Tasks
-            CanChangeVideoSource = true;
             
-            if (Settings.MinimizeOnStart)
-                ServiceProvider.MainWindow.IsMinimized = false;
-
-            ServiceProvider.RegionProvider.Release();
-            #endregion
+            var task = Task.Run(() => rec.Dispose());
+            
+            AfterRecording();
 
             // Ensure saved
             await task;

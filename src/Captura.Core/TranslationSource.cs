@@ -40,7 +40,7 @@ namespace Captura
 
         public CultureInfo CurrentCulture
         {
-            get { return currentCulture; }
+            get => currentCulture;
             set
             {
                 currentCulture = value;

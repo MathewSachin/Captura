@@ -87,7 +87,7 @@ namespace Captura.ViewModels
 
         public bool IsSaving
         {
-            get { return _saving; }
+            get => _saving;
             private set
             {
                 _saving = value;

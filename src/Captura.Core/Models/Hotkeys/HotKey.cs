@@ -27,7 +27,7 @@ namespace Captura.Models
 
         public bool IsActive
         {
-            get { return _active; }
+            get => _active;
             set
             {
                 _active = value;
