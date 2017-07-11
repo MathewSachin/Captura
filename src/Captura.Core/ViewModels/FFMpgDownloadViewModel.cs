@@ -31,15 +31,16 @@ namespace Captura.ViewModels
 
             SelectFolderCommand = new DelegateCommand(() =>
             {
-                var dlg = new VistaFolderBrowserDialog
+                using (var dlg = new VistaFolderBrowserDialog
                 {
                     SelectedPath = TargetFolder,
                     UseDescriptionForTitle = true,
                     Description = Resources.SelectFFMpegFolder
-                };
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    TargetFolder = dlg.SelectedPath;
+                })
+                {
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                        TargetFolder = dlg.SelectedPath;
+                }
             });
         }
 
