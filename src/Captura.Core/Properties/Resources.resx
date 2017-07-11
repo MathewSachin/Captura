@@ -228,9 +228,6 @@
   <data name="ShowSysNotify" xml:space="preserve">
     <value>Show System Tray Notifications</value>
   </data>
-  <data name="AudioFormatWoVideo" xml:space="preserve">
-    <value>Audio Format when no Video</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -315,8 +312,8 @@
   <data name="ScreenShotSaved" xml:space="preserve">
     <value>ScreenShot Saved</value>
   </data>
-  <data name="NoVideo" xml:space="preserve">
-    <value>No Video</value>
+  <data name="OnlyAudio" xml:space="preserve">
+    <value>Only Audio</value>
   </data>
   <data name="Region" xml:space="preserve">
     <value>Region</value>

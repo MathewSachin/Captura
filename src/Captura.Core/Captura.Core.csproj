@@ -76,6 +76,7 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Models\IMainWindow.cs" />
     <Compile Include="Models\IMessageProvider.cs" />
     <Compile Include="Models\IRegionProvider.cs" />
     <Compile Include="Models\ISystemTray.cs" />
@@ -133,7 +134,6 @@
     <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="Models\Timing.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>

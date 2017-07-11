@@ -18,6 +18,8 @@ namespace Captura
         {
             _hotkey = Hotkey;
 
+            TextColor();
+
             Content = _hotkey.ToString();
         }
 
@@ -26,12 +28,17 @@ namespace Captura
             HotkeyEdited((Keys) KeyInterop.VirtualKeyFromKey(NewKey), NewModifiers);
         }
 
+        void TextColor()
+        {
+            Foreground = new SolidColorBrush(_hotkey.IsRegistered ? Colors.Black : Colors.DarkRed);
+        }
+
         void HotkeyEdited(Keys NewKey, Modifiers NewModifiers)
         {
             _hotkey.Change(NewKey, NewModifiers);
 
             // Red Text on Error
-            Foreground = new SolidColorBrush(_hotkey.IsRegistered ? Colors.Black : Colors.DarkRed);
+            TextColor();
 
             Content = _hotkey.ToString();
 

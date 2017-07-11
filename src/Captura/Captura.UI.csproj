@@ -74,6 +74,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\CmdOptions.cs" />
     <Compile Include="Models\Dpi.cs" />
+    <Compile Include="Models\MainWindowProvider.cs" />
     <Compile Include="Models\MessageProvider.cs" />
     <Compile Include="Models\SystemTray.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="Views\FFMpegLogView.xaml.cs">
       <DependentUpon>FFMpegLogView.xaml</DependentUpon>
     </Compile>

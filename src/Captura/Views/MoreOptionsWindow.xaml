@@ -84,6 +84,10 @@
                     Allows DirectX Full Screen Game Recording.
                 </TextBlock>
             </CheckBox>
+
+            <CheckBox Content="Hide Main Window on Full Screen ScreenShot"
+                      IsChecked="{Binding Settings.HideOnFullScreenShot, Mode=TwoWay}"
+                      Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Window>

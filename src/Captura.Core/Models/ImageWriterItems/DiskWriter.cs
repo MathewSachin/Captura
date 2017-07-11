@@ -36,7 +36,7 @@ namespace Captura.Models
             }
             catch (Exception E)
             {
-                ServiceProvider.Messenger.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
+                ServiceProvider.MessageProvider.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
 
                 Status.LocalizationKey = nameof(Resources.NotSaved);
             }

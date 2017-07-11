@@ -45,6 +45,7 @@
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
     <Compile Include="Recorder\IRecorder.cs" />
     <Compile Include="Recorder\Recorder.cs" />
+    <Compile Include="Timing.cs" />
     <Compile Include="VideoWriter\GifWriter.cs" />
     <Compile Include="ImageProviders\ImageProviderBase.cs" />
     <Compile Include="ImageProviders\RegionProvider.cs" />
