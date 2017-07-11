@@ -76,11 +76,11 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
-    <Compile Include="Models\IMainWindow.cs" />
-    <Compile Include="Models\IMessageProvider.cs" />
-    <Compile Include="Models\IRegionProvider.cs" />
-    <Compile Include="Models\ISystemTray.cs" />
-    <Compile Include="Models\IWebCamProvider.cs" />
+    <Compile Include="Services\IMainWindow.cs" />
+    <Compile Include="Services\IMessageProvider.cs" />
+    <Compile Include="Services\IRegionProvider.cs" />
+    <Compile Include="Services\ISystemTray.cs" />
+    <Compile Include="Services\IWebCamProvider.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
