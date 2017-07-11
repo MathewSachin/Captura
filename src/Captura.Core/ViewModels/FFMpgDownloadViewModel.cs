@@ -4,6 +4,7 @@ using SharpCompress.Archives;
 using SharpCompress.Readers;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -44,28 +45,74 @@ namespace Captura.ViewModels
             });
         }
 
+        const string CancelDownload = "Cancel Download";
+        const string StartDownload = "Start Download";
+
+        WebClient web;
+
         async Task Start()
         {
-            using (var web = new WebClient())
+            if (ActionDescription == CancelDownload)
+            {
+                try
+                {
+                    web.CancelAsync();
+                }
+                catch { }
+
+                StartCommand.RaiseCanExecuteChanged(false);
+            }
+
+            ActionDescription = CancelDownload;
+
+            var archivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
+
+            using (web = new WebClient())
             {
                 web.DownloadProgressChanged += (s, e) => Progress = e.ProgressPercentage;
-                
-                var archivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
+
+                Status = "Downloading";
 
                 await web.DownloadFileTaskAsync(FFMpegUri, archivePath);
+            }
 
+            // No cancelling after download
+            StartCommand.RaiseCanExecuteChanged(false);
+
+            Status = "Extracting";
+
+            await Task.Run(() =>
+            {
                 using (var archive = ArchiveFactory.Open(archivePath))
                 {
-                    foreach (var entry in archive.Entries)
+                    // Find ffmpeg.exe
+                    var ffmpegEntry = archive.Entries.First(entry => Path.GetFileName(entry.Key) == "ffmpeg.exe");
+                    
+                    ffmpegEntry.WriteToDirectory(TargetFolder, new ExtractionOptions
                     {
-                        if (Path.GetFileName(entry.Key) == "ffmpeg.exe")
-                        {
-                            entry.WriteToDirectory(TargetFolder, new ExtractionOptions { ExtractFullPath = false, Overwrite = true });
-
-                            Settings.Instance.FFMpegFolder = TargetFolder;
-                        }
-                    }
+                        // Don't copy directory structure
+                        ExtractFullPath = false,
+                        Overwrite = true
+                    });
                 }
+            });
+
+            // Update FFMpeg folder setting
+            Settings.Instance.FFMpegFolder = TargetFolder;
+
+            Status = "Done";
+        }
+
+        string _actionDescription = StartDownload;
+
+        public string ActionDescription
+        {
+            get => _actionDescription;
+            set
+            {
+                _actionDescription = value;
+
+                OnPropertyChanged();
             }
         }
 

@@ -10,8 +10,6 @@
         <vm:FFMpegDownloadViewModel/>
     </Window.DataContext>
     <DockPanel Margin="5">
-        <Label Content="{Binding Status}"
-               DockPanel.Dock="Bottom"/>
         <DockPanel DockPanel.Dock="Top"
                    Margin="15">
             <Label Margin="0,0,10,0"
@@ -20,10 +18,18 @@
             <ProgressBar Value="{Binding Progress, Mode=OneWay}"
                          Height="10"/>
         </DockPanel>
+
+        <Label Content="{Binding Status}"
+               DockPanel.Dock="Top"
+               Margin="0,10"
+               HorizontalAlignment="Center"
+               ContentStringFormat="{}Status: {0}"/>
+
         <TextBlock DockPanel.Dock="Top"
                    Margin="0,5"
                    TextAlignment="Center">
             FFMpeg adds support for more output formats to Captura.<LineBreak/>
+            Latest build of FFMpeg is downloaded. This can also be used to update FFMpeg.<LineBreak/>
             The Download size is nearly 30 MB.
         </TextBlock>
 
