@@ -64,41 +64,8 @@
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
-                           Text="{local:Loc ScreenShot}"
+                           Text="ScreenShot Transforms"
                            FontWeight="Bold"/>
-
-                <Grid Margin="0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Label Content="{local:Loc SaveLocation}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,0,5,0"/>
-
-                    <ComboBox Grid.Column="1"
-                              ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
-                              SelectedValue="{Binding VideoViewModel.SelectedImageWriter, Mode=TwoWay}"
-                              SelectedValuePath="Source"
-                              DisplayMemberPath="Display"/>
-
-                    <Label Content="{local:Loc ImgFormat}"
-                           ContentStringFormat="{}{0}: "
-                           Grid.Row="1"
-                           Margin="0,5,5,0"/>
-
-                    <ComboBox VerticalAlignment="Center"
-                              Grid.Row="1"
-                              Grid.Column="1"
-                              ItemsSource="{Binding ScreenShotImageFormats}"
-                              SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"
-                              Margin="0,5,0,0"/>
-                </Grid>
 
                 <Grid Margin="0,5">
                     <Grid.ColumnDefinitions>
