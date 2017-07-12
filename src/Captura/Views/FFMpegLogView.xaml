@@ -1,13 +1,14 @@
 ﻿<Window x:Class="Captura.FFMpegLogView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FFMpeg Log"
+        xmlns:local="clr-namespace:Captura"
+        Title="{local:Loc FFMpegLog}"
         Height="600"
         Width="600"
         DataContext="{StaticResource MainViewModel}">
     <DockPanel Margin="5">
         <Button DockPanel.Dock="Top"
-                Content="Copy to Clipboard"
+                Content="{local:Loc CopyToClipboard}"
                 Command="{Binding FFMpegLog.CopyToClipboardCommand}"/>
         <Label Content="{Binding FFMpegLog.Frame}"
                DockPanel.Dock="Bottom"/>
