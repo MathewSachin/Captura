@@ -384,4 +384,73 @@
   <data name="ImgurUploading" xml:space="preserve">
     <value>Uploading to Imgur</value>
   </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CustomizeClickAndKeysOverlays" xml:space="preserve">
+    <value>Customize Click and Keystrokes Overlays</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="Extras" xml:space="preserve">
+    <value>Extras</value>
+  </data>
+  <data name="FFMpegLog" xml:space="preserve">
+    <value>FFMpeg Log</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ScreenShotTransforms" xml:space="preserve">
+    <value>ScreenShot Transforms</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="WantToTranslate" xml:space="preserve">
+    <value>Want to Translate?</value>
+  </data>
+  <data name="BackColor" xml:space="preserve">
+    <value>Back Color</value>
+  </data>
+  <data name="BorderColor" xml:space="preserve">
+    <value>Border Color</value>
+  </data>
+  <data name="BorderThickness" xml:space="preserve">
+    <value>Border Thickness</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="CornerRadius" xml:space="preserve">
+    <value>CornerRadius</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>FontSize</value>
+  </data>
+  <data name="Keystrokes" xml:space="preserve">
+    <value>Keystrokes</value>
+  </data>
+  <data name="MaxTextLength" xml:space="preserve">
+    <value>Max Text Length</value>
+  </data>
+  <data name="MouseClicks" xml:space="preserve">
+    <value>Mouse Clicks</value>
+  </data>
+  <data name="PaddingX" xml:space="preserve">
+    <value>Horizontal Padding</value>
+  </data>
+  <data name="PaddingY" xml:space="preserve">
+    <value>Vertical Padding</value>
+  </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
 </root>

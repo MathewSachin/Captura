@@ -97,11 +97,47 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back Color.
+        /// </summary>
+        public static string BackColor {
+            get {
+                return ResourceManager.GetString("BackColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Border Color.
+        /// </summary>
+        public static string BorderColor {
+            get {
+                return ResourceManager.GetString("BorderColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Border Thickness.
+        /// </summary>
+        public static string BorderThickness {
+            get {
+                return ResourceManager.GetString("BorderThickness", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capture Duration (in seconds).
         /// </summary>
         public static string CaptureDuration {
             get {
                 return ResourceManager.GetString("CaptureDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Changelog {
+            get {
+                return ResourceManager.GetString("Changelog", resourceCulture);
             }
         }
         
@@ -142,11 +178,47 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Color {
+            get {
+                return ResourceManager.GetString("Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure.
         /// </summary>
         public static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to Clipboard.
+        /// </summary>
+        public static string CopyToClipboard {
+            get {
+                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CornerRadius.
+        /// </summary>
+        public static string CornerRadius {
+            get {
+                return ResourceManager.GetString("CornerRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customize Click and Keystrokes Overlays.
+        /// </summary>
+        public static string CustomizeClickAndKeysOverlays {
+            get {
+                return ResourceManager.GetString("CustomizeClickAndKeysOverlays", resourceCulture);
             }
         }
         
@@ -178,6 +250,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        public static string Donate {
+            get {
+                return ResourceManager.GetString("Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An Error Occured.
         /// </summary>
         public static string ErrorOccured {
@@ -196,11 +277,29 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extras.
+        /// </summary>
+        public static string Extras {
+            get {
+                return ResourceManager.GetString("Extras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FFMpeg Folder.
         /// </summary>
         public static string FFMpegFolder {
             get {
                 return ResourceManager.GetString("FFMpegFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFMpeg Log.
+        /// </summary>
+        public static string FFMpegLog {
+            get {
+                return ResourceManager.GetString("FFMpegLog", resourceCulture);
             }
         }
         
@@ -219,6 +318,15 @@ namespace Captura.Properties {
         public static string FlipY {
             get {
                 return ResourceManager.GetString("FlipY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FontSize.
+        /// </summary>
+        public static string FontSize {
+            get {
+                return ResourceManager.GetString("FontSize", resourceCulture);
             }
         }
         
@@ -358,6 +466,24 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keystrokes.
+        /// </summary>
+        public static string Keystrokes {
+            get {
+                return ResourceManager.GetString("Keystrokes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speaker Output Source.
         /// </summary>
         public static string LoopbackSource {
@@ -381,6 +507,15 @@ namespace Captura.Properties {
         public static string MaxRecent {
             get {
                 return ResourceManager.GetString("MaxRecent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Text Length.
+        /// </summary>
+        public static string MaxTextLength {
+            get {
+                return ResourceManager.GetString("MaxTextLength", resourceCulture);
             }
         }
         
@@ -417,6 +552,15 @@ namespace Captura.Properties {
         public static string MinTray {
             get {
                 return ResourceManager.GetString("MinTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mouse Clicks.
+        /// </summary>
+        public static string MouseClicks {
+            get {
+                return ResourceManager.GetString("MouseClicks", resourceCulture);
             }
         }
         
@@ -475,6 +619,24 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal Padding.
+        /// </summary>
+        public static string PaddingX {
+            get {
+                return ResourceManager.GetString("PaddingX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Padding.
+        /// </summary>
+        public static string PaddingY {
+            get {
+                return ResourceManager.GetString("PaddingY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording Paused.
         /// </summary>
         public static string Paused {
@@ -516,6 +678,15 @@ namespace Captura.Properties {
         public static string Quality {
             get {
                 return ResourceManager.GetString("Quality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Radius.
+        /// </summary>
+        public static string Radius {
+            get {
+                return ResourceManager.GetString("Radius", resourceCulture);
             }
         }
         
@@ -691,6 +862,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ScreenShot Transforms.
+        /// </summary>
+        public static string ScreenShotTransforms {
+            get {
+                return ResourceManager.GetString("ScreenShotTransforms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select FFMpeg Folder.
         /// </summary>
         public static string SelectFFMpegFolder {
@@ -718,6 +898,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string Source {
+            get {
+                return ResourceManager.GetString("Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Delay (in ms).
         /// </summary>
         public static string StartDelay {
@@ -741,6 +930,15 @@ namespace Captura.Properties {
         public static string Stopped {
             get {
                 return ResourceManager.GetString("Stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string Timeout {
+            get {
+                return ResourceManager.GetString("Timeout", resourceCulture);
             }
         }
         
@@ -804,6 +1002,15 @@ namespace Captura.Properties {
         public static string Waiting {
             get {
                 return ResourceManager.GetString("Waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Want to Translate?.
+        /// </summary>
+        public static string WantToTranslate {
+            get {
+                return ResourceManager.GetString("WantToTranslate", resourceCulture);
             }
         }
         

@@ -23,11 +23,13 @@
                 <DockPanel Margin="0,0,0,10">
                     <TextBlock DockPanel.Dock="Bottom"
                                HorizontalAlignment="Right">
-                        <Hyperlink CommandParameter="https://mathewsachin.github.io/Captura/Translation">Want to Translate?</Hyperlink>
+                        <Hyperlink CommandParameter="https://mathewsachin.github.io/Captura/Translation">
+                            <Run Text="{local:Loc WantToTranslate}"/>
+                        </Hyperlink>
                     </TextBlock>
-                    <TextBlock Text="Language:"
-                               VerticalAlignment="Center" 
-                               Margin="0,0,16,5"/>
+                    <Label Content="{local:Loc Language}"
+                           ContentStringFormat="{}{0}:"
+                           Margin="0,0,16,5"/>
                     <ComboBox VerticalAlignment="Center" 
                               Margin="0,0,0,5"
                               ItemsSource="{Binding Languages}"
@@ -43,16 +45,16 @@
                     </Grid.ColumnDefinitions>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/"
-                            Content="Source"
+                            Content="{local:Loc Source}"
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://mathewsachin.github.io/Captura/Changelog"
-                            Content="Changelog"
+                            Content="{local:Loc Changelog}"
                             Grid.Column="1"
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://mathewsachin.github.io/Captura/Donate"
-                            Content="Donate"
+                            Content="{local:Loc Donate}"
                             Grid.Column="2"
                             Margin="3"/>
                 </Grid>
@@ -62,11 +64,11 @@
                            Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
                 </TextBlock>
                 
-                <Button Content="Extras"
+                <Button Content="{local:Loc Extras}"
                         Click="OpenExtras"
                         Margin="0,5"/>
 
-                <Button Content="FFMpeg Log"
+                <Button Content="{local:Loc FFMpegLog}"
                         Click="OpenFFMpegLog"
                         Margin="0,5"/>
             </StackPanel>

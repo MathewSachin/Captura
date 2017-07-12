@@ -372,4 +372,73 @@
   <data name="Yes" xml:space="preserve">
     <value>അതെ</value>
   </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>ചെയ്ഞ്ച്ലോഗ്</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>ക്ലിപ്പ്ബോർഡിലേയ്ക്ക് പകർത്തുക</value>
+  </data>
+  <data name="CustomizeClickAndKeysOverlays" xml:space="preserve">
+    <value>ക്ലിക്കുകളുടെയും കീസ്ട്രോക്കുകളുടെയും ഓവർലേ ഇഷ്ടാനുസൃതമാക്കുക</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>സംഭാവനചെയ്യുക</value>
+  </data>
+  <data name="Extras" xml:space="preserve">
+    <value>കൂടുതൽ ഓപ്ഷനുകൾ</value>
+  </data>
+  <data name="FFMpegLog" xml:space="preserve">
+    <value>FFMpeg ലോഗ്</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>ഭാഷ</value>
+  </data>
+  <data name="ScreenShotTransforms" xml:space="preserve">
+    <value>സ്ക്രീൻഷോട്ട് പരിവര്തനങ്ങൾ</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>സോഴ്സ് കോഡ്</value>
+  </data>
+  <data name="WantToTranslate" xml:space="preserve">
+    <value>തർജ്ജമ ചെയ്യാൻ ആഗ്രഹമുണ്ടോ?</value>
+  </data>
+  <data name="BackColor" xml:space="preserve">
+    <value>പിൻ നിറം</value>
+  </data>
+  <data name="BorderColor" xml:space="preserve">
+    <value>ബോർഡർ നിറം</value>
+  </data>
+  <data name="BorderThickness" xml:space="preserve">
+    <value>ബോർഡർ കനം</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>നിറം</value>
+  </data>
+  <data name="CornerRadius" xml:space="preserve">
+    <value>മൂല ആരം</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>അക്ഷര വലിപ്പം</value>
+  </data>
+  <data name="Keystrokes" xml:space="preserve">
+    <value>കീസ്ട്രോക്കുകൾ</value>
+  </data>
+  <data name="MaxTextLength" xml:space="preserve">
+    <value>പരമാവധി ടെക്സ്റ്റ് ദൈർഘ്യം</value>
+  </data>
+  <data name="MouseClicks" xml:space="preserve">
+    <value>മൗസ് ക്ലിക്കുകൾ</value>
+  </data>
+  <data name="PaddingX" xml:space="preserve">
+    <value>തിരശ്ചീന പാഡിംഗ്</value>
+  </data>
+  <data name="PaddingY" xml:space="preserve">
+    <value>ലംബ പാഡിംഗ്</value>
+  </data>
+  <data name="Radius" xml:space="preserve">
+    <value>ആരം</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>ടൈം ഔട്ട്</value>
+  </data>
 </root>

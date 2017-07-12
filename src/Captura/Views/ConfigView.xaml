@@ -64,7 +64,7 @@
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
-                           Text="ScreenShot Transforms"
+                           Text="{local:Loc ScreenShotTransforms}"
                            FontWeight="Bold"/>
 
                 <Grid Margin="0,5">

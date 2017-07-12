@@ -35,7 +35,8 @@
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Keyboard}"
                                           IsChecked="{Binding Settings.KeyStrokes, Mode=TwoWay}"/>
-                <local:ModernButton ToolTip="Customize Click and Keystrokes Overlays"
+                <local:ModernButton ToolTip="{local:Loc CustomizeClickAndKeysOverlays}"
+                                    Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                     IconData="{StaticResource Icon_More}"
                                     Click="OpenMouseKeyHook"/>
             </StackPanel>

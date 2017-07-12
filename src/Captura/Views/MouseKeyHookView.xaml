@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Captura"
-        Title="Clicks and Keystrokes"
+        Title="{local:Loc CustomizeClickAndKeysOverlays}"
         DataContext="{StaticResource MainViewModel}"
         SizeToContent="Height"
         Width="400">
     <Grid>
         <StackPanel Margin="10">
-            <Label Content="Mouse Clicks"
+            <Label Content="{local:Loc MouseClicks}"
                    FontWeight="Bold"
                    Margin="0,3"
                    FontSize="15"/>
@@ -26,7 +26,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Radius"
+                <Label Content="{local:Loc Radius}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"/>
                 <xctk:IntegerUpDown Value="{Binding Settings.MouseClick_Radius, Mode=TwoWay}"
@@ -34,7 +34,7 @@
                                     Margin="0,5"
                                     Grid.Column="1"/>
 
-                <Label Content="Color"
+                <Label Content="{local:Loc Color}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
@@ -42,7 +42,7 @@
                                   Grid.Row="1"
                                   Grid.Column="1"/>
 
-                <Label Content="Border Thickness"
+                <Label Content="{local:Loc BorderThickness}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="2"/>
@@ -51,7 +51,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Border Color"
+                <Label Content="{local:Loc BorderColor}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="3"/>
@@ -61,7 +61,7 @@
                                   Margin="0,5"/>
             </Grid>            
                         
-            <Label Content="Keystrokes"
+            <Label Content="{local:Loc Keystrokes}"
                    FontWeight="Bold"
                    Margin="0,3"
                    FontSize="15"/>
@@ -84,14 +84,14 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Color"
+                <Label Content="{local:Loc Color}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"/>
                 <xctk:ColorPicker SelectedColor="{Binding Settings.Keystrokes_Color, Converter={StaticResource WpfColorConverter}}"
                                   Grid.Column="1"
                                   Margin="0,5"/>
 
-                <Label Content="Font Size"
+                <Label Content="{local:Loc FontSize}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
@@ -101,7 +101,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Max Length"
+                <Label Content="{local:Loc MaxTextLength}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="2"/>
@@ -111,7 +111,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Back Color"
+                <Label Content="{local:Loc BackColor}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="3"/>
@@ -120,7 +120,7 @@
                                   Grid.Column="1"
                                   Margin="0,5"/>
 
-                <Label Content="Padding X"
+                <Label Content="{local:Loc PaddingX}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="4"/>
@@ -129,7 +129,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Padding Y"
+                <Label Content="{local:Loc PaddingY}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="5"/>
@@ -138,7 +138,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Corner Radius"
+                <Label Content="{local:Loc CornerRadius}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="6"/>
@@ -147,7 +147,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Max Seconds"
+                <Label Content="{local:Loc Timeout}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="7"/>
@@ -157,7 +157,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Border Thickness"
+                <Label Content="{local:Loc BorderThickness}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="8"/>
@@ -166,7 +166,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <Label Content="Border Color"
+                <Label Content="{local:Loc BorderColor}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="9"/>
