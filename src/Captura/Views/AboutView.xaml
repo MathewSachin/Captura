@@ -16,7 +16,7 @@
                         Margin="10">
                 <TextBlock TextWrapping="Wrap"
                            LineHeight="30">
-                    <Run FontSize="20">Captura</Run> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                    <Run FontSize="20" Text="{local:Loc AppName}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
                     (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 

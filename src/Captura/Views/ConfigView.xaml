@@ -45,6 +45,18 @@
                           IsChecked="{Binding Settings.TrayNotify, Mode=TwoWay}"
                           Margin="0,2"/>
 
+                <CheckBox Content="{local:Loc CopyOutPathClipboard}"
+                          IsChecked="{Binding Settings.CopyOutPathToClipboard, Mode=TwoWay}"
+                          Margin="0,2"/>
+                
+                <CheckBox Content="{local:Loc AlwaysOnTop}"
+                          IsChecked="{Binding Settings.MainWindowTopmost, Mode=TwoWay}"
+                          Margin="0,2"/>
+                
+                <CheckBox Content="{local:Loc HideOnFullScreenShot}"
+                          IsChecked="{Binding Settings.HideOnFullScreenShot, Mode=TwoWay}"
+                          Margin="0,2"/>
+
                 <TextBlock Margin="0,7,0,3"
                            Text="{local:Loc Gif}"
                            FontWeight="Bold"/>

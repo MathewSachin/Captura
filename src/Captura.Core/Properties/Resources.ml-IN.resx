@@ -441,4 +441,13 @@
   <data name="Timeout" xml:space="preserve">
     <value>ടൈം ഔട്ട്</value>
   </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>വിൻഡോ എപ്പോഴും മുകളിൽ</value>
+  </data>
+  <data name="CopyOutPathClipboard" xml:space="preserve">
+    <value>ഔട്ട്പുട്ട് ഫയൽ പാത്ത് ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക</value>
+  </data>
+  <data name="HideOnFullScreenShot" xml:space="preserve">
+    <value>പൂർണ്ണ സ്ക്രീൻ സ്ക്രീൻഷോട്ടിൽ വിൻഡോ മറയ്ക്കുക</value>
+  </data>
 </root>

@@ -70,6 +70,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always on Top.
+        /// </summary>
+        public static string AlwaysOnTop {
+            get {
+                return ResourceManager.GetString("AlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captura.
         /// </summary>
         public static string AppName {
@@ -192,6 +201,15 @@ namespace Captura.Properties {
         public static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Output file path to Clipboard.
+        /// </summary>
+        public static string CopyOutPathClipboard {
+            get {
+                return ResourceManager.GetString("CopyOutPathClipboard", resourceCulture);
             }
         }
         
@@ -354,6 +372,15 @@ namespace Captura.Properties {
         public static string Gif {
             get {
                 return ResourceManager.GetString("Gif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide on Full Screen ScreenShot.
+        /// </summary>
+        public static string HideOnFullScreenShot {
+            get {
+                return ResourceManager.GetString("HideOnFullScreenShot", resourceCulture);
             }
         }
         

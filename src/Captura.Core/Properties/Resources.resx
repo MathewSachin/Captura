@@ -453,4 +453,13 @@
   <data name="Timeout" xml:space="preserve">
     <value>Timeout</value>
   </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="CopyOutPathClipboard" xml:space="preserve">
+    <value>Copy Output file path to Clipboard</value>
+  </data>
+  <data name="HideOnFullScreenShot" xml:space="preserve">
+    <value>Hide on Full Screen ScreenShot</value>
+  </data>
 </root>

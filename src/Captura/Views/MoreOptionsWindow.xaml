@@ -68,15 +68,6 @@
                                   Grid.Row="4"
                                   Grid.Column="1"/>
             </Grid>
-            <CheckBox Content="Copy Output file path to Clipboard"
-                      IsChecked="{Binding Settings.CopyOutPathToClipboard, Mode=TwoWay}"
-                      Margin="0,5"/>
-            <CheckBox Content="Main Window Always on Top"
-                      IsChecked="{Binding Settings.MainWindowTopmost, Mode=TwoWay}"
-                      Margin="0,5"/>
-            <CheckBox Content="Hide Main Window on Full Screen ScreenShot"
-                      IsChecked="{Binding Settings.HideOnFullScreenShot, Mode=TwoWay}"
-                      Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Window>
