@@ -1,6 +1,6 @@
 ﻿using Captura.Properties;
 using System.Windows;
-using WPFCustomMessageBox;
+using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
 namespace Captura.Models
 {
@@ -8,12 +8,18 @@ namespace Captura.Models
     {
         public void ShowError(string Message)
         {
-            Application.Current.Dispatcher.Invoke(() => CustomMessageBox.ShowOK(Message, Resources.ErrorOccured, Resources.Ok, MessageBoxImage.Error));
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(Message, Resources.ErrorOccured, MessageBoxButton.OK, MessageBoxImage.Error);
+            });
         }
 
         public bool ShowYesNo(string Message, string Title)
         {
-            return Application.Current.Dispatcher.Invoke(() => CustomMessageBox.ShowYesNo(Message, Title, Resources.Yes, Resources.No, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                return MessageBox.Show(Message, Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+            });
         }
     }
 }
