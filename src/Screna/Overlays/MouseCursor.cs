@@ -65,7 +65,7 @@ namespace Screna
         /// <param name="Offset">Offset from Origin of the Captured Area.</param>
         public void Draw(Graphics g, Point Offset = default(Point))
         {
-            var _cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf(typeof(CursorInfo)) };
+            var _cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
 
             if (!GetCursorInfo(out _cursorInfo))
                 return;

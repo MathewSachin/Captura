@@ -1,7 +1,6 @@
 ﻿using Screna.Native;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -42,65 +41,25 @@ namespace Screna
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
         /// <param name="Managed">Whether to use Managed or Unmanaged Procedure.</param>
         /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(Screen Screen, bool IncludeCursor = false, bool Managed = true)
+        public static Bitmap Capture(Screen Screen, bool IncludeCursor = false)
         {
-            return Capture(Screen.Bounds, IncludeCursor, Managed);
+            return Capture(Screen.Bounds, IncludeCursor);
         }
-        
-        /// <summary>
-        /// Captures a Specific Window.
-        /// </summary>
-        /// <param name="Window">The <see cref="Window"/> to Capture</param>
-        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <returns>The Captured Image.</returns>
+
         public static Bitmap Capture(Window Window, bool IncludeCursor = false)
         {
-            User32.GetWindowRect(Window.Handle, out var r);
-            var region = r.ToRectangle();
-
-            IntPtr hSrc = GetWindowDC(Window.Handle),
-                hDest = Gdi32.CreateCompatibleDC(hSrc),
-                hBmp = Gdi32.CreateCompatibleBitmap(hSrc, region.Width, region.Height),
-                hOldBmp = Gdi32.SelectObject(hDest, hBmp);
-
-            Gdi32.BitBlt(hDest, 0, 0,
-                region.Width, region.Height,
-                hSrc,
-                region.Left, region.Top,
-                CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
-
-            var bmp = Image.FromHbitmap(hBmp);
-
-            Gdi32.SelectObject(hDest, hOldBmp);
-            Gdi32.DeleteObject(hBmp);
-            Gdi32.DeleteDC(hDest);
-            Gdi32.DeleteDC(hSrc);
-
-            var clone = bmp.Clone(new Rectangle(Point.Empty, bmp.Size), PixelFormat.Format24bppRgb);
-
-            if (IncludeCursor)
-                MouseCursor.Instance.Draw(clone, region.Location);
-
-            return clone;
+            return Capture(Window.Rectangle, IncludeCursor);
         }
-
-        /// <summary>
-        /// Captures a Specific <see cref="Form"/>.
-        /// </summary>
-        /// <param name="Form">The <see cref="Form"/> to Capture</param>
-        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(Form Form, bool IncludeCursor = false) => Capture(new Window(Form.Handle), IncludeCursor);
-
+                
         /// <summary>
         /// Captures the entire Desktop.
         /// </summary>
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
         /// <param name="Managed">Whether to use Managed or Unmanaged Procedure.</param>
         /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(bool IncludeCursor = false, bool Managed = true)
+        public static Bitmap Capture(bool IncludeCursor = false)
         {
-            return Capture(WindowProvider.DesktopRectangle, IncludeCursor, Managed);
+            return Capture(WindowProvider.DesktopRectangle, IncludeCursor);
         }
 
         /// <summary>
@@ -108,14 +67,12 @@ namespace Screna
         /// </summary>
         /// <param name="Window">The <see cref="Window"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        public static unsafe Bitmap CaptureTransparent(Window Window, bool IncludeCursor = false)
+        public static Bitmap CaptureTransparent(Window Window, bool IncludeCursor = false)
         {
-            var tmpColour = Color.White;
-
             var backdrop = new Form
             {
                 AllowTransparency = true,
-                BackColor = tmpColour,
+                BackColor = Color.White,
                 FormBorderStyle = FormBorderStyle.None,
                 ShowInTaskbar = false,
                 Opacity = 0
@@ -125,7 +82,7 @@ namespace Screna
 
             const int extendedFrameBounds = 0;
 
-            if (DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, sizeof(RECT)) != 0)
+            if (DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
                 // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
                 User32.GetWindowRect(Window.Handle, out r);
 
@@ -146,13 +103,13 @@ namespace Screna
             Application.DoEvents();
 
             // Capture screenshot with white background
-            using (var whiteShot = CaptureRegionUnmanaged(R))
+            using (var whiteShot = Capture(R))
             {
                 backdrop.BackColor = Color.Black;
                 Application.DoEvents();
 
                 // Capture screenshot with black background
-                using (var blackShot = CaptureRegionUnmanaged(R))
+                using (var blackShot = Capture(R))
                 {
                     backdrop.Dispose();
 
@@ -238,36 +195,13 @@ namespace Screna
             }
         }
 
-        #region Region
-        static Bitmap CaptureRegionUnmanaged(Rectangle Region, bool IncludeCursor = false)
-        {
-            IntPtr hSrc = Gdi32.CreateDC("DISPLAY", null, null, 0),
-                hDest = Gdi32.CreateCompatibleDC(hSrc),
-                hBmp = Gdi32.CreateCompatibleBitmap(hSrc, Region.Width, Region.Height),
-                hOldBmp = Gdi32.SelectObject(hDest, hBmp);
-
-            Gdi32.BitBlt(hDest, 0, 0,
-                Region.Width, Region.Height,
-                hSrc,
-                Region.Left, Region.Top,
-                CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
-
-            var bmp = Image.FromHbitmap(hBmp);
-
-            Gdi32.SelectObject(hDest, hOldBmp);
-            Gdi32.DeleteObject(hBmp);
-            Gdi32.DeleteDC(hDest);
-            Gdi32.DeleteDC(hSrc);
-
-            var clone = bmp.Clone(new Rectangle(Point.Empty, bmp.Size), PixelFormat.Format24bppRgb);
-
-            if (IncludeCursor)
-                MouseCursor.Instance.Draw(clone, Region.Location);
-
-            return clone;
-        }
-
-        static Bitmap CaptureRegionManaged(Rectangle Region, bool IncludeCursor = false)
+        /// <summary>
+        /// Captures a Specific Region.
+        /// </summary>
+        /// <param name="Region">A <see cref="Rectangle"/> specifying the Region to Capture.</param>
+        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
+        /// <returns>The Captured Image.</returns>
+        public static Bitmap Capture(Rectangle Region, bool IncludeCursor = false)
         {
             var bmp = new Bitmap(Region.Width, Region.Height);
 
@@ -283,18 +217,5 @@ namespace Screna
 
             return bmp;
         }
-
-        /// <summary>
-        /// Captures a Specific Region.
-        /// </summary>
-        /// <param name="Region">A <see cref="Rectangle"/> specifying the Region to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <param name="Managed">Whether to use Managed or Unmanaged Procedure.</param>
-        /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(Rectangle Region, bool IncludeCursor = false, bool Managed = true)
-        {
-            return Managed ? CaptureRegionManaged(Region, IncludeCursor) : CaptureRegionUnmanaged(Region, IncludeCursor);
-        }
-        #endregion
     }
 }
