@@ -11,11 +11,11 @@
         MaxWidth="{local:Loc WindowWidth}"
         MinWidth="{local:Loc WindowWidth}"
         Title="{local:Loc AppName}"
-        Left="{Binding Settings.MainWindowLeft, Mode=TwoWay}"
-        Top="{Binding Settings.MainWindowTop, Mode=TwoWay}"
+        Left="{local:Setting MainWindowLeft}"
+        Top="{local:Setting MainWindowTop}"
         BorderThickness="1"
         BorderBrush="{DynamicResource Accent}"
-        Topmost="{Binding Settings.MainWindowTopmost}">
+        Topmost="{local:Setting MainWindowTopmost}">
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Template">
@@ -77,7 +77,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid Background="{Binding Settings.TopBarColor}">
+    <Grid Background="{local:Setting TopBarColor}">
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
@@ -123,7 +123,7 @@
         </tb:TaskbarIcon>
 
         <Expander Padding="5,0,0,0"
-                  IsExpanded="{Binding Settings.Expanded, Mode=TwoWay}">
+                  IsExpanded="{local:Setting Expanded}">
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
@@ -195,7 +195,7 @@
                            DockPanel.Dock="Left"
                            Padding="5,0"/>
                     <TextBox IsReadOnly="True"
-                             Text="{Binding Settings.FFMpegFolder}"
+                             Text="{local:Setting FFMpegFolder}"
                              Grid.Column="1"/>
                     <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc Reset}"
@@ -230,7 +230,7 @@
                             Command="{Binding OpenOutputFolderCommand}"
                             Grid.Row="1"/>
                     <TextBox IsReadOnly="True"
-                             Text="{Binding Settings.OutPath}"
+                             Text="{local:Setting OutPath}"
                              Grid.Row="1"
                              Grid.Column="1"/>
                     <Button DockPanel.Dock="Right"

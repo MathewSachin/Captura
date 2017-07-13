@@ -85,6 +85,7 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="Views\FFMpegLogView.xaml.cs">
       <DependentUpon>FFMpegLogView.xaml</DependentUpon>
