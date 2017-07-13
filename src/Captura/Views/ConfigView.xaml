@@ -34,27 +34,27 @@
                 </Grid>
 
                 <CheckBox Content="{local:Loc MinCapture}"
-                          IsChecked="{Binding Settings.MinimizeOnStart, Mode=TwoWay}"
+                          IsChecked="{local:Setting MinimizeOnStart}"
                           Margin="0,2"/>
 
                 <CheckBox Content="{local:Loc MinTray}"
-                          IsChecked="{Binding Settings.MinimizeToTray, Mode=TwoWay}"
+                          IsChecked="{local:Setting MinimizeToTray}"
                           Margin="0,2"/>
 
                 <CheckBox Content="{local:Loc ShowSysNotify}"
-                          IsChecked="{Binding Settings.TrayNotify, Mode=TwoWay}"
+                          IsChecked="{local:Setting TrayNotify}"
                           Margin="0,2"/>
 
                 <CheckBox Content="{local:Loc CopyOutPathClipboard}"
-                          IsChecked="{Binding Settings.CopyOutPathToClipboard, Mode=TwoWay}"
+                          IsChecked="{local:Setting CopyOutPathToClipboard}"
                           Margin="0,2"/>
                 
                 <CheckBox Content="{local:Loc AlwaysOnTop}"
-                          IsChecked="{Binding Settings.MainWindowTopmost, Mode=TwoWay}"
+                          IsChecked="{local:Setting MainWindowTopmost}"
                           Margin="0,2"/>
                 
                 <CheckBox Content="{local:Loc HideOnFullScreenShot}"
-                          IsChecked="{Binding Settings.HideOnFullScreenShot, Mode=TwoWay}"
+                          IsChecked="{local:Setting HideOnFullScreenShot}"
                           Margin="0,2"/>
 
                 <TextBlock Margin="0,7,0,3"
@@ -63,16 +63,16 @@
 
                 <CheckBox Margin="0,2"
                           Content="{local:Loc VarFrameRate}"
-                          IsChecked="{Binding Settings.GifVariable, Mode=TwoWay}"/>
+                          IsChecked="{local:Setting GifVariable}"/>
 
                 <DockPanel Margin="0,2">
                     <CheckBox Content="{local:Loc Repeat}"
                               Margin="0,0,5,0"
                               DockPanel.Dock="Left"
-                              IsChecked="{Binding Settings.GifRepeat, Mode=TwoWay}"/>
+                              IsChecked="{local:Setting GifRepeat}"/>
 
-                    <xctk:IntegerUpDown IsEnabled="{Binding Settings.GifRepeat}"
-                                        Value="{Binding Settings.GifRepeatCount, Mode=TwoWay}"/>
+                    <xctk:IntegerUpDown IsEnabled="{local:Setting GifRepeat}"
+                                        Value="{local:Setting GifRepeatCount}"/>
                 </DockPanel>
 
                 <TextBlock Margin="0,7,0,3"
@@ -88,31 +88,31 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{local:Loc Resize}"
-                              IsChecked="{Binding Settings.DoResize, Mode=TwoWay}"
+                              IsChecked="{local:Setting DoResize}"
                               Margin="0,0,5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.ResizeWidth, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{local:Setting ResizeWidth}"
                                         Grid.Column="1"
-                                        IsEnabled="{Binding Settings.DoResize}"/>
+                                        IsEnabled="{local:Setting DoResize}"/>
 
                     <Label Content="x"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.ResizeHeight, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{local:Setting ResizeHeight}"
                                         Grid.Column="3"
-                                        IsEnabled="{Binding Settings.DoResize}"/>
+                                        IsEnabled="{local:Setting DoResize}"/>
                 </Grid>
 
                 <StackPanel Margin="0,5"
                             Orientation="Horizontal">
                     <CheckBox Content="{local:Loc FlipX}"
-                              IsChecked="{Binding Settings.FlipHorizontal, Mode=TwoWay}"
+                              IsChecked="{local:Setting FlipHorizontal}"
                               Margin="0,0,10,0"/>
 
                     <CheckBox Grid.Column="1"
                               Content="{local:Loc FlipY}"
-                              IsChecked="{Binding Settings.FlipVertical, Mode=TwoWay}"/>
+                              IsChecked="{local:Setting FlipVertical}"/>
                 </StackPanel>
 
                 <DockPanel Margin="0,5">
@@ -123,7 +123,7 @@
                               ItemsSource="{Binding Rotations}"
                               SelectedValuePath="Key"
                               DisplayMemberPath="Value"
-                              SelectedValue="{Binding Settings.RotateBy, Mode=TwoWay}"/>
+                              SelectedValue="{local:Setting RotateBy}"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

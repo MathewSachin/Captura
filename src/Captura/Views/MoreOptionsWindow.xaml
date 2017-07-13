@@ -34,7 +34,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
-                <xctk:ColorPicker SelectedColor="{Binding Settings.TopBarColor}"
+                <xctk:ColorPicker SelectedColor="{local:Setting TopBarColor}"
                                   Margin="0,5"
                                   Grid.Row="1"
                                   Grid.Column="1"/>
@@ -43,7 +43,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="2"/>
-                <xctk:IntegerUpDown Value="{Binding Settings.RegionBorderThickness}"
+                <xctk:IntegerUpDown Value="{local:Setting RegionBorderThickness}"
                                     Minimum="1"
                                     Margin="0,5"
                                     Grid.Row="2"
@@ -53,7 +53,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="3"/>
-                <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotNotifyTimeout}"
+                <xctk:IntegerUpDown Value="{local:Setting ScreenShotNotifyTimeout}"
                                     Minimum="1000"
                                     Margin="0,5"
                                     Grid.Row="3"
@@ -63,7 +63,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="4"/>
-                <xctk:ColorPicker SelectedColor="{Binding Settings.VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
+                <xctk:ColorPicker SelectedColor="{local:Setting VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
                                   Margin="0,5"
                                   Grid.Row="4"
                                   Grid.Column="1"/>
