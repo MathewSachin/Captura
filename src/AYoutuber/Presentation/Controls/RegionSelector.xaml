@@ -1,0 +1,70 @@
+﻿<Window x:Class="Captura.RegionSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Captura"
+        Title="{local:Loc RegionSelector}"
+        Height="300"
+        Background="Transparent"
+        Width="300"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="True"
+        BorderBrush="#66333333"
+        BorderThickness="1"
+        ResizeMode="CanResize"
+        LocationChanged="Window_LocationChanged">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0"
+                      CaptionHeight="0"
+                      ResizeBorderThickness="3"
+                      NonClientFrameEdges="None"/>
+    </WindowChrome.WindowChrome>
+    <Border BorderThickness="5"
+            BorderBrush="#EEEEEE">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <local:ModernButton ToolTip="Snap to Window"
+                                IconData="{StaticResource Icon_SnapToWindow}"
+                                Background="#EEEEEE"
+                                Foreground="#333333"
+                                x:Name="Snapper"
+                                Margin="0,-5,0,0"
+                                PreviewMouseLeftButtonDown="ModernButton_PreviewMouseLeftButtonDown"/>
+
+            <Label Cursor="SizeAll"
+                   Background="#EEEEEE"
+                   Content="{local:Loc RegionSelector}"
+                   HorizontalContentAlignment="Center"
+                   MouseDoubleClick="HeaderMouseDoubleClick"
+                   PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"
+                   Grid.Column="1"
+                   Margin="0,-5,0,0"/>
+
+
+            <local:ModernButton ToolTip="{local:Loc Close}"
+                                x:Name="CloseButton"
+                                Click="CloseButton_Click"
+                                Background="#EEEEEE"
+                                Foreground="#77ef5350"
+                                IconData="{StaticResource Icon_Close}"
+                                Grid.Column="2"
+                                Margin="0,-5,0,0"/>
+
+            <Border BorderThickness="1"
+                    BorderBrush="#66333333"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3">
+            </Border>
+        </Grid>
+    </Border>
+</Window>

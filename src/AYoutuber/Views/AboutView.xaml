@@ -1,0 +1,75 @@
+﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Captura"
+      x:Class="Captura.AboutView">
+    <Page.DataContext>
+        <local:AboutViewModel/>
+    </Page.DataContext>
+    <Grid Visibility="Collapsed">
+        <Grid.Resources>
+            <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
+                <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>
+            </Style>
+        </Grid.Resources>
+        <ScrollViewer>
+            <StackPanel MinWidth="150"
+                        Margin="10">
+                <TextBlock TextWrapping="Wrap"
+                           LineHeight="30">
+                    <Run FontSize="20">Captura</Run> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                    (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
+                </TextBlock>
+
+                <DockPanel Margin="0,0,0,10">
+                    <TextBlock DockPanel.Dock="Bottom"
+                               HorizontalAlignment="Right">
+                        <Hyperlink CommandParameter="https://mathewsachin.github.io/Captura/Translation">Want to Translate?</Hyperlink>
+                    </TextBlock>
+                    <TextBlock Text="Language:"
+                               VerticalAlignment="Center" 
+                               Margin="0,0,16,5"/>
+                    <ComboBox VerticalAlignment="Center" 
+                              Margin="0,0,0,5"
+                              ItemsSource="{Binding Languages}"
+                              SelectedValue="{Binding Language, Mode=TwoWay}"
+                              DisplayMemberPath="DisplayName"/>
+                </DockPanel>
+
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://github.com/MathewSachin/Captura/"
+                            Content="Source"
+                            Margin="3"/>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://mathewsachin.github.io/Captura/Changelog"
+                            Content="Changelog"
+                            Grid.Column="1"
+                            Margin="3"/>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://mathewsachin.github.io/Captura/Donate"
+                            Content="Donate"
+                            Grid.Column="2"
+                            Margin="3"/>
+                </Grid>
+
+                <TextBlock TextWrapping="Wrap"
+                           Margin="0,10">
+                           Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
+                </TextBlock>
+                
+                <Button Content="Extras"
+                        Click="OpenExtras"
+                        Margin="0,5"/>
+
+                <Button Content="FFMpeg Log"
+                        Click="OpenFFMpegLog"
+                        Margin="0,5"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

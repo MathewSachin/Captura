@@ -106,7 +106,7 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("70")]
+        [DefaultSettingValue("80")]
         public int VideoQuality
         {
             get => Get<int>();
@@ -114,7 +114,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("10")]
+        [DefaultSettingValue("20")]
         public int FrameRate
         {
             get => Get<int>();

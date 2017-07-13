@@ -42,7 +42,7 @@ namespace Captura.ViewModels
             if (ServiceProvider.FFMpegExists)
             {
                 if (!AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
-                    AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);                    
+                    AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);
             }
             else
             {
@@ -186,7 +186,7 @@ namespace Captura.ViewModels
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
 
-        VideoSourceKind _videoSourceKind = VideoSourceKind.Screen;
+        VideoSourceKind _videoSourceKind = VideoSourceKind.Region;
 
         public VideoSourceKind SelectedVideoSourceKind
         {

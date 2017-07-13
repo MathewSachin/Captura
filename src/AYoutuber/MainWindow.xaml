@@ -1,0 +1,270 @@
+﻿<Window x:Class="Captura.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:local="clr-namespace:Captura"
+        DataContext="{StaticResource MainViewModel}"
+        WindowStyle="None"
+        ResizeMode="CanMinimize"
+        Icon="AYoutuber.ico"
+        SizeToContent="Height"
+        MaxWidth="{local:Loc WindowWidth}"
+        MinWidth="{local:Loc WindowWidth}"
+        Title="{local:Loc AppName}"
+        Left="{Binding Settings.MainWindowLeft, Mode=TwoWay}"
+        Top="{Binding Settings.MainWindowTop, Mode=TwoWay}"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource Accent}"
+        Topmost="{Binding Settings.MainWindowTopmost}">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid Name="Panel">
+                            <Label Content="{TemplateBinding Header}"
+                                   HorizontalAlignment="Center"
+                                   Name="HeaderLabel"
+                                   Margin="10,2"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Panel" 
+                                     Property="IsMouseOver" 
+                                     Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="Panel"
+                                        Value="#EEFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" 
+                                     Value="True">
+                                <Setter TargetName="Panel" 
+                                        Property="Background"
+                                        Value="{DynamicResource Accent}" />
+                                <Setter TargetName="HeaderLabel"
+                                        Property="Foreground" 
+                                        Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>        
+        <DrawingImage x:Key="RecordStopImageSource">
+            <DrawingImage.Drawing>
+                <GeometryDrawing Geometry="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                 Brush="#b71c1c"/>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        <DrawingImage x:Key="ScreenShotImageSource">
+            <DrawingImage.Drawing>
+                <GeometryDrawing Geometry="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"
+                                 Brush="#cccccc"/>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
+                         Description="{local:Loc AppName}">
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
+                                 Description="{local:Loc ScreenShot}"
+                                 DismissWhenClicked="True"
+                                 ImageSource="{StaticResource ScreenShotImageSource}"/>
+                <ThumbButtonInfo Command="{Binding RecordCommand}"
+                                 Description="{local:Loc RecordStop}"
+                                 DismissWhenClicked="True"
+                                 ImageSource="{StaticResource RecordStopImageSource}"/>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+    <Grid Background="{Binding Settings.TopBarColor}">
+        <!-- NotifyIcon -->
+        <tb:TaskbarIcon x:Name="SystemTray"
+                        IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
+                        ToolTipText="{local:Loc AppName}"
+                        TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{local:Loc StartStopRecording}"
+                              Command="{Binding RecordCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource RecordStopImageSource}"
+                                   Width="15"
+                                   Margin="5"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="{local:Loc PauseResumeRecording}"
+                              Command="{Binding PauseCommand}"/>
+
+                    <Separator/>
+
+                    <MenuItem Header="{local:Loc ScreenShot}"
+                              Command="{Binding ScreenShotCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ScreenShotImageSource}"
+                                   Width="15"
+                                   Margin="5"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="{local:Loc ScreenShotActiveWindow}"
+                              Command="{Binding ScreenShotActiveCommand}"/>
+
+                    <MenuItem Header="{local:Loc ScreenShotDesktop}"
+                              Command="{Binding ScreenShotDesktopCommand}"/>
+
+                    <Separator/>
+
+                    <MenuItem Header="{local:Loc Exit}"
+                              Click="MenuExit_Click"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
+        <Expander Padding="5,0,0,0"
+                  IsExpanded="{Binding Settings.Expanded, Mode=TwoWay}">
+            <Expander.HeaderTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
+                        <ContentPresenter Content="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
+            <Expander.Header>
+                <DockPanel VerticalAlignment="Center">
+                    <local:ModernButton ToolTip="{local:Loc ScreenShot}"
+                                        Command="{Binding ScreenShotCommand}"
+                                        Foreground="#333333"
+                                        IconData="{StaticResource Icon_Camera}"/>
+                    <local:ModernButton ToolTip="{local:Loc RecordStop}"
+                                        Command="{Binding RecordCommand}"
+                                        Foreground="#b71c1c"
+                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                    <local:ModernButton ToolTip="{local:Loc PauseResume}" 
+                                        Command="{Binding PauseCommand}"
+                                        Foreground="#333333"
+                                        IconData="{StaticResource Icon_Pause}">
+                        <local:ModernButton.LayoutTransform>
+                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                        </local:ModernButton.LayoutTransform>
+                    </local:ModernButton>
+                    <local:ModernButton ToolTip="{local:Loc Close}"
+                                        Click="CloseButton_Click"
+                                        Foreground="#77ef5350"
+                                        IconData="{StaticResource Icon_Close}"
+                                        DockPanel.Dock="Right"/>
+                    <local:ModernButton ToolTip="{local:Loc Minimize}"
+                                        Click="MinButton_Click"
+                                        Foreground="#77333333"
+                                        IconData="{StaticResource Icon_Minimize}"
+                                        DockPanel.Dock="Right"/>
+                    <Grid Background="#57222222"
+                          Cursor="Hand"
+                          Margin="0,-2"
+                          PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
+                        <Label Content="{Binding TimeSpan}"
+                               Foreground="White"
+                               Margin="0,-1"
+                               HorizontalContentAlignment="Center"/>
+                    </Grid>
+                </DockPanel>
+            </Expander.Header>
+            <DockPanel Background="#F5F5F5"
+                       Margin="-5,0,0,0"
+                       Height="{local:Loc WindowHeight}">
+                <Label Margin="5"
+                       Content="{Binding Status.Display}"
+                       Opacity="0.9"
+                       DockPanel.Dock="Bottom"/>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- FFmpeg Folder -->
+                    <Label Content="{local:Loc FFMpegFolder}"
+                           ContentStringFormat="{}{0}: "
+                           DockPanel.Dock="Left"
+                           Padding="5,0"/>
+                    <TextBox IsReadOnly="True"
+                             Text="{Binding Settings.FFMpegFolder}"
+                             Grid.Column="1"/>
+                    <Button DockPanel.Dock="Right"
+                            ToolTip="{local:Loc Reset}"
+                            Command="{Binding ResetFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Column="2">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="10"
+                              Width="10"
+                              Data="{StaticResource Icon_Close}"/>
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            ToolTip="{local:Loc SelectFFMpegFolder}"
+                            Command="{Binding SelectFFMpegFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Column="3">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="4"
+                              Width="16"
+                              Data="{StaticResource Icon_More}"/>
+                    </Button>
+
+                    <!-- Output Folder -->
+                    <Button Content="{local:Loc OutFolder}"
+                            ContentStringFormat="{}{0}: "
+                            DockPanel.Dock="Left"
+                            Padding="5,0"
+                            VerticalContentAlignment="Center"
+                            ToolTip="{local:Loc OpenOutFolder}"
+                            Command="{Binding OpenOutputFolderCommand}"
+                            Grid.Row="1"/>
+                    <TextBox IsReadOnly="True"
+                             Text="{Binding Settings.OutPath}"
+                             Grid.Row="1"
+                             Grid.Column="1"/>
+                    <Button DockPanel.Dock="Right"
+                            ToolTip="{local:Loc SelectOutFolder}"
+                            Command="{Binding SelectOutputFolderCommand}"
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Grid.Column="2">
+                        <Path Fill="#B7000000" 
+                              Stretch="UniformToFill"
+                              Height="4"
+                              Width="16"
+                              Data="{StaticResource Icon_More}"/>
+                    </Button>
+                </Grid>
+                <TabControl Background="Transparent">
+                    <TabItem Header="{local:Loc Main}">
+                        <Frame Source="Views/MainConfigView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Configure}">
+                        <Frame Source="Views/ConfigView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Recent}">
+                        <Frame Source="Views/RecentView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc Hotkeys}">
+                        <Frame Source="Views/HotkeyView.xaml"/>
+                    </TabItem>
+                    <TabItem Header="{local:Loc About}">
+                        <Frame Source="Views/AboutView.xaml"/>
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+        </Expander>
+    </Grid>
+</Window>

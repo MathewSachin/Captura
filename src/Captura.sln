@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.UI", "Captura\Captura.UI.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests", "UITests\UITests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AYoutuber", "AYoutuber\AYoutuber.csproj", "{C77BCD64-B62A-4B64-9F22-80252D6A1FE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77BCD64-B62A-4B64-9F22-80252D6A1FE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77BCD64-B62A-4B64-9F22-80252D6A1FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77BCD64-B62A-4B64-9F22-80252D6A1FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77BCD64-B62A-4B64-9F22-80252D6A1FE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
