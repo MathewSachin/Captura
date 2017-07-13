@@ -58,11 +58,11 @@ namespace Captura
 
             Settings.Instance.Hotkeys.AddRange(new[]
             {
-                new HotkeyModel(ServiceName.Recording, Keys.R, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
-                new HotkeyModel(ServiceName.Pause, Keys.P, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
-                new HotkeyModel(ServiceName.ScreenShot, Keys.S, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true),
+                new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true),
                 new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true),
-                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.D, Modifiers.Alt | Modifiers.Ctrl | Modifiers.Shift, true)
+                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true)
             });
         }
         
