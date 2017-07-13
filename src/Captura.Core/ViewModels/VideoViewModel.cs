@@ -7,12 +7,8 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
-        public IRegionProvider RegionProvider { get; private set; }
-        
         public void Init()
-        {
-            RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
-            
+        {            
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
@@ -30,7 +26,7 @@ namespace Captura.ViewModels
 
             ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
 
-            RegionProvider.SelectorHidden += () =>
+            ServiceProvider.RegionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
                     SelectedVideoSourceKind = VideoSourceKind.Screen;
@@ -64,7 +60,7 @@ namespace Captura.ViewModels
                     AvailableVideoSources.Add(WindowItem.TaskBar);
 
                     // Prevent RegionSelector from showing here
-                    RegionProvider.SelectorVisible = false;
+                    ServiceProvider.RegionProvider.SelectorVisible = false;
 
                     foreach (var win in Window.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowItem(win));
@@ -79,7 +75,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(RegionProvider.VideoSource);
+                    AvailableVideoSources.Add(ServiceProvider.RegionProvider.VideoSource);
                     break;
 
                 case VideoSourceKind.NoVideo:
@@ -96,7 +92,7 @@ namespace Captura.ViewModels
                 SelectedVideoSource = AvailableVideoSources[0];
 
             // RegionSelector should only be shown on Region Capture.
-            RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
         }
         
         void InitSharpAviCodecs()
@@ -162,7 +158,7 @@ namespace Captura.ViewModels
 
         public VideoWriterKind SelectedVideoWriterKind
         {
-            get { return _writerKind; }
+            get => _writerKind;
             set
             {
                 if (_writerKind == value)
@@ -178,7 +174,7 @@ namespace Captura.ViewModels
         
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.NoVideo)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.OnlyAudio)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
@@ -190,7 +186,7 @@ namespace Captura.ViewModels
 
         public VideoSourceKind SelectedVideoSourceKind
         {
-            get { return _videoSourceKind; }
+            get => _videoSourceKind;
             set
             {
                 if (_videoSourceKind == value)
@@ -208,7 +204,7 @@ namespace Captura.ViewModels
 
         public IVideoItem SelectedVideoSource
         {
-            get { return _videoSource; }
+            get => _videoSource;
             set
             {
                 if (value == null && AvailableVideoSources.Count > 0)
@@ -224,7 +220,7 @@ namespace Captura.ViewModels
 
         public IVideoWriterItem SelectedVideoWriter
         {
-            get { return _writer; }
+            get => _writer;
             set
             {
                 _writer = value ?? (AvailableVideoWriters.Count == 0 ? null : AvailableVideoWriters[0]);

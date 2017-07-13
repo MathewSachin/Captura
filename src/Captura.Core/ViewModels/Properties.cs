@@ -19,7 +19,7 @@ namespace Captura.ViewModels
 
         public bool CanChangeVideoSource
         {
-            get { return _canChangeVideoSource; }
+            get => _canChangeVideoSource;
             set
             {
                 if (_canChangeVideoSource == value)
@@ -36,7 +36,7 @@ namespace Captura.ViewModels
 
         public TimeSpan TimeSpan
         {
-            get { return _ts; }
+            get => _ts;
             set
             {
                 if (_ts == value)
@@ -52,7 +52,7 @@ namespace Captura.ViewModels
 
         public int Duration
         {
-            get { return _duration; }
+            get => _duration;
             set
             {
                 if (_duration == value)
@@ -68,7 +68,7 @@ namespace Captura.ViewModels
 
         public int StartDelay
         {
-            get { return _startDelay; }
+            get => _startDelay;
             set
             {
                 if (_startDelay == value)
@@ -93,7 +93,7 @@ namespace Captura.ViewModels
 
         public RecorderState RecorderState
         {
-            get { return _recorderState; }
+            get => _recorderState;
             set
             {
                 if (_recorderState == value)
@@ -110,6 +110,22 @@ namespace Captura.ViewModels
         }
 
         public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
+
+        // Not a Setting
+        public KeyValuePair<Alignment, string>[] XAlignments { get; } = new[]
+        {
+            new KeyValuePair<Alignment, string>(Alignment.Start, "Left"),
+            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
+            new KeyValuePair<Alignment, string>(Alignment.End, "Right")
+        };
+
+        // Not a Setting
+        public KeyValuePair<Alignment, string>[] YAlignments { get; } = new[]
+        {
+            new KeyValuePair<Alignment, string>(Alignment.Start, "Top"),
+            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
+            new KeyValuePair<Alignment, string>(Alignment.End, "Bottom")
+        };
 
         #region ScreenShot
         public ImageFormat[] ScreenShotImageFormats => new[]
@@ -129,7 +145,7 @@ namespace Captura.ViewModels
 
         public ImageFormat SelectedScreenShotImageFormat
         {
-            get { return _screenShotImageFormat; }
+            get => _screenShotImageFormat;
             set
             {
                 if (_screenShotImageFormat == value)
@@ -192,8 +208,6 @@ namespace Captura.ViewModels
         #endregion
 
         #region Nested ViewModels
-        public Settings Settings { get; } = Settings.Instance;
-
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 
         public AudioViewModel AudioViewModel { get; } = new AudioViewModel();

@@ -80,7 +80,7 @@ namespace Captura.Models
                     }
                     catch (Exception E)
                     {
-                        ServiceProvider.Messenger.ShowError($"Could not Start Capture\n\n\n{E}");
+                        ServiceProvider.MessageProvider.ShowError($"Could not Start Capture\n\n\n{E}");
 
                         _window.Hide();
                     }

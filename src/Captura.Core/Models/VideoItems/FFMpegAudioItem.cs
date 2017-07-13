@@ -6,6 +6,8 @@ namespace Captura.Models
     {
         FFMpegAudioArgsProvider _audioArgsProvider;
 
+        const string Experimental = "-strict -2";
+
         FFMpegAudioItem(string Name, string Extension, FFMpegAudioArgsProvider AudioArgsProvider)
             : base($"{Name} (FFMpeg)", Extension)
         {
@@ -22,7 +24,7 @@ namespace Captura.Models
             // bitrate: 32k to 512k (steps of 32k)
             var b = 32 * (1 + (15 * (q - 1)) / 99);
 
-            return $"-acodec aac -strict -2 -ac 2 -b:a {b}k";
+            return $"-c:a aac {Experimental} -b:a {b}k";
         };
 
         public static FFMpegAudioArgsProvider Mp3 { get; } = q =>

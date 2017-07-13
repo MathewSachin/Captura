@@ -26,16 +26,17 @@
                         Margin="5,0,0,0">
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
                                           IconData="{StaticResource Icon_Cursor}"
-                                          IsChecked="{Binding Settings.IncludeCursor, Mode=TwoWay}"/>
+                                          IsChecked="{local:Setting IncludeCursor}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Hand}"
-                                          IsChecked="{Binding Settings.MouseClicks, Mode=TwoWay}"/>
+                                          IsChecked="{local:Setting MouseClicks}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Keyboard}"
-                                          IsChecked="{Binding Settings.KeyStrokes, Mode=TwoWay}"/>
-                <local:ModernButton ToolTip="Customize Click and Keystrokes Overlays"
+                                          IsChecked="{local:Setting KeyStrokes}"/>
+                <local:ModernButton ToolTip="{local:Loc CustomizeClickAndKeysOverlays}"
+                                    Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                     IconData="{StaticResource Icon_More}"
                                     Click="OpenMouseKeyHook"/>
             </StackPanel>
@@ -132,7 +133,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc FrameRate}"
                    ContentStringFormat="{}{0}:"                   />
-            <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
+            <Label Content="{local:Setting FrameRate, StringFormat={}{0:N0}}"
                    Margin="5,0"
                    MinWidth="15"
                    HorizontalContentAlignment="Right"/>
@@ -141,7 +142,7 @@
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.FrameRate, Mode=TwoWay}"
+                    Value="{local:Setting FrameRate}"
                     Interval="1"/>
         </DockPanel>
 
@@ -149,7 +150,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.VideoQuality}"
+            <Label Content="{local:Setting VideoQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -159,8 +160,46 @@
                     SelectionStart="60"
                     SelectionEnd="80"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
+                    Value="{local:Setting VideoQuality}"/>
         </DockPanel>
+
+        <Label Margin="10,15,0,3"
+               Content="{local:Loc ScreenShot}"
+               FontWeight="Bold"
+               FontSize="15"/>
+
+        <Grid Margin="10,5,7,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="{local:Loc SaveLocation}"
+                           ContentStringFormat="{}{0}: "
+                           Margin="0,0,5,0"/>
+
+            <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
+                              SelectedValue="{Binding VideoViewModel.SelectedImageWriter, Mode=TwoWay}"
+                              SelectedValuePath="Source"
+                              DisplayMemberPath="Display"/>
+
+            <Label Content="{local:Loc ImgFormat}"
+                           ContentStringFormat="{}{0}: "
+                           Grid.Row="1"
+                           Margin="0,5,5,0"/>
+
+            <ComboBox VerticalAlignment="Center"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              ItemsSource="{Binding ScreenShotImageFormats}"
+                              SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"
+                              Margin="0,5,0,0"/>
+        </Grid>
 
         <Label Content="{local:Loc Audio}"
                FontWeight="Bold"
@@ -205,7 +244,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.AudioQuality}"
+            <Label Content="{local:Setting AudioQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -215,7 +254,7 @@
                     SelectionStart="40"
                     SelectionEnd="60"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.AudioQuality, Mode=TwoWay}"/>
+                    Value="{local:Setting AudioQuality}"/>
         </DockPanel>
     </StackPanel>
 </Page>

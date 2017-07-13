@@ -50,6 +50,7 @@
     <Compile Include="Fakes\FakeRegionProvider.cs" />
     <Compile Include="Fakes\FakeSystemTray.cs" />
     <Compile Include="Fakes\FakeWebCamProvider.cs" />
+    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />

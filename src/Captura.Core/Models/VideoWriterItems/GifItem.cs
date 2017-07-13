@@ -18,7 +18,7 @@ namespace Captura.Models
         {
             var repeat = Settings.Instance.GifRepeat ? Settings.Instance.GifRepeatCount : -1;
             
-            return new GifWriter(FileName, 1000 / FrameRate, repeat);
+            return new GifWriter(FileName, FrameRate, repeat);
         }
     }
 }

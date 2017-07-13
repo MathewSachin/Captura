@@ -8,6 +8,14 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool HideOnFullScreenShot
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool MainWindowTopmost
         {
@@ -32,7 +40,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("200")]
+        [DefaultSettingValue("50")]
         public int MainWindowLeft
         {
             get => Get<int>();
@@ -40,7 +48,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("200")]
+        [DefaultSettingValue("50")]
         public int MainWindowTop
         {
             get => Get<int>();

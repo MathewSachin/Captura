@@ -27,7 +27,7 @@ namespace Captura.Models
 
         public virtual IAudioItem SelectedRecordingSource
         {
-            get { return _recordingSource; }
+            get => _recordingSource;
             set
             {
                 _recordingSource = value ?? NoSoundItem.Instance;
@@ -38,7 +38,7 @@ namespace Captura.Models
 
         public virtual IAudioItem SelectedLoopbackSource
         {
-            get { return _loopbackSource; }
+            get => _loopbackSource;
             set
             {
                 _loopbackSource = value ?? NoSoundItem.Instance;

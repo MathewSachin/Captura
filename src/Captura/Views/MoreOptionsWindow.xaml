@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Captura"
-        Title="Extras"
+        Title="{local:Loc Extras}"
         DataContext="{StaticResource MainViewModel}"
         SizeToContent="Height"
         Width="400">
@@ -34,7 +34,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
-                <xctk:ColorPicker SelectedColor="{Binding Settings.TopBarColor}"
+                <xctk:ColorPicker SelectedColor="{local:Setting TopBarColor}"
                                   Margin="0,5"
                                   Grid.Row="1"
                                   Grid.Column="1"/>
@@ -43,7 +43,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="2"/>
-                <xctk:IntegerUpDown Value="{Binding Settings.RegionBorderThickness}"
+                <xctk:IntegerUpDown Value="{local:Setting RegionBorderThickness}"
                                     Minimum="1"
                                     Margin="0,5"
                                     Grid.Row="2"
@@ -53,7 +53,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="3"/>
-                <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotNotifyTimeout}"
+                <xctk:IntegerUpDown Value="{local:Setting ScreenShotNotifyTimeout}"
                                     Minimum="1000"
                                     Margin="0,5"
                                     Grid.Row="3"
@@ -63,17 +63,11 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="4"/>
-                <xctk:ColorPicker SelectedColor="{Binding Settings.VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
+                <xctk:ColorPicker SelectedColor="{local:Setting VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
                                   Margin="0,5"
                                   Grid.Row="4"
                                   Grid.Column="1"/>
             </Grid>
-            <CheckBox Content="Copy Output file path to Clipboard"
-                      IsChecked="{Binding Settings.CopyOutPathToClipboard, Mode=TwoWay}"
-                      Margin="0,5"/>
-            <CheckBox Content="Main Window Always on Top"
-                      IsChecked="{Binding Settings.MainWindowTopmost, Mode=TwoWay}"
-                      Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Window>

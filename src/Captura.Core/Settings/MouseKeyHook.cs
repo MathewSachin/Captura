@@ -109,23 +109,7 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
-
-        // Not a Setting
-        public KeyValuePair<Alignment, string>[] XAlignments { get; } = new[]
-        {
-            new KeyValuePair<Alignment, string>(Alignment.Start, "Left"),
-            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
-            new KeyValuePair<Alignment, string>(Alignment.End, "Right")
-        };
-
-        // Not a Setting
-        public KeyValuePair<Alignment, string>[] YAlignments { get; } = new[]
-        {
-            new KeyValuePair<Alignment, string>(Alignment.Start, "Top"),
-            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
-            new KeyValuePair<Alignment, string>(Alignment.End, "Bottom")
-        };
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("Start")]
         public Alignment Keystrokes_XAlign
@@ -151,7 +135,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("200")]
+        [DefaultSettingValue("100")]
         public int Keystrokes_Y
         {
             get => Get<int>();

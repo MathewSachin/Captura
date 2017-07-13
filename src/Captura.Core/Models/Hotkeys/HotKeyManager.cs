@@ -27,8 +27,29 @@ namespace Captura
             if (Settings.Instance.Hotkeys.Count == 0)
                 Reset();
 
+            var nonReg = new List<Hotkey>();
+
             foreach (var model in Settings.Instance.Hotkeys)
-                Hotkeys.Add(new Hotkey(model));
+            {
+                var hotkey = new Hotkey(model);
+
+                if (!hotkey.IsRegistered)
+                    nonReg.Add(hotkey);
+
+                Hotkeys.Add(hotkey);
+            }
+
+            if (nonReg.Count > 0)
+            {
+                var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
+
+                foreach (var hotkey in nonReg)
+                {
+                    message += $"{TranslationSource.Instance[ServiceProvider.GetDescriptionKey(hotkey.ServiceName)]} - {hotkey}\n\n";
+                }
+
+                ServiceProvider.MessageProvider.ShowError(message);
+            }
         }
 
         public static void Reset()

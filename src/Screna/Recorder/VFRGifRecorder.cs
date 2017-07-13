@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +18,8 @@ namespace Screna
 
         readonly ManualResetEvent _stopCapturing = new ManualResetEvent(false),
             _continueCapturing = new ManualResetEvent(false);
+
+        readonly Timing _timing = new Timing();
         #endregion
 
         /// <summary>
@@ -38,7 +41,12 @@ namespace Screna
         /// <summary>
         /// Start recording.
         /// </summary>
-        public void Start() => _continueCapturing.Set();
+        public void Start()
+        {
+            _timing.Start();
+            
+            _continueCapturing.Set();
+        }
 
         void Dispose(bool ErrorOccured)
         {
@@ -49,6 +57,8 @@ namespace Screna
 
             if (!ErrorOccured)
                 _recordTask.Wait();
+
+            _timing.Stop();
 
             _imageProvider.Dispose();
 
@@ -66,24 +76,33 @@ namespace Screna
         /// <summary>
         /// Override this method with the code to pause recording.
         /// </summary>
-        public void Stop() => _continueCapturing.Reset();
+        public void Stop()
+        {
+            _continueCapturing.Reset();
+
+            _timing.Pause();
+        }
 
         void Record()
         {
             try
             {
-                var lastFrameWriteTime = DateTime.MinValue;
+                Bitmap lastFrame = null;
                 
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {
                     var frame = _imageProvider.Capture();
 
-                    var delay = lastFrameWriteTime == DateTime.MinValue ? 0
-                        : (int)(DateTime.Now - lastFrameWriteTime).TotalMilliseconds;
+                    var delay = (int)_timing.Elapsed.TotalMilliseconds;
 
-                    lastFrameWriteTime = DateTime.Now;
+                    _timing.Stop();
+                    _timing.Start();
 
-                    _videoEncoder.WriteFrame(frame, delay);
+                    // delay is the time between this and next frame
+                    if (lastFrame != null)
+                        _videoEncoder.WriteFrame(lastFrame, delay);
+
+                    lastFrame = frame;
                 }
             }
             catch (Exception E)
