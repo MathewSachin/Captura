@@ -232,6 +232,8 @@ namespace Captura
             {
                 ResizeMode = ResizeMode.NoResize;
                 Snapper.IsEnabled = CloseButton.IsEnabled = false;
+
+                WidthBox.IsEnabled = HeightBox.IsEnabled = false;
             });
         }
         
@@ -241,6 +243,8 @@ namespace Captura
             {
                 ResizeMode = ResizeMode.CanResize;
                 Snapper.IsEnabled = CloseButton.IsEnabled = true;
+
+                WidthBox.IsEnabled = HeightBox.IsEnabled = true;
             });
         }
 
