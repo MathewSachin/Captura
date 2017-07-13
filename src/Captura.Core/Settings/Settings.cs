@@ -122,7 +122,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("False")]
+        [DefaultSettingValue("True")]
         public bool MouseClicks
         {
             get => Get<bool>();
@@ -138,7 +138,6 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("en-US")]
         public string Language
         {
             get => Get<string>();

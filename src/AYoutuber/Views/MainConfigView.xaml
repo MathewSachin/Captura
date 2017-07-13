@@ -41,20 +41,16 @@
             </StackPanel>
         </DockPanel>
 
+        <GroupBox Header="{local:Loc Video}" Margin="10,10,0,0">
+            <StackPanel>
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
 
-        <Label Content="{local:Loc Video}"
-               FontWeight="Bold"
-               Margin="10,3"
-               FontSize="15"/>
-
-        <Grid Margin="0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
-
-            <Path Data="{StaticResource Icon_Screen}"
+                    <Path Data="{StaticResource Icon_Screen}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -64,7 +60,7 @@
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc VideoSource}"/>
 
-            <ComboBox VerticalAlignment="Center" 
+                    <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
                       Grid.Column="1"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
@@ -73,16 +69,16 @@
                       SelectedValuePath="Source"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
-            <ComboBox VerticalAlignment="Center" 
+                    <ComboBox VerticalAlignment="Center" 
                       Margin="3,0,7,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
                       IsEnabled="{Binding CanChangeVideoSource}"
                       Grid.Column="2"/>
-        </Grid>
+                </Grid>
 
-        <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Webcam}"
+                <DockPanel Margin="0,5">
+                    <Path Data="{StaticResource Icon_Webcam}"
                   Width="15"
                   Height="15"
                   Margin="10,0,7,0"
@@ -92,18 +88,18 @@
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc WebCam}"/>
 
-            <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
+                    <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                       SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
                       Margin="0,0,7,0"/>
-        </DockPanel>
+                </DockPanel>
 
-        <Grid Margin="0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
-            <Path Data="{StaticResource Icon_Video}"
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Path Data="{StaticResource Icon_Video}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -113,62 +109,63 @@
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc VideoEncoder}"/>
 
-            <ComboBox VerticalAlignment="Center" 
+                    <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
                       Grid.Column="1"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
-            <ComboBox VerticalAlignment="Center"
+                    <ComboBox VerticalAlignment="Center"
                       Margin="3,0,7,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
                       Grid.Column="2"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-        </Grid>
-        
-        <DockPanel Margin="10,5,0,5"
+                </Grid>
+
+                <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc FrameRate}"
+                    <Label Content="{local:Loc FrameRate}"
                    ContentStringFormat="{}{0}:"                   />
-            <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
+                    <Label Content="{Binding Settings.FrameRate, StringFormat={}{0:N0}}"
                    Margin="5,0"
                    MinWidth="15"
                    HorizontalContentAlignment="Right"/>
-            <Slider Minimum="1"
+                    <Slider Minimum="1"
                     Maximum="30" 
-                    SelectionStart="8"
-                    SelectionEnd="12"
+                    SelectionStart="15"
+                    SelectionEnd="25"
                     IsSelectionRangeEnabled="True"
                     Value="{Binding Settings.FrameRate, Mode=TwoWay}"
                     Interval="1"/>
-        </DockPanel>
+                </DockPanel>
 
-        <DockPanel Margin="10,5,0,5"
+                <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc Quality}"
+                    <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.VideoQuality}"
+                    <Label Content="{Binding Settings.VideoQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
                    HorizontalContentAlignment="Right"/>
-            <Slider Minimum="1" 
+                    <Slider Minimum="1" 
                     Maximum="100"
-                    SelectionStart="60"
-                    SelectionEnd="80"
+                    SelectionStart="70"
+                    SelectionEnd="90"
                     IsSelectionRangeEnabled="True"
                     Value="{Binding Settings.VideoQuality, Mode=TwoWay}"/>
-        </DockPanel>
+                </DockPanel>
+            </StackPanel>
+        </GroupBox>
+        
+        <GroupBox Header="{local:Loc Audio}" Margin="10,10,0,0" IsEnabled="False">
+            <StackPanel>
+                
 
-        <Label Content="{local:Loc Audio}"
-               FontWeight="Bold"
-               Margin="10,15,0,3"
-               FontSize="15"/>
-
-        <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Mic}"
+                <DockPanel Margin="0,5">
+                    <Path Data="{StaticResource Icon_Mic}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -177,15 +174,15 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc MicSource}"/>
-            <ComboBox VerticalAlignment="Center" 
+                    <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableRecordingSources}"
                       SelectedValue="{Binding AudioViewModel.AudioSource.SelectedRecordingSource, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-        </DockPanel>
-        
-        <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Speaker}"
+                </DockPanel>
+
+                <DockPanel Margin="0,5">
+                    <Path Data="{StaticResource Icon_Speaker}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -194,28 +191,31 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc LoopbackSource}"/>
-            <ComboBox VerticalAlignment="Center" 
+                    <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableLoopbackSources}"
                       SelectedValue="{Binding AudioViewModel.AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-        </DockPanel>
+                </DockPanel>
 
-        <DockPanel Margin="10,5,0,5"
+                <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc Quality}"
+                    <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.AudioQuality}"
+                    <Label Content="{Binding Settings.AudioQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
                    HorizontalContentAlignment="Right"/>
-            <Slider Minimum="1" 
+                    <Slider Minimum="1" 
                     Maximum="100"
                     SelectionStart="40"
                     SelectionEnd="60"
                     IsSelectionRangeEnabled="True"
                     Value="{Binding Settings.AudioQuality, Mode=TwoWay}"/>
-        </DockPanel>
+                </DockPanel>
+            </StackPanel>
+        </GroupBox>
+        
     </StackPanel>
 </Page>

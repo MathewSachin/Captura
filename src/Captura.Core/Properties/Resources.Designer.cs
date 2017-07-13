@@ -70,7 +70,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captura.
+        ///   Looks up a localized string similar to VideoGenerator.
         /// </summary>
         public static string AppName {
             get {

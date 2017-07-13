@@ -5,7 +5,7 @@
     <Page.DataContext>
         <local:AboutViewModel/>
     </Page.DataContext>
-    <Grid Visibility="Collapsed">
+    <Grid>
         <Grid.Resources>
             <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
                 <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>

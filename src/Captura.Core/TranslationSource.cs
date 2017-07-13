@@ -27,7 +27,12 @@ namespace Captura
             if (!AvailableCultures.Any(culture => culture.Name == "en-US"))
                 AvailableCultures.Insert(0, new CultureInfo("en-US"));
 
-            var savedCulture = Settings.Instance.Language;
+            // 시스템에서 언어 정보 가져오기
+            var savedCulture = string.Empty;
+            if (Settings.Instance.Language == null)
+            {
+                savedCulture = Thread.CurrentThread.CurrentCulture.ToString();
+            }
 
             CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en-US");
         }

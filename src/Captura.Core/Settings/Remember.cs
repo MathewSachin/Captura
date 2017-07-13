@@ -29,7 +29,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue(nameof(VideoSourceKind.Screen))]
+        [DefaultSettingValue(nameof(VideoSourceKind.Region))]
         public VideoSourceKind LastSourceKind
         {
             get => Get<VideoSourceKind>();
@@ -37,6 +37,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [DefaultSettingValue("0,0,400,400")]
         public string LastSourceName
         {
             get => Get<string>();
