@@ -270,7 +270,11 @@
                                 </DockPanel>
                             </TabItem>
                             <TabItem Header="FFMpeg">
-                                    
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/FFMpegView.xaml"/>
+                                </DockPanel>                                    
                             </TabItem>
                             <TabItem Header="Extras">
                                 <DockPanel>
