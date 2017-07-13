@@ -63,10 +63,6 @@
                            Margin="0,10">
                            Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
                 </TextBlock>
-                
-                <Button Content="{local:Loc Extras}"
-                        Click="OpenExtras"
-                        Margin="0,5"/>
 
                 <Button Content="{local:Loc FFMpegLog}"
                         Click="OpenFFMpegLog"
