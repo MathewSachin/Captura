@@ -69,7 +69,7 @@
                                   Grid.Column="1"/>
             </Grid>
 
-            <CheckBox IsChecked="{Binding Settings.UseDeskDupl, Mode=TwoWay}"
+            <CheckBox IsChecked="{local:Setting UseDeskDupl}"
                       Margin="0,5">
                 <TextBlock TextWrapping="Wrap">
                     Use Desktop Duplication API instead of GDI.<LineBreak/>
