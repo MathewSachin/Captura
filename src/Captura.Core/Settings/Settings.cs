@@ -40,7 +40,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("200")]
+        [DefaultSettingValue("50")]
         public int MainWindowLeft
         {
             get => Get<int>();
@@ -48,7 +48,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("200")]
+        [DefaultSettingValue("50")]
         public int MainWindowTop
         {
             get => Get<int>();

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Captura"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -11,5 +12,13 @@
     <Style TargetType="xctk:ColorPicker">
         <Setter Property="ColorMode" Value="ColorCanvas"/>
         <Setter Property="ShowAdvancedButton" Value="False"/>
+    </Style>
+    <Style TargetType="xctk:MessageBox">
+        <Setter Property="YesButtonContent" Value="{local:Loc Yes}"/>
+        <Setter Property="NoButtonContent" Value="{local:Loc No}"/>
+        <Setter Property="OkButtonContent" Value="{local:Loc Ok}"/>
+        <Setter Property="YesButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="NoButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="OkButtonStyle" Value="{StaticResource {x:Type Button}}"/>
     </Style>
 </ResourceDictionary>

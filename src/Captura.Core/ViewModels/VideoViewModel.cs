@@ -158,7 +158,7 @@ namespace Captura.ViewModels
 
         public VideoWriterKind SelectedVideoWriterKind
         {
-            get { return _writerKind; }
+            get => _writerKind;
             set
             {
                 if (_writerKind == value)
@@ -186,7 +186,7 @@ namespace Captura.ViewModels
 
         public VideoSourceKind SelectedVideoSourceKind
         {
-            get { return _videoSourceKind; }
+            get => _videoSourceKind;
             set
             {
                 if (_videoSourceKind == value)
@@ -204,7 +204,7 @@ namespace Captura.ViewModels
 
         public IVideoItem SelectedVideoSource
         {
-            get { return _videoSource; }
+            get => _videoSource;
             set
             {
                 if (value == null && AvailableVideoSources.Count > 0)
@@ -220,7 +220,7 @@ namespace Captura.ViewModels
 
         public IVideoWriterItem SelectedVideoWriter
         {
-            get { return _writer; }
+            get => _writer;
             set
             {
                 _writer = value ?? (AvailableVideoWriters.Count == 0 ? null : AvailableVideoWriters[0]);
