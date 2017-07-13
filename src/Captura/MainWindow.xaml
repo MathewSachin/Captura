@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         DataContext="{StaticResource MainViewModel}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
@@ -23,7 +24,6 @@
                     <ControlTemplate TargetType="TabItem">
                         <Grid Name="Panel">
                             <Label Content="{TemplateBinding Header}"
-                                   HorizontalAlignment="Center"
                                    Name="HeaderLabel"
                                    Margin="10,2"/>
                         </Grid>
@@ -177,88 +177,69 @@
                        Content="{Binding Status.Display}"
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
-                <Grid DockPanel.Dock="Bottom">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
 
-                    <!-- FFmpeg Folder -->
-                    <Label Content="{local:Loc FFMpegFolder}"
-                           ContentStringFormat="{}{0}: "
-                           DockPanel.Dock="Left"
-                           Padding="5,0"/>
-                    <TextBox IsReadOnly="True"
-                             Text="{local:Setting FFMpegFolder}"
-                             Grid.Column="1"/>
-                    <Button DockPanel.Dock="Right"
-                            ToolTip="{local:Loc Reset}"
-                            Command="{Binding ResetFFMpegFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Column="2">
-                        <Path Fill="#B7000000" 
-                              Stretch="UniformToFill"
-                              Height="10"
-                              Width="10"
-                              Data="{StaticResource Icon_Close}"/>
-                    </Button>
-                    <Button DockPanel.Dock="Right"
-                            ToolTip="{local:Loc SelectFFMpegFolder}"
-                            Command="{Binding SelectFFMpegFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Column="3">
-                        <Path Fill="#B7000000" 
-                              Stretch="UniformToFill"
-                              Height="4"
-                              Width="16"
-                              Data="{StaticResource Icon_More}"/>
-                    </Button>
-
-                    <!-- Output Folder -->
+                <!-- Output Folder -->
+                <DockPanel DockPanel.Dock="Bottom">                    
                     <Button Content="{local:Loc OutFolder}"
                             ContentStringFormat="{}{0}: "
                             DockPanel.Dock="Left"
                             Padding="5,0"
                             VerticalContentAlignment="Center"
                             ToolTip="{local:Loc OpenOutFolder}"
-                            Command="{Binding OpenOutputFolderCommand}"
-                            Grid.Row="1"/>
-                    <TextBox IsReadOnly="True"
-                             Text="{local:Setting OutPath}"
-                             Grid.Row="1"
-                             Grid.Column="1"/>
+                            Command="{Binding OpenOutputFolderCommand}"/>
                     <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Grid.Column="2">
+                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                         <Path Fill="#B7000000" 
                               Stretch="UniformToFill"
                               Height="4"
                               Width="16"
                               Data="{StaticResource Icon_More}"/>
                     </Button>
-                </Grid>
+                    <TextBox IsReadOnly="True"
+                             Text="{local:Setting OutPath}"/>
+                </DockPanel>
                 <TabControl Background="Transparent">
                     <TabItem Header="{local:Loc Main}">
                         <Frame Source="Views/MainConfigView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc Configure}">
-                        <Frame Source="Views/ConfigView.xaml"/>
+                        <TabControl Background="Transparent"
+                                    TabStripPlacement="Left"
+                                    BorderThickness="0">
+                            <TabItem Header="Options">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/ConfigView.xaml"/>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="{local:Loc Hotkeys}">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/HotkeyView.xaml"/>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="FFMpeg">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/FFMpegView.xaml"/>
+                                </DockPanel>                                    
+                            </TabItem>
+                            <TabItem Header="Extras">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/ExtrasView.xaml"/>
+                                </DockPanel>                                
+                            </TabItem>
+                        </TabControl>
                     </TabItem>
                     <TabItem Header="{local:Loc Recent}">
                         <Frame Source="Views/RecentView.xaml"/>
-                    </TabItem>
-                    <TabItem Header="{local:Loc Hotkeys}">
-                        <Frame Source="Views/HotkeyView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc About}">
                         <Frame Source="Views/AboutView.xaml"/>

@@ -60,8 +60,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +87,12 @@
     <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
+    <Compile Include="Views\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FFMpegView.xaml.cs">
+      <DependentUpon>FFMpegView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FFMpegLogView.xaml.cs">
       <DependentUpon>FFMpegLogView.xaml</DependentUpon>
     </Compile>
@@ -119,8 +125,8 @@
     <Compile Include="Views\MouseKeyHookView.xaml.cs">
       <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MoreOptionsWindow.xaml.cs">
-      <DependentUpon>MoreOptionsWindow.xaml</DependentUpon>
+    <Compile Include="Views\ExtrasView.xaml.cs">
+      <DependentUpon>ExtrasView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
@@ -164,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FFMpegView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FFMpegLogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,7 +198,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MoreOptionsWindow.xaml">
+    <Page Include="Views\ExtrasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
