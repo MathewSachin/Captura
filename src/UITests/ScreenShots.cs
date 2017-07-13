@@ -61,7 +61,7 @@ namespace UITests
         {
             Directory.CreateDirectory("Tabs");
             
-            foreach (var tabName in new[] { Resources.Main, Resources.Configure, Resources.Recent, Resources.Hotkeys, Resources.About })
+            foreach (var tabName in new[] { Resources.Main, Resources.Configure, Resources.Recent, Resources.About })
             {
                 var tab = MainWindow.Get<TabPage>(SearchCriteria.ByText(tabName));
 

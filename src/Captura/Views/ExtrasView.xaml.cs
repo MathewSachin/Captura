@@ -4,22 +4,8 @@ using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class MoreOptionsWindow
+    public partial class ExtrasView
     {
-        MoreOptionsWindow()
-        {
-            InitializeComponent();
-
-            Closing += (s, e) =>
-            {
-                Hide();
-
-                e.Cancel = true;
-            };
-        }
-
-        public static MoreOptionsWindow Instance { get; } = new MoreOptionsWindow();
-
         void SelectedAccentColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             if (e.NewValue != null)

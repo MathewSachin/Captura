@@ -105,10 +105,5 @@ namespace Captura
         {
             TryExit();
         }
-
-        void FFDownload(object sender, RoutedEventArgs e)
-        {
-            new FFMpegDownloader().ShowDialog();
-        }
     }
 }
