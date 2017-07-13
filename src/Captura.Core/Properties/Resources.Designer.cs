@@ -1069,7 +1069,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 580.
+        ///   Looks up a localized string similar to 560.
         /// </summary>
         public static string WindowHeight {
             get {
@@ -1078,7 +1078,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 400.
+        ///   Looks up a localized string similar to 420.
         /// </summary>
         public static string WindowWidth {
             get {
