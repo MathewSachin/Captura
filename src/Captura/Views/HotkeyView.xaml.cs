@@ -41,12 +41,18 @@ namespace Captura
                     Source = hotkey.Description
                 };
 
-                var desc = new CheckBox
+                var textBlock = new TextBlock
                 {
-                    IsChecked = hotkey.IsActive
+                    TextWrapping = TextWrapping.WrapWithOverflow
                 };
 
-                BindingOperations.SetBinding(desc, ContentControl.ContentProperty, binding);
+                var desc = new CheckBox
+                {
+                    IsChecked = hotkey.IsActive,
+                    Content = textBlock
+                };
+
+                BindingOperations.SetBinding(textBlock, TextBlock.TextProperty, binding);
 
                 HotkeyGrid.Children.Add(desc);
                 Grid.SetRow(desc, i);

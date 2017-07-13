@@ -8,14 +8,11 @@
                 Click="Reset_Click"/>
         <Grid Name="HotkeyGrid" Margin="0,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="3"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="Auto" MinWidth="180"/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="3"/>
-                </Style>
                 <Style TargetType="local:HotkeySelector">
                     <Setter Property="Margin" Value="3"/>
                     <Setter Property="Background" Value="#EEEEEE"/>
