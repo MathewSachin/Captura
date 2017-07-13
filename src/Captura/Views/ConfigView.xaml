@@ -4,12 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
       DataContext="{StaticResource MainViewModel}">
-    <DockPanel>
-        <Button Content="{local:Loc Extras}"
-                Click="OpenExtras"
-                Margin="5"
-                DockPanel.Dock="Bottom"/>
-        
+    <Grid>        
         <ScrollViewer>
             <StackPanel Margin="3"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
@@ -133,5 +128,5 @@
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>
-    </DockPanel>
+    </Grid>
 </Page>

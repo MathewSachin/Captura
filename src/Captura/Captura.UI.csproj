@@ -122,8 +122,8 @@
     <Compile Include="Views\MouseKeyHookView.xaml.cs">
       <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MoreOptionsWindow.xaml.cs">
-      <DependentUpon>MoreOptionsWindow.xaml</DependentUpon>
+    <Compile Include="Views\ExtrasView.xaml.cs">
+      <DependentUpon>ExtrasView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
@@ -191,7 +191,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MoreOptionsWindow.xaml">
+    <Page Include="Views\ExtrasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

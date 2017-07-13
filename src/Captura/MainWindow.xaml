@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         DataContext="{StaticResource MainViewModel}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
@@ -23,7 +24,6 @@
                     <ControlTemplate TargetType="TabItem">
                         <Grid Name="Panel">
                             <Label Content="{TemplateBinding Header}"
-                                   HorizontalAlignment="Center"
                                    Name="HeaderLabel"
                                    Margin="10,2"/>
                         </Grid>
@@ -252,13 +252,37 @@
                         <Frame Source="Views/MainConfigView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc Configure}">
-                        <Frame Source="Views/ConfigView.xaml"/>
+                        <TabControl Background="Transparent"
+                                    TabStripPlacement="Left"
+                                    BorderThickness="0">
+                            <TabItem Header="Options">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/ConfigView.xaml"/>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="{local:Loc Hotkeys}">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/HotkeyView.xaml"/>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="FFMpeg">
+                                    
+                            </TabItem>
+                            <TabItem Header="Extras">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/ExtrasView.xaml"/>
+                                </DockPanel>                                
+                            </TabItem>
+                        </TabControl>
                     </TabItem>
                     <TabItem Header="{local:Loc Recent}">
                         <Frame Source="Views/RecentView.xaml"/>
-                    </TabItem>
-                    <TabItem Header="{local:Loc Hotkeys}">
-                        <Frame Source="Views/HotkeyView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc About}">
                         <Frame Source="Views/AboutView.xaml"/>
