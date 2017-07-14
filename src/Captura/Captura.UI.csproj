@@ -131,6 +131,9 @@
     <Compile Include="Views\ExtrasView.xaml.cs">
       <DependentUpon>ExtrasView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProxyView.xaml.cs">
+      <DependentUpon>ProxyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ExtrasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProxyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -197,7 +197,14 @@
                                     <GridSplitter Width="1"
                                                   Margin="5,0"/>
                                     <Frame Source="Views/FFMpegView.xaml"/>
-                                </DockPanel>                                    
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="Proxy">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <Frame Source="Views/ProxyView.xaml"/>
+                                </DockPanel>
                             </TabItem>
                             <TabItem Header="Extras">
                                 <DockPanel>

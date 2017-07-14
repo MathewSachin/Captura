@@ -25,7 +25,7 @@ namespace Captura.Models
 
                 var ritem = Recents.Add(Resources.ImgurUploading, RecentItemType.Link, true);
                                 
-                using (var w = new WebClient())
+                using (var w = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
                 {
                     w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
 
