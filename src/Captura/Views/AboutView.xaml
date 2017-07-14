@@ -10,12 +10,16 @@
             <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
                 <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>
             </Style>
+            <Style x:Key="TextColor" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+            </Style>
         </Grid.Resources>
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">
                 <TextBlock TextWrapping="Wrap"
-                           LineHeight="30">
+                           LineHeight="30"
+                           Style="{StaticResource TextColor}">
                     <Run FontSize="20" Text="{local:Loc AppName}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
                     (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
@@ -60,7 +64,8 @@
                 </Grid>
 
                 <TextBlock TextWrapping="Wrap"
-                           Margin="0,10">
+                           Margin="0,10"
+                           Style="{StaticResource TextColor}">
                            Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
                 </TextBlock>
             </StackPanel>
