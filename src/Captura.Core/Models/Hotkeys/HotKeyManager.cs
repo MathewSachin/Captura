@@ -33,7 +33,7 @@ namespace Captura
             {
                 var hotkey = new Hotkey(model);
 
-                if (!hotkey.IsRegistered)
+                if (hotkey.IsActive && !hotkey.IsRegistered)
                     nonReg.Add(hotkey);
 
                 Hotkeys.Add(hotkey);

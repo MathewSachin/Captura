@@ -18,7 +18,8 @@ namespace Captura
         {
             _hotkey = Hotkey;
 
-            TextColor();
+            if (Hotkey.IsActive)
+                TextColor();
 
             Content = _hotkey.ToString();
         }
