@@ -8,7 +8,7 @@
         <ScrollViewer>
             <StackPanel Margin="3"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Grid>
+                <Grid Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -19,15 +19,18 @@
                     </Grid.RowDefinitions>
 
                     <Label Content="{local:Loc StartDelay}"
-                           Margin="0,2,5,2"/>
+                           ContentStringFormat="{}{0}: "
+                           Margin="0,2,10,2"/>
 
                     <xctk:IntegerUpDown Value="{Binding StartDelay, Mode=TwoWay}"
                                         Grid.Column="1"
                                         Margin="0,2"/>
 
                     <Label Content="{local:Loc CaptureDuration}"
-                           Margin="0,2,5,2"
+                           ContentStringFormat="{}{0}: "
+                           Margin="0,2,10,2"
                            Grid.Row="1"/>
+
                     <xctk:IntegerUpDown Value="{Binding Duration, Mode=TwoWay}"
                                         Grid.Row="1"
                                         Grid.Column="1"
@@ -58,7 +61,7 @@
                           IsChecked="{local:Setting HideOnFullScreenShot}"
                           Margin="0,2"/>
 
-                <TextBlock Margin="0,7,0,3"
+                <TextBlock Margin="0,10,0,3"
                            Text="{local:Loc Gif}"
                            FontWeight="Bold"/>
 
@@ -76,7 +79,7 @@
                                         Value="{local:Setting GifRepeatCount}"/>
                 </DockPanel>
 
-                <TextBlock Margin="0,7,0,3"
+                <TextBlock Margin="0,10,0,3"
                            Text="{local:Loc ScreenShotTransforms}"
                            FontWeight="Bold"/>
 
