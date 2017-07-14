@@ -10,9 +10,6 @@
             <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
                 <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>
             </Style>
-            <Style x:Key="TextColor" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
-            </Style>
         </Grid.Resources>
         <ScrollViewer>
             <StackPanel MinWidth="150"

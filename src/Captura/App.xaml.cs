@@ -18,11 +18,16 @@ namespace Captura
                 Settings.Instance.UpdateRequired = false;
             }
 
+            if (Settings.Instance.DarkTheme)
+            {
+                AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
+            }
+
             var accent = Settings.Instance.AccentColor;
 
             if (accent != null)
                 AppearanceManager.Current.AccentColor = (Color) ColorConverter.ConvertFromString(accent);
-
+            
             // A quick fix for WpfToolkit not being copied to build output of console project
             Xceed.Wpf.Toolkit.ColorSortingMode.Alphabetical.ToString();
         }

@@ -5,7 +5,11 @@
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
-    
+
+    <Style x:Key="TextColor" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    </Style>
+
     <Style TargetType="xctk:IntegerUpDown" BasedOn="{StaticResource {x:Type xctk:IntegerUpDown}}">
         <Setter Property="Minimum" Value="0"/>
         <Setter Property="Padding" Value="0,0,5,0"/>

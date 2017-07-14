@@ -48,7 +48,7 @@
     </Window.TaskbarItemInfo>
     <Grid>
         <Grid.Background>
-            <SolidColorBrush Color="{StaticResource WindowBackgroundColor}"/>
+            <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
         </Grid.Background>
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
