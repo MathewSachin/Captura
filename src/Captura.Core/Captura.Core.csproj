@@ -125,7 +125,9 @@
     <Compile Include="Services\ServiceName.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Models\Alignment.cs" />
+    <Compile Include="Settings\ArraySettingsProvider.cs" />
     <Compile Include="Settings\Code.cs" />
+    <Compile Include="Settings\CustomSettingsProvider.cs" />
     <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Proxy.cs" />
     <Compile Include="Settings\Remember.cs" />

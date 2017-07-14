@@ -71,6 +71,7 @@ namespace Captura
             set => Set(value);
         }
 
+        [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
         public List<RecentItemModel> RecentItems
         {
@@ -161,6 +162,7 @@ namespace Captura
             set => Set(value);
         }
 
+        [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
         public List<HotkeyModel> Hotkeys
         {
