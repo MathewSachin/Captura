@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using Captura.Views;
 using System;
 using System.Windows;
 using System.Windows.Input;

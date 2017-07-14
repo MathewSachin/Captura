@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Captura.Views;
+using System.Windows;
 
 namespace Captura
 {
@@ -7,6 +8,11 @@ namespace Captura
         void OpenFFMpegLog(object sender, RoutedEventArgs e)
         {
             FFMpegLogView.Instance.ShowAndFocus();
+        }
+
+        void FFDownload(object sender, RoutedEventArgs e)
+        {
+            new FFMpegDownloader().ShowDialog();
         }
     }
 }

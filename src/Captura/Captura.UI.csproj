@@ -90,6 +90,9 @@
     <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
+    <Compile Include="Views\FFMpegDownloader.xaml.cs">
+      <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AudioEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FFMpegDownloader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

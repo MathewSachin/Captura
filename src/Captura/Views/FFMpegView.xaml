@@ -9,6 +9,12 @@
                     Click="OpenFFMpegLog"
                     Margin="0,5"/>
 
+            <Button Content="Download FFMpeg"
+                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                    Grid.Column="3"
+                    Click="FFDownload"
+                    Margin="0,5"/>
+
             <Label Content="{local:Loc FFMpegFolder}"
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>
