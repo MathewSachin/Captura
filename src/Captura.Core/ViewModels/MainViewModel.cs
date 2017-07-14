@@ -326,8 +326,6 @@ namespace Captura.ViewModels
             if (bmp != null)
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
-
-                bmp.Dispose();
             }
             else Status.LocalizationKey = nameof(Resources.ImgEmpty);
         }

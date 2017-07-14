@@ -25,7 +25,9 @@ namespace Captura.Models
 
                 var fileName = FileName ?? Path.Combine(Settings.Instance.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
-                Image.Save(fileName, Format);
+                using (Image)
+                    Image.Save(fileName, Format);
+
                 Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
                 Recents.Add(fileName, RecentItemType.Image, false);
 
@@ -36,7 +38,7 @@ namespace Captura.Models
             }
             catch (Exception E)
             {
-                ServiceProvider.MessageProvider.ShowError(nameof(Resources.NotSaved) + $"\n\n{E}");
+                ServiceProvider.MessageProvider.ShowError($"{nameof(Resources.NotSaved)}\n\n{E}");
 
                 Status.LocalizationKey = nameof(Resources.NotSaved);
             }
