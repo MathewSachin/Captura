@@ -7,7 +7,12 @@
       DataContext="{StaticResource MainViewModel}">
     <Grid>
         <StackPanel Margin="10">
-            <Grid>
+            <CheckBox IsChecked="{local:Setting DarkTheme}"
+                      Click="DarkThemeClick"
+                      Content="Dark Theme"
+                      Margin="0,5"/>
+            
+            <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
