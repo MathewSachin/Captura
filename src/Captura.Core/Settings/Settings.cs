@@ -259,15 +259,7 @@ namespace Captura
             set => Set(value);
         }
         #endregion
-
-        [UserScopedSetting]
-        [DefaultSettingValue("#BDBDBD")]
-        public string TopBarColor
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("3")]
         public int RegionBorderThickness

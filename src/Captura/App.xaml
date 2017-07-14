@@ -11,9 +11,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml"/>
-                <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="/ModernUI.Xceed.Toolkit;component/Assets/ModernUI.Xceed.Toolkit.xaml" />
                 <ResourceDictionary Source="Presentation/Themes/ModernButton.xaml" />
                 <ResourceDictionary Source="Presentation/Themes/ModernToggleButton.xaml" />
+                <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>

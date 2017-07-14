@@ -40,7 +40,8 @@
                        Grid.Row="1"/>
                 <xctk:ColorPicker SelectedColor="{local:Setting MouseClick_Color, Converter={StaticResource WpfColorConverter}}"
                                   Grid.Row="1"
-                                  Grid.Column="1"/>
+                                  Grid.Column="1"
+                                  Margin="0,5"/>
 
                 <Label Content="{local:Loc BorderThickness}"
                        ContentStringFormat="{}{0}: "
