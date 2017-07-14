@@ -67,7 +67,7 @@ namespace Captura.ViewModels
 
             var archivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
 
-            using (web = new WebClient())
+            using (web = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
             {
                 web.DownloadProgressChanged += (s, e) => Progress = e.ProgressPercentage;
 
