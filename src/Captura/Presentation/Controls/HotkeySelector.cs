@@ -30,7 +30,9 @@ namespace Captura
 
         void TextColor()
         {
-            Foreground = new SolidColorBrush(_hotkey.IsRegistered ? Colors.Black : Colors.DarkRed);
+            if (!_hotkey.IsRegistered)
+                Foreground = new SolidColorBrush(Colors.Red);
+            else ClearValue(ForegroundProperty);
         }
 
         void HotkeyEdited(Keys NewKey, Modifiers NewModifiers)

@@ -3,14 +3,7 @@
       xmlns:local="clr-namespace:Captura"
       DataContext="{StaticResource MainViewModel}"
       x:Class="Captura.MainConfigView">
-    <StackPanel Margin="-5,0,0,0">
-        <StackPanel.Resources>
-            <SolidColorBrush x:Key="ModernButtonText" Color="#111111" />
-            <SolidColorBrush x:Key="ModernButtonTextHover" Color="#333333" />
-            <SolidColorBrush x:Key="ModernButtonTextPressed" Color="#333333" />
-            <SolidColorBrush x:Key="ModernButtonTextDisabled" Color="#a1a1a1" />
-        </StackPanel.Resources>
-        
+    <StackPanel Margin="-5,0,0,0">        
         <DockPanel>
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
@@ -59,7 +52,6 @@
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
-                  Fill="#B7000000"
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
@@ -87,7 +79,6 @@
                   Width="15"
                   Height="15"
                   Margin="10,0,7,0"
-                  Fill="#B7000000"
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
@@ -108,7 +99,6 @@
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
-                  Fill="#B7000000"
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
@@ -211,7 +201,6 @@
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
-                  Fill="#B7000000"
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
@@ -228,7 +217,6 @@
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
-                  Fill="#B7000000"
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"

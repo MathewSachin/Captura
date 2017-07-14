@@ -5,14 +5,21 @@
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
+    
     <Style TargetType="xctk:IntegerUpDown">
         <Setter Property="Minimum" Value="0"/>
         <Setter Property="Padding" Value="0,0,5,0"/>
     </Style>
+
+    <Style TargetType="Path">
+        <Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+    </Style>
+    
     <Style TargetType="xctk:ColorPicker">
         <Setter Property="ColorMode" Value="ColorCanvas"/>
         <Setter Property="ShowAdvancedButton" Value="False"/>
     </Style>
+    
     <Style TargetType="xctk:MessageBox">
         <Setter Property="YesButtonContent" Value="{local:Loc Yes}"/>
         <Setter Property="NoButtonContent" Value="{local:Loc No}"/>
@@ -20,5 +27,37 @@
         <Setter Property="YesButtonStyle" Value="{StaticResource {x:Type Button}}"/>
         <Setter Property="NoButtonStyle" Value="{StaticResource {x:Type Button}}"/>
         <Setter Property="OkButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+    </Style>
+    
+    <Style TargetType="TabItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid Name="Panel">
+                        <Label Content="{TemplateBinding Header}"
+                                   Name="HeaderLabel"
+                                   Margin="10,2"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="Panel" 
+                                     Property="IsMouseOver" 
+                                     Value="True">
+                            <Setter Property="Background" 
+                                        TargetName="Panel"
+                                        Value="#EEFFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" 
+                                     Value="True">
+                            <Setter TargetName="Panel" 
+                                        Property="Background"
+                                        Value="{DynamicResource Accent}" />
+                            <Setter TargetName="HeaderLabel"
+                                        Property="Foreground" 
+                                        Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

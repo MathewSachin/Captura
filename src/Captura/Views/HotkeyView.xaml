@@ -13,9 +13,8 @@
                 <ColumnDefinition Width="Auto" MinWidth="180"/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <Style TargetType="local:HotkeySelector">
+                <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="3"/>
-                    <Setter Property="Background" Value="#EEEEEE"/>
                 </Style>
             </Grid.Resources>
         </Grid>

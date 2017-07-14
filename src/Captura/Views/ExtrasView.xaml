@@ -17,7 +17,6 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Accent"
@@ -28,42 +27,33 @@
                                   Margin="0,5"
                                   Grid.Column="1"/>
                 
-                <Label Content="Top Bar Color"
-                       ContentStringFormat="{}{0}: "
-                       Margin="0,5,5,5"
-                       Grid.Row="1"/>
-                <xctk:ColorPicker SelectedColor="{local:Setting TopBarColor}"
-                                  Margin="0,5"
-                                  Grid.Row="1"
-                                  Grid.Column="1"/>
-
                 <Label Content="Region Border Thickness"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
-                       Grid.Row="2"/>
+                       Grid.Row="1"/>
                 <xctk:IntegerUpDown Value="{local:Setting RegionBorderThickness}"
                                     Minimum="1"
                                     Margin="0,5"
-                                    Grid.Row="2"
+                                    Grid.Row="1"
                                     Grid.Column="1"/>
 
                 <Label Content="ScreenShot Notification Timeout"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
-                       Grid.Row="3"/>
+                       Grid.Row="2"/>
                 <xctk:IntegerUpDown Value="{local:Setting ScreenShotNotifyTimeout}"
                                     Minimum="1000"
                                     Margin="0,5"
-                                    Grid.Row="3"
+                                    Grid.Row="2"
                                     Grid.Column="1"/>
 
                 <Label Content="Video Background Color"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
-                       Grid.Row="4"/>
+                       Grid.Row="3"/>
                 <xctk:ColorPicker SelectedColor="{local:Setting VideoBackgroundColor, Converter={StaticResource WpfColorConverter}}"
                                   Margin="0,5"
-                                  Grid.Row="4"
+                                  Grid.Row="3"
                                   Grid.Column="1"/>
             </Grid>
         </StackPanel>

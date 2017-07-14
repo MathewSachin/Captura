@@ -10,8 +10,7 @@
                 BorderThickness="0"
                 Margin="5,0"
                 Command="{Binding RemoveCommand}">
-            <Path Fill="#B7000000" 
-                  Stretch="UniformToFill"
+            <Path Stretch="UniformToFill"
                   Height="10"
                   Width="10"
                   Data="{StaticResource Icon_Close}"/>
