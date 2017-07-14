@@ -19,10 +19,15 @@ namespace Captura.Models
 
         public async void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
-            var ritem = Recents.Add(Resources.ImgurUploading, RecentItemType.Link, true);
+            var ritem = Recents.Add($"{Resources.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
             using (var w = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
             {
+                w.UploadProgressChanged += (s, e) =>
+                {
+                    ritem.Display = $"{Resources.ImgurUploading} ({e.ProgressPercentage}%)";
+                };
+
                 w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
 
                 NameValueCollection values;
