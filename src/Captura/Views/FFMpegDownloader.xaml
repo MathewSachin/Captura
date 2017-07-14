@@ -6,6 +6,9 @@
         Height="400"
         Width="600"
         ResizeMode="NoResize">
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+    </Window.Background>
     <Window.DataContext>
         <vm:FFMpegDownloadViewModel/>
     </Window.DataContext>
@@ -27,7 +30,8 @@
 
         <TextBlock DockPanel.Dock="Top"
                    Margin="0,5"
-                   TextAlignment="Center">
+                   TextAlignment="Center"
+                   Style="{StaticResource TextColor}">
             FFMpeg adds support for more output formats to Captura.<LineBreak/>
             Latest build of FFMpeg is downloaded. This can also be used to update FFMpeg.<LineBreak/>
             The Download size is nearly 30 MB.
