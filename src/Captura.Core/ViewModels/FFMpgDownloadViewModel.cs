@@ -69,15 +69,31 @@ namespace Captura.ViewModels
 
             using (web = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
             {
-                web.DownloadProgressChanged += (s, e) => Progress = e.ProgressPercentage;
+                web.DownloadProgressChanged += (s, e) =>
+                {
+                    Progress = e.ProgressPercentage;
+
+                    Status = $"Downloading ({Progress}%)";
+                };
 
                 Status = "Downloading";
 
-                await web.DownloadFileTaskAsync(FFMpegUri, archivePath);
-            }
+                try
+                {
+                    await web.DownloadFileTaskAsync(FFMpegUri, archivePath);
+                }
+                catch
+                {
+                    Status = "Failed";
 
-            // No cancelling after download
-            StartCommand.RaiseCanExecuteChanged(false);
+                    return;
+                }
+                finally
+                {
+                    // No cancelling after download
+                    StartCommand.RaiseCanExecuteChanged(false);
+                }
+            }
 
             Status = "Extracting";
 
