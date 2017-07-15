@@ -8,7 +8,7 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         public void Init()
-        {            
+        {
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
@@ -16,16 +16,12 @@ namespace Captura.ViewModels
 
                 SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
-            
-            // Check if FFMpeg is available
-            RefreshFFMpeg();
-                       
+            else SelectedVideoWriterKind = VideoWriterKind.Gif;
+                                               
             RefreshCodecs();
 
             RefreshVideoSources();
-
-            ServiceProvider.FFMpegPathChanged += RefreshFFMpeg;
-
+            
             ServiceProvider.RegionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
@@ -33,23 +29,6 @@ namespace Captura.ViewModels
             };
         }
         
-        public void RefreshFFMpeg()
-        {
-            if (ServiceProvider.FFMpegExists)
-            {
-                if (!AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
-                    AvailableVideoWriterKinds.Add(VideoWriterKind.FFMpeg);                    
-            }
-            else
-            {
-                if (SelectedVideoWriterKind == VideoWriterKind.FFMpeg)
-                    SelectedVideoWriterKind = VideoWriterKind.Gif;
-
-                if (AvailableVideoWriterKinds.Contains(VideoWriterKind.FFMpeg))
-                    AvailableVideoWriterKinds.Remove(VideoWriterKind.FFMpeg);
-            }
-        }
-
         public void RefreshVideoSources()
         {
             AvailableVideoSources.Clear();
@@ -148,7 +127,9 @@ namespace Captura.ViewModels
             // Gif is always availble
             VideoWriterKind.Gif,
 
-            VideoWriterKind.Folder
+            VideoWriterKind.Folder,
+
+            VideoWriterKind.FFMpeg
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();

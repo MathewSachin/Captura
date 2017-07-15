@@ -9,7 +9,9 @@ using System.Windows.Interop;
 namespace Captura
 {
     public partial class MainWindow
-    {        
+    {
+        FFMpegDownloader _downloader;
+
         public MainWindow()
         {
             ServiceProvider.RegionProvider = new RegionSelector();
@@ -17,6 +19,17 @@ namespace Captura
             ServiceProvider.MessageProvider = new MessageProvider();
 
             ServiceProvider.WebCamProvider = new WebCamProvider();
+
+            FFMpegService.FFMpegDownloader += () =>
+            {
+                if (_downloader == null)
+                {
+                    _downloader = new FFMpegDownloader();
+                    _downloader.Closed += (s, args) => _downloader = null;
+                }
+
+                _downloader.ShowAndFocus();
+            };
             
             InitializeComponent();
 

@@ -80,7 +80,7 @@ namespace Captura.Console
                 var video = vm.VideoViewModel;
 
                 #region FFmpeg
-                var ffmpegExists = ServiceProvider.FFMpegExists;
+                var ffmpegExists = FFMpegService.FFMpegExists;
 
                 WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
 
@@ -273,7 +273,7 @@ namespace Captura.Console
 
             var video = ViewModel.VideoViewModel;
 
-            if (ServiceProvider.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"ffmpeg:\d+"))
+            if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"ffmpeg:\d+"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
                 

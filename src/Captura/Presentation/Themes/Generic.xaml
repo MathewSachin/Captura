@@ -32,6 +32,14 @@
         <Setter Property="NoButtonStyle" Value="{StaticResource {x:Type Button}}"/>
         <Setter Property="OkButtonStyle" Value="{StaticResource {x:Type Button}}"/>
     </Style>
+
+    <Style x:Key="NoFFMpegBox" TargetType="xctk:MessageBox">
+        <Setter Property="YesButtonContent" Value="{local:Loc SelectFFMpegFolder}"/>
+        <Setter Property="NoButtonContent" Value="Download FFMpeg"/>
+        <Setter Property="YesButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="NoButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+        <Setter Property="CancelButtonStyle" Value="{StaticResource {x:Type Button}}"/>
+    </Style>
     
     <Style TargetType="TabItem">
         <Setter Property="Template">

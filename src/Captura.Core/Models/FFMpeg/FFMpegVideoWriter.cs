@@ -56,7 +56,7 @@ namespace Captura.Models
             {
                 StartInfo =
                 {
-                    FileName = ServiceProvider.FFMpegExePath,
+                    FileName = FFMpegService.FFMpegExePath,
                     Arguments = $"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,

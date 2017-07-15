@@ -79,6 +79,7 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Services\FFMpegService.cs" />
     <Compile Include="Services\IMainWindow.cs" />
     <Compile Include="Services\IMessageProvider.cs" />
     <Compile Include="Services\IRegionProvider.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="TranslationSource.cs" />
+    <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

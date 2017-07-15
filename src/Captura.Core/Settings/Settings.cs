@@ -98,12 +98,7 @@ namespace Captura
         public string FFMpegFolder
         {
             get => Get<string>();
-            set
-            {
-                Set(value);
-
-                ServiceProvider.RaiseFFMpegPathChanged();
-            }
+            set => Set(value);
         }
 
         [UserScopedSetting]

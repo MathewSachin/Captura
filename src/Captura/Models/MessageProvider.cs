@@ -14,6 +14,29 @@ namespace Captura.Models
             });
         }
 
+        public void ShowFFMpegUnavailable()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {                
+                var result = MessageBox.Show("FFMpeg was not found on your system.\n\nSelect FFMpeg Folder if you alrady have FFMpeg on your system, else Download FFMpeg.",
+                    "FFMpeg Unavailable",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning,
+                    (Style) Application.Current.FindResource("NoFFMpegBox"));
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        FFMpegService.SelectFFMpegFolder();
+                        break;
+
+                    case MessageBoxResult.No:
+                        FFMpegService.FFMpegDownloader?.Invoke();
+                        break;
+                }
+            });
+        }
+
         public bool ShowYesNo(string Message, string Title)
         {
             return Application.Current.Dispatcher.Invoke(() =>

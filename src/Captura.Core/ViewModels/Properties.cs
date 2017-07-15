@@ -192,19 +192,7 @@ namespace Captura.ViewModels
             }
         });
 
-        public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(() =>
-        {
-            using (var dlg = new VistaFolderBrowserDialog
-            {
-                SelectedPath = Settings.Instance.FFMpegFolder,
-                UseDescriptionForTitle = true,
-                Description = Resources.SelectFFMpegFolder
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.Instance.FFMpegFolder = dlg.SelectedPath;
-            }
-        });
+        public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(FFMpegService.SelectFFMpegFolder);
 
         public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() => Settings.Instance.FFMpegFolder = "");
         #endregion
