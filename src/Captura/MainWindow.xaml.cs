@@ -1,7 +1,10 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
+using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -59,7 +62,50 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);            
+            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+
+            if (Settings.Instance.CheckForUpdates)
+                CheckForUpdates();
+        }
+
+        async void CheckForUpdates()
+        {
+            try
+            {
+                var link = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
+
+                string result;
+
+                using (var web = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
+                {
+                    web.Headers.Add(HttpRequestHeader.UserAgent, Properties.Resources.AppName);
+
+                    result = await web.DownloadStringTaskAsync(link);
+                }
+
+                var node = JsonConvert.DeserializeXmlNode(result, "Releases");
+
+                var latestVersion = node.SelectSingleNode("Releases/tag_name").InnerText.Substring(1);
+
+                if (new Version(latestVersion) > AboutViewModel.Version)
+                {
+                    ServiceProvider.SystemTray.ShowTextNotification($"Captura: Update (v{latestVersion}) Available", 60_000, () =>
+                    {
+                        try
+                        {
+                            Process.Start($"https://github.com/MathewSachin/Captura/releases/latest");
+                        }
+                        catch
+                        {
+                            // Swallow Exceptions.
+                        }
+                    });
+                }
+            }
+            catch
+            {
+                // Swallow any Exceptions.
+            }
         }
 
         protected override void OnStateChanged(EventArgs e)

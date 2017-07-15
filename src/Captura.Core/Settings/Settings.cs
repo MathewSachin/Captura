@@ -8,6 +8,14 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool CheckForUpdates
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool DarkTheme
         {

@@ -11,7 +11,11 @@
                       Click="DarkThemeClick"
                       Content="Dark Theme"
                       Margin="0,5"/>
-            
+
+            <CheckBox IsChecked="{local:Setting CheckForUpdates}"
+                      Content="Check for Updates"
+                      Margin="0,5"/>
+
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
