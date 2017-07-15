@@ -33,9 +33,6 @@ after_build:
 
   - ps: appveyor/Choco.ps1
 
-after_test:
-  - ps: appveyor/Update-ScreenShots.ps1
-
 artifacts:
   - path: Output/Captura-$(configuration).zip
     name: Captura.zip
