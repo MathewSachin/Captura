@@ -22,6 +22,8 @@
                 Command="{Binding OpenCommand}">
             <Button.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Copy as Path"
+                              Command="{Binding CopyPathCommand}"/>
                     <MenuItem Header="{local:Loc Print}"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="{local:Loc Delete}"
