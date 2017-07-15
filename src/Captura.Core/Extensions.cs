@@ -1,13 +1,51 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Captura
 {
     public static class Extensions
     {
+        public static XElement GetOrAddElement(this XContainer parent, XName name)
+        {
+            var element = parent.Element(name);
+
+            if (element == null)
+            {
+                element = new XElement(name);
+                parent.Add(element);
+            }
+
+            return element;
+        }
+
+        public static XElement Sort(this XElement element)
+        {
+            return new XElement(element.Name,
+                    element.Attributes(),
+                    from child in element.Nodes()
+                    where child.NodeType != XmlNodeType.Element
+                    select child,
+                    from child in element.Elements()
+                    orderby child.Name.ToString()
+                    select Sort(child));
+        }
+
+        public static XDocument Sort(this XDocument file)
+        {
+            return new XDocument(
+                    file.Declaration,
+                    from child in file.Nodes()
+                    where child.NodeType != XmlNodeType.Element
+                    select child,
+                    Sort(file.Root));
+        }
+
         public static void ExecuteIfCan(this ICommand Command)
         {
             if (Command.CanExecute(null))
