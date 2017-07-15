@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Captura
 {
-    [SettingsProvider(typeof(CustomSettingsProvider))]
+    [SettingsProvider(typeof(JsonSettingsProvider))]
     public partial class Settings : ApplicationSettingsBase
     {
         public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
