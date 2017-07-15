@@ -129,13 +129,14 @@ namespace Captura
             DragMove();
 
             _captured = false;
-
-            ToggleBorder(win);
-
+            
             try
             {
                 if (win == IntPtr.Zero)
-                    SelectWindow();
+                {
+                    win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+                }
+                else ToggleBorder(win);
 
                 if (win != IntPtr.Zero)
                     SelectedRegion = new Screna.Window(win).Rectangle;
@@ -154,7 +155,9 @@ namespace Captura
 
             win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
 
-            if (oldwin != IntPtr.Zero && oldwin != win)
+            if (oldwin == IntPtr.Zero)
+                ToggleBorder(win);
+            else if (oldwin != win)
             {
                 ToggleBorder(oldwin);
                 ToggleBorder(win);
