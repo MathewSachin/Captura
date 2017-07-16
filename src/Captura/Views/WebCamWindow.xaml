@@ -9,6 +9,9 @@
         MinWidth="400"
         MinHeight="250"
         Topmost="True">
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+    </Window.Background>
     <DockPanel Margin="5">
         <wpf:WebCameraControl x:Name="webCameraControl" />
     </DockPanel>

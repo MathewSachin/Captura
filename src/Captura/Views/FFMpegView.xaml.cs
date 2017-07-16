@@ -8,5 +8,10 @@ namespace Captura
         {
             FFMpegLogView.Instance.ShowAndFocus();
         }
+        
+        void FFDownload(object sender, RoutedEventArgs e)
+        {
+            FFMpegService.FFMpegDownloader?.Invoke();
+        }
     }
 }

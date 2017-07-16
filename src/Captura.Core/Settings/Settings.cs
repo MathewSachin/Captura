@@ -9,6 +9,22 @@ namespace Captura
     {
         [UserScopedSetting]
         [DefaultSettingValue("True")]
+        public bool CheckForUpdates
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool DarkTheme
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
         public bool HideOnFullScreenShot
         {
             get => Get<bool>();
@@ -71,6 +87,7 @@ namespace Captura
             set => Set(value);
         }
 
+        [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
         public List<RecentItemModel> RecentItems
         {
@@ -97,12 +114,7 @@ namespace Captura
         public string FFMpegFolder
         {
             get => Get<string>();
-            set
-            {
-                Set(value);
-
-                ServiceProvider.RaiseFFMpegPathChanged();
-            }
+            set => Set(value);
         }
 
         [UserScopedSetting]
@@ -161,6 +173,7 @@ namespace Captura
             set => Set(value);
         }
 
+        [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
         public List<HotkeyModel> Hotkeys
         {
@@ -267,15 +280,7 @@ namespace Captura
             set => Set(value);
         }
         #endregion
-
-        [UserScopedSetting]
-        [DefaultSettingValue("#BDBDBD")]
-        public string TopBarColor
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("3")]
         public int RegionBorderThickness

@@ -18,7 +18,8 @@ namespace Captura
         {
             _hotkey = Hotkey;
 
-            TextColor();
+            if (Hotkey.IsActive)
+                TextColor();
 
             Content = _hotkey.ToString();
         }
@@ -30,7 +31,18 @@ namespace Captura
 
         void TextColor()
         {
-            Foreground = new SolidColorBrush(_hotkey.IsRegistered ? Colors.Black : Colors.DarkRed);
+            if (!_hotkey.IsRegistered)
+            {
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef5350"));
+
+                Foreground = new SolidColorBrush(Colors.White);
+            }
+            else
+            {
+                ClearValue(BackgroundProperty);
+
+                ClearValue(ForegroundProperty);
+            }
         }
 
         void HotkeyEdited(Keys NewKey, Modifiers NewModifiers)

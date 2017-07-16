@@ -53,6 +53,8 @@ namespace Captura.Models
             if (AudioProvider != null)
                 CreateAudioStream(AudioProvider);
         }
+
+        int lastFrameHash;
         
         /// <summary>
         /// Writes an Image frame.
@@ -60,11 +62,19 @@ namespace Captura.Models
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-            Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-            Image.UnlockBits(bits);
+            var hash = Image.GetHashCode();
 
-            Image.Dispose();
+            if (lastFrameHash != hash)
+            {
+                using (Image)
+                {
+                    var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
+                    Image.UnlockBits(bits);
+                }
+
+                lastFrameHash = hash;
+            }
 
             _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
         }

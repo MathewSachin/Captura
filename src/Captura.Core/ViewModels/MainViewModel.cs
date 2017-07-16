@@ -326,8 +326,6 @@ namespace Captura.ViewModels
             if (bmp != null)
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
-
-                bmp.Dispose();
             }
             else Status.LocalizationKey = nameof(Resources.ImgEmpty);
         }
@@ -404,7 +402,18 @@ namespace Captura.ViewModels
         
         public void StartRecording(string FileName = null)
         {
-            FFMpegLog.Reset();
+            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.FFMpeg ||
+                (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
+            {
+                if (!FFMpegService.FFMpegExists)
+                {
+                    ServiceProvider.MessageProvider.ShowFFMpegUnavailable();
+
+                    return;
+                }
+
+                FFMpegLog.Reset();
+            }
 
             ServiceProvider.RegionProvider.Lock();
 

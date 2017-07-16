@@ -10,6 +10,11 @@ namespace Captura.Console
             System.Console.Error.WriteLine(Message);
         }
 
+        public void ShowFFMpegUnavailable()
+        {
+            ShowError("FFMpeg Unavailable");
+        }
+
         public bool ShowYesNo(string Message, string Title)
         {
             throw new NotImplementedException();

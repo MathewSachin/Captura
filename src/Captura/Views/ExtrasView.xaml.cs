@@ -15,5 +15,17 @@ namespace Captura
                 Settings.Instance.AccentColor = e.NewValue.Value.ToString();
             }
         }
+
+        void DarkThemeClick(object sender, RoutedEventArgs e)
+        {
+            if (Settings.Instance.DarkTheme)
+            {
+                AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
+            }
+            else
+            {
+                AppearanceManager.Current.ThemeSource = AppearanceManager.LightThemeSource;
+            }
+        }
     }
 }

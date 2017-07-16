@@ -1,0 +1,61 @@
+﻿<Window x:Class="Captura.Views.FFMpegDownloader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        Title="FFMpeg Downloader"
+        Height="400"
+        Width="600"
+        ResizeMode="NoResize">
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+    </Window.Background>
+    <Window.DataContext>
+        <vm:FFMpegDownloadViewModel/>
+    </Window.DataContext>
+    <DockPanel Margin="5">
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="15">
+            <Label Margin="0,0,10,0"
+                   Content="Download Progress"
+                   ContentStringFormat="{}{0}:"/>
+            <ProgressBar Value="{Binding Progress, Mode=OneWay}"
+                         Height="10"/>
+        </DockPanel>
+
+        <Label Content="{Binding Status}"
+               DockPanel.Dock="Top"
+               Margin="0,10"
+               HorizontalAlignment="Center"
+               ContentStringFormat="{}Status: {0}"/>
+
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="0,5"
+                   TextAlignment="Center"
+                   Style="{StaticResource TextColor}">
+            FFMpeg adds support for more output formats to Captura.<LineBreak/>
+            Latest build of FFMpeg is downloaded. This can also be used to update FFMpeg.<LineBreak/>
+            The Download size is nearly 30 MB.
+        </TextBlock>
+
+        <DockPanel DockPanel.Dock="Bottom"
+                   Margin="0,5">
+            <Button Content="Target Folder"
+                    ContentStringFormat="{}{0}: "/>
+            <Button DockPanel.Dock="Right"
+                    Command="{Binding SelectFolderCommand}">
+                <Path Fill="#B7000000" 
+                      Stretch="UniformToFill"
+                      Height="4"
+                      Width="16"
+                      Data="{StaticResource Icon_More}"/>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     Text="{Binding TargetFolder, Mode=OneWay}"/>
+        </DockPanel>
+        
+        <Button Content="Start Download"
+                Command="{Binding StartCommand}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+    </DockPanel>
+</Window>

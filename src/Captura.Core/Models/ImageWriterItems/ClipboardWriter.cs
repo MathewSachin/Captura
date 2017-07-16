@@ -14,7 +14,9 @@ namespace Captura.Models
 
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
-            Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
+            using (Image)
+                Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
+            
             Status.LocalizationKey = nameof(Resources.ImgSavedClipboard);
         }
 

@@ -5,5 +5,7 @@
         void ShowError(string Message);
 
         bool ShowYesNo(string Message, string Title);
+
+        void ShowFFMpegUnavailable();
     }
 }
