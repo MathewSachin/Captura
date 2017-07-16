@@ -87,11 +87,13 @@ namespace DesktopDuplication
             _rect.Location = P;
         }
 
+        Bitmap lastFrame;
+
         public Bitmap GetLatestFrame()
         {
             // Try to get the latest frame; this may timeout
             if (!RetrieveFrame())
-                return null;
+                return lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
 
             try
             {
@@ -113,7 +115,7 @@ namespace DesktopDuplication
                         
             try
             {
-                _deskDupl.AcquireNextFrame(500, out _frameInfo, out var desktopResource);
+                _deskDupl.AcquireNextFrame(0, out _frameInfo, out var desktopResource);
 
                 using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
                     _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1), _desktopImageTexture, 0);
@@ -143,17 +145,17 @@ namespace DesktopDuplication
             // Get the desktop capture texture
             var mapSource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
-            var image = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
+            lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = image.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, image.PixelFormat);
+            var mapDest = lastFrame.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, lastFrame.PixelFormat);
 
             Utilities.CopyMemory(mapDest.Scan0, mapSource.DataPointer, _rect.Width * _rect.Height * 4);
                         
             // Release source and dest locks
-            image.UnlockBits(mapDest);
+            lastFrame.UnlockBits(mapDest);
             _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
-            return image;
+            return lastFrame;
         }
         
         void ReleaseFrame()
