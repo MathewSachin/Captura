@@ -51,6 +51,8 @@ namespace Screna
 
         readonly MemoryStream gifStream = new MemoryStream();
 
+        int lastFrameHash;
+
         /// <summary>
         /// Adds a frame to this animation.
         /// </summary>
@@ -60,12 +62,18 @@ namespace Screna
         {
             gifStream.Position = 0;
 
+            var hash = Image.GetHashCode();
+
+            if (lastFrameHash != hash)
+            {
+                using (Image)
+                    Image.Save(gifStream, ImageFormat.Gif);
+                
+                lastFrameHash = hash;
+            }
+
             var h = Image.Height;
             var w = Image.Width;
-            
-            Image.Save(gifStream, ImageFormat.Gif);
-
-            Image.Dispose();
 
             // Steal the global color table info
             if (_firstFrame)

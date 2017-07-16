@@ -17,6 +17,8 @@ namespace Screna
             Height = Rectangle.Height;
         }
 
+        Bitmap lastImage;
+
         /// <summary>
         /// Captures an Image.
         /// </summary>
@@ -24,10 +26,26 @@ namespace Screna
         {
             var bmp = new Bitmap(Width, Height);
 
-            using (var g = Graphics.FromImage(bmp))
-                OnCapture(g);
-            
-            return bmp;
+            try
+            {
+                using (var g = Graphics.FromImage(bmp))
+                    OnCapture(g);
+
+                lastImage = bmp;
+
+                return bmp;
+            }
+            catch
+            {
+                if (lastImage != null)
+                {
+                    bmp.Dispose();
+
+                    return lastImage;
+                }
+
+                return bmp;
+            }
         }
 
         /// <summary>

@@ -109,6 +109,8 @@ namespace Captura.Models
                     
             _audioPipe.WriteAsync(Buffer, 0, Length);
         }
+
+        int lastFrameHash;
         
         /// <summary>
         /// Writes an Image frame.
@@ -122,11 +124,19 @@ namespace Captura.Models
                 throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
 
-            var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-            Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-            Image.UnlockBits(bits);
+            var hash = Image.GetHashCode();
 
-            Image.Dispose();
+            if (lastFrameHash != hash)
+            {
+                using (Image)
+                {
+                    var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
+                    Image.UnlockBits(bits);
+                }
+
+                lastFrameHash = hash;
+            }
             
             _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
         }
