@@ -224,7 +224,7 @@ namespace Captura.Console
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
-                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromString(CommonOptions.Source);
+                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source);
 
                 FakeRegionProvider.Instance.SelectedRegion = rect;
                 video.SelectedVideoSourceKind = VideoSourceKind.Region;

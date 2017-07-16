@@ -119,7 +119,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
-                    var rect = (Rectangle)RectangleConverter.ConvertFromString(Settings.Instance.LastSourceName);
+                    var rect = (Rectangle)RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName);
 
                     ServiceProvider.RegionProvider.SelectedRegion = rect;
                     break;
@@ -256,7 +256,7 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Region:
                     Settings.Instance.LastSourceKind = VideoSourceKind.Region;
                     var rect = ServiceProvider.RegionProvider.SelectedRegion;
-                    Settings.Instance.LastSourceName = RectangleConverter.ConvertToString(rect);
+                    Settings.Instance.LastSourceName = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
                 default:
