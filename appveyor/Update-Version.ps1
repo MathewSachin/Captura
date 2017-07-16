@@ -14,14 +14,26 @@ function Update-Version ($infoPath, $version) {
 # For Tag build
 if ($env:appveyor_repo_tag -eq 'true')
 {
+    $env:TagVersion = $env:APPVEYOR_REPO_TAG_NAME.Substring(1)
+
     # Check tag name format
-    if (-not ($env:APPVEYOR_REPO_TAG_NAME -match '^v\d+\.\d+\.\d+$'))
+    if ($env:APPVEYOR_REPO_TAG_NAME -match '^v\d+\.\d+\.\d+$')
+    {
+        $env:prerelease = $false
+
+        # Extract AppVersion from Tag name
+        $env:AppVersion = $env:TagVersion
+    }
+    elseif ($env:APPVEYOR_REPO_TAG_NAME -match '^v\d+\.\d+\.\d+-[^\s]+$')
+    {
+        $env:prerelease = $true
+
+        $env:AppVersion = $env:TagVersion.Split('-')[0]
+    }
+    else
     {
         throw 'Invalid Tag Format'
     }
-
-    # Extract AppVersion from Tag name
-    $env:AppVersion = ($env:APPVEYOR_REPO_TAG_NAME).Substring(1)
 
     # Update AssemblyInfo.cs with Version from tag
     Update-Version $uiInfo $env:AppVersion

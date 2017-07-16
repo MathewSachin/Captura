@@ -1,6 +1,6 @@
 # Create output and temp folder
-md Output
-md temp
+md Output | Out-Null
+md temp | Out-Null
 
 # Copy licenses
 Copy-Item licenses Output -Recurse
