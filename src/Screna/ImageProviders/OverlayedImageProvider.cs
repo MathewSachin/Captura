@@ -37,12 +37,23 @@ namespace Screna
             Height = ImageProvider.Height;
         }
 
+        int lastFrameHash;
+
         /// <summary>
         /// Captures an Image.
         /// </summary>
         public Bitmap Capture()
         {
             var bmp = _imageProvider.Capture();
+            
+            var hash = bmp.GetHashCode();
+
+            if (lastFrameHash == hash)
+            {
+                return bmp;
+            }
+
+            lastFrameHash = hash;
 
             using (var g = Graphics.FromImage(bmp))
             {
