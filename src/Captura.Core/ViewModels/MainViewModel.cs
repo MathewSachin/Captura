@@ -355,7 +355,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public void CaptureScreenShot(string FileName = null)
+        public async void CaptureScreenShot(string FileName = null)
         {
             ServiceProvider.SystemTray.HideNotification();
 
@@ -376,7 +376,12 @@ namespace Captura.ViewModels
                     if (selectedVideoSource is FullScreenItem fullScreen)
                     {
                         if (Settings.Instance.HideOnFullScreenShot)
+                        {
                             ServiceProvider.MainWindow.IsVisible = false;
+
+                            // Ensure that the ScreenShot Tooltip is hidden
+                            await Task.Delay(100);
+                        }
 
                         bmp = ScreenShot.Capture();
 
