@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
@@ -27,6 +26,11 @@ namespace Captura.ViewModels
             OpenCommand = new DelegateCommand(() =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath));
+            }, !IsSaving);
+
+            CopyPathCommand = new DelegateCommand(() =>
+            {
+                FilePath.WriteToClipboard();
             }, !IsSaving);
 
             PrintCommand = new DelegateCommand(() =>
@@ -103,20 +107,23 @@ namespace Captura.ViewModels
 
             IsSaving = false;
 
-            (RemoveCommand as DelegateCommand).RaiseCanExecuteChanged(true);
-            (OpenCommand as DelegateCommand).RaiseCanExecuteChanged(true);
-            (DeleteCommand as DelegateCommand).RaiseCanExecuteChanged(true);
+            RemoveCommand.RaiseCanExecuteChanged(true);
+            OpenCommand.RaiseCanExecuteChanged(true);
+            DeleteCommand.RaiseCanExecuteChanged(true);
+            CopyPathCommand.RaiseCanExecuteChanged(true);
 
             (PrintCommand as DelegateCommand).RaiseCanExecuteChanged(CanPrint);
         }
 
-        public ICommand RemoveCommand { get; private set; }
+        public DelegateCommand RemoveCommand { get; private set; }
 
-        public ICommand OpenCommand { get; private set; }
+        public DelegateCommand OpenCommand { get; private set; }
 
-        public ICommand PrintCommand { get; private set; }
+        public DelegateCommand CopyPathCommand { get; private set; }
 
-        public ICommand DeleteCommand { get; private set; }
+        public DelegateCommand PrintCommand { get; private set; }
+
+        public DelegateCommand DeleteCommand { get; private set; }
 
         public event Action OnRemove;
     }

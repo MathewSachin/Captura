@@ -17,7 +17,7 @@ namespace Captura.Models
             {
                 StartInfo =
                 {
-                    FileName = ServiceProvider.FFMpegExePath,
+                    FileName = FFMpegService.FFMpegExePath,
                     Arguments = $"-hide_banner -f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn {AudioArgsProvider(AudioQuality)} \"{FileName}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,

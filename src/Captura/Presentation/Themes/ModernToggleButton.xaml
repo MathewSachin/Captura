@@ -35,8 +35,7 @@
                             <Setter Property="Opacity" TargetName="icon" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextPressed}" />
-                            <Setter TargetName="icon" Property="Fill" Value="{DynamicResource ModernButtonIconForegroundPressed}" />
+                            <Setter TargetName="icon" Property="Fill" Value="{DynamicResource Accent}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}" />

@@ -10,8 +10,7 @@
                 BorderThickness="0"
                 Margin="5,0"
                 Command="{Binding RemoveCommand}">
-            <Path Fill="#B7000000" 
-                  Stretch="UniformToFill"
+            <Path Stretch="UniformToFill"
                   Height="10"
                   Width="10"
                   Data="{StaticResource Icon_Close}"/>
@@ -23,10 +22,13 @@
                 Command="{Binding OpenCommand}">
             <Button.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Copy as Path"
+                              Command="{Binding CopyPathCommand}"/>
                     <MenuItem Header="{local:Loc Print}"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="{local:Loc Delete}"
-                              Foreground="DarkRed"
+                              Background="#ef5350"
+                              Foreground="White"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>
             </Button.ContextMenu>

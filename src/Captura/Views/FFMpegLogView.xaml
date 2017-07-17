@@ -6,6 +6,9 @@
         Height="600"
         Width="600"
         DataContext="{StaticResource MainViewModel}">
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+    </Window.Background>
     <DockPanel Margin="5">
         <Button DockPanel.Dock="Top"
                 Content="{local:Loc CopyToClipboard}"
@@ -13,7 +16,8 @@
         <Label Content="{Binding FFMpegLog.Frame}"
                DockPanel.Dock="Bottom"/>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <TextBlock Text="{Binding FFMpegLog.Content, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding FFMpegLog.Content, Mode=TwoWay}"
+                       Style="{StaticResource TextColor}"/>
         </ScrollViewer>
     </DockPanel>
 </Window>

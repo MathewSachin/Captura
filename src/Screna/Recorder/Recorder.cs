@@ -104,7 +104,9 @@ namespace Screna
                 {
                     var timestamp = DateTime.Now;
 
-                    try { _frames.Add(_imageProvider.Capture()); }
+                    var frame = _imageProvider.Capture();
+
+                    try { _frames.Add(frame); }
                     catch { }
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;

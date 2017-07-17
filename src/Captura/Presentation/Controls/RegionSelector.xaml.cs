@@ -62,6 +62,47 @@ namespace Captura
 
             // Prevent Closing by User
             Closing += (s, e) => e.Cancel = true;
+
+            #region Height and Width Boxes
+            WidthBox.Minimum = (int)MinWidth - WidthBorder;
+            HeightBox.Minimum = (int)MinHeight - HeightBorder;
+
+            void sizeChange()
+            {
+                var selectedRegion = SelectedRegion;
+
+                WidthBox.Value = selectedRegion.Width;
+                HeightBox.Value = selectedRegion.Height;
+            }
+
+            SizeChanged += (s, e) => sizeChange();
+
+            sizeChange();
+            
+            WidthBox.ValueChanged += (s, e) =>
+            {
+                if (e.NewValue == null)
+                    return;
+
+                var selectedRegion = SelectedRegion;
+
+                selectedRegion.Width = WidthBox.Value.Value;
+
+                SelectedRegion = selectedRegion;
+            };
+
+            HeightBox.ValueChanged += (s, e) =>
+            {
+                if (e.NewValue == null)
+                    return;
+
+                var selectedRegion = SelectedRegion;
+
+                selectedRegion.Height = HeightBox.Value.Value;
+
+                SelectedRegion = selectedRegion;
+            };
+            #endregion
         }
 
         void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -88,13 +129,14 @@ namespace Captura
             DragMove();
 
             _captured = false;
-
-            ToggleBorder(win);
-
+            
             try
             {
                 if (win == IntPtr.Zero)
-                    SelectWindow();
+                {
+                    win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+                }
+                else ToggleBorder(win);
 
                 if (win != IntPtr.Zero)
                     SelectedRegion = new Screna.Window(win).Rectangle;
@@ -113,7 +155,9 @@ namespace Captura
 
             win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
 
-            if (oldwin != IntPtr.Zero && oldwin != win)
+            if (oldwin == IntPtr.Zero)
+                ToggleBorder(win);
+            else if (oldwin != win)
             {
                 ToggleBorder(oldwin);
                 ToggleBorder(win);
@@ -142,10 +186,15 @@ namespace Captura
             }
         }
 
+        const int LeftOffset = 7,
+            TopOffset = 37,
+            WidthBorder = 14,
+            HeightBorder = 74;
+
         // Ignoring Borders and Header
         public Rectangle SelectedRegion
         {
-            get => Dispatcher.Invoke(() => new Rectangle((int)Left + 7, (int)Top + 37, (int)Width - 14, (int)Height - 44)) * Dpi.Instance;
+            get => Dispatcher.Invoke(() => new Rectangle((int)Left + LeftOffset, (int)Top + TopOffset, (int)Width - WidthBorder, (int)Height - HeightBorder)) * Dpi.Instance;
             set
             {
                 if (value == Rectangle.Empty)
@@ -156,11 +205,11 @@ namespace Captura
 
                 Dispatcher.Invoke(() =>
                 {
-                    Left = value.Left - 7;
-                    Top = value.Top - 37;
+                    Left = value.Left - LeftOffset;
+                    Top = value.Top - TopOffset;
 
-                    Width = value.Width + 14;
-                    Height = value.Height + 44;
+                    Width = value.Width + WidthBorder;
+                    Height = value.Height + HeightBorder;
 
                     // Prevent going off-screen
                     if (Left < 0)
@@ -186,6 +235,8 @@ namespace Captura
             {
                 ResizeMode = ResizeMode.NoResize;
                 Snapper.IsEnabled = CloseButton.IsEnabled = false;
+
+                WidthBox.IsEnabled = HeightBox.IsEnabled = false;
             });
         }
         
@@ -195,6 +246,8 @@ namespace Captura
             {
                 ResizeMode = ResizeMode.CanResize;
                 Snapper.IsEnabled = CloseButton.IsEnabled = true;
+
+                WidthBox.IsEnabled = HeightBox.IsEnabled = true;
             });
         }
 
