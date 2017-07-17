@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 using Device = SharpDX.Direct3D11.Device;
 using DRectangle = System.Drawing.Rectangle;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
@@ -150,7 +151,12 @@ namespace DesktopDuplication
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = lastFrame.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, lastFrame.PixelFormat);
 
-            Utilities.CopyMemory(mapDest.Scan0, mapSource.DataPointer, _rect.Width * _rect.Height * 4);
+            Parallel.For(0, _rect.Height, y =>
+            {
+                Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
+                    mapSource.DataPointer + y * mapSource.RowPitch,
+                    _rect.Width * 4);
+            });
                         
             // Release source and dest locks
             lastFrame.UnlockBits(mapDest);
