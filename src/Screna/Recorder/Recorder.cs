@@ -1,6 +1,7 @@
 ﻿using Screna.Audio;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -99,15 +100,43 @@ namespace Screna
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
-
+                var frameCount = 0;
+                var sw = new Stopwatch();
+                sw.Start();
+                
                 while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
                 {
                     var timestamp = DateTime.Now;
 
                     var frame = _imageProvider.Capture();
+                    
+                    try
+                    {
+                        _frames.Add(frame);
 
-                    try { _frames.Add(frame); }
-                    catch { }
+                        ++frameCount;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return;
+                    }
+
+                    var requiredFrames = sw.Elapsed.TotalSeconds * _frameRate;
+                    var diff = requiredFrames - frameCount;
+
+                    for (var i = 0; i < diff; ++i)
+                    {
+                        try
+                        {
+                            _frames.Add(frame);
+
+                            ++frameCount;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            return;
+                        }
+                    }
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 
