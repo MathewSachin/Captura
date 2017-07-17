@@ -25,7 +25,12 @@ namespace Captura.Models
         {
             return "";
         };
-        
+
+        public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
+        {
+            return $"-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast";
+        };
+
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
@@ -36,6 +41,9 @@ namespace Captura.Models
 
             // Gif (No Audio)
             new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioItem.Mp3),
+
+            // MP4 (HEVC Intel QSV, AAC)
+            new FFMpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", ".mp4", HEVC_QSV, FFMpegAudioItem.Aac)
         };
         
         FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)

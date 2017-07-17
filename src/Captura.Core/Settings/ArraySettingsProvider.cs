@@ -1,4 +1,6 @@
 ﻿using Captura.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -32,22 +34,24 @@ namespace Captura
         {
             // Create new collection of values
             var values = new SettingsPropertyValueCollection();
-
+            
             // Iterate through the settings to be retrieved
             foreach (SettingsProperty setting in collection)
             {
-                var value = "";
+                object value = null;
 
                 try
                 {
-                    value = File.ReadAllText(Path.Combine(Dir, $"{setting.Name}.xml"));
+                    var text = File.ReadAllText(Path.Combine(Dir, $"{setting.Name}.json"));
+
+                    value = JsonConvert.DeserializeObject(text, setting.PropertyType);
                 }
                 catch { }
-
+                
                 values.Add(new SettingsPropertyValue(setting)
                 {
                     IsDirty = false,
-                    SerializedValue = value,
+                    PropertyValue = value,
                 });
             }
             return values;
@@ -59,11 +63,18 @@ namespace Captura
 
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
+            var enumConverter = new StringEnumConverter
+            {
+                AllowIntegerValues = false
+            };
+                        
             foreach (SettingsPropertyValue propertyValue in collection)
             {
                 try
                 {
-                    File.WriteAllText(Path.Combine(Dir, $"{propertyValue.Name}.xml"), propertyValue.SerializedValue?.ToString() ?? "");
+                    var value = JsonConvert.SerializeObject(propertyValue.PropertyValue, Formatting.Indented, enumConverter);
+
+                    File.WriteAllText(Path.Combine(Dir, $"{propertyValue.Name}.json"), value);
                 }
                 catch { }
             }

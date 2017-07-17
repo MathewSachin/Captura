@@ -224,7 +224,7 @@ namespace Captura.Console
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
-                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromString(CommonOptions.Source);
+                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source);
 
                 FakeRegionProvider.Instance.SelectedRegion = rect;
                 video.SelectedVideoSourceKind = VideoSourceKind.Region;
@@ -382,7 +382,14 @@ namespace Captura.Console
 
                 Write(text);
 
-                while (ReadKey(true).KeyChar != 'q') ;
+                if (IsInputRedirected)
+                {
+                    while (!ReadLine().Equals("q", StringComparison.InvariantCultureIgnoreCase)) ;
+                }
+                else
+                {
+                    while (ReadKey(true).KeyChar != 'q') ;
+                }
 
                 Write(new string('\b', text.Length));
             }
