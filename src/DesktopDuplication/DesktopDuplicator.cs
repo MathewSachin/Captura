@@ -95,15 +95,8 @@ namespace DesktopDuplication
             // Try to get the latest frame; this may timeout
             if (!RetrieveFrame())
                 return lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
-
-            try
-            {
-                return ProcessFrame();
-            }
-            finally
-            {
-                ReleaseFrame();
-            }
+            
+            return ProcessFrame();
         }
 
         /// <summary>
@@ -118,10 +111,11 @@ namespace DesktopDuplication
             {
                 _deskDupl.AcquireNextFrame(0, out _frameInfo, out var desktopResource);
 
+                using (desktopResource)
                 using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
                     _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1), _desktopImageTexture, 0);
-
-                desktopResource.Dispose();
+                                
+                ReleaseFrame();
 
                 return true;
             }
