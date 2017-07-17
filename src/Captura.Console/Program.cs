@@ -382,7 +382,14 @@ namespace Captura.Console
 
                 Write(text);
 
-                while (ReadKey(true).KeyChar != 'q') ;
+                if (IsInputRedirected)
+                {
+                    while (!ReadLine().Equals("q", StringComparison.InvariantCultureIgnoreCase)) ;
+                }
+                else
+                {
+                    while (ReadKey(true).KeyChar != 'q') ;
+                }
 
                 Write(new string('\b', text.Length));
             }
