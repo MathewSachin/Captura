@@ -28,7 +28,7 @@ namespace Captura.Models
 
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
         {
-            return new FFMpegVideoArgs("-init_hw_device qsv -hwaccel qsv", $"-vcodec hevc_qsv -load_plugin hevc_hw -q 30 -preset:v veryfast");
+            return new FFMpegVideoArgs("-init_hw_device qsv", $"-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast");
         };
 
         public static FFMpegItem[] Items { get; } =
