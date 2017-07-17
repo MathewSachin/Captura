@@ -36,10 +36,9 @@ namespace Captura.Models
             _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
 
             var pipe = @"\\.\pipe\";
-
-            var videoArgs = VideoArgsProvider(VideoQuality);
-            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} {videoArgs.InputArgs} -i {pipe}{VideoPipeName}";
-            var videoOutArgs = $"{videoArgs.OutputArgs} -r {FrameRate}";
+            
+            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i {pipe}{VideoPipeName}";
+            var videoOutArgs = $"{VideoArgsProvider(VideoQuality)} -r {FrameRate}";
 
             string audioInArgs = "", audioOutArgs = "";
             

@@ -10,7 +10,7 @@ namespace Captura.Models
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
             
-            return new FFMpegVideoArgs("", $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast");
+            return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
         };
         
         public static FFMpegVideoArgsProvider Avi { get; } = VideoQuality =>
@@ -18,17 +18,17 @@ namespace Captura.Models
             // quality: 31 (lowest) to 1 (highest)
             var qscale = 31 - ((VideoQuality - 1) * 30) / 99;
 
-            return new FFMpegVideoArgs("", $"-vcodec libxvid -qscale:v {qscale}");
+            return $"-vcodec libxvid -qscale:v {qscale}";
         };
 
         public static FFMpegVideoArgsProvider Gif { get; } = VideoQuality =>
         {
-            return new FFMpegVideoArgs("", "");
+            return "";
         };
 
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
         {
-            return new FFMpegVideoArgs("", $"-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast");
+            return $"-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast";
         };
 
         public static FFMpegItem[] Items { get; } =
