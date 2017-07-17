@@ -9,7 +9,7 @@ namespace Captura.Models
         {
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
-            
+
             return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
         };
         
