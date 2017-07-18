@@ -8,14 +8,17 @@ namespace Captura
     {
         readonly RegionSelector _selector;
         DesktopDuplicator _dupl;
+        readonly bool _includeCursor;
 
-        public StaticRegionProvider(RegionSelector RegionSelector)
+        public StaticRegionProvider(RegionSelector RegionSelector, bool IncludeCursor)
         {
             _selector = RegionSelector;
 
             var rect = _selector.SelectedRegion.Even();
             Height = rect.Height;
             Width = rect.Width;
+
+            _includeCursor = IncludeCursor;
         }
         
         public Bitmap Capture()
@@ -32,12 +35,12 @@ namespace Captura
                 }
                 catch
                 {
-                    _dupl = new DesktopDuplicator(region, 0);
+                    _dupl = new DesktopDuplicator(region, _includeCursor, 0);
 
                     return _dupl.GetLatestFrame();
                 }
             }
-            else return ScreenShot.Capture(region);
+            else return ScreenShot.Capture(region, _includeCursor);
         }
 
         public int Height { get; }

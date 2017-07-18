@@ -114,8 +114,13 @@ namespace Screna
                     backdrop.Dispose();
 
                     var transparentImage = Extensions.DifferentiateAlpha(whiteShot, blackShot);
+
                     if (IncludeCursor)
-                        MouseCursor.Instance.Draw(transparentImage, R.Location);
+                    {
+                        using (var g = Graphics.FromImage(transparentImage))
+                            MouseCursor.Draw(g, R.Location);
+                    }
+
                     return transparentImage.CropEmptyEdges();
                 }
             }
@@ -210,7 +215,7 @@ namespace Screna
                 g.CopyFromScreen(Region.Location, Point.Empty, Region.Size, CopyPixelOperation.SourceCopy);
 
                 if (IncludeCursor)
-                    MouseCursor.Instance.Draw(g, Region.Location);
+                    MouseCursor.Draw(g, Region.Location);
 
                 g.Flush();
             }

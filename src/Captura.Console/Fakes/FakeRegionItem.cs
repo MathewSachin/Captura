@@ -15,11 +15,11 @@ namespace Captura.Console
             _rect = Region;
         }
 
-        public IImageProvider GetImageProvider(out Func<Point> OverlayOffset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> OverlayOffset)
         {
             OverlayOffset = () => _rect.Location;
 
-            return new RegionProvider(_rect);
+            return new RegionProvider(_rect, IncludeCursor);
         }
 
         public override string ToString() => Resources.RegionSelector;

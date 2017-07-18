@@ -13,14 +13,14 @@ namespace Captura.Models
                 
         public override string ToString() => Resources.FullScreen;
 
-        public IImageProvider GetImageProvider(out Func<Point> Offset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
         {
             Offset = () => Point.Empty;
 
             if (Settings.Instance.UseDeskDupl)
-                return new DeskDuplImageProvider();
+                return new DeskDuplImageProvider(0, IncludeCursor);
 
-            return new RegionProvider(WindowProvider.DesktopRectangle);
+            return new RegionProvider(WindowProvider.DesktopRectangle, IncludeCursor);
         }
     }
 }

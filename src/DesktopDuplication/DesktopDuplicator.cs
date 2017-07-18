@@ -1,5 +1,6 @@
 ﻿// Adapted from https://github.com/jasonpang/desktop-duplication-net
 
+using Screna;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -25,11 +26,14 @@ namespace DesktopDuplication
         OutputDuplicateFrameInformation _frameInfo;
 
         DRectangle _rect;
+
+        readonly bool _includeCursor;
         #endregion
 
-        public DesktopDuplicator(DRectangle Rect, int Monitor, int Adapter = 0)
+        public DesktopDuplicator(DRectangle Rect, bool IncludeCursor, int Monitor, int Adapter = 0)
         {
             _rect = Rect;
+            _includeCursor = IncludeCursor;
 
             Adapter1 adapter;
             try
@@ -154,7 +158,15 @@ namespace DesktopDuplication
                         
             // Release source and dest locks
             lastFrame.UnlockBits(mapDest);
+
             _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
+
+            if (_includeCursor)
+            {
+                using (var g = Graphics.FromImage(lastFrame))
+                    MouseCursor.Draw(g, _rect.Location);
+            }
+
             return lastFrame;
         }
         

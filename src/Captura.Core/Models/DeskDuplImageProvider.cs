@@ -8,10 +8,12 @@ namespace Captura.Models
     {
         DesktopDuplicator _dupl;
         int _monitor;
+        bool _includeCursor;
 
-        public DeskDuplImageProvider(int Monitor = 0)
+        public DeskDuplImageProvider(int Monitor, bool IncludeCursor)
         {
             _monitor = Monitor;
+            _includeCursor = IncludeCursor;
 
             Width = WindowProvider.DesktopRectangle.Width;
             Height = WindowProvider.DesktopRectangle.Height;
@@ -29,7 +31,7 @@ namespace Captura.Models
             }
             catch
             {
-                _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _monitor);
+                _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _includeCursor, _monitor);
 
                 return Capture();
             }
