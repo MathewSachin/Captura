@@ -6,17 +6,20 @@ namespace Captura
     class StaticRegionProvider : IImageProvider
     {
         readonly RegionSelector _selector;
+        readonly bool _includeCursor;
 
-        public StaticRegionProvider(RegionSelector RegionSelector)
+        public StaticRegionProvider(RegionSelector RegionSelector, bool IncludeCursor)
         {
             _selector = RegionSelector;
 
             var rect = _selector.SelectedRegion.Even();
             Height = rect.Height;
-            Width = rect.Width;            
+            Width = rect.Width;
+
+            _includeCursor = IncludeCursor;
         }
         
-        public Bitmap Capture() => ScreenShot.Capture(_selector.SelectedRegion.Even());
+        public Bitmap Capture() => ScreenShot.Capture(_selector.SelectedRegion.Even(), _includeCursor);
 
         public int Height { get; }
 

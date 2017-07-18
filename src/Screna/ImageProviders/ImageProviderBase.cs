@@ -11,11 +11,17 @@ namespace Screna
         /// Constructor for <see cref="ImageProviderBase"/>.
         /// </summary>
         /// <param name="Rectangle">A <see cref="Rectangle"/> representing the captured region.</param>
-        protected ImageProviderBase(Rectangle Rectangle)
+        protected ImageProviderBase(Rectangle Rectangle, bool IncludeCursor)
         {
             Width = Rectangle.Width;
             Height = Rectangle.Height;
+
+            _offset = Rectangle.Location;
+            _includeCursor = IncludeCursor;
         }
+
+        readonly Point _offset;
+        readonly bool _includeCursor;
 
         Bitmap lastImage;
 
@@ -29,7 +35,12 @@ namespace Screna
             try
             {
                 using (var g = Graphics.FromImage(bmp))
+                {
                     OnCapture(g);
+
+                    if (_includeCursor)
+                        MouseCursor.Draw(g, _offset);
+                }
 
                 lastImage = bmp;
 

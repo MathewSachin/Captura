@@ -9,7 +9,7 @@ namespace Screna
     /// <summary>
     /// Draws the MouseCursor on an Image
     /// </summary>
-    public class MouseCursor : IOverlay
+    public static class MouseCursor
     {
         #region PInvoke
         const string DllName = "user32.dll";
@@ -32,14 +32,7 @@ namespace Screna
         [DllImport("gdi32.dll")]
         static extern bool DeleteObject(IntPtr HObject);
         #endregion
-
-        MouseCursor() { }
         
-        /// <summary>
-        /// Singleton Instance of <see cref="MouseCursor"/>.
-        /// </summary>
-        public static MouseCursor Instance { get; } = new MouseCursor();
-
         const int CursorShowing = 1;
                 
         /// <summary>
@@ -56,14 +49,14 @@ namespace Screna
         }
 
         // hCursor -> (Icon, Hotspot)
-        Dictionary<IntPtr, Tuple<Bitmap, Point>> _cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();
+        static readonly Dictionary<IntPtr, Tuple<Bitmap, Point>> _cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();
         
         /// <summary>
         /// Draws this overlay.
         /// </summary>
         /// <param name="g">A <see cref="Graphics"/> object to draw upon.</param>
         /// <param name="Offset">Offset from Origin of the Captured Area.</param>
-        public void Draw(Graphics g, Point Offset = default(Point))
+        public static void Draw(Graphics g, Point Offset = default(Point))
         {
             var _cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
 
@@ -109,10 +102,5 @@ namespace Screna
 
             g.DrawImage(icon, new Rectangle(location, icon.Size));
         }
-
-        /// <summary>
-        /// Frees all resources used by this object.
-        /// </summary>
-        public void Dispose() { }
     }
 }

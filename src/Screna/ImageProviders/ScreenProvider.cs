@@ -16,13 +16,10 @@ namespace Screna
         /// </summary>
         /// <param name="Screen">The Screen to Capture.</param>
         /// <exception cref="ArgumentNullException"><paramref name="Screen"/> is null.</exception>
-        public ScreenProvider(Screen Screen)
-            : base(Screen?.Bounds ?? Rectangle.Empty)
+        public ScreenProvider(Screen Screen, bool IncludeCursor)
+            : base(Screen?.Bounds ?? Rectangle.Empty, IncludeCursor)
         {
-            if (Screen == null)
-                throw new ArgumentNullException(nameof(Screen));
-
-            _screen = Screen;
+            _screen = Screen ?? throw new ArgumentNullException(nameof(Screen));
         }
 
         /// <summary>

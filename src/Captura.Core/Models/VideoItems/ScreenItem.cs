@@ -28,7 +28,7 @@ namespace Captura.Models
                 g.CopyFromScreen(rectangle.Location, Point.Empty, rectangle.Size, CopyPixelOperation.SourceCopy);
 
                 if (Cursor)
-                    MouseCursor.Instance.Draw(g, rectangle.Location);
+                    MouseCursor.Draw(g, rectangle.Location);
 
                 g.Flush();
             }
@@ -46,11 +46,11 @@ namespace Captura.Models
 
         public override string ToString() => Screen.DeviceName;
 
-        public IImageProvider GetImageProvider(out Func<Point> Offset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
         {
             Offset = () => Screen.Bounds.Location;
 
-            return new ScreenProvider(Screen);
+            return new ScreenProvider(Screen, IncludeCursor);
         }
     }
 }

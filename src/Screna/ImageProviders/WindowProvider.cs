@@ -22,23 +22,15 @@ namespace Screna
 
         readonly Func<Window> _windowFunction;
         readonly Color _backgroundColor;
-
-        /// <summary>
-        /// Creates a new instance of <see cref="WindowProvider"/>.
-        /// </summary>
-        /// <param name="Window">The Window to Capture.</param>
-        /// <param name="BackgroundColor"><see cref="Color"/> to fill blank background.</param>
-        public WindowProvider(Window Window = null, Color BackgroundColor = default(Color))
-            : this(() => Window ?? Window.DesktopWindow, BackgroundColor) { }
-
+        
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
         /// <param name="WindowFunction">A Function returning the Window to Capture.</param>
         /// <param name="BackgroundColor"><see cref="Color"/> to fill blank background.</param>
         /// <exception cref="ArgumentNullException"><paramref name="WindowFunction"/> is null.</exception>
-        public WindowProvider(Func<Window> WindowFunction, Color BackgroundColor = default(Color))
-            : base(DesktopRectangle)
+        public WindowProvider(Func<Window> WindowFunction, bool IncludeCursor, Color BackgroundColor = default(Color))
+            : base(DesktopRectangle, IncludeCursor)
         {
             _windowFunction = WindowFunction ?? throw new ArgumentNullException(nameof(WindowFunction));
             _backgroundColor = BackgroundColor;

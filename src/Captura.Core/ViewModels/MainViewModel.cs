@@ -545,23 +545,15 @@ namespace Captura.ViewModels
         {
             Func<Point> offset = () => Point.Empty;
 
-            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(out offset);
+            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(Settings.Instance.IncludeCursor, out offset);
 
             if (imageProvider == null)
                 return null;
-
-            var overlays = new List<IOverlay>();
-
+                        
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
-
-            if (Settings.Instance.IncludeCursor)
-                overlays.Add(MouseCursor.Instance);
-
-            if (overlays.Count > 0)
-                return new OverlayedImageProvider(imageProvider, offset, overlays.ToArray());
-
+                return new OverlayedImageProvider(imageProvider, offset, new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+            
             return imageProvider;
         }
         

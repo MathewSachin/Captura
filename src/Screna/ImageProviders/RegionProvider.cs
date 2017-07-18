@@ -13,8 +13,8 @@ namespace Screna
         /// Creates a new instance of <see cref="RegionProvider"/>.
         /// </summary>
         /// <param name="Region">Region to Capture.</param>
-        public RegionProvider(Rectangle Region)
-            : base(Region)
+        public RegionProvider(Rectangle Region, bool IncludeCursor)
+            : base(Region, IncludeCursor)
         {
             _region = Region;
         }
