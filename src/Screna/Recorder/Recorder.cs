@@ -22,7 +22,8 @@ namespace Screna
 
         readonly int _frameRate;
 
-        readonly BlockingCollection<Bitmap> _frames = new BlockingCollection<Bitmap>();
+        readonly BlockingCollection<Bitmap> _frames;
+        readonly Stopwatch _sw;
 
         readonly ManualResetEvent _continueCapturing;
 
@@ -49,6 +50,9 @@ namespace Screna
             if (VideoWriter.SupportsAudio && AudioProvider != null)
                 AudioProvider.DataAvailable += AudioProvider_DataAvailable;
             else _audioProvider = null;
+
+            _sw = new Stopwatch();
+            _frames = new BlockingCollection<Bitmap>();
 
             _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
             _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
@@ -93,8 +97,6 @@ namespace Screna
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
-                var sw = new Stopwatch();
-                sw.Start();
                 
                 while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
                 {
@@ -113,7 +115,7 @@ namespace Screna
                         return;
                     }
 
-                    var requiredFrames = sw.Elapsed.TotalSeconds * _frameRate;
+                    var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
                     var diff = requiredFrames - frameCount;
 
                     for (var i = 0; i < diff; ++i)
@@ -210,6 +212,8 @@ namespace Screna
         {
             ThrowIfDisposed();
 
+            _sw?.Start();
+
             _audioProvider?.Start();
             
             _continueCapturing?.Set();
@@ -224,6 +228,8 @@ namespace Screna
 
             _continueCapturing?.Reset();            
             _audioProvider?.Stop();
+
+            _sw?.Stop();
         }
     }
 }
