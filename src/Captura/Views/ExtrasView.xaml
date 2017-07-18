@@ -67,12 +67,8 @@
             </Grid>
 
             <CheckBox IsChecked="{local:Setting UseDeskDupl}"
-                      Margin="0,5">
-                <TextBlock TextWrapping="Wrap">
-                    Use Desktop Duplication API instead of GDI.<LineBreak/>
-                    Allows DirectX Full Screen Game Recording.
-                </TextBlock>
-            </CheckBox>
+                      Margin="0,5"
+                      Content="Use Desktop Duplication API instead of GDI."/>
 
         </StackPanel>
     </Grid>
