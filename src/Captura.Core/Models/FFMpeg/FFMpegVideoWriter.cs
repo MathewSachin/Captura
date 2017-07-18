@@ -91,7 +91,9 @@ namespace Captura.Models
         /// Gets whether audio is supported.
         /// </summary>
         public bool SupportsAudio { get; } = true;
-        
+
+        bool firstAudio = true;
+
         /// <summary>
         /// Write audio block to Audio Stream.
         /// </summary>
@@ -103,10 +105,14 @@ namespace Captura.Models
             {
                 throw new Exception("An Error Occured with FFMpeg");
             }
-            
-            if (!_audioPipe.IsConnected)
+
+            if (firstAudio)
+            {
                 _audioPipe.WaitForConnection();
-                    
+
+                firstAudio = false;
+            }
+
             _audioPipe.WriteAsync(Buffer, 0, Length);
         }
 
