@@ -35,9 +35,18 @@ namespace Captura
                 }
                 catch
                 {
-                    _dupl = new DesktopDuplicator(region, _includeCursor, 0);
+                    try
+                    {
+                        _dupl?.Dispose();
 
-                    return _dupl.GetLatestFrame();
+                        _dupl = new DesktopDuplicator(region, _includeCursor, 0);
+
+                        return _dupl.GetLatestFrame();
+                    }
+                    catch
+                    {
+                        return new Bitmap(Width, Height);
+                    }
                 }
             }
             else return ScreenShot.Capture(region, _includeCursor);

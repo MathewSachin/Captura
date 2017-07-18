@@ -31,9 +31,18 @@ namespace Captura.Models
             }
             catch
             {
-                _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _includeCursor, _monitor);
+                try
+                {
+                    _dupl?.Dispose();
 
-                return Capture();
+                    _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _includeCursor, _monitor);
+
+                    return _dupl.GetLatestFrame();
+                }
+                catch
+                {
+                    return new Bitmap(Width, Height);
+                }
             }
         }
 
