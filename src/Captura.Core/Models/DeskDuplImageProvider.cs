@@ -27,7 +27,7 @@ namespace Captura.Models
         {
             try
             {
-                return _dupl.GetLatestFrame();
+                return _dupl.Capture();
             }
             catch
             {
@@ -37,7 +37,7 @@ namespace Captura.Models
 
                     _dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, _includeCursor, _monitor);
 
-                    return _dupl.GetLatestFrame();
+                    return _dupl.Capture();
                 }
                 catch
                 {

@@ -31,7 +31,7 @@ namespace Captura
                 {
                     _dupl.UpdateRectLocation(region.Location);
 
-                    return _dupl.GetLatestFrame();
+                    return _dupl.Capture();
                 }
                 catch
                 {
@@ -41,7 +41,7 @@ namespace Captura
 
                         _dupl = new DesktopDuplicator(region, _includeCursor, 0);
 
-                        return _dupl.GetLatestFrame();
+                        return _dupl.Capture();
                     }
                     catch
                     {

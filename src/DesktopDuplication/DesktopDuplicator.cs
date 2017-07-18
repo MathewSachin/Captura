@@ -94,66 +94,52 @@ namespace DesktopDuplication
 
         Bitmap lastFrame;
 
-        bool _pointerVisible;
-
-        public Bitmap GetLatestFrame()
-        {
-            // Try to get the latest frame; this may timeout
-            if (!RetrieveFrame())
-                return lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
-            
-            return ProcessFrame();
-        }
-
-        /// <summary>
-        /// Returns true on success, false on timeout
-        /// </summary>
-        bool RetrieveFrame()
+        public Bitmap Capture()
         {
             if (_desktopImageTexture == null)
                 _desktopImageTexture = new Texture2D(_device, _textureDesc);
-                        
+
+            SharpDX.DXGI.Resource desktopResource;
+
             try
             {
-                _deskDupl.AcquireNextFrame(0, out _frameInfo, out var desktopResource);
-
-                _pointerVisible = _frameInfo.PointerPosition.Visible;
-
-                using (desktopResource)
-                {
-                    using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
-                    {
-                        var resourceRegion = new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1);
-
-                        _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, resourceRegion, _desktopImageTexture, 0);
-                    }
-                }
-                                
-                ReleaseFrame();
-
-                return true;
+                _deskDupl.AcquireNextFrame(0, out _frameInfo, out desktopResource);
             }
-            catch (SharpDXException e)
+            catch (SharpDXException e) when (e.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
             {
-                if (e.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
-                {
-                    return false;
-                }
-
-                if (e.ResultCode.Failure)
-                {
-                    throw new Exception("Failed to acquire next frame.", e);
-                }
-
-                throw;
+                return lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
             }
-        }
-        
-        Bitmap ProcessFrame()
-        {
-            // Get the desktop capture texture
+            catch (SharpDXException e) when (e.ResultCode.Failure)
+            {
+                throw new Exception("Failed to acquire next frame.", e);
+            }
+            
+            using (desktopResource)
+            {
+                using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
+                {
+                    var resourceRegion = new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1);
+
+                    _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, resourceRegion, _desktopImageTexture, 0);
+                }
+            }
+
+            ReleaseFrame();
+
             var mapSource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
+            try
+            {
+                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch);
+            }
+            finally
+            {
+                _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
+            }
+        }
+
+        Bitmap ProcessFrame(IntPtr SourcePtr, int SourceRowPitch)
+        {
             lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
@@ -162,16 +148,14 @@ namespace DesktopDuplication
             Parallel.For(0, _rect.Height, y =>
             {
                 Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
-                    mapSource.DataPointer + y * mapSource.RowPitch,
+                    SourcePtr + y * SourceRowPitch,
                     _rect.Width * 4);
             });
                         
             // Release source and dest locks
             lastFrame.UnlockBits(mapDest);
 
-            _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
-
-            if (_includeCursor && _pointerVisible)
+            if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
                 using (var g = Graphics.FromImage(lastFrame))
                     MouseCursor.Draw(g, _rect.Location);
