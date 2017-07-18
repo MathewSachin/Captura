@@ -94,6 +94,8 @@ namespace DesktopDuplication
 
         Bitmap lastFrame;
 
+        bool _pointerVisible;
+
         public Bitmap GetLatestFrame()
         {
             // Try to get the latest frame; this may timeout
@@ -115,9 +117,17 @@ namespace DesktopDuplication
             {
                 _deskDupl.AcquireNextFrame(0, out _frameInfo, out var desktopResource);
 
+                _pointerVisible = _frameInfo.PointerPosition.Visible;
+
                 using (desktopResource)
-                using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
-                    _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1), _desktopImageTexture, 0);
+                {
+                    using (var tempTexture = desktopResource.QueryInterface<Texture2D>())
+                    {
+                        var resourceRegion = new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1);
+
+                        _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, resourceRegion, _desktopImageTexture, 0);
+                    }
+                }
                                 
                 ReleaseFrame();
 
@@ -161,7 +171,7 @@ namespace DesktopDuplication
 
             _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
 
-            if (_includeCursor)
+            if (_includeCursor && _pointerVisible)
             {
                 using (var g = Graphics.FromImage(lastFrame))
                     MouseCursor.Draw(g, _rect.Location);
