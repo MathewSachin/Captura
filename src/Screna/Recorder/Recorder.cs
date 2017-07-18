@@ -22,7 +22,7 @@ namespace Screna
 
         readonly int _frameRate;
 
-        readonly BlockingCollection<object> _frames = new BlockingCollection<object>();
+        readonly BlockingCollection<Bitmap> _frames = new BlockingCollection<Bitmap>();
 
         readonly ManualResetEvent _continueCapturing;
 
@@ -73,18 +73,10 @@ namespace Screna
             {
                 while (!_frames.IsCompleted)
                 {
-                    _frames.TryTake(out var data, -1);
+                    _frames.TryTake(out var img, -1);
 
-                    switch (data)
-                    {
-                        case Bitmap img:
-                            _videoWriter.WriteFrame(img);
-                            break;
-
-                        case DataAvailableEventArgs args:
-                            _videoWriter.WriteAudio(args.Buffer, args.Length);
-                            break;
-                    }
+                    if (img != null)
+                        _videoWriter.WriteFrame(img);
                 }
             }
             catch (Exception E)
@@ -154,8 +146,7 @@ namespace Screna
 
         void AudioProvider_DataAvailable(object sender, DataAvailableEventArgs e)
         {
-            try { _frames.Add(e); }
-            catch { }
+            _videoWriter.WriteAudio(e.Buffer, e.Length);            
         }
 
         #region Dispose

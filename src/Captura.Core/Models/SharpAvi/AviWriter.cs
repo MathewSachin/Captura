@@ -76,7 +76,8 @@ namespace Captura.Models
                 lastFrameHash = hash;
             }
 
-            _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
+            lock (_writer)
+                _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
         }
 
         void CreateVideoStream(int Width, int Height)
@@ -128,7 +129,8 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
-            _audioStream?.WriteBlock(Buffer, 0, Length);
+            lock (_writer)
+                _audioStream?.WriteBlock(Buffer, 0, Length);
         }
 
         /// <summary>
