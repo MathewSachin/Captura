@@ -13,11 +13,16 @@ namespace Captura
         {
             get
             {
+                var exePath = FFMpegExePath;
+
+                if (File.Exists(exePath))
+                    return true;
+
                 try
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = FFMpegExePath,
+                        FileName = exePath,
                         Arguments = "-version",
                         UseShellExecute = false,
                         CreateNoWindow = true
