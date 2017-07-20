@@ -25,6 +25,7 @@
                     <MenuItem Header="Copy as Path"
                               Command="{Binding CopyPathCommand}"/>
                     <MenuItem Header="{local:Loc Print}"
+                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="{local:Loc Delete}"
                               Background="#ef5350"
