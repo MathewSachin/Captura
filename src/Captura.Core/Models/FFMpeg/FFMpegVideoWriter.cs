@@ -21,8 +21,7 @@ namespace Captura.Models
         readonly Process _ffmpegProcess;
         readonly NamedPipeServerStream _ffmpegIn;
         readonly byte[] _videoBuffer;
-        bool _exited;
-        
+                
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegWriter"/>.
         /// </summary>
@@ -52,25 +51,9 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(VideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
-            _ffmpegProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = FFMpegService.FFMpegExePath,
-                    Arguments = $"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardError = true
-                }
-            };
-
-            _ffmpegProcess.Exited += (s, e) => _exited = true;
-
-            _ffmpegProcess.Start();
-
+            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"");
+            
             _ffmpegIn.WaitForConnection();
-
-            FFMpegLog.Instance.ReadLog(_ffmpegProcess.StandardError, "frame=");
         }
 
         /// <summary>
@@ -101,7 +84,7 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
-            if (_exited)
+            if (_ffmpegProcess.HasExited)
             {
                 throw new Exception("An Error Occured with FFMpeg");
             }
@@ -124,7 +107,7 @@ namespace Captura.Models
         /// <param name="Image">The Image frame to write.</param>
         public void WriteFrame(Bitmap Image)
         {
-            if (_exited)
+            if (_ffmpegProcess.HasExited)
             {
                 Image.Dispose();
                 throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");

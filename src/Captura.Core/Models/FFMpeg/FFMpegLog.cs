@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Captura.Models
@@ -24,25 +22,22 @@ namespace Captura.Models
             Content = Frame = "";
         }
 
-        public void ReadLog(StreamReader ErrorStream, string FrameStart)
+        public void Write(string Text)
         {
-            Task.Factory.StartNew(() =>
-            {
-                while (!ErrorStream.EndOfStream)
-                {
-                    var line = ErrorStream.ReadLine();
+            if (Text == null)
+                return;
 
-                    if (line.StartsWith(FrameStart))
-                        Frame = line;
-                    else Content += line + Environment.NewLine;
-                }
-            });
+            if (Text.StartsWith("frame=") || Text.StartsWith("size="))
+            {
+                Frame = Text;
+            }
+            else Content += Text + Environment.NewLine;
         }
 
         public string Frame
         {
             get => _frame;
-            set
+            private set
             {
                 _frame = value;
 
@@ -53,7 +48,7 @@ namespace Captura.Models
         public string Content
         {
             get => _content;
-            set
+            private set
             {
                 _content = value;
 

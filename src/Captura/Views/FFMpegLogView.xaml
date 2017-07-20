@@ -16,7 +16,7 @@
         <Label Content="{Binding FFMpegLog.Frame}"
                DockPanel.Dock="Bottom"/>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <TextBlock Text="{Binding FFMpegLog.Content, Mode=TwoWay}"
+            <TextBlock Text="{Binding FFMpegLog.Content, Mode=OneWay}"
                        Style="{StaticResource TextColor}"/>
         </ScrollViewer>
     </DockPanel>

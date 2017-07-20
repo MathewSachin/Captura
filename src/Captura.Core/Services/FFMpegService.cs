@@ -1,4 +1,5 @@
-﻿using Captura.Properties;
+﻿using Captura.Models;
+using Captura.Properties;
 using Ookii.Dialogs;
 using System;
 using System.Diagnostics;
@@ -60,5 +61,30 @@ namespace Captura
         }
 
         public static Action FFMpegDownloader { get; set; }
+
+        public static Process StartFFMpeg(string Arguments)
+        {
+            var process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = FFMpegExePath,
+                    Arguments = Arguments,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardError = true,
+                    RedirectStandardInput = true
+                },
+                EnableRaisingEvents = true
+            };
+                        
+            process.ErrorDataReceived += (s, e) => FFMpegLog.Instance.Write(e.Data);
+
+            process.Start();
+
+            process.BeginErrorReadLine();
+            
+            return process;
+        }
     }
 }
