@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Core", "Captura.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests", "UITests\UITests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
