@@ -32,6 +32,8 @@ namespace UITests
         public static void Clean()
         {
             MainWindow.Close();
+
+            App.Close();
         }
 
         static void Shot(string FileName, IntPtr hWnd)
