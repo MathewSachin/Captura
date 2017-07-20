@@ -107,8 +107,6 @@
     <Compile Include="Models\VideoItems\WindowItem.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegItem.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegVideoArgsProvider.cs" />
-    <Compile Include="Models\VideoWriterItems\FolderItem.cs" />
-    <Compile Include="Models\VideoWriterItems\FolderWriter.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
