@@ -226,7 +226,7 @@ namespace Captura.Console
             {
                 var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source);
 
-                FakeRegionProvider.Instance.SelectedRegion = rect;
+                FakeRegionProvider.Instance.SelectedRegion = rect.Even();
                 video.SelectedVideoSourceKind = VideoSourceKind.Region;
             }
 
