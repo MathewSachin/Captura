@@ -81,7 +81,7 @@ namespace Screna
             // Steal the global color table info
             if (_firstFrame)
                 InitHeader(gifStream, _writer, width, height);
-            
+
             WriteGraphicControlBlock(gifStream, _writer, Delay);
             WriteImageBlock(gifStream, _writer, !_firstFrame, 0, 0, width, height);
             

@@ -111,14 +111,6 @@ namespace Captura.ViewModels
 
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
-
-                case VideoWriterKind.Folder:
-                    var folderItem = new FolderItem();
-
-                    AvailableVideoWriters.Add(folderItem);
-                    SelectedVideoWriter = folderItem;
-
-                    break;
             }
         }
 
@@ -126,8 +118,6 @@ namespace Captura.ViewModels
         {
             // Gif is always availble
             VideoWriterKind.Gif,
-
-            VideoWriterKind.Folder,
 
             VideoWriterKind.FFMpeg
         };
