@@ -4,7 +4,6 @@
     {
         Gif,
         SharpAvi,
-        FFMpeg,
-        Folder
+        FFMpeg
     }
 }
