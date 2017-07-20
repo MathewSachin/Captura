@@ -23,33 +23,7 @@ namespace Captura
         
         public Bitmap Capture()
         {
-            var region = _selector.SelectedRegion.Even();
-
-            if (Settings.Instance.UseDeskDupl)
-            {
-                try
-                {
-                    _dupl.UpdateRectLocation(region.Location);
-
-                    return _dupl.Capture();
-                }
-                catch
-                {
-                    try
-                    {
-                        _dupl?.Dispose();
-
-                        _dupl = new DesktopDuplicator(region, _includeCursor, 0);
-
-                        return _dupl.Capture();
-                    }
-                    catch
-                    {
-                        return new Bitmap(Width, Height);
-                    }
-                }
-            }
-            else return ScreenShot.Capture(region, _includeCursor);
+            return ScreenShot.Capture(_selector.SelectedRegion.Even(), _includeCursor);
         }
 
         public int Height { get; }
