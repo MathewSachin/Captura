@@ -93,6 +93,7 @@
     <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
+    <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="Views\FFMpegDownloader.xaml.cs">
       <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
     </Compile>
@@ -140,6 +141,7 @@
     <Compile Include="Views\ProxyView.xaml.cs">
       <DependentUpon>ProxyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\ValueConverters\TimeSpanToSecondsConverter.cs" />
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
