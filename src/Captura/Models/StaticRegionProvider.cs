@@ -1,5 +1,4 @@
-﻿using DesktopDuplication;
-using Screna;
+﻿using Screna;
 using System.Drawing;
 
 namespace Captura
@@ -7,7 +6,6 @@ namespace Captura
     class StaticRegionProvider : IImageProvider
     {
         readonly RegionSelector _selector;
-        DesktopDuplicator _dupl;
         readonly bool _includeCursor;
 
         public StaticRegionProvider(RegionSelector RegionSelector, bool IncludeCursor)
@@ -29,10 +27,7 @@ namespace Captura
         public int Height { get; }
 
         public int Width { get; }
-        
-        public void Dispose()
-        {
-            _dupl?.Dispose();
-        }
+
+        public void Dispose() { }
     }
 }
