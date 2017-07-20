@@ -60,9 +60,10 @@ namespace Captura.Models
                     ritem.Display = Resources.ImgurFailed;
                     Status.LocalizationKey = nameof(Resources.ImgurFailed);
 
-                    ServiceProvider.MessageProvider.ShowError($"{Resources.ImgurFailed}\nWill Try to Save to Disk\n\n{E}");
+                    var yes = ServiceProvider.MessageProvider.ShowYesNo($"{Resources.ImgurFailed}\nDo you want to Save to Disk?\n\n{E}", "Imgur Upload Failed");
 
-                    DiskWriter.Instance.Save(Image, Format, FileName, Status, Recents);
+                    if (yes)
+                        DiskWriter.Instance.Save(Image, Format, FileName, Status, Recents);
 
                     return;
                 }
