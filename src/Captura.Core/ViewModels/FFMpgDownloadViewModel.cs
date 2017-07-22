@@ -54,13 +54,9 @@ namespace Captura.ViewModels
         {
             if (ActionDescription == CancelDownload)
             {
-                try
-                {
-                    web.CancelAsync();
-                }
-                catch { }
-
-                StartCommand.RaiseCanExecuteChanged(false);
+                web.CancelAsync();
+                
+                return;
             }
 
             ActionDescription = CancelDownload;
@@ -82,6 +78,12 @@ namespace Captura.ViewModels
                 {
                     await web.DownloadFileTaskAsync(FFMpegUri, archivePath);
                 }
+                catch (WebException e) when (e.Status == WebExceptionStatus.RequestCanceled)
+                {
+                    Status = "Cancelled";
+
+                    return;
+                }
                 catch
                 {
                     Status = "Failed";
@@ -97,21 +99,36 @@ namespace Captura.ViewModels
 
             Status = "Extracting";
 
-            await Task.Run(() =>
+            try
             {
-                using (var archive = ArchiveFactory.Open(archivePath))
+                await Task.Run(() =>
                 {
-                    // Find ffmpeg.exe
-                    var ffmpegEntry = archive.Entries.First(entry => Path.GetFileName(entry.Key) == "ffmpeg.exe");
-                    
-                    ffmpegEntry.WriteToDirectory(TargetFolder, new ExtractionOptions
+                    using (var archive = ArchiveFactory.Open(archivePath))
                     {
-                        // Don't copy directory structure
-                        ExtractFullPath = false,
-                        Overwrite = true
-                    });
-                }
-            });
+                        // Find ffmpeg.exe
+                        var ffmpegEntry = archive.Entries.First(entry => Path.GetFileName(entry.Key) == "ffmpeg.exe");
+
+                        ffmpegEntry.WriteToDirectory(TargetFolder, new ExtractionOptions
+                        {
+                            // Don't copy directory structure
+                            ExtractFullPath = false,
+                            Overwrite = true
+                        });
+                    }
+                });
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Status = "Can't extract to specified directory";
+
+                return;
+            }
+            catch
+            {
+                Status = "Extraction Failed";
+
+                return;
+            }
 
             // Update FFMpeg folder setting
             Settings.Instance.FFMpegFolder = TargetFolder;

@@ -53,7 +53,7 @@
                      Text="{Binding TargetFolder, Mode=OneWay}"/>
         </DockPanel>
         
-        <Button Content="Start Download"
+        <Button Content="{Binding ActionDescription}"
                 Command="{Binding StartCommand}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
