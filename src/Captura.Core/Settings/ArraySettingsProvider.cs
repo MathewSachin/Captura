@@ -2,34 +2,15 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 
 namespace Captura
 {
-    public class ArraySettingsProvider : SettingsProvider, IApplicationSettingsProvider
+    public class ArraySettingsProvider : SettingsProviderBase
     {
-        public override string ApplicationName
-        {
-            get => Resources.AppName;
-            set { }
-        }
-
-        public override void Initialize(string name, NameValueCollection collection)
-        {
-            base.Initialize(ApplicationName, collection);
-        }
-
-        public override string Name => nameof(ArraySettingsProvider);
-
         static readonly string Dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName);
-
-        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
-        {
-            return new SettingsPropertyValue(property) { PropertyValue = property.DefaultValue };
-        }
-
+        
         public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
         {
             // Create new collection of values
@@ -56,11 +37,7 @@ namespace Captura
             }
             return values;
         }
-
-        public void Reset(SettingsContext context)
-        {
-        }
-
+        
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
             var enumConverter = new StringEnumConverter
@@ -78,10 +55,6 @@ namespace Captura
                 }
                 catch { }
             }
-        }
-
-        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
-        {
         }
     }
 }

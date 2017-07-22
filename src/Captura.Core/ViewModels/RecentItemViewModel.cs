@@ -112,7 +112,7 @@ namespace Captura.ViewModels
             DeleteCommand.RaiseCanExecuteChanged(true);
             CopyPathCommand.RaiseCanExecuteChanged(true);
 
-            (PrintCommand as DelegateCommand).RaiseCanExecuteChanged(CanPrint);
+            PrintCommand.RaiseCanExecuteChanged(CanPrint);
         }
 
         public DelegateCommand RemoveCommand { get; private set; }

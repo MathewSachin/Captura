@@ -84,9 +84,9 @@ namespace Captura.ViewModels
 
                     return;
                 }
-                catch
+                catch (Exception e)
                 {
-                    Status = "Failed";
+                    Status = $"Failed {e.Message}";
 
                     return;
                 }
@@ -117,7 +117,7 @@ namespace Captura.ViewModels
                     }
                 });
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 Status = "Can't extract to specified directory";
 

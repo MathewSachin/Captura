@@ -1,17 +1,16 @@
 ﻿using Captura.Properties;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 
 namespace Captura
 {
-    public class JsonSettingsProvider : SettingsProvider, IApplicationSettingsProvider
+    public class JsonSettingsProvider : SettingsProviderBase
     {
         readonly JObject SettingsJson;
-
+        
         public static readonly string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName, "Settings.json");
 
         public JsonSettingsProvider()
@@ -20,20 +19,7 @@ namespace Captura
 
             SettingsJson = LoadOrCreateSettings(FileName);
         }
-
-        public override void Initialize(string name, NameValueCollection collection)
-        {
-            base.Initialize(ApplicationName, collection);
-        }
-
-        public override string ApplicationName
-        {
-            get => Resources.AppName;
-            set { }
-        }
-
-        public override string Name => nameof(JsonSettingsProvider);
-
+        
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection properties)
         {
             // Only dirty settings are included in properties, and only ones relevant to this provider
@@ -82,7 +68,7 @@ namespace Captura
 
         void SetValue(SettingsPropertyValue setting)
         {
-            SettingsJson[setting.Name] = setting.SerializedValue?.ToString() ?? "";         
+            SettingsJson[setting.Name] = setting.SerializedValue?.ToString() ?? "";
         }
 
         static JObject LoadOrCreateSettings(string FilePath)
@@ -96,17 +82,10 @@ namespace Captura
                 return new JObject();
             }
         }
-
-        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
-        {
-            return new SettingsPropertyValue(property) { PropertyValue = property.DefaultValue };
-        }
-
-        public void Reset(SettingsContext context)
+        
+        public override void Reset(SettingsContext context)
         {
             SettingsJson.RemoveAll();
         }
-
-        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties) { }
     }
 }
