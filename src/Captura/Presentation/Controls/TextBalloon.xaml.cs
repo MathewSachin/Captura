@@ -1,16 +1,15 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
 
 namespace Captura
 {
-    public partial class TextBalloon : UserControl
+    public partial class TextBalloon
     {
         public string Text { get; }
 
-        Action _onClick;
+        readonly Action _onClick;
         
         public TextBalloon(string Text, Action OnClick)
         {

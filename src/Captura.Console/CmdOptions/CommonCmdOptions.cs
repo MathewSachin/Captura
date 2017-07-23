@@ -2,9 +2,9 @@
 
 namespace Captura
 {
-    public class CommonCmdOptions : CmdOptionsBase
+    public abstract class CommonCmdOptions : CmdOptionsBase
     {
-        public CommonCmdOptions()
+        protected CommonCmdOptions()
         {
             Settings.Instance.IncludeCursor = false;
         }

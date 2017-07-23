@@ -58,47 +58,48 @@ namespace Screna
         /// <param name="Offset">Offset from Origin of the Captured Area.</param>
         public static void Draw(Graphics g, Point Offset = default(Point))
         {
-            var _cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
+            // ReSharper disable once RedundantAssignment
+            var cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
 
-            if (!GetCursorInfo(out _cursorInfo))
+            if (!GetCursorInfo(out cursorInfo))
                 return;
 
-            if (_cursorInfo.flags != CursorShowing)
+            if (cursorInfo.flags != CursorShowing)
                 return;
 
-            Bitmap icon = null;
-            Point hotspot = Point.Empty;
+            Bitmap icon;
+            Point hotspot;
 
-            if (_cursors.ContainsKey(_cursorInfo.hCursor))
+            if (_cursors.ContainsKey(cursorInfo.hCursor))
             {
-                var tuple = _cursors[_cursorInfo.hCursor];
+                var tuple = _cursors[cursorInfo.hCursor];
 
                 icon = tuple.Item1;
                 hotspot = tuple.Item2;
             }
             else
             {
-                var _hIcon = CopyIcon(_cursorInfo.hCursor);
+                var hIcon = CopyIcon(cursorInfo.hCursor);
 
-                if (_hIcon == IntPtr.Zero)
+                if (hIcon == IntPtr.Zero)
                     return;
 
-                if (!GetIconInfo(_hIcon, out var _icInfo))
+                if (!GetIconInfo(hIcon, out var _icInfo))
                     return;
 
-                icon = Icon.FromHandle(_hIcon).ToBitmap();
+                icon = Icon.FromHandle(hIcon).ToBitmap();
                 hotspot = new Point(_icInfo.xHotspot, _icInfo.yHotspot);
 
-                _cursors.Add(_cursorInfo.hCursor, Tuple.Create(icon, hotspot));
+                _cursors.Add(cursorInfo.hCursor, Tuple.Create(icon, hotspot));
 
-                DestroyIcon(_hIcon);
+                DestroyIcon(hIcon);
 
                 DeleteObject(_icInfo.hbmColor);
                 DeleteObject(_icInfo.hbmMask);
             }
 
-            var location = new Point(_cursorInfo.ptScreenPos.X - Offset.X - hotspot.X,
-                _cursorInfo.ptScreenPos.Y - Offset.Y - hotspot.Y);
+            var location = new Point(cursorInfo.ptScreenPos.X - Offset.X - hotspot.X,
+                cursorInfo.ptScreenPos.Y - Offset.Y - hotspot.Y);
 
             g.DrawImage(icon, new Rectangle(location, icon.Size));
         }

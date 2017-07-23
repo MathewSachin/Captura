@@ -13,10 +13,7 @@ namespace Captura.ViewModels
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
-
-                SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
-            else SelectedVideoWriterKind = VideoWriterKind.Gif;
                                                
             RefreshCodecs();
 
@@ -123,9 +120,8 @@ namespace Captura.ViewModels
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
-
-        // Give SharpAvi the default preference
-        VideoWriterKind _writerKind = VideoWriterKind.Gif;
+        
+        VideoWriterKind _writerKind = VideoWriterKind.FFMpeg;
 
         public VideoWriterKind SelectedVideoWriterKind
         {

@@ -3,7 +3,6 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -21,7 +20,7 @@ namespace Captura.ViewModels
     {
         #region Fields
         Timer _timer;
-        Timing _timing = new Timing();
+        readonly Timing _timing = new Timing();
         IRecorder _recorder;
         string _currentFileName;
         bool isVideo;
@@ -373,7 +372,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Screen:
-                    if (selectedVideoSource is FullScreenItem fullScreen)
+                    if (selectedVideoSource is FullScreenItem)
                     {
                         if (Settings.Instance.HideOnFullScreenShot)
                         {
@@ -390,7 +389,7 @@ namespace Captura.ViewModels
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
-                        bmp = (selectedVideoSource as ScreenItem)?.Capture(includeCursor);
+                        bmp = screen.Capture(includeCursor);
                     }
                     
                     bmp = bmp?.Transform();
@@ -450,7 +449,7 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSource is NoVideoItem x)
                 extension = x.Extension;
 
-            _currentFileName = FileName ?? Path.Combine(Settings.Instance.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = FileName ?? Path.Combine(Settings.Instance.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 

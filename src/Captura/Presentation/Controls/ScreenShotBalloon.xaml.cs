@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace Captura
 {
-    public partial class ScreenShotBalloon : UserControl
+    public partial class ScreenShotBalloon
     {
         public string FileName { get; }
 

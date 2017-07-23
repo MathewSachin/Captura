@@ -151,7 +151,8 @@ namespace Screna
             Writer.Write((byte)0); // Terminator
         }
 
-        static byte[] _buffer, _header = new byte[11];
+        static byte[] _buffer;
+        static readonly byte[] _header = new byte[11];
 
         static void WriteImageBlock(Stream SourceGif, BinaryWriter Writer, bool IncludeColorTable, int X, int Y, int Width, int Height)
         {

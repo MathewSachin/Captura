@@ -17,9 +17,6 @@ namespace Screna
 
         [DllImport("dwmapi.dll")]
         static extern int DwmGetWindowAttribute(IntPtr hWnd, int dWAttribute, ref RECT pvAttribute, int cbAttribute);
-        
-        [DllImport(DllName)]
-        static extern IntPtr GetWindowDC(IntPtr hWnd);
 
         [DllImport(DllName)]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPositionFlags wFlags);
@@ -39,7 +36,6 @@ namespace Screna
         /// </summary>
         /// <param name="Screen">The <see cref="Screen"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <param name="Managed">Whether to use Managed or Unmanaged Procedure.</param>
         /// <returns>The Captured Image.</returns>
         public static Bitmap Capture(Screen Screen, bool IncludeCursor = false)
         {
@@ -55,7 +51,6 @@ namespace Screna
         /// Captures the entire Desktop.
         /// </summary>
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <param name="Managed">Whether to use Managed or Unmanaged Procedure.</param>
         /// <returns>The Captured Image.</returns>
         public static Bitmap Capture(bool IncludeCursor = false)
         {

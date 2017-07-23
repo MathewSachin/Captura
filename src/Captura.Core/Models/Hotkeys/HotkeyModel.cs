@@ -13,14 +13,15 @@ namespace Captura.Models
         }
 
         // Default constructor required by Settings
+        // ReSharper disable once UnusedMember.Global
         public HotkeyModel() { }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; }
 
-        public ServiceName ServiceName { get; set; }
+        public ServiceName ServiceName { get; }
 
-        public Keys Key { get; set; }
+        public Keys Key { get; }
 
-        public Modifiers Modifiers { get; set; }
+        public Modifiers Modifiers { get; }
     }
 }

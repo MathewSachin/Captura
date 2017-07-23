@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Captura
+﻿namespace Captura
 {
     public partial class ConfigView
     {

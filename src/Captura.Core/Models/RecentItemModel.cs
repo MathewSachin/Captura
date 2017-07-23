@@ -2,9 +2,9 @@
 {
     public class RecentItemModel
     {
-        public string FilePath { get; set; }
+        public string FilePath { get; }
 
-        public RecentItemType ItemType { get; set; }
+        public RecentItemType ItemType { get; }
 
         public RecentItemModel(string FilePath, RecentItemType ItemType)
         {

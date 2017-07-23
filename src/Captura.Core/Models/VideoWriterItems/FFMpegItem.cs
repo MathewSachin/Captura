@@ -21,14 +21,11 @@ namespace Captura.Models
             return $"-vcodec libxvid -qscale:v {qscale}";
         };
 
-        public static FFMpegVideoArgsProvider Gif { get; } = VideoQuality =>
-        {
-            return "";
-        };
+        public static FFMpegVideoArgsProvider Gif { get; } = VideoQuality => "";
 
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality =>
         {
-            return $"-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast";
+            return "-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast";
         };
 
         public static FFMpegItem[] Items { get; } =

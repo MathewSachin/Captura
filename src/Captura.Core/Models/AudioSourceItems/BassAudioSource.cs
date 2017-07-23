@@ -7,8 +7,8 @@ namespace Captura.Models
     {
         class BassItem : IAudioItem
         {
-            int _id;
-            string _name;
+            readonly int _id;
+            readonly string _name;
 
             public BassItem(int Id, string Name)
             {

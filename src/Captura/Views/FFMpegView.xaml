@@ -12,7 +12,6 @@
 
             <Button Content="Download FFMpeg"
                     IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                    Grid.Column="3"
                     Click="FFDownload"
                     Margin="0,5"/>
 

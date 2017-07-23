@@ -114,8 +114,7 @@
                               IsChecked="{local:Setting FlipHorizontal}"
                               Margin="0,0,10,0"/>
 
-                    <CheckBox Grid.Column="1"
-                              Content="{local:Loc FlipY}"
+                    <CheckBox Content="{local:Loc FlipY}"
                               IsChecked="{local:Setting FlipVertical}"/>
                 </StackPanel>
 

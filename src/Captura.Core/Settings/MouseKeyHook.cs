@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Drawing;
+// ReSharper disable UnusedMember.Global
 
 namespace Captura
 {

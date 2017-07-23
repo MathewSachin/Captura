@@ -14,7 +14,7 @@ namespace Captura
     /// </summary>
     public static class ServiceProvider
     {
-        static Dictionary<ServiceName, object> _services = new Dictionary<ServiceName, object>();
+        static readonly Dictionary<ServiceName, object> _services = new Dictionary<ServiceName, object>();
 
         /// <summary>
         /// Get the requested Service.

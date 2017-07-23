@@ -22,7 +22,7 @@ namespace Captura
 
         public TimeSpan Begin
         {
-            get { return _begin; }
+            get => _begin;
             set
             {
                 _begin = value;
@@ -33,7 +33,7 @@ namespace Captura
 
         public TimeSpan End
         {
-            get { return _end; }
+            get => _end;
             set
             {
                 _end = value;
@@ -44,7 +44,7 @@ namespace Captura
 
         public TimeSpan Current
         {
-            get { return _current; }
+            get => _current;
             set
             {
                 _current = value;
@@ -60,7 +60,7 @@ namespace Captura
         
         public TimeSpan Duration
         {
-            get { return _duration; }
+            get => _duration;
             private set
             {
                 _duration = value;

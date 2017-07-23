@@ -18,7 +18,7 @@ namespace Captura
 
                 Directory.CreateDirectory(dir);
 
-                File.WriteAllText(Path.Combine(dir, $"{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.txt"), args.ExceptionObject.ToString());
+                File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), args.ExceptionObject.ToString());
 
                 MessageBox.Show($"Unexpected error occured. Captura will exit.\n\n{args.ExceptionObject}", "App Crash", MessageBoxButton.OK, MessageBoxImage.Error);
 

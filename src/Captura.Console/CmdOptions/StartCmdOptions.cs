@@ -1,7 +1,11 @@
 ﻿using CommandLine;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Captura
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class StartCmdOptions : CommonCmdOptions
     {
         public StartCmdOptions()

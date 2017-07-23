@@ -55,7 +55,6 @@
     <Compile Include="ImageProviders\WindowProvider.cs" />
     <Compile Include="Overlays\MouseCursor.cs" />
     <Compile Include="Native\Enums.cs" />
-    <Compile Include="Native\Gdi32.cs" />
     <Compile Include="Native\Structs.cs" />
     <Compile Include="Native\User32.cs" />
     <Compile Include="Window.cs" />

@@ -120,9 +120,6 @@
   <data name="About" xml:space="preserve">
     <value>ഈ അപ്ലിക്കേഷനെക്കുറിച്ച്</value>
   </data>
-  <data name="AppName" xml:space="preserve">
-    <value>Captura</value>
-  </data>
   <data name="Audio" xml:space="preserve">
     <value>ഓഡിയോ</value>
   </data>
@@ -137,9 +134,6 @@
   </data>
   <data name="FrameRate" xml:space="preserve">
     <value>ഫ്രെയിം റേറ്റ്</value>
-  </data>
-  <data name="Gif" xml:space="preserve">
-    <value>Gif</value>
   </data>
   <data name="IncludeClicks" xml:space="preserve">
     <value>മൗസ് ക്ലിക്കുകൾ ഉൾപ്പെടുത്തു</value>

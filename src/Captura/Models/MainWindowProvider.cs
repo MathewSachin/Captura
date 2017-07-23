@@ -4,7 +4,7 @@ namespace Captura.Models
 {
     class MainWindowProvider : IMainWindow
     {
-        Window _window;
+        readonly Window _window;
 
         public MainWindowProvider(Window Window)
         {
@@ -25,10 +25,7 @@ namespace Captura.Models
         public bool IsMinimized
         {
             get => _window.WindowState == WindowState.Minimized;
-            set
-            {
-                _window.WindowState = value ? WindowState.Minimized : WindowState.Normal;
-            }
+            set => _window.WindowState = value ? WindowState.Minimized : WindowState.Normal;
         }
     }
 }

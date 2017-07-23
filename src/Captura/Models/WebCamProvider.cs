@@ -22,7 +22,7 @@ namespace Captura.Models
             public override string ToString() => _name;
         }
 
-        WebCamWindow _window;
+        readonly WebCamWindow _window;
 
         public WebCamProvider()
         {
@@ -43,7 +43,7 @@ namespace Captura.Models
 
         public ObservableCollection<object> AvailableCams { get; } = new ObservableCollection<object>();
 
-        WebCameraControl _camControl;
+        readonly WebCameraControl _camControl;
 
         object _selectedCam = None;
 

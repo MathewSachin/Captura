@@ -23,7 +23,7 @@ namespace Captura.Models
                     : Format.Equals(ImageFormat.Jpeg) ? "jpg"
                     : Format.ToString().ToLower();
 
-                var fileName = FileName ?? Path.Combine(Settings.Instance.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
+                var fileName = FileName ?? Path.Combine(Settings.Instance.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
 
                 using (Image)
                     Image.Save(fileName, Format);

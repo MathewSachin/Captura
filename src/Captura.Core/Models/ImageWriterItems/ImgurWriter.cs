@@ -42,7 +42,7 @@ namespace Captura.Models
                     };
                 }
 
-                XDocument xdoc = null;
+                XDocument xdoc;
 
                 try
                 {

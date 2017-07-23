@@ -4,7 +4,7 @@ namespace Captura.Models
 {
     public class FFMpegAudioItem : NoVideoItem
     {
-        FFMpegAudioArgsProvider _audioArgsProvider;
+        readonly FFMpegAudioArgsProvider _audioArgsProvider;
 
         const string Experimental = "-strict -2";
 

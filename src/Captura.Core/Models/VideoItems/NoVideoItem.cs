@@ -10,9 +10,9 @@ namespace Captura.Models
     /// </summary>
     public abstract class NoVideoItem : IVideoItem
     {
-        string _name;
+        readonly string _name;
 
-        public NoVideoItem(string DisplayName, string Extension)
+        protected NoVideoItem(string DisplayName, string Extension)
         {
             _name = DisplayName;
 

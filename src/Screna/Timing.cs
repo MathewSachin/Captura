@@ -6,7 +6,7 @@ namespace Screna
     public class Timing
     {
         TimeSpan _addend;
-        Stopwatch _stopwatch = new Stopwatch();
+        readonly Stopwatch _stopwatch = new Stopwatch();
 
         public TimeSpan Elapsed => _stopwatch.Elapsed + _addend;
 

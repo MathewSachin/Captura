@@ -28,7 +28,7 @@
         ActiveScreenShot,
 
         /// <summary>
-        /// Get the Window selected in the Window list (Func<Window>).
+        /// Get the Window selected in the Window list (Func Window).
         /// </summary>
         SelectedWindow
     }

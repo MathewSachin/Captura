@@ -92,7 +92,7 @@ namespace Captura.Console
 
                     video.SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
 
-                    for (int i = 0; i < video.AvailableVideoWriters.Count; ++i)
+                    for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
                     {
                         WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
                     }
@@ -114,7 +114,7 @@ namespace Captura.Console
 
                     video.SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
 
-                    for (int i = 0; i < video.AvailableVideoWriters.Count; ++i)
+                    for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
                     {
                         WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
                     }
@@ -378,7 +378,7 @@ namespace Captura.Console
             }
             else
             {
-                var text = "Press q to quit";
+                const string text = "Press q to quit";
 
                 Write(text);
 

@@ -93,7 +93,7 @@ namespace Captura
                     {
                         try
                         {
-                            Process.Start($"https://github.com/MathewSachin/Captura/releases/latest");
+                            Process.Start("https://github.com/MathewSachin/Captura/releases/latest");
                         }
                         catch
                         {

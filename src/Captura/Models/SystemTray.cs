@@ -6,7 +6,7 @@ namespace Captura.Models
 {
     class SystemTray : ISystemTray
     {
-        TaskbarIcon _trayIcon;
+        readonly TaskbarIcon _trayIcon;
 
         public SystemTray(TaskbarIcon TaskbarIcon)
         {
