@@ -83,6 +83,7 @@
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
     <Compile Include="Services\FFMpegService.cs" />
+    <Compile Include="Models\DeskDuplImageProvider.cs" />
     <Compile Include="Services\IMainWindow.cs" />
     <Compile Include="Services\IMessageProvider.cs" />
     <Compile Include="Services\IRegionProvider.cs" />
@@ -148,6 +149,10 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
+      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
+      <Name>DesktopDuplication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
       <Name>Screna</Name>

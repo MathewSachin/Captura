@@ -17,6 +17,9 @@ namespace Captura.Models
         {
             Offset = () => Point.Empty;
 
+            if (Settings.Instance.UseDeskDupl)
+                return new DeskDuplImageProvider(0, IncludeCursor);
+
             return new RegionProvider(WindowProvider.DesktopRectangle, IncludeCursor);
         }
     }

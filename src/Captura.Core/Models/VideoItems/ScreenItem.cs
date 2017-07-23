@@ -10,9 +10,13 @@ namespace Captura.Models
     {
         public Screen Screen { get; }
 
+        readonly int _index;
+
         ScreenItem(int i)
         {
             Screen = Screen.AllScreens[i];
+
+            _index = i;
         }
 
         public static int Count => Screen.AllScreens.Length;
@@ -49,6 +53,9 @@ namespace Captura.Models
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
         {
             Offset = () => Screen.Bounds.Location;
+
+            if (Settings.Instance.UseDeskDupl)
+                return new DeskDuplImageProvider(_index, IncludeCursor);
 
             return new ScreenProvider(Screen, IncludeCursor);
         }

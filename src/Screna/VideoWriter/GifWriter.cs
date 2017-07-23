@@ -77,7 +77,7 @@ namespace Screna
                 
                 lastFrameHash = hash;
             }
-            
+
             // Steal the global color table info
             if (_firstFrame)
                 InitHeader(gifStream, _writer, width, height);

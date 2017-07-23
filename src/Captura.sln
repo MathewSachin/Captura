@@ -8,10 +8,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna", "Screna\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Core", "Captura.Core\Captura.Core.csproj", "{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22} = {222C215B-663F-4BD6-9B3E-8FA99C867B22}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +44,10 @@ Global
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF998FD2-10BB-4CB2-802C-B44879776544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

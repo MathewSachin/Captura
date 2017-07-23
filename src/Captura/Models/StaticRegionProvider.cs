@@ -19,12 +19,15 @@ namespace Captura
             _includeCursor = IncludeCursor;
         }
         
-        public Bitmap Capture() => ScreenShot.Capture(_selector.SelectedRegion.Even(), _includeCursor);
+        public Bitmap Capture()
+        {
+            return ScreenShot.Capture(_selector.SelectedRegion.Even(), _includeCursor);
+        }
 
         public int Height { get; }
 
         public int Width { get; }
-        
+
         public void Dispose() { }
     }
 }
