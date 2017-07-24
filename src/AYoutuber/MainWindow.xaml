@@ -176,8 +176,8 @@
                 <Label Margin="5"
                        Content="{Binding Status.Display}"
                        Opacity="0.9"
-                       DockPanel.Dock="Bottom"/>
-                <Grid DockPanel.Dock="Bottom">
+                       DockPanel.Dock="Bottom" Height="20"/>
+                <Grid DockPanel.Dock="Bottom" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -251,16 +251,19 @@
                     <TabItem Header="{local:Loc Main}">
                         <Frame Source="Views/MainConfigView.xaml"/>
                     </TabItem>
+                    <TabItem Header="{local:Loc ManageWork}" Visibility="Collapsed">
+                        <Frame Source="Views/ManageSession.xaml" />
+                    </TabItem>
                     <TabItem Header="{local:Loc Configure}">
                         <Frame Source="Views/ConfigView.xaml"/>
                     </TabItem>
-                    <TabItem Header="{local:Loc Recent}">
+                    <TabItem Header="{local:Loc Recent}" Visibility="Collapsed">
                         <Frame Source="Views/RecentView.xaml"/>
                     </TabItem>
-                    <TabItem Header="{local:Loc Hotkeys}">
+                    <TabItem Header="{local:Loc Hotkeys}" Visibility="Collapsed">
                         <Frame Source="Views/HotkeyView.xaml"/>
                     </TabItem>
-                    <TabItem Header="{local:Loc About}">
+                    <TabItem Header="{local:Loc About}" Visibility="Collapsed">
                         <Frame Source="Views/AboutView.xaml"/>
                     </TabItem>
                 </TabControl>

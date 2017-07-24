@@ -12,7 +12,7 @@
         BorderBrush="#66333333"
         BorderThickness="1"
         ResizeMode="CanResize"
-        LocationChanged="Window_LocationChanged">
+        LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0"
                       CaptionHeight="0"

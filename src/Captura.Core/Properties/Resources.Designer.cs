@@ -187,6 +187,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Work.
+        /// </summary>
+        public static string EditWork {
+            get {
+                return ResourceManager.GetString("EditWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An Error Occured.
         /// </summary>
         public static string ErrorOccured {
@@ -385,6 +394,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Work.
+        /// </summary>
+        public static string ManageWork {
+            get {
+                return ResourceManager.GetString("ManageWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max items to persist.
         /// </summary>
         public static string MaxRecent {
@@ -426,6 +444,15 @@ namespace Captura.Properties {
         public static string MinTray {
             get {
                 return ResourceManager.GetString("MinTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Work.
+        /// </summary>
+        public static string NewWork {
+            get {
+                return ResourceManager.GetString("NewWork", resourceCulture);
             }
         }
         
@@ -844,7 +871,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 510.
+        ///   Looks up a localized string similar to 530.
         /// </summary>
         public static string WindowHeight {
             get {
@@ -858,6 +885,15 @@ namespace Captura.Properties {
         public static string WindowWidth {
             get {
                 return ResourceManager.GetString("WindowWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work.
+        /// </summary>
+        public static string Work {
+            get {
+                return ResourceManager.GetString("Work", resourceCulture);
             }
         }
         

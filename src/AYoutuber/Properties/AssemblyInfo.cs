@@ -6,4 +6,4 @@
 [assembly: AssemblyProduct("AYoutuber")]
 [assembly: AssemblyCopyright("(c) 2017 AYoutuber")]
 [assembly: AssemblyTrademark("AYoutuber")]
-[assembly: AssemblyVersion("4.2.0")]
+[assembly: AssemblyVersion("0.5.0")]

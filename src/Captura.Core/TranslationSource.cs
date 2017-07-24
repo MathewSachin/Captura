@@ -33,6 +33,10 @@ namespace Captura
             {
                 savedCulture = Thread.CurrentThread.CurrentCulture.ToString();
             }
+            else
+            {
+                savedCulture = Settings.Instance.Language;
+            }
 
             CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en-US");
         }

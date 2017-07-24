@@ -29,7 +29,13 @@ namespace Captura
 
         public override string ToString()
         {
-            return Resources.ResourceManager.GetString(_key, null);
+            // 키 값이 한글로 들어 올때가 있음
+            var str = Resources.ResourceManager.GetString(_key, null);
+            if (_key != null && str == null)
+            {
+                str = _key;
+            }
+            return str;
         }
     }
 }

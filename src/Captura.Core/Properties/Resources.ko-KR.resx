@@ -358,10 +358,10 @@
     <value>웹캠뷰</value>
   </data>
   <data name="WindowHeight" xml:space="preserve">
-    <value>510</value>
+    <value>500</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
-    <value>400</value>
+    <value>450</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>아니오</value>
@@ -386,5 +386,17 @@
   </data>
   <data name="ImgurUploading" xml:space="preserve">
     <value>Imgur에 업로드</value>
+  </data>
+  <data name="EditWork" xml:space="preserve">
+    <value>현재 작업 편집</value>
+  </data>
+  <data name="ManageWork" xml:space="preserve">
+    <value>작업관리</value>
+  </data>
+  <data name="NewWork" xml:space="preserve">
+    <value>새 작업</value>
+  </data>
+  <data name="Work" xml:space="preserve">
+    <value>작업</value>
   </data>
 </root>

@@ -34,6 +34,10 @@ namespace Captura
         {
             if (!Directory.Exists(OutPath))
                 Directory.CreateDirectory(OutPath);
+
+            var str = this.OutPathWithSession();
+            if (!Directory.Exists(str))
+                Directory.CreateDirectory(str);
         }
     }
 }

@@ -64,12 +64,27 @@
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF R2 2017\Binaries\WPF45\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF R2 2017\Binaries\WPF45\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF R2 2017\Binaries\WPF45\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WebEye.Controls.Wpf.WebCameraControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WebEye.Controls.Wpf.WebCameraControl.1.0.1\lib\net40\WebEye.Controls.Wpf.WebCameraControl.dll</HintPath>
     </Reference>
@@ -103,6 +118,7 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="ViewModels\ManageSessionViewModel.cs" />
     <Compile Include="Views\FFMpegLogView.xaml.cs">
       <DependentUpon>FFMpegLogView.xaml</DependentUpon>
     </Compile>
@@ -131,6 +147,9 @@
     </Compile>
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageSession.xaml.cs">
+      <DependentUpon>ManageSession.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MouseKeyHookView.xaml.cs">
       <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
@@ -199,6 +218,10 @@
     <Page Include="Views\ConfigView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ManageSession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MouseKeyHookView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +301,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Licenses.licx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

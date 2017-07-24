@@ -358,7 +358,7 @@
     <value>WebCam View</value>
   </data>
   <data name="WindowHeight" xml:space="preserve">
-    <value>510</value>
+    <value>530</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
     <value>400</value>
@@ -386,5 +386,17 @@
   </data>
   <data name="ImgurUploading" xml:space="preserve">
     <value>Uploading to Imgur</value>
+  </data>
+  <data name="EditWork" xml:space="preserve">
+    <value>Edit Work</value>
+  </data>
+  <data name="ManageWork" xml:space="preserve">
+    <value>Manage Work</value>
+  </data>
+  <data name="NewWork" xml:space="preserve">
+    <value>New Work</value>
+  </data>
+  <data name="Work" xml:space="preserve">
+    <value>Work</value>
   </data>
 </root>

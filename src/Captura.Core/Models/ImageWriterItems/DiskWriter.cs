@@ -23,7 +23,7 @@ namespace Captura.Models
                     : Format.Equals(ImageFormat.Jpeg) ? "jpg"
                     : Format.ToString().ToLower();
 
-                var fileName = FileName ?? Path.Combine(Settings.Instance.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
+                var fileName = FileName ?? Path.Combine(Settings.Instance.OutPathWithSession(), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + extension);
 
                 Image.Save(fileName, Format);
                 Status.LocalizationKey = nameof(Resources.ImgSavedDisk);

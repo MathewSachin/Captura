@@ -172,6 +172,9 @@ namespace Captura.ViewModels
                 if (saveTo != null)
                     VideoViewModel.SelectedImageWriter = saveTo.Source;
             }
+
+            // Restore Region Size
+            VideoViewModel.SelectedRegionSizeKind = Settings.LastSelectedRegionSizeKind;
         }
 
         bool _persist, _hotkeys;
@@ -257,6 +260,7 @@ namespace Captura.ViewModels
                     Settings.LastSourceKind = VideoSourceKind.Region;
                     var rect = VideoViewModel.RegionProvider.SelectedRegion;
                     Settings.LastSourceName = RectangleConverter.ConvertToString(rect);
+                    Settings.LastSelectedRegionSizeKind = this.VideoViewModel.SelectedRegionSizeKind;
                     break;
 
                 default:
@@ -430,7 +434,7 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSource is NoVideoItem x)
                 extension = x.Extension;
 
-            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPathWithSession(), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 

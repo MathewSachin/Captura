@@ -157,7 +157,7 @@ namespace Captura.ViewModels
         {
             Settings.Instance.EnsureOutPath();
 
-            Process.Start(Settings.Instance.OutPath);
+            Process.Start(Settings.Instance.OutPathWithSession());
         });
 
         public DelegateCommand PauseCommand { get; }

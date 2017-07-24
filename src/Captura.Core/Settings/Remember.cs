@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.Models.VideoItems;
 using System.Configuration;
 
 namespace Captura
@@ -37,13 +38,30 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("0,0,400,400")]
+        //[DefaultSettingValue("0,0,854,480")]
+        [DefaultSettingValue("0,0,940,560")]
         public string LastSourceName
         {
             get => Get<string>();
             set => Set(value);
         }
-        
+
+        [UserScopedSetting]
+        [DefaultSettingValue(nameof(RegionSize.YOUTUBE_940_530))]
+        public RegionSize LastSelectedRegionSizeKind
+        {
+            get => Get<RegionSize>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("1")]
+        public int LastSessionNumber
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
         [UserScopedSetting]
         public string LastMicName
         {

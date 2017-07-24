@@ -387,4 +387,16 @@
   <data name="ImgurUploading" xml:space="preserve">
     <value>Uploading to Imgur</value>
   </data>
+  <data name="EditWork" xml:space="preserve">
+    <value>Edit Work</value>
+  </data>
+  <data name="ManageWork" xml:space="preserve">
+    <value>Manage Work</value>
+  </data>
+  <data name="NewWork" xml:space="preserve">
+    <value>New Work</value>
+  </data>
+  <data name="Work" xml:space="preserve">
+    <value>Work</value>
+  </data>
 </root>

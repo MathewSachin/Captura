@@ -1,7 +1,11 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       DataContext="{StaticResource MainViewModel}"
+      mc:Ignorable="d" 
+      d:DesignHeight="470" d:DesignWidth="450"
       x:Class="Captura.MainConfigView">
     <StackPanel Margin="-5,0,0,0">
         <StackPanel.Resources>
@@ -69,12 +73,21 @@
                       SelectedValuePath="Source"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
-                    <ComboBox VerticalAlignment="Center" 
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <ComboBox VerticalAlignment="Center" 
                       Margin="3,0,7,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
                       IsEnabled="{Binding CanChangeVideoSource}"
-                      Grid.Column="2"/>
+                      />
+
+                        <ComboBox VerticalAlignment="Center" 
+                      Margin="3,0,7,0"
+                      Visibility="{Binding VideoViewModel.AvailableRegionSizeVisibility, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"
+                      ItemsSource="{Binding VideoViewModel.AvailableRegionSizeKinds}" 
+                      SelectedValue="{Binding VideoViewModel.SelectedRegionSizeKind, Mode=TwoWay}"
+                      />
+                    </StackPanel>
                 </Grid>
 
                 <DockPanel Margin="0,5">
@@ -216,6 +229,12 @@
                 </DockPanel>
             </StackPanel>
         </GroupBox>
-        
+
+        <GroupBox Header="{local:Loc Work}" Margin="10,10,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{local:Loc NewWork}" Margin="10,10,10,10"></Button>
+                <Button Content="{local:Loc EditWork}" Margin="10,10,10,10"></Button>
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
 </Page>

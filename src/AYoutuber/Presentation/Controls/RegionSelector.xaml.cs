@@ -64,6 +64,8 @@ namespace Captura
             Closing += (s, e) => e.Cancel = true;
         }
 
+        public event Action RegionSizeChanged;
+
         void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Hide();
@@ -199,6 +201,11 @@ namespace Captura
         }
 
         public IVideoItem VideoSource { get; }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RegionSizeChanged?.Invoke();
+        }
         #endregion
     }
 }

@@ -1,14 +1,34 @@
 using Captura.Models;
+using Captura.Models.VideoItems;
 using Captura.Properties;
 using Screna;
 using System.Collections.ObjectModel;
+using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
         public IRegionProvider RegionProvider { get; private set; }
-        
+
+        private bool availableRegionSizeVisibility = false;
+
+        public bool AvailableRegionSizeVisibility
+        {
+            get { return availableRegionSizeVisibility; }
+            set
+            {
+                if (availableRegionSizeVisibility != value)
+                {
+                    availableRegionSizeVisibility = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
         public void Init()
         {
             RegionProvider = ServiceProvider.Get<IRegionProvider>(ServiceName.RegionProvider);
@@ -17,7 +37,6 @@ namespace Captura.ViewModels
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
                 AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
-
                 SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
             }
             
@@ -34,6 +53,16 @@ namespace Captura.ViewModels
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
                     SelectedVideoSourceKind = VideoSourceKind.Screen;
+            };
+
+            this.RegionProvider.RegionSizeChanged += () => {
+                var rect = this.RegionProvider.SelectedRegion;
+                if (!(this.LastSelectedRegionSize.Width == rect.Width && this.LastSelectedRegionSize.Height == rect.Height))
+                {
+                    this.IsCustomResized = true;
+                    this.SelectedRegionSizeKind = RegionSize.Custom;
+                    this.LastSelectedRegionSize = rect;
+                }
             };
         }
         
@@ -58,6 +87,8 @@ namespace Captura.ViewModels
         {
             AvailableVideoSources.Clear();
 
+            this.AvailableRegionSizeVisibility = false;
+
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
@@ -79,6 +110,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
+                    this.AvailableRegionSizeVisibility = true;
                     AvailableVideoSources.Add(RegionProvider.VideoSource);
                     break;
 
@@ -218,6 +250,64 @@ namespace Captura.ViewModels
 
                 OnPropertyChanged();
             }
+        }
+
+        public ObservableCollection<RegionSize> AvailableRegionSizeKinds { get; } = new ObservableCollection<RegionSize>() {
+            RegionSize.XVGA_640_480,
+            RegionSize.XVGA_800_600,
+            RegionSize.WVGA_854_480,
+            RegionSize.YOUTUBE_940_530,
+            RegionSize.XGA_1024_768,
+            RegionSize.HD720_1280_720,
+            RegionSize.SXGA_1280_1024,
+            RegionSize.HD1080_1920_1080,
+            RegionSize.WUXGA_1920_1200,
+            RegionSize.Custom
+        };
+
+        private RegionSize selectedRegionSizeKind = RegionSize.YOUTUBE_940_530;
+
+        public RegionSize SelectedRegionSizeKind
+        {
+            get { return selectedRegionSizeKind; }
+            set
+            {
+                selectedRegionSizeKind = value;
+
+                OnPropertyChanged();
+
+                if (!this.IsCustomResized)
+                {
+                    RefreshRegionSize();
+                }
+                else
+                {
+                    this.IsCustomResized = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 마지막 선택된 영역 화면 사이즈 체크
+        /// </summary>
+        private Rectangle LastSelectedRegionSize { get; set; } = Rectangle.Empty;
+        private bool IsCustomResized { get; set; } = false;
+
+        private void RefreshRegionSize()
+        {
+            var width = 940;
+            var height = 530;
+
+            var SelectedRegionSizeKindString = this.SelectedRegionSizeKind.ToString().Split('_');
+            if (SelectedRegionSizeKindString != null && SelectedRegionSizeKindString.Length == 3)
+            {
+                width = int.Parse(SelectedRegionSizeKindString[1]);
+                height = int.Parse(SelectedRegionSizeKindString[2]);
+            }
+
+            var regionSize = new Rectangle(this.RegionProvider.SelectedRegion.X, this.RegionProvider.SelectedRegion.Y, width, height + 30);
+            this.LastSelectedRegionSize = regionSize;
+            this.RegionProvider.SelectedRegion = regionSize;
         }
 
         IVideoWriterItem _writer;

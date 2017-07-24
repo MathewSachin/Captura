@@ -21,6 +21,7 @@ namespace Captura.Console
         public IVideoItem VideoSource => new FakeRegionItem(SelectedRegion);
 
         public event Action SelectorHidden;
+        public event Action RegionSizeChanged;
 
         public void Lock() { }
 
