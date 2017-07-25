@@ -11,6 +11,8 @@ namespace Captura
     {
         static readonly string Dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName);
         
+        public override string Name => nameof(ArraySettingsProvider);
+
         public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
         {
             // Create new collection of values

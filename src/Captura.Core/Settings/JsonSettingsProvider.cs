@@ -13,6 +13,8 @@ namespace Captura
         
         public static readonly string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName, "Settings.json");
 
+        public override string Name => nameof(JsonSettingsProvider);
+
         public JsonSettingsProvider()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FileName));

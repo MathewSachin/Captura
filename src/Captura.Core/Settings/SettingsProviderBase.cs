@@ -11,9 +11,7 @@ namespace Captura
             get => Resources.AppName;
             set { }
         }
-
-        public override string Name => GetType().Name;
-
+        
         public override void Initialize(string name, NameValueCollection collection)
         {
             base.Initialize(ApplicationName, collection);
