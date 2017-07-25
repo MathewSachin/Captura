@@ -14,7 +14,7 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue(nameof(VideoWriterKind.SharpAvi))]
+        [DefaultSettingValue(nameof(VideoWriterKind.FFMpeg))]
         public VideoWriterKind LastVideoWriterKind
         {
             get => Get<VideoWriterKind>();
