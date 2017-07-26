@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Captura.Models
 {
@@ -16,12 +18,12 @@ namespace Captura.Models
         // ReSharper disable once UnusedMember.Global
         public HotkeyModel() { }
 
-        public bool IsActive { get; }
+        public bool IsActive { get; set; }
 
-        public ServiceName ServiceName { get; }
+        public ServiceName ServiceName { get; set; }
 
-        public Keys Key { get; }
+        public Keys Key { get; set; }
 
-        public Modifiers Modifiers { get; }
+        public Modifiers Modifiers { get; set; }
     }
 }

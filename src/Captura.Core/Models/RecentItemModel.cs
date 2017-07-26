@@ -1,10 +1,12 @@
-﻿namespace Captura.Models
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+namespace Captura.Models
 {
     public class RecentItemModel
     {
-        public string FilePath { get; }
+        public string FilePath { get; set; }
 
-        public RecentItemType ItemType { get; }
+        public RecentItemType ItemType { get; set; }
 
         public RecentItemModel(string FilePath, RecentItemType ItemType)
         {
