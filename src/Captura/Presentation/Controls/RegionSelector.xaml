@@ -10,7 +10,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        BorderBrush="#66333333"
+        BorderBrush="{DynamicResource Accent}"
         BorderThickness="1"
         ResizeMode="CanResize"
         LocationChanged="Window_LocationChanged"
@@ -22,9 +22,11 @@
                       ResizeBorderThickness="3"
                       NonClientFrameEdges="None"/>
     </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackBrush" Color="{DynamicResource WindowBackgroundColor}"/>
+    </Window.Resources>
     <Border BorderThickness="5"
-            BorderBrush="#EEEEEE">
-
+            BorderBrush="{StaticResource BackBrush}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -39,14 +41,13 @@
 
             <local:ModernButton ToolTip="Snap to Window"
                                 IconData="{StaticResource Icon_SnapToWindow}"
-                                Background="#EEEEEE"
-                                Foreground="#333333"
+                                Background="{StaticResource BackBrush}"
                                 x:Name="Snapper"
                                 Margin="0,-5,0,0"
                                 PreviewMouseLeftButtonDown="ModernButton_PreviewMouseLeftButtonDown"/>
 
             <Label Cursor="SizeAll"
-                   Background="#EEEEEE"
+                   Background="{StaticResource BackBrush}"
                    Content="{local:Loc RegionSelector}"
                    HorizontalContentAlignment="Center"
                    MouseDoubleClick="HeaderMouseDoubleClick"
@@ -58,21 +59,21 @@
             <local:ModernButton ToolTip="{local:Loc Close}"
                                 x:Name="CloseButton"
                                 Click="CloseButton_Click"
-                                Background="#EEEEEE"
+                                Background="{StaticResource BackBrush}"
                                 Foreground="#77ef5350"
                                 IconData="{StaticResource Icon_Close}"
                                 Grid.Column="2"
                                 Margin="0,-5,0,0"/>
 
             <Border BorderThickness="1"
-                    BorderBrush="#66333333"
+                    BorderBrush="{DynamicResource Accent}"
                     Grid.Row="1"
                     Grid.ColumnSpan="3">
             </Border>
 
             <DockPanel Grid.Row="2"
                        Grid.ColumnSpan="3"
-                       Background="#EEEEEE"
+                       Background="{StaticResource BackBrush}"
                        LastChildFill="False">
                 <xctk:IntegerUpDown Width="100"
                                     DockPanel.Dock="Right"
