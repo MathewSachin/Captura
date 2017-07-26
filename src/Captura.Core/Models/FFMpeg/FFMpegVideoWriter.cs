@@ -52,8 +52,6 @@ namespace Captura.Models
             _ffmpegIn = new NamedPipeServerStream(VideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
             _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"");
-            
-            _ffmpegIn.WaitForConnection();
         }
 
         /// <summary>
@@ -114,6 +112,9 @@ namespace Captura.Models
             }
 
             var hash = Image.GetHashCode();
+
+            if (lastFrameHash == 0)
+                _ffmpegIn.WaitForConnection();
 
             if (lastFrameHash != hash)
             {
