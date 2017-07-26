@@ -70,12 +70,16 @@ namespace Captura
                 {
                     hotkey.IsActive = true;
                     x.IsEnabled = true;
+
+                    x.TextColor();
                 };
                 
                 desc.Unchecked += (s, e) =>
                 {
                     hotkey.IsActive = false;
                     x.IsEnabled = false;
+
+                    x.TextColor();
                 };
             }
         }

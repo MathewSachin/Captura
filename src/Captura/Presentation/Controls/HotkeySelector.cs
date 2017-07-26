@@ -18,8 +18,7 @@ namespace Captura
         {
             _hotkey = Hotkey;
 
-            if (Hotkey.IsActive)
-                TextColor();
+            TextColor();
 
             Content = _hotkey.ToString();
         }
@@ -29,9 +28,9 @@ namespace Captura
             HotkeyEdited((Keys) KeyInterop.VirtualKeyFromKey(NewKey), NewModifiers);
         }
 
-        void TextColor()
+        public void TextColor()
         {
-            if (!_hotkey.IsRegistered)
+            if (_hotkey.IsActive && !_hotkey.IsRegistered)
             {
                 Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef5350"));
 
