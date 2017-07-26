@@ -4,26 +4,44 @@ using Ookii.Dialogs;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Captura
 {
     public static class FFMpegService
     {
+        public const string FFMpegExeName = "ffmpeg.exe";
+
         public static bool FFMpegExists
         {
             get
             {
-                var exePath = FFMpegExePath;
+                // FFMpeg folder
+                if (!string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
+                {
+                    var path = Path.Combine(Settings.Instance.FFMpegFolder, FFMpegExeName);
 
-                if (File.Exists(exePath))
+                    if (File.Exists(path))
+                        return true;
+                }
+
+                // application directory
+                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFMpegExeName);
+
+                if (File.Exists(cpath))
                     return true;
 
+                // Current working directory
+                if (File.Exists(FFMpegExeName))
+                    return true;
+
+                // PATH
                 try
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = exePath,
+                        FileName = FFMpegExeName,
                         Arguments = "-version",
                         UseShellExecute = false,
                         CreateNoWindow = true
@@ -39,10 +57,19 @@ namespace Captura
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
-                    return "ffmpeg.exe";
+                // FFMpeg folder
+                if (!string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
+                {
+                    var path = Path.Combine(Settings.Instance.FFMpegFolder, FFMpegExeName);
 
-                return Path.Combine(Settings.Instance.FFMpegFolder, "ffmpeg.exe");
+                    if (File.Exists(path))
+                        return path;
+                }
+
+                // application directory
+                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFMpegExeName);
+
+                return File.Exists(cpath) ? cpath : FFMpegExeName;
             }
         }
 
