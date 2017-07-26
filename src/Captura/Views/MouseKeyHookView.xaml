@@ -6,10 +6,8 @@
         Title="{local:Loc CustomizeClickAndKeysOverlays}"
         DataContext="{StaticResource MainViewModel}"
         SizeToContent="Height"
-        Width="400">
-    <Window.Background>
-        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-    </Window.Background>
+        Width="400"
+        Background="{DynamicResource WindowBackground}">
     <Grid>
         <StackPanel Margin="10">
             <Label Content="{local:Loc MouseClicks}"

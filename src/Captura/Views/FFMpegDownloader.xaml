@@ -5,10 +5,8 @@
         Title="FFMpeg Downloader"
         Height="400"
         Width="600"
-        ResizeMode="NoResize">
-    <Window.Background>
-        <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-    </Window.Background>
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackground}">
     <Window.DataContext>
         <vm:FFMpegDownloadViewModel/>
     </Window.DataContext>

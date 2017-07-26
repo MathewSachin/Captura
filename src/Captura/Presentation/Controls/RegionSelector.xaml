@@ -22,11 +22,8 @@
                       ResizeBorderThickness="3"
                       NonClientFrameEdges="None"/>
     </WindowChrome.WindowChrome>
-    <Window.Resources>
-        <SolidColorBrush x:Key="BackBrush" Color="{DynamicResource WindowBackgroundColor}"/>
-    </Window.Resources>
     <Border BorderThickness="5"
-            BorderBrush="{StaticResource BackBrush}">
+            BorderBrush="{DynamicResource WindowBackground}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -41,13 +38,13 @@
 
             <local:ModernButton ToolTip="Snap to Window"
                                 IconData="{StaticResource Icon_SnapToWindow}"
-                                Background="{StaticResource BackBrush}"
+                                Background="{DynamicResource WindowBackground}"
                                 x:Name="Snapper"
                                 Margin="0,-5,0,0"
                                 PreviewMouseLeftButtonDown="ModernButton_PreviewMouseLeftButtonDown"/>
 
             <Label Cursor="SizeAll"
-                   Background="{StaticResource BackBrush}"
+                   Background="{DynamicResource WindowBackground}"
                    Content="{local:Loc RegionSelector}"
                    HorizontalContentAlignment="Center"
                    MouseDoubleClick="HeaderMouseDoubleClick"
@@ -59,7 +56,7 @@
             <local:ModernButton ToolTip="{local:Loc Close}"
                                 x:Name="CloseButton"
                                 Click="CloseButton_Click"
-                                Background="{StaticResource BackBrush}"
+                                Background="{DynamicResource WindowBackground}"
                                 Foreground="#77ef5350"
                                 IconData="{StaticResource Icon_Close}"
                                 Grid.Column="2"
@@ -73,7 +70,7 @@
 
             <DockPanel Grid.Row="2"
                        Grid.ColumnSpan="3"
-                       Background="{StaticResource BackBrush}"
+                       Background="{DynamicResource WindowBackground}"
                        LastChildFill="False">
                 <xctk:IntegerUpDown Width="100"
                                     DockPanel.Dock="Right"

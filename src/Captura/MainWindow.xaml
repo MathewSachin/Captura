@@ -45,10 +45,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-        </Grid.Background>
+    <Grid Background="{DynamicResource WindowBackground}">
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
