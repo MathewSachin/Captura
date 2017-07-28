@@ -35,7 +35,7 @@ namespace Captura
             if (!Directory.Exists(OutPath))
                 Directory.CreateDirectory(OutPath);
 
-            var str = this.OutPathWithSession();
+            var str = this.OutPathWithWork();
             if (!Directory.Exists(str))
                 Directory.CreateDirectory(str);
         }

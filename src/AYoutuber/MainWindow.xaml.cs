@@ -54,7 +54,23 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);            
+            var mainViewModel = DataContext as MainViewModel;
+            mainViewModel.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+
+            mainViewModel.WorkViewModel.NewWorkCommand = new DelegateCommand(() => {
+                if (ServiceProvider.Messenger.ShowYesNo("New Work?", "New Work"))
+                {
+                    Settings.Instance.LastWorkNumber++;
+                }
+            });
+
+            mainViewModel.WorkViewModel.EditWorkCommand = new DelegateCommand(() => {
+                TimelineWindow timelineWindow = new TimelineWindow();
+                timelineWindow.DataContext = new TimelineViewModel(Settings.Instance.LastWorkNumber, Settings.Instance.OutPathWithWork());
+                timelineWindow.Height = 800;
+                timelineWindow.Width = 1200;
+                timelineWindow.Show();
+            });
         }
 
         protected override void OnStateChanged(EventArgs e)

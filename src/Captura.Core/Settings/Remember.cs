@@ -56,7 +56,7 @@ namespace Captura
 
         [UserScopedSetting]
         [DefaultSettingValue("1")]
-        public int LastSessionNumber
+        public int LastWorkNumber
         {
             get => Get<int>();
             set => Set(value);

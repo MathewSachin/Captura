@@ -157,6 +157,7 @@
     <Compile Include="Models\Timing.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\WorkViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Screna\Screna.csproj">

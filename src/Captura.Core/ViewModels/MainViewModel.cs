@@ -43,6 +43,8 @@ namespace Captura.ViewModels
         
         public MainViewModel()
         {
+            this.WorkViewModel = new WorkViewModel(this);
+
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
             
@@ -434,7 +436,7 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSource is NoVideoItem x)
                 extension = x.Extension;
 
-            _currentFileName = FileName ?? Path.Combine(Settings.OutPathWithSession(), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPathWithWork(), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + extension);
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
 

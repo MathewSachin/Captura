@@ -232,8 +232,8 @@
 
         <GroupBox Header="{local:Loc Work}" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal">
-                <Button Content="{local:Loc NewWork}" Margin="10,10,10,10"></Button>
-                <Button Content="{local:Loc EditWork}" Margin="10,10,10,10"></Button>
+                <Button Command="{Binding WorkViewModel.NewWorkCommand}" Content="{local:Loc NewWork}" Margin="10,10,10,10"></Button>
+                <Button Command="{Binding WorkViewModel.EditWorkCommand}" Content="{local:Loc EditWork}" Margin="10,10,10,10"></Button>
             </StackPanel>
         </GroupBox>
     </StackPanel>

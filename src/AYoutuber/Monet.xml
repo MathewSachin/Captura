@@ -1,0 +1,308 @@
+﻿<data
+    wiki-url="http://simile.mit.edu/shelf/"
+    wiki-section="Simile Monet Timeline">
+  <!-- Source:
+        http://en.wikipedia.org/wiki/Monet
+        http://www.accents-n-art.com/artists/claude-monet-biography.html
+    -->
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Nov 14 1840 00:00:00 GMT"
+         title="Birth"
+         color="Green"
+         rowOverride="5"
+         link="http://en.wikipedia.org/wiki/Monet"
+        >
+    Claude="" Monet, also known as Oscar-Claude Monet or Claude Oscar Monet
+    was born to Adolphe and Louise-Justine Monet of 45 Rue Laffitte,
+    in the 9th arrondissement of Paris.
+    He was christened as Oscar-Claude at the church of
+    Notre-Dame-de-Lorette. His father wanted him to go into the family
+    (grocery store) business, but Claude Monet wanted to become an artist.
+    His mother was a singer, both parents were second-generation Parisians.
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1845"
+         end="1846"
+         title="Family moved to Le Havre, Normandy"
+         rowOverride="6"
+        >
+
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Apr 01 1851 00:00:00 GMT"
+         title="Entered Le Havre secondary school"
+        >
+    On the first of April 1851 Monet entered the Le Havre secondary school.
+    He first became known locally for his charcoal caricatures, which he
+    would sell for ten to twenty francs. Monet also undertook his first
+    drawing lessons from Jean-Francois Ochard, a former student of
+    Jacques-Louis David (1748 - 1825). On the beaches of Normandy, he met
+    fellow artist Eugène Boudin, who became his mentor and taught him to
+    use oil paints. Boudin taught Monet en plein air (outdoor) techniques
+    for painting.
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Jan 28 1857 00:00:00 GMT"
+         color="Red"
+         title="Mother died"
+        >
+    On 28 January, 1857 his mother died. Now 16 years old, he left school
+    and his widowed, childless aunt Marie-Jeanne took him into her home.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Jun 01 1861 00:00:00 GMT"
+         latestStart="Jul 01 1861 00:00:00 GMT"
+         earliestEnd="Jun 01 1863 00:00:00 GMT"
+         end="Jul 01 1863 00:00:00 GMT"
+         isDuration="true"
+         title="Joined Cavalry in Algeria"
+        >
+    In June of 1861 Monet joined the First Regiment of African Light Cavalry
+    in Algeria for two years of a seven-year commitment, but upon his
+    contracting typhoid his aunt Madame Lecadre intervened to get him out
+    of the army if he agreed to complete an art course at a university.
+    It is also possible that the Dutch painter Johan Barthold Jongkind
+    (whom Monet knew) may have prompted his aunt on this matter.
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1862"
+         end="1863"
+         title="Joined studio of Charles Gleyre in Paris"
+        >
+    Disillusioned with the traditional art taught at universities, instead
+    in 1862 he joined the studio of Charles Gleyre in Paris, where he met
+    Pierre-Auguste Renoir, Frederic Bazille, and Alfred Sisley. Together
+    they shared new approaches to art, which later came to be known as
+    impressionism, featuring open spaces and light painted with thick
+    brushstrokes.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1866"
+         end="1867"
+         title="Camille"
+         color="Green"
+        >
+    Monet's 1866 Camille or The Woman in the Green Dress (La Femme à la
+    Robe Verte), which brought him recognition, depicted Camille Doncieux.
+    Shortly thereafter Doncieux became pregnant and bore their first child,
+    Jean.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1868"
+         end="1869"
+         title="Attempted suicide"
+        >
+    In 1868, Monet attempted suicide but failed to do so.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1870"
+         end="1871"
+         title="Took refuge in England"
+        >
+
+    During the Franco-Prussian War (1870–1871), Monet took refuge in England
+    to avoid the conflict. There he studied the works of John Constable and
+    J. M. W. Turner.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1871"
+         latestStart="1872"
+         earliestEnd="1878"
+         end="1879"
+         isDuration="true"
+         title="Lived at Argenteuil, near Paris"
+        >
+    From 1871 to 1878 Monet lived at Argenteuil, a village on the Seine near
+    Paris, and here were painted some of his best known works.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1872"
+         end="1873"
+         title="Impression, Sunrise"
+         color="Green"
+         link="http://en.wikipedia.org/wiki/Image:Claude_Monet%2C_Impression%2C_soleil_levant%2C_1872.jpg"
+        >
+    Upon returning to France, in 1872 (or 1873) he painted Impression, Sunrise
+    (Impression, soleil levant) depicting a Le Havre landscape. It hung in the
+    first impressionist exhibition in 1874 and is now displayed in the
+    Musée Marmottan-Monet, Paris. From the painting's title, art critic Louis
+    Leroy coined the term "impressionism", which he intended to be derogatory.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1870"
+         end="1871"
+         title="Married Doncieux"
+        >
+    In 1870, Monet and Doncieux married and in 1873 moved into a house in
+    Argenteuil near the Seine River.
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1873"
+         end="1874"
+         title="Monet's Garden at Argenteuil"
+         color="Green"
+         teaserimage="http://www.accents-n-art.com/artwork/M00279ss.jpg"
+         image="http://www.accents-n-art.com/artwork/M00279ss.jpg"
+         link="http://www.accents-n-art.com/artists/claude_monet/monets-garden-at-argenteuil.html"
+        >
+    Some of Claude Monet's best known work was done in Argenteuil, including
+    one of his famous garden scenes Monet's Garden at Argenteuil which he
+    painted in 1873.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1875"
+         end="1879"
+         title="The Seine at Argenteuil"
+         color="Green"
+         teaserimage="http://www.accents-n-art.com/artwork/M00506ss.jpg"
+         image="http://www.accents-n-art.com/artwork/M00506ss.jpg"
+         link="http://www.accents-n-art.com/artists/claude_monet/the-seine-at-argenteuil.html"
+        >
+    He worked almost exclusively in Argenteuil from 1875 to 1878. The Seine at
+    Argenteuil was one of his famous paintings during this period. The painting
+    was recently featured in the hit movie Vanilla Sky, starring Tom Cruise and
+    Cameron Diaz.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Mar 18 1878 00:00:00 GMT"
+         title="Second son Michel born"
+        >
+    Monet and Doncieux had another son, Michel, on March 17, 1878.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1879"
+         end="1880"
+         title="Doncieux died"
+        >
+
+    Madame Monet died of tuberculosis in 1879.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Apr 01 1883 00:00:00 GMT"
+         end="May 01 1883 00:00:00 GMT"
+         title="Moved to Giverny with Alice Hoschedé"
+        >
+    Alice Hoschedé decided to help Monet by bringing up his two children
+    together with her own. They lived in Poissy, which Monet hated.
+    In April 1883 they moved to a house in Giverny, Eure, in Haute-Normandie,
+    where he planted a large garden which he painted for the rest of his life.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1892"
+         end="1893"
+         title="Married Hoschedé"
+        >
+    Monet and Hoschedé married in 1892.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1880"
+         latestStart="1885"
+         earliestEnd="1895"
+         end="1900"
+         isDuration="true"
+         title="'Series' painting"
+        >
+    In the 1880s and 1890s, Monet began "series" painting: paintings of
+    one subject in varying light and viewpoints. His first series is of
+    Rouen Cathedral from different points of view and at different times
+    of the day.
+  </event>
+
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1895"
+         end="1896"
+         title="Durand-Ruel gallery"
+        >
+    Twenty views of Monet's Rouen cathedral were exhibited at the Durand-Ruel
+    gallery in 1895.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1889"
+         end="1890"
+         title="Water Lily Pond"
+         color="Green"
+         teaserimage="http://en.wikipedia.org/wiki/Image:Monet.waterlilies.500pix.jpg"
+         image="http://en.wikipedia.org/wiki/Image:Monet.waterlilies.500pix.jpg"
+        >
+    Monet was exceptionally fond of painting controlled nature: his own garden
+    in Giverny, with its water lilies, pond and bridge. He also painted up and
+    down the banks of the Seine.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1883"
+         end="1909"
+         isDuration="true"
+         title="Painted landscapes and seascapes"
+         color="Green"
+         teaserimage="http://www.accents-n-art.com/artwork/M00358ss.jpg"
+         image="http://www.accents-n-art.com/artwork/M00358ss.jpg"
+         link="http://www.accents-n-art.com/artists/claude_monet/san-giorgio-maggiore-at-dusk.html"
+        >
+    Claude Monet made several trips to the Mediterranean between 1883 and 1908.
+    During these visits he painted many landscapes and seascapes such as
+    Bordighera. Famous landmarks were also a favorite subject for Monet in the
+    Mediterranean. His paintings in Venice included the Grand Canal, Doges' Palace,
+    and San Giorgio Maggiore. The Monet painting that was stolen in the movie The
+    Thomas Crown Affair was San Giorgio Maggiore at Dusk.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1883"
+         end="1884"
+         title="The Artist's Garden in Giverny"
+         color="Green"
+         teaserimage="http://www.accents-n-art.com/artwork/M00006ss.jpg"
+         image="http://www.accents-n-art.com/artwork/M00006ss.jpg"
+         link="http://www.accents-n-art.com/artists/claude_monet/monets-garden-the-irises.html"
+        >
+
+    Monet moved to Giverny, France in 1883. Shortly after his arrival in Giverny,
+    Claude began developing the famous garden that was the inspiration for many
+    of his most famous paintings. The Artist's Garden in Giverny is one of the
+    most popular paintings. His garden in Giverny grew to include a water garden
+    and a japanese style bridge. Water lilies and the Japanese bridge were the subject
+    of many Monet paintings.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1911"
+         end="1912"
+         color="Red"
+         title="Second wife died"
+        >
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1914"
+         end="1915"
+         color="Red"
+         title="Son Jean died"
+        >
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="1923"
+         end="1924"
+         title="Underwent 2 cataract surgeries"
+        >
+    Cataracts formed on his eyes for which he underwent two surgeries in 1923.
+    It is interesting to note that the paintings done while the cataracts affected
+    his vision have a general reddish tone, which is a characteristic of the vision
+    of cataract victims. It may also be that after his surgery, he was now able to
+    see certain ultraviolet wavelengths of light that are normally excluded by the
+    lens of the eye; this may have had an effect on the colors he perceived. After
+    his operations he even repainted some of these paintings.
+  </event>
+  <event video="http://localhost:4545/Wildlife.wmv"
+         start="Dec 5 1926 00:00:00 GMT"
+         color="Red"
+         title="Death"
+        >
+
+    Monet died December 5, 1926 at the age of 86 and is buried in the Giverny
+    church cemetery. His famous home and garden with its waterlily pond and bridge
+    at Giverny are a popular drawcard for tourists. In the house there are many
+    examples of Japanese woodcut prints on the walls.
+  </event>
+</data>

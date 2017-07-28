@@ -78,9 +78,9 @@ namespace Captura
             set => Set(value);
         }
 
-        public string OutPathWithSession()
+        public string OutPathWithWork()
         {
-            var str = Path.Combine(this.OutPath, "Session_" + this.LastSessionNumber.ToString().PadLeft(4, '0'));
+            var str = Path.Combine(this.OutPath, "Work_" + this.LastWorkNumber.ToString().PadLeft(4, '0'));
             if (!Directory.Exists(str))
             {
                 Directory.CreateDirectory(str);

@@ -157,7 +157,7 @@ namespace Captura.ViewModels
         {
             Settings.Instance.EnsureOutPath();
 
-            Process.Start(Settings.Instance.OutPathWithSession());
+            Process.Start(Settings.Instance.OutPathWithWork());
         });
 
         public DelegateCommand PauseCommand { get; }
@@ -197,6 +197,8 @@ namespace Captura.ViewModels
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 
         public AudioViewModel AudioViewModel { get; } = new AudioViewModel();
+
+        public WorkViewModel WorkViewModel { get; private set; }
 
         public RecentViewModel RecentViewModel { get; } = new RecentViewModel();
         #endregion
