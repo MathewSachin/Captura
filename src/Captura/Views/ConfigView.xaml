@@ -41,10 +41,6 @@
                           IsChecked="{local:Setting MinimizeOnStart}"
                           Margin="0,2"/>
 
-                <CheckBox Content="{local:Loc MinTray}"
-                          IsChecked="{local:Setting MinimizeToTray}"
-                          Margin="0,2"/>
-
                 <CheckBox Content="{local:Loc ShowSysNotify}"
                           IsChecked="{local:Setting TrayNotify}"
                           Margin="0,2"/>

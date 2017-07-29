@@ -182,14 +182,6 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool MinimizeToTray
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
         [DefaultSettingValue("50")]
         public int AudioQuality
         {

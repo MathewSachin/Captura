@@ -107,15 +107,7 @@ namespace Captura
                 // Swallow any Exceptions.
             }
         }
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            base.OnStateChanged(e);
-
-            if (WindowState == WindowState.Minimized && Settings.Instance.MinimizeToTray)
-                Hide();
-        }
-
+        
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
@@ -160,9 +152,8 @@ namespace Captura
             return true;
         }
 
-        void MenuExit_Click(object sender, RoutedEventArgs e)
-        {
-            TryExit();
-        }
+        void MenuExit_Click(object sender, RoutedEventArgs e) => TryExit();
+
+        void HideButton_Click(object Sender, RoutedEventArgs E) => Hide();
     }
 }

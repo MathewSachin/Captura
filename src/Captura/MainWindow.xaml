@@ -122,6 +122,11 @@
                                         Foreground="#77ef5350"
                                         IconData="{StaticResource Icon_Close}"
                                         DockPanel.Dock="Right"/>
+                    <local:ModernButton ToolTip="{local:Loc MinTray}"
+                                        Click="HideButton_Click"
+                                        IconData="{StaticResource Icon_DoubleDown}"
+                                        Opacity="0.7"
+                                        DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{local:Loc Minimize}"
                                         Click="MinButton_Click"
                                         IconData="{StaticResource Icon_Minimize}"
