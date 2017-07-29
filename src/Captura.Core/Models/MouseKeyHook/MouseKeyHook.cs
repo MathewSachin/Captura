@@ -140,9 +140,9 @@ namespace Captura.Models
         /// <summary>
         /// Draws overlay.
         /// </summary>
-        public void Draw(Graphics g, Point Offset = default(Point))
+        public void Draw(Graphics g, Func<Point, Point> Transform = null)
         {
-            DrawClicks(g, Offset);
+            DrawClicks(g, Transform);
             DrawKeys(g);
         }
 
@@ -183,17 +183,21 @@ namespace Captura.Models
             }
         }
 
-        void DrawClicks(Graphics g, Point Offset)
+        void DrawClicks(Graphics g, Func<Point, Point> Transform)
         {
             if (_mouseClicked)
             {
                 var _clickRadius = Settings.Instance.MouseClick_Radius;
 
                 var curPos = MouseCursor.CursorPosition;
-                var d = _clickRadius * 2;
 
-                var x = curPos.X - _clickRadius - Offset.X;
-                var y = curPos.Y - _clickRadius - Offset.Y;
+                if (Transform != null)
+                    curPos = Transform(curPos);
+
+                var d = _clickRadius * 2;
+                
+                var x = curPos.X - _clickRadius;
+                var y = curPos.Y - _clickRadius;
 
                 g.FillEllipse(new SolidBrush(Settings.Instance.MouseClick_Color), x, y, d, d);
 

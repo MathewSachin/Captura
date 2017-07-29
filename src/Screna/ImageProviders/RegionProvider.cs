@@ -14,7 +14,7 @@ namespace Screna
         /// </summary>
         /// <param name="Region">Region to Capture.</param>
         public RegionProvider(Rectangle Region, bool IncludeCursor)
-            : base(Region, IncludeCursor)
+            : base(Region.Size, P => new Point(P.X - Region.X, P.Y - Region.Y),  IncludeCursor)
         {
             _region = Region;
         }

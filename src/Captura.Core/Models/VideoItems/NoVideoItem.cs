@@ -19,9 +19,9 @@ namespace Captura.Models
             this.Extension = Extension;
         }
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> OverlayOffset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            OverlayOffset = null;
+            Transform = null;
 
             return null;
         }

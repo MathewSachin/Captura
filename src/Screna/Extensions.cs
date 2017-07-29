@@ -11,6 +11,17 @@ namespace Screna
     /// </summary>
     public static class Extensions
     {
+        public static Rectangle Even(this Rectangle Rect)
+        {
+            if (Rect.Width % 2 == 1)
+                --Rect.Width;
+
+            if (Rect.Height % 2 == 1)
+                --Rect.Height;
+
+            return Rect;
+        }
+
         /// <summary>
         /// Writes a Bitmap to Clipboard while taking care of Transparency
         /// </summary>
@@ -166,17 +177,7 @@ namespace Screna
 
             return final;
         }
-
-        /// <summary>
-        /// Draws an <see cref="IOverlay"/> over an <see cref="Image"/>.
-        /// </summary>
-        public static void Draw(this IOverlay overlay, Image img, Point Offset = default(Point))
-        {
-            if (img != null)
-                using (var g = Graphics.FromImage(img))
-                    overlay.Draw(g, Offset);
-        }
-
+        
         internal static Rectangle ToRectangle(this RECT r) => new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top);
 
         /// <summary>

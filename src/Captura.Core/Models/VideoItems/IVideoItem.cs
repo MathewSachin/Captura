@@ -9,6 +9,6 @@ namespace Captura.Models
     /// </summary>
     public interface IVideoItem
     {
-        IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> OverlayOffset);
+        IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform);
     }
 }

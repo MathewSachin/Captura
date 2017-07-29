@@ -26,11 +26,9 @@ namespace Captura.Models
         
         public override string ToString() => _name;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            Offset = () => Point.Empty;
-            
-            return new WindowProvider(ServiceProvider.Get<Func<Window>>(ServiceName.SelectedWindow), IncludeCursor, Settings.Instance.VideoBackgroundColor);
+            return new WindowProvider(Window, IncludeCursor, Settings.Instance.VideoBackgroundColor, out Transform);
         }
     }
 }

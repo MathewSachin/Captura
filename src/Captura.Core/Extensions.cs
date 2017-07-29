@@ -21,18 +21,7 @@ namespace Captura
 
             Clipboard.SetText(S);
         }
-
-        public static Rectangle Even(this Rectangle Rect)
-        {
-            if (Rect.Width % 2 == 1)
-                --Rect.Width;
-
-            if (Rect.Height % 2 == 1)
-                --Rect.Height;
-
-            return Rect;
-        }
-
+        
         static GraphicsPath RoundedRect(RectangleF bounds, int radius)
         {
             var diameter = radius * 2;
@@ -87,8 +76,8 @@ namespace Captura
             {
                 var ratio = Math.Min(Settings.Instance.ResizeWidth / Image.Width, Settings.Instance.ResizeHeight / Image.Height);
 
-                var _resizeWidth = Image.Width * ratio;
-                var _resizeHeight = Image.Height * ratio;
+                var resizeWidth = Image.Width * ratio;
+                var resizeHeight = Image.Height * ratio;
 
                 var nonResized = Image;
 
@@ -100,13 +89,13 @@ namespace Captura
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.SmoothingMode = SmoothingMode.HighQuality;
 
-                    var _backgroundColor = Settings.Instance.VideoBackgroundColor;
+                    var backgroundColor = Settings.Instance.VideoBackgroundColor;
 
-                    if (_backgroundColor != Color.Transparent)
-                        g.FillRectangle(new SolidBrush(_backgroundColor), 0, 0, Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
+                    if (backgroundColor != Color.Transparent)
+                        g.FillRectangle(new SolidBrush(backgroundColor), 0, 0, Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
 
                     using (nonResized)
-                        g.DrawImage(nonResized, 0, 0, _resizeWidth, _resizeHeight);
+                        g.DrawImage(nonResized, 0, 0, resizeWidth, resizeHeight);
                 }
             }
             #endregion

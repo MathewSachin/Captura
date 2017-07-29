@@ -25,11 +25,6 @@
         /// <summary>
         /// ScreenShot of Active Window (Action).
         /// </summary>
-        ActiveScreenShot,
-
-        /// <summary>
-        /// Get the Window selected in the Window list (Func Window).
-        /// </summary>
-        SelectedWindow
+        ActiveScreenShot
     }
 }

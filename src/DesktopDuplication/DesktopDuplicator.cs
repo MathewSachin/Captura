@@ -158,7 +158,7 @@ namespace DesktopDuplication
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
                 using (var g = Graphics.FromImage(lastFrame))
-                    MouseCursor.Draw(g, _rect.Location);
+                    MouseCursor.Draw(g, P => new System.Drawing.Point(P.X - _rect.X, P.Y - _rect.Y));
             }
 
             return lastFrame;

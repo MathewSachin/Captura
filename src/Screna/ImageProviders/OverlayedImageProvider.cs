@@ -10,28 +10,19 @@ namespace Screna
     {
         readonly IOverlay[] _overlays;
         readonly IImageProvider _imageProvider;
-        readonly Func<Point> _offset;
-
+        readonly Func<Point, Point> _transform;
+        
         /// <summary>
         /// Creates a new instance of <see cref="OverlayedImageProvider"/>.
         /// </summary>
         /// <param name="ImageProvider">The <see cref="IImageProvider"/> to apply the Overlays on.</param>
         /// <param name="Overlays">Array of <see cref="IOverlay"/>(s) to apply.</param>
-        /// <param name="Offset">The Offset of the Captured region.</param>
-        public OverlayedImageProvider(IImageProvider ImageProvider, Point Offset, params IOverlay[] Overlays)
-            : this(ImageProvider, () => Offset, Overlays) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="OverlayedImageProvider"/>.
-        /// </summary>
-        /// <param name="ImageProvider">The <see cref="IImageProvider"/> to apply the Overlays on.</param>
-        /// <param name="Overlays">Array of <see cref="IOverlay"/>(s) to apply.</param>
-        /// <param name="Offset">Function returning Offset of the Captured region.</param>
-        public OverlayedImageProvider(IImageProvider ImageProvider, Func<Point> Offset, params IOverlay[] Overlays)
+        /// <param name="Transform">Point Transform Function.</param>
+        public OverlayedImageProvider(IImageProvider ImageProvider, Func<Point, Point> Transform, params IOverlay[] Overlays)
         {
             _imageProvider = ImageProvider;
             _overlays = Overlays;
-            _offset = Offset;
+            _transform = Transform;
 
             Width = ImageProvider.Width;
             Height = ImageProvider.Height;
@@ -59,7 +50,7 @@ namespace Screna
             {
                 if (_overlays != null)
                     foreach (var overlay in _overlays)
-                        overlay?.Draw(g, _offset());
+                        overlay?.Draw(g, _transform);
             }
 
             return bmp;

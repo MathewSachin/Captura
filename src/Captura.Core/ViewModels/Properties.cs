@@ -14,23 +14,7 @@ namespace Captura.ViewModels
         public bool MouseKeyHookAvailable { get; } = ServiceProvider.FileExists("Gma.System.MouseKeyHook.dll");
 
         public TextLocalizer Status { get; } = new TextLocalizer(Resources.Ready);
-
-        bool _canChangeVideoSource = true;
-
-        public bool CanChangeVideoSource
-        {
-            get => _canChangeVideoSource;
-            set
-            {
-                if (_canChangeVideoSource == value)
-                    return;
-
-                _canChangeVideoSource = value;
-
-                OnPropertyChanged();
-            }
-        }
-
+        
         #region Time
         TimeSpan _ts;
 

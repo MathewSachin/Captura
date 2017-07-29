@@ -1,12 +1,11 @@
-﻿using Screna.Native;
-using System;
+﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Screna
 {
     /// <summary>
-    /// Captures the specified window which can change dynamically. 
-    /// The captured image is of the size of the whole desktop to accomodate any change in the Window.
+    /// Captures the specified window.
     /// </summary>
     public class WindowProvider : ImageProviderBase
     {
@@ -20,20 +19,35 @@ namespace Screna
             DesktopRectangle = System.Windows.Forms.SystemInformation.VirtualScreen;
         }
 
-        readonly Func<Window> _windowFunction;
+        readonly Window _window;
         readonly Color _backgroundColor;
+
+        static Func<Point, Point> GetTransformer(Window Window)
+        {
+            var initialSize = Window.Rectangle.Even().Size;
+
+            return P =>
+            {
+                var rect = Window.Rectangle;
+                
+                var ratio = Math.Min((float)initialSize.Width / rect.Width, (float)initialSize.Height / rect.Height);
+
+                return new Point((int)((P.X - rect.X) * ratio), (int)((P.Y - rect.Y) * ratio));
+            };
+        }
         
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        /// <param name="WindowFunction">A Function returning the Window to Capture.</param>
+        /// <param name="Window">The Window to Capture.</param>
         /// <param name="BackgroundColor"><see cref="Color"/> to fill blank background.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="WindowFunction"/> is null.</exception>
-        public WindowProvider(Func<Window> WindowFunction, bool IncludeCursor, Color BackgroundColor = default(Color))
-            : base(DesktopRectangle, IncludeCursor)
+        public WindowProvider(Window Window, bool IncludeCursor, Color BackgroundColor, out Func<Point, Point> Transform)
+            : base(Window.Rectangle.Even().Size, GetTransformer(Window), IncludeCursor)
         {
-            _windowFunction = WindowFunction ?? throw new ArgumentNullException(nameof(WindowFunction));
+            _window = Window;
             _backgroundColor = BackgroundColor;
+
+            Transform = _transform;
         }
 
         /// <summary>
@@ -41,24 +55,42 @@ namespace Screna
         /// </summary>
         protected override void OnCapture(Graphics g)
         {
-            var windowHandle = _windowFunction().Handle;
-
-            var rect = DesktopRectangle;
-
-            if (windowHandle != Window.DesktopWindow.Handle
-                && windowHandle != IntPtr.Zero)
-            {
-                if (User32.GetWindowRect(windowHandle, out var r))
-                    rect = r.ToRectangle();
-            }
+            var rect = _window.Rectangle;
             
-            if (_backgroundColor != Color.Transparent)
-                g.FillRectangle(new SolidBrush(_backgroundColor), DesktopRectangle);
+            if (rect.Width == Width && rect.Height == Height)
+            {
+                g.CopyFromScreen(rect.Location,
+                    Point.Empty,
+                    rect.Size,
+                    CopyPixelOperation.SourceCopy);
+            }
+            else // Scale to fit
+            {
+                var capture = new Bitmap(rect.Width, rect.Height);
 
-            g.CopyFromScreen(rect.Location, 
-                             rect.Location,
-                             rect.Size,
-                             CopyPixelOperation.SourceCopy);
+                using (var gcapture = Graphics.FromImage(capture))
+                {
+                    gcapture.CopyFromScreen(rect.Location,
+                        Point.Empty,
+                        rect.Size,
+                        CopyPixelOperation.SourceCopy);
+                }
+
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                
+                if (_backgroundColor != Color.Transparent)
+                    g.FillRectangle(new SolidBrush(_backgroundColor), 0, 0, Width, Height);
+
+                var ratio = Math.Min((float)Width / rect.Width, (float)Height / rect.Height);
+
+                var resizeWidth = rect.Width * ratio;
+                var resizeHeight = rect.Height * ratio;
+
+                using (capture)
+                    g.DrawImage(capture, 0, 0, resizeWidth, resizeHeight);
+            }
         }
     }
 }

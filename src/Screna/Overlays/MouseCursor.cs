@@ -56,7 +56,7 @@ namespace Screna
         /// </summary>
         /// <param name="g">A <see cref="Graphics"/> object to draw upon.</param>
         /// <param name="Offset">Offset from Origin of the Captured Area.</param>
-        public static void Draw(Graphics g, Point Offset = default(Point))
+        public static void Draw(Graphics g, Func<Point, Point> Transform = null)
         {
             // ReSharper disable once RedundantAssignment
             var cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
@@ -98,8 +98,11 @@ namespace Screna
                 DeleteObject(_icInfo.hbmMask);
             }
 
-            var location = new Point(cursorInfo.ptScreenPos.X - Offset.X - hotspot.X,
-                cursorInfo.ptScreenPos.Y - Offset.Y - hotspot.Y);
+            var location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,
+                cursorInfo.ptScreenPos.Y - hotspot.Y);
+
+            if (Transform != null)
+                location = Transform(location);
 
             g.DrawImage(icon, new Rectangle(location, icon.Size));
         }

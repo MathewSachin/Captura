@@ -70,7 +70,7 @@
                       Margin="3,0,7,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
-                      IsEnabled="{Binding CanChangeVideoSource}"
+                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       Grid.Column="2"/>
         </Grid>
 

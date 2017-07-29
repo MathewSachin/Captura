@@ -8,11 +8,12 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Screna;
 using static System.Console;
 
 namespace Captura.Console
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

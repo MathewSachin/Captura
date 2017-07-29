@@ -15,9 +15,14 @@ namespace Captura
             _selector = RegionSelector;
         }
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            Offset = () => _selector.SelectedRegion.Location;
+            Transform = P =>
+            {
+                var region = _selector.SelectedRegion.Location;
+
+                return new Point(P.X - region.X, P.Y - region.Y);
+            };
 
             return new StaticRegionProvider(_selector, IncludeCursor);
         }

@@ -226,7 +226,6 @@ namespace Captura.ViewModels
             ServiceProvider.Register<Action>(ServiceName.ScreenShot, () => ScreenShotCommand.ExecuteIfCan());
             ServiceProvider.Register<Action>(ServiceName.ActiveScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
             ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
-            ServiceProvider.Register<Func<Window>>(ServiceName.SelectedWindow, () => (VideoViewModel.SelectedVideoSource as WindowItem).Window);
 
             // Register Hotkeys if not console
             if (_hotkeys)
@@ -426,8 +425,6 @@ namespace Captura.ViewModels
             if (Settings.Instance.MinimizeOnStart)
                 ServiceProvider.MainWindow.IsMinimized = true;
             
-            CanChangeVideoSource = VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.Window;
-
             Settings.Instance.EnsureOutPath();
             
             if (StartDelay < 0)
@@ -505,9 +502,7 @@ namespace Captura.ViewModels
 
             _timer?.Stop();
             _timing.Stop();
-
-            CanChangeVideoSource = true;
-
+            
             if (Settings.Instance.MinimizeOnStart)
                 ServiceProvider.MainWindow.IsMinimized = false;
 
@@ -542,16 +537,16 @@ namespace Captura.ViewModels
         
         IImageProvider GetImageProvider()
         {
-            Func<Point> offset = () => Point.Empty;
+            Func<Point, Point> transform = p => p;
 
-            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(Settings.Instance.IncludeCursor, out offset);
+            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(Settings.Instance.IncludeCursor, out transform);
 
             if (imageProvider == null)
                 return null;
                         
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                return new OverlayedImageProvider(imageProvider, offset, new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+                return new OverlayedImageProvider(imageProvider, transform, new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
             
             return imageProvider;
         }

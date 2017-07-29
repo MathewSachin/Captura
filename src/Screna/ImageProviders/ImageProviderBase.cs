@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Screna
 {
@@ -10,17 +11,17 @@ namespace Screna
         /// <summary>
         /// Constructor for <see cref="ImageProviderBase"/>.
         /// </summary>
-        /// <param name="Rectangle">A <see cref="Rectangle"/> representing the captured region.</param>
-        protected ImageProviderBase(Rectangle Rectangle, bool IncludeCursor)
+        /// <param name="Size">Size of the captured region.</param>
+        protected ImageProviderBase(Size Size, Func<Point, Point> Transform, bool IncludeCursor)
         {
-            Width = Rectangle.Width;
-            Height = Rectangle.Height;
+            Width = Size.Width;
+            Height = Size.Height;
 
-            _offset = Rectangle.Location;
+            _transform = Transform;
             _includeCursor = IncludeCursor;
         }
 
-        readonly Point _offset;
+        protected readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
 
         Bitmap lastImage;
@@ -39,7 +40,7 @@ namespace Screna
                     OnCapture(g);
 
                     if (_includeCursor)
-                        MouseCursor.Draw(g, _offset);
+                        MouseCursor.Draw(g, _transform);
                 }
 
                 lastImage = bmp;

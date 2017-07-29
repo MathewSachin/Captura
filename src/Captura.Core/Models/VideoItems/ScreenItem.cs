@@ -32,7 +32,7 @@ namespace Captura.Models
                 g.CopyFromScreen(rectangle.Location, Point.Empty, rectangle.Size, CopyPixelOperation.SourceCopy);
 
                 if (Cursor)
-                    MouseCursor.Draw(g, rectangle.Location);
+                    MouseCursor.Draw(g, P => new Point(P.X - rectangle.X, P.Y - rectangle.Y));
 
                 g.Flush();
             }
@@ -50,10 +50,10 @@ namespace Captura.Models
 
         public override string ToString() => Screen.DeviceName;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point> Offset)
+        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            Offset = () => Screen.Bounds.Location;
-
+            Transform = P => new Point(P.X - Screen.Bounds.X, P.Y - Screen.Bounds.Y);
+            
             if (Settings.Instance.UseDeskDupl)
                 return new DeskDuplImageProvider(_index, IncludeCursor);
 

@@ -113,7 +113,7 @@ namespace Screna
                     if (IncludeCursor)
                     {
                         using (var g = Graphics.FromImage(transparentImage))
-                            MouseCursor.Draw(g, R.Location);
+                            MouseCursor.Draw(g, P => new Point(P.X - R.X, P.Y - R.Y));
                     }
 
                     return transparentImage.CropEmptyEdges();
@@ -210,7 +210,7 @@ namespace Screna
                 g.CopyFromScreen(Region.Location, Point.Empty, Region.Size, CopyPixelOperation.SourceCopy);
 
                 if (IncludeCursor)
-                    MouseCursor.Draw(g, Region.Location);
+                    MouseCursor.Draw(g, P => new Point(P.X - Region.X, P.Y - Region.Y));
 
                 g.Flush();
             }
