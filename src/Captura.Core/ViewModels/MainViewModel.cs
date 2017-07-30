@@ -373,7 +373,9 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
-                        if (Settings.Instance.HideOnFullScreenShot)
+                        var hide = ServiceProvider.MainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
+
+                        if (hide)
                         {
                             ServiceProvider.MainWindow.IsVisible = false;
 
@@ -383,7 +385,7 @@ namespace Captura.ViewModels
 
                         bmp = ScreenShot.Capture();
 
-                        if (Settings.Instance.HideOnFullScreenShot)
+                        if (hide)
                             ServiceProvider.MainWindow.IsVisible = true;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
