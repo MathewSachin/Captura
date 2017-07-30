@@ -8,9 +8,9 @@ http://mathewsachin.github.io/Captura/
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https://github.com/MathewSachin/Screna).
 
-![ScreenShot](http://mathewsachin.github.io/Captura/img/ScreenShots/Tabs/Main.png)
+![ScreenShot](http://i.imgur.com/syPGnSd.png)
 
-[See more ScreenShots](http://mathewsachin.github.io/Captura/ScreenShots/)
+[See more ScreenShots](https://github.com/MathewSachin/Captura/wiki/ScreenShots/)
 
 # Available on Chocolatey
 ```
@@ -25,17 +25,9 @@ choco install captura -y
 - Capture Mouse Clicks or Keystrokes
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
-- Can be used from [Command-line](http://mathewsachin.github.io/Captura/Manual/cmdline.html).
+- Can be used from [Command-line](https://github.com/MathewSachin/Captura/wiki/Command-line).
 
 # Build Notes
 - [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
 - .Net Framework v4.6.1 is required.
-- ~~**Clone submodules:** Open a terminal in the project folder and type `git submodule update --init`.~~
-
-## Optional Native Libraries
-Download and place in build output directory.
-These may need licensing for commercial use.
-
-- [BASS Audio library](http://www.un4seen.com/download.php?bass24) for Audio Recording - *bass.dll* (x86).
-- [BASSmix](http://www.un4seen.com/download.php?bassmix24) for Audio Mixing - *bassmix.dll* (x86).
-- [FFMpeg](https://ffmpeg.zeranoe.com/builds/) for Audio/Video Encoding - *ffmpeg.exe* (Static build recommended) (x86 or x64 as per platform).
+- For more info, see [Building](https://github.com/MathewSachin/Captura/wiki/Building).

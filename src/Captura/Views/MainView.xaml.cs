@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    public partial class MainConfigView
+    public partial class MainView
     {
         void OpenMouseKeyHook(object sender, RoutedEventArgs e)
         {

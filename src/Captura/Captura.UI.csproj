@@ -106,8 +106,8 @@
     <Compile Include="Views\FFMpegLogView.xaml.cs">
       <DependentUpon>FFMpegLogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainConfigView.xaml.cs">
-      <DependentUpon>MainConfigView.xaml</DependentUpon>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Loc.cs" />
     <Compile Include="Presentation\ValueConverters\DrawingToWpfColorConverter.cs" />
@@ -196,7 +196,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainConfigView.xaml">
+    <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

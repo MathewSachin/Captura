@@ -49,12 +49,12 @@
                             Content="{local:Loc Source}"
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://mathewsachin.github.io/Captura/Changelog"
+                            CommandParameter="https://github.com/MathewSachin/Captura/wiki/Changelog"
                             Content="{local:Loc Changelog}"
                             Grid.Column="1"
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://mathewsachin.github.io/Captura/Donate"
+                            CommandParameter="https://github.com/MathewSachin/Captura/wiki/Donate"
                             Content="{local:Loc Donate}"
                             Grid.Column="2"
                             Margin="3"/>

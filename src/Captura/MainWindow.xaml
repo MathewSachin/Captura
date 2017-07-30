@@ -173,7 +173,7 @@
                 <TabControl Background="Transparent"
                             BorderThickness="0">
                     <TabItem Header="{local:Loc Main}">
-                        <Frame Source="Views/MainConfigView.xaml"/>
+                        <Frame Source="Views/MainView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc Configure}">
                         <TabControl Background="Transparent"
