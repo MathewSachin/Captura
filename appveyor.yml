@@ -42,7 +42,7 @@ deploy:
   tag: $(APPVEYOR_REPO_TAG_NAME)
   release: Captura $(APPVEYOR_REPO_TAG_NAME)
   prerelease: $(prerelease)
-  description: "[Changelog](https://mathewsachin.github.io/Captura/Changelog)"
+  description: "[Changelog](https://github.com/MathewSachin/Captura/wiki/Changelog)"
   auth_token:
     secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
   artifact: Captura.zip

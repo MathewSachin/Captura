@@ -24,7 +24,7 @@
                 <DockPanel Margin="0,0,0,10">
                     <TextBlock DockPanel.Dock="Bottom"
                                HorizontalAlignment="Right">
-                        <Hyperlink CommandParameter="https://mathewsachin.github.io/Captura/Translation">
+                        <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/wiki/Translation">
                             <Run Text="{local:Loc WantToTranslate}"/>
                         </Hyperlink>
                     </TextBlock>

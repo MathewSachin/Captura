@@ -29,7 +29,7 @@ Captura is an application to capture Screen/Audio/Cursor/Clicks/Keystrokes.
 
 Download ffmpeg.exe and add to path for even more features.
     </description>
-    <releaseNotes>[Changelog](https://mathewsachin.github.io/Captura/Changelog)</releaseNotes>
+    <releaseNotes>[Changelog](https://github.com/MathewSachin/Captura/wiki/Changelog)</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
