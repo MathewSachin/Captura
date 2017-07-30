@@ -383,7 +383,20 @@ namespace Captura.ViewModels
                             await Task.Delay(100);
                         }
 
-                        bmp = ScreenShot.Capture();
+                        if (Settings.Instance.UseDeskDupl)
+                        {
+                            using (var dupl = new DesktopDuplication.DesktopDuplicator(WindowProvider.DesktopRectangle, includeCursor, 0))
+                            {
+                                // Increase timeout
+                                dupl.Timeout = 10000;
+
+                                // First one is blank
+                                dupl.Capture().Dispose();
+
+                                bmp = dupl.Capture();
+                            }
+                        }
+                        else bmp = ScreenShot.Capture(includeCursor);
 
                         if (hide)
                             ServiceProvider.MainWindow.IsVisible = true;

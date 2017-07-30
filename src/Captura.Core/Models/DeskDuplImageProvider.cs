@@ -7,8 +7,8 @@ namespace Captura.Models
     public class DeskDuplImageProvider : IImageProvider
     {
         DesktopDuplicator _dupl;
-        int _monitor;
-        bool _includeCursor;
+        readonly int _monitor;
+        readonly bool _includeCursor;
 
         public DeskDuplImageProvider(int Monitor, bool IncludeCursor)
         {

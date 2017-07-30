@@ -30,6 +30,8 @@ namespace DesktopDuplication
         readonly bool _includeCursor;
         #endregion
 
+        public int Timeout { get; set; }
+
         public DesktopDuplicator(DRectangle Rect, bool IncludeCursor, int Monitor, int Adapter = 0)
         {
             _rect = Rect;
@@ -86,13 +88,8 @@ namespace DesktopDuplication
                 }
             }
         }
-
-        public void UpdateRectLocation(System.Drawing.Point P)
-        {
-            _rect.Location = P;
-        }
-
-        Bitmap lastFrame;
+        
+        Bitmap _lastFrame;
 
         public Bitmap Capture()
         {
@@ -103,11 +100,11 @@ namespace DesktopDuplication
 
             try
             {
-                _deskDupl.AcquireNextFrame(0, out _frameInfo, out desktopResource);
+                _deskDupl.AcquireNextFrame(Timeout, out _frameInfo, out desktopResource);
             }
             catch (SharpDXException e) when (e.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
             {
-                return lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
+                return _lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
             {
@@ -140,10 +137,10 @@ namespace DesktopDuplication
 
         Bitmap ProcessFrame(IntPtr SourcePtr, int SourceRowPitch)
         {
-            lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
+            _lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = lastFrame.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, lastFrame.PixelFormat);
+            var mapDest = _lastFrame.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, _lastFrame.PixelFormat);
 
             Parallel.For(0, _rect.Height, y =>
             {
@@ -153,15 +150,15 @@ namespace DesktopDuplication
             });
                         
             // Release source and dest locks
-            lastFrame.UnlockBits(mapDest);
+            _lastFrame.UnlockBits(mapDest);
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                using (var g = Graphics.FromImage(lastFrame))
+                using (var g = Graphics.FromImage(_lastFrame))
                     MouseCursor.Draw(g, P => new System.Drawing.Point(P.X - _rect.X, P.Y - _rect.Y));
             }
 
-            return lastFrame;
+            return _lastFrame;
         }
         
         void ReleaseFrame()
