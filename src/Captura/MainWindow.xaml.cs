@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -65,7 +66,7 @@ namespace Captura
             (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
 
             if (Settings.Instance.CheckForUpdates)
-                CheckForUpdates();
+                Task.Factory.StartNew(CheckForUpdates);
         }
 
         async void CheckForUpdates()
