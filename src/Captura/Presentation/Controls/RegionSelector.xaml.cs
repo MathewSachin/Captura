@@ -53,17 +53,14 @@ namespace Captura
 
             VideoSource = new RegionItem(this);
 
-            // Prevent being Maximized
-            StateChanged += (s, e) =>
-            {
-                if (WindowState == WindowState.Maximized)
-                    WindowState = WindowState.Normal;
-            };
-
             // Prevent Closing by User
             Closing += (s, e) => e.Cancel = true;
 
-            #region Height and Width Boxes
+            InitDimensionBoxes();
+        }
+
+        void InitDimensionBoxes()
+        {
             WidthBox.Minimum = (int)MinWidth - WidthBorder;
             HeightBox.Minimum = (int)MinHeight - HeightBorder;
 
@@ -78,7 +75,7 @@ namespace Captura
             SizeChanged += (s, e) => sizeChange();
 
             sizeChange();
-            
+
             WidthBox.ValueChanged += (s, e) =>
             {
                 if (e.NewValue == null)
@@ -102,7 +99,6 @@ namespace Captura
 
                 SelectedRegion = selectedRegion;
             };
-            #endregion
         }
 
         void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -122,7 +118,7 @@ namespace Captura
 
         bool _captured;
 
-        void ModernButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void SnapButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _captured = true;
 
@@ -164,12 +160,63 @@ namespace Captura
             }
         }
 
-        void Window_LocationChanged(object sender, EventArgs e)
+        // Prevent going outside
+        protected override void OnLocationChanged(EventArgs e)
         {
+            if (Left < 0)
+            {
+                // Decrease Width
+                try
+                {
+                    Width += Left;
+                }
+                catch
+                {
+                    // May become invalid
+                }
+
+                Left = 0;
+            }
+
+            if (Top < 0)
+            {
+                // Decrease Height
+                try
+                {
+                    Height += Top;
+                }
+                catch
+                {
+                    // May become invalid
+                }
+
+                Top = 0;
+            }
+
+            base.OnLocationChanged(e);
+            
             if (_captured)
             {
                 SelectWindow();
             }
+
+            UpdateRegion();
+        }
+
+        // Prevent Maximizing
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState != WindowState.Normal)
+                WindowState = WindowState.Normal;
+
+            base.OnStateChanged(e);
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            UpdateRegion();
+
+            base.OnRenderSizeChanged(sizeInfo);
         }
 
         #region IRegionProvider
@@ -191,10 +238,23 @@ namespace Captura
             WidthBorder = 14,
             HeightBorder = 74;
 
+        Rectangle? _region;
+        
+        void UpdateRegion()
+        {
+            _region = Dispatcher.Invoke(() => new Rectangle((int)Left + LeftOffset, (int)Top + TopOffset, (int)Width - WidthBorder, (int)Height - HeightBorder)) * Dpi.Instance;
+        }
+
         // Ignoring Borders and Header
         public Rectangle SelectedRegion
         {
-            get => Dispatcher.Invoke(() => new Rectangle((int)Left + LeftOffset, (int)Top + TopOffset, (int)Width - WidthBorder, (int)Height - HeightBorder)) * Dpi.Instance;
+            get
+            {
+                if (_region == null)
+                    UpdateRegion();
+
+                return _region.Value;
+            }
             set
             {
                 if (value == Rectangle.Empty)
@@ -205,26 +265,11 @@ namespace Captura
 
                 Dispatcher.Invoke(() =>
                 {
-                    Left = value.Left - LeftOffset;
-                    Top = value.Top - TopOffset;
-
                     Width = value.Width + WidthBorder;
                     Height = value.Height + HeightBorder;
 
-                    // Prevent going off-screen
-                    if (Left < 0)
-                    {
-                        // Decrease Width
-                        Width += Left;
-                        Left = 0;
-                    }
-
-                    if (Top < 0)
-                    {
-                        // Decrease Height
-                        Height += Top;
-                        Top = 0;
-                    }
+                    Left = value.Left - LeftOffset;
+                    Top = value.Top - TopOffset;
                 });
             }
         }

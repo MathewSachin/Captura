@@ -13,7 +13,6 @@
         BorderBrush="{DynamicResource Accent}"
         BorderThickness="1"
         ResizeMode="CanResize"
-        LocationChanged="Window_LocationChanged"
         MinHeight="250"
         MinWidth="250">
     <WindowChrome.WindowChrome>
@@ -41,7 +40,7 @@
                                 Background="{DynamicResource WindowBackground}"
                                 x:Name="Snapper"
                                 Margin="0,-5,0,0"
-                                PreviewMouseLeftButtonDown="ModernButton_PreviewMouseLeftButtonDown"/>
+                                PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"/>
 
             <Label Cursor="SizeAll"
                    Background="{DynamicResource WindowBackground}"
