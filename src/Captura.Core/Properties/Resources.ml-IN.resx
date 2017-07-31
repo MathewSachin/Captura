@@ -465,4 +465,25 @@
   <data name="Proxy" xml:space="preserve">
     <value>പ്രോക്സി</value>
   </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>ഫയൽ പാത്ത് പകർത്തുക</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>ഹോസ്റ്റ്</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>പാസ്വേഡ്</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>പോർട്ട്</value>
+  </data>
+  <data name="UseProxy" xml:space="preserve">
+    <value>പ്രോക്സി ഉപയോഗിക്കുക</value>
+  </data>
+  <data name="UseProxyAuth" xml:space="preserve">
+    <value>പ്രോക്സി പ്രാമാണീകരണം ഉപയോഗിക്കുക</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>ഉപയോക്തൃനാമം</value>
+  </data>
 </root>

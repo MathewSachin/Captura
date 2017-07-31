@@ -232,6 +232,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy Path.
+        /// </summary>
+        public static string CopyPath {
+            get {
+                return ResourceManager.GetString("CopyPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to Clipboard.
         /// </summary>
         public static string CopyToClipboard {
@@ -399,6 +408,15 @@ namespace Captura.Properties {
         public static string HideOnFullScreenShot {
             get {
                 return ResourceManager.GetString("HideOnFullScreenShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host.
+        /// </summary>
+        public static string Host {
+            get {
+                return ResourceManager.GetString("Host", resourceCulture);
             }
         }
         
@@ -700,6 +718,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording Paused.
         /// </summary>
         public static string Paused {
@@ -723,6 +750,15 @@ namespace Captura.Properties {
         public static string PauseResumeRecording {
             get {
                 return ResourceManager.GetString("PauseResumeRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string Port {
+            get {
+                return ResourceManager.GetString("Port", resourceCulture);
             }
         }
         
@@ -1038,6 +1074,33 @@ namespace Captura.Properties {
         public static string Transforms {
             get {
                 return ResourceManager.GetString("Transforms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Proxy.
+        /// </summary>
+        public static string UseProxy {
+            get {
+                return ResourceManager.GetString("UseProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Proxy Authentication.
+        /// </summary>
+        public static string UseProxyAuth {
+            get {
+                return ResourceManager.GetString("UseProxyAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

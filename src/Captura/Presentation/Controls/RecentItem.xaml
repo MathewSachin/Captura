@@ -22,7 +22,7 @@
                 Command="{Binding OpenCommand}">
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Copy as Path"
+                    <MenuItem Header="{local:Loc CopyPath}"
                               Command="{Binding CopyPathCommand}"/>
                     <MenuItem Header="{local:Loc Print}"
                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"

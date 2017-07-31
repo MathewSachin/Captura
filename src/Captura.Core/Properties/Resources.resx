@@ -483,4 +483,25 @@
   <data name="Proxy" xml:space="preserve">
     <value>Proxy</value>
   </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Copy Path</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="UseProxy" xml:space="preserve">
+    <value>Use Proxy</value>
+  </data>
+  <data name="UseProxyAuth" xml:space="preserve">
+    <value>Use Proxy Authentication</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
 </root>

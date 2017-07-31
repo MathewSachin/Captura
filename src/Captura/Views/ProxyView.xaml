@@ -5,7 +5,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Grid>
         <StackPanel>
-            <CheckBox Content="Use Proxy"
+            <CheckBox Content="{local:Loc UseProxy}"
                       IsChecked="{local:Setting UseProxy}"
                       Margin="0,5"/>
 
@@ -21,7 +21,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Host"
+                <Label Content="{local:Loc Host}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"/>
 
@@ -29,7 +29,7 @@
                          Grid.Column="1"
                          Margin="0,5"/>
 
-                <Label Content="Port"
+                <Label Content="{local:Loc Port}"
                        ContentStringFormat="{}{0}: "
                        Grid.Row="1"
                        Margin="0,5,5,5"/>
@@ -39,7 +39,7 @@
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <CheckBox Content="Use Proxy Authentication"
+                <CheckBox Content="{local:Loc UseProxyAuth}"
                           IsChecked="{local:Setting UseProxyAuth}"
                           Margin="0,10,0,5"
                           Grid.Row="2"
@@ -58,7 +58,7 @@
                     </Grid.RowDefinitions>
 
 
-                    <Label Content="User Name"
+                    <Label Content="{local:Loc UserName}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"/>
 
@@ -66,7 +66,7 @@
                              Grid.Column="1"
                              Margin="0,5"/>
 
-                    <Label Content="Password"
+                    <Label Content="{local:Loc Password}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="1"/>
