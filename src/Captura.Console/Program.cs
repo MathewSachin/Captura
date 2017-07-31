@@ -312,7 +312,7 @@ namespace Captura.Console
 
                 try
                 {
-                    var bmp = ViewModel.ScreenShotWindow(new Screna.Window(new IntPtr(ptr)));
+                    var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
                     ViewModel.SaveScreenShot(bmp, ShotOptions.FileName);
                 }
@@ -385,11 +385,11 @@ namespace Captura.Console
 
                 if (IsInputRedirected)
                 {
-                    while (!ReadLine().Equals("q", StringComparison.InvariantCultureIgnoreCase)) ;
+                    while (!ReadLine().Equals("q", StringComparison.InvariantCultureIgnoreCase)) { }
                 }
                 else
                 {
-                    while (ReadKey(true).KeyChar != 'q') ;
+                    while (ReadKey(true).KeyChar != 'q') { }
                 }
 
                 Write(new string('\b', text.Length));

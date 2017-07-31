@@ -14,7 +14,10 @@ namespace Captura
 
         public ICommand HyperlinkCommand { get; } = new DelegateCommand(link =>
         {
-            Process.Start(link as string);
+            var s = link as string;
+
+            if (s != null)
+                Process.Start(s);
         });
 
         public static Version Version { get; }

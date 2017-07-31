@@ -193,8 +193,8 @@
                        Margin="0,3"/>
                 <ComboBox ItemsSource="{Binding XAlignments}"
                           SelectedValue="{local:Setting Keystrokes_XAlign}"
-                          SelectedValuePath="Key"
-                          DisplayMemberPath="Value"
+                          SelectedValuePath="Source"
+                          DisplayMemberPath="Display"
                           Grid.Column="1"
                           Margin="3"/>
                 <xctk:IntegerUpDown Value="{local:Setting Keystrokes_X}"
@@ -206,8 +206,8 @@
                        Margin="0,3"/>
                 <ComboBox ItemsSource="{Binding YAlignments}"
                           SelectedValue="{local:Setting Keystrokes_YAlign}"
-                          SelectedValuePath="Key"
-                          DisplayMemberPath="Value"
+                          SelectedValuePath="Source"
+                          DisplayMemberPath="Display"
                           Grid.Column="1"
                           Grid.Row="1"
                           Margin="3"/>

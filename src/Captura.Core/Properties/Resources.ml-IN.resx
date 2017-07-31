@@ -352,10 +352,10 @@
     <value>വെബ്ക്യാം കാണിക്കുക</value>
   </data>
   <data name="WindowHeight" xml:space="preserve">
-    <value>600</value>
+    <value>560</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
-    <value>700</value>
+    <value>600</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>അല്ല</value>
@@ -379,7 +379,7 @@
     <value>സംഭാവനചെയ്യുക</value>
   </data>
   <data name="Extras" xml:space="preserve">
-    <value>കൂടുതൽ ഓപ്ഷനുകൾ</value>
+    <value>കൂടുതൽ</value>
   </data>
   <data name="FFMpegLog" xml:space="preserve">
     <value>FFMpeg ലോഗ്</value>
@@ -443,5 +443,26 @@
   </data>
   <data name="HideOnFullScreenShot" xml:space="preserve">
     <value>പൂർണ്ണ സ്ക്രീൻ സ്ക്രീൻഷോട്ടിൽ വിൻഡോ മറയ്ക്കുക</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>താഴെ</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>മധ്യത്തിൽ</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ഇടത് വശം</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>വലത് വശം</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>മുകളിൽ</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>ഓപ്ഷനുകൾ</value>
+  </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>പ്രോക്സി</value>
   </data>
 </root>

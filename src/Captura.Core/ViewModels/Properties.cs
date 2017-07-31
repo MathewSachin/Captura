@@ -65,7 +65,7 @@ namespace Captura.ViewModels
         }
         #endregion
 
-        public KeyValuePair<RotateBy, string>[] Rotations { get; } = new[]
+        public KeyValuePair<RotateBy, string>[] Rotations { get; } =
         {
             new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
@@ -95,20 +95,18 @@ namespace Captura.ViewModels
 
         public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
 
-        // Not a Setting
-        public KeyValuePair<Alignment, string>[] XAlignments { get; } = new[]
+        public ObjectLocalizer<Alignment>[] XAlignments { get; } =
         {
-            new KeyValuePair<Alignment, string>(Alignment.Start, "Left"),
-            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
-            new KeyValuePair<Alignment, string>(Alignment.End, "Right")
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(Resources.Left)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(Resources.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(Resources.Right))
         };
 
-        // Not a Setting
-        public KeyValuePair<Alignment, string>[] YAlignments { get; } = new[]
+        public ObjectLocalizer<Alignment>[] YAlignments { get; } =
         {
-            new KeyValuePair<Alignment, string>(Alignment.Start, "Top"),
-            new KeyValuePair<Alignment, string>(Alignment.Center, "Center"),
-            new KeyValuePair<Alignment, string>(Alignment.End, "Bottom")
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(Resources.Top)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(Resources.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(Resources.Bottom))
         };
 
         #region ScreenShot

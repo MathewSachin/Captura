@@ -55,7 +55,7 @@ namespace Screna
         /// Draws this overlay.
         /// </summary>
         /// <param name="g">A <see cref="Graphics"/> object to draw upon.</param>
-        /// <param name="Offset">Offset from Origin of the Captured Area.</param>
+        /// <param name="Transform">Point Transform Function.</param>
         public static void Draw(Graphics g, Func<Point, Point> Transform = null)
         {
             // ReSharper disable once RedundantAssignment

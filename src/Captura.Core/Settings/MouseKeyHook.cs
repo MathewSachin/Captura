@@ -111,7 +111,7 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("Start")]
+        [DefaultSettingValue(nameof(Alignment.Start))]
         public Alignment Keystrokes_XAlign
         {
             get => Get<Alignment>();
@@ -119,7 +119,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("End")]
+        [DefaultSettingValue(nameof(Alignment.End))]
         public Alignment Keystrokes_YAlign
         {
             get => Get<Alignment>();

@@ -179,7 +179,7 @@
                         <TabControl Background="Transparent"
                                     TabStripPlacement="Left"
                                     BorderThickness="0">
-                            <TabItem Header="Options">
+                            <TabItem Header="{local:Loc Options}">
                                 <DockPanel>
                                     <GridSplitter Width="1"
                                                   Margin="5,0"/>
@@ -200,14 +200,14 @@
                                     <Frame Source="Views/FFMpegView.xaml"/>
                                 </DockPanel>
                             </TabItem>
-                            <TabItem Header="Proxy">
+                            <TabItem Header="{local:Loc Proxy}">
                                 <DockPanel>
                                     <GridSplitter Width="1"
                                                   Margin="5,0"/>
                                     <Frame Source="Views/ProxyView.xaml"/>
                                 </DockPanel>
                             </TabItem>
-                            <TabItem Header="Extras">
+                            <TabItem Header="{local:Loc Extras}">
                                 <DockPanel>
                                     <GridSplitter Width="1"
                                                   Margin="5,0"/>
