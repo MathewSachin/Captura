@@ -14,14 +14,16 @@ namespace Captura.Models
     /// </summary>
     public class FFMpegWriter : IVideoFileWriter
     {
-        const string AudioPipeName = "capturaaudio";
-        const string VideoPipeName = "capturavideo";
         readonly NamedPipeServerStream _audioPipe;
 
         readonly Process _ffmpegProcess;
         readonly NamedPipeServerStream _ffmpegIn;
         readonly byte[] _videoBuffer;
-                
+
+        const string pipePrefix = @"\\.\pipe\";
+
+        string GetPipeName() => $"captura-{Guid.NewGuid()}";
+
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegWriter"/>.
         /// </summary>
@@ -34,22 +36,23 @@ namespace Captura.Models
         {
             _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
 
-            var pipe = @"\\.\pipe\";
+            var audioPipeName = GetPipeName();
+            var videoPipeName = GetPipeName();
 
-            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i {pipe}{VideoPipeName}";
+            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i {pipePrefix}{videoPipeName}";
             var videoOutArgs = $"{VideoArgsProvider(VideoQuality)} -r {FrameRate}";
 
             string audioInArgs = "", audioOutArgs = "";
             
             if (AudioProvider != null)
             {
-                audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i {pipe}{AudioPipeName}";
+                audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i {pipePrefix}{audioPipeName}";
                 audioOutArgs = AudioArgsProvider(AudioQuality);
 
-                _audioPipe = new NamedPipeServerStream(AudioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
+                _audioPipe = new NamedPipeServerStream(audioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
             }
 
-            _ffmpegIn = new NamedPipeServerStream(VideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
+            _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
             _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"");
         }
