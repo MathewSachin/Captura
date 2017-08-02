@@ -9,7 +9,7 @@ namespace Captura
     {
         [UserScopedSetting]
         [DefaultSettingValue("True")]
-        public bool CheckForUpdates
+        public bool AutoUpdate
         {
             get => Get<bool>();
             set => Set(value);

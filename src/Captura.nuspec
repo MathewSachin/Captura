@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- NuSpec for creating Squirrel Installer Package -->
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Captura</id>
+        <version>$version$</version>
+        <authors>Mathew Sachin</authors>
+        <description>Captura</description>
+    </metadata>
+    <files>
+        <file src="..\Output\**" exclude="Captura-Release.zip" target="lib\net45" />
+    </files>
+</package>
