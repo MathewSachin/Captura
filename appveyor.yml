@@ -37,7 +37,7 @@ after_build:
 artifacts:
   - path: Output/Captura-$(configuration).zip
     name: Captura.zip
-  - path: src/Releases/**
+  - path: Releases/**
     name: Squirrel
 
 deploy:

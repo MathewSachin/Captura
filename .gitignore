@@ -4,7 +4,7 @@ packages/
 publish/
 temp/
 Output/
-src/Releases/
+Releases/
 .vs/
 *.suo
 *.user
