@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
         mc:Ignorable="d"
-        Title="TimelineWindow" Height="300" Width="476.506">
+        Title="TimelineWindow" Height="300" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
@@ -14,10 +14,22 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding MediaCollection}" AutoGenerateColumns="False">
+        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
+            <Label>Target Result Size : </Label>
+            <ComboBox ItemsSource="{Binding MediaTargetSizes}" SelectedItem="{Binding MediaTargetSizeSelectedItem}">
+                <!--<ComboBox.Items>
+                    <ComboBoxItem Content="aaa" IsSelected="True" />
+                    <ComboBoxItem Content="bbb" />
+                    <ComboBoxItem Content="ccc" />
+                </ComboBox.Items>-->
+            </ComboBox>
+        </StackPanel>
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding MediaCollection}" AutoGenerateColumns="False" Height="33" Width="482">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Order" Binding="{Binding Path=Order}" Width="100"/>
                 <DataGridTemplateColumn Header="Media" Width="150">
@@ -40,10 +52,14 @@
                 <DataGridTextColumn Header="Type" 
                                     Binding="{Binding MediaType}"
                                     Width="100" />
-                <DataGridTextColumn Header="Name" 
-                                    Binding="{Binding Name}"
+                <DataGridTextColumn Header="Interval" 
+                                    Binding="{Binding Interval}"
                                     Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,0" Grid.Row="3" VerticalAlignment="Top">
+            <Button Content="만들기" />
+        </StackPanel>
+
     </Grid>
 </Window>

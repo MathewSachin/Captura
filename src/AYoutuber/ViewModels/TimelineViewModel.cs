@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.Models.VideoItems;
 using Captura.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace Captura
         #region Commands
         #endregion
 
+        //public TimelineViewModel()
+        //    : this(1, "")
+        //{
+
+        //}
+
         public TimelineViewModel(int workNumber, string outPath)
         {
             this.WorkNumber = workNumber;
@@ -51,10 +58,16 @@ namespace Captura
 
                 }
             });
+
+            this.MediaTargetSizes = new ObservableCollection<string>(Enum.GetNames(typeof(RegionSize)));
         }
 
         public DelegateCommand PlayMedia { get; set; }
 
         public DelegateCommand StopMedia { get; set; }
+
+        public ObservableCollection<string> MediaTargetSizes { get; set; }
+
+        public string MediaTargetSizeSelectedItem { get; set; } = "YOUTUBE_940_530";
     }
 }

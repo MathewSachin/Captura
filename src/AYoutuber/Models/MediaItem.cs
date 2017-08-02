@@ -55,6 +55,18 @@ namespace Captura.Models
             }
         }
 
+        private int interval;
+
+        public int Interval
+        {
+            get { return interval; }
+            set
+            {
+                interval = value;
+                this.OnPropertyChanged();
+            }
+        }
+
 
         public string MediaSource
         {
