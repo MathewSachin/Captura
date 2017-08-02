@@ -126,7 +126,7 @@
     <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
-    <Compile Include="ProxiedDownloader.cs" />
+    <Compile Include="Models\ProxiedDownloader.cs" />
     <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="Views\FFMpegDownloader.xaml.cs">
       <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
