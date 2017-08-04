@@ -32,8 +32,6 @@ after_build:
   - ps: appveyor/Pack-Release.ps1
   - ps: appveyor/Pack-Squirrel.ps1
 
-  - ps: appveyor/Choco.ps1
-
 artifacts:
   - path: Output/Captura-$(configuration).zip
     name: Captura.zip
