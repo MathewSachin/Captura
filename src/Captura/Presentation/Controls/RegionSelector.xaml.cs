@@ -130,6 +130,7 @@ namespace Captura
 
         #region IRegionProvider
         public event Action SelectorHidden;
+        public event Action RegionSizeChanged;
 
         public bool SelectorVisible
         {
@@ -199,6 +200,11 @@ namespace Captura
         }
 
         public IVideoItem VideoSource { get; }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RegionSizeChanged?.Invoke();
+        }
         #endregion
     }
 }

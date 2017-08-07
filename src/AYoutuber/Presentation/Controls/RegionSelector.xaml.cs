@@ -64,8 +64,6 @@ namespace Captura
             Closing += (s, e) => e.Cancel = true;
         }
 
-        public event Action RegionSizeChanged;
-
         void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Hide();
@@ -132,6 +130,7 @@ namespace Captura
 
         #region IRegionProvider
         public event Action SelectorHidden;
+        public event Action RegionSizeChanged;
 
         public bool SelectorVisible
         {
