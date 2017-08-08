@@ -13,6 +13,13 @@ namespace Captura
         {
             foreach (var culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
             {
+                if (culture.Name == "en-US")
+                {
+                    AvailableCultures.Add(culture);
+
+                    continue;
+                }
+
                 try
                 {
                     if (Properties.Resources.ResourceManager.GetResourceSet(culture, true, false) != null)
@@ -24,9 +31,6 @@ namespace Captura
                 }
             }
 
-            if (!AvailableCultures.Any(culture => culture.Name == "en-US"))
-                AvailableCultures.Insert(0, new CultureInfo("en-US"));
-
             var savedCulture = Settings.Instance.Language;
 
             CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en-US");
@@ -36,14 +40,14 @@ namespace Captura
 
         public ObservableCollection<CultureInfo> AvailableCultures { get; } = new ObservableCollection<CultureInfo>();
 
-        CultureInfo currentCulture;
+        CultureInfo _currentCulture;
 
         public CultureInfo CurrentCulture
         {
-            get => currentCulture;
+            get => _currentCulture;
             set
             {
-                currentCulture = value;
+                _currentCulture = value;
 
                 Thread.CurrentThread.CurrentUICulture = value;
                 

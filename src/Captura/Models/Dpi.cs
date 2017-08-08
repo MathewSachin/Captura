@@ -39,8 +39,8 @@ namespace Captura
             return new Rectangle(R.Location * D, R.Size * D);
         }
 
-        public double X { get; private set; } = 1;
+        public double X { get; private set; }
 
-        public double Y { get; private set; } = 1;
+        public double Y { get; private set; }
     }
 }

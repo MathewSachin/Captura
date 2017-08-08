@@ -9,6 +9,8 @@ namespace Captura
     /// </summary>
     static class ApiKeys
     {
-        public static string ImgurClientId { get; } = Environment.GetEnvironmentVariable("imgur_client_id", EnvironmentVariableTarget.User) ?? "";
+        static string Get(string Key) => Environment.GetEnvironmentVariable(Key, EnvironmentVariableTarget.User) ?? "";
+
+        public static string ImgurClientId { get; } = Get("imgur_client_id");
     }
 }
