@@ -68,32 +68,34 @@ namespace Captura.ViewModels
                 Status.LocalizationKey = nameof(Resources.Refreshed);
             });
             
-            PauseCommand = new DelegateCommand(() =>
-            {
-                if (RecorderState == RecorderState.Paused)
-                {
-                    ServiceProvider.SystemTray.HideNotification();
-
-                    _recorder.Start();
-                    _timing?.Start();
-                    _timer?.Start();
-                    
-                    RecorderState = RecorderState.Recording;
-                    Status.LocalizationKey = nameof(Resources.Recording);
-                }
-                else
-                {
-                    _recorder.Stop();
-                    _timer?.Stop();
-                    _timing?.Pause();
-
-                    RecorderState = RecorderState.Paused;
-                    Status.LocalizationKey = nameof(Resources.Paused);
-
-                    ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
-                }
-            }, false);
+            PauseCommand = new DelegateCommand(OnPauseExecute, false);
             #endregion
+        }
+
+        void OnPauseExecute()
+        {
+            if (RecorderState == RecorderState.Paused)
+            {
+                ServiceProvider.SystemTray.HideNotification();
+
+                _recorder.Start();
+                _timing?.Start();
+                _timer?.Start();
+
+                RecorderState = RecorderState.Recording;
+                Status.LocalizationKey = nameof(Resources.Recording);
+            }
+            else
+            {
+                _recorder.Stop();
+                _timer?.Stop();
+                _timing?.Pause();
+
+                RecorderState = RecorderState.Paused;
+                Status.LocalizationKey = nameof(Resources.Paused);
+
+                ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
+            }
         }
 
         void RestoreRemembered()
@@ -587,9 +589,18 @@ namespace Captura.ViewModels
             
             AfterRecording();
 
-            // Ensure saved
-            await task;
-            
+            try
+            {
+                // Ensure saved
+                await task;
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowError($"Error occured when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.\n\n{e}");
+
+                return;
+            }
+
             // After Save
             savingRecentItem.Saved();
 
