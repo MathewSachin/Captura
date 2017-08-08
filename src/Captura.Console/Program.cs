@@ -365,7 +365,7 @@ namespace Captura.Console
 
             if (StartOptions.Length > 0)
             {
-                int elapsed = 0;
+                var elapsed = 0;
 
                 Write(TimeSpan.Zero);
 
@@ -379,20 +379,41 @@ namespace Captura.Console
             }
             else
             {
-                const string text = "Press q to quit";
+                const string recordingText = "Press p to pause or resume, q to quit";
 
-                Write(text);
+                WriteLine(recordingText);
 
-                if (IsInputRedirected)
+                char ReadChar()
                 {
-                    while (!ReadLine().Equals("q", StringComparison.InvariantCultureIgnoreCase)) { }
-                }
-                else
-                {
-                    while (ReadKey(true).KeyChar != 'q') { }
+                    if (IsInputRedirected)
+                    {
+                        var line = ReadLine();
+
+                        if (line != null && line.Length == 1)
+                            return line[0];
+
+                        return char.MinValue;
+                    }
+
+                    return char.ToLower(ReadKey(true).KeyChar);
                 }
 
-                Write(new string('\b', text.Length));
+                char c;
+
+                do
+                {
+                    c = ReadChar();
+
+                    if (c != 'p')
+                        continue;
+                    
+                    ViewModel.PauseCommand.ExecuteIfCan();
+
+                    if (ViewModel.RecorderState != RecorderState.Paused)
+                    {
+                        WriteLine("Resumed");
+                    }
+                } while (c != 'q');
             }
 
             Task.Run(async () => await ViewModel.StopRecording()).Wait();
