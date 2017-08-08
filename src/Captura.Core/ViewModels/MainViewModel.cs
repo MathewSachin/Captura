@@ -11,6 +11,7 @@ using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using DesktopDuplication;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
@@ -385,15 +386,22 @@ namespace Captura.ViewModels
 
                         if (Settings.Instance.UseDeskDupl)
                         {
-                            using (var dupl = new DesktopDuplication.DesktopDuplicator(WindowProvider.DesktopRectangle, includeCursor, 0))
+                            try
                             {
-                                // Increase timeout
-                                dupl.Timeout = 10000;
+                                using (var dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, includeCursor, 0))
+                                {
+                                    // Increase timeout
+                                    dupl.Timeout = 10000;
 
-                                // First one is blank
-                                dupl.Capture().Dispose();
+                                    // First one is blank
+                                    dupl.Capture().Dispose();
 
-                                bmp = dupl.Capture();
+                                    bmp = dupl.Capture();
+                                }
+                            }
+                            catch
+                            {
+                                bmp = ScreenShot.Capture(includeCursor);
                             }
                         }
                         else bmp = ScreenShot.Capture(includeCursor);
