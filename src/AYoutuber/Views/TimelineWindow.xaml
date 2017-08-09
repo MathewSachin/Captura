@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="TimelineWindow" Height="300" Width="500">
+        Title="TimelineWindow" Height="300" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
@@ -20,45 +21,74 @@
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
-            <Label>Target Result Size : </Label>
-            <ComboBox ItemsSource="{Binding MediaTargetSizes}" SelectedItem="{Binding MediaTargetSizeSelectedItem}">
-                <!--<ComboBox.Items>
-                    <ComboBoxItem Content="aaa" IsSelected="True" />
-                    <ComboBoxItem Content="bbb" />
-                    <ComboBoxItem Content="ccc" />
-                </ComboBox.Items>-->
-            </ComboBox>
+            <Label>Target Result Size :</Label>
+            <ComboBox ItemsSource="{Binding MediaTargetSizes}" SelectedItem="{Binding MediaTargetSizeSelectedItem}" />
         </StackPanel>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding MediaCollection}" AutoGenerateColumns="False" Height="33" Width="482">
+        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding MediaCollection}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Order" Binding="{Binding Path=Order}" Width="100"/>
-                <DataGridTemplateColumn Header="Media" Width="150">
+                <DataGridTemplateColumn Width="70">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock>Order</TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Order}" Width="50" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Media" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <MediaElement Height="100" Width="100" Margin="0" Source="{Binding MediaSource}" LoadedBehavior="Stop" UnloadedBehavior="Stop" ScrubbingEnabled="True"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="80">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock>Action</TextBlock>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Button Content="Play" Command="" />
-                                <Button Content="Stop" Margin="0,10,0,0" />
+                                <Button Content="Play" Visibility="{Binding MediaType, Converter={StaticResource MediaTypeToPlayButtonVisibilityConverter}}" />
+                                <!--<Button Content="Stop" Margin="0,10,0,0" />-->
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Type" 
-                                    Binding="{Binding MediaType}"
-                                    Width="100" />
-                <DataGridTextColumn Header="Interval" 
-                                    Binding="{Binding Interval}"
-                                    Width="*"/>
+                <DataGridTemplateColumn Width="80">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock>Type</TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding MediaType}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="110">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock>Interval</TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBox Text="{Binding Interval, Mode=TwoWay }" Width="100" />
+                                <xctk:IntegerUpDown Value="{Binding Interval, Mode=TwoWay}" Width="100" Increment="1" Maximum="60" Minimum="1" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Notice" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,0" Grid.Row="3" VerticalAlignment="Top">
-            <Button Content="만들기" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,5,0" Grid.Row="3" VerticalAlignment="Top">
+            <Button Content="Preview" />
+            <Button Content="Next" Margin="10,0,0,0" />
         </StackPanel>
 
     </Grid>

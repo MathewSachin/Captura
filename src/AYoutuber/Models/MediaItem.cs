@@ -11,7 +11,7 @@ namespace Captura.Models
     public class MediaItem : ViewModelBase
     {
         #region Properties
-        public TimelineViewModel TimelineViewModel { get; set; }
+        public TimelineViewModel ViewModel { get; private set; }
 
         private int id;
 
@@ -62,8 +62,11 @@ namespace Captura.Models
             get { return interval; }
             set
             {
-                interval = value;
-                this.OnPropertyChanged();
+                if(interval != value)
+                {
+                    interval = value;
+                    this.OnPropertyChanged();
+                }                
             }
         }
 
@@ -72,15 +75,24 @@ namespace Captura.Models
         {
             get
             {
-                return System.IO.Path.Combine(this.TimelineViewModel.OutPath, FileName);
+                return System.IO.Path.Combine(this.ViewModel.OutPath, FileName);
             }
         }
+
+        private string notice = string.Empty;
+
+        public string Notice
+        {
+            get { return notice; }
+            set { notice = value; }
+        }
+
         #endregion
 
         #region Construction
         public MediaItem(TimelineViewModel timelineViewModel)
         {
-            this.TimelineViewModel = timelineViewModel;
+            this.ViewModel = timelineViewModel;
         }
         #endregion
     }

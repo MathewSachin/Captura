@@ -15,7 +15,8 @@
                 <ResourceDictionary Source="Presentation/Themes/ModernButton.xaml" />
                 <ResourceDictionary Source="Presentation/Themes/ModernToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
+            <local:MediaTypeToPlayButtonVisibilityConverter x:Key="MediaTypeToPlayButtonVisibilityConverter" />
             <local:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
             <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
             <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>

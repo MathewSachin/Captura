@@ -77,7 +77,7 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WebEye.Controls.Wpf.WebCameraControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebEye.Controls.Wpf.WebCameraControl.1.0.1\lib\net40\WebEye.Controls.Wpf.WebCameraControl.dll</HintPath>
+      <HintPath>..\packages\WebEye.Controls.Wpf.WebCameraControl.1.0.2\lib\net40\WebEye.Controls.Wpf.WebCameraControl.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -127,6 +127,7 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\ValueConverters\MediaTypeToPlayButtonVisibilityConverter.cs" />
     <Compile Include="ViewModels\ManageSessionViewModel.cs" />
     <Compile Include="ViewModels\TimelineViewModel.cs" />
     <Compile Include="Views\FFMpegLogView.xaml.cs">

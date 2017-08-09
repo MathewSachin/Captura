@@ -67,8 +67,8 @@ namespace Captura
             mainViewModel.WorkViewModel.EditWorkCommand = new DelegateCommand(() => {
                 TimelineWindow timelineWindow = new TimelineWindow();
                 timelineWindow.DataContext = new TimelineViewModel(Settings.Instance.LastWorkNumber, Settings.Instance.OutPathWithWork());
-                timelineWindow.Height = 800;
-                timelineWindow.Width = 1200;
+                timelineWindow.Height = 600;
+                timelineWindow.Width = 800;
                 timelineWindow.Show();
             });
         }

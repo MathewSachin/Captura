@@ -9,7 +9,7 @@ namespace Captura.Models
     public enum MediaType
     {
         Image,
-        Movie,
+        Video,
         AnimationGIF
     }
 }

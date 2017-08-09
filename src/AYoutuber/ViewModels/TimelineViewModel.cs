@@ -4,6 +4,7 @@ using Captura.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,11 +44,27 @@ namespace Captura
             this.WorkNumber = workNumber;
             this.OutPath = outPath;
 
+            
+
             //if(System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                for (int i = 1; i <= 10; i++)
+                int fileIndex = 0;
+                foreach(var filePath in Directory.GetFiles(outPath))
                 {
-                    this.MediaCollection.Add(new MediaItem(this) { FileName = "CapturedFile" + i + ".png", Id = i, MediaType = MediaType.Image, Order = i });
+                    var fileInfo = new FileInfo(filePath);
+
+                    switch (fileInfo.Extension.ToLower())
+                    {
+                        case ".png":
+                        case ".gif":
+                            fileIndex++;
+                            this.MediaCollection.Add(new MediaItem(this) { FileName = fileInfo.Name, Id = fileIndex, MediaType = MediaType.Image, Order = fileIndex, Interval = 5 });
+                            break;
+                        case ".mp4":
+                            fileIndex++;
+                            this.MediaCollection.Add(new MediaItem(this) { FileName = fileInfo.Name, Id = fileIndex, MediaType = MediaType.Video, Order = fileIndex, Interval = 5 });
+                            break;
+                    }
                 }
             }
 
