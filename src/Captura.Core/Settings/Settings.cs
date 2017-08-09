@@ -8,7 +8,7 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
-        [DefaultSettingValue("True")]
+        [DefaultSettingValue("False")]
         public bool AutoUpdate
         {
             get => Get<bool>();
