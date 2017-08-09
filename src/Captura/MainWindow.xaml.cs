@@ -64,49 +64,6 @@ namespace Captura
             };
 
             (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
-
-            if (Settings.Instance.CheckForUpdates)
-                Task.Factory.StartNew(CheckForUpdates);
-        }
-
-        async void CheckForUpdates()
-        {
-            try
-            {
-                var link = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
-
-                string result;
-
-                using (var web = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
-                {
-                    web.Headers.Add(HttpRequestHeader.UserAgent, Properties.Resources.AppName);
-
-                    result = await web.DownloadStringTaskAsync(link);
-                }
-
-                var node = JsonConvert.DeserializeXmlNode(result, "Releases");
-
-                var latestVersion = node.SelectSingleNode("Releases/tag_name").InnerText.Substring(1);
-
-                if (new Version(latestVersion) > AboutViewModel.Version)
-                {
-                    ServiceProvider.SystemTray.ShowTextNotification($"Captura: Update (v{latestVersion}) Available", 60_000, () =>
-                    {
-                        try
-                        {
-                            Process.Start("https://github.com/MathewSachin/Captura/releases/latest");
-                        }
-                        catch
-                        {
-                            // Swallow Exceptions.
-                        }
-                    });
-                }
-            }
-            catch
-            {
-                // Swallow any Exceptions.
-            }
         }
         
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

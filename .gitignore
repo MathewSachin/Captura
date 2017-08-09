@@ -4,6 +4,7 @@ packages/
 publish/
 temp/
 Output/
+Releases/
 .vs/
 *.suo
 *.user

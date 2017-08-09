@@ -8,8 +8,8 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool CheckForUpdates
+        [DefaultSettingValue("False")]
+        public bool AutoUpdate
         {
             get => Get<bool>();
             set => Set(value);
