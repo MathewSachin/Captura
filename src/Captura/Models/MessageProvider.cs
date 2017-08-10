@@ -39,10 +39,7 @@ namespace Captura.Models
 
         public bool ShowYesNo(string Message, string Title)
         {
-            return Application.Current.Dispatcher.Invoke(() =>
-            {
-                return MessageBox.Show(Message, Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
-            });
+            return Application.Current.Dispatcher.Invoke(() => MessageBox.Show(Message, Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
         }
     }
 }

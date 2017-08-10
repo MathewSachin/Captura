@@ -185,9 +185,7 @@ namespace Screna
         /// </summary>
         internal static unsafe Bitmap DifferentiateAlpha(Bitmap WhiteBitmap, Bitmap BlackBitmap)
         {
-            if (WhiteBitmap == null || BlackBitmap == null ||
-                WhiteBitmap.Width != BlackBitmap.Width ||
-                WhiteBitmap.Height != BlackBitmap.Height)
+            if (WhiteBitmap == null || BlackBitmap == null || WhiteBitmap.Size != BlackBitmap.Size)
                 return null;
 
             int sizeX = WhiteBitmap.Width,
@@ -198,47 +196,36 @@ namespace Screna
             var empty = true;
 
             using (var a = new UnsafeBitmap(WhiteBitmap))
+            using (var b = new UnsafeBitmap(BlackBitmap))
+            using (var f = new UnsafeBitmap(final))
             {
-                using (var b = new UnsafeBitmap(BlackBitmap))
+                byte ToByte(int i) => (byte)(i > 255 ? 255 : (i < 0 ? 0 : i));
+
+                for (var y = 0; y < sizeY; ++y)
+                for (var x = 0; x < sizeX; ++x)
                 {
-                    using (var f = new UnsafeBitmap(final))
+                    PixelData* pixelA = a[x, y],
+                        pixelB = b[x, y],
+                        pixelF = f[x, y];
+                    
+                    pixelF->Alpha = ToByte((pixelB->Red - pixelA->Red + 255 + pixelB->Green -
+                                            pixelA->Green + 255 + pixelB->Blue - pixelA->Blue +
+                                            255) / 3);
+
+                    if (pixelF->Alpha > 0)
                     {
-                        for (int x = 0, y = 0; x < sizeX && y < sizeY; )
-                        {
-                            PixelData* pixelA = a[x, y],
-                                pixelB = b[x, y],
-                                pixelF = f[x, y];
+                        // Following math creates an image optimized to be displayed on a black background
+                        pixelF->Red = ToByte(255 * pixelB->Red / pixelF->Alpha);
+                        pixelF->Green = ToByte(255 * pixelB->Green / pixelF->Alpha);
+                        pixelF->Blue = ToByte(255 * pixelB->Blue / pixelF->Alpha);
 
-                            pixelF->Alpha = ToByte((pixelB->Red - pixelA->Red + 255 + pixelB->Green -
-                                        pixelA->Green + 255 + pixelB->Blue - pixelA->Blue +
-                                        255) / 3);
-
-                            if (pixelF->Alpha > 0)
-                            {
-                                // Following math creates an image optimized to be displayed on a black background
-                                pixelF->Red = ToByte(255 * pixelB->Red / pixelF->Alpha);
-                                pixelF->Green = ToByte(255 * pixelB->Green / pixelF->Alpha);
-                                pixelF->Blue = ToByte(255 * pixelB->Blue / pixelF->Alpha);
-                            }
-
-                            if (empty && pixelF->Alpha > 0)
-                                empty = false;
-
-                            if (x == sizeX - 1)
-                            {
-                                y++;
-                                x = 0;
-                                continue;
-                            }
-                            x++;
-                        }
+                        if (empty)
+                            empty = false;
                     }
                 }
             }
 
             return empty ? null : final;
         }
-
-        static byte ToByte(int i) => (byte)(i > 255 ? 255 : (i < 0 ? 0 : i));
     }
 }

@@ -49,9 +49,9 @@ namespace UITests
             };
 
             var process = Process.Start(startInfo);
-            process.WaitForExit();
+            process?.WaitForExit();
 
-            if (process.ExitCode != 0)
+            if (process == null || process.ExitCode != 0)
                 Assert.Fail($"Error occured when taking ScreenShot, hWnd: {hWnd}, FileName: {FileName}, ExitCode: {process.ExitCode}");
         }
 

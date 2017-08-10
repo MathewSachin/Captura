@@ -4,12 +4,14 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Screna;
 using static System.Console;
+// ReSharper disable LocalizableElement
 
 namespace Captura.Console
 {
@@ -129,7 +131,7 @@ namespace Captura.Console
 
                 video.SelectedVideoSourceKind = VideoSourceKind.Window;
 
-                foreach (WindowItem source in video.AvailableVideoSources)
+                foreach (var source in video.AvailableVideoSources.OfType<WindowItem>())
                 {
                     WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
                 }
@@ -225,10 +227,11 @@ namespace Captura.Console
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
-                var rect = (Rectangle) MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source);
-
-                FakeRegionProvider.Instance.SelectedRegion = rect.Even();
-                video.SelectedVideoSourceKind = VideoSourceKind.Region;
+                if (MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
+                {
+                    FakeRegionProvider.Instance.SelectedRegion = rect.Even();
+                    video.SelectedVideoSourceKind = VideoSourceKind.Region;
+                }
             }
 
             // Screen

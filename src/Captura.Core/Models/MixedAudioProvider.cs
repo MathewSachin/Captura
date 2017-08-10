@@ -66,11 +66,11 @@ namespace Captura.Models
             Bass.ChannelSetDSP(_mixer, Procedure);
         }
 
-        int FindPlaybackDevice(int LoopbackDevice)
+        static int FindPlaybackDevice(int LoopbackDevice)
         {
             var driver = Bass.RecordGetDeviceInfo(LoopbackDevice).Driver;
 
-            for (int i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
+            for (var i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
                 if (info.Driver == driver)
                     return i;
 
@@ -98,12 +98,7 @@ namespace Captura.Models
         /// Indicates recorded data is available.
         /// </summary>
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
-
-        /// <summary>
-        /// Indicates that all recorded data has now been received.
-        /// </summary>
-        public event EventHandler<EndEventArgs> RecordingStopped;
-
+        
         /// <summary>
         /// Frees up the resources used by this instant.
         /// </summary>
@@ -141,8 +136,6 @@ namespace Captura.Models
             Bass.ChannelPause(_loopback);
 
             Bass.ChannelPause(_silence);
-
-            RecordingStopped?.Invoke(this, new EndEventArgs(null));
         }
     }
 }

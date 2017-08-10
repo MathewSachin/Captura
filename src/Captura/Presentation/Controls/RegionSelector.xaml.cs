@@ -78,26 +78,26 @@ namespace Captura
 
             WidthBox.ValueChanged += (s, e) =>
             {
-                if (e.NewValue == null)
-                    return;
+                if (e.NewValue is int width)
+                {
+                    var selectedRegion = SelectedRegion;
 
-                var selectedRegion = SelectedRegion;
+                    selectedRegion.Width = width;
 
-                selectedRegion.Width = WidthBox.Value.Value;
-
-                SelectedRegion = selectedRegion;
+                    SelectedRegion = selectedRegion;
+                }
             };
 
             HeightBox.ValueChanged += (s, e) =>
             {
-                if (e.NewValue == null)
-                    return;
+                if (e.NewValue is int height)
+                {
+                    var selectedRegion = SelectedRegion;
 
-                var selectedRegion = SelectedRegion;
+                    selectedRegion.Height = height;
 
-                selectedRegion.Height = HeightBox.Value.Value;
-
-                SelectedRegion = selectedRegion;
+                    SelectedRegion = selectedRegion;
+                }
             };
         }
 

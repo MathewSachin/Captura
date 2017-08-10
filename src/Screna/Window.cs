@@ -151,9 +151,10 @@ namespace Screna
 
                 const int dwmCloaked = 14;
 
-                DwmGetWindowAttribute(hWnd, dwmCloaked, out bool cloacked, Marshal.SizeOf<bool>());
+                // Exclude suspended Windows apps
+                DwmGetWindowAttribute(hWnd, dwmCloaked, out bool cloaked, Marshal.SizeOf<bool>());
 
-                if (cloacked)
+                if (cloaked)
                     continue;
 
                 yield return window;
@@ -188,7 +189,7 @@ namespace Screna
         /// <summary>
         /// Checks whether two <see cref="Window"/> instances are equal.
         /// </summary>
-        public static bool operator ==(Window W1, Window W2) => W1.Handle == W2.Handle;
+        public static bool operator ==(Window W1, Window W2) => W1?.Handle == W2?.Handle;
 
         /// <summary>
         /// Checks whether two <see cref="Window"/> instances are not equal.

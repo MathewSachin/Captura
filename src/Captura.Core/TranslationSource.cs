@@ -53,6 +53,7 @@ namespace Captura
                 
                 Settings.Instance.Language = value.Name;
 
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("");
             }
         }

@@ -18,14 +18,8 @@ namespace Captura
 
         void DarkThemeClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.Instance.DarkTheme)
-            {
-                AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
-            }
-            else
-            {
-                AppearanceManager.Current.ThemeSource = AppearanceManager.LightThemeSource;
-            }
+            AppearanceManager.Current.ThemeSource = Settings.Instance.DarkTheme
+                ? AppearanceManager.DarkThemeSource : AppearanceManager.LightThemeSource;
         }
     }
 }

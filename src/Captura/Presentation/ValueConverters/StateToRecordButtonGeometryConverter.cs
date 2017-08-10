@@ -2,6 +2,7 @@ using Captura.Models;
 using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Captura
@@ -13,7 +14,10 @@ namespace Captura
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (RecorderState)value == RecorderState.NotRecording ? _recordGeometry : _stopGeometry;
+            if (value is RecorderState state)
+                return state == RecorderState.NotRecording ? _recordGeometry : _stopGeometry;
+
+            return Binding.DoNothing;
         }
     }
 }

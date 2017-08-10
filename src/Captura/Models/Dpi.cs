@@ -9,10 +9,13 @@ namespace Captura
         {
             using (var src = new HwndSource(new HwndSourceParameters()))
             {
-                var matrix = src.CompositionTarget.TransformToDevice;
+                if (src.CompositionTarget != null)
+                {
+                    var matrix = src.CompositionTarget.TransformToDevice;
 
-                X = matrix.M11;
-                Y = matrix.M22;
+                    X = matrix.M11;
+                    Y = matrix.M22;
+                }
             }
         }
 

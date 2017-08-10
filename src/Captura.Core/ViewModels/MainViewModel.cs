@@ -121,9 +121,9 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
-                    var rect = (Rectangle)RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName);
 
-                    ServiceProvider.RegionProvider.SelectedRegion = rect;
+                    if (RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName) is Rectangle rect)
+                        ServiceProvider.RegionProvider.SelectedRegion = rect;
                     break;
             }
             #endregion
@@ -492,7 +492,7 @@ namespace Captura.ViewModels
                 else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
                     _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.Instance.AudioQuality), audioSource);
             }
-
+            
             _recorder.ErrorOccured += E => _syncContext.Post(d => OnErrorOccured(E), null);
             
             if (StartDelay > 0)

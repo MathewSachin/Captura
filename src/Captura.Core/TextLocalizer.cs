@@ -8,6 +8,7 @@ namespace Captura
         {
             this.LocalizationKey = LocalizationKey;
 
+            // ReSharper disable once ExplicitCallerInfoArgument
             TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
         
@@ -21,15 +22,14 @@ namespace Captura
                 _key = value;
 
                 OnPropertyChanged();
+
+                // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(nameof(Display));
             }
         }
 
         public string Display => ToString();
 
-        public override string ToString()
-        {
-            return Resources.ResourceManager.GetString(_key, null);
-        }
+        public override string ToString() => Resources.ResourceManager.GetString(_key, null);
     }
 }

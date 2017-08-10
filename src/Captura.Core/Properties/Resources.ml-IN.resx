@@ -222,9 +222,6 @@
   <data name="ShowSysNotify" xml:space="preserve">
     <value>സിസ്റ്റം ട്രേ അറിയിപ്പുകൾ കാണിക്കുക</value>
   </data>
-  <data name="AudioFormatWoVideo" xml:space="preserve">
-    <value>വീഡിയോ ഇല്ലാതിരിക്കുമ്പോൾ ഓഡിയോ ഫോർമാറ്റ്</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>ഇല്ലാതാക്കുക</value>
   </data>

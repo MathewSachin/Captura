@@ -70,13 +70,15 @@ namespace Captura.Models
 
                     try
                     {
-                        var model = value as WebCamModel;
+                        if (value is WebCamModel model)
+                        {
 
-                        _camControl.StartCapture(model.Cam);
+                            _camControl.StartCapture(model.Cam);
 
-                        _selectedCam = value;
+                            _selectedCam = value;
 
-                        OnPropertyChanged();
+                            OnPropertyChanged();
+                        }
                     }
                     catch (Exception E)
                     {

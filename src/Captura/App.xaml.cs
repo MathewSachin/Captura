@@ -54,9 +54,13 @@ namespace Captura
             var accent = Settings.Instance.AccentColor;
 
             if (!string.IsNullOrEmpty(accent))
-                AppearanceManager.Current.AccentColor = (Color) ColorConverter.ConvertFromString(accent);
-            
+            {
+                if (ColorConverter.ConvertFromString(accent) is Color accentColor)
+                    AppearanceManager.Current.AccentColor = accentColor;
+            }
+
             // A quick fix for WpfToolkit not being copied to build output of console project
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             Xceed.Wpf.Toolkit.ColorSortingMode.Alphabetical.ToString();
         }
     }

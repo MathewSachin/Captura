@@ -50,7 +50,9 @@ namespace Captura.Models
 
                     xdoc = XDocument.Load(new MemoryStream(response));
 
-                    if (int.Parse(xdoc.Root.Attribute("success").Value) != 1)
+                    var xAttribute = xdoc.Root?.Attribute("success");
+
+                    if (xAttribute == null || int.Parse(xAttribute.Value) != 1)
                         throw new Exception("Response indicates Failure");
 
                     Image.Dispose();

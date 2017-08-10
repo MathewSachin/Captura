@@ -26,10 +26,5 @@ namespace Screna.Audio
         /// Indicates recorded data is available.
         /// </summary>
         event EventHandler<DataAvailableEventArgs> DataAvailable;
-
-        /// <summary>
-        /// Indicates that all recorded data has now been received.
-        /// </summary>
-        event EventHandler<EndEventArgs> RecordingStopped;
     }
 }

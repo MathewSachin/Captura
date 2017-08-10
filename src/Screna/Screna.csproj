@@ -40,7 +40,6 @@
     <Compile Include="Audio\WaveFormat\WaveFormatEncoding.cs" />
     <Compile Include="Audio\AudioFileWriters\IAudioFileWriter.cs" />
     <Compile Include="EventArgs\DataAvailableEventArgs.cs" />
-    <Compile Include="EventArgs\EndEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
     <Compile Include="Recorder\IRecorder.cs" />

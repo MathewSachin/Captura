@@ -1,11 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
-using Newtonsoft.Json;
-using System;
-using System.Diagnostics;
-using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -63,7 +58,8 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            (DataContext as MainViewModel).Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+            if (DataContext is MainViewModel vm)
+                vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
         }
         
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -95,15 +91,18 @@ namespace Captura
 
         bool TryExit()
         {
-            var vm = DataContext as MainViewModel;
-
-            if (vm.RecorderState == RecorderState.Recording)
+            if (DataContext is MainViewModel vm)
             {
-                if (!ServiceProvider.MessageProvider.ShowYesNo("A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
-                    return false;
+                if (vm.RecorderState == RecorderState.Recording)
+                {
+                    if (!ServiceProvider.MessageProvider.ShowYesNo(
+                        "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                        return false;
+                }
+
+                vm.Dispose();
             }
 
-            vm.Dispose();
             SystemTray.Dispose();
             Application.Current.Shutdown();
 

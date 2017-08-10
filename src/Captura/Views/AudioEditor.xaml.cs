@@ -9,7 +9,8 @@
 
         public void Load(string FileName)
         {
-            (DataContext as AudioEditorViewModel).Load(FileName);
+            if (DataContext is AudioEditorViewModel vm)
+                vm.Load(FileName);
         }
     }
 }
