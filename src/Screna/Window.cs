@@ -133,9 +133,10 @@ namespace Screna
         /// </summary>
         public static IEnumerable<Window> EnumerateVisible()
         {
-            foreach (var hWnd in Enumerate().Where(W => W.IsVisible && !string.IsNullOrWhiteSpace(W.Title))
-                                            .Select(W => W.Handle))
+            foreach (var window in Enumerate().Where(W => W.IsVisible && !string.IsNullOrWhiteSpace(W.Title)))
             {
+                var hWnd = window.Handle;
+
                 if (!User32.GetWindowLong(hWnd, GetWindowLongValue.ExStyle).HasFlag(WindowStyles.AppWindow))
                 {
                     if (GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
@@ -148,9 +149,19 @@ namespace Screna
                         continue;
                 }
 
-                yield return new Window(hWnd);
+                const int dwmCloaked = 14;
+
+                DwmGetWindowAttribute(hWnd, dwmCloaked, out bool cloacked, Marshal.SizeOf<bool>());
+
+                if (cloacked)
+                    continue;
+
+                yield return window;
             }
         }
+
+        [DllImport("dwmapi.dll")]
+        static extern int DwmGetWindowAttribute(IntPtr Window, int Attribute, out bool Value, int Size);
 
         /// <summary>
         /// Returns the Widow Title.
