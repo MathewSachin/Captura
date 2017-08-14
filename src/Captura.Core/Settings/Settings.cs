@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
@@ -80,7 +81,7 @@ namespace Captura
 
         public string OutPathWithWork()
         {
-            var str = Path.Combine(this.OutPath, "Work_" + this.LastWorkNumber.ToString().PadLeft(4, '0'));
+            var str = Path.Combine(this.OutPath, "Work_" + Environment.UserName + "_" + this.LastWorkNumber.ToString().PadLeft(4, '0'));
             if (!Directory.Exists(str))
             {
                 Directory.CreateDirectory(str);

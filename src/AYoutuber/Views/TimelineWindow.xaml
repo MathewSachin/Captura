@@ -87,8 +87,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,5,0" Grid.Row="3" VerticalAlignment="Top">
-            <Button Content="Preview" />
-            <Button Content="Next" Margin="10,0,0,0" />
+            <Button Content="Preview" Command="{Binding MakePreviewVideoCommand}" />
+            <Button Content="Next" Margin="10,0,0,0" Command="{Binding NextCommand}" />
         </StackPanel>
 
     </Grid>

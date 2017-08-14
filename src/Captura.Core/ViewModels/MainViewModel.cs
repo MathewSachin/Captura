@@ -217,10 +217,13 @@ namespace Captura.ViewModels
                         break;
                 }
             };
-            
+
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(Settings.OutPath))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AYoutuber\\");
+            {
+                //Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AYoutuber\\");
+                Settings.OutPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Works");
+            }
 
             // Create the Output Directory if it does not exist
             if (!Directory.Exists(Settings.OutPath))
