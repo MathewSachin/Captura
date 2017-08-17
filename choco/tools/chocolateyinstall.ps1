@@ -1,4 +1,4 @@
-﻿$response = Invoke-WebRequest https://api.github.com/repos/MathewSachin/Captura/releases/latest
+﻿$response = Invoke-WebRequest https://api.github.com/repos/MathewSachin/Captura/releases/latest -UseBasicParsing
 
 $release = ConvertFrom-Json $response
 
