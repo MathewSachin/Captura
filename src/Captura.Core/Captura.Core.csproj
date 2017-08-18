@@ -82,6 +82,11 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Properties\Resources.es-AR.Designer.cs">
+      <DependentUpon>Resources.es-AR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Services\FFMpegService.cs" />
     <Compile Include="Models\DeskDuplImageProvider.cs" />
     <Compile Include="Services\IMainWindow.cs" />
@@ -159,6 +164,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.es-AR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.es-AR.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ml-IN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.ml-IN.Designer.cs</LastGenOutput>
