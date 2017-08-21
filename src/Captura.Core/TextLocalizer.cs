@@ -1,6 +1,4 @@
-﻿using Captura.Properties;
-
-namespace Captura
+﻿namespace Captura
 {
     public class TextLocalizer : NotifyPropertyChanged
     {
@@ -30,6 +28,6 @@ namespace Captura
 
         public string Display => ToString();
 
-        public override string ToString() => Resources.ResourceManager.GetString(_key, null);
+        public override string ToString() => TranslationSource.Instance[_key];
     }
 }

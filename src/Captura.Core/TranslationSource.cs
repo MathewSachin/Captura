@@ -36,7 +36,7 @@ namespace Captura
 
             var savedCulture = Settings.Instance.Language;
 
-            CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en");
+            CurrentCulture = AvailableCultures.FirstOrDefault(Culture => Culture.Name == savedCulture) ?? new CultureInfo("en");
         }
 
         public string this[string Key] => Properties.Resources.ResourceManager.GetString(Key, CurrentCulture);

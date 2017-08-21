@@ -22,15 +22,15 @@ namespace Captura
             Clipboard.SetText(S);
         }
         
-        static GraphicsPath RoundedRect(RectangleF bounds, int radius)
+        static GraphicsPath RoundedRect(RectangleF Bounds, int Radius)
         {
-            var diameter = radius * 2;
-            var arc = new RectangleF(bounds.Location, new Size(diameter, diameter));
+            var diameter = Radius * 2;
+            var arc = new RectangleF(Bounds.Location, new Size(diameter, diameter));
             var path = new GraphicsPath();
 
-            if (radius == 0)
+            if (Radius == 0)
             {
-                path.AddRectangle(bounds);
+                path.AddRectangle(Bounds);
                 return path;
             }
 
@@ -38,15 +38,15 @@ namespace Captura
             path.AddArc(arc, 180, 90);
 
             // top right arc  
-            arc.X = bounds.Right - diameter;
+            arc.X = Bounds.Right - diameter;
             path.AddArc(arc, 270, 90);
 
             // bottom right arc  
-            arc.Y = bounds.Bottom - diameter;
+            arc.Y = Bounds.Bottom - diameter;
             path.AddArc(arc, 0, 90);
 
             // bottom left arc 
-            arc.X = bounds.Left;
+            arc.X = Bounds.Left;
             path.AddArc(arc, 90, 90);
 
             path.CloseFigure();
@@ -112,7 +112,7 @@ namespace Captura
             if (Settings.Instance.FlipVertical)
                 flip += "Y";
 
-            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), Settings.Instance.RotateBy.ToString() + flip);
+            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), Settings.Instance.RotateBy + flip);
 
             Image.RotateFlip(rotateFlip);
             #endregion

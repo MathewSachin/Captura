@@ -12,13 +12,7 @@ namespace Captura
     {
         public ObservableCollection<CultureInfo> Languages { get; }
 
-        public ICommand HyperlinkCommand { get; } = new DelegateCommand(link =>
-        {
-            var s = link as string;
-
-            if (s != null)
-                Process.Start(s);
-        });
+        public ICommand HyperlinkCommand { get; }
 
         public static Version Version { get; }
 
@@ -34,6 +28,21 @@ namespace Captura
             Languages = TranslationSource.Instance.AvailableCultures;
 
             AppVersion = "v" + Version.ToString(3);
+
+            HyperlinkCommand = new DelegateCommand(Link =>
+            {
+                if (Link is string s)
+                {
+                    try
+                    {
+                        Process.Start(s);
+                    }
+                    catch
+                    {
+                        // Suppress Errors
+                    }
+                }
+            });
         }
         
         public CultureInfo Language
