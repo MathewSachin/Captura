@@ -11,9 +11,12 @@ namespace Captura
         
         TranslationSource()
         {
-            foreach (var culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            foreach (var culture in CultureInfo.GetCultures(CultureTypes.AllCultures))
             {
-                if (culture.Name == "en-US")
+                if (culture.Equals(CultureInfo.InvariantCulture) || culture.Name == "en-US")
+                    continue;
+                
+                if (culture.Name == "en")
                 {
                     AvailableCultures.Add(culture);
 
@@ -33,7 +36,7 @@ namespace Captura
 
             var savedCulture = Settings.Instance.Language;
 
-            CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en-US");
+            CurrentCulture = new CultureInfo(AvailableCultures.Any(culture => culture.Name == savedCulture) ? savedCulture : "en");
         }
 
         public string this[string Key] => Properties.Resources.ResourceManager.GetString(Key, CurrentCulture);

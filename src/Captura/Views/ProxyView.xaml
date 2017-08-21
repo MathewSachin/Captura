@@ -1,4 +1,4 @@
-﻿<Page x:Class="Captura.ProxyView"
+﻿<Page x:Class="Captura.Views.ProxyView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
