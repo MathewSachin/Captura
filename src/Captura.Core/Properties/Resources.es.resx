@@ -499,7 +499,7 @@
     <value>Usar proxy</value>
   </data>
   <data name="UseProxyAuth" xml:space="preserve">
-    <value>Usar autenticación de proxy</value>
+    <value>Usar autenticación proxy</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Usuario</value>
