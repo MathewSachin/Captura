@@ -457,7 +457,7 @@
     <value>Siempre visible</value>
   </data>
   <data name="CopyOutPathClipboard" xml:space="preserve">
-    <value>Copiar la ruta del archivo de salida al portapapeles</value>
+    <value>Copiar ruta del archivo de destino al portapapeles</value>
   </data>
   <data name="HideOnFullScreenShot" xml:space="preserve">
     <value>Ocultar en captura a pantalla completa</value>
