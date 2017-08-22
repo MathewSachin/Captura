@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Acerca de Captura</value>
+    <value>Acerca de</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>Captura</value>
@@ -127,16 +127,16 @@
     <value>Audio</value>
   </data>
   <data name="CaptureDuration" xml:space="preserve">
-    <value>Duración de la captura (en segundos)</value>
+    <value>Duración de captura (en seg.)</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Cerrar</value>
   </data>
   <data name="Configure" xml:space="preserve">
-    <value>Configuración</value>
+    <value>Configurar</value>
   </data>
   <data name="FrameRate" xml:space="preserve">
-    <value>Tasa de fotogramas</value>
+    <value>Fotogramas</value>
   </data>
   <data name="Gif" xml:space="preserve">
     <value>Gif</value>
@@ -145,19 +145,19 @@
     <value>Incluir clics del mouse</value>
   </data>
   <data name="IncludeCursor" xml:space="preserve">
-    <value>Incluir cursor</value>
+    <value>Incluir el cursor</value>
   </data>
   <data name="IncludeKeys" xml:space="preserve">
-    <value>Incluir entradas del teclado</value>
+    <value>Incluir pulsa. de teclas</value>
   </data>
   <data name="LoopbackSource" xml:space="preserve">
-    <value>Fuente de salida del parlante</value>
+    <value>Fuente de salida de altavoz</value>
   </data>
   <data name="MicSource" xml:space="preserve">
-    <value>Fuente del micrófono</value>
+    <value>Fuente de salida de micrófono</value>
   </data>
   <data name="MinCapture" xml:space="preserve">
-    <value>Minimizar al iniciar</value>
+    <value>Minimizar al iniciar captura</value>
   </data>
   <data name="Minimize" xml:space="preserve">
     <value>Minimizar</value>
@@ -166,10 +166,10 @@
     <value>Minimizar al área de notificaciones</value>
   </data>
   <data name="OpenOutFolder" xml:space="preserve">
-    <value>Abrir carpeta de destino</value>
+    <value>Abrir carpeta de salida</value>
   </data>
   <data name="OutFolder" xml:space="preserve">
-    <value>Carpeta de destino</value>
+    <value>Guardar en</value>
   </data>
   <data name="PauseResume" xml:space="preserve">
     <value>Pausar | Reanudar</value>
@@ -178,52 +178,52 @@
     <value>Calidad</value>
   </data>
   <data name="Recent" xml:space="preserve">
-    <value>Recientes</value>
+    <value>Reciente</value>
   </data>
   <data name="RecordStop" xml:space="preserve">
     <value>Grabar | Detener</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Refrescar</value>
+    <value>Actaulizar</value>
   </data>
   <data name="Repeat" xml:space="preserve">
     <value>Repetir</value>
   </data>
   <data name="Resize" xml:space="preserve">
-    <value>Redimensionar</value>
+    <value>Tamaño</value>
   </data>
   <data name="ScreenShot" xml:space="preserve">
     <value>Captura de pantalla</value>
   </data>
   <data name="StartDelay" xml:space="preserve">
-    <value>Iniciar retraso (en ms)</value>
+    <value>Retraso del inicio (en ms)</value>
   </data>
   <data name="Video" xml:space="preserve">
-    <value>Video</value>
+    <value>Vídeo</value>
   </data>
   <data name="VideoEncoder" xml:space="preserve">
-    <value>Codificador de video</value>
+    <value>Codificador de vídeo</value>
   </data>
   <data name="VideoSource" xml:space="preserve">
-    <value>Fuente de video</value>
+    <value>Fuente de vídeo</value>
   </data>
   <data name="ImgFormat" xml:space="preserve">
-    <value>Formato de imagen</value>
+    <value>Formato</value>
   </data>
   <data name="VarFrameRate" xml:space="preserve">
-    <value>Tasa variable de fotogramas</value>
+    <value>Cuadros por segundo variables</value>
   </data>
   <data name="Hotkeys" xml:space="preserve">
     <value>Atajos</value>
   </data>
   <data name="Main" xml:space="preserve">
-    <value>Principal</value>
+    <value>Principio</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Restablecer</value>
   </data>
   <data name="SaveLocation" xml:space="preserve">
-    <value>Ubicación para guardar</value>
+    <value>Ubicación</value>
   </data>
   <data name="ShowSysNotify" xml:space="preserve">
     <value>Mostrar mensajes en el área de notificaciones</value>
@@ -247,19 +247,19 @@
     <value>Unidad</value>
   </data>
   <data name="DelayGtDuration" xml:space="preserve">
-    <value>El retraso no puede ser mayor que la duración</value>
+    <value>El retraso no puede ser mayor a la duración</value>
   </data>
   <data name="ImgEmpty" xml:space="preserve">
-    <value>No se guardó. La imagen tomada estaba vacía.</value>
+    <value>No guardado. La imagen está vacía</value>
   </data>
   <data name="ImgSavedClipboard" xml:space="preserve">
     <value>Imagen guardada al portapapeles</value>
   </data>
   <data name="ImgSavedDisk" xml:space="preserve">
-    <value>Imagen guardada a la unidad</value>
+    <value>Imagen guardada en la unidad</value>
   </data>
   <data name="NotSaved" xml:space="preserve">
-    <value>No guardada</value>
+    <value>No guardado</value>
   </data>
   <data name="Paused" xml:space="preserve">
     <value>Grabación pausada</value>
@@ -268,34 +268,34 @@
     <value>Listo</value>
   </data>
   <data name="Recording" xml:space="preserve">
-    <value>Grabando…</value>
+    <value>Grabando...</value>
   </data>
   <data name="Refreshed" xml:space="preserve">
-    <value>Refrescado</value>
+    <value>Actualizado</value>
   </data>
   <data name="Stopped" xml:space="preserve">
     <value>Grabación detenida</value>
   </data>
   <data name="Waiting" xml:space="preserve">
-    <value>Esperando…</value>
+    <value>Esperando...</value>
   </data>
   <data name="AudioSaved" xml:space="preserve">
     <value>Audio guardado</value>
   </data>
   <data name="VideoSaved" xml:space="preserve">
-    <value>Video guardado</value>
+    <value>Vídeo guardado</value>
   </data>
   <data name="PauseResumeRecording" xml:space="preserve">
-    <value>Pausar/reanudar grabación</value>
+    <value>Pausar/Reanudar grabación</value>
   </data>
   <data name="ScreenShotActiveWindow" xml:space="preserve">
-    <value>Captura de pantalla de la ventana activa</value>
+    <value>Captura de pantalla de ventana</value>
   </data>
   <data name="ScreenShotDesktop" xml:space="preserve">
-    <value>Captura de pantalla del escritorio</value>
+    <value>Captura de pantalla de escritorio</value>
   </data>
   <data name="StartStopRecording" xml:space="preserve">
-    <value>Iniciar/detener grabación</value>
+    <value>Iniciar/Detener grabación</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Salir</value>
@@ -304,10 +304,10 @@
     <value>Carpeta de FFMpeg</value>
   </data>
   <data name="SelectFFMpegFolder" xml:space="preserve">
-    <value>Seleccionar la carpeta de FFMpeg</value>
+    <value>Seleccionar carpeta FFMpeg</value>
   </data>
   <data name="SelectOutFolder" xml:space="preserve">
-    <value>Seleccionar la carpeta de destino</value>
+    <value>Seleccionar carpeta de salida</value>
   </data>
   <data name="ScreenShotSaved" xml:space="preserve">
     <value>Captura de pantalla guardada</value>
@@ -319,7 +319,7 @@
     <value>Área</value>
   </data>
   <data name="WebCam" xml:space="preserve">
-    <value>WebCam</value>
+    <value>Cámara web</value>
   </data>
   <data name="Window" xml:space="preserve">
     <value>Ventana</value>
@@ -328,13 +328,13 @@
     <value>Pantalla</value>
   </data>
   <data name="FlipX" xml:space="preserve">
-    <value>Girar horizontalmente</value>
+    <value>Voltear horizontal</value>
   </data>
   <data name="FlipY" xml:space="preserve">
-    <value>Girar verticalmente</value>
+    <value>Voltear vertical</value>
   </data>
   <data name="Rotate" xml:space="preserve">
-    <value>Rotar</value>
+    <value>Girar</value>
   </data>
   <data name="Transforms" xml:space="preserve">
     <value>Transformaciones</value>
@@ -343,22 +343,22 @@
     <value>Limpiar</value>
   </data>
   <data name="ClearRecentList" xml:space="preserve">
-    <value>Limpiar lista de recientes</value>
+    <value>Limpiar lista reciente</value>
   </data>
   <data name="MaxRecent" xml:space="preserve">
-    <value>Elementos a conservar</value>
+    <value>Maxi. para conservar</value>
   </data>
   <data name="ErrorOccured" xml:space="preserve">
     <value>Ocurrió un error</value>
   </data>
   <data name="WebCamView" xml:space="preserve">
-    <value>Vista de WebCam</value>
+    <value>Vista de cámara web</value>
   </data>
   <data name="WindowHeight" xml:space="preserve">
     <value>560</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
-    <value>470</value>
+    <value>420</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -376,13 +376,13 @@
     <value>Imgur</value>
   </data>
   <data name="ImgurFailed" xml:space="preserve">
-    <value>Falló la subida a Imgur</value>
+    <value>Error al subir Imgur</value>
   </data>
   <data name="ImgurSuccess" xml:space="preserve">
-    <value>Subida exitosa a Imgur</value>
+    <value>Imgur lo subió con éxito</value>
   </data>
   <data name="ImgurUploading" xml:space="preserve">
-    <value>Subiendo a Imgur…</value>
+    <value>Subiendo a Imgur</value>
   </data>
   <data name="Changelog" xml:space="preserve">
     <value>Registro de cambios</value>
@@ -391,16 +391,16 @@
     <value>Copiar al portapapeles</value>
   </data>
   <data name="CustomizeClickAndKeysOverlays" xml:space="preserve">
-    <value>Personalizar las capas de clics y entradas del teclado</value>
+    <value>Personalizar clics y pulsaciones de teclas</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Doná</value>
+    <value>Donar</value>
   </data>
   <data name="Extras" xml:space="preserve">
     <value>Extras</value>
   </data>
   <data name="FFMpegLog" xml:space="preserve">
-    <value>Registro FFMpeg</value>
+    <value>Registro de FFMpeg</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Idioma</value>
@@ -409,19 +409,19 @@
     <value>Transformaciones de capturas de pantalla</value>
   </data>
   <data name="Source" xml:space="preserve">
-    <value>Fuente</value>
+    <value>Código</value>
   </data>
   <data name="WantToTranslate" xml:space="preserve">
-    <value>¿Querés localizar?</value>
+    <value>¿Quieres traducir?</value>
   </data>
   <data name="BackColor" xml:space="preserve">
-    <value>Color de fondo</value>
+    <value>Color del fondo</value>
   </data>
   <data name="BorderColor" xml:space="preserve">
-    <value>Color de bordes</value>
+    <value>Color del borde</value>
   </data>
   <data name="BorderThickness" xml:space="preserve">
-    <value>Anchura de los bordes</value>
+    <value>tamaño del borde</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
@@ -430,13 +430,13 @@
     <value>Radio del borde</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>Tamaño de la tipografía</value>
+    <value>Tamaño de fuente</value>
   </data>
   <data name="Keystrokes" xml:space="preserve">
-    <value>Entradas del teclado</value>
+    <value>Pulsaciones de teclas</value>
   </data>
   <data name="MaxTextLength" xml:space="preserve">
-    <value>Longitud máxima del texto</value>
+    <value>Longi. máxi. de texto</value>
   </data>
   <data name="MouseClicks" xml:space="preserve">
     <value>Clics del mouse</value>
@@ -451,16 +451,16 @@
     <value>Radio</value>
   </data>
   <data name="Timeout" xml:space="preserve">
-    <value>Tiempo agotado</value>
+    <value>Tiempo terminado</value>
   </data>
   <data name="AlwaysOnTop" xml:space="preserve">
     <value>Siempre visible</value>
   </data>
   <data name="CopyOutPathClipboard" xml:space="preserve">
-    <value>Copiar ruta del archivo de destino al portapapeles</value>
+    <value>Copiar la ruta del archivo de salida al portapapeles</value>
   </data>
   <data name="HideOnFullScreenShot" xml:space="preserve">
-    <value>Ocultar en la captura a pantalla completa</value>
+    <value>Ocultar en captura a pantalla completa</value>
   </data>
   <data name="Bottom" xml:space="preserve">
     <value>Abajo</value>
@@ -478,7 +478,7 @@
     <value>Arriba</value>
   </data>
   <data name="Options" xml:space="preserve">
-    <value>Configuración</value>
+    <value>Opciones</value>
   </data>
   <data name="Proxy" xml:space="preserve">
     <value>Proxy</value>
@@ -487,7 +487,7 @@
     <value>Copiar ruta</value>
   </data>
   <data name="Host" xml:space="preserve">
-    <value>Servidor</value>
+    <value>Host</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Contraseña</value>
@@ -499,9 +499,9 @@
     <value>Usar proxy</value>
   </data>
   <data name="UseProxyAuth" xml:space="preserve">
-    <value>Usar autenticación proxy</value>
+    <value>Usar autenticación de proxy</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Nombre de usuario</value>
+    <value>Usuario</value>
   </data>
 </root>
