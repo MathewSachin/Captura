@@ -166,7 +166,7 @@ namespace Captura
         }
         
         [UserScopedSetting]
-        [DefaultSettingValue("en-US")]
+        [DefaultSettingValue("en")]
         public string Language
         {
             get => Get<string>();

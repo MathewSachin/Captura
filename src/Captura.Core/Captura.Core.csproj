@@ -82,8 +82,8 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
-    <Compile Include="Properties\Resources.es-AR.Designer.cs">
-      <DependentUpon>Resources.es-AR.resx</DependentUpon>
+    <Compile Include="Properties\Resources.es.Designer.cs">
+      <DependentUpon>Resources.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -120,8 +120,8 @@
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />
-    <Compile Include="Properties\Resources.ml-IN.Designer.cs">
-      <DependentUpon>Resources.ml-IN.resx</DependentUpon>
+    <Compile Include="Properties\Resources.ml.Designer.cs">
+      <DependentUpon>Resources.ml.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -164,14 +164,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.es-AR.resx">
+    <EmbeddedResource Include="Properties\Resources.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.es-AR.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.es.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ml-IN.resx">
+    <EmbeddedResource Include="Properties\Resources.ml.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.ml-IN.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.ml.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

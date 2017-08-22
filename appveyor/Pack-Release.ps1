@@ -16,7 +16,7 @@ elseif ($env:configuration -eq 'Debug')
 }
 
 # Copy Resource Assemblies
-Get-ChildItem "src/Captura.Console/bin/$env:configuration/??-??" -Directory | Copy-Item -Destination 'Output/' -Recurse
+Get-ChildItem "src/Captura.Console/bin/$env:configuration/*" -Directory | Copy-Item -Destination 'Output/' -Recurse
 
 # Download BASS and BassMix
 Invoke-WebRequest "http://www.un4seen.com/files/bass24.zip" -OutFile "temp/bass.zip"

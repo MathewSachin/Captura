@@ -16,7 +16,7 @@ namespace Captura
 
         public DelegateCommand(Action OnExecute, bool CanExecute = true)
         {
-            _execute = o => OnExecute?.Invoke();
+            _execute = O => OnExecute?.Invoke();
             _canExecute = CanExecute;
         }
 
