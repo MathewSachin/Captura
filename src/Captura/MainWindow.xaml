@@ -193,6 +193,15 @@
                                     <Frame Source="Views/HotkeyView.xaml"/>
                                 </DockPanel>
                             </TabItem>
+                            <TabItem Header="Overlays">
+                                <DockPanel>
+                                    <GridSplitter Width="1"
+                                                  Margin="5,0"/>
+                                    <ScrollViewer>
+                                        <Frame Source="Views/MouseKeyHookView.xaml"/>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </TabItem>
                             <TabItem Header="FFMpeg">
                                 <DockPanel>
                                     <GridSplitter Width="1"
