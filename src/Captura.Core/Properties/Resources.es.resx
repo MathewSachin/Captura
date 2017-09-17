@@ -133,7 +133,7 @@
     <value>Cerrar</value>
   </data>
   <data name="Configure" xml:space="preserve">
-    <value>Configurar</value>
+    <value>Configuración</value>
   </data>
   <data name="FrameRate" xml:space="preserve">
     <value>Fotogramas</value>
@@ -166,10 +166,10 @@
     <value>Minimizar al área de notificaciones</value>
   </data>
   <data name="OpenOutFolder" xml:space="preserve">
-    <value>Abrir carpeta de salida</value>
+    <value>Abrir carpeta de destino</value>
   </data>
   <data name="OutFolder" xml:space="preserve">
-    <value>Guardar en</value>
+    <value>Destino</value>
   </data>
   <data name="PauseResume" xml:space="preserve">
     <value>Pausar | Reanudar</value>
@@ -211,13 +211,13 @@
     <value>Formato</value>
   </data>
   <data name="VarFrameRate" xml:space="preserve">
-    <value>Cuadros por segundo variables</value>
+    <value>Fotogramas variables</value>
   </data>
   <data name="Hotkeys" xml:space="preserve">
     <value>Atajos</value>
   </data>
   <data name="Main" xml:space="preserve">
-    <value>Principio</value>
+    <value>Principal</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Restablecer</value>
@@ -307,7 +307,7 @@
     <value>Seleccionar carpeta FFMpeg</value>
   </data>
   <data name="SelectOutFolder" xml:space="preserve">
-    <value>Seleccionar carpeta de salida</value>
+    <value>Seleccionar carpeta de destino</value>
   </data>
   <data name="ScreenShotSaved" xml:space="preserve">
     <value>Captura de pantalla guardada</value>
@@ -457,7 +457,7 @@
     <value>Siempre visible</value>
   </data>
   <data name="CopyOutPathClipboard" xml:space="preserve">
-    <value>Copiar la ruta del archivo de salida al portapapeles</value>
+    <value>Copiar ruta del archivo de destino al portapapeles</value>
   </data>
   <data name="HideOnFullScreenShot" xml:space="preserve">
     <value>Ocultar en captura a pantalla completa</value>
@@ -499,7 +499,7 @@
     <value>Usar proxy</value>
   </data>
   <data name="UseProxyAuth" xml:space="preserve">
-    <value>Usar autenticación de proxy</value>
+    <value>Usar autenticación proxy</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Usuario</value>
