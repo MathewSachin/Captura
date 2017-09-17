@@ -427,10 +427,10 @@
     <value>Color</value>
   </data>
   <data name="CornerRadius" xml:space="preserve">
-    <value>CornerRadius</value>
+    <value>Corner Radius</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>FontSize</value>
+    <value>Font Size</value>
   </data>
   <data name="Keystrokes" xml:space="preserve">
     <value>Keystrokes</value>

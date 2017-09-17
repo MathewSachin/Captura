@@ -8,8 +8,7 @@
     <StackPanel Margin="10">
         <Label Content="{local:Loc MouseClicks}"
                FontWeight="Bold"
-               Margin="0,3"
-               FontSize="15"/>
+               Margin="0,3"/>
 
         <Grid Margin="0,3">
             <Grid.ColumnDefinitions>
@@ -61,8 +60,7 @@
                         
         <Label Content="{local:Loc Keystrokes}"
                FontWeight="Bold"
-               Margin="0,3"
-               FontSize="15"/>
+               Margin="0,3"/>
 
         <Grid Margin="0,3">
             <Grid.ColumnDefinitions>

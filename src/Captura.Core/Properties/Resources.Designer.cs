@@ -250,7 +250,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CornerRadius.
+        ///   Looks up a localized string similar to Corner Radius.
         /// </summary>
         public static string CornerRadius {
             get {
@@ -367,7 +367,7 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FontSize.
+        ///   Looks up a localized string similar to Font Size.
         /// </summary>
         public static string FontSize {
             get {
