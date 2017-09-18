@@ -15,7 +15,30 @@ namespace Captura
     public static class ServiceProvider
     {
         static readonly Dictionary<ServiceName, object> _services = new Dictionary<ServiceName, object>();
+        
+        static string _settingsDir;
 
+        public static string SettingsDir
+        {
+            get
+            {
+                if (_settingsDir == null)
+                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName);
+
+                if (!Directory.Exists(_settingsDir))
+                    Directory.CreateDirectory(_settingsDir);
+
+                return _settingsDir;
+            }
+            set
+            {
+                _settingsDir = value;
+
+                if (!Directory.Exists(_settingsDir))
+                    Directory.CreateDirectory(_settingsDir);
+            }
+        }
+        
         /// <summary>
         /// Get the requested Service.
         /// </summary>

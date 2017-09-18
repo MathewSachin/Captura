@@ -15,5 +15,8 @@ namespace Captura
 
         [Option("no-persist", DefaultValue = false, HelpText = "Do not save any changes in settings.")]
         public bool NoPersist { get; set; }
+
+        [Option("settings", DefaultValue = null, HelpText = "Settings Directory")]
+        public string Settings { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿using Captura.Properties;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using System.Configuration;
 using System.IO;
 
@@ -9,8 +7,6 @@ namespace Captura
 {
     public class ArraySettingsProvider : SettingsProviderBase
     {
-        static readonly string Dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName);
-        
         public override string Name => nameof(ArraySettingsProvider);
 
         public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
@@ -25,7 +21,7 @@ namespace Captura
 
                 try
                 {
-                    var text = File.ReadAllText(Path.Combine(Dir, $"{setting.Name}.json"));
+                    var text = File.ReadAllText(Path.Combine(ServiceProvider.SettingsDir, $"{setting.Name}.json"));
 
                     value = JsonConvert.DeserializeObject(text, setting.PropertyType);
                 }
@@ -53,7 +49,7 @@ namespace Captura
                 {
                     var value = JsonConvert.SerializeObject(propertyValue.PropertyValue, Formatting.Indented, enumConverter);
 
-                    File.WriteAllText(Path.Combine(Dir, $"{propertyValue.Name}.json"), value);
+                    File.WriteAllText(Path.Combine(ServiceProvider.SettingsDir, $"{propertyValue.Name}.json"), value);
                 }
                 catch { }
             }

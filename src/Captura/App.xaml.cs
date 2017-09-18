@@ -14,7 +14,7 @@ namespace Captura
         {
             AppDomain.CurrentDomain.UnhandledException += (s, args) =>
             {
-                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Captura", "Crashes");
+                var dir = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
 
                 Directory.CreateDirectory(dir);
 
@@ -27,7 +27,12 @@ namespace Captura
 
             CommandLine.Parser.Default.ParseArguments(e.Args, CmdOptions);
 
-            if (CmdOptions.Reset)
+            if (CmdOptions.Settings != null)
+            {
+                ServiceProvider.SettingsDir = CmdOptions.Settings;
+            }
+
+            if (App.CmdOptions.Reset)
             {
                 Settings.Instance.Reset();
             }
