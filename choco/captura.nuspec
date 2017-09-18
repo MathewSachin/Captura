@@ -18,10 +18,6 @@
     <summary>Capture Screen/Audio/Cursor/Clicks/Keystrokes</summary>
     <description>
 Captura is an application to capture Screen/Audio/Cursor/Clicks/Keystrokes.
-
-This package installs the latest version available, maybe later than the version listed here.
-
-Captura will update automatically, so there is no need to manually update using chocolatey.
     </description>
     <releaseNotes>[Changelog](https://github.com/MathewSachin/Captura/wiki/Changelog)</releaseNotes>
   </metadata>
