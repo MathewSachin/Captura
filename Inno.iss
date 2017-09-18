@@ -20,6 +20,7 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=Captura-Setup
 Compression=lzma
 SolidCompression=yes
+SetupIconFile=src/Captura/Captura.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
