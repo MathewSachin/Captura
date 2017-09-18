@@ -6,10 +6,10 @@ if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 
     $installScript = "choco/tools/chocolateyinstall.ps1"
 
-    $scriptContent = "`n`n" + (Get-Content $installScript)
+    $newContent = @(('$tag = "{0}";' -f $env:APPVEYOR_REPO_TAG_NAME), ('$checksum = "{0};"' -f $checksum), (Get-Content $installScript))
 
     # Update chocolatey install script
-    Set-Content $installScript (('$tag = "{0}"; $checksum = "{1}";{2}') -f $env:APPVEYOR_REPO_TAG_NAME, $checksum, $scriptContent)
+    Set-Content $installScript $newContent
 
     # Pack Chocolatey Package with Tag version
     choco pack choco/captura.nuspec --version $env:TagVersion
