@@ -38,7 +38,7 @@ if ($env:configuration -eq 'Release')
     choco install innosetup -y
 
     # Update Version in Inno Script
-    Set-Content "Inno.iss" ("#define MyAppVersion `"$AppVersion`"`n" + (Get-Content "Inno.iss"))
+    Set-Content "Inno.iss" ('#define MyAppVersion "{0}"`n{1}' -f $env:AppVersion, (Get-Content "Inno.iss"))
 
     # Compile Setup
     iscc "Inno.iss"
