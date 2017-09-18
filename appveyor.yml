@@ -37,6 +37,8 @@ artifacts:
     name: Portable
   - path: Output/Captura-Setup.exe
     name: Setup
+  - path: captura.*.nupkg
+    name: Chocolatey
 
 deploy:
   provider: GitHub
