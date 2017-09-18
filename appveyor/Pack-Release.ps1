@@ -32,13 +32,13 @@ Copy-Item 'temp/bass/bass.dll', 'temp/bassmix/bassmix.dll' 'Output/'
 # Pack Deploy zip
 Compress-Archive 'Output\*' "Captura-Portable.zip"
 
-if ($env:configuration -eq 'Release')
+if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 {
     # Install Inno Setup
     choco install innosetup -y
 
     # Update Version in Inno Script
-    Set-Content "Inno.iss" ('#define MyAppVersion "{0}"`n{1}' -f $env:AppVersion, (Get-Content "Inno.iss"))
+    Set-Content "Inno.iss" ("#define MyAppVersion `"{0}`"`n{1}" -f $env:AppVersion, (Get-Content "Inno.iss"))
 
     # Compile Setup
     iscc "Inno.iss"
