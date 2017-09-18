@@ -9,14 +9,6 @@ namespace Captura
     {
         [UserScopedSetting]
         [DefaultSettingValue("False")]
-        public bool AutoUpdate
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
         public bool DarkTheme
         {
             get => Get<bool>();

@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Device = SharpDX.Direct3D11.Device;
-using DRectangle = System.Drawing.Rectangle;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
@@ -25,14 +24,14 @@ namespace DesktopDuplication
         Texture2D _desktopImageTexture;
         OutputDuplicateFrameInformation _frameInfo;
 
-        DRectangle _rect;
+        Rectangle _rect;
 
         readonly bool _includeCursor;
         #endregion
 
         public int Timeout { get; set; }
 
-        public DesktopDuplicator(DRectangle Rect, bool IncludeCursor, int Monitor, int Adapter = 0)
+        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, int Monitor, int Adapter = 0)
         {
             _rect = Rect;
             _includeCursor = IncludeCursor;
@@ -140,7 +139,7 @@ namespace DesktopDuplication
             _lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = _lastFrame.LockBits(new DRectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, _lastFrame.PixelFormat);
+            var mapDest = _lastFrame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, _lastFrame.PixelFormat);
 
             Parallel.For(0, _rect.Height, y =>
             {

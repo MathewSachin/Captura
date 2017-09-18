@@ -12,10 +12,6 @@
                       Content="Dark Theme"
                       Margin="0,5"/>
 
-            <CheckBox IsChecked="{local:Setting AutoUpdate}"
-                      Content="Auto Update"
-                      Margin="0,5"/>
-
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
