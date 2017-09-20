@@ -507,4 +507,7 @@
   <data name="NoAudio" xml:space="preserve">
     <value>No Audio</value>
   </data>
+  <data name="NoWebcam" xml:space="preserve">
+    <value>No Webcam</value>
+  </data>
 </root>

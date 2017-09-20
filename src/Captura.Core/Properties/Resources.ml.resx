@@ -483,4 +483,13 @@
   <data name="UserName" xml:space="preserve">
     <value>ഉപയോക്തൃനാമം</value>
   </data>
+  <data name="NoWebcam" xml:space="preserve">
+    <value>വെബ്ക്യാം ഇല്ല</value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>പൂർണ്ണ സ്ക്രീൻ</value>
+  </data>
+  <data name="NoAudio" xml:space="preserve">
+    <value>ഓഡിയോ ഇല്ല</value>
+  </data>
 </root>

@@ -113,6 +113,7 @@
     <Compile Include="Models\MainWindowProvider.cs" />
     <Compile Include="Models\MessageProvider.cs" />
     <Compile Include="Models\SystemTray.cs" />
+    <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
     <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
       <DependentUpon>TextBalloon.xaml</DependentUpon>

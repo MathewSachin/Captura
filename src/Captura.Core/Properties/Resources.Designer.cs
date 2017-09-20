@@ -664,6 +664,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Webcam.
+        /// </summary>
+        public static string NoWebcam {
+            get {
+                return ResourceManager.GetString("NoWebcam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Ok {

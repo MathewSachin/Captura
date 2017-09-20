@@ -98,6 +98,7 @@
     <Compile Include="Services\IMessageProvider.cs" />
     <Compile Include="Services\IRegionProvider.cs" />
     <Compile Include="Services\ISystemTray.cs" />
+    <Compile Include="Services\IWebcamItem.cs" />
     <Compile Include="Services\IWebCamProvider.cs" />
     <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />

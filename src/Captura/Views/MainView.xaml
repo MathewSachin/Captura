@@ -83,6 +83,7 @@
 
             <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                       SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
                       Margin="0,0,7,0"/>
         </DockPanel>
 

@@ -65,6 +65,8 @@ namespace Captura.ViewModels
 
                 AudioViewModel.AudioSource.Refresh();
 
+                WebCamProvider.Refresh();
+
                 Status.LocalizationKey = nameof(Resources.Refreshed);
             });
             

@@ -5,9 +5,9 @@ namespace Captura.Console
 {
     class FakeWebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
-        public ObservableCollection<object> AvailableCams { get; } = new ObservableCollection<object>();
+        public ObservableCollection<IWebcamItem> AvailableCams { get; } = new ObservableCollection<IWebcamItem>();
 
-        public object SelectedCam { get; set; }
+        public IWebcamItem SelectedCam { get; set; }
 
         public void Dispose() { }
 

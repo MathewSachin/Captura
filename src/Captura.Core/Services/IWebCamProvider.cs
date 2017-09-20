@@ -6,9 +6,9 @@ namespace Captura.Models
 {
     public interface IWebCamProvider : INotifyPropertyChanged, IDisposable
     {
-        ObservableCollection<object> AvailableCams { get; }
+        ObservableCollection<IWebcamItem> AvailableCams { get; }
 
-        object SelectedCam { get; set; }
+        IWebcamItem SelectedCam { get; set; }
 
         void Refresh();
     }
