@@ -5,9 +5,8 @@
         public TextLocalizer(string LocalizationKey)
         {
             this.LocalizationKey = LocalizationKey;
-
-            // ReSharper disable once ExplicitCallerInfoArgument
-            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
+            
+            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Display));
         }
         
         string _key;
@@ -21,8 +20,7 @@
 
                 OnPropertyChanged();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
-                OnPropertyChanged(nameof(Display));
+                RaisePropertyChanged(nameof(Display));
             }
         }
 

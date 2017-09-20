@@ -646,6 +646,15 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Audio.
+        /// </summary>
+        public static string NoAudio {
+            get {
+                return ResourceManager.GetString("NoAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Saved.
         /// </summary>
         public static string NotSaved {

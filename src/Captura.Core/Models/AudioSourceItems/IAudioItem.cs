@@ -1,4 +1,9 @@
-﻿namespace Captura.Models
+﻿using System.ComponentModel;
+
+namespace Captura.Models
 {
-    public interface IAudioItem { }
+    public interface IAudioItem : INotifyPropertyChanged
+    {
+        string Name { get; }
+    }
 }

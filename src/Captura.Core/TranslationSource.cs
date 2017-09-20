@@ -55,9 +55,8 @@ namespace Captura
                 Thread.CurrentThread.CurrentUICulture = value;
                 
                 Settings.Instance.Language = value.Name;
-
-                // ReSharper disable once ExplicitCallerInfoArgument
-                OnPropertyChanged("");
+                
+                RaisePropertyChanged("");
             }
         }
     }

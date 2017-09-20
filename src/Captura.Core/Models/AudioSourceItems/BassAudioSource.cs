@@ -1,19 +1,19 @@
-﻿using Screna.Audio;
+﻿using System.Linq;
+using Screna.Audio;
 using ManagedBass;
 
 namespace Captura.Models
 {
     public class BassAudioSource : AudioSource
     {
-        class BassItem : IAudioItem
+        class BassItem : NotifyPropertyChanged, IAudioItem
         {
             readonly int _id;
-            readonly string _name;
 
             public BassItem(int Id, string Name)
             {
                 _id = Id;
-                _name = Name;
+                this.Name = Name;
             }
 
             public static IAudioProvider GetAudioProvider(BassItem RecordingDevice, BassItem LoopbackDevice)
@@ -21,16 +21,14 @@ namespace Captura.Models
                 return new MixedAudioProvider(RecordingDevice?._id, LoopbackDevice?._id);
             }
 
-            public override string ToString() => _name;
+            public string Name { get; }
+
+            public override string ToString() => Name;
         }
 
         static bool AllExist(params string[] Paths)
         {
-            foreach (var path in Paths)
-                if (!ServiceProvider.FileExists(path))
-                    return false;
-
-            return true;
+            return Paths.All(ServiceProvider.FileExists);
         }
 
         // Check if all BASS dependencies are present

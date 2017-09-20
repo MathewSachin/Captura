@@ -205,6 +205,7 @@
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableRecordingSources}"
                       SelectedValue="{Binding AudioViewModel.AudioSource.SelectedRecordingSource, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
         
@@ -221,6 +222,7 @@
                       Margin="7,0"
                       ItemsSource="{Binding AudioViewModel.AudioSource.AvailableLoopbackSources}"
                       SelectedValue="{Binding AudioViewModel.AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
 
