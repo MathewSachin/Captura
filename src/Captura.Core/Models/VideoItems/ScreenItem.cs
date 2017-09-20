@@ -6,7 +6,7 @@ using System;
 
 namespace Captura.Models
 {
-    public class ScreenItem : IVideoItem
+    public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {
         public Screen Screen { get; }
 
@@ -48,7 +48,9 @@ namespace Captura.Models
                 yield return new ScreenItem(i);
         }
 
-        public override string ToString() => Screen.DeviceName;
+        public string Name => Screen.DeviceName;
+
+        public override string ToString() => Name;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

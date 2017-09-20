@@ -8,16 +8,16 @@ namespace Captura.Models
     /// <summary>
     /// Holds codecs for audio-alone capture.
     /// </summary>
-    public abstract class NoVideoItem : IVideoItem
+    public abstract class NoVideoItem : NotifyPropertyChanged, IVideoItem
     {
-        readonly string _name;
-
         protected NoVideoItem(string DisplayName, string Extension)
         {
-            _name = DisplayName;
+            Name = DisplayName;
 
             this.Extension = Extension;
         }
+
+        public string Name { get; }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
@@ -26,7 +26,7 @@ namespace Captura.Models
             return null;
         }
 
-        public override string ToString() => _name;
+        public override string ToString() => Name;
 
         public string Extension { get; }
 

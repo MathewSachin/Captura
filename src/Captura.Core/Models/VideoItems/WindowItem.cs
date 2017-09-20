@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Captura.Models
 {
-    public class WindowItem : IVideoItem
+    public class WindowItem : NotifyPropertyChanged, IVideoItem
     {
         public Window Window { get; }
 
@@ -13,18 +13,18 @@ namespace Captura.Models
         public WindowItem(Window Window)
         {
             this.Window = Window;
-            _name = Window.Title;
+            Name = Window.Title;
         }
 
         public WindowItem(Window Window, string Name)
         {
             this.Window = Window;
-            _name = Name;
+            this.Name = Name;
         }
 
-        readonly string _name;
-        
-        public override string ToString() => _name;
+        public override string ToString() => Name;
+
+        public string Name { get; }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

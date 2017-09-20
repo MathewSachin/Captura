@@ -6,7 +6,7 @@ using Captura.Properties;
 
 namespace Captura.Console
 {
-    class FakeRegionItem : IVideoItem
+    class FakeRegionItem : NotifyPropertyChanged, IVideoItem
     {
         Rectangle _rect;
 
@@ -15,6 +15,8 @@ namespace Captura.Console
             _rect = Region;
         }
 
+        public string Name => Resources.RegionSelector;
+
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
             Transform = P => new Point(P.X - _rect.X, P.Y - _rect.Y);
@@ -22,6 +24,6 @@ namespace Captura.Console
             return new RegionProvider(_rect, IncludeCursor);
         }
 
-        public override string ToString() => Resources.RegionSelector;
+        public override string ToString() => Name;
     }
 }

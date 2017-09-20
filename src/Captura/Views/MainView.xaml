@@ -67,6 +67,7 @@
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      DisplayMemberPath="Name"
                       Grid.Column="2"/>
         </Grid>
 

@@ -6,13 +6,15 @@ using System.Drawing;
 
 namespace Captura
 {
-    class RegionItem : IVideoItem
+    class RegionItem : NotifyPropertyChanged, IVideoItem
     {
         readonly RegionSelector _selector;
 
         public RegionItem(RegionSelector RegionSelector)
         {
             _selector = RegionSelector;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
         }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
@@ -27,6 +29,8 @@ namespace Captura
             return new StaticRegionProvider(_selector, IncludeCursor);
         }
 
-        public override string ToString() => Resources.RegionSelector;
+        public string Name => Resources.RegionSelector;
+
+        public override string ToString() => Name;
     }
 }
