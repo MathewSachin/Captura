@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
+        xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         DataContext="{StaticResource MainViewModel}"
         WindowStyle="None"
         ResizeMode="CanMinimize"
@@ -176,54 +177,68 @@
                         <Frame Source="Views/MainView.xaml"/>
                     </TabItem>
                     <TabItem Header="{local:Loc Configure}">
-                        <TabControl Background="Transparent"
-                                    TabStripPlacement="Left"
-                                    BorderThickness="0">
-                            <TabItem Header="{local:Loc Options}">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <Frame Source="Views/ConfigView.xaml"/>
-                                </DockPanel>
-                            </TabItem>
-                            <TabItem Header="{local:Loc Hotkeys}">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <Frame Source="Views/HotkeyView.xaml"/>
-                                </DockPanel>
-                            </TabItem>
-                            <TabItem Header="Overlays">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <ScrollViewer>
-                                        <Frame Source="Views/MouseKeyHookView.xaml"/>
-                                    </ScrollViewer>
-                                </DockPanel>
-                            </TabItem>
-                            <TabItem Header="FFMpeg">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <Frame Source="Views/FFMpegView.xaml"/>
-                                </DockPanel>
-                            </TabItem>
-                            <TabItem Header="{local:Loc Proxy}">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <Frame Source="Views/ProxyView.xaml"/>
-                                </DockPanel>
-                            </TabItem>
-                            <TabItem Header="{local:Loc Extras}">
-                                <DockPanel>
-                                    <GridSplitter Width="1"
-                                                  Margin="5,0"/>
-                                    <Frame Source="Views/ExtrasView.xaml"/>
-                                </DockPanel>                                
-                            </TabItem>
-                        </TabControl>
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top"
+                                       Margin="5,0,5,5">
+                                <Label Content="{local:Loc Language}"
+                                       ContentStringFormat="{}{0}:"
+                                       Margin="5"/>
+                                <ComboBox VerticalAlignment="Center" 
+                                          Margin="5"
+                                          DataContext="{x:Static core:TranslationSource.Instance}"
+                                          ItemsSource="{Binding AvailableCultures}"
+                                          SelectedValue="{Binding CurrentCulture, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                            </DockPanel>
+                            <TabControl Background="Transparent"
+                                        TabStripPlacement="Left"
+                                        BorderThickness="0">
+                                <TabItem Header="{local:Loc Options}">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <Frame Source="Views/ConfigView.xaml"/>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="{local:Loc Hotkeys}">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <Frame Source="Views/HotkeyView.xaml"/>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="Overlays">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <ScrollViewer>
+                                            <Frame Source="Views/MouseKeyHookView.xaml"/>
+                                        </ScrollViewer>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="FFMpeg">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <Frame Source="Views/FFMpegView.xaml"/>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="{local:Loc Proxy}">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <Frame Source="Views/ProxyView.xaml"/>
+                                    </DockPanel>
+                                </TabItem>
+                                <TabItem Header="{local:Loc Extras}">
+                                    <DockPanel>
+                                        <GridSplitter Width="1"
+                                                      Margin="5,0"/>
+                                        <Frame Source="Views/ExtrasView.xaml"/>
+                                    </DockPanel>                                
+                                </TabItem>
+                            </TabControl>
+                        </DockPanel>
                     </TabItem>
                     <TabItem Header="{local:Loc Recent}">
                         <Frame Source="Views/RecentView.xaml"/>

@@ -21,22 +21,13 @@
                     (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
-                <DockPanel Margin="0,0,0,10">
-                    <TextBlock DockPanel.Dock="Bottom"
-                               HorizontalAlignment="Right">
-                        <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/wiki/Translation">
-                            <Run Text="{local:Loc WantToTranslate}"/>
-                        </Hyperlink>
-                    </TextBlock>
-                    <Label Content="{local:Loc Language}"
-                           ContentStringFormat="{}{0}:"
-                           Margin="0,0,16,5"/>
-                    <ComboBox VerticalAlignment="Center" 
-                              Margin="0,0,0,5"
-                              ItemsSource="{Binding Languages}"
-                              SelectedValue="{Binding Language, Mode=TwoWay}"
-                              DisplayMemberPath="DisplayName"/>
-                </DockPanel>
+                <TextBlock DockPanel.Dock="Bottom"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,0,10">
+                    <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/wiki/Translation">
+                        <Run Text="{local:Loc WantToTranslate}"/>
+                    </Hyperlink>
+                </TextBlock>
 
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
