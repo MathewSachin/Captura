@@ -82,6 +82,11 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Properties\Resources.pt.Designer.cs">
+      <DependentUpon>Resources.pt.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.ru.Designer.cs">
       <DependentUpon>Resources.ru.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -170,6 +175,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ru.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.ru.Designer.cs</LastGenOutput>
