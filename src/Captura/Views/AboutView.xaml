@@ -33,8 +33,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/"
                             Content="{local:Loc Source}"
@@ -47,7 +50,13 @@
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/wiki/Donate"
                             Content="{local:Loc Donate}"
-                            Grid.Column="2"
+                            Grid.Row="1"
+                            Margin="3"/>
+                    <Button Command="{Binding HyperlinkCommand}"
+                            CommandParameter="https://github.com/MathewSachin/Captura/wiki"
+                            Content="Help"
+                            Grid.Row="1"
+                            Grid.Column="1"
                             Margin="3"/>
                 </Grid>
 

@@ -6,17 +6,12 @@
         <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
                 Click="Reset_Click"/>
-        <Grid Name="HotkeyGrid" Margin="0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3"/>
-                <ColumnDefinition Width="Auto" MinWidth="180"/>
-            </Grid.ColumnDefinitions>
-            <Grid.Resources>
+        <StackPanel Name="HotkeysPanel" Margin="0,5">
+            <StackPanel.Resources>
                 <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="3"/>
                 </Style>
-            </Grid.Resources>
-        </Grid>
+            </StackPanel.Resources>
+        </StackPanel>
     </DockPanel>
 </Page>

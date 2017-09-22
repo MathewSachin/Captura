@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Captura.Models;
 
 namespace Captura
 {
@@ -21,19 +22,22 @@ namespace Captura
             HotKeyManager.Hotkeys.Clear();
             HotKeyManager.Populate();
 
-            HotkeyGrid.RowDefinitions.Clear();
-            HotkeyGrid.Children.Clear();
+            HotkeysPanel.Children.Clear();
 
             Render();
         }
 
         void Render()
         {
-            for (int i = 0; i < HotKeyManager.Hotkeys.Count; ++i)
+            foreach (var hotkey in HotKeyManager.Hotkeys)
             {
-                var hotkey = HotKeyManager.Hotkeys[i];
+                var splitter = new GridSplitter
+                {
+                    Height = 1,
+                    Margin = new Thickness(0, 10, 0, 10)
+                };
 
-                HotkeyGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                HotkeysPanel.Children.Add(splitter);
 
                 var binding = new Binding
                 {
@@ -49,22 +53,20 @@ namespace Captura
                 var desc = new CheckBox
                 {
                     IsChecked = hotkey.IsActive,
-                    Content = textBlock
+                    Content = textBlock,
+                    Margin = new Thickness(0, 0, 0, 2)
                 };
 
                 BindingOperations.SetBinding(textBlock, TextBlock.TextProperty, binding);
 
-                HotkeyGrid.Children.Add(desc);
-                Grid.SetRow(desc, i);
+                HotkeysPanel.Children.Add(desc);
 
                 var x = new HotkeySelector(hotkey)
                 {
                     IsEnabled = hotkey.IsActive
                 };
 
-                HotkeyGrid.Children.Add(x);
-                Grid.SetColumn(x, 2);
-                Grid.SetRow(x, i);
+                HotkeysPanel.Children.Add(x);
 
                 desc.Checked += (s, e) =>
                 {

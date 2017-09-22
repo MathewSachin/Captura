@@ -7,7 +7,7 @@ namespace UITests
     [TestClass]
     public class ConsoleStart
     {
-        Process Start(string Arguments)
+        static Process Start(string Arguments)
         {
             var process = new Process
             {
@@ -54,7 +54,17 @@ namespace UITests
 
             process.WaitForExit();
 
-            Assert.IsTrue(process.ExitCode == 0);
-        }        
+            Assert.AreEqual(process.ExitCode, 0);
+        }
+
+        [TestMethod]
+        public void StartGifFixedDuration()
+        {
+            var process = Start("start --encoder gif --length 1");
+
+            process.WaitForExit();
+
+            Assert.AreEqual(process.ExitCode, 0);
+        }
     }
 }

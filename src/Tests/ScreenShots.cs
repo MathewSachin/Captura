@@ -14,26 +14,26 @@ namespace UITests
     [TestClass]
     public class ScreenShots
     {
-        static Application App;
-        static Window MainWindow;
-        static TabPage MainTab;
+        static Application _app;
+        static Window _mainWindow;
+        static TabPage _mainTab;
 
         [ClassInitialize]
         public static void Init(TestContext Context)
         {
-            App = Application.Launch("captura.ui.exe");
+            _app = Application.Launch("captura.ui.exe");
 
-            MainWindow = App.GetWindow("Captura");
+            _mainWindow = _app.GetWindow("Captura");
 
-            MainTab = MainWindow.Get<TabPage>(SearchCriteria.ByText(Resources.Main));
+            _mainTab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(Resources.Main));
         }
 
         [ClassCleanup]
         public static void Clean()
         {
-            MainWindow.Close();
+            _mainWindow.Close();
 
-            App.Close();
+            _app.Close();
         }
 
         static void Shot(string FileName, IntPtr hWnd)
@@ -62,14 +62,22 @@ namespace UITests
         public void ScreenShotTabs()
         {
             Directory.CreateDirectory("Tabs");
-            
-            foreach (var tabName in new[] { Resources.Main, Resources.Configure, Resources.Recent, Resources.About })
+
+            var tabs = new[]
             {
-                var tab = MainWindow.Get<TabPage>(SearchCriteria.ByText(tabName));
+                Resources.Main,
+                Resources.Configure, Resources.Hotkeys, "Overlays", "FFMpeg", Resources.Proxy, Resources.Extras,
+                Resources.Recent,
+                Resources.About
+            };
+
+            foreach (var tabName in tabs)
+            {
+                var tab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(tabName));
 
                 tab.Select();
 
-                Shot($"Tabs/{tabName}.png", App.Process.MainWindowHandle);
+                Shot($"Tabs/{tabName}.png", _app.Process.MainWindowHandle);
             }
         }
     }

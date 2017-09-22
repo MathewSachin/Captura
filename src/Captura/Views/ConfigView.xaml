@@ -45,9 +45,11 @@
                           IsChecked="{local:Setting TrayNotify}"
                           Margin="0,2"/>
 
-                <CheckBox Content="{local:Loc CopyOutPathClipboard}"
-                          IsChecked="{local:Setting CopyOutPathToClipboard}"
-                          Margin="0,2"/>
+                <CheckBox IsChecked="{local:Setting CopyOutPathToClipboard}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{local:Loc CopyOutPathClipboard}"/>
+                </CheckBox>
                 
                 <CheckBox Content="{local:Loc AlwaysOnTop}"
                           IsChecked="{local:Setting MainWindowTopmost}"
