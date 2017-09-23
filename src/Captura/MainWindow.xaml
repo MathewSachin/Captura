@@ -167,8 +167,11 @@
                               Width="16"
                               Data="{StaticResource Icon_More}"/>
                     </Button>
-                    <TextBox IsReadOnly="True"
-                             Text="{local:Setting OutPath}"/>
+                    <Border ToolTip="{local:Setting OutPath}">
+                        <TextBox IsReadOnly="True"
+                                 IsEnabled="False"
+                                 Text="{local:Setting OutPath}"/>
+                    </Border>
                 </DockPanel>
                 
                 <TabControl Background="Transparent"

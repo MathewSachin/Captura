@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    public class Hotkey
+    public class Hotkey : NotifyPropertyChanged
     {
         public Action Work { get; }
 
@@ -37,6 +37,8 @@ namespace Captura.Models
 
                 else if (!value && IsRegistered)
                     Unregister();
+
+                OnPropertyChanged();
             }
         }
 

@@ -12,15 +12,32 @@ namespace Captura
     {
         bool _editing;
 
-        readonly Hotkey _hotkey;
+        Hotkey _hotkey;
         
-        public HotkeySelector(Hotkey Hotkey)
+        public static readonly DependencyProperty HotkeyModelProperty = DependencyProperty.Register(nameof(HotkeyModel), typeof(Hotkey), typeof(HotkeySelector), new UIPropertyMetadata(PropertyChangedCallback));
+
+        static void PropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            _hotkey = Hotkey;
+            if (sender is HotkeySelector selector && args.NewValue is Hotkey hotkey)
+            {
+                selector._hotkey = hotkey;
 
-            TextColor();
+                selector.TextColor();
 
-            Content = _hotkey.ToString();
+                hotkey.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(Hotkey.IsActive))
+                        selector.TextColor();
+                };
+
+                selector.Content = hotkey.ToString();
+            }
+        }
+
+        public Hotkey HotkeyModel
+        {
+            get => (Hotkey) GetValue(HotkeyModelProperty);
+            set => SetValue(HotkeyModelProperty, value);
         }
 
         void HotkeyEdited(Key NewKey, Modifiers NewModifiers)
@@ -32,7 +49,8 @@ namespace Captura
         {
             if (_hotkey.IsActive && !_hotkey.IsRegistered)
             {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef5350"));
+                if (ColorConverter.ConvertFromString("#ef5350") is Color c)
+                    Background = new SolidColorBrush(c);
 
                 Foreground = new SolidColorBrush(Colors.White);
             }

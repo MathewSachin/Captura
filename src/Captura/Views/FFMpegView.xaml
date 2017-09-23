@@ -19,26 +19,34 @@
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>
 
-            <xctk:WatermarkTextBox IsReadOnly="True"
-                                   IsEnabled="False"
-                                   Watermark="Load From PATH or App Directory"
-                                   Text="{local:Setting FFMpegFolder}"
-                                   Margin="0,5"/>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="3"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Content="{local:Loc Reset}"
-                        Command="{Binding ResetFFMpegFolderCommand}"
-                        IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                <Button Content="{local:Loc SelectFFMpegFolder}"
+            <DockPanel Margin="0,5">
+                <Button DockPanel.Dock="Right"
+                        ToolTip="{local:Loc SelectFFMpegFolder}"
                         Command="{Binding SelectFFMpegFolderCommand}"
+                        IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <Path Stretch="UniformToFill"
+                          Height="4"
+                          Width="16"
+                          Data="{StaticResource Icon_More}"/>
+                </Button>
+                <Button DockPanel.Dock="Right"
+                        ToolTip="{local:Loc Reset}"
+                        Command="{Binding ResetFFMpegFolderCommand}"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                        Grid.Column="2"/>
-            </Grid>
+                        VerticalContentAlignment="Center">
+                    <Path Stretch="UniformToFill"
+                          Height="10"
+                          Width="9"
+                          Data="{StaticResource Icon_Close}"/>
+                </Button>
+
+                <Border ToolTip="{local:Setting FFMpegFolder}">
+                    <xctk:WatermarkTextBox IsReadOnly="True"
+                                           IsEnabled="False"
+                                           Watermark="Load From PATH or App Directory"
+                                           Text="{local:Setting FFMpegFolder}"/>
+                </Border>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </Page>

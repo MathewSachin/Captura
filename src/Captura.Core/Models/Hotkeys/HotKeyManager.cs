@@ -1,5 +1,6 @@
 using Captura.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -7,7 +8,7 @@ namespace Captura
 {
     public static class HotKeyManager
     {
-        public static readonly List<Hotkey> Hotkeys = new List<Hotkey>();
+        public static ObservableCollection<Hotkey> Hotkeys { get; } = new ObservableCollection<Hotkey>();
 
         static HotKeyManager()
         {
@@ -74,15 +75,15 @@ namespace Captura
         public static void Dispose()
         {
             Settings.Instance.Hotkeys.Clear();
-                        
-            Hotkeys.ForEach(h => 
+
+            foreach (var h in Hotkeys)
             {
                 // Unregister All Hotkeys
                 h.Unregister();
 
                 // Save
                 Settings.Instance.Hotkeys.Add(new HotkeyModel(h.ServiceName, h.Key, h.Modifiers, h.IsActive));
-            });
+            }
         }
     }
 }

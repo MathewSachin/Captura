@@ -1,17 +1,34 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
+      xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
       x:Class="Captura.HotkeyView">
     <DockPanel Margin="5">
         <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
                 Click="Reset_Click"/>
-        <StackPanel Name="HotkeysPanel" Margin="0,5">
-            <StackPanel.Resources>
+        <ItemsControl Margin="0,5"
+                      ItemsSource="{x:Static core:HotKeyManager.Hotkeys}">
+            <ItemsControl.Resources>
                 <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="3"/>
                 </Style>
-            </StackPanel.Resources>
-        </StackPanel>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <GridSplitter Height="1"
+                                      Margin="0,10"/>
+                        <CheckBox Margin="0,0,0,2"
+                                  IsChecked="{Binding IsActive, Mode=TwoWay}">
+                            <TextBlock TextWrapping="Wrap"
+                                       Text="{Binding Description.Display, Mode=OneWay}"/>
+                        </CheckBox>
+                        <local:HotkeySelector IsEnabled="{Binding IsActive}"
+                                              HotkeyModel="{Binding}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </DockPanel>
 </Page>
