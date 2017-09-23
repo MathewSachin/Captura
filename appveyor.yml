@@ -30,13 +30,15 @@ build:
 
 after_build:
   - ps: appveyor/Pack-Release.ps1
-  - ps: appveyor/Pack-Squirrel.ps1
+  - ps: appveyor/Choco.ps1
 
 artifacts:
-  - path: Output/Captura-$(configuration).zip
-    name: Captura.zip
-  - path: Releases/**
-    name: Squirrel
+  - path: Captura-Portable.zip
+    name: Portable
+  - path: Output/Captura-Setup.exe
+    name: Setup
+  - path: captura.*.nupkg
+    name: Chocolatey
 
 deploy:
   provider: GitHub
@@ -46,7 +48,7 @@ deploy:
   description: "[Changelog](https://github.com/MathewSachin/Captura/wiki/Changelog)"
   auth_token:
     secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
-  artifact: Captura.zip, Squirrel
+  artifact: Portable, Setup
   draft: true
   on:
     configuration: Release

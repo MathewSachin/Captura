@@ -1,6 +1,4 @@
-﻿using Captura.Properties;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -9,17 +7,17 @@ namespace Captura
 {
     public class JsonSettingsProvider : SettingsProviderBase
     {
-        readonly JObject SettingsJson;
-        
-        public static readonly string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName, "Settings.json");
+        readonly JObject _settingsJson;
+
+        readonly string _fileName;
 
         public override string Name => nameof(JsonSettingsProvider);
 
         public JsonSettingsProvider()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(FileName));
-
-            SettingsJson = LoadOrCreateSettings(FileName);
+            _fileName = Path.Combine(ServiceProvider.SettingsDir, "Settings.json");
+            
+            _settingsJson = LoadOrCreateSettings(_fileName);
         }
         
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection properties)
@@ -32,8 +30,8 @@ namespace Captura
 
             try
             {
-                var jobj = new JObject(SettingsJson.Properties().OrderBy(j => j.Name).ToArray());
-                File.WriteAllText(FileName, jobj.ToString());
+                var jobj = new JObject(_settingsJson.Properties().OrderBy(j => j.Name).ToArray());
+                File.WriteAllText(_fileName, jobj.ToString());
             }
             catch
             {
@@ -60,7 +58,7 @@ namespace Captura
 
         object GetValue(SettingsProperty setting)
         {
-            var value = (string)SettingsJson[setting.Name];
+            var value = (string)_settingsJson[setting.Name];
 
             if (string.IsNullOrEmpty(value))
                 return setting.DefaultValue?.ToString() ?? "";
@@ -70,7 +68,7 @@ namespace Captura
 
         void SetValue(SettingsPropertyValue setting)
         {
-            SettingsJson[setting.Name] = setting.SerializedValue?.ToString() ?? "";
+            _settingsJson[setting.Name] = setting.SerializedValue?.ToString() ?? "";
         }
 
         static JObject LoadOrCreateSettings(string FilePath)
@@ -87,7 +85,7 @@ namespace Captura
         
         public override void Reset(SettingsContext context)
         {
-            SettingsJson.RemoveAll();
+            _settingsJson.RemoveAll();
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using Squirrel;
 
 namespace Captura
 {
@@ -14,21 +12,9 @@ namespace Captura
 
         void Application_Startup(object sender, StartupEventArgs e)
         {
-            if (Settings.Instance.AutoUpdate)
-            {
-                Task.Run(async () =>
-                {
-                    using (var mgr = await UpdateManager.GitHubUpdateManager(@"https://github.com/MathewSachin/Captura",
-                        urlDownloader: new ProxiedDownloader()))
-                    {
-                        await mgr.UpdateApp();
-                    }
-                });
-            }
-
             AppDomain.CurrentDomain.UnhandledException += (s, args) =>
             {
-                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Captura", "Crashes");
+                var dir = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
 
                 Directory.CreateDirectory(dir);
 
@@ -41,7 +27,12 @@ namespace Captura
 
             CommandLine.Parser.Default.ParseArguments(e.Args, CmdOptions);
 
-            if (CmdOptions.Reset)
+            if (CmdOptions.Settings != null)
+            {
+                ServiceProvider.SettingsDir = CmdOptions.Settings;
+            }
+
+            if (App.CmdOptions.Reset)
             {
                 Settings.Instance.Reset();
             }
