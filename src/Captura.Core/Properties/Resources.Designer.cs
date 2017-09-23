@@ -349,20 +349,11 @@ namespace Captura.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flip Horizontal.
+        ///   Looks up a localized string similar to Flip.
         /// </summary>
-        public static string FlipX {
+        public static string Flip {
             get {
-                return ResourceManager.GetString("FlipX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Flip Vertical.
-        /// </summary>
-        public static string FlipY {
-            get {
-                return ResourceManager.GetString("FlipY", resourceCulture);
+                return ResourceManager.GetString("Flip", resourceCulture);
             }
         }
         
@@ -403,11 +394,29 @@ namespace Captura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide on Full Screen ScreenShot.
         /// </summary>
         public static string HideOnFullScreenShot {
             get {
                 return ResourceManager.GetString("HideOnFullScreenShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal.
+        /// </summary>
+        public static string Horizontal {
+            get {
+                return ResourceManager.GetString("Horizontal", resourceCulture);
             }
         }
         
@@ -1128,6 +1137,15 @@ namespace Captura.Properties {
         public static string VarFrameRate {
             get {
                 return ResourceManager.GetString("VarFrameRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical.
+        /// </summary>
+        public static string Vertical {
+            get {
+                return ResourceManager.GetString("Vertical", resourceCulture);
             }
         }
         

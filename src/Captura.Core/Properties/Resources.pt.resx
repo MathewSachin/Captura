@@ -447,11 +447,11 @@
   <data name="Delete" xml:space="preserve">
     <value>Excluir</value>
   </data>
-  <data name="FlipX" xml:space="preserve">
-    <value>Inverter Horizontalmente</value>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horizontalmente</value>
   </data>
-  <data name="FlipY" xml:space="preserve">
-    <value>Inverter Verticalmente</value>
+  <data name="Vertical" xml:space="preserve">
+    <value>Verticalmente</value>
   </data>
   <data name="ShowSysNotify" xml:space="preserve">
     <value>Exibir Notificações na Área de Notificação</value>
@@ -490,6 +490,9 @@
     <value>Qualidade</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
-    <value>450</value>
+    <value>420</value>
+  </data>
+  <data name="Flip" xml:space="preserve">
+    <value>Inverter</value>
   </data>
 </root>

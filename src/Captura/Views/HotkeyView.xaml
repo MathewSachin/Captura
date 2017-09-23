@@ -7,28 +7,30 @@
         <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
                 Click="Reset_Click"/>
-        <ItemsControl Margin="0,5"
-                      ItemsSource="{x:Static core:HotKeyManager.Hotkeys}">
-            <ItemsControl.Resources>
-                <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="3"/>
-                </Style>
-            </ItemsControl.Resources>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <GridSplitter Height="1"
-                                      Margin="0,10"/>
-                        <CheckBox Margin="0,0,0,2"
-                                  IsChecked="{Binding IsActive, Mode=TwoWay}">
-                            <TextBlock TextWrapping="Wrap"
-                                       Text="{Binding Description.Display, Mode=OneWay}"/>
-                        </CheckBox>
-                        <local:HotkeySelector IsEnabled="{Binding IsActive}"
-                                              HotkeyModel="{Binding}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer>
+            <ItemsControl Margin="0,5"
+                          ItemsSource="{x:Static core:HotKeyManager.Hotkeys}">
+                <ItemsControl.Resources>
+                    <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Margin" Value="3"/>
+                    </Style>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <GridSplitter Height="1"
+                                          Margin="0,10"/>
+                            <CheckBox Margin="0,0,0,2"
+                                      IsChecked="{Binding IsActive, Mode=TwoWay}">
+                                <TextBlock TextWrapping="Wrap"
+                                           Text="{Binding Description.Display, Mode=OneWay}"/>
+                            </CheckBox>
+                            <local:HotkeySelector IsEnabled="{Binding IsActive}"
+                                                  HotkeyModel="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </Page>

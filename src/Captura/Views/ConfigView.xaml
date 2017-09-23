@@ -37,13 +37,17 @@
                                         Margin="0,2"/>
                 </Grid>
 
-                <CheckBox Content="{local:Loc MinCapture}"
-                          IsChecked="{local:Setting MinimizeOnStart}"
-                          Margin="0,2"/>
+                <CheckBox IsChecked="{local:Setting MinimizeOnStart}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{local:Loc MinCapture}"/>
+                </CheckBox>
 
-                <CheckBox Content="{local:Loc ShowSysNotify}"
-                          IsChecked="{local:Setting TrayNotify}"
-                          Margin="0,2"/>
+                <CheckBox IsChecked="{local:Setting TrayNotify}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{local:Loc ShowSysNotify}"/>
+                </CheckBox>
 
                 <CheckBox IsChecked="{local:Setting CopyOutPathToClipboard}"
                           Margin="0,2">
@@ -55,9 +59,11 @@
                           IsChecked="{local:Setting MainWindowTopmost}"
                           Margin="0,2"/>
                 
-                <CheckBox Content="{local:Loc HideOnFullScreenShot}"
-                          IsChecked="{local:Setting HideOnFullScreenShot}"
-                          Margin="0,2"/>
+                <CheckBox IsChecked="{local:Setting HideOnFullScreenShot}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{local:Loc HideOnFullScreenShot}"/>
+                </CheckBox>
 
                 <Label Margin="0,10,0,3"
                        Content="{local:Loc Gif}"
@@ -108,11 +114,14 @@
 
                 <StackPanel Margin="0,5"
                             Orientation="Horizontal">
-                    <CheckBox Content="{local:Loc FlipX}"
+                    <Label Content="{local:Loc Flip}"
+                           ContentStringFormat="{}{0}:"/>
+                    
+                    <CheckBox Content="{local:Loc Horizontal}"
                               IsChecked="{local:Setting FlipHorizontal}"
-                              Margin="0,0,10,0"/>
+                              Margin="10,0"/>
 
-                    <CheckBox Content="{local:Loc FlipY}"
+                    <CheckBox Content="{local:Loc Vertical}"
                               IsChecked="{local:Setting FlipVertical}"/>
                 </StackPanel>
 

@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>ഈ അപ്ലിക്കേഷനെക്കുറിച്ച്</value>
+    <value>വിവരം</value>
   </data>
   <data name="Audio" xml:space="preserve">
     <value>ഓഡിയോ</value>
   </data>
   <data name="CaptureDuration" xml:space="preserve">
-    <value>ക്യാപ്ചർ ദൈർഘ്യം (സെക്കന്റുകളിൽ)</value>
+    <value>ക്യാപ്ചർ ദൈർഘ്യം (sec)</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>അടയ്ക്കുക</value>
@@ -172,7 +172,7 @@
     <value>ഗുണനിലവാരം</value>
   </data>
   <data name="Recent" xml:space="preserve">
-    <value>സമീപകാലത്തെ</value>
+    <value>സമീപകാല</value>
   </data>
   <data name="RecordStop" xml:space="preserve">
     <value>റെക്കോർഡ് ചെയ്യുക | നിർത്തുക</value>
@@ -190,7 +190,7 @@
     <value>സ്ക്രീൻഷോട്ട്</value>
   </data>
   <data name="StartDelay" xml:space="preserve">
-    <value>ആരംഭ കാലതാമസം (മില്ലിസെക്കൻഡുകളിൽ)</value>
+    <value>ആരംഭ കാലതാമസം (ms)</value>
   </data>
   <data name="Video" xml:space="preserve">
     <value>വീഡിയോ</value>
@@ -321,12 +321,6 @@
   <data name="Screen" xml:space="preserve">
     <value>സ്ക്രീൻ</value>
   </data>
-  <data name="FlipX" xml:space="preserve">
-    <value>തിരശ്ചീനമായി ഫ്ലിപ്പുചെയ്യുക</value>
-  </data>
-  <data name="FlipY" xml:space="preserve">
-    <value>ലംബമായി ഫ്ലിപ്പുചെയ്യുക</value>
-  </data>
   <data name="Rotate" xml:space="preserve">
     <value>തിരിക്കുക</value>
   </data>
@@ -340,7 +334,7 @@
     <value>സമീപകാല പട്ടിക മായ്ക്കുക</value>
   </data>
   <data name="MaxRecent" xml:space="preserve">
-    <value>നിലനിൽക്കുന്നതിനുള്ള ഇനങ്ങളുടെ പരമാവധി എണ്ണം</value>
+    <value>പരമാവധി ഇനങ്ങൾ</value>
   </data>
   <data name="ErrorOccured" xml:space="preserve">
     <value>ഒരു പിശക് സംഭവിച്ചു</value>
@@ -352,7 +346,7 @@
     <value>560</value>
   </data>
   <data name="WindowWidth" xml:space="preserve">
-    <value>600</value>
+    <value>420</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>അല്ല</value>
@@ -491,5 +485,17 @@
   </data>
   <data name="NoAudio" xml:space="preserve">
     <value>ഓഡിയോ ഇല്ല</value>
+  </data>
+  <data name="Flip" xml:space="preserve">
+    <value>ഫ്ലിപ്പ്</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>സഹായം</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>തിരശ്ചീനമായി</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>ലംബമായ</value>
   </data>
 </root>

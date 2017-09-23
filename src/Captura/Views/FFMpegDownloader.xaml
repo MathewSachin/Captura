@@ -41,14 +41,16 @@
                     ContentStringFormat="{}{0}: "/>
             <Button DockPanel.Dock="Right"
                     Command="{Binding SelectFolderCommand}">
-                <Path Fill="#B7000000" 
-                      Stretch="UniformToFill"
+                <Path Stretch="UniformToFill"
                       Height="4"
                       Width="16"
                       Data="{StaticResource Icon_More}"/>
             </Button>
-            <TextBox IsReadOnly="True"
-                     Text="{Binding TargetFolder, Mode=OneWay}"/>
+            <Border ToolTip="{Binding TargetFolder, Mode=OneWay}">
+                <TextBox IsReadOnly="True"
+                         IsEnabled="False"
+                         Text="{Binding TargetFolder, Mode=OneWay}"/>
+            </Border>
         </DockPanel>
         
         <Button Content="{Binding ActionDescription}"

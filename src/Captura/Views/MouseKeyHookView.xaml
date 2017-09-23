@@ -12,8 +12,8 @@
 
         <Grid Margin="0,3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -64,8 +64,8 @@
 
         <Grid Margin="0,3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -97,10 +97,12 @@
                                 Grid.Column="1"
                                 Margin="0,5"/>
 
-            <Label Content="{local:Loc MaxTextLength}"
-                   ContentStringFormat="{}{0}: "
+            <Label ContentStringFormat="{}{0}: "
                    Margin="0,5,5,5"
-                   Grid.Row="2"/>
+                   Grid.Row="2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{local:Loc MaxTextLength}"/>
+            </Label>
             <xctk:IntegerUpDown Minimum="1"
                                 Value="{local:Setting Keystrokes_MaxLength}"
                                 Grid.Row="2"

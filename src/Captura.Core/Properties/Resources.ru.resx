@@ -327,11 +327,11 @@
   <data name="Screen" xml:space="preserve">
     <value>Экран</value>
   </data>
-  <data name="FlipX" xml:space="preserve">
-    <value>Отразить по гор.</value>
+  <data name="Horizontal" xml:space="preserve">
+    <value>гор.</value>
   </data>
-  <data name="FlipY" xml:space="preserve">
-    <value>Отразить по верт.</value>
+  <data name="Vertical" xml:space="preserve">
+    <value>вер.</value>
   </data>
   <data name="Rotate" xml:space="preserve">
     <value>Повернуть</value>
@@ -503,5 +503,8 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Имя пользователя</value>
+  </data>
+  <data name="Flip" xml:space="preserve">
+    <value>Отразить</value>
   </data>
 </root>

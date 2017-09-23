@@ -54,7 +54,7 @@
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/wiki"
-                            Content="Help"
+                            Content="{local:Loc Help}"
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="3"/>
