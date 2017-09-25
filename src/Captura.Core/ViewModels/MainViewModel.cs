@@ -445,6 +445,15 @@ namespace Captura.ViewModels
                 FFMpegLog.Reset();
             }
 
+            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif
+                && Settings.Instance.GifVariable
+                && Settings.Instance.UseDeskDupl)
+            {
+                ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
+
+                return;
+            }
+
             ServiceProvider.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
