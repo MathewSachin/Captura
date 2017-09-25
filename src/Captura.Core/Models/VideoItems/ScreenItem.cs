@@ -57,7 +57,7 @@ namespace Captura.Models
             Transform = P => new Point(P.X - Screen.Bounds.X, P.Y - Screen.Bounds.Y);
             
             if (Settings.Instance.UseDeskDupl)
-                return new DeskDuplImageProvider(_index, IncludeCursor);
+                return new DeskDuplImageProvider(_index, new Rectangle(Point.Empty, Screen.Bounds.Size), IncludeCursor);
 
             return new ScreenProvider(Screen, IncludeCursor);
         }
