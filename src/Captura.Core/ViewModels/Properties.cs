@@ -42,7 +42,7 @@ namespace Captura.ViewModels
                 if (_duration == value)
                     return;
 
-                _duration = value;
+                _duration = Math.Max(0, value);
 
                 OnPropertyChanged();
             }
@@ -58,7 +58,7 @@ namespace Captura.ViewModels
                 if (_startDelay == value)
                     return;
 
-                _startDelay = value;
+                _startDelay = Math.Max(0, value);
 
                 OnPropertyChanged();
             }

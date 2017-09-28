@@ -1,6 +1,8 @@
 ﻿using Captura.Properties;
 using System.Windows;
-using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
+using System.Windows.Controls;
+using System.Windows.Media;
+using FirstFloor.ModernUI.Windows.Controls;
 
 namespace Captura.Models
 {
@@ -10,36 +12,75 @@ namespace Captura.Models
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                MessageBox.Show(Message, Resources.ErrorOccured, MessageBoxButton.OK, MessageBoxImage.Error);
+                var dialog = new ModernDialog
+                {
+                    Title = Resources.ErrorOccured,
+                    Content = Message
+                };
+
+                dialog.OkButton.Content = Resources.Ok;
+                dialog.Buttons = new[] { dialog.OkButton };
+
+                dialog.BackgroundContent = new Grid
+                {
+                    Background = new SolidColorBrush(Color.FromArgb(255, 244, 67, 54)),
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Height = 10,
+                };
+
+                dialog.ShowDialog();
             });
         }
 
         public void ShowFFMpegUnavailable()
         {
             Application.Current.Dispatcher.Invoke(() =>
-            {                
-                var result = MessageBox.Show("FFMpeg was not found on your system.\n\nSelect FFMpeg Folder if you alrady have FFMpeg on your system, else Download FFMpeg.",
-                    "FFMpeg Unavailable",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Warning,
-                    (Style) Application.Current.FindResource("NoFFMpegBox"));
-
-                switch (result)
+            {
+                var dialog = new ModernDialog
                 {
-                    case MessageBoxResult.Yes:
-                        FFMpegService.SelectFFMpegFolder();
-                        break;
+                    Title = "FFMpeg Unavailable",
+                    Content = "FFMpeg was not found on your system.\n\nSelect FFMpeg Folder if you alrady have FFMpeg on your system, else Download FFMpeg."
+                };
 
-                    case MessageBoxResult.No:
-                        FFMpegService.FFMpegDownloader?.Invoke();
-                        break;
-                }
+                // Yes -> Select FFMpeg Folder
+                dialog.YesButton.Content = Resources.SelectFFMpegFolder;
+                dialog.YesButton.Click += (s, e) => FFMpegService.SelectFFMpegFolder();
+
+                // No -> Download FFMpeg
+                dialog.NoButton.Content = "Download FFMpeg";
+                dialog.NoButton.Click += (s, e) => FFMpegService.FFMpegDownloader?.Invoke();
+
+                dialog.CancelButton.Content = "Cancel";
+
+                dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton, dialog.CancelButton };
+
+                dialog.ShowDialog();
             });
         }
 
         public bool ShowYesNo(string Message, string Title)
         {
-            return Application.Current.Dispatcher.Invoke(() => MessageBox.Show(Message, Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                var dialog = new ModernDialog
+                {
+                    Title = Title,
+                    Content = Message
+                };
+
+                var result = false;
+
+                dialog.YesButton.Content = Resources.Yes;
+                dialog.YesButton.Click += (s, e) => result = true;
+
+                dialog.NoButton.Content = Resources.No;
+
+                dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton };
+
+                dialog.ShowDialog();
+
+                return result;
+            });
         }
     }
 }

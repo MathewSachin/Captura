@@ -6,7 +6,7 @@ if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 
     $installScript = "choco/tools/chocolateyinstall.ps1"
 
-    $newContent = @(('$tag = "{0}";' -f $env:APPVEYOR_REPO_TAG_NAME), ('$checksum = "{0};"' -f $checksum), (Get-Content $installScript))
+    $newContent = @(('$tag = "{0}";' -f $env:APPVEYOR_REPO_TAG_NAME), ('$checksum = "{0}";' -f $checksum), (Get-Content $installScript))
 
     # Update chocolatey install script
     Set-Content $installScript $newContent

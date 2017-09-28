@@ -454,6 +454,13 @@ namespace Captura.ViewModels
                 return;
             }
 
+            if (Duration != 0 && (StartDelay > Duration * 1000))
+            {
+                ServiceProvider.MessageProvider.ShowError(Resources.DelayGtDuration);
+
+                return;
+            }
+
             ServiceProvider.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
@@ -462,16 +469,6 @@ namespace Captura.ViewModels
                 ServiceProvider.MainWindow.IsMinimized = true;
             
             Settings.Instance.EnsureOutPath();
-            
-            if (StartDelay < 0)
-                StartDelay = 0;
-
-            if (Duration != 0 && (StartDelay > Duration * 1000))
-            {
-                Status.LocalizationKey = nameof(Resources.DelayGtDuration);
-                SystemSounds.Asterisk.Play();
-                return;
-            }
 
             RecorderState = RecorderState.Recording;
             

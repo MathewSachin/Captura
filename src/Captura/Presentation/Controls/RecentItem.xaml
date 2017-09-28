@@ -28,8 +28,6 @@
                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                               Command="{Binding PrintCommand}"/>
                     <MenuItem Header="{local:Loc Delete}"
-                              Background="#ef5350"
-                              Foreground="White"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>
             </Button.ContextMenu>
