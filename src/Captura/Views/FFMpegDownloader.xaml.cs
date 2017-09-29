@@ -1,4 +1,6 @@
-﻿namespace Captura.Views
+﻿using System.Windows;
+
+namespace Captura.Views
 {
     public partial class FFMpegDownloader
     {
@@ -6,5 +8,7 @@
         {
             InitializeComponent();
         }
+
+        void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
     }
 }

@@ -10,7 +10,23 @@
         MinHeight="250"
         Topmost="True"
         Background="{DynamicResource WindowBackground}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="1"
+                      UseAeroCaptionButtons="False"
+                      NonClientFrameEdges="None"
+                      CaptionHeight="40"/>
+    </WindowChrome.WindowChrome>
     <DockPanel Margin="5">
+        <DockPanel DockPanel.Dock="Top">
+            <local:ModernButton ToolTip="{local:Loc Close}"
+                                Click="CloseButton_Click"
+                                IconData="{StaticResource Icon_Close}"
+                                DockPanel.Dock="Right"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
+            <Label Content="{local:Loc WebCamView}"
+                   Margin="10,0"/>
+        </DockPanel>
+        
         <wpf:WebCameraControl x:Name="webCameraControl" />
     </DockPanel>
 </Window>

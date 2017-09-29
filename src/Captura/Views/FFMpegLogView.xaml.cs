@@ -1,4 +1,6 @@
-﻿namespace Captura
+﻿using System.Windows;
+
+namespace Captura
 {
     public partial class FFMpegLogView
     {
@@ -15,5 +17,7 @@
         }
 
         public static FFMpegLogView Instance { get; } = new FFMpegLogView();
+
+        void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
     }
 }

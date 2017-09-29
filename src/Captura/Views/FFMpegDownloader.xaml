@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        xmlns:local="clr-namespace:Captura"
         Title="FFMpeg Downloader"
         Height="400"
         Width="600"
@@ -10,7 +11,23 @@
     <Window.DataContext>
         <vm:FFMpegDownloadViewModel/>
     </Window.DataContext>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="1"
+                      UseAeroCaptionButtons="False"
+                      NonClientFrameEdges="None"
+                      CaptionHeight="40"/>
+    </WindowChrome.WindowChrome>
     <DockPanel Margin="5">
+        <DockPanel DockPanel.Dock="Top">
+            <local:ModernButton ToolTip="{local:Loc Close}"
+                                Click="CloseButton_Click"
+                                IconData="{StaticResource Icon_Close}"
+                                DockPanel.Dock="Right"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
+            <Label Content="FFMpeg Downloader"
+                   Margin="10,0"/>
+        </DockPanel>
+        
         <DockPanel DockPanel.Dock="Top"
                    Margin="15">
             <Label Margin="0,0,10,0"

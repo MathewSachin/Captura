@@ -200,49 +200,32 @@
                             <TabControl Background="Transparent"
                                         TabStripPlacement="Left"
                                         BorderThickness="0">
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <GridSplitter Width="1"
+                                                          Margin="5,0"/>
+                                            <ScrollViewer Content="{Binding}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
                                 <TabItem Header="{local:Loc Options}">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <Frame Source="Views/ConfigView.xaml"/>
-                                    </DockPanel>
+                                    <Frame Source="Views/ConfigView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{local:Loc Hotkeys}">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <Frame Source="Views/HotkeyView.xaml"/>
-                                    </DockPanel>
+                                    <Frame Source="Views/HotkeyView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="Overlays">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <ScrollViewer>
-                                            <Frame Source="Views/MouseKeyHookView.xaml"/>
-                                        </ScrollViewer>
-                                    </DockPanel>
+                                    <Frame Source="Views/MouseKeyHookView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="FFMpeg">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <Frame Source="Views/FFMpegView.xaml"/>
-                                    </DockPanel>
+                                    <Frame Source="Views/FFMpegView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{local:Loc Proxy}">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <Frame Source="Views/ProxyView.xaml"/>
-                                    </DockPanel>
+                                    <Frame Source="Views/ProxyView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{local:Loc Extras}">
-                                    <DockPanel>
-                                        <GridSplitter Width="1"
-                                                      Margin="5,0"/>
-                                        <Frame Source="Views/ExtrasView.xaml"/>
-                                    </DockPanel>                                
+                                    <Frame Source="Views/ExtrasView.xaml"/>                               
                                 </TabItem>
                             </TabControl>
                         </DockPanel>
