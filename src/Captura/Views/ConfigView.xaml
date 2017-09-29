@@ -6,7 +6,7 @@
       DataContext="{StaticResource MainViewModel}">
     <Grid>        
         <ScrollViewer>
-            <StackPanel Margin="3"
+            <StackPanel Margin="5"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <Grid Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>

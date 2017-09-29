@@ -4,6 +4,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
         xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         DataContext="{StaticResource MainViewModel}"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
@@ -180,6 +181,11 @@
                 
                 <TabControl Background="Transparent"
                             BorderThickness="0">
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <mui:TransitioningContentControl Content="{Binding}"/>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
                     <TabItem Header="{local:Loc Main}">
                         <Frame Source="Views/MainView.xaml"/>
                     </TabItem>
@@ -205,7 +211,7 @@
                                         <DockPanel>
                                             <GridSplitter Width="1"
                                                           Margin="5,0"/>
-                                            <ScrollViewer Content="{Binding}"/>
+                                            <mui:TransitioningContentControl Content="{Binding}"/>
                                         </DockPanel>
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
@@ -216,7 +222,9 @@
                                     <Frame Source="Views/HotkeyView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="Overlays">
-                                    <Frame Source="Views/MouseKeyHookView.xaml"/>
+                                    <ScrollViewer>
+                                        <Frame Source="Views/MouseKeyHookView.xaml"/>
+                                    </ScrollViewer>
                                 </TabItem>
                                 <TabItem Header="FFMpeg">
                                     <Frame Source="Views/FFMpegView.xaml"/>

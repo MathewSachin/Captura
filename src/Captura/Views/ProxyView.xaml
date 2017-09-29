@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
-    <Grid>
+    <Grid Margin="5,0">
         <StackPanel>
             <CheckBox Content="{local:Loc UseProxy}"
                       IsChecked="{local:Setting UseProxy}"
