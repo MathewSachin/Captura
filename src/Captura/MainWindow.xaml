@@ -5,7 +5,6 @@
         xmlns:local="clr-namespace:Captura"
         xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         DataContext="{StaticResource MainViewModel}"
-        WindowStyle="None"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
@@ -31,6 +30,12 @@
             </DrawingImage.Drawing>
         </DrawingImage>
     </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="1"
+                      UseAeroCaptionButtons="False"
+                      NonClientFrameEdges="None"
+                      CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
                          Description="{local:Loc AppName}">
@@ -133,8 +138,7 @@
                                         IconData="{StaticResource Icon_Minimize}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
-                    <Grid Cursor="Hand"
-                          Margin="0,-2"
+                    <Grid Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding TimeSpan}"
                                Margin="0,-1"

@@ -69,7 +69,7 @@ namespace Captura
             e.Handled = true;
         }
 
-        void MinButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        void MinButton_Click(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
 
         void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
@@ -104,12 +104,11 @@ namespace Captura
             }
 
             SystemTray.Dispose();
-            Application.Current.Shutdown();
 
             return true;
         }
 
-        void MenuExit_Click(object sender, RoutedEventArgs e) => TryExit();
+        void MenuExit_Click(object sender, RoutedEventArgs e) => Close();
 
         void HideButton_Click(object Sender, RoutedEventArgs E) => Hide();
     }
