@@ -195,6 +195,54 @@ namespace Captura.Models
                         result += "/";
                         break;
 
+                    case Keys.Escape:
+                        result += "Esc";
+                        break;
+
+                    case Keys.Delete:
+                        result += "Del";
+                        break;
+
+                    case Keys.PageUp:
+                        result += "Pg Up";
+                        break;
+
+                    case Keys.PageDown:
+                        result += "Pg Dn";
+                        break;
+
+                    case Keys.PrintScreen:
+                        result += "Prt Sc";
+                        break;
+
+                    case Keys.VolumeMute:
+                        result += "Mute";
+                        break;
+
+                    case Keys.VolumeUp:
+                        result += "Vol +";
+                        break;
+                    
+                    case Keys.VolumeDown:
+                        result += "Vol -";
+                        break;
+
+                    case Keys.Up:
+                        result += " ↑ ";
+                        break;
+
+                    case Keys.Down:
+                        result += " ↓ ";
+                        break;
+
+                    case Keys.Left:
+                        result += " ← ";
+                        break;
+
+                    case Keys.Right:
+                        result += " → ";
+                        break;
+
                     case Keys.NumLock:
                         result += $"NumLock: {(Console.NumberLock ? "On" : "Off")}";
                         break;
