@@ -83,6 +83,10 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
+    <Compile Include="Models\MouseKeyHook\DummyKeyRecord.cs" />
+    <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
+    <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
+    <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Properties\Resources.pt.Designer.cs">
       <DependentUpon>Resources.pt.resx</DependentUpon>
       <AutoGen>True</AutoGen>

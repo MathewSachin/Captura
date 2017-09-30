@@ -149,5 +149,21 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("4")]
+        public int Keystrokes_History_Count
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("10")]
+        public int Keystrokes_History_Spacing
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

@@ -78,6 +78,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Label Content="{local:Loc Color}"
@@ -172,8 +174,26 @@
                               Grid.Row="9"
                               Grid.Column="1"
                               Margin="0,5"/>
-        </Grid>
             
+            <Label Content="History Count"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,5,5,5"
+                   Grid.Row="10"/>
+            <xctk:IntegerUpDown Value="{local:Setting Keystrokes_History_Count}"
+                                Grid.Row="10"
+                                Grid.Column="1"
+                                Margin="0,5"/>
+
+            <Label Content="History Spacing"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,5,5,5"
+                   Grid.Row="11"/>
+            <xctk:IntegerUpDown Value="{local:Setting Keystrokes_History_Spacing}"
+                                Grid.Row="11"
+                                Grid.Column="1"
+                                Margin="0,5"/>
+        </Grid>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
