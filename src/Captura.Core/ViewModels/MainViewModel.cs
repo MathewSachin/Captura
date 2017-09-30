@@ -384,8 +384,8 @@ namespace Captura.ViewModels
                         {
                             ServiceProvider.MainWindow.IsVisible = false;
 
-                            // Ensure that the ScreenShot Tooltip is hidden
-                            await Task.Delay(100);
+                            // Ensure that the Window is hidden
+                            await Task.Delay(300);
                         }
 
                         if (Settings.Instance.UseDeskDupl)
