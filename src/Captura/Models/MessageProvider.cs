@@ -15,7 +15,12 @@ namespace Captura.Models
                 var dialog = new ModernDialog
                 {
                     Title = Resources.ErrorOccured,
-                    Content = Message
+                    Content = new ScrollViewer
+                    {
+                        Content = Message,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Padding = new Thickness(0, 0, 0, 10)
+                    }
                 };
 
                 dialog.OkButton.Content = Resources.Ok;
@@ -65,7 +70,12 @@ namespace Captura.Models
                 var dialog = new ModernDialog
                 {
                     Title = Title,
-                    Content = Message
+                    Content = new ScrollViewer
+                    {
+                        Content = Message,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Padding = new Thickness(0, 0, 0, 10)
+                    }
                 };
 
                 var result = false;
