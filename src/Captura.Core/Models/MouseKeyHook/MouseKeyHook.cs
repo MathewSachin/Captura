@@ -36,14 +36,35 @@ namespace Captura.Models
 
                 _hook.MouseUp += (s, e) => _mouseClicked = false;
             }
-            
+
             if (CaptureKeystrokes)
-                _hook.KeyDown += OnKeyPressed;
+            {
+                _hook.KeyDown += OnKeyDown;
+                _hook.KeyUp += OnKeyUp;
+            }
         }
-        
-        void OnKeyPressed(object sender, KeyEventArgs e)
+
+        void OnKeyUp(object Sender, KeyEventArgs Args)
         {
-            var record = new KeyRecord(e);
+            var record = new KeyRecord(Args);
+
+            if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
+            {
+                if (_records.Last?.Display == record.Display)
+                {
+                    _records.Last = new RepeatKeyRecord(record);
+                }
+                else if (_records.Last is RepeatKeyRecord repeat && repeat.Repeated.Display == record.Display)
+                {
+                    repeat.Increment();
+                }
+                else _records.Add(record);
+            }
+        }
+
+        void OnKeyDown(object Sender, KeyEventArgs Args)
+        {
+            var record = new KeyRecord(Args);
             
             if (_records.Last == null)
             {
@@ -69,11 +90,9 @@ namespace Captura.Models
             {
                 repeatRecord.Increment();
             }
-            else if ((_records.Last.Display == "Ctrl" || _records.Last.Display == "Alt" ||
-                      _records.Last.Display == "Shift")
-                     && (record.Control || record.Alt || record.Shift))
+            else if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
             {
-                _records.Last = record;
+                // Handle in OnKeyUp
             }
             else
             {
