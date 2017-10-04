@@ -79,12 +79,13 @@ namespace DesktopDuplication
             {
                 _deskDupl = output1.DuplicateOutput(_device);
             }
-            catch (SharpDXException e)
+            catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.NotCurrentlyAvailable)
             {
-                if (e.ResultCode.Code == SharpDX.DXGI.ResultCode.NotCurrentlyAvailable.Result.Code)
-                {
-                    throw new Exception("There is already the maximum number of applications using the Desktop Duplication API running, please close one of the applications and try again.", e);
-                }
+                throw new Exception("There is already the maximum number of applications using the Desktop Duplication API running, please close one of the applications and try again.", e);
+            }
+            catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.Unsupported)
+            {
+                throw new Exception("Desktop Duplication is not supported on this system.\nIf you have multiple graphic cards, try running Captura on integrated graphics.", e);
             }
         }
         
@@ -101,7 +102,7 @@ namespace DesktopDuplication
             {
                 _deskDupl.AcquireNextFrame(Timeout, out _frameInfo, out desktopResource);
             }
-            catch (SharpDXException e) when (e.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
+            catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
                 return _lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
             }

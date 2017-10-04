@@ -524,7 +524,7 @@ namespace Captura.ViewModels
                         
             AfterRecording();
 
-            ServiceProvider.MessageProvider.ShowError($"{Resources.ErrorOccured}\n\n{E}");
+            ServiceProvider.MessageProvider.ShowError(E.ToString());
         }
 
         void AfterRecording()

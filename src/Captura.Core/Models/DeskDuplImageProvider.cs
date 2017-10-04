@@ -27,18 +27,21 @@ namespace Captura.Models
 
         public Bitmap Capture()
         {
+            if (_dupl == null)
+                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
+
             try
             {
                 return _dupl.Capture();
             }
             catch
             {
+                _dupl?.Dispose();
+
+                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
+
                 try
                 {
-                    _dupl?.Dispose();
-
-                    _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
-
                     return _dupl.Capture();
                 }
                 catch

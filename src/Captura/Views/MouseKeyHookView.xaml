@@ -182,6 +182,7 @@
             <xctk:IntegerUpDown Value="{local:Setting Keystrokes_History_Count}"
                                 Grid.Row="10"
                                 Grid.Column="1"
+                                Minimum="1"
                                 Margin="0,5"/>
 
             <Label Content="History Spacing"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using WebEye.Controls.Wpf;
 
 namespace Captura.Models
@@ -62,11 +63,17 @@ namespace Captura.Models
                             OnPropertyChanged();
                         }
                     }
-                    catch (Exception E)
+                    catch (DirectShowException e) when (e.InnerException is COMException comException && comException.HResult == unchecked((int)0x80040217))
                     {
-                        ServiceProvider.MessageProvider.ShowError($"Could not Start Capture\n\n\n{E}");
-
                         _window.Hide();
+
+                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\nIf you have multiple graphic cards, try running Captura on integrated graphics.");
+                    }
+                    catch (Exception e)
+                    {
+                        _window.Hide();
+
+                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\n\n\n{e}");
                     }
                 }
 

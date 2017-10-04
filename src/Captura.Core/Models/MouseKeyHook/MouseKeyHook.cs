@@ -82,6 +82,10 @@ namespace Captura.Models
             {
                 _records.Last = new DummyKeyRecord(_records.Last.Display + record.Display);
             }
+            else if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
+            {
+                // Handle in OnKeyUp
+            }
             else if (_records.Last is KeyRecord keyRecord && keyRecord.Key == record.Key)
             {
                 _records.Last = new RepeatKeyRecord(record);
@@ -89,10 +93,6 @@ namespace Captura.Models
             else if (_records.Last is RepeatKeyRecord repeatRecord && repeatRecord.Repeated.Key == record.Key)
             {
                 repeatRecord.Increment();
-            }
-            else if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
-            {
-                // Handle in OnKeyUp
             }
             else
             {

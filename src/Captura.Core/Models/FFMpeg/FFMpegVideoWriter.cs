@@ -62,10 +62,8 @@ namespace Captura.Models
         /// </summary>
         public void Dispose()
         {
-            _ffmpegIn.Flush();
-            _ffmpegIn.Close();
+            _ffmpegIn.Dispose();
 
-            _audioPipe?.Flush();
             _audioPipe?.Dispose();
 
             _ffmpegProcess.WaitForExit();

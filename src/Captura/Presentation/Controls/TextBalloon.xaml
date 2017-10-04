@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
-             x:Name="me"
              Background="#333333"
              Foreground="White"
              Width="400"
@@ -15,7 +14,7 @@
                             Foreground="LightPink"
                             IconData="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
                             DockPanel.Dock="Right"/>
-        <TextBlock Text="{Binding Text, ElementName=me}"
+        <TextBlock Text="{Binding}"
                    VerticalAlignment="Center"
                    Padding="5"
                    MouseUp="TextBlock_MouseUp"

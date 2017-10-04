@@ -10,14 +10,12 @@ namespace Captura
 {
     public partial class ScreenShotBalloon
     {
-        public string FileName { get; }
-
-        public string FilePath { get; }
+        readonly string _filePath;
 
         public ScreenShotBalloon(string FilePath)
         {
-            this.FilePath = FilePath;
-            FileName = Path.GetFileName(FilePath);
+            _filePath = FilePath;
+            DataContext = Path.GetFileName(FilePath);
 
             InitializeComponent();
 
@@ -30,9 +28,9 @@ namespace Captura
             img.Source = image;
         }
 
-        public void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
+        void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
         {
-            //the tray icon assigned this attached property to simplify access
+            // the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon?.CloseBalloon();
         }
@@ -49,7 +47,7 @@ namespace Captura
 
         void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath));
+            ServiceProvider.LaunchFile(new ProcessStartInfo(_filePath));
 
             CloseButton_Click();
         }

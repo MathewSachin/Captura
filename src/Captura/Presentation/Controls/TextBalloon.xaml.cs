@@ -7,20 +7,18 @@ namespace Captura
 {
     public partial class TextBalloon
     {
-        public string Text { get; }
-
         readonly Action _onClick;
         
         public TextBalloon(string Text, Action OnClick)
         {
-            this.Text = Text;
+            DataContext = Text;
 
             _onClick = OnClick;
 
             InitializeComponent();
         }
 
-        public void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
+        void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
         {
             //the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);

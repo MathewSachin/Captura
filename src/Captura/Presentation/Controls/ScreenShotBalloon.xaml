@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
-             x:Name="me"
              Background="#333333"
              Foreground="White"
              Width="400"
@@ -21,7 +20,7 @@
                        Margin="5"/>
         </DockPanel>
 
-        <TextBlock Text="{Binding FileName, ElementName=me}"
+        <TextBlock Text="{Binding}"
                    DockPanel.Dock="Bottom"
                    Padding="5"/>
         
