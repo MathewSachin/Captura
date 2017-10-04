@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Tentang</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Captura</value>
+  </data>
+  <data name="Audio" xml:space="preserve">
+    <value>Suara</value>
+  </data>
+  <data name="CaptureDuration" xml:space="preserve">
+    <value>Durasi tangkap (dalam detik)</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Tutup</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Atur</value>
+  </data>
+  <data name="FrameRate" xml:space="preserve">
+    <value>Nilai Bingkai</value>
+  </data>
+  <data name="Gif" xml:space="preserve">
+    <value>Gif</value>
+  </data>
+  <data name="IncludeClicks" xml:space="preserve">
+    <value>Memasukkan Klik Mouse</value>
+  </data>
+  <data name="IncludeCursor" xml:space="preserve">
+    <value>Memasukkan Kursor</value>
+  </data>
+  <data name="IncludeKeys" xml:space="preserve">
+    <value>Memasukkan Ketukan Kunci</value>
+  </data>
+  <data name="LoopbackSource" xml:space="preserve">
+    <value>Sumber Speaker Keluar</value>
+  </data>
+  <data name="MicSource" xml:space="preserve">
+    <value>Sumber Microphone</value>
+  </data>
+  <data name="MinCapture" xml:space="preserve">
+    <value>Kecilkan saat Tangkapan Dimulai</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>Kecilkan</value>
+  </data>
+  <data name="MinTray" xml:space="preserve">
+    <value>Kecilkan ke Sistem Tray</value>
+  </data>
+  <data name="OpenOutFolder" xml:space="preserve">
+    <value>Folder Keluar Terbuka</value>
+  </data>
+  <data name="OutFolder" xml:space="preserve">
+    <value>Folder Keluar</value>
+  </data>
+  <data name="PauseResume" xml:space="preserve">
+    <value>Jeda | Lanjutkan</value>
+  </data>
+  <data name="Quality" xml:space="preserve">
+    <value>Kualitas</value>
+  </data>
+  <data name="Recent" xml:space="preserve">
+    <value>Baru-baru ini</value>
+  </data>
+  <data name="RecordStop" xml:space="preserve">
+    <value>Rekam | Berhenti</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Segarkan</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Mengulang</value>
+  </data>
+  <data name="Resize" xml:space="preserve">
+    <value>Mengukur ulang</value>
+  </data>
+  <data name="ScreenShot" xml:space="preserve">
+    <value>Tangkap Layar</value>
+  </data>
+  <data name="StartDelay" xml:space="preserve">
+    <value>Mulai tunda (dalam ms)</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="VideoEncoder" xml:space="preserve">
+    <value>Penyandi Video</value>
+  </data>
+  <data name="VideoSource" xml:space="preserve">
+    <value>Sumber Video</value>
+  </data>
+  <data name="ImgFormat" xml:space="preserve">
+    <value>Format Gambar</value>
+  </data>
+  <data name="VarFrameRate" xml:space="preserve">
+    <value>Nilai Variabel Bingkai</value>
+  </data>
+  <data name="Hotkeys" xml:space="preserve">
+    <value>Hotkeys</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Utama</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Memasang Ulang</value>
+  </data>
+  <data name="SaveLocation" xml:space="preserve">
+    <value>Simpan lokasi</value>
+  </data>
+  <data name="ShowSysNotify" xml:space="preserve">
+    <value>Tunjukan notifikasi Sistem Tray</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Hapus</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Cetak</value>
+  </data>
+  <data name="RegionSelector" xml:space="preserve">
+    <value>Pemilih daerah</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Singkirkan dari daftar</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Papan klip</value>
+  </data>
+  <data name="Disk" xml:space="preserve">
+    <value>Cakram</value>
+  </data>
+  <data name="DelayGtDuration" xml:space="preserve">
+    <value>Penundaan tidak bisa lebih dari Durasi</value>
+  </data>
+  <data name="ImgEmpty" xml:space="preserve">
+    <value>Tidak disimpan. Gambar yang diambil kosong</value>
+  </data>
+  <data name="ImgSavedClipboard" xml:space="preserve">
+    <value>Gambar disimpan ke Papan klip</value>
+  </data>
+  <data name="ImgSavedDisk" xml:space="preserve">
+    <value>Gambar disimpan ke Cakram</value>
+  </data>
+  <data name="NotSaved" xml:space="preserve">
+    <value>Tidak disimpan</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>Rekaman dijeda</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Siap</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Merekam...</value>
+  </data>
+  <data name="Refreshed" xml:space="preserve">
+    <value>Disegarkan</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Rekaman dihentikan</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Menunggu...</value>
+  </data>
+  <data name="AudioSaved" xml:space="preserve">
+    <value>Suara disimpan</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>Video disimpan</value>
+  </data>
+  <data name="PauseResumeRecording" xml:space="preserve">
+    <value>Jeda/Lanjutkan Rekaman</value>
+  </data>
+  <data name="ScreenShotActiveWindow" xml:space="preserve">
+    <value>Tangkap layar Jendela Aktif</value>
+  </data>
+  <data name="ScreenShotDesktop" xml:space="preserve">
+    <value>Tangkap layar Desktop</value>
+  </data>
+  <data name="StartStopRecording" xml:space="preserve">
+    <value>Mulai/Berhenti Rekaman</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Keluar</value>
+  </data>
+  <data name="FFMpegFolder" xml:space="preserve">
+    <value>Folder FFMpeg</value>
+  </data>
+  <data name="SelectFFMpegFolder" xml:space="preserve">
+    <value>Pilih Folder FFMpeg </value>
+  </data>
+  <data name="SelectOutFolder" xml:space="preserve">
+    <value>Pilih Folder Keluar</value>
+  </data>
+  <data name="ScreenShotSaved" xml:space="preserve">
+    <value>Tangkapan layar disimpan</value>
+  </data>
+  <data name="OnlyAudio" xml:space="preserve">
+    <value>Hanya Suara</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Daerah</value>
+  </data>
+  <data name="WebCam" xml:space="preserve">
+    <value>WebCam</value>
+  </data>
+  <data name="Window" xml:space="preserve">
+    <value>Jendela</value>
+  </data>
+  <data name="Screen" xml:space="preserve">
+    <value>Layar</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Putar</value>
+  </data>
+  <data name="Transforms" xml:space="preserve">
+    <value>Ubah</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Bersihkan</value>
+  </data>
+  <data name="ClearRecentList" xml:space="preserve">
+    <value>Bersihkan Daftar Baru-baru ini</value>
+  </data>
+  <data name="MaxRecent" xml:space="preserve">
+    <value>Max items to persist Maksimum barang yang tertahan</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>Sebuah Eror terjadi</value>
+  </data>
+  <data name="WebCamView" xml:space="preserve">
+    <value>Tampak Webcam</value>
+  </data>
+  <data name="WindowHeight" xml:space="preserve">
+    <value>560</value>
+  </data>
+  <data name="WindowWidth" xml:space="preserve">
+    <value>420</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Tidak</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ya</value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>Layar Penuh</value>
+  </data>
+  <data name="Imgur" xml:space="preserve">
+    <value>Imgur</value>
+  </data>
+  <data name="ImgurFailed" xml:space="preserve">
+    <value>Unggahan Imgur gagal</value>
+  </data>
+  <data name="ImgurSuccess" xml:space="preserve">
+    <value>Unggahan Imgur sukses</value>
+  </data>
+  <data name="ImgurUploading" xml:space="preserve">
+    <value>Mengunggah ke Imgur</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Catatan perubahan</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Salin ke papan klip</value>
+  </data>
+  <data name="CustomizeClickAndKeysOverlays" xml:space="preserve">
+    <value>Mengkustomisasi posisi Klik dan Ketukan kunci </value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donasi</value>
+  </data>
+  <data name="Extras" xml:space="preserve">
+    <value>Tambahan</value>
+  </data>
+  <data name="FFMpegLog" xml:space="preserve">
+    <value>Catatan FFMpeg</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Bahasa</value>
+  </data>
+  <data name="ScreenShotTransforms" xml:space="preserve">
+    <value>Layar Tangkap berubah</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Sumber</value>
+  </data>
+  <data name="WantToTranslate" xml:space="preserve">
+    <value>Ingin menerjemahkan?</value>
+  </data>
+  <data name="BackColor" xml:space="preserve">
+    <value>Warna Dasar</value>
+  </data>
+  <data name="BorderColor" xml:space="preserve">
+    <value>Warna Pembatas</value>
+  </data>
+  <data name="BorderThickness" xml:space="preserve">
+    <value>Ketebalan Pembatas</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Warna</value>
+  </data>
+  <data name="CornerRadius" xml:space="preserve">
+    <value>Jarak pojok</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Ukuran font</value>
+  </data>
+  <data name="Keystrokes" xml:space="preserve">
+    <value>Ketukan kunci</value>
+  </data>
+  <data name="MaxTextLength" xml:space="preserve">
+    <value>Maksimum panjang teks</value>
+  </data>
+  <data name="MouseClicks" xml:space="preserve">
+    <value>Klik-an Mouse</value>
+  </data>
+  <data name="PaddingX" xml:space="preserve">
+    <value>Peletakan Horizontal</value>
+  </data>
+  <data name="PaddingY" xml:space="preserve">
+    <value>Peletakan Vertikal</value>
+  </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Jarak</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Waktu berakhir</value>
+  </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>Selalu di atas</value>
+  </data>
+  <data name="CopyOutPathClipboard" xml:space="preserve">
+    <value>Salin jalur hasil file ke Papan klip</value>
+  </data>
+  <data name="HideOnFullScreenShot" xml:space="preserve">
+    <value>Sembunyikan pada Layar penuh Tangkapan layar</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bawah</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>Tengah</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Kiri</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Kanan</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Atas</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Opsi</value>
+  </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Jalur salin</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>Penyedia</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Kata Sandi</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="UseProxy" xml:space="preserve">
+    <value>Gunakan Proxy</value>
+  </data>
+  <data name="UseProxyAuth" xml:space="preserve">
+    <value>Gunakan autentikasi proxy</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Nama Pengguna</value>
+  </data>
+  <data name="NoAudio" xml:space="preserve">
+    <value>Tanpa Suara</value>
+  </data>
+  <data name="NoWebcam" xml:space="preserve">
+    <value>TanpaWebcam</value>
+  </data>
+  <data name="Flip" xml:space="preserve">
+    <value>Flip</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Bantuan</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+</root>
