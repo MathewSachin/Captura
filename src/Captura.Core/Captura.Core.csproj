@@ -107,8 +107,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Resources.ua.Designer.cs">
-      <DependentUpon>Resources.ua.resx</DependentUpon>
+    <Compile Include="Properties\Resources.uk.Designer.cs">
+      <DependentUpon>Resources.uk.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -220,9 +220,9 @@
       <LastGenOutput>Resources.pt.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ua.resx">
+    <EmbeddedResource Include="Properties\Resources.uk.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.ua.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.uk.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ru.resx">
