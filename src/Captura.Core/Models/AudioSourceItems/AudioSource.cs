@@ -1,27 +1,12 @@
 ﻿using Screna.Audio;
 using System;
 using System.Collections.ObjectModel;
-using Captura.Properties;
 
 namespace Captura.Models
 {
     // Users need to call Init and Dispose methods
     public abstract class AudioSource : NotifyPropertyChanged, IDisposable
     {
-        class NoSoundItem : NotifyPropertyChanged, IAudioItem
-        {
-            public static NoSoundItem Instance { get; } = new NoSoundItem();
-
-            NoSoundItem()
-            {
-                TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
-            }
-
-            public string Name => Resources.NoAudio;
-
-            public override string ToString() => Name;
-        }
-
         public ObservableCollection<IAudioItem> AvailableRecordingSources { get; } = new ObservableCollection<IAudioItem>();
         public ObservableCollection<IAudioItem> AvailableLoopbackSources { get; } = new ObservableCollection<IAudioItem>();
 

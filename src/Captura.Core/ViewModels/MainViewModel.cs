@@ -454,6 +454,18 @@ namespace Captura.ViewModels
                 return;
             }
 
+            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif)
+            {
+                if (AudioViewModel.AudioSource.SelectedLoopbackSource != NoSoundItem.Instance
+                    || AudioViewModel.AudioSource.SelectedRecordingSource != NoSoundItem.Instance)
+                {
+                    if (!ServiceProvider.MessageProvider.ShowYesNo("Audio won't be included in the recording.\nDo you want to record?", "Gif does not support Audio"))
+                    {
+                        return;
+                    }
+                }
+            }
+
             if (Duration != 0 && (StartDelay > Duration * 1000))
             {
                 ServiceProvider.MessageProvider.ShowError(Resources.DelayGtDuration);
