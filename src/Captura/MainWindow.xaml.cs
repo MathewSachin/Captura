@@ -58,8 +58,11 @@ namespace Captura
                     e.Cancel = true;
             };
 
-            if (DataContext is MainViewModel vm)
-                vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+            Loaded += (s, e) =>
+            {
+                if (DataContext is MainViewModel vm)
+                    vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+            };
         }
         
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
