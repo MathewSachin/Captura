@@ -210,7 +210,8 @@
                                     <DataTemplate>
                                         <DockPanel>
                                             <GridSplitter Width="1"
-                                                          Margin="5,0"/>
+                                                          Margin="5,0"
+                                                          IsEnabled="False"/>
                                             <mui:TransitioningContentControl Content="{Binding}"/>
                                         </DockPanel>
                                     </DataTemplate>
