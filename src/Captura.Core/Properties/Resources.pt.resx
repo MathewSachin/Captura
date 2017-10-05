@@ -358,7 +358,7 @@
     <value>Teclas de Atalho</value>
   </data>
   <data name="DelayGtDuration" xml:space="preserve">
-    <value>O atraso não pode ser maior do que a duração</value>
+    <value>O atraso não pode ser maior que a duração</value>
   </data>
   <data name="OpenOutFolder" xml:space="preserve">
     <value>Abrir Pasta de Saída</value>
@@ -415,7 +415,7 @@
     <value>Selecionar Região</value>
   </data>
   <data name="SelectOutFolder" xml:space="preserve">
-    <value>Seelcione a Pasta de Saída</value>
+    <value>Selecione a Pasta de Saída</value>
   </data>
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copiar para Área de Transferência</value>

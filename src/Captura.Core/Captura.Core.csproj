@@ -87,6 +87,11 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
+    <Compile Include="Properties\Resources.sv.Designer.cs">
+      <DependentUpon>Resources.sv.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.id.Designer.cs">
       <DependentUpon>Resources.id.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -122,7 +127,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-	<Compile Include="Properties\Resources.he.Designer.cs">
+    <Compile Include="Properties\Resources.he.Designer.cs">
       <DependentUpon>Resources.he.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -205,6 +210,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.sv.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.sv.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.id.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.id.Designer.cs</LastGenOutput>
@@ -240,7 +250,7 @@
       <LastGenOutput>Resources.es.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-	<EmbeddedResource Include="Properties\Resources.he.resx">
+    <EmbeddedResource Include="Properties\Resources.he.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.he.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
