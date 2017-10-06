@@ -11,7 +11,7 @@ namespace Captura
         
         TranslationSource()
         {
-            foreach (var culture in CultureInfo.GetCultures(CultureTypes.AllCultures))
+            foreach (var culture in CultureInfo.GetCultures(CultureTypes.AllCultures).OrderBy(M => M.DisplayName))
             {
                 if (culture.Equals(CultureInfo.InvariantCulture) || culture.Name == "en-US")
                     continue;
