@@ -88,6 +88,11 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
+    <Compile Include="Properties\Resources.fi.Designer.cs">
+      <DependentUpon>Resources.fi.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.fr.Designer.cs">
       <DependentUpon>Resources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -231,6 +236,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.fi.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.fi.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.fr.Designer.cs</LastGenOutput>
