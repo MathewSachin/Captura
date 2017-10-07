@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Tietoja</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Captura</value>
+  </data>
+  <data name="Audio" xml:space="preserve">
+    <value>Ääni</value>
+  </data>
+  <data name="CaptureDuration" xml:space="preserve">
+    <value>Tallennuksen kesto (sekunneissa)</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Sulje</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Määritä</value>
+  </data>
+  <data name="FrameRate" xml:space="preserve">
+    <value>Ruudunpäivitysnopeus</value>
+  </data>
+  <data name="Gif" xml:space="preserve">
+    <value>Gif</value>
+  </data>
+  <data name="IncludeClicks" xml:space="preserve">
+    <value>Näytä hiiren painallukset</value>
+  </data>
+  <data name="IncludeCursor" xml:space="preserve">
+    <value>Näytä kursori</value>
+  </data>
+  <data name="IncludeKeys" xml:space="preserve">
+    <value>Näytä näppäimistön painallukset</value>
+  </data>
+  <data name="LoopbackSource" xml:space="preserve">
+    <value>Kaiuttimen ulostulo</value>
+  </data>
+  <data name="MicSource" xml:space="preserve">
+    <value>Mikrofonin tulo</value>
+  </data>
+  <data name="MinCapture" xml:space="preserve">
+    <value>Pienennä kaappauksen alkaessa</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>Pienennä</value>
+  </data>
+  <data name="MinTray" xml:space="preserve">
+    <value>Pienennä tehtäväpalkkiin</value>
+  </data>
+  <data name="OpenOutFolder" xml:space="preserve">
+    <value>Avaa tallennuskansio</value>
+  </data>
+  <data name="OutFolder" xml:space="preserve">
+    <value>Tallennuskansio</value>
+  </data>
+  <data name="PauseResume" xml:space="preserve">
+    <value>Keskeytä | Jatka</value>
+  </data>
+  <data name="Quality" xml:space="preserve">
+    <value>Laatu</value>
+  </data>
+  <data name="Recent" xml:space="preserve">
+    <value>Viimeisimmät</value>
+  </data>
+  <data name="RecordStop" xml:space="preserve">
+    <value>Nauhoita | Lopeta</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Päivitä</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Toista</value>
+  </data>
+  <data name="Resize" xml:space="preserve">
+    <value>Resize</value>
+  </data>
+  <data name="ScreenShot" xml:space="preserve">
+    <value>Ruutukaappaus</value>
+  </data>
+  <data name="StartDelay" xml:space="preserve">
+    <value>Aloituksen viive (millisekunteissa)</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="VideoEncoder" xml:space="preserve">
+    <value>Video encoder</value>
+  </data>
+  <data name="VideoSource" xml:space="preserve">
+    <value>Videolähde</value>
+  </data>
+  <data name="ImgFormat" xml:space="preserve">
+    <value>Kuvan formaatti</value>
+  </data>
+  <data name="VarFrameRate" xml:space="preserve">
+    <value>Muuttuva ruudunpäivitysnopeus</value>
+  </data>
+  <data name="Hotkeys" xml:space="preserve">
+    <value>Pikanäppäimet</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Päävalikko</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Nollaa</value>
+  </data>
+  <data name="SaveLocation" xml:space="preserve">
+    <value>Tallenna sijainti</value>
+  </data>
+  <data name="ShowSysNotify" xml:space="preserve">
+    <value>Näytä tehtäväpalkin ilmoitukset</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Poista</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Tulosta</value>
+  </data>
+  <data name="RegionSelector" xml:space="preserve">
+    <value>Aluevalitsin</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Poista listasta</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Leikepöytä</value>
+  </data>
+  <data name="Disk" xml:space="preserve">
+    <value>Levy</value>
+  </data>
+  <data name="DelayGtDuration" xml:space="preserve">
+    <value>Viive ei voi olla suurempi kuin Kesto</value>
+  </data>
+  <data name="ImgEmpty" xml:space="preserve">
+    <value>Otettu kuva oli tyhjä ja sitä ei tallennettu</value>
+  </data>
+  <data name="ImgSavedClipboard" xml:space="preserve">
+    <value>Kuva tallennettu leikepöydälle</value>
+  </data>
+  <data name="ImgSavedDisk" xml:space="preserve">
+    <value>Kuva tallennettu levylle</value>
+  </data>
+  <data name="NotSaved" xml:space="preserve">
+    <value>Ei tallennettu</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>Tallennus keskeytetty</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Valmis</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Nauhoitetaan...</value>
+  </data>
+  <data name="Refreshed" xml:space="preserve">
+    <value>Päivitetty</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Tallennus lopetettu</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Odotetaan...</value>
+  </data>
+  <data name="AudioSaved" xml:space="preserve">
+    <value>Ääni tallennettu</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>Video tallennettu</value>
+  </data>
+  <data name="PauseResumeRecording" xml:space="preserve">
+    <value>Keskeytä/Jatka tallennusta</value>
+  </data>
+  <data name="ScreenShotActiveWindow" xml:space="preserve">
+    <value>Ota ruutukaappaus aktiivisesta ikkunasta</value>
+  </data>
+  <data name="ScreenShotDesktop" xml:space="preserve">
+    <value>Ota ruutukaappaus työpöydästä</value>
+  </data>
+  <data name="StartStopRecording" xml:space="preserve">
+    <value>Aloita/Lopeta tallennus</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Poistu</value>
+  </data>
+  <data name="FFMpegFolder" xml:space="preserve">
+    <value>FFMpeg Kansio</value>
+  </data>
+  <data name="SelectFFMpegFolder" xml:space="preserve">
+    <value>Valitse FFMpeg kansio</value>
+  </data>
+  <data name="SelectOutFolder" xml:space="preserve">
+    <value>Valitse tallennuskansio</value>
+  </data>
+  <data name="ScreenShotSaved" xml:space="preserve">
+    <value>Ruutukaappaus tallennettu</value>
+  </data>
+  <data name="OnlyAudio" xml:space="preserve">
+    <value>Vain ääni</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Alue</value>
+  </data>
+  <data name="WebCam" xml:space="preserve">
+    <value>Webkamera</value>
+  </data>
+  <data name="Window" xml:space="preserve">
+    <value>Ikkuna</value>
+  </data>
+  <data name="Screen" xml:space="preserve">
+    <value>Näyttö</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Kierrä</value>
+  </data>
+  <data name="Transforms" xml:space="preserve">
+    <value>Muunnokset</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Tyhjennä</value>
+  </data>
+  <data name="ClearRecentList" xml:space="preserve">
+    <value>Tyhjennä viimeisimmät</value>
+  </data>
+  <data name="MaxRecent" xml:space="preserve">
+    <value>Viimeisimmät listan maksimimäärä</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>Tapahtui virhe</value>
+  </data>
+  <data name="WebCamView" xml:space="preserve">
+    <value>Webkameran näkymä</value>
+  </data>
+  <data name="WindowHeight" xml:space="preserve">
+    <value>560</value>
+  </data>
+  <data name="WindowWidth" xml:space="preserve">
+    <value>420</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ei</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Kyllä</value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>Koko näyttö</value>
+  </data>
+  <data name="Imgur" xml:space="preserve">
+    <value>Imgur</value>
+  </data>
+  <data name="ImgurFailed" xml:space="preserve">
+    <value>Imgur lähetys epäonnistui</value>
+  </data>
+  <data name="ImgurSuccess" xml:space="preserve">
+    <value>Imgur lähetys onnistui</value>
+  </data>
+  <data name="ImgurUploading" xml:space="preserve">
+    <value>Lähetetään Imguriin</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Muutosloki</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Kopioi leikepöydälle</value>
+  </data>
+  <data name="CustomizeClickAndKeysOverlays" xml:space="preserve">
+    <value>Mukauta hiiren ja näppäimistön painallusten ulkoasua</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Lahjoita</value>
+  </data>
+  <data name="Extras" xml:space="preserve">
+    <value>Extrat</value>
+  </data>
+  <data name="FFMpegLog" xml:space="preserve">
+    <value>FFMpeg Loki</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Kieli</value>
+  </data>
+  <data name="ScreenShotTransforms" xml:space="preserve">
+    <value>Ruutukaappauksen muokkaukset</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Lähde</value>
+  </data>
+  <data name="WantToTranslate" xml:space="preserve">
+    <value>Haluatko kääntäjäksi?</value>
+  </data>
+  <data name="BackColor" xml:space="preserve">
+    <value>Taustaväri</value>
+  </data>
+  <data name="BorderColor" xml:space="preserve">
+    <value>Reunaväri</value>
+  </data>
+  <data name="BorderThickness" xml:space="preserve">
+    <value>Reunan paksuus</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Väri</value>
+  </data>
+  <data name="CornerRadius" xml:space="preserve">
+    <value>Kulman pyöreys</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Fontin koko</value>
+  </data>
+  <data name="Keystrokes" xml:space="preserve">
+    <value>Näppäimistön painallukset</value>
+  </data>
+  <data name="MaxTextLength" xml:space="preserve">
+    <value>Tekstin maksimipituus</value>
+  </data>
+  <data name="MouseClicks" xml:space="preserve">
+    <value>Hiiren painallukset</value>
+  </data>
+  <data name="PaddingX" xml:space="preserve">
+    <value>Vaakasuora marginaali</value>
+  </data>
+  <data name="PaddingY" xml:space="preserve">
+    <value>Pystysuora marginaali</value>
+  </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Säde</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Aikakatkaisu</value>
+  </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>Aina päällimmäisenä</value>
+  </data>
+  <data name="CopyOutPathClipboard" xml:space="preserve">
+    <value>Kopioi tiedostopolku leikepöydälle</value>
+  </data>
+  <data name="HideOnFullScreenShot" xml:space="preserve">
+    <value>Piilota koko ruudun ruutukaappauksessa</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Alapuoli</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>Keski</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Vasen</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Oikea</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Ylä</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Asetukset</value>
+  </data>
+  <data name="Proxy" xml:space="preserve">
+    <value>Välityspalvelin</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Kopioi polku</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>Palvelin</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Salasana</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Portti</value>
+  </data>
+  <data name="UseProxy" xml:space="preserve">
+    <value>Käytä välityspalvelinta</value>
+  </data>
+  <data name="UseProxyAuth" xml:space="preserve">
+    <value>Käytä välityspalvelimessa tunnistautumista</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Käyttäjänimi</value>
+  </data>
+  <data name="NoAudio" xml:space="preserve">
+    <value>Ei ääntä</value>
+  </data>
+  <data name="NoWebcam" xml:space="preserve">
+    <value>Ei webkameraa</value>
+  </data>
+  <data name="Flip" xml:space="preserve">
+    <value>Käännä</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ohje</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Vaakasuora</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Pystysuora</value>
+  </data>
+</root>
