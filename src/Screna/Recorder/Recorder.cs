@@ -54,7 +54,7 @@ namespace Screna
             _sw = new Stopwatch();
             _frames = new BlockingCollection<Bitmap>();
 
-            _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
+            _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
             _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
         }
 
@@ -91,35 +91,23 @@ namespace Screna
             }
         }
 
-        void DoRecord()
+        async Task DoRecord()
         {
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
+
+                Task<Bitmap> task = null;
                 
                 while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
                 {
                     var timestamp = DateTime.Now;
 
-                    var frame = _imageProvider.Capture();
-                    
-                    try
+                    if (task != null)
                     {
-                        _frames.Add(frame);
+                        var frame = await task;
 
-                        ++frameCount;
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return;
-                    }
-
-                    var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                    var diff = requiredFrames - frameCount;
-
-                    for (var i = 0; i < diff; ++i)
-                    {
                         try
                         {
                             _frames.Add(frame);
@@ -130,7 +118,26 @@ namespace Screna
                         {
                             return;
                         }
+
+                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+                        var diff = requiredFrames - frameCount;
+
+                        for (var i = 0; i < diff; ++i)
+                        {
+                            try
+                            {
+                                _frames.Add(frame);
+
+                                ++frameCount;
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                return;
+                            }
+                        }
                     }
+
+                    task = Task.Factory.StartNew(() => _imageProvider.Capture());
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 
