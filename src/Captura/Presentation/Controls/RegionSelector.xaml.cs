@@ -108,14 +108,6 @@ namespace Captura
             SelectorHidden?.Invoke();
         }
         
-        void HeaderPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
-
-        void HeaderMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (WindowState == WindowState.Maximized)
-                WindowState = WindowState.Normal;
-        }
-
         bool _captured;
 
         void SnapButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -135,7 +127,26 @@ namespace Captura
                 else ToggleBorder(win);
 
                 if (win != IntPtr.Zero)
+                {
                     SelectedRegion = new Screna.Window(win).Rectangle;
+
+                    // Prevent going outside
+                    if (Left < 0)
+                    {
+                        // Decrease Width
+                        try { Width += Left; }
+                        catch { }
+                        finally { Left = 0; }
+                    }
+
+                    if (Top < 0)
+                    {
+                        // Decrease Height
+                        try { Height += Top; }
+                        catch { }
+                        finally { Top = 0; }
+                    }
+                }
             }
             finally
             {
@@ -160,39 +171,8 @@ namespace Captura
             }
         }
 
-        // Prevent going outside
         protected override void OnLocationChanged(EventArgs e)
         {
-            if (Left < 0)
-            {
-                // Decrease Width
-                try
-                {
-                    Width += Left;
-                }
-                catch
-                {
-                    // May become invalid
-                }
-
-                Left = 0;
-            }
-
-            if (Top < 0)
-            {
-                // Decrease Height
-                try
-                {
-                    Height += Top;
-                }
-                catch
-                {
-                    // May become invalid
-                }
-
-                Top = 0;
-            }
-
             base.OnLocationChanged(e);
             
             if (_captured)

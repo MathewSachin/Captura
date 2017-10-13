@@ -17,7 +17,7 @@
         MinWidth="250">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0"
-                      CaptionHeight="0"
+                      CaptionHeight="30"
                       ResizeBorderThickness="3"
                       NonClientFrameEdges="None"/>
     </WindowChrome.WindowChrome>
@@ -40,17 +40,14 @@
                                 Background="{DynamicResource WindowBackground}"
                                 x:Name="Snapper"
                                 Margin="0,-5,0,0"
-                                PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"/>
+                                PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-            <Label Cursor="SizeAll"
-                   Background="{DynamicResource WindowBackground}"
+            <Label Background="{DynamicResource WindowBackground}"
                    Content="{local:Loc RegionSelector}"
                    HorizontalContentAlignment="Center"
-                   MouseDoubleClick="HeaderMouseDoubleClick"
-                   PreviewMouseLeftButtonDown="HeaderPreviewMouseLeftButtonDown"
                    Grid.Column="1"
                    Margin="0,-5,0,0"/>
-
 
             <local:ModernButton ToolTip="{local:Loc Close}"
                                 x:Name="CloseButton"
@@ -59,7 +56,8 @@
                                 Foreground="#77ef5350"
                                 IconData="{StaticResource Icon_Close}"
                                 Grid.Column="2"
-                                Margin="0,-5,0,0"/>
+                                Margin="0,-5,0,0"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
 
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource Accent}"
