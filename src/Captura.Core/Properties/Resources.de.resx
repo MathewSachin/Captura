@@ -166,7 +166,7 @@
     <value>In Tray minimieren</value>
   </data>
   <data name="OpenOutFolder" xml:space="preserve">
-    <value>Asugabeordner öffnen</value>
+    <value>Ausgabeordner öffnen</value>
   </data>
   <data name="OutFolder" xml:space="preserve">
     <value>Ausgabeordner</value>
@@ -415,7 +415,7 @@
     <value>Rahmenfarbe</value>
   </data>
   <data name="BorderThickness" xml:space="preserve">
-    <value>Rahmdendicke</value>
+    <value>Rahmendicke</value>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
