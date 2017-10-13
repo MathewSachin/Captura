@@ -2,7 +2,7 @@
 if ($env:configuration -eq 'Release' -and $env:appveyor_repo_tag -eq 'true')
 {
     # sha256 Checksum
-    $checksum = (Get-FileHash "Output/Captura-Portable.zip").Hash
+    $checksum = (Get-FileHash "Captura-Portable.zip").Hash
 
     $installScript = "choco/tools/chocolateyinstall.ps1"
 
