@@ -23,6 +23,11 @@
                                 IconData="{StaticResource Icon_Close}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
+            <local:ModernButton ToolTip="Capture Image"
+                                Click="CaptureImage_OnClick"
+                                IconData="{StaticResource Icon_Camera}"
+                                DockPanel.Dock="Right"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
             <Label Content="{local:Loc WebCamView}"
                    Margin="10,0"/>
         </DockPanel>

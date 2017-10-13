@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -38,6 +39,8 @@ namespace Captura
                     Directory.CreateDirectory(_settingsDir);
             }
         }
+
+        public static MainViewModel MainViewModel { get; set; }
         
         /// <summary>
         /// Get the requested Service.

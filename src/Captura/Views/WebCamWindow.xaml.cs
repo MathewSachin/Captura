@@ -22,5 +22,10 @@ namespace Captura
         public WebCameraControl GetWebCamControl() => webCameraControl;
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
+
+        void CaptureImage_OnClick(object Sender, RoutedEventArgs E)
+        {
+            ServiceProvider.MainViewModel?.SaveScreenShot(webCameraControl.GetCurrentImage());
+        }
     }
 }

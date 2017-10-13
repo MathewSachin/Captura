@@ -61,7 +61,11 @@ namespace Captura
             Loaded += (s, e) =>
             {
                 if (DataContext is MainViewModel vm)
+                {
+                    ServiceProvider.MainViewModel = vm;
+
                     vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                }
             };
         }
         
