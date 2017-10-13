@@ -200,8 +200,15 @@
                                           Margin="5"
                                           DataContext="{x:Static core:TranslationSource.Instance}"
                                           ItemsSource="{Binding AvailableCultures}"
-                                          SelectedValue="{Binding CurrentCulture, Mode=TwoWay}"
-                                          DisplayMemberPath="DisplayName"/>
+                                          SelectedValue="{Binding CurrentCulture, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="{Binding DisplayName, Mode=OneWay}"/> (<Run Text="{Binding NativeName, Mode=OneWay}"/>)
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </DockPanel>
                             <TabControl Background="Transparent"
                                         TabStripPlacement="Left"
