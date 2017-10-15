@@ -126,7 +126,7 @@
                    MinWidth="15"
                    HorizontalContentAlignment="Right"/>
             <Slider Minimum="1"
-                    Maximum="60"
+                    Maximum="30"
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"
