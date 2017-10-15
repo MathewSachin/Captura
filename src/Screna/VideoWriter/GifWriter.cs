@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
+// TODO: Adapt to ImageWrapper
 namespace Screna
 {
     /// <summary>
@@ -93,7 +94,7 @@ namespace Screna
         /// Writes a Image frame.
         /// </summary>
         /// <param name="Image">Image frame to write.</param>
-        public void WriteFrame(Bitmap Image) => WriteFrame(Image, _defaultFrameDelay);
+        public void WriteFrame(ImageWrapper Image) => WriteFrame(Image.Bitmap, _defaultFrameDelay);
 
         /// <summary>
         /// <see cref="GifWriter"/> does not support Audio.

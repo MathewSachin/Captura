@@ -19,20 +19,26 @@ namespace Captura.Models
 
             Width = Rectangle.Width;
             Height = Rectangle.Height;
+
+            _imagePool = new ImagePool(Width, Height);
         }
         
         public int Height { get; }
 
         public int Width { get; }
 
-        public Bitmap Capture()
+        readonly ImagePool _imagePool;
+
+        public ImageWrapper Capture()
         {
             if (_dupl == null)
                 _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
 
+            var img = _imagePool.Get();
+
             try
             {
-                return _dupl.Capture();
+                return _dupl.Capture(img);
             }
             catch
             {
@@ -42,11 +48,12 @@ namespace Captura.Models
 
                 try
                 {
-                    return _dupl.Capture();
+                    return _dupl.Capture(img);
                 }
                 catch
                 {
-                    return new Bitmap(Width, Height);
+                    img.Written = true;
+                    return ImageWrapper.Repeat;
                 }
             }
         }
@@ -54,6 +61,7 @@ namespace Captura.Models
         public void Dispose()
         {
             _dupl?.Dispose();
+            _imagePool.Dispose();
         }
     }
 }

@@ -19,44 +19,37 @@ namespace Screna
 
             _transform = Transform;
             _includeCursor = IncludeCursor;
+            _imagePool = new ImagePool(Width, Height);
         }
 
         protected readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
 
-        Bitmap lastImage;
+        readonly ImagePool _imagePool;
 
         /// <summary>
         /// Captures an Image.
         /// </summary>
-        public Bitmap Capture()
+        public ImageWrapper Capture()
         {
-            var bmp = new Bitmap(Width, Height);
+            var img = _imagePool.Get();
 
             try
             {
-                using (var g = Graphics.FromImage(bmp))
-                {
-                    OnCapture(g);
+                var g = img.Graphics;
 
-                    if (_includeCursor)
-                        MouseCursor.Draw(g, _transform);
-                }
+                OnCapture(g);
 
-                lastImage = bmp;
+                if (_includeCursor)
+                    MouseCursor.Draw(g, _transform);
 
-                return bmp;
+                g.Flush();
+
+                return img;
             }
             catch
             {
-                if (lastImage != null)
-                {
-                    bmp.Dispose();
-
-                    return lastImage;
-                }
-
-                return bmp;
+                return ImageWrapper.Repeat;
             }
         }
 
@@ -78,6 +71,9 @@ namespace Screna
         /// <summary>
         /// Frees all resources used by this instance.
         /// </summary>
-        public virtual void Dispose() { }
+        public virtual void Dispose()
+        {
+            _imagePool.Dispose();
+        }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Screna.Audio;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
@@ -53,27 +50,16 @@ namespace Captura.Models
             if (AudioProvider != null)
                 CreateAudioStream(AudioProvider);
         }
-
-        int lastFrameHash;
         
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
-        public void WriteFrame(Bitmap Image)
+        public void WriteFrame(ImageWrapper Image)
         {
-            var hash = Image.GetHashCode();
-
-            if (lastFrameHash != hash)
+            if (Image != ImageWrapper.Repeat)
             {
-                using (Image)
-                {
-                    var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-                    Image.UnlockBits(bits);
-                }
-
-                lastFrameHash = hash;
+                Image.CopyTo(_videoBuffer);
             }
 
             lock (_writer)

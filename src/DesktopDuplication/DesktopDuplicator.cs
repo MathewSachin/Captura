@@ -89,9 +89,7 @@ namespace DesktopDuplication
             }
         }
         
-        Bitmap _lastFrame;
-
-        public Bitmap Capture()
+        public ImageWrapper Capture(ImageWrapper ImageWrapper)
         {
             if (_desktopImageTexture == null)
                 _desktopImageTexture = new Texture2D(_device, _textureDesc);
@@ -104,7 +102,8 @@ namespace DesktopDuplication
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
-                return _lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
+                ImageWrapper.Written = true;
+                return ImageWrapper.Repeat;
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
             {
@@ -127,7 +126,7 @@ namespace DesktopDuplication
 
             try
             {
-                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch);
+                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, ImageWrapper);
             }
             finally
             {
@@ -135,12 +134,12 @@ namespace DesktopDuplication
             }
         }
 
-        Bitmap ProcessFrame(IntPtr SourcePtr, int SourceRowPitch)
+        ImageWrapper ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, ImageWrapper ImageWrapper)
         {
-            _lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
+            var frame = ImageWrapper.Bitmap;
 
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = _lastFrame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, _lastFrame.PixelFormat);
+            var mapDest = frame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, frame.PixelFormat);
 
             Parallel.For(0, _rect.Height, y =>
             {
@@ -150,15 +149,15 @@ namespace DesktopDuplication
             });
                         
             // Release source and dest locks
-            _lastFrame.UnlockBits(mapDest);
+            frame.UnlockBits(mapDest);
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                using (var g = Graphics.FromImage(_lastFrame))
+                using (var g = Graphics.FromImage(frame))
                     MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
             }
 
-            return _lastFrame;
+            return ImageWrapper;
         }
         
         void ReleaseFrame()

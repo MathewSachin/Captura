@@ -397,10 +397,13 @@ namespace Captura.ViewModels
                                     // Increase timeout
                                     dupl.Timeout = 10000;
 
-                                    // First one is blank
-                                    dupl.Capture().Dispose();
+                                    var img = new ImageWrapper(WindowProvider.DesktopRectangle.Width, WindowProvider.DesktopRectangle.Height);
 
-                                    bmp = dupl.Capture();
+                                    // First one is blank
+                                    dupl.Capture(img).Dispose();
+
+                                    bmp = dupl.Capture(img).Bitmap;
+                                    img.Graphics.Dispose();
                                 }
                             }
                             catch

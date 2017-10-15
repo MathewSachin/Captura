@@ -2,10 +2,7 @@
 using Screna.Audio;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO.Pipes;
-using System.Runtime.InteropServices;
 
 namespace Captura.Models
 {
@@ -98,35 +95,30 @@ namespace Captura.Models
             _audioPipe.WriteAsync(Buffer, 0, Length);
         }
 
-        int lastFrameHash;
+        bool first = true;
         
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
-        public void WriteFrame(Bitmap Image)
+        public void WriteFrame(ImageWrapper Image)
         {
             if (_ffmpegProcess.HasExited)
             {
                 Image.Dispose();
                 throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
-
-            var hash = Image.GetHashCode();
-
-            if (lastFrameHash == 0)
+            
+            if (first)
+            {
                 _ffmpegIn.WaitForConnection();
 
-            if (lastFrameHash != hash)
-            {
-                using (Image)
-                {
-                    var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-                    Image.UnlockBits(bits);
-                }
+                first = false;
+            }
 
-                lastFrameHash = hash;
+            if (Image != ImageWrapper.Repeat)
+            {
+                Image.CopyTo(_videoBuffer);
             }
             
             _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
