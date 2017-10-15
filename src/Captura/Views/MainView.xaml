@@ -120,13 +120,13 @@
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc FrameRate}"
-                   ContentStringFormat="{}{0}:"                   />
+                   ContentStringFormat="{}{0}:"/>
             <Label Content="{local:Setting FrameRate, StringFormat={}{0:N0}}"
                    Margin="5,0"
                    MinWidth="15"
                    HorizontalContentAlignment="Right"/>
             <Slider Minimum="1"
-                    Maximum="30" 
+                    Maximum="60"
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"

@@ -99,6 +99,23 @@ namespace Screna
                 var frameCount = 0;
 
                 Task<Bitmap> task = null;
+
+                // Returns false when stopped
+                bool AddFrame(Bitmap Frame)
+                {
+                    try
+                    {
+                        _frames.Add(Frame);
+
+                        ++frameCount;
+
+                        return true;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return false;
+                    }
+                }
                 
                 while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
                 {
@@ -108,32 +125,16 @@ namespace Screna
                     {
                         var frame = await task;
 
-                        try
-                        {
-                            _frames.Add(frame);
-
-                            ++frameCount;
-                        }
-                        catch (InvalidOperationException)
-                        {
+                        if (!AddFrame(frame))
                             return;
-                        }
 
                         var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
                         var diff = requiredFrames - frameCount;
 
                         for (var i = 0; i < diff; ++i)
                         {
-                            try
-                            {
-                                _frames.Add(frame);
-
-                                ++frameCount;
-                            }
-                            catch (InvalidOperationException)
-                            {
+                            if (!AddFrame(frame))
                                 return;
-                            }
                         }
                     }
 
