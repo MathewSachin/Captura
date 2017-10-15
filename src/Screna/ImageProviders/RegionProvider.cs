@@ -7,7 +7,7 @@ namespace Screna
     /// </summary>
     public class RegionProvider : ImageProviderBase
     {
-        readonly Rectangle _region;
+        Rectangle _region;
         
         /// <summary>
         /// Creates a new instance of <see cref="RegionProvider"/>.
@@ -17,6 +17,11 @@ namespace Screna
             : base(Region.Size, P => new Point(P.X - Region.X, P.Y - Region.Y),  IncludeCursor)
         {
             _region = Region;
+        }
+
+        public void UpdateLocation(Point P)
+        {
+            _region.Location = P;
         }
 
         /// <summary>
