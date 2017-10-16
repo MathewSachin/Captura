@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -82,8 +81,6 @@ namespace Screna
                     if (img != null)
                     {
                         _videoWriter.WriteFrame(img);
-
-                        img.Written = true;
                     }
                 }
             }

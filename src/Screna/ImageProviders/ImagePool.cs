@@ -18,20 +18,23 @@ namespace Screna
 
         public ImageWrapper Get()
         {
-            var any = _images.FirstOrDefault(M => M.Written);
-
-            if (any != null)
+            lock (_images)
             {
-                any.Written = false;
+                var any = _images.FirstOrDefault(M => M.Written);
 
-                return any;
+                if (any != null)
+                {
+                    any.Written = false;
+
+                    return any;
+                }
+
+                var img = new ImageWrapper(_width, _height);
+
+                _images.Add(img);
+
+                return img;
             }
-
-            var img = new ImageWrapper(_width, _height);
-
-            _images.Add(img);
-
-            return img;
         }
 
         public void Dispose()
