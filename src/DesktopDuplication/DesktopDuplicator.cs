@@ -89,7 +89,7 @@ namespace DesktopDuplication
             }
         }
         
-        public ImageWrapper Capture(ImageWrapper ImageWrapper)
+        public ImageWrapper Capture(Func<ImageWrapper> ImageWrapperFunc)
         {
             if (_desktopImageTexture == null)
                 _desktopImageTexture = new Texture2D(_device, _textureDesc);
@@ -102,7 +102,6 @@ namespace DesktopDuplication
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
-                ImageWrapper.Written = true;
                 return ImageWrapper.Repeat;
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
@@ -126,7 +125,7 @@ namespace DesktopDuplication
 
             try
             {
-                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, ImageWrapper);
+                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, ImageWrapperFunc());
             }
             finally
             {

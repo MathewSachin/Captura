@@ -34,11 +34,9 @@ namespace Captura.Models
             if (_dupl == null)
                 _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
 
-            var img = _imagePool.Get();
-
             try
             {
-                return _dupl.Capture(img);
+                return _dupl.Capture(_imagePool.Get);
             }
             catch
             {
@@ -48,11 +46,10 @@ namespace Captura.Models
 
                 try
                 {
-                    return _dupl.Capture(img);
+                    return _dupl.Capture(_imagePool.Get);
                 }
                 catch
                 {
-                    img.Written = true;
                     return ImageWrapper.Repeat;
                 }
             }
