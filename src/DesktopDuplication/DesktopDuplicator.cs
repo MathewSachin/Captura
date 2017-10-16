@@ -150,7 +150,11 @@ namespace DesktopDuplication
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                MouseCursor.Draw(ImageWrapper.Graphics, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+                var g = ImageWrapper.Graphics;
+
+                MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+
+                g.Flush();
             }
 
             return ImageWrapper;
