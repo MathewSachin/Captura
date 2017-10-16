@@ -117,7 +117,19 @@ namespace Screna
                     }
                 }
 
-                while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
+                bool CanContinue()
+                {
+                    try
+                    {
+                        return _continueCapturing.WaitOne();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        return false;
+                    }
+                }
+
+                while (CanContinue() && !_frames.IsAddingCompleted)
                 {
                     var timestamp = DateTime.Now;
 
