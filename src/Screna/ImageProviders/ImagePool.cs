@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Screna
 {
@@ -16,25 +17,23 @@ namespace Screna
 
         readonly List<ImageWrapper> _images = new List<ImageWrapper>();
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public ImageWrapper Get()
         {
-            lock (_images)
+            var any = _images.FirstOrDefault(M => M.Written);
+
+            if (any != null)
             {
-                var any = _images.FirstOrDefault(M => M.Written);
+                any.Written = false;
 
-                if (any != null)
-                {
-                    any.Written = false;
-
-                    return any;
-                }
-
-                var img = new ImageWrapper(_width, _height);
-
-                _images.Add(img);
-
-                return img;
+                return any;
             }
+
+            var img = new ImageWrapper(_width, _height);
+
+            _images.Add(img);
+
+            return img;
         }
 
         public void Dispose()

@@ -22,9 +22,14 @@ namespace Screna
 
         public bool Written { get; set; }
 
+        public BitmapData Lock(ImageLockMode LockMode)
+        {
+            return Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), LockMode, PixelFormat.Format32bppRgb);
+        }
+
         public void CopyTo(byte[] Output)
         {
-            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            var bits = Lock(ImageLockMode.ReadOnly);
             Marshal.Copy(bits.Scan0, Output, 0, Output.Length);
             Bitmap.UnlockBits(bits);
 

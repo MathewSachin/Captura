@@ -135,10 +135,8 @@ namespace DesktopDuplication
 
         ImageWrapper ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, ImageWrapper ImageWrapper)
         {
-            var frame = ImageWrapper.Bitmap;
-
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = frame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, frame.PixelFormat);
+            var mapDest = ImageWrapper.Lock(ImageLockMode.WriteOnly);
 
             Parallel.For(0, _rect.Height, y =>
             {
@@ -148,12 +146,11 @@ namespace DesktopDuplication
             });
                         
             // Release source and dest locks
-            frame.UnlockBits(mapDest);
+            ImageWrapper.Bitmap.UnlockBits(mapDest);
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                using (var g = Graphics.FromImage(frame))
-                    MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+                MouseCursor.Draw(ImageWrapper.Graphics, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
             }
 
             return ImageWrapper;
