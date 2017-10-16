@@ -116,7 +116,7 @@ namespace Screna
                         return false;
                     }
                 }
-                
+
                 while (_continueCapturing.WaitOne() && !_frames.IsAddingCompleted)
                 {
                     var timestamp = DateTime.Now;
@@ -182,7 +182,7 @@ namespace Screna
                 _videoWriter.Dispose();
                 _frames.Dispose();
 
-                _continueCapturing.Close();
+                _continueCapturing.Dispose();
             }
             else _audioWriter.Dispose();
 

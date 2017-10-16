@@ -51,12 +51,15 @@ namespace Screna
         void Dispose(bool ErrorOccured)
         {
             // Resume if Paused
-            _continueCapturing?.Set();
+            _continueCapturing.Set();
             
             _stopCapturing.Set();
 
             if (!ErrorOccured)
                 _recordTask.Wait();
+
+            _continueCapturing.Dispose();
+            _stopCapturing.Dispose();
 
             _timing.Stop();
 
