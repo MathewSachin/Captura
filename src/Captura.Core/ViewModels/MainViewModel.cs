@@ -7,11 +7,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using DesktopDuplication;
+using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
@@ -72,6 +72,16 @@ namespace Captura.ViewModels
             
             PauseCommand = new DelegateCommand(OnPauseExecute, false);
             #endregion
+
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+        }
+
+        void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend && RecorderState == RecorderState.Recording)
+            {
+                OnPauseExecute();
+            }
         }
 
         void OnPauseExecute()
