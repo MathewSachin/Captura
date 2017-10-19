@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using WebEye.Controls.Wpf;
+using Captura.Webcam;
 
 namespace Captura.Models
 {
@@ -26,7 +25,7 @@ namespace Captura.Models
         
         public ObservableCollection<IWebcamItem> AvailableCams { get; } = new ObservableCollection<IWebcamItem>();
 
-        readonly WebCameraControl _camControl;
+        readonly WebcamControl _camControl;
 
         IWebcamItem _selectedCam = WebcamItem.NoWebcam;
 
@@ -39,9 +38,8 @@ namespace Captura.Models
                     return;
 
                 _selectedCam = value;
-                
-                if (_camControl.IsCapturing)
-                    _camControl.StopCapture();
+
+                _camControl.Capture?.StopPreview();
 
                 if (_selectedCam == null || _selectedCam == WebcamItem.NoWebcam)
                 {
@@ -55,19 +53,13 @@ namespace Captura.Models
                     {
                         if (value is WebcamItem model)
                         {
-
-                            _camControl.StartCapture(model.Cam);
+                            _camControl.VideoDevice = model.Cam;
+                            _camControl.Refresh();
 
                             _selectedCam = value;
 
                             OnPropertyChanged();
                         }
-                    }
-                    catch (DirectShowException e) when (e.InnerException is COMException comException && comException.HResult == unchecked((int)0x80040217))
-                    {
-                        _window.Hide();
-
-                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\nIf you have multiple graphic cards, try running Captura on integrated graphics.");
                     }
                     catch (Exception e)
                     {
@@ -90,7 +82,7 @@ namespace Captura.Models
             if (_camControl == null)
                 return;
 
-            foreach (var cam in _camControl.GetVideoCaptureDevices())
+            foreach (var cam in CaptureWebcam.VideoInputDevices)
                 AvailableCams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;
