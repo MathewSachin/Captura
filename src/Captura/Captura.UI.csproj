@@ -133,6 +133,9 @@
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WebcamConfig.xaml.cs">
+      <DependentUpon>WebcamConfig.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MouseKeyHookView.xaml.cs">
       <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
     </Compile>
@@ -214,6 +217,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WebcamConfig.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
