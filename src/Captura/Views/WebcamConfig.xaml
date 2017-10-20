@@ -44,5 +44,30 @@
                                 Grid.Row="1"
                                 Margin="0,3"/>
         </Grid>
+        
+        <Grid Margin="0,15,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Content="{local:Loc Resize}"
+                      IsChecked="{local:Setting Webcam_DoResize}"
+                      Margin="0,0,5,0"/>
+
+            <xctk:IntegerUpDown Value="{local:Setting Webcam_ResizeWidth}"
+                                Grid.Column="1"
+                                IsEnabled="{local:Setting Webcam_DoResize}"/>
+
+            <Label Content="x"
+                   Grid.Column="2"
+                   Margin="5,0"/>
+
+            <xctk:IntegerUpDown Value="{local:Setting Webcam_ResizeHeight}"
+                                Grid.Column="3"
+                                IsEnabled="{local:Setting Webcam_DoResize}"/>
+        </Grid>
     </StackPanel>
 </Page>

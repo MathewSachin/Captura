@@ -37,5 +37,29 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool Webcam_DoResize
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("320")]
+        public int Webcam_ResizeWidth
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("240")]
+        public int Webcam_ResizeHeight
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }

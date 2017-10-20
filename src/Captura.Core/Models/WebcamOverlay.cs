@@ -47,7 +47,10 @@ namespace Captura.Models
 
                 if (img == null)
                     return;
-                
+
+                if (Settings.Instance.Webcam_DoResize)
+                    img = img.Resize(new Size(Settings.Instance.Webcam_ResizeWidth, Settings.Instance.Webcam_ResizeHeight));
+
                 using (img)
                 {
                     try
