@@ -10,6 +10,9 @@
                 <local:ModernButton ToolTip="{local:Loc Refresh}"
                                     Command="{Binding RefreshCommand}"
                                     IconData="{StaticResource Icon_Refresh}"/>
+                <local:ModernButton ToolTip="Open Canvas"
+                                    Click="OpenCanvas"
+                                    IconData="{StaticResource Icon_Brush}"/>
                 <local:ModernButton ToolTip="{local:Loc OpenOutFolder}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{StaticResource Icon_Folder}"/>
