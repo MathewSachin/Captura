@@ -27,8 +27,6 @@ namespace Captura
         {
             try
             {
-                webCameraControl.Capture.PrepareCapture();
-
                 ServiceProvider.MainViewModel?.SaveScreenShot(webCameraControl.Capture.GetFrame());
             }
             catch (Exception e)

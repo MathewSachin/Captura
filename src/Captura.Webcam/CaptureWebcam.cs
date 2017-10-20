@@ -246,7 +246,7 @@ namespace Captura.Webcam
                 _videoInfoHeader = Marshal.PtrToStructure<VideoInfoHeader>(media.formatPtr);
                 Marshal.FreeCoTaskMem(media.formatPtr); media.formatPtr = IntPtr.Zero;
 
-                hr = _sampGrabber.SetBufferSamples(false);
+                hr = _sampGrabber.SetBufferSamples(true);
 
                 if (hr == 0)
                     hr = _sampGrabber.SetOneShot(false);
@@ -519,58 +519,10 @@ namespace Captura.Webcam
         #endregion
 
         #region SampleGrabber
-        /// <summary>
-        /// Capture frame event.
-        /// </summary>
-        public event Action<Bitmap> CaptureFrameEvent;
+        int ISampleGrabberCB.SampleCB(double sampleTime, IMediaSample pSample) => 0;
 
-        int ISampleGrabberCB.SampleCB(double sampleTime, IMediaSample pSample)
-        {
-            return 0;
-        }
-
-        public int BufferCB(double sampleTime, IntPtr pBuffer, int bufferLen)
-        {
-            if (CaptureFrameEvent == null)
-                return 1;
-
-            var width = _videoInfoHeader.BmiHeader.Width;
-            var height = _videoInfoHeader.BmiHeader.Height;
-
-            var stride = width * 3;
-
-            Marshal.Copy(pBuffer, _savedArray, 0, bufferLen);
-
-            var handle = GCHandle.Alloc(_savedArray, GCHandleType.Pinned);
-            var scan0 = (int)handle.AddrOfPinnedObject();
-            scan0 += height * stride;
-
-            var b = new Bitmap(width, height, -stride, System.Drawing.Imaging.PixelFormat.Format24bppRgb, (IntPtr)scan0);
-            handle.Free();
-
-            CaptureFrameEvent(b);
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Prepares the capture of frames.
-        /// </summary>
-        public void PrepareCapture()
-        {
-            var size = _videoInfoHeader.BmiHeader.ImageSize;
-
-            if (_savedArray == null)
-            {
-                if (size < 1000 || size > 16000000)
-                    return;
-
-                _savedArray = new byte[size + 64000];
-            }
-
-            _sampGrabber.SetBufferSamples(false);
-        }
-
+        public int BufferCB(double sampleTime, IntPtr pBuffer, int bufferLen) => 1;
+        
         /// <summary>
         /// Gets the current frame from the buffer.
         /// </summary>
@@ -581,6 +533,9 @@ namespace Captura.Webcam
             var bufferSize = 0;
             _sampGrabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
 
+            if (_savedArray == null || _savedArray.Length < bufferSize)
+                _savedArray = new byte[bufferSize + 64000];
+            
             //Allocs the byte array.
             var handleObj = GCHandle.Alloc(_savedArray, GCHandleType.Pinned);
 
@@ -594,10 +549,10 @@ namespace Captura.Webcam
             var width = _videoInfoHeader.BmiHeader.Width;
             var height = _videoInfoHeader.BmiHeader.Height;
 
-            var stride = width * 3;
+            var stride = width * 4;
             address += height * stride;
 
-            var bitmap = new Bitmap(width, height, -stride, System.Drawing.Imaging.PixelFormat.Format24bppRgb, address);
+            var bitmap = new Bitmap(width, height, -stride, System.Drawing.Imaging.PixelFormat.Format32bppRgb, address);
             handleObj.Free();
 
             return bitmap;
