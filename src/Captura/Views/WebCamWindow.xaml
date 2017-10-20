@@ -5,9 +5,8 @@
         Title="{local:Loc WebCamView}"
         Width="640"
         Height="480"
-        MinWidth="400"
-        MinHeight="250"
-        Topmost="True"
+        MinWidth="200"
+        MinHeight="200"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"

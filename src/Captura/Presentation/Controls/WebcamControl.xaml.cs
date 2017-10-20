@@ -73,7 +73,7 @@ namespace Captura
                 
                 Capture.StartPreview();
 
-                Capture.OnPreviewWindowResize(50, 38, new System.Drawing.Point(257, 1));
+                Capture.OnPreviewWindowResize(50, 40, new System.Drawing.Point(257, 1));
             }
         }
 
