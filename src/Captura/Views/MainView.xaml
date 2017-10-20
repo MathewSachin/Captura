@@ -80,11 +80,16 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ToolTip="{local:Loc WebCam}"/>
+            
+            <Button Content="Preview"
+                    DockPanel.Dock="Right"
+                    Click="Preview_Click"
+                    Padding="10,0"
+                    Margin="7,0"/>
 
             <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                       SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      Margin="0,0,7,0"/>
+                      DisplayMemberPath="Name"/>
         </DockPanel>
 
         <Grid Margin="0,5">

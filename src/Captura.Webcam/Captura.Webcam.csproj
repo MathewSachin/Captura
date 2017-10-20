@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProjectGuid>{8CE140BC-61D1-4A4A-A313-A966D961282C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Captura.Webcam</RootNamespace>
+    <AssemblyName>Captura.Webcam</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CaptureWebcam.cs" />
+    <Compile Include="Enumerations\GraphState.cs" />
+    <Compile Include="Enumerations\PinDirection.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="Interfaces\IAMCopyCaptureFileProgress.cs" />
+    <Compile Include="Interfaces\IAMStreamConfig.cs" />
+    <Compile Include="Interfaces\IBaseFilter.cs" />
+    <Compile Include="Interfaces\ICaptureGraphBuilder2.cs" />
+    <Compile Include="Interfaces\ICreateDevEnum.cs" />
+    <Compile Include="Interfaces\IEnumFilters.cs" />
+    <Compile Include="Interfaces\IEnumPins.cs" />
+    <Compile Include="Interfaces\IFileSinkFilter.cs" />
+    <Compile Include="Interfaces\IFilterGraph.cs" />
+    <Compile Include="Interfaces\IGraphBuilder.cs" />
+    <Compile Include="Interfaces\IMediaControl.cs" />
+    <Compile Include="Interfaces\IMediaSample.cs" />
+    <Compile Include="Interfaces\IPin.cs" />
+    <Compile Include="Interfaces\IPropertyBag.cs" />
+    <Compile Include="Interfaces\IReferenceClock.cs" />
+    <Compile Include="Interfaces\ISampleGrabber.cs" />
+    <Compile Include="Interfaces\ISampleGrabberCB.cs" />
+    <Compile Include="Interfaces\IVideoWindow.cs" />
+    <Compile Include="Structures\AMMediaType.cs" />
+    <Compile Include="Structures\BitmapInfoHeader.cs" />
+    <Compile Include="Structures\FilterInfo.cs" />
+    <Compile Include="Structures\OptInt64.cs" />
+    <Compile Include="Structures\PinInfo.cs" />
+    <Compile Include="Structures\RECT.cs" />
+    <Compile Include="Structures\VideoInfoHeader.cs" />
+    <Compile Include="Uuid.cs" />
+    <Compile Include="WorkAround.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

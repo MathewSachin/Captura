@@ -1,32 +1,22 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using WebEye.Controls.Wpf;
+using System.Drawing;
+using Captura.Webcam;
 
 namespace Captura.Models
 {
     public class WebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
-        readonly WebCamWindow _window;
-
         public WebCamProvider()
         {
-            _window = WebCamWindow.Instance;
-
-            _camControl = _window.GetWebCamControl();
-
-            _window.IsVisibleChanged += (s, e) =>
-            {
-                if (!_window.IsVisible)
-                    Dispose();
-            };
+            _camControl = WebCamWindow.Instance.GetWebCamControl();
             
             Refresh();
         }
         
         public ObservableCollection<IWebcamItem> AvailableCams { get; } = new ObservableCollection<IWebcamItem>();
 
-        readonly WebCameraControl _camControl;
+        readonly WebcamControl _camControl;
 
         IWebcamItem _selectedCam = WebcamItem.NoWebcam;
 
@@ -39,40 +29,25 @@ namespace Captura.Models
                     return;
 
                 _selectedCam = value;
-                
-                if (_camControl.IsCapturing)
-                    _camControl.StopCapture();
 
-                if (_selectedCam == null || _selectedCam == WebcamItem.NoWebcam)
-                {
-                    _window.Hide();
-                }
-                else
-                {
-                    _window.Show();
+                _camControl.Capture?.StopPreview();
 
+                if (value is WebcamItem model)
+                {
                     try
                     {
-                        if (value is WebcamItem model)
-                        {
+                        _camControl.VideoDevice = model.Cam;
 
-                            _camControl.StartCapture(model.Cam);
+                        if (_camControl.IsVisible)
+                            _camControl.Refresh();
+                        else _camControl.ShowOnMainWindow(MainWindow.Instance);
 
-                            _selectedCam = value;
+                        _selectedCam = value;
 
-                            OnPropertyChanged();
-                        }
-                    }
-                    catch (DirectShowException e) when (e.InnerException is COMException comException && comException.HResult == unchecked((int)0x80040217))
-                    {
-                        _window.Hide();
-
-                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\nIf you have multiple graphic cards, try running Captura on integrated graphics.");
+                        OnPropertyChanged();
                     }
                     catch (Exception e)
                     {
-                        _window.Hide();
-
                         ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\n\n\n{e}");
                     }
                 }
@@ -90,15 +65,19 @@ namespace Captura.Models
             if (_camControl == null)
                 return;
 
-            foreach (var cam in _camControl.GetVideoCaptureDevices())
+            foreach (var cam in CaptureWebcam.VideoInputDevices)
                 AvailableCams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;
         }
 
-        public void Dispose()
+        public Bitmap Capture()
         {
-            SelectedCam = WebcamItem.NoWebcam;
+            try
+            {
+                return _camControl.Dispatcher.Invoke(() => _camControl.Capture.GetFrame());
+            }
+            catch { return null; }
         }
     }
 }

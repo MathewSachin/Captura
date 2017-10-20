@@ -88,6 +88,7 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
+    <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Properties\Resources.ro.Designer.cs">
       <DependentUpon>Resources.ro.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -233,6 +234,7 @@
     <Compile Include="Settings\ArraySettingsProvider.cs" />
     <Compile Include="Settings\Code.cs" />
     <Compile Include="Settings\JsonSettingsProvider.cs" />
+    <Compile Include="Settings\Webcam.cs" />
     <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Proxy.cs" />
     <Compile Include="Settings\Remember.cs" />

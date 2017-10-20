@@ -60,9 +60,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="WebEye.Controls.Wpf.WebCameraControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebEye.Controls.Wpf.WebCameraControl.1.0.2\lib\net40\WebEye.Controls.Wpf.WebCameraControl.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -92,6 +89,9 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
+      <DependentUpon>WebcamControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="ViewModels\AudioEditorViewModel.cs" />
@@ -133,6 +133,9 @@
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WebcamConfig.xaml.cs">
+      <DependentUpon>WebcamConfig.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MouseKeyHookView.xaml.cs">
       <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Controls\ScreenShotBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\WebcamControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -213,6 +220,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\WebcamConfig.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MouseKeyHookView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -261,6 +272,10 @@
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
+      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
+      <Name>Captura.Webcam</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
