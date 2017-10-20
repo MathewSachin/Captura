@@ -69,36 +69,39 @@ namespace Captura
             }
         }
 
+        public static Bitmap Resize(this Bitmap Image, Size Resize)
+        {
+            var ratio = Math.Min((double)Resize.Width / Image.Width, (double)Resize.Height / Image.Height);
+
+            var resizeWidth = Image.Width * ratio;
+            var resizeHeight = Image.Height * ratio;
+            
+            var resized = new Bitmap(Resize.Width, Resize.Height);
+
+            using (var g = Graphics.FromImage(resized))
+            {
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+
+                var backgroundColor = Settings.Instance.VideoBackgroundColor;
+
+                if (backgroundColor != Color.Transparent)
+                    g.FillRectangle(new SolidBrush(backgroundColor), 0, 0, Resize.Width, Resize.Height);
+
+                using (Image)
+                    g.DrawImage(Image, 0, 0, (int)resizeWidth, (int)resizeHeight);
+            }
+
+            return resized;
+        }
+
         public static Bitmap Transform(this Bitmap Image, bool SkipResize = false)
         {
-            #region Resize
             if (Settings.Instance.DoResize && !SkipResize)
             {
-                var ratio = Math.Min(Settings.Instance.ResizeWidth / Image.Width, Settings.Instance.ResizeHeight / Image.Height);
-
-                var resizeWidth = Image.Width * ratio;
-                var resizeHeight = Image.Height * ratio;
-
-                var nonResized = Image;
-
-                Image = new Bitmap(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
-
-                using (var g = Graphics.FromImage(Image))
-                {
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-
-                    var backgroundColor = Settings.Instance.VideoBackgroundColor;
-
-                    if (backgroundColor != Color.Transparent)
-                        g.FillRectangle(new SolidBrush(backgroundColor), 0, 0, Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight);
-
-                    using (nonResized)
-                        g.DrawImage(nonResized, 0, 0, resizeWidth, resizeHeight);
-                }
+                Image = Image.Resize(new Size(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight));
             }
-            #endregion
 
             #region Rotate Flip
             var flip = "Flip";
