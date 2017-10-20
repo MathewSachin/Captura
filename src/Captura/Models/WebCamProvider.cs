@@ -7,19 +7,9 @@ namespace Captura.Models
 {
     public class WebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
-        readonly WebCamWindow _window;
-
         public WebCamProvider()
         {
-            _window = WebCamWindow.Instance;
-
-            _camControl = _window.GetWebCamControl();
-
-            _window.IsVisibleChanged += (s, e) =>
-            {
-                if (!_window.IsVisible)
-                    Dispose();
-            };
+            _camControl = WebCamWindow.Instance.GetWebCamControl();
             
             Refresh();
         }
@@ -42,30 +32,22 @@ namespace Captura.Models
 
                 _camControl.Capture?.StopPreview();
 
-                if (_selectedCam == null || _selectedCam == WebcamItem.NoWebcam)
+                if (value is WebcamItem model)
                 {
-                    _window.Hide();
-                }
-                else
-                {
-                    _window.Show();
-
                     try
                     {
-                        if (value is WebcamItem model)
-                        {
-                            _camControl.VideoDevice = model.Cam;
+                        _camControl.VideoDevice = model.Cam;
+
+                        if (_camControl.IsVisible)
                             _camControl.Refresh();
+                        else _camControl.ShowOnMainWindow(MainWindow.Instance);
 
-                            _selectedCam = value;
+                        _selectedCam = value;
 
-                            OnPropertyChanged();
-                        }
+                        OnPropertyChanged();
                     }
                     catch (Exception e)
                     {
-                        _window.Hide();
-
                         ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\n\n\n{e}");
                     }
                 }
@@ -96,11 +78,6 @@ namespace Captura.Models
                 return _camControl.Dispatcher.Invoke(() => _camControl.Capture.GetFrame());
             }
             catch { return null; }
-        }
-
-        public void Dispose()
-        {
-            SelectedCam = WebcamItem.NoWebcam;
         }
     }
 }

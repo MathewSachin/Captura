@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Interop;
 using Captura.Webcam;
 
@@ -43,31 +41,57 @@ namespace Captura
                     PreviewWindow = source.Handle,
                     Scale = Scale()
                 };
-
-                void OnSizeChange()
-                {
-                    Capture.OnPreviewWindowResize(ActualWidth, ActualHeight, new System.Drawing.Point(5, 40));
-                }
-
+                
                 SizeChanged += (s, e) => OnSizeChange();
 
-                Capture.StartPreview();
+                if (IsVisible)
+                    Capture.StartPreview();
 
                 OnSizeChange();
             }
         }
 
-        public void Unload()
+        public void ShowOnMainWindow(Window MainWindow)
         {
+            //To change the video device, a dispose is needed.
             if (Capture != null)
             {
-                Capture.StopPreview();
                 Capture.Dispose();
+                Capture = null;
             }
 
-            VideoDevice = null;
+            //Create capture object.
+            if (VideoDevice != null)
+            {
+                var source = PresentationSource.FromVisual(MainWindow) as HwndSource;
 
-            GC.Collect();
+                Capture = new CaptureWebcam(VideoDevice)
+                {
+                    PreviewWindow = source.Handle,
+                    Scale = Scale()
+                };
+                
+                Capture.StartPreview();
+
+                Capture.OnPreviewWindowResize(50, 38, new System.Drawing.Point(257, 1));
+            }
+        }
+
+        void OnSizeChange()
+        {
+            Capture?.OnPreviewWindowResize(ActualWidth, ActualHeight, new System.Drawing.Point(5, 40));
+        }
+
+        void WebcamControl_OnIsVisibleChanged(object Sender, DependencyPropertyChangedEventArgs E)
+        {
+            if (IsVisible)
+            {
+                Refresh();
+            }
+            else
+            {
+                ShowOnMainWindow(MainWindow.Instance);
+            }
         }
     }
 }

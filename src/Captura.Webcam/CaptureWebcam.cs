@@ -529,6 +529,9 @@ namespace Captura.Webcam
         /// <returns>The Bitmap of the frame.</returns>
         public Bitmap GetFrame()
         {
+            if (_actualGraphState != GraphState.Rendered)
+                return null;
+
             //Asks for the buffer size.
             var bufferSize = 0;
             _sampGrabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);

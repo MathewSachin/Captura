@@ -22,7 +22,10 @@ namespace Captura.Models
                 var point = new Point((int)g.VisibleClipBounds.Width - img.Width - 10, (int)g.VisibleClipBounds.Height - img.Height - 10);
 
                 using (img)
-                    g.DrawImage(img, point);
+                {
+                    try { g.DrawImage(img, point); }
+                    catch { }
+                }
             }
         }
     }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace Captura.Models
 {
-    public interface IWebCamProvider : INotifyPropertyChanged, IDisposable
+    public interface IWebCamProvider : INotifyPropertyChanged
     {
         ObservableCollection<IWebcamItem> AvailableCams { get; }
 
