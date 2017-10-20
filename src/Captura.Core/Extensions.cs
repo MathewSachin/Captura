@@ -69,13 +69,19 @@ namespace Captura
             }
         }
 
-        public static Bitmap Resize(this Bitmap Image, Size Resize)
+        public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio)
         {
-            var ratio = Math.Min((double)Resize.Width / Image.Width, (double)Resize.Height / Image.Height);
+            var resizeWidth = Resize.Width;
+            var resizeHeight = Resize.Height;
 
-            var resizeWidth = Image.Width * ratio;
-            var resizeHeight = Image.Height * ratio;
-            
+            if (KeepAspectRatio)
+            {
+                var ratio = Math.Min((double) Resize.Width / Image.Width, (double) Resize.Height / Image.Height);
+
+                resizeWidth = (int)(Image.Width * ratio);
+                resizeHeight = (int)(Image.Height * ratio);
+            }
+
             var resized = new Bitmap(Resize.Width, Resize.Height);
 
             using (var g = Graphics.FromImage(resized))
@@ -90,7 +96,7 @@ namespace Captura
                     g.FillRectangle(new SolidBrush(backgroundColor), 0, 0, Resize.Width, Resize.Height);
 
                 using (Image)
-                    g.DrawImage(Image, 0, 0, (int)resizeWidth, (int)resizeHeight);
+                    g.DrawImage(Image, 0, 0, resizeWidth, resizeHeight);
             }
 
             return resized;
@@ -100,7 +106,7 @@ namespace Captura
         {
             if (Settings.Instance.DoResize && !SkipResize)
             {
-                Image = Image.Resize(new Size(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight));
+                Image = Image.Resize(new Size(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight), true);
             }
 
             #region Rotate Flip
