@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -11,5 +12,7 @@ namespace Captura.Models
         IWebcamItem SelectedCam { get; set; }
 
         void Refresh();
+
+        Bitmap Capture();
     }
 }

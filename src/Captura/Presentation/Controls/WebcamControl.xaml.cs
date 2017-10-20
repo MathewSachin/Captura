@@ -8,18 +8,13 @@ namespace Captura
 {
     public partial class WebcamControl
     {
-        public CaptureWebcam Capture { get; set; }
+        public CaptureWebcam Capture { get; private set; }
 
         public Filter VideoDevice { get; set; }
 
         public WebcamControl()
         {
             InitializeComponent();
-        }
-
-        bool IsInDesignMode()
-        {
-            return DesignerProperties.GetIsInDesignMode(this);
         }
 
         double Scale()
@@ -73,20 +68,6 @@ namespace Captura
             VideoDevice = null;
 
             GC.Collect();
-        }
-
-        void WebcamControl_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            //Don't show the feed if in design mode.
-            if (IsInDesignMode())
-                return;
-
-            Refresh();
-        }
-
-        void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Unload();
         }
     }
 }

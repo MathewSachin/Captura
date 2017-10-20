@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using Captura.Webcam;
 
 namespace Captura.Models
@@ -86,6 +87,15 @@ namespace Captura.Models
                 AvailableCams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;
+        }
+
+        public Bitmap Capture()
+        {
+            try
+            {
+                return _camControl.Dispatcher.Invoke(() => _camControl.Capture.GetFrame());
+            }
+            catch { return null; }
         }
 
         public void Dispose()

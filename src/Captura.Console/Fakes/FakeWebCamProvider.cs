@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using Captura.Models;
 
 namespace Captura.Console
@@ -12,5 +13,7 @@ namespace Captura.Console
         public void Dispose() { }
 
         public void Refresh() { }
+
+        public Bitmap Capture() => null;
     }
 }

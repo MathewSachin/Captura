@@ -3,6 +3,7 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -598,12 +599,14 @@ namespace Captura.ViewModels
 
             if (imageProvider == null)
                 return null;
+
+            var overlays = new List<IOverlay> { new WebcamOverlay() };
                         
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                return new OverlayedImageProvider(imageProvider, transform, new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
             
-            return imageProvider;
+            return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }
         
         public async Task StopRecording()

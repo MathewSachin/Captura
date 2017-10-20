@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Captura
 {
@@ -27,11 +26,12 @@ namespace Captura
         {
             try
             {
-                ServiceProvider.MainViewModel?.SaveScreenShot(webCameraControl.Capture.GetFrame());
+                var img = ServiceProvider.WebCamProvider.Capture();
+
+                if (img != null)
+                    ServiceProvider.MainViewModel?.SaveScreenShot(img);
             }
-            catch (Exception e)
-            {
-            }
+            catch { }
         }
     }
 }
