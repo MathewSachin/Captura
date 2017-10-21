@@ -484,6 +484,27 @@ namespace Captura.ViewModels
                 return;
             }
 
+            IImageProvider imgProvider;
+
+            try
+            {
+                imgProvider = GetImageProvider();
+            }
+            catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
+            {
+                ServiceProvider.MessageProvider.ShowError($"{e.Message}\n\nDesktop Duplication will now be turned off.");
+
+                Settings.Instance.UseDeskDupl = false;
+
+                return;
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowError(e.ToString());
+
+                return;
+            }
+
             ServiceProvider.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
@@ -510,8 +531,6 @@ namespace Captura.ViewModels
             TimeSpan = TimeSpan.Zero;
             
             var audioSource = AudioViewModel.AudioSource.GetAudioSource();
-
-            var imgProvider = GetImageProvider();
             
             var videoEncoder = GetVideoFileWriter(imgProvider, audioSource);
             

@@ -19,6 +19,15 @@ namespace Captura.Models
 
             Width = Rectangle.Width;
             Height = Rectangle.Height;
+
+            Reinit();
+        }
+
+        void Reinit()
+        {
+            _dupl?.Dispose();
+
+            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
         }
         
         public int Height { get; }
@@ -27,18 +36,13 @@ namespace Captura.Models
 
         public Bitmap Capture()
         {
-            if (_dupl == null)
-                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
-
             try
             {
                 return _dupl.Capture();
             }
             catch
             {
-                _dupl?.Dispose();
-
-                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
+                Reinit();
 
                 try
                 {
