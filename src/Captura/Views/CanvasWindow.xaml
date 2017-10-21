@@ -25,8 +25,14 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Value}"
-                               Margin="2"/>
+                        <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              ToolTip="{Binding Value}"
+                              Margin="2"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

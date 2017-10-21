@@ -93,6 +93,7 @@
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Setting.cs" />
+    <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="Views\CanvasWindow.xaml.cs">
