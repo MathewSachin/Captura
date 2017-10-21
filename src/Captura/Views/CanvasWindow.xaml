@@ -15,10 +15,27 @@
         <DockPanel LastChildFill="False">
             <ListBox Margin="2"
                      ItemsSource="{Binding Modes}"
-                     DisplayMemberPath="Value"
                      SelectedValuePath="Key"
                      Name="ModesBox"
-                     SelectionChanged="ModesBox_OnSelectionChanged"/>
+                     SelectionChanged="ModesBox_OnSelectionChanged">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Value}"
+                               Margin="2"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <xctk:IntegerUpDown Name="SizeBox"
+                                Minimum="1"
+                                Maximum="100"
+                                ValueChanged="SizeBox_OnValueChanged"
+                                Margin="5,2"/>
 
             <xctk:ColorPicker Width="100"
                               Margin="2"
@@ -26,13 +43,16 @@
                               Name="ColorPicker"
                               SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
                               VerticalContentAlignment="Stretch"/>
+
+            <CheckBox Click="Highlight_OnClick"
+                      Content="Highlighter"
+                      Margin="5,2"/>
             
-            <Slider Name="SizeSlider"
-                    ValueChanged="SizeSlider_OnValueChanged"
-                    Minimum="1"
-                    Maximum="100"
-                    Width="200"
-                    Margin="5,2"/>
+            <CheckBox Checked="FitToCurve_OnClick"
+                      Unchecked="FitToCurve_OnClick"
+                      Content="Fit to Curve"
+                      Name="FitToCurveCheckbox"
+                      Margin="5,2"/>
         </DockPanel>
         
         <InkCanvas Grid.Row="1"

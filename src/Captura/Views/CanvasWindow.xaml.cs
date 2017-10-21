@@ -14,7 +14,8 @@ namespace Captura
 
             ModesBox.SelectedIndex = 0;
             ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
-            SizeSlider.Value = 10;
+            SizeBox.Value = 5;
+            FitToCurveCheckbox.IsChecked = true;
         }
 
         public KeyValuePair<InkCanvasEditingMode, string>[] Modes { get; } =
@@ -39,10 +40,22 @@ namespace Captura
                 InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
         }
 
-        void SizeSlider_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<double> E)
+        void Highlight_OnClick(object Sender, RoutedEventArgs E)
         {
-            if (InkCanvas != null)
-                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = E.NewValue;
+            if (InkCanvas != null && Sender is CheckBox checkBox)
+                InkCanvas.DefaultDrawingAttributes.IsHighlighter = checkBox.IsChecked.GetValueOrDefault();
+        }
+
+        void FitToCurve_OnClick(object Sender, RoutedEventArgs E)
+        {
+            if (InkCanvas != null && Sender is CheckBox checkBox)
+                InkCanvas.DefaultDrawingAttributes.FitToCurve = checkBox.IsChecked.GetValueOrDefault();
+        }
+
+        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
+        {
+            if (InkCanvas != null && E.NewValue is int i)
+                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
         }
     }
 }
