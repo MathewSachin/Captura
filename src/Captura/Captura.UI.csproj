@@ -93,8 +93,12 @@
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Setting.cs" />
+    <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="ViewModels\AudioEditorViewModel.cs" />
+    <Compile Include="Views\CanvasWindow.xaml.cs">
+      <DependentUpon>CanvasWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FFMpegDownloader.xaml.cs">
       <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
     </Compile>
@@ -189,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AudioEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CanvasWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,5 +8,10 @@ namespace Captura
         {
             WebCamWindow.Instance.Show();
         }
+        
+        void OpenCanvas(object Sender, RoutedEventArgs E)
+        {
+            new CanvasWindow().ShowAndFocus();
+        }
     }
 }
