@@ -53,3 +53,6 @@ else
 
 # Update Appveyor Build Version
 Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER"
+
+# Update Version in Inno Script
+Set-Content "Inno.iss" (@('#define MyAppVersion "{0}"' -f $env:AppVersion) + (Get-Content "Inno.iss"))

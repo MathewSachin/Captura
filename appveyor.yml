@@ -13,7 +13,8 @@ environment:
     secure: /h902KA2Ri4x+k+whUtfcEv1/evuFPyUnns3nYQ8fghSaUpFr0ZUG6SZvzdceQEiOM46kS1iOOyp7f1jWV/ItRdzBE4Vbqz7DJEHdLhvBIyI3dr4/dt94Hcj5jUT86sxR4dMVx08FUvAOog4PET5Fw==
 
 install:
-- ps: appveyor/Install.ps1
+  # Install Inno Setup
+  - choco install innosetup -y
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified
@@ -23,13 +24,11 @@ before_build:
   - ps: appveyor/Update-Version.ps1
   - ps: appveyor/Update-ApiKeys.ps1
 
-build:
-  parallel: true
-  project: src\Captura.sln
-  verbosity: minimal
+# Build using Cake
+build_script:
+  - ps: build.ps1 -target CI -configuration $env:CONFIGURATION
 
 after_build:
-  - ps: appveyor/Pack-Release.ps1
   - ps: appveyor/Choco.ps1
 
 artifacts:
