@@ -19,23 +19,33 @@ Task("Nuget-Restore").Does(() =>
 });
 
 // Restores native dlls
-Task("Native-Restore").Does(() =>
+void NativeRestore()
 {
     EnsureDirectoryExists("temp");
 
     var bass = "temp/bass/bass.dll";
     var bassmix = "temp/bassmix/bassmix.dll";
 
+    Information("Restoring Native libraries...");
+
     if (!FileExists(bass))
     {
+        Information("Downloading BASS...");
+
         DownloadFile("http://www.un4seen.com/files/bass24.zip", "temp/bass.zip");
+
+        Information("Extracting BASS ...");
 
         Unzip("temp/bass.zip", "temp/bass");
     }
 
     if (!FileExists(bassmix))
     {
+        Information("Downloading BASSmix...");
+
         DownloadFile("http://www.un4seen.com/files/bassmix24.zip", "temp/bassmix.zip");
+
+        Information("Extracting BASSmix...");
 
         Unzip("temp/bassmix.zip", "temp/bassmix");
     }
@@ -49,7 +59,7 @@ Task("Native-Restore").Does(() =>
         CopyFileToDirectory(bass, output);
         CopyFileToDirectory(bassmix, output);
     }
-});
+}
 
 Task("Build")
     .IsDependentOn("NuGet-Restore")
@@ -62,7 +72,7 @@ Task("Build")
             .WithTarget("Rebuild");
     });
 
-    RunTarget("Native-Restore");
+    NativeRestore();
 });
 
 Task("Clean-Output").Does(() =>
