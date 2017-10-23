@@ -26,7 +26,7 @@ before_build:
 
 # Build using Cake
 build_script:
-  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION
+  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version $env:AppVersion
 
 after_build:
   - ps: appveyor/Choco.ps1

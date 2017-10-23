@@ -1,5 +1,6 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var version = Argument("appversion", "6.0.0");
 
 var slnPath = "src/Captura.sln";
 
@@ -122,7 +123,11 @@ Task("Pack-Setup")
     .IsDependentOn("Populate-Output")
     .Does(() =>
 {
-    InnoSetup("Inno.iss");
+    InnoSetup("Inno.iss", new InnoSetupSettings
+    {
+        QuietMode = InnoSetupQuietMode.Quiet,
+        ArgumentCustomization = Args => Args.Append($"/DMyAppVersion={version}")
+    });
 });
 
 Task("Default").IsDependentOn("Build");

@@ -52,6 +52,7 @@ Param(
     [switch]$Experimental,
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
+    [string]$Version,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
     [string[]]$ScriptArgs
 )
@@ -226,6 +227,7 @@ if ($ShowDescription) { $cakeArguments += "-showdescription" }
 if ($DryRun) { $cakeArguments += "-dryrun" }
 if ($Experimental) { $cakeArguments += "-experimental" }
 if ($Mono) { $cakeArguments += "-mono" }
+if ($Version) { $cakeArguments += "-appversion=$Version" }
 $cakeArguments += $ScriptArgs
 
 # Start Cake
