@@ -1,4 +1,4 @@
-version: 2.0.{build}
+version: 6.0.{build}
 
 image: Visual Studio 2017
 
@@ -27,15 +27,12 @@ before_build:
 build_script:
   - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version $env:AppVersion
 
-after_build:
-  - ps: appveyor/Choco.ps1
-
 artifacts:
-  - path: Output/Captura-Portable.zip
+  - path: temp/Captura-Portable.zip
     name: Portable
-  - path: Output/Captura-Setup.exe
+  - path: temp/Captura-Setup.exe
     name: Setup
-  - path: captura.*.nupkg
+  - path: temp/captura.*.nupkg
     name: Chocolatey
 
 deploy:

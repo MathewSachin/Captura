@@ -1,6 +1,6 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var version = Argument<string>("appversion", null) ?? ParseAssemblyInfo("src/Captura/Properties/AssemblyInfo.cs").AssemblyVersion;
+var version = Argument<string>("appversion", null);
 
 const string slnPath = "src/Captura.sln";
 const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
@@ -10,6 +10,12 @@ bool apiKeyEmbed;
 
 Setup(context =>
 {
+    if (string.IsNullOrWhiteSpace(version))
+    {
+        // Read from AssemblyInfo
+        version = ParseAssemblyInfo("src/Captura/Properties/AssemblyInfo.cs").AssemblyVersion;
+    }
+
     // Embed Api Keys in Release builds
     if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
     {
@@ -149,11 +155,11 @@ Task("Pack-Portable")
     .IsDependentOn("Populate-Output")
     .Does(() =>
 {
-    Zip("Output", "Output/Captura-Portable.zip");
+    Zip("Output", "temp/Captura-Portable.zip");
 });
 
 Task("Pack-Setup")
-    .WithCriteria(() => configuration == "Release")
+    .WithCriteria(configuration == "Release")
     .IsDependentOn("Populate-Output")
     .Does(() =>
 {
@@ -164,10 +170,42 @@ Task("Pack-Setup")
     });
 });
 
+Task("Pack-Choco")
+    // Run only on AppVeyor Release Tag builds
+    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
+    .IsDependentOn("Pack-Portable")
+    .Does(() =>
+{
+    var checksum = CalculateFileHash("temp/Captura-Portable.zip").ToHex();
+
+    var chocoInstallScript = "choco/tools/chocolateyinstall.ps1";
+
+    var originalContent = System.IO.File.ReadAllText(chocoInstallScript);
+
+    var tag = EnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
+    var newContent = $"$tag = '{tag}'; $checksum = '{checksum}'; {originalContent}";
+
+    CopyFileToDirectory(chocoInstallScript, "temp");
+
+    System.IO.File.WriteAllText(chocoInstallScript, newContent);
+
+    var chocoVersion = EnvironmentVariable("TagVersion");
+
+    ChocolateyPack("choco/captura.nuspec", new ChocolateyPackSettings
+    {
+        Version = chocoVersion,
+        ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
+    });
+
+    DeleteFile(chocoInstallScript);
+    MoveFile("temp/chocolateyinstall.ps1", chocoInstallScript);
+});
+
 Task("Default").IsDependentOn("Populate-Output");
 
 Task("CI")
     .IsDependentOn("Pack-Portable")
-    .IsDependentOn("Pack-Setup");
+    .IsDependentOn("Pack-Setup")
+    .IsDependentOn("Pack-Choco");
 
 RunTarget(target);
