@@ -1,6 +1,6 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var version = Argument("appversion", "6.0.0");
+var version = Argument<string>("appversion", null) ?? ParseAssemblyInfo("src/Captura/Properties/AssemblyInfo.cs").AssemblyVersion;
 
 const string slnPath = "src/Captura.sln";
 const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
@@ -16,6 +16,8 @@ Setup(context =>
         apiKeyEmbed = true;
 
         EnsureDirectoryExists("temp");
+
+        Information("Embedding Api Keys from Environment Variables ...");
 
         CopyFileToDirectory(apiKeysPath, "temp");
 
@@ -162,7 +164,7 @@ Task("Pack-Setup")
     });
 });
 
-Task("Default").IsDependentOn("Build");
+Task("Default").IsDependentOn("Populate-Output");
 
 Task("CI")
     .IsDependentOn("Pack-Portable")
