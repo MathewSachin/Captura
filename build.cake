@@ -2,7 +2,39 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var version = Argument("appversion", "6.0.0");
 
-var slnPath = "src/Captura.sln";
+const string slnPath = "src/Captura.sln";
+const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
+const string imgurEnv = "imgur_client_id";
+
+bool apiKeyEmbed;
+
+Setup(context =>
+{
+    // Embed Api Keys in Release builds
+    if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
+    {
+        apiKeyEmbed = true;
+
+        EnsureDirectoryExists("temp");
+
+        CopyFileToDirectory(apiKeysPath, "temp");
+
+        var apiKeysOriginalContent = System.IO.File.ReadAllText(apiKeysPath);
+
+        var newContent = apiKeysOriginalContent.Replace($"Get(\"{imgurEnv}\")", $"\"{EnvironmentVariable(imgurEnv)}\"");
+
+        System.IO.File.WriteAllText(apiKeysPath, newContent);
+    }
+});
+
+Teardown(context =>
+{
+    if (apiKeyEmbed)
+    {
+        DeleteFile(apiKeysPath);
+        MoveFile("temp/ApiKeys.cs", apiKeysPath);
+    }
+});
 
 Task("Clean").Does(() =>
 {
