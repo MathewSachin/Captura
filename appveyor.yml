@@ -31,7 +31,7 @@ after_build:
   - ps: appveyor/Choco.ps1
 
 artifacts:
-  - path: Captura-Portable.zip
+  - path: Output/Captura-Portable.zip
     name: Portable
   - path: Output/Captura-Setup.exe
     name: Setup

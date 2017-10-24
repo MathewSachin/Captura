@@ -149,7 +149,7 @@ Task("Pack-Portable")
     .IsDependentOn("Populate-Output")
     .Does(() =>
 {
-    Zip("Output", "Captura-Portable.zip");
+    Zip("Output", "Output/Captura-Portable.zip");
 });
 
 Task("Pack-Setup")
