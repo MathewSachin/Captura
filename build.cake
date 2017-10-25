@@ -24,7 +24,7 @@ void UpdateVersion(string AssemblyInfoPath)
 
 string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
 
-string FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
+void FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
 
 Setup(context =>
 {
