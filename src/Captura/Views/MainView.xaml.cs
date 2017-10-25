@@ -6,7 +6,7 @@ namespace Captura
     {
         void Preview_Click(object Sender, RoutedEventArgs E)
         {
-            WebCamWindow.Instance.Show();
+            WebCamWindow.Instance.ShowAndFocus();
         }
         
         void OpenCanvas(object Sender, RoutedEventArgs E)
