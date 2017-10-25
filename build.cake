@@ -5,15 +5,39 @@ var version = Argument<string>("appversion", null);
 const string slnPath = "src/Captura.sln";
 const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
 const string imgurEnv = "imgur_client_id";
+const string uiAssemblyInfo = "src/Captura/Properties/AssemblyInfo.cs";
+const string consoleAssemblyInfo = "src/Captura.Console/Properties/AssemblyInfo.cs";
 
-bool apiKeyEmbed;
+bool apiKeyEmbed, assemblyInfoUpdate;
+
+void UpdateVersion(string AssemblyInfoPath)
+{
+    var content = System.IO.File.ReadAllText(AssemblyInfoPath);
+
+    var start = content.IndexOf("AssemblyVersion");
+    var end = content.IndexOf(")", start);
+
+    var replace = content.Replace(content.Substring(start, end - start + 1), $"AssemblyVersion(\"{version}\")");
+
+    System.IO.File.WriteAllText(AssemblyInfoPath, replace);
+}
 
 Setup(context =>
 {
     if (string.IsNullOrWhiteSpace(version))
     {
         // Read from AssemblyInfo
-        version = ParseAssemblyInfo("src/Captura/Properties/AssemblyInfo.cs").AssemblyVersion;
+        version = ParseAssemblyInfo(uiAssemblyInfo).AssemblyVersion;
+    }
+    else
+    {
+        assemblyInfoUpdate = true;
+
+        CopyFileToDirectory(uiAssemblyInfo, "temp");
+        CopyFile(consoleAssemblyInfo, "temp/console.cs");
+
+        UpdateVersion(uiAssemblyInfo);
+        UpdateVersion(consoleAssemblyInfo);
     }
 
     // Embed Api Keys in Release builds
@@ -41,6 +65,15 @@ Teardown(context =>
     {
         DeleteFile(apiKeysPath);
         MoveFile("temp/ApiKeys.cs", apiKeysPath);
+    }
+
+    if (assemblyInfoUpdate)
+    {
+        DeleteFile(uiAssemblyInfo);
+        DeleteFile(consoleAssemblyInfo);
+
+        MoveFile("temp/AssemblyInfo.cs", uiAssemblyInfo);
+        MoveFile("temp/console.cs", consoleAssemblyInfo);
     }
 });
 

@@ -1,13 +1,3 @@
-# Path to AssemblyInfo.cs file
-$uiInfo = "src\Captura\Properties\AssemblyInfo.cs"
-$consoleInfo = "src\Captura.Console\Properties\AssemblyInfo.cs"
-
-function Update-Version ($infoPath, $version) {
-    $content = Get-Content $infoPath
-    $replaced = $content -replace 'AssemblyVersion\(\".+?\"\)', "AssemblyVersion(`"$version`")"
-    Set-Content $infoPath $replaced
-}
-
 # For Tag build
 if ($env:appveyor_repo_tag -eq 'true')
 {
@@ -31,10 +21,6 @@ if ($env:appveyor_repo_tag -eq 'true')
     {
         throw 'Invalid Tag Format'
     }
-
-    # Update AssemblyInfo.cs with Version from tag
-    Update-Version $uiInfo $env:AppVersion
-    Update-Version $consoleInfo $env:AppVersion
 
     # Update Appveyor Build Version
     Update-AppveyorBuild -Version "$env:AppVersion.$env:APPVEYOR_BUILD_NUMBER"

@@ -25,7 +25,7 @@ before_build:
 
 # Build using Cake
 build_script:
-  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version $env:AppVersion
+  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version "$env:AppVersion"
 
 artifacts:
   - path: temp/Captura-Portable.zip
