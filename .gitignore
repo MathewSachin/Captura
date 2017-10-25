@@ -9,3 +9,6 @@ Releases/
 *.suo
 *.user
 *.nupkg
+
+# Cake
+tools/

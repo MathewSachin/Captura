@@ -21,6 +21,7 @@ OutputBaseFilename=Captura-Setup
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=src/Captura/Captura.ico
+OutputDir=temp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
