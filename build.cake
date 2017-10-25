@@ -12,15 +12,19 @@ bool apiKeyEmbed, assemblyInfoUpdate;
 
 void UpdateVersion(string AssemblyInfoPath)
 {
-    var content = System.IO.File.ReadAllText(AssemblyInfoPath);
+    var content = FileRead(AssemblyInfoPath);
 
     var start = content.IndexOf("AssemblyVersion");
     var end = content.IndexOf(")", start);
 
     var replace = content.Replace(content.Substring(start, end - start + 1), $"AssemblyVersion(\"{version}\")");
 
-    System.IO.File.WriteAllText(AssemblyInfoPath, replace);
+    FileWrite(AssemblyInfoPath, replace);
 }
+
+string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
+
+string FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
 
 Setup(context =>
 {
@@ -31,6 +35,7 @@ Setup(context =>
     }
     else
     {
+        // Update AssemblyInfo files
         assemblyInfoUpdate = true;
 
         CopyFileToDirectory(uiAssemblyInfo, "temp");
@@ -51,29 +56,31 @@ Setup(context =>
 
         CopyFileToDirectory(apiKeysPath, "temp");
 
-        var apiKeysOriginalContent = System.IO.File.ReadAllText(apiKeysPath);
+        var apiKeysOriginalContent = FileRead(apiKeysPath);
 
         var newContent = apiKeysOriginalContent.Replace($"Get(\"{imgurEnv}\")", $"\"{EnvironmentVariable(imgurEnv)}\"");
 
-        System.IO.File.WriteAllText(apiKeysPath, newContent);
+        FileWrite(apiKeysPath, newContent);
     }
 });
+
+void RestoreFile(string From, string To)
+{
+    DeleteFile(To);
+    MoveFile(From, To);
+}
 
 Teardown(context =>
 {
     if (apiKeyEmbed)
     {
-        DeleteFile(apiKeysPath);
-        MoveFile("temp/ApiKeys.cs", apiKeysPath);
+        RestoreFile("temp/ApiKeys.cs", apiKeysPath);
     }
 
     if (assemblyInfoUpdate)
     {
-        DeleteFile(uiAssemblyInfo);
-        DeleteFile(consoleAssemblyInfo);
-
-        MoveFile("temp/AssemblyInfo.cs", uiAssemblyInfo);
-        MoveFile("temp/console.cs", consoleAssemblyInfo);
+        RestoreFile("temp/AssemblyInfo.cs", uiAssemblyInfo);
+        RestoreFile("temp/console.cs", consoleAssemblyInfo);
     }
 });
 
@@ -213,14 +220,14 @@ Task("Pack-Choco")
 
     var chocoInstallScript = "choco/tools/chocolateyinstall.ps1";
 
-    var originalContent = System.IO.File.ReadAllText(chocoInstallScript);
+    var originalContent = FileRead(chocoInstallScript);
 
     var tag = EnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
     var newContent = $"$tag = '{tag}'; $checksum = '{checksum}'; {originalContent}";
 
     CopyFileToDirectory(chocoInstallScript, "temp");
 
-    System.IO.File.WriteAllText(chocoInstallScript, newContent);
+    FileWrite(chocoInstallScript, newContent);
 
     var chocoVersion = EnvironmentVariable("TagVersion");
 
@@ -230,8 +237,7 @@ Task("Pack-Choco")
         ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
     });
 
-    DeleteFile(chocoInstallScript);
-    MoveFile("temp/chocolateyinstall.ps1", chocoInstallScript);
+    RestoreFile("temp/chocolateyinstall.ps1", chocoInstallScript);
 });
 
 Task("Default").IsDependentOn("Populate-Output");
