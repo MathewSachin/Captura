@@ -2,13 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
-        xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
         Title="{local:Loc WebCamView}"
         Width="640"
         Height="480"
-        MinWidth="400"
-        MinHeight="250"
-        Topmost="True"
+        MinWidth="200"
+        MinHeight="200"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
@@ -32,6 +30,6 @@
                    Margin="10,0"/>
         </DockPanel>
         
-        <wpf:WebCameraControl x:Name="webCameraControl" />
+        <local:WebcamControl x:Name="webCameraControl"/>
     </DockPanel>
 </Window>

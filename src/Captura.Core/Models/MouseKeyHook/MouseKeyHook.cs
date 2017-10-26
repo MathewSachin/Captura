@@ -113,7 +113,7 @@ namespace Captura.Models
                     return FullWidth - x - TextWidth - 2 * Settings.Instance.Keystrokes_PaddingX;
 
                 case Alignment.Center:
-                    return FullWidth / 2 - x - TextWidth / 2 - Settings.Instance.Keystrokes_PaddingX;
+                    return FullWidth / 2 + x - TextWidth / 2 - Settings.Instance.Keystrokes_PaddingX;
 
                 default:
                     return 0;
@@ -133,7 +133,7 @@ namespace Captura.Models
                     return FullHeight - y - TextHeight - 2 * Settings.Instance.Keystrokes_PaddingY - Offset;
 
                 case Alignment.Center:
-                    return FullHeight / 2 - y - TextHeight / 2 - Settings.Instance.Keystrokes_PaddingY + Offset;
+                    return FullHeight / 2 + y - TextHeight / 2 - Settings.Instance.Keystrokes_PaddingY + Offset;
 
                 default:
                     return 0;

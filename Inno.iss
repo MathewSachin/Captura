@@ -21,6 +21,7 @@ OutputBaseFilename=Captura-Setup
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=src/Captura/Captura.ico
+OutputDir=temp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -31,6 +32,7 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
 Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "norwegian"; MessagesFile: "compiler:Languages\Norwegian.isl"
 Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"

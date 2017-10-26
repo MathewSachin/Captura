@@ -9,10 +9,14 @@ namespace Captura
 {
     public partial class MainWindow
     {
+        public static MainWindow Instance { get; private set; }
+
         FFMpegDownloader _downloader;
 
         public MainWindow()
         {
+            Instance = this;
+
             ServiceProvider.RegionProvider = new RegionSelector();
 
             ServiceProvider.MessageProvider = new MessageProvider();

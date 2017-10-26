@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using WebEye.Controls.Wpf;
 
 namespace Captura
 {
@@ -19,13 +18,20 @@ namespace Captura
 
         public static WebCamWindow Instance { get; } = new WebCamWindow();
 
-        public WebCameraControl GetWebCamControl() => webCameraControl;
+        public WebcamControl GetWebCamControl() => webCameraControl;
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
-
+        
         void CaptureImage_OnClick(object Sender, RoutedEventArgs E)
         {
-            ServiceProvider.MainViewModel?.SaveScreenShot(webCameraControl.GetCurrentImage());
+            try
+            {
+                var img = ServiceProvider.WebCamProvider.Capture();
+
+                if (img != null)
+                    ServiceProvider.MainViewModel?.SaveScreenShot(img);
+            }
+            catch { }
         }
     }
 }

@@ -3,15 +3,16 @@ using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using DesktopDuplication;
+using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
 
@@ -72,6 +73,16 @@ namespace Captura.ViewModels
             
             PauseCommand = new DelegateCommand(OnPauseExecute, false);
             #endregion
+
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+        }
+
+        void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend && RecorderState == RecorderState.Recording)
+            {
+                OnPauseExecute();
+            }
         }
 
         void OnPauseExecute()
@@ -478,6 +489,28 @@ namespace Captura.ViewModels
                 return;
             }
 
+            IImageProvider imgProvider;
+
+            try
+            {
+                imgProvider = GetImageProvider();
+            }
+            catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
+            {
+                var yes = ServiceProvider.MessageProvider.ShowYesNo(Resources.ErrorOccured, $"{e.Message}\n\nDo you want to turn off Desktop Duplication.");
+
+                if (yes)
+                    Settings.Instance.UseDeskDupl = false;
+
+                return;
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowError(e.ToString());
+
+                return;
+            }
+
             ServiceProvider.RegionProvider.Lock();
 
             ServiceProvider.SystemTray.HideNotification();
@@ -504,8 +537,6 @@ namespace Captura.ViewModels
             TimeSpan = TimeSpan.Zero;
             
             var audioSource = AudioViewModel.AudioSource.GetAudioSource();
-
-            var imgProvider = GetImageProvider();
             
             var videoEncoder = GetVideoFileWriter(imgProvider, audioSource);
             
@@ -593,12 +624,14 @@ namespace Captura.ViewModels
 
             if (imageProvider == null)
                 return null;
+
+            var overlays = new List<IOverlay> { new WebcamOverlay() };
                         
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                return new OverlayedImageProvider(imageProvider, transform, new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
             
-            return imageProvider;
+            return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }
         
         public async Task StopRecording()

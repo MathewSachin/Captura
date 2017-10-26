@@ -88,6 +88,12 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
+    <Compile Include="Models\WebcamOverlay.cs" />
+    <Compile Include="Properties\Resources.ro.Designer.cs">
+      <DependentUpon>Resources.ro.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.no.Designer.cs">
       <DependentUpon>Resources.no.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -228,6 +234,7 @@
     <Compile Include="Settings\ArraySettingsProvider.cs" />
     <Compile Include="Settings\Code.cs" />
     <Compile Include="Settings\JsonSettingsProvider.cs" />
+    <Compile Include="Settings\Webcam.cs" />
     <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Proxy.cs" />
     <Compile Include="Settings\Remember.cs" />
@@ -256,6 +263,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.ro.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ro.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.no.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.no.Designer.cs</LastGenOutput>

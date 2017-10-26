@@ -1,7 +1,8 @@
 # Captura
 [![Master Build Status](https://img.shields.io/appveyor/ci/MathewSachin/Captura/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/Captura)
 [![MIT License](https://img.shields.io/github/license/MathewSachin/Captura.svg?style=flat-square)](LICENSE.md)
-[![Chat](https://img.shields.io/gitter/room/MathewSachin/Screna.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)  
+[![Chat](https://img.shields.io/gitter/room/MathewSachin/Screna.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)
+[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://github.com/MathewSachin/Captura/releases)  
 &copy; [Copyright 2017](LICENSE.md) Mathew Sachin
 
 :link: https://mathewsachin.github.io/Captura/

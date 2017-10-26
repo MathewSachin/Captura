@@ -234,6 +234,11 @@
                                         <Frame Source="Views/MouseKeyHookView.xaml"/>
                                     </ScrollViewer>
                                 </TabItem>
+                                <TabItem Header="{local:Loc WebCam}">
+                                    <ScrollViewer>
+                                        <Frame Source="Views/WebcamConfig.xaml"/>
+                                    </ScrollViewer>
+                                </TabItem>
                                 <TabItem Header="FFMpeg">
                                     <Frame Source="Views/FFMpegView.xaml"/>
                                 </TabItem>

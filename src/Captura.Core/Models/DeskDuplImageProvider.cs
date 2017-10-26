@@ -21,6 +21,15 @@ namespace Captura.Models
             Height = Rectangle.Height;
 
             _imagePool = new ImagePool(Width, Height);
+
+            Reinit();
+        }
+
+        void Reinit()
+        {
+            _dupl?.Dispose();
+
+            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
         }
         
         public int Height { get; }
@@ -31,18 +40,13 @@ namespace Captura.Models
 
         public ImageWrapper Capture()
         {
-            if (_dupl == null)
-                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
-
             try
             {
                 return _dupl.Capture(_imagePool.Get);
             }
             catch
             {
-                _dupl?.Dispose();
-
-                _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
+                Reinit();
 
                 try
                 {

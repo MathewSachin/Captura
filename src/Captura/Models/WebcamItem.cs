@@ -1,6 +1,6 @@
 ﻿using System;
 using Captura.Properties;
-using WebEye.Controls.Wpf;
+using Captura.Webcam;
 
 namespace Captura.Models
 {
@@ -18,7 +18,7 @@ namespace Captura.Models
             };
         }
 
-        public WebcamItem(WebCameraId Cam)
+        public WebcamItem(Filter Cam)
         {
             this.Cam = Cam ?? throw new ArgumentNullException(nameof(Cam));
             Name = Cam.Name;
@@ -26,7 +26,7 @@ namespace Captura.Models
 
         public static WebcamItem NoWebcam { get; } = new WebcamItem();
 
-        public WebCameraId Cam { get; }
+        public Filter Cam { get; }
 
         public string Name { get; private set; }
 

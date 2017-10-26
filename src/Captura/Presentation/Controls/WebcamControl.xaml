@@ -1,0 +1,4 @@
+﻿<UserControl x:Class="Captura.WebcamControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsVisibleChanged="WebcamControl_OnIsVisibleChanged"/>
