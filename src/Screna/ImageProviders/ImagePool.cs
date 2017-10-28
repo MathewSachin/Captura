@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Screna
 {
@@ -15,25 +13,30 @@ namespace Screna
             _height = Height;
         }
 
+        readonly Queue<ImageWrapper> _imageQueue = new Queue<ImageWrapper>();
         readonly List<ImageWrapper> _images = new List<ImageWrapper>();
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        
         public ImageWrapper Get()
         {
-            var any = _images.FirstOrDefault(M => M.Written);
-
-            if (any != null)
+            lock (_imageQueue)
             {
-                any.Written = false;
+                if (_imageQueue.Count == 0)
+                {
+                    var img = new ImageWrapper(_width, _height);
 
-                return any;
+                    _images.Add(img);
+
+                    img.Freed += () =>
+                    {
+                        lock (_imageQueue)
+                            _imageQueue.Enqueue(img);
+                    };
+
+                    return img;
+                }
+
+                return _imageQueue.Dequeue();
             }
-
-            var img = new ImageWrapper(_width, _height);
-
-            _images.Add(img);
-
-            return img;
         }
 
         public void Dispose()

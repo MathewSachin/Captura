@@ -20,20 +20,26 @@ namespace Screna
 
         public Graphics Graphics { get; }
 
-        public bool Written { get; set; }
-
         public BitmapData Lock(ImageLockMode LockMode)
         {
-            return Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), LockMode, PixelFormat.Format32bppRgb);
+            try { return Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), LockMode, PixelFormat.Format32bppRgb); }
+            catch
+            {
+                return null;
+            }
         }
 
         public void CopyTo(byte[] Output)
         {
             var bits = Lock(ImageLockMode.ReadOnly);
-            Marshal.Copy(bits.Scan0, Output, 0, Output.Length);
-            Bitmap.UnlockBits(bits);
 
-            Written = true;
+            if (bits != null)
+            {
+                Marshal.Copy(bits.Scan0, Output, 0, Output.Length);
+                Bitmap.UnlockBits(bits);
+            }
+
+            Freed?.Invoke();
         }
 
         public void Dispose()
@@ -42,6 +48,8 @@ namespace Screna
 
             Bitmap.Dispose();
         }
+
+        public event Action Freed;
 
         public static ImageWrapper Repeat { get; } = new ImageWrapper();
     }

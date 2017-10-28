@@ -138,15 +138,18 @@ namespace DesktopDuplication
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = ImageWrapper.Lock(ImageLockMode.WriteOnly);
 
-            Parallel.For(0, _rect.Height, y =>
+            if (mapDest != null)
             {
-                Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
-                    SourcePtr + y * SourceRowPitch,
-                    _rect.Width * 4);
-            });
-                        
-            // Release source and dest locks
-            ImageWrapper.Bitmap.UnlockBits(mapDest);
+                Parallel.For(0, _rect.Height, y =>
+                {
+                    Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
+                        SourcePtr + y * SourceRowPitch,
+                        _rect.Width * 4);
+                });
+
+                // Release source and dest locks
+                ImageWrapper.Bitmap.UnlockBits(mapDest);
+            }
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
