@@ -11,7 +11,7 @@ namespace Screna
         /// <summary>
         /// Capture an image.
         /// </summary>
-        ImageWrapper Capture();
+        Frame Capture();
 
         /// <summary>
         /// Height of Captured image.

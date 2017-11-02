@@ -89,7 +89,7 @@ namespace DesktopDuplication
             }
         }
         
-        public ImageWrapper Capture(Func<ImageWrapper> ImageWrapperFunc)
+        public Frame Capture(Func<Frame> ImageWrapperFunc)
         {
             if (_desktopImageTexture == null)
                 _desktopImageTexture = new Texture2D(_device, _textureDesc);
@@ -102,7 +102,7 @@ namespace DesktopDuplication
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
-                return ImageWrapper.Repeat;
+                return Frame.Repeat;
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
             {
@@ -133,10 +133,10 @@ namespace DesktopDuplication
             }
         }
 
-        ImageWrapper ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, ImageWrapper ImageWrapper)
+        Frame ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, Frame Frame)
         {
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = ImageWrapper.Lock(ImageLockMode.WriteOnly);
+            var mapDest = Frame.Lock(ImageLockMode.WriteOnly);
 
             if (mapDest != null)
             {
@@ -148,19 +148,19 @@ namespace DesktopDuplication
                 });
 
                 // Release source and dest locks
-                ImageWrapper.Bitmap.UnlockBits(mapDest);
+                Frame.Bitmap.UnlockBits(mapDest);
             }
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                var g = ImageWrapper.Graphics;
+                var g = Frame.Graphics;
 
                 MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
 
                 g.Flush();
             }
 
-            return ImageWrapper;
+            return Frame;
         }
         
         void ReleaseFrame()

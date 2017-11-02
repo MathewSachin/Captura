@@ -30,7 +30,7 @@ namespace Screna
         /// <summary>
         /// Captures an Image.
         /// </summary>
-        public ImageWrapper Capture()
+        public Frame Capture()
         {
             var img = _imagePool.Get();
 
@@ -49,7 +49,7 @@ namespace Screna
             }
             catch
             {
-                return ImageWrapper.Repeat;
+                return Frame.Repeat;
             }
         }
 

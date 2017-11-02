@@ -21,7 +21,7 @@ namespace Screna
 
         readonly int _frameRate;
 
-        readonly BlockingCollection<ImageWrapper> _frames;
+        readonly BlockingCollection<Frame> _frames;
         readonly Stopwatch _sw;
 
         readonly ManualResetEvent _continueCapturing;
@@ -51,7 +51,7 @@ namespace Screna
             else _audioProvider = null;
 
             _sw = new Stopwatch();
-            _frames = new BlockingCollection<ImageWrapper>();
+            _frames = new BlockingCollection<Frame>();
 
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
             _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
@@ -99,10 +99,10 @@ namespace Screna
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
 
-                Task<ImageWrapper> task = null;
+                Task<Frame> task = null;
 
                 // Returns false when stopped
-                bool AddFrame(ImageWrapper Frame)
+                bool AddFrame(Frame Frame)
                 {
                     try
                     {

@@ -31,11 +31,11 @@ namespace Screna
         /// <summary>
         /// Captures an Image.
         /// </summary>
-        public ImageWrapper Capture()
+        public Frame Capture()
         {
             var bmp = _imageProvider.Capture();
 
-            if (bmp == ImageWrapper.Repeat)
+            if (bmp == Frame.Repeat)
                 return bmp;
 
             var g = bmp.Graphics;

@@ -38,7 +38,7 @@ namespace Captura.Models
 
         readonly ImagePool _imagePool;
 
-        public ImageWrapper Capture()
+        public Frame Capture()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Captura.Models
                 }
                 catch
                 {
-                    return ImageWrapper.Repeat;
+                    return Frame.Repeat;
                 }
             }
         }

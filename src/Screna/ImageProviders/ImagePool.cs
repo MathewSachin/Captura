@@ -13,16 +13,16 @@ namespace Screna
             _height = Height;
         }
 
-        readonly Queue<ImageWrapper> _imageQueue = new Queue<ImageWrapper>();
-        readonly List<ImageWrapper> _images = new List<ImageWrapper>();
+        readonly Queue<Frame> _imageQueue = new Queue<Frame>();
+        readonly List<Frame> _images = new List<Frame>();
         
-        public ImageWrapper Get()
+        public Frame Get()
         {
             lock (_imageQueue)
             {
                 if (_imageQueue.Count == 0)
                 {
-                    var img = new ImageWrapper(_width, _height);
+                    var img = new Frame(_width, _height);
 
                     _images.Add(img);
 

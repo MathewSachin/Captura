@@ -408,7 +408,7 @@ namespace Captura.ViewModels
                                     // Increase timeout
                                     dupl.Timeout = 10000;
 
-                                    ImageWrapper ImgFunc() => new ImageWrapper(WindowProvider.DesktopRectangle.Width, WindowProvider.DesktopRectangle.Height);
+                                    Frame ImgFunc() => new Frame(WindowProvider.DesktopRectangle.Width, WindowProvider.DesktopRectangle.Height);
 
                                     // First one is blank
                                     dupl.Capture(ImgFunc).Dispose();

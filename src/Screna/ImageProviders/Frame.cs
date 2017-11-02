@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 
 namespace Screna
 {
-    public class ImageWrapper : IDisposable
+    public class Frame : IDisposable
     {
-        ImageWrapper() { }
+        Frame() { }
 
-        public ImageWrapper(int Width, int Height)
+        public Frame(int Width, int Height)
         {
             Bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppRgb);
 
@@ -51,6 +51,6 @@ namespace Screna
 
         public event Action Freed;
 
-        public static ImageWrapper Repeat { get; } = new ImageWrapper();
+        public static Frame Repeat { get; } = new Frame();
     }
 }

@@ -55,9 +55,9 @@ namespace Captura.Models
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
-        public void WriteFrame(ImageWrapper Image)
+        public void WriteFrame(Frame Image)
         {
-            if (Image != ImageWrapper.Repeat)
+            if (Image != Frame.Repeat)
             {
                 Image.CopyTo(_videoBuffer);
             }

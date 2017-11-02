@@ -90,7 +90,7 @@ namespace Screna
         {
             try
             {
-                ImageWrapper lastFrame = null;
+                Frame lastFrame = null;
                 
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {

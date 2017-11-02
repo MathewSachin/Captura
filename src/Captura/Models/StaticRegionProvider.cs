@@ -18,7 +18,7 @@ namespace Captura
             _regionProvider = new RegionProvider(rect, IncludeCursor);
         }
         
-        public ImageWrapper Capture()
+        public Frame Capture()
         {
             _regionProvider.UpdateLocation(_selector.SelectedRegion.Location);
 
