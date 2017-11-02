@@ -492,7 +492,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
             {
-                var yes = ServiceProvider.MessageProvider.ShowYesNo(Resources.ErrorOccured, $"{e.Message}\n\nDo you want to turn off Desktop Duplication.");
+                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Resources.ErrorOccured);
 
                 if (yes)
                     Settings.Instance.UseDeskDupl = false;
