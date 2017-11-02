@@ -38,6 +38,8 @@ Setup(context =>
         // Update AssemblyInfo files
         assemblyInfoUpdate = true;
 
+        EnsureDirectoryExists("temp");
+
         CopyFileToDirectory(uiAssemblyInfo, "temp");
         CopyFile(consoleAssemblyInfo, "temp/console.cs");
 
