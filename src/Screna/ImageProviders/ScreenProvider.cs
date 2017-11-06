@@ -25,6 +25,10 @@ namespace Screna
         /// <summary>
         /// Capture Frame.
         /// </summary>
-        protected override void OnCapture(Graphics g) => g.DrawImage(ScreenShot.Capture(_screen), Point.Empty);
+        protected override void OnCapture(Graphics g)
+        {
+            using (var img = ScreenShot.Capture(_screen))
+                g.DrawImage(img, Point.Empty);
+        }
     }
 }
