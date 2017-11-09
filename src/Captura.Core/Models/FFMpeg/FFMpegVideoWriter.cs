@@ -20,9 +20,9 @@ namespace Captura.Models
         readonly NamedPipeServerStream _ffmpegIn;
         readonly byte[] _videoBuffer;
 
-        const string pipePrefix = @"\\.\pipe\";
+        const string PipePrefix = @"\\.\pipe\";
 
-        string GetPipeName() => $"captura-{Guid.NewGuid()}";
+        static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegWriter"/>.
@@ -39,14 +39,14 @@ namespace Captura.Models
             var audioPipeName = GetPipeName();
             var videoPipeName = GetPipeName();
 
-            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i {pipePrefix}{videoPipeName}";
+            var videoInArgs = $"-framerate {FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {ImageProvider.Width}x{ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{VideoArgsProvider(VideoQuality)} -r {FrameRate}";
 
             string audioInArgs = "", audioOutArgs = "";
             
             if (AudioProvider != null)
             {
-                audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i {pipePrefix}{audioPipeName}";
+                audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i {PipePrefix}{audioPipeName}";
                 audioOutArgs = AudioArgsProvider(AudioQuality);
 
                 _audioPipe = new NamedPipeServerStream(audioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
@@ -74,7 +74,7 @@ namespace Captura.Models
         /// </summary>
         public bool SupportsAudio { get; } = true;
 
-        bool firstAudio = true;
+        bool _firstAudio = true;
 
         /// <summary>
         /// Write audio block to Audio Stream.
@@ -88,17 +88,17 @@ namespace Captura.Models
                 throw new Exception("An Error Occured with FFMpeg");
             }
 
-            if (firstAudio)
+            if (_firstAudio)
             {
                 _audioPipe.WaitForConnection();
 
-                firstAudio = false;
+                _firstAudio = false;
             }
 
             _audioPipe.WriteAsync(Buffer, 0, Length);
         }
 
-        int lastFrameHash;
+        int _lastFrameHash;
         
         /// <summary>
         /// Writes an Image frame.
@@ -114,10 +114,10 @@ namespace Captura.Models
 
             var hash = Image.GetHashCode();
 
-            if (lastFrameHash == 0)
+            if (_lastFrameHash == 0)
                 _ffmpegIn.WaitForConnection();
 
-            if (lastFrameHash != hash)
+            if (_lastFrameHash != hash)
             {
                 using (Image)
                 {
@@ -126,7 +126,7 @@ namespace Captura.Models
                     Image.UnlockBits(bits);
                 }
 
-                lastFrameHash = hash;
+                _lastFrameHash = hash;
             }
             
             _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);

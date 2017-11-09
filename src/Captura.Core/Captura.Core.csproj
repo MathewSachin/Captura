@@ -244,6 +244,7 @@
     <Compile Include="Settings\ArraySettingsProvider.cs" />
     <Compile Include="Settings\Code.cs" />
     <Compile Include="Settings\JsonSettingsProvider.cs" />
+    <Compile Include="Settings\FFMpegCustom.cs" />
     <Compile Include="Settings\Webcam.cs" />
     <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Proxy.cs" />
