@@ -61,5 +61,13 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("100")]
+        public int Webcam_Opacity
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
     }
 }
