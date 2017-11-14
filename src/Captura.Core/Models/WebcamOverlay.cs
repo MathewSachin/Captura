@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Screna;
+using System.Drawing.Imaging;
 
 namespace Captura.Models
 {
@@ -56,8 +57,18 @@ namespace Captura.Models
                     try
                     {
                         var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
-
-                        g.DrawImage(img, point);
+                        if (Settings.Instance.Webcam_Opacity < 100)
+                        {
+                            ColorMatrix colormatrix = new ColorMatrix();
+                            colormatrix.Matrix33 = Settings.Instance.Webcam_Opacity / 100.0f;
+                            ImageAttributes imgAttribute = new ImageAttributes();
+                            imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                            g.DrawImage(img, new Rectangle(point, img.Size), 0.0f, 0.0f, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+                        }
+                        else
+                        {
+                            g.DrawImage(img, point);
+                        }
                     }
                     catch { }
                 }

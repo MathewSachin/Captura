@@ -69,5 +69,22 @@
                                 Grid.Column="3"
                                 IsEnabled="{local:Setting Webcam_DoResize}"/>
         </Grid>
+        <Grid Margin="0,15,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{local:Loc Opacity}"                   
+                   Margin="0,3"/>
+            <Label Content=" : "     
+                   Grid.Column="1"
+                   Margin="0,3"/>
+
+            <xctk:IntegerUpDown Value="{local:Setting Webcam_Opacity}"
+                                Grid.Column="2"  Minimum="1" Maximum="100"/>
+
+        </Grid>
     </StackPanel>
 </Page>
