@@ -4,7 +4,7 @@ using Captura.Views;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System;
+using Screna;
 
 namespace Captura
 {
@@ -29,7 +29,7 @@ namespace Captura
                 if (_downloader == null)
                 {
                     _downloader = new FFMpegDownloader();
-                    _downloader.Closed += (s, args) => _downloader = null;
+                    _downloader.Closed += (Sender, Args) => _downloader = null;
                 }
 
                 _downloader.ShowAndFocus();
@@ -45,9 +45,9 @@ namespace Captura
             // Register for Windows Messages
             ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
             {
-                const int WmHotkey = 786;
+                const int wmHotkey = 786;
 
-                if (Message.message == WmHotkey)
+                if (Message.message == wmHotkey)
                 {
                     var id = Message.wParam.ToInt32();
 
@@ -57,15 +57,16 @@ namespace Captura
 
             ServiceProvider.SystemTray = new SystemTray(SystemTray);
             
-            Closing += (s, e) =>
+            Closing += (Sender, Args) =>
             {
                 if (!TryExit())
-                    e.Cancel = true;
+                    Args.Cancel = true;
             };
 
-            Loaded += (s, e) =>
+            Loaded += (Sender, Args) =>
             {
-                ReplaceWindowIfOutside();
+                RepositionWindowIfOutside();
+
                 if (DataContext is MainViewModel vm)
                 {
                     ServiceProvider.MainViewModel = vm;
@@ -75,27 +76,31 @@ namespace Captura
             };
         }
 
-        private void ReplaceWindowIfOutside()
+        void RepositionWindowIfOutside()
         {
-            if (!Screna.WindowProvider.DesktopRectangle.Contains(Settings.Instance.MainWindowLeft, Settings.Instance.MainWindowTop))
+            // Convert as per DPI since these are stored in device independent units
+            var x = Settings.Instance.MainWindowLeft * Dpi.Instance.X;
+            var y = Settings.Instance.MainWindowTop * Dpi.Instance.Y;
+            
+            if (!WindowProvider.DesktopRectangle.Contains((int) x, (int) y))
             {
-                this.Left = 50;
-                this.Top = 50;
+                Left = 50;
+                Top = 50;
             }
         }
 
-        void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void Grid_PreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs Args)
         {
             DragMove();
 
-            e.Handled = true;
+            Args.Handled = true;
         }
 
-        void MinButton_Click(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+        void MinButton_Click(object Sender, RoutedEventArgs Args) => SystemCommands.MinimizeWindow(this);
 
-        void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+        void CloseButton_Click(object Sender, RoutedEventArgs Args) => Close();
 
-        void SystemTray_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+        void SystemTray_TrayMouseDoubleClick(object Sender, RoutedEventArgs Args)
         {
             if (Visibility == Visibility.Visible)
             {
@@ -130,8 +135,8 @@ namespace Captura
             return true;
         }
 
-        void MenuExit_Click(object sender, RoutedEventArgs e) => Close();
+        void MenuExit_Click(object Sender, RoutedEventArgs Args) => Close();
 
-        void HideButton_Click(object Sender, RoutedEventArgs E) => Hide();
+        void HideButton_Click(object Sender, RoutedEventArgs Args) => Hide();
     }
 }
