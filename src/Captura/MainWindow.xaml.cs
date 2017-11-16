@@ -4,6 +4,7 @@ using Captura.Views;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System;
 
 namespace Captura
 {
@@ -64,6 +65,7 @@ namespace Captura
 
             Loaded += (s, e) =>
             {
+                ReplaceWindowIfOutside();
                 if (DataContext is MainViewModel vm)
                 {
                     ServiceProvider.MainViewModel = vm;
@@ -72,7 +74,16 @@ namespace Captura
                 }
             };
         }
-        
+
+        private void ReplaceWindowIfOutside()
+        {
+            if (!Screna.WindowProvider.DesktopRectangle.Contains(Settings.Instance.MainWindowLeft, Settings.Instance.MainWindowTop))
+            {
+                this.Left = 50;
+                this.Top = 50;
+            }
+        }
+
         void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
