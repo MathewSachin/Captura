@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System.Drawing;
+using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
 using System.Windows;
@@ -78,14 +79,20 @@ namespace Captura
 
         void RepositionWindowIfOutside()
         {
-            // Convert as per DPI since these are stored in device independent units
-            var x = Settings.Instance.MainWindowLeft * Dpi.Instance.X;
-            var y = Settings.Instance.MainWindowTop * Dpi.Instance.Y;
+            var rect = new Rectangle(Settings.Instance.MainWindowLeft,
+                Settings.Instance.MainWindowTop,
+                (int) ActualWidth,
+                (int) ActualHeight);
+
+            // Convert as per DPI since WPF uses device independent units
+            rect *= Dpi.Instance;
             
-            if (!WindowProvider.DesktopRectangle.Contains((int) x, (int) y))
+            if (!WindowProvider.DesktopRectangle.Contains(rect))
             {
                 Left = 50;
                 Top = 50;
+
+                this.ShouldSerializeTriggers();
             }
         }
 
