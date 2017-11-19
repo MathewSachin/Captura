@@ -16,7 +16,7 @@ namespace Captura.Models
         {
             using (Image)
                 Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
-            
+
             Status.LocalizationKey = nameof(Resources.ImgSavedClipboard);
         }
 
