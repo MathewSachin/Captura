@@ -23,21 +23,7 @@ namespace Captura.Models
 
         public Bitmap Capture(bool Cursor)
         {
-            var rectangle = Screen.Bounds;
-
-            var bmp = new Bitmap(rectangle.Width, rectangle.Height);
-
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.CopyFromScreen(rectangle.Location, Point.Empty, rectangle.Size, CopyPixelOperation.SourceCopy);
-
-                if (Cursor)
-                    MouseCursor.Draw(g, P => new Point(P.X - rectangle.X, P.Y - rectangle.Y));
-
-                g.Flush();
-            }
-
-            return bmp;
+            return ScreenShot.Capture(Screen, Cursor);
         }
 
         public static IEnumerable<ScreenItem> Enumerate()

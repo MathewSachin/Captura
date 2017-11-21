@@ -19,7 +19,7 @@ namespace Captura.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -696,6 +696,15 @@ namespace Captura.Properties {
         public static string OnlyAudio {
             get {
                 return ResourceManager.GetString("OnlyAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opacity.
+        /// </summary>
+        public static string Opacity {
+            get {
+                return ResourceManager.GetString("Opacity", resourceCulture);
             }
         }
         

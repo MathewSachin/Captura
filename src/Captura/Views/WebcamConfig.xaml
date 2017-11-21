@@ -3,8 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
-      DataContext="{StaticResource MainViewModel}"
-      Background="{DynamicResource WindowBackground}">
+      DataContext="{StaticResource MainViewModel}">
     <StackPanel Margin="10">
         <Grid>
             <Grid.RowDefinitions>
@@ -68,6 +67,22 @@
             <xctk:IntegerUpDown Value="{local:Setting Webcam_ResizeHeight}"
                                 Grid.Column="3"
                                 IsEnabled="{local:Setting Webcam_DoResize}"/>
+        </Grid>
+        <Grid Margin="0,15,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{local:Loc Opacity}"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,3"/>
+
+            <xctk:IntegerUpDown Value="{local:Setting Webcam_Opacity}"
+                                Grid.Column="1"
+                                Minimum="1"
+                                Maximum="100"/>
+
         </Grid>
     </StackPanel>
 </Page>

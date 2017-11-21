@@ -1,4 +1,6 @@
-﻿using Screna;
+﻿using System;
+using System.Linq;
+using Screna;
 using Screna.Audio;
 
 namespace Captura.Models
@@ -25,30 +27,37 @@ namespace Captura.Models
 
         public static FFMpegVideoArgsProvider HEVC_QSV { get; } = VideoQuality => "-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast";
 
+        public static FFMpegVideoArgsProvider Custom { get; } = VideoQuality => Settings.Instance.FFMpeg_CustomArgs;
+
         public static FFMpegItem[] Items { get; } =
         {
             // MP4 (x264, AAC)
-            new FFMpegItem("Mp4 (x264 | AAC)", ".mp4", x264, FFMpegAudioItem.Aac),
+            new FFMpegItem("Mp4 (x264 | AAC)", () => ".mp4", x264, FFMpegAudioItem.Aac),
 
             // Avi (Xvid, Mp3)
-            new FFMpegItem("Avi (Xvid | Mp3)", ".avi", Avi, FFMpegAudioItem.Mp3),
+            new FFMpegItem("Avi (Xvid | Mp3)", () => ".avi", Avi, FFMpegAudioItem.Mp3),
 
             // Gif (No Audio)
-            new FFMpegItem("Gif (No Audio)", ".gif", Gif, FFMpegAudioItem.Mp3),
+            new FFMpegItem("Gif (No Audio)", () => ".gif", Gif, FFMpegAudioItem.Mp3),
 
             // MP4 (HEVC Intel QSV, AAC)
-            new FFMpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", ".mp4", HEVC_QSV, FFMpegAudioItem.Aac)
+            new FFMpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", () => ".mp4", HEVC_QSV, FFMpegAudioItem.Aac),
+
+            // Custom
+            new FFMpegItem("Custom", () => Settings.Instance.FFMpeg_CustomExtension, Custom, FFMpegAudioItem.Mp3)
         };
         
-        FFMpegItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
+        FFMpegItem(string Name, Func<string> Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
         {            
-            this.Extension = Extension;
+            _extension = Extension;
             _videoArgsProvider = VideoArgsProvider;
             _audioArgsProvider = AudioArgsProvider;
             _name = Name;
         }
 
-        public string Extension { get; }
+        readonly Func<string> _extension;
+
+        public string Extension => _extension?.Invoke();
 
         readonly string _name;
         readonly FFMpegVideoArgsProvider _videoArgsProvider;

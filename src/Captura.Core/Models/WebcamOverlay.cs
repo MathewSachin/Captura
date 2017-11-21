@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Screna;
+using System.Drawing.Imaging;
 
 namespace Captura.Models
 {
@@ -41,26 +42,39 @@ namespace Captura.Models
         {
             var webcam = ServiceProvider.WebCamProvider;
 
-            if (webcam.SelectedCam != webcam.AvailableCams[0])
+            // No Webcam
+            if (webcam.SelectedCam == webcam.AvailableCams[0])
+                return;
+
+            var img = webcam.Capture();
+
+            if (img == null)
+                return;
+
+            if (Settings.Instance.Webcam_DoResize)
+                img = img.Resize(new Size(Settings.Instance.Webcam_ResizeWidth, Settings.Instance.Webcam_ResizeHeight), false);
+
+            using (img)
             {
-                var img = webcam.Capture();
-
-                if (img == null)
-                    return;
-
-                if (Settings.Instance.Webcam_DoResize)
-                    img = img.Resize(new Size(Settings.Instance.Webcam_ResizeWidth, Settings.Instance.Webcam_ResizeHeight), false);
-
-                using (img)
+                try
                 {
-                    try
-                    {
-                        var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
+                    var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
 
-                        g.DrawImage(img, point);
+                    if (Settings.Instance.Webcam_Opacity < 100)
+                    {
+                        var colormatrix = new ColorMatrix
+                        {
+                            Matrix33 = Settings.Instance.Webcam_Opacity / 100.0f
+                        };
+
+                        var imgAttribute = new ImageAttributes();
+                        imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                        g.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
                     }
-                    catch { }
+                    else g.DrawImage(img, point);
                 }
+                catch { }
             }
         }
     }

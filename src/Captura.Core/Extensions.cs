@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -19,7 +20,11 @@ namespace Captura
             if (S == null)
                 return;
 
-            Clipboard.SetText(S);
+            try { Clipboard.SetText(S); }
+            catch (ExternalException)
+            {
+                ServiceProvider.MessageProvider?.ShowError($"Copy to Clipboard failed:\n\n{S}");
+            }
         }
         
         static GraphicsPath RoundedRect(RectangleF Bounds, int Radius)
