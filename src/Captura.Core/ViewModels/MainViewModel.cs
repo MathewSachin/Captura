@@ -625,6 +625,10 @@ namespace Captura.ViewModels
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
                 overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+
+            // Time Elapsed overlay
+            if (Settings.Instance.TimeElapsed_Draw)
+                overlays.Add(new TimeElapsedOverlay(() => TimeSpan));
             
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }

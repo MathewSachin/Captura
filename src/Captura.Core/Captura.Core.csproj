@@ -87,6 +87,7 @@
     <Compile Include="Models\MouseKeyHook\DummyKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
+    <Compile Include="Models\TimeElapsedOverlay.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Properties\Resources.cs.Designer.cs">
@@ -245,6 +246,7 @@
     <Compile Include="Settings\Code.cs" />
     <Compile Include="Settings\JsonSettingsProvider.cs" />
     <Compile Include="Settings\FFMpegCustom.cs" />
+    <Compile Include="Settings\TimeElapsed.cs" />
     <Compile Include="Settings\Webcam.cs" />
     <Compile Include="Settings\MouseKeyHook.cs" />
     <Compile Include="Settings\Proxy.cs" />
