@@ -1,5 +1,4 @@
 ﻿using System;
-using Captura.Properties;
 using Captura.Webcam;
 
 namespace Captura.Models
@@ -8,11 +7,11 @@ namespace Captura.Models
     {
         WebcamItem()
         {
-            Name = Resources.NoWebcam;
+            Name = LanguageManager.NoWebcam;
 
             TranslationSource.Instance.PropertyChanged += (s, e) =>
             {
-                Name = Resources.NoWebcam;
+                Name = LanguageManager.NoWebcam;
 
                 RaisePropertyChanged(nameof(Name));
             };

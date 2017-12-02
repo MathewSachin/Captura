@@ -32,7 +32,7 @@ namespace Captura.Models
         public FFMpegWriter(string FileName, IImageProvider ImageProvider, int FrameRate,
             int VideoQuality, FFMpegVideoArgsProvider VideoArgsProvider,
             int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider,
-            IAudioProvider AudioProvider, int Frequency = 44100, int Channels = 2)
+            IAudioProvider AudioProvider, int Frequency = 44100, int Channels = 2, string OutputArgs = "")
         {
             _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
 
@@ -54,7 +54,7 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
-            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} \"{FileName}\"");
+            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {OutputArgs} \"{FileName}\"");
         }
 
         /// <summary>

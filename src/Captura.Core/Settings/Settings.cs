@@ -8,6 +8,22 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [DefaultSettingValue("")]
+        public string TwitchKey
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+        
+        [UserScopedSetting]
+        [DefaultSettingValue("")]
+        public string YouTubeLiveKey
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool DarkTheme
         {

@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.Properties;
 using Ookii.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Captura.ViewModels
     {
         public bool MouseKeyHookAvailable { get; } = ServiceProvider.FileExists("Gma.System.MouseKeyHook.dll");
 
-        public TextLocalizer Status { get; } = new TextLocalizer(Resources.Ready);
+        public TextLocalizer Status { get; } = new TextLocalizer(LanguageManager.Ready);
         
         #region Time
         TimeSpan _ts;
@@ -97,16 +96,16 @@ namespace Captura.ViewModels
 
         public ObjectLocalizer<Alignment>[] XAlignments { get; } =
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(Resources.Left)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(Resources.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(Resources.Right))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Right))
         };
 
         public ObjectLocalizer<Alignment>[] YAlignments { get; } =
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(Resources.Top)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(Resources.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(Resources.Bottom))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Top)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Bottom))
         };
 
         #region ScreenShot
@@ -166,7 +165,7 @@ namespace Captura.ViewModels
             {
                 SelectedPath = Settings.Instance.OutPath,
                 UseDescriptionForTitle = true,
-                Description = Resources.SelectOutFolder
+                Description = LanguageManager.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

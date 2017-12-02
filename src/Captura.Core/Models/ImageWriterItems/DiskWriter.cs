@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using Captura.ViewModels;
+﻿using Captura.ViewModels;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -28,7 +27,7 @@ namespace Captura.Models
                 using (Image)
                     Image.Save(fileName, Format);
 
-                Status.LocalizationKey = nameof(Resources.ImgSavedDisk);
+                Status.LocalizationKey = nameof(LanguageManager.ImgSavedDisk);
                 Recents.Add(fileName, RecentItemType.Image, false);
 
                 if (Settings.Instance.CopyOutPathToClipboard)
@@ -38,12 +37,12 @@ namespace Captura.Models
             }
             catch (Exception E)
             {
-                ServiceProvider.MessageProvider.ShowError($"{nameof(Resources.NotSaved)}\n\n{E}");
+                ServiceProvider.MessageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{E}");
 
-                Status.LocalizationKey = nameof(Resources.NotSaved);
+                Status.LocalizationKey = nameof(LanguageManager.NotSaved);
             }
         }
 
-        public override string ToString() => Resources.Disk;
+        public override string ToString() => LanguageManager.Disk;
     }
 }

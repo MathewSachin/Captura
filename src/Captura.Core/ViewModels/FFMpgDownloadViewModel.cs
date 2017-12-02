@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using Ookii.Dialogs;
+﻿using Ookii.Dialogs;
 using SharpCompress.Archives;
 using SharpCompress.Readers;
 using System;
@@ -36,7 +35,7 @@ namespace Captura.ViewModels
                 {
                     SelectedPath = TargetFolder,
                     UseDescriptionForTitle = true,
-                    Description = Resources.SelectFFMpegFolder
+                    Description = LanguageManager.SelectFFMpegFolder
                 })
                 {
                     if (dlg.ShowDialog() == DialogResult.OK)
