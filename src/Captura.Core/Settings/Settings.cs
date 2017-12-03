@@ -8,7 +8,7 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
-        public WebcamOverlaySettings Webcam
+        public WebcamOverlaySettings WebcamOverlay
         {
             get => Get<WebcamOverlaySettings>();
             set => Set(value);
@@ -28,7 +28,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public TextOverlaySettings TimeElapsed
+        public TextOverlaySettings TimeElapsedOverlay
         {
             get => Get<TextOverlaySettings>();
             set => Set(value);

@@ -8,8 +8,40 @@ namespace Captura
     public partial class Settings : ApplicationSettingsBase
     {
         public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
-        
-        Settings() { }
+
+        Settings()
+        {
+            InitOverlaySettings();
+        }
+
+        void InitOverlaySettings()
+        {
+            if (Keystrokes == null)
+            {
+                Keystrokes = new KeystrokesSettings();
+            }
+
+            if (MouseClicks == null)
+            {
+                MouseClicks = new MouseClickSettings();
+            }
+
+            if (TimeElapsedOverlay == null)
+            {
+                TimeElapsedOverlay = new TextOverlaySettings
+                {
+                    HorizontalAlignment = Alignment.End
+                };
+            }
+
+            if (WebcamOverlay == null)
+            {
+                WebcamOverlay = new WebcamOverlaySettings
+                {
+                    HorizontalAlignment = Alignment.End
+                };
+            }
+        }
         
         T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
 

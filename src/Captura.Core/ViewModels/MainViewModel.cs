@@ -627,7 +627,7 @@ namespace Captura.ViewModels
                 overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.Keystrokes));
 
             // Time Elapsed overlay
-            if (Settings.Instance.TimeElapsed.Display)
+            if (Settings.Instance.TimeElapsedOverlay.Display)
                 overlays.Add(new TimeElapsedOverlay(() => TimeSpan));
             
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
