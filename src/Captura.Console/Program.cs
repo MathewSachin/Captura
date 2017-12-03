@@ -27,7 +27,7 @@ namespace Captura.Console
                     Banner();
 
                     // Reset settings
-                    Settings.Instance.Reset();
+                    Settings.Instance.SafeReset();
 
                     var verbs = new VerbCmdOptions();
 

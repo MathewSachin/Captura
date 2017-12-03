@@ -43,6 +43,13 @@ namespace Captura
             }
         }
 
+        public void SafeReset()
+        {
+            Reset();
+
+            InitOverlaySettings();
+        }
+
         T Get<T>([CallerMemberName] string PropertyName = null)
         {
             if (this[PropertyName] is T value)
