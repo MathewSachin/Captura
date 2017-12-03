@@ -338,10 +338,10 @@ namespace Captura.Console
                 Settings.Instance.IncludeCursor = true;
 
             if (StartOptions.Clicks)
-                Settings.Instance.MouseClicks = true;
+                Settings.Instance.MouseClicks.Display = true;
 
             if (StartOptions.Keys)
-                Settings.Instance.KeyStrokes = true;
+                Settings.Instance.Keystrokes.Display = true;
 
             HandleVideoSource(ViewModel, StartOptions);
 

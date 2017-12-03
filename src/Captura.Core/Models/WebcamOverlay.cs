@@ -11,9 +11,9 @@ namespace Captura.Models
 
         static Point GetPosition(Size Bounds, Size ImageSize)
         {
-            var point = new Point(Settings.Instance.Webcam_X, Settings.Instance.Webcam_Y);
+            var point = new Point(Settings.Instance.Webcam.X, Settings.Instance.Webcam.Y);
 
-            switch (Settings.Instance.Webcam_XAlign)
+            switch (Settings.Instance.Webcam.HorizontalAlignment)
             {
                 case Alignment.Center:
                     point.X = Bounds.Width / 2 - ImageSize.Width / 2 + point.X;
@@ -24,7 +24,7 @@ namespace Captura.Models
                     break;
             }
 
-            switch (Settings.Instance.Webcam_YAlign)
+            switch (Settings.Instance.Webcam.VerticalAlignment)
             {
                 case Alignment.Center:
                     point.Y = Bounds.Height / 2 - ImageSize.Height / 2 + point.Y;
@@ -51,8 +51,8 @@ namespace Captura.Models
             if (img == null)
                 return;
 
-            if (Settings.Instance.Webcam_DoResize)
-                img = img.Resize(new Size(Settings.Instance.Webcam_ResizeWidth, Settings.Instance.Webcam_ResizeHeight), false);
+            if (Settings.Instance.Webcam.Resize)
+                img = img.Resize(new Size(Settings.Instance.Webcam.ResizeWidth, Settings.Instance.Webcam.ResizeHeight), false);
 
             using (img)
             {
@@ -60,11 +60,11 @@ namespace Captura.Models
                 {
                     var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
 
-                    if (Settings.Instance.Webcam_Opacity < 100)
+                    if (Settings.Instance.Webcam.Opacity < 100)
                     {
                         var colormatrix = new ColorMatrix
                         {
-                            Matrix33 = Settings.Instance.Webcam_Opacity / 100.0f
+                            Matrix33 = Settings.Instance.Webcam.Opacity / 100.0f
                         };
 
                         var imgAttribute = new ImageAttributes();

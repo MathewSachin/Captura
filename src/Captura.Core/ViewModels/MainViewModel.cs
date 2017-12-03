@@ -623,11 +623,11 @@ namespace Captura.ViewModels
             var overlays = new List<IOverlay> { new WebcamOverlay() };
                         
             // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+            if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks.Display || Settings.Instance.Keystrokes.Display))
+                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.Keystrokes));
 
             // Time Elapsed overlay
-            if (Settings.Instance.TimeElapsed_Draw)
+            if (Settings.Instance.TimeElapsed.Display)
                 overlays.Add(new TimeElapsedOverlay(() => TimeSpan));
             
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());

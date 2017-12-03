@@ -8,6 +8,33 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        public WebcamOverlaySettings Webcam
+        {
+            get => Get<WebcamOverlaySettings>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public MouseClickSettings MouseClicks
+        {
+            get => Get<MouseClickSettings>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        public KeystrokesSettings Keystrokes
+        {
+            get => Get<KeystrokesSettings>();
+            set => Set(value);
+        }
+
+        public TextOverlaySettings TimeElapsed
+        {
+            get => Get<TextOverlaySettings>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool DarkTheme
         {
@@ -138,22 +165,6 @@ namespace Captura
         public int FrameRate
         {
             get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool MouseClicks
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool KeyStrokes
-        {
-            get => Get<bool>();
             set => Set(value);
         }
         
