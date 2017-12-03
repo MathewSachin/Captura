@@ -47,28 +47,36 @@ namespace Captura
             // Iterate through the settings to be retrieved
             foreach (SettingsProperty setting in props)
             {
-                values.Add(new SettingsPropertyValue(setting)
-                {
-                    IsDirty = false,
-                    SerializedValue = GetValue(setting),
-                });
+                values.Add(GetValue(setting));
             }
             return values;
         }
 
-        object GetValue(SettingsProperty setting)
+        SettingsPropertyValue GetValue(SettingsProperty setting)
         {
-            var value = (string)_settingsJson[setting.Name];
+            var value = new SettingsPropertyValue(setting)
+            {
+                IsDirty = false
+            };
 
-            if (string.IsNullOrEmpty(value))
-                return setting.DefaultValue?.ToString() ?? "";
+            if (_settingsJson.TryGetValue(setting.Name, out var token))
+            {
+                value.PropertyValue = token.ToObject(setting.PropertyType);
+                value.Deserialized = true;
+            }
+            else
+            {
+                value.Deserialized = false;
+                value.SerializedValue = setting.DefaultValue;
+            }
 
             return value;
         }
 
         void SetValue(SettingsPropertyValue setting)
         {
-            _settingsJson[setting.Name] = setting.SerializedValue?.ToString() ?? "";
+            if (setting.PropertyValue != null)
+                _settingsJson[setting.Name] = JToken.FromObject(setting.PropertyValue);
         }
 
         static JObject LoadOrCreateSettings(string FilePath)

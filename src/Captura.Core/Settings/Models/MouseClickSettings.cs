@@ -2,9 +2,20 @@
 
 namespace Captura
 {
-    public class MouseClickSettings
+    public class MouseClickSettings : NotifyPropertyChanged
     {
-        public bool Display { get; set; }
+        bool _display;
+
+        public bool Display
+        {
+            get => _display;
+            set
+            {
+                _display = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public int Radius { get; set; } = 25;
 

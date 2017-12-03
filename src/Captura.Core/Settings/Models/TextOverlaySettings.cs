@@ -4,7 +4,18 @@ namespace Captura
 {
     public class TextOverlaySettings : PositionedOverlaySettings
     {
-        public bool Display { get; set; }
+        bool _display;
+
+        public bool Display
+        {
+            get => _display;
+            set
+            {
+                _display = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public int FontSize { get; set; } = 20;
 

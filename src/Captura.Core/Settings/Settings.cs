@@ -8,6 +8,7 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
         public WebcamOverlaySettings WebcamOverlay
         {
             get => Get<WebcamOverlaySettings>();
@@ -15,6 +16,7 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
         public MouseClickSettings MouseClicks
         {
             get => Get<MouseClickSettings>();
@@ -22,12 +24,15 @@ namespace Captura
         }
 
         [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
         public KeystrokesSettings Keystrokes
         {
             get => Get<KeystrokesSettings>();
             set => Set(value);
         }
 
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
         public TextOverlaySettings TimeElapsedOverlay
         {
             get => Get<TextOverlaySettings>();

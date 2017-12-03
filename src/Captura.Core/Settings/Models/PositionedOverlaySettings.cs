@@ -1,6 +1,6 @@
 ﻿namespace Captura
 {
-    public abstract class PositionedOverlaySettings
+    public abstract class PositionedOverlaySettings : NotifyPropertyChanged
     {
         public Alignment HorizontalAlignment { get; set; } = Alignment.Start;
 

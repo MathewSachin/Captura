@@ -156,7 +156,7 @@ namespace Captura.Models
 
         void DrawKeys(Graphics g)
         {
-            if (_records.Last == null)
+            if (_records?.Last == null)
                 return;
 
             var offsetY = 0f;

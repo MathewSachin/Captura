@@ -42,8 +42,14 @@ namespace Captura
                 };
             }
         }
-        
-        T Get<T>([CallerMemberName] string PropertyName = null) => (T)this[PropertyName];
+
+        T Get<T>([CallerMemberName] string PropertyName = null)
+        {
+            if (this[PropertyName] is T value)
+                return value;
+
+            return default(T);
+        }
 
         void Set<T>(T Value, [CallerMemberName] string PropertyName = null) => this[PropertyName] = Value;
         

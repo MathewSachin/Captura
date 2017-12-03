@@ -4,7 +4,18 @@
     {
         public int Opacity { get; set; } = 100;
 
-        public bool Resize { get; set; }
+        bool _resize;
+
+        public bool Resize
+        {
+            get => _resize;
+            set
+            {
+                _resize = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public int ResizeWidth { get; set; } = 320;
 
