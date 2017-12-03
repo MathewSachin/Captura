@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Captura
 {
@@ -31,6 +34,7 @@ namespace Captura
             try
             {
                 var jobj = new JObject(_settingsJson.Properties().OrderBy(j => j.Name).ToArray());
+
                 File.WriteAllText(_fileName, jobj.ToString());
             }
             catch

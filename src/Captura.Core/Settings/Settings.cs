@@ -39,6 +39,14 @@ namespace Captura
             set => Set(value);
         }
 
+        [SettingsProvider(typeof(ArraySettingsProvider))]
+        [UserScopedSetting]
+        public List<TextOverlaySettings> CustomOverlays
+        {
+            get => Get<List<TextOverlaySettings>>();
+            set => Set(value);
+        }
+
         [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool DarkTheme

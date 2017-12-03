@@ -1,11 +1,28 @@
 ﻿using Captura.Properties;
 using System.Collections.Specialized;
 using System.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Captura
 {
     public abstract class SettingsProviderBase : SettingsProvider, IApplicationSettingsProvider
     {
+        static SettingsProviderBase()
+        {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                Converters = new JsonConverter[]
+                {
+                    new StringEnumConverter
+                    {
+                        AllowIntegerValues = false
+                    }
+                }
+            };
+        }
+
         public override string ApplicationName
         {
             get => Resources.AppName;

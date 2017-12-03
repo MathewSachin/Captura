@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -40,6 +41,11 @@ namespace Captura
                 {
                     HorizontalAlignment = Alignment.End
                 };
+            }
+
+            if (CustomOverlays == null)
+            {
+                CustomOverlays = new List<TextOverlaySettings>();
             }
         }
 
