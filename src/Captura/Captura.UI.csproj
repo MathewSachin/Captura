@@ -89,6 +89,12 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\Controls\PositionSettingsControl.xaml.cs">
+      <DependentUpon>PositionSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\TextOverlaySettingsControl.xaml.cs">
+      <DependentUpon>TextOverlaySettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
@@ -164,6 +170,14 @@
     <Page Include="Presentation\Controls\ScreenShotBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\PositionSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\TextOverlaySettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Controls\WebcamControl.xaml">
       <Generator>MSBuild:Compile</Generator>

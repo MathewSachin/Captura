@@ -11,45 +11,8 @@
             </Expander.Header>
 
             <StackPanel Margin="5">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Content="X: "
-                           Margin="0,3"/>
-                    <ComboBox ItemsSource="{Binding XAlignments}"
-                              SelectedValue="{Binding Settings.WebcamOverlay.HorizontalAlignment, Mode=TwoWay}"
-                              SelectedValuePath="Source"
-                              DisplayMemberPath="Display"
-                              Grid.Column="1"
-                              Margin="3"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.WebcamOverlay.X, Mode=TwoWay}"
-                                        Grid.Column="2"
-                                        Margin="0,3"/>
-
-                    <Label Content="Y: "
-                           Grid.Row="1"
-                           Margin="0,3"/>
-                    <ComboBox ItemsSource="{Binding YAlignments}"
-                              SelectedValue="{Binding Settings.WebcamOverlay.VerticalAlignment, Mode=TwoWay}"
-                              SelectedValuePath="Source"
-                              DisplayMemberPath="Display"
-                              Grid.Column="1"
-                              Grid.Row="1"
-                              Margin="3"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.WebcamOverlay.Y, Mode=TwoWay}"
-                                        Grid.Column="2"
-                                        Grid.Row="1"
-                                        Margin="0,3"/>
-                </Grid>
-
+                <local:PositionSettingsControl DataContext="{Binding Settings.WebcamOverlay}"/>
+                
                 <Grid Margin="0,15,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -337,139 +300,10 @@
 
             <StackPanel Margin="5">
                 <CheckBox Content="Draw"
-                          IsChecked="{local:Setting TimeElapsed_Draw}"
+                          IsChecked="{Binding Settings.TimeElapsedOverlay.Display, Mode=TwoWay}"
                           Margin="0,3"/>
 
-                <Grid Margin="0,3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Label Content="{local:Loc Color}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"/>
-                    <xctk:ColorPicker SelectedColor="{local:Setting TimeElapsed_Color, Converter={StaticResource WpfColorConverter}}"
-                                      Grid.Column="1"
-                                      Margin="0,5"/>
-
-                    <Label Content="{local:Loc FontSize}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="1"/>
-                    <xctk:IntegerUpDown Minimum="1"
-                                        Value="{local:Setting TimeElapsed_FontSize}"
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc BackColor}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="3"/>
-                    <xctk:ColorPicker SelectedColor="{local:Setting TimeElapsedRect_Color, Converter={StaticResource WpfColorConverter}}"
-                                      Grid.Row="3"
-                                      Grid.Column="1"
-                                      Margin="0,5"/>
-
-                    <Label Content="{local:Loc PaddingX}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="4"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_PaddingX}"
-                                        Grid.Row="4"
-                                        Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc PaddingY}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="5"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_PaddingY}"
-                                        Grid.Row="5"
-                                        Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc CornerRadius}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="6"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_CornerRadius}"
-                                        Grid.Row="6"
-                                        Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc BorderThickness}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="8"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_Border}"
-                                        Grid.Row="8"
-                                        Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc BorderColor}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="9"/>
-                    <xctk:ColorPicker SelectedColor="{local:Setting TimeElapsed_BorderColor, Converter={StaticResource WpfColorConverter}}"
-                                      Grid.Row="9"
-                                      Grid.Column="1"
-                                      Margin="0,5"/>
-                </Grid>
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Content="X: "
-                           Margin="0,3"/>
-                    <ComboBox ItemsSource="{Binding XAlignments}"
-                              SelectedValue="{local:Setting TimeElapsed_XAlign}"
-                              SelectedValuePath="Source"
-                              DisplayMemberPath="Display"
-                              Grid.Column="1"
-                              Margin="3"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_X}"
-                                        Grid.Column="2"
-                                        Margin="0,3"/>
-
-                    <Label Content="Y: "
-                           Grid.Row="1"
-                           Margin="0,3"/>
-                    <ComboBox ItemsSource="{Binding YAlignments}"
-                              SelectedValue="{local:Setting TimeElapsed_YAlign}"
-                              SelectedValuePath="Source"
-                              DisplayMemberPath="Display"
-                              Grid.Column="1"
-                              Grid.Row="1"
-                              Margin="3"/>
-                    <xctk:IntegerUpDown Value="{local:Setting TimeElapsed_Y}"
-                                        Grid.Column="2"
-                                        Grid.Row="1"
-                                        Margin="0,3"/>
-                </Grid>
+                <local:TextOverlaySettingsControl DataContext="{Binding Settings.TimeElapsedOverlay}"/>
             </StackPanel>
         </Expander>
     </StackPanel>
