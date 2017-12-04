@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Configuration;
 
 namespace Captura
@@ -8,7 +7,7 @@ namespace Captura
     {
         public override string ApplicationName
         {
-            get => Resources.AppName;
+            get => "Captura";
             set { }
         }
         

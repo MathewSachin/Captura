@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.Properties;
 using Ookii.Dialogs;
 using System;
 using System.Diagnostics;
@@ -79,7 +78,7 @@ namespace Captura
             {
                 SelectedPath = Settings.Instance.FFMpegFolder,
                 UseDescriptionForTitle = true,
-                Description = Resources.SelectFFMpegFolder
+                Description = LanguageManager.SelectFFMpegFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

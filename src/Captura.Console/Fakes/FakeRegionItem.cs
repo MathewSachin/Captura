@@ -2,7 +2,6 @@
 using System.Drawing;
 using Captura.Models;
 using Screna;
-using Captura.Properties;
 
 namespace Captura.Console
 {
@@ -15,7 +14,7 @@ namespace Captura.Console
             _rect = Region;
         }
 
-        public string Name => Resources.RegionSelector;
+        public string Name => LanguageManager.RegionSelector;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

@@ -136,7 +136,7 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Language.cs" />
+    <Compile Include="LanguageManager.cs" />
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />

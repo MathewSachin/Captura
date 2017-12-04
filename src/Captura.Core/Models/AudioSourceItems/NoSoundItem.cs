@@ -1,6 +1,4 @@
-﻿using Captura.Properties;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     public class NoSoundItem : NotifyPropertyChanged, IAudioItem
     {
@@ -11,7 +9,7 @@ namespace Captura.Models
             TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
         }
 
-        public string Name => Resources.NoAudio;
+        public string Name => LanguageManager.NoAudio;
 
         public override string ToString() => Name;
     }
