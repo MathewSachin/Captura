@@ -1,7 +1,6 @@
 ﻿using System;
 using Screna;
 using System.Drawing;
-using Captura.Properties;
 
 namespace Captura.Models
 {
@@ -16,7 +15,7 @@ namespace Captura.Models
                 
         public override string ToString() => Name;
 
-        public string Name => Resources.FullScreen;
+        public string Name => LanguageManager.FullScreen;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

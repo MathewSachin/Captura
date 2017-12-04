@@ -1,5 +1,4 @@
 using Captura.Models;
-using Captura.Properties;
 using Screna;
 using System.Collections.ObjectModel;
 
@@ -141,10 +140,10 @@ namespace Captura.ViewModels
         
         public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(Resources.OnlyAudio)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(Resources.Screen)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(Resources.Window)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(Resources.Region))
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(LanguageManager.OnlyAudio)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(LanguageManager.Screen)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(LanguageManager.Window)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(LanguageManager.Region))
         };
 
         public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
@@ -198,9 +197,9 @@ namespace Captura.ViewModels
 
         public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } = new ObservableCollection<ObjectLocalizer<IImageWriterItem>>()
         {
-            new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(Resources.Disk)),
-            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(Resources.Clipboard)),
-            new ObjectLocalizer<IImageWriterItem>(ImgurWriter.Instance, nameof(Resources.Imgur))
+            new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(LanguageManager.Disk)),
+            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(LanguageManager.Clipboard)),
+            new ObjectLocalizer<IImageWriterItem>(ImgurWriter.Instance, nameof(LanguageManager.Imgur))
         };
 
         IImageWriterItem _imgWriter = DiskWriter.Instance;

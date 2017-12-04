@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using Captura.ViewModels;
+﻿using Captura.ViewModels;
 using Screna;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -17,9 +16,9 @@ namespace Captura.Models
             using (Image)
                 Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 
-            Status.LocalizationKey = nameof(Resources.ImgSavedClipboard);
+            Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
         }
 
-        public override string ToString() => Resources.Clipboard;
+        public override string ToString() => LanguageManager.Clipboard;
     }
 }

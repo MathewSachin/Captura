@@ -1,4 +1,3 @@
-using Captura.Properties;
 using Captura.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace Captura
             get
             {
                 if (_settingsDir == null)
-                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.AppName);
+                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Captura");
 
                 if (!Directory.Exists(_settingsDir))
                     Directory.CreateDirectory(_settingsDir);
@@ -58,19 +57,19 @@ namespace Captura
             switch (ServiceName)
             {
                 case ServiceName.Recording:
-                    return nameof(Resources.StartStopRecording);
+                    return nameof(LanguageManager.StartStopRecording);
 
                 case ServiceName.Pause:
-                    return nameof(Resources.PauseResumeRecording);
+                    return nameof(LanguageManager.PauseResumeRecording);
 
                 case ServiceName.ScreenShot:
-                    return nameof(Resources.ScreenShot);
+                    return nameof(LanguageManager.ScreenShot);
 
                 case ServiceName.ActiveScreenShot:
-                    return nameof(Resources.ScreenShotActiveWindow);
+                    return nameof(LanguageManager.ScreenShotActiveWindow);
 
                 case ServiceName.DesktopScreenShot:
-                    return nameof(Resources.ScreenShotDesktop);
+                    return nameof(LanguageManager.ScreenShotDesktop);
 
                 default:
                     return "Unknown";
