@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.Properties;
 using Screna;
 using System;
 using System.Drawing;
@@ -29,7 +28,7 @@ namespace Captura
             return new StaticRegionProvider(_selector, IncludeCursor);
         }
 
-        public string Name => Resources.RegionSelector;
+        public string Name => LanguageManager.RegionSelector;
 
         public override string ToString() => Name;
     }

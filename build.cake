@@ -176,8 +176,8 @@ Task("Populate-Output")
     // Copy Assemblies
     CopyFiles(binFolder + "*.dll", "Output");
     
-    // Copy Resource Assemblies
-    CopyFiles(binFolder + "*/*.dll", "Output", true);
+    // Copy Languages
+    CopyDirectory(binFolder + "Languages", "Output/Languages");
 
     // Copy executables and config files
     CopyFiles(binFolder + "*.exe*", "Output");

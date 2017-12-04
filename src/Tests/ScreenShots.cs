@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
-using Captura.Properties;
 using TestStack.White.UIItems.TabItems;
 using TestStack.White.UIItems.Finders;
 using System.Diagnostics;
 using TestStack.White.UIItems.WindowItems;
 using System.Threading;
 using System.IO;
+using Captura;
 
 namespace UITests
 {
@@ -25,7 +25,7 @@ namespace UITests
 
             _mainWindow = _app.GetWindow("Captura");
 
-            _mainTab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(Resources.Main));
+            _mainTab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(LanguageManager.Main));
         }
 
         [ClassCleanup]
@@ -65,10 +65,10 @@ namespace UITests
 
             var tabs = new[]
             {
-                Resources.Main,
-                Resources.Configure, Resources.Hotkeys, "Overlays", "FFMpeg", Resources.Proxy, Resources.Extras,
-                Resources.Recent,
-                Resources.About
+                LanguageManager.Main,
+                LanguageManager.Configure, LanguageManager.Hotkeys, "Overlays", "FFMpeg", LanguageManager.Proxy, LanguageManager.Extras,
+                LanguageManager.Recent,
+                LanguageManager.About
             };
 
             foreach (var tabName in tabs)

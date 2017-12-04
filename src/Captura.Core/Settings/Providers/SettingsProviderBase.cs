@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -25,7 +24,7 @@ namespace Captura
 
         public override string ApplicationName
         {
-            get => Resources.AppName;
+            get => "Captura";
             set { }
         }
         

@@ -1,6 +1,5 @@
 ﻿using System;
 using Captura.Models;
-using Captura.Properties;
 
 namespace Captura.Console
 {
@@ -11,7 +10,7 @@ namespace Captura.Console
         public void ShowScreenShotNotification(string FilePath)
         {
             // ReSharper disable once LocalizableElement
-            System.Console.WriteLine($"{Resources.ScreenShotSaved}: {FilePath}");
+            System.Console.WriteLine($"{LanguageManager.ScreenShotSaved}: {FilePath}");
         }
 
         public void ShowTextNotification(string Text, int Duration, Action OnClick)
