@@ -142,6 +142,7 @@
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
+    <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegLog.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="Models\MouseKeyHook\DummyKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
+    <Compile Include="Models\TextOverlay.cs" />
+    <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
+    <Compile Include="ViewModels\CustomOverlays.cs" />
     <Compile Include="Models\TimeElapsedOverlay.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />

@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
+      xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
       DataContext="{StaticResource MainViewModel}">
     <StackPanel Margin="10">
         <Expander Margin="0,5">
@@ -78,7 +79,7 @@
                     <Label Content="{local:Loc Radius}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.MouseClicks.Radius, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.Clicks.Radius, Mode=TwoWay}"
                                         Minimum="1"
                                         Margin="0,5"
                                         Grid.Column="1"/>
@@ -87,7 +88,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="1"/>
-                    <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClicks.Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                    <xctk:ColorPicker SelectedColor="{Binding Settings.Clicks.Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                                       Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,5"/>
@@ -96,7 +97,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="2"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.MouseClicks.BorderThickness, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.Clicks.BorderThickness, Mode=TwoWay}"
                                         Grid.Row="2"
                                         Grid.Column="1"
                                         Margin="0,5"/>
@@ -105,7 +106,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="3"/>
-                    <xctk:ColorPicker SelectedColor="{Binding Settings.MouseClicks.BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                    <xctk:ColorPicker SelectedColor="{Binding Settings.Clicks.BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                                       Grid.Row="3"
                                       Grid.Column="1"
                                       Margin="0,5"/>
@@ -186,6 +187,43 @@
                           Margin="0,3"/>
 
                 <local:TextOverlaySettingsControl DataContext="{Binding Settings.TimeElapsedOverlay}"/>
+            </StackPanel>
+        </Expander>
+        
+        <Expander Margin="0,5">
+            <Expander.Header>
+                <Label Content="Custom"/>
+            </Expander.Header>
+
+            <StackPanel Margin="5"
+                        DataContext="{x:Static viewModels:CustomOverlaysViewModel.Instance}">
+                <Button Content="Add"
+                        Command="{Binding AddCommand}"/>
+                
+                <ItemsControl Margin="5"
+                              ItemsSource="{Binding Collection}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="0.2"
+                                    BorderBrush="#333333"
+                                    Padding="10"
+                                    Margin="0,5">
+                                <DockPanel>
+                                    <local:TextOverlaySettingsControl DataContext="{Binding}"
+                                                                      Margin="10"
+                                                                      DockPanel.Dock="Bottom"/>
+                                    <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"/>
+                                    <Button Content="X"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Right"
+                                            Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                    <TextBox Text="{Binding Text, Mode=TwoWay}"
+                                             Margin="5,0"/>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Expander>
     </StackPanel>

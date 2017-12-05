@@ -17,7 +17,7 @@ namespace Captura
 
         [UserScopedSetting]
         [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public MouseClickSettings MouseClicks
+        public MouseClickSettings Clicks
         {
             get => Get<MouseClickSettings>();
             set => Set(value);
@@ -41,9 +41,9 @@ namespace Captura
 
         [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
-        public List<TextOverlaySettings> CustomOverlays
+        public List<CustomOverlaySettings> CustomOverlays
         {
-            get => Get<List<TextOverlaySettings>>();
+            get => Get<List<CustomOverlaySettings>>();
             set => Set(value);
         }
 

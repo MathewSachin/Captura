@@ -26,7 +26,7 @@
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Hand}"
-                                          IsChecked="{Binding Settings.MouseClicks.Display, Mode=TwoWay}"/>
+                                          IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Keyboard}"

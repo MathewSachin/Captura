@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -22,9 +21,9 @@ namespace Captura
                 Keystrokes = new KeystrokesSettings();
             }
 
-            if (MouseClicks == null)
+            if (Clicks == null)
             {
-                MouseClicks = new MouseClickSettings();
+                Clicks = new MouseClickSettings();
             }
 
             if (TimeElapsedOverlay == null)
@@ -41,11 +40,6 @@ namespace Captura
                 {
                     HorizontalAlignment = Alignment.End
                 };
-            }
-
-            if (CustomOverlays == null)
-            {
-                CustomOverlays = new List<TextOverlaySettings>();
             }
         }
 

@@ -338,7 +338,7 @@ namespace Captura.Console
                 Settings.Instance.IncludeCursor = true;
 
             if (StartOptions.Clicks)
-                Settings.Instance.MouseClicks.Display = true;
+                Settings.Instance.Clicks.Display = true;
 
             if (StartOptions.Keys)
                 Settings.Instance.Keystrokes.Display = true;
