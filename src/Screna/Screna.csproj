@@ -50,7 +50,6 @@
     <Compile Include="ImageProviders\RegionProvider.cs" />
     <Compile Include="VideoWriter\IVideoFileWriter.cs" />
     <Compile Include="ImageProviders\IImageProvider.cs" />
-    <Compile Include="ImageProviders\ScreenProvider.cs" />
     <Compile Include="ImageProviders\WindowProvider.cs" />
     <Compile Include="Overlays\MouseCursor.cs" />
     <Compile Include="Native\Enums.cs" />
