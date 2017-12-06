@@ -59,6 +59,8 @@ namespace Captura.ViewModels
 
             RefreshCommand = new DelegateCommand(() =>
             {
+                WindowProvider.RefreshDesktopSize();
+
                 VideoViewModel.RefreshVideoSources();
 
                 VideoViewModel.RefreshCodecs();
