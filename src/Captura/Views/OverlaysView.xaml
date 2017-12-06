@@ -190,16 +190,21 @@
             </StackPanel>
         </Expander>
         
-        <Expander Margin="0,5">
+        <Expander DataContext="{x:Static viewModels:CustomOverlaysViewModel.Instance}"
+                  Margin="0,5">
             <Expander.Header>
                 <Label Content="Custom"/>
             </Expander.Header>
 
-            <StackPanel Margin="5"
-                        DataContext="{x:Static viewModels:CustomOverlaysViewModel.Instance}">
-                <Button Content="Add"
-                        Command="{Binding AddCommand}"/>
-                
+            <StackPanel>
+                <DockPanel>
+                    <local:ModernButton ToolTip="Add"
+                                        Command="{Binding AddCommand}"
+                                        IconData="{StaticResource Icon_Add}"
+                                        DockPanel.Dock="Right"/>
+                    <Label Content="Create Custom Text Overlays"/>
+                </DockPanel>
+
                 <ItemsControl Margin="5"
                               ItemsSource="{Binding Collection}">
                     <ItemsControl.ItemTemplate>
@@ -210,15 +215,17 @@
                                     Margin="0,5">
                                 <DockPanel>
                                     <local:TextOverlaySettingsControl DataContext="{Binding}"
-                                                                      Margin="10"
+                                                                      Margin="10,5"
                                                                       DockPanel.Dock="Bottom"/>
                                     <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"/>
-                                    <Button Content="X"
-                                            CommandParameter="{Binding}"
-                                            DockPanel.Dock="Right"
-                                            Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                    <local:ModernButton ToolTip="Remove"
+                                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                                        CommandParameter="{Binding}"
+                                                        IconData="{StaticResource Icon_Close}"
+                                                        DockPanel.Dock="Right"/>
                                     <TextBox Text="{Binding Text, Mode=TwoWay}"
-                                             Margin="5,0"/>
+                                             Margin="5,0"
+                                             VerticalAlignment="Center"/>
                                 </DockPanel>
                             </Border>
                         </DataTemplate>
