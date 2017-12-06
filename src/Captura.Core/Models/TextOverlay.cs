@@ -60,6 +60,10 @@ namespace Captura.Models
         public virtual void Draw(Graphics g, Func<Point, Point> PointTransform = null)
         {
             var text = GetText();
+
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
             var fontSize = _overlaySettings.FontSize;
 
             var font = new Font(FontFamily.GenericMonospace, fontSize);

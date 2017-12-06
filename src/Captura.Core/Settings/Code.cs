@@ -26,14 +26,6 @@ namespace Captura
                 Clicks = new MouseClickSettings();
             }
 
-            if (TimeElapsedOverlay == null)
-            {
-                TimeElapsedOverlay = new TextOverlaySettings
-                {
-                    HorizontalAlignment = Alignment.End
-                };
-            }
-
             if (WebcamOverlay == null)
             {
                 WebcamOverlay = new WebcamOverlaySettings

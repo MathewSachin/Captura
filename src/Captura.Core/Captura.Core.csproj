@@ -161,7 +161,6 @@
     <Compile Include="Models\TextOverlay.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="ViewModels\CustomOverlays.cs" />
-    <Compile Include="Models\TimeElapsedOverlay.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Services\FFMpegService.cs" />

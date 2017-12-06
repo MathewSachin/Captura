@@ -31,14 +31,6 @@ namespace Captura
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public TextOverlaySettings TimeElapsedOverlay
-        {
-            get => Get<TextOverlaySettings>();
-            set => Set(value);
-        }
-
         [SettingsProvider(typeof(ArraySettingsProvider))]
         [UserScopedSetting]
         public List<CustomOverlaySettings> CustomOverlays

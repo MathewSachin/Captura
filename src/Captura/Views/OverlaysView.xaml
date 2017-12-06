@@ -64,7 +64,7 @@
             </Expander.Header>
             
             <StackPanel Margin="5">
-                <Grid Margin="0,3">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -92,23 +92,25 @@
                                       Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,5"/>
-
-                    <Label Content="{local:Loc BorderThickness}"
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Label Content="Border"
                            ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="2"/>
+                           Margin="0,5,5,5"/>
+                    
                     <xctk:IntegerUpDown Value="{Binding Settings.Clicks.BorderThickness, Mode=TwoWay}"
-                                        Grid.Row="2"
                                         Grid.Column="1"
-                                        Margin="0,5"/>
-
-                    <Label Content="{local:Loc BorderColor}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,5,5,5"
-                           Grid.Row="3"/>
+                                        Margin="5"/>
+                    
                     <xctk:ColorPicker SelectedColor="{Binding Settings.Clicks.BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
-                                      Grid.Row="3"
-                                      Grid.Column="1"
+                                      Grid.Column="2"
                                       Margin="0,5"/>
                 </Grid>
             </StackPanel>
@@ -175,20 +177,6 @@
                 </Grid>
             </StackPanel>
         </Expander>
-
-        <Expander Margin="0,5">
-            <Expander.Header>
-                <Label Content="Time Elapsed"/>
-            </Expander.Header>
-
-            <StackPanel Margin="5">
-                <CheckBox Content="Draw"
-                          IsChecked="{Binding Settings.TimeElapsedOverlay.Display, Mode=TwoWay}"
-                          Margin="0,3"/>
-
-                <local:TextOverlaySettingsControl DataContext="{Binding Settings.TimeElapsedOverlay}"/>
-            </StackPanel>
-        </Expander>
         
         <Expander DataContext="{x:Static viewModels:CustomOverlaysViewModel.Instance}"
                   Margin="0,5">
@@ -202,7 +190,7 @@
                                         Command="{Binding AddCommand}"
                                         IconData="{StaticResource Icon_Add}"
                                         DockPanel.Dock="Right"/>
-                    <Label Content="Create Custom Text Overlays"/>
+                    <Label Content="Supported Replacement Tokens: %elapsed%"/>
                 </DockPanel>
 
                 <ItemsControl Margin="5"
