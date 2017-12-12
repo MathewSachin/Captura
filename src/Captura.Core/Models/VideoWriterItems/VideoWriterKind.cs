@@ -4,6 +4,7 @@
     {
         Gif,
         SharpAvi,
-        FFMpeg
+        FFMpeg,
+        Streaming_Alpha
     }
 }
