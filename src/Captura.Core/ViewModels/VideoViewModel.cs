@@ -107,6 +107,13 @@ namespace Captura.ViewModels
 
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
+
+                case VideoWriterKind.Streaming_Alpha:
+                    foreach (var item in StreamingItem.StreamingItems)
+                        AvailableVideoWriters.Add(item);
+
+                    SelectedVideoWriter = AvailableVideoWriters[0];
+                    break;
             }
         }
 
@@ -115,7 +122,9 @@ namespace Captura.ViewModels
             // Gif is always availble
             VideoWriterKind.Gif,
 
-            VideoWriterKind.FFMpeg
+            VideoWriterKind.FFMpeg,
+
+            VideoWriterKind.Streaming_Alpha
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();

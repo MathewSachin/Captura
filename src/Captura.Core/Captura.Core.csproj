@@ -159,6 +159,7 @@
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\TimeElapsedOverlay.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
+    <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Services\FFMpegService.cs" />
     <Compile Include="Models\DeskDuplImageProvider.cs" />
