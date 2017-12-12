@@ -8,6 +8,38 @@ namespace Captura
     public partial class Settings
     {
         [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
+        public WebcamOverlaySettings WebcamOverlay
+        {
+            get => Get<WebcamOverlaySettings>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
+        public MouseClickSettings Clicks
+        {
+            get => Get<MouseClickSettings>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
+        public KeystrokesSettings Keystrokes
+        {
+            get => Get<KeystrokesSettings>();
+            set => Set(value);
+        }
+
+        [SettingsProvider(typeof(ArraySettingsProvider))]
+        [UserScopedSetting]
+        public List<CustomOverlaySettings> CustomOverlays
+        {
+            get => Get<List<CustomOverlaySettings>>();
+            set => Set(value);
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("")]
         public string TwitchKey
         {
@@ -154,22 +186,6 @@ namespace Captura
         public int FrameRate
         {
             get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool MouseClicks
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool KeyStrokes
-        {
-            get => Get<bool>();
             set => Set(value);
         }
         

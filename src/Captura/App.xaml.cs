@@ -34,7 +34,7 @@ namespace Captura
 
             if (App.CmdOptions.Reset)
             {
-                Settings.Instance.Reset();
+                Settings.Instance.SafeReset();
             }
 
             if (Settings.Instance.DarkTheme)

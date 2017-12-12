@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="Captura.TextOverlaySettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Path Data="{StaticResource Icon_Font}"
+                  Width="15"
+                  Height="15"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  ToolTip="Font"/>
+
+
+            <xctk:IntegerUpDown Minimum="1"
+                                Value="{Binding FontSize, Mode=TwoWay}"
+                                Grid.Column="1"
+                                Margin="10,5,5,5"/>
+
+            <xctk:ColorPicker SelectedColor="{Binding FontColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                              Grid.Column="2"
+                              Margin="0,5"/>
+        </Grid>
+        
+        <DockPanel>
+            <Label Content="{local:Loc BackColor}"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,5,5,5"/>
+
+            <xctk:ColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                              Margin="0,5"/>
+        </DockPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Border"
+                   ContentStringFormat="{}{0}: "/>
+
+            <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
+                                Grid.Column="1"
+                                Margin="5"/>
+
+            <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                              Grid.Column="2"
+                              Margin="0,5"/>
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Padding (X, Y)"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,5"/>
+
+            <xctk:IntegerUpDown Value="{Binding HorizontalPadding, Mode=TwoWay}"
+                                Grid.Column="1"
+                                Margin="5"/>
+
+            <xctk:IntegerUpDown Value="{Binding VerticalPadding, Mode=TwoWay}"
+                                Grid.Column="2"
+                                Margin="0,5"/>
+        </Grid>
+
+        <DockPanel>
+            <Label Content="{local:Loc CornerRadius}"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,5,5,5"/>
+
+            <xctk:IntegerUpDown Value="{Binding CornerRadius, Mode=TwoWay}"
+                                Margin="0,5"/>
+        </DockPanel>
+
+        <local:PositionSettingsControl DataContext="{Binding}"/>
+    </StackPanel>
+</UserControl>

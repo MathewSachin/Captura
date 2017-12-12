@@ -37,17 +37,12 @@ namespace Captura
         }
         
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
-        {
-            var enumConverter = new StringEnumConverter
-            {
-                AllowIntegerValues = false
-            };
-                        
+        {   
             foreach (SettingsPropertyValue propertyValue in collection)
             {
                 try
                 {
-                    var value = JsonConvert.SerializeObject(propertyValue.PropertyValue, Formatting.Indented, enumConverter);
+                    var value = JsonConvert.SerializeObject(propertyValue.PropertyValue);
 
                     File.WriteAllText(Path.Combine(ServiceProvider.SettingsDir, $"{propertyValue.Name}.json"), value);
                 }

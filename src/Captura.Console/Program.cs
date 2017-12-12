@@ -27,7 +27,7 @@ namespace Captura.Console
                     Banner();
 
                     // Reset settings
-                    Settings.Instance.Reset();
+                    Settings.Instance.SafeReset();
 
                     var verbs = new VerbCmdOptions();
 
@@ -338,10 +338,10 @@ namespace Captura.Console
                 Settings.Instance.IncludeCursor = true;
 
             if (StartOptions.Clicks)
-                Settings.Instance.MouseClicks = true;
+                Settings.Instance.Clicks.Display = true;
 
             if (StartOptions.Keys)
-                Settings.Instance.KeyStrokes = true;
+                Settings.Instance.Keystrokes.Display = true;
 
             HandleVideoSource(ViewModel, StartOptions);
 

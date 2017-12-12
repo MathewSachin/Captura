@@ -305,6 +305,8 @@ namespace Captura.ViewModels
             AudioViewModel.Dispose();
 
             RecentViewModel.Dispose();
+            
+            CustomOverlaysViewModel.Instance.Dispose();
 
             // Remember things if not console.
             if (_persist)
@@ -625,13 +627,12 @@ namespace Captura.ViewModels
             var overlays = new List<IOverlay> { new WebcamOverlay() };
                         
             // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
-
-            // Time Elapsed overlay
-            if (Settings.Instance.TimeElapsed_Draw)
-                overlays.Add(new TimeElapsedOverlay(() => TimeSpan));
+            if (MouseKeyHookAvailable && (Settings.Instance.Clicks.Display || Settings.Instance.Keystrokes.Display))
+                overlays.Add(new MouseKeyHook(Settings.Instance.Clicks, Settings.Instance.Keystrokes));
             
+            // Custom Overlays
+            overlays.AddRange(CustomOverlaysViewModel.Instance.Collection.Select(M => new CustomOverlay(M, () => TimeSpan)));
+
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }
         

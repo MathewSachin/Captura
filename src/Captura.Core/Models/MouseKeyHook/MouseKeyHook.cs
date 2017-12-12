@@ -13,6 +13,8 @@ namespace Captura.Models
     {
         #region Fields
         readonly IKeyboardMouseEvents _hook;
+        readonly MouseClickSettings _mouseClickSettings;
+        readonly KeystrokesSettings _keystrokesSettings;
 
         bool _mouseClicked;
         
@@ -22,23 +24,24 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        /// <param name="CaptureMouseClicks">Whether to capture Mouse CLicks.</param>
-        /// <param name="CaptureKeystrokes">Whether to capture Keystrokes.</param>
-        public MouseKeyHook(bool CaptureMouseClicks, bool CaptureKeystrokes)
+        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings)
         {
-            _records = new KeyRecords(Settings.Instance.Keystrokes_History_Count);
-
+            _mouseClickSettings = MouseClickSettings;
+            _keystrokesSettings = KeystrokesSettings;
+            
             _hook = Hook.GlobalEvents();
 
-            if (CaptureMouseClicks)
+            if (MouseClickSettings.Display)
             {
                 _hook.MouseDown += (s, e) => _mouseClicked = true;
 
                 _hook.MouseUp += (s, e) => _mouseClicked = false;
             }
 
-            if (CaptureKeystrokes)
+            if (KeystrokesSettings.Display)
             {
+                _records = new KeyRecords(KeystrokesSettings.HistoryCount);
+
                 _hook.KeyDown += OnKeyDown;
                 _hook.KeyUp += OnKeyUp;
             }
@@ -77,8 +80,8 @@ namespace Captura.Models
 
             if (record.Display.Length == 1
                 && (_records.Last is DummyKeyRecord || _records.Last.Display.Length == 1)
-                && record.Display.Length + _records.Last.Display.Length <= Settings.Instance.Keystrokes_MaxLength
-                && elapsed <= Settings.Instance.Keystrokes_MaxSeconds)
+                && record.Display.Length + _records.Last.Display.Length <= _keystrokesSettings.MaxTextLength
+                && elapsed <= _keystrokesSettings.Timeout)
             {
                 _records.Last = new DummyKeyRecord(_records.Last.Display + record.Display);
             }
@@ -100,40 +103,42 @@ namespace Captura.Models
             }
         }
 
-        static float GetLeft(float FullWidth, float TextWidth)
+        static float GetLeft(KeystrokesSettings KeystrokesSettings, float FullWidth, float TextWidth)
         {
-            var x = Settings.Instance.Keystrokes_X;
+            var x = KeystrokesSettings.X;
+            var padding = KeystrokesSettings.HorizontalPadding;
 
-            switch (Settings.Instance.Keystrokes_XAlign)
+            switch (KeystrokesSettings.HorizontalAlignment)
             {
                 case Alignment.Start:
                     return x;
 
                 case Alignment.End:
-                    return FullWidth - x - TextWidth - 2 * Settings.Instance.Keystrokes_PaddingX;
+                    return FullWidth - x - TextWidth - 2 * padding;
 
                 case Alignment.Center:
-                    return FullWidth / 2 + x - TextWidth / 2 - Settings.Instance.Keystrokes_PaddingX;
+                    return FullWidth / 2 + x - TextWidth / 2 - padding;
 
                 default:
                     return 0;
             }
         }
 
-        static float GetTop(float FullHeight, float TextHeight, float Offset = 0)
+        static float GetTop(KeystrokesSettings KeystrokesSettings, float FullHeight, float TextHeight, float Offset = 0)
         {
-            var y = Settings.Instance.Keystrokes_Y;
+            var y = KeystrokesSettings.Y;
+            var padding = KeystrokesSettings.VerticalPadding;
 
-            switch (Settings.Instance.Keystrokes_YAlign)
+            switch (KeystrokesSettings.VerticalAlignment)
             {
                 case Alignment.Start:
                     return y + Offset;
 
                 case Alignment.End:
-                    return FullHeight - y - TextHeight - 2 * Settings.Instance.Keystrokes_PaddingY - Offset;
+                    return FullHeight - y - TextHeight - 2 * padding - Offset;
 
                 case Alignment.Center:
-                    return FullHeight / 2 + y - TextHeight / 2 - Settings.Instance.Keystrokes_PaddingY + Offset;
+                    return FullHeight / 2 + y - TextHeight / 2 - padding + Offset;
 
                 default:
                     return 0;
@@ -151,11 +156,11 @@ namespace Captura.Models
 
         void DrawKeys(Graphics g)
         {
-            if (_records.Last == null)
+            if (_records?.Last == null)
                 return;
 
             var offsetY = 0f;
-            var fontSize = Settings.Instance.Keystrokes_FontSize;
+            var fontSize = _keystrokesSettings.FontSize;
             byte opacity = 255;
 
             var index = 0;
@@ -164,18 +169,18 @@ namespace Captura.Models
             {
                 ++index;
 
-                if ((DateTime.Now - keyRecord.TimeStamp).TotalSeconds > _records.Size * Settings.Instance.Keystrokes_MaxSeconds)
+                if ((DateTime.Now - keyRecord.TimeStamp).TotalSeconds > _records.Size * _keystrokesSettings.Timeout)
                     continue;
                 
-                DrawKeys(g, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
+                DrawKeys(_keystrokesSettings, g, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
 
                 var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
 
                 var height = g.MeasureString("A", keystrokeFont).Height;
 
-                offsetY += height + Settings.Instance.Keystrokes_History_Spacing;
+                offsetY += height + _keystrokesSettings.HistorySpacing;
 
-                offsetY += Settings.Instance.Keystrokes_PaddingY * 2 + Settings.Instance.Keystrokes_Border * 2;
+                offsetY += _keystrokesSettings.VerticalPadding * 2 + _keystrokesSettings.BorderThickness * 2;
 
                 if (index == 1)
                 {
@@ -185,37 +190,37 @@ namespace Captura.Models
             }
         }
 
-        static void DrawKeys(Graphics g, string Text, int FontSize, byte Opacity, float OffsetY)
+        static void DrawKeys(KeystrokesSettings KeystrokesSettings, Graphics g, string Text, int FontSize, byte Opacity, float OffsetY)
         {
             var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
 
             var size = g.MeasureString(Text, keystrokeFont);
 
-            int paddingX = Settings.Instance.Keystrokes_PaddingX, paddingY = Settings.Instance.Keystrokes_PaddingY;
+            int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
-            var rect = new RectangleF(GetLeft(g.VisibleClipBounds.Width, size.Width),
-                GetTop(g.VisibleClipBounds.Height, size.Height, OffsetY),
+            var rect = new RectangleF(GetLeft(KeystrokesSettings, g.VisibleClipBounds.Width, size.Width),
+                GetTop(KeystrokesSettings, g.VisibleClipBounds.Height, size.Height, OffsetY),
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
             
-            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, Settings.Instance.KeystrokesRect_Color)),
+            g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
                 rect,
-                Settings.Instance.Keystrokes_CornerRadius);
+                KeystrokesSettings.CornerRadius);
             
             g.DrawString(Text,
                 keystrokeFont,
-                new SolidBrush(Color.FromArgb(Opacity, Settings.Instance.Keystrokes_Color)),
+                new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.FontColor)),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
-            var border = Settings.Instance.Keystrokes_Border;
+            var border = KeystrokesSettings.BorderThickness;
 
             if (border > 0)
             {
                 rect = new RectangleF(rect.Left - border / 2, rect.Top - border / 2, rect.Width + border, rect.Height + border);
 
-                g.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, Settings.Instance.Keystrokes_BorderColor), border),
+                g.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
                     rect,
-                    Settings.Instance.Keystrokes_CornerRadius);
+                    KeystrokesSettings.CornerRadius);
             }
         }
 
@@ -223,7 +228,7 @@ namespace Captura.Models
         {
             if (_mouseClicked)
             {
-                var clickRadius = Settings.Instance.MouseClick_Radius;
+                var clickRadius = _mouseClickSettings.Radius;
 
                 var curPos = MouseCursor.CursorPosition;
 
@@ -235,9 +240,9 @@ namespace Captura.Models
                 var x = curPos.X - clickRadius;
                 var y = curPos.Y - clickRadius;
 
-                g.FillEllipse(new SolidBrush(Settings.Instance.MouseClick_Color), x, y, d, d);
+                g.FillEllipse(new SolidBrush(_mouseClickSettings.Color), x, y, d, d);
 
-                var border = Settings.Instance.MouseClick_Border;
+                var border = _mouseClickSettings.BorderThickness;
 
                 if (border > 0)
                 {
@@ -245,7 +250,7 @@ namespace Captura.Models
                     y -= border / 2;
                     d += border;
 
-                    g.DrawEllipse(new Pen(Settings.Instance.MouseClick_BorderColor, border), x, y, d, d);
+                    g.DrawEllipse(new Pen(_mouseClickSettings.BorderColor, border), x, y, d, d);
                 }
             }
         }

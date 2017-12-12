@@ -10,7 +10,7 @@ namespace Captura
     {
         public StartCmdOptions()
         {
-            Settings.Instance.KeyStrokes = Settings.Instance.MouseClicks = false;
+            Settings.Instance.Keystrokes.Display = Settings.Instance.Clicks.Display = false;
 
             FrameRate = Settings.Instance.FrameRate;
             VideoQuality = Settings.Instance.VideoQuality;

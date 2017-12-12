@@ -94,14 +94,14 @@ namespace Captura.ViewModels
 
         public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
 
-        public ObjectLocalizer<Alignment>[] XAlignments { get; } =
+        public static ObjectLocalizer<Alignment>[] XAlignments { get; } =
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),
             new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
             new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Right))
         };
 
-        public ObjectLocalizer<Alignment>[] YAlignments { get; } =
+        public static ObjectLocalizer<Alignment>[] YAlignments { get; } =
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Top)),
             new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
