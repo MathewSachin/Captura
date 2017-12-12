@@ -108,7 +108,7 @@ namespace Captura.ViewModels
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
 
-                case VideoWriterKind.Stream:
+                case VideoWriterKind.Streaming_Alpha:
                     foreach (var item in StreamingItem.StreamingItems)
                         AvailableVideoWriters.Add(item);
 
@@ -124,7 +124,7 @@ namespace Captura.ViewModels
 
             VideoWriterKind.FFMpeg,
 
-            VideoWriterKind.Stream
+            VideoWriterKind.Streaming_Alpha
         };
 
         public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();

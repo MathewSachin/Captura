@@ -443,7 +443,7 @@ namespace Captura.ViewModels
         public void StartRecording(string FileName = null)
         {
             if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.FFMpeg ||
-                VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Stream ||
+                VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Streaming_Alpha ||
                 (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
             {
                 if (!FFMpegService.FFMpegExists)

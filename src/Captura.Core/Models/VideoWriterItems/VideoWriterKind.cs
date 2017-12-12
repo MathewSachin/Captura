@@ -5,6 +5,6 @@
         Gif,
         SharpAvi,
         FFMpeg,
-        Stream
+        Streaming_Alpha
     }
 }
