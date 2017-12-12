@@ -32,6 +32,14 @@ namespace Captura.Models
         public static FFMpegItem HEVC_QSV { get; } = new FFMpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", () => ".mp4",
             VideoQuality => "-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast", FFMpegAudioItem.Aac);
 
+        // MP4 (H.264 NVENC, AAC)
+        public static FFMpegItem H264_NVENC { get; } = new FFMpegItem("Mp4 (H.264 NVENC | AAC) (Alpha)", () => ".mp4",
+            VideoQuality => "-c:v h264_nvenc -preset fast", FFMpegAudioItem.Aac);
+
+        // MP4 (HEVC NVENC, AAC)
+        public static FFMpegItem HEVC_NVENC { get; } = new FFMpegItem("Mp4 (HEVC NVENC | AAC) (Alpha)", () => ".mp4",
+            VideoQuality => "-c:v hevc_nvenc -preset slow", FFMpegAudioItem.Aac);
+
         // Custom
         public static FFMpegItem Custom { get; } = new FFMpegItem("Custom", () => Settings.Instance.FFMpeg_CustomExtension,
             VideoQuality => Settings.Instance.FFMpeg_CustomArgs, FFMpegAudioItem.Mp3);
@@ -42,6 +50,8 @@ namespace Captura.Models
             Avi,
             Gif,
             HEVC_QSV,
+            H264_NVENC,
+            HEVC_NVENC,
             Custom
         };
         
