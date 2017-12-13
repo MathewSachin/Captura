@@ -17,10 +17,9 @@ namespace Captura.Models
         protected override string GetText()
         {
             var text = _overlaySettings.Text;
-            
-            text = text.Replace("%elapsed%", _elapsed().ToString());
 
-            // TODO: Replacement Tokens
+            text = text?.Replace("%elapsed%", _elapsed().ToString());
+
             return text;
         }
     }

@@ -184,8 +184,8 @@
                 <Label Content="Custom"/>
             </Expander.Header>
 
-            <StackPanel>
-                <DockPanel>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
                     <local:ModernButton ToolTip="Add"
                                         Command="{Binding AddCommand}"
                                         IconData="{StaticResource Icon_Add}"
@@ -193,33 +193,44 @@
                     <Label Content="Supported Replacement Tokens: %elapsed%"/>
                 </DockPanel>
 
-                <ItemsControl Margin="5"
-                              ItemsSource="{Binding Collection}">
-                    <ItemsControl.ItemTemplate>
+                <ListView Margin="5"
+                          ItemsSource="{Binding Collection}"
+                          Name="ItemsControl"
+                          SelectionChanged="ItemsControl_OnSelectionChanged">
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderThickness="0.2"
-                                    BorderBrush="#333333"
-                                    Padding="10"
-                                    Margin="0,5">
-                                <DockPanel>
-                                    <local:TextOverlaySettingsControl DataContext="{Binding}"
-                                                                      Margin="10,5"
-                                                                      DockPanel.Dock="Bottom"/>
-                                    <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"/>
-                                    <local:ModernButton ToolTip="Remove"
-                                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                                        CommandParameter="{Binding}"
-                                                        IconData="{StaticResource Icon_Close}"
-                                                        DockPanel.Dock="Right"/>
-                                    <TextBox Text="{Binding Text, Mode=TwoWay}"
-                                             Margin="5,0"
-                                             VerticalAlignment="Center"/>
-                                </DockPanel>
-                            </Border>
+                            <Label Content="Overlay"/>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <GridSplitter Width="1"/>
+
+                <DockPanel DataContext="{Binding SelectedItem, ElementName=ItemsControl}"
+                           Margin="10"
+                           IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                    <local:TextOverlaySettingsControl DataContext="{Binding}"
+                                                      Margin="0,5"
+                                                      DockPanel.Dock="Bottom"/>
+
+                    <DockPanel DockPanel.Dock="Top">
+                        <local:ModernButton ToolTip="Remove"
+                                            Command="{Binding DataContext.RemoveCommand, ElementName=ItemsControl}"
+                                            CommandParameter="{Binding}"
+                                            IconData="{StaticResource Icon_Close}"
+                                            DockPanel.Dock="Right"/>
+                        
+                        <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                                  Content="Display"/>
+                    </DockPanel>
+
+                    <Label Content="Text"
+                           ContentStringFormat="{}{0}: "/>
+                    
+                    <TextBox Text="{Binding Text, Mode=TwoWay}"
+                             Margin="5,0"/>
+                </DockPanel>
+            </DockPanel>
         </Expander>
     </StackPanel>
 </Page>

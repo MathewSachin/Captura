@@ -1,18 +1,26 @@
-﻿using FirstFloor.ModernUI.Presentation;
-using System.Windows;
-using System.Windows.Media;
+﻿using System.Windows.Controls;
 
 namespace Captura
 {
     public partial class MouseKeyHookView
     {
-        void SelectedAccentColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        public MouseKeyHookView()
         {
-            if (e.NewValue != null)
-            {
-                AppearanceManager.Current.AccentColor = e.NewValue.Value;
+            InitializeComponent();
 
-                Settings.Instance.AccentColor = e.NewValue.Value.ToString();
+            UpdateSelection();
+        }
+
+        void ItemsControl_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            UpdateSelection();
+        }
+
+        void UpdateSelection()
+        {
+            if (ItemsControl.SelectedIndex == -1 && ItemsControl.HasItems)
+            {
+                ItemsControl.SelectedIndex = 0;
             }
         }
     }

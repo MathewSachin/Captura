@@ -21,6 +21,7 @@
             <local:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
             <local:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
             <local:NotRecordingConverter x:Key="NotRecordingConverter"/>
+            <local:NotNullConverter x:Key="NotNullConverter"/>
             <local:NegatingConverter x:Key="NegatingConverter"/>
             <local:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
             <local:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
