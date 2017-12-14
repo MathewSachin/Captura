@@ -21,7 +21,7 @@
                               ItemsSource="{Binding RecentViewModel.RecentList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <local:RecentItem DataContext="{Binding}"/>
+                            <local:RecentItem/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

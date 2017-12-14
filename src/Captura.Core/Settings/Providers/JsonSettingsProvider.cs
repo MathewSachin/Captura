@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Captura
 {

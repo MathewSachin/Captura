@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:captura="clr-namespace:Captura">
+    <captura:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
+    <captura:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
+    <captura:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
+    <captura:NotRecordingConverter x:Key="NotRecordingConverter"/>
+    <captura:NotNullConverter x:Key="NotNullConverter"/>
+    <captura:NegatingConverter x:Key="NegatingConverter"/>
+    <captura:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
+    <captura:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
+    <captura:InkToolToIconConverter x:Key="InkToolToIconConverter"/>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+</ResourceDictionary>

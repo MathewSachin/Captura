@@ -91,6 +91,6 @@
                                 Margin="0,5"/>
         </DockPanel>
 
-        <local:PositionSettingsControl DataContext="{Binding}"/>
+        <local:PositionSettingsControl/>
     </StackPanel>
 </UserControl>

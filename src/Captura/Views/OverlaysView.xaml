@@ -11,8 +11,9 @@
                 <Label Content="{local:Loc WebCam}"/>
             </Expander.Header>
 
-            <StackPanel Margin="5">
-                <local:PositionSettingsControl DataContext="{Binding Settings.WebcamOverlay}"/>
+            <StackPanel Margin="5"
+                        DataContext="{Binding Settings.WebcamOverlay}">
+                <local:PositionSettingsControl/>
                 
                 <Grid Margin="0,15,0,5">
                     <Grid.ColumnDefinitions>
@@ -23,20 +24,20 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{local:Loc Resize}"
-                              IsChecked="{Binding Settings.WebcamOverlay.Resize, Mode=TwoWay}"
+                              IsChecked="{Binding Resize, Mode=TwoWay}"
                               Margin="0,0,5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.WebcamOverlay.ResizeWidth, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding ResizeWidth, Mode=TwoWay}"
                                         Grid.Column="1"
-                                        IsEnabled="{Binding Settings.WebcamOverlay.Resize, Mode=TwoWay}"/>
+                                        IsEnabled="{Binding Resize}"/>
 
                     <Label Content="x"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.WebcamOverlay.ResizeHeight, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding ResizeHeight, Mode=TwoWay}"
                                         Grid.Column="3"
-                                        IsEnabled="{Binding Settings.WebcamOverlay.Resize, Mode=TwoWay}"/>
+                                        IsEnabled="{Binding Resize}"/>
                 </Grid>
                 
                 <Grid Margin="0,15,0,5">
@@ -49,11 +50,10 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,3"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.WebcamOverlay.Opacity, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Opacity, Mode=TwoWay}"
                                         Grid.Column="1"
                                         Minimum="1"
                                         Maximum="100"/>
-
                 </Grid>
             </StackPanel>
         </Expander>
@@ -63,7 +63,8 @@
                 <Label Content="{local:Loc MouseClicks}"/>
             </Expander.Header>
             
-            <StackPanel Margin="5">
+            <StackPanel Margin="5"
+                        DataContext="{Binding Settings.Clicks}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -79,7 +80,7 @@
                     <Label Content="{local:Loc Radius}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.Clicks.Radius, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
                                         Minimum="1"
                                         Margin="0,5"
                                         Grid.Column="1"/>
@@ -88,7 +89,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="1"/>
-                    <xctk:ColorPicker SelectedColor="{Binding Settings.Clicks.Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                    <xctk:ColorPicker SelectedColor="{Binding Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                                       Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,5"/>
@@ -105,11 +106,11 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"/>
                     
-                    <xctk:IntegerUpDown Value="{Binding Settings.Clicks.BorderThickness, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
                                         Grid.Column="1"
                                         Margin="5"/>
                     
-                    <xctk:ColorPicker SelectedColor="{Binding Settings.Clicks.BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                    <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                                       Grid.Column="2"
                                       Margin="0,5"/>
                 </Grid>
@@ -121,8 +122,9 @@
                 <Label Content="{local:Loc Keystrokes}"/>
             </Expander.Header>
             
-            <StackPanel Margin="5">
-                <local:TextOverlaySettingsControl DataContext="{Binding Settings.Keystrokes}"/>
+            <StackPanel Margin="5"
+                        DataContext="{Binding Settings.Keystrokes}">
+                <local:TextOverlaySettingsControl/>
                 
                 <Grid Margin="0,3">
                     <Grid.ColumnDefinitions>
@@ -142,7 +144,7 @@
                                    Text="{local:Loc MaxTextLength}"/>
                     </Label>
                     <xctk:IntegerUpDown Minimum="1"
-                                        Value="{Binding Settings.Keystrokes.MaxTextLength, Mode=TwoWay}"
+                                        Value="{Binding MaxTextLength, Mode=TwoWay}"
                                         Grid.Column="1"
                                         Margin="0,5"/>
                     
@@ -150,7 +152,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="1"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes.Timeout, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Timeout, Mode=TwoWay}"
                                         Minimum="1"
                                         Grid.Row="1"
                                         Grid.Column="1"
@@ -160,7 +162,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="2"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes.HistoryCount, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding HistoryCount, Mode=TwoWay}"
                                         Grid.Row="2"
                                         Grid.Column="1"
                                         Minimum="1"
@@ -170,7 +172,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="3"/>
-                    <xctk:IntegerUpDown Value="{Binding Settings.Keystrokes.HistorySpacing, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding HistorySpacing, Mode=TwoWay}"
                                         Grid.Row="3"
                                         Grid.Column="1"
                                         Margin="0,5"/>
@@ -209,8 +211,7 @@
                 <DockPanel DataContext="{Binding SelectedItem, ElementName=ItemsControl}"
                            Margin="10"
                            IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
-                    <local:TextOverlaySettingsControl DataContext="{Binding}"
-                                                      Margin="0,5"
+                    <local:TextOverlaySettingsControl Margin="0,5"
                                                       DockPanel.Dock="Bottom"/>
 
                     <DockPanel DockPanel.Dock="Top">
