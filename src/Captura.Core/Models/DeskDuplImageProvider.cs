@@ -20,6 +20,8 @@ namespace Captura.Models
             Width = Rectangle.Width;
             Height = Rectangle.Height;
 
+            _imagePool = new ImagePool(Width, Height);
+
             Reinit();
         }
 
@@ -34,11 +36,13 @@ namespace Captura.Models
 
         public int Width { get; }
 
-        public Bitmap Capture()
+        readonly ImagePool _imagePool;
+
+        public Frame Capture()
         {
             try
             {
-                return _dupl.Capture();
+                return _dupl.Capture(_imagePool.Get);
             }
             catch
             {
@@ -46,11 +50,11 @@ namespace Captura.Models
 
                 try
                 {
-                    return _dupl.Capture();
+                    return _dupl.Capture(_imagePool.Get);
                 }
                 catch
                 {
-                    return new Bitmap(Width, Height);
+                    return Frame.Repeat;
                 }
             }
         }
@@ -58,6 +62,7 @@ namespace Captura.Models
         public void Dispose()
         {
             _dupl?.Dispose();
+            _imagePool.Dispose();
         }
     }
 }

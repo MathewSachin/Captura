@@ -89,9 +89,7 @@ namespace DesktopDuplication
             }
         }
         
-        Bitmap _lastFrame;
-
-        public Bitmap Capture()
+        public Frame Capture(Func<Frame> ImageWrapperFunc)
         {
             if (_desktopImageTexture == null)
                 _desktopImageTexture = new Texture2D(_device, _textureDesc);
@@ -104,7 +102,7 @@ namespace DesktopDuplication
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
-                return _lastFrame ?? new Bitmap(_rect.Width, _rect.Height);
+                return Frame.Repeat;
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
             {
@@ -127,7 +125,7 @@ namespace DesktopDuplication
 
             try
             {
-                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch);
+                return ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, ImageWrapperFunc());
             }
             finally
             {
@@ -135,30 +133,34 @@ namespace DesktopDuplication
             }
         }
 
-        Bitmap ProcessFrame(IntPtr SourcePtr, int SourceRowPitch)
+        Frame ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, Frame Frame)
         {
-            _lastFrame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
-
             // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = _lastFrame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, _lastFrame.PixelFormat);
+            var mapDest = Frame.Lock(ImageLockMode.WriteOnly);
 
-            Parallel.For(0, _rect.Height, y =>
+            if (mapDest != null)
             {
-                Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
-                    SourcePtr + y * SourceRowPitch,
-                    _rect.Width * 4);
-            });
-                        
-            // Release source and dest locks
-            _lastFrame.UnlockBits(mapDest);
+                Parallel.For(0, _rect.Height, y =>
+                {
+                    Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
+                        SourcePtr + y * SourceRowPitch,
+                        _rect.Width * 4);
+                });
+
+                // Release source and dest locks
+                Frame.Bitmap.UnlockBits(mapDest);
+            }
 
             if (_includeCursor && _frameInfo.PointerPosition.Visible)
             {
-                using (var g = Graphics.FromImage(_lastFrame))
-                    MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+                var g = Frame.Graphics;
+
+                MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+
+                g.Flush();
             }
 
-            return _lastFrame;
+            return Frame;
         }
         
         void ReleaseFrame()

@@ -152,6 +152,8 @@ namespace Captura.Models
         {
             DrawClicks(g, Transform);
             DrawKeys(g);
+
+            g.Flush();
         }
 
         void DrawKeys(Graphics g)

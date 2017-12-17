@@ -90,7 +90,7 @@ namespace Screna
         {
             try
             {
-                Bitmap lastFrame = null;
+                Frame lastFrame = null;
                 
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {
@@ -103,7 +103,7 @@ namespace Screna
 
                     // delay is the time between this and next frame
                     if (lastFrame != null)
-                        _videoEncoder.WriteFrame(lastFrame, delay);
+                        _videoEncoder.WriteFrame(lastFrame.Bitmap, delay);
 
                     lastFrame = frame;
                 }

@@ -41,6 +41,8 @@
     <Compile Include="Audio\AudioFileWriters\IAudioFileWriter.cs" />
     <Compile Include="EventArgs\DataAvailableEventArgs.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="ImageProviders\ImagePool.cs" />
+    <Compile Include="ImageProviders\Frame.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
     <Compile Include="Recorder\IRecorder.cs" />
     <Compile Include="Recorder\Recorder.cs" />

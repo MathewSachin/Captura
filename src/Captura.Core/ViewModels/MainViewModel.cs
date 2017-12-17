@@ -411,10 +411,15 @@ namespace Captura.ViewModels
                                     // Increase timeout
                                     dupl.Timeout = 10000;
 
-                                    // First one is blank
-                                    dupl.Capture().Dispose();
+                                    Frame ImgFunc() => new Frame(WindowProvider.DesktopRectangle.Width, WindowProvider.DesktopRectangle.Height);
 
-                                    bmp = dupl.Capture();
+                                    // First one is blank
+                                    dupl.Capture(ImgFunc).Dispose();
+
+                                    var img = dupl.Capture(ImgFunc);
+                                    img.Graphics.Dispose();
+
+                                    bmp = img.Bitmap;
                                 }
                             }
                             catch
