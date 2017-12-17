@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.Properties;
 using Screna;
 using Screna.Audio;
 using System;
@@ -60,6 +59,8 @@ namespace Captura.ViewModels
 
             RefreshCommand = new DelegateCommand(() =>
             {
+                WindowProvider.RefreshDesktopSize();
+
                 VideoViewModel.RefreshVideoSources();
 
                 VideoViewModel.RefreshCodecs();
@@ -68,7 +69,7 @@ namespace Captura.ViewModels
 
                 WebCamProvider.Refresh();
 
-                Status.LocalizationKey = nameof(Resources.Refreshed);
+                Status.LocalizationKey = nameof(LanguageManager.Refreshed);
             });
             
             PauseCommand = new DelegateCommand(OnPauseExecute, false);
@@ -96,7 +97,7 @@ namespace Captura.ViewModels
                 _timer?.Start();
 
                 RecorderState = RecorderState.Recording;
-                Status.LocalizationKey = nameof(Resources.Recording);
+                Status.LocalizationKey = nameof(LanguageManager.Recording);
             }
             else
             {
@@ -105,9 +106,9 @@ namespace Captura.ViewModels
                 _timing?.Pause();
 
                 RecorderState = RecorderState.Paused;
-                Status.LocalizationKey = nameof(Resources.Paused);
+                Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                ServiceProvider.SystemTray.ShowTextNotification(Resources.Paused, 3000, null);
+                ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
             }
         }
 
@@ -295,7 +296,7 @@ namespace Captura.ViewModels
             Settings.Instance.LastScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
         }
 
-        // Call before Exit to free Resources
+        // Call before Exit to free LanguageManager
         public void Dispose()
         {
             if (_hotkeys)
@@ -304,6 +305,8 @@ namespace Captura.ViewModels
             AudioViewModel.Dispose();
 
             RecentViewModel.Dispose();
+            
+            CustomOverlaysViewModel.Instance.Dispose();
 
             // Remember things if not console.
             if (_persist)
@@ -341,7 +344,7 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else Status.LocalizationKey = nameof(Resources.ImgEmpty);
+            else Status.LocalizationKey = nameof(LanguageManager.ImgEmpty);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -449,6 +452,7 @@ namespace Captura.ViewModels
         public void StartRecording(string FileName = null)
         {
             if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.FFMpeg ||
+                VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Streaming_Alpha ||
                 (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
             {
                 if (!FFMpegService.FFMpegExists)
@@ -484,7 +488,7 @@ namespace Captura.ViewModels
 
             if (Duration != 0 && (StartDelay > Duration * 1000))
             {
-                ServiceProvider.MessageProvider.ShowError(Resources.DelayGtDuration);
+                ServiceProvider.MessageProvider.ShowError(LanguageManager.DelayGtDuration);
 
                 return;
             }
@@ -497,7 +501,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
             {
-                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Resources.ErrorOccured);
+                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", LanguageManager.ErrorOccured);
 
                 if (yes)
                     Settings.Instance.UseDeskDupl = false;
@@ -531,7 +535,7 @@ namespace Captura.ViewModels
 
             _currentFileName = FileName ?? Path.Combine(Settings.Instance.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
-            Status.LocalizationKey = StartDelay > 0 ? nameof(Resources.Waiting) : nameof(Resources.Recording);
+            Status.LocalizationKey = StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
 
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
@@ -568,7 +572,7 @@ namespace Captura.ViewModels
 
         void OnErrorOccured(Exception E)
         {
-            Status.LocalizationKey = nameof(Resources.ErrorOccured);
+            Status.LocalizationKey = nameof(LanguageManager.ErrorOccured);
                         
             AfterRecording();
 
@@ -628,15 +632,18 @@ namespace Captura.ViewModels
             var overlays = new List<IOverlay> { new WebcamOverlay() };
                         
             // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable && (Settings.Instance.MouseClicks || Settings.Instance.KeyStrokes))
-                overlays.Add(new MouseKeyHook(Settings.Instance.MouseClicks, Settings.Instance.KeyStrokes));
+            if (MouseKeyHookAvailable && (Settings.Instance.Clicks.Display || Settings.Instance.Keystrokes.Display))
+                overlays.Add(new MouseKeyHook(Settings.Instance.Clicks, Settings.Instance.Keystrokes));
             
+            // Custom Overlays
+            overlays.AddRange(CustomOverlaysViewModel.Instance.Collection.Where(M => M.Display).Select(M => new CustomOverlay(M, () => TimeSpan)));
+
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }
         
         public async Task StopRecording()
         {
-            Status.LocalizationKey = nameof(Resources.Stopped);
+            Status.LocalizationKey = nameof(LanguageManager.Stopped);
 
             var savingRecentItem = RecentViewModel.Add(_currentFileName, isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
             
@@ -665,7 +672,7 @@ namespace Captura.ViewModels
             if (Settings.Instance.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
-            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? Resources.VideoSaved : Resources.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });

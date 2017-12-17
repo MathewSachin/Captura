@@ -89,11 +89,18 @@
     <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
     <Compile Include="Presentation\Controls\ModernButton.cs" />
     <Compile Include="Models\RegionItem.cs" />
+    <Compile Include="Presentation\Controls\PositionSettingsControl.xaml.cs">
+      <DependentUpon>PositionSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\TextOverlaySettingsControl.xaml.cs">
+      <DependentUpon>TextOverlaySettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
     <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="Views\CanvasWindow.xaml.cs">
@@ -137,11 +144,8 @@
     <Compile Include="Views\AudioEditor.xaml.cs">
       <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WebcamConfig.xaml.cs">
-      <DependentUpon>WebcamConfig.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MouseKeyHookView.xaml.cs">
-      <DependentUpon>MouseKeyHookView.xaml</DependentUpon>
+    <Compile Include="Views\OverlaysView.xaml.cs">
+      <DependentUpon>OverlaysView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExtrasView.xaml.cs">
       <DependentUpon>ExtrasView.xaml</DependentUpon>
@@ -168,9 +172,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Presentation\Controls\PositionSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\TextOverlaySettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Controls\WebcamControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\MaterialDesignIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Themes\Generic.xaml">
       <SubType>Designer</SubType>
@@ -189,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Controls\RecentItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\ValueConverters\ValueConverters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,11 +248,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\WebcamConfig.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MouseKeyHookView.xaml">
+    <Page Include="Views\OverlaysView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

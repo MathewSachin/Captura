@@ -26,11 +26,11 @@
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Hand}"
-                                          IsChecked="{local:Setting MouseClicks}"/>
+                                          IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Keyboard}"
-                                          IsChecked="{local:Setting KeyStrokes}"/>
+                                          IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
             </StackPanel>
         </DockPanel>
 

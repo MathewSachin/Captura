@@ -1,5 +1,4 @@
-﻿using Captura.Properties;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -14,7 +13,7 @@ namespace Captura.Models
             {
                 var dialog = new ModernDialog
                 {
-                    Title = Resources.ErrorOccured,
+                    Title = LanguageManager.ErrorOccured,
                     Content = new ScrollViewer
                     {
                         Content = Message,
@@ -23,7 +22,7 @@ namespace Captura.Models
                     }
                 };
 
-                dialog.OkButton.Content = Resources.Ok;
+                dialog.OkButton.Content = LanguageManager.Ok;
                 dialog.Buttons = new[] { dialog.OkButton };
 
                 dialog.BackgroundContent = new Grid
@@ -48,7 +47,7 @@ namespace Captura.Models
                 };
 
                 // Yes -> Select FFMpeg Folder
-                dialog.YesButton.Content = Resources.SelectFFMpegFolder;
+                dialog.YesButton.Content = LanguageManager.SelectFFMpegFolder;
                 dialog.YesButton.Click += (s, e) => FFMpegService.SelectFFMpegFolder();
 
                 // No -> Download FFMpeg
@@ -80,10 +79,10 @@ namespace Captura.Models
 
                 var result = false;
 
-                dialog.YesButton.Content = Resources.Yes;
+                dialog.YesButton.Content = LanguageManager.Yes;
                 dialog.YesButton.Click += (s, e) => result = true;
 
-                dialog.NoButton.Content = Resources.No;
+                dialog.NoButton.Content = LanguageManager.No;
 
                 dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton };
 

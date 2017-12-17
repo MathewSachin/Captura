@@ -231,12 +231,7 @@
                                 </TabItem>
                                 <TabItem Header="Overlays">
                                     <ScrollViewer>
-                                        <Frame Source="Views/MouseKeyHookView.xaml"/>
-                                    </ScrollViewer>
-                                </TabItem>
-                                <TabItem Header="{local:Loc WebCam}">
-                                    <ScrollViewer>
-                                        <Frame Source="Views/WebcamConfig.xaml"/>
+                                        <Frame Source="Views/OverlaysView.xaml"/>
                                     </ScrollViewer>
                                 </TabItem>
                                 <TabItem Header="FFMpeg">

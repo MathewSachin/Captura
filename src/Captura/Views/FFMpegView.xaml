@@ -77,6 +77,36 @@
                          Margin="2"
                          Text="{local:Setting FFMpeg_CustomExtension}"/>
             </Grid>
+
+            <Label Content="Streaming Keys"
+                   Margin="0,10,0,0"
+                   FontWeight="Bold"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Twitch"
+                       ContentStringFormat="{}{0}: "/>
+                <TextBox Grid.Column="1"
+                         Margin="2"
+                         Text="{local:Setting TwitchKey}"/>
+
+
+                <Label Content="YouTube Live"
+                       Grid.Row="1"
+                       ContentStringFormat="{}{0}: "/>
+                <TextBox Grid.Column="1"
+                         Grid.Row="1"
+                         Margin="2"
+                         Text="{local:Setting YouTubeLiveKey}"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

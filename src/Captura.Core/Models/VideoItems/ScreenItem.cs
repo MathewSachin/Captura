@@ -45,7 +45,7 @@ namespace Captura.Models
             if (Settings.Instance.UseDeskDupl)
                 return new DeskDuplImageProvider(_index, new Rectangle(Point.Empty, Screen.Bounds.Size), IncludeCursor);
 
-            return new ScreenProvider(Screen, IncludeCursor);
+            return new RegionProvider(Screen.Bounds, IncludeCursor);
         }
     }
 }
