@@ -26,9 +26,13 @@ namespace Screna
             _imagePool = new ImagePool(Region.Width, Region.Height);
         }
 
+        bool _regionShift;
+
         public void UpdateLocation(Point P)
         {
             _region.Location = P;
+
+            _regionShift = true;
         }
         
         public IBitmapFrame Capture()
@@ -39,6 +43,9 @@ namespace Screna
             {
                 using (var editor = bmp.GetEditor())
                 {
+                    if (_regionShift)
+                        editor.Graphics.Clear(Color.Transparent);
+
                     editor.Graphics.CopyFromScreen(_region.Location,
                         Point.Empty,
                         _region.Size,

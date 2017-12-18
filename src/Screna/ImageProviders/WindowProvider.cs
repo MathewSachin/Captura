@@ -103,7 +103,7 @@ namespace Screna
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 
                 if (_backgroundColor != Color.Transparent)
-                    g.FillRectangle(new SolidBrush(_backgroundColor), 0, 0, Width, Height);
+                    g.Clear(_backgroundColor);
 
                 var ratio = Math.Min((float)Width / rect.Width, (float)Height / rect.Height);
 
