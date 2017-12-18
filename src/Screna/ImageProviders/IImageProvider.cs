@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace Screna
 {
     /// <summary>
     /// Provides images.
-    /// Must provide in <see cref="PixelFormat.Format32bppRgb"/>
+    /// Must provide in 32-bpp RGB.
     /// </summary>
     public interface IImageProvider : IDisposable
     {
         /// <summary>
         /// Capture an image.
         /// </summary>
-        Bitmap Capture();
+        IBitmapFrame Capture();
 
         /// <summary>
         /// Height of Captured image.

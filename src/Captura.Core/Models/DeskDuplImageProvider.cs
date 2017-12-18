@@ -33,8 +33,8 @@ namespace Captura.Models
         public int Height { get; }
 
         public int Width { get; }
-
-        public Bitmap Capture()
+        
+        public IBitmapFrame Capture()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Captura.Models
                 }
                 catch
                 {
-                    return new Bitmap(Width, Height);
+                    return new OneTimeFrame(new Bitmap(Width, Height));
                 }
             }
         }

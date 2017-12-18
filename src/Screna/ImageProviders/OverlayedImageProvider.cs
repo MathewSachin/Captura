@@ -28,29 +28,23 @@ namespace Screna
             Height = ImageProvider.Height;
         }
 
-        int lastFrameHash;
-
         /// <summary>
         /// Captures an Image.
         /// </summary>
-        public Bitmap Capture()
+        public IBitmapFrame Capture()
         {
             var bmp = _imageProvider.Capture();
             
-            var hash = bmp.GetHashCode();
-
-            if (lastFrameHash == hash)
+            if (bmp is RepeatFrame)
             {
                 return bmp;
             }
-
-            lastFrameHash = hash;
-
-            using (var g = Graphics.FromImage(bmp))
+            
+            using (var editor = bmp.GetEditor())
             {
                 if (_overlays != null)
                     foreach (var overlay in _overlays)
-                        overlay?.Draw(g, _transform);
+                        overlay?.Draw(editor.Graphics, _transform);
             }
 
             return bmp;

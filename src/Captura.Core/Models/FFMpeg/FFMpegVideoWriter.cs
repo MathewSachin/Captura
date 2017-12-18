@@ -98,35 +98,36 @@ namespace Captura.Models
             _audioPipe.WriteAsync(Buffer, 0, Length);
         }
 
-        int _lastFrameHash;
-        
+        bool _firstFrame = true;
+
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
-        /// <param name="Image">The Image frame to write.</param>
-        public void WriteFrame(Bitmap Image)
+        public void WriteFrame(IBitmapFrame Frame)
         {
             if (_ffmpegProcess.HasExited)
             {
-                Image.Dispose();
+                Frame.Dispose();
                 throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
-
-            var hash = Image.GetHashCode();
-
-            if (_lastFrameHash == 0)
+            
+            if (_firstFrame)
+            {
                 _ffmpegIn.WaitForConnection();
 
-            if (_lastFrameHash != hash)
-            {
-                using (Image)
-                {
-                    var bits = Image.LockBits(new Rectangle(Point.Empty, Image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-                    Image.UnlockBits(bits);
-                }
+                _firstFrame = false;
+            }
 
-                _lastFrameHash = hash;
+            if (!(Frame is RepeatFrame))
+            {
+                using (Frame)
+                {
+                    var image = Frame.Bitmap;
+
+                    var bits = image.LockBits(new Rectangle(Point.Empty, image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
+                    image.UnlockBits(bits);
+                }
             }
             
             _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);

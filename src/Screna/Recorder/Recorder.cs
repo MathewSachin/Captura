@@ -22,7 +22,7 @@ namespace Screna
 
         readonly int _frameRate;
 
-        readonly BlockingCollection<Bitmap> _frames;
+        readonly BlockingCollection<IBitmapFrame> _frames;
         readonly Stopwatch _sw;
 
         readonly ManualResetEvent _continueCapturing;
@@ -52,7 +52,7 @@ namespace Screna
             else _audioProvider = null;
 
             _sw = new Stopwatch();
-            _frames = new BlockingCollection<Bitmap>();
+            _frames = new BlockingCollection<IBitmapFrame>();
 
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
             _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
@@ -80,7 +80,9 @@ namespace Screna
                     _frames.TryTake(out var img, -1);
 
                     if (img != null)
+                    {
                         _videoWriter.WriteFrame(img);
+                    }
                 }
             }
             catch (Exception E)
@@ -98,10 +100,10 @@ namespace Screna
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
 
-                Task<Bitmap> task = null;
+                Task<IBitmapFrame> task = null;
 
                 // Returns false when stopped
-                bool AddFrame(Bitmap Frame)
+                bool AddFrame(IBitmapFrame Frame)
                 {
                     try
                     {
@@ -145,7 +147,7 @@ namespace Screna
 
                         for (var i = 0; i < diff; ++i)
                         {
-                            if (!AddFrame(frame))
+                            if (!AddFrame(RepeatFrame.Instance))
                                 return;
                         }
                     }

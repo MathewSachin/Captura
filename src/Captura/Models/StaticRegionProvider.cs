@@ -1,5 +1,4 @@
 ﻿using Screna;
-using System.Drawing;
 
 namespace Captura
 {
@@ -19,7 +18,7 @@ namespace Captura
             _regionProvider = new RegionProvider(rect, IncludeCursor);
         }
         
-        public Bitmap Capture()
+        public IBitmapFrame Capture()
         {
             _regionProvider.UpdateLocation(_selector.SelectedRegion.Location);
 

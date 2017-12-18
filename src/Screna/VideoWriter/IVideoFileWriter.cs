@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace Screna
 {
@@ -12,8 +11,8 @@ namespace Screna
         /// Writes an Image frame.
         /// </summary>
         /// <param name="Image">The Image frame to write.</param>
-        void WriteFrame(Bitmap Image);
-
+        void WriteFrame(IBitmapFrame Image);
+        
         /// <summary>
         /// Gets whether audio is supported.
         /// </summary>

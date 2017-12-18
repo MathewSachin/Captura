@@ -414,7 +414,7 @@ namespace Captura.ViewModels
                                     // First one is blank
                                     dupl.Capture().Dispose();
 
-                                    bmp = dupl.Capture();
+                                    bmp = dupl.Capture().Bitmap;
                                 }
                             }
                             catch

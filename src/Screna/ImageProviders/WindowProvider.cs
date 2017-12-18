@@ -8,7 +8,7 @@ namespace Screna
     /// <summary>
     /// Captures the specified window.
     /// </summary>
-    public class WindowProvider : ImageProviderBase
+    public class WindowProvider : IImageProvider
     {
         /// <summary>
         /// A <see cref="Rectangle"/> representing the entire Desktop.
@@ -42,6 +42,8 @@ namespace Screna
 
         readonly Window _window;
         readonly Color _backgroundColor;
+        readonly Func<Point, Point> _transform;
+        readonly bool _includeCursor;
 
         static Func<Point, Point> GetTransformer(Window Window)
         {
@@ -60,21 +62,20 @@ namespace Screna
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        /// <param name="Window">The Window to Capture.</param>
-        /// <param name="BackgroundColor"><see cref="Color"/> to fill blank background.</param>
         public WindowProvider(Window Window, bool IncludeCursor, Color BackgroundColor, out Func<Point, Point> Transform)
-            : base(Window.Rectangle.Even().Size, GetTransformer(Window), IncludeCursor)
         {
             _window = Window;
             _backgroundColor = BackgroundColor;
+            _includeCursor = IncludeCursor;
 
-            Transform = _transform;
+            var size = Window.Rectangle.Even().Size;
+            Width = size.Width;
+            Height = size.Height;
+
+            Transform = _transform = GetTransformer(Window);
         }
 
-        /// <summary>
-        /// Capture Image.
-        /// </summary>
-        protected override void OnCapture(Graphics g)
+        void OnCapture(Graphics g)
         {
             var rect = _window.Rectangle;
             
@@ -113,5 +114,41 @@ namespace Screna
                     g.DrawImage(capture, 0, 0, resizeWidth, resizeHeight);
             }
         }
+
+        public IBitmapFrame Capture()
+        {
+            var bmp = new Bitmap(Width, Height);
+
+            try
+            {
+                using (var g = Graphics.FromImage(bmp))
+                {
+                    OnCapture(g);
+
+                    if (_includeCursor)
+                        MouseCursor.Draw(g, _transform);
+                }
+
+                return new OneTimeFrame(bmp);
+            }
+            catch
+            {
+                bmp.Dispose();
+
+                return RepeatFrame.Instance;
+            }
+        }
+
+        /// <summary>
+        /// Height of Captured image.
+        /// </summary>
+        public int Height { get; }
+
+        /// <summary>
+        /// Width of Captured image.
+        /// </summary>
+        public int Width { get; }
+
+        public void Dispose() { }
     }
 }
