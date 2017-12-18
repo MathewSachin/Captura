@@ -344,7 +344,7 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else Status.LocalizationKey = nameof(LanguageManager.ImgEmpty);
+            else ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -355,21 +355,27 @@ namespace Captura.ViewModels
             {
                 return ScreenShot.Capture(Settings.Instance.IncludeCursor).Transform();
             }
-            else
-            {
-                var bmp = ScreenShot.CaptureTransparent(hWnd,
-                    Settings.Instance.IncludeCursor,
-                    Settings.Instance.DoResize,
-                    Settings.Instance.ResizeWidth,
-                    Settings.Instance.ResizeHeight);
 
-                // Capture without Transparency
-                if (bmp == null)
+            var bmp = ScreenShot.CaptureTransparent(hWnd,
+                Settings.Instance.IncludeCursor,
+                Settings.Instance.DoResize,
+                Settings.Instance.ResizeWidth,
+                Settings.Instance.ResizeHeight);
+
+            // Capture without Transparency
+            if (bmp == null)
+            {
+                try
                 {
                     return ScreenShot.Capture(hWnd, Settings.Instance.IncludeCursor)?.Transform();
                 }
-                else return bmp.Transform(true);
+                catch
+                {
+                    return null;
+                }
             }
+
+            return bmp.Transform(true);
         }
 
         public async void CaptureScreenShot(string FileName = null)

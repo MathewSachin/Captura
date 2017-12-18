@@ -110,6 +110,9 @@ namespace Screna
 
                     var transparentImage = Extensions.DifferentiateAlpha(whiteShot, blackShot);
 
+                    if (transparentImage == null)
+                        return null;
+
                     if (IncludeCursor)
                     {
                         using (var g = Graphics.FromImage(transparentImage))
