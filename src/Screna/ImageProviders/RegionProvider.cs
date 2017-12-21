@@ -26,13 +26,13 @@ namespace Screna
             _imagePool = new ImagePool(Region.Width, Region.Height);
         }
 
-        bool _regionShift;
+        bool _outsideBounds;
 
         public void UpdateLocation(Point P)
         {
             _region.Location = P;
 
-            _regionShift = true;
+            _outsideBounds = !WindowProvider.DesktopRectangle.Contains(_region);
         }
         
         public IBitmapFrame Capture()
@@ -43,7 +43,7 @@ namespace Screna
             {
                 using (var editor = bmp.GetEditor())
                 {
-                    if (_regionShift)
+                    if (_outsideBounds)
                         editor.Graphics.Clear(Color.Transparent);
 
                     editor.Graphics.CopyFromScreen(_region.Location,
