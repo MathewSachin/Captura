@@ -41,7 +41,6 @@ namespace Screna
         }
 
         readonly Window _window;
-        readonly Color _backgroundColor;
         readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
 
@@ -62,10 +61,9 @@ namespace Screna
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        public WindowProvider(Window Window, bool IncludeCursor, Color BackgroundColor, out Func<Point, Point> Transform)
+        public WindowProvider(Window Window, bool IncludeCursor, out Func<Point, Point> Transform)
         {
             _window = Window;
-            _backgroundColor = BackgroundColor;
             _includeCursor = IncludeCursor;
 
             var size = Window.Rectangle.Even().Size;
@@ -102,9 +100,6 @@ namespace Screna
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 
-                if (_backgroundColor != Color.Transparent)
-                    g.Clear(_backgroundColor);
-
                 var ratio = Math.Min((float)Width / rect.Width, (float)Height / rect.Height);
 
                 var resizeWidth = rect.Width * ratio;

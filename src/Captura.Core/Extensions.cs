@@ -94,12 +94,7 @@ namespace Captura
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = SmoothingMode.HighQuality;
-
-                var backgroundColor = Settings.Instance.VideoBackgroundColor;
-
-                if (backgroundColor != Color.Transparent)
-                    g.FillRectangle(new SolidBrush(backgroundColor), 0, 0, Resize.Width, Resize.Height);
-
+                
                 using (Image)
                     g.DrawImage(Image, 0, 0, resizeWidth, resizeHeight);
             }

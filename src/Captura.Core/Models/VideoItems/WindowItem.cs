@@ -28,7 +28,7 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            return new WindowProvider(Window, IncludeCursor, Settings.Instance.VideoBackgroundColor, out Transform);
+            return new WindowProvider(Window, IncludeCursor, out Transform);
         }
     }
 }
