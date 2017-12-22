@@ -38,11 +38,22 @@ namespace Screna
             }
 
             DesktopRectangle = new Rectangle(0, 0, width, height);
+
+            if (_fullWidthFrame != null)
+                _fullWidthFrame.Destroy();
+            else
+            {
+                _fullWidthFrame = new ReusableFrame(new Bitmap(width, height));
+            }
         }
 
         readonly Window _window;
         readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
+        readonly ImagePool _imagePool;
+
+        // used when resizing window frames.
+        static ReusableFrame _fullWidthFrame;
 
         static Func<Point, Point> GetTransformer(Window Window)
         {
@@ -71,6 +82,8 @@ namespace Screna
             Height = size.Height;
 
             Transform = _transform = GetTransformer(Window);
+
+            _imagePool = new ImagePool(Width, Height);
         }
 
         void OnCapture(Graphics g)
@@ -86,11 +99,9 @@ namespace Screna
             }
             else // Scale to fit
             {
-                var capture = new Bitmap(rect.Width, rect.Height);
-
-                using (var gcapture = Graphics.FromImage(capture))
+                using (var editor = _fullWidthFrame.GetEditor())
                 {
-                    gcapture.CopyFromScreen(rect.Location,
+                    editor.Graphics.CopyFromScreen(rect.Location,
                         Point.Empty,
                         rect.Size,
                         CopyPixelOperation.SourceCopy);
@@ -105,26 +116,30 @@ namespace Screna
                 var resizeWidth = rect.Width * ratio;
                 var resizeHeight = rect.Height * ratio;
 
-                using (capture)
-                    g.DrawImage(capture, 0, 0, resizeWidth, resizeHeight);
+                g.Clear(Color.Transparent);
+                
+                g.DrawImage(_fullWidthFrame.Bitmap,
+                    new RectangleF(0, 0, resizeWidth, resizeHeight),
+                    new RectangleF(0, 0, rect.Width, rect.Height), 
+                    GraphicsUnit.Pixel);
             }
         }
 
         public IBitmapFrame Capture()
         {
-            var bmp = new Bitmap(Width, Height);
+            var bmp = _imagePool.Get();
 
             try
             {
-                using (var g = Graphics.FromImage(bmp))
+                using (var editor = bmp.GetEditor())
                 {
-                    OnCapture(g);
+                    OnCapture(editor.Graphics);
 
                     if (_includeCursor)
-                        MouseCursor.Draw(g, _transform);
+                        MouseCursor.Draw(editor.Graphics, _transform);
                 }
 
-                return new OneTimeFrame(bmp);
+                return bmp;
             }
             catch
             {

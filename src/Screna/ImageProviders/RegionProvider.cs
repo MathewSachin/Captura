@@ -78,7 +78,7 @@ namespace Screna
         /// <summary>
         /// Frees all resources used by this instance.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             _imagePool.Dispose();
         }
