@@ -159,6 +159,9 @@ namespace Screna
         /// </summary>
         public int Width { get; }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _imagePool.Dispose();
+        }
     }
 }
