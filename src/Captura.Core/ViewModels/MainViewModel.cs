@@ -317,13 +317,17 @@ namespace Captura.ViewModels
             }
         }
         
-        void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
+        async void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
             
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                _syncContext.Post(async state => await StopRecording(), null);
+            {
+                if (_syncContext != null)
+                    _syncContext.Post(async State => await StopRecording(), null);
+                else await StopRecording();
+            }
         }
         
         void CheckFunctionalityAvailability()
@@ -554,7 +558,12 @@ namespace Captura.ViewModels
                     _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.Instance.AudioQuality), audioSource);
             }
             
-            _recorder.ErrorOccured += E => _syncContext.Post(d => OnErrorOccured(E), null);
+            _recorder.ErrorOccured += E =>
+            {
+                if (_syncContext != null)
+                    _syncContext.Post(d => OnErrorOccured(E), null);
+                else OnErrorOccured(E);
+            };
             
             if (StartDelay > 0)
             {
