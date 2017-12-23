@@ -43,7 +43,7 @@ namespace Captura.Models
             var webcam = ServiceProvider.WebCamProvider;
 
             // No Webcam
-            if (webcam.SelectedCam == webcam.AvailableCams[0])
+            if (webcam.AvailableCams.Count < 1 || webcam.SelectedCam == webcam.AvailableCams[0])
                 return;
 
             var img = webcam.Capture();
