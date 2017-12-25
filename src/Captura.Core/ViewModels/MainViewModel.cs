@@ -299,6 +299,8 @@ namespace Captura.ViewModels
         // Call before Exit to free LanguageManager
         public void Dispose()
         {
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+
             if (_hotkeys)
                 HotKeyManager.Dispose();
 
