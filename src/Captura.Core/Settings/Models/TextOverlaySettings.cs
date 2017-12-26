@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Captura
 {

@@ -29,7 +29,7 @@ namespace Captura
                 values.Add(new SettingsPropertyValue(setting)
                 {
                     IsDirty = false,
-                    PropertyValue = value,
+                    PropertyValue = value
                 });
             }
             return values;

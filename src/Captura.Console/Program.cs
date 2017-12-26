@@ -17,10 +17,10 @@ namespace Captura.Console
 {
     static class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] Args)
         {
             // Handle if args is empty
-            switch (args.Length > 0 ? args[0] : "")
+            switch (Args.Length > 0 ? Args[0] : "")
             {
                 case "start":
                 case "shot":
@@ -31,7 +31,7 @@ namespace Captura.Console
 
                     var verbs = new VerbCmdOptions();
 
-                    if (!CommandLine.Parser.Default.ParseArguments(args, verbs, (verb, options) =>
+                    if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
                     {
                         using (var vm = new MainViewModel())
                         {
@@ -40,13 +40,13 @@ namespace Captura.Console
                             vm.Init(false, false, false, false);
 
                             // Start Recording (Command-line)
-                            if (options is StartCmdOptions startOptions)
+                            if (Options is StartCmdOptions startOptions)
                             {
                                 Start(vm, startOptions);
                             }
 
                             // ScreenShot and Exit (Command-line)
-                            else if (options is ShotCmdOptions shotOptions)
+                            else if (Options is ShotCmdOptions shotOptions)
                             {
                                 Shot(vm, shotOptions);
                             }
@@ -63,7 +63,7 @@ namespace Captura.Console
 
                 // Launch UI passing arguments
                 default:
-                    Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", args));
+                    Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", Args));
                     break;
             }
         }

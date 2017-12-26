@@ -91,8 +91,6 @@ namespace Captura
             {
                 Left = 50;
                 Top = 50;
-
-                this.ShouldSerializeTriggers();
             }
         }
 

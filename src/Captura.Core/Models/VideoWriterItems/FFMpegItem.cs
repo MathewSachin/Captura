@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Screna;
 using Screna.Audio;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable InconsistentNaming
 
 namespace Captura.Models
 {

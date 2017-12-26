@@ -48,6 +48,8 @@ namespace Captura
             if (_currentCulture == null)
                 CurrentCulture = new CultureInfo("en");
 
+            cultures.Sort((X, Y) => X.DisplayName.CompareTo(Y.DisplayName));
+
             AvailableCultures = cultures;
         }
 

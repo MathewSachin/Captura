@@ -1,7 +1,6 @@
 ﻿<Application x:Class="Captura.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Captura"
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              ShutdownMode="OnMainWindowClose"
              StartupUri="MainWindow.xaml"

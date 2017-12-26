@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -7,11 +8,11 @@ namespace Captura
 {
     public class InkToolToIconConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            var app = App.Current;
+            var app = Application.Current;
 
-            switch (value)
+            switch (Value)
             {
                 case InkCanvasEditingMode.Ink:
                     return app.FindResource("Icon_Pencil");
@@ -29,7 +30,7 @@ namespace Captura
             return Binding.DoNothing;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             return Binding.DoNothing;
         }

@@ -1,4 +1,6 @@
 ﻿using System.Runtime.InteropServices;
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Captura.Webcam
 {
@@ -15,19 +17,19 @@ namespace Captura.Webcam
         int Stop();
 
         [PreserveSig]
-        int GetState(int msTimeout, out int pfs);
+        int GetState(int MsTimeout, out int Pfs);
 
         [PreserveSig]
-        int RenderFile(string strFilename);
+        int RenderFile(string StrFilename);
 
         [PreserveSig]
-        int AddSourceFilter([In] string strFilename, [Out, MarshalAs(UnmanagedType.IDispatch)] out object ppUnk);
+        int AddSourceFilter([In] string StrFilename, [Out, MarshalAs(UnmanagedType.IDispatch)] out object PpUnk);
 
         [PreserveSig]
-        int get_FilterCollection([Out, MarshalAs(UnmanagedType.IDispatch)] out object ppUnk);
+        int get_FilterCollection([Out, MarshalAs(UnmanagedType.IDispatch)] out object PpUnk);
 
         [PreserveSig]
-        int get_RegFilterCollection([Out, MarshalAs(UnmanagedType.IDispatch)] out object ppUnk);
+        int get_RegFilterCollection([Out, MarshalAs(UnmanagedType.IDispatch)] out object PpUnk);
 
         [PreserveSig]
         int StopWhenReady();

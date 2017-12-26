@@ -28,7 +28,7 @@ namespace Screna
             Height = ImageProvider.Height;
         }
 
-        int lastFrameHash;
+        int _lastFrameHash;
 
         /// <summary>
         /// Captures an Image.
@@ -39,12 +39,12 @@ namespace Screna
             
             var hash = bmp.GetHashCode();
 
-            if (lastFrameHash == hash)
+            if (_lastFrameHash == hash)
             {
                 return bmp;
             }
 
-            lastFrameHash = hash;
+            _lastFrameHash = hash;
 
             using (var g = Graphics.FromImage(bmp))
             {
@@ -56,20 +56,14 @@ namespace Screna
             return bmp;
         }
         
-        /// <summary>
-        /// Height of Captured image.
-        /// </summary>
+        /// <inheritdoc />
         public int Height { get; }
 
-        /// <summary>
-        /// Width of Captured image.
-        /// </summary>
+        /// <inheritdoc />
         public int Width { get; }
 
-        /// <summary>
-        /// Frees all resources used by this instance.
-        /// </summary>
-        public virtual void Dispose()
+        /// <inheritdoc />
+        public void Dispose()
         {
             _imageProvider.Dispose();
 

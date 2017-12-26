@@ -27,16 +27,7 @@ namespace Captura.Webcam
         /// <summary>
         /// The Width and Height of the video feed.
         /// </summary>
-        public Size Size
-        {
-            get
-            {
-                if (_videoInfoHeader != null)
-                    return new Size(_videoInfoHeader.BmiHeader.Width, _videoInfoHeader.BmiHeader.Height);
-
-                return Size.Empty;
-            }
-        }
+        public Size Size => _videoInfoHeader != null ? new Size(_videoInfoHeader.BmiHeader.Width, _videoInfoHeader.BmiHeader.Height) : Size.Empty;
 
         /// <summary>
         /// The Scale of the video feed.
