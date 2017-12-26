@@ -88,7 +88,7 @@ namespace Screna
 
         void OnCapture(Graphics g)
         {
-            var rect = _window.Rectangle;
+            var rect = _window.Rectangle.Even();
             
             if (rect.Width == Width && rect.Height == Height)
             {
@@ -106,10 +106,6 @@ namespace Screna
                         rect.Size,
                         CopyPixelOperation.SourceCopy);
                 }
-
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.SmoothingMode = SmoothingMode.HighQuality;
                 
                 var ratio = Math.Min((float)Width / rect.Width, (float)Height / rect.Height);
 

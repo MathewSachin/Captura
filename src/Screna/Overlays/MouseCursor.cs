@@ -104,7 +104,11 @@ namespace Screna
             if (Transform != null)
                 location = Transform(location);
 
-            g.DrawImage(icon, new Rectangle(location, icon.Size));
+            try
+            {
+                g.DrawImage(icon, new Rectangle(location, icon.Size));
+            }
+            catch (ArgumentException) { }
         }
     }
 }
