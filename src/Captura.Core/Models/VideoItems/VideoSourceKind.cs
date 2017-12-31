@@ -5,6 +5,7 @@ namespace Captura.Models
         NoVideo,
         Window,
         Screen,
+        DesktopDuplication,
         Region
     }
 }

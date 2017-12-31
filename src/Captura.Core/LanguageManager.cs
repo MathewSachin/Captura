@@ -155,6 +155,8 @@ namespace Captura
 
         public static string Delete => Get();
 
+        public static string DesktopDuplication => Get();
+
         public static string Disk => Get();
 
         public static string Donate => Get();

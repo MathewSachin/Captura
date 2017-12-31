@@ -21,9 +21,6 @@ namespace Captura.Models
         {
             Transform = P => P;
 
-            if (Settings.Instance.UseDeskDupl)
-                return new DeskDuplImageProvider(0, WindowProvider.DesktopRectangle, IncludeCursor);
-
             return new RegionProvider(WindowProvider.DesktopRectangle, IncludeCursor);
         }
     }

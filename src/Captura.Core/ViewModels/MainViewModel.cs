@@ -401,6 +401,7 @@ namespace Captura.ViewModels
                     bmp = ScreenShotWindow(hWnd);
                     break;
 
+                case VideoSourceKind.DesktopDuplication:
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
@@ -414,27 +415,7 @@ namespace Captura.ViewModels
                             await Task.Delay(300);
                         }
 
-                        if (Settings.Instance.UseDeskDupl)
-                        {
-                            try
-                            {
-                                using (var dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, includeCursor, 0))
-                                {
-                                    // Increase timeout
-                                    dupl.Timeout = 10000;
-
-                                    // First one is blank
-                                    dupl.Capture().Dispose();
-
-                                    bmp = dupl.Capture();
-                                }
-                            }
-                            catch
-                            {
-                                bmp = ScreenShot.Capture(includeCursor);
-                            }
-                        }
-                        else bmp = ScreenShot.Capture(includeCursor);
+                        bmp = ScreenShot.Capture(includeCursor);
 
                         if (hide)
                             ServiceProvider.MainWindow.IsVisible = true;
@@ -474,7 +455,7 @@ namespace Captura.ViewModels
 
             if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif
                 && Settings.Instance.GifVariable
-                && Settings.Instance.UseDeskDupl)
+                && VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
                 ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
 
@@ -506,12 +487,12 @@ namespace Captura.ViewModels
             {
                 imgProvider = GetImageProvider();
             }
-            catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
+            catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", LanguageManager.ErrorOccured);
 
                 if (yes)
-                    Settings.Instance.UseDeskDupl = false;
+                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
 
                 return;
             }

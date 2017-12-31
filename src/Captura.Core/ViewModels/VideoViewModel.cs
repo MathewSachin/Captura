@@ -29,23 +29,27 @@ namespace Captura.ViewModels
         {
             AvailableVideoSources.Clear();
 
+            // RegionSelector should only be shown on Region Capture.
+            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
                     AvailableVideoSources.Add(WindowItem.TaskBar);
-
-                    // Prevent RegionSelector from showing here
-                    ServiceProvider.RegionProvider.SelectorVisible = false;
-
+                    
                     foreach (var win in Window.EnumerateVisible())
                         AvailableVideoSources.Add(new WindowItem(win));
-                    
+                    break;
+
+                case VideoSourceKind.DesktopDuplication:
+                    foreach (var screen in ScreenItem.Enumerate(true))
+                        AvailableVideoSources.Add(screen);
                     break;
 
                 case VideoSourceKind.Screen:
                     AvailableVideoSources.Add(FullScreenItem.Instance);
 
-                    foreach (var screen in ScreenItem.Enumerate())
+                    foreach (var screen in ScreenItem.Enumerate(false))
                         AvailableVideoSources.Add(screen);
                     break;
 
@@ -65,9 +69,6 @@ namespace Captura.ViewModels
             // Set first source as default
             if (AvailableVideoSources.Count > 0)
                 SelectedVideoSource = AvailableVideoSources[0];
-
-            // RegionSelector should only be shown on Region Capture.
-            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
         }
         
         void InitSharpAviCodecs()
@@ -151,6 +152,7 @@ namespace Captura.ViewModels
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(LanguageManager.OnlyAudio)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(LanguageManager.Screen)),
+            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.DesktopDuplication, nameof(LanguageManager.DesktopDuplication)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(LanguageManager.Window)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(LanguageManager.Region))
         };

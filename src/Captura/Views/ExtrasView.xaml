@@ -61,12 +61,6 @@
                                   Grid.Row="3"
                                   Grid.Column="1"/>
             </Grid>
-
-            <CheckBox IsChecked="{local:Setting UseDeskDupl}"
-                      Margin="0,5">
-                <TextBlock TextWrapping="Wrap"
-                           Text="Use Desktop Duplication API (Windows 8 or above)"/>
-            </CheckBox>
         </StackPanel>
     </Grid>
 </Page>
