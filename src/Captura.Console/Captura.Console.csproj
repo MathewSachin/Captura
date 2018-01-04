@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CmdOptions\CmdOptionsBase.cs" />
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
+    <Compile Include="CmdOptions\FFMpegCmdOptions.cs" />
     <Compile Include="Fakes\FakeMessageProvider.cs" />
     <Compile Include="Fakes\FakeRegionItem.cs" />
     <Compile Include="Fakes\FakeRegionProvider.cs" />
