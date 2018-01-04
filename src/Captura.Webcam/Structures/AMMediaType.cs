@@ -1,9 +1,13 @@
 using System;
 using System.Runtime.InteropServices;
+// ReSharper disable NotAccessedField.Global
+#pragma warning disable 414
+#pragma warning disable 169
 
 namespace Captura.Webcam
 {
     [StructLayout(LayoutKind.Sequential)]
+    // ReSharper disable once InconsistentNaming
     class AMMediaType
     {
         public Guid majorType;

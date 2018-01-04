@@ -29,7 +29,7 @@ namespace Captura.Models
                 {
                     Background = new SolidColorBrush(Color.FromArgb(255, 244, 67, 54)),
                     VerticalAlignment = VerticalAlignment.Top,
-                    Height = 10,
+                    Height = 10
                 };
 
                 dialog.ShowDialog();

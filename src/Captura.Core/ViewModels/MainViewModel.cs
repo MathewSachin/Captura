@@ -299,6 +299,8 @@ namespace Captura.ViewModels
         // Call before Exit to free LanguageManager
         public void Dispose()
         {
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+
             if (_hotkeys)
                 HotKeyManager.Dispose();
 
@@ -317,13 +319,17 @@ namespace Captura.ViewModels
             }
         }
         
-        void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
+        async void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
             
             // If Capture Duration is set and reached
             if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
-                _syncContext.Post(async state => await StopRecording(), null);
+            {
+                if (_syncContext != null)
+                    _syncContext.Post(async State => await StopRecording(), null);
+                else await StopRecording();
+            }
         }
         
         void CheckFunctionalityAvailability()
@@ -344,7 +350,7 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else Status.LocalizationKey = nameof(LanguageManager.ImgEmpty);
+            else ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -355,21 +361,27 @@ namespace Captura.ViewModels
             {
                 return ScreenShot.Capture(Settings.Instance.IncludeCursor).Transform();
             }
-            else
-            {
-                var bmp = ScreenShot.CaptureTransparent(hWnd,
-                    Settings.Instance.IncludeCursor,
-                    Settings.Instance.DoResize,
-                    Settings.Instance.ResizeWidth,
-                    Settings.Instance.ResizeHeight);
 
-                // Capture without Transparency
-                if (bmp == null)
+            var bmp = ScreenShot.CaptureTransparent(hWnd,
+                Settings.Instance.IncludeCursor,
+                Settings.Instance.DoResize,
+                Settings.Instance.ResizeWidth,
+                Settings.Instance.ResizeHeight);
+
+            // Capture without Transparency
+            if (bmp == null)
+            {
+                try
                 {
                     return ScreenShot.Capture(hWnd, Settings.Instance.IncludeCursor)?.Transform();
                 }
-                else return bmp.Transform(true);
+                catch
+                {
+                    return null;
+                }
             }
+
+            return bmp.Transform(true);
         }
 
         public async void CaptureScreenShot(string FileName = null)
@@ -389,6 +401,7 @@ namespace Captura.ViewModels
                     bmp = ScreenShotWindow(hWnd);
                     break;
 
+                case VideoSourceKind.DesktopDuplication:
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
@@ -402,27 +415,7 @@ namespace Captura.ViewModels
                             await Task.Delay(300);
                         }
 
-                        if (Settings.Instance.UseDeskDupl)
-                        {
-                            try
-                            {
-                                using (var dupl = new DesktopDuplicator(WindowProvider.DesktopRectangle, includeCursor, 0))
-                                {
-                                    // Increase timeout
-                                    dupl.Timeout = 10000;
-
-                                    // First one is blank
-                                    dupl.Capture().Dispose();
-
-                                    bmp = dupl.Capture().Bitmap;
-                                }
-                            }
-                            catch
-                            {
-                                bmp = ScreenShot.Capture(includeCursor);
-                            }
-                        }
-                        else bmp = ScreenShot.Capture(includeCursor);
+                        bmp = ScreenShot.Capture(includeCursor);
 
                         if (hide)
                             ServiceProvider.MainWindow.IsVisible = true;
@@ -462,7 +455,7 @@ namespace Captura.ViewModels
 
             if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif
                 && Settings.Instance.GifVariable
-                && Settings.Instance.UseDeskDupl)
+                && VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
                 ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
 
@@ -494,12 +487,12 @@ namespace Captura.ViewModels
             {
                 imgProvider = GetImageProvider();
             }
-            catch (NotSupportedException e) when (Settings.Instance.UseDeskDupl)
+            catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", LanguageManager.ErrorOccured);
 
                 if (yes)
-                    Settings.Instance.UseDeskDupl = false;
+                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
 
                 return;
             }
@@ -548,7 +541,12 @@ namespace Captura.ViewModels
                     _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.Instance.AudioQuality), audioSource);
             }
             
-            _recorder.ErrorOccured += E => _syncContext.Post(d => OnErrorOccured(E), null);
+            _recorder.ErrorOccured += E =>
+            {
+                if (_syncContext != null)
+                    _syncContext.Post(d => OnErrorOccured(E), null);
+                else OnErrorOccured(E);
+            };
             
             if (StartDelay > 0)
             {

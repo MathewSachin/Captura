@@ -1,4 +1,6 @@
 ﻿using System.Runtime.InteropServices;
+#pragma warning disable 649
+#pragma warning disable 169
 
 namespace Captura.Webcam
 {

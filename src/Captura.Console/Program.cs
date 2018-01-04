@@ -17,13 +17,14 @@ namespace Captura.Console
 {
     static class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] Args)
         {
             // Handle if args is empty
-            switch (args.Length > 0 ? args[0] : "")
+            switch (Args.Length > 0 ? Args[0] : "")
             {
                 case "start":
                 case "shot":
+                case "ffmpeg":
                     Banner();
 
                     // Reset settings
@@ -31,7 +32,7 @@ namespace Captura.Console
 
                     var verbs = new VerbCmdOptions();
 
-                    if (!CommandLine.Parser.Default.ParseArguments(args, verbs, (verb, options) =>
+                    if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
                     {
                         using (var vm = new MainViewModel())
                         {
@@ -40,15 +41,19 @@ namespace Captura.Console
                             vm.Init(false, false, false, false);
 
                             // Start Recording (Command-line)
-                            if (options is StartCmdOptions startOptions)
+                            if (Options is StartCmdOptions startOptions)
                             {
                                 Start(vm, startOptions);
                             }
 
                             // ScreenShot and Exit (Command-line)
-                            else if (options is ShotCmdOptions shotOptions)
+                            else if (Options is ShotCmdOptions shotOptions)
                             {
                                 Shot(vm, shotOptions);
+                            }
+                            else if (Options is FFMpegCmdOptions ffmpegOptions)
+                            {
+                                FFMpeg(vm, ffmpegOptions);
                             }
                         }
                     }))
@@ -63,7 +68,7 @@ namespace Captura.Console
 
                 // Launch UI passing arguments
                 default:
-                    Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", args));
+                    Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", Args));
                     break;
             }
         }
@@ -300,6 +305,28 @@ namespace Captura.Console
             else if (StartOptions.Encoder == "gif")
             {
                 video.SelectedVideoWriterKind = VideoWriterKind.Gif;
+            }
+        }
+
+        static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions ffmpegOptions)
+        {
+
+            if (ffmpegOptions.install != null)
+            {
+                var downloadFolder = ffmpegOptions.install;
+
+                if (!System.IO.Directory.Exists(downloadFolder))
+                {
+                    WriteLine("Directory doesn't exist");
+                    return;
+                }
+
+                var ffMpegDownload = new FFMpegDownloadViewModel();
+                ffMpegDownload.TargetFolder = ffmpegOptions.install;
+                Task downloadTask = Task.Run(() => ffMpegDownload.Start());
+                downloadTask.Wait();
+
+                WriteLine(ffMpegDownload.Status);
             }
         }
 

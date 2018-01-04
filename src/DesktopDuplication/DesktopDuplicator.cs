@@ -140,13 +140,13 @@ namespace DesktopDuplication
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = frame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, frame.PixelFormat);
 
-            Parallel.For(0, _rect.Height, y =>
+            Parallel.For(0, _rect.Height, Y =>
             {
-                Utilities.CopyMemory(mapDest.Scan0 + y * mapDest.Stride,
-                    SourcePtr + y * SourceRowPitch,
+                Utilities.CopyMemory(mapDest.Scan0 + Y * mapDest.Stride,
+                    SourcePtr + Y * SourceRowPitch,
                     _rect.Width * 4);
             });
-                        
+
             // Release source and dest locks
             frame.UnlockBits(mapDest);
 

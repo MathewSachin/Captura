@@ -1,4 +1,5 @@
-﻿namespace Captura
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+namespace Captura
 {
     public abstract class PositionedOverlaySettings : NotifyPropertyChanged
     {

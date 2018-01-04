@@ -68,7 +68,7 @@ namespace Captura.Models
 
         public Modifiers Modifiers { get; private set; }
 
-        public virtual void Change(Keys Key, Modifiers Modifiers)
+        public void Change(Keys Key, Modifiers Modifiers)
         {
             Unregister();
 

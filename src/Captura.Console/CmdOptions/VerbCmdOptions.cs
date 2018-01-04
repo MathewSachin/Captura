@@ -9,5 +9,8 @@ namespace Captura
 
         [VerbOption("shot")]
         public ShotCmdOptions Shot { get; set; }
+
+        [VerbOption("ffmpeg")]
+        public FFMpegCmdOptions Get { get; set; }
     }
 }

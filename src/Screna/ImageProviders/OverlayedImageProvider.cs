@@ -41,6 +41,7 @@ namespace Screna
             }
             
             using (var editor = bmp.GetEditor())
+
             {
                 if (_overlays != null)
                     foreach (var overlay in _overlays)
@@ -50,20 +51,14 @@ namespace Screna
             return bmp;
         }
         
-        /// <summary>
-        /// Height of Captured image.
-        /// </summary>
+        /// <inheritdoc />
         public int Height { get; }
 
-        /// <summary>
-        /// Width of Captured image.
-        /// </summary>
+        /// <inheritdoc />
         public int Width { get; }
 
-        /// <summary>
-        /// Frees all resources used by this instance.
-        /// </summary>
-        public virtual void Dispose()
+        /// <inheritdoc />
+        public void Dispose()
         {
             _imageProvider.Dispose();
 

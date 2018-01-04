@@ -10,29 +10,29 @@ namespace Captura
     {
         public static CmdOptions CmdOptions { get; } = new CmdOptions();
 
-        void Application_Startup(object sender, StartupEventArgs e)
+        void Application_Startup(object Sender, StartupEventArgs Args)
         {
-            AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+            AppDomain.CurrentDomain.UnhandledException += (S, E) =>
             {
                 var dir = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
 
                 Directory.CreateDirectory(dir);
 
-                File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), args.ExceptionObject.ToString());
+                File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
 
-                MessageBox.Show($"Unexpected error occured. Captura will exit.\n\n{args.ExceptionObject}", "App Crash", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Unexpected error occured. Captura will exit.\n\n{E.ExceptionObject}", "App Crash", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 Shutdown();
             };
 
-            CommandLine.Parser.Default.ParseArguments(e.Args, CmdOptions);
+            CommandLine.Parser.Default.ParseArguments(Args.Args, CmdOptions);
 
             if (CmdOptions.Settings != null)
             {
                 ServiceProvider.SettingsDir = CmdOptions.Settings;
             }
 
-            if (App.CmdOptions.Reset)
+            if (CmdOptions.Reset)
             {
                 Settings.Instance.SafeReset();
             }

@@ -48,6 +48,8 @@ namespace Captura
             if (_currentCulture == null)
                 CurrentCulture = new CultureInfo("en");
 
+            cultures.Sort((X, Y) => X.DisplayName.CompareTo(Y.DisplayName));
+
             AvailableCultures = cultures;
         }
 
@@ -152,6 +154,8 @@ namespace Captura
         public static string DelayGtDuration => Get();
 
         public static string Delete => Get();
+
+        public static string DesktopDuplication => Get();
 
         public static string Disk => Get();
 

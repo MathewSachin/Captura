@@ -69,7 +69,7 @@ namespace Captura.ViewModels
             new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise")
         };
         
         RecorderState _recorderState = RecorderState.NotRecording;

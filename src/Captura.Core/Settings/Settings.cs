@@ -70,15 +70,7 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool UseDeskDupl
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
+        
         [UserScopedSetting]
         [DefaultSettingValue("False")]
         public bool MainWindowTopmost

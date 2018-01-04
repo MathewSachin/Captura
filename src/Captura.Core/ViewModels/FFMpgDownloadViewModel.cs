@@ -49,7 +49,7 @@ namespace Captura.ViewModels
 
         WebClient web;
 
-        async Task Start()
+        public async Task Start()
         {
             if (ActionDescription == CancelDownload)
             {
@@ -153,7 +153,7 @@ namespace Captura.ViewModels
         public string TargetFolder
         {
             get => _targetFolder;
-            private set
+            set
             {
                 _targetFolder = value;
 
