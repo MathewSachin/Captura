@@ -24,6 +24,7 @@ namespace Captura.Console
             {
                 case "start":
                 case "shot":
+                case "ffmpeg":
                     Banner();
 
                     // Reset settings
@@ -49,6 +50,10 @@ namespace Captura.Console
                             else if (Options is ShotCmdOptions shotOptions)
                             {
                                 Shot(vm, shotOptions);
+                            }
+                            else if (Options is FFMpegCmdOptions ffmpegOptions)
+                            {
+                                FFMpeg(vm, ffmpegOptions);
                             }
                         }
                     }))
@@ -300,6 +305,28 @@ namespace Captura.Console
             else if (StartOptions.Encoder == "gif")
             {
                 video.SelectedVideoWriterKind = VideoWriterKind.Gif;
+            }
+        }
+
+        static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions ffmpegOptions)
+        {
+
+            if (ffmpegOptions.install != null)
+            {
+                var downloadFolder = ffmpegOptions.install;
+
+                if (!System.IO.Directory.Exists(downloadFolder))
+                {
+                    WriteLine("Directory doesn't exist");
+                    return;
+                }
+
+                var ffMpegDownload = new FFMpegDownloadViewModel();
+                ffMpegDownload.TargetFolder = ffmpegOptions.install;
+                Task downloadTask = Task.Run(() => ffMpegDownload.Start());
+                downloadTask.Wait();
+
+                WriteLine(ffMpegDownload.Status);
             }
         }
 
