@@ -370,6 +370,13 @@ namespace Captura.Console
             if (StartOptions.Keys)
                 Settings.Instance.Keystrokes.Display = true;
 
+            if (File.Exists(StartOptions.FileName))
+            {
+                WriteLine("Output File Already Exists");
+
+                return;
+            }
+
             HandleVideoSource(ViewModel, StartOptions);
 
             HandleVideoEncoder(ViewModel, StartOptions);
