@@ -1,38 +1,86 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Screna
 {
     /// <summary>
     /// Captures the Region specified by a Rectangle.
     /// </summary>
-    public class RegionProvider : ImageProviderBase
+    public class RegionProvider : IImageProvider
     {
         Rectangle _region;
-        
+        readonly ImagePool _imagePool;
+        readonly bool _includeCursor;
+        readonly Func<Point, Point> _transform;
+
         /// <summary>
         /// Creates a new instance of <see cref="RegionProvider"/>.
         /// </summary>
-        /// <param name="Region">Region to Capture.</param>
         public RegionProvider(Rectangle Region, bool IncludeCursor)
-            : base(Region.Size, P => new Point(P.X - Region.X, P.Y - Region.Y),  IncludeCursor)
         {
             _region = Region;
+            _includeCursor = IncludeCursor;
+
+            _transform = P => new Point(P.X - Region.X, P.Y - Region.Y);
+
+            _imagePool = new ImagePool(Region.Width, Region.Height);
         }
+
+        bool _outsideBounds;
 
         public void UpdateLocation(Point P)
         {
             _region.Location = P;
+
+            _outsideBounds = !WindowProvider.DesktopRectangle.Contains(_region);
+        }
+        
+        public IBitmapFrame Capture()
+        {
+            var bmp = _imagePool.Get();
+
+            try
+            {
+                using (var editor = bmp.GetEditor())
+                {
+                    if (_outsideBounds)
+                        editor.Graphics.Clear(Color.Transparent);
+
+                    editor.Graphics.CopyFromScreen(_region.Location,
+                        Point.Empty,
+                        _region.Size,
+                        CopyPixelOperation.SourceCopy);
+
+                    if (_includeCursor)
+                        MouseCursor.Draw(editor.Graphics, _transform);
+                }
+                
+                return bmp;
+            }
+            catch
+            {
+                bmp.Dispose();
+
+                return RepeatFrame.Instance;
+            }
         }
 
         /// <summary>
-        /// Capture an image.
+        /// Height of Captured image.
         /// </summary>
-        protected override void OnCapture(Graphics g)
+        public int Height => _region.Height;
+
+        /// <summary>
+        /// Width of Captured image.
+        /// </summary>
+        public int Width => _region.Width;
+
+        /// <summary>
+        /// Frees all resources used by this instance.
+        /// </summary>
+        public void Dispose()
         {
-            g.CopyFromScreen(_region.Location,
-                             Point.Empty,
-                             _region.Size,
-                             CopyPixelOperation.SourceCopy);
+            _imagePool.Dispose();
         }
     }
 }

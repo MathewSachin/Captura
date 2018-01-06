@@ -304,13 +304,5 @@ namespace Captura
             get => Get<int>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("Black")]
-        public Color VideoBackgroundColor
-        {
-            get => Get<Color>();
-            set => Set(value);
-        }
     }
 }

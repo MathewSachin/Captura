@@ -51,39 +51,38 @@ namespace Screna
 
         readonly MemoryStream gifStream = new MemoryStream();
 
-        int lastFrameHash, width, height;
+        int _width, _height;
 
         /// <summary>
         /// Adds a frame to this animation.
         /// </summary>
-        /// <param name="Image">The image to add</param>
-        /// <param name="Delay">Delay in Milliseconds between this and last frame.</param>
-        public void WriteFrame(Image Image, int Delay)
+        public void WriteFrame(IBitmapFrame Frame, int Delay)
         {
             gifStream.Position = 0;
-
-            var hash = Image.GetHashCode();
-
+            
             if (_firstFrame)
             {
-                width = Image.Width;
-                height = Image.Height;
+                if (Frame is RepeatFrame)
+                    return;
+
+                var image = Frame.Bitmap;
+
+                _width = image.Width;
+                _height = image.Height;
             }
 
-            if (lastFrameHash != hash)
+            if (!(Frame is RepeatFrame))
             {
-                using (Image)
-                    Image.Save(gifStream, ImageFormat.Gif);
-                
-                lastFrameHash = hash;
+                using (Frame)
+                    Frame.Bitmap.Save(gifStream, ImageFormat.Gif);
             }
 
             // Steal the global color table info
             if (_firstFrame)
-                InitHeader(gifStream, _writer, width, height);
+                InitHeader(gifStream, _writer, _width, _height);
 
             WriteGraphicControlBlock(gifStream, _writer, Delay);
-            WriteImageBlock(gifStream, _writer, !_firstFrame, 0, 0, width, height);
+            WriteImageBlock(gifStream, _writer, !_firstFrame, 0, 0, _width, _height);
             
             if (_firstFrame)
                 _firstFrame = false;
@@ -93,8 +92,8 @@ namespace Screna
         /// Writes a Image frame.
         /// </summary>
         /// <param name="Image">Image frame to write.</param>
-        public void WriteFrame(Bitmap Image) => WriteFrame(Image, _defaultFrameDelay);
-
+        public void WriteFrame(IBitmapFrame Image) => WriteFrame(Image, _defaultFrameDelay);
+        
         /// <summary>
         /// <see cref="GifWriter"/> does not support Audio.
         /// </summary>
