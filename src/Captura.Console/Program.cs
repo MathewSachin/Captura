@@ -40,20 +40,23 @@ namespace Captura.Console
 
                             vm.Init(false, false, false, false);
 
-                            // Start Recording (Command-line)
-                            if (Options is StartCmdOptions startOptions)
-                            {
-                                Start(vm, startOptions);
-                            }
+                            // Remove Custom overlays
+                            CustomOverlaysViewModel.Instance.Collection.Clear();
 
-                            // ScreenShot and Exit (Command-line)
-                            else if (Options is ShotCmdOptions shotOptions)
+                            // Start Recording (Command-line)
+                            switch (Options)
                             {
-                                Shot(vm, shotOptions);
-                            }
-                            else if (Options is FFMpegCmdOptions ffmpegOptions)
-                            {
-                                FFMpeg(vm, ffmpegOptions);
+                                case StartCmdOptions startOptions:
+                                    Start(vm, startOptions);
+                                    break;
+
+                                case ShotCmdOptions shotOptions:
+                                    Shot(vm, shotOptions);
+                                    break;
+
+                                case FFMpegCmdOptions ffmpegOptions:
+                                    FFMpeg(vm, ffmpegOptions);
+                                    break;
                             }
                         }
                     }))
@@ -240,7 +243,7 @@ namespace Captura.Console
             }
 
             // Screen
-            else if (Regex.IsMatch(CommonOptions.Source, @"screen:\d+"))
+            else if (Regex.IsMatch(CommonOptions.Source, @"^screen:\d+$"))
             {
                 var index = int.Parse(CommonOptions.Source.Substring(7));
 
@@ -250,6 +253,19 @@ namespace Captura.Console
 
                     // First item is Full Screen
                     video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
+                }
+            }
+
+            // Desktop Duplication
+            else if (CommonOptions is StartCmdOptions && Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+            {
+                var index = int.Parse(CommonOptions.Source.Substring(9));
+
+                if (index < ScreenItem.Count)
+                {
+                    video.SelectedVideoSourceKind = VideoSourceKind.DesktopDuplication;
+
+                    video.SelectedVideoSource = video.AvailableVideoSources[index];
                 }
             }
 
@@ -282,7 +298,8 @@ namespace Captura.Console
 
             var video = ViewModel.VideoViewModel;
 
-            if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"ffmpeg:\d+"))
+            // FFMpeg
+            if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
                 
@@ -292,7 +309,8 @@ namespace Captura.Console
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
-            else if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(StartOptions.Encoder, @"sharpavi:\d+"))
+            // SharpAvi
+            else if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(StartOptions.Encoder, @"^sharpavi:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
@@ -302,28 +320,32 @@ namespace Captura.Console
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
+            // Gif
             else if (StartOptions.Encoder == "gif")
             {
                 video.SelectedVideoWriterKind = VideoWriterKind.Gif;
             }
         }
 
-        static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions ffmpegOptions)
+        static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions FFMpegOptions)
         {
-
-            if (ffmpegOptions.install != null)
+            if (FFMpegOptions.install != null)
             {
-                var downloadFolder = ffmpegOptions.install;
+                var downloadFolder = FFMpegOptions.install;
 
-                if (!System.IO.Directory.Exists(downloadFolder))
+                if (!Directory.Exists(downloadFolder))
                 {
                     WriteLine("Directory doesn't exist");
                     return;
                 }
 
-                var ffMpegDownload = new FFMpegDownloadViewModel();
-                ffMpegDownload.TargetFolder = ffmpegOptions.install;
-                Task downloadTask = Task.Run(() => ffMpegDownload.Start());
+                var ffMpegDownload = new FFMpegDownloadViewModel
+                {
+                    TargetFolder = FFMpegOptions.install
+                };
+
+                var downloadTask = Task.Run(() => ffMpegDownload.Start());
+
                 downloadTask.Wait();
 
                 WriteLine(ffMpegDownload.Status);
