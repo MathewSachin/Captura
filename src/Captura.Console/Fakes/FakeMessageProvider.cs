@@ -1,5 +1,5 @@
-﻿using System;
-using Captura.Models;
+﻿using Captura.Models;
+using Con = System.Console;
 
 namespace Captura.Console
 {
@@ -7,17 +7,21 @@ namespace Captura.Console
     {
         public void ShowError(string Message)
         {
-            System.Console.Error.WriteLine(Message);
+            Con.Error.WriteLine(Message);
         }
 
         public void ShowFFMpegUnavailable()
         {
-            ShowError("FFMpeg Unavailable");
+            ShowError("FFMpeg is not available.\nYou can install ffmpeg by calling: captura ffmpeg --install [path]");
         }
 
         public bool ShowYesNo(string Message, string Title)
         {
-            throw new NotImplementedException();
+            Con.Write($"{Message} (Y/N):");
+
+            var reply = Con.ReadLine();
+
+            return reply != null && reply.ToLower() == "y";
         }
     }
 }
