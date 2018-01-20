@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Captura.Models
 {
-    public class DiskWriter : IImageWriterItem
+    public class DiskWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
@@ -15,6 +15,8 @@ namespace Captura.Models
         {
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
 
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
@@ -48,8 +50,8 @@ namespace Captura.Models
             }
         }
 
-        public string LocalizationKey { get; } = nameof(LanguageManager.Disk);
+        public string Display => LanguageManager.Disk;
 
-        public override string ToString() => LanguageManager.Disk;
+        public override string ToString() => Display;
     }
 }

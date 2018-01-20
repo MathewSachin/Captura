@@ -204,7 +204,7 @@ namespace Captura.ViewModels
                 var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.Instance.LastScreenShotSaveTo);
 
                 if (saveTo != null)
-                    VideoViewModel.SelectedImageWriter = saveTo.Source;
+                    VideoViewModel.SelectedImageWriter = saveTo;
             }
         }
 

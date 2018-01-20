@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace Captura.Models
 {
-    public class ImgurWriter : IImageWriterItem
+    public class ImgurWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly DiskWriter _diskWriter;
         readonly ISystemTray _systemTray;
@@ -21,6 +21,8 @@ namespace Captura.Models
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
 
         public async void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
@@ -90,8 +92,8 @@ namespace Captura.Models
             }
         }
 
-        public string LocalizationKey { get; } = nameof(LanguageManager.Imgur);
+        public string Display => LanguageManager.Imgur;
 
-        public override string ToString() => LanguageManager.Imgur;
+        public override string ToString() => Display;
     }
 }

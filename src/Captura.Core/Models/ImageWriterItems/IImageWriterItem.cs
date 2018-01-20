@@ -8,6 +8,6 @@ namespace Captura.Models
     {
         void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents);
 
-        string LocalizationKey { get; }
+        string Display { get; }
     }
 }

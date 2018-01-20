@@ -15,10 +15,10 @@ namespace Captura.ViewModels
 
             foreach (var imageWriter in ImageWriters)
             {
-                AvailableImageWriters.Add(new ObjectLocalizer<IImageWriterItem>(imageWriter, imageWriter.LocalizationKey));
+                AvailableImageWriters.Add(imageWriter);
             }
             
-            SelectedImageWriter = AvailableImageWriters[0].Source;
+            SelectedImageWriter = AvailableImageWriters[0];
         }
 
         public void Init()
@@ -221,8 +221,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } =
-            new ObservableCollection<ObjectLocalizer<IImageWriterItem>>();
+        public ObservableCollection<IImageWriterItem> AvailableImageWriters { get; } = new ObservableCollection<IImageWriterItem>();
 
         IImageWriterItem _imgWriter;
 

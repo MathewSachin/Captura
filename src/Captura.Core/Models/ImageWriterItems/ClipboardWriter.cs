@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 
 namespace Captura.Models
 {
-    public class ClipboardWriter : IImageWriterItem
+    public class ClipboardWriter : NotifyPropertyChanged, IImageWriterItem
     {
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
@@ -13,10 +13,12 @@ namespace Captura.Models
                 Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 
             Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
 
-        public string LocalizationKey { get; } = nameof(LanguageManager.Clipboard);
+        public string Display => LanguageManager.Clipboard;
 
-        public override string ToString() => LanguageManager.Clipboard;
+        public override string ToString() => Display;
     }
 }
