@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Captura.ViewModels;
 
 namespace Captura
 {
@@ -14,7 +13,7 @@ namespace Captura
     /// </summary>
     public static class ServiceProvider
     {
-        static readonly Dictionary<ServiceName, object> _services = new Dictionary<ServiceName, object>();
+        static readonly Dictionary<ServiceName, object> Services = new Dictionary<ServiceName, object>();
         
         static string _settingsDir;
 
@@ -39,14 +38,12 @@ namespace Captura
             }
         }
         
-        public static MainViewModel MainViewModel { get; set; }
-        
         /// <summary>
         /// Get the requested Service.
         /// </summary>
         public static T Get<T>(ServiceName ServiceAction)
         {
-            return _services.ContainsKey(ServiceAction) ? (T)_services[ServiceAction] : default(T);
+            return Services.ContainsKey(ServiceAction) ? (T)Services[ServiceAction] : default(T);
         }
 
         /// <summary>
@@ -81,7 +78,7 @@ namespace Captura
         /// </summary>
         public static void Register<T>(ServiceName ServiceAction, T Action)
         {
-            _services.Add(ServiceAction, Action);
+            Services.Add(ServiceAction, Action);
         }
 
         /// <summary>
