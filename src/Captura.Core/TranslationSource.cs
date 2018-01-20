@@ -11,7 +11,7 @@ namespace Captura
 
         public string this[string Key] => LanguageManager.GetString(Key);
 
-        public IReadOnlyList<CultureInfo> AvailableCultures { get; } = LanguageManager.AvailableCultures;
+        public IEnumerable<CultureInfo> AvailableCultures { get; } = LanguageManager.AvailableCultures;
         
         public CultureInfo CurrentCulture
         {

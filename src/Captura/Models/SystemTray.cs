@@ -6,16 +6,16 @@ namespace Captura.Models
 {
     class SystemTray : ISystemTray
     {
-        readonly TaskbarIcon _trayIcon;
+        readonly Func<TaskbarIcon> _trayIcon;
 
-        public SystemTray(TaskbarIcon TaskbarIcon)
+        public SystemTray(Func<TaskbarIcon> TaskbarIcon)
         {
             _trayIcon = TaskbarIcon;
         }
 
         public void HideNotification()
         {
-            _trayIcon.CloseBalloon();
+            _trayIcon.Invoke()?.CloseBalloon();
         }
 
         public void ShowScreenShotNotification(string FilePath)
@@ -25,7 +25,7 @@ namespace Captura.Models
 
             var popup = new ScreenShotBalloon(FilePath);
             
-            _trayIcon.ShowCustomBalloon(popup, PopupAnimation.Scroll, Settings.Instance.ScreenShotNotifyTimeout);
+            _trayIcon.Invoke()?.ShowCustomBalloon(popup, PopupAnimation.Scroll, Settings.Instance.ScreenShotNotifyTimeout);
         }
 
         public void ShowTextNotification(string Text, int Duration, Action OnClick)
@@ -35,7 +35,7 @@ namespace Captura.Models
 
             var balloon = new TextBalloon(Text, OnClick);
 
-            _trayIcon.ShowCustomBalloon(balloon, PopupAnimation.Scroll, Duration);
+            _trayIcon.Invoke()?.ShowCustomBalloon(balloon, PopupAnimation.Scroll, Duration);
         }
     }
 }

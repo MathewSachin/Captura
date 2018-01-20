@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:Captura"
         xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-        DataContext="{StaticResource MainViewModel}"
+        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"

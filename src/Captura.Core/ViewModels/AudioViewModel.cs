@@ -7,15 +7,9 @@ namespace Captura.ViewModels
     {
         public AudioSource AudioSource { get; }
 
-        public AudioViewModel()
+        public AudioViewModel(AudioSource AudioSource)
         {
-            if (BassAudioSource.Available)
-                AudioSource = new BassAudioSource();
-            /*
-            else if (NAudioSource.Available)
-                AudioSource = new NAudioSource();
-            */
-            else AudioSource = NoAudioSource.Instance;
+            this.AudioSource = AudioSource;
 
             AudioSource.Init();
             

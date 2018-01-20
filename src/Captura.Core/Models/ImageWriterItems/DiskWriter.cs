@@ -6,11 +6,18 @@ using System.IO;
 
 namespace Captura.Models
 {
-    public class DiskWriter : IImageWriterItem
+    public class DiskWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        DiskWriter() { }
+        readonly ISystemTray _systemTray;
+        readonly IMessageProvider _messageProvider;
 
-        public static DiskWriter Instance { get; } = new DiskWriter();
+        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider)
+        {
+            _systemTray = SystemTray;
+            _messageProvider = MessageProvider;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
+        }
 
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
@@ -33,16 +40,18 @@ namespace Captura.Models
                 if (Settings.Instance.CopyOutPathToClipboard)
                     fileName.WriteToClipboard();
 
-                ServiceProvider.SystemTray.ShowScreenShotNotification(fileName);
+                _systemTray.ShowScreenShotNotification(fileName);
             }
             catch (Exception E)
             {
-                ServiceProvider.MessageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{E}");
+                _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{E}");
 
                 Status.LocalizationKey = nameof(LanguageManager.NotSaved);
             }
         }
 
-        public override string ToString() => LanguageManager.Disk;
+        public string Display => LanguageManager.Disk;
+
+        public override string ToString() => Display;
     }
 }

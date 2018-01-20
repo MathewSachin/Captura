@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using DesktopDuplication;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -39,10 +38,29 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        readonly ISystemTray _systemTray;
+        readonly IRegionProvider _regionProvider;
+        readonly WebcamOverlay _webcamOverlay;
+        readonly IMainWindow _mainWindow;
         #endregion
         
-        public MainViewModel()
+        public MainViewModel(AudioViewModel AudioViewModel,
+            VideoViewModel VideoViewModel,
+            ISystemTray SystemTray,
+            IRegionProvider RegionProvider,
+            IWebCamProvider WebCamProvider,
+            WebcamOverlay WebcamOverlay,
+            IMainWindow MainWindow)
         {
+            this.AudioViewModel = AudioViewModel;
+            this.VideoViewModel = VideoViewModel;
+            _systemTray = SystemTray;
+            _regionProvider = RegionProvider;
+            this.WebCamProvider = WebCamProvider;
+            _webcamOverlay = WebcamOverlay;
+            _mainWindow = MainWindow;
+
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
             
@@ -90,7 +108,7 @@ namespace Captura.ViewModels
         {
             if (RecorderState == RecorderState.Paused)
             {
-                ServiceProvider.SystemTray.HideNotification();
+                _systemTray.HideNotification();
 
                 _recorder.Start();
                 _timing?.Start();
@@ -108,7 +126,7 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Paused;
                 Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
+                _systemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
             }
         }
 
@@ -137,7 +155,7 @@ namespace Captura.ViewModels
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
 
                     if (RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName) is Rectangle rect)
-                        ServiceProvider.RegionProvider.SelectedRegion = rect;
+                        _regionProvider.SelectedRegion = rect;
                     break;
             }
             #endregion
@@ -186,7 +204,7 @@ namespace Captura.ViewModels
                 var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.Instance.LastScreenShotSaveTo);
 
                 if (saveTo != null)
-                    VideoViewModel.SelectedImageWriter = saveTo.Source;
+                    VideoViewModel.SelectedImageWriter = saveTo;
             }
         }
 
@@ -252,8 +270,6 @@ namespace Captura.ViewModels
 
             if (Remembered)
                 RestoreRemembered();
-
-            WebCamProvider = ServiceProvider.WebCamProvider;
         }
 
         void Remember()
@@ -270,7 +286,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     Settings.Instance.LastSourceKind = VideoSourceKind.Region;
-                    var rect = ServiceProvider.RegionProvider.SelectedRegion;
+                    var rect = _regionProvider.SelectedRegion;
                     Settings.Instance.LastSourceName = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
@@ -350,12 +366,12 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
+            else _systemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
             {
@@ -386,7 +402,7 @@ namespace Captura.ViewModels
 
         public async void CaptureScreenShot(string FileName = null)
         {
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             Bitmap bmp = null;
 
@@ -405,11 +421,11 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
-                        var hide = ServiceProvider.MainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
+                        var hide = _mainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
 
                         if (hide)
                         {
-                            ServiceProvider.MainWindow.IsVisible = false;
+                            _mainWindow.IsVisible = false;
 
                             // Ensure that the Window is hidden
                             await Task.Delay(300);
@@ -418,7 +434,7 @@ namespace Captura.ViewModels
                         bmp = ScreenShot.Capture(includeCursor);
 
                         if (hide)
-                            ServiceProvider.MainWindow.IsVisible = true;
+                            _mainWindow.IsVisible = true;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
@@ -429,7 +445,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(ServiceProvider.RegionProvider.SelectedRegion, includeCursor);
+                    bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
                     bmp = bmp.Transform();
                     break;
             }
@@ -503,12 +519,12 @@ namespace Captura.ViewModels
                 return;
             }
 
-            ServiceProvider.RegionProvider.Lock();
+            _regionProvider.Lock();
 
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             if (Settings.Instance.MinimizeOnStart)
-                ServiceProvider.MainWindow.IsMinimized = true;
+                _mainWindow.IsMinimized = true;
             
             Settings.Instance.EnsureOutPath();
 
@@ -582,9 +598,9 @@ namespace Captura.ViewModels
             _timing.Stop();
             
             if (Settings.Instance.MinimizeOnStart)
-                ServiceProvider.MainWindow.IsMinimized = false;
+                _mainWindow.IsMinimized = false;
 
-            ServiceProvider.RegionProvider.Release();
+            _regionProvider.Release();
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
@@ -622,7 +638,7 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay> { new WebcamOverlay() };
+            var overlays = new List<IOverlay> { _webcamOverlay };
                         
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.Clicks.Display || Settings.Instance.Keystrokes.Display))
@@ -665,7 +681,7 @@ namespace Captura.ViewModels
             if (Settings.Instance.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
-            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            _systemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });

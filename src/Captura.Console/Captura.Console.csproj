@@ -41,6 +41,9 @@
     <Reference Include="ModernUI.Xceed.Toolkit">
       <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -55,6 +58,7 @@
     <Compile Include="Fakes\FakeSystemTray.cs" />
     <Compile Include="Fakes\FakeWebCamProvider.cs" />
     <Compile Include="Fakes\FakeWindowProvider.cs" />
+    <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />

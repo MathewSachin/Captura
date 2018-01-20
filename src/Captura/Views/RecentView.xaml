@@ -2,7 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
-      DataContext="{StaticResource MainViewModel}">
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="10">
             <DockPanel DockPanel.Dock="Top"

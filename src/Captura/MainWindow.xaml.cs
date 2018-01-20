@@ -18,13 +18,9 @@ namespace Captura
         public MainWindow()
         {
             Instance = this;
-
-            ServiceProvider.RegionProvider = new RegionSelector();
-
+            
             ServiceProvider.MessageProvider = new MessageProvider();
-
-            ServiceProvider.WebCamProvider = new WebCamProvider();
-
+            
             FFMpegService.FFMpegDownloader += () =>
             {
                 if (_downloader == null)
@@ -37,9 +33,7 @@ namespace Captura
             };
             
             InitializeComponent();
-
-            ServiceProvider.MainWindow = new MainWindowProvider(this);
-
+            
             if (App.CmdOptions.Tray)
                 Hide();
             
@@ -55,8 +49,6 @@ namespace Captura
                     ServiceProvider.RaiseHotKeyPressed(id);
                 }
             };
-
-            ServiceProvider.SystemTray = new SystemTray(SystemTray);
             
             Closing += (Sender, Args) =>
             {
@@ -70,8 +62,6 @@ namespace Captura
 
                 if (DataContext is MainViewModel vm)
                 {
-                    ServiceProvider.MainViewModel = vm;
-
                     vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
                 }
             };

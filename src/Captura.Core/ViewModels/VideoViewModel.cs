@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Captura.Models;
 using Screna;
 using System.Collections.ObjectModel;
@@ -6,6 +7,20 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
+        readonly IRegionProvider _regionProvider;
+
+        public VideoViewModel(IRegionProvider RegionProvider, IEnumerable<IImageWriterItem> ImageWriters)
+        {
+            _regionProvider = RegionProvider;
+
+            foreach (var imageWriter in ImageWriters)
+            {
+                AvailableImageWriters.Add(imageWriter);
+            }
+            
+            SelectedImageWriter = AvailableImageWriters[0];
+        }
+
         public void Init()
         {
             // Check if SharpAvi is available
@@ -18,7 +33,7 @@ namespace Captura.ViewModels
 
             RefreshVideoSources();
             
-            ServiceProvider.RegionProvider.SelectorHidden += () =>
+            _regionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
                     SelectedVideoSourceKind = VideoSourceKind.Screen;
@@ -30,7 +45,7 @@ namespace Captura.ViewModels
             AvailableVideoSources.Clear();
 
             // RegionSelector should only be shown on Region Capture.
-            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+            _regionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
 
             switch (SelectedVideoSourceKind)
             {
@@ -54,7 +69,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(ServiceProvider.RegionProvider.VideoSource);
+                    AvailableVideoSources.Add(_regionProvider.VideoSource);
                     break;
 
                 case VideoSourceKind.NoVideo:
@@ -206,14 +221,9 @@ namespace Captura.ViewModels
             }
         }
 
-        public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } = new ObservableCollection<ObjectLocalizer<IImageWriterItem>>
-        {
-            new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(LanguageManager.Disk)),
-            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(LanguageManager.Clipboard)),
-            new ObjectLocalizer<IImageWriterItem>(ImgurWriter.Instance, nameof(LanguageManager.Imgur))
-        };
+        public ObservableCollection<IImageWriterItem> AvailableImageWriters { get; } = new ObservableCollection<IImageWriterItem>();
 
-        IImageWriterItem _imgWriter = DiskWriter.Instance;
+        IImageWriterItem _imgWriter;
 
         public IImageWriterItem SelectedImageWriter
         {

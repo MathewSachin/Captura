@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ninject;
 using Screna;
 using static System.Console;
 // ReSharper disable LocalizableElement
@@ -17,6 +18,8 @@ namespace Captura.Console
 {
     static class Program
     {
+        static IKernel Kernel { get; } = new StandardKernel(new CoreModule(), new MainModule());
+
         static void Main(string[] Args)
         {
             // Handle if args is empty
@@ -34,7 +37,7 @@ namespace Captura.Console
 
                     if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
                     {
-                        using (var vm = new MainViewModel())
+                        using (var vm = Kernel.Get<MainViewModel>())
                         {
                             RegisterFakes();
 
@@ -80,7 +83,7 @@ namespace Captura.Console
         {
             Banner();
 
-            using (var vm = new MainViewModel())
+            using (var vm = Kernel.Get<MainViewModel>())
             {
                 RegisterFakes();
 
@@ -204,15 +207,7 @@ namespace Captura.Console
 
         static void RegisterFakes()
         {
-            ServiceProvider.RegionProvider = FakeRegionProvider.Instance;
-
             ServiceProvider.MessageProvider = new FakeMessageProvider();
-
-            ServiceProvider.WebCamProvider = new FakeWebCamProvider();
-
-            ServiceProvider.SystemTray = new FakeSystemTray();
-
-            ServiceProvider.MainWindow = new FakeWindowProvider();
         }
 
         static void Banner()

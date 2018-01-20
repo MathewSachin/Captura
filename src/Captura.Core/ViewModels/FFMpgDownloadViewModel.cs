@@ -10,21 +10,68 @@ using System.Windows.Forms;
 
 namespace Captura.ViewModels
 {
+    public class DownloadFFMpeg
+    {
+        static readonly Uri FFMpegUri;
+        static readonly string FFMpegArchivePath;
+
+        static DownloadFFMpeg()
+        {
+            var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
+
+            FFMpegUri = new Uri($"http://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.7z");
+
+            FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
+        }
+
+        WebClient _webClient;
+
+        public async Task DownloadArchive(Action<int> Progress)
+        {
+            using (_webClient = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
+            {
+                _webClient.DownloadProgressChanged += (s, e) =>
+                {
+                    Progress?.Invoke(e.ProgressPercentage);
+                };
+                
+                await _webClient.DownloadFileTaskAsync(FFMpegUri, FFMpegArchivePath);
+            }
+        }
+
+        public async Task ExtractTo(string FolderPath)
+        {
+            await Task.Run(() =>
+            {
+                using (var archive = ArchiveFactory.Open(FFMpegArchivePath))
+                {
+                    // Find ffmpeg.exe
+                    var ffmpegEntry = archive.Entries.First(Entry => Path.GetFileName(Entry.Key) == "ffmpeg.exe");
+
+                    ffmpegEntry.WriteToDirectory(FolderPath, new ExtractionOptions
+                    {
+                        // Don't copy directory structure
+                        ExtractFullPath = false,
+                        Overwrite = true
+                    });
+                }
+            });
+        }
+        
+        public void Cancel()
+        {
+            _webClient?.CancelAsync();
+        }
+    }
+
     public class FFMpegDownloadViewModel : ViewModelBase
     {
         public DelegateCommand StartCommand { get; }
 
         public DelegateCommand SelectFolderCommand { get; }
 
-        static readonly Uri FFMpegUri;
-
-        static FFMpegDownloadViewModel()
-        {
-            var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
-
-            FFMpegUri = new Uri($"http://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.7z");
-        }
-
+        readonly DownloadFFMpeg _downloader = new DownloadFFMpeg();
+        
         public FFMpegDownloadViewModel()
         {
             StartCommand = new DelegateCommand(async () => await Start());
@@ -46,89 +93,60 @@ namespace Captura.ViewModels
 
         const string CancelDownload = "Cancel Download";
         const string StartDownload = "Start Download";
-
-        WebClient web;
-
+        
         public async Task Start()
         {
             if (ActionDescription == CancelDownload)
             {
-                web.CancelAsync();
+                _downloader.Cancel();
                 
                 return;
             }
 
             ActionDescription = CancelDownload;
 
-            var archivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
+            Status = "Downloading";
 
-            using (web = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
+            try
             {
-                web.DownloadProgressChanged += (s, e) =>
+                await _downloader.DownloadArchive(P =>
                 {
-                    Progress = e.ProgressPercentage;
+                    Progress = P;
 
-                    Status = $"Downloading ({Progress}%)";
-                };
-
-                Status = "Downloading";
-
-                try
-                {
-                    await web.DownloadFileTaskAsync(FFMpegUri, archivePath);
-                }
-                catch (WebException e) when (e.Status == WebExceptionStatus.RequestCanceled)
-                {
-                    Status = "Cancelled";
-
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Status = $"Failed {e.Message}";
-
-                    return;
-                }
-                finally
-                {
-                    // No cancelling after download
-                    StartCommand.RaiseCanExecuteChanged(false);
-                }
+                    Status = $"Downloading ({P}%)";
+                });
+            }
+            catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
+            {
+                Status = "Cancelled";
+                return;
+            }
+            catch (Exception e)
+            {
+                Status = $"Failed - {e.Message}";
+                return;
             }
 
+            // No cancelling after download
+            StartCommand.RaiseCanExecuteChanged(false);
+            
             Status = "Extracting";
 
             try
             {
-                await Task.Run(() =>
-                {
-                    using (var archive = ArchiveFactory.Open(archivePath))
-                    {
-                        // Find ffmpeg.exe
-                        var ffmpegEntry = archive.Entries.First(entry => Path.GetFileName(entry.Key) == "ffmpeg.exe");
-
-                        ffmpegEntry.WriteToDirectory(TargetFolder, new ExtractionOptions
-                        {
-                            // Don't copy directory structure
-                            ExtractFullPath = false,
-                            Overwrite = true
-                        });
-                    }
-                });
+                await _downloader.ExtractTo(TargetFolder);
             }
             catch (UnauthorizedAccessException)
             {
                 Status = "Can't extract to specified directory";
-
                 return;
             }
             catch
             {
-                Status = "Extraction Failed";
-
+                Status = "Extraction failed";
                 return;
             }
-
+            
             // Update FFMpeg folder setting
             Settings.Instance.FFMpegFolder = TargetFolder;
 
