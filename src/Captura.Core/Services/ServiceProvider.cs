@@ -111,9 +111,7 @@ namespace Captura
         }
 
         public static IMessageProvider MessageProvider { get; set; }
-
-        public static IMainWindow MainWindow { get; set; }
-                
+        
         public static bool FileExists(string FileName)
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));

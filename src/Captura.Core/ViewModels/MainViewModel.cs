@@ -42,9 +42,16 @@ namespace Captura.ViewModels
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
         readonly WebcamOverlay _webcamOverlay;
+        readonly IMainWindow _mainWindow;
         #endregion
         
-        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray, IRegionProvider RegionProvider, IWebCamProvider WebCamProvider, WebcamOverlay WebcamOverlay)
+        public MainViewModel(AudioViewModel AudioViewModel,
+            VideoViewModel VideoViewModel,
+            ISystemTray SystemTray,
+            IRegionProvider RegionProvider,
+            IWebCamProvider WebCamProvider,
+            WebcamOverlay WebcamOverlay,
+            IMainWindow MainWindow)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
@@ -52,6 +59,7 @@ namespace Captura.ViewModels
             _regionProvider = RegionProvider;
             this.WebCamProvider = WebCamProvider;
             _webcamOverlay = WebcamOverlay;
+            _mainWindow = MainWindow;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -413,11 +421,11 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
-                        var hide = ServiceProvider.MainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
+                        var hide = _mainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
 
                         if (hide)
                         {
-                            ServiceProvider.MainWindow.IsVisible = false;
+                            _mainWindow.IsVisible = false;
 
                             // Ensure that the Window is hidden
                             await Task.Delay(300);
@@ -426,7 +434,7 @@ namespace Captura.ViewModels
                         bmp = ScreenShot.Capture(includeCursor);
 
                         if (hide)
-                            ServiceProvider.MainWindow.IsVisible = true;
+                            _mainWindow.IsVisible = true;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
@@ -516,7 +524,7 @@ namespace Captura.ViewModels
             _systemTray.HideNotification();
 
             if (Settings.Instance.MinimizeOnStart)
-                ServiceProvider.MainWindow.IsMinimized = true;
+                _mainWindow.IsMinimized = true;
             
             Settings.Instance.EnsureOutPath();
 
@@ -590,7 +598,7 @@ namespace Captura.ViewModels
             _timing.Stop();
             
             if (Settings.Instance.MinimizeOnStart)
-                ServiceProvider.MainWindow.IsMinimized = false;
+                _mainWindow.IsMinimized = false;
 
             _regionProvider.Release();
         }

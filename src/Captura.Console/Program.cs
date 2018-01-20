@@ -208,8 +208,6 @@ namespace Captura.Console
         static void RegisterFakes()
         {
             ServiceProvider.MessageProvider = new FakeMessageProvider();
-            
-            ServiceProvider.MainWindow = new FakeWindowProvider();
         }
 
         static void Banner()
