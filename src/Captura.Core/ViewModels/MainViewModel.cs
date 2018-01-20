@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using DesktopDuplication;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
