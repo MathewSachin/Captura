@@ -4,7 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
       xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
-      DataContext="{StaticResource MainViewModel}">
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <StackPanel Margin="10">
         <Expander Margin="0,5">
             <Expander.Header>

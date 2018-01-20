@@ -80,6 +80,7 @@
     <Compile Include="Models\Dpi.cs" />
     <Compile Include="Models\MainWindowProvider.cs" />
     <Compile Include="Models\MessageProvider.cs" />
+    <Compile Include="Models\NinjectServiceLocator.cs" />
     <Compile Include="Models\SystemTray.cs" />
     <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Models\WebCamProvider.cs" />

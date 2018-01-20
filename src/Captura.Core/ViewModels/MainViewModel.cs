@@ -40,8 +40,10 @@ namespace Captura.ViewModels
         }
         #endregion
         
-        public MainViewModel()
+        public MainViewModel(AudioViewModel AudioViewModel)
         {
+            this.AudioViewModel = AudioViewModel;
+
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
             

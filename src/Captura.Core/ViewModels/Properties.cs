@@ -181,7 +181,7 @@ namespace Captura.ViewModels
         #region Nested ViewModels
         public VideoViewModel VideoViewModel { get; } = new VideoViewModel();
 
-        public AudioViewModel AudioViewModel { get; } = new AudioViewModel();
+        public AudioViewModel AudioViewModel { get; }
 
         public RecentViewModel RecentViewModel { get; } = new RecentViewModel();
         #endregion

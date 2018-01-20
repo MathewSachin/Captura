@@ -4,7 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
       Title="{local:Loc Extras}"
-      DataContext="{StaticResource MainViewModel}">
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Margin="10">
             <CheckBox IsChecked="{local:Setting DarkTheme}"

@@ -5,7 +5,7 @@
         Title="{local:Loc FFMpegLog}"
         Height="600"
         Width="600"
-        DataContext="{StaticResource MainViewModel}"
+        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
