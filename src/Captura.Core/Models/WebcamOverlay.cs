@@ -7,6 +7,13 @@ namespace Captura.Models
 {
     public class WebcamOverlay : IOverlay
     {
+        readonly IWebCamProvider _webCamProvider;
+
+        public WebcamOverlay(IWebCamProvider WebCamProvider)
+        {
+            _webCamProvider = WebCamProvider;
+        }
+
         public void Dispose() { }
 
         static Point GetPosition(Size Bounds, Size ImageSize)
@@ -40,13 +47,11 @@ namespace Captura.Models
 
         public void Draw(Graphics g, Func<Point, Point> PointTransform = null)
         {
-            var webcam = ServiceProvider.WebCamProvider;
-
             // No Webcam
-            if (webcam.AvailableCams.Count < 1 || webcam.SelectedCam == webcam.AvailableCams[0])
+            if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])
                 return;
 
-            var img = webcam.Capture();
+            var img = _webCamProvider.Capture();
 
             if (img == null)
                 return;

@@ -41,14 +41,17 @@ namespace Captura.ViewModels
 
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
+        readonly WebcamOverlay _webcamOverlay;
         #endregion
         
-        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray, IRegionProvider RegionProvider)
+        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray, IRegionProvider RegionProvider, IWebCamProvider WebCamProvider, WebcamOverlay WebcamOverlay)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
+            this.WebCamProvider = WebCamProvider;
+            _webcamOverlay = WebcamOverlay;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -259,8 +262,6 @@ namespace Captura.ViewModels
 
             if (Remembered)
                 RestoreRemembered();
-
-            WebCamProvider = ServiceProvider.WebCamProvider;
         }
 
         void Remember()
@@ -629,7 +630,7 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay> { new WebcamOverlay() };
+            var overlays = new List<IOverlay> { _webcamOverlay };
                         
             // Mouse Click overlay should be drawn below cursor.
             if (MouseKeyHookAvailable && (Settings.Instance.Clicks.Display || Settings.Instance.Keystrokes.Display))

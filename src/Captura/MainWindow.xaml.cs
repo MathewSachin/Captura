@@ -20,9 +20,7 @@ namespace Captura
             Instance = this;
             
             ServiceProvider.MessageProvider = new MessageProvider();
-
-            ServiceProvider.WebCamProvider = new WebCamProvider();
-
+            
             FFMpegService.FFMpegDownloader += () =>
             {
                 if (_downloader == null)

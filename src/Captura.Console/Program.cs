@@ -208,9 +208,7 @@ namespace Captura.Console
         static void RegisterFakes()
         {
             ServiceProvider.MessageProvider = new FakeMessageProvider();
-
-            ServiceProvider.WebCamProvider = new FakeWebCamProvider();
-
+            
             ServiceProvider.MainWindow = new FakeWindowProvider();
         }
 

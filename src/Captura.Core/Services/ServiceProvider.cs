@@ -112,8 +112,6 @@ namespace Captura
 
         public static IMessageProvider MessageProvider { get; set; }
 
-        public static IWebCamProvider WebCamProvider { get; set; }
-
         public static IMainWindow MainWindow { get; set; }
                 
         public static bool FileExists(string FileName)
