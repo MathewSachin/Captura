@@ -1,12 +1,19 @@
 ﻿using Captura.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
 
 namespace Captura
 {
     public partial class Settings
     {
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
+        public ProxySettings Proxy
+        {
+            get => Get<ProxySettings>();
+            set => Set(value);
+        }
+
         [UserScopedSetting]
         [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
         public WebcamOverlaySettings WebcamOverlay

@@ -29,7 +29,7 @@ namespace Captura.Models
         {
             var ritem = Recents.Add($"{LanguageManager.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
-            using (var w = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
+            using (var w = new WebClient { Proxy = Settings.Instance.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (s, e) =>
                 {

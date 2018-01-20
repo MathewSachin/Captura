@@ -28,7 +28,7 @@ namespace Captura.ViewModels
 
         public async Task DownloadArchive(Action<int> Progress)
         {
-            using (_webClient = new WebClient { Proxy = Settings.Instance.GetWebProxy() })
+            using (_webClient = new WebClient { Proxy = Settings.Instance.Proxy.GetWebProxy() })
             {
                 _webClient.DownloadProgressChanged += (s, e) =>
                 {

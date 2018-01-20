@@ -213,7 +213,7 @@
     <Compile Include="Settings\Models\MouseClickSettings.cs" />
     <Compile Include="Settings\Models\PositionedOverlaySettings.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
-    <Compile Include="Settings\Proxy.cs" />
+    <Compile Include="Settings\Models\ProxySettings.cs" />
     <Compile Include="Settings\Remember.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Providers\SettingsProviderBase.cs" />

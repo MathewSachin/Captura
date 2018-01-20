@@ -12,6 +12,11 @@ namespace Captura
         Settings()
         {
             InitOverlaySettings();
+
+            if (Proxy == null)
+            {
+                Proxy = new ProxySettings();
+            }
         }
 
         void InitOverlaySettings()

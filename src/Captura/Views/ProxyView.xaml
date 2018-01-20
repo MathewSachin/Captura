@@ -2,14 +2,15 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
-      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      DataContext="{Binding MainViewModel.Settings.Proxy, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5,0">
         <StackPanel>
             <CheckBox Content="{local:Loc UseProxy}"
-                      IsChecked="{local:Setting UseProxy}"
+                      IsChecked="{Binding Enabled}"
                       Margin="0,5"/>
 
-            <Grid IsEnabled="{local:Setting UseProxy}">
+            <Grid IsEnabled="{Binding Enabled}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -25,7 +26,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"/>
 
-                <TextBox Text="{local:Setting ProxyHost}"
+                <TextBox Text="{Binding Host}"
                          Grid.Column="1"
                          Margin="0,5"/>
 
@@ -34,12 +35,12 @@
                        Grid.Row="1"
                        Margin="0,5,5,5"/>
 
-                <xctk:IntegerUpDown Value="{local:Setting ProxyPort}"
+                <xctk:IntegerUpDown Value="{Binding Port}"
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,5"/>
 
-                <CheckBox IsChecked="{local:Setting UseProxyAuth}"
+                <CheckBox IsChecked="{Binding Authenticate}"
                           Margin="0,10,0,5"
                           Grid.Row="2"
                           Grid.ColumnSpan="2">
@@ -49,7 +50,7 @@
 
                 <Grid Grid.Row="3"
                       Grid.ColumnSpan="2"
-                      IsEnabled="{local:Setting UseProxyAuth}">
+                      IsEnabled="{Binding Authenticate}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
@@ -64,7 +65,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"/>
 
-                    <TextBox Text="{local:Setting ProxyUserName}"
+                    <TextBox Text="{Binding UserName}"
                              Grid.Column="1"
                              Margin="0,5"/>
 
@@ -73,7 +74,7 @@
                            Margin="0,5,5,5"
                            Grid.Row="1"/>
 
-                    <TextBox Text="{local:Setting ProxyPassword}"
+                    <TextBox Text="{Binding Password}"
                              Grid.Row="1"
                              Grid.Column="1"
                              Margin="0,5"/>
