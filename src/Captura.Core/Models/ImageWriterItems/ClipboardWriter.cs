@@ -7,10 +7,6 @@ namespace Captura.Models
 {
     public class ClipboardWriter : IImageWriterItem
     {
-        ClipboardWriter() { }
-
-        public static ClipboardWriter Instance { get; } = new ClipboardWriter();
-
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
             using (Image)

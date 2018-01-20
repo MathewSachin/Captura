@@ -38,7 +38,7 @@ namespace Captura
             
             InitializeComponent();
 
-            ServiceProvider.MainWindow = new MainWindowProvider(this);
+            ServiceProvider.MainWindow = new MainWindowProvider(() => this);
 
             if (App.CmdOptions.Tray)
                 Hide();
@@ -55,8 +55,6 @@ namespace Captura
                     ServiceProvider.RaiseHotKeyPressed(id);
                 }
             };
-
-            ServiceProvider.SystemTray = new SystemTray(SystemTray);
             
             Closing += (Sender, Args) =>
             {

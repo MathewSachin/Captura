@@ -6,6 +6,20 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
+        public VideoViewModel(DiskWriter DiskWriter, ImgurWriter ImgurWriter)
+        {
+            AddImageWriter(DiskWriter, nameof(LanguageManager.Disk));
+            AddImageWriter(new ClipboardWriter(), nameof(LanguageManager.Clipboard));
+            AddImageWriter(ImgurWriter, nameof(LanguageManager.Imgur));
+
+            SelectedImageWriter = DiskWriter;
+        }
+
+        void AddImageWriter(IImageWriterItem ImageWriter, string LocalizationKey)
+        {
+            AvailableImageWriters.Add(new ObjectLocalizer<IImageWriterItem>(ImageWriter, LocalizationKey));
+        }
+
         public void Init()
         {
             // Check if SharpAvi is available
@@ -206,14 +220,10 @@ namespace Captura.ViewModels
             }
         }
 
-        public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } = new ObservableCollection<ObjectLocalizer<IImageWriterItem>>
-        {
-            new ObjectLocalizer<IImageWriterItem>(DiskWriter.Instance, nameof(LanguageManager.Disk)),
-            new ObjectLocalizer<IImageWriterItem>(ClipboardWriter.Instance, nameof(LanguageManager.Clipboard)),
-            new ObjectLocalizer<IImageWriterItem>(ImgurWriter.Instance, nameof(LanguageManager.Imgur))
-        };
+        public ObservableCollection<ObjectLocalizer<IImageWriterItem>> AvailableImageWriters { get; } =
+            new ObservableCollection<ObjectLocalizer<IImageWriterItem>>();
 
-        IImageWriterItem _imgWriter = DiskWriter.Instance;
+        IImageWriterItem _imgWriter;
 
         public IImageWriterItem SelectedImageWriter
         {

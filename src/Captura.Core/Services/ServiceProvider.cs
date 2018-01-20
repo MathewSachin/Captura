@@ -110,8 +110,6 @@ namespace Captura
             }
         }
 
-        public static ISystemTray SystemTray { get; set; }
-
         public static IRegionProvider RegionProvider { get; set; }
 
         public static IMessageProvider MessageProvider { get; set; }

@@ -38,11 +38,15 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        readonly ISystemTray _systemTray;
         #endregion
         
-        public MainViewModel(AudioViewModel AudioViewModel)
+        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray)
         {
             this.AudioViewModel = AudioViewModel;
+            this.VideoViewModel = VideoViewModel;
+            _systemTray = SystemTray;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -91,7 +95,7 @@ namespace Captura.ViewModels
         {
             if (RecorderState == RecorderState.Paused)
             {
-                ServiceProvider.SystemTray.HideNotification();
+                _systemTray.HideNotification();
 
                 _recorder.Start();
                 _timing?.Start();
@@ -109,7 +113,7 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Paused;
                 Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
+                _systemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
             }
         }
 
@@ -351,12 +355,12 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else ServiceProvider.SystemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
+            else _systemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
         {
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             if (hWnd == Window.DesktopWindow)
             {
@@ -387,7 +391,7 @@ namespace Captura.ViewModels
 
         public async void CaptureScreenShot(string FileName = null)
         {
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             Bitmap bmp = null;
 
@@ -506,7 +510,7 @@ namespace Captura.ViewModels
 
             ServiceProvider.RegionProvider.Lock();
 
-            ServiceProvider.SystemTray.HideNotification();
+            _systemTray.HideNotification();
 
             if (Settings.Instance.MinimizeOnStart)
                 ServiceProvider.MainWindow.IsMinimized = true;
@@ -666,7 +670,7 @@ namespace Captura.ViewModels
             if (Settings.Instance.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
-            ServiceProvider.SystemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            _systemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });

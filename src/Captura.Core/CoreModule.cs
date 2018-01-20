@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.ViewModels;
 using Ninject.Modules;
 
 namespace Captura
@@ -7,6 +8,10 @@ namespace Captura
     {
         public override void Load()
         {
+            // Singleton
+            Bind<MainViewModel>().ToSelf().InSingletonScope();
+            Bind<DiskWriter>().ToSelf().InSingletonScope();
+            
             if (BassAudioSource.Available)
             {
                 Bind<AudioSource>().To<BassAudioSource>();

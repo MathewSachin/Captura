@@ -213,8 +213,6 @@ namespace Captura.Console
 
             ServiceProvider.WebCamProvider = new FakeWebCamProvider();
 
-            ServiceProvider.SystemTray = new FakeSystemTray();
-
             ServiceProvider.MainWindow = new FakeWindowProvider();
         }
 

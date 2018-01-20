@@ -9,9 +9,9 @@ namespace Captura
         {
             Bind<IMessageProvider>().To<MessageProvider>().InSingletonScope();
             Bind<IRegionProvider>().To<RegionSelector>().InSingletonScope();
-            Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
+            Bind<ISystemTray>().ToMethod(M => new SystemTray(() => MainWindow.Instance.SystemTray));
             Bind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
-            Bind<IMainWindow>().To<MainWindowProvider>().InSingletonScope();
+            Bind<IMainWindow>().ToMethod(M => new MainWindowProvider(() => MainWindow.Instance));
         }
     }
 }

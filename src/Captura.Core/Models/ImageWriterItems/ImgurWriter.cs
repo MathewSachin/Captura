@@ -12,9 +12,16 @@ namespace Captura.Models
 {
     public class ImgurWriter : IImageWriterItem
     {
-        ImgurWriter() { }
+        readonly DiskWriter _diskWriter;
+        readonly ISystemTray _systemTray;
+        readonly IMessageProvider _messageProvider;
 
-        public static ImgurWriter Instance { get; } = new ImgurWriter();
+        public ImgurWriter(DiskWriter DiskWriter, ISystemTray SystemTray, IMessageProvider MessageProvider)
+        {
+            _diskWriter = DiskWriter;
+            _systemTray = SystemTray;
+            _messageProvider = MessageProvider;
+        }
 
         public async void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
@@ -61,10 +68,10 @@ namespace Captura.Models
                     ritem.Display = LanguageManager.ImgurFailed;
                     Status.LocalizationKey = nameof(LanguageManager.ImgurFailed);
 
-                    var yes = ServiceProvider.MessageProvider.ShowYesNo($"{LanguageManager.ImgurFailed}\n{E.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                    var yes = _messageProvider.ShowYesNo($"{LanguageManager.ImgurFailed}\n{E.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
 
                     if (yes)
-                        DiskWriter.Instance.Save(Image, Format, FileName, Status, Recents);
+                        _diskWriter.Save(Image, Format, FileName, Status, Recents);
 
                     return;
                 }
@@ -77,7 +84,7 @@ namespace Captura.Models
                 ritem.FilePath = ritem.Display = link;
                 ritem.Saved();
 
-                ServiceProvider.SystemTray.ShowTextNotification($"{LanguageManager.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
+                _systemTray.ShowTextNotification($"{LanguageManager.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
 
                 Status.LocalizationKey = nameof(LanguageManager.ImgurSuccess);
             }
