@@ -10,13 +10,15 @@ namespace Captura
         {
             // Singleton
             Bind<MainViewModel>().ToSelf().InSingletonScope();
+            Bind<VideoViewModel>().ToSelf().InSingletonScope();
+            Bind<AudioViewModel>().ToSelf().InSingletonScope();
             Bind<DiskWriter>().ToSelf().InSingletonScope();
             
             if (BassAudioSource.Available)
             {
-                Bind<AudioSource>().To<BassAudioSource>();
+                Bind<AudioSource>().To<BassAudioSource>().InSingletonScope();
             }
-            else Bind<AudioSource>().To<NoAudioSource>();
+            else Bind<AudioSource>().To<NoAudioSource>().InSingletonScope();
         }
     }
 }
