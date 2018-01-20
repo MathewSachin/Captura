@@ -207,8 +207,6 @@ namespace Captura.Console
 
         static void RegisterFakes()
         {
-            ServiceProvider.RegionProvider = FakeRegionProvider.Instance;
-
             ServiceProvider.MessageProvider = new FakeMessageProvider();
 
             ServiceProvider.WebCamProvider = new FakeWebCamProvider();

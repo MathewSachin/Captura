@@ -6,8 +6,12 @@ namespace Captura.ViewModels
 {
     public class VideoViewModel : ViewModelBase
     {
-        public VideoViewModel(DiskWriter DiskWriter, ImgurWriter ImgurWriter)
+        readonly IRegionProvider _regionProvider;
+
+        public VideoViewModel(IRegionProvider RegionProvider, DiskWriter DiskWriter, ImgurWriter ImgurWriter)
         {
+            _regionProvider = RegionProvider;
+
             AddImageWriter(DiskWriter, nameof(LanguageManager.Disk));
             AddImageWriter(new ClipboardWriter(), nameof(LanguageManager.Clipboard));
             AddImageWriter(ImgurWriter, nameof(LanguageManager.Imgur));
@@ -32,7 +36,7 @@ namespace Captura.ViewModels
 
             RefreshVideoSources();
             
-            ServiceProvider.RegionProvider.SelectorHidden += () =>
+            _regionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind == VideoSourceKind.Region)
                     SelectedVideoSourceKind = VideoSourceKind.Screen;
@@ -44,7 +48,7 @@ namespace Captura.ViewModels
             AvailableVideoSources.Clear();
 
             // RegionSelector should only be shown on Region Capture.
-            ServiceProvider.RegionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+            _regionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
 
             switch (SelectedVideoSourceKind)
             {
@@ -68,7 +72,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(ServiceProvider.RegionProvider.VideoSource);
+                    AvailableVideoSources.Add(_regionProvider.VideoSource);
                     break;
 
                 case VideoSourceKind.NoVideo:

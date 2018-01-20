@@ -40,13 +40,15 @@ namespace Captura.ViewModels
         }
 
         readonly ISystemTray _systemTray;
+        readonly IRegionProvider _regionProvider;
         #endregion
         
-        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray)
+        public MainViewModel(AudioViewModel AudioViewModel, VideoViewModel VideoViewModel, ISystemTray SystemTray, IRegionProvider RegionProvider)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
             _systemTray = SystemTray;
+            _regionProvider = RegionProvider;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -142,7 +144,7 @@ namespace Captura.ViewModels
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
 
                     if (RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName) is Rectangle rect)
-                        ServiceProvider.RegionProvider.SelectedRegion = rect;
+                        _regionProvider.SelectedRegion = rect;
                     break;
             }
             #endregion
@@ -275,7 +277,7 @@ namespace Captura.ViewModels
 
                 case VideoSourceKind.Region:
                     Settings.Instance.LastSourceKind = VideoSourceKind.Region;
-                    var rect = ServiceProvider.RegionProvider.SelectedRegion;
+                    var rect = _regionProvider.SelectedRegion;
                     Settings.Instance.LastSourceName = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
@@ -434,7 +436,7 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoSourceKind.Region:
-                    bmp = ScreenShot.Capture(ServiceProvider.RegionProvider.SelectedRegion, includeCursor);
+                    bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
                     bmp = bmp.Transform();
                     break;
             }
@@ -508,7 +510,7 @@ namespace Captura.ViewModels
                 return;
             }
 
-            ServiceProvider.RegionProvider.Lock();
+            _regionProvider.Lock();
 
             _systemTray.HideNotification();
 
@@ -589,7 +591,7 @@ namespace Captura.ViewModels
             if (Settings.Instance.MinimizeOnStart)
                 ServiceProvider.MainWindow.IsMinimized = false;
 
-            ServiceProvider.RegionProvider.Release();
+            _regionProvider.Release();
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)

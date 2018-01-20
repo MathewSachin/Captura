@@ -38,7 +38,7 @@ namespace Captura
                     Directory.CreateDirectory(_settingsDir);
             }
         }
-
+        
         public static MainViewModel MainViewModel { get; set; }
         
         /// <summary>
@@ -109,8 +109,6 @@ namespace Captura
                 MessageProvider.ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{E}");
             }
         }
-
-        public static IRegionProvider RegionProvider { get; set; }
 
         public static IMessageProvider MessageProvider { get; set; }
 

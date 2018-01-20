@@ -18,9 +18,7 @@ namespace Captura
         public MainWindow()
         {
             Instance = this;
-
-            ServiceProvider.RegionProvider = new RegionSelector();
-
+            
             ServiceProvider.MessageProvider = new MessageProvider();
 
             ServiceProvider.WebCamProvider = new WebCamProvider();
