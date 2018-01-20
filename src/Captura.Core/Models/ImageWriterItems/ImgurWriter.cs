@@ -90,6 +90,8 @@ namespace Captura.Models
             }
         }
 
+        public string LocalizationKey { get; } = nameof(LanguageManager.Imgur);
+
         public override string ToString() => LanguageManager.Imgur;
     }
 }

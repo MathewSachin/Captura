@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Captura.Models;
 using Screna;
 using System.Collections.ObjectModel;
@@ -8,20 +9,16 @@ namespace Captura.ViewModels
     {
         readonly IRegionProvider _regionProvider;
 
-        public VideoViewModel(IRegionProvider RegionProvider, DiskWriter DiskWriter, ImgurWriter ImgurWriter)
+        public VideoViewModel(IRegionProvider RegionProvider, IEnumerable<IImageWriterItem> ImageWriters)
         {
             _regionProvider = RegionProvider;
 
-            AddImageWriter(DiskWriter, nameof(LanguageManager.Disk));
-            AddImageWriter(new ClipboardWriter(), nameof(LanguageManager.Clipboard));
-            AddImageWriter(ImgurWriter, nameof(LanguageManager.Imgur));
-
-            SelectedImageWriter = DiskWriter;
-        }
-
-        void AddImageWriter(IImageWriterItem ImageWriter, string LocalizationKey)
-        {
-            AvailableImageWriters.Add(new ObjectLocalizer<IImageWriterItem>(ImageWriter, LocalizationKey));
+            foreach (var imageWriter in ImageWriters)
+            {
+                AvailableImageWriters.Add(new ObjectLocalizer<IImageWriterItem>(imageWriter, imageWriter.LocalizationKey));
+            }
+            
+            SelectedImageWriter = AvailableImageWriters[0].Source;
         }
 
         public void Init()

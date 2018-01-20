@@ -8,12 +8,17 @@ namespace Captura
     {
         public override void Load()
         {
-            // Singleton
+            // Singleton View Models
             Bind<MainViewModel>().ToSelf().InSingletonScope();
             Bind<VideoViewModel>().ToSelf().InSingletonScope();
             Bind<AudioViewModel>().ToSelf().InSingletonScope();
-            Bind<DiskWriter>().ToSelf().InSingletonScope();
+
+            // Image Writers
+            Bind<IImageWriterItem>().To<DiskWriter>().InSingletonScope();
+            Bind<IImageWriterItem>().To<ClipboardWriter>().InSingletonScope();
+            Bind<IImageWriterItem>().To<ImgurWriter>().InSingletonScope();
             
+            // Audio Source
             if (BassAudioSource.Available)
             {
                 Bind<AudioSource>().To<BassAudioSource>().InSingletonScope();

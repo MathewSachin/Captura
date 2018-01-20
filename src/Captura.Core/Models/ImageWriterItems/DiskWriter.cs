@@ -48,6 +48,8 @@ namespace Captura.Models
             }
         }
 
+        public string LocalizationKey { get; } = nameof(LanguageManager.Disk);
+
         public override string ToString() => LanguageManager.Disk;
     }
 }

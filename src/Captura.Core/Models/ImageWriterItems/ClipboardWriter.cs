@@ -15,6 +15,8 @@ namespace Captura.Models
             Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
         }
 
+        public string LocalizationKey { get; } = nameof(LanguageManager.Clipboard);
+
         public override string ToString() => LanguageManager.Clipboard;
     }
 }
