@@ -53,7 +53,8 @@ namespace Captura.ViewModels
             WebcamOverlay WebcamOverlay,
             IMainWindow MainWindow,
             Settings Settings,
-            RecentViewModel RecentViewModel) : base(Settings)
+            RecentViewModel RecentViewModel,
+            LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
@@ -129,7 +130,7 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Paused;
                 Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                _systemTray.ShowTextNotification(LanguageManager.Paused, 3000, null);
+                _systemTray.ShowTextNotification(Loc.Paused, 3000, null);
             }
         }
 
@@ -368,7 +369,7 @@ namespace Captura.ViewModels
             {
                 VideoViewModel.SelectedImageWriter.Save(bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
             }
-            else _systemTray.ShowTextNotification(LanguageManager.ImgEmpty, 5000, null);
+            else _systemTray.ShowTextNotification(Loc.ImgEmpty, 5000, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -494,7 +495,7 @@ namespace Captura.ViewModels
 
             if (Duration != 0 && (StartDelay > Duration * 1000))
             {
-                ServiceProvider.MessageProvider.ShowError(LanguageManager.DelayGtDuration);
+                ServiceProvider.MessageProvider.ShowError(Loc.DelayGtDuration);
 
                 return;
             }
@@ -507,7 +508,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
-                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", LanguageManager.ErrorOccured);
+                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccured);
 
                 if (yes)
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
@@ -688,7 +689,7 @@ namespace Captura.ViewModels
             if (Settings.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
-            _systemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            _systemTray.ShowTextNotification((isVideo ? Loc.VideoSaved : Loc.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });

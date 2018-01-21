@@ -5,8 +5,8 @@
         public TextLocalizer(string LocalizationKey)
         {
             this.LocalizationKey = LocalizationKey;
-            
-            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Display));
+
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
         
         string _key;
@@ -26,6 +26,6 @@
 
         public string Display => ToString();
 
-        public override string ToString() => TranslationSource.Instance[_key];
+        public override string ToString() => LanguageManager.Instance[_key];
     }
 }

@@ -13,7 +13,7 @@ namespace Captura.Models
             {
                 var dialog = new ModernDialog
                 {
-                    Title = LanguageManager.ErrorOccured,
+                    Title = LanguageManager.Instance.ErrorOccured,
                     Content = new ScrollViewer
                     {
                         Content = Message,
@@ -22,7 +22,7 @@ namespace Captura.Models
                     }
                 };
 
-                dialog.OkButton.Content = LanguageManager.Ok;
+                dialog.OkButton.Content = LanguageManager.Instance.Ok;
                 dialog.Buttons = new[] { dialog.OkButton };
 
                 dialog.BackgroundContent = new Grid
@@ -47,7 +47,7 @@ namespace Captura.Models
                 };
 
                 // Yes -> Select FFMpeg Folder
-                dialog.YesButton.Content = LanguageManager.SelectFFMpegFolder;
+                dialog.YesButton.Content = LanguageManager.Instance.SelectFFMpegFolder;
                 dialog.YesButton.Click += (s, e) => FFMpegService.SelectFFMpegFolder();
 
                 // No -> Download FFMpeg
@@ -79,10 +79,10 @@ namespace Captura.Models
 
                 var result = false;
 
-                dialog.YesButton.Content = LanguageManager.Yes;
+                dialog.YesButton.Content = LanguageManager.Instance.Yes;
                 dialog.YesButton.Click += (s, e) => result = true;
 
-                dialog.NoButton.Content = LanguageManager.No;
+                dialog.NoButton.Content = LanguageManager.Instance.No;
 
                 dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton };
 

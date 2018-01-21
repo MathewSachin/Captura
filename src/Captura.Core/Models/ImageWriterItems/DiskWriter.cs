@@ -18,7 +18,7 @@ namespace Captura.Models
             _messageProvider = MessageProvider;
             _settings = Settings;
 
-            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
@@ -53,7 +53,7 @@ namespace Captura.Models
             }
         }
 
-        public string Display => LanguageManager.Disk;
+        public string Display => LanguageManager.Instance.Disk;
 
         public override string ToString() => Display;
     }

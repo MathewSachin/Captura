@@ -10,12 +10,12 @@ namespace Captura.Models
 
         FullScreenItem()
         {
-            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
                 
         public override string ToString() => Name;
 
-        public string Name => LanguageManager.FullScreen;
+        public string Name => LanguageManager.Instance.FullScreen;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

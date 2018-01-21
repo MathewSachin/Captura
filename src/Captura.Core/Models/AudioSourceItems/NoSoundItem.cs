@@ -6,10 +6,10 @@
 
         NoSoundItem()
         {
-            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
-        public string Name => LanguageManager.NoAudio;
+        public string Name => LanguageManager.Instance.NoAudio;
 
         public override string ToString() => Name;
     }

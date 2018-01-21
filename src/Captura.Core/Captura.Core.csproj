@@ -217,7 +217,6 @@
     <Compile Include="Settings\Models\ProxySettings.cs" />
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="Settings\Models\TextOverlaySettings.cs" />
-    <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

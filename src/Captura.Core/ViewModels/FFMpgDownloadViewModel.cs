@@ -72,7 +72,7 @@ namespace Captura.ViewModels
 
         readonly DownloadFFMpeg _downloader = new DownloadFFMpeg();
         
-        public FFMpegDownloadViewModel(Settings Settings) : base(Settings)
+        public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             StartCommand = new DelegateCommand(async () => await Start());
 

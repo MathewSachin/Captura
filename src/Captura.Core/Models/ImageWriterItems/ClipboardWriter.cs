@@ -14,10 +14,10 @@ namespace Captura.Models
 
             Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
 
-            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public string Display => LanguageManager.Clipboard;
+        public string Display => LanguageManager.Instance.Clipboard;
 
         public override string ToString() => Display;
     }

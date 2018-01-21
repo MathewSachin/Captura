@@ -25,7 +25,7 @@ namespace UITests
 
             _mainWindow = _app.GetWindow("Captura");
 
-            _mainTab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(LanguageManager.Main));
+            _mainTab = _mainWindow.Get<TabPage>(SearchCriteria.ByText(LanguageManager.Instance.Main));
         }
 
         [ClassCleanup]
@@ -65,10 +65,10 @@ namespace UITests
 
             var tabs = new[]
             {
-                LanguageManager.Main,
-                LanguageManager.Configure, LanguageManager.Hotkeys, "Overlays", "FFMpeg", LanguageManager.Proxy, LanguageManager.Extras,
-                LanguageManager.Recent,
-                LanguageManager.About
+                LanguageManager.Instance.Main,
+                LanguageManager.Instance.Configure, LanguageManager.Instance.Hotkeys, "Overlays", "FFMpeg", LanguageManager.Instance.Proxy, LanguageManager.Instance.Extras,
+                LanguageManager.Instance.Recent,
+                LanguageManager.Instance.About
             };
 
             foreach (var tabName in tabs)

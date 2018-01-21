@@ -13,7 +13,7 @@ namespace Captura.ViewModels
     {
         public bool MouseKeyHookAvailable { get; } = ServiceProvider.FileExists("Gma.System.MouseKeyHook.dll");
 
-        public TextLocalizer Status { get; } = new TextLocalizer(LanguageManager.Ready);
+        public TextLocalizer Status { get; } = new TextLocalizer(nameof(LanguageManager.Ready));
         
         #region Time
         TimeSpan _ts;
@@ -170,7 +170,7 @@ namespace Captura.ViewModels
             {
                 SelectedPath = settings.OutPath,
                 UseDescriptionForTitle = true,
-                Description = LanguageManager.SelectOutFolder
+                Description = LanguageManager.Instance.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

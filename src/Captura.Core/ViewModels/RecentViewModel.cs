@@ -17,7 +17,7 @@ namespace Captura.ViewModels
         readonly string _filePath;
         readonly Settings _settings;
 
-        public RecentViewModel(Settings Settings) : base(Settings)
+        public RecentViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             _settings = Settings;
             _filePath = Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");

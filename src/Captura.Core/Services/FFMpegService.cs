@@ -87,7 +87,7 @@ namespace Captura
             {
                 SelectedPath = settings.FFMpegFolder,
                 UseDescriptionForTitle = true,
-                Description = LanguageManager.SelectFFMpegFolder
+                Description = LanguageManager.Instance.SelectFFMpegFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

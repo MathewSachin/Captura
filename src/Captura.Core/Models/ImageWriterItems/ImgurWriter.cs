@@ -16,26 +16,32 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
+        readonly LanguageManager _loc;
 
-        public ImgurWriter(DiskWriter DiskWriter, ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings)
+        public ImgurWriter(DiskWriter DiskWriter,
+            ISystemTray SystemTray,
+            IMessageProvider MessageProvider,
+            Settings Settings,
+            LanguageManager LanguageManager)
         {
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
+            _loc = LanguageManager;
 
-            TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public async void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
-            var ritem = Recents.Add($"{LanguageManager.ImgurUploading} (0%)", RecentItemType.Link, true);
+            var ritem = Recents.Add($"{_loc.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (s, e) =>
                 {
-                    ritem.Display = $"{LanguageManager.ImgurUploading} ({e.ProgressPercentage}%)";
+                    ritem.Display = $"{_loc.ImgurUploading} ({e.ProgressPercentage}%)";
                 };
 
                 w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
@@ -69,10 +75,10 @@ namespace Captura.Models
                 }
                 catch (Exception E)
                 {
-                    ritem.Display = LanguageManager.ImgurFailed;
+                    ritem.Display = _loc.ImgurFailed;
                     Status.LocalizationKey = nameof(LanguageManager.ImgurFailed);
 
-                    var yes = _messageProvider.ShowYesNo($"{LanguageManager.ImgurFailed}\n{E.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                    var yes = _messageProvider.ShowYesNo($"{_loc.ImgurFailed}\n{E.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
 
                     if (yes)
                         _diskWriter.Save(Image, Format, FileName, Status, Recents);
@@ -88,13 +94,13 @@ namespace Captura.Models
                 ritem.FilePath = ritem.Display = link;
                 ritem.Saved();
 
-                _systemTray.ShowTextNotification($"{LanguageManager.ImgurSuccess}: {link}", _settings.UI.ScreenShotNotifyTimeout, () => Process.Start(link));
+                _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", _settings.UI.ScreenShotNotifyTimeout, () => Process.Start(link));
 
                 Status.LocalizationKey = nameof(LanguageManager.ImgurSuccess);
             }
         }
 
-        public string Display => LanguageManager.Imgur;
+        public string Display => _loc.Imgur;
 
         public override string ToString() => Display;
     }

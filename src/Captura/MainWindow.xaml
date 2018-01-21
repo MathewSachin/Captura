@@ -198,7 +198,7 @@
                                        Margin="5"/>
                                 <ComboBox VerticalAlignment="Center" 
                                           Margin="5"
-                                          DataContext="{x:Static core:TranslationSource.Instance}"
+                                          DataContext="{x:Static core:LanguageManager.Instance}"
                                           ItemsSource="{Binding AvailableCultures}"
                                           SelectedValue="{Binding CurrentCulture, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>

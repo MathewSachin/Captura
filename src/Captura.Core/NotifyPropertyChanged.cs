@@ -14,7 +14,7 @@ namespace Captura
 
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            RaisePropertyChanged(PropertyName);
         }
     }
 }

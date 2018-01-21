@@ -7,11 +7,11 @@ namespace Captura.Models
     {
         WebcamItem()
         {
-            Name = LanguageManager.NoWebcam;
+            Name = LanguageManager.Instance.NoWebcam;
 
-            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            LanguageManager.Instance.LanguageChanged += L =>
             {
-                Name = LanguageManager.NoWebcam;
+                Name = LanguageManager.Instance.NoWebcam;
 
                 RaisePropertyChanged(nameof(Name));
             };

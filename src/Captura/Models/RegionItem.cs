@@ -13,7 +13,7 @@ namespace Captura
         {
             _selector = RegionSelector;
 
-            TranslationSource.Instance.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(Name));
+            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
@@ -28,7 +28,7 @@ namespace Captura
             return new StaticRegionProvider(_selector, IncludeCursor);
         }
 
-        public string Name => LanguageManager.RegionSelector;
+        public string Name => LanguageManager.Instance.RegionSelector;
 
         public override string ToString() => Name;
     }

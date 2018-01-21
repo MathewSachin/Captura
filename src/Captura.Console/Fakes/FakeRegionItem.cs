@@ -14,7 +14,7 @@ namespace Captura.Console
             _rect = Region;
         }
 
-        public string Name => LanguageManager.RegionSelector;
+        public string Name => LanguageManager.Instance.RegionSelector;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {

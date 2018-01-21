@@ -10,7 +10,7 @@ namespace Captura.Console
         public void ShowScreenShotNotification(string FilePath)
         {
             // ReSharper disable once LocalizableElement
-            System.Console.WriteLine($"{LanguageManager.ScreenShotSaved}: {FilePath}");
+            System.Console.WriteLine($"{LanguageManager.Instance.ScreenShotSaved}: {FilePath}");
         }
 
         public void ShowTextNotification(string Text, int Duration, Action OnClick)

@@ -68,7 +68,7 @@ namespace Captura
 
                 foreach (var hotkey in nonReg)
                 {
-                    message += $"{TranslationSource.Instance[ServiceProvider.GetDescriptionKey(hotkey.ServiceName)]} - {hotkey}\n\n";
+                    message += $"{LanguageManager.Instance[ServiceProvider.GetDescriptionKey(hotkey.ServiceName)]} - {hotkey}\n\n";
                 }
 
                 ServiceProvider.MessageProvider.ShowError(message);

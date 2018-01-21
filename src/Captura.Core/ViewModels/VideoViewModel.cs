@@ -9,7 +9,10 @@ namespace Captura.ViewModels
     {
         readonly IRegionProvider _regionProvider;
 
-        public VideoViewModel(IRegionProvider RegionProvider, IEnumerable<IImageWriterItem> ImageWriters, Settings Settings) : base(Settings)
+        public VideoViewModel(IRegionProvider RegionProvider,
+            IEnumerable<IImageWriterItem> ImageWriters,
+            Settings Settings,
+            LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             _regionProvider = RegionProvider;
 
