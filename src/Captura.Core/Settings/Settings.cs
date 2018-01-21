@@ -174,5 +174,11 @@ namespace Captura
             get => Get("-vcodec libx264 -crf 30 -pix_fmt yuv420p -preset ultrafast");
             set => Set(value);
         }
+
+        public string FFMpeg_CustomStreaming
+        {
+            get => Get("rtmp://");
+            set => Set(value);
+        }
     }
 }

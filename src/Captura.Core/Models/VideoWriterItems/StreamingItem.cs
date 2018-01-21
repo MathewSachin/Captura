@@ -36,7 +36,13 @@ namespace Captura.Models
                 var settings = ServiceProvider.Kernel.Get<Settings>();
 
                 return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
-            }, x264)
+            }, x264),
+            new StreamingItem("Custom", () =>
+            {
+                var settings = ServiceProvider.Kernel.Get<Settings>();
+
+                return settings.FFMpeg_CustomStreaming;
+            }, x264),
         };
     }
 }

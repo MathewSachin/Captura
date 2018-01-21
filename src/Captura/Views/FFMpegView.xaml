@@ -78,12 +78,13 @@
                          Text="{Binding Settings.FFMpeg_CustomExtension}"/>
             </Grid>
 
-            <Label Content="Streaming Keys"
+            <Label Content="Streaming"
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>
 
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
@@ -92,20 +93,28 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Twitch"
+                <Label Content="Twitch Key"
                        ContentStringFormat="{}{0}: "/>
                 <TextBox Grid.Column="1"
                          Margin="2"
                          Text="{Binding Settings.TwitchKey}"/>
 
 
-                <Label Content="YouTube Live"
+                <Label Content="YouTube Live Key"
                        Grid.Row="1"
                        ContentStringFormat="{}{0}: "/>
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
                          Margin="2"
                          Text="{Binding Settings.YouTubeLiveKey}"/>
+                
+                <Label Content="Custom Url"
+                       Grid.Row="2"
+                       ContentStringFormat="{}{0}:"/>
+                <TextBox Grid.Row="2"
+                         Grid.Column="1"
+                         Margin="2"
+                         Text="{Binding Settings.FFMpeg_CustomStreaming}"/>
             </Grid>
         </StackPanel>
     </Grid>
