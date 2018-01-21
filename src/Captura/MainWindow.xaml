@@ -12,11 +12,11 @@
         MaxWidth="{local:Loc WindowWidth}"
         MinWidth="{local:Loc WindowWidth}"
         Title="{local:Loc AppName}"
-        Left="{local:Setting MainWindowLeft}"
-        Top="{local:Setting MainWindowTop}"
+        Left="{Binding Settings.UI.MainWindowLeft}"
+        Top="{Binding Settings.UI.MainWindowTop}"
         BorderThickness="1"
         BorderBrush="{DynamicResource Accent}"
-        Topmost="{local:Setting MainWindowTopmost}">
+        Topmost="{Binding Settings.UI.MainWindowTopmost}">
     <Window.Resources>
         <DrawingImage x:Key="RecordStopImageSource">
             <DrawingImage.Drawing>
@@ -98,7 +98,7 @@
         </tb:TaskbarIcon>
 
         <Expander Padding="5,0,0,0"
-                  IsExpanded="{local:Setting Expanded}">
+                  IsExpanded="{Binding Settings.UI.Expanded}">
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
@@ -172,10 +172,10 @@
                               Width="16"
                               Data="{StaticResource Icon_More}"/>
                     </Button>
-                    <Border ToolTip="{local:Setting OutPath}">
+                    <Border ToolTip="{Binding Settings.OutPath}">
                         <TextBox IsReadOnly="True"
                                  IsEnabled="False"
-                                 Text="{local:Setting OutPath}"/>
+                                 Text="{Binding Settings.OutPath}"/>
                     </Border>
                 </DockPanel>
                 

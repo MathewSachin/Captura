@@ -5,8 +5,15 @@ namespace Captura
 {
     public class NinjectServiceLocator
     {
-        public static IKernel Kernel { get; } = new StandardKernel(new MainModule(), new CoreModule());
+        static NinjectServiceLocator()
+        {
+            ServiceProvider.Kernel.Load(new MainModule());
+        }
         
-        public MainViewModel MainViewModel => Kernel.Get<MainViewModel>();
+        public MainViewModel MainViewModel => ServiceProvider.Kernel.Get<MainViewModel>();
+
+        public AboutViewModel AboutViewModel => ServiceProvider.Kernel.Get<AboutViewModel>();
+
+        public FFMpegDownloadViewModel FFMpegDownloadViewModel => ServiceProvider.Kernel.Get<FFMpegDownloadViewModel>();
     }
 }

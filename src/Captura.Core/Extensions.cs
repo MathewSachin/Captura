@@ -102,26 +102,26 @@ namespace Captura
             return resized;
         }
 
-        public static Bitmap Transform(this Bitmap Image, bool SkipResize = false)
+        public static Bitmap Transform(this Bitmap Image, ScreenShotTransformSettings TransformSettings, bool SkipResize = false)
         {
-            if (Settings.Instance.DoResize && !SkipResize)
+            if (TransformSettings.Resize && !SkipResize)
             {
-                Image = Image.Resize(new Size(Settings.Instance.ResizeWidth, Settings.Instance.ResizeHeight), true);
+                Image = Image.Resize(new Size(TransformSettings.ResizeWidth, TransformSettings.ResizeHeight), true);
             }
 
             #region Rotate Flip
             var flip = "Flip";
 
-            if (!Settings.Instance.FlipHorizontal && !Settings.Instance.FlipVertical)
+            if (!TransformSettings.FlipHorizontal && !TransformSettings.FlipVertical)
                 flip += "None";
 
-            if (Settings.Instance.FlipHorizontal)
+            if (TransformSettings.FlipHorizontal)
                 flip += "X";
 
-            if (Settings.Instance.FlipVertical)
+            if (TransformSettings.FlipVertical)
                 flip += "Y";
 
-            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), Settings.Instance.RotateBy + flip);
+            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), TransformSettings.RotateBy + flip);
 
             Image.RotateFlip(rotateFlip);
             #endregion

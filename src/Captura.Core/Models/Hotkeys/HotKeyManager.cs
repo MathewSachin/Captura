@@ -1,8 +1,10 @@
 using Captura.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Captura
 {
@@ -10,27 +12,47 @@ namespace Captura
     {
         public static ObservableCollection<Hotkey> Hotkeys { get; } = new ObservableCollection<Hotkey>();
 
+        static readonly string FilePath;
+
         static HotKeyManager()
         {
             ServiceProvider.HotKeyPressed += ProcessHotkey;
+
+            FilePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
         }
 
         public static void RegisterAll()
         {
-            Populate();
+            IEnumerable<HotkeyModel> models;
+
+            try
+            {
+                var json = File.ReadAllText(FilePath);
+
+                models = JsonConvert.DeserializeObject<IEnumerable<HotkeyModel>>(json);
+            }
+            catch
+            {
+                models = Defaults();
+            }
+
+            Populate(models);
         }
 
-        public static void Populate()
+        public static void Reset()
         {
-            if (Settings.Instance.Hotkeys == null)
-                Settings.Instance.Hotkeys = new List<HotkeyModel>();
+            Dispose();
 
-            if (Settings.Instance.Hotkeys.Count == 0)
-                Reset();
+            Hotkeys.Clear();
 
+            Populate(Defaults());
+        }
+
+        static void Populate(IEnumerable<HotkeyModel> Models)
+        {
             var nonReg = new List<Hotkey>();
 
-            foreach (var model in Settings.Instance.Hotkeys)
+            foreach (var model in Models)
             {
                 var hotkey = new Hotkey(model);
 
@@ -53,36 +75,38 @@ namespace Captura
             }
         }
 
-        public static void Reset()
+        static IEnumerable<HotkeyModel> Defaults()
         {
-            Settings.Instance.Hotkeys.Clear();
-
-            Settings.Instance.Hotkeys.AddRange(new[]
-            {
-                new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true),
-                new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true),
-                new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true),
-                new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true),
-                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true)
-            });
+            yield return new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true);
+            yield return new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true);
+            yield return new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true);
+            yield return new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true);
+            yield return new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true);
         }
         
         static void ProcessHotkey(int Id)
         {
-            Hotkeys.SingleOrDefault(h => h.ID == Id)?.Work();
+            Hotkeys.SingleOrDefault(H => H.ID == Id)?.Work();
         }
         
         public static void Dispose()
         {
-            Settings.Instance.Hotkeys.Clear();
-
-            foreach (var h in Hotkeys)
+            var models = Hotkeys.Select(M =>
             {
-                // Unregister All Hotkeys
-                h.Unregister();
+                M.Unregister();
 
-                // Save
-                Settings.Instance.Hotkeys.Add(new HotkeyModel(h.ServiceName, h.Key, h.Modifiers, h.IsActive));
+                return new HotkeyModel(M.ServiceName, M.Key, M.Modifiers, M.IsActive);
+            });
+
+            try
+            {
+                var json = JsonConvert.SerializeObject(models);
+
+                File.WriteAllText(FilePath, json);
+            }
+            catch
+            {
+                // Ignore Errors
             }
         }
     }

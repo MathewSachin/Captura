@@ -18,10 +18,10 @@ namespace Captura.Console
 {
     static class Program
     {
-        static IKernel Kernel { get; } = new StandardKernel(new CoreModule(), new MainModule());
-
         static void Main(string[] Args)
         {
+            ServiceProvider.Kernel.Load(new MainModule());
+
             // Handle if args is empty
             switch (Args.Length > 0 ? Args[0] : "")
             {
@@ -30,14 +30,11 @@ namespace Captura.Console
                 case "ffmpeg":
                     Banner();
 
-                    // Reset settings
-                    Settings.Instance.SafeReset();
-
                     var verbs = new VerbCmdOptions();
 
                     if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
                     {
-                        using (var vm = Kernel.Get<MainViewModel>())
+                        using (var vm = ServiceProvider.Kernel.Get<MainViewModel>())
                         {
                             RegisterFakes();
 
@@ -83,7 +80,7 @@ namespace Captura.Console
         {
             Banner();
 
-            using (var vm = Kernel.Get<MainViewModel>())
+            using (var vm = ServiceProvider.Kernel.Get<MainViewModel>())
             {
                 RegisterFakes();
 
@@ -334,10 +331,9 @@ namespace Captura.Console
                     return;
                 }
 
-                var ffMpegDownload = new FFMpegDownloadViewModel
-                {
-                    TargetFolder = FFMpegOptions.install
-                };
+                var ffMpegDownload = ServiceProvider.Kernel.Get<FFMpegDownloadViewModel>();
+
+                ffMpegDownload.TargetFolder = FFMpegOptions.install;
 
                 var downloadTask = Task.Run(() => ffMpegDownload.Start());
 
@@ -350,7 +346,7 @@ namespace Captura.Console
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
         {
             if (ShotOptions.Cursor)
-                Settings.Instance.IncludeCursor = true;
+                ViewModel.Settings.IncludeCursor = true;
 
             // Screenshot Window with Transparency
             if (ShotOptions.Source != null && Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
@@ -379,13 +375,13 @@ namespace Captura.Console
         static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
             if (StartOptions.Cursor)
-                Settings.Instance.IncludeCursor = true;
+                ViewModel.Settings.IncludeCursor = true;
 
             if (StartOptions.Clicks)
-                Settings.Instance.Clicks.Display = true;
+                ViewModel.Settings.Clicks.Display = true;
 
             if (StartOptions.Keys)
-                Settings.Instance.Keystrokes.Display = true;
+                ViewModel.Settings.Keystrokes.Display = true;
 
             if (File.Exists(StartOptions.FileName))
             {
@@ -400,10 +396,10 @@ namespace Captura.Console
 
             HandleAudioSource(ViewModel, StartOptions);
 
-            Settings.Instance.FrameRate = StartOptions.FrameRate;
+            ViewModel.Settings.FrameRate = StartOptions.FrameRate;
 
-            Settings.Instance.AudioQuality = StartOptions.AudioQuality;
-            Settings.Instance.VideoQuality = StartOptions.VideoQuality;
+            ViewModel.Settings.AudioQuality = StartOptions.AudioQuality;
+            ViewModel.Settings.VideoQuality = StartOptions.VideoQuality;
 
             if (!ViewModel.RecordCommand.CanExecute(null))
             {

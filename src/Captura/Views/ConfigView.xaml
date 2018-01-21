@@ -37,29 +37,29 @@
                                         Margin="0,2"/>
                 </Grid>
 
-                <CheckBox IsChecked="{local:Setting MinimizeOnStart}"
+                <CheckBox IsChecked="{Binding Settings.UI.MinimizeOnStart}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
                                Text="{local:Loc MinCapture}"/>
                 </CheckBox>
 
-                <CheckBox IsChecked="{local:Setting TrayNotify}"
+                <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
                                Text="{local:Loc ShowSysNotify}"/>
                 </CheckBox>
 
-                <CheckBox IsChecked="{local:Setting CopyOutPathToClipboard}"
+                <CheckBox IsChecked="{Binding Settings.CopyOutPathToClipboard}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
                                Text="{local:Loc CopyOutPathClipboard}"/>
                 </CheckBox>
                 
                 <CheckBox Content="{local:Loc AlwaysOnTop}"
-                          IsChecked="{local:Setting MainWindowTopmost}"
+                          IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
                 
-                <CheckBox IsChecked="{local:Setting HideOnFullScreenShot}"
+                <CheckBox IsChecked="{Binding Settings.UI.HideOnFullScreenShot}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
                                Text="{local:Loc HideOnFullScreenShot}"/>
@@ -71,16 +71,16 @@
 
                 <CheckBox Margin="0,2"
                           Content="{local:Loc VarFrameRate}"
-                          IsChecked="{local:Setting GifVariable}"/>
+                          IsChecked="{Binding Settings.GifVariable}"/>
 
                 <DockPanel Margin="0,2">
                     <CheckBox Content="{local:Loc Repeat}"
                               Margin="0,0,5,0"
                               DockPanel.Dock="Left"
-                              IsChecked="{local:Setting GifRepeat}"/>
+                              IsChecked="{Binding Settings.GifRepeat}"/>
 
-                    <xctk:IntegerUpDown IsEnabled="{local:Setting GifRepeat}"
-                                        Value="{local:Setting GifRepeatCount}"/>
+                    <xctk:IntegerUpDown IsEnabled="{Binding Settings.GifRepeat}"
+                                        Value="{Binding Settings.GifRepeatCount}"/>
                 </DockPanel>
 
                 <Label Margin="0,10,0,3"
@@ -96,20 +96,20 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{local:Loc Resize}"
-                              IsChecked="{local:Setting DoResize}"
+                              IsChecked="{Binding Settings.ScreenShotTransform.Resize}"
                               Margin="0,0,5,0"/>
 
-                    <xctk:IntegerUpDown Value="{local:Setting ResizeWidth}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotTransform.ResizeWidth}"
                                         Grid.Column="1"
-                                        IsEnabled="{local:Setting DoResize}"/>
+                                        IsEnabled="{Binding Settings.ScreenShotTransform.Resize}"/>
 
                     <Label Content="x"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <xctk:IntegerUpDown Value="{local:Setting ResizeHeight}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotTransform.ResizeHeight}"
                                         Grid.Column="3"
-                                        IsEnabled="{local:Setting DoResize}"/>
+                                        IsEnabled="{Binding Settings.ScreenShotTransform.Resize}"/>
                 </Grid>
 
                 <StackPanel Margin="0,5"
@@ -118,11 +118,11 @@
                            ContentStringFormat="{}{0}:"/>
                     
                     <CheckBox Content="{local:Loc Horizontal}"
-                              IsChecked="{local:Setting FlipHorizontal}"
+                              IsChecked="{Binding Settings.ScreenShotTransform.FlipHorizontal}"
                               Margin="10,0"/>
 
                     <CheckBox Content="{local:Loc Vertical}"
-                              IsChecked="{local:Setting FlipVertical}"/>
+                              IsChecked="{Binding Settings.ScreenShotTransform.FlipVertical}"/>
                 </StackPanel>
 
                 <DockPanel Margin="0,5">
@@ -133,7 +133,7 @@
                               ItemsSource="{Binding Rotations}"
                               SelectedValuePath="Key"
                               DisplayMemberPath="Value"
-                              SelectedValue="{local:Setting RotateBy}"/>
+                              SelectedValue="{Binding Settings.ScreenShotTransform.RotateBy}"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

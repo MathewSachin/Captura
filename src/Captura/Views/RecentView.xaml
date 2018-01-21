@@ -14,7 +14,7 @@
                 <Label Content="{local:Loc MaxRecent}"
                        ContentStringFormat="{}{0}:"/>
                 <xctk:IntegerUpDown Margin="5,0,10,0"
-                                    Value="{local:Setting RecentMax}"/>
+                                    Value="{Binding Settings.RecentMax}"/>
             </DockPanel>
             <ScrollViewer>
                 <ItemsControl Margin="0,10,0,0"

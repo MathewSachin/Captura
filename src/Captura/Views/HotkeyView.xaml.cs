@@ -11,11 +11,7 @@ namespace Captura
 
         void Reset_Click(object sender, RoutedEventArgs e)
         {
-            HotKeyManager.Dispose();
-            Settings.Instance.Hotkeys.Clear();
-
-            HotKeyManager.Hotkeys.Clear();
-            HotKeyManager.Populate();
+            HotKeyManager.Reset();
         }
     }
 }

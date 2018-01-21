@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Ninject;
 
 namespace Captura
 {
@@ -37,6 +38,8 @@ namespace Captura
                     Directory.CreateDirectory(_settingsDir);
             }
         }
+
+        public static IKernel Kernel { get; } = new StandardKernel(new CoreModule());
         
         /// <summary>
         /// Get the requested Service.

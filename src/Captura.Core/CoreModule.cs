@@ -13,6 +13,9 @@ namespace Captura
             Bind<VideoViewModel>().ToSelf().InSingletonScope();
             Bind<AudioViewModel>().ToSelf().InSingletonScope();
 
+            // Settings
+            Bind<Settings>().ToSelf().InSingletonScope();
+
             // Image Writers
             Bind<IImageWriterItem>().To<DiskWriter>().InSingletonScope();
             Bind<IImageWriterItem>().To<ClipboardWriter>().InSingletonScope();

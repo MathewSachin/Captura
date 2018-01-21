@@ -103,11 +103,9 @@
     <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Setting.cs" />
     <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
-    <Compile Include="ViewModels\AudioEditorViewModel.cs" />
     <Compile Include="Views\CanvasWindow.xaml.cs">
       <DependentUpon>CanvasWindow.xaml</DependentUpon>
     </Compile>
@@ -145,9 +143,6 @@
     <Compile Include="Models\StaticRegionProvider.cs" />
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AudioEditor.xaml.cs">
-      <DependentUpon>AudioEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OverlaysView.xaml.cs">
       <DependentUpon>OverlaysView.xaml</DependentUpon>
@@ -214,10 +209,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\ValueConverters\ValueConverters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AudioEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,9 +26,9 @@ namespace Captura.ViewModels
 
         WebClient _webClient;
 
-        public async Task DownloadArchive(Action<int> Progress)
+        public async Task DownloadArchive(Action<int> Progress, WebProxy Proxy)
         {
-            using (_webClient = new WebClient { Proxy = Settings.Instance.Proxy.GetWebProxy() })
+            using (_webClient = new WebClient { Proxy = Proxy })
             {
                 _webClient.DownloadProgressChanged += (s, e) =>
                 {
@@ -72,7 +72,7 @@ namespace Captura.ViewModels
 
         readonly DownloadFFMpeg _downloader = new DownloadFFMpeg();
         
-        public FFMpegDownloadViewModel()
+        public FFMpegDownloadViewModel(Settings Settings) : base(Settings)
         {
             StartCommand = new DelegateCommand(async () => await Start());
 
@@ -114,7 +114,7 @@ namespace Captura.ViewModels
                     Progress = P;
 
                     Status = $"Downloading ({P}%)";
-                });
+                }, Settings.Proxy.GetWebProxy());
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
@@ -148,7 +148,7 @@ namespace Captura.ViewModels
             }
             
             // Update FFMpeg folder setting
-            Settings.Instance.FFMpegFolder = TargetFolder;
+            Settings.FFMpegFolder = TargetFolder;
 
             Status = "Done";
         }

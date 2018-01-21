@@ -2,6 +2,11 @@ namespace Captura.ViewModels
 {
     public abstract class ViewModelBase : NotifyPropertyChanged
     {
-        public Settings Settings => Settings.Instance;
+        protected ViewModelBase(Settings Settings)
+        {
+            this.Settings = Settings;
+        }
+
+        public Settings Settings { get; }
     }
 }

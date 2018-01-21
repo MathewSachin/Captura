@@ -1,6 +1,7 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System.Windows;
 using System.Windows.Media;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -8,18 +9,22 @@ namespace Captura
     {
         void SelectedAccentColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            if (e.NewValue != null)
+            if (e.NewValue != null && DataContext is ViewModelBase vm)
             {
                 AppearanceManager.Current.AccentColor = e.NewValue.Value;
 
-                Settings.Instance.AccentColor = e.NewValue.Value.ToString();
+                vm.Settings.UI.AccentColor = e.NewValue.Value.ToString();
             }
         }
 
         void DarkThemeClick(object sender, RoutedEventArgs e)
         {
-            AppearanceManager.Current.ThemeSource = Settings.Instance.DarkTheme
-                ? AppearanceManager.DarkThemeSource : AppearanceManager.LightThemeSource;
+            if (DataContext is ViewModelBase vm)
+            {
+                AppearanceManager.Current.ThemeSource = vm.Settings.UI.DarkTheme
+                    ? AppearanceManager.DarkThemeSource
+                    : AppearanceManager.LightThemeSource;
+            }
         }
     }
 }

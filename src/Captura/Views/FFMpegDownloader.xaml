@@ -7,10 +7,8 @@
         Height="400"
         Width="600"
         ResizeMode="NoResize"
-        Background="{DynamicResource WindowBackground}">
-    <Window.DataContext>
-        <vm:FFMpegDownloadViewModel/>
-    </Window.DataContext>
+        Background="{DynamicResource WindowBackground}"
+        DataContext="{Binding FFMpegDownloadViewModel, Source={StaticResource ServiceLocator}}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
                       UseAeroCaptionButtons="False"

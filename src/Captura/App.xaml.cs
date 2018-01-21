@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using Ninject;
 
 namespace Captura
 {
@@ -32,17 +33,19 @@ namespace Captura
                 ServiceProvider.SettingsDir = CmdOptions.Settings;
             }
 
-            if (CmdOptions.Reset)
+            var settings = ServiceProvider.Kernel.Get<Settings>();
+
+            if (!CmdOptions.Reset)
             {
-                Settings.Instance.SafeReset();
+                settings.Load();
             }
 
-            if (Settings.Instance.DarkTheme)
+            if (settings.UI.DarkTheme)
             {
                 AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
             }
 
-            var accent = Settings.Instance.AccentColor;
+            var accent = settings.UI.AccentColor;
 
             if (!string.IsNullOrEmpty(accent))
             {

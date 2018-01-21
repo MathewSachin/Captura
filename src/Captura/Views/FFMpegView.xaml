@@ -40,11 +40,11 @@
                           Data="{StaticResource Icon_Close}"/>
                 </Button>
 
-                <Border ToolTip="{local:Setting FFMpegFolder}">
+                <Border ToolTip="{Binding Settings.FFMpegFolder}">
                     <xctk:WatermarkTextBox IsReadOnly="True"
                                            IsEnabled="False"
                                            Watermark="Load From PATH or App Directory"
-                                           Text="{local:Setting FFMpegFolder}"/>
+                                           Text="{Binding Settings.FFMpegFolder}"/>
                 </Border>
             </DockPanel>
 
@@ -66,7 +66,7 @@
                        ContentStringFormat="{}{0}: "/>
                 <TextBox Grid.Column="1"
                          Margin="2"
-                         Text="{local:Setting FFMpeg_CustomArgs}"/>
+                         Text="{Binding Settings.FFMpeg_CustomArgs}"/>
 
 
                 <Label Content="Extension"
@@ -75,7 +75,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
                          Margin="2"
-                         Text="{local:Setting FFMpeg_CustomExtension}"/>
+                         Text="{Binding Settings.FFMpeg_CustomExtension}"/>
             </Grid>
 
             <Label Content="Streaming Keys"
@@ -96,7 +96,7 @@
                        ContentStringFormat="{}{0}: "/>
                 <TextBox Grid.Column="1"
                          Margin="2"
-                         Text="{local:Setting TwitchKey}"/>
+                         Text="{Binding Settings.TwitchKey}"/>
 
 
                 <Label Content="YouTube Live"
@@ -105,7 +105,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
                          Margin="2"
-                         Text="{local:Setting YouTubeLiveKey}"/>
+                         Text="{Binding Settings.YouTubeLiveKey}"/>
             </Grid>
         </StackPanel>
     </Grid>

@@ -2,27 +2,36 @@
 
 namespace Captura
 {
-    public class MouseClickSettings : NotifyPropertyChanged
+    public class MouseClickSettings : PropertyStore
     {
-        bool _display;
-
         public bool Display
         {
-            get => _display;
-            set
-            {
-                _display = value;
-                
-                OnPropertyChanged();
-            }
+            get => Get<bool>();
+            set => Set(value);
         }
 
-        public int Radius { get; set; } = 25;
+        public int Radius
+        {
+            get => Get(25);
+            set => Set(value);
+        }
 
-        public Color Color { get; set; } = Color.Yellow;
+        public Color Color
+        {
+            get => Get(Color.Yellow);
+            set => Set(value);
+        }
 
-        public int BorderThickness { get; set; } = 0;
+        public int BorderThickness
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
 
-        public Color BorderColor { get; set; } = Color.Black;
+        public Color BorderColor
+        {
+            get => Get(Color.Black);
+            set => Set(value);
+        }
     }
 }

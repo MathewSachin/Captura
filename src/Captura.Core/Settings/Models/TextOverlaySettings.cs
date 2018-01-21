@@ -5,33 +5,58 @@ namespace Captura
 {
     public class TextOverlaySettings : PositionedOverlaySettings
     {
-        bool _display;
-
         public bool Display
         {
-            get => _display;
-            set
-            {
-                _display = value;
-
-                OnPropertyChanged();
-            }
+            get => Get<bool>();
+            set => Set(value);
         }
 
-        public int FontSize { get; set; } = 20;
+        public int FontSize
+        {
+            get => Get(20);
+            set => Set(value);
+        }
 
-        public Color FontColor { get; set; } = Color.White;
+        public Color FontColor
+        {
+            get => Get(Color.White);
+            set => Set(value);
+        }
 
-        public Color BackgroundColor { get; set; } = Color.Teal;
+        public Color BackgroundColor
+        {
+            get => Get(Color.Teal);
+            set => Set(value);
+        }
 
-        public int HorizontalPadding { get; set; } = 15;
+        public int HorizontalPadding
+        {
+            get => Get(15);
+            set => Set(value);
+        }
 
-        public int VerticalPadding { get; set; } = 15;
+        public int VerticalPadding
+        {
+            get => Get(15);
+            set => Set(value);
+        }
 
-        public int CornerRadius { get; set; } = 30;
+        public int CornerRadius
+        {
+            get => Get(30);
+            set => Set(value);
+        }
 
-        public int BorderThickness { get; set; } = 0;
+        public int BorderThickness
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
 
-        public Color BorderColor { get; set; } = Color.Black;
+        public Color BorderColor
+        {
+            get => Get(Color.Black);
+            set => Set(value);
+        }
     }
 }

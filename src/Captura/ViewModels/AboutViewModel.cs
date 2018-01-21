@@ -19,7 +19,7 @@ namespace Captura
             Version = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
-        public AboutViewModel()
+        public AboutViewModel(Settings Settings) : base(Settings)
         {
             AppVersion = "v" + Version.ToString(3);
 

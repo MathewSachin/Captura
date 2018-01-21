@@ -8,19 +8,21 @@ namespace Captura.Models
     public class WebcamOverlay : IOverlay
     {
         readonly IWebCamProvider _webCamProvider;
+        readonly Settings _settings;
 
-        public WebcamOverlay(IWebCamProvider WebCamProvider)
+        public WebcamOverlay(IWebCamProvider WebCamProvider, Settings Settings)
         {
             _webCamProvider = WebCamProvider;
+            _settings = Settings;
         }
 
         public void Dispose() { }
 
-        static Point GetPosition(Size Bounds, Size ImageSize)
+        Point GetPosition(Size Bounds, Size ImageSize)
         {
-            var point = new Point(Settings.Instance.WebcamOverlay.X, Settings.Instance.WebcamOverlay.Y);
+            var point = new Point(_settings.WebcamOverlay.X, _settings.WebcamOverlay.Y);
 
-            switch (Settings.Instance.WebcamOverlay.HorizontalAlignment)
+            switch (_settings.WebcamOverlay.HorizontalAlignment)
             {
                 case Alignment.Center:
                     point.X = Bounds.Width / 2 - ImageSize.Width / 2 + point.X;
@@ -31,7 +33,7 @@ namespace Captura.Models
                     break;
             }
 
-            switch (Settings.Instance.WebcamOverlay.VerticalAlignment)
+            switch (_settings.WebcamOverlay.VerticalAlignment)
             {
                 case Alignment.Center:
                     point.Y = Bounds.Height / 2 - ImageSize.Height / 2 + point.Y;
@@ -56,8 +58,8 @@ namespace Captura.Models
             if (img == null)
                 return;
 
-            if (Settings.Instance.WebcamOverlay.Resize)
-                img = img.Resize(new Size(Settings.Instance.WebcamOverlay.ResizeWidth, Settings.Instance.WebcamOverlay.ResizeHeight), false);
+            if (_settings.WebcamOverlay.Resize)
+                img = img.Resize(new Size(_settings.WebcamOverlay.ResizeWidth, _settings.WebcamOverlay.ResizeHeight), false);
 
             using (img)
             {
@@ -65,11 +67,11 @@ namespace Captura.Models
                 {
                     var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
 
-                    if (Settings.Instance.WebcamOverlay.Opacity < 100)
+                    if (_settings.WebcamOverlay.Opacity < 100)
                     {
                         var colormatrix = new ColorMatrix
                         {
-                            Matrix33 = Settings.Instance.WebcamOverlay.Opacity / 100.0f
+                            Matrix33 = _settings.WebcamOverlay.Opacity / 100.0f
                         };
 
                         var imgAttribute = new ImageAttributes();

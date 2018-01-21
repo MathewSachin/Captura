@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ninject;
 using Screna;
 using Screna.Audio;
 // ReSharper disable MemberCanBeProtected.Global
@@ -44,8 +45,10 @@ namespace Captura.Models
             VideoQuality => "-c:v hevc_nvenc -preset slow", FFMpegAudioItem.Aac);
 
         // Custom
-        public static FFMpegItem Custom { get; } = new FFMpegItem("Custom", () => Settings.Instance.FFMpeg_CustomExtension,
-            VideoQuality => Settings.Instance.FFMpeg_CustomArgs, FFMpegAudioItem.Mp3);
+        public static FFMpegItem Custom { get; } = new FFMpegItem("Custom",
+            () => ServiceProvider.Kernel.Get<Settings>().FFMpeg_CustomExtension,
+            VideoQuality => ServiceProvider.Kernel.Get<Settings>().FFMpeg_CustomArgs,
+            FFMpegAudioItem.Mp3);
 
         public static IEnumerable<FFMpegItem> Items { get; } = new[]
         {

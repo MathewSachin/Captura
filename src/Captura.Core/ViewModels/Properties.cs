@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using Ninject;
 
 namespace Captura.ViewModels
 {
@@ -152,30 +153,39 @@ namespace Captura.ViewModels
 
         public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            Settings.Instance.EnsureOutPath();
+            var settings = ServiceProvider.Kernel.Get<Settings>();
 
-            Process.Start(Settings.Instance.OutPath);
+            settings.EnsureOutPath();
+
+            Process.Start(settings.OutPath);
         });
 
         public DelegateCommand PauseCommand { get; }
 
         public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
+            var settings = ServiceProvider.Kernel.Get<Settings>();
+
             using (var dlg = new VistaFolderBrowserDialog
             {
-                SelectedPath = Settings.Instance.OutPath,
+                SelectedPath = settings.OutPath,
                 UseDescriptionForTitle = true,
                 Description = LanguageManager.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.Instance.OutPath = dlg.SelectedPath;
+                    settings.OutPath = dlg.SelectedPath;
             }
         });
 
         public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(FFMpegService.SelectFFMpegFolder);
 
-        public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() => Settings.Instance.FFMpegFolder = "");
+        public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() =>
+        {
+            var settings = ServiceProvider.Kernel.Get<Settings>();
+
+            settings.FFMpegFolder = "";
+        });
         #endregion
 
         #region Nested ViewModels
@@ -183,7 +193,7 @@ namespace Captura.ViewModels
 
         public AudioViewModel AudioViewModel { get; }
 
-        public RecentViewModel RecentViewModel { get; } = new RecentViewModel();
+        public RecentViewModel RecentViewModel { get; }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Ninject;
 
 namespace Captura
 {
@@ -6,7 +7,9 @@ namespace Captura
     {
         protected CommonCmdOptions()
         {
-            Settings.Instance.IncludeCursor = false;
+            var settings = ServiceProvider.Kernel.Get<Settings>();
+
+            settings.IncludeCursor = false;
         }
         
         [Option("cursor", DefaultValue = false, HelpText = "Include Cursor in Recording.")]

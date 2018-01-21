@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Newtonsoft.Json.Linq;
+using Ninject;
 
 namespace Captura
 {
@@ -13,6 +14,8 @@ namespace Captura
         static readonly JObject DefaultLanguage;
         static JObject _currentLanguage;
         static readonly string LangDir;
+
+        static readonly Settings Settings;
 
         static LanguageManager()
         {
@@ -24,6 +27,8 @@ namespace Captura
 
             var files  = Directory.EnumerateFiles(LangDir, "*.json");
 
+            Settings = ServiceProvider.Kernel.Get<Settings>();
+
             foreach (var file in files)
             {
                 var cultureName = Path.GetFileNameWithoutExtension(file);
@@ -34,7 +39,7 @@ namespace Captura
 
                     cultures.Add(culture);
 
-                    if (cultureName == Settings.Instance.Language)
+                    if (cultureName == Settings.Language)
                     {
                         CurrentCulture = culture;
                     }
@@ -66,7 +71,7 @@ namespace Captura
 
                 Thread.CurrentThread.CurrentUICulture = value;
 
-                Settings.Instance.Language = value.Name;
+                Settings.Language = value.Name;
 
                 _currentLanguage = LoadLang(value.Name);
             }

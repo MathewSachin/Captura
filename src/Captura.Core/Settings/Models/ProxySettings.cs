@@ -2,10 +2,8 @@
 
 namespace Captura
 {
-    public class ProxySettings : NotifyPropertyChanged
+    public class ProxySettings : PropertyStore
     {
-        bool _enabled, _auth;
-
         public WebProxy GetWebProxy()
         {
             if (!Enabled)
@@ -23,32 +21,38 @@ namespace Captura
 
         public bool Enabled
         {
-            get => _enabled;
-            set
-            {
-                _enabled = value;
-                
-                OnPropertyChanged();
-            }
+            get => Get<bool>();
+            set => Set(value);
         }
 
-        public string Host { get; set; }
-        
-        public int Port { get; set; }
+        public string Host
+        {
+            get => Get("");
+            set => Set(value);
+        }
+
+        public int Port
+        {
+            get => Get<int>();
+            set => Set(value);
+        }
 
         public bool Authenticate
         {
-            get => _auth;
-            set
-            {
-                _auth = value;
-                
-                OnPropertyChanged();
-            }
+            get => Get<bool>();
+            set => Set(value);
         }
-        
-        public string UserName { get; set; }
-        
-        public string Password { get; set; }
+
+        public string UserName
+        {
+            get => Get("");
+            set => Set(value);
+        }
+
+        public string Password
+        {
+            get => Get("");
+            set => Set(value);
+        }
     }
 }

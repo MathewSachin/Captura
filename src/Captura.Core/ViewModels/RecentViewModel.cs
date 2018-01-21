@@ -1,9 +1,10 @@
 ﻿using Captura.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace Captura.ViewModels
 {
@@ -13,18 +14,32 @@ namespace Captura.ViewModels
         
         public ICommand ClearCommand { get; }
 
-        public RecentViewModel()
+        readonly string _filePath;
+        readonly Settings _settings;
+
+        public RecentViewModel(Settings Settings) : base(Settings)
         {
-            if (Settings.Instance.RecentItems == null)
-                Settings.Instance.RecentItems = new List<RecentItemModel>();
+            _settings = Settings;
+            _filePath = Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
 
-            // Reversion required to maintain order.
-            Settings.Instance.RecentItems.Reverse();
+            try
+            {
+                var json = File.ReadAllText(_filePath);
 
-            // Restore only if File exists or is a link.
-            foreach (var recent in Settings.Instance.RecentItems)
-                if (recent.ItemType == RecentItemType.Link || File.Exists(recent.FilePath))
-                    Add(recent.FilePath, recent.ItemType, false);
+                var list = JsonConvert.DeserializeObject<RecentItemModel[]>(json)
+                    .Reverse() // Reversion required to maintain order
+                    .Where(M => M.ItemType == RecentItemType.Link ||
+                                File.Exists(M.FilePath)); // Restore only if file exists
+
+                foreach (var model in list)
+                {
+                    Add(model.FilePath, model.ItemType, false);
+                }
+            }
+            catch
+            {
+                // Ignore Errors
+            }
 
             ClearCommand = new DelegateCommand(() => RecentList.Clear());
         }
@@ -43,17 +58,20 @@ namespace Captura.ViewModels
 
         public void Dispose()
         {
-            Settings.Instance.RecentItems.Clear();
-
-            var max = Settings.Instance.RecentMax;
-
             // Persist only if File exists or is a link.
-            for (int i = 0; i < RecentList.Count && i < max; ++i)
+            var items = RecentList.Where(M => M.ItemType == RecentItemType.Link && !M.IsSaving || File.Exists(M.FilePath))
+                .Select(M => new RecentItemModel(M.FilePath, M.ItemType))
+                .Take(_settings.RecentMax);
+
+            try
             {
-                var item = RecentList[i];
-                
-                if ((item.ItemType == RecentItemType.Link && !item.IsSaving) || File.Exists(item.FilePath))
-                    Settings.Instance.RecentItems.Add(new RecentItemModel(item.FilePath, item.ItemType));
+                var json = JsonConvert.SerializeObject(items);
+
+                File.WriteAllText(_filePath, json);
+            }
+            catch
+            {
+                // Ignore Errors
             }
         }
     }

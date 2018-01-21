@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Captura.ViewModels
 {
-    public class RecentItemViewModel : ViewModelBase
+    public class RecentItemViewModel : NotifyPropertyChanged
     {
         public RecentItemViewModel(string FilePath, RecentItemType ItemType, bool IsSaving)
         {

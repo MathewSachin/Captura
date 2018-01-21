@@ -1,4 +1,6 @@
 ﻿using CommandLine;
+using Ninject;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -10,11 +12,13 @@ namespace Captura
     {
         public StartCmdOptions()
         {
-            Settings.Instance.Keystrokes.Display = Settings.Instance.Clicks.Display = false;
+            var settings = ServiceProvider.Kernel.Get<Settings>();
 
-            FrameRate = Settings.Instance.FrameRate;
-            VideoQuality = Settings.Instance.VideoQuality;
-            AudioQuality = Settings.Instance.AudioQuality;
+            settings.Keystrokes.Display = settings.Clicks.Display = false;
+
+            FrameRate = settings.FrameRate;
+            VideoQuality = settings.VideoQuality;
+            AudioQuality = settings.AudioQuality;
         }
 
         [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]

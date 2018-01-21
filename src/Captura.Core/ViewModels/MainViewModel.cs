@@ -51,7 +51,9 @@ namespace Captura.ViewModels
             IRegionProvider RegionProvider,
             IWebCamProvider WebCamProvider,
             WebcamOverlay WebcamOverlay,
-            IMainWindow MainWindow)
+            IMainWindow MainWindow,
+            Settings Settings,
+            RecentViewModel RecentViewModel) : base(Settings)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
@@ -60,6 +62,7 @@ namespace Captura.ViewModels
             this.WebCamProvider = WebCamProvider;
             _webcamOverlay = WebcamOverlay;
             _mainWindow = MainWindow;
+            this.RecentViewModel = RecentViewModel;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -135,15 +138,15 @@ namespace Captura.ViewModels
             #region Restore Video Source
             void VideoSource()
             {
-                VideoViewModel.SelectedVideoSourceKind = Settings.Instance.LastSourceKind;
+                VideoViewModel.SelectedVideoSourceKind = Settings.Last.SourceKind;
 
-                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.Instance.LastSourceName);
+                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.Last.SourceName);
 
                 if (source != null)
                     VideoViewModel.SelectedVideoSource = source;
             }
 
-            switch (Settings.Instance.LastSourceKind)
+            switch (Settings.Last.SourceKind)
             {
                 case VideoSourceKind.Window:
                 case VideoSourceKind.NoVideo:
@@ -154,54 +157,54 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Region:
                     VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
 
-                    if (RectangleConverter.ConvertFromInvariantString(Settings.Instance.LastSourceName) is Rectangle rect)
+                    if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle rect)
                         _regionProvider.SelectedRegion = rect;
                     break;
             }
             #endregion
 
             // Restore Video Codec
-            if (VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.Instance.LastVideoWriterKind))
+            if (VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.Last.VideoWriterKind))
             {
-                VideoViewModel.SelectedVideoWriterKind = Settings.Instance.LastVideoWriterKind;
+                VideoViewModel.SelectedVideoWriterKind = Settings.Last.VideoWriterKind;
 
-                var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(c => c.ToString() == Settings.Instance.LastVideoWriterName);
+                var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(c => c.ToString() == Settings.Last.VideoWriterName);
 
                 if (codec != null)
                     VideoViewModel.SelectedVideoWriter = codec;
             }
             
             // Restore Microphone
-            if (!string.IsNullOrEmpty(Settings.Instance.LastMicName))
+            if (!string.IsNullOrEmpty(Settings.Last.MicName))
             {
-                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(codec => codec.ToString() == Settings.Instance.LastMicName);
+                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(codec => codec.ToString() == Settings.Last.MicName);
 
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedRecordingSource = source;
             }
 
             // Restore Loopback Speaker
-            if (!string.IsNullOrEmpty(Settings.Instance.LastSpeakerName))
+            if (!string.IsNullOrEmpty(Settings.Last.SpeakerName))
             {
-                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(codec => codec.ToString() == Settings.Instance.LastSpeakerName);
+                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(codec => codec.ToString() == Settings.Last.SpeakerName);
 
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedLoopbackSource = source;
             }
 
             // Restore ScreenShot Format
-            if (!string.IsNullOrEmpty(Settings.Instance.LastScreenShotFormat))
+            if (!string.IsNullOrEmpty(Settings.Last.ScreenShotFormat))
             {
-                var format = ScreenShotImageFormats.FirstOrDefault(f => f.ToString() == Settings.Instance.LastScreenShotFormat);
+                var format = ScreenShotImageFormats.FirstOrDefault(f => f.ToString() == Settings.Last.ScreenShotFormat);
 
                 if (format != null)
                     SelectedScreenShotImageFormat = format;
             }
 
             // Restore ScreenShot Target
-            if (!string.IsNullOrEmpty(Settings.Instance.LastScreenShotSaveTo))
+            if (!string.IsNullOrEmpty(Settings.Last.ScreenShotSaveTo))
             {
-                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.Instance.LastScreenShotSaveTo);
+                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.Last.ScreenShotSaveTo);
 
                 if (saveTo != null)
                     VideoViewModel.SelectedImageWriter = saveTo;
@@ -248,12 +251,11 @@ namespace Captura.ViewModels
             };
             
             // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(Settings.Instance.OutPath))
-                Settings.Instance.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+            if (string.IsNullOrWhiteSpace(Settings.OutPath))
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
 
             // Create the Output Directory if it does not exist
-            if (!Directory.Exists(Settings.Instance.OutPath))
-                Directory.CreateDirectory(Settings.Instance.OutPath);
+            Settings.EnsureOutPath();
 
             // Register ActionServices
             ServiceProvider.Register<Action>(ServiceName.Recording, () => RecordCommand.ExecuteIfCan());
@@ -280,36 +282,36 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Window:
                 case VideoSourceKind.Screen:
                 case VideoSourceKind.NoVideo:
-                    Settings.Instance.LastSourceKind = VideoViewModel.SelectedVideoSourceKind;
-                    Settings.Instance.LastSourceName = VideoViewModel.SelectedVideoSource.ToString();
+                    Settings.Last.SourceKind = VideoViewModel.SelectedVideoSourceKind;
+                    Settings.Last.SourceName = VideoViewModel.SelectedVideoSource.ToString();
                     break;
 
                 case VideoSourceKind.Region:
-                    Settings.Instance.LastSourceKind = VideoSourceKind.Region;
+                    Settings.Last.SourceKind = VideoSourceKind.Region;
                     var rect = _regionProvider.SelectedRegion;
-                    Settings.Instance.LastSourceName = RectangleConverter.ConvertToInvariantString(rect);
+                    Settings.Last.SourceName = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
                 default:
-                    Settings.Instance.LastSourceKind = VideoSourceKind.Screen;
-                    Settings.Instance.LastSourceName = "";
+                    Settings.Last.SourceKind = VideoSourceKind.Screen;
+                    Settings.Last.SourceName = "";
                     break;
             }
             #endregion
 
             // Remember Video Codec
-            Settings.Instance.LastVideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
-            Settings.Instance.LastVideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
+            Settings.Last.VideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
+            Settings.Last.VideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            Settings.Instance.LastMicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
-            Settings.Instance.LastSpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
+            Settings.Last.MicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
+            Settings.Last.SpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
             
             // Remember ScreenShot Format
-            Settings.Instance.LastScreenShotFormat = SelectedScreenShotImageFormat.ToString();
+            Settings.Last.ScreenShotFormat = SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
-            Settings.Instance.LastScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
+            Settings.Last.ScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
         }
 
         // Call before Exit to free LanguageManager
@@ -331,7 +333,7 @@ namespace Captura.ViewModels
             {
                 Remember();
 
-                Settings.Instance.Save();
+                Settings.Save();
             }
         }
         
@@ -375,21 +377,21 @@ namespace Captura.ViewModels
 
             if (hWnd == Window.DesktopWindow)
             {
-                return ScreenShot.Capture(Settings.Instance.IncludeCursor).Transform();
+                return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShotTransform);
             }
 
             var bmp = ScreenShot.CaptureTransparent(hWnd,
-                Settings.Instance.IncludeCursor,
-                Settings.Instance.DoResize,
-                Settings.Instance.ResizeWidth,
-                Settings.Instance.ResizeHeight);
+                Settings.IncludeCursor,
+                Settings.ScreenShotTransform.Resize,
+                Settings.ScreenShotTransform.ResizeWidth,
+                Settings.ScreenShotTransform.ResizeHeight);
 
             // Capture without Transparency
             if (bmp == null)
             {
                 try
                 {
-                    return ScreenShot.Capture(hWnd, Settings.Instance.IncludeCursor)?.Transform();
+                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform(Settings.ScreenShotTransform);
                 }
                 catch
                 {
@@ -397,7 +399,7 @@ namespace Captura.ViewModels
                 }
             }
 
-            return bmp.Transform(true);
+            return bmp.Transform(Settings.ScreenShotTransform, true);
         }
 
         public async void CaptureScreenShot(string FileName = null)
@@ -407,7 +409,7 @@ namespace Captura.ViewModels
             Bitmap bmp = null;
 
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var includeCursor = Settings.Instance.IncludeCursor;
+            var includeCursor = Settings.IncludeCursor;
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
@@ -421,7 +423,7 @@ namespace Captura.ViewModels
                 case VideoSourceKind.Screen:
                     if (selectedVideoSource is FullScreenItem)
                     {
-                        var hide = _mainWindow.IsVisible && Settings.Instance.HideOnFullScreenShot;
+                        var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
 
                         if (hide)
                         {
@@ -441,12 +443,12 @@ namespace Captura.ViewModels
                         bmp = screen.Capture(includeCursor);
                     }
                     
-                    bmp = bmp?.Transform();
+                    bmp = bmp?.Transform(Settings.ScreenShotTransform);
                     break;
 
                 case VideoSourceKind.Region:
                     bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
-                    bmp = bmp.Transform();
+                    bmp = bmp.Transform(Settings.ScreenShotTransform);
                     break;
             }
 
@@ -470,7 +472,7 @@ namespace Captura.ViewModels
             }
 
             if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif
-                && Settings.Instance.GifVariable
+                && Settings.GifVariable
                 && VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
                 ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
@@ -523,10 +525,10 @@ namespace Captura.ViewModels
 
             _systemTray.HideNotification();
 
-            if (Settings.Instance.MinimizeOnStart)
+            if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = true;
             
-            Settings.Instance.EnsureOutPath();
+            Settings.EnsureOutPath();
 
             RecorderState = RecorderState.Recording;
             
@@ -537,7 +539,7 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSource is NoVideoItem x)
                 extension = x.Extension;
 
-            _currentFileName = FileName ?? Path.Combine(Settings.Instance.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
             Status.LocalizationKey = StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
 
@@ -551,10 +553,10 @@ namespace Captura.ViewModels
             if (_recorder == null)
             {
                 if (isVideo)
-                    _recorder = new Recorder(videoEncoder, imgProvider, Settings.Instance.FrameRate, audioSource);
+                    _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
 
                 else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
-                    _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.Instance.AudioQuality), audioSource);
+                    _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
             }
             
             _recorder.ErrorOccured += E =>
@@ -597,7 +599,7 @@ namespace Captura.ViewModels
             _timer?.Stop();
             _timing.Stop();
             
-            if (Settings.Instance.MinimizeOnStart)
+            if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
 
             _regionProvider.Release();
@@ -610,12 +612,17 @@ namespace Captura.ViewModels
             
             IVideoFileWriter videoEncoder = null;
             
-            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName, Settings.Instance.FrameRate, Settings.Instance.VideoQuality, ImgProvider, Settings.Instance.AudioQuality, AudioProvider);
+            var encoder = VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName,
+                Settings.FrameRate,
+                Settings.VideoQuality,
+                ImgProvider,
+                Settings.AudioQuality,
+                AudioProvider);
 
             switch (encoder)
             {
                 case GifWriter gif:
-                    if (Settings.Instance.GifVariable)
+                    if (Settings.GifVariable)
                         _recorder = new VFRGifRecorder(gif, ImgProvider);
                     
                     else videoEncoder = gif;
@@ -633,7 +640,7 @@ namespace Captura.ViewModels
         {
             Func<Point, Point> transform = p => p;
 
-            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(Settings.Instance.IncludeCursor, out transform);
+            var imageProvider = VideoViewModel.SelectedVideoSource?.GetImageProvider(Settings.IncludeCursor, out transform);
 
             if (imageProvider == null)
                 return null;
@@ -641,8 +648,8 @@ namespace Captura.ViewModels
             var overlays = new List<IOverlay> { _webcamOverlay };
                         
             // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable && (Settings.Instance.Clicks.Display || Settings.Instance.Keystrokes.Display))
-                overlays.Add(new MouseKeyHook(Settings.Instance.Clicks, Settings.Instance.Keystrokes));
+            if (MouseKeyHookAvailable && (Settings.Clicks.Display || Settings.Keystrokes.Display))
+                overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
             
             // Custom Overlays
             overlays.AddRange(CustomOverlaysViewModel.Instance.Collection.Where(M => M.Display).Select(M => new CustomOverlay(M, () => TimeSpan)));
@@ -678,7 +685,7 @@ namespace Captura.ViewModels
             // After Save
             savingRecentItem.Saved();
 
-            if (Settings.Instance.CopyOutPathToClipboard)
+            if (Settings.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
             _systemTray.ShowTextNotification((isVideo ? LanguageManager.VideoSaved : LanguageManager.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>

@@ -23,7 +23,9 @@ namespace Captura
 
         const int DstInvert = 0x0055_0009;
 
-        static void ToggleBorder(IntPtr hWnd)
+        readonly Settings _settings;
+
+        void ToggleBorder(IntPtr hWnd)
         {
             if (hWnd == IntPtr.Zero)
                 return;
@@ -32,7 +34,7 @@ namespace Captura
 
             var rect = new Screna.Window(hWnd).Rectangle;
 
-            var borderThickness = Settings.Instance.RegionBorderThickness;
+            var borderThickness = _settings.UI.RegionBorderThickness;
 
             // Top
             PatBlt(hdc, 0, 0, rect.Width, borderThickness, DstInvert);
@@ -47,8 +49,10 @@ namespace Captura
             PatBlt(hdc, 0, rect.Height - borderThickness, rect.Width, borderThickness, DstInvert);
         }
         
-        public RegionSelector()
+        public RegionSelector(Settings Settings)
         {
+            _settings = Settings;
+
             InitializeComponent();
 
             VideoSource = new RegionItem(this);

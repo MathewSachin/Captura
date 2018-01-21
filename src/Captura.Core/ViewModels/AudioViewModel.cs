@@ -7,7 +7,7 @@ namespace Captura.ViewModels
     {
         public AudioSource AudioSource { get; }
 
-        public AudioViewModel(AudioSource AudioSource)
+        public AudioViewModel(AudioSource AudioSource, Settings Settings) : base(Settings)
         {
             this.AudioSource = AudioSource;
 

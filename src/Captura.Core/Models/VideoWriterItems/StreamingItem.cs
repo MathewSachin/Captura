@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ninject;
 using Screna;
 using Screna.Audio;
 
@@ -24,8 +25,18 @@ namespace Captura.Models
         
         public static IEnumerable<StreamingItem> StreamingItems { get; } = new[]
         {
-            new StreamingItem("Twitch", () => $"rtmp://live.twitch.tv/app/{Settings.Instance.TwitchKey}", x264),
-            new StreamingItem("YouTube Live", () => $"rtmp://a.rtmp.youtube.com/live2/{Settings.Instance.YouTubeLiveKey}", x264)
+            new StreamingItem("Twitch", () =>
+            {
+                var settings = ServiceProvider.Kernel.Get<Settings>();
+
+                return $"rtmp://live.twitch.tv/app/{settings.TwitchKey}";
+            }, x264),
+            new StreamingItem("YouTube Live", () =>
+            {
+                var settings = ServiceProvider.Kernel.Get<Settings>();
+
+                return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
+            }, x264)
         };
     }
 }

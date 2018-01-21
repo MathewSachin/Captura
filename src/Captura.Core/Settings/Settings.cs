@@ -1,314 +1,177 @@
-﻿using Captura.Models;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Captura
 {
-    public partial class Settings
+    public class Settings : PropertyStore
     {
-        [UserScopedSetting]
-        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public ProxySettings Proxy
+        static Settings()
         {
-            get => Get<ProxySettings>();
-            set => Set(value);
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                Converters = new JsonConverter[]
+                {
+                    new StringEnumConverter
+                    {
+                        AllowIntegerValues = false
+                    }
+                }
+            };
         }
 
-        [UserScopedSetting]
-        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public WebcamOverlaySettings WebcamOverlay
+        static string GetPath() => Path.Combine(ServiceProvider.SettingsDir, "Captura.json");
+
+        public bool Load()
         {
-            get => Get<WebcamOverlaySettings>();
-            set => Set(value);
+            try
+            {
+                var json = File.ReadAllText(GetPath());
+
+                JsonConvert.PopulateObject(json, this);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        [UserScopedSetting]
-        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public MouseClickSettings Clicks
+        public bool Save()
         {
-            get => Get<MouseClickSettings>();
-            set => Set(value);
+            try
+            {
+                var jobj = new JObject(JObject.FromObject(this).Properties().OrderBy(J => J.Name).ToArray());
+                
+                File.WriteAllText(GetPath(), jobj.ToString());
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        [UserScopedSetting]
-        [SettingsSerializeAs(SettingsSerializeAs.ProviderSpecific)]
-        public KeystrokesSettings Keystrokes
+        public void EnsureOutPath()
         {
-            get => Get<KeystrokesSettings>();
-            set => Set(value);
+            if (!Directory.Exists(OutPath))
+                Directory.CreateDirectory(OutPath);
         }
 
-        [SettingsProvider(typeof(ArraySettingsProvider))]
-        [UserScopedSetting]
-        public List<CustomOverlaySettings> CustomOverlays
-        {
-            get => Get<List<CustomOverlaySettings>>();
-            set => Set(value);
-        }
+        public ProxySettings Proxy { get; } = new ProxySettings();
 
-        [UserScopedSetting]
-        [DefaultSettingValue("")]
+        public WebcamOverlaySettings WebcamOverlay { get; } = new WebcamOverlaySettings();
+
+        public MouseClickSettings Clicks { get; } = new MouseClickSettings();
+        
+        public KeystrokesSettings Keystrokes { get; } = new KeystrokesSettings();
+        
+        public VisualSettings UI { get; } = new VisualSettings();
+
+        public ScreenShotTransformSettings ScreenShotTransform { get; } = new ScreenShotTransformSettings();
+
+        public LastSettings Last { get; } = new LastSettings();
+
         public string TwitchKey
         {
-            get => Get<string>();
+            get => Get("");
             set => Set(value);
         }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("")]
+
         public string YouTubeLiveKey
         {
-            get => Get<string>();
+            get => Get("");
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool DarkTheme
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool HideOnFullScreenShot
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool MainWindowTopmost
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
         public bool CopyOutPathToClipboard
         {
             get => Get<bool>();
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue(null)]
-        public string AccentColor
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("50")]
-        public int MainWindowLeft
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("50")]
-        public int MainWindowTop
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool Expanded
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [SettingsProvider(typeof(ArraySettingsProvider))]
-        [UserScopedSetting]
-        public List<RecentItemModel> RecentItems
-        {
-            get => Get<List<RecentItemModel>>();
-            set => Set(value);
-        }
         
-        [UserScopedSetting]
-        [DefaultSettingValue("30")]
         public int RecentMax
         {
-            get => Get<int>();
+            get => Get(30);
             set => Set(value);
         }
-        
-        [UserScopedSetting]
+
         public string OutPath
         {
             get => Get<string>();
             set => Set(value);
         }
-        
-        [UserScopedSetting]
+
         public string FFMpegFolder
         {
             get => Get<string>();
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
         public bool IncludeCursor
         {
-            get => Get<bool>();
+            get => Get(true);
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool MinimizeOnStart
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("70")]
         public int VideoQuality
         {
-            get => Get<int>();
+            get => Get(70);
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [DefaultSettingValue("10")]
         public int FrameRate
         {
-            get => Get<int>();
+            get => Get(10);
             set => Set(value);
         }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("en")]
+
         public string Language
         {
-            get => Get<string>();
+            get => Get("en");
             set => Set(value);
         }
-
-        [SettingsProvider(typeof(ArraySettingsProvider))]
-        [UserScopedSetting]
-        public List<HotkeyModel> Hotkeys
-        {
-            get => Get<List<HotkeyModel>>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("50")]
+        
         public int AudioQuality
         {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
-        public bool TrayNotify
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        #region Transforms
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool DoResize
-        {
-            get => Get<bool>();
+            get => Get(50);
             set => Set(value);
         }
         
-        [UserScopedSetting]
-        [DefaultSettingValue("640")]
-        public int ResizeWidth
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("400")]
-        public int ResizeHeight
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool FlipHorizontal
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool FlipVertical
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("RotateNone")]
-        public RotateBy RotateBy
-        {
-            get => Get<RotateBy>();
-            set => Set(value);
-        }
-        #endregion
-
         #region Gif
-        [UserScopedSetting]
-        [DefaultSettingValue("False")]
         public bool GifRepeat
         {
             get => Get<bool>();
             set => Set(value);
         }
-        
-        [UserScopedSetting]
-        [DefaultSettingValue("0")]
+
         public int GifRepeatCount
         {
             get => Get<int>();
             set => Set(value);
         }
 
-        [UserScopedSetting]
-        [DefaultSettingValue("True")]
         public bool GifVariable
         {
-            get => Get<bool>();
+            get => Get(true);
             set => Set(value);
         }
         #endregion
         
-        [UserScopedSetting]
-        [DefaultSettingValue("3")]
-        public int RegionBorderThickness
+        public string FFMpeg_CustomExtension
         {
-            get => Get<int>();
+            get => Get(".mp4");
             set => Set(value);
         }
-
-        [UserScopedSetting]
-        [DefaultSettingValue("5000")]
-        public int ScreenShotNotifyTimeout
+        
+        public string FFMpeg_CustomArgs
         {
-            get => Get<int>();
+            get => Get("-vcodec libx264 -crf 30 -pix_fmt yuv420p -preset ultrafast");
             set => Set(value);
         }
     }

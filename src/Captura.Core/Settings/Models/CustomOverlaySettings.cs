@@ -2,6 +2,10 @@
 {
     public class CustomOverlaySettings : TextOverlaySettings
     {
-        public string Text { get; set; }
+        public string Text
+        {
+            get => Get("");
+            set => Set(value);
+        }
     }
 }

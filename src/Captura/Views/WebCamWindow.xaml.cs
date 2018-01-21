@@ -29,10 +29,10 @@ namespace Captura
         {
             try
             {
-                var img = NinjectServiceLocator.Kernel.Get<WebCamProvider>().Capture();
+                var img = ServiceProvider.Kernel.Get<WebCamProvider>().Capture();
                 
                 if (img != null)
-                    NinjectServiceLocator.Kernel.Get<MainViewModel>().SaveScreenShot(img);
+                    ServiceProvider.Kernel.Get<MainViewModel>().SaveScreenShot(img);
             }
             catch { }
         }

@@ -7,7 +7,7 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Margin="10">
-            <CheckBox IsChecked="{local:Setting DarkTheme}"
+            <CheckBox IsChecked="{Binding Settings.UI.DarkTheme}"
                       Click="DarkThemeClick"
                       Content="Dark Theme"
                       Margin="0,5"/>
@@ -35,7 +35,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
-                <xctk:IntegerUpDown Value="{local:Setting RegionBorderThickness}"
+                <xctk:IntegerUpDown Value="{Binding Settings.UI.RegionBorderThickness}"
                                     Minimum="1"
                                     Margin="0,5"
                                     Grid.Row="1"
@@ -45,7 +45,7 @@
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"
                        Grid.Row="2"/>
-                <xctk:IntegerUpDown Value="{local:Setting ScreenShotNotifyTimeout}"
+                <xctk:IntegerUpDown Value="{Binding Settings.UI.ScreenShotNotifyTimeout}"
                                     Minimum="1000"
                                     Margin="0,5"
                                     Grid.Row="2"

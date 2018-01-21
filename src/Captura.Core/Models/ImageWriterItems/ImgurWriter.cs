@@ -15,12 +15,14 @@ namespace Captura.Models
         readonly DiskWriter _diskWriter;
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
+        readonly Settings _settings;
 
-        public ImgurWriter(DiskWriter DiskWriter, ISystemTray SystemTray, IMessageProvider MessageProvider)
+        public ImgurWriter(DiskWriter DiskWriter, ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings)
         {
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
+            _settings = Settings;
 
             TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
@@ -29,7 +31,7 @@ namespace Captura.Models
         {
             var ritem = Recents.Add($"{LanguageManager.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
-            using (var w = new WebClient { Proxy = Settings.Instance.Proxy.GetWebProxy() })
+            using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (s, e) =>
                 {
@@ -80,13 +82,13 @@ namespace Captura.Models
 
                 var link = xdoc.Root.Element("link").Value;
 
-                if (Settings.Instance.CopyOutPathToClipboard)
+                if (_settings.CopyOutPathToClipboard)
                     link.WriteToClipboard();
 
                 ritem.FilePath = ritem.Display = link;
                 ritem.Saved();
 
-                _systemTray.ShowTextNotification($"{LanguageManager.ImgurSuccess}: {link}", Settings.Instance.ScreenShotNotifyTimeout, () => Process.Start(link));
+                _systemTray.ShowTextNotification($"{LanguageManager.ImgurSuccess}: {link}", _settings.UI.ScreenShotNotifyTimeout, () => Process.Start(link));
 
                 Status.LocalizationKey = nameof(LanguageManager.ImgurSuccess);
             }

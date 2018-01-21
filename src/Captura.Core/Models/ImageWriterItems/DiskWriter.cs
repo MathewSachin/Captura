@@ -10,11 +10,13 @@ namespace Captura.Models
     {
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
+        readonly Settings _settings;
 
-        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider)
+        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings)
         {
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
+            _settings = Settings;
 
             TranslationSource.Instance.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Display));
         }
@@ -23,13 +25,14 @@ namespace Captura.Models
         {
             try
             {
-                Settings.Instance.EnsureOutPath();
+
+                _settings.EnsureOutPath();
 
                 var extension = Format.Equals(ImageFormat.Icon) ? "ico"
                     : Format.Equals(ImageFormat.Jpeg) ? "jpg"
                     : Format.ToString().ToLower();
 
-                var fileName = FileName ?? Path.Combine(Settings.Instance.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
+                var fileName = FileName ?? Path.Combine(_settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
 
                 using (Image)
                     Image.Save(fileName, Format);
@@ -37,7 +40,7 @@ namespace Captura.Models
                 Status.LocalizationKey = nameof(LanguageManager.ImgSavedDisk);
                 Recents.Add(fileName, RecentItemType.Image, false);
 
-                if (Settings.Instance.CopyOutPathToClipboard)
+                if (_settings.CopyOutPathToClipboard)
                     fileName.WriteToClipboard();
 
                 _systemTray.ShowScreenShotNotification(fileName);

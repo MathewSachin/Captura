@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using Ninject;
 
 namespace Captura
 {
@@ -12,14 +13,18 @@ namespace Captura
     {
         public const string FFMpegExeName = "ffmpeg.exe";
 
+        static Settings GetSettings() => ServiceProvider.Kernel.Get<Settings>();
+
         public static bool FFMpegExists
         {
             get
             {
+                var settings = GetSettings();
+
                 // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
+                if (!string.IsNullOrWhiteSpace(settings.FFMpegFolder))
                 {
-                    var path = Path.Combine(Settings.Instance.FFMpegFolder, FFMpegExeName);
+                    var path = Path.Combine(settings.FFMpegFolder, FFMpegExeName);
 
                     if (File.Exists(path))
                         return true;
@@ -56,10 +61,12 @@ namespace Captura
         {
             get
             {
+                var settings = GetSettings();
+
                 // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(Settings.Instance.FFMpegFolder))
+                if (!string.IsNullOrWhiteSpace(settings.FFMpegFolder))
                 {
-                    var path = Path.Combine(Settings.Instance.FFMpegFolder, FFMpegExeName);
+                    var path = Path.Combine(settings.FFMpegFolder, FFMpegExeName);
 
                     if (File.Exists(path))
                         return path;
@@ -74,15 +81,17 @@ namespace Captura
 
         public static void SelectFFMpegFolder()
         {
+            var settings = GetSettings();
+
             using (var dlg = new VistaFolderBrowserDialog
             {
-                SelectedPath = Settings.Instance.FFMpegFolder,
+                SelectedPath = settings.FFMpegFolder,
                 UseDescriptionForTitle = true,
                 Description = LanguageManager.SelectFFMpegFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.Instance.FFMpegFolder = dlg.SelectedPath;
+                    settings.FFMpegFolder = dlg.SelectedPath;
             }
         }
 

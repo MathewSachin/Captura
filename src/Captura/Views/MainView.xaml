@@ -22,7 +22,7 @@
                         Margin="5,0,0,0">
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
                                           IconData="{StaticResource Icon_Cursor}"
-                                          IsChecked="{local:Setting IncludeCursor}"/>
+                                          IsChecked="{Binding Settings.IncludeCursor}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource Icon_Hand}"
@@ -129,16 +129,17 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc FrameRate}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{local:Setting FrameRate, StringFormat={}{0:N0}}"
+            <Label Content="{Binding Settings.FrameRate}"
                    Margin="5,0"
                    MinWidth="15"
+                   ContentStringFormat="{}{0:N0}"
                    HorizontalContentAlignment="Right"/>
             <Slider Minimum="1"
                     Maximum="30"
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"
-                    Value="{local:Setting FrameRate}"
+                    Value="{Binding Settings.FrameRate}"
                     Interval="1"/>
         </DockPanel>
 
@@ -146,7 +147,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{local:Setting VideoQuality}"
+            <Label Content="{Binding Settings.VideoQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -156,7 +157,7 @@
                     SelectionStart="60"
                     SelectionEnd="80"
                     IsSelectionRangeEnabled="True"
-                    Value="{local:Setting VideoQuality}"/>
+                    Value="{Binding Settings.VideoQuality}"/>
         </DockPanel>
 
         <Label Margin="10,15,0,3"
@@ -239,7 +240,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{local:Setting AudioQuality}"
+            <Label Content="{Binding Settings.AudioQuality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -249,7 +250,7 @@
                     SelectionStart="40"
                     SelectionEnd="60"
                     IsSelectionRangeEnabled="True"
-                    Value="{local:Setting AudioQuality}"/>
+                    Value="{Binding Settings.AudioQuality}"/>
         </DockPanel>
     </StackPanel>
 </Page>

@@ -1,14 +1,30 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 namespace Captura
 {
-    public abstract class PositionedOverlaySettings : NotifyPropertyChanged
+    public abstract class PositionedOverlaySettings : PropertyStore
     {
-        public Alignment HorizontalAlignment { get; set; } = Alignment.Start;
+        public Alignment HorizontalAlignment
+        {
+            get => Get(Alignment.Start);
+            set => Set(value);
+        }
 
-        public Alignment VerticalAlignment { get; set; } = Alignment.End;
+        public Alignment VerticalAlignment
+        {
+            get => Get(Alignment.End);
+            set => Set(value);
+        }
 
-        public int X { get; set; } = 80;
+        public int X
+        {
+            get => Get(80);
+            set => Set(value);
+        }
 
-        public int Y { get; set; } = 100;
+        public int Y
+        {
+            get => Get(100);
+            set => Set(value);
+        }
     }
 }
