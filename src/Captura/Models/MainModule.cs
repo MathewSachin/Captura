@@ -17,6 +17,8 @@ namespace Captura
             Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
             Bind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
             Bind<IMainWindow>().ToMethod(M => new MainWindowProvider(() => MainWindow.Instance));
+
+            Bind<AboutViewModel>().ToSelf().InSingletonScope();
         }
     }
 }

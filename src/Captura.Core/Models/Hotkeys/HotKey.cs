@@ -17,7 +17,7 @@ namespace Captura.Models
             ServiceName = Model.ServiceName;
             Key = Model.Key;
             Modifiers = Model.Modifiers;
-            Work = ServiceProvider.Get<Action>(Model.ServiceName);
+            Work = () => ServiceProvider.Get(Model.ServiceName).ExecuteIfCan();
             Description = new TextLocalizer(ServiceProvider.GetDescriptionKey(Model.ServiceName));
 
             IsActive = Model.IsActive;

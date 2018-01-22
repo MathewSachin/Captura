@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Input;
 using Ninject;
 
 namespace Captura
@@ -14,7 +15,7 @@ namespace Captura
     /// </summary>
     public static class ServiceProvider
     {
-        static readonly Dictionary<ServiceName, object> Services = new Dictionary<ServiceName, object>();
+        static readonly Dictionary<ServiceName, ICommand> Services = new Dictionary<ServiceName, ICommand>();
         
         static string _settingsDir;
 
@@ -44,9 +45,9 @@ namespace Captura
         /// <summary>
         /// Get the requested Service.
         /// </summary>
-        public static T Get<T>(ServiceName ServiceAction)
+        public static ICommand Get(ServiceName ServiceAction)
         {
-            return Services.ContainsKey(ServiceAction) ? (T)Services[ServiceAction] : default(T);
+            return Services.ContainsKey(ServiceAction) ? Services[ServiceAction] : null;
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Captura
         /// <summary>
         /// Registers a Service.
         /// </summary>
-        public static void Register<T>(ServiceName ServiceAction, T Action)
+        public static void Register(ServiceName ServiceAction, ICommand Action)
         {
             Services.Add(ServiceAction, Action);
         }

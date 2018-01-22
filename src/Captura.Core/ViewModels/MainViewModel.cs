@@ -263,11 +263,11 @@ namespace Captura.ViewModels
             Settings.EnsureOutPath();
 
             // Register ActionServices
-            ServiceProvider.Register<Action>(ServiceName.Recording, () => RecordCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.Pause, () => PauseCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.ScreenShot, () => ScreenShotCommand.ExecuteIfCan());
-            ServiceProvider.Register<Action>(ServiceName.ActiveScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
-            ServiceProvider.Register<Action>(ServiceName.DesktopScreenShot, () => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
+            ServiceProvider.Register(ServiceName.Recording, RecordCommand);
+            ServiceProvider.Register(ServiceName.Pause, PauseCommand);
+            ServiceProvider.Register(ServiceName.ScreenShot, ScreenShotCommand);
+            ServiceProvider.Register(ServiceName.ActiveScreenShot, ScreenShotActiveCommand);
+            ServiceProvider.Register(ServiceName.DesktopScreenShot, ScreenShotDesktopCommand);
 
             // Register Hotkeys if not console
             if (_hotkeys)
