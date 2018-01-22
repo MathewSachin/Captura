@@ -19,6 +19,9 @@ namespace Captura
             // Localization
             Bind<LanguageManager>().ToMethod(M => LanguageManager.Instance).InSingletonScope();
 
+            // Hotkeys
+            Bind<HotKeyManager>().ToSelf().InSingletonScope();
+
             // Image Writers
             Bind<IImageWriterItem>().To<DiskWriter>().InSingletonScope();
             Bind<IImageWriterItem>().To<ClipboardWriter>().InSingletonScope();

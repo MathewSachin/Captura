@@ -44,6 +44,8 @@ namespace Captura.ViewModels
         readonly WebcamOverlay _webcamOverlay;
         readonly IMainWindow _mainWindow;
         #endregion
+
+        public HotKeyManager HotKeyManager { get; }
         
         public MainViewModel(AudioViewModel AudioViewModel,
             VideoViewModel VideoViewModel,
@@ -54,7 +56,8 @@ namespace Captura.ViewModels
             IMainWindow MainWindow,
             Settings Settings,
             RecentViewModel RecentViewModel,
-            LanguageManager LanguageManager) : base(Settings, LanguageManager)
+            LanguageManager LanguageManager,
+            HotKeyManager HotKeyManager) : base(Settings, LanguageManager)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
@@ -64,6 +67,7 @@ namespace Captura.ViewModels
             _webcamOverlay = WebcamOverlay;
             _mainWindow = MainWindow;
             this.RecentViewModel = RecentViewModel;
+            this.HotKeyManager = HotKeyManager;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());

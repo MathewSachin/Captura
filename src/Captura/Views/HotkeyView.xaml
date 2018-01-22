@@ -2,14 +2,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
-      x:Class="Captura.HotkeyView">
+      x:Class="Captura.HotkeyView"
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <DockPanel Margin="5">
         <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
-                Click="Reset_Click"/>
+                Command="{Binding HotKeyManager.ResetCommand}"/>
         <ScrollViewer>
             <ItemsControl Margin="0,5"
-                          ItemsSource="{x:Static core:HotKeyManager.Hotkeys}">
+                          ItemsSource="{Binding HotKeyManager.Hotkeys}">
                 <ItemsControl.Resources>
                     <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Margin" Value="3"/>

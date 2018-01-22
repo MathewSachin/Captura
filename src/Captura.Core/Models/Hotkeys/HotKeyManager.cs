@@ -1,31 +1,37 @@
+using System;
 using Captura.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Newtonsoft.Json;
 
 namespace Captura
 {
-    public static class HotKeyManager
+    public class HotKeyManager : IDisposable
     {
-        static readonly ObservableCollection<Hotkey> hotkeys = new ObservableCollection<Hotkey>();
+        readonly ObservableCollection<Hotkey> hotkeys = new ObservableCollection<Hotkey>();
 
-        public static ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
+        public ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
 
-        static readonly string FilePath;
+        readonly string FilePath;
 
-        static HotKeyManager()
+        public ICommand ResetCommand { get; }
+
+        public HotKeyManager()
         {
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(hotkeys);
+
+            ResetCommand = new DelegateCommand(Reset);
 
             ServiceProvider.HotKeyPressed += ProcessHotkey;
 
             FilePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
         }
 
-        public static void RegisterAll()
+        public void RegisterAll()
         {
             IEnumerable<HotkeyModel> models;
 
@@ -43,7 +49,7 @@ namespace Captura
             Populate(models);
         }
 
-        public static void Reset()
+        public void Reset()
         {
             Dispose();
 
@@ -52,7 +58,7 @@ namespace Captura
             Populate(Defaults());
         }
 
-        static void Populate(IEnumerable<HotkeyModel> Models)
+        void Populate(IEnumerable<HotkeyModel> Models)
         {
             var nonReg = new List<Hotkey>();
 
@@ -79,7 +85,7 @@ namespace Captura
             }
         }
 
-        static IEnumerable<HotkeyModel> Defaults()
+        IEnumerable<HotkeyModel> Defaults()
         {
             yield return new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true);
             yield return new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true);
@@ -88,12 +94,12 @@ namespace Captura
             yield return new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true);
         }
         
-        static void ProcessHotkey(int Id)
+        void ProcessHotkey(int Id)
         {
             Hotkeys.SingleOrDefault(H => H.ID == Id)?.Work();
         }
         
-        public static void Dispose()
+        public void Dispose()
         {
             var models = Hotkeys.Select(M =>
             {
