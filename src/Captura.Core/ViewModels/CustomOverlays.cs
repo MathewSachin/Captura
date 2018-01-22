@@ -11,6 +11,8 @@ namespace Captura.ViewModels
 
         CustomOverlaysViewModel()
         {
+            Collection = new ReadOnlyObservableCollection<CustomOverlaySettings>(_collection);
+
             _filePath = Path.Combine(ServiceProvider.SettingsDir, "CustomOverlays.json");
 
             try
@@ -21,7 +23,7 @@ namespace Captura.ViewModels
 
                 foreach (var overlay in overlays)
                 {
-                    Collection.Add(overlay);
+                    _collection.Add(overlay);
                 }
             }
             catch
@@ -29,7 +31,7 @@ namespace Captura.ViewModels
                 // Ignore Errors
             }
 
-            AddCommand = new DelegateCommand(() => Collection.Add(new CustomOverlaySettings()));
+            AddCommand = new DelegateCommand(() => _collection.Add(new CustomOverlaySettings()));
 
             RemoveCommand = new DelegateCommand(OnRemoveExecute);
         }
@@ -38,17 +40,21 @@ namespace Captura.ViewModels
         {
             if (O is CustomOverlaySettings textOverlaySettings)
             {
-                Collection.Remove(textOverlaySettings);
+                _collection.Remove(textOverlaySettings);
             }
         }
 
         public static CustomOverlaysViewModel Instance { get; } = new CustomOverlaysViewModel();
 
-        public ObservableCollection<CustomOverlaySettings> Collection { get; } = new ObservableCollection<CustomOverlaySettings>();
+        readonly ObservableCollection<CustomOverlaySettings> _collection = new ObservableCollection<CustomOverlaySettings>();
+
+        public ReadOnlyObservableCollection<CustomOverlaySettings> Collection { get; }
 
         public ICommand AddCommand { get; }
 
         public ICommand RemoveCommand { get; }
+
+        public void Reset() => _collection.Clear();
 
         public void Dispose()
         {

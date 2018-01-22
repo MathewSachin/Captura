@@ -14,11 +14,19 @@ namespace Captura.ViewModels
             Settings Settings,
             LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
+            AvailableVideoWriterKinds = new ReadOnlyObservableCollection<VideoWriterKind>(_videoWriterKinds);
+            AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
+
+            AvailableVideoSourceKinds = new ReadOnlyObservableCollection<ObjectLocalizer<VideoSourceKind>>(_videoSourceKinds);
+            AvailableVideoSources = new ReadOnlyObservableCollection<IVideoItem>(_videoSources);
+
+            AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
+
             _regionProvider = RegionProvider;
 
             foreach (var imageWriter in ImageWriters)
             {
-                AvailableImageWriters.Add(imageWriter);
+                _imageWriters.Add(imageWriter);
             }
             
             SelectedImageWriter = AvailableImageWriters[0];
@@ -29,7 +37,7 @@ namespace Captura.ViewModels
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
-                AvailableVideoWriterKinds.Add(VideoWriterKind.SharpAvi);
+                _videoWriterKinds.Add(VideoWriterKind.SharpAvi);
             }
                                                
             RefreshCodecs();
@@ -45,7 +53,7 @@ namespace Captura.ViewModels
         
         public void RefreshVideoSources()
         {
-            AvailableVideoSources.Clear();
+            _videoSources.Clear();
 
             // RegionSelector should only be shown on Region Capture.
             _regionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
@@ -53,33 +61,33 @@ namespace Captura.ViewModels
             switch (SelectedVideoSourceKind)
             {
                 case VideoSourceKind.Window:
-                    AvailableVideoSources.Add(WindowItem.TaskBar);
+                    _videoSources.Add(WindowItem.TaskBar);
                     
                     foreach (var win in Window.EnumerateVisible())
-                        AvailableVideoSources.Add(new WindowItem(win));
+                        _videoSources.Add(new WindowItem(win));
                     break;
 
                 case VideoSourceKind.DesktopDuplication:
                     foreach (var screen in ScreenItem.Enumerate(true))
-                        AvailableVideoSources.Add(screen);
+                        _videoSources.Add(screen);
                     break;
 
                 case VideoSourceKind.Screen:
-                    AvailableVideoSources.Add(FullScreenItem.Instance);
+                    _videoSources.Add(FullScreenItem.Instance);
 
                     foreach (var screen in ScreenItem.Enumerate(false))
-                        AvailableVideoSources.Add(screen);
+                        _videoSources.Add(screen);
                     break;
 
                 case VideoSourceKind.Region:
-                    AvailableVideoSources.Add(_regionProvider.VideoSource);
+                    _videoSources.Add(_regionProvider.VideoSource);
                     break;
 
                 case VideoSourceKind.NoVideo:
-                    AvailableVideoSources.Add(WaveItem.Instance);
+                    _videoSources.Add(WaveItem.Instance);
 
                     foreach (var item in FFMpegAudioItem.Items)
-                        AvailableVideoSources.Add(item);
+                        _videoSources.Add(item);
 
                     break;
             }
@@ -95,7 +103,7 @@ namespace Captura.ViewModels
             {
                 var item = new SharpAviItem(codec);
 
-                AvailableVideoWriters.Add(item);
+                _videoWriters.Add(item);
 
                 // Set MotionJpeg as default
                 if (codec == AviCodec.MotionJpeg)
@@ -106,7 +114,7 @@ namespace Captura.ViewModels
         public void RefreshCodecs()
         {
             // Available Codecs
-            AvailableVideoWriters.Clear();
+            _videoWriters.Clear();
 
             switch (SelectedVideoWriterKind)
             {
@@ -115,28 +123,28 @@ namespace Captura.ViewModels
                     break;
 
                 case VideoWriterKind.Gif:
-                    AvailableVideoWriters.Add(GifItem.Instance);
+                    _videoWriters.Add(GifItem.Instance);
 
                     SelectedVideoWriter = GifItem.Instance;
                     break;
 
                 case VideoWriterKind.FFMpeg:
                     foreach (var item in FFMpegItem.Items)
-                        AvailableVideoWriters.Add(item);
+                        _videoWriters.Add(item);
 
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
 
                 case VideoWriterKind.Streaming_Alpha:
                     foreach (var item in StreamingItem.StreamingItems)
-                        AvailableVideoWriters.Add(item);
+                        _videoWriters.Add(item);
 
                     SelectedVideoWriter = AvailableVideoWriters[0];
                     break;
             }
         }
 
-        public ObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; } = new ObservableCollection<VideoWriterKind>
+        readonly ObservableCollection<VideoWriterKind> _videoWriterKinds = new ObservableCollection<VideoWriterKind>()
         {
             // Gif is always availble
             VideoWriterKind.Gif,
@@ -146,7 +154,11 @@ namespace Captura.ViewModels
             VideoWriterKind.Streaming_Alpha
         };
 
-        public ObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; } = new ObservableCollection<IVideoWriterItem>();
+        public ReadOnlyObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; }
+
+        readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
+
+        public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
         
         VideoWriterKind _writerKind = VideoWriterKind.FFMpeg;
 
@@ -166,7 +178,7 @@ namespace Captura.ViewModels
             }
         }
         
-        public ObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; } = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
+        readonly ObservableCollection<ObjectLocalizer<VideoSourceKind>> _videoSourceKinds = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
         {
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(LanguageManager.OnlyAudio)),
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(LanguageManager.Screen)),
@@ -175,7 +187,11 @@ namespace Captura.ViewModels
             new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(LanguageManager.Region))
         };
 
-        public ObservableCollection<IVideoItem> AvailableVideoSources { get; } = new ObservableCollection<IVideoItem>();
+        public ReadOnlyObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; }
+
+        readonly ObservableCollection<IVideoItem> _videoSources = new ObservableCollection<IVideoItem>();
+
+        public ReadOnlyObservableCollection<IVideoItem> AvailableVideoSources { get; }
 
         VideoSourceKind _videoSourceKind = VideoSourceKind.Screen;
 
@@ -224,7 +240,9 @@ namespace Captura.ViewModels
             }
         }
 
-        public ObservableCollection<IImageWriterItem> AvailableImageWriters { get; } = new ObservableCollection<IImageWriterItem>();
+        readonly ObservableCollection<IImageWriterItem> _imageWriters = new ObservableCollection<IImageWriterItem>();
+
+        public ReadOnlyObservableCollection<IImageWriterItem> AvailableImageWriters { get; }
 
         IImageWriterItem _imgWriter;
 

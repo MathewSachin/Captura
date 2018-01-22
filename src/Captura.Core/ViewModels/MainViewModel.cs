@@ -326,12 +326,12 @@ namespace Captura.ViewModels
             AudioViewModel.Dispose();
 
             RecentViewModel.Dispose();
-            
-            CustomOverlaysViewModel.Instance.Dispose();
 
             // Remember things if not console.
             if (_persist)
             {
+                CustomOverlaysViewModel.Instance.Dispose();
+
                 Remember();
 
                 Settings.Save();

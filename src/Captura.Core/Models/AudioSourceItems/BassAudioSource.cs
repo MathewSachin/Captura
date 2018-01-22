@@ -47,11 +47,11 @@ namespace Captura.Models
 
         protected override void OnRefresh()
         {
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
+            for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
                 if (info.IsLoopback)
-                    AvailableLoopbackSources.Add(new BassItem(i, info.Name));
-                else AvailableRecordingSources.Add(new BassItem(i, info.Name));
+                    LoopbackSources.Add(new BassItem(i, info.Name));
+                else RecordingSources.Add(new BassItem(i, info.Name));
             }
         }
 

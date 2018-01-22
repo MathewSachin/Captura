@@ -10,12 +10,16 @@ namespace Captura
 {
     public static class HotKeyManager
     {
-        public static ObservableCollection<Hotkey> Hotkeys { get; } = new ObservableCollection<Hotkey>();
+        static readonly ObservableCollection<Hotkey> hotkeys = new ObservableCollection<Hotkey>();
+
+        public static ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
 
         static readonly string FilePath;
 
         static HotKeyManager()
         {
+            Hotkeys = new ReadOnlyObservableCollection<Hotkey>(hotkeys);
+
             ServiceProvider.HotKeyPressed += ProcessHotkey;
 
             FilePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
@@ -43,7 +47,7 @@ namespace Captura
         {
             Dispose();
 
-            Hotkeys.Clear();
+            hotkeys.Clear();
 
             Populate(Defaults());
         }
@@ -59,7 +63,7 @@ namespace Captura
                 if (hotkey.IsActive && !hotkey.IsRegistered)
                     nonReg.Add(hotkey);
 
-                Hotkeys.Add(hotkey);
+                hotkeys.Add(hotkey);
             }
 
             if (nonReg.Count > 0)

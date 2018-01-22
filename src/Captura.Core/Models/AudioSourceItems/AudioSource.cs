@@ -7,8 +7,17 @@ namespace Captura.Models
     // Users need to call Init and Dispose methods
     public abstract class AudioSource : NotifyPropertyChanged, IDisposable
     {
-        public ObservableCollection<IAudioItem> AvailableRecordingSources { get; } = new ObservableCollection<IAudioItem>();
-        public ObservableCollection<IAudioItem> AvailableLoopbackSources { get; } = new ObservableCollection<IAudioItem>();
+        protected readonly ObservableCollection<IAudioItem> RecordingSources = new ObservableCollection<IAudioItem>();
+        protected readonly ObservableCollection<IAudioItem> LoopbackSources = new ObservableCollection<IAudioItem>();
+
+        public ReadOnlyObservableCollection<IAudioItem> AvailableRecordingSources { get; }
+        public ReadOnlyObservableCollection<IAudioItem> AvailableLoopbackSources { get; }
+
+        protected AudioSource()
+        {
+            AvailableRecordingSources = new ReadOnlyObservableCollection<IAudioItem>(RecordingSources);
+            AvailableLoopbackSources = new ReadOnlyObservableCollection<IAudioItem>(LoopbackSources);
+        }
 
         IAudioItem _recordingSource, _loopbackSource;
 
@@ -24,6 +33,8 @@ namespace Captura.Models
                 _recordingSource = value ?? NoSoundItem.Instance;
 
                 OnPropertyChanged();
+
+                RaisePropertyChanged(nameof(AudioAvailable));
             }
         }
 
@@ -35,16 +46,18 @@ namespace Captura.Models
                 _loopbackSource = value ?? NoSoundItem.Instance;
 
                 OnPropertyChanged();
+
+                RaisePropertyChanged(nameof(AudioAvailable));
             }
         }
 
         public void Refresh()
         {
-            AvailableRecordingSources.Clear();
-            AvailableLoopbackSources.Clear();
+            RecordingSources.Clear();
+            LoopbackSources.Clear();
 
-            AvailableRecordingSources.Add(NoSoundItem.Instance);
-            AvailableLoopbackSources.Add(NoSoundItem.Instance);
+            RecordingSources.Add(NoSoundItem.Instance);
+            LoopbackSources.Add(NoSoundItem.Instance);
 
             OnRefresh();
 

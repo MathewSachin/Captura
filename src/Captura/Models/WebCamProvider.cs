@@ -9,12 +9,16 @@ namespace Captura.Models
     {
         public WebCamProvider()
         {
+            AvailableCams = new ReadOnlyObservableCollection<IWebcamItem>(_cams);
+
             _camControl = WebCamWindow.Instance.GetWebCamControl();
             
             Refresh();
         }
         
-        public ObservableCollection<IWebcamItem> AvailableCams { get; } = new ObservableCollection<IWebcamItem>();
+        readonly ObservableCollection<IWebcamItem> _cams = new ObservableCollection<IWebcamItem>();
+
+        public ReadOnlyObservableCollection<IWebcamItem> AvailableCams { get; }
 
         readonly WebcamControl _camControl;
 
@@ -58,15 +62,15 @@ namespace Captura.Models
         
         public void Refresh()
         {
-            AvailableCams.Clear();
+            _cams.Clear();
 
-            AvailableCams.Add(WebcamItem.NoWebcam);
+            _cams.Add(WebcamItem.NoWebcam);
 
             if (_camControl == null)
                 return;
 
             foreach (var cam in CaptureWebcam.VideoInputDevices)
-                AvailableCams.Add(new WebcamItem(cam));
+                _cams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;
         }

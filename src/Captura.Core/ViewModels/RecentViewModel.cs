@@ -10,7 +10,9 @@ namespace Captura.ViewModels
 {
     public class RecentViewModel : ViewModelBase, IDisposable
     {
-        public ObservableCollection<RecentItemViewModel> RecentList { get; } = new ObservableCollection<RecentItemViewModel>();
+        readonly ObservableCollection<RecentItemViewModel> _recentList = new ObservableCollection<RecentItemViewModel>();
+
+        public ReadOnlyObservableCollection<RecentItemViewModel> RecentList { get; }
         
         public ICommand ClearCommand { get; }
 
@@ -19,6 +21,8 @@ namespace Captura.ViewModels
 
         public RecentViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
+            RecentList = new ReadOnlyObservableCollection<RecentItemViewModel>(_recentList);
+
             _settings = Settings;
             _filePath = Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
 
@@ -41,7 +45,7 @@ namespace Captura.ViewModels
                 // Ignore Errors
             }
 
-            ClearCommand = new DelegateCommand(() => RecentList.Clear());
+            ClearCommand = new DelegateCommand(() => _recentList.Clear());
         }
 
         public RecentItemViewModel Add(string FilePath, RecentItemType ItemType, bool IsSaving)
@@ -49,9 +53,9 @@ namespace Captura.ViewModels
             var item = new RecentItemViewModel(FilePath, ItemType, IsSaving);
 
             // Insert on Top
-            RecentList.Insert(0, item);
+            _recentList.Insert(0, item);
 
-            item.OnRemove += () => RecentList.Remove(item);
+            item.OnRemove += () => _recentList.Remove(item);
 
             return item;
         }
