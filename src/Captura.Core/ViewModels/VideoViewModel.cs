@@ -12,13 +12,14 @@ namespace Captura.ViewModels
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
             IEnumerable<IVideoWriterProvider> VideoWriterProviders,
+            IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             Settings Settings,
             LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             AvailableVideoWriterKinds = new ReadOnlyObservableCollection<IVideoWriterProvider>(_videoWriterKinds);
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
-            AvailableVideoSourceKinds = new ReadOnlyObservableCollection<ObjectLocalizer<VideoSourceKind>>(_videoSourceKinds);
+            AvailableVideoSourceKinds = new ReadOnlyObservableCollection<IVideoSourceProvider>(_videoSourceKinds);
             AvailableVideoSources = new ReadOnlyObservableCollection<IVideoItem>(_videoSources);
 
             AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
@@ -34,12 +35,20 @@ namespace Captura.ViewModels
             {
                 _videoWriterKinds.Add(videoWriterProvider);
             }
+
+            foreach (var videoSourceProvider in VideoSourceProviders)
+            {
+                _videoSourceKinds.Add(videoSourceProvider);
+            }
             
             if (AvailableImageWriters.Count > 0)
                 SelectedImageWriter = AvailableImageWriters[0];
 
             if (AvailableVideoWriterKinds.Count > 0)
                 SelectedVideoWriterKind = AvailableVideoWriterKinds[0];
+
+            if (AvailableVideoSourceKinds.Count > 0)
+                SelectedVideoSourceKind = AvailableVideoSourceKinds[0];
         }
 
         public void Init()
@@ -50,8 +59,8 @@ namespace Captura.ViewModels
             
             _regionProvider.SelectorHidden += () =>
             {
-                if (SelectedVideoSourceKind == VideoSourceKind.Region)
-                    SelectedVideoSourceKind = VideoSourceKind.Screen;
+                if (SelectedVideoSourceKind is RegionSourceProvider)
+                    SelectedVideoSourceKind = AvailableVideoSourceKinds[0];
             };
         }
         
@@ -60,40 +69,11 @@ namespace Captura.ViewModels
             _videoSources.Clear();
 
             // RegionSelector should only be shown on Region Capture.
-            _regionProvider.SelectorVisible = SelectedVideoSourceKind == VideoSourceKind.Region;
+            _regionProvider.SelectorVisible = SelectedVideoSourceKind is RegionSourceProvider;
 
-            switch (SelectedVideoSourceKind)
+            foreach (var source in SelectedVideoSourceKind)
             {
-                case VideoSourceKind.Window:
-                    _videoSources.Add(WindowItem.TaskBar);
-                    
-                    foreach (var win in Window.EnumerateVisible())
-                        _videoSources.Add(new WindowItem(win));
-                    break;
-
-                case VideoSourceKind.DesktopDuplication:
-                    foreach (var screen in ScreenItem.Enumerate(true))
-                        _videoSources.Add(screen);
-                    break;
-
-                case VideoSourceKind.Screen:
-                    _videoSources.Add(FullScreenItem.Instance);
-
-                    foreach (var screen in ScreenItem.Enumerate(false))
-                        _videoSources.Add(screen);
-                    break;
-
-                case VideoSourceKind.Region:
-                    _videoSources.Add(_regionProvider.VideoSource);
-                    break;
-
-                case VideoSourceKind.NoVideo:
-                    _videoSources.Add(WaveItem.Instance);
-
-                    foreach (var item in FFMpegAudioItem.Items)
-                        _videoSources.Add(item);
-
-                    break;
+                _videoSources.Add(source);
             }
 
             // Set first source as default
@@ -140,25 +120,18 @@ namespace Captura.ViewModels
                 RefreshCodecs();
             }
         }
-        
-        readonly ObservableCollection<ObjectLocalizer<VideoSourceKind>> _videoSourceKinds = new ObservableCollection<ObjectLocalizer<VideoSourceKind>>
-        {
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.NoVideo, nameof(LanguageManager.OnlyAudio)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Screen, nameof(LanguageManager.Screen)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.DesktopDuplication, nameof(LanguageManager.DesktopDuplication)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Window, nameof(LanguageManager.Window)),
-            new ObjectLocalizer<VideoSourceKind>(VideoSourceKind.Region, nameof(LanguageManager.Region))
-        };
 
-        public ReadOnlyObservableCollection<ObjectLocalizer<VideoSourceKind>> AvailableVideoSourceKinds { get; }
+        readonly ObservableCollection<IVideoSourceProvider> _videoSourceKinds = new ObservableCollection<IVideoSourceProvider>();
+
+        public ReadOnlyObservableCollection<IVideoSourceProvider> AvailableVideoSourceKinds { get; }
 
         readonly ObservableCollection<IVideoItem> _videoSources = new ObservableCollection<IVideoItem>();
 
         public ReadOnlyObservableCollection<IVideoItem> AvailableVideoSources { get; }
 
-        VideoSourceKind _videoSourceKind = VideoSourceKind.Screen;
+        IVideoSourceProvider _videoSourceKind;
 
-        public VideoSourceKind SelectedVideoSourceKind
+        public IVideoSourceProvider SelectedVideoSourceKind
         {
             get => _videoSourceKind;
             set

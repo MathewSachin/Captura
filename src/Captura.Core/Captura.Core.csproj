@@ -163,6 +163,12 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\TextOverlay.cs" />
+    <Compile Include="Models\VideoSourceProviders\DeskDuplSourceProvider.cs" />
+    <Compile Include="Models\VideoSourceProviders\IVideoSourceProvider.cs" />
+    <Compile Include="Models\VideoSourceProviders\NoVideoSourceProvider.cs" />
+    <Compile Include="Models\VideoSourceProviders\RegionSourceProvider.cs" />
+    <Compile Include="Models\VideoSourceProviders\ScreenSourceProvider.cs" />
+    <Compile Include="Models\VideoSourceProviders\WindowSourceProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\FFMpegWriterProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\IVideoWriterProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\SharpAviWriterProvider.cs" />
@@ -198,7 +204,7 @@
     <Compile Include="Models\VideoItems\FFMpegAudioItem.cs" />
     <Compile Include="Models\VideoItems\NoVideoItem.cs" />
     <Compile Include="Models\VideoItems\IVideoItem.cs" />
-    <Compile Include="Models\VideoItems\VideoSourceKind.cs" />
+    <Compile Include="Models\VideoSourceProviders\VideoSourceProviderBase.cs" />
     <Compile Include="Models\VideoItems\FullScreenItem.cs" />
     <Compile Include="Models\VideoItems\WaveItem.cs" />
     <Compile Include="Models\VideoItems\WindowItem.cs" />

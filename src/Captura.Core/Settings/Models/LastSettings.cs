@@ -22,9 +22,9 @@ namespace Captura
             set => Set(value);
         }
         
-        public VideoSourceKind SourceKind
+        public string SourceKind
         {
-            get => Get(VideoSourceKind.Screen);
+            get => Get("Screen");
             set => Set(value);
         }
 

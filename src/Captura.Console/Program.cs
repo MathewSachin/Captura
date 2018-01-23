@@ -136,7 +136,7 @@ namespace Captura.Console
                 #region Windows
                 WriteLine("AVAILABLE WINDOWS" + underline);
 
-                video.SelectedVideoSourceKind = VideoSourceKind.Window;
+                video.SelectedVideoSourceKind = ServiceProvider.Get<WindowSourceProvider>();
 
                 foreach (var source in video.AvailableVideoSources.OfType<WindowItem>())
                 {
@@ -149,7 +149,7 @@ namespace Captura.Console
                 #region Screens
                 WriteLine("AVAILABLE SCREENS" + underline);
 
-                video.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
 
                 for (var i = 0; i < video.AvailableVideoSources.Count; ++i)
                 {
@@ -229,7 +229,7 @@ namespace Captura.Console
                 if (MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
                 {
                     FakeRegionProvider.Instance.SelectedRegion = rect.Even();
-                    video.SelectedVideoSourceKind = VideoSourceKind.Region;
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
                 }
             }
 
@@ -240,7 +240,7 @@ namespace Captura.Console
 
                 if (index < ScreenItem.Count)
                 {
-                    video.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
 
                     // First item is Full Screen
                     video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
@@ -254,7 +254,7 @@ namespace Captura.Console
 
                 if (index < ScreenItem.Count)
                 {
-                    video.SelectedVideoSourceKind = VideoSourceKind.DesktopDuplication;
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
 
                     video.SelectedVideoSource = video.AvailableVideoSources[index];
                 }
@@ -263,7 +263,7 @@ namespace Captura.Console
             // No Video for Start
             else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
             {
-                video.SelectedVideoSourceKind = VideoSourceKind.NoVideo;
+                video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
             }            
         }
 

@@ -141,30 +141,26 @@ namespace Captura.ViewModels
         void RestoreRemembered()
         {
             #region Restore Video Source
-            void VideoSource()
+            var sourceKind = VideoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == Settings.Last.SourceKind);
+
+            if (sourceKind != null)
             {
-                VideoViewModel.SelectedVideoSourceKind = Settings.Last.SourceKind;
+                VideoViewModel.SelectedVideoSourceKind = sourceKind;
 
-                var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(window => window.ToString() == Settings.Last.SourceName);
+                switch (sourceKind)
+                {
+                    case RegionSourceProvider _:
+                        if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle rect)
+                            _regionProvider.SelectedRegion = rect;
+                        break;
 
-                if (source != null)
-                    VideoViewModel.SelectedVideoSource = source;
-            }
+                    default:
+                        var source = VideoViewModel.AvailableVideoSources.FirstOrDefault(S => S.ToString() == Settings.Last.SourceName);
 
-            switch (Settings.Last.SourceKind)
-            {
-                case VideoSourceKind.Window:
-                case VideoSourceKind.NoVideo:
-                case VideoSourceKind.Screen:
-                    VideoSource();
-                    break;
-
-                case VideoSourceKind.Region:
-                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Region;
-
-                    if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle rect)
-                        _regionProvider.SelectedRegion = rect;
-                    break;
+                        if (source != null)
+                            VideoViewModel.SelectedVideoSource = source;
+                        break;
+                }
             }
             #endregion
 
@@ -287,24 +283,17 @@ namespace Captura.ViewModels
         void Remember()
         {
             #region Remember Video Source
+            Settings.Last.SourceKind = VideoViewModel.SelectedVideoSourceKind.Name;
+
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
-                case VideoSourceKind.Window:
-                case VideoSourceKind.Screen:
-                case VideoSourceKind.NoVideo:
-                    Settings.Last.SourceKind = VideoViewModel.SelectedVideoSourceKind;
-                    Settings.Last.SourceName = VideoViewModel.SelectedVideoSource.ToString();
-                    break;
-
-                case VideoSourceKind.Region:
-                    Settings.Last.SourceKind = VideoSourceKind.Region;
+                case RegionSourceProvider _:
                     var rect = _regionProvider.SelectedRegion;
                     Settings.Last.SourceName = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
                 default:
-                    Settings.Last.SourceKind = VideoSourceKind.Screen;
-                    Settings.Last.SourceName = "";
+                    Settings.Last.SourceName = VideoViewModel.SelectedVideoSource.ToString();
                     break;
             }
             #endregion
@@ -364,7 +353,7 @@ namespace Captura.ViewModels
         {
             var audioAvailable = AudioViewModel.AudioSource.AudioAvailable;
 
-            var videoAvailable = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
+            var videoAvailable = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
             RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
 
@@ -423,14 +412,14 @@ namespace Captura.ViewModels
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
-                case VideoSourceKind.Window:
+                case WindowSourceProvider _:
                     var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
 
                     bmp = ScreenShotWindow(hWnd);
                     break;
 
-                case VideoSourceKind.DesktopDuplication:
-                case VideoSourceKind.Screen:
+                case DeskDuplSourceProvider _:
+                case ScreenSourceProvider _:
                     if (selectedVideoSource is FullScreenItem)
                     {
                         var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
@@ -456,7 +445,7 @@ namespace Captura.ViewModels
                     bmp = bmp?.Transform(Settings.ScreenShotTransform);
                     break;
 
-                case VideoSourceKind.Region:
+                case RegionSourceProvider _:
                     bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
                     bmp = bmp.Transform(Settings.ScreenShotTransform);
                     break;
@@ -469,7 +458,7 @@ namespace Captura.ViewModels
         {
             if (VideoViewModel.SelectedVideoWriterKind is FFMpegWriterProvider ||
                 VideoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
-                (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
+                (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
             {
                 if (!FFMpegService.FFMpegExists)
                 {
@@ -483,7 +472,7 @@ namespace Captura.ViewModels
 
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
                 && Settings.GifVariable
-                && VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
+                && VideoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
                 ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
 
@@ -515,12 +504,12 @@ namespace Captura.ViewModels
             {
                 imgProvider = GetImageProvider();
             }
-            catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
+            catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccured);
 
                 if (yes)
-                    VideoViewModel.SelectedVideoSourceKind = VideoSourceKind.Screen;
+                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
 
                 return;
             }
@@ -542,7 +531,7 @@ namespace Captura.ViewModels
 
             RecorderState = RecorderState.Recording;
             
-            isVideo = VideoViewModel.SelectedVideoSourceKind != VideoSourceKind.NoVideo;
+            isVideo = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
             var extension = VideoViewModel.SelectedVideoWriter.Extension;
 
@@ -617,7 +606,7 @@ namespace Captura.ViewModels
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
-            if (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo)
+            if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
             
             IVideoFileWriter videoEncoder = null;

@@ -38,6 +38,13 @@ namespace Captura
                 Bind<IVideoWriterProvider>().To<SharpAviWriterProvider>().InSingletonScope();
             }
 
+            // Video Source Providers
+            Bind<IVideoSourceProvider>().To<ScreenSourceProvider>().InSingletonScope();
+            Bind<IVideoSourceProvider>().To<RegionSourceProvider>().InSingletonScope();
+            Bind<IVideoSourceProvider>().To<WindowSourceProvider>().InSingletonScope();
+            Bind<IVideoSourceProvider>().To<DeskDuplSourceProvider>().InSingletonScope();
+            Bind<IVideoSourceProvider>().To<NoVideoSourceProvider>().InSingletonScope();
+
             // Audio Source
             if (BassAudioSource.Available)
             {
