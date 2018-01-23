@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Input;
 using Ninject;
+using Ninject.Modules;
 
 namespace Captura
 {
@@ -40,8 +41,15 @@ namespace Captura
             }
         }
 
-        public static IKernel Kernel { get; } = new StandardKernel(new CoreModule());
-        
+        static IKernel Kernel { get; } = new StandardKernel(new CoreModule());
+
+        public static void LoadModule(INinjectModule Module)
+        {
+            Kernel.Load(Module);
+        }
+
+        public static T Get<T>() => Kernel.Get<T>();
+
         /// <summary>
         /// Get the requested Service.
         /// </summary>

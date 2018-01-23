@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ninject;
 using Screna;
 using Screna.Audio;
 // ReSharper disable MemberCanBeProtected.Global
@@ -46,8 +45,8 @@ namespace Captura.Models
 
         // Custom
         public static FFMpegItem Custom { get; } = new FFMpegItem("Custom",
-            () => ServiceProvider.Kernel.Get<Settings>().FFMpeg_CustomExtension,
-            VideoQuality => ServiceProvider.Kernel.Get<Settings>().FFMpeg_CustomArgs,
+            () => ServiceProvider.Get<Settings>().FFMpeg_CustomExtension,
+            VideoQuality => ServiceProvider.Get<Settings>().FFMpeg_CustomArgs,
             FFMpegAudioItem.Mp3);
 
         public static IEnumerable<FFMpegItem> Items { get; } = new[]

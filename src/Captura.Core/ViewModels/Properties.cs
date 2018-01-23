@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-using Ninject;
 
 namespace Captura.ViewModels
 {
@@ -153,7 +152,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             settings.EnsureOutPath();
 
@@ -164,7 +163,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             using (var dlg = new VistaFolderBrowserDialog
             {
@@ -182,7 +181,7 @@ namespace Captura.ViewModels
 
         public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() =>
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             settings.FFMpegFolder = "";
         });

@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Ninject;
 
 namespace Captura
 {
@@ -7,7 +6,7 @@ namespace Captura
     {
         protected CommonCmdOptions()
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             settings.IncludeCursor = false;
         }

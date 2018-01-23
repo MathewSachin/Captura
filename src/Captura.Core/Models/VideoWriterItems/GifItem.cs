@@ -1,5 +1,4 @@
-﻿using Ninject;
-using Screna;
+﻿using Screna;
 using Screna.Audio;
 
 namespace Captura.Models
@@ -17,7 +16,7 @@ namespace Captura.Models
 
         public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             var repeat = settings.GifRepeat ? settings.GifRepeatCount : -1;
             

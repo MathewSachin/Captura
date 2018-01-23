@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using Captura.Models;
 using Captura.ViewModels;
-using Ninject;
 
 namespace Captura
 {
@@ -29,10 +28,10 @@ namespace Captura
         {
             try
             {
-                var img = ServiceProvider.Kernel.Get<WebCamProvider>().Capture();
+                var img = ServiceProvider.Get<WebCamProvider>().Capture();
                 
                 if (img != null)
-                    ServiceProvider.Kernel.Get<MainViewModel>().SaveScreenShot(img);
+                    ServiceProvider.Get<MainViewModel>().SaveScreenShot(img);
             }
             catch { }
         }

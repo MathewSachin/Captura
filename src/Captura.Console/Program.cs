@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Ninject;
 using Screna;
 using static System.Console;
 // ReSharper disable LocalizableElement
@@ -20,7 +19,7 @@ namespace Captura.Console
     {
         static void Main(string[] Args)
         {
-            ServiceProvider.Kernel.Load(new MainModule());
+            ServiceProvider.LoadModule(new MainModule());
 
             // Handle if args is empty
             switch (Args.Length > 0 ? Args[0] : "")
@@ -34,7 +33,7 @@ namespace Captura.Console
 
                     if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
                     {
-                        using (var vm = ServiceProvider.Kernel.Get<MainViewModel>())
+                        using (var vm = ServiceProvider.Get<MainViewModel>())
                         {
                             RegisterFakes();
 
@@ -80,7 +79,7 @@ namespace Captura.Console
         {
             Banner();
 
-            using (var vm = ServiceProvider.Kernel.Get<MainViewModel>())
+            using (var vm = ServiceProvider.Get<MainViewModel>())
             {
                 RegisterFakes();
 
@@ -152,7 +151,7 @@ namespace Captura.Console
 
                 video.SelectedVideoSourceKind = VideoSourceKind.Screen;
 
-                for (int i = 0; i < video.AvailableVideoSources.Count; ++i)
+                for (var i = 0; i < video.AvailableVideoSources.Count; ++i)
                 {
                     WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoSources[i]}");
                 }
@@ -177,7 +176,7 @@ namespace Captura.Console
                 {
                     WriteLine("AVAILABLE MICROPHONES" + underline);
 
-                    for (int i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                    for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
                     {
                         WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
                     }
@@ -191,7 +190,7 @@ namespace Captura.Console
                 {
                     WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
 
-                    for (int i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                    for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
                     {
                         WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
                     }
@@ -321,9 +320,9 @@ namespace Captura.Console
 
         static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions FFMpegOptions)
         {
-            if (FFMpegOptions.install != null)
+            if (FFMpegOptions.Install != null)
             {
-                var downloadFolder = FFMpegOptions.install;
+                var downloadFolder = FFMpegOptions.Install;
 
                 if (!Directory.Exists(downloadFolder))
                 {
@@ -331,9 +330,9 @@ namespace Captura.Console
                     return;
                 }
 
-                var ffMpegDownload = ServiceProvider.Kernel.Get<FFMpegDownloadViewModel>();
+                var ffMpegDownload = ServiceProvider.Get<FFMpegDownloadViewModel>();
 
-                ffMpegDownload.TargetFolder = FFMpegOptions.install;
+                ffMpegDownload.TargetFolder = FFMpegOptions.Install;
 
                 var downloadTask = Task.Run(() => ffMpegDownload.Start());
 

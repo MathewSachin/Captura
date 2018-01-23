@@ -73,7 +73,7 @@ namespace Captura.Models
         /// </summary>
         public override void Dispose()
         {
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
+            for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
                 if (info.IsInitialized)
                 {
@@ -82,7 +82,7 @@ namespace Captura.Models
                 }
             }
 
-            for (int i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
+            for (var i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
             {
                 if (info.IsInitialized)
                 {

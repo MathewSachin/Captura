@@ -32,7 +32,7 @@ namespace Captura.Webcam
         /// <summary> Retrieve the a moniker's display name (i.e. it's unique string) </summary>
         static string GetMonikerString(IMoniker Moniker)
         {
-            Moniker.GetDisplayName(null, null, out string s);
+            Moniker.GetDisplayName(null, null, out var s);
             return s;
         }
 

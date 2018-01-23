@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Ninject;
 
 namespace Captura
 {
@@ -13,7 +12,7 @@ namespace Captura
     {
         public const string FFMpegExeName = "ffmpeg.exe";
 
-        static Settings GetSettings() => ServiceProvider.Kernel.Get<Settings>();
+        static Settings GetSettings() => ServiceProvider.Get<Settings>();
 
         public static bool FFMpegExists
         {

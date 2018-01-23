@@ -152,7 +152,7 @@ namespace Screna
                 const int dwmCloaked = 14;
 
                 // Exclude suspended Windows apps
-                DwmGetWindowAttribute(hWnd, dwmCloaked, out bool cloaked, Marshal.SizeOf<bool>());
+                DwmGetWindowAttribute(hWnd, dwmCloaked, out var cloaked, Marshal.SizeOf<bool>());
 
                 if (cloaked)
                     continue;

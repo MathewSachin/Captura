@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Newtonsoft.Json.Linq;
-using Ninject;
 
 namespace Captura
 {
@@ -30,7 +29,7 @@ namespace Captura
 
             var files  = Directory.EnumerateFiles(LangDir, "*.json");
 
-            Settings = ServiceProvider.Kernel.Get<Settings>();
+            Settings = ServiceProvider.Get<Settings>();
 
             foreach (var file in files)
             {

@@ -1,5 +1,4 @@
 ﻿using Captura.ViewModels;
-using Ninject;
 
 namespace Captura
 {
@@ -7,13 +6,13 @@ namespace Captura
     {
         static NinjectServiceLocator()
         {
-            ServiceProvider.Kernel.Load(new MainModule());
+            ServiceProvider.LoadModule(new MainModule());
         }
         
-        public MainViewModel MainViewModel => ServiceProvider.Kernel.Get<MainViewModel>();
+        public MainViewModel MainViewModel => ServiceProvider.Get<MainViewModel>();
 
-        public AboutViewModel AboutViewModel => ServiceProvider.Kernel.Get<AboutViewModel>();
+        public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
 
-        public FFMpegDownloadViewModel FFMpegDownloadViewModel => ServiceProvider.Kernel.Get<FFMpegDownloadViewModel>();
+        public FFMpegDownloadViewModel FFMpegDownloadViewModel => ServiceProvider.Get<FFMpegDownloadViewModel>();
     }
 }

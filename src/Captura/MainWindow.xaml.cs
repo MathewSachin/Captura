@@ -5,7 +5,6 @@ using Captura.Views;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Ninject;
 using Screna;
 
 namespace Captura
@@ -70,7 +69,7 @@ namespace Captura
 
         void RepositionWindowIfOutside()
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             var rect = new Rectangle(settings.UI.MainWindowLeft,
                 settings.UI.MainWindowTop,

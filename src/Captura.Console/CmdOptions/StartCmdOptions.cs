@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Ninject;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
@@ -12,7 +11,7 @@ namespace Captura
     {
         public StartCmdOptions()
         {
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             settings.Keystrokes.Display = settings.Clicks.Display = false;
 

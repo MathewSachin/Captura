@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
-using Ninject;
 
 namespace Captura
 {
@@ -33,7 +32,7 @@ namespace Captura
                 ServiceProvider.SettingsDir = CmdOptions.Settings;
             }
 
-            var settings = ServiceProvider.Kernel.Get<Settings>();
+            var settings = ServiceProvider.Get<Settings>();
 
             if (!CmdOptions.Reset)
             {
