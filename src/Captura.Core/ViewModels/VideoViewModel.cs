@@ -11,10 +11,11 @@ namespace Captura.ViewModels
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
+            IEnumerable<IVideoWriterProvider> VideoWriterProviders,
             Settings Settings,
             LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
-            AvailableVideoWriterKinds = new ReadOnlyObservableCollection<VideoWriterKind>(_videoWriterKinds);
+            AvailableVideoWriterKinds = new ReadOnlyObservableCollection<IVideoWriterProvider>(_videoWriterKinds);
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
             AvailableVideoSourceKinds = new ReadOnlyObservableCollection<ObjectLocalizer<VideoSourceKind>>(_videoSourceKinds);
@@ -28,18 +29,21 @@ namespace Captura.ViewModels
             {
                 _imageWriters.Add(imageWriter);
             }
+
+            foreach (var videoWriterProvider in VideoWriterProviders)
+            {
+                _videoWriterKinds.Add(videoWriterProvider);
+            }
             
-            SelectedImageWriter = AvailableImageWriters[0];
+            if (AvailableImageWriters.Count > 0)
+                SelectedImageWriter = AvailableImageWriters[0];
+
+            if (AvailableVideoWriterKinds.Count > 0)
+                SelectedVideoWriterKind = AvailableVideoWriterKinds[0];
         }
 
         public void Init()
-        {
-            // Check if SharpAvi is available
-            if (ServiceProvider.FileExists("SharpAvi.dll"))
-            {
-                _videoWriterKinds.Add(VideoWriterKind.SharpAvi);
-            }
-                                               
+        {                                               
             RefreshCodecs();
 
             RefreshVideoSources();
@@ -96,73 +100,32 @@ namespace Captura.ViewModels
             if (AvailableVideoSources.Count > 0)
                 SelectedVideoSource = AvailableVideoSources[0];
         }
-        
-        void InitSharpAviCodecs()
-        {
-            foreach (var codec in AviWriter.EnumerateEncoders())
-            {
-                var item = new SharpAviItem(codec);
-
-                _videoWriters.Add(item);
-
-                // Set MotionJpeg as default
-                if (codec == AviCodec.MotionJpeg)
-                    SelectedVideoWriter = item;
-            }
-        }
 
         public void RefreshCodecs()
         {
             // Available Codecs
             _videoWriters.Clear();
 
-            switch (SelectedVideoWriterKind)
+            foreach (var writerItem in SelectedVideoWriterKind)
             {
-                case VideoWriterKind.SharpAvi:
-                    InitSharpAviCodecs();
-                    break;
-
-                case VideoWriterKind.Gif:
-                    _videoWriters.Add(GifItem.Instance);
-
-                    SelectedVideoWriter = GifItem.Instance;
-                    break;
-
-                case VideoWriterKind.FFMpeg:
-                    foreach (var item in FFMpegItem.Items)
-                        _videoWriters.Add(item);
-
-                    SelectedVideoWriter = AvailableVideoWriters[0];
-                    break;
-
-                case VideoWriterKind.Streaming_Alpha:
-                    foreach (var item in StreamingItem.StreamingItems)
-                        _videoWriters.Add(item);
-
-                    SelectedVideoWriter = AvailableVideoWriters[0];
-                    break;
+                _videoWriters.Add(writerItem);
             }
+
+            if (_videoWriters.Count > 0)
+                SelectedVideoWriter = _videoWriters[0];
         }
 
-        readonly ObservableCollection<VideoWriterKind> _videoWriterKinds = new ObservableCollection<VideoWriterKind>()
-        {
-            // Gif is always availble
-            VideoWriterKind.Gif,
+        readonly ObservableCollection<IVideoWriterProvider> _videoWriterKinds = new ObservableCollection<IVideoWriterProvider>();
 
-            VideoWriterKind.FFMpeg,
-
-            VideoWriterKind.Streaming_Alpha
-        };
-
-        public ReadOnlyObservableCollection<VideoWriterKind> AvailableVideoWriterKinds { get; }
+        public ReadOnlyObservableCollection<IVideoWriterProvider> AvailableVideoWriterKinds { get; }
 
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
 
         public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
         
-        VideoWriterKind _writerKind = VideoWriterKind.FFMpeg;
+        IVideoWriterProvider _writerKind;
 
-        public VideoWriterKind SelectedVideoWriterKind
+        public IVideoWriterProvider SelectedVideoWriterKind
         {
             get => _writerKind;
             set

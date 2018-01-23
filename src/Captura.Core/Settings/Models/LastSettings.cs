@@ -10,9 +10,9 @@ namespace Captura
             set => Set(value);
         }
         
-        public VideoWriterKind VideoWriterKind
+        public string VideoWriterKind
         {
-            get => Get(VideoWriterKind.FFMpeg);
+            get => Get("FFMpeg");
             set => Set(value);
         }
         

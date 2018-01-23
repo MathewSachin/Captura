@@ -100,7 +100,7 @@ namespace Captura.Console
                 {
                     WriteLine("FFmpeg ENCODERS" + underline);
 
-                    video.SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
+                    video.SelectedVideoWriterKind = ServiceProvider.Get<FFMpegWriterProvider>();
 
                     for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
                     {
@@ -122,7 +122,7 @@ namespace Captura.Console
                 {
                     WriteLine("SharpAvi ENCODERS" + underline);
 
-                    video.SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
+                    video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
                     for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
                     {
@@ -293,8 +293,8 @@ namespace Captura.Console
             if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
-                
-                video.SelectedVideoWriterKind = VideoWriterKind.FFMpeg;
+
+                video.SelectedVideoWriterKind = ServiceProvider.Get<FFMpegWriterProvider>();
 
                 if (index < video.AvailableVideoSources.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
@@ -305,7 +305,7 @@ namespace Captura.Console
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
-                video.SelectedVideoWriterKind = VideoWriterKind.SharpAvi;
+                video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
                 if (index < video.AvailableVideoSources.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
@@ -314,7 +314,7 @@ namespace Captura.Console
             // Gif
             else if (StartOptions.Encoder == "gif")
             {
-                video.SelectedVideoWriterKind = VideoWriterKind.Gif;
+                video.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
             }
         }
 

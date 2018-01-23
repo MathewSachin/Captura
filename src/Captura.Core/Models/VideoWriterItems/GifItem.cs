@@ -5,11 +5,6 @@ namespace Captura.Models
 {
     public class GifItem : IVideoWriterItem
     {
-        // Singleton
-        public static GifItem Instance { get; } = new GifItem();
-
-        GifItem() { }
-
         public string Extension { get; } = ".gif";
 
         public override string ToString() => "Gif";

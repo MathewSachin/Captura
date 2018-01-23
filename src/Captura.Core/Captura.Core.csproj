@@ -163,6 +163,10 @@
     <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\TextOverlay.cs" />
+    <Compile Include="Models\VideoWriterProviders\FFMpegWriterProvider.cs" />
+    <Compile Include="Models\VideoWriterProviders\IVideoWriterProvider.cs" />
+    <Compile Include="Models\VideoWriterProviders\SharpAviWriterProvider.cs" />
+    <Compile Include="Models\VideoWriterProviders\StreamingWriterProvider.cs" />
     <Compile Include="Settings\Models\LastSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="Settings\Settings.cs" />
@@ -203,7 +207,7 @@
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
     <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
-    <Compile Include="Models\VideoWriterItems\VideoWriterKind.cs" />
+    <Compile Include="Models\VideoWriterProviders\GifWriterProvider.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />

@@ -169,20 +169,25 @@ namespace Captura.ViewModels
             #endregion
 
             // Restore Video Codec
-            if (VideoViewModel.AvailableVideoWriterKinds.Contains(Settings.Last.VideoWriterKind))
+            if (!string.IsNullOrEmpty(Settings.Last.VideoWriterKind))
             {
-                VideoViewModel.SelectedVideoWriterKind = Settings.Last.VideoWriterKind;
+                var kind = VideoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == Settings.Last.VideoWriterKind);
 
-                var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(c => c.ToString() == Settings.Last.VideoWriterName);
+                if (kind != null)
+                {
+                    VideoViewModel.SelectedVideoWriterKind = kind;
 
-                if (codec != null)
-                    VideoViewModel.SelectedVideoWriter = codec;
+                    var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == Settings.Last.VideoWriterName);
+
+                    if (codec != null)
+                        VideoViewModel.SelectedVideoWriter = codec;
+                }
             }
             
             // Restore Microphone
             if (!string.IsNullOrEmpty(Settings.Last.MicName))
             {
-                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(codec => codec.ToString() == Settings.Last.MicName);
+                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Last.MicName);
 
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedRecordingSource = source;
@@ -191,7 +196,7 @@ namespace Captura.ViewModels
             // Restore Loopback Speaker
             if (!string.IsNullOrEmpty(Settings.Last.SpeakerName))
             {
-                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(codec => codec.ToString() == Settings.Last.SpeakerName);
+                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Last.SpeakerName);
 
                 if (source != null)
                     AudioViewModel.AudioSource.SelectedLoopbackSource = source;
@@ -200,7 +205,7 @@ namespace Captura.ViewModels
             // Restore ScreenShot Format
             if (!string.IsNullOrEmpty(Settings.Last.ScreenShotFormat))
             {
-                var format = ScreenShotImageFormats.FirstOrDefault(f => f.ToString() == Settings.Last.ScreenShotFormat);
+                var format = ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == Settings.Last.ScreenShotFormat);
 
                 if (format != null)
                     SelectedScreenShotImageFormat = format;
@@ -209,7 +214,7 @@ namespace Captura.ViewModels
             // Restore ScreenShot Target
             if (!string.IsNullOrEmpty(Settings.Last.ScreenShotSaveTo))
             {
-                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(s => s.ToString() == Settings.Last.ScreenShotSaveTo);
+                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(S => S.ToString() == Settings.Last.ScreenShotSaveTo);
 
                 if (saveTo != null)
                     VideoViewModel.SelectedImageWriter = saveTo;
@@ -305,7 +310,7 @@ namespace Captura.ViewModels
             #endregion
 
             // Remember Video Codec
-            Settings.Last.VideoWriterKind = VideoViewModel.SelectedVideoWriterKind;
+            Settings.Last.VideoWriterKind = VideoViewModel.SelectedVideoWriterKind.Name;
             Settings.Last.VideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
@@ -462,8 +467,8 @@ namespace Captura.ViewModels
         
         public void StartRecording(string FileName = null)
         {
-            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.FFMpeg ||
-                VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Streaming_Alpha ||
+            if (VideoViewModel.SelectedVideoWriterKind is FFMpegWriterProvider ||
+                VideoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
                 (VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.NoVideo && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
             {
                 if (!FFMpegService.FFMpegExists)
@@ -476,7 +481,7 @@ namespace Captura.ViewModels
                 FFMpegLog.Reset();
             }
 
-            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif
+            if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
                 && Settings.GifVariable
                 && VideoViewModel.SelectedVideoSourceKind == VideoSourceKind.DesktopDuplication)
             {
@@ -485,7 +490,7 @@ namespace Captura.ViewModels
                 return;
             }
 
-            if (VideoViewModel.SelectedVideoWriterKind == VideoWriterKind.Gif)
+            if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider)
             {
                 if (AudioViewModel.AudioSource.SelectedLoopbackSource != NoSoundItem.Instance
                     || AudioViewModel.AudioSource.SelectedRecordingSource != NoSoundItem.Instance)

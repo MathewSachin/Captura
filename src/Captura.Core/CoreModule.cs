@@ -26,7 +26,18 @@ namespace Captura
             Bind<IImageWriterItem>().To<DiskWriter>().InSingletonScope();
             Bind<IImageWriterItem>().To<ClipboardWriter>().InSingletonScope();
             Bind<IImageWriterItem>().To<ImgurWriter>().InSingletonScope();
-            
+
+            // Video Writer Providers
+            Bind<IVideoWriterProvider>().To<FFMpegWriterProvider>().InSingletonScope();
+            Bind<IVideoWriterProvider>().To<GifWriterProvider>().InSingletonScope();
+            Bind<IVideoWriterProvider>().To<StreamingWriterProvider>().InSingletonScope();
+
+            // Check if SharpAvi is available
+            if (ServiceProvider.FileExists("SharpAvi.dll"))
+            {
+                Bind<IVideoWriterProvider>().To<SharpAviWriterProvider>().InSingletonScope();
+            }
+
             // Audio Source
             if (BassAudioSource.Available)
             {

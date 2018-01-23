@@ -111,8 +111,9 @@ namespace Captura.Models
         /// </summary>
         public static IEnumerable<AviCodec> EnumerateEncoders()
         {
-            yield return AviCodec.Uncompressed;
             yield return AviCodec.MotionJpeg;
+            yield return AviCodec.Uncompressed;
+            
             foreach (var codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs())
                 yield return new AviCodec(codec.Codec, codec.Name);
         }

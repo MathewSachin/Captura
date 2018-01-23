@@ -115,6 +115,7 @@
                       Grid.Column="1"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center"
