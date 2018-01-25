@@ -108,6 +108,10 @@ namespace Captura.ViewModels
             new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Bottom))
         };
 
+        public HotKeyManager HotKeyManager { get; }
+
+        public IWebCamProvider WebCamProvider { get; }
+
         #region ScreenShot
         public ImageFormat[] ScreenShotImageFormats => new[]
         {

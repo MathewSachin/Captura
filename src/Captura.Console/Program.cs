@@ -410,7 +410,8 @@ namespace Captura.Console
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            ViewModel.StartRecording(StartOptions.FileName);
+            if (!ViewModel.StartRecording(StartOptions.FileName))
+                return;
 
             if (StartOptions.Length > 0)
             {
