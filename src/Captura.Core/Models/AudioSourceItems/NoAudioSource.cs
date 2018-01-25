@@ -8,7 +8,7 @@ namespace Captura.Models
 
         NoAudioSource() { }
 
-        public override IAudioProvider GetAudioSource() => null;
+        public override IAudioProvider GetAudioProvider() => null;
 
         protected override void OnRefresh() { }
     }

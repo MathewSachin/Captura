@@ -6,8 +6,6 @@ namespace Captura.Models
 {
     public class Hotkey : NotifyPropertyChanged
     {
-        public Action Work { get; }
-
         public TextLocalizer Description { get; }
 
         public ServiceName ServiceName { get; }
@@ -17,10 +15,33 @@ namespace Captura.Models
             ServiceName = Model.ServiceName;
             Key = Model.Key;
             Modifiers = Model.Modifiers;
-            Work = () => ServiceProvider.Get(Model.ServiceName).ExecuteIfCan();
-            Description = new TextLocalizer(ServiceProvider.GetDescriptionKey(Model.ServiceName));
+            Description = new TextLocalizer(GetDescriptionKey(Model.ServiceName));
 
             IsActive = Model.IsActive;
+        }
+
+        static string GetDescriptionKey(ServiceName ServiceName)
+        {
+            switch (ServiceName)
+            {
+                case ServiceName.Recording:
+                    return nameof(LanguageManager.StartStopRecording);
+
+                case ServiceName.Pause:
+                    return nameof(LanguageManager.PauseResumeRecording);
+
+                case ServiceName.ScreenShot:
+                    return nameof(LanguageManager.ScreenShot);
+
+                case ServiceName.ActiveScreenShot:
+                    return nameof(LanguageManager.ScreenShotActiveWindow);
+
+                case ServiceName.DesktopScreenShot:
+                    return nameof(LanguageManager.ScreenShotDesktop);
+
+                default:
+                    return "Unknown";
+            }
         }
 
         bool _active;

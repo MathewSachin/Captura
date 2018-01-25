@@ -11,25 +11,25 @@ namespace Captura
 {
     public class LanguageManager : NotifyPropertyChanged
     {
-        readonly JObject DefaultLanguage;
+        readonly JObject _defaultLanguage;
         JObject _currentLanguage;
-        readonly string LangDir;
+        readonly string _langDir;
 
-        readonly Settings Settings;
+        readonly Settings _settings;
 
         public static LanguageManager Instance { get; } = new LanguageManager();
 
         public LanguageManager()
         {
-            LangDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
+            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
 
-            DefaultLanguage = LoadLang("en");
+            _defaultLanguage = LoadLang("en");
 
             var cultures = new List<CultureInfo>();
 
-            var files  = Directory.EnumerateFiles(LangDir, "*.json");
+            var files  = Directory.EnumerateFiles(_langDir, "*.json");
 
-            Settings = ServiceProvider.Get<Settings>();
+            _settings = ServiceProvider.Get<Settings>();
 
             foreach (var file in files)
             {
@@ -41,7 +41,7 @@ namespace Captura
 
                     cultures.Add(culture);
 
-                    if (cultureName == Settings.Language)
+                    if (cultureName == _settings.Language)
                     {
                         CurrentCulture = culture;
                     }
@@ -55,7 +55,7 @@ namespace Captura
             if (_currentCulture == null)
                 CurrentCulture = new CultureInfo("en");
 
-            cultures.Sort((X, Y) => X.DisplayName.CompareTo(Y.DisplayName));
+            cultures.Sort((X, Y) => string.Compare(X.DisplayName, Y.DisplayName, StringComparison.Ordinal));
 
             AvailableCultures = cultures;
         }
@@ -73,7 +73,7 @@ namespace Captura
 
                 Thread.CurrentThread.CurrentUICulture = value;
 
-                Settings.Language = value.Name;
+                _settings.Language = value.Name;
 
                 _currentLanguage = LoadLang(value.Name);
 
@@ -87,7 +87,7 @@ namespace Captura
 
         JObject LoadLang(string LanguageId)
         {
-            var filePath = Path.Combine(LangDir, $"{LanguageId}.json");
+            var filePath = Path.Combine(_langDir, $"{LanguageId}.json");
 
             try
             {
@@ -109,7 +109,7 @@ namespace Captura
                 if (_currentLanguage != null && _currentLanguage.TryGetValue(Key, out var value))
                     return value.ToString();
 
-                if (DefaultLanguage.TryGetValue(Key, out value))
+                if (_defaultLanguage.TryGetValue(Key, out value))
                     return value.ToString();
 
                 return Key;

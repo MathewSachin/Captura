@@ -35,8 +35,6 @@ namespace Captura.Console
                     {
                         using (var vm = ServiceProvider.Get<MainViewModel>())
                         {
-                            RegisterFakes();
-
                             vm.Init(false, false, false, false);
 
                             // Remove Custom overlays
@@ -81,8 +79,6 @@ namespace Captura.Console
 
             using (var vm = ServiceProvider.Get<MainViewModel>())
             {
-                RegisterFakes();
-
                 vm.Init(false, false, false, false);
 
                 var underline = $"\n{new string('-', 30)}";
@@ -199,11 +195,6 @@ namespace Captura.Console
                 }
                 #endregion
             }
-        }
-
-        static void RegisterFakes()
-        {
-            ServiceProvider.MessageProvider = new FakeMessageProvider();
         }
 
         static void Banner()

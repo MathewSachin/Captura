@@ -19,8 +19,6 @@ namespace Captura
         {
             Instance = this;
             
-            ServiceProvider.MessageProvider = new MessageProvider();
-            
             FFMpegService.FFMpegDownloader += () =>
             {
                 if (_downloader == null)
@@ -42,11 +40,11 @@ namespace Captura
             {
                 const int wmHotkey = 786;
 
-                if (Message.message == wmHotkey)
+                if (Message.message == wmHotkey && DataContext is MainViewModel vm)
                 {
                     var id = Message.wParam.ToInt32();
 
-                    ServiceProvider.RaiseHotKeyPressed(id);
+                    vm.HotKeyManager.ProcessHotkey(id);
                 }
             };
             

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Captura.Models;
-using Screna;
 using System.Collections.ObjectModel;
 
 namespace Captura.ViewModels

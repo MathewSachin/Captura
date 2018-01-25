@@ -69,6 +69,12 @@ namespace Captura.ViewModels
             RefreshCommand = new DelegateCommand(OnRefresh);
             
             PauseCommand = new DelegateCommand(OnPauseExecute, false);
+
+            OpenOutputFolderCommand = new DelegateCommand(OpenOutputFolder);
+
+            SelectOutputFolderCommand = new DelegateCommand(SelectOutputFolder);
+
+            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpegFolder = "");
             #endregion
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
@@ -107,11 +113,31 @@ namespace Captura.ViewModels
             Settings.EnsureOutPath();
 
             // Register ActionServices
-            ServiceProvider.Register(ServiceName.Recording, RecordCommand);
-            ServiceProvider.Register(ServiceName.Pause, PauseCommand);
-            ServiceProvider.Register(ServiceName.ScreenShot, ScreenShotCommand);
-            ServiceProvider.Register(ServiceName.ActiveScreenShot, ScreenShotActiveCommand);
-            ServiceProvider.Register(ServiceName.DesktopScreenShot, ScreenShotDesktopCommand);
+            HotKeyManager.HotkeyPressed += Service =>
+            {
+                switch (Service)
+                {
+                    case ServiceName.Recording:
+                        RecordCommand?.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.Pause:
+                        PauseCommand?.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.ScreenShot:
+                        ScreenShotCommand?.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.ActiveScreenShot:
+                        ScreenShotActiveCommand?.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.DesktopScreenShot:
+                        ScreenShotDesktopCommand?.ExecuteIfCan();
+                        break;
+                }
+            };
         }
 
         async void OnRecordExecute()
@@ -540,9 +566,9 @@ namespace Captura.ViewModels
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
             
-            var audioSource = AudioViewModel.AudioSource.GetAudioSource();
+            var audioProvider = AudioViewModel.AudioSource.GetAudioProvider();
             
-            var videoEncoder = GetVideoFileWriter(imgProvider, audioSource);
+            var videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
 
             if (videoEncoder is GifWriter gif && Settings.GifVariable)
             {
@@ -550,11 +576,11 @@ namespace Captura.ViewModels
             }
             else if (_isVideo)
             {
-                _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioSource);
+                _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioProvider);
             }
             else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
             {
-                _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioSource.WaveFormat, Settings.AudioQuality), audioSource);
+                _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.AudioQuality), audioProvider);
             }
             
             _recorder.ErrorOccured += E =>
@@ -670,7 +696,7 @@ namespace Captura.ViewModels
             if (Settings.CopyOutPathToClipboard)
                 savingRecentItem.FilePath.WriteToClipboard();
             
-            _systemTray.ShowTextNotification((_isVideo ? Loc.VideoSaved : Loc.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            _systemTray.ShowTextNotification((savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
             {
                 ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
             });

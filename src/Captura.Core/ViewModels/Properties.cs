@@ -156,41 +156,36 @@ namespace Captura.ViewModels
 
         public DelegateCommand RefreshCommand { get; }
 
-        public DelegateCommand OpenOutputFolderCommand { get; } = new DelegateCommand(() =>
+        public DelegateCommand OpenOutputFolderCommand { get; }
+
+        void OpenOutputFolder()
         {
-            var settings = ServiceProvider.Get<Settings>();
+            Settings.EnsureOutPath();
 
-            settings.EnsureOutPath();
-
-            Process.Start(settings.OutPath);
-        });
+            Process.Start(Settings.OutPath);
+        }
 
         public DelegateCommand PauseCommand { get; }
 
-        public DelegateCommand SelectOutputFolderCommand { get; } = new DelegateCommand(() =>
-        {
-            var settings = ServiceProvider.Get<Settings>();
+        public DelegateCommand SelectOutputFolderCommand { get; }
 
+        void SelectOutputFolder()
+        {
             using (var dlg = new VistaFolderBrowserDialog
             {
-                SelectedPath = settings.OutPath,
+                SelectedPath = Settings.OutPath,
                 UseDescriptionForTitle = true,
                 Description = LanguageManager.Instance.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    settings.OutPath = dlg.SelectedPath;
+                    Settings.OutPath = dlg.SelectedPath;
             }
-        });
+        }
 
         public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(FFMpegService.SelectFFMpegFolder);
 
-        public DelegateCommand ResetFFMpegFolderCommand { get; } = new DelegateCommand(() =>
-        {
-            var settings = ServiceProvider.Get<Settings>();
-
-            settings.FFMpegFolder = "";
-        });
+        public DelegateCommand ResetFFMpegFolderCommand { get; }
         #endregion
 
         #region Nested ViewModels

@@ -12,23 +12,21 @@ namespace Captura
 {
     public class HotKeyManager : IDisposable
     {
-        readonly ObservableCollection<Hotkey> hotkeys = new ObservableCollection<Hotkey>();
+        readonly ObservableCollection<Hotkey> _hotkeys = new ObservableCollection<Hotkey>();
 
         public ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
 
-        readonly string FilePath;
+        readonly string _filePath;
 
         public ICommand ResetCommand { get; }
 
         public HotKeyManager()
         {
-            Hotkeys = new ReadOnlyObservableCollection<Hotkey>(hotkeys);
+            Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
 
             ResetCommand = new DelegateCommand(Reset);
 
-            ServiceProvider.HotKeyPressed += ProcessHotkey;
-
-            FilePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
+            _filePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
         }
 
         public void RegisterAll()
@@ -37,7 +35,7 @@ namespace Captura
 
             try
             {
-                var json = File.ReadAllText(FilePath);
+                var json = File.ReadAllText(_filePath);
 
                 models = JsonConvert.DeserializeObject<IEnumerable<HotkeyModel>>(json);
             }
@@ -53,7 +51,7 @@ namespace Captura
         {
             Dispose();
 
-            hotkeys.Clear();
+            _hotkeys.Clear();
 
             Populate(Defaults());
         }
@@ -69,7 +67,7 @@ namespace Captura
                 if (hotkey.IsActive && !hotkey.IsRegistered)
                     nonReg.Add(hotkey);
 
-                hotkeys.Add(hotkey);
+                _hotkeys.Add(hotkey);
             }
 
             if (nonReg.Count > 0)
@@ -78,14 +76,14 @@ namespace Captura
 
                 foreach (var hotkey in nonReg)
                 {
-                    message += $"{LanguageManager.Instance[ServiceProvider.GetDescriptionKey(hotkey.ServiceName)]} - {hotkey}\n\n";
+                    message += $"{hotkey.Description} - {hotkey}\n\n";
                 }
 
                 ServiceProvider.MessageProvider.ShowError(message);
             }
         }
 
-        IEnumerable<HotkeyModel> Defaults()
+        static IEnumerable<HotkeyModel> Defaults()
         {
             yield return new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true);
             yield return new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true);
@@ -94,10 +92,15 @@ namespace Captura
             yield return new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true);
         }
         
-        void ProcessHotkey(int Id)
+        public void ProcessHotkey(int Id)
         {
-            Hotkeys.SingleOrDefault(H => H.ID == Id)?.Work();
+            var hotkey = Hotkeys.SingleOrDefault(H => H.ID == Id);
+
+            if (hotkey != null)
+                HotkeyPressed?.Invoke(hotkey.ServiceName);
         }
+
+        public event Action<ServiceName> HotkeyPressed;
         
         public void Dispose()
         {
@@ -112,7 +115,7 @@ namespace Captura
             {
                 var json = JsonConvert.SerializeObject(models);
 
-                File.WriteAllText(FilePath, json);
+                File.WriteAllText(_filePath, json);
             }
             catch
             {
