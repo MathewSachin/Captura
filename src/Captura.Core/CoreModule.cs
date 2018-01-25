@@ -13,6 +13,8 @@ namespace Captura
             Bind<VideoViewModel>().ToSelf().InSingletonScope();
             Bind<AudioViewModel>().ToSelf().InSingletonScope();
 
+            Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
+
             // Settings
             Bind<Settings>().ToSelf().InSingletonScope();
 

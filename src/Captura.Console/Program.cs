@@ -40,7 +40,7 @@ namespace Captura.Console
                             vm.Init(false, false, false, false);
 
                             // Remove Custom overlays
-                            CustomOverlaysViewModel.Instance.Reset();
+                            vm.CustomOverlays.Reset();
 
                             // Start Recording (Command-line)
                             switch (Options)

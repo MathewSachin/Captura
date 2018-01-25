@@ -9,7 +9,7 @@ namespace Captura.ViewModels
     {
         readonly string _filePath;
 
-        CustomOverlaysViewModel()
+        public CustomOverlaysViewModel()
         {
             Collection = new ReadOnlyObservableCollection<CustomOverlaySettings>(_collection);
 
@@ -43,9 +43,7 @@ namespace Captura.ViewModels
                 _collection.Remove(textOverlaySettings);
             }
         }
-
-        public static CustomOverlaysViewModel Instance { get; } = new CustomOverlaysViewModel();
-
+        
         readonly ObservableCollection<CustomOverlaySettings> _collection = new ObservableCollection<CustomOverlaySettings>();
 
         public ReadOnlyObservableCollection<CustomOverlaySettings> Collection { get; }

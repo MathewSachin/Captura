@@ -43,7 +43,8 @@ namespace Captura.ViewModels
             Settings Settings,
             RecentViewModel RecentViewModel,
             LanguageManager LanguageManager,
-            HotKeyManager HotKeyManager) : base(Settings, LanguageManager)
+            HotKeyManager HotKeyManager,
+            CustomOverlaysViewModel CustomOverlays) : base(Settings, LanguageManager)
         {
             this.AudioViewModel = AudioViewModel;
             this.VideoViewModel = VideoViewModel;
@@ -54,6 +55,7 @@ namespace Captura.ViewModels
             _mainWindow = MainWindow;
             this.RecentViewModel = RecentViewModel;
             this.HotKeyManager = HotKeyManager;
+            this.CustomOverlays = CustomOverlays;
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -321,7 +323,7 @@ namespace Captura.ViewModels
             // Remember things if not console.
             if (_persist)
             {
-                CustomOverlaysViewModel.Instance.Dispose();
+                CustomOverlays.Dispose();
 
                 Remember();
 
@@ -632,7 +634,7 @@ namespace Captura.ViewModels
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
             
             // Custom Overlays
-            overlays.AddRange(CustomOverlaysViewModel.Instance.Collection.Where(M => M.Display).Select(M => new CustomOverlay(M, () => TimeSpan)));
+            overlays.AddRange(CustomOverlays.Collection.Where(M => M.Display).Select(M => new CustomOverlay(M, () => TimeSpan)));
 
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }

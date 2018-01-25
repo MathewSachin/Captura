@@ -179,7 +179,7 @@
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotTransformSettings.cs" />
     <Compile Include="PropertyStore.cs" />
-    <Compile Include="ViewModels\CustomOverlays.cs" />
+    <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />

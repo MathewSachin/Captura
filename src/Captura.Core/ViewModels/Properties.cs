@@ -112,6 +112,8 @@ namespace Captura.ViewModels
 
         public IWebCamProvider WebCamProvider { get; }
 
+        public CustomOverlaysViewModel CustomOverlays { get; }
+
         #region ScreenShot
         public ImageFormat[] ScreenShotImageFormats => new[]
         {

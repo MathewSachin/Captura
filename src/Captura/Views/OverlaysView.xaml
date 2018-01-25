@@ -180,7 +180,7 @@
             </StackPanel>
         </Expander>
         
-        <Expander DataContext="{x:Static viewModels:CustomOverlaysViewModel.Instance}"
+        <Expander DataContext="{Binding CustomOverlays}"
                   Margin="0,5">
             <Expander.Header>
                 <Label Content="Custom"/>
