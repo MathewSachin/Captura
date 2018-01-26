@@ -103,7 +103,7 @@ namespace Captura.Models
             }
         }
 
-        static float GetLeft(KeystrokesSettings KeystrokesSettings, float FullWidth, float TextWidth)
+        static float GetLeft(TextOverlaySettings KeystrokesSettings, float FullWidth, float TextWidth)
         {
             var x = KeystrokesSettings.X;
             var padding = KeystrokesSettings.HorizontalPadding;
@@ -124,7 +124,7 @@ namespace Captura.Models
             }
         }
 
-        static float GetTop(KeystrokesSettings KeystrokesSettings, float FullHeight, float TextHeight, float Offset = 0)
+        static float GetTop(TextOverlaySettings KeystrokesSettings, float FullHeight, float TextHeight, float Offset = 0)
         {
             var y = KeystrokesSettings.Y;
             var padding = KeystrokesSettings.VerticalPadding;

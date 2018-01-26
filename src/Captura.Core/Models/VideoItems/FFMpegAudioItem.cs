@@ -1,4 +1,5 @@
-﻿using Screna.Audio;
+﻿using System.Collections.Generic;
+using Screna.Audio;
 
 namespace Captura.Models
 {
@@ -51,7 +52,7 @@ namespace Captura.Models
             return $"-c:a libopus -compression_level {qscale}";
         };
 
-        public static FFMpegAudioItem[] Items { get; } =
+        public static IEnumerable<FFMpegAudioItem> Items { get; } = new[]
         {
             new FFMpegAudioItem("AAC", ".aac", Aac),
             new FFMpegAudioItem("Mp3", ".mp3", Mp3),

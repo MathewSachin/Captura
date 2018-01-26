@@ -5,9 +5,9 @@ namespace Captura.Webcam
     [StructLayout(LayoutKind.Sequential)]
     class OptInt64
     {
-        public OptInt64(long value)
+        public OptInt64(long Value)
         {
-            Value = value;
+            this.Value = Value;
         }
 
         public long Value;

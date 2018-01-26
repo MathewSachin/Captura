@@ -144,9 +144,13 @@ namespace Captura.Models
 
             // Handle Number keys
             if (Key >= Keys.D0 && Key <= Keys.D9)
-                text += (Key - Keys.D0);
+            {
+                text += Key - Keys.D0;
+            }
             else if (Key >= Keys.NumPad0 && Key <= Keys.NumPad9)
-                text += (Key - Keys.NumPad0);
+            {
+                text += Key - Keys.NumPad0;
+            }
             else text += Key;
 
             return text;

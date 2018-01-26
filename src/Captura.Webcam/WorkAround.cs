@@ -17,7 +17,7 @@ namespace Captura.Webcam
         {
             const int clsCtxInProc = 0x03;
 
-            var hr = CoCreateInstance(ref clsid, IntPtr.Zero, clsCtxInProc, ref riid, out IntPtr ptrIf);
+            var hr = CoCreateInstance(ref clsid, IntPtr.Zero, clsCtxInProc, ref riid, out var ptrIf);
             if (hr != 0 || ptrIf == IntPtr.Zero)
                 Marshal.ThrowExceptionForHR(hr);
 

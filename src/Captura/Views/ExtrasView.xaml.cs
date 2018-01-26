@@ -7,17 +7,17 @@ namespace Captura
 {
     public partial class ExtrasView
     {
-        void SelectedAccentColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        void SelectedAccentColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
         {
-            if (e.NewValue != null && DataContext is ViewModelBase vm)
+            if (E.NewValue != null && DataContext is ViewModelBase vm)
             {
-                AppearanceManager.Current.AccentColor = e.NewValue.Value;
+                AppearanceManager.Current.AccentColor = E.NewValue.Value;
 
-                vm.Settings.UI.AccentColor = e.NewValue.Value.ToString();
+                vm.Settings.UI.AccentColor = E.NewValue.Value.ToString();
             }
         }
 
-        void DarkThemeClick(object sender, RoutedEventArgs e)
+        void DarkThemeClick(object Sender, RoutedEventArgs E)
         {
             if (DataContext is ViewModelBase vm)
             {

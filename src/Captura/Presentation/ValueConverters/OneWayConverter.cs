@@ -6,9 +6,9 @@ namespace Captura
 {
     public abstract class OneWayConverter : IValueConverter
     {
-        public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
+        public abstract object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture);
 
-        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public virtual object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             return Binding.DoNothing;
         }

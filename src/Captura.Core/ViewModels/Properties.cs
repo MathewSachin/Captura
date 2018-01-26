@@ -64,7 +64,7 @@ namespace Captura.ViewModels
         }
         #endregion
 
-        public KeyValuePair<RotateBy, string>[] Rotations { get; } =
+        public IEnumerable<KeyValuePair<RotateBy, string>> Rotations { get; } = new[]
         {
             new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
@@ -94,14 +94,14 @@ namespace Captura.ViewModels
 
         public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
 
-        public static ObjectLocalizer<Alignment>[] XAlignments { get; } =
+        public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),
             new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
             new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Right))
         };
 
-        public static ObjectLocalizer<Alignment>[] YAlignments { get; } =
+        public static IEnumerable<ObjectLocalizer<Alignment>> YAlignments { get; } = new[]
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Top)),
             new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
@@ -115,7 +115,7 @@ namespace Captura.ViewModels
         public CustomOverlaysViewModel CustomOverlays { get; }
 
         #region ScreenShot
-        public ImageFormat[] ScreenShotImageFormats => new[]
+        public IEnumerable<ImageFormat> ScreenShotImageFormats => new[]
         {
             ImageFormat.Png,
             ImageFormat.Jpeg,

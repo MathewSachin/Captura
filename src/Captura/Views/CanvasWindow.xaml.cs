@@ -17,7 +17,7 @@ namespace Captura
             FitToCurveCheckbox.IsChecked = true;
         }
 
-        public KeyValuePair<InkCanvasEditingMode, string>[] Modes { get; } =
+        public IEnumerable<KeyValuePair<InkCanvasEditingMode, string>> Modes { get; } = new []
         {
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Ink, "Pencil"),
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByPoint, "Eraser"),

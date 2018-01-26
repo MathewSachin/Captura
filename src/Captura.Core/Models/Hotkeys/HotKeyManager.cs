@@ -16,7 +16,7 @@ namespace Captura
 
         public ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
 
-        readonly string _filePath;
+        static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
 
         public ICommand ResetCommand { get; }
 
@@ -25,8 +25,6 @@ namespace Captura
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
 
             ResetCommand = new DelegateCommand(Reset);
-
-            _filePath = Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
         }
 
         public void RegisterAll()
@@ -35,7 +33,7 @@ namespace Captura
 
             try
             {
-                var json = File.ReadAllText(_filePath);
+                var json = File.ReadAllText(GetFilePath());
 
                 models = JsonConvert.DeserializeObject<IEnumerable<HotkeyModel>>(json);
             }
@@ -115,7 +113,7 @@ namespace Captura
             {
                 var json = JsonConvert.SerializeObject(models);
 
-                File.WriteAllText(_filePath, json);
+                File.WriteAllText(GetFilePath(), json);
             }
             catch
             {

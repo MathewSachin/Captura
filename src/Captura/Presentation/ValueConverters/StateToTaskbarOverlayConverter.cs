@@ -6,9 +6,9 @@ namespace Captura
 {
     public class StateToTaskbarOverlayConverter : OneWayConverter
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            switch(value)
+            switch(Value)
             {
                 case RecorderState.Recording:
                     return "record.ico";

@@ -15,24 +15,24 @@ namespace Captura
         static extern IntPtr WindowFromPoint(Point Point);
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetWindowDC(IntPtr hWnd);
+        static extern IntPtr GetWindowDC(IntPtr Window);
         
         [DllImport("gdi32.dll")]
-        static extern bool PatBlt(IntPtr hDC, int X, int Y, int Width, int Height, uint dwRop);
+        static extern bool PatBlt(IntPtr Window, int X, int Y, int Width, int Height, uint Operation);
         #endregion
 
         const int DstInvert = 0x0055_0009;
 
         readonly Settings _settings;
 
-        void ToggleBorder(IntPtr hWnd)
+        void ToggleBorder(IntPtr Window)
         {
-            if (hWnd == IntPtr.Zero)
+            if (Window == IntPtr.Zero)
                 return;
 
-            var hdc = GetWindowDC(hWnd);
+            var hdc = GetWindowDC(Window);
 
-            var rect = new Screna.Window(hWnd).Rectangle;
+            var rect = new Screna.Window(Window).Rectangle;
 
             var borderThickness = _settings.UI.RegionBorderThickness;
 
@@ -58,7 +58,7 @@ namespace Captura
             VideoSource = new RegionItem(this);
 
             // Prevent Closing by User
-            Closing += (s, e) => e.Cancel = true;
+            Closing += (S, E) => E.Cancel = true;
 
             InitDimensionBoxes();
         }
@@ -68,7 +68,7 @@ namespace Captura
             WidthBox.Minimum = (int)MinWidth - WidthBorder;
             HeightBox.Minimum = (int)MinHeight - HeightBorder;
 
-            void sizeChange()
+            void SizeChange()
             {
                 var selectedRegion = SelectedRegion;
 
@@ -76,13 +76,13 @@ namespace Captura
                 HeightBox.Value = selectedRegion.Height;
             }
 
-            SizeChanged += (s, e) => sizeChange();
+            SizeChanged += (S, E) => SizeChange();
 
-            sizeChange();
+            SizeChange();
 
-            WidthBox.ValueChanged += (s, e) =>
+            WidthBox.ValueChanged += (S, E) =>
             {
-                if (e.NewValue is int width)
+                if (E.NewValue is int width)
                 {
                     var selectedRegion = SelectedRegion;
 
@@ -92,9 +92,9 @@ namespace Captura
                 }
             };
 
-            HeightBox.ValueChanged += (s, e) =>
+            HeightBox.ValueChanged += (S, E) =>
             {
-                if (e.NewValue is int height)
+                if (E.NewValue is int height)
                 {
                     var selectedRegion = SelectedRegion;
 
@@ -105,7 +105,7 @@ namespace Captura
             };
         }
 
-        void CloseButton_Click(object sender, RoutedEventArgs e)
+        void CloseButton_Click(object Sender, RoutedEventArgs E)
         {
             Hide();
 
@@ -114,7 +114,7 @@ namespace Captura
         
         bool _captured;
 
-        void SnapButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void SnapButton_PreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             _captured = true;
 
@@ -124,15 +124,15 @@ namespace Captura
             
             try
             {
-                if (win == IntPtr.Zero)
+                if (_win == IntPtr.Zero)
                 {
-                    win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+                    _win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
                 }
-                else ToggleBorder(win);
+                else ToggleBorder(_win);
 
-                if (win != IntPtr.Zero)
+                if (_win != IntPtr.Zero)
                 {
-                    SelectedRegion = new Screna.Window(win).Rectangle;
+                    SelectedRegion = new Screna.Window(_win).Rectangle;
 
                     // Prevent going outside
                     if (Left < 0)
@@ -154,30 +154,30 @@ namespace Captura
             }
             finally
             {
-                win = IntPtr.Zero;
+                _win = IntPtr.Zero;
             }
         }
 
-        IntPtr win;
+        IntPtr _win;
         
         void SelectWindow()
         {
-            var oldwin = win;
+            var oldwin = _win;
 
-            win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+            _win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
 
             if (oldwin == IntPtr.Zero)
-                ToggleBorder(win);
-            else if (oldwin != win)
+                ToggleBorder(_win);
+            else if (oldwin != _win)
             {
                 ToggleBorder(oldwin);
-                ToggleBorder(win);
+                ToggleBorder(_win);
             }
         }
 
-        protected override void OnLocationChanged(EventArgs e)
+        protected override void OnLocationChanged(EventArgs E)
         {
-            base.OnLocationChanged(e);
+            base.OnLocationChanged(E);
             
             if (_captured)
             {
@@ -188,19 +188,19 @@ namespace Captura
         }
 
         // Prevent Maximizing
-        protected override void OnStateChanged(EventArgs e)
+        protected override void OnStateChanged(EventArgs E)
         {
             if (WindowState != WindowState.Normal)
                 WindowState = WindowState.Normal;
 
-            base.OnStateChanged(e);
+            base.OnStateChanged(E);
         }
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        protected override void OnRenderSizeChanged(SizeChangedInfo SizeInfo)
         {
             UpdateRegion();
 
-            base.OnRenderSizeChanged(sizeInfo);
+            base.OnRenderSizeChanged(SizeInfo);
         }
 
         #region IRegionProvider

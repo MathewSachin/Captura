@@ -28,7 +28,9 @@ namespace Captura
             img.Source = image;
         }
 
-        void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
+        void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();
+
+        void OnClose()
         {
             // the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
@@ -38,18 +40,18 @@ namespace Captura
         /// <summary>
         /// If the users hovers over the balloon, we don't close it.
         /// </summary>
-        void grid_MouseEnter(object sender, MouseEventArgs e)
+        void grid_MouseEnter(object Sender, MouseEventArgs E)
         {
             // the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon?.ResetBalloonCloseTimer();
         }
 
-        void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        void Image_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             ServiceProvider.LaunchFile(new ProcessStartInfo(_filePath));
 
-            CloseButton_Click();
+            OnClose();
         }
     }
 }

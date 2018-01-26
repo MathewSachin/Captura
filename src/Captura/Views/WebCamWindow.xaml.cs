@@ -10,11 +10,11 @@ namespace Captura
         {
             InitializeComponent();
             
-            Closing += (s, e) =>
+            Closing += (S, E) =>
             {
                 Hide();
 
-                e.Cancel = true;
+                E.Cancel = true;
             };
         }
 

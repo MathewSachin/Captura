@@ -5,9 +5,9 @@ namespace Captura
 {
     public class NotNullConverter : OneWayConverter
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            return value != null;
+            return Value != null;
         }
     }
 }

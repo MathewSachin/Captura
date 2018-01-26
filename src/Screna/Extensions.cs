@@ -75,8 +75,8 @@ namespace Screna
                     if (r.Left == -1)
                     {
                         if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &
-                             TrimColor.G != pixel->Green &
+                            (TrimColor.R != pixel->Red &&
+                             TrimColor.G != pixel->Green &&
                              TrimColor.B != pixel->Blue))
                         {
                             r.Left = x;
@@ -100,8 +100,8 @@ namespace Screna
                     if (r.Top == -1)
                     {
                         if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &
-                             TrimColor.G != pixel->Green &
+                            (TrimColor.R != pixel->Red &&
+                             TrimColor.G != pixel->Green &&
                              TrimColor.B != pixel->Blue))
                         {
                             r.Top = y;
@@ -125,8 +125,8 @@ namespace Screna
                     if (r.Right == -1)
                     {
                         if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &
-                             TrimColor.G != pixel->Green &
+                            (TrimColor.R != pixel->Red &&
+                             TrimColor.G != pixel->Green &&
                              TrimColor.B != pixel->Blue))
                         {
                             r.Right = x + 1;
@@ -151,8 +151,8 @@ namespace Screna
                         continue;
 
                     if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                        (TrimColor.R != pixel->Red &
-                         TrimColor.G != pixel->Green &
+                        (TrimColor.R != pixel->Red &&
+                         TrimColor.G != pixel->Green &&
                          TrimColor.B != pixel->Blue))
                     {
                         r.Bottom = y + 1;

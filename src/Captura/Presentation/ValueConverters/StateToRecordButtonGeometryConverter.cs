@@ -12,9 +12,9 @@ namespace Captura
         readonly Geometry _recordGeometry = new EllipseGeometry(new Point(), 50, 50),
             _stopGeometry = new RectangleGeometry(new Rect(new Point(), new Size(50, 50)));
 
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            if (value is RecorderState state)
+            if (Value is RecorderState state)
                 return state == RecorderState.NotRecording ? _recordGeometry : _stopGeometry;
 
             return Binding.DoNothing;

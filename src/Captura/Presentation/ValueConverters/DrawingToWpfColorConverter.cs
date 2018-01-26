@@ -8,17 +8,17 @@ namespace Captura
 {
     public class DrawingToWpfColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            if (value is Color c)
+            if (Value is Color c)
                 return WpfColor.FromArgb(c.A, c.R, c.G, c.B);
 
             return Binding.DoNothing;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            switch (value)
+            switch (Value)
             {
                 case string s:
                     return ColorTranslator.FromHtml(s);

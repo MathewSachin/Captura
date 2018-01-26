@@ -1,23 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using Newtonsoft.Json;
 
 namespace Captura.ViewModels
 {
-    public class CustomOverlaysViewModel
+    public class CustomOverlaysViewModel : IDisposable
     {
-        readonly string _filePath;
+        static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "CustomOverlays.json");
 
         public CustomOverlaysViewModel()
         {
             Collection = new ReadOnlyObservableCollection<CustomOverlaySettings>(_collection);
 
-            _filePath = Path.Combine(ServiceProvider.SettingsDir, "CustomOverlays.json");
-
             try
             {
-                var json = File.ReadAllText(_filePath);
+                var json = File.ReadAllText(GetFilePath());
 
                 var overlays = JsonConvert.DeserializeObject<CustomOverlaySettings[]>(json);
 
@@ -60,7 +59,7 @@ namespace Captura.ViewModels
             {
                 var json = JsonConvert.SerializeObject(Collection);
 
-                File.WriteAllText(_filePath, json);
+                File.WriteAllText(GetFilePath(), json);
             }
             catch
             {

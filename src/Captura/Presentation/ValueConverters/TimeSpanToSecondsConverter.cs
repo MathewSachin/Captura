@@ -6,17 +6,17 @@ namespace Captura
 {
     public class TimeSpanToSecondsConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            if (value is TimeSpan t)
+            if (Value is TimeSpan t)
                 return t.TotalSeconds;
 
             return Binding.DoNothing;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            if (value is double seconds)
+            if (Value is double seconds)
                 return TimeSpan.FromSeconds((int)seconds);
 
             return Binding.DoNothing;

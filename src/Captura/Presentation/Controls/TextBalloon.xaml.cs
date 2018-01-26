@@ -18,28 +18,30 @@ namespace Captura
             InitializeComponent();
         }
 
-        void CloseButton_Click(object sender = null, RoutedEventArgs e = null)
+        void OnClose()
         {
             //the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon?.CloseBalloon();
         }
 
+        void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();
+
         /// <summary>
         /// If the users hovers over the balloon, we don't close it.
         /// </summary>
-        void grid_MouseEnter(object sender, MouseEventArgs e)
+        void grid_MouseEnter(object Sender, MouseEventArgs E)
         {
             // the tray icon assigned this attached property to simplify access
             var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon?.ResetBalloonCloseTimer();
         }
 
-        void TextBlock_MouseUp(object sender, MouseButtonEventArgs e)
+        void TextBlock_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             _onClick?.Invoke();
 
-            CloseButton_Click();
+            OnClose();
         }
     }
 }

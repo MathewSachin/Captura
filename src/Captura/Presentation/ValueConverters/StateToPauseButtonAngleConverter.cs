@@ -7,9 +7,9 @@ namespace Captura
 {
     public class StateToPauseButtonAngleConverter : OneWayConverter
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            if (value is RecorderState state)
+            if (Value is RecorderState state)
                 return state == RecorderState.Paused ? 90 : 0;
 
             return Binding.DoNothing;

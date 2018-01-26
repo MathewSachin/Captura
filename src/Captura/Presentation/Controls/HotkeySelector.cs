@@ -16,17 +16,17 @@ namespace Captura
         
         public static readonly DependencyProperty HotkeyModelProperty = DependencyProperty.Register(nameof(HotkeyModel), typeof(Hotkey), typeof(HotkeySelector), new UIPropertyMetadata(PropertyChangedCallback));
 
-        static void PropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        static void PropertyChangedCallback(DependencyObject Sender, DependencyPropertyChangedEventArgs Args)
         {
-            if (sender is HotkeySelector selector && args.NewValue is Hotkey hotkey)
+            if (Sender is HotkeySelector selector && Args.NewValue is Hotkey hotkey)
             {
                 selector._hotkey = hotkey;
 
                 selector.TextColor();
 
-                hotkey.PropertyChanged += (s, e) =>
+                hotkey.PropertyChanged += (S, E) =>
                 {
-                    if (e.PropertyName == nameof(Hotkey.IsActive))
+                    if (E.PropertyName == nameof(Hotkey.IsActive))
                         selector.TextColor();
                 };
 
@@ -45,7 +45,7 @@ namespace Captura
             HotkeyEdited((Keys) KeyInterop.VirtualKeyFromKey(NewKey), NewModifiers);
         }
 
-        public void TextColor()
+        void TextColor()
         {
             if (_hotkey.IsActive && !_hotkey.IsRegistered)
             {
@@ -83,20 +83,20 @@ namespace Captura
             Content = _editing ? "Press new Hotkey..." : _hotkey.ToString();
         }
 
-        protected override void OnLostFocus(RoutedEventArgs e)
+        protected override void OnLostFocus(RoutedEventArgs E)
         {
-            base.OnLostFocus(e);
+            base.OnLostFocus(E);
 
             CancelEditing();
         }
 
         void CancelEditing()
         {
-            if (_editing)
-            {
-                _editing = false;
-                Content = _hotkey.ToString();
-            }
+            if (!_editing)
+                return;
+
+            _editing = false;
+            Content = _hotkey.ToString();
         }
 
         static bool IsValid(KeyEventArgs e)
@@ -108,77 +108,85 @@ namespace Captura
                 && e.Key != Key.LeftShift && e.Key != Key.RightShift;
         }
 
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs E)
         {
             // Ignore Repeats
-            if (e.IsRepeat)
+            if (E.IsRepeat)
             {
-                e.Handled = true;
+                E.Handled = true;
                 return;
             }
 
             if (_editing)
             {
                 // Suppress event propagation
-                e.Handled = true;
-                
-                if (e.Key == Key.Escape)
-                    CancelEditing();
+                E.Handled = true;
 
-                // Special Handling for Alt
-                else if (e.Key == Key.System)
+                switch (E.Key)
                 {
-                    if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
-                        Content = "Alt + ...";
-                    else HotkeyEdited(e.SystemKey, Modifiers.Alt);
-                }
+                    case Key.Escape:
+                        CancelEditing();
+                        break;
 
-                else if (IsValid(e))
-                    HotkeyEdited(e.Key, (Modifiers)e.KeyboardDevice.Modifiers);
+                    case Key.System:
+                        if (E.SystemKey == Key.LeftAlt || E.SystemKey == Key.RightAlt)
+                            Content = "Alt + ...";
+                        else HotkeyEdited(E.SystemKey, Modifiers.Alt);
+                        break;
 
-                else
-                {
-                    var modifiers = e.KeyboardDevice.Modifiers;
+                    default:
+                        if (IsValid(E))
+                            HotkeyEdited(E.Key, (Modifiers)E.KeyboardDevice.Modifiers);
 
-                    Content = "";
+                        else
+                        {
+                            var modifiers = E.KeyboardDevice.Modifiers;
 
-                    if (modifiers.HasFlag(ModifierKeys.Control))
-                        Content += "Ctrl + ";
+                            Content = "";
 
-                    if (modifiers.HasFlag(ModifierKeys.Alt))
-                        Content += "Alt + ";
+                            if (modifiers.HasFlag(ModifierKeys.Control))
+                                Content += "Ctrl + ";
 
-                    if (modifiers.HasFlag(ModifierKeys.Shift))
-                        Content += "Shift + ";
+                            if (modifiers.HasFlag(ModifierKeys.Alt))
+                                Content += "Alt + ";
 
-                    Content += "...";
+                            if (modifiers.HasFlag(ModifierKeys.Shift))
+                                Content += "Shift + ";
+
+                            Content += "...";
+                        }
+                        break;
                 }
             }
 
-            base.OnPreviewKeyDown(e);
+            base.OnPreviewKeyDown(E);
         }
 
-        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        protected override void OnPreviewKeyUp(KeyEventArgs E)
         {
             // Ignore Repeats
-            if (e.IsRepeat)
+            if (E.IsRepeat)
                 return;
 
             if (_editing)
             {
                 // Suppress event propagation
-                e.Handled = true;
+                E.Handled = true;
 
                 // PrintScreen is not recognized in KeyDown
-                if (e.Key == Key.Snapshot)
-                    HotkeyEdited(Keys.PrintScreen, (Modifiers)e.KeyboardDevice.Modifiers);
-                
-                // Special handling for Alt
-                else if (e.Key == Key.System && e.SystemKey == Key.Snapshot)
-                    HotkeyEdited(Keys.PrintScreen, Modifiers.Alt);
+                switch (E.Key)
+                {
+                    case Key.Snapshot:
+                        HotkeyEdited(Keys.PrintScreen, (Modifiers)E.KeyboardDevice.Modifiers);
+                        break;
+
+                    case Key.System when E.SystemKey == Key.Snapshot:
+                        HotkeyEdited(Keys.PrintScreen, Modifiers.Alt);
+                        break;
+                }
             }
 
-            base.OnPreviewKeyUp(e);
+            base.OnPreviewKeyUp(E);
         }
     }
 }

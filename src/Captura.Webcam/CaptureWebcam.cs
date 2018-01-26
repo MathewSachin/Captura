@@ -214,7 +214,7 @@ namespace Captura.Webcam
                 var cat = Uuid.PinCategory.Capture;
                 var med = Uuid.MediaType.Interleaved;
                 var iid = typeof(IAMStreamConfig).GUID;
-                hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out object o);
+                hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out var o);
 
                 if (hr != 0)
                 {
@@ -297,7 +297,7 @@ namespace Captura.Webcam
         void RemoveDownstream(IBaseFilter filter)
         {
             // Get a pin enumerator off the filter
-            var hr = filter.EnumPins(out IEnumPins pinEnum);
+            var hr = filter.EnumPins(out var pinEnum);
 
             if (pinEnum == null)
                 return;
@@ -316,12 +316,12 @@ namespace Captura.Webcam
                     if (hr == 0 && pins[0] != null)
                     {
                         // Get the pin it is connected to
-                        pins[0].ConnectedTo(out IPin pinTo);
+                        pins[0].ConnectedTo(out var pinTo);
 
                         if (pinTo != null)
                         {
                             // Is this an input pin?
-                            hr = pinTo.QueryPinInfo(out PinInfo info);
+                            hr = pinTo.QueryPinInfo(out var info);
 
                             if (hr == 0 && info.dir == PinDirection.Input)
                             {
