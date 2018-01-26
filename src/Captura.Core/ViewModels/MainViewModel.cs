@@ -210,15 +210,13 @@ namespace Captura.ViewModels
                     switch (kind)
                     {
                         case RegionSourceProvider _:
-                            if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle
-                                rect)
+                            if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle rect)
                                 _regionProvider.SelectedRegion = rect;
                             break;
 
                         default:
-                            var source =
-                                VideoViewModel.AvailableVideoSources.FirstOrDefault(S =>
-                                    S.ToString() == Settings.Last.SourceName);
+                            var source = VideoViewModel.AvailableVideoSources
+                                .FirstOrDefault(S => S.ToString() == Settings.Last.SourceName);
 
                             if (source != null)
                                 VideoViewModel.SelectedVideoSource = source;
@@ -278,6 +276,17 @@ namespace Captura.ViewModels
                 if (saveTo != null)
                     VideoViewModel.SelectedImageWriter = saveTo;
             }
+
+            // Restore Webcam
+            if (!string.IsNullOrEmpty(Settings.Last.Webcam))
+            {
+                var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Last.Webcam);
+
+                if (webcam != null)
+                {
+                    WebCamProvider.SelectedCam = webcam;
+                }
+            }
         }
 
         bool _persist, _hotkeys;
@@ -333,6 +342,9 @@ namespace Captura.ViewModels
 
             // Remember ScreenShot Target
             Settings.Last.ScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
+
+            // Remember Webcam
+            Settings.Last.Webcam = WebCamProvider.SelectedCam.Name;
         }
         
         public void Dispose()

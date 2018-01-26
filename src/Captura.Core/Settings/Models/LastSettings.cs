@@ -51,5 +51,11 @@ namespace Captura
             get => Get("Disk");
             set => Set(value);
         }
+
+        public string Webcam
+        {
+            get => Get("");
+            set => Set(value);
+        }
     }
 }
