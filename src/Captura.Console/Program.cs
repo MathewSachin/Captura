@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Screna;
 using static System.Console;
-using Captura.Core;
 // ReSharper disable LocalizableElement
 
 namespace Captura

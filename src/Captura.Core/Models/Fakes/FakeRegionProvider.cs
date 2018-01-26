@@ -1,8 +1,7 @@
-﻿using Captura.Models;
-using System.Drawing;
+﻿using System.Drawing;
 using System;
 
-namespace Captura.Core
+namespace Captura.Models
 {
     public class FakeRegionProvider : IRegionProvider
     {

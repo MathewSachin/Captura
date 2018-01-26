@@ -7,7 +7,7 @@
     <ProjectGuid>{AF998FD2-10BB-4CB2-802C-B44879776544}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UITests</RootNamespace>
+    <RootNamespace>Captura.Tests</RootNamespace>
     <AssemblyName>UITests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

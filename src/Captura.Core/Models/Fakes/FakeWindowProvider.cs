@@ -1,6 +1,4 @@
-﻿using Captura.Models;
-
-namespace Captura.Core
+﻿namespace Captura.Models
 {
     class FakeWindowProvider : IMainWindow
     {

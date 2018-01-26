@@ -1,7 +1,7 @@
 ﻿using Captura.Models;
 using Ninject.Modules;
 
-namespace Captura.Core
+namespace Captura
 {
     public class FakesModule : NinjectModule
     {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Drawing;
-using Captura.Models;
 
-namespace Captura.Core
+namespace Captura.Models
 {
     class FakeWebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {

@@ -1,7 +1,6 @@
 ﻿using System;
-using Captura.Models;
 
-namespace Captura.Core
+namespace Captura.Models
 {
     class FakeSystemTray : ISystemTray
     {
