@@ -4,7 +4,8 @@
              xmlns:captura="clr-namespace:Captura"
              ShutdownMode="OnMainWindowClose"
              StartupUri="MainWindow.xaml"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             DispatcherUnhandledException="App_OnDispatcherUnhandledException">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
