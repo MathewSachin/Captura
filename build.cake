@@ -88,7 +88,7 @@ Teardown(context =>
 
 Task("Clean").Does(() =>
 {
-    DotNetBuild(slnPath, settings =>
+    MSBuild(slnPath, settings =>
     {
         settings.SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Minimal)
@@ -148,7 +148,7 @@ Task("Build")
     .IsDependentOn("NuGet-Restore")
     .Does(() =>
 {
-    DotNetBuild(slnPath, settings =>
+    MSBuild(slnPath, settings =>
     {
         settings.SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Minimal)
