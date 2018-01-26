@@ -598,7 +598,7 @@ namespace Captura.ViewModels
             _recorder.ErrorOccured += E =>
             {
                 if (_syncContext != null)
-                    _syncContext.Post(d => OnErrorOccured(E), null);
+                    _syncContext.Post(S => OnErrorOccured(E), null);
                 else OnErrorOccured(E);
             };
             

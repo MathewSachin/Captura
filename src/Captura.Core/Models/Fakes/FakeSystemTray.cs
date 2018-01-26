@@ -1,7 +1,7 @@
 ﻿using System;
 using Captura.Models;
 
-namespace Captura.Console
+namespace Captura.Core
 {
     class FakeSystemTray : ISystemTray
     {
@@ -10,12 +10,12 @@ namespace Captura.Console
         public void ShowScreenShotNotification(string FilePath)
         {
             // ReSharper disable once LocalizableElement
-            System.Console.WriteLine($"{LanguageManager.Instance.ScreenShotSaved}: {FilePath}");
+            Console.WriteLine($"{LanguageManager.Instance.ScreenShotSaved}: {FilePath}");
         }
 
         public void ShowTextNotification(string Text, int Duration, Action OnClick)
         {
-            System.Console.WriteLine(Text);
+            Console.WriteLine(Text);
         }
     }
 }

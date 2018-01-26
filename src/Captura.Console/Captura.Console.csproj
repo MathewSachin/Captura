@@ -52,13 +52,6 @@
     <Compile Include="CmdOptions\CmdOptionsBase.cs" />
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
     <Compile Include="CmdOptions\FFMpegCmdOptions.cs" />
-    <Compile Include="Fakes\FakeMessageProvider.cs" />
-    <Compile Include="Fakes\FakeRegionItem.cs" />
-    <Compile Include="Fakes\FakeRegionProvider.cs" />
-    <Compile Include="Fakes\FakeSystemTray.cs" />
-    <Compile Include="Fakes\FakeWebCamProvider.cs" />
-    <Compile Include="Fakes\FakeWindowProvider.cs" />
-    <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />

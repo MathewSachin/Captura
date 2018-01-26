@@ -11,15 +11,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Screna;
 using static System.Console;
+using Captura.Core;
 // ReSharper disable LocalizableElement
 
-namespace Captura.Console
+namespace Captura
 {
     static class Program
     {
         static void Main(string[] Args)
         {
-            ServiceProvider.LoadModule(new MainModule());
+            ServiceProvider.LoadModule(new FakesModule());
 
             // Handle if args is empty
             switch (Args.Length > 0 ? Args[0] : "")

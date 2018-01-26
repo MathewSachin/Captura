@@ -83,6 +83,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleStart.cs" />
+    <Compile Include="FakePropertyStore.cs" />
+    <Compile Include="PropertyStoreTests.cs" />
     <Compile Include="ScreenShots.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

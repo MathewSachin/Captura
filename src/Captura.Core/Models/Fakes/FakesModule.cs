@@ -1,9 +1,9 @@
 ﻿using Captura.Models;
 using Ninject.Modules;
 
-namespace Captura.Console
+namespace Captura.Core
 {
-    public class MainModule : NinjectModule
+    public class FakesModule : NinjectModule
     {
         public override void Load()
         {

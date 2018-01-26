@@ -45,8 +45,10 @@ namespace Captura
         {
             try
             {
-                var jobj = new JObject(JObject.FromObject(this).Properties().OrderBy(J => J.Name).ToArray());
-                
+                var sortedProperties = JObject.FromObject(this).Properties().OrderBy(J => J.Name);
+
+                var jobj = new JObject(sortedProperties.Cast<object>().ToArray());
+
                 File.WriteAllText(GetPath(), jobj.ToString());
 
                 return true;

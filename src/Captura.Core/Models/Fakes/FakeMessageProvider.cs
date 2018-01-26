@@ -1,13 +1,13 @@
-﻿using Captura.Models;
-using Con = System.Console;
+﻿using System;
+using Captura.Models;
 
-namespace Captura.Console
+namespace Captura.Core
 {
     class FakeMessageProvider : IMessageProvider
     {
         public void ShowError(string Message)
         {
-            Con.Error.WriteLine(Message);
+            Console.Error.WriteLine(Message);
         }
 
         public void ShowFFMpegUnavailable()
@@ -17,9 +17,9 @@ namespace Captura.Console
 
         public bool ShowYesNo(string Message, string Title)
         {
-            Con.Write($"{Message} (Y/N):");
+            Console.Write($"{Message} (Y/N):");
 
-            var reply = Con.ReadLine();
+            var reply = Console.ReadLine();
 
             return reply != null && reply.ToLower() == "y";
         }

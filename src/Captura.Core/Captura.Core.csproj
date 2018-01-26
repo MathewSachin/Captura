@@ -147,6 +147,13 @@
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
+    <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Models\Fakes\FakeRegionItem.cs" />
+    <Compile Include="Models\Fakes\FakeRegionProvider.cs" />
+    <Compile Include="Models\Fakes\FakesModule.cs" />
+    <Compile Include="Models\Fakes\FakeSystemTray.cs" />
+    <Compile Include="Models\Fakes\FakeWebCamProvider.cs" />
+    <Compile Include="Models\Fakes\FakeWindowProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
     <Compile Include="Models\FFMpeg\FFMpegLog.cs" />

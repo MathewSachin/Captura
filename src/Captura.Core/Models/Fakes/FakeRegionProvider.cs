@@ -2,9 +2,9 @@
 using System.Drawing;
 using System;
 
-namespace Captura.Console
+namespace Captura.Core
 {
-    class FakeRegionProvider : IRegionProvider
+    public class FakeRegionProvider : IRegionProvider
     {
         FakeRegionProvider() { }
 

@@ -3,7 +3,7 @@ using System.Drawing;
 using Captura.Models;
 using Screna;
 
-namespace Captura.Console
+namespace Captura.Core
 {
     class FakeRegionItem : NotifyPropertyChanged, IVideoItem
     {

@@ -1,6 +1,5 @@
 ﻿using CommandLine;
 
-
 namespace Captura
 {
     public class FFMpegCmdOptions

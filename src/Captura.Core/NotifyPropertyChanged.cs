@@ -12,9 +12,14 @@ namespace Captura
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
             RaisePropertyChanged(PropertyName);
+        }
+
+        protected void RaiseAllChanged()
+        {
+            RaisePropertyChanged("");
         }
     }
 }

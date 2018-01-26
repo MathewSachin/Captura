@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace UITests
+namespace Captura.Tests
 {
     [TestClass]
-    public class ConsoleStart
+    public class ConsoleStartTests
     {
         static Process Start(string Arguments)
         {

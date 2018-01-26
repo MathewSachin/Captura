@@ -2,7 +2,7 @@
 using System.Drawing;
 using Captura.Models;
 
-namespace Captura.Console
+namespace Captura.Core
 {
     class FakeWebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {

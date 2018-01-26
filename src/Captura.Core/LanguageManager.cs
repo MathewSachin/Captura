@@ -37,6 +37,9 @@ namespace Captura
 
                 try
                 {
+                    if (cultureName == null)
+                        continue;
+
                     var culture = CultureInfo.GetCultureInfo(cultureName);
 
                     cultures.Add(culture);
@@ -79,7 +82,7 @@ namespace Captura
 
                 LanguageChanged?.Invoke(value);
 
-                OnPropertyChanged(null);
+                RaiseAllChanged();
             }
         }
 
