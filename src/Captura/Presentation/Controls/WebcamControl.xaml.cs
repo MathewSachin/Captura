@@ -32,17 +32,15 @@ namespace Captura
             }
 
             //Create capture object.
-            if (VideoDevice != null)
+            if (VideoDevice != null && PresentationSource.FromVisual(this) is HwndSource source)
             {
-                var source = PresentationSource.FromVisual(this) as HwndSource;
-
                 Capture = new CaptureWebcam(VideoDevice)
                 {
                     PreviewWindow = source.Handle,
                     Scale = Scale()
                 };
                 
-                SizeChanged += (s, e) => OnSizeChange();
+                SizeChanged += (S, E) => OnSizeChange();
 
                 if (IsVisible)
                     Capture.StartPreview();
@@ -61,10 +59,8 @@ namespace Captura
             }
 
             //Create capture object.
-            if (VideoDevice != null)
+            if (VideoDevice != null && PresentationSource.FromVisual(MainWindow) is HwndSource source)
             {
-                var source = PresentationSource.FromVisual(MainWindow) as HwndSource;
-
                 Capture = new CaptureWebcam(VideoDevice)
                 {
                     PreviewWindow = source.Handle,

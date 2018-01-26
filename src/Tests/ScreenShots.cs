@@ -52,7 +52,7 @@ namespace UITests
             process?.WaitForExit();
 
             if (process == null || process.ExitCode != 0)
-                Assert.Fail($"Error occured when taking ScreenShot, hWnd: {hWnd}, FileName: {FileName}, ExitCode: {process.ExitCode}");
+                Assert.Fail($"Error occured when taking ScreenShot, hWnd: {hWnd}, FileName: {FileName}, ExitCode: {process?.ExitCode}");
         }
 
         /// <summary>

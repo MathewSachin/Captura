@@ -14,14 +14,14 @@ namespace Captura
             return Binding.DoNothing;
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            return DoConvert(value);
+            return DoConvert(Value);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            return DoConvert(value);
+            return DoConvert(Value);
         }
     }
 }

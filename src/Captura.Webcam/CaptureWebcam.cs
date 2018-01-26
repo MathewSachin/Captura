@@ -120,7 +120,7 @@ namespace Captura.Webcam
         {
             DerenderGraph();
 
-            _wantPreviewRendered = PreviewWindow != null && VideoDevice != null;
+            _wantPreviewRendered = PreviewWindow != IntPtr.Zero && VideoDevice != null;
 
             RenderGraph();
             StartPreviewIfNeeded();
