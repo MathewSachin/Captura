@@ -107,7 +107,7 @@ namespace Captura.ViewModels
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(Settings.OutPath))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura\\");
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura");
 
             // Create the Output Directory if it does not exist
             Settings.EnsureOutPath();

@@ -1,79 +1,24 @@
 ﻿using Ookii.Dialogs;
-using SharpCompress.Archives;
-using SharpCompress.Readers;
 using System;
-using System.IO;
-using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Captura.ViewModels
 {
-    public class DownloadFFMpeg
-    {
-        static readonly Uri FFMpegUri;
-        static readonly string FFMpegArchivePath;
-
-        static DownloadFFMpeg()
-        {
-            var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
-
-            FFMpegUri = new Uri($"http://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.7z");
-
-            FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
-        }
-
-        WebClient _webClient;
-
-        public async Task DownloadArchive(Action<int> Progress, WebProxy Proxy)
-        {
-            using (_webClient = new WebClient { Proxy = Proxy })
-            {
-                _webClient.DownloadProgressChanged += (s, e) =>
-                {
-                    Progress?.Invoke(e.ProgressPercentage);
-                };
-                
-                await _webClient.DownloadFileTaskAsync(FFMpegUri, FFMpegArchivePath);
-            }
-        }
-
-        public async Task ExtractTo(string FolderPath)
-        {
-            await Task.Run(() =>
-            {
-                using (var archive = ArchiveFactory.Open(FFMpegArchivePath))
-                {
-                    // Find ffmpeg.exe
-                    var ffmpegEntry = archive.Entries.First(Entry => Path.GetFileName(Entry.Key) == "ffmpeg.exe");
-
-                    ffmpegEntry.WriteToDirectory(FolderPath, new ExtractionOptions
-                    {
-                        // Don't copy directory structure
-                        ExtractFullPath = false,
-                        Overwrite = true
-                    });
-                }
-            });
-        }
-        
-        public void Cancel()
-        {
-            _webClient?.CancelAsync();
-        }
-    }
-
     public class FFMpegDownloadViewModel : ViewModelBase
     {
         public DelegateCommand StartCommand { get; }
 
         public DelegateCommand SelectFolderCommand { get; }
 
-        readonly DownloadFFMpeg _downloader = new DownloadFFMpeg();
-        
+        readonly CancellationTokenSource _cancellationTokenSource;
+
         public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
+            _cancellationTokenSource = new CancellationTokenSource();
+
             StartCommand = new DelegateCommand(async () => await Start());
 
             SelectFolderCommand = new DelegateCommand(() =>
@@ -98,7 +43,7 @@ namespace Captura.ViewModels
         {
             if (ActionDescription == CancelDownload)
             {
-                _downloader.Cancel();
+                _cancellationTokenSource.Cancel();
                 
                 return;
             }
@@ -109,12 +54,12 @@ namespace Captura.ViewModels
 
             try
             {
-                await _downloader.DownloadArchive(P =>
+                await DownloadFFMpeg.DownloadArchive(P =>
                 {
                     Progress = P;
 
                     Status = $"Downloading ({P}%)";
-                }, Settings.Proxy.GetWebProxy());
+                }, Settings.Proxy.GetWebProxy(), _cancellationTokenSource.Token);
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
@@ -134,7 +79,7 @@ namespace Captura.ViewModels
 
             try
             {
-                await _downloader.ExtractTo(TargetFolder);
+                await DownloadFFMpeg.ExtractTo(TargetFolder);
             }
             catch (UnauthorizedAccessException)
             {

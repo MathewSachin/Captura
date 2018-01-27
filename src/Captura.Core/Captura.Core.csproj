@@ -235,6 +235,7 @@
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="Settings\Models\TextOverlaySettings.cs" />
     <Compile Include="ViewModels\AudioViewModel.cs" />
+    <Compile Include="Models\DownloadFFMpeg.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />

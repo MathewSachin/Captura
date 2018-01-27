@@ -15,20 +15,30 @@ namespace Captura.ViewModels
         public ReadOnlyObservableCollection<RecentItemViewModel> RecentList { get; }
         
         public ICommand ClearCommand { get; }
-
-        readonly string _filePath;
+        
         readonly Settings _settings;
+
+        static string GetFilePath()
+        {
+            return Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
+        }
 
         public RecentViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             RecentList = new ReadOnlyObservableCollection<RecentItemViewModel>(_recentList);
 
             _settings = Settings;
-            _filePath = Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
 
+            Load();
+
+            ClearCommand = new DelegateCommand(() => _recentList.Clear());
+        }
+
+        void Load()
+        {
             try
             {
-                var json = File.ReadAllText(_filePath);
+                var json = File.ReadAllText(GetFilePath());
 
                 var list = JsonConvert.DeserializeObject<RecentItemModel[]>(json)
                     .Reverse() // Reversion required to maintain order
@@ -44,8 +54,6 @@ namespace Captura.ViewModels
             {
                 // Ignore Errors
             }
-
-            ClearCommand = new DelegateCommand(() => _recentList.Clear());
         }
 
         public RecentItemViewModel Add(string FilePath, RecentItemType ItemType, bool IsSaving)
@@ -71,7 +79,7 @@ namespace Captura.ViewModels
             {
                 var json = JsonConvert.SerializeObject(items);
 
-                File.WriteAllText(_filePath, json);
+                File.WriteAllText(GetFilePath(), json);
             }
             catch
             {

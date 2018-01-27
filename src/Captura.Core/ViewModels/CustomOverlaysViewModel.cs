@@ -14,6 +14,15 @@ namespace Captura.ViewModels
         {
             Collection = new ReadOnlyObservableCollection<CustomOverlaySettings>(_collection);
 
+            Load();
+
+            AddCommand = new DelegateCommand(() => _collection.Add(new CustomOverlaySettings()));
+
+            RemoveCommand = new DelegateCommand(OnRemoveExecute);
+        }
+
+        void Load()
+        {
             try
             {
                 var json = File.ReadAllText(GetFilePath());
@@ -29,10 +38,6 @@ namespace Captura.ViewModels
             {
                 // Ignore Errors
             }
-
-            AddCommand = new DelegateCommand(() => _collection.Add(new CustomOverlaySettings()));
-
-            RemoveCommand = new DelegateCommand(OnRemoveExecute);
         }
 
         void OnRemoveExecute(object O)
