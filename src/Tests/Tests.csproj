@@ -96,6 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioFileWriterTests.cs" />
     <Compile Include="ConsoleStart.cs" />
     <Compile Include="FakePropertyStore.cs" />
     <Compile Include="MoqModule.cs" />

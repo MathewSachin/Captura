@@ -49,7 +49,7 @@ namespace Screna
         }
 
         // hCursor -> (Icon, Hotspot)
-        static readonly Dictionary<IntPtr, Tuple<Bitmap, Point>> _cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();
+        static readonly Dictionary<IntPtr, Tuple<Bitmap, Point>> Cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();
         
         /// <summary>
         /// Draws this overlay.
@@ -59,6 +59,7 @@ namespace Screna
         public static void Draw(Graphics g, Func<Point, Point> Transform = null)
         {
             // ReSharper disable once RedundantAssignment
+            // ReSharper disable once InlineOutVariableDeclaration
             var cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
 
             if (!GetCursorInfo(out cursorInfo))
@@ -70,9 +71,9 @@ namespace Screna
             Bitmap icon;
             Point hotspot;
 
-            if (_cursors.ContainsKey(cursorInfo.hCursor))
+            if (Cursors.ContainsKey(cursorInfo.hCursor))
             {
-                var tuple = _cursors[cursorInfo.hCursor];
+                var tuple = Cursors[cursorInfo.hCursor];
 
                 icon = tuple.Item1;
                 hotspot = tuple.Item2;
@@ -84,18 +85,18 @@ namespace Screna
                 if (hIcon == IntPtr.Zero)
                     return;
 
-                if (!GetIconInfo(hIcon, out var _icInfo))
+                if (!GetIconInfo(hIcon, out var icInfo))
                     return;
 
                 icon = Icon.FromHandle(hIcon).ToBitmap();
-                hotspot = new Point(_icInfo.xHotspot, _icInfo.yHotspot);
+                hotspot = new Point(icInfo.xHotspot, icInfo.yHotspot);
 
-                _cursors.Add(cursorInfo.hCursor, Tuple.Create(icon, hotspot));
+                Cursors.Add(cursorInfo.hCursor, Tuple.Create(icon, hotspot));
 
                 DestroyIcon(hIcon);
 
-                DeleteObject(_icInfo.hbmColor);
-                DeleteObject(_icInfo.hbmMask);
+                DeleteObject(icInfo.hbmColor);
+                DeleteObject(icInfo.hbmMask);
             }
 
             var location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,

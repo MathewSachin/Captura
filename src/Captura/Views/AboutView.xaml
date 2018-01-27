@@ -16,7 +16,7 @@
                            LineHeight="30"
                            Style="{StaticResource TextColor}">
                     <Run FontSize="20" Text="{local:Loc AppName}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
-                    (c) 2017 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
+                    (c) 2018 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
                 <TextBlock DockPanel.Dock="Bottom"

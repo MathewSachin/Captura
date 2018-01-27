@@ -39,14 +39,20 @@ namespace Screna
         /// <returns>The Captured Image.</returns>
         public static Bitmap Capture(Screen Screen, bool IncludeCursor = false)
         {
+            if (Screen == null)
+                throw new ArgumentNullException(nameof(Screen));
+
             return Capture(Screen.Bounds, IncludeCursor);
         }
 
         public static Bitmap Capture(Window Window, bool IncludeCursor = false)
         {
+            if (Window == null)
+                throw new ArgumentNullException(nameof(Window));
+
             return Capture(Window.Rectangle, IncludeCursor);
         }
-                
+
         /// <summary>
         /// Captures the entire Desktop.
         /// </summary>
@@ -64,6 +70,9 @@ namespace Screna
         /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
         public static Bitmap CaptureTransparent(Window Window, bool IncludeCursor = false)
         {
+            if (Window == null)
+                throw new ArgumentNullException(nameof(Window));
+
             var backdrop = new Form
             {
                 AllowTransparency = true,
@@ -137,6 +146,9 @@ namespace Screna
         /// <param name="ResizeHeight">Capture Height.</param>
         public static Bitmap CaptureTransparent(Window Window, bool IncludeCursor, bool DoResize, int ResizeWidth, int ResizeHeight)
         {
+            if (Window == null)
+                throw new ArgumentNullException(nameof(Window));
+
             var startButtonHandle = User32.FindWindow("Button", "Start");
             var taskbarHandle = User32.FindWindow("Shell_TrayWnd", null);
 

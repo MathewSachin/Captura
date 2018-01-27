@@ -67,5 +67,31 @@ namespace Captura.Tests
 
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void NegativeFrameRate()
+        {
+            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+
+            using (new Recorder(videoWriter, imageProvider, -1))
+            {
+                
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ZeroFrameRate()
+        {
+            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+
+            using (new Recorder(videoWriter, imageProvider, 0))
+            {
+
+            }
+        }
     }
 }

@@ -20,9 +20,9 @@ namespace Screna
         /// <param name="Transform">Point Transform Function.</param>
         public OverlayedImageProvider(IImageProvider ImageProvider, Func<Point, Point> Transform, params IOverlay[] Overlays)
         {
-            _imageProvider = ImageProvider;
-            _overlays = Overlays;
-            _transform = Transform;
+            _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
+            _overlays = Overlays ?? throw new ArgumentNullException(nameof(Overlays));
+            _transform = Transform ?? throw new ArgumentNullException(nameof(Transform));
 
             Width = ImageProvider.Width;
             Height = ImageProvider.Height;

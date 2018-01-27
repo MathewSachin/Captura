@@ -77,124 +77,128 @@ namespace Captura
         {
             Banner();
 
-            using (var vm = ServiceProvider.Get<MainViewModel>())
+            var underline = $"\n{new string('-', 30)}";
+
+            #region FFmpeg
+            var ffmpegExists = FFMpegService.FFMpegExists;
+
+            WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
+
+            WriteLine();
+
+            if (ffmpegExists)
             {
-                vm.Init(false, false, false, false);
+                WriteLine("FFmpeg ENCODERS" + underline);
 
-                var underline = $"\n{new string('-', 30)}";
+                var writerProvider = ServiceProvider.Get<FFMpegWriterProvider>();
 
-                var video = vm.VideoViewModel;
+                var i = 0;
 
-                #region FFmpeg
-                var ffmpegExists = FFMpegService.FFMpegExists;
-
-                WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
-
-                WriteLine();                
-
-                if (ffmpegExists)
+                foreach (var codec in writerProvider)
                 {
-                    WriteLine("FFmpeg ENCODERS" + underline);
-
-                    video.SelectedVideoWriterKind = ServiceProvider.Get<FFMpegWriterProvider>();
-
-                    for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
-                    {
-                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
-                    }
-
-                    WriteLine();
-                }
-                #endregion
-
-                #region SharpAvi
-                var sharpAviExists = ServiceProvider.FileExists("SharpAvi.dll");
-
-                WriteLine($"SharpAvi Available: {(sharpAviExists ? "YES" : "NO")}");
-
-                WriteLine();
-
-                if (sharpAviExists)
-                {
-                    WriteLine("SharpAvi ENCODERS" + underline);
-
-                    video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
-
-                    for (var i = 0; i < video.AvailableVideoWriters.Count; ++i)
-                    {
-                        WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoWriters[i]}");
-                    }
-
-                    WriteLine();
-                }
-                #endregion
-
-                #region Windows
-                WriteLine("AVAILABLE WINDOWS" + underline);
-
-                video.SelectedVideoSourceKind = ServiceProvider.Get<WindowSourceProvider>();
-
-                foreach (var source in video.AvailableVideoSources.OfType<WindowItem>())
-                {
-                    WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                    ++i;
                 }
 
                 WriteLine();
-                #endregion
-
-                #region Screens
-                WriteLine("AVAILABLE SCREENS" + underline);
-
-                video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
-
-                for (var i = 0; i < video.AvailableVideoSources.Count; ++i)
-                {
-                    WriteLine($"{i.ToString().PadRight(2)}: {video.AvailableVideoSources[i]}");
-                }
-
-                WriteLine();
-                #endregion
-
-                #region MouseKeyHook
-                WriteLine($"MouseKeyHook Available: {(vm.MouseKeyHookAvailable ? "YES" : "NO")}");
-
-                WriteLine();
-                #endregion
-
-                var audio = vm.AudioViewModel.AudioSource;
-
-                WriteLine($"ManagedBass Available: {(audio is BassAudioSource ? "YES" : "NO")}");
-
-                WriteLine();
-
-                #region Microphones
-                if (audio.AvailableRecordingSources.Count > 1)
-                {
-                    WriteLine("AVAILABLE MICROPHONES" + underline);
-
-                    for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
-                    {
-                        WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
-                    }
-
-                    WriteLine();
-                }
-                #endregion
-
-                #region Speaker
-                if (audio.AvailableLoopbackSources.Count > 1)
-                {
-                    WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
-
-                    for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
-                    {
-                        WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
-                    }
-
-                    WriteLine();
-                }
-                #endregion
             }
+            #endregion
+
+            #region SharpAvi
+            var sharpAviExists = ServiceProvider.FileExists("SharpAvi.dll");
+
+            WriteLine($"SharpAvi Available: {(sharpAviExists ? "YES" : "NO")}");
+
+            WriteLine();
+
+            if (sharpAviExists)
+            {
+                WriteLine("SharpAvi ENCODERS" + underline);
+
+                var writerProvider = ServiceProvider.Get<SharpAviWriterProvider>();
+
+                var i = 0;
+
+                foreach (var codec in writerProvider)
+                {
+                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                    ++i;
+                }
+
+                WriteLine();
+            }
+            #endregion
+
+            #region Windows
+            WriteLine("AVAILABLE WINDOWS" + underline);
+
+            var winProvider = ServiceProvider.Get<WindowSourceProvider>();
+
+            foreach (var source in winProvider.OfType<WindowItem>())
+            {
+                WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
+            }
+
+            WriteLine();
+            #endregion
+
+            #region Screens
+            WriteLine("AVAILABLE SCREENS" + underline);
+
+            var scrProvider = ServiceProvider.Get<ScreenSourceProvider>();
+
+            var j = 0;
+
+            // First is Full Screen
+            foreach (var screen in scrProvider.Skip(1))
+            {
+                WriteLine($"{j.ToString().PadRight(2)}: {screen}");
+
+                ++j;
+            }
+
+            WriteLine();
+            #endregion
+
+            #region MouseKeyHook
+            WriteLine($"MouseKeyHook Available: {(ServiceProvider.Get<MainViewModel>().MouseKeyHookAvailable ? "YES" : "NO")}");
+
+            WriteLine();
+            #endregion
+
+            var audio = ServiceProvider.Get<AudioSource>();
+
+            WriteLine($"ManagedBass Available: {(audio is BassAudioSource ? "YES" : "NO")}");
+
+            WriteLine();
+
+            #region Microphones
+            if (audio.AvailableRecordingSources.Count > 1)
+            {
+                WriteLine("AVAILABLE MICROPHONES" + underline);
+
+                for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                {
+                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
+                }
+
+                WriteLine();
+            }
+            #endregion
+
+            #region Speaker
+            if (audio.AvailableLoopbackSources.Count > 1)
+            {
+                WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
+
+                for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                {
+                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                }
+
+                WriteLine();
+            }
+            #endregion
         }
 
         static void Banner()
@@ -202,7 +206,7 @@ namespace Captura
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
             WriteLine($@"Captura v{version}
-(c) 2017 Mathew Sachin
+(c) 2018 Mathew Sachin
 ");
         }
 

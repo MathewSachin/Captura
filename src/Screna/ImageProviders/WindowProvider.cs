@@ -73,7 +73,7 @@ namespace Screna
         /// </summary>
         public WindowProvider(Window Window, bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            _window = Window;
+            _window = Window ?? throw new ArgumentNullException(nameof(Window));
             _includeCursor = IncludeCursor;
 
             var size = Window.Rectangle.Even().Size;

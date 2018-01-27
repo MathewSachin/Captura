@@ -42,6 +42,9 @@ namespace Screna
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
             _audioProvider = AudioProvider;
 
+            if (FrameRate <= 0)
+                throw new ArgumentException("Frame Rate must be possitive", nameof(FrameRate));
+
             _frameRate = FrameRate;
 
             _continueCapturing = new ManualResetEvent(false);
