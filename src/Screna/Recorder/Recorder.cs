@@ -67,7 +67,7 @@ namespace Screna
             _audioWriter = AudioWriter ?? throw new ArgumentNullException(nameof(AudioWriter));
             _audioProvider = AudioProvider ?? throw new ArgumentNullException(nameof(AudioProvider));
 
-            _audioProvider.DataAvailable += (s, e) => _audioWriter.Write(e.Buffer, 0, e.Length);
+            _audioProvider.DataAvailable += (S, E) => _audioWriter.Write(E.Buffer, 0, E.Length);
         }
 
         void DoWrite()
@@ -84,9 +84,9 @@ namespace Screna
                     }
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                ErrorOccured?.Invoke(E);
+                ErrorOccured?.Invoke(e);
 
                 Dispose(true, false);
             }
@@ -159,17 +159,17 @@ namespace Screna
                         Thread.Sleep(timeTillNextFrame);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                ErrorOccured?.Invoke(E);
+                ErrorOccured?.Invoke(e);
 
                 Dispose(false, true);
             }
         }
 
-        void AudioProvider_DataAvailable(object sender, DataAvailableEventArgs e)
+        void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
         {
-            _videoWriter.WriteAudio(e.Buffer, e.Length);            
+            _videoWriter.WriteAudio(E.Buffer, E.Length);            
         }
 
         #region Dispose

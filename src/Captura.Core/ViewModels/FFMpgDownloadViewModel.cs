@@ -13,12 +13,10 @@ namespace Captura.ViewModels
 
         public DelegateCommand SelectFolderCommand { get; }
 
-        readonly CancellationTokenSource _cancellationTokenSource;
+        readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-
             StartCommand = new DelegateCommand(async () => await Start());
 
             SelectFolderCommand = new DelegateCommand(() =>
@@ -71,6 +69,8 @@ namespace Captura.ViewModels
                 Status = $"Failed - {e.Message}";
                 return;
             }
+
+            _cancellationTokenSource.Dispose();
 
             // No cancelling after download
             StartCommand.RaiseCanExecuteChanged(false);

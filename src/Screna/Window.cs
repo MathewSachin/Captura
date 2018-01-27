@@ -116,9 +116,9 @@ namespace Screna
         {
             var list = new List<Window>();
 
-            EnumWindows((hWnd, lParam) =>
+            EnumWindows((Handle, Param) =>
             {
-                var wh = new Window(hWnd);
+                var wh = new Window(Handle);
 
                 list.Add(wh);
 
@@ -175,8 +175,8 @@ namespace Screna
         /// <returns>
         /// true if the specified object  is equal to the current object; otherwise, false.
         /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
-        public override bool Equals(object obj) => obj is Window w && w.Handle == Handle;
+        /// <param name="Obj">The object to compare with the current object. </param>
+        public override bool Equals(object Obj) => Obj is Window w && w.Handle == Handle;
         
         /// <summary>
         /// Serves as the default hash function. 

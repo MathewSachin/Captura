@@ -109,9 +109,9 @@ namespace Screna
                     lastFrame = frame;
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                ErrorOccured?.Invoke(E);
+                ErrorOccured?.Invoke(e);
 
                 Dispose(true);
             }
