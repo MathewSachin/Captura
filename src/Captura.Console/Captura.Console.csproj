@@ -35,8 +35,8 @@
     <ApplicationIcon>..\Captura\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="ModernUI.Xceed.Toolkit">
       <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
@@ -49,14 +49,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CmdOptions\CmdOptionsBase.cs" />
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
     <Compile Include="CmdOptions\FFMpegCmdOptions.cs" />
+    <Compile Include="CmdOptions\ListCmdOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />
     <Compile Include="CmdOptions\StartCmdOptions.cs" />
-    <Compile Include="CmdOptions\VerbCmdOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

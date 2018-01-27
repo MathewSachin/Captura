@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CommandLine;
 using Screna;
 using static System.Console;
 // ReSharper disable LocalizableElement
@@ -19,58 +20,49 @@ namespace Captura
     {
         static void Main(string[] Args)
         {
+            if (Args.Length == 0)
+            {
+                Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "Captura.UI.exe"));
+
+                return;
+            }
+
             ServiceProvider.LoadModule(new FakesModule());
 
-            // Handle if args is empty
-            switch (Args.Length > 0 ? Args[0] : "")
-            {
-                case "start":
-                case "shot":
-                case "ffmpeg":
+            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFMpegCmdOptions, ListCmdOptions>(Args)
+                .WithParsed<ListCmdOptions>(Options => List())
+                .WithParsed<StartCmdOptions>(Options =>
+                {
                     Banner();
 
-                    var verbs = new VerbCmdOptions();
-
-                    if (!CommandLine.Parser.Default.ParseArguments(Args, verbs, (Verb, Options) =>
+                    using (var vm = ServiceProvider.Get<MainViewModel>())
                     {
-                        using (var vm = ServiceProvider.Get<MainViewModel>())
-                        {
-                            vm.Init(false, false, false, false);
+                        vm.Init(false, false, false, false);
 
-                            // Remove Custom overlays
-                            vm.CustomOverlays.Reset();
+                        // Remove Custom overlays
+                        vm.CustomOverlays.Reset();
 
-                            // Start Recording (Command-line)
-                            switch (Options)
-                            {
-                                case StartCmdOptions startOptions:
-                                    Start(vm, startOptions);
-                                    break;
-
-                                case ShotCmdOptions shotOptions:
-                                    Shot(vm, shotOptions);
-                                    break;
-
-                                case FFMpegCmdOptions ffmpegOptions:
-                                    FFMpeg(vm, ffmpegOptions);
-                                    break;
-                            }
-                        }
-                    }))
-                    {
-                        WriteLine("Invalid Arguments");
+                        Start(vm, Options);
                     }
-                    break;
+                })
+                .WithParsed<ShotCmdOptions>(Options =>
+                {
+                    Banner();
 
-                case "list":
-                    List();
-                    break;
+                    using (var vm = ServiceProvider.Get<MainViewModel>())
+                    {
+                        vm.Init(false, false, false, false);
 
-                // Launch UI passing arguments
-                default:
-                    Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Captura.UI.exe"), string.Join(" ", Args));
-                    break;
-            }
+                        Shot(vm, Options);
+                    }
+                })
+                .WithParsed<FFMpegCmdOptions>(Options =>
+                {
+                    Banner();
+
+                    FFMpeg(Options);
+                });
         }
 
         static void List()
@@ -313,7 +305,7 @@ namespace Captura
             }
         }
 
-        static void FFMpeg(MainViewModel ViewModel, FFMpegCmdOptions FFMpegOptions)
+        static void FFMpeg(FFMpegCmdOptions FFMpegOptions)
         {
             if (FFMpegOptions.Install != null)
             {

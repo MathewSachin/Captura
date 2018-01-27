@@ -7,7 +7,8 @@
 namespace Captura
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class StartCmdOptions : CommonCmdOptions
+    [Verb("start", HelpText = "Start Recording")]
+    class StartCmdOptions : CommonCmdOptions
     {
         public StartCmdOptions()
         {
@@ -20,28 +21,28 @@ namespace Captura
             AudioQuality = settings.AudioQuality;
         }
 
-        [Option("delay", DefaultValue = 0, HelpText = "Milliseconds to wait before starting recording.")]
+        [Option("delay", HelpText = "Milliseconds to wait before starting recording.")]
         public int Delay { get; set; }
 
-        [Option("length", DefaultValue = 0, HelpText = "Length of Recording in seconds.")]
+        [Option("length", HelpText = "Length of Recording in seconds.")]
         public int Length { get; set; }
         
-        [Option("keys", DefaultValue = false, HelpText = "Include Keystrokes in Recording.")]
+        [Option("keys", HelpText = "Include Keystrokes in Recording.")]
         public bool Keys { get; set; }
 
-        [Option("clicks", DefaultValue = false, HelpText = "Include Mouse Clicks in Recording.")]
+        [Option("clicks", HelpText = "Include Mouse Clicks in Recording.")]
         public bool Clicks { get; set; }
 
-        [Option("mic", DefaultValue = -1, HelpText = "Index of Microphone source.")]
+        [Option("mic", Default = -1, HelpText = "Index of Microphone source.")]
         public int Microphone { get; set; }
 
-        [Option("speaker", DefaultValue = -1, HelpText = "Index of Speaker output source.")]
+        [Option("speaker", Default = -1, HelpText = "Index of Speaker output source.")]
         public int Speaker { get; set; }
 
         [Option('r', "framerate", HelpText = "Recording frame rate.")]
         public int FrameRate { get; set; }
 
-        [Option("encoder", DefaultValue = null, HelpText = "Video encoder to use.")]
+        [Option("encoder", HelpText = "Video encoder to use.")]
         public string Encoder { get; set; }
 
         [Option("vq", HelpText = "Video Quality")]

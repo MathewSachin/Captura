@@ -4,12 +4,13 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using CommandLine;
 
 namespace Captura
 {
     public partial class App
     {
-        public static CmdOptions CmdOptions { get; } = new CmdOptions();
+        public static CmdOptions CmdOptions { get; private set; }
         
         void App_OnDispatcherUnhandledException(object Sender, DispatcherUnhandledExceptionEventArgs Args)
         {
@@ -45,7 +46,8 @@ namespace Captura
                 Shutdown();
             };
 
-            CommandLine.Parser.Default.ParseArguments(Args.Args, CmdOptions);
+            Parser.Default.ParseArguments<CmdOptions>(Args.Args)
+                .WithParsed(M => CmdOptions = M);
 
             if (CmdOptions.Settings != null)
             {
