@@ -2,10 +2,10 @@
 
 namespace Captura
 {
-    [Verb("ffmpeg")]
+    [Verb("ffmpeg", HelpText = "Manage FFMpeg")]
     class FFMpegCmdOptions
     {
-        [Option("install", HelpText = "Install FFMPeg to specified folder.")]
+        [Option("install", HelpText = "Install FFMpeg to specified folder.")]
         public string Install { get; set; }
     }
 }

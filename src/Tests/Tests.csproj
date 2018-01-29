@@ -66,6 +66,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="TestStack.White, Version=0.13.0.0, Culture=neutral, PublicKeyToken=2672efbf3e161801, processorArchitecture=MSIL">
       <HintPath>..\packages\TestStack.White.0.13.3\lib\net40\TestStack.White.dll</HintPath>
     </Reference>
@@ -99,6 +100,7 @@
     <Compile Include="AudioFileWriterTests.cs" />
     <Compile Include="ConsoleStart.cs" />
     <Compile Include="FakePropertyStore.cs" />
+    <Compile Include="ImageProviderTests.cs" />
     <Compile Include="MoqModule.cs" />
     <Compile Include="PropertyStoreTests.cs" />
     <Compile Include="ScreenShots.cs" />

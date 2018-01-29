@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Screna;
 using Screna.Audio;
 
@@ -92,6 +93,38 @@ namespace Captura.Tests
             {
 
             }
+        }
+
+        [TestMethod]
+        public void RecorderVideoDispose()
+        {
+            var imgProviderMock = ServiceProvider.Get<Mock<IImageProvider>>();
+            var videoWriterMock = ServiceProvider.Get<Mock<IVideoFileWriter>>();
+            var audioProviderMock = ServiceProvider.Get<Mock<IAudioProvider>>();
+
+            using (new Recorder(videoWriterMock.Object, imgProviderMock.Object, 10, audioProviderMock.Object))
+            {
+                
+            }
+
+            imgProviderMock.Verify(M => M.Dispose(), Times.Once);
+            videoWriterMock.Verify(M => M.Dispose(), Times.Once);
+            audioProviderMock.Verify(M => M.Dispose(), Times.Once);
+        }
+
+        [TestMethod]
+        public void RecorderAudioDispose()
+        {
+            var audioWriterMock = ServiceProvider.Get<Mock<IAudioFileWriter>>();
+            var audioProviderMock = ServiceProvider.Get<Mock<IAudioProvider>>();
+
+            using (new Recorder(audioWriterMock.Object, audioProviderMock.Object))
+            {
+
+            }
+            
+            audioWriterMock.Verify(M => M.Dispose(), Times.Once);
+            audioProviderMock.Verify(M => M.Dispose(), Times.Once);
         }
     }
 }

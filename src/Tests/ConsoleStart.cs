@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Captura.Tests
+namespace Captura.Tests.Console
 {
     [TestClass]
     public class ConsoleStartTests

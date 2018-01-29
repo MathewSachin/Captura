@@ -8,7 +8,7 @@ using TestStack.White.UIItems.WindowItems;
 using System.Threading;
 using System.IO;
 
-namespace Captura.Tests
+namespace Captura.Tests.Views
 {
     [TestClass]
     public class ScreenShotTests

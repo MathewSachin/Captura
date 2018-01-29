@@ -305,7 +305,7 @@ namespace Captura
             }
         }
 
-        static void FFMpeg(FFMpegCmdOptions FFMpegOptions)
+        static async void FFMpeg(FFMpegCmdOptions FFMpegOptions)
         {
             if (FFMpegOptions.Install != null)
             {
@@ -321,10 +321,8 @@ namespace Captura
 
                 ffMpegDownload.TargetFolder = FFMpegOptions.Install;
 
-                var downloadTask = Task.Run(() => ffMpegDownload.Start());
-
-                downloadTask.Wait();
-
+                await ffMpegDownload.Start();
+                
                 WriteLine(ffMpegDownload.Status);
             }
         }
