@@ -49,12 +49,15 @@ namespace Captura.Tests.Views
 
             if (process == null || process.ExitCode != 0)
                 Assert.Fail($"Error occured when taking ScreenShot, hWnd: {Window}, FileName: {FileName}, ExitCode: {process?.ExitCode}");
+
+            Assert.IsTrue(File.Exists(FileName), $"ScreenShot was not saved: {FileName}");
         }
 
         /// <summary>
         /// Take ScreenShot of all Tabs.
         /// </summary>
         [TestMethod]
+        [Timeout(25000)]
         public void ScreenShotTabs()
         {
             Directory.CreateDirectory("Tabs");

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.UI", "Captura\Captura.UI.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura", "Captura\Captura.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna", "Screna\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject

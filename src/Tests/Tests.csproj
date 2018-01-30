@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Captura.Tests</RootNamespace>
-    <AssemblyName>UITests</AssemblyName>
+    <AssemblyName>Captura.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -87,9 +87,9 @@
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Captura\Captura.UI.csproj">
+    <ProjectReference Include="..\Captura\Captura.csproj">
       <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
-      <Name>Captura.UI</Name>
+      <Name>Captura</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>

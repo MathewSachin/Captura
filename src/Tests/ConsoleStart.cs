@@ -44,6 +44,7 @@ namespace Captura.Tests.Console
         }
         
         [TestMethod]
+        [Timeout(5000)]
         public void StartGif()
         {
             var process = Start("start --encoder gif");
@@ -54,17 +55,18 @@ namespace Captura.Tests.Console
 
             process.WaitForExit();
 
-            Assert.AreEqual(process.ExitCode, 0);
+            Assert.AreEqual(process.ExitCode, 0, $"Process exited with exit code: {process.ExitCode}");
         }
 
         [TestMethod]
+        [Timeout(5000)]
         public void StartGifFixedDuration()
         {
             var process = Start("start --encoder gif --length 1");
 
             process.WaitForExit();
 
-            Assert.AreEqual(process.ExitCode, 0);
+            Assert.AreEqual(process.ExitCode, 0, $"Process exited with exit code: {process.ExitCode}");
         }
     }
 }
