@@ -10,7 +10,7 @@ namespace Captura.Tests
         {
             var obj = new FakePropertyStore();
 
-            var propertyName = "Initial Value";
+            var propertyName = "Unknown";
 
             obj.PropertyChanged += (S, E) => propertyName = E.PropertyName;
 

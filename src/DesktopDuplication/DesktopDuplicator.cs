@@ -87,13 +87,12 @@ namespace DesktopDuplication
             {
                 throw new NotSupportedException("Desktop Duplication is not supported on this system.\nIf you have multiple graphic cards, try running Captura on integrated graphics.", e);
             }
+
+            _desktopImageTexture = new Texture2D(_device, _textureDesc);
         }
         
         public IBitmapFrame Capture()
         {
-            if (_desktopImageTexture == null)
-                _desktopImageTexture = new Texture2D(_device, _textureDesc);
-
             SharpDX.DXGI.Resource desktopResource;
 
             try

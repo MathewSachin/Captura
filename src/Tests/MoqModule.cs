@@ -48,6 +48,9 @@ namespace Captura.Tests
             {
                 var mock = new Mock<IVideoFileWriter>();
 
+                mock.Setup(M => M.WriteFrame(It.IsAny<IBitmapFrame>()))
+                    .Callback<IBitmapFrame>(M => M.Dispose());
+
                 mock.Setup(M => M.SupportsAudio).Returns(true);
 
                 return mock;

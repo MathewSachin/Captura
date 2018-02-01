@@ -48,7 +48,7 @@ namespace Screna
         /// </summary>
         public void WriteAudio(byte[] Buffer, int Count) { }
 
-        readonly MemoryStream gifStream = new MemoryStream();
+        readonly MemoryStream _gifStream = new MemoryStream();
 
         int _width, _height;
 
@@ -57,7 +57,7 @@ namespace Screna
         /// </summary>
         public void WriteFrame(IBitmapFrame Frame, int Delay)
         {
-            gifStream.Position = 0;
+            _gifStream.Position = 0;
             
             if (_firstFrame)
             {
@@ -73,15 +73,15 @@ namespace Screna
             if (!(Frame is RepeatFrame))
             {
                 using (Frame)
-                    Frame.Bitmap.Save(gifStream, ImageFormat.Gif);
+                    Frame.Bitmap.Save(_gifStream, ImageFormat.Gif);
             }
 
             // Steal the global color table info
             if (_firstFrame)
-                InitHeader(gifStream, _writer, _width, _height);
+                InitHeader(_gifStream, _writer, _width, _height);
 
-            WriteGraphicControlBlock(gifStream, _writer, Delay);
-            WriteImageBlock(gifStream, _writer, !_firstFrame, 0, 0, _width, _height);
+            WriteGraphicControlBlock(_gifStream, _writer, Delay);
+            WriteImageBlock(_gifStream, _writer, !_firstFrame, 0, 0, _width, _height);
             
             if (_firstFrame)
                 _firstFrame = false;
@@ -206,7 +206,7 @@ namespace Screna
             _writer.BaseStream.Dispose();
             _writer.Dispose();
 
-            gifStream.Dispose();
+            _gifStream.Dispose();
         }
     }
 }

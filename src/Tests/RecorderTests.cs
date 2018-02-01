@@ -126,5 +126,55 @@ namespace Captura.Tests
             audioWriterMock.Verify(M => M.Dispose(), Times.Once);
             audioProviderMock.Verify(M => M.Dispose(), Times.Once);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void StartAfterDisposed()
+        {
+            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+
+            var recorder = new Recorder(videoWriter, imageProvider, 10);
+
+            using (recorder)
+            {
+            }
+
+            recorder.Start();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void StopAfterDisposed()
+        {
+            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+
+            var recorder = new Recorder(videoWriter, imageProvider, 10);
+
+            using (recorder)
+            {
+            }
+
+            recorder.Stop();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void DisposeTwice()
+        {
+            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+
+            var recorder = new Recorder(videoWriter, imageProvider, 10);
+
+            using (recorder)
+            {
+            }
+
+            using (recorder)
+            {
+            }
+        }
     }
 }
