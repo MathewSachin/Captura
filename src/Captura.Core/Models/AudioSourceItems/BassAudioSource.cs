@@ -6,24 +6,15 @@ namespace Captura.Models
 {
     public class BassAudioSource : AudioSource
     {
-        class BassItem : NotifyPropertyChanged, IAudioItem
+        public BassAudioSource()
         {
-            readonly int _id;
+            // Initialises Default Playback Device.
+            Bass.Init();
 
-            public BassItem(int Id, string Name)
-            {
-                _id = Id;
-                this.Name = Name;
-            }
+            // Enable Loopback Recording.
+            Bass.Configure(Configuration.LoopbackRecording, true);
 
-            public static IAudioProvider GetAudioProvider(BassItem RecordingDevice, BassItem LoopbackDevice)
-            {
-                return new MixedAudioProvider(RecordingDevice?._id, LoopbackDevice?._id);
-            }
-
-            public string Name { get; }
-
-            public override string ToString() => Name;
+            Refresh();
         }
 
         static bool AllExist(params string[] Paths)
@@ -53,19 +44,6 @@ namespace Captura.Models
                     LoopbackSources.Add(new BassItem(i, info.Name));
                 else RecordingSources.Add(new BassItem(i, info.Name));
             }
-        }
-
-        /// <summary>
-        /// Initialises BASS and enables Loopback Recording.
-        /// Call this method when your application starts.
-        /// </summary>
-        public override void Init()
-        {
-            // Initialises Default Playback Device.
-            Bass.Init();
-
-            // Enable Loopback Recording.
-            Bass.Configure(Configuration.LoopbackRecording, true);
         }
 
         /// <summary>

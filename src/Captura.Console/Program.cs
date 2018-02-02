@@ -256,7 +256,7 @@ namespace Captura
 
         static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
-            var source = ViewModel.AudioViewModel.AudioSource;
+            var source = ViewModel.AudioSource;
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count - 1)
             {

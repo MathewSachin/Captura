@@ -33,7 +33,7 @@ namespace Captura.ViewModels
         readonly IMainWindow _mainWindow;
         #endregion
         
-        public MainViewModel(AudioViewModel AudioViewModel,
+        public MainViewModel(AudioSource AudioSource,
             VideoViewModel VideoViewModel,
             ISystemTray SystemTray,
             IRegionProvider RegionProvider,
@@ -46,7 +46,7 @@ namespace Captura.ViewModels
             HotKeyManager HotKeyManager,
             CustomOverlaysViewModel CustomOverlays) : base(Settings, LanguageManager)
         {
-            this.AudioViewModel = AudioViewModel;
+            this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
@@ -79,7 +79,7 @@ namespace Captura.ViewModels
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            AudioViewModel.AudioSource.PropertyChanged += (Sender, Args) =>
+            AudioSource.PropertyChanged += (Sender, Args) =>
             {
                 switch (Args.PropertyName)
                 {
@@ -155,7 +155,7 @@ namespace Captura.ViewModels
 
             VideoViewModel.RefreshCodecs();
 
-            AudioViewModel.AudioSource.Refresh();
+            AudioSource.Refresh();
 
             WebCamProvider.Refresh();
 
@@ -244,19 +244,19 @@ namespace Captura.ViewModels
             // Restore Microphone
             if (!string.IsNullOrEmpty(Settings.Last.MicName))
             {
-                var source = AudioViewModel.AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Last.MicName);
+                var source = AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Last.MicName);
 
                 if (source != null)
-                    AudioViewModel.AudioSource.SelectedRecordingSource = source;
+                    AudioSource.SelectedRecordingSource = source;
             }
 
             // Restore Loopback Speaker
             if (!string.IsNullOrEmpty(Settings.Last.SpeakerName))
             {
-                var source = AudioViewModel.AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Last.SpeakerName);
+                var source = AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Last.SpeakerName);
 
                 if (source != null)
-                    AudioViewModel.AudioSource.SelectedLoopbackSource = source;
+                    AudioSource.SelectedLoopbackSource = source;
             }
 
             // Restore ScreenShot Format
@@ -334,8 +334,8 @@ namespace Captura.ViewModels
             Settings.Last.VideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            Settings.Last.MicName = AudioViewModel.AudioSource.SelectedRecordingSource.ToString();
-            Settings.Last.SpeakerName = AudioViewModel.AudioSource.SelectedLoopbackSource.ToString();
+            Settings.Last.MicName = AudioSource.SelectedRecordingSource.ToString();
+            Settings.Last.SpeakerName = AudioSource.SelectedLoopbackSource.ToString();
             
             // Remember ScreenShot Format
             Settings.Last.ScreenShotFormat = SelectedScreenShotImageFormat.ToString();
@@ -354,7 +354,7 @@ namespace Captura.ViewModels
             if (_hotkeys)
                 HotKeyManager.Dispose();
 
-            AudioViewModel.Dispose();
+            AudioSource.Dispose();
 
             RecentViewModel.Dispose();
             
@@ -384,7 +384,7 @@ namespace Captura.ViewModels
         
         void CheckFunctionalityAvailability()
         {
-            var audioAvailable = AudioViewModel.AudioSource.AudioAvailable;
+            var audioAvailable = AudioSource.AudioAvailable;
 
             var videoAvailable = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
@@ -514,8 +514,7 @@ namespace Captura.ViewModels
 
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider)
             {
-                if (AudioViewModel.AudioSource.SelectedLoopbackSource != NoSoundItem.Instance
-                    || AudioViewModel.AudioSource.SelectedRecordingSource != NoSoundItem.Instance)
+                if (AudioSource.AudioAvailable)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo("Audio won't be included in the recording.\nDo you want to record?", "Gif does not support Audio"))
                     {
@@ -578,7 +577,7 @@ namespace Captura.ViewModels
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
             
-            var audioProvider = AudioViewModel.AudioSource.GetAudioProvider();
+            var audioProvider = AudioSource.GetAudioProvider();
             
             var videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
 

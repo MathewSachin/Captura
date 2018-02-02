@@ -143,6 +143,7 @@
     <Compile Include="LanguageManager.cs" />
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
+    <Compile Include="Models\AudioSourceItems\BassItem.cs" />
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
@@ -234,7 +235,6 @@
     <Compile Include="Settings\Models\ProxySettings.cs" />
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="Settings\Models\TextOverlaySettings.cs" />
-    <Compile Include="ViewModels\AudioViewModel.cs" />
     <Compile Include="Models\DownloadFFMpeg.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

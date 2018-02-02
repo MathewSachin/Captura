@@ -213,8 +213,8 @@
                   ToolTip="{local:Loc MicSource}"/>
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
-                      ItemsSource="{Binding AudioViewModel.AudioSource.AvailableRecordingSources}"
-                      SelectedValue="{Binding AudioViewModel.AudioSource.SelectedRecordingSource, Mode=TwoWay}"
+                      ItemsSource="{Binding AudioSource.AvailableRecordingSources}"
+                      SelectedValue="{Binding AudioSource.SelectedRecordingSource, Mode=TwoWay}"
                       DisplayMemberPath="Name"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>
@@ -230,8 +230,8 @@
                   ToolTip="{local:Loc LoopbackSource}"/>
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0"
-                      ItemsSource="{Binding AudioViewModel.AudioSource.AvailableLoopbackSources}"
-                      SelectedValue="{Binding AudioViewModel.AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
+                      ItemsSource="{Binding AudioSource.AvailableLoopbackSources}"
+                      SelectedValue="{Binding AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
                       DisplayMemberPath="Name"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
         </DockPanel>

@@ -103,7 +103,7 @@ namespace Captura.ViewModels
         public string ActionDescription
         {
             get => _actionDescription;
-            set
+            private set
             {
                 _actionDescription = value;
 
@@ -142,7 +142,7 @@ namespace Captura.ViewModels
         public string Status
         {
             get => _status;
-            set
+            private set
             {
                 _status = value;
 

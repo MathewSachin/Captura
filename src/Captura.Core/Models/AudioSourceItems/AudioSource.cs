@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 
 namespace Captura.Models
 {
-    // Users need to call Init and Dispose methods
     public abstract class AudioSource : NotifyPropertyChanged, IDisposable
     {
         protected readonly ObservableCollection<IAudioItem> RecordingSources = new ObservableCollection<IAudioItem>();
@@ -19,9 +18,8 @@ namespace Captura.Models
             AvailableLoopbackSources = new ReadOnlyObservableCollection<IAudioItem>(LoopbackSources);
         }
 
-        IAudioItem _recordingSource, _loopbackSource;
-
-        public virtual void Init() { }
+        IAudioItem _recordingSource = NoSoundItem.Instance,
+            _loopbackSource = NoSoundItem.Instance;
 
         public virtual void Dispose() { }
 

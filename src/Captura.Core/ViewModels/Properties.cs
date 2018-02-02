@@ -77,7 +77,7 @@ namespace Captura.ViewModels
         public RecorderState RecorderState
         {
             get => _recorderState;
-            set
+            private set
             {
                 if (_recorderState == value)
                     return;
@@ -115,7 +115,7 @@ namespace Captura.ViewModels
         public CustomOverlaysViewModel CustomOverlays { get; }
 
         #region ScreenShot
-        public IEnumerable<ImageFormat> ScreenShotImageFormats => new[]
+        public IEnumerable<ImageFormat> ScreenShotImageFormats { get; } = new[]
         {
             ImageFormat.Png,
             ImageFormat.Jpeg,
@@ -191,7 +191,7 @@ namespace Captura.ViewModels
         #region Nested ViewModels
         public VideoViewModel VideoViewModel { get; }
 
-        public AudioViewModel AudioViewModel { get; }
+        public AudioSource AudioSource { get; }
 
         public RecentViewModel RecentViewModel { get; }
         #endregion
