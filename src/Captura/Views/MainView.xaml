@@ -18,9 +18,9 @@
                                     IconData="{StaticResource Icon_Folder}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                         Margin="5,0,0,0">
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
+                                          IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource Icon_Cursor}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"

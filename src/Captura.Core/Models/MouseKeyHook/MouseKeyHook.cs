@@ -30,25 +30,22 @@ namespace Captura.Models
             _keystrokesSettings = KeystrokesSettings;
             
             _hook = Hook.GlobalEvents();
+            
+            _hook.MouseDown += (S, E) => _mouseClicked = true;
 
-            if (MouseClickSettings.Display)
-            {
-                _hook.MouseDown += (s, e) => _mouseClicked = true;
+            _hook.MouseUp += (S, E) => _mouseClicked = false;
+            
+            _records = new KeyRecords(KeystrokesSettings.HistoryCount);
 
-                _hook.MouseUp += (s, e) => _mouseClicked = false;
-            }
-
-            if (KeystrokesSettings.Display)
-            {
-                _records = new KeyRecords(KeystrokesSettings.HistoryCount);
-
-                _hook.KeyDown += OnKeyDown;
-                _hook.KeyUp += OnKeyUp;
-            }
+            _hook.KeyDown += OnKeyDown;
+            _hook.KeyUp += OnKeyUp;
         }
 
         void OnKeyUp(object Sender, KeyEventArgs Args)
         {
+            if (!_keystrokesSettings.Display)
+                return;
+
             var record = new KeyRecord(Args);
 
             if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
@@ -67,6 +64,9 @@ namespace Captura.Models
 
         void OnKeyDown(object Sender, KeyEventArgs Args)
         {
+            if (!_keystrokesSettings.Display)
+                return;
+
             var record = new KeyRecord(Args);
             
             if (_records.Last == null)
@@ -150,8 +150,11 @@ namespace Captura.Models
         /// </summary>
         public void Draw(Graphics g, Func<Point, Point> Transform = null)
         {
-            DrawClicks(g, Transform);
-            DrawKeys(g);
+            if (_mouseClickSettings.Display)
+                DrawClicks(g, Transform);
+
+            if (_keystrokesSettings.Display)
+                DrawKeys(g);
         }
 
         void DrawKeys(Graphics g)

@@ -9,9 +9,12 @@ namespace Captura
 
         protected T Get<T>(T Default = default(T), [CallerMemberName] string PropertyName = "")
         {
-            if (_dictionary.TryGetValue(PropertyName, out var obj) && obj is T val)
+            lock (_dictionary)
             {
-                return val;
+                if (_dictionary.TryGetValue(PropertyName, out var obj) && obj is T val)
+                {
+                    return val;
+                }
             }
 
             return Default;
@@ -19,11 +22,14 @@ namespace Captura
 
         protected void Set<T>(T Value, [CallerMemberName] string PropertyName = "")
         {
-            if (_dictionary.ContainsKey(PropertyName))
+            lock (_dictionary)
             {
-                _dictionary[PropertyName] = Value;
+                if (_dictionary.ContainsKey(PropertyName))
+                {
+                    _dictionary[PropertyName] = Value;
+                }
+                else _dictionary.Add(PropertyName, Value);
             }
-            else _dictionary.Add(PropertyName, Value);
 
             OnPropertyChanged(PropertyName);
         }

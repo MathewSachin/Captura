@@ -19,7 +19,7 @@ namespace Captura.Tests.Views
         [ClassInitialize]
         public static void Init(TestContext Context)
         {
-            _app = Application.Launch("captura.ui.exe");
+            _app = Application.Launch(new ProcessStartInfo("captura.ui.exe", "--no-persist"));
 
             _mainWindow = _app.GetWindow("Captura");
         }

@@ -665,9 +665,8 @@ namespace Captura.ViewModels
                 return null;
 
             var overlays = new List<IOverlay> { _webcamOverlay };
-                        
-            // Mouse Click overlay should be drawn below cursor.
-            if (MouseKeyHookAvailable && (Settings.Clicks.Display || Settings.Keystrokes.Display))
+
+            if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
             
             // Custom Overlays
