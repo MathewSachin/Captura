@@ -44,7 +44,11 @@ namespace Captura.Models
         void OnKeyUp(object Sender, KeyEventArgs Args)
         {
             if (!_keystrokesSettings.Display)
+            {
+                _records.Clear();
+
                 return;
+            }
 
             var record = new KeyRecord(Args);
 
@@ -65,7 +69,11 @@ namespace Captura.Models
         void OnKeyDown(object Sender, KeyEventArgs Args)
         {
             if (!_keystrokesSettings.Display)
+            {
+                _records.Clear();
+
                 return;
+            }
 
             var record = new KeyRecord(Args);
             

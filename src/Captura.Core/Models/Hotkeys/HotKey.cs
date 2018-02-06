@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Captura.Models
@@ -40,8 +41,25 @@ namespace Captura.Models
                     return nameof(LanguageManager.ScreenShotDesktop);
 
                 default:
-                    return "Unknown";
+                    return SpaceAtCapitals(ServiceName);
             }
+        }
+
+        static string SpaceAtCapitals<T>(T Obj)
+        {
+            var s = Obj.ToString();
+
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < s.Length; ++i)
+            {
+                if (i != 0 && char.IsUpper(s[i]))
+                    sb.Append(" ");
+
+                sb.Append(s[i]);
+            }
+
+            return sb.ToString();
         }
 
         bool _active;

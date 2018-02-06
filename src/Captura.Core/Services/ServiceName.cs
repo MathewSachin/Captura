@@ -3,28 +3,38 @@
     public enum ServiceName
     {
         /// <summary>
-        /// ScreenShot (Action).
+        /// ScreenShot.
         /// </summary>
         ScreenShot,
 
         /// <summary>
-        /// Start/Stop Recording (Action).
+        /// Start/Stop Recording.
         /// </summary>
         Recording,
 
         /// <summary>
-        /// Pause/Resume Recording (Action).
+        /// Pause/Resume Recording.
         /// </summary>
         Pause,
 
         /// <summary>
-        /// ScreenShot of Desktop (Action).
+        /// ScreenShot of Desktop.
         /// </summary>
         DesktopScreenShot,
 
         /// <summary>
-        /// ScreenShot of Active Window (Action).
+        /// ScreenShot of Active Window.
         /// </summary>
-        ActiveScreenShot
+        ActiveScreenShot,
+
+        /// <summary>
+        /// Toggle Mouse clicks overlay.
+        /// </summary>
+        ToggleMouseClicks,
+
+        /// <summary>
+        /// Toggle Keystrokes overlay.
+        /// </summary>
+        ToggleKeystrokes
     }
 }

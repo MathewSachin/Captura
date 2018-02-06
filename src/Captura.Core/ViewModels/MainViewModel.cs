@@ -112,7 +112,7 @@ namespace Captura.ViewModels
             // Create the Output Directory if it does not exist
             Settings.EnsureOutPath();
 
-            // Register ActionServices
+            // Handle Hoykeys
             HotKeyManager.HotkeyPressed += Service =>
             {
                 switch (Service)
@@ -135,6 +135,14 @@ namespace Captura.ViewModels
 
                     case ServiceName.DesktopScreenShot:
                         ScreenShotDesktopCommand?.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.ToggleMouseClicks:
+                        Settings.Clicks.Display = !Settings.Clicks.Display;
+                        break;
+
+                    case ServiceName.ToggleKeystrokes:
+                        Settings.Keystrokes.Display = !Settings.Keystrokes.Display;
                         break;
                 }
             };
@@ -541,7 +549,7 @@ namespace Captura.ViewModels
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccured);
 
                 if (yes)
-                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
+                    VideoViewModel.SelectedVideoSourceKind = VideoViewModel.AvailableVideoSourceKinds[0];
 
                 return false;
             }

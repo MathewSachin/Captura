@@ -13,6 +13,8 @@ namespace Captura.Models {
 
         public int Size { get; }
 
+        public void Clear() => _records.Clear();
+
         public void Add(IKeyRecord KeyRecord)
         {
             if (_records.Count == Size)

@@ -88,6 +88,8 @@ namespace Captura
             yield return new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true);
             yield return new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true);
             yield return new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true);
+            yield return new HotkeyModel(ServiceName.ToggleMouseClicks, Keys.F10, Modifiers.Alt, false);
+            yield return new HotkeyModel(ServiceName.ToggleKeystrokes, Keys.F11, Modifiers.Alt, false);
         }
         
         public void ProcessHotkey(int Id)
