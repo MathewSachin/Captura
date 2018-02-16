@@ -266,6 +266,11 @@ namespace Captura
                 Snapper.IsEnabled = CloseButton.IsEnabled = false;
 
                 WidthBox.IsEnabled = HeightBox.IsEnabled = false;
+
+                if (ServiceProvider.Get<Settings>().UI.HideRegionSelectorWhenRecording)
+                {
+                    Hide();
+                }
             });
         }
         
@@ -277,6 +282,8 @@ namespace Captura
                 Snapper.IsEnabled = CloseButton.IsEnabled = true;
 
                 WidthBox.IsEnabled = HeightBox.IsEnabled = true;
+
+                Show();
             });
         }
 

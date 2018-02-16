@@ -67,5 +67,11 @@
             get => Get(5000);
             set => Set(value);
         }
+
+        public bool HideRegionSelectorWhenRecording
+        {
+            get => Get(false);
+            set => Set(value);
+        }
     }
 }
