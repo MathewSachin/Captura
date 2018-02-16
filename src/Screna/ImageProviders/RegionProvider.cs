@@ -18,6 +18,8 @@ namespace Screna
         /// </summary>
         public RegionProvider(Rectangle Region, bool IncludeCursor)
         {
+            Region = Region.Even();
+
             _region = Region;
             _includeCursor = IncludeCursor;
 
