@@ -13,7 +13,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullVideoWriter()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
 
             using (new Recorder(null, imageProvider, 10))
             {
@@ -25,7 +25,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullImageProvider()
         {
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             using (new Recorder(videoWriter, null, 10))
             {
@@ -37,7 +37,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullAudioWriter()
         {
-            var audioProvider = ServiceProvider.Get<IAudioProvider>();
+            var audioProvider = MoqFactory.GetAudioProviderMock().Object;
 
             using (new Recorder(null, audioProvider))
             {
@@ -49,7 +49,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullAudioProvider()
         {
-            var audioWriter = ServiceProvider.Get<IAudioFileWriter>();
+            var audioWriter = MoqFactory.GetAudioFileWriterMock().Object;
 
             using (new Recorder(audioWriter, null))
             {
@@ -61,7 +61,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullGifWriter()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
 
             using (new VFRGifRecorder(null, imageProvider))
             {
@@ -73,8 +73,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void NegativeFrameRate()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             using (new Recorder(videoWriter, imageProvider, -1))
             {
@@ -86,8 +86,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void ZeroFrameRate()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             using (new Recorder(videoWriter, imageProvider, 0))
             {
@@ -98,9 +98,9 @@ namespace Captura.Tests
         [TestMethod]
         public void RecorderVideoDispose()
         {
-            var imgProviderMock = ServiceProvider.Get<Mock<IImageProvider>>();
-            var videoWriterMock = ServiceProvider.Get<Mock<IVideoFileWriter>>();
-            var audioProviderMock = ServiceProvider.Get<Mock<IAudioProvider>>();
+            var imgProviderMock = MoqFactory.GetImageProviderMock();
+            var videoWriterMock = MoqFactory.GetVideoFileWriterMock();
+            var audioProviderMock = MoqFactory.GetAudioProviderMock();
 
             using (new Recorder(videoWriterMock.Object, imgProviderMock.Object, 10, audioProviderMock.Object))
             {
@@ -115,8 +115,8 @@ namespace Captura.Tests
         [TestMethod]
         public void RecorderAudioDispose()
         {
-            var audioWriterMock = ServiceProvider.Get<Mock<IAudioFileWriter>>();
-            var audioProviderMock = ServiceProvider.Get<Mock<IAudioProvider>>();
+            var audioWriterMock = MoqFactory.GetAudioFileWriterMock();
+            var audioProviderMock = MoqFactory.GetAudioProviderMock();
 
             using (new Recorder(audioWriterMock.Object, audioProviderMock.Object))
             {
@@ -131,8 +131,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ObjectDisposedException))]
         public void StartAfterDisposed()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             var recorder = new Recorder(videoWriter, imageProvider, 10);
 
@@ -147,8 +147,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ObjectDisposedException))]
         public void StopAfterDisposed()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             var recorder = new Recorder(videoWriter, imageProvider, 10);
 
@@ -163,8 +163,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ObjectDisposedException))]
         public void DisposeTwice()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var videoWriter = ServiceProvider.Get<IVideoFileWriter>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
 
             var recorder = new Recorder(videoWriter, imageProvider, 10);
 

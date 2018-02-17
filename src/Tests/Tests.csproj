@@ -101,11 +101,10 @@
     <Compile Include="ConsoleStart.cs" />
     <Compile Include="FakePropertyStore.cs" />
     <Compile Include="ImageProviderTests.cs" />
-    <Compile Include="MoqModule.cs" />
+    <Compile Include="MoqFactory.cs" />
     <Compile Include="PropertyStoreTests.cs" />
     <Compile Include="ScreenShots.cs" />
     <Compile Include="RecorderTests.cs" />
-    <Compile Include="TestAssemblyManager.cs" />
     <Compile Include="WindowTests.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -15,7 +15,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void OverlayImageProviderNull()
         {
-            var overlay = ServiceProvider.Get<IOverlay>();
+            var overlay = MoqFactory.GetOverlayMock().Object;
 
             using (new OverlayedImageProvider(null, P => P, overlay))
             {
@@ -27,7 +27,7 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void OverlaysNull()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
 
             using (new OverlayedImageProvider(imageProvider, P => P, null))
             {
@@ -39,8 +39,8 @@ namespace Captura.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void OverlaysTransformNull()
         {
-            var imageProvider = ServiceProvider.Get<IImageProvider>();
-            var overlay = ServiceProvider.Get<IOverlay>();
+            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var overlay = MoqFactory.GetOverlayMock().Object;
 
             using (new OverlayedImageProvider(imageProvider, null, overlay))
             {
@@ -124,8 +124,8 @@ namespace Captura.Tests
         [TestMethod]
         public void OverlayedSize()
         {
-            var imgProvider = ServiceProvider.Get<IImageProvider>();
-            var overlay = ServiceProvider.Get<IOverlay>();
+            var imgProvider = MoqFactory.GetImageProviderMock().Object;
+            var overlay = MoqFactory.GetOverlayMock().Object;
 
             using (var provider = new OverlayedImageProvider(imgProvider, P => P, overlay))
             {
@@ -146,8 +146,8 @@ namespace Captura.Tests
         [TestMethod]
         public void CaptureOverlayedImage()
         {
-            var imgProviderMock = ServiceProvider.Get<Mock<IImageProvider>>();
-            var overlayMock = ServiceProvider.Get<Mock<IOverlay>>();
+            var imgProviderMock = MoqFactory.GetImageProviderMock();
+            var overlayMock = MoqFactory.GetOverlayMock();
 
             using (var provider = new OverlayedImageProvider(imgProviderMock.Object, P => P, overlayMock.Object))
             {
