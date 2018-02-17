@@ -2,7 +2,7 @@
 {
     public interface IMessageProvider
     {
-        void ShowError(string Message);
+        void ShowError(string Message, string Header = null);
 
         bool ShowYesNo(string Message, string Title);
 

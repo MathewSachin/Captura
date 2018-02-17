@@ -50,9 +50,9 @@ namespace Captura.ViewModels
                     // Remove from List
                     OnRemove?.Invoke();
                 }
-                catch (Exception E)
+                catch (Exception e)
                 {
-                    ServiceProvider.MessageProvider.ShowError($"Could not Delete file: {FilePath}\n\n\n{E}");
+                    ServiceProvider.MessageProvider.ShowError(e.ToString(), $"Could not Delete file: {FilePath}");
                 }
             }, !IsSaving);
         }

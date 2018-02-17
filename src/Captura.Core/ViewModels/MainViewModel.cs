@@ -555,21 +555,12 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError(e.ToString());
+                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
 
                 return false;
             }
-
-            _regionProvider.Lock();
-
-            _systemTray.HideNotification();
-
-            if (Settings.UI.MinimizeOnStart)
-                _mainWindow.IsMinimized = true;
             
             Settings.EnsureOutPath();
-
-            RecorderState = RecorderState.Recording;
             
             _isVideo = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
@@ -580,14 +571,36 @@ namespace Captura.ViewModels
 
             _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
-            Status.LocalizationKey = StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
+            IAudioProvider audioProvider;
 
-            _timer?.Stop();
-            TimeSpan = TimeSpan.Zero;
-            
-            var audioProvider = AudioSource.GetAudioProvider();
-            
-            var videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
+            try
+            {
+                audioProvider = AudioSource.GetAudioProvider();
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
+
+                imgProvider?.Dispose();
+
+                return false;
+            }
+
+            IVideoFileWriter videoEncoder;
+
+            try
+            {
+                videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
+
+                imgProvider?.Dispose();
+                audioProvider?.Dispose();
+
+                return false;
+            }
 
             if (videoEncoder is GifWriter gif && Settings.GifVariable)
             {
@@ -601,7 +614,21 @@ namespace Captura.ViewModels
             {
                 _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.AudioQuality), audioProvider);
             }
-            
+
+            _regionProvider.Lock();
+
+            _systemTray.HideNotification();
+
+            if (Settings.UI.MinimizeOnStart)
+                _mainWindow.IsMinimized = true;
+
+            RecorderState = RecorderState.Recording;
+
+            _timer?.Stop();
+            TimeSpan = TimeSpan.Zero;
+
+            Status.LocalizationKey = StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
+
             _recorder.ErrorOccured += E =>
             {
                 if (_syncContext != null)
@@ -632,7 +659,7 @@ namespace Captura.ViewModels
                         
             AfterRecording();
 
-            ServiceProvider.MessageProvider.ShowError(E.ToString());
+            ServiceProvider.MessageProvider.ShowError(E.ToString(), E.Message);
         }
 
         void AfterRecording()

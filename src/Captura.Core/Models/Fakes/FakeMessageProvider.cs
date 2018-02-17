@@ -4,8 +4,11 @@ namespace Captura.Models
 {
     class FakeMessageProvider : IMessageProvider
     {
-        public void ShowError(string Message)
+        public void ShowError(string Message, string Header = null)
         {
+            if (Header != null)
+                Console.WriteLine(Header);
+
             Console.Error.WriteLine(Message);
         }
 

@@ -77,7 +77,7 @@ namespace Captura
                     message += $"{hotkey.Description} - {hotkey}\n\n";
                 }
 
-                ServiceProvider.MessageProvider.ShowError(message);
+                ServiceProvider.MessageProvider.ShowError(message, "Failed to Register Hotkeys");
             }
         }
 

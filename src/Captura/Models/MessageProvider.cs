@@ -7,18 +7,31 @@ namespace Captura.Models
 {
     public class MessageProvider : IMessageProvider
     {
-        public void ShowError(string Message)
+        public void ShowError(string Message, string Header = null)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var dialog = new ModernDialog
                 {
                     Title = LanguageManager.Instance.ErrorOccured,
-                    Content = new ScrollViewer
+                    Content = new StackPanel
                     {
-                        Content = Message,
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        Padding = new Thickness(0, 0, 0, 10)
+                        Children =
+                        {
+                            new TextBlock
+                            {
+                                Text = Header,
+                                Margin = new Thickness(0, 0, 0, 10),
+                                FontSize = 15
+                            },
+
+                            new ScrollViewer
+                            {
+                                Content = Message,
+                                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                                Padding = new Thickness(0, 0, 0, 10)
+                            }
+                        }
                     }
                 };
 

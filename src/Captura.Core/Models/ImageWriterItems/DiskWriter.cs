@@ -45,9 +45,9 @@ namespace Captura.Models
 
                 _systemTray.ShowScreenShotNotification(fileName);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{E}");
+                _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{e}");
 
                 Status.LocalizationKey = nameof(LanguageManager.NotSaved);
             }
