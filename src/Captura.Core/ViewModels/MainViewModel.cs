@@ -647,7 +647,8 @@ namespace Captura.ViewModels
             if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
 
-            _regionProvider.Release();
+            if (VideoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
+                _regionProvider.Release();
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
