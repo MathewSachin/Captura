@@ -28,19 +28,19 @@ namespace Captura.Models
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return $"rtmp://live.twitch.tv/app/{settings.TwitchKey}";
+                return $"rtmp://live.twitch.tv/app/{settings.FFMpeg.TwitchKey}";
             }, x264),
             new StreamingItem("YouTube Live", () =>
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
+                return $"rtmp://a.rtmp.youtube.com/live2/{settings.FFMpeg.YouTubeLiveKey}";
             }, x264),
             new StreamingItem("Custom", () =>
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return settings.FFMpeg_CustomStreaming;
+                return settings.FFMpeg.CustomStreamingUrl;
             }, x264),
         };
     }

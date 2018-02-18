@@ -74,7 +74,7 @@ namespace Captura.ViewModels
 
             SelectOutputFolderCommand = new DelegateCommand(SelectOutputFolder);
 
-            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpegFolder = "");
+            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpeg.FolderPath = "");
             #endregion
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;

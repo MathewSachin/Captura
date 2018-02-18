@@ -93,7 +93,7 @@ namespace Captura.ViewModels
             }
             
             // Update FFMpeg folder setting
-            Settings.FFMpegFolder = TargetFolder;
+            Settings.FFMpeg.FolderPath = TargetFolder;
 
             Status = "Done";
         }

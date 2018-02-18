@@ -45,8 +45,8 @@ namespace Captura.Models
 
         // Custom
         public static FFMpegItem Custom { get; } = new FFMpegItem("Custom",
-            () => ServiceProvider.Get<Settings>().FFMpeg_CustomExtension,
-            VideoQuality => ServiceProvider.Get<Settings>().FFMpeg_CustomArgs,
+            () => ServiceProvider.Get<Settings>().FFMpeg.CustomExtension,
+            VideoQuality => ServiceProvider.Get<Settings>().FFMpeg.CustomArgs,
             FFMpegAudioItem.Mp3);
 
         public static IEnumerable<FFMpegItem> Items { get; } = new[]

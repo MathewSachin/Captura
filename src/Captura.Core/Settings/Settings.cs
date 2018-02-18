@@ -79,17 +79,7 @@ namespace Captura
 
         public LastSettings Last { get; } = new LastSettings();
 
-        public string TwitchKey
-        {
-            get => Get("");
-            set => Set(value);
-        }
-
-        public string YouTubeLiveKey
-        {
-            get => Get("");
-            set => Set(value);
-        }
+        public FFMpegSettings FFMpeg { get; } = new FFMpegSettings();
 
         public bool CopyOutPathToClipboard
         {
@@ -104,12 +94,6 @@ namespace Captura
         }
 
         public string OutPath
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public string FFMpegFolder
         {
             get => Get<string>();
             set => Set(value);
@@ -164,23 +148,5 @@ namespace Captura
             set => Set(value);
         }
         #endregion
-        
-        public string FFMpeg_CustomExtension
-        {
-            get => Get(".mp4");
-            set => Set(value);
-        }
-        
-        public string FFMpeg_CustomArgs
-        {
-            get => Get("-vcodec libx264 -crf 30 -pix_fmt yuv420p -preset ultrafast");
-            set => Set(value);
-        }
-
-        public string FFMpeg_CustomStreaming
-        {
-            get => Get("rtmp://");
-            set => Set(value);
-        }
     }
 }

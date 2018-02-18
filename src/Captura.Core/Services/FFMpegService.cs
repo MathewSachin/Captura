@@ -21,9 +21,9 @@ namespace Captura
                 var settings = GetSettings();
 
                 // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFMpegFolder))
+                if (!string.IsNullOrWhiteSpace(settings.FFMpeg.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFMpegFolder, FFMpegExeName);
+                    var path = Path.Combine(settings.FFMpeg.FolderPath, FFMpegExeName);
 
                     if (File.Exists(path))
                         return true;
@@ -63,9 +63,9 @@ namespace Captura
                 var settings = GetSettings();
 
                 // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFMpegFolder))
+                if (!string.IsNullOrWhiteSpace(settings.FFMpeg.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFMpegFolder, FFMpegExeName);
+                    var path = Path.Combine(settings.FFMpeg.FolderPath, FFMpegExeName);
 
                     if (File.Exists(path))
                         return path;
@@ -84,13 +84,13 @@ namespace Captura
 
             using (var dlg = new VistaFolderBrowserDialog
             {
-                SelectedPath = settings.FFMpegFolder,
+                SelectedPath = settings.FFMpeg.FolderPath,
                 UseDescriptionForTitle = true,
                 Description = LanguageManager.Instance.SelectFFMpegFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    settings.FFMpegFolder = dlg.SelectedPath;
+                    settings.FFMpeg.FolderPath = dlg.SelectedPath;
             }
         }
 
