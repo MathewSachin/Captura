@@ -13,7 +13,7 @@ namespace Captura.Models
         {
             var settings = ServiceProvider.Get<Settings>();
 
-            var repeat = settings.GifRepeat ? settings.GifRepeatCount : -1;
+            var repeat = settings.Gif.Repeat ? settings.Gif.RepeatCount : -1;
             
             return new GifWriter(FileName, FrameRate, repeat);
         }

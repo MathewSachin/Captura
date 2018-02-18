@@ -512,7 +512,7 @@ namespace Captura.ViewModels
             }
 
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
-                && Settings.GifVariable
+                && Settings.Gif.VariableFrameRate
                 && VideoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
                 ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
@@ -602,7 +602,7 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            if (videoEncoder is GifWriter gif && Settings.GifVariable)
+            if (videoEncoder is GifWriter gif && Settings.Gif.VariableFrameRate)
             {
                 _recorder = new VFRGifRecorder(gif, imgProvider);
             }

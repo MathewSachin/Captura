@@ -124,6 +124,7 @@ namespace Captura
             return this[PropertyName];
         }
 
+        #region Resources
         public string About => Get();
 
         public string AlwaysOnTop => Get();
@@ -393,5 +394,6 @@ namespace Captura
         public string WindowWidth => Get();
 
         public string Yes => Get();
+        #endregion
     }
 }

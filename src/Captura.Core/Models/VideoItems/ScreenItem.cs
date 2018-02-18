@@ -13,11 +13,11 @@ namespace Captura.Models
         readonly int _index;
         readonly bool _desktopDuplication;
 
-        ScreenItem(int i, bool DesktopDuplication)
+        ScreenItem(int Index, bool DesktopDuplication)
         {
-            Screen = Screen.AllScreens[i];
+            Screen = Screen.AllScreens[Index];
 
-            _index = i;
+            _index = Index;
             _desktopDuplication = DesktopDuplication;
         }
 

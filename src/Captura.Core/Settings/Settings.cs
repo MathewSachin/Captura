@@ -81,6 +81,8 @@ namespace Captura
 
         public FFMpegSettings FFMpeg { get; } = new FFMpegSettings();
 
+        public GifSettings Gif { get; } = new GifSettings();
+
         public bool CopyOutPathToClipboard
         {
             get => Get<bool>();
@@ -128,25 +130,5 @@ namespace Captura
             get => Get(50);
             set => Set(value);
         }
-        
-        #region Gif
-        public bool GifRepeat
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        public int GifRepeatCount
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        public bool GifVariable
-        {
-            get => Get(true);
-            set => Set(value);
-        }
-        #endregion
     }
 }

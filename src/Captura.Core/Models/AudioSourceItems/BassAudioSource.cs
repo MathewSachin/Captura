@@ -4,6 +4,10 @@ using ManagedBass;
 
 namespace Captura.Models
 {
+    /// <summary>
+    /// ManagedBass Audio Source.
+    /// Use <see cref="Available"/> to check if all dependencies are present.
+    /// </summary>
     public class BassAudioSource : AudioSource
     {
         public BassAudioSource()
