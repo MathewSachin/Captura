@@ -181,13 +181,14 @@
     <Compile Include="Models\VideoWriterProviders\IVideoWriterProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\SharpAviWriterProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\StreamingWriterProvider.cs" />
+    <Compile Include="Settings\Models\AudioSettings.cs" />
     <Compile Include="Settings\Models\GifSettings.cs" />
     <Compile Include="Settings\Models\FFMpegSettings.cs" />
-    <Compile Include="Settings\Models\LastSettings.cs" />
+    <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
-    <Compile Include="Settings\Models\ScreenShotTransformSettings.cs" />
+    <Compile Include="Settings\Models\ScreenShotSettings.cs" />
     <Compile Include="PropertyStore.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />

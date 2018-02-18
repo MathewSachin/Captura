@@ -129,7 +129,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc FrameRate}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.FrameRate}"
+            <Label Content="{Binding Settings.Video.FrameRate}"
                    Margin="5,0"
                    MinWidth="15"
                    ContentStringFormat="{}{0:N0}"
@@ -139,7 +139,7 @@
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.FrameRate}"
+                    Value="{Binding Settings.Video.FrameRate}"
                     Interval="1"/>
         </DockPanel>
 
@@ -147,7 +147,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.VideoQuality}"
+            <Label Content="{Binding Settings.Video.Quality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -157,7 +157,7 @@
                     SelectionStart="60"
                     SelectionEnd="80"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.VideoQuality}"/>
+                    Value="{Binding Settings.Video.Quality}"/>
         </DockPanel>
 
         <Label Margin="10,15,0,3"
@@ -240,7 +240,7 @@
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{local:Loc Quality}"
                    ContentStringFormat="{}{0}:"/>
-            <Label Content="{Binding Settings.AudioQuality}"
+            <Label Content="{Binding Settings.Audio.Quality}"
                    ContentStringFormat="{}{0:N0}%"
                    Margin="5,0"
                    MinWidth="30"
@@ -250,7 +250,7 @@
                     SelectionStart="40"
                     SelectionEnd="60"
                     IsSelectionRangeEnabled="True"
-                    Value="{Binding Settings.AudioQuality}"/>
+                    Value="{Binding Settings.Audio.Quality}"/>
         </DockPanel>
     </StackPanel>
 </Page>

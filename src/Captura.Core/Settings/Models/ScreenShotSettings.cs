@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    public class ScreenShotTransformSettings : PropertyStore
+    public class ScreenShotSettings : PropertyStore
     {
         public bool Resize
         {
@@ -37,6 +37,18 @@ namespace Captura
         public RotateBy RotateBy
         {
             get => Get<RotateBy>();
+            set => Set(value);
+        }
+
+        public string ImageFormat
+        {
+            get => Get("Png");
+            set => Set(value);
+        }
+
+        public string SaveTarget
+        {
+            get => Get("Disk");
             set => Set(value);
         }
     }

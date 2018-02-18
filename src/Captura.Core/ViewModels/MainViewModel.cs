@@ -207,9 +207,9 @@ namespace Captura.ViewModels
         void RestoreRemembered()
         {
             // Restore Video Source
-            if (!string.IsNullOrEmpty(Settings.Last.SourceKind))
+            if (!string.IsNullOrEmpty(Settings.Video.SourceKind))
             {
-                var kind = VideoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == Settings.Last.SourceKind);
+                var kind = VideoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == Settings.Video.SourceKind);
 
                 if (kind != null)
                 {
@@ -218,13 +218,13 @@ namespace Captura.ViewModels
                     switch (kind)
                     {
                         case RegionSourceProvider _:
-                            if (RectangleConverter.ConvertFromInvariantString(Settings.Last.SourceName) is Rectangle rect)
+                            if (RectangleConverter.ConvertFromInvariantString(Settings.Video.Source) is Rectangle rect)
                                 _regionProvider.SelectedRegion = rect;
                             break;
 
                         default:
                             var source = VideoViewModel.AvailableVideoSources
-                                .FirstOrDefault(S => S.ToString() == Settings.Last.SourceName);
+                                .FirstOrDefault(S => S.ToString() == Settings.Video.Source);
 
                             if (source != null)
                                 VideoViewModel.SelectedVideoSource = source;
@@ -234,15 +234,15 @@ namespace Captura.ViewModels
             }
 
             // Restore Video Codec
-            if (!string.IsNullOrEmpty(Settings.Last.VideoWriterKind))
+            if (!string.IsNullOrEmpty(Settings.Video.WriterKind))
             {
-                var kind = VideoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == Settings.Last.VideoWriterKind);
+                var kind = VideoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == Settings.Video.WriterKind);
 
                 if (kind != null)
                 {
                     VideoViewModel.SelectedVideoWriterKind = kind;
 
-                    var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == Settings.Last.VideoWriterName);
+                    var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == Settings.Video.Writer);
 
                     if (codec != null)
                         VideoViewModel.SelectedVideoWriter = codec;
@@ -250,45 +250,45 @@ namespace Captura.ViewModels
             }
             
             // Restore Microphone
-            if (!string.IsNullOrEmpty(Settings.Last.MicName))
+            if (!string.IsNullOrEmpty(Settings.Audio.Microphone))
             {
-                var source = AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Last.MicName);
+                var source = AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Audio.Microphone);
 
                 if (source != null)
                     AudioSource.SelectedRecordingSource = source;
             }
 
             // Restore Loopback Speaker
-            if (!string.IsNullOrEmpty(Settings.Last.SpeakerName))
+            if (!string.IsNullOrEmpty(Settings.Audio.Speaker))
             {
-                var source = AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Last.SpeakerName);
+                var source = AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Audio.Speaker);
 
                 if (source != null)
                     AudioSource.SelectedLoopbackSource = source;
             }
 
             // Restore ScreenShot Format
-            if (!string.IsNullOrEmpty(Settings.Last.ScreenShotFormat))
+            if (!string.IsNullOrEmpty(Settings.ScreenShots.ImageFormat))
             {
-                var format = ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == Settings.Last.ScreenShotFormat);
+                var format = ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == Settings.ScreenShots.ImageFormat);
 
                 if (format != null)
                     SelectedScreenShotImageFormat = format;
             }
 
             // Restore ScreenShot Target
-            if (!string.IsNullOrEmpty(Settings.Last.ScreenShotSaveTo))
+            if (!string.IsNullOrEmpty(Settings.ScreenShots.SaveTarget))
             {
-                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(S => S.ToString() == Settings.Last.ScreenShotSaveTo);
+                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(S => S.ToString() == Settings.ScreenShots.SaveTarget);
 
                 if (saveTo != null)
                     VideoViewModel.SelectedImageWriter = saveTo;
             }
 
             // Restore Webcam
-            if (!string.IsNullOrEmpty(Settings.Last.Webcam))
+            if (!string.IsNullOrEmpty(Settings.Video.Webcam))
             {
-                var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Last.Webcam);
+                var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Video.Webcam);
 
                 if (webcam != null)
                 {
@@ -323,36 +323,36 @@ namespace Captura.ViewModels
         void Remember()
         {
             // Remember Video Source
-            Settings.Last.SourceKind = VideoViewModel.SelectedVideoSourceKind.Name;
+            Settings.Video.SourceKind = VideoViewModel.SelectedVideoSourceKind.Name;
 
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case RegionSourceProvider _:
                     var rect = _regionProvider.SelectedRegion;
-                    Settings.Last.SourceName = RectangleConverter.ConvertToInvariantString(rect);
+                    Settings.Video.Source = RectangleConverter.ConvertToInvariantString(rect);
                     break;
 
                 default:
-                    Settings.Last.SourceName = VideoViewModel.SelectedVideoSource.ToString();
+                    Settings.Video.Source = VideoViewModel.SelectedVideoSource.ToString();
                     break;
             }
 
             // Remember Video Codec
-            Settings.Last.VideoWriterKind = VideoViewModel.SelectedVideoWriterKind.Name;
-            Settings.Last.VideoWriterName = VideoViewModel.SelectedVideoWriter.ToString();
+            Settings.Video.WriterKind = VideoViewModel.SelectedVideoWriterKind.Name;
+            Settings.Video.Writer = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            Settings.Last.MicName = AudioSource.SelectedRecordingSource.ToString();
-            Settings.Last.SpeakerName = AudioSource.SelectedLoopbackSource.ToString();
+            Settings.Audio.Microphone = AudioSource.SelectedRecordingSource.ToString();
+            Settings.Audio.Speaker = AudioSource.SelectedLoopbackSource.ToString();
             
             // Remember ScreenShot Format
-            Settings.Last.ScreenShotFormat = SelectedScreenShotImageFormat.ToString();
+            Settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
-            Settings.Last.ScreenShotSaveTo = VideoViewModel.SelectedImageWriter.ToString();
+            Settings.ScreenShots.SaveTarget = VideoViewModel.SelectedImageWriter.ToString();
 
             // Remember Webcam
-            Settings.Last.Webcam = WebCamProvider.SelectedCam.Name;
+            Settings.Video.Webcam = WebCamProvider.SelectedCam.Name;
         }
         
         public void Dispose()
@@ -417,21 +417,21 @@ namespace Captura.ViewModels
 
             if (hWnd == Window.DesktopWindow)
             {
-                return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShotTransform);
+                return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShots);
             }
 
             var bmp = ScreenShot.CaptureTransparent(hWnd,
                 Settings.IncludeCursor,
-                Settings.ScreenShotTransform.Resize,
-                Settings.ScreenShotTransform.ResizeWidth,
-                Settings.ScreenShotTransform.ResizeHeight);
+                Settings.ScreenShots.Resize,
+                Settings.ScreenShots.ResizeWidth,
+                Settings.ScreenShots.ResizeHeight);
 
             // Capture without Transparency
             if (bmp == null)
             {
                 try
                 {
-                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform(Settings.ScreenShotTransform);
+                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform(Settings.ScreenShots);
                 }
                 catch
                 {
@@ -439,7 +439,7 @@ namespace Captura.ViewModels
                 }
             }
 
-            return bmp.Transform(Settings.ScreenShotTransform, true);
+            return bmp.Transform(Settings.ScreenShots, true);
         }
 
         public async void CaptureScreenShot(string FileName = null)
@@ -483,12 +483,12 @@ namespace Captura.ViewModels
                         bmp = screen.Capture(includeCursor);
                     }
                     
-                    bmp = bmp?.Transform(Settings.ScreenShotTransform);
+                    bmp = bmp?.Transform(Settings.ScreenShots);
                     break;
 
                 case RegionSourceProvider _:
                     bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
-                    bmp = bmp.Transform(Settings.ScreenShotTransform);
+                    bmp = bmp.Transform(Settings.ScreenShots);
                     break;
             }
 
@@ -608,11 +608,11 @@ namespace Captura.ViewModels
             }
             else if (_isVideo)
             {
-                _recorder = new Recorder(videoEncoder, imgProvider, Settings.FrameRate, audioProvider);
+                _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
             }
             else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
             {
-                _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.AudioQuality), audioProvider);
+                _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.Audio.Quality), audioProvider);
             }
 
             _regionProvider.Lock();
@@ -684,10 +684,10 @@ namespace Captura.ViewModels
                 return null;
             
             return VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName,
-                Settings.FrameRate,
-                Settings.VideoQuality,
+                Settings.Video.FrameRate,
+                Settings.Video.Quality,
                 ImgProvider,
-                Settings.AudioQuality,
+                Settings.Audio.Quality,
                 AudioProvider);
         }
         

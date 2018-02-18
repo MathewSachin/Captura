@@ -75,9 +75,11 @@ namespace Captura
         
         public VisualSettings UI { get; } = new VisualSettings();
 
-        public ScreenShotTransformSettings ScreenShotTransform { get; } = new ScreenShotTransformSettings();
+        public ScreenShotSettings ScreenShots { get; } = new ScreenShotSettings();
 
-        public LastSettings Last { get; } = new LastSettings();
+        public VideoSettings Video { get; } = new VideoSettings();
+
+        public AudioSettings Audio { get; } = new AudioSettings();
 
         public FFMpegSettings FFMpeg { get; } = new FFMpegSettings();
 
@@ -104,30 +106,6 @@ namespace Captura
         public bool IncludeCursor
         {
             get => Get(true);
-            set => Set(value);
-        }
-
-        public int VideoQuality
-        {
-            get => Get(70);
-            set => Set(value);
-        }
-
-        public int FrameRate
-        {
-            get => Get(10);
-            set => Set(value);
-        }
-
-        public string Language
-        {
-            get => Get("en");
-            set => Set(value);
-        }
-        
-        public int AudioQuality
-        {
-            get => Get(50);
             set => Set(value);
         }
     }

@@ -18,9 +18,9 @@ namespace Captura
 
             settings.Keystrokes.Display = settings.Clicks.Display = false;
 
-            FrameRate = settings.FrameRate;
-            VideoQuality = settings.VideoQuality;
-            AudioQuality = settings.AudioQuality;
+            FrameRate = settings.Video.FrameRate;
+            VideoQuality = settings.Video.Quality;
+            AudioQuality = settings.Audio.Quality;
         }
 
         [Option("delay", HelpText = "Milliseconds to wait before starting recording.")]

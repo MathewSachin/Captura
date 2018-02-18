@@ -73,5 +73,11 @@
             get => Get(false);
             set => Set(value);
         }
+
+        public string Language
+        {
+            get => Get("en");
+            set => Set(value);
+        }
     }
 }

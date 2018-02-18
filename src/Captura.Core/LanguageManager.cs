@@ -44,7 +44,7 @@ namespace Captura
 
                     cultures.Add(culture);
 
-                    if (cultureName == _settings.Language)
+                    if (cultureName == _settings.UI.Language)
                     {
                         CurrentCulture = culture;
                     }
@@ -76,7 +76,7 @@ namespace Captura
 
                 Thread.CurrentThread.CurrentUICulture = value;
 
-                _settings.Language = value.Name;
+                _settings.UI.Language = value.Name;
 
                 _currentLanguage = LoadLang(value.Name);
 

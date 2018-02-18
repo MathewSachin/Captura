@@ -102,20 +102,20 @@
                     </Grid.ColumnDefinitions>
 
                     <CheckBox Content="{local:Loc Resize}"
-                              IsChecked="{Binding Settings.ScreenShotTransform.Resize}"
+                              IsChecked="{Binding Settings.ScreenShots.Resize}"
                               Margin="0,0,5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotTransform.ResizeWidth}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShots.ResizeWidth}"
                                         Grid.Column="1"
-                                        IsEnabled="{Binding Settings.ScreenShotTransform.Resize}"/>
+                                        IsEnabled="{Binding Settings.ScreenShots.Resize}"/>
 
                     <Label Content="x"
                            Grid.Column="2"
                            Margin="5,0"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShotTransform.ResizeHeight}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShots.ResizeHeight}"
                                         Grid.Column="3"
-                                        IsEnabled="{Binding Settings.ScreenShotTransform.Resize}"/>
+                                        IsEnabled="{Binding Settings.ScreenShots.Resize}"/>
                 </Grid>
 
                 <StackPanel Margin="0,5"
@@ -124,11 +124,11 @@
                            ContentStringFormat="{}{0}:"/>
                     
                     <CheckBox Content="{local:Loc Horizontal}"
-                              IsChecked="{Binding Settings.ScreenShotTransform.FlipHorizontal}"
+                              IsChecked="{Binding Settings.ScreenShots.FlipHorizontal}"
                               Margin="10,0"/>
 
                     <CheckBox Content="{local:Loc Vertical}"
-                              IsChecked="{Binding Settings.ScreenShotTransform.FlipVertical}"/>
+                              IsChecked="{Binding Settings.ScreenShots.FlipVertical}"/>
                 </StackPanel>
 
                 <DockPanel Margin="0,5">
@@ -139,7 +139,7 @@
                               ItemsSource="{Binding Rotations}"
                               SelectedValuePath="Key"
                               DisplayMemberPath="Value"
-                              SelectedValue="{Binding Settings.ScreenShotTransform.RotateBy}"/>
+                              SelectedValue="{Binding Settings.ScreenShots.RotateBy}"/>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

@@ -102,7 +102,7 @@ namespace Captura
             return resized;
         }
 
-        public static Bitmap Transform(this Bitmap Image, ScreenShotTransformSettings TransformSettings, bool SkipResize = false)
+        public static Bitmap Transform(this Bitmap Image, ScreenShotSettings TransformSettings, bool SkipResize = false)
         {
             if (TransformSettings.Resize && !SkipResize)
             {

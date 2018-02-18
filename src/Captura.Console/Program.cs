@@ -380,10 +380,10 @@ namespace Captura
 
             HandleAudioSource(ViewModel, StartOptions);
 
-            ViewModel.Settings.FrameRate = StartOptions.FrameRate;
+            ViewModel.Settings.Video.FrameRate = StartOptions.FrameRate;
 
-            ViewModel.Settings.AudioQuality = StartOptions.AudioQuality;
-            ViewModel.Settings.VideoQuality = StartOptions.VideoQuality;
+            ViewModel.Settings.Audio.Quality = StartOptions.AudioQuality;
+            ViewModel.Settings.Video.Quality = StartOptions.VideoQuality;
 
             if (!ViewModel.RecordCommand.CanExecute(null))
             {
