@@ -13,7 +13,11 @@ namespace Captura
         bool _editing;
 
         Hotkey _hotkey;
-        
+
+        static readonly SolidColorBrush RedBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef5350"));
+
+        static readonly SolidColorBrush WhiteBrush = new SolidColorBrush(Colors.White);
+
         public static readonly DependencyProperty HotkeyModelProperty = DependencyProperty.Register(nameof(HotkeyModel), typeof(Hotkey), typeof(HotkeySelector), new UIPropertyMetadata(PropertyChangedCallback));
 
         static void PropertyChangedCallback(DependencyObject Sender, DependencyPropertyChangedEventArgs Args)
@@ -49,10 +53,9 @@ namespace Captura
         {
             if (_hotkey.IsActive && !_hotkey.IsRegistered)
             {
-                if (ColorConverter.ConvertFromString("#ef5350") is Color c)
-                    Background = new SolidColorBrush(c);
+                Background = RedBrush;
 
-                Foreground = new SolidColorBrush(Colors.White);
+                Foreground = WhiteBrush;
             }
             else
             {
@@ -99,13 +102,13 @@ namespace Captura
             Content = _hotkey.ToString();
         }
 
-        static bool IsValid(KeyEventArgs e)
+        static bool IsValid(KeyEventArgs E)
         {
-            return e.Key != Key.None // Some key must pe pressed
-                && !e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows) // Windows Key is reserved by OS
-                && e.Key != Key.LeftCtrl && e.Key != Key.RightCtrl // Modifier Keys alone are not supported
-                && e.Key != Key.LeftAlt && e.Key != Key.RightAlt
-                && e.Key != Key.LeftShift && e.Key != Key.RightShift;
+            return E.Key != Key.None // Some key must pe pressed
+                && !E.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows) // Windows Key is reserved by OS
+                && E.Key != Key.LeftCtrl && E.Key != Key.RightCtrl // Modifier Keys alone are not supported
+                && E.Key != Key.LeftAlt && E.Key != Key.RightAlt
+                && E.Key != Key.LeftShift && E.Key != Key.RightShift;
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs E)

@@ -17,11 +17,9 @@ namespace DesktopDuplication
     {
         #region Fields
         readonly Device _device;
-        readonly Texture2DDescription _textureDesc;
-        OutputDescription _outputDesc;
         readonly OutputDuplication _deskDupl;
 
-        Texture2D _desktopImageTexture;
+        readonly Texture2D _desktopImageTexture;
         OutputDuplicateFrameInformation _frameInfo;
 
         Rectangle _rect;
@@ -59,9 +57,8 @@ namespace DesktopDuplication
             }
 
             var output1 = output.QueryInterface<Output1>();
-            _outputDesc = output.Description;
-            
-            _textureDesc = new Texture2DDescription
+
+            var textureDesc = new Texture2DDescription
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
@@ -88,7 +85,7 @@ namespace DesktopDuplication
                 throw new NotSupportedException("Desktop Duplication is not supported on this system.\nIf you have multiple graphic cards, try running Captura on integrated graphics.", e);
             }
 
-            _desktopImageTexture = new Texture2D(_device, _textureDesc);
+            _desktopImageTexture = new Texture2D(_device, textureDesc);
         }
         
         public IBitmapFrame Capture()

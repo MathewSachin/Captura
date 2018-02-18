@@ -35,6 +35,7 @@ namespace Screna
         {
             var bmp = _imageProvider.Capture();
             
+            // Overlays should have already been drawn on previous frame
             if (bmp is RepeatFrame)
             {
                 return bmp;

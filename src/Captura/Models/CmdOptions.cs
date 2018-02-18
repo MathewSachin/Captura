@@ -2,6 +2,9 @@
 
 namespace Captura
 {
+    /// <summary>
+    /// Command-line options for the WPF app.
+    /// </summary>
     public class CmdOptions
     {
         [Option("reset", HelpText = "Reset all setting values to default.")]

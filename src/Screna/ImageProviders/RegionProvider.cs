@@ -32,6 +32,9 @@ namespace Screna
 
         public void UpdateLocation(Point P)
         {
+            if (_region.Location == P)
+                return;
+
             _region.Location = P;
 
             _outsideBounds = !WindowProvider.DesktopRectangle.Contains(_region);

@@ -46,7 +46,7 @@ namespace Captura
             Bind<IVideoSourceProvider>().To<DeskDuplSourceProvider>().InSingletonScope();
             Bind<IVideoSourceProvider>().To<NoVideoSourceProvider>().InSingletonScope();
 
-            // Audio Source
+            // Check if Bass is available
             if (BassAudioSource.Available)
             {
                 Bind<AudioSource>().To<BassAudioSource>().InSingletonScope();

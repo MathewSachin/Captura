@@ -6,6 +6,9 @@ namespace Captura.Models
 {
     class SystemTray : ISystemTray
     {
+        /// <summary>
+        /// Using a Function ensures that the <see cref="TaskbarIcon"/> object is used only after it is initialised.
+        /// </summary>
         readonly Func<TaskbarIcon> _trayIcon;
         readonly Settings _settings;
 

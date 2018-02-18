@@ -3,6 +3,12 @@ using System.Windows.Interop;
 
 namespace Captura
 {
+    /// <summary>
+    /// Provides DPI scaling factor.
+    /// Can be used by multiplying <see cref="Instance"/> with <see cref="Rectangle"/>, <see cref="Point"/> or <see cref="Size"/> objects.
+    /// The reverse effect can be attained by multiplying with <see cref="Inverse"/>.
+    /// Only needs to be used when dealing with WPF since their sizes are specified in Device Independent Pixels.
+    /// </summary>
     public class Dpi
     {
         Dpi()
