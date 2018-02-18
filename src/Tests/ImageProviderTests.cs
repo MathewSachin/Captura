@@ -122,6 +122,30 @@ namespace Captura.Tests
         }
 
         [TestMethod]
+        public void RegionImageSizeOdd()
+        {
+            var rect = new Rectangle(0, 0, 101, 53);
+
+            using (var imgProvider = new RegionProvider(rect, false))
+            {
+                Assert.IsTrue(imgProvider.Width % 2 == 0);
+                Assert.IsTrue(imgProvider.Height % 2 == 0);
+
+                using (var img = imgProvider.Capture())
+                {
+                    if (img.Bitmap != null)
+                    {
+                        Assert.AreEqual(img.Bitmap.Width, imgProvider.Width);
+                        Assert.AreEqual(img.Bitmap.Height, imgProvider.Height);
+
+                        Assert.IsTrue(img.Bitmap.Width % 2 == 0);
+                        Assert.IsTrue(img.Bitmap.Height % 2 == 0);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
         public void OverlayedSize()
         {
             var imgProvider = MoqFactory.GetImageProviderMock().Object;
