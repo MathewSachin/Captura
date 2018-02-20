@@ -10,45 +10,6 @@ namespace Captura
 {
     public partial class RegionSelector : IRegionProvider
     {
-        #region Native
-        [DllImport("user32.dll")]
-        static extern IntPtr WindowFromPoint(Point Point);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr GetWindowDC(IntPtr Window);
-        
-        [DllImport("gdi32.dll")]
-        static extern bool PatBlt(IntPtr Window, int X, int Y, int Width, int Height, uint Operation);
-        #endregion
-
-        const int DstInvert = 0x0055_0009;
-
-        readonly Settings _settings;
-
-        void ToggleBorder(IntPtr Window)
-        {
-            if (Window == IntPtr.Zero)
-                return;
-
-            var hdc = GetWindowDC(Window);
-
-            var rect = new Screna.Window(Window).Rectangle;
-
-            var borderThickness = _settings.UI.RegionBorderThickness;
-
-            // Top
-            PatBlt(hdc, 0, 0, rect.Width, borderThickness, DstInvert);
-
-            // Left
-            PatBlt(hdc, 0, borderThickness, borderThickness, rect.Height - 2 * borderThickness, DstInvert);
-
-            // Right
-            PatBlt(hdc, rect.Width - borderThickness, borderThickness, borderThickness, rect.Height - 2 * borderThickness, DstInvert);
-
-            // Bottom
-            PatBlt(hdc, 0, rect.Height - borderThickness, rect.Width, borderThickness, DstInvert);
-        }
-        
         public RegionSelector(Settings Settings)
         {
             _settings = Settings;
@@ -63,10 +24,29 @@ namespace Captura
             InitDimensionBoxes();
         }
 
+        [DllImport("user32.dll")]
+        static extern IntPtr WindowFromPoint(Point Point);
+        
+        readonly Settings _settings;
+        bool _captured;
+        IntPtr _win;
+
+        const int LeftOffset = 7,
+            TopOffset = 37,
+            WidthBorder = 14,
+            HeightBorder = 74;
+
+        Rectangle? _region;
+
+        void ToggleBorder(IntPtr Window)
+        {
+            WindowBorderToggler.Toggle(Window, _settings.UI.RegionBorderThickness);
+        }
+
         void InitDimensionBoxes()
         {
-            WidthBox.Minimum = (int)MinWidth - WidthBorder;
-            HeightBox.Minimum = (int)MinHeight - HeightBorder;
+            WidthBox.Minimum = (int)((MinWidth - WidthBorder) * Dpi.X);
+            HeightBox.Minimum = (int)((MinHeight - HeightBorder) * Dpi.Y);
 
             void SizeChange()
             {
@@ -111,8 +91,6 @@ namespace Captura
 
             SelectorHidden?.Invoke();
         }
-        
-        bool _captured;
 
         void SnapButton_PreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
@@ -126,7 +104,7 @@ namespace Captura
             {
                 if (_win == IntPtr.Zero)
                 {
-                    _win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+                    _win = GetBelowWindow();
                 }
                 else ToggleBorder(_win);
 
@@ -158,13 +136,16 @@ namespace Captura
             }
         }
 
-        IntPtr _win;
+        IntPtr GetBelowWindow()
+        {
+            return WindowFromPoint(new Point((int)((Left - 1) * Dpi.X), (int)((Top - 1) * Dpi.Y)));
+        }
         
         void SelectWindow()
         {
             var oldwin = _win;
 
-            _win = WindowFromPoint(new Point((int)(Left - 1), (int)Top - 1) * Dpi.Instance);
+            _win = GetBelowWindow();
 
             if (oldwin == IntPtr.Zero)
                 ToggleBorder(_win);
@@ -216,17 +197,14 @@ namespace Captura
                 else Hide();
             }
         }
-
-        const int LeftOffset = 7,
-            TopOffset = 37,
-            WidthBorder = 14,
-            HeightBorder = 74;
-
-        Rectangle? _region;
         
         void UpdateRegion()
         {
-            _region = Dispatcher.Invoke(() => new Rectangle((int)Left + LeftOffset, (int)Top + TopOffset, (int)Width - WidthBorder, (int)Height - HeightBorder)) * Dpi.Instance;
+            _region = Dispatcher.Invoke(() =>
+                new Rectangle((int)((Left + LeftOffset) * Dpi.X),
+                    (int)((Top + TopOffset) * Dpi.Y),
+                    (int)((Width - WidthBorder) * Dpi.X),
+                    (int)((Height - HeightBorder) * Dpi.Y)));
         }
 
         // Ignoring Borders and Header
@@ -243,17 +221,14 @@ namespace Captura
             {
                 if (value == Rectangle.Empty)
                     return;
-
-                // High Dpi fix
-                value *= Dpi.Inverse;
-
+                
                 Dispatcher.Invoke(() =>
                 {
-                    Width = value.Width + WidthBorder;
-                    Height = value.Height + HeightBorder;
+                    Width = value.Width / Dpi.X + WidthBorder;
+                    Height = value.Height / Dpi.Y + HeightBorder;
 
-                    Left = value.Left - LeftOffset;
-                    Top = value.Top - TopOffset;
+                    Left = value.Left / Dpi.X - LeftOffset;
+                    Top = value.Top / Dpi.Y - TopOffset;
                 });
             }
         }

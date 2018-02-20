@@ -67,15 +67,11 @@ namespace Captura
 
         void RepositionWindowIfOutside()
         {
-            var settings = ServiceProvider.Get<Settings>();
-
-            var rect = new Rectangle(settings.UI.MainWindowLeft,
-                settings.UI.MainWindowTop,
-                (int) ActualWidth,
-                (int) ActualHeight);
-
-            // Convert as per DPI since WPF uses device independent units
-            rect *= Dpi.Instance;
+            // Window dimensions taking care of DPI
+            var rect = new Rectangle((int)(Left * Dpi.X),
+                (int)(Top * Dpi.Y),
+                (int)(ActualWidth * Dpi.X),
+                (int)(ActualHeight * Dpi.Y));
             
             if (!WindowProvider.DesktopRectangle.Contains(rect))
             {
