@@ -43,7 +43,7 @@
 - **fix:** Using Screenshot resize resulted in blank images.
 - Pause recording on Sleep/Hibernate.
 
-#### Webcam
+### Webcam
 
 - **fix:** Webcam preview fails when Captura is run on dedicated graphics processor.
 - Webcam drawn as overlay.
@@ -51,19 +51,19 @@
 - Opening Preview window is optional.
 - Capture image button on header.
 
-#### MouseKeyHook
+### MouseKeyHook
 
 - MouseKeyHook customizations embedded in Config menu.
 - Multipliers shown for repeated keystrokes.
 - History of selected no of previous keystrokes displayed in overlay.
 - **fix:** Corrected Keystrokes Center positioning.
 
-#### Installation
+### Installation
 
 - Moving to standard type of installer where you the user has control over options.
 - Chocolatey upgrade is now used again.
 
-#### Translation
+### Translation
 
 - Language selection moved to Configure tab.
 - Added lots of translations.
@@ -90,7 +90,7 @@
 - MessageBox shown and Log file created on crash.
 - Update Check
 
-#### UI
+### UI
 
 - Tabbed Configure page with Hotkeys and Extras embedded.
 - Number Boxes to specify size of Region Selector.
@@ -99,7 +99,7 @@
 - Removed selection of Topbar color.
 - Added a Minimize to Tray button.
 
-#### Change in Audio/Video Sources
+### Change in Audio/Video Sources
 
 - **[Desktop]** under **Window** changed to **Full Screeb** under **Screen**.
 - **Screen** kind is always visible.
@@ -108,19 +108,19 @@
 - **WebCam** is selected on the Main Window.
 - Window recording is of the initial size of window. Any resizing of the window is scaled to fit.
 
-#### Console
+### Console
 
 - **fix:** Video dimensions made even when capturing region from console.
 - **fix:** Error running console with input redirected.
 - **fix:** Use culture invariant string to represent region rectangle in console.
 
-#### ScreenShots
+### ScreenShots
 
 - ScreenShot Save Location and Format options on Main Tab.
 - Support for uploading ScreenShots to **Imgur**.
 - Option to hide MainWindow on **Full Screen** ScreenShot.
 
-#### FFMpeg
+### FFMpeg
 
 - FFMpeg is the default encoder.
 - Audio and Video muxed in Realtime in FFMpeg capture.
@@ -153,7 +153,7 @@ It now Snaps to the window below.
 - Added FFMpeg Logging. Openable from About tab.
 - Resize/Rotate/Flip transforms now only for ScreenShots.
 
-#### Extras
+### Extras
 
 A new window openable from About tab for additional settings:
 
@@ -185,7 +185,7 @@ A new window openable from About tab for additional settings:
 
 ### What's New
 
-- Added [Command-line support](Command-line).
+- Added [Command-line support](CmdLine.md).
 
 ## v3.5.0
 
@@ -194,7 +194,7 @@ A new window openable from About tab for additional settings:
 - **fix:** Crash when Recording stops automatically on reaching Duration.
 - **fix:** Recording cannot start if Delay is set.
 - **fix:** Optional libraries don't load on Chocolatey.
-- Localization using RESX files. [Translations](Translation) are welcome.
+- Localization using RESX files. [Translations](Translation.md) are welcome.
 - Scroll to change values in Number boxes.
 - Removed NAudio support.
 - Items in the Recent list are persisted only if the files exist.
@@ -247,13 +247,13 @@ A new window openable from About tab for additional settings:
 - **fix:** FFmpeg Command-line args when encoding both audio and video.
 - **fix:** WASAPI Format error on loopback.
 
-#### Recent List
+### Recent List
 
 - Recent List persists items (max items can be configured).
 - Added Recent list Clear button.
 - **fix:** Scolling in Recent List.
 
-#### System Tray
+### System Tray
 
 - Icons in Context menu.
 - Double click to show/hide MainWindow.
@@ -295,21 +295,21 @@ A new window openable from About tab for additional settings:
 - Alpha support for Localisation.
 - Recording both Microphone input and Speaker output.
 
-#### System Tray
+### System Tray
 
 - Video/Audio Recorded, ScreenShot Taken notifications.
 - Notifications can be clicked to open corresponding file.
 - Start/Stop/Pause/Resume Recording or Take ScreenShots or Exit from Tray.
 - Added Minimize to System Tray option.
 
-#### Video/Audio Writers
+### Video/Audio Writers
 
 - Video Witers grouped by Kind.
 - Added FFmpeg encoding support (using ffmpeg.exe) (optional) (realtime when audio or video alone, post-processing when both).
 - Dropped SharpAvi LAME Mp3 encoding support.
 - Mp3 encoding supported using FFmpeg.
 
-#### Region Capture
+### Region Capture
 
 - Region as Video Kind.
 - Removed functionality of using RegionSelector in Window Video Kind.

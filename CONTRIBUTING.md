@@ -8,7 +8,7 @@ You can always [Chat on Gitter](https://gitter.im/MathewSachin/Screna) for Quest
 
 When contributing major changes to this repository, please first discuss the change you wish to make via issue, email, or any other method before making a change.
 
-## Reporting Bugs (Issues)
+## Reporting Issues
 
 - Check the [FAQ](docs/FAQ.md)
 - Check if a similar issue is already reported. If so then comment on that issue with details specific to your case.
@@ -26,8 +26,6 @@ You can support this project by donating.
 
 - [Patreon][patreon]
 - [Paypal][paypal]
-
----
 
 ### Donation History
 

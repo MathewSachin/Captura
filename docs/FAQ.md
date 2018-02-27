@@ -1,6 +1,6 @@
 # FAQ
 
-## Will Captura support Linux or Mac?
+## Will Captura support Linux or Mac
 
 Captura is written using .NET Framework, which at present, is supported only on Windows.
 
@@ -8,7 +8,7 @@ Software written using .NET Framework can work on Linux and Mac using Mono but t
 
 Also, the recently released .Net Core only has support for console applications.
 
-## Does Captura support DirectX Game Video Recording?
+## Does Captura support DirectX Game Video Recording
 
 Some newer games can be recorded using Desktop Duplication API.
 Enable Desktop Duplication in **Config | Extras**.
