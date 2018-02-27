@@ -1,6 +1,6 @@
-﻿The MIT License  
+﻿# The MIT License
 
-(c) Copyright 2018 Mathew Sachin.  
+&copy; Copyright 2018 Mathew Sachin.
 
 Permission is hereby granted, free of charge,
  to any person obtaining a copy of this software and associated documentation files (the "Software"),
