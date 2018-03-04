@@ -1,21 +1,24 @@
 # Captura
+
 [![Master Build Status](https://img.shields.io/appveyor/ci/MathewSachin/Captura/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/Captura)
-[![MIT License](https://img.shields.io/github/license/MathewSachin/Captura.svg?style=flat-square)](LICENSE.md)
-[![Chat](https://img.shields.io/gitter/room/MathewSachin/Screna.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)
-[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://github.com/MathewSachin/Captura/releases)  
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
+[![Chat](https://img.shields.io/badge/chat-on_gitter-yellow.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)
+[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://github.com/MathewSachin/Captura/releases)
+[![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square)](https://www.paypal.me/MathewSachin)
+
 &copy; [Copyright 2018](LICENSE.md) Mathew Sachin
 
-:link: https://mathewsachin.github.io/Captura/
+:link: <https://mathewsachin.github.io/Captura/>
 
-Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes using [Screna](https://github.com/MathewSachin/Screna).
+Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-See the [Wiki](https://github.com/MathewSachin/Captura/wiki) for more information!
+[![INSTALL](https://img.shields.io/badge/installation-guide-orange.svg?style=for-the-badge)](docs/Installation.md)
+[![BUILD](https://img.shields.io/badge/build-notes-blue.svg?style=for-the-badge)](docs/Building.md)
 
-![ScreenShot](http://i.imgur.com/syPGnSd.png)
+<img src="http://i.imgur.com/syPGnSd.png" align="right">
 
-[See more ScreenShots](https://github.com/MathewSachin/Captura/wiki/ScreenShots/)
+## Features
 
-# Features
 - Take ScreenShots
 - Capture ScreenCasts (Avi/Gif/Mp4)
 - Capture with/without Mouse Cursor
@@ -23,18 +26,16 @@ See the [Wiki](https://github.com/MathewSachin/Captura/wiki) for more informatio
 - Capture Mouse Clicks or Keystrokes
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
-- Can be used from [Command-line](https://github.com/MathewSachin/Captura/wiki/Command-line).
+- Can be used from [Command-line](docs/CmdLine.md).
 
-## Available on Chocolatey
-```
-choco install captura -y
-```
+## Documentation
 
-# Build Notes
-- [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
-- .Net Framework v4.6.1 is required.
-- For more info, see [Building](https://github.com/MathewSachin/Captura/wiki/Building).
-
----
-
-See the [Wiki](https://github.com/MathewSachin/Captura/wiki) for more information!
+- [Changelog](docs/Changelog.md)
+- [Continuous Integration](docs/CI.md)
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Command-line](docs/CmdLine.md)
+- [FAQ](docs/FAQ.md)
+- [Hotkeys](docs/Hotkeys.md)
+- [ScreenShots](docs/ScreenShots.md)
+- [Translation](docs/Translation.md)
