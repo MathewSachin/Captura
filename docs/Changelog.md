@@ -1,31 +1,37 @@
 # Changelog
 
-## v7.0.0 (In Progress)
+## v7.0.0
 
 - Improved efficiency of specific screen capture.
-- Added Custom format for FFMpeg. Can be used by selecting encoder as `FFMpeg > Custom` and customizing arguments in `Config > FFMpeg`.
-- Opacity support for Webcam overlay.
 - The window is repositioned on startup if it is outside desktop bounds.
 - Handle errors when copying to clipboard.
 - Localization is done using JSON files.
 - Fixed full screen region size.
 - Refresh updates the full screen region size.
-- Alpha: Live Streaming
-- Added support for Custom Text overlays.
-  `%elapsed%` can be used as a replacement token for the time elapsed.
-- Alpha: NVENC support
 - Desktop Duplication is now shown as a video source.
-- FFMpeg can be installed from the commandline.
 - Reuse `Image` and `Graphics` objects without disposing to reduce CPU usage.
 - Better organisation in Settings file: `Captura.json`.
 - Prevent crashes when possible.
-- Remember selected webcam.
-- Clicks & Keystrokes can be turned on/off during capture
-- Hotkeys to Toggle Click and Keystrokes overlays (Alpha)
-- Fixed unability to record multiple screens with total width or height indivisible by 2.
 - Fixed unability to precisely resize Region Selector on high DPI.
 - Option to Hide Region Selector during recording.
 - Lagarith codec support through SharpAvi (Install codec manually, disable Null Frames and select RGB as format).
+
+### Overlays
+
+- Added support for Custom Text overlays.
+  `%elapsed%` can be used as a replacement token for the time elapsed.
+- Opacity support for Webcam overlay.
+- Remember selected webcam.
+- Clicks & Keystrokes can be turned on/off during capture
+- Hotkeys to Toggle Click and Keystrokes overlays (Alpha)
+
+### FFMpeg
+
+- Added Custom format for FFMpeg. Can be used by selecting encoder as `FFMpeg > Custom` and customizing arguments in `Config > FFMpeg`.
+- Alpha: Live Streaming
+- Alpha: NVENC support
+- Fixed unability to record multiple screens with total width or height indivisible by 2.
+- FFMpeg can be installed from the commandline.
 
 ## v6.0.1
 
