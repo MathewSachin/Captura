@@ -27,6 +27,7 @@ The settings are stored in `%APPDATA%/Captura` folder by default. The settings f
 - **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
 - Using the **FFMpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
 - **Desktop Duplication API** is only available on **Windows 8** and above.
+- For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
 
 ## FFMpeg
 

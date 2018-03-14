@@ -22,7 +22,7 @@
                 <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Right"
                            Margin="0,0,0,10">
-                    <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/wiki/Translation">
+                    <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/blob/master/docs/Translation.md">
                         <Run Text="{local:Loc WantToTranslate}"/>
                     </Hyperlink>
                 </TextBlock>
@@ -41,7 +41,7 @@
                             Content="{local:Loc Source}"
                             Margin="3"/>
                     <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://github.com/MathewSachin/Captura/wiki/Changelog"
+                            CommandParameter="https://github.com/MathewSachin/Captura/blob/master/docs/Changelog.md"
                             Content="{local:Loc Changelog}"
                             Grid.Column="1"
                             Margin="3"/>

@@ -32,6 +32,7 @@ You can support this project by donating.
 Name                 | Website                 | Amount
 ---------------------|-------------------------|---------
 GOFF Concepts L.L.C. | http://goffconcepts.com | $25
+George van der Ven   |                         | $10
 
 [gratipay]: https://gratipay.com/Screna
 [patreon]: https://www.patreon.com/MathewSachin

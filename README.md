@@ -15,7 +15,7 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 [![INSTALL](https://img.shields.io/badge/installation-guide-orange.svg?style=for-the-badge)](docs/Installation.md)
 [![BUILD](https://img.shields.io/badge/build-notes-blue.svg?style=for-the-badge)](docs/Building.md)
 
-<img src="http://i.imgur.com/syPGnSd.png" align="right">
+<a href="docs/ScreenShots.md"><img src="http://i.imgur.com/syPGnSd.png" align="right"></a>
 
 ## Features
 

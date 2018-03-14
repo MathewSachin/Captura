@@ -18,6 +18,8 @@ Pause/Resume Recording           | Shift + F9
 Take ScreenShots                 | PrintScreen
 Take ScreenShot of Active Window | Alt + PrintScreen
 Take ScreenShot of Desktop       | Shift + PrintScreen
+Toggle Mouse Clicks              | Alt + F10
+Toggle Keystrokes                | Alt + F11
 
 ## Changing a Hotkey
 
