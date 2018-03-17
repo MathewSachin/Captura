@@ -24,16 +24,14 @@ See [here](docs/Translation.md).
 Captura is made and maintained in personal time and is completely Ad-Free.
 You can support this project by donating.
 
-- [Patreon][patreon]
 - [Paypal][paypal]
 
 ### Donation History
 
 Name                 | Website                 | Amount
 ---------------------|-------------------------|---------
-GOFF Concepts L.L.C. | http://goffconcepts.com | $25
-George van der Ven   |                         | $10
+GOFF Concepts L.L.C. | http://goffconcepts.com | $25 USD
+George van der Ven   |                         | $10 USD
+Geoffroy Menard      |                         | $15 CAD
 
-[gratipay]: https://gratipay.com/Screna
-[patreon]: https://www.patreon.com/MathewSachin
 [paypal]: https://www.paypal.me/MathewSachin
