@@ -27,13 +27,13 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
 ## Table of Contents
 
-- [Installation](#Installation)
-  - [Setup](#Setup)
-  - [Portable](#Portable)
-  - [Chocolatey](#Chocolatey)
-- [Build Notes](#Build-Notes)
-- [System Requirements](#System-Requirements)
-- [FFMpeg](#FFMpeg)
+- [Installation](#installation)
+  - [Setup](#setup)
+  - [Portable](#portable)
+  - [Chocolatey](#chocolatey)
+- [Build Notes](#build-notes)
+- [System Requirements](#system-requirements)
+- [FFMpeg](#ffmpeg)
 - Other Links
   - [Changelog](docs/Changelog.md)
   - [Continuous Integration](docs/CI.md)
