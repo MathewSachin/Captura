@@ -23,7 +23,8 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - Capture Mouse Clicks or Keystrokes
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
-- Can be used from [Command-line](docs/CmdLine.md).
+- Can be used from [Command-line](docs/CmdLine.md) (*BETA*).
+- Available in multiple languages
 
 ## Table of Contents
 
@@ -70,6 +71,8 @@ choco install captura -y
 
 ### Dev Builds
 
+Dev builds can be unstable and should be used for testing purposes only.
+
 1. Go to [AppVeyor project](https://ci.appveyor.com/project/MathewSachin/Captura) page.
 
 2. Select Build Configuration: **Debug** or **Release**.
@@ -77,8 +80,6 @@ choco install captura -y
 3. Open **Artifacts** tab.
 
 4. Download **Zip package**.
-
-**Warning: Dev builds can be unstable and should be used for testing purposes only.**
 
 ## Build Notes
 
