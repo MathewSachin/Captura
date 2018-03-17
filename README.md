@@ -31,6 +31,7 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
   - [Setup](#setup)
   - [Portable](#portable)
   - [Chocolatey](#chocolatey)
+  - [Dev Builds](#dev-builds)
 - [Build Notes](#build-notes)
 - [System Requirements](#system-requirements)
 - [FFMpeg](#ffmpeg)
@@ -38,12 +39,12 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
   - [Changelog](docs/Changelog.md)
   - [Continuous Integration](docs/CI.md)
   - [Contributing](CONTRIBUTING.md)
+    - [Translation](docs/Translation.md)
   - [Code of Conduct](CODE_OF_CONDUCT.md)
   - [Command-line](docs/CmdLine.md)
   - [FAQ](docs/FAQ.md)
   - [Hotkeys](docs/Hotkeys.md)
   - [ScreenShots](docs/ScreenShots.md)
-  - [Translation](docs/Translation.md)
 
 ## Installation
 
