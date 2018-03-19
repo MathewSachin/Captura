@@ -11,7 +11,6 @@ Also, the recently released .Net Core only has support for console applications.
 ## Does Captura support DirectX Game Video Recording
 
 Some newer games can be recorded using Desktop Duplication API.
-Enable Desktop Duplication in **Config | Extras**.
 
 Make sure to use a fast codec like Mp4 (x264).
 
@@ -22,6 +21,7 @@ Game                                        | Status
 NFS Most Wanted 2012                        | OK
 Burnout Paradise Ultimate Box               | OK
 Resident Evil 7                             | OK
+Watch Dogs 2                                | FAIL
 
 ## Captura runs out of resources (high memory/CPU/disk usage) during recording
 

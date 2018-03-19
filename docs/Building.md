@@ -5,7 +5,7 @@
 - [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
 - .Net Framework v4.6.1 is required.
 
-### Api Keys
+## Api Keys
 
 Api Keys are loaded from user environment variables during development and embedded in Release builds if using Cake.
 
@@ -13,7 +13,7 @@ Service | Environment Variable
 --------|----------------------
 Imgur   | `imgur_client_id`
 
-### FFMpeg
+## FFMpeg
 
 FFMpeg can be downloaded from within the app.
 

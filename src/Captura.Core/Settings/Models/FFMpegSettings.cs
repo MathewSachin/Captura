@@ -37,5 +37,7 @@
             get => Get("rtmp://");
             set => Set(value);
         }
+
+        public X264Settings X264 { get; } = new X264Settings();
     }
 }

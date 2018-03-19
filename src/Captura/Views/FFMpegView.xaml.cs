@@ -13,5 +13,10 @@ namespace Captura
         {
             FFMpegService.FFMpegDownloader?.Invoke();
         }
+
+        void ConfigCodecs(object Sender, RoutedEventArgs E)
+        {
+            new FFMpegCodecWindow().ShowAndFocus();
+        }
     }
 }

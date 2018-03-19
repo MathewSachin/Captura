@@ -186,6 +186,7 @@
     <Compile Include="Settings\Models\FFMpegSettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
+    <Compile Include="Settings\Models\X264Settings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />

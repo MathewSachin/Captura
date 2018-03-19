@@ -99,7 +99,6 @@
                          Margin="2"
                          Text="{Binding Settings.FFMpeg.TwitchKey}"/>
 
-
                 <Label Content="YouTube Live Key"
                        Grid.Row="1"
                        ContentStringFormat="{}{0}: "/>
@@ -116,6 +115,10 @@
                          Margin="2"
                          Text="{Binding Settings.FFMpeg.CustomStreamingUrl}"/>
             </Grid>
+            
+            <Button Margin="0,10"
+                    Content="Configure Codecs"
+                    Click="ConfigCodecs"/>
         </StackPanel>
     </Grid>
 </Page>

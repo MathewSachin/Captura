@@ -24,7 +24,8 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
 - Can be used from [Command-line](docs/CmdLine.md) (*BETA*).
-- Available in multiple languages
+- Available in [multiple languages]](docs/Translation.md)
+- Configurable [Hotkeys](docs/Hotkeys.md)
 
 ## Table of Contents
 
@@ -46,6 +47,7 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
   - [FAQ](docs/FAQ.md)
   - [Hotkeys](docs/Hotkeys.md)
   - [ScreenShots](docs/ScreenShots.md)
+- [License](#license)
 
 ## Installation
 
@@ -106,5 +108,12 @@ Due to its large size (approx. 30MB), it is not included in the downloads.
 If you already have FFMpeg on your system, you can just set the path to the folder containing it.
 If it is installed globally (available in PATH), you don't have to do anything.
 If you don't have FFMpeg or want to update, use the inbuilt **FFMpeg Downloader**.
+FFMpeg needs to be downloaded only once.
+
+In cases where the **FFMpeg Downloader** fails, please download manually from <https://ffmpeg.zeranoe.com/builds/> and set FFMpeg folder in `Configure | FFMpeg`.
 
 If you don't want to use FFMpeg, you can switch to `SharpAvi`.
+
+## License
+
+[MIT License](LICENSE.md)

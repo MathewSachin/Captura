@@ -75,6 +75,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\FFMpegCodecWindow.xaml.cs">
+      <DependentUpon>FFMpegCodecWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\MainModule.cs" />
     <Compile Include="Models\CmdOptions.cs" />
     <Compile Include="Models\Dpi.cs" />
@@ -165,6 +168,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Views\FFMpegCodecWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Controls\TextBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

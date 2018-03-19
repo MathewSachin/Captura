@@ -13,10 +13,12 @@ namespace Captura.Models
         // MP4 (x264, AAC)
         public static FFMpegItem x264 { get; } = new FFMpegItem("Mp4 (x264 | AAC)", () => ".mp4", VideoQuality =>
         {
+            var settings = ServiceProvider.Get<Settings>().FFMpeg.X264;
+
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
-            return $"-vcodec libx264 -crf {crf} -pix_fmt yuv420p -preset ultrafast";
+            return $"-vcodec libx264 -crf {crf} -pix_fmt {settings.PixelFormat} -preset {settings.Preset}";
         }, FFMpegAudioItem.Aac);
 
         // Avi (Xvid, Mp3)
