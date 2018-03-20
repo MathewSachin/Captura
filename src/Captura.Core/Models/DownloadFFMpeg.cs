@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpCompress.Archives;
-using SharpCompress.Readers;
 
 namespace Captura.ViewModels
 {
@@ -18,9 +17,9 @@ namespace Captura.ViewModels
         {
             var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
 
-            FFMpegUri = new Uri($"http://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.7z");
+            FFMpegUri = new Uri($"https://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.zip");
 
-            FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.7z");
+            FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
         }
 
         public static async Task DownloadArchive(Action<int> Progress, WebProxy Proxy, CancellationToken CancellationToken)
@@ -38,21 +37,17 @@ namespace Captura.ViewModels
             }
         }
 
+        const string ExeName = "ffmpeg.exe";
+
         public static async Task ExtractTo(string FolderPath)
         {
             await Task.Run(() =>
             {
-                using (var archive = ArchiveFactory.Open(FFMpegArchivePath))
+                using (var archive = ZipFile.OpenRead(FFMpegArchivePath))
                 {
-                    // Find ffmpeg.exe
-                    var ffmpegEntry = archive.Entries.First(Entry => Path.GetFileName(Entry.Key) == "ffmpeg.exe");
+                    var ffmpegEntry = archive.Entries.First(M => M.Name == ExeName);
 
-                    ffmpegEntry.WriteToDirectory(FolderPath, new ExtractionOptions
-                    {
-                        // Don't copy directory structure
-                        ExtractFullPath = false,
-                        Overwrite = true
-                    });
+                    ffmpegEntry.ExtractToFile(Path.Combine(FolderPath, ExeName), true);
                 }
             });
         }
