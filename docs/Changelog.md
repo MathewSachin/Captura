@@ -1,5 +1,9 @@
 # Changelog
 
+# v7.0.1
+
+- Fixed FFMpeg download link
+
 ## v7.0.0
 
 - Improved efficiency of specific screen capture.

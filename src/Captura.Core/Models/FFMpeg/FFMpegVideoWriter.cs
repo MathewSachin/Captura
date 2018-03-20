@@ -27,8 +27,6 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="FFMpegWriter"/>.
         /// </summary>
-        /// <param name="FileName">Path for the output file.</param>
-        /// <param name="FrameRate">Video Frame Rate.</param>
         public FFMpegWriter(string FileName, IImageProvider ImageProvider, int FrameRate,
             int VideoQuality, FFMpegVideoArgsProvider VideoArgsProvider,
             int AudioQuality, FFMpegAudioArgsProvider AudioArgsProvider,
