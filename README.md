@@ -24,7 +24,7 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
 - Can be used from [Command-line](docs/CmdLine.md) (*BETA*).
-- Available in [multiple languages]](docs/Translation.md)
+- Available in [multiple languages](docs/Translation.md)
 - Configurable [Hotkeys](docs/Hotkeys.md)
 
 ## Table of Contents
@@ -92,6 +92,8 @@ Dev builds can be unstable and should be used for testing purposes only.
 ## System Requirements
 
 - Verified on **Windows 10**. Might work on earlier versions also.
+- 2 GHz CPU (Recommended).
+- 4 GB RAM (Recommended).
 - **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
 - Using the **FFMpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
 - **Desktop Duplication API** is only available on **Windows 8** and above.
