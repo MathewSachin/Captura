@@ -29,9 +29,10 @@ You can support this project by donating.
 ### Donation History
 
 Name                 | Website                 | Amount
----------------------|-------------------------|---------
+---------------------|-------------------------|-----------
 GOFF Concepts L.L.C. | http://goffconcepts.com | $25 USD
 George van der Ven   |                         | $10 USD
 Geoffroy Menard      |                         | $15 CAD
+Ian Harpur           |                         | 1,000 RUB
 
 [paypal]: https://www.paypal.me/MathewSachin

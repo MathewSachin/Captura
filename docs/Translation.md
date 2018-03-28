@@ -1,8 +1,9 @@
 # Translation
 
 Captura is localized using language-specific JSON files.
+Language can be set on Config tab.
 
-Currently supported languages:
+## Currently supported languages
 
 Name       | Language ID | Contributor
 -----------|-------------|-------------------------------------------------
@@ -52,3 +53,8 @@ Ukrainian  | uk          | [Marusyk](https://github.com/Marusyk)
 - Do translation in the renamed file.
 - Send Pull Request.
 - We will edit your pull request to solve the problem.
+
+## Testing
+
+Place the `[Language ID].json` file in the `Languages` folder of a build.
+The Language can be tested by starting Captura and selecting the Language on `Config` tab.
