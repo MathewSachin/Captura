@@ -31,28 +31,12 @@ Thai       | th          | [kerlos](https://github.com/kerlos)
 Turkish    | tr          | [sgbasaraner](https://github.com/sgbasaraner)
 Ukrainian  | uk          | [Marusyk](https://github.com/Marusyk)
 
-## Guidelines
-
-- Do translation only if you know the language. Don't rely solely on some tool like Google Translate.
-- Once you contribute translations, you'll have to review any changes to them in future.
-
 ## Contributing
-
-### I have Visual Studio
-
-- Open Visual Studio.
-- In Visual Studio, Create a copy of the `en.json` file in `Captura.Core` project's `Languages` folder.
-- Rename the copy to `[Language ID].json` where `[Language ID]` is the ID of language you are translating into.
-- Do translation in the renamed file.
-- Send Pull Request.
-
-### I don't have Visual Studio
 
 - Copy the `en.json` file in `src/Captura.Core/Languages` folder.
 - Rename the copy to `[Language ID].json` where `[Language ID]` is the ID of language you are translating into.
 - Do translation in the renamed file.
 - Send Pull Request.
-- We will edit your pull request to solve the problem.
 
 ## Testing
 

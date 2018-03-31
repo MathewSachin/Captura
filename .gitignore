@@ -1,14 +1,19 @@
+# Build Output
 bin/
 obj/
+
+# NuGet
+*.nupkg
 packages/
-publish/
-temp/
-Output/
-Releases/
+
+# Visual Studio
 .vs/
+.vscode/
+publish/
 *.suo
 *.user
-*.nupkg
 
 # Cake
-tools/
+/tools/
+/temp/
+/Output/
