@@ -148,7 +148,7 @@ void PopulateOutput()
     }
 }
 
-void PackChoco()
+void PackChoco(string Tag, string Version)
 {
     var checksum = CalculateFileHash("temp/Captura-Portable.zip").ToHex();
 
@@ -156,18 +156,15 @@ void PackChoco()
 
     var originalContent = FileRead(chocoInstallScript);
 
-    var tag = EnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
-    var newContent = $"$tag = '{tag}'; $checksum = '{checksum}'; {originalContent}";
+    var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
 
     CopyFileToDirectory(chocoInstallScript, "temp");
 
     FileWrite(chocoInstallScript, newContent);
 
-    var chocoVersion = EnvironmentVariable("TagVersion");
-
     ChocolateyPack("choco/captura.nuspec", new ChocolateyPackSettings
     {
-        Version = chocoVersion,
+        Version = Version,
         ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
     });
 
@@ -252,7 +249,7 @@ Task("Pack-Choco")
     // Run only on AppVeyor Release Tag builds
     .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
     .IsDependentOn("Pack-Portable")
-    .Does(() => PackChoco());
+    .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
 
 Task("Default").IsDependentOn("Populate-Output");
 

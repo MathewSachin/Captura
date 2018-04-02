@@ -119,3 +119,5 @@ If you don't want to use FFMpeg, you can switch to `SharpAvi`.
 ## License
 
 [MIT License](LICENSE.md)
+
+Check [here](licenses/) for licenses of dependencies.
