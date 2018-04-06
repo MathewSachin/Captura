@@ -114,6 +114,8 @@ namespace Captura.ViewModels
 
         public CustomOverlaysViewModel CustomOverlays { get; }
 
+        public CustomImageOverlaysViewModel CustomImageOverlays { get; }
+
         #region ScreenShot
         public IEnumerable<ImageFormat> ScreenShotImageFormats { get; } = new[]
         {

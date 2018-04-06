@@ -1,75 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows.Input;
-using Newtonsoft.Json;
-
-namespace Captura.ViewModels
+﻿namespace Captura.ViewModels
 {
-    public class CustomOverlaysViewModel : IDisposable
+    public class CustomOverlaysViewModel : ArraySettingsViewModel<CustomOverlaySettings>
     {
-        static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "CustomOverlays.json");
-
-        public CustomOverlaysViewModel()
+        public CustomOverlaysViewModel() : base("CustomOverlays.json")
         {
-            Collection = new ReadOnlyObservableCollection<CustomOverlaySettings>(_collection);
-
-            Load();
-
-            AddCommand = new DelegateCommand(() => _collection.Add(new CustomOverlaySettings()));
-
-            RemoveCommand = new DelegateCommand(OnRemoveExecute);
-        }
-
-        void Load()
-        {
-            try
-            {
-                var json = File.ReadAllText(GetFilePath());
-
-                var overlays = JsonConvert.DeserializeObject<CustomOverlaySettings[]>(json);
-
-                foreach (var overlay in overlays)
-                {
-                    _collection.Add(overlay);
-                }
-            }
-            catch
-            {
-                // Ignore Errors
-            }
-        }
-
-        void OnRemoveExecute(object O)
-        {
-            if (O is CustomOverlaySettings textOverlaySettings)
-            {
-                _collection.Remove(textOverlaySettings);
-            }
-        }
-        
-        readonly ObservableCollection<CustomOverlaySettings> _collection = new ObservableCollection<CustomOverlaySettings>();
-
-        public ReadOnlyObservableCollection<CustomOverlaySettings> Collection { get; }
-
-        public ICommand AddCommand { get; }
-
-        public ICommand RemoveCommand { get; }
-
-        public void Reset() => _collection.Clear();
-
-        public void Dispose()
-        {
-            try
-            {
-                var json = JsonConvert.SerializeObject(Collection);
-
-                File.WriteAllText(GetFilePath(), json);
-            }
-            catch
-            {
-                // Ignore Errors
-            }
         }
     }
 }
