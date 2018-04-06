@@ -28,6 +28,9 @@ namespace Captura
                 return;
             }
 
+            // Hide on Full Screen Screenshot doesn't work on Console
+            ServiceProvider.Get<Settings>().UI.HideOnFullScreenShot = false;
+            
             ServiceProvider.LoadModule(new FakesModule());
 
             Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFMpegCmdOptions, ListCmdOptions>(Args)
