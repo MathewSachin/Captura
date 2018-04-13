@@ -27,27 +27,28 @@ namespace Captura.Models
             if (Settings.Resize)
                 img = img.Resize(new Size(Settings.ResizeWidth, Settings.ResizeHeight), false);
 
-            using (img)
+            try
             {
-                try
+                var point = GetPosition(new Size((int) g.VisibleClipBounds.Width, (int) g.VisibleClipBounds.Height), img.Size);
+
+                if (Settings.Opacity < 100)
                 {
-                    var point = GetPosition(new Size((int)g.VisibleClipBounds.Width, (int)g.VisibleClipBounds.Height), img.Size);
-
-                    if (Settings.Opacity < 100)
+                    var colormatrix = new ColorMatrix
                     {
-                        var colormatrix = new ColorMatrix
-                        {
-                            Matrix33 = Settings.Opacity / 100.0f
-                        };
+                        Matrix33 = Settings.Opacity / 100.0f
+                    };
 
-                        var imgAttribute = new ImageAttributes();
-                        imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    var imgAttribute = new ImageAttributes();
+                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                        g.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
-                    }
-                    else g.DrawImage(img, point);
+                    g.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
                 }
-                catch { }
+                else g.DrawImage(img, point);
+            }
+            catch { }
+            finally
+            {
+                if(_disposeImages)img.Dispose();
             }
         }
 
