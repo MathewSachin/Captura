@@ -17,6 +17,7 @@ namespace Captura.Models
         readonly KeystrokesSettings _keystrokesSettings;
 
         bool _mouseClicked;
+        MouseButtons _mouseButtons;
         
         readonly KeyRecords _records;
         #endregion
@@ -31,7 +32,12 @@ namespace Captura.Models
             
             _hook = Hook.GlobalEvents();
             
-            _hook.MouseDown += (S, E) => _mouseClicked = true;
+            _hook.MouseDown += (S, E) =>
+            {
+                _mouseClicked = true;
+
+                _mouseButtons = E.Button;
+            };
 
             _hook.MouseUp += (S, E) => _mouseClicked = false;
             
@@ -251,7 +257,21 @@ namespace Captura.Models
                 var x = curPos.X - clickRadius;
                 var y = curPos.Y - clickRadius;
 
-                g.FillEllipse(new SolidBrush(_mouseClickSettings.Color), x, y, d, d);
+                g.FillEllipse(new SolidBrush(Color.Chocolate), x, y, d, d);
+
+                void FillForButton(int StartAngle)
+                {
+                    g.FillPie(new SolidBrush(_mouseClickSettings.Color), x, y, d, d, StartAngle, 90);
+                }
+
+                if (_mouseButtons.HasFlag(MouseButtons.Left))
+                    FillForButton(180);
+
+                if (_mouseButtons.HasFlag(MouseButtons.Middle))
+                    FillForButton(225);
+
+                if (_mouseButtons.HasFlag(MouseButtons.Right))
+                    FillForButton(270);
 
                 var border = _mouseClickSettings.BorderThickness;
 
