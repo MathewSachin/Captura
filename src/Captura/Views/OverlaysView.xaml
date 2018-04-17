@@ -233,5 +233,14 @@
                 </DockPanel>
             </DockPanel>
         </Expander>
+        
+        <Expander DataContext="{Binding CustomImageOverlays}"
+                  Margin="0,5">
+            <Expander.Header>
+                <Label Content="Custom Images"/>
+            </Expander.Header>
+            
+            <DockPanel></DockPanel>
+        </Expander>
     </StackPanel>
 </Page>
