@@ -241,6 +241,21 @@ namespace Captura.Models
             }
         }
 
+        Color GetClickCirleColor()
+        {
+            if (_mouseButtons.HasFlag(MouseButtons.Right))
+            {
+                return _mouseClickSettings.RightClickColor;
+            }
+
+            if (_mouseButtons.HasFlag(MouseButtons.Middle))
+            {
+                return _mouseClickSettings.MiddleClickColor;
+            }
+
+            return _mouseClickSettings.Color;
+        }
+
         void DrawClicks(Graphics g, Func<Point, Point> Transform)
         {
             if (_mouseClicked)
@@ -257,21 +272,7 @@ namespace Captura.Models
                 var x = curPos.X - clickRadius;
                 var y = curPos.Y - clickRadius;
 
-                g.FillEllipse(new SolidBrush(Color.Chocolate), x, y, d, d);
-
-                void FillForButton(int StartAngle)
-                {
-                    g.FillPie(new SolidBrush(_mouseClickSettings.Color), x, y, d, d, StartAngle, 90);
-                }
-
-                if (_mouseButtons.HasFlag(MouseButtons.Left))
-                    FillForButton(180);
-
-                if (_mouseButtons.HasFlag(MouseButtons.Middle))
-                    FillForButton(225);
-
-                if (_mouseButtons.HasFlag(MouseButtons.Right))
-                    FillForButton(270);
+                g.FillEllipse(new SolidBrush(GetClickCirleColor()), x, y, d, d);
 
                 var border = _mouseClickSettings.BorderThickness;
 
