@@ -13,48 +13,7 @@
 
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.WebcamOverlay}">
-                <local:PositionSettingsControl/>
-                
-                <Grid Margin="0,15,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <CheckBox Content="{local:Loc Resize}"
-                              IsChecked="{Binding Resize, Mode=TwoWay}"
-                              Margin="0,0,5,0"/>
-
-                    <xctk:IntegerUpDown Value="{Binding ResizeWidth, Mode=TwoWay}"
-                                        Grid.Column="1"
-                                        IsEnabled="{Binding Resize}"/>
-
-                    <Label Content="x"
-                           Grid.Column="2"
-                           Margin="5,0"/>
-
-                    <xctk:IntegerUpDown Value="{Binding ResizeHeight, Mode=TwoWay}"
-                                        Grid.Column="3"
-                                        IsEnabled="{Binding Resize}"/>
-                </Grid>
-                
-                <Grid Margin="0,15,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Content="{local:Loc Opacity}"
-                           ContentStringFormat="{}{0}: "
-                           Margin="0,3"/>
-
-                    <xctk:IntegerUpDown Value="{Binding Opacity, Mode=TwoWay}"
-                                        Grid.Column="1"
-                                        Minimum="1"
-                                        Maximum="100"/>
-                </Grid>
+                <local:ImageOverlaySettingsControl/>
             </StackPanel>
         </Expander>
 
@@ -247,6 +206,66 @@
                            ContentStringFormat="{}{0}: "/>
                     
                     <TextBox Text="{Binding Text, Mode=TwoWay}"
+                             Margin="5,0"/>
+                </DockPanel>
+            </DockPanel>
+        </Expander>
+        
+        <Expander DataContext="{Binding CustomImageOverlays}"
+                  Margin="0,5">
+            <Expander.Header>
+                <Label Content="Custom Images"/>
+            </Expander.Header>
+
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <local:ModernButton ToolTip="Add"
+                                        Command="{Binding AddCommand}"
+                                        IconData="{StaticResource Icon_Add}"
+                                        DockPanel.Dock="Right"/>
+                    
+                    <Label Content="Images can be used as watermarks"/>
+                </DockPanel>
+
+                <ListView Margin="5"
+                          ItemsSource="{Binding Collection}"
+                          Name="ImagesItemsControl"
+                          SelectionChanged="ItemsControl_OnSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="Image"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <GridSplitter Width="1"/>
+
+                <DockPanel DataContext="{Binding SelectedItem, ElementName=ImagesItemsControl}"
+                           Margin="10"
+                           IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                    <local:ImageOverlaySettingsControl DockPanel.Dock="Bottom"
+                                                       Margin="0,5"/>
+
+                    <DockPanel DockPanel.Dock="Top">
+                        <local:ModernButton ToolTip="Remove"
+                                            Command="{Binding DataContext.RemoveCommand, ElementName=ImagesItemsControl}"
+                                            CommandParameter="{Binding}"
+                                            IconData="{StaticResource Icon_Close}"
+                                            DockPanel.Dock="Right"/>
+
+                        <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                                  Content="Display"/>
+                    </DockPanel>
+
+                    <Label Content="Source"
+                           ContentStringFormat="{}{0}: "/>
+                    
+                    <Button Content="..."
+                            DockPanel.Dock="Right"
+                            Command="{Binding DataContext.ChangeCommand, ElementName=ImagesItemsControl}"
+                            CommandParameter="{Binding}"/>
+
+                    <TextBox Text="{Binding Source, Mode=TwoWay}"
                              Margin="5,0"/>
                 </DockPanel>
             </DockPanel>

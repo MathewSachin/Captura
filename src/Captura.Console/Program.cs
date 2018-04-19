@@ -45,6 +45,7 @@ namespace Captura
 
                         // Remove Custom overlays
                         vm.CustomOverlays.Reset();
+                        vm.CustomImageOverlays.Reset();
 
                         Start(vm, Options);
                     }
