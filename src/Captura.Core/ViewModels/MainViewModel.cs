@@ -372,6 +372,7 @@ namespace Captura.ViewModels
             if (_persist)
             {
                 CustomOverlays.Dispose();
+                CustomImageOverlays.Dispose();
 
                 Remember();
 

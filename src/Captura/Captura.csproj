@@ -82,6 +82,9 @@
     <Compile Include="Views\PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\Controls\ImageOverlaySettingsControl.xaml.cs">
+      <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FFMpegCodecWindow.xaml.cs">
       <DependentUpon>FFMpegCodecWindow.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,10 @@
     <Page Include="Views\PreviewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Controls\ImageOverlaySettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FFMpegCodecWindow.xaml">
       <SubType>Designer</SubType>

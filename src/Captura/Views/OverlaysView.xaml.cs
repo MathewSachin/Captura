@@ -8,19 +8,22 @@ namespace Captura
         {
             InitializeComponent();
 
-            UpdateSelection();
+            UpdateSelection(ItemsControl);
+
+            UpdateSelection(ImagesItemsControl);
         }
 
         void ItemsControl_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
         {
-            UpdateSelection();
+            if (Sender is ListView listView)
+                UpdateSelection(listView);
         }
 
-        void UpdateSelection()
+        void UpdateSelection(ListView Sender)
         {
-            if (ItemsControl.SelectedIndex == -1 && ItemsControl.HasItems)
+            if (Sender.SelectedIndex == -1 && Sender.HasItems)
             {
-                ItemsControl.SelectedIndex = 0;
+                Sender.SelectedIndex = 0;
             }
         }
     }

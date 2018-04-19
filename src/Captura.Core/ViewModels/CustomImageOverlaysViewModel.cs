@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Captura.Models;
 
 namespace Captura.ViewModels
@@ -12,6 +14,23 @@ namespace Captura.ViewModels
 
         public ICommand ChangeCommand { get; }
 
-        void Change() { }
+        void Change(object M)
+        {
+            if (M is CustomImageOverlaySettings settings)
+            {
+                var ofd = new OpenFileDialog
+                {
+                     CheckFileExists = true,
+                     CheckPathExists = true,
+                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                     Title = "Select Image"
+                };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    settings.Source = ofd.FileName;
+                }
+            }
+        }
     }
 }

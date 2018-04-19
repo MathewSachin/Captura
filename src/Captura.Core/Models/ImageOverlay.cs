@@ -48,7 +48,8 @@ namespace Captura.Models
             catch { }
             finally
             {
-                if(_disposeImages)img.Dispose();
+                if (_disposeImages)
+                    img.Dispose();
             }
         }
 
