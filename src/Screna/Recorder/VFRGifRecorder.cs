@@ -90,7 +90,7 @@ namespace Screna
             try
             {
                 IBitmapFrame lastFrame = null;
-                
+
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {
                     var frame = _imageProvider.Capture();

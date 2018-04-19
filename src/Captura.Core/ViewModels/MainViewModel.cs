@@ -655,11 +655,15 @@ namespace Captura.ViewModels
 
         void OnErrorOccured(Exception E)
         {
-            Status.LocalizationKey = nameof(LanguageManager.ErrorOccured);
+            var cancelled = E is OperationCanceledException;
+
+            if (!cancelled)
+                Status.LocalizationKey = nameof(LanguageManager.ErrorOccured);
                         
             AfterRecording();
 
-            ServiceProvider.MessageProvider.ShowError(E.ToString(), E.Message);
+            if (!cancelled)
+                ServiceProvider.MessageProvider.ShowError(E.ToString(), E.Message);
         }
 
         void AfterRecording()
@@ -715,7 +719,13 @@ namespace Captura.ViewModels
         {
             Status.LocalizationKey = nameof(LanguageManager.Stopped);
 
-            var savingRecentItem = RecentViewModel.Add(_currentFileName, _isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
+            RecentItemViewModel savingRecentItem = null;
+
+            // Assume saving to file only when extension is present
+            if (!string.IsNullOrWhiteSpace(VideoViewModel.SelectedVideoWriter.Extension))
+            {
+                savingRecentItem = RecentViewModel.Add(_currentFileName, _isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
+            }
             
             // Reference Recorder as it will be set to null
             var rec = _recorder;
@@ -736,16 +746,20 @@ namespace Captura.ViewModels
                 return;
             }
 
-            // After Save
-            savingRecentItem.Saved();
-
-            if (Settings.CopyOutPathToClipboard)
-                savingRecentItem.FilePath.WriteToClipboard();
-            
-            _systemTray.ShowTextNotification((savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved) + ": " + Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+            if (savingRecentItem != null)
             {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
-            });
+                // After Save
+                savingRecentItem.Saved();
+
+                if (Settings.CopyOutPathToClipboard)
+                    savingRecentItem.FilePath.WriteToClipboard();
+
+                _systemTray.ShowTextNotification((savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved) + ": " +
+                    Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+                    {
+                        ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
+                    });
+            }
         }
     }
 }

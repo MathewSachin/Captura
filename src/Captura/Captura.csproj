@@ -66,6 +66,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="Xceed.Wpf.Toolkit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
@@ -75,6 +76,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\PreviewWriter.cs" />
+    <Compile Include="Models\PreviewWriterItem.cs" />
+    <Compile Include="Models\PreviewWriterProvider.cs" />
+    <Compile Include="Views\PreviewWindow.xaml.cs">
+      <DependentUpon>PreviewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FFMpegCodecWindow.xaml.cs">
       <DependentUpon>FFMpegCodecWindow.xaml</DependentUpon>
     </Compile>
@@ -168,6 +175,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Views\PreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FFMpegCodecWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
