@@ -93,6 +93,24 @@
                                       Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,5"/>
+
+                    <Label Content="Right Click Color"
+                           ContentStringFormat="{}{0}: "
+                           Margin="0,5,5,5"
+                           Grid.Row="2"/>
+                    <xctk:ColorPicker SelectedColor="{Binding RightClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                      Grid.Row="2"
+                                      Grid.Column="1"
+                                      Margin="0,5"/>
+
+                    <Label Content="Middle Click Color"
+                           ContentStringFormat="{}{0}: "
+                           Margin="0,5,5,5"
+                           Grid.Row="3"/>
+                    <xctk:ColorPicker SelectedColor="{Binding MiddleClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                      Grid.Row="3"
+                                      Grid.Column="1"
+                                      Margin="0,5"/>
                 </Grid>
                 
                 <Grid>
