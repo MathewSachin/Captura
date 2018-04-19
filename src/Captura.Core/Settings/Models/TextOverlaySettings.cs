@@ -55,7 +55,7 @@ namespace Captura
 
         public Color BorderColor
         {
-            get => Get(Color.Black);
+            get => Get(Color.FromArgb(158, 158, 158));
             set => Set(value);
         }
     }
