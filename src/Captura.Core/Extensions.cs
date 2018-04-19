@@ -74,7 +74,7 @@ namespace Captura
             }
         }
 
-        public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio)
+        public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)
         {
             var resizeWidth = Resize.Width;
             var resizeHeight = Resize.Height;
@@ -94,9 +94,16 @@ namespace Captura
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = SmoothingMode.HighQuality;
-                
-                using (Image)
+
+                try
+                {
                     g.DrawImage(Image, 0, 0, resizeWidth, resizeHeight);
+                }
+                finally
+                {
+                    if (DisposeOriginal)
+                        Image.Dispose();
+                }
             }
 
             return resized;

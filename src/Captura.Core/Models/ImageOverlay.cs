@@ -25,7 +25,7 @@ namespace Captura.Models
                 return;
 
             if (Settings.Resize)
-                img = img.Resize(new Size(Settings.ResizeWidth, Settings.ResizeHeight), false);
+                img = img.Resize(new Size(Settings.ResizeWidth, Settings.ResizeHeight), false, _disposeImages);
 
             try
             {
