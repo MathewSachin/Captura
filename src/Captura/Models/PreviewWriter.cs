@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Screna;
 
 namespace Captura.Models
@@ -35,7 +29,12 @@ namespace Captura.Models
             _lastFrame?.Dispose();
 
             _lastFrame = Image;
-            
+
+            if (!_previewWindow.IsVisible)
+            {
+                throw new OperationCanceledException();
+            }
+
             _previewWindow.Dispatcher.Invoke(() =>
             {
                 _previewWindow.DisplayImage.Image = Image.Bitmap;
