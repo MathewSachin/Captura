@@ -618,7 +618,8 @@ namespace Captura.ViewModels
                 _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.Audio.Quality), audioProvider);
             }
 
-            _regionProvider.Lock();
+            if (VideoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
+                _regionProvider.Lock();
 
             _systemTray.HideNotification();
 
