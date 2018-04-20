@@ -1,6 +1,13 @@
 # Changelog
 
-# v7.0.1
+## vNext
+
+- Added Preview window as a video output.
+- Fixed `captura shot` failing for fullscreen screenshots.
+- Separate colors for Right and Middle mouse click overlays.
+- Support for custom image overlays.
+
+## v7.0.1
 
 - Fixed FFMpeg download link
 

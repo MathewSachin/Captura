@@ -689,13 +689,16 @@ namespace Captura.ViewModels
         {
             if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
-            
-            return VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(_currentFileName,
-                Settings.Video.FrameRate,
-                Settings.Video.Quality,
-                ImgProvider,
-                Settings.Audio.Quality,
-                AudioProvider);
+
+            return VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            {
+                FileName = _currentFileName,
+                FrameRate = Settings.Video.FrameRate,
+                VideoQuality = Settings.Video.Quality,
+                ImageProvider = ImgProvider,
+                AudioQuality = Settings.Audio.Quality,
+                AudioProvider = AudioProvider
+            });
         }
         
         IImageProvider GetImageProvider()

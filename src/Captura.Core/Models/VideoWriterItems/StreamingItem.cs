@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Screna;
-using Screna.Audio;
 
 namespace Captura.Models
 {
@@ -16,10 +15,11 @@ namespace Captura.Models
             _linkFunction = LinkFunction;
         }
 
-        public override IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider,
-            int AudioQuality, IAudioProvider AudioProvider)
+        public override IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return _baseItem.GetVideoFileWriter(_linkFunction(), FrameRate, VideoQuality, ImageProvider, AudioQuality, AudioProvider, "-g 20 -r 10 -f flv");
+            Args.FileName = _linkFunction();
+
+            return _baseItem.GetVideoFileWriter(Args, "-g 20 -r 10 -f flv");
         }
         
         public static IEnumerable<StreamingItem> StreamingItems { get; } = new[]

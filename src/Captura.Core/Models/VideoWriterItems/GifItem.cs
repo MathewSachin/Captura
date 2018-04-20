@@ -1,5 +1,4 @@
 ﻿using Screna;
-using Screna.Audio;
 
 namespace Captura.Models
 {
@@ -9,13 +8,13 @@ namespace Captura.Models
 
         public override string ToString() => "Gif";
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
+        public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
             var settings = ServiceProvider.Get<Settings>();
 
             var repeat = settings.Gif.Repeat ? settings.Gif.RepeatCount : -1;
             
-            return new GifWriter(FileName, FrameRate, repeat);
+            return new GifWriter(Args.FileName, Args.FrameRate, repeat);
         }
     }
 }

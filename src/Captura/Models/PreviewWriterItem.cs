@@ -1,5 +1,4 @@
 ﻿using Screna;
-using Screna.Audio;
 
 namespace Captura.Models
 {
@@ -7,8 +6,7 @@ namespace Captura.Models
     {
         public string Extension { get; } = "";
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider,
-            int AudioQuality, IAudioProvider AudioProvider)
+        public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
             return new PreviewWriter();
         }

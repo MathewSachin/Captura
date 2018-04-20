@@ -82,6 +82,8 @@
     <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\ImageOverlay.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
+    <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\Fakes\FakeMessageProvider.cs" />

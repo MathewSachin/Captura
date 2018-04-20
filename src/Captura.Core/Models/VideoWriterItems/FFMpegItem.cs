@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Screna;
-using Screna.Audio;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
@@ -84,14 +83,17 @@ namespace Captura.Models
         readonly FFMpegAudioArgsProvider _audioArgsProvider;
         public override string ToString() => _name;
 
-        public virtual IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider)
+        public virtual IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new FFMpegWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider);
+            return new FFMpegWriter(FFMpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider));
         }
 
-        public IVideoFileWriter GetVideoFileWriter(string FileName, int FrameRate, int VideoQuality, IImageProvider ImageProvider, int AudioQuality, IAudioProvider AudioProvider, string OutputArgs)
+        public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args, string OutputArgs)
         {
-            return new FFMpegWriter(FileName, ImageProvider, FrameRate, VideoQuality, _videoArgsProvider, AudioQuality, _audioArgsProvider, AudioProvider, OutputArgs: OutputArgs);
+            var args = FFMpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider);
+            args.OutputArgs = OutputArgs;
+
+            return new FFMpegWriter(args);
         }
     }
 }
