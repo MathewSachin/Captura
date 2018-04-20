@@ -23,7 +23,7 @@ namespace Screna
             _region = Region;
             _includeCursor = IncludeCursor;
 
-            _transform = P => new Point(P.X - Region.X, P.Y - Region.Y);
+            _transform = P => new Point(P.X - _region.X, P.Y - _region.Y);
 
             _imagePool = new ImagePool(Region.Width, Region.Height);
         }
