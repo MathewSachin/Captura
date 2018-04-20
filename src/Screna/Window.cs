@@ -55,6 +55,8 @@ namespace Screna
             this.Handle = Handle;
         }
 
+        public bool IsAlive => IsWindow(Handle);
+
         /// <summary>
         /// Gets whether the Window is Visible.
         /// </summary>

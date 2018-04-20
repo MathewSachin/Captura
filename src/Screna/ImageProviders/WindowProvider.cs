@@ -87,6 +87,11 @@ namespace Screna
 
         void OnCapture(Graphics g)
         {
+            if (!_window.IsAlive)
+            {
+                throw new OperationCanceledException();
+            }
+
             var rect = _window.Rectangle.Even();
             
             if (rect.Width == Width && rect.Height == Height)
@@ -136,7 +141,7 @@ namespace Screna
 
                 return bmp;
             }
-            catch
+            catch (Exception e) when (!(e is OperationCanceledException))
             {
                 bmp.Dispose();
 
