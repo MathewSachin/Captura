@@ -646,6 +646,8 @@ namespace Captura.ViewModels
                 {
                     await Task.Delay(StartDelay);
 
+                    Status.LocalizationKey = nameof(LanguageManager.Recording);
+
                     _recorder.Start();
                 });
             }

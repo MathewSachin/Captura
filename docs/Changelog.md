@@ -3,13 +3,16 @@
 ## vNext
 
 - Added Preview window as a video output.
-- Fixed `captura shot` failing for fullscreen screenshots.
+- **fix:** `captura shot` failing for fullscreen screenshots.
 - Separate colors for Right and Middle mouse click overlays.
 - Support for custom image overlays.
+- Stop Window capture when Window is closed.
+- **fix:** Mouse cursor position is wrong after moving region selector.
+- **fix:** Unable to resize Region Selector after stopping recording.
 
 ## v7.0.1
 
-- Fixed FFMpeg download link
+- **fix:** FFMpeg download link gives 404.
 
 ## v7.0.0
 
@@ -17,13 +20,13 @@
 - The window is repositioned on startup if it is outside desktop bounds.
 - Handle errors when copying to clipboard.
 - Localization is done using JSON files.
-- Fixed full screen region size.
+- **fix:** Wrong full screen region size.
 - Refresh updates the full screen region size.
 - Desktop Duplication is now shown as a video source.
 - Reuse `Image` and `Graphics` objects without disposing to reduce CPU usage.
 - Better organisation in Settings file: `Captura.json`.
 - Prevent crashes when possible.
-- Fixed unability to precisely resize Region Selector on high DPI.
+- **fix:** Unable to precisely resize Region Selector on high DPI.
 - Option to Hide Region Selector during recording.
 - Lagarith codec support through SharpAvi (Install codec manually, disable Null Frames and select RGB as format).
 
@@ -41,12 +44,12 @@
 - Added Custom format for FFMpeg. Can be used by selecting encoder as `FFMpeg > Custom` and customizing arguments in `Config > FFMpeg`.
 - Alpha: Live Streaming
 - Alpha: NVENC support
-- Fixed unability to record multiple screens with total width or height indivisible by 2.
+- **fix:** Unable to record multiple screens with total width or height indivisible by 2.
 - FFMpeg can be installed from the commandline.
 
 ## v6.0.1
 
-**fix:** High memory usage when recording a specific screen.
+- **fix:** High memory usage when recording a specific screen.
 
 ## v6.0.0
 
