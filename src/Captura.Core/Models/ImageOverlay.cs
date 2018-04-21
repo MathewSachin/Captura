@@ -7,43 +7,43 @@ namespace Captura.Models
 {
     public abstract class ImageOverlay<T> : IOverlay where T : ImageOverlaySettings
     {
-        protected readonly T Settings;
+        readonly T _settings;
         readonly bool _disposeImages;
 
         protected ImageOverlay(T Settings, bool DisposeImages)
         {
             _disposeImages = DisposeImages;
 
-            this.Settings = Settings;
+            _settings = Settings;
         }
 
-        public void Draw(Graphics g, Func<Point, Point> PointTransform = null)
+        public void Draw(Graphics G, Func<Point, Point> PointTransform = null)
         {
             var img = GetImage();
 
             if (img == null)
                 return;
 
-            if (Settings.Resize)
-                img = img.Resize(new Size(Settings.ResizeWidth, Settings.ResizeHeight), false, _disposeImages);
+            if (_settings.Resize)
+                img = img.Resize(new Size(_settings.ResizeWidth, _settings.ResizeHeight), false, _disposeImages);
 
             try
             {
-                var point = GetPosition(new Size((int) g.VisibleClipBounds.Width, (int) g.VisibleClipBounds.Height), img.Size);
+                var point = GetPosition(new Size((int) G.VisibleClipBounds.Width, (int) G.VisibleClipBounds.Height), img.Size);
 
-                if (Settings.Opacity < 100)
+                if (_settings.Opacity < 100)
                 {
                     var colormatrix = new ColorMatrix
                     {
-                        Matrix33 = Settings.Opacity / 100.0f
+                        Matrix33 = _settings.Opacity / 100.0f
                     };
 
                     var imgAttribute = new ImageAttributes();
                     imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                    g.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+                    G.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
                 }
-                else g.DrawImage(img, point);
+                else G.DrawImage(img, point);
             }
             catch { }
             finally
@@ -53,13 +53,13 @@ namespace Captura.Models
             }
         }
 
-        public abstract Bitmap GetImage();
+        protected abstract Bitmap GetImage();
 
         Point GetPosition(Size Bounds, Size ImageSize)
         {
-            var point = new Point(Settings.X, Settings.Y);
+            var point = new Point(_settings.X, _settings.Y);
 
-            switch (Settings.HorizontalAlignment)
+            switch (_settings.HorizontalAlignment)
             {
                 case Alignment.Center:
                     point.X = Bounds.Width / 2 - ImageSize.Width / 2 + point.X;
@@ -70,7 +70,7 @@ namespace Captura.Models
                     break;
             }
 
-            switch (Settings.VerticalAlignment)
+            switch (_settings.VerticalAlignment)
             {
                 case Alignment.Center:
                     point.Y = Bounds.Height / 2 - ImageSize.Height / 2 + point.Y;

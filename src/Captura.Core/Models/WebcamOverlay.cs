@@ -11,7 +11,7 @@ namespace Captura.Models
             _webCamProvider = WebCamProvider;
         }
 
-        public override Bitmap GetImage()
+        protected override Bitmap GetImage()
         {
             // No Webcam
             if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])

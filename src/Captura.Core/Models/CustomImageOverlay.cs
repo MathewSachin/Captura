@@ -16,7 +16,7 @@ namespace Captura.Models
             _bmp.Dispose();
         }
 
-        public override Bitmap GetImage()
+        protected override Bitmap GetImage()
         {
             return _bmp;
         }
