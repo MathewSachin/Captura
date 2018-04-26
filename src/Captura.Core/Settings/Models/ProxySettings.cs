@@ -2,16 +2,29 @@
 
 namespace Captura
 {
+    public enum ProxyType
+    {
+        None,
+        System,
+        Manual
+    }
+
     public class ProxySettings : PropertyStore
     {
-        public WebProxy GetWebProxy()
+        public IWebProxy GetWebProxy()
         {
-            if (!Enabled)
+            if (Type == ProxyType.None)
                 return null;
 
-            var proxy = new WebProxy(Host, Port);
+            IWebProxy proxy;
 
-            if (Authenticate)
+            if (Type == ProxyType.Manual && !string.IsNullOrWhiteSpace(Host) && Port > 0)
+            {
+                proxy = new WebProxy(Host, Port);
+            }
+            else proxy = WebRequest.GetSystemWebProxy();
+
+            if (Authenticate && !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password))
             {
                 proxy.Credentials = new NetworkCredential(UserName, Password);
             }
@@ -19,9 +32,9 @@ namespace Captura
             return proxy;
         }
 
-        public bool Enabled
+        public ProxyType Type
         {
-            get => Get<bool>();
+            get => Get(ProxyType.System);
             set => Set(value);
         }
 

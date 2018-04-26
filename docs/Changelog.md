@@ -9,6 +9,9 @@
 - Stop Window capture when Window is closed.
 - **fix:** Mouse cursor position is wrong after moving region selector.
 - **fix:** Unable to resize Region Selector after stopping recording.
+- `Duration` is considered after `Start Delay` has elapsed.
+- `Duration` and `Start Delay` are stored in Settings.
+- Added option to use System Proxy.
 
 ## v7.0.1
 

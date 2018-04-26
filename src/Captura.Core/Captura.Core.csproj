@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />
+    <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
     <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />

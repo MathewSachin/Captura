@@ -22,7 +22,7 @@ namespace Captura.ViewModels
             FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
         }
 
-        public static async Task DownloadArchive(Action<int> Progress, WebProxy Proxy, CancellationToken CancellationToken)
+        public static async Task DownloadArchive(Action<int> Progress, IWebProxy Proxy, CancellationToken CancellationToken)
         {
             using (var webClient = new WebClient { Proxy = Proxy })
             {

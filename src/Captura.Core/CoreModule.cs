@@ -11,6 +11,7 @@ namespace Captura
             // Singleton View Models
             Bind<MainViewModel>().ToSelf().InSingletonScope();
             Bind<VideoViewModel>().ToSelf().InSingletonScope();
+            Bind<ProxySettingsViewModel>().ToSelf().InSingletonScope();
 
             Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
             Bind<CustomImageOverlaysViewModel>().ToSelf().InSingletonScope();
