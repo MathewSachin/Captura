@@ -385,7 +385,7 @@ namespace Captura.ViewModels
             TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
             
             // If Capture Duration is set and reached
-            if (Duration > 0 && TimeSpan.TotalSeconds >= Duration)
+            if (Duration > 0 && TimeSpan.TotalSeconds >= StartDelay / 1000 + Duration)
             {
                 if (_syncContext != null)
                     _syncContext.Post(async State => await StopRecording(), null);
@@ -532,13 +532,6 @@ namespace Captura.ViewModels
                         return false;
                     }
                 }
-            }
-
-            if (Duration != 0 && (StartDelay > Duration * 1000))
-            {
-                ServiceProvider.MessageProvider.ShowError(Loc.DelayGtDuration);
-
-                return false;
             }
 
             IImageProvider imgProvider;

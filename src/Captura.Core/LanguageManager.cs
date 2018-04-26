@@ -171,8 +171,6 @@ namespace Captura
 
         public string CustomizeClickAndKeysOverlays => Get();
 
-        public string DelayGtDuration => Get();
-
         public string Delete => Get();
 
         public string DesktopDuplication => Get();
