@@ -23,22 +23,25 @@ namespace Captura.Models
 
         public void WriteFrame(IBitmapFrame Image)
         {
-            if (Image is RepeatFrame)
-                return;
-
-            _lastFrame?.Dispose();
-
-            _lastFrame = Image;
-
-            if (!_previewWindow.IsVisible)
+            var cancel = _previewWindow.Dispatcher.Invoke(() =>
             {
-                throw new OperationCanceledException();
-            }
+                if (Image is RepeatFrame)
+                    return false;
 
-            _previewWindow.Dispatcher.Invoke(() =>
-            {
+                _lastFrame?.Dispose();
+
+                _lastFrame = Image;
+
+                if (!_previewWindow.IsVisible)
+                    return true;
+                
                 _previewWindow.DisplayImage.Image = Image.Bitmap;
+
+                return false;
             });
+
+            if (cancel)
+                throw new OperationCanceledException();
         }
 
         public bool SupportsAudio { get; } = false;

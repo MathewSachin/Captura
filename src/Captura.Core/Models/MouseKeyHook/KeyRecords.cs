@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Captura.Models {
+namespace Captura.Models
+{
     public class KeyRecords : IEnumerable<IKeyRecord>
     {
         readonly List<IKeyRecord> _records = new List<IKeyRecord>();

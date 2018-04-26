@@ -1,6 +1,7 @@
 using System;
 
-namespace Captura.Models {
+namespace Captura.Models
+{
     public class RepeatKeyRecord : IKeyRecord
     {
         public RepeatKeyRecord(KeyRecord Repeated)

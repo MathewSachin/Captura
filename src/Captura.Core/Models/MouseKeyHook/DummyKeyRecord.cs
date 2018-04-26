@@ -1,6 +1,7 @@
 using System;
 
-namespace Captura.Models {
+namespace Captura.Models
+{
     public class DummyKeyRecord : IKeyRecord
     {
         public DummyKeyRecord(string Display)
