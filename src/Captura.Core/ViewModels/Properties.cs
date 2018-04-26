@@ -30,38 +30,6 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        int _duration;
-
-        public int Duration
-        {
-            get => _duration;
-            set
-            {
-                if (_duration == value)
-                    return;
-
-                _duration = Math.Max(0, value);
-
-                OnPropertyChanged();
-            }
-        }
-
-        int _startDelay;
-
-        public int StartDelay
-        {
-            get => _startDelay;
-            set
-            {
-                if (_startDelay == value)
-                    return;
-
-                _startDelay = Math.Max(0, value);
-
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         public IEnumerable<KeyValuePair<RotateBy, string>> Rotations { get; } = new[]

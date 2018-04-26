@@ -383,9 +383,11 @@ namespace Captura.ViewModels
         async void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
-            
+
+            var duration = Settings.Duration;
+
             // If Capture Duration is set and reached
-            if (Duration > 0 && TimeSpan.TotalSeconds >= StartDelay / 1000 + Duration)
+            if (duration > 0 && TimeSpan.TotalSeconds >= Settings.StartDelay / 1000 + duration)
             {
                 if (_syncContext != null)
                     _syncContext.Post(async State => await StopRecording(), null);
@@ -624,7 +626,7 @@ namespace Captura.ViewModels
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
 
-            Status.LocalizationKey = StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
+            Status.LocalizationKey = Settings.StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
 
             _recorder.ErrorOccured += E =>
             {
@@ -633,11 +635,11 @@ namespace Captura.ViewModels
                 else OnErrorOccured(E);
             };
             
-            if (StartDelay > 0)
+            if (Settings.StartDelay > 0)
             {
                 Task.Factory.StartNew(async () =>
                 {
-                    await Task.Delay(StartDelay);
+                    await Task.Delay(Settings.StartDelay);
 
                     Status.LocalizationKey = nameof(LanguageManager.Recording);
 

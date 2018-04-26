@@ -22,7 +22,7 @@
                            ContentStringFormat="{}{0}: "
                            Margin="0,2,10,2"/>
 
-                    <xctk:IntegerUpDown Value="{Binding StartDelay, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.StartDelay, Mode=TwoWay}"
                                         Grid.Column="1"
                                         Margin="0,2"/>
 
@@ -31,7 +31,7 @@
                            Margin="0,2,10,2"
                            Grid.Row="1"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Duration, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.Duration, Mode=TwoWay}"
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         Margin="0,2"/>

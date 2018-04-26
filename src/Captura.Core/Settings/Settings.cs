@@ -85,6 +85,18 @@ namespace Captura
 
         public GifSettings Gif { get; } = new GifSettings();
 
+        public int StartDelay
+        {
+            get => Get(0);
+            set => Set(value);
+        }
+
+        public int Duration
+        {
+            get => Get(0);
+            set => Set(value);
+        }
+
         public bool CopyOutPathToClipboard
         {
             get => Get<bool>();
