@@ -57,12 +57,6 @@
                             Grid.Column="1"
                             Margin="3"/>
                 </Grid>
-
-                <TextBlock TextWrapping="Wrap"
-                           Margin="0,10"
-                           Style="{StaticResource TextColor}">
-                           Powered by <Hyperlink CommandParameter="https://github.com/MathewSachin/Screna">Screna</Hyperlink>
-                </TextBlock>
             </StackPanel>
         </ScrollViewer>
     </Grid>

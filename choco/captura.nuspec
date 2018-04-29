@@ -12,7 +12,7 @@
     <packageSourceUrl>https://github.com/MathewSachin/Captura/tree/master/choco</packageSourceUrl>
     <bugTrackerUrl>https://github.com/MathewSachin/Captura/issues</bugTrackerUrl>
     <docsUrl>https://github.com/MathewSachin/Captura/wiki</docsUrl>
-    <mailingListUrl>https://gitter.im/MathewSachin/Screna</mailingListUrl>
+    <mailingListUrl>https://gitter.im/MathewSachin/Captura</mailingListUrl>
     <copyright>(c) 2018 Mathew Sachin</copyright>
     <tags>captura screen capture recording loopback screenshot screencast</tags>
     <summary>Capture Screen/Audio/Cursor/Clicks/Keystrokes</summary>

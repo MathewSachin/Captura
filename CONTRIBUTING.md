@@ -2,7 +2,7 @@
 
 Want to Help? You can help by starring this repo, contributing code, testing and reporting bugs.
 
-You can always [Chat on Gitter](https://gitter.im/MathewSachin/Screna) for Questions/Discussions.
+You can always [Chat on Gitter](https://gitter.im/MathewSachin/Captura) for Questions/Discussions.
 
 ## Contributing Code
 
