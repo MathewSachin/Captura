@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using CommandLine;
 using Screna;
 using static System.Console;
@@ -402,6 +403,21 @@ namespace Captura
             if (!ViewModel.StartRecording(StartOptions.FileName))
                 return;
 
+            Task.Factory.StartNew(() =>
+            {
+                Loop(ViewModel, StartOptions);
+
+                ViewModel.StopRecording().Wait();
+
+                Application.Exit();
+            });
+
+            // MouseKeyHook requires a Window Handle to register
+            Application.Run(new ApplicationContext());
+        }
+
+        static void Loop(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        {
             if (StartOptions.Length > 0)
             {
                 var elapsed = 0;
@@ -445,7 +461,7 @@ namespace Captura
 
                     if (c != 'p')
                         continue;
-                    
+
                     ViewModel.PauseCommand.ExecuteIfCan();
 
                     if (ViewModel.RecorderState != RecorderState.Paused)
@@ -454,8 +470,6 @@ namespace Captura
                     }
                 } while (c != 'q');
             }
-
-            Task.Run(async () => await ViewModel.StopRecording()).Wait();
         }
     }
 }
