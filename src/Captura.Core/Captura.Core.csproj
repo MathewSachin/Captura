@@ -84,6 +84,7 @@
     <Compile Include="Models\ImageOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
     <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
+    <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
@@ -191,6 +192,10 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
+      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
+      <Name>Captura.Webcam</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
       <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
       <Name>DesktopDuplication</Name>

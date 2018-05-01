@@ -196,6 +196,22 @@ namespace Captura
                 WriteLine();
             }
             #endregion
+
+            #region Webcams
+            var webcam = ServiceProvider.Get<IWebCamProvider>();
+
+            if (webcam.AvailableCams.Count > 1)
+            {
+                WriteLine("AVAILABLE WEBCAMS" + underline);
+
+                for (var i = 1; i < webcam.AvailableCams.Count; ++i)
+                {
+                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {webcam.AvailableCams[i]}");
+                }
+
+                WriteLine();
+            }
+            #endregion
         }
 
         static void Banner()
@@ -310,6 +326,19 @@ namespace Captura
             }
         }
 
+        static void HandleWebcam(StartCmdOptions StartOptions)
+        {
+            var webcam = ServiceProvider.Get<IWebCamProvider>();
+
+            if (StartOptions.Webcam != -1 && StartOptions.Webcam < webcam.AvailableCams.Count - 1)
+            {
+                webcam.SelectedCam = webcam.AvailableCams[StartOptions.Webcam + 1];
+
+                // Sleep to prevent AccessViolationException
+                Thread.Sleep(500);
+            }
+        }
+
         static async void FFMpeg(FFMpegCmdOptions FFMpegOptions)
         {
             if (FFMpegOptions.Install != null)
@@ -384,6 +413,8 @@ namespace Captura
             HandleVideoEncoder(ViewModel, StartOptions);
 
             HandleAudioSource(ViewModel, StartOptions);
+
+            HandleWebcam(StartOptions);
 
             ViewModel.Settings.Video.FrameRate = StartOptions.FrameRate;
 

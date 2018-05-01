@@ -53,6 +53,8 @@ namespace Captura
         [Option("aq", HelpText = "Audio Quality")]
         public int AudioQuality { get; set; }
 
+        [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
+        public int Webcam { get; set; }
 
         [Usage]
         public static IEnumerable<Example> Examples

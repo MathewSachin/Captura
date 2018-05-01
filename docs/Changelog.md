@@ -12,6 +12,8 @@
 - `Duration` is considered after `Start Delay` has elapsed.
 - `Duration` and `Start Delay` are stored in Settings.
 - Added option to use System Proxy.
+- **fix:** Mouse Cursor moves slowly when recording from Command-line
+- Webcam capture support from Command-line.
 
 ## v7.0.1
 
