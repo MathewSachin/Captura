@@ -14,6 +14,7 @@
 - Added option to use System Proxy.
 - **fix:** Mouse Cursor moves slowly when recording from Command-line
 - Webcam capture support from Command-line.
+- Added Chinese (Simplified) translation.
 
 ## v7.0.1
 
