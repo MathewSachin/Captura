@@ -1,6 +1,7 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       x:Class="Captura.AboutView"
       DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
@@ -16,7 +17,7 @@
                            LineHeight="30"
                            Style="{StaticResource TextColor}">
                     <Run FontSize="20" Text="{local:Loc AppName}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
-                    (c) 2018 <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
+                    (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
                 <TextBlock DockPanel.Dock="Bottom"

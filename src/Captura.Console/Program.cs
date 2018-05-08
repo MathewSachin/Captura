@@ -219,7 +219,7 @@ namespace Captura
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
             WriteLine($@"Captura v{version}
-(c) 2018 Mathew Sachin
+(c) {DateTime.Now.Year} Mathew Sachin
 ");
         }
 
