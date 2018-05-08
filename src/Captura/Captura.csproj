@@ -79,6 +79,7 @@
     <Compile Include="Models\PreviewWriter.cs" />
     <Compile Include="Models\PreviewWriterItem.cs" />
     <Compile Include="Models\PreviewWriterProvider.cs" />
+    <Compile Include="Models\WithPreviewWriter.cs" />
     <Compile Include="Views\PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
