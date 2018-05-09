@@ -516,15 +516,6 @@ namespace Captura.ViewModels
                 FFMpegLog.Reset();
             }
 
-            if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
-                && Settings.Gif.VariableFrameRate
-                && VideoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
-            {
-                ServiceProvider.MessageProvider.ShowError("Using Variable Frame Rate GIF with Desktop Duplication is not supported.");
-
-                return false;
-            }
-
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider)
             {
                 if (AudioSource.AudioAvailable)
@@ -557,7 +548,14 @@ namespace Captura.ViewModels
 
                 return false;
             }
-            
+
+            if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
+                && Settings.Gif.VariableFrameRate
+                && imgProvider is DeskDuplImageProvider deskDuplImageProvider)
+            {
+                deskDuplImageProvider.Timeout = 5000;
+            }
+
             Settings.EnsureOutPath();
             
             _isVideo = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);

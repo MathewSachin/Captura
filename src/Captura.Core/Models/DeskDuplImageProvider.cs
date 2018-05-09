@@ -11,6 +11,8 @@ namespace Captura.Models
         readonly bool _includeCursor;
         readonly Rectangle _rectangle;
 
+        public int Timeout { get; set; }
+
         public DeskDuplImageProvider(int Monitor, Rectangle Rectangle, bool IncludeCursor)
         {
             _monitor = Monitor;
@@ -27,7 +29,10 @@ namespace Captura.Models
         {
             _dupl?.Dispose();
 
-            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor);
+            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor)
+            {
+                Timeout = Timeout
+            };
         }
         
         public int Height { get; }
