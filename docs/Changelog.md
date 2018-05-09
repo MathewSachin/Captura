@@ -15,6 +15,7 @@
 - **fix:** Mouse Cursor moves slowly when recording from Command-line
 - Webcam capture support from Command-line.
 - Added Chinese (Simplified) translation.
+- Overlay customization from UI is used in Console.
 
 ## v7.0.1
 

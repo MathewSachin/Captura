@@ -44,9 +44,13 @@ namespace Captura
                     {
                         vm.Init(false, false, false, false);
 
-                        // Remove Custom overlays
-                        vm.CustomOverlays.Reset();
-                        vm.CustomImageOverlays.Reset();
+                        // Load settings dummy
+                        var dummySettings = new Settings();
+                        dummySettings.Load();
+
+                        vm.Settings.WebcamOverlay = dummySettings.WebcamOverlay;
+                        vm.Settings.Clicks = dummySettings.Clicks;
+                        vm.Settings.Keystrokes = dummySettings.Keystrokes;
 
                         Start(vm, Options);
                     }
@@ -363,8 +367,7 @@ namespace Captura
 
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
         {
-            if (ShotOptions.Cursor)
-                ViewModel.Settings.IncludeCursor = true;
+            ViewModel.Settings.IncludeCursor = ShotOptions.Cursor;
 
             // Screenshot Window with Transparency
             if (ShotOptions.Source != null && Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
@@ -392,14 +395,11 @@ namespace Captura
 
         static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
-            if (StartOptions.Cursor)
-                ViewModel.Settings.IncludeCursor = true;
+            ViewModel.Settings.IncludeCursor = StartOptions.Cursor;
 
-            if (StartOptions.Clicks)
-                ViewModel.Settings.Clicks.Display = true;
+            ViewModel.Settings.Clicks.Display = StartOptions.Clicks;
 
-            if (StartOptions.Keys)
-                ViewModel.Settings.Keystrokes.Display = true;
+            ViewModel.Settings.Keystrokes.Display = StartOptions.Keys;
 
             if (File.Exists(StartOptions.FileName))
             {

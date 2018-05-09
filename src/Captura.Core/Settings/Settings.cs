@@ -67,11 +67,11 @@ namespace Captura
 
         public ProxySettings Proxy { get; } = new ProxySettings();
 
-        public WebcamOverlaySettings WebcamOverlay { get; } = new WebcamOverlaySettings();
+        public WebcamOverlaySettings WebcamOverlay { get; set; } = new WebcamOverlaySettings();
 
-        public MouseClickSettings Clicks { get; } = new MouseClickSettings();
+        public MouseClickSettings Clicks { get; set; } = new MouseClickSettings();
         
-        public KeystrokesSettings Keystrokes { get; } = new KeystrokesSettings();
+        public KeystrokesSettings Keystrokes { get; set; } = new KeystrokesSettings();
         
         public VisualSettings UI { get; } = new VisualSettings();
 

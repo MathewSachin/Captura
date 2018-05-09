@@ -4,13 +4,6 @@ namespace Captura
 {
     abstract class CommonCmdOptions
     {
-        protected CommonCmdOptions()
-        {
-            var settings = ServiceProvider.Get<Settings>();
-
-            settings.IncludeCursor = false;
-        }
-        
         [Option("cursor", HelpText = "Include Cursor in Recording (default = false).")]
         public bool Cursor { get; set; }
 
