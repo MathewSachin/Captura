@@ -47,7 +47,11 @@ namespace Captura.Models
             }
             catch
             {
-                Reinit();
+                try { Reinit(); }
+                catch
+                {
+                    return RepeatFrame.Instance;
+                }
 
                 try
                 {

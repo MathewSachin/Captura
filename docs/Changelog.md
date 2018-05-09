@@ -16,6 +16,8 @@
 - Webcam capture support from Command-line.
 - Added Chinese (Simplified) translation.
 - Overlay customization from UI is used in Console.
+- Desktop Duplication is supported with Variable Frame Rate Gif.
+- **fix:** Desktop Duplication recording does not crash when Screen enters non-recordable mode. e.g. Sign-in screen.
 
 ## v7.0.1
 
