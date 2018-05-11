@@ -11,6 +11,7 @@ namespace Captura
             Bind<IRegionProvider>().ToConstant(FakeRegionProvider.Instance);
             Bind<ISystemTray>().To<FakeSystemTray>().InSingletonScope();
             Bind<IMainWindow>().To<FakeWindowProvider>().InSingletonScope();
+            Bind<IPreviewWindow>().To<FakePreviewWindow>().InSingletonScope();
         }
     }
 }

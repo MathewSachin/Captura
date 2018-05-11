@@ -2,7 +2,8 @@
 
 ## vNext
 
-- Added Preview window as a video output.
+- Added option to Preview while recording.
+- Added a Discard video output type which does not record to file (for testing with Preview).
 - **fix:** `captura shot` failing for fullscreen screenshots.
 - Separate colors for Right and Middle mouse click overlays.
 - Support for custom image overlays.

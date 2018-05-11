@@ -99,6 +99,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Path Data="{StaticResource Icon_Video}"
                   Width="15"
@@ -118,11 +119,17 @@
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center"
-                      Margin="3,0,7,0"
+                      Margin="5,0,0,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
                       Grid.Column="2"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+
+            <Button Content="Preview"
+                    Grid.Column="3"
+                    Command="{Binding ShowPreviewCommand}"
+                    Padding="10,0"
+                    Margin="7,0"/>
         </Grid>
         
         <DockPanel Margin="10,5,0,5"

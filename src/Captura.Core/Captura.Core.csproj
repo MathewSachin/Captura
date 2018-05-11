@@ -81,10 +81,15 @@
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
+    <Compile Include="Models\Discard\DiscardWriter.cs" />
+    <Compile Include="Models\Discard\DiscardWriterItem.cs" />
+    <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
+    <Compile Include="Models\Fakes\FakePreviewWindow.cs" />
     <Compile Include="Models\ImageOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
     <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
     <Compile Include="Models\WebcamItem.cs" />
+    <Compile Include="Services\IPreviewWindow.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
@@ -190,6 +195,7 @@
     <Compile Include="ViewModels\RecentViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="WithPreviewWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">

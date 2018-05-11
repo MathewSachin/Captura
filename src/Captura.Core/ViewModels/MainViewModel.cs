@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Input;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -32,6 +33,10 @@ namespace Captura.ViewModels
         readonly WebcamOverlay _webcamOverlay;
         readonly IMainWindow _mainWindow;
         #endregion
+
+        readonly IPreviewWindow _previewWindow;
+
+        public ICommand ShowPreviewCommand { get; }
         
         public MainViewModel(AudioSource AudioSource,
             VideoViewModel VideoViewModel,
@@ -45,7 +50,8 @@ namespace Captura.ViewModels
             LanguageManager LanguageManager,
             HotKeyManager HotKeyManager,
             CustomOverlaysViewModel CustomOverlays,
-            CustomImageOverlaysViewModel CustomImageOverlays) : base(Settings, LanguageManager)
+            CustomImageOverlaysViewModel CustomImageOverlays,
+            IPreviewWindow PreviewWindow) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -58,6 +64,9 @@ namespace Captura.ViewModels
             this.HotKeyManager = HotKeyManager;
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
+            _previewWindow = PreviewWindow;
+
+            ShowPreviewCommand = new DelegateCommand(() => _previewWindow.Show());
 
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
@@ -686,7 +695,7 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
-            return VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            return new WithPreviewWriter(VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
             {
                 FileName = _currentFileName,
                 FrameRate = Settings.Video.FrameRate,
@@ -694,7 +703,7 @@ namespace Captura.ViewModels
                 ImageProvider = ImgProvider,
                 AudioQuality = Settings.Audio.Quality,
                 AudioProvider = AudioProvider
-            });
+            }), _previewWindow);
         }
         
         IImageProvider GetImageProvider()

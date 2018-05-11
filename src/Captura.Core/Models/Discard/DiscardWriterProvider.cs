@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
-    public class PreviewWriterProvider : IVideoWriterProvider
+    public class DiscardWriterProvider : IVideoWriterProvider
     {
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            yield return new PreviewWriterItem();
+            yield return new DiscardWriterItem();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -15,6 +15,6 @@ namespace Captura.Models
             return GetEnumerator();
         }
 
-        public string Name { get; } = "Preview";
+        public string Name { get; } = "Discard";
     }
 }

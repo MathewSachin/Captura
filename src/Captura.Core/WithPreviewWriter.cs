@@ -4,18 +4,19 @@ namespace Captura.Models
 {
     public class WithPreviewWriter : IVideoFileWriter
     {
-        readonly PreviewWriter _previewWriter = new PreviewWriter();
+        readonly IPreviewWindow _preview;
         readonly IVideoFileWriter _writer;
 
-        public WithPreviewWriter(IVideoFileWriter Writer)
+        public WithPreviewWriter(IVideoFileWriter Writer, IPreviewWindow Preview)
         {
             _writer = Writer;
+            _preview = Preview;
         }
 
         public void Dispose()
         {
             _writer.Dispose();
-            _previewWriter.Dispose();
+            _preview.Dispose();
         }
 
         public void WriteFrame(IBitmapFrame Image)
@@ -28,8 +29,8 @@ namespace Captura.Models
             {
                 var frame = new MultiDisposeFrame(Image, 2);
 
-                _previewWriter.WriteFrame(frame);
                 _writer.WriteFrame(frame);
+                _preview.Display(frame);
             }
         }
 

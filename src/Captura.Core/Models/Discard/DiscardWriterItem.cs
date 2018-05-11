@@ -2,15 +2,15 @@
 
 namespace Captura.Models
 {
-    public class PreviewWriterItem : IVideoWriterItem
+    public class DiscardWriterItem : IVideoWriterItem
     {
         public string Extension { get; } = "";
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new PreviewWriter();
+            return new DiscardWriter();
         }
 
-        public override string ToString() => "Preview";
+        public override string ToString() => "Discard";
     }
 }

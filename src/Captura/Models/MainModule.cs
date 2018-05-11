@@ -13,11 +13,9 @@ namespace Captura
             Bind<IMessageProvider>().To<MessageProvider>().InSingletonScope();
             Bind<IRegionProvider>().To<RegionSelector>().InSingletonScope();
             Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
+            Bind<IPreviewWindow>().To<PreviewWindowService>().InSingletonScope();
             Rebind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
             Bind<AboutViewModel>().ToSelf().InSingletonScope();
-
-            // Preview
-            Bind<IVideoWriterProvider>().To<PreviewWriterProvider>().InSingletonScope();
 
             // Bind as a Function to ensure the UI objects are referenced only after they have been created.
             Bind<Func<TaskbarIcon>>().ToConstant<Func<TaskbarIcon>>(() => MainWindow.Instance.SystemTray);
