@@ -20,6 +20,7 @@
 
             <xctk:IntegerUpDown Value="{Binding ResizeWidth, Mode=TwoWay}"
                                 Grid.Column="1"
+                                Minimum="1"
                                 IsEnabled="{Binding Resize}"/>
 
             <Label Content="x"
@@ -28,6 +29,7 @@
 
             <xctk:IntegerUpDown Value="{Binding ResizeHeight, Mode=TwoWay}"
                                 Grid.Column="3"
+                                Minimum="1"
                                 IsEnabled="{Binding Resize}"/>
         </Grid>
 

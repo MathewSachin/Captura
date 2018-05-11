@@ -29,6 +29,8 @@ namespace Captura.Models
         /// </summary>
         public FFMpegWriter(FFMpegVideoWriterArgs Args)
         {
+            var settings = ServiceProvider.Get<Settings>();
+
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
 
             var audioPipeName = GetPipeName();
@@ -36,6 +38,20 @@ namespace Captura.Models
 
             var videoInArgs = $"-framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
+
+            if (settings.FFMpeg.Resize)
+            {
+                var width = settings.FFMpeg.ResizeWidth;
+                var height = settings.FFMpeg.ResizeHeight;
+
+                if (width % 2 == 1)
+                    ++width;
+
+                if (height % 2 == 1)
+                    ++height;
+
+                videoOutArgs += $" -vf scale={width}:{height}";
+            }
 
             string audioInArgs = "", audioOutArgs = "";
             
