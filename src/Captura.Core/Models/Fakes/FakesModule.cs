@@ -10,7 +10,6 @@ namespace Captura
             Bind<IMessageProvider>().To<FakeMessageProvider>().InSingletonScope();
             Bind<IRegionProvider>().ToConstant(FakeRegionProvider.Instance);
             Bind<ISystemTray>().To<FakeSystemTray>().InSingletonScope();
-            Bind<IWebCamProvider>().To<FakeWebCamProvider>().InSingletonScope();
             Bind<IMainWindow>().To<FakeWindowProvider>().InSingletonScope();
         }
     }

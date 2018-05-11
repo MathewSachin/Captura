@@ -8,6 +8,9 @@ namespace Captura
     {
         public override void Load()
         {
+            // Webcam Provider
+            Bind<IWebCamProvider>().To<CoreWebCamProvider>().InSingletonScope();
+
             // Singleton View Models
             Bind<MainViewModel>().ToSelf().InSingletonScope();
             Bind<VideoViewModel>().ToSelf().InSingletonScope();

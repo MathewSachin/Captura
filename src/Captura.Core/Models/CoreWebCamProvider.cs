@@ -6,9 +6,9 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
-    class FakeWebCamProvider : NotifyPropertyChanged, IWebCamProvider
+    class CoreWebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
-        public FakeWebCamProvider()
+        public CoreWebCamProvider()
         {
             AvailableCams = new ReadOnlyObservableCollection<IWebcamItem>(_cams);
 

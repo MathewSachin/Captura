@@ -13,7 +13,7 @@ namespace Captura
             Bind<IMessageProvider>().To<MessageProvider>().InSingletonScope();
             Bind<IRegionProvider>().To<RegionSelector>().InSingletonScope();
             Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
-            Bind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
+            Rebind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
             Bind<AboutViewModel>().ToSelf().InSingletonScope();
 
             // Preview

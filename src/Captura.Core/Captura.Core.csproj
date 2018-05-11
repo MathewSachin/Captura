@@ -92,7 +92,7 @@
     <Compile Include="Models\Fakes\FakeRegionProvider.cs" />
     <Compile Include="Models\Fakes\FakesModule.cs" />
     <Compile Include="Models\Fakes\FakeSystemTray.cs" />
-    <Compile Include="Models\Fakes\FakeWebCamProvider.cs" />
+    <Compile Include="Models\CoreWebCamProvider.cs" />
     <Compile Include="Models\Fakes\FakeWindowProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioArgsProvider.cs" />
     <Compile Include="Models\FFMpeg\FFMpegAudioWriter.cs" />
