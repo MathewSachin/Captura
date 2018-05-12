@@ -715,7 +715,7 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay> { _webcamOverlay };
+            var overlays = new List<IOverlay> { _webcamOverlay, new MousePointerOverlay(Settings.MousePointerOverlay) };
 
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));

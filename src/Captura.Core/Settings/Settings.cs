@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -68,6 +69,11 @@ namespace Captura
         public ProxySettings Proxy { get; } = new ProxySettings();
 
         public WebcamOverlaySettings WebcamOverlay { get; set; } = new WebcamOverlaySettings();
+
+        public MouseOverlaySettings MousePointerOverlay { get; set; } = new MouseOverlaySettings
+        {
+            Color = Color.FromArgb(200, 239, 108, 0)
+        };
 
         public MouseClickSettings Clicks { get; set; } = new MouseClickSettings();
         

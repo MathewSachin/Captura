@@ -22,6 +22,7 @@
 - Option to resize FFMpeg output video size.
 - Option to Minimize to System Tray on Startup.
 - Option to Minimize to System Tray when Closed.
+- Option to display Mouse Pointer Overlay to make easier to track Mouse Pointer.
 
 ## v7.0.1
 
