@@ -44,6 +44,18 @@
             set => Set(value);
         }
 
+        public bool MinToTrayOnStartup
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
+        public bool MinToTrayOnClose
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
         public bool HideOnFullScreenShot
         {
             get => Get(true);

@@ -19,6 +19,9 @@
 - Overlay customization from UI is used in Console.
 - Desktop Duplication is supported with Variable Frame Rate Gif.
 - **fix:** Desktop Duplication recording does not crash when Screen enters non-recordable mode. e.g. Sign-in screen.
+- Option to resize FFMpeg output video size.
+- Option to Minimize to System Tray on Startup.
+- Option to Minimize to System Tray when Closed.
 
 ## v7.0.1
 

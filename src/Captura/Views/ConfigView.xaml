@@ -43,6 +43,18 @@
                                Text="{local:Loc MinCapture}"/>
                 </CheckBox>
 
+                <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnStartup}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="Minimize to Tray on Startup"/>
+                </CheckBox>
+
+                <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnClose}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="Minimize To Tray when Closed"/>
+                </CheckBox>
+
                 <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"

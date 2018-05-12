@@ -32,7 +32,7 @@ namespace Captura
             
             InitializeComponent();
             
-            if (App.CmdOptions.Tray)
+            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().UI.MinToTrayOnStartup)
                 Hide();
             
             // Register for Windows Messages
@@ -89,7 +89,14 @@ namespace Captura
 
         void MinButton_Click(object Sender, RoutedEventArgs Args) => SystemCommands.MinimizeWindow(this);
 
-        void CloseButton_Click(object Sender, RoutedEventArgs Args) => Close();
+        void CloseButton_Click(object Sender, RoutedEventArgs Args)
+        {
+            if (ServiceProvider.Get<Settings>().UI.MinToTrayOnClose)
+            {
+                Hide();
+            }
+            else Close();
+        }
 
         void SystemTray_TrayMouseDoubleClick(object Sender, RoutedEventArgs Args)
         {
