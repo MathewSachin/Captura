@@ -17,7 +17,12 @@ namespace Captura.ViewModels
 
         public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
-            StartCommand = new DelegateCommand(async () => await Start());
+            StartCommand = new DelegateCommand(async () =>
+            {
+                var result = await Start();
+
+                AfterDownload?.Invoke(result);
+            });
 
             SelectFolderCommand = new DelegateCommand(() =>
             {
@@ -36,14 +41,30 @@ namespace Captura.ViewModels
 
         const string CancelDownload = "Cancel Download";
         const string StartDownload = "Start Download";
+        const string Finish = "Finish";
+
+        public Action CloseWindowAction;
+
+        public event Action<int> ProgressChanged;
+
+        public event Action<bool> AfterDownload;
         
-        public async Task Start()
+        public async Task<bool> Start()
         {
             if (ActionDescription == CancelDownload)
             {
                 _cancellationTokenSource.Cancel();
+
+                CloseWindowAction.Invoke();
                 
-                return;
+                return false;
+            }
+
+            if (ActionDescription == Finish)
+            {
+                CloseWindowAction?.Invoke();
+
+                return true;
             }
 
             ActionDescription = CancelDownload;
@@ -57,17 +78,19 @@ namespace Captura.ViewModels
                     Progress = P;
 
                     Status = $"Downloading ({P}%)";
+
+                    ProgressChanged?.Invoke(P);
                 }, Settings.Proxy.GetWebProxy(), _cancellationTokenSource.Token);
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
                 Status = "Cancelled";
-                return;
+                return false;
             }
             catch (Exception e)
             {
                 Status = $"Failed - {e.Message}";
-                return;
+                return false;
             }
 
             _cancellationTokenSource.Dispose();
@@ -84,18 +107,23 @@ namespace Captura.ViewModels
             catch (UnauthorizedAccessException)
             {
                 Status = "Can't extract to specified directory";
-                return;
+                return false;
             }
             catch
             {
                 Status = "Extraction failed";
-                return;
+                return false;
             }
             
             // Update FFMpeg folder setting
             Settings.FFMpeg.FolderPath = TargetFolder;
-
+            
             Status = "Done";
+            ActionDescription = Finish;
+
+            StartCommand.RaiseCanExecuteChanged(true);
+
+            return true;
         }
 
         string _actionDescription = StartDownload;

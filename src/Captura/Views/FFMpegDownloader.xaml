@@ -15,6 +15,9 @@
                       NonClientFrameEdges="None"
                       CaptionHeight="40"/>
     </WindowChrome.WindowChrome>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo/>
+    </Window.TaskbarItemInfo>
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{local:Loc Close}"
