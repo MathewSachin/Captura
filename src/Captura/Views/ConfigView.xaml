@@ -77,12 +77,6 @@
                                Text="{local:Loc HideOnFullScreenShot}"/>
                 </CheckBox>
 
-                <CheckBox IsChecked="{Binding Settings.UI.HideRegionSelectorWhenRecording}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="Hide Region Selector during Recording"/>
-                </CheckBox>
-
                 <Label Margin="0,10,0,3"
                        Content="{local:Loc Gif}"
                        FontWeight="Bold"/>

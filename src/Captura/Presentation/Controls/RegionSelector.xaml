@@ -67,9 +67,8 @@
 
             <DockPanel Grid.Row="2"
                        Grid.ColumnSpan="3"
-                       Background="{DynamicResource WindowBackground}"
-                       LastChildFill="False">
-                <xctk:IntegerUpDown Width="100"
+                       Background="{DynamicResource WindowBackground}">
+                <xctk:IntegerUpDown Width="60"
                                     DockPanel.Dock="Right"
                                     Margin="0,5,0,0"
                                     Name="HeightBox"/>
@@ -77,10 +76,18 @@
                        DockPanel.Dock="Right"
                        Margin="10,0"/>
 
-                <xctk:IntegerUpDown Width="100"
+                <xctk:IntegerUpDown Width="60"
                                     DockPanel.Dock="Right"
                                     Margin="0,5,0,0"
                                     Name="WidthBox"/>
+
+                <CheckBox DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}"
+                          IsChecked="{Binding Settings.UI.HideRegionSelectorWhenRecording}"
+                          Margin="0,2">
+                    <TextBlock TextWrapping="Wrap"
+                               FontSize="11"
+                               Text="Hide when Recording"/>
+                </CheckBox>
             </DockPanel>
         </Grid>
     </Border>
