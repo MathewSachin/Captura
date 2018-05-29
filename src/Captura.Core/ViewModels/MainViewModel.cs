@@ -170,13 +170,64 @@ namespace Captura.ViewModels
         {
             WindowProvider.RefreshDesktopSize();
 
+            #region Video Source
+            var lastVideoSourceName = VideoViewModel.SelectedVideoSource?.Name;
+
             VideoViewModel.RefreshVideoSources();
+
+            var matchingVideoSource = VideoViewModel.AvailableVideoSources.FirstOrDefault(M => M.Name == lastVideoSourceName);
+
+            if (matchingVideoSource != null)
+            {
+                VideoViewModel.SelectedVideoSource = matchingVideoSource;
+            }
+            #endregion
+
+            #region Video Codec
+            var lastVideoCodecName = VideoViewModel.SelectedVideoWriter?.ToString();
 
             VideoViewModel.RefreshCodecs();
 
+            var matchingVideoCodec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(M => M.ToString() == lastVideoCodecName);
+
+            if (matchingVideoCodec != null)
+            {
+                VideoViewModel.SelectedVideoWriter = matchingVideoCodec;
+            }
+            #endregion
+
+            #region Audio
+            var lastMicName = AudioSource.SelectedRecordingSource?.Name;
+            var lastSpeakerName = AudioSource.SelectedLoopbackSource?.Name;
+
             AudioSource.Refresh();
 
+            var matchingMic = AudioSource.AvailableRecordingSources.FirstOrDefault(M => M.Name == lastMicName);
+            var matchingSpeaker = AudioSource.AvailableLoopbackSources.FirstOrDefault(M => M.Name == lastSpeakerName);
+
+            if (matchingMic != null)
+            {
+                AudioSource.SelectedRecordingSource = matchingMic;
+            }
+
+            if (matchingSpeaker != null)
+            {
+                AudioSource.SelectedLoopbackSource = matchingSpeaker;
+            }
+            #endregion
+
+            #region Webcam
+            var lastWebcamName = WebCamProvider.SelectedCam?.Name;
+
             WebCamProvider.Refresh();
+
+            var matchingWebcam = WebCamProvider.AvailableCams.FirstOrDefault(M => M.Name == lastWebcamName);
+
+            if (matchingWebcam != null)
+            {
+                WebCamProvider.SelectedCam = matchingWebcam;
+            }
+            #endregion
 
             Status.LocalizationKey = nameof(LanguageManager.Refreshed);
         }
