@@ -24,11 +24,11 @@
 
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.MousePointerOverlay}">
-                
+
                 <CheckBox Content="Display"
                           IsChecked="{Binding Display, Mode=TwoWay}"
                           Margin="0,5"/>
-                
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -78,7 +78,6 @@
                 </Grid>
             </StackPanel>
         </Expander>
-
 
         <Expander Margin="0,5">
             <Expander.Header>

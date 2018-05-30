@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -11,9 +13,18 @@ namespace Captura
 
             Loaded += OnLoaded;
 
-            Closing += (S, E) => ServiceProvider.Get<Settings>().Save();
+            Closing += (S, E) =>
+            {
+                ServiceProvider.Get<Settings>().Save();
+                ServiceProvider.Get<CustomOverlaysViewModel>().Dispose();
+                ServiceProvider.Get<CustomImageOverlaysViewModel>().Dispose();
+            };
 
             SizeChanged += (S, E) => UpdateSizeText();
+
+            UpdateSelection(ItemsControl);
+
+            UpdateSelection(ImagesItemsControl);
         }
 
         LayerFrame Generate(PositionedOverlaySettings Settings, string Name, int Width, int Height, Color Background)
@@ -189,6 +200,20 @@ namespace Captura
 
             Grid.Children.Add(keystrokes);
             Grid.Children.Add(webcam);
+        }
+
+        void ItemsControl_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            if (Sender is ListView listView)
+                UpdateSelection(listView);
+        }
+
+        void UpdateSelection(ListView Sender)
+        {
+            if (Sender.SelectedIndex == -1 && Sender.HasItems)
+            {
+                Sender.SelectedIndex = 0;
+            }
         }
     }
 }
