@@ -10,77 +10,116 @@ namespace Captura
             InitializeComponent();
 
             Loaded += OnLoaded;
+
+            Closing += (S, E) => ServiceProvider.Get<Settings>().Save();
+        }
+
+        LayerFrame2 Generate(PositionedOverlaySettings Settings, string Name, int Width, int Height, Color Background)
+        {
+            var control = new LayerFrame2
+            {
+                Width = Width,
+                Height = Height,
+                Tag = Name,
+                Background = new SolidColorBrush(Background),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            };
+
+            void Update()
+            {
+                int left = 0, top = 0, right = 0, bottom = 0;
+
+                switch (Settings.HorizontalAlignment)
+                {
+                    case Alignment.Start:
+                        control.HorizontalAlignment = HorizontalAlignment.Left;
+                        left = Settings.X;
+                        break;
+
+                    case Alignment.Center:
+                        control.HorizontalAlignment = HorizontalAlignment.Center;
+                        left = Settings.X;
+                        break;
+
+                    case Alignment.End:
+                        control.HorizontalAlignment = HorizontalAlignment.Right;
+                        right = Settings.X;
+                        break;
+                }
+
+                switch (Settings.VerticalAlignment)
+                {
+                    case Alignment.Start:
+                        control.VerticalAlignment = VerticalAlignment.Top;
+                        top = Settings.Y;
+                        break;
+
+                    case Alignment.Center:
+                        control.VerticalAlignment = VerticalAlignment.Center;
+                        top = Settings.Y;
+                        break;
+
+                    case Alignment.End:
+                        control.VerticalAlignment = VerticalAlignment.Bottom;
+                        bottom = Settings.Y;
+                        break;
+                }
+
+                Dispatcher.Invoke(() => control.Margin = new Thickness(left, top, right, bottom));
+            }
+
+            Settings.PropertyChanged += (S, E) => Update();
+
+            Update();
+
+            control.PositionUpdated += (X, Y, W, H) =>
+            {
+                Settings.X = (int)X;
+                Settings.Y = (int)Y;
+            };
+
+            return control;
+        }
+
+        LayerFrame2 Webcam(WebcamOverlaySettings Settings)
+        {
+            var webcam = Generate(Settings, "Webcam",
+                Settings.ResizeWidth,
+                Settings.ResizeHeight,
+                Colors.Brown);
+
+            webcam.Opacity = Settings.Opacity / 100.0;
+
+            Settings.PropertyChanged += (S, E) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    webcam.Width = Settings.ResizeWidth;
+                    webcam.Height = Settings.ResizeHeight;
+                    webcam.Opacity = Settings.Opacity / 100.0;
+                });
+            };
+
+            webcam.PositionUpdated += (X, Y, W, H) =>
+            {
+                Settings.ResizeWidth = (int)W;
+                Settings.ResizeHeight = (int)H;
+            };
+            
+            return webcam;
         }
 
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             var settings = ServiceProvider.Get<Settings>();
 
-            var keySettings = settings.Keystrokes;
+            var keystrokes = Generate(settings.Keystrokes, "Keystrokes", 200, 50, Colors.Crimson);
 
-            var keystrokes = new LayerFrame2
-            {
-                Width = 200,
-                Height = 50,
-                Background = new SolidColorBrush(Colors.Aquamarine),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top
-            };
-
-            void KeyUpdate()
-            {
-                int left = 0, top = 0, right = 0, bottom = 0;
-
-                switch (keySettings.HorizontalAlignment)
-                {
-                    case Alignment.Start:
-                        keystrokes.HorizontalAlignment = HorizontalAlignment.Left;
-                        left = keySettings.X;
-                        break;
-
-                    case Alignment.Center:
-                        keystrokes.HorizontalAlignment = HorizontalAlignment.Center;
-                        left = keySettings.X;
-                        break;
-
-                    case Alignment.End:
-                        keystrokes.HorizontalAlignment = HorizontalAlignment.Right;
-                        right = keySettings.X;
-                        break;
-                }
-
-                switch (keySettings.VerticalAlignment)
-                {
-                    case Alignment.Start:
-                        keystrokes.VerticalAlignment = VerticalAlignment.Top;
-                        top = keySettings.Y;
-                        break;
-
-                    case Alignment.Center:
-                        keystrokes.VerticalAlignment = VerticalAlignment.Center;
-                        top = keySettings.Y;
-                        break;
-
-                    case Alignment.End:
-                        keystrokes.VerticalAlignment = VerticalAlignment.Bottom;
-                        bottom = keySettings.Y;
-                        break;
-                }
-
-                Dispatcher.Invoke(() => keystrokes.Margin = new Thickness(left, top, right, bottom));
-            }
-
-            keySettings.PropertyChanged += (S, E) => KeyUpdate();
-
-            KeyUpdate();
-
-            keystrokes.PositionUpdated += (X, Y) =>
-            {
-                keySettings.X = (int)X;
-                keySettings.Y = (int)Y;
-            };
+            var webcam = Webcam(settings.WebcamOverlay);
 
             Grid.Children.Add(keystrokes);
+            Grid.Children.Add(webcam);
         }
     }
 }

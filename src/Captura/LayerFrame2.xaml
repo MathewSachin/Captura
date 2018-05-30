@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="Brown"
+             Name="This"
              MouseDown="LayerFrame_OnMouseDown">
     <Grid>
         <Grid.Resources>
@@ -26,6 +27,10 @@
                  VerticalAlignment="Bottom"/>
         <Ellipse HorizontalAlignment="Right"
                  VerticalAlignment="Bottom"/>
+        
+        <Label Content="{Binding Tag, ElementName=This}"
+               HorizontalAlignment="Center"
+               Foreground="White"/>
     </Grid>
     <UserControl.Effect>
         <DropShadowEffect ShadowDepth="1"

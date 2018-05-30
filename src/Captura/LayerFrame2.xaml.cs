@@ -328,7 +328,7 @@ namespace Captura
 
                     Margin = new Thickness(left, top, right, bottom);
 
-                    PositionUpdated?.Invoke(newX, newY);
+                    PositionUpdated?.Invoke(newX, newY, newWidth, newHeight);
 
                     Width = newWidth;
                     Height = newHeight;
@@ -344,6 +344,6 @@ namespace Captura
             }
         }
 
-        public event Action<double, double> PositionUpdated;
+        public event Action<double, double, double, double> PositionUpdated;
     }
 }
