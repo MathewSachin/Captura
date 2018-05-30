@@ -174,7 +174,7 @@ namespace Captura
 
         void UpdateSizeText()
         {
-            SizeBox.Tag = $"{(int)SizeBox.ActualWidth} x {(int)SizeBox.ActualHeight}";
+            Grid.Tag = $"{(int)Grid.ActualWidth} x {(int)Grid.ActualHeight}";
         }
 
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
