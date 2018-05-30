@@ -77,12 +77,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HitType.cs" />
-    <Compile Include="LayerFrame2.xaml.cs">
-      <DependentUpon>LayerFrame2.xaml</DependentUpon>
+    <Compile Include="LayerFrame.xaml.cs">
+      <DependentUpon>LayerFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
-    <Compile Include="ResizeWindow2.xaml.cs">
-      <DependentUpon>ResizeWindow2.xaml</DependentUpon>
+    <Compile Include="OverlayWindow.xaml.cs">
+      <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
@@ -182,11 +182,11 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
-    <Page Include="LayerFrame2.xaml">
+    <Page Include="LayerFrame.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResizeWindow2.xaml">
+    <Page Include="OverlayWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

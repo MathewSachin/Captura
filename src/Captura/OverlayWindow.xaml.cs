@@ -3,20 +3,22 @@ using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class ResizeWindow2
+    public partial class OverlayWindow
     {
-        public ResizeWindow2()
+        public OverlayWindow()
         {
             InitializeComponent();
 
             Loaded += OnLoaded;
 
             Closing += (S, E) => ServiceProvider.Get<Settings>().Save();
+
+            SizeChanged += (S, E) => UpdateSizeText();
         }
 
-        LayerFrame2 Generate(PositionedOverlaySettings Settings, string Name, int Width, int Height, Color Background)
+        LayerFrame Generate(PositionedOverlaySettings Settings, string Name, int Width, int Height, Color Background)
         {
-            var control = new LayerFrame2
+            var control = new LayerFrame
             {
                 Width = Width,
                 Height = Height,
@@ -83,7 +85,7 @@ namespace Captura
             return control;
         }
 
-        LayerFrame2 Webcam(WebcamOverlaySettings Settings)
+        LayerFrame Webcam(WebcamOverlaySettings Settings)
         {
             var webcam = Generate(Settings, "Webcam",
                 Settings.ResizeWidth,
@@ -111,7 +113,7 @@ namespace Captura
             return webcam;
         }
 
-        LayerFrame2 Keystrokes(KeystrokesSettings Settings)
+        LayerFrame Keystrokes(KeystrokesSettings Settings)
         {
             Color ConvertColor(System.Drawing.Color C)
             {
@@ -170,8 +172,15 @@ namespace Captura
             return keystrokes;
         }
 
+        void UpdateSizeText()
+        {
+            SizeBox.Tag = $"{(int)SizeBox.ActualWidth} x {(int)SizeBox.ActualHeight}";
+        }
+
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
+            UpdateSizeText();
+
             var settings = ServiceProvider.Get<Settings>();
 
             var keystrokes = Keystrokes(settings.Keystrokes);

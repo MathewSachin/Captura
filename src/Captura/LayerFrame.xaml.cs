@@ -4,9 +4,9 @@ using System.Windows.Input;
 
 namespace Captura
 {
-    public partial class LayerFrame2
+    public partial class LayerFrame
     {
-        public LayerFrame2()
+        public LayerFrame()
         {
             InitializeComponent();
 

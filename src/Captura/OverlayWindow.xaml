@@ -1,4 +1,4 @@
-﻿<Window x:Class="Captura.ResizeWindow2"
+﻿<Window x:Class="Captura.OverlayWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,6 +25,14 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
+
+            <Border Name="SizeBox">
+                <TextBlock Style="{StaticResource Heading1}"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Text="{Binding Tag, ElementName=SizeBox, Mode=OneWay}"/>
+            </Border>
 
             <ScrollViewer Grid.Column="1">
                 <StackPanel Background="#07333333"
