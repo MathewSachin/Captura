@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Captura.ViewModels;
@@ -27,12 +29,10 @@ namespace Captura
             UpdateSelection(ImagesItemsControl);
         }
 
-        LayerFrame Generate(PositionedOverlaySettings Settings, string Name, int Width, int Height, Color Background)
+        LayerFrame Generate(PositionedOverlaySettings Settings, string Name, Color Background)
         {
             var control = new LayerFrame
             {
-                Width = Width,
-                Height = Height,
                 Tag = Name,
                 Background = new SolidColorBrush(Background),
                 Foreground = new SolidColorBrush(Colors.White),
@@ -98,10 +98,10 @@ namespace Captura
 
         LayerFrame Webcam(WebcamOverlaySettings Settings)
         {
-            var webcam = Generate(Settings, "Webcam",
-                Settings.ResizeWidth,
-                Settings.ResizeHeight,
-                Colors.Brown);
+            var webcam = Generate(Settings, "Webcam", Colors.Brown);
+
+            webcam.Width = Settings.ResizeWidth;
+            webcam.Height = Settings.ResizeHeight;
 
             webcam.Opacity = Settings.Opacity / 100.0;
 
@@ -124,55 +124,48 @@ namespace Captura
             return webcam;
         }
 
-        LayerFrame Keystrokes(KeystrokesSettings Settings)
+        LayerFrame Text(TextOverlaySettings Settings, string Text)
         {
-            Color ConvertColor(System.Drawing.Color C)
-            {
-                return Color.FromArgb(C.A, C.R, C.G, C.B);
-            }
+            var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
+            
+            control.FontSize = Settings.FontSize;
 
-            var keystrokes = Generate(Settings, "Keystrokes", 200, 50, ConvertColor(Settings.BackgroundColor));
-            keystrokes.Width = double.NaN;
-            keystrokes.Height = double.NaN;
-
-            keystrokes.FontSize = Settings.FontSize;
-
-            keystrokes.Padding = new Thickness(Settings.HorizontalPadding,
+            control.Padding = new Thickness(Settings.HorizontalPadding,
                 Settings.VerticalPadding,
                 Settings.HorizontalPadding,
                 Settings.VerticalPadding);
 
-            keystrokes.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-            keystrokes.BorderThickness = new Thickness(Settings.BorderThickness);
-            keystrokes.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+            control.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+            control.BorderThickness = new Thickness(Settings.BorderThickness);
+            control.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
 
             Settings.PropertyChanged += (S, E) =>
             {
                 switch (E.PropertyName)
                 {
                     case nameof(Settings.BackgroundColor):
-                        keystrokes.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
+                        control.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
                         break;
 
                     case nameof(Settings.FontColor):
-                        keystrokes.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+                        control.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
                         break;
 
                     case nameof(Settings.BorderThickness):
-                        keystrokes.BorderThickness = new Thickness(Settings.BorderThickness);
+                        control.BorderThickness = new Thickness(Settings.BorderThickness);
                         break;
 
                     case nameof(Settings.BorderColor):
-                        keystrokes.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                        control.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
                         break;
 
                     case nameof(Settings.FontSize):
-                        keystrokes.FontSize = Settings.FontSize;
+                        control.FontSize = Settings.FontSize;
                         break;
 
                     case nameof(Settings.HorizontalPadding):
                     case nameof(Settings.VerticalPadding):
-                        keystrokes.Padding = new Thickness(Settings.HorizontalPadding,
+                        control.Padding = new Thickness(Settings.HorizontalPadding,
                             Settings.VerticalPadding,
                             Settings.HorizontalPadding,
                             Settings.VerticalPadding);
@@ -180,7 +173,57 @@ namespace Captura
                 }
             };
 
-            return keystrokes;
+            return control;
+        }
+
+        static Color ConvertColor(System.Drawing.Color C)
+        {
+            return Color.FromArgb(C.A, C.R, C.G, C.B);
+        }
+
+        LayerFrame Keystrokes(KeystrokesSettings Settings)
+        {
+            return Text(Settings, "Keystrokes");
+        }
+
+        readonly List<LayerFrame> _textOverlays = new List<LayerFrame>();
+        readonly List<LayerFrame> _imageOverlays = new List<LayerFrame>();
+
+        void UpdateTextOverlays(IList<CustomOverlaySettings> Settings)
+        {
+            foreach (var overlay in _textOverlays)
+            {
+                Grid.Children.Remove(overlay);
+            }
+
+            _textOverlays.Clear();
+
+            foreach (var setting in Settings)
+            {
+                var control = Text(setting, setting.Text);
+                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+
+                setting.PropertyChanged += (S, E) =>
+                {
+                    switch (E.PropertyName)
+                    {
+                        case nameof(setting.Text):
+                            control.Tag = setting.Text;
+                            break;
+
+                        case nameof(setting.Display):
+                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+                            break;
+                    }
+                };
+
+                _textOverlays.Add(control);
+            }
+
+            foreach (var overlay in _textOverlays)
+            {
+                Grid.Children.Add(overlay);
+            }
         }
 
         void UpdateSizeText()
@@ -197,6 +240,11 @@ namespace Captura
             var keystrokes = Keystrokes(settings.Keystrokes);
 
             var webcam = Webcam(settings.WebcamOverlay);
+
+            var textOverlayVm = ServiceProvider.Get<CustomOverlaysViewModel>();
+
+            UpdateTextOverlays(textOverlayVm.Collection);
+            (textOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateTextOverlays(textOverlayVm.Collection);
 
             Grid.Children.Add(keystrokes);
             Grid.Children.Add(webcam);

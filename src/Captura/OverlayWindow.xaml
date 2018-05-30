@@ -295,7 +295,7 @@
                         <Label Content="Text"
                                ContentStringFormat="{}{0}: "/>
 
-                        <TextBox Text="{Binding Text, Mode=TwoWay}"
+                        <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5,0"/>
                     </DockPanel>
                 </DockPanel>
@@ -372,7 +372,8 @@
                        DockPanel.Dock="Bottom"
                        Margin="5"/>
 
-            <Grid Name="Grid">
+            <Grid Name="Grid"
+                  Background="Transparent">
                 <TextBlock Style="{StaticResource Heading1}"
                            Foreground="LightGray"
                            HorizontalAlignment="Center"

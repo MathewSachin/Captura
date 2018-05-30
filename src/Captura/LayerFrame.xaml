@@ -7,8 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Background="Brown"
-             Name="This"
-             MouseDown="LayerFrame_OnMouseDown">
+             Name="This">
     <Grid>
         <Label Content="{Binding Tag, ElementName=This}"
                HorizontalAlignment="Center"

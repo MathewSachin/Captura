@@ -14,6 +14,7 @@ namespace Captura
             {
                 if (Parent is UIElement element)
                 {
+                    element.MouseDown += Parent_OnMouseDown;
                     element.MouseMove += Parent_OnMouseMove;
                     element.MouseUp += Parent_OnMouseUp;
                 }
@@ -129,7 +130,7 @@ namespace Captura
             }
         }
 
-        void LayerFrame_OnMouseDown(object Sender, MouseButtonEventArgs E)
+        void Parent_OnMouseDown(object Sender, MouseButtonEventArgs E)
         {
             _mouseHitType = SetHitType();
 
@@ -330,8 +331,11 @@ namespace Captura
 
                     PositionUpdated?.Invoke(newX, newY, newWidth, newHeight);
 
-                    Width = newWidth;
-                    Height = newHeight;
+                    if (_mouseHitType != HitType.Body)
+                    {
+                        Width = newWidth;
+                        Height = newHeight;
+                    }
 
                     _lastPoint = point;
                 }
