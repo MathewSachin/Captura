@@ -22,6 +22,7 @@ namespace Captura
                 Height = Height,
                 Tag = Name,
                 Background = new SolidColorBrush(Background),
+                Foreground = new SolidColorBrush(Colors.White),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             };
@@ -110,11 +111,70 @@ namespace Captura
             return webcam;
         }
 
+        LayerFrame2 Keystrokes(KeystrokesSettings Settings)
+        {
+            Color ConvertColor(System.Drawing.Color C)
+            {
+                return Color.FromArgb(C.A, C.R, C.G, C.B);
+            }
+
+            var keystrokes = Generate(Settings, "Keystrokes", 200, 50, ConvertColor(Settings.BackgroundColor));
+            keystrokes.Width = double.NaN;
+            keystrokes.Height = double.NaN;
+
+            keystrokes.FontSize = Settings.FontSize;
+
+            keystrokes.Padding = new Thickness(Settings.HorizontalPadding,
+                Settings.VerticalPadding,
+                Settings.HorizontalPadding,
+                Settings.VerticalPadding);
+
+            keystrokes.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+            keystrokes.BorderThickness = new Thickness(Settings.BorderThickness);
+            keystrokes.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+
+            Settings.PropertyChanged += (S, E) =>
+            {
+                switch (E.PropertyName)
+                {
+                    case nameof(Settings.BackgroundColor):
+                        keystrokes.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
+                        break;
+
+                    case nameof(Settings.FontColor):
+                        keystrokes.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+                        break;
+
+                    case nameof(Settings.BorderThickness):
+                        keystrokes.BorderThickness = new Thickness(Settings.BorderThickness);
+                        break;
+
+                    case nameof(Settings.BorderColor):
+                        keystrokes.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                        break;
+
+                    case nameof(Settings.FontSize):
+                        keystrokes.FontSize = Settings.FontSize;
+                        break;
+
+                    case nameof(Settings.HorizontalPadding):
+                    case nameof(Settings.VerticalPadding):
+                        keystrokes.Padding = new Thickness(Settings.HorizontalPadding,
+                            Settings.VerticalPadding,
+                            Settings.HorizontalPadding,
+                            Settings.VerticalPadding);
+                        break;
+                }
+            };
+
+            return keystrokes;
+        }
+
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             var settings = ServiceProvider.Get<Settings>();
 
-            var keystrokes = Generate(settings.Keystrokes, "Keystrokes", 200, 50, Colors.Crimson);
+            var keystrokes = Keystrokes(settings.Keystrokes);
 
             var webcam = Webcam(settings.WebcamOverlay);
 

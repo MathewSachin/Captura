@@ -10,27 +10,9 @@
              Name="This"
              MouseDown="LayerFrame_OnMouseDown">
     <Grid>
-        <Grid.Resources>
-            <Style TargetType="Ellipse">
-                <Setter Property="Fill" Value="White"/>
-                <Setter Property="Width" Value="3"/>
-                <Setter Property="Height" Value="3"/>
-                <Setter Property="Margin" Value="1"/>
-            </Style>
-        </Grid.Resources>
-
-        <Ellipse HorizontalAlignment="Left"
-                 VerticalAlignment="Top"/>
-        <Ellipse HorizontalAlignment="Right"
-                 VerticalAlignment="Top"/>
-        <Ellipse HorizontalAlignment="Left"
-                 VerticalAlignment="Bottom"/>
-        <Ellipse HorizontalAlignment="Right"
-                 VerticalAlignment="Bottom"/>
-        
         <Label Content="{Binding Tag, ElementName=This}"
                HorizontalAlignment="Center"
-               Foreground="White"/>
+               Foreground="{Binding Foreground, ElementName=This}"/>
     </Grid>
     <UserControl.Effect>
         <DropShadowEffect ShadowDepth="1"
