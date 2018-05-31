@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Captura.Models;
 using Captura.ViewModels;
 
 namespace Captura
@@ -96,32 +97,37 @@ namespace Captura
             return control;
         }
 
-        LayerFrame Webcam(WebcamOverlaySettings Settings)
+        LayerFrame Image(ImageOverlaySettings Settings, string Name)
         {
-            var webcam = Generate(Settings, "Webcam", Colors.Brown);
+            var control = Generate(Settings, Name, Colors.Brown);
 
-            webcam.Width = Settings.ResizeWidth;
-            webcam.Height = Settings.ResizeHeight;
+            control.Width = Settings.ResizeWidth;
+            control.Height = Settings.ResizeHeight;
 
-            webcam.Opacity = Settings.Opacity / 100.0;
+            control.Opacity = Settings.Opacity / 100.0;
 
             Settings.PropertyChanged += (S, E) =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    webcam.Width = Settings.ResizeWidth;
-                    webcam.Height = Settings.ResizeHeight;
-                    webcam.Opacity = Settings.Opacity / 100.0;
+                    control.Width = Settings.ResizeWidth;
+                    control.Height = Settings.ResizeHeight;
+                    control.Opacity = Settings.Opacity / 100.0;
                 });
             };
 
-            webcam.PositionUpdated += (X, Y, W, H) =>
+            control.PositionUpdated += (X, Y, W, H) =>
             {
                 Settings.ResizeWidth = (int)W;
                 Settings.ResizeHeight = (int)H;
             };
-            
-            return webcam;
+
+            return control;
+        }
+
+        LayerFrame Webcam(WebcamOverlaySettings Settings)
+        {
+            return Image(Settings, "Webcam");
         }
 
         LayerFrame Text(TextOverlaySettings Settings, string Text)
@@ -226,6 +232,43 @@ namespace Captura
             }
         }
 
+        void UpdateImageOverlays(IList<CustomImageOverlaySettings> Settings)
+        {
+            foreach (var overlay in _imageOverlays)
+            {
+                Grid.Children.Remove(overlay);
+            }
+
+            _imageOverlays.Clear();
+
+            foreach (var setting in Settings)
+            {
+                var control = Image(setting, setting.Source);
+                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+
+                setting.PropertyChanged += (S, E) =>
+                {
+                    switch (E.PropertyName)
+                    {
+                        case nameof(setting.Source):
+                            control.Tag = setting.Source;
+                            break;
+
+                        case nameof(setting.Display):
+                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+                            break;
+                    }
+                };
+
+                _imageOverlays.Add(control);
+            }
+
+            foreach (var overlay in _imageOverlays)
+            {
+                Grid.Children.Add(overlay);
+            }
+        }
+
         void UpdateSizeText()
         {
             Grid.Tag = $"{(int)Grid.ActualWidth} x {(int)Grid.ActualHeight}";
@@ -245,6 +288,11 @@ namespace Captura
 
             UpdateTextOverlays(textOverlayVm.Collection);
             (textOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateTextOverlays(textOverlayVm.Collection);
+
+            var imgOverlayVm = ServiceProvider.Get<CustomImageOverlaysViewModel>();
+
+            UpdateImageOverlays(imgOverlayVm.Collection);
+            (imgOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateImageOverlays(imgOverlayVm.Collection);
 
             Grid.Children.Add(keystrokes);
             Grid.Children.Add(webcam);

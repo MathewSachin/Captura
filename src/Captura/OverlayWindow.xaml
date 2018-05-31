@@ -350,7 +350,7 @@
                                 Command="{Binding DataContext.ChangeCommand, ElementName=ImagesItemsControl}"
                                 CommandParameter="{Binding}"/>
 
-                        <TextBox Text="{Binding Source, Mode=TwoWay}"
+                        <TextBox Text="{Binding Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5,0"/>
                     </DockPanel>
                 </DockPanel>
