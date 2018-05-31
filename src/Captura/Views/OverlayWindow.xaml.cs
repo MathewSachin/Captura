@@ -19,8 +19,6 @@ namespace Captura
             Closing += (S, E) =>
             {
                 ServiceProvider.Get<Settings>().Save();
-                ServiceProvider.Get<CustomOverlaysViewModel>().Dispose();
-                ServiceProvider.Get<CustomImageOverlaysViewModel>().Dispose();
             };
 
             SizeChanged += (S, E) => UpdateSizeText();

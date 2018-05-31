@@ -5,9 +5,9 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class CustomImageOverlaysViewModel : ArraySettingsViewModel<CustomImageOverlaySettings>
+    public class CustomImageOverlaysViewModel : CustomOverlaysBaseViewModel<CustomImageOverlaySettings>
     {
-        public CustomImageOverlaysViewModel() : base("CustomImageOverlays.json")
+        public CustomImageOverlaysViewModel(Settings Settings) : base(Settings.ImageOverlays)
         {
             ChangeCommand = new DelegateCommand(Change);
         }

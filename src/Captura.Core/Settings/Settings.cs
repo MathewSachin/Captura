@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using Captura.Models;
 
 namespace Captura
 {
@@ -90,6 +92,10 @@ namespace Captura
         public FFMpegSettings FFMpeg { get; } = new FFMpegSettings();
 
         public GifSettings Gif { get; } = new GifSettings();
+
+        public ObservableCollection<CustomOverlaySettings> TextOverlays { get; } = new ObservableCollection<CustomOverlaySettings>();
+
+        public ObservableCollection<CustomImageOverlaySettings> ImageOverlays { get; } = new ObservableCollection<CustomImageOverlaySettings>();
 
         public int StartDelay
         {

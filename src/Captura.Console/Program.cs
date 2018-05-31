@@ -52,6 +52,16 @@ namespace Captura
                         vm.Settings.Clicks = dummySettings.Clicks;
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
 
+                        foreach (var overlay in dummySettings.TextOverlays)
+                        {
+                            vm.Settings.TextOverlays.Add(overlay);
+                        }
+
+                        foreach (var overlay in dummySettings.ImageOverlays)
+                        {
+                            vm.Settings.ImageOverlays.Add(overlay);
+                        }
+
                         Start(vm, Options);
                     }
                 })
