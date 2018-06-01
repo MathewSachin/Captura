@@ -6,7 +6,7 @@
         Height="700"
         Width="650"
         DataContext="{Binding LicensesViewModel, Source={StaticResource ServiceLocator}}">
-    <DockPanel>
+    <DockPanel Background="{DynamicResource WindowBackground}">
         <ListView ItemsSource="{Binding Licenses}"
                   x:Name="LicenseList"
                   SelectedIndex="0"
@@ -22,15 +22,18 @@
 
         <Border DataContext="{Binding SelectedItem, ElementName=LicenseList}">
             <DockPanel>
-                <TextBlock Text="{Binding Name}"
-                           Style="{StaticResource Heading1}"
-                           DockPanel.Dock="Top"
-                           Margin="5"/>
-                
+                <Label Margin="5"
+                       DockPanel.Dock="Top">
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource Heading1}"/>
+                </Label>
+
                 <ScrollViewer>
-                    <TextBlock Text="{Binding Content}"
-                               TextWrapping="Wrap"
-                               Margin="5"/>
+                    <Label Margin="5"
+                           VerticalContentAlignment="Top">
+                        <TextBlock Text="{Binding Content}"
+                                   TextWrapping="Wrap"/>
+                    </Label>
                 </ScrollViewer>
             </DockPanel>
         </Border>
