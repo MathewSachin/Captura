@@ -10,7 +10,7 @@
         Title="Overlays"
         Height="800"
         Width="1200">
-    <Grid>
+    <Grid Background="{DynamicResource WindowBackground}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
@@ -18,7 +18,8 @@
         </Grid.ColumnDefinitions>
         
         <TabControl Grid.Column="2"
-                    Background="#07333333">
+                    Background="Transparent"
+                    BorderThickness="0">
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <mui:TransitioningContentControl Content="{Binding}"/>
@@ -343,14 +344,16 @@
             </TabItem>
         </TabControl>
 
-        <GridSplitter Width="1"
+        <GridSplitter Width="3"
                       Grid.Column="1"
-                      Background="#333333"/>
+                      Opacity="0.3"
+                      Background="{StaticResource ItemText}"/>
         
         <DockPanel>
             <TextBlock DockPanel.Dock="Top"
                        Text="Positioning"
-                       Background="LightGray"
+                       Background="#B7333333"
+                       Foreground="White"
                        Padding="5"
                        Style="{StaticResource Heading1}"/>
 
