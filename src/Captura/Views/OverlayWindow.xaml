@@ -253,7 +253,7 @@
                               SelectionChanged="ItemsControl_OnSelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="Overlay"/>
+                                <TextBlock Text="Overlay"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -303,7 +303,7 @@
                               SelectionChanged="ItemsControl_OnSelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="Image"/>
+                                <TextBlock Text="Image"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
