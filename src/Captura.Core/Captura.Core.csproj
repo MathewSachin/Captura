@@ -91,6 +91,7 @@
     <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
     <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Services\IPreviewWindow.cs" />
+    <Compile Include="Settings\Models\CustomFFMpegCodec.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="TextLocalizer.cs" />
     <Compile Include="Settings\Models\TextOverlaySettings.cs" />
     <Compile Include="Models\DownloadFFMpeg.cs" />
+    <Compile Include="ViewModels\FFMpegCodecsViewModel.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
     <Compile Include="Models\LicenseItem.cs" />
     <Compile Include="ViewModels\LicensesViewModel.cs" />

@@ -79,36 +79,6 @@
                                     IsEnabled="{Binding Settings.FFMpeg.Resize}"/>
             </Grid>
 
-            <Label Content="Custom Format"
-                   Margin="0,10,0,0"
-                   FontWeight="Bold"/>
-            
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Label Content="Arguments"
-                       ContentStringFormat="{}{0}: "/>
-                <TextBox Grid.Column="1"
-                         Margin="2"
-                         Text="{Binding Settings.FFMpeg.CustomArgs}"/>
-
-
-                <Label Content="Extension"
-                       Grid.Row="1"
-                       ContentStringFormat="{}{0}: "/>
-                <TextBox Grid.Column="1"
-                         Grid.Row="1"
-                         Margin="2"
-                         Text="{Binding Settings.FFMpeg.CustomExtension}"/>
-            </Grid>
-
             <Label Content="Streaming"
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>

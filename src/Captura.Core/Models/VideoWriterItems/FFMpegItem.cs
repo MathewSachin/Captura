@@ -44,12 +44,6 @@ namespace Captura.Models
         public static FFMpegItem HEVC_NVENC { get; } = new FFMpegItem("Mp4 (HEVC NVENC | AAC) (Alpha)", () => ".mp4",
             VideoQuality => "-c:v hevc_nvenc -profile high444p -pixel_format yuv444p -preset slow", FFMpegAudioItem.Aac);
 
-        // Custom
-        public static FFMpegItem Custom { get; } = new FFMpegItem("Custom",
-            () => ServiceProvider.Get<Settings>().FFMpeg.CustomExtension,
-            VideoQuality => ServiceProvider.Get<Settings>().FFMpeg.CustomArgs,
-            FFMpegAudioItem.Mp3);
-
         public static IEnumerable<FFMpegItem> Items { get; } = new[]
         {
             x264,
@@ -57,8 +51,7 @@ namespace Captura.Models
             Gif,
             HEVC_QSV,
             H264_NVENC,
-            HEVC_NVENC,
-            Custom
+            HEVC_NVENC
         };
         
         FFMpegItem(string Name, Func<string> Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
@@ -72,6 +65,23 @@ namespace Captura.Models
         {
             _name = Name;
             _extension = Extension;
+        }
+
+        public FFMpegItem(CustomFFMpegCodec CustomCodec) : this(CustomCodec.Name,
+            () => CustomCodec.Extension)
+        {
+            _videoArgsProvider = VideoQuality => CustomCodec.Args;
+
+            _audioArgsProvider = FFMpegAudioItem.Mp3;
+
+            foreach (var audioItem in FFMpegAudioItem.Items)
+            {
+                if (audioItem.Name.Split(' ')[0] == CustomCodec.AudioFormat)
+                {
+                    _audioArgsProvider = audioItem.AudioArgsProvider;
+                    break;
+                }
+            }
         }
 
         readonly Func<string> _extension;

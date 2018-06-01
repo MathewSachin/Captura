@@ -5,19 +5,20 @@ namespace Captura.Models
 {
     public class FFMpegAudioItem : NoVideoItem
     {
-        readonly FFMpegAudioArgsProvider _audioArgsProvider;
+        public FFMpegAudioArgsProvider AudioArgsProvider { get; }
 
         const string Experimental = "-strict -2";
 
+        // The (FFMpeg) appended to the name is expected in Custom Codecs
         FFMpegAudioItem(string Name, string Extension, FFMpegAudioArgsProvider AudioArgsProvider)
             : base($"{Name} (FFMpeg)", Extension)
         {
-            _audioArgsProvider = AudioArgsProvider;
+            this.AudioArgsProvider = AudioArgsProvider;
         }
 
         public override IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
         {
-            return new FFMpegAudioWriter(FileName, AudioQuality, _audioArgsProvider, Wf.SampleRate, Wf.Channels);
+            return new FFMpegAudioWriter(FileName, AudioQuality, AudioArgsProvider, Wf.SampleRate, Wf.Channels);
         }
 
         public static FFMpegAudioArgsProvider Aac { get; } = q =>

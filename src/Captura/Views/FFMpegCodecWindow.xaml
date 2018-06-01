@@ -2,12 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+        xmlns:local="clr-namespace:Captura"
         Title="FFMpeg Codecs"
-        Height="300"
-        Width="400"
-        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid>
-        <TabControl>
+        Height="500"
+        Width="500"
+        DataContext="{Binding FfMpegCodecsViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid  Background="{DynamicResource WindowBackground}">
+        <TabControl Background="Transparent">
             <TabItem Header="x264">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
@@ -52,6 +53,82 @@
                            Grid.ColumnSpan="2"
                            FontWeight="Light"/>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Custom">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top">
+                        <local:ModernButton ToolTip="Add"
+                                            Command="{Binding AddCustomCodecCommand}"
+                                            IconData="{StaticResource Icon_Add}"/>
+                        
+                        <Label Content="Add Codec"
+                               VerticalAlignment="Center"/>
+                    </DockPanel>
+                    
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Settings.FFMpeg.CustomCodecs}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5"
+                                            BorderThickness="0.5"
+                                            BorderBrush="{StaticResource ItemText}">
+                                        <Grid Margin="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                    
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <local:ModernButton ToolTip="Delete"
+                                                                Grid.Column="2"
+                                                                CommandParameter="{Binding}"
+                                                                Command="{Binding DataContext.RemoveCustomCodecCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                                                IconData="{StaticResource Icon_Close}"/>
+                                    
+                                            <Label Content="Name"/>
+                                            
+                                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Grid.Column="1"
+                                                     Margin="5"/>
+                                            
+                                            <Label Content="Args"
+                                                   Grid.Row="1"/>
+
+                                            <TextBox Text="{Binding Args, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Grid.Column="1"
+                                                     Grid.Row="1"
+                                                     Margin="5"/>
+
+                                            <Label Content="Extension"
+                                                   Grid.Row="2"/>
+
+                                            <TextBox Text="{Binding Extension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Grid.Column="1"
+                                                     Grid.Row="2"
+                                                     Margin="5"/>
+                                            
+                                            <Label Content="Audio Format"
+                                                   Grid.Row="3"/>
+                                            
+                                            <ComboBox ItemsSource="{Binding DataContext.AudioCodecNames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                      SelectedValue="{Binding AudioFormat, Mode=TwoWay}"
+                                                      Grid.Row="3"
+                                                      Grid.Column="1"
+                                                      Margin="5"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </Grid>

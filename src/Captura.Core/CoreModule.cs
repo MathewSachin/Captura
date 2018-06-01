@@ -16,6 +16,7 @@ namespace Captura
             Bind<VideoViewModel>().ToSelf().InSingletonScope();
             Bind<ProxySettingsViewModel>().ToSelf().InSingletonScope();
             Bind<LicensesViewModel>().ToSelf().InSingletonScope();
+            Bind<FFMpegCodecsViewModel>().ToSelf().InSingletonScope();
 
             Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
             Bind<CustomImageOverlaysViewModel>().ToSelf().InSingletonScope();

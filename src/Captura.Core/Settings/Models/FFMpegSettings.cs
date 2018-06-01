@@ -1,4 +1,6 @@
-﻿namespace Captura
+﻿using System.Collections.ObjectModel;
+
+namespace Captura
 {
     public class FFMpegSettings : PropertyStore
     {
@@ -20,17 +22,7 @@
             set => Set(value);
         }
 
-        public string CustomExtension
-        {
-            get => Get(".mp4");
-            set => Set(value);
-        }
-
-        public string CustomArgs
-        {
-            get => Get("-vcodec libx264 -crf 30 -pix_fmt yuv420p -preset ultrafast");
-            set => Set(value);
-        }
+        public ObservableCollection<CustomFFMpegCodec> CustomCodecs { get; } = new ObservableCollection<CustomFFMpegCodec>();
 
         public string CustomStreamingUrl
         {
