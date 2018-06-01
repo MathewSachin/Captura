@@ -7,8 +7,7 @@ configuration:
 - Release
 
 environment:
-  access_token:
-    secure: c1r9fMnxBX4DW0SvZ4V/5Nucdi8pzA2YiQ/wsiyfjIY19q4RyKCYZTtU+2YQbiLT
+  # Used in build.cake
   imgur_client_id:
     secure: Y/2WUSisk7oLSQNY1YzUxw==
 
@@ -36,15 +35,24 @@ artifacts:
     name: Chocolatey
 
 deploy:
-  provider: GitHub
-  tag: $(APPVEYOR_REPO_TAG_NAME)
-  release: Captura $(APPVEYOR_REPO_TAG_NAME)
-  prerelease: $(prerelease)
-  description: "[Changelog](https://github.com/MathewSachin/Captura/blob/master/docs/Changelog.md)"
-  auth_token:
-    secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
-  artifact: Portable, Setup
-  draft: true
-  on:
-    configuration: Release
-    appveyor_repo_tag: true
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: Captura $(APPVEYOR_REPO_TAG_NAME)
+    prerelease: $(prerelease)
+    description: "[Changelog](https://mathewsachin.github.io/Captura/changelog)"
+    auth_token:
+      secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
+    artifact: Portable, Setup
+    on:
+      configuration: Release
+      appveyor_repo_tag: true
+
+  - provider: NuGet
+    server: https://chocolatey.org
+    api_key:
+      secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
+    artifact: Chocolatey
+    on:
+      configuration: Release
+      appveyor_repo_tag: true
+
