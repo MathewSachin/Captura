@@ -58,6 +58,10 @@
                             Grid.Column="1"
                             Margin="3"/>
                 </Grid>
+
+                <Button Click="ViewLicenses"
+                        Content="View Licenses"
+                        Margin="3"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

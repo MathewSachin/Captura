@@ -77,6 +77,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Views\LicensesWindow.xaml.cs">
+      <DependentUpon>LicensesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
@@ -175,6 +178,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Views\LicensesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PreviewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

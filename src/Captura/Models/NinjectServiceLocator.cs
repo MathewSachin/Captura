@@ -19,5 +19,7 @@ namespace Captura
         public FFMpegDownloadViewModel FFMpegDownloadViewModel => ServiceProvider.Get<FFMpegDownloadViewModel>();
 
         public ProxySettingsViewModel ProxySettingsViewModel => ServiceProvider.Get<ProxySettingsViewModel>();
+
+        public LicensesViewModel LicensesViewModel => ServiceProvider.Get<LicensesViewModel>();
     }
 }

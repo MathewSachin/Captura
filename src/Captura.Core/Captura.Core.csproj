@@ -190,6 +190,8 @@
     <Compile Include="Settings\Models\TextOverlaySettings.cs" />
     <Compile Include="Models\DownloadFFMpeg.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
+    <Compile Include="Models\LicenseItem.cs" />
+    <Compile Include="ViewModels\LicensesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
