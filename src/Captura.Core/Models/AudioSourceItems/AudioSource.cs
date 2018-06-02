@@ -34,5 +34,12 @@ namespace Captura.Models
         protected abstract void OnRefresh();
 
         public abstract IAudioProvider GetAudioProvider();
+
+        public static event Action AudioSourceActiveChanged;
+
+        public static void RaiseAudioSourceActiveChanged()
+        {
+            AudioSourceActiveChanged?.Invoke();
+        }
     }
 }

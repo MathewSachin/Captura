@@ -34,6 +34,8 @@ namespace Captura.Models
                 _active = value;
                 
                 OnPropertyChanged();
+
+                AudioSource.RaiseAudioSourceActiveChanged();
             }
         }
 

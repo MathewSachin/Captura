@@ -90,18 +90,7 @@ namespace Captura.ViewModels
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            AudioSource.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(AudioSource.SelectedRecordingSource):
-                    case nameof(AudioSource.SelectedLoopbackSource):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }
-            };
+            AudioSource.AudioSourceActiveChanged += CheckFunctionalityAvailability;
 
             VideoViewModel.PropertyChanged += (Sender, Args) =>
             {
