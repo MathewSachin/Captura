@@ -3,14 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:local="clr-namespace:Captura"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         Title="FFMpeg Codecs"
         Height="500"
         Width="500"
         DataContext="{Binding FfMpegCodecsViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid  Background="{DynamicResource WindowBackground}">
-        <TabControl Background="Transparent">
+    <Grid Background="{DynamicResource WindowBackground}">
+        <TabControl Background="Transparent"
+                    BorderThickness="0">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <mui:TransitioningContentControl Content="{Binding}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
             <TabItem Header="x264">
-                <Grid Margin="5">
+                <Grid Margin="5"
+                      DataContext="{Binding}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -55,7 +63,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Custom">
-                <DockPanel>
+                <DockPanel DataContext="{Binding}">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCustomCodecCommand}"
