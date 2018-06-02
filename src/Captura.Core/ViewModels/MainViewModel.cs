@@ -416,8 +416,15 @@ namespace Captura.ViewModels
             Settings.Video.Writer = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            Settings.Audio.Microphone = AudioSource.SelectedRecordingSource.ToString();
-            Settings.Audio.Speaker = AudioSource.SelectedLoopbackSource.ToString();
+            Settings.Audio.Microphones = AudioSource.AvailableRecordingSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
+
+            Settings.Audio.Speakers = AudioSource.AvailableLoopbackSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
             
             // Remember ScreenShot Format
             Settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();

@@ -23,15 +23,14 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        /// <param name="RecordingDevice">Index of Recording Device. null = No Microphone Recording.</param>
-        /// <param name="LoopbackDevice">Index of Loopback Device. null = No Loopback Recording.</param>
-        /// <exception cref="InvalidOperationException">Can't Record when both <paramref name="LoopbackDevice"/> and <paramref name="RecordingDevice"/> are null.</exception>
-        public MixedAudioProvider(int[] RecordingDevices, int[] LoopbackDevices)
+        /// <param name="RecordingDevices">Indices of Recording Devices.</param>
+        /// <param name="LoopbackDevices">Indices of Loopback Devices.</param>
+        public MixedAudioProvider(IReadOnlyCollection<int> RecordingDevices, IReadOnlyCollection<int> LoopbackDevices)
         {
             if (RecordingDevices == null || LoopbackDevices == null)
                 throw new ArgumentNullException();
 
-            if (RecordingDevices.Length + LoopbackDevices.Length == 0)
+            if (RecordingDevices.Count + LoopbackDevices.Count == 0)
                 throw new InvalidOperationException("Nothing to Record.");
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
