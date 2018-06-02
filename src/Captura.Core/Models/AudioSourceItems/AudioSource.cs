@@ -1,6 +1,7 @@
 ﻿using Screna.Audio;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Captura.Models
 {
@@ -18,51 +19,17 @@ namespace Captura.Models
             AvailableLoopbackSources = new ReadOnlyObservableCollection<IAudioItem>(LoopbackSources);
         }
 
-        IAudioItem _recordingSource = NoSoundItem.Instance,
-            _loopbackSource = NoSoundItem.Instance;
-
         public virtual void Dispose() { }
-
-        public virtual IAudioItem SelectedRecordingSource
-        {
-            get => _recordingSource;
-            set
-            {
-                _recordingSource = value ?? NoSoundItem.Instance;
-
-                OnPropertyChanged();
-
-                RaisePropertyChanged(nameof(AudioAvailable));
-            }
-        }
-
-        public virtual IAudioItem SelectedLoopbackSource
-        {
-            get => _loopbackSource;
-            set
-            {
-                _loopbackSource = value ?? NoSoundItem.Instance;
-
-                OnPropertyChanged();
-
-                RaisePropertyChanged(nameof(AudioAvailable));
-            }
-        }
 
         public void Refresh()
         {
             RecordingSources.Clear();
             LoopbackSources.Clear();
 
-            RecordingSources.Add(NoSoundItem.Instance);
-            LoopbackSources.Add(NoSoundItem.Instance);
-
             OnRefresh();
-
-            SelectedRecordingSource = SelectedLoopbackSource = NoSoundItem.Instance;
         }
 
-        public bool AudioAvailable => SelectedRecordingSource != NoSoundItem.Instance || SelectedLoopbackSource != NoSoundItem.Instance;
+        public bool AudioAvailable => AvailableRecordingSources.Count(M => M.Active) + AvailableLoopbackSources.Count(M => M.Active) > 0;
 
         protected abstract void OnRefresh();
 

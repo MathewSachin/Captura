@@ -19,6 +19,19 @@ namespace Captura.Models
 
         public string Name { get; }
 
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
         public override string ToString() => Name;
     }
 }

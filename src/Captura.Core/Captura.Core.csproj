@@ -79,7 +79,6 @@
     <Compile Include="Models\AudioSourceItems\BassItem.cs" />
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
     <Compile Include="Models\Discard\DiscardWriterItem.cs" />
