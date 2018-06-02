@@ -186,10 +186,21 @@
                    ContentStringFormat="{}{0}: "
                    Margin="0,0,5,0"/>
 
-            <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
-                      SelectedValue="{Binding VideoViewModel.SelectedImageWriter, Mode=TwoWay}"
-                      DisplayMemberPath="Display"/>
+            <ItemsControl ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
+                          Grid.Column="1">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding Active, Mode=TwoWay}"
+                                  Content="{Binding Display}"
+                                  Margin="0,0,15,0"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
 
             <Label Content="{local:Loc ImgFormat}"
                    ContentStringFormat="{}{0}: "

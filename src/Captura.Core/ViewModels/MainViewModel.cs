@@ -339,12 +339,18 @@ namespace Captura.ViewModels
             }
 
             // Restore ScreenShot Target
-            if (!string.IsNullOrEmpty(Settings.ScreenShots.SaveTarget))
+            if (Settings.ScreenShots.SaveTargets != null)
             {
-                var saveTo = VideoViewModel.AvailableImageWriters.FirstOrDefault(S => S.ToString() == Settings.ScreenShots.SaveTarget);
+                foreach (var imageWriter in VideoViewModel.AvailableImageWriters)
+                {
+                    imageWriter.Active = Settings.ScreenShots.SaveTargets.Contains(imageWriter.Display);
+                }
 
-                if (saveTo != null)
-                    VideoViewModel.SelectedImageWriter = saveTo;
+                // Activate First if none
+                if (!VideoViewModel.AvailableImageWriters.Any(M => M.Active))
+                {
+                    VideoViewModel.AvailableImageWriters[0].Active = true;
+                }
             }
 
             // Restore Webcam
@@ -417,7 +423,10 @@ namespace Captura.ViewModels
             Settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
-            Settings.ScreenShots.SaveTarget = VideoViewModel.SelectedImageWriter.ToString();
+            Settings.ScreenShots.SaveTargets = VideoViewModel.AvailableImageWriters
+                .Where(M => M.Active)
+                .Select(M => M.Display)
+                .ToArray();
 
             // Remember Webcam
             Settings.Video.Webcam = WebCamProvider.SelectedCam.Name;
@@ -477,7 +486,11 @@ namespace Captura.ViewModels
             // Save to Disk or Clipboard
             if (Bmp != null)
             {
-                VideoViewModel.SelectedImageWriter.Save(Bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel);
+                var allTasks = VideoViewModel.AvailableImageWriters
+                    .Where(M => M.Active)
+                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel));
+
+                Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
             else _systemTray.ShowTextNotification(Loc.ImgEmpty, 5000, null);
         }

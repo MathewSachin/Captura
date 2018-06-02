@@ -46,9 +46,9 @@ namespace Captura
             set => Set(value);
         }
 
-        public string SaveTarget
+        public string[] SaveTargets
         {
-            get => Get("Disk");
+            get => Get(new []{ "Disk" });
             set => Set(value);
         }
     }

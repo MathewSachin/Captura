@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Captura.ViewModels
 {
@@ -40,8 +41,8 @@ namespace Captura.ViewModels
                 _videoSourceKinds.Add(videoSourceProvider);
             }
             
-            if (AvailableImageWriters.Count > 0)
-                SelectedImageWriter = AvailableImageWriters[0];
+            if (!AvailableImageWriters.Any(M => M.Active))
+                AvailableImageWriters[0].Active = true;
 
             if (AvailableVideoWriterKinds.Count > 0)
                 SelectedVideoWriterKind = AvailableVideoWriterKinds[0];
@@ -178,18 +179,5 @@ namespace Captura.ViewModels
         readonly ObservableCollection<IImageWriterItem> _imageWriters = new ObservableCollection<IImageWriterItem>();
 
         public ReadOnlyObservableCollection<IImageWriterItem> AvailableImageWriters { get; }
-
-        IImageWriterItem _imgWriter;
-
-        public IImageWriterItem SelectedImageWriter
-        {
-            get => _imgWriter;
-            set
-            {
-                _imgWriter = value;
-
-                OnPropertyChanged();
-            }
-        }
     }
 }

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Captura.Models
@@ -33,7 +34,7 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
             var ritem = Recents.Add($"{_loc.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
@@ -70,25 +71,24 @@ namespace Captura.Models
 
                     if (xAttribute == null || int.Parse(xAttribute.Value) != 1)
                         throw new Exception("Response indicates Failure");
-
-                    Image.Dispose();
                 }
-                catch (Exception E)
+                catch (Exception e)
                 {
                     ritem.Display = _loc.ImgurFailed;
                     Status.LocalizationKey = nameof(LanguageManager.ImgurFailed);
 
-                    var yes = _messageProvider.ShowYesNo($"{_loc.ImgurFailed}\n{E.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                    var yes = _messageProvider.ShowYesNo($"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
 
                     if (yes)
-                        _diskWriter.Save(Image, Format, FileName, Status, Recents);
+                        await _diskWriter.Save(Image, Format, FileName, Status, Recents);
 
                     return;
                 }
 
                 var link = xdoc.Root.Element("link").Value;
 
-                if (_settings.CopyOutPathToClipboard)
+                // Copy path to clipboard only when clipboard writer is off
+                if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                     link.WriteToClipboard();
 
                 ritem.FilePath = ritem.Display = link;
@@ -101,6 +101,19 @@ namespace Captura.Models
         }
 
         public string Display => _loc.Imgur;
+
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Display;
     }

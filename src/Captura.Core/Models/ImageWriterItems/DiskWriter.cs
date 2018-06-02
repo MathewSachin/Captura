@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Captura.Models
 {
@@ -21,7 +22,7 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
         {
             try
             {
@@ -34,13 +35,13 @@ namespace Captura.Models
 
                 var fileName = FileName ?? Path.Combine(_settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
 
-                using (Image)
-                    Image.Save(fileName, Format);
+                Image.Save(fileName, Format);
 
                 Status.LocalizationKey = nameof(LanguageManager.ImgSavedDisk);
                 Recents.Add(fileName, RecentItemType.Image, false);
 
-                if (_settings.CopyOutPathToClipboard)
+                // Copy path to clipboard only when clipboard writer is off
+                if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                     fileName.WriteToClipboard();
 
                 _systemTray.ShowScreenShotNotification(fileName);
@@ -51,9 +52,24 @@ namespace Captura.Models
 
                 Status.LocalizationKey = nameof(LanguageManager.NotSaved);
             }
+
+            return Task.CompletedTask;
         }
 
         public string Display => LanguageManager.Instance.Disk;
+
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Display;
     }
