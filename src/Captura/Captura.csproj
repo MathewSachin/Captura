@@ -77,6 +77,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="SourcePicker.xaml.cs">
+      <DependentUpon>SourcePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LicensesWindow.xaml.cs">
       <DependentUpon>LicensesWindow.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="SourcePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LicensesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
