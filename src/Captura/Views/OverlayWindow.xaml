@@ -1,0 +1,376 @@
+﻿<Window x:Class="Captura.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        mc:Ignorable="d"
+        Title="Overlays"
+        Height="800"
+        Width="1200">
+    <Grid Background="{DynamicResource WindowBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="350"/>
+        </Grid.ColumnDefinitions>
+        
+        <TabControl Grid.Column="2"
+                    Background="Transparent"
+                    BorderThickness="0">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <mui:TransitioningContentControl Content="{Binding}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <TabItem Header="Keystrokes">
+                <ScrollViewer DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                    <StackPanel Margin="5"
+                                DataContext="{Binding Settings.Keystrokes}">
+                        <local:TextOverlaySettingsControl/>
+
+                        <Grid Margin="0,3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="85"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5">
+                                <TextBlock TextWrapping="Wrap"
+                                           Text="{local:Loc MaxTextLength}"/>
+                            </Label>
+                            <xctk:IntegerUpDown Minimum="1"
+                                                Value="{Binding MaxTextLength, Mode=TwoWay}"
+                                                Grid.Column="1"
+                                                Margin="0,5"/>
+
+                            <Label Content="{local:Loc Timeout}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="1"/>
+                            <xctk:IntegerUpDown Value="{Binding Timeout, Mode=TwoWay}"
+                                                Minimum="1"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="0,5"/>
+
+                            <Label Content="History Count"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="2"/>
+                            <xctk:IntegerUpDown Value="{Binding HistoryCount, Mode=TwoWay}"
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                Minimum="1"
+                                                Margin="0,5"/>
+
+                            <Label Content="History Spacing"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="3"/>
+                            <xctk:IntegerUpDown Value="{Binding HistorySpacing, Mode=TwoWay}"
+                                                Grid.Row="3"
+                                                Grid.Column="1"
+                                                Margin="0,5"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Mouse">
+                <ScrollViewer DockPanel.Dock="Right">
+                    <StackPanel DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                        <Expander Margin="5"
+                                  IsExpanded="True">
+                            <Expander.Header>
+                                <Label Content="Mouse Pointer"/>
+                            </Expander.Header>
+
+                            <StackPanel Margin="5"
+                                        DataContext="{Binding Settings.MousePointerOverlay}">
+
+                                <CheckBox Content="Display"
+                                          IsChecked="{Binding Display, Mode=TwoWay}"
+                                          Margin="0,5"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Content="{local:Loc Radius}"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"/>
+                                    <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
+                                                        Minimum="1"
+                                                        Margin="0,5"
+                                                        Grid.Column="1"/>
+
+                                    <Label Content="{local:Loc Color}"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"
+                                           Grid.Row="1"/>
+                                    <xctk:ColorPicker SelectedColor="{Binding Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      Margin="0,5"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="Border"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"/>
+
+                                    <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
+                                                        Grid.Column="1"
+                                                        Margin="5"/>
+
+                                    <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Column="2"
+                                                      Margin="0,5"/>
+                                </Grid>
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Margin="5"
+                                  IsExpanded="True">
+                            <Expander.Header>
+                                <Label Content="{local:Loc MouseClicks}"/>
+                            </Expander.Header>
+
+                            <StackPanel Margin="5"
+                                        DataContext="{Binding Settings.Clicks}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Content="{local:Loc Radius}"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"/>
+                                    <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
+                                                        Minimum="1"
+                                                        Margin="0,5"
+                                                        Grid.Column="1"/>
+
+                                    <Label Content="{local:Loc Color}"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"
+                                           Grid.Row="1"/>
+                                    <xctk:ColorPicker SelectedColor="{Binding Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      Margin="0,5"/>
+
+                                    <Label Content="Right Click Color"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"
+                                           Grid.Row="2"/>
+                                    <xctk:ColorPicker SelectedColor="{Binding RightClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Row="2"
+                                                      Grid.Column="1"
+                                                      Margin="0,5"/>
+
+                                    <Label Content="Middle Click Color"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"
+                                           Grid.Row="3"/>
+                                    <xctk:ColorPicker SelectedColor="{Binding MiddleClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Row="3"
+                                                      Grid.Column="1"
+                                                      Margin="0,5"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="Border"
+                                           ContentStringFormat="{}{0}: "
+                                           Margin="0,5,5,5"/>
+
+                                    <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
+                                                        Grid.Column="1"
+                                                        Margin="5"/>
+
+                                    <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                                      Grid.Column="2"
+                                                      Margin="0,5"/>
+                                </Grid>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Webcam"
+                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <StackPanel Margin="5"
+                            DataContext="{Binding Settings.WebcamOverlay}">
+                    <local:ImageOverlaySettingsControl/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Text">
+                <DockPanel DataContext="{Binding MainViewModel.CustomOverlays, Source={StaticResource ServiceLocator}}">
+                    <DockPanel DockPanel.Dock="Top">
+                        <local:ModernButton ToolTip="Add"
+                                            Command="{Binding AddCommand}"
+                                            IconData="{StaticResource Icon_Add}"
+                                            DockPanel.Dock="Right"/>
+                        <Label Content="Supported Replacement Tokens: %elapsed%"/>
+                    </DockPanel>
+
+                    <ListView Margin="5"
+                              ItemsSource="{Binding Collection}"
+                              Name="ItemsControl"
+                              SelectionChanged="ItemsControl_OnSelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Overlay"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <GridSplitter Width="1"/>
+
+                    <DockPanel DataContext="{Binding SelectedItem, ElementName=ItemsControl}"
+                               Margin="10"
+                               VerticalAlignment="Top"
+                               IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                        <local:TextOverlaySettingsControl Margin="0,5"
+                                                          DockPanel.Dock="Bottom"/>
+
+                        <DockPanel DockPanel.Dock="Top">
+                            <local:ModernButton ToolTip="Remove"
+                                                Command="{Binding DataContext.RemoveCommand, ElementName=ItemsControl}"
+                                                CommandParameter="{Binding}"
+                                                IconData="{StaticResource Icon_Close}"
+                                                DockPanel.Dock="Right"/>
+
+                            <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                                      Content="Display"/>
+                        </DockPanel>
+
+                        <Label Content="Text"
+                               ContentStringFormat="{}{0}: "/>
+
+                        <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5,0"/>
+                    </DockPanel>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Images">
+                <DockPanel DataContext="{Binding MainViewModel.CustomImageOverlays, Source={StaticResource ServiceLocator}}">
+                    <DockPanel DockPanel.Dock="Top">
+                        <local:ModernButton ToolTip="Add"
+                                            Command="{Binding AddCommand}"
+                                            IconData="{StaticResource Icon_Add}"
+                                            DockPanel.Dock="Right"/>
+
+                        <Label Content="Images can be used as watermarks"/>
+                    </DockPanel>
+
+                    <ListView Margin="5"
+                              ItemsSource="{Binding Collection}"
+                              Name="ImagesItemsControl"
+                              SelectionChanged="ItemsControl_OnSelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Image"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <GridSplitter Width="1"/>
+
+                    <DockPanel DataContext="{Binding SelectedItem, ElementName=ImagesItemsControl}"
+                               Margin="10"
+                               VerticalAlignment="Top"
+                               IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                        <local:ImageOverlaySettingsControl DockPanel.Dock="Bottom"
+                                                           Margin="0,5"/>
+
+                        <DockPanel DockPanel.Dock="Top">
+                            <local:ModernButton ToolTip="Remove"
+                                                Command="{Binding DataContext.RemoveCommand, ElementName=ImagesItemsControl}"
+                                                CommandParameter="{Binding}"
+                                                IconData="{StaticResource Icon_Close}"
+                                                DockPanel.Dock="Right"/>
+
+                            <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                                      Content="Display"/>
+                        </DockPanel>
+
+                        <Label Content="Source"
+                               ContentStringFormat="{}{0}: "/>
+
+                        <Button Content="..."
+                                DockPanel.Dock="Right"
+                                Command="{Binding DataContext.ChangeCommand, ElementName=ImagesItemsControl}"
+                                CommandParameter="{Binding}"/>
+
+                        <TextBox Text="{Binding Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="5,0"/>
+                    </DockPanel>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+
+        <GridSplitter Width="3"
+                      Grid.Column="1"
+                      Opacity="0.3"
+                      Background="{StaticResource ItemText}"/>
+        
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top"
+                       Text="Positioning"
+                       Background="#B7333333"
+                       Foreground="White"
+                       Padding="5"
+                       Style="{StaticResource Heading1}"/>
+
+            <TextBlock Text="Not to Scale"
+                       DockPanel.Dock="Bottom"
+                       Padding="5"
+                       Background="#B7333333"
+                       Foreground="White"/>
+
+            <Grid Name="Grid"
+                  Background="Transparent">
+                <TextBlock Style="{StaticResource Heading1}"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Text="{Binding Tag, ElementName=Grid, Mode=OneWay}"/>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -446,9 +446,6 @@ namespace Captura.ViewModels
             // Remember things if not console.
             if (_persist)
             {
-                CustomOverlays.Dispose();
-                CustomImageOverlays.Dispose();
-
                 Remember();
 
                 Settings.Save();
