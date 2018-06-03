@@ -215,13 +215,15 @@
                       Margin="0,5,0,0"/>
         </Grid>
 
-        <Label Content="{local:Loc Audio}"
-               FontWeight="Bold"
-               Margin="10,15,0,3"
-               FontSize="15"/>
+        <CheckBox Content="{local:Loc Audio}"
+                  IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
+                  IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                  FontWeight="Bold"
+                  Margin="10,15,0,3"
+                  FontSize="15"/>
         
         <ScrollViewer Height="90"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                      IsEnabled="{Binding Settings.Audio.Enabled}">
             <StackPanel>
                 <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources}">
                     <ItemsControl.ItemTemplate>

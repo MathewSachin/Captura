@@ -2,6 +2,12 @@
 {
     public class AudioSettings : PropertyStore
     {
+        public bool Enabled
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
         public string[] Microphones
         {
             get => Get(new string[0]);
