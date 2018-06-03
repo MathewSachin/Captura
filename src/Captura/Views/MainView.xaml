@@ -219,40 +219,55 @@
                FontWeight="Bold"
                Margin="10,15,0,3"
                FontSize="15"/>
-
-        <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Mic}"
-                  Width="15"
-                  Height="15"
-                  Margin="10,0,0,0"
-                  Stretch="Uniform"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  ToolTip="{local:Loc MicSource}"/>
-            <ComboBox VerticalAlignment="Center" 
-                      Margin="7,0"
-                      ItemsSource="{Binding AudioSource.AvailableRecordingSources}"
-                      SelectedValue="{Binding AudioSource.SelectedRecordingSource, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-        </DockPanel>
         
-        <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Speaker}"
-                  Width="15"
-                  Height="15"
-                  Margin="10,0,0,0"
-                  Stretch="Uniform"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  ToolTip="{local:Loc LoopbackSource}"/>
-            <ComboBox VerticalAlignment="Center" 
-                      Margin="7,0"
-                      ItemsSource="{Binding AudioSource.AvailableLoopbackSources}"
-                      SelectedValue="{Binding AudioSource.SelectedLoopbackSource, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-        </DockPanel>
+        <ScrollViewer Height="90"
+                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Margin="10,5,0,5"
+                                      IsChecked="{Binding Active, Mode=TwoWay}">
+                                <DockPanel>
+                                    <Path Data="{StaticResource Icon_Mic}"
+                                          Width="15"
+                                          Height="15"
+                                          Margin="5,0"
+                                          Stretch="Uniform"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          ToolTip="{local:Loc MicSource}"/>
+                            
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                                </DockPanel>
+                            </CheckBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding AudioSource.AvailableLoopbackSources}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Margin="10,5,0,5"
+                                      IsChecked="{Binding Active, Mode=TwoWay}">
+                                <DockPanel>
+                                    <Path Data="{StaticResource Icon_Speaker}"
+                                          Width="15"
+                                          Height="15"
+                                          Margin="5,0"
+                                          Stretch="Uniform"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          ToolTip="{local:Loc LoopbackSource}"/>
+
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                                </DockPanel>
+                            </CheckBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">

@@ -90,18 +90,7 @@ namespace Captura.ViewModels
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            AudioSource.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(AudioSource.SelectedRecordingSource):
-                    case nameof(AudioSource.SelectedLoopbackSource):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }
-            };
+            AudioSource.AudioSourceActiveChanged += CheckFunctionalityAvailability;
 
             VideoViewModel.PropertyChanged += (Sender, Args) =>
             {
@@ -197,22 +186,26 @@ namespace Captura.ViewModels
             #endregion
 
             #region Audio
-            var lastMicName = AudioSource.SelectedRecordingSource?.Name;
-            var lastSpeakerName = AudioSource.SelectedLoopbackSource?.Name;
+            var lastMicNames = AudioSource.AvailableRecordingSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
+
+            var lastSpeakerNames = AudioSource.AvailableLoopbackSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
 
             AudioSource.Refresh();
 
-            var matchingMic = AudioSource.AvailableRecordingSources.FirstOrDefault(M => M.Name == lastMicName);
-            var matchingSpeaker = AudioSource.AvailableLoopbackSources.FirstOrDefault(M => M.Name == lastSpeakerName);
-
-            if (matchingMic != null)
+            foreach (var source in AudioSource.AvailableRecordingSources)
             {
-                AudioSource.SelectedRecordingSource = matchingMic;
+                source.Active = lastMicNames.Contains(source.Name);
             }
 
-            if (matchingSpeaker != null)
+            foreach (var source in AudioSource.AvailableLoopbackSources)
             {
-                AudioSource.SelectedLoopbackSource = matchingSpeaker;
+                source.Active = lastSpeakerNames.Contains(source.Name);
             }
             #endregion
 
@@ -311,22 +304,22 @@ namespace Captura.ViewModels
                 }
             }
             
-            // Restore Microphone
-            if (!string.IsNullOrEmpty(Settings.Audio.Microphone))
+            // Restore Microphones
+            if (Settings.Audio.Microphones != null)
             {
-                var source = AudioSource.AvailableRecordingSources.FirstOrDefault(C => C.ToString() == Settings.Audio.Microphone);
-
-                if (source != null)
-                    AudioSource.SelectedRecordingSource = source;
+                foreach (var source in AudioSource.AvailableRecordingSources)
+                {
+                    source.Active = Settings.Audio.Microphones.Contains(source.Name);
+                }
             }
 
-            // Restore Loopback Speaker
-            if (!string.IsNullOrEmpty(Settings.Audio.Speaker))
+            // Restore Loopback Speakers
+            if (Settings.Audio.Speakers != null)
             {
-                var source = AudioSource.AvailableLoopbackSources.FirstOrDefault(C => C.ToString() == Settings.Audio.Speaker);
-
-                if (source != null)
-                    AudioSource.SelectedLoopbackSource = source;
+                foreach (var source in AudioSource.AvailableLoopbackSources)
+                {
+                    source.Active = Settings.Audio.Speakers.Contains(source.Name);
+                }
             }
 
             // Restore ScreenShot Format
@@ -416,8 +409,15 @@ namespace Captura.ViewModels
             Settings.Video.Writer = VideoViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            Settings.Audio.Microphone = AudioSource.SelectedRecordingSource.ToString();
-            Settings.Audio.Speaker = AudioSource.SelectedLoopbackSource.ToString();
+            Settings.Audio.Microphones = AudioSource.AvailableRecordingSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
+
+            Settings.Audio.Speakers = AudioSource.AvailableLoopbackSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
             
             // Remember ScreenShot Format
             Settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();

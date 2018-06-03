@@ -293,14 +293,14 @@ namespace Captura
         {
             var source = ViewModel.AudioSource;
 
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count - 1)
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count)
             {
-                source.SelectedRecordingSource = source.AvailableRecordingSources[StartOptions.Microphone + 1];
+                source.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count - 1)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count)
             {
-                source.SelectedLoopbackSource = source.AvailableLoopbackSources[StartOptions.Speaker + 1];
+                source.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }
 

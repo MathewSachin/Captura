@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ManagedBass;
 using ManagedBass.Mix;
 using System.Runtime.InteropServices;
@@ -14,56 +15,75 @@ namespace Captura.Models
     /// </summary>
     public class MixedAudioProvider : IAudioProvider
     {
-        readonly int _silence, _loopback, _recording, _mixer;
-        
+        readonly List<int> _silence = new List<int>();
+        readonly List<int> _loopback = new List<int>();
+        readonly List<int> _recording = new List<int>();
+        readonly int _mixer;
+
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        /// <param name="RecordingDevice">Index of Recording Device. null = No Microphone Recording.</param>
-        /// <param name="LoopbackDevice">Index of Loopback Device. null = No Loopback Recording.</param>
-        /// <exception cref="InvalidOperationException">Can't Record when both <paramref name="LoopbackDevice"/> and <paramref name="RecordingDevice"/> are null.</exception>
-        public MixedAudioProvider(int? RecordingDevice, int? LoopbackDevice)
+        /// <param name="RecordingDevices">Indices of Recording Devices.</param>
+        /// <param name="LoopbackDevices">Indices of Loopback Devices.</param>
+        public MixedAudioProvider(IReadOnlyCollection<int> RecordingDevices, IReadOnlyCollection<int> LoopbackDevices)
         {
-            if (RecordingDevice == null && LoopbackDevice == null)
+            if (RecordingDevices == null || LoopbackDevices == null)
+                throw new ArgumentNullException();
+
+            if (RecordingDevices.Count + LoopbackDevices.Count == 0)
                 throw new InvalidOperationException("Nothing to Record.");
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
-            
-            if (RecordingDevice != null)
+
+            foreach (var recordingDevice in RecordingDevices)
             {
-                Bass.RecordInit(RecordingDevice.Value);
-                Bass.CurrentRecordingDevice = RecordingDevice.Value;
-
-                var info = Bass.RecordingInfo;
-                
-                _recording = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
-
-                BassMix.MixerAddChannel(_mixer, _recording, BassFlags.MixerDownMix);
+                InitRecordingDevice(recordingDevice);
             }
 
-            if (LoopbackDevice != null)
+            foreach (var loopbackDevice in LoopbackDevices)
             {
-                var playbackDevice = FindPlaybackDevice(LoopbackDevice.Value);
-
-                Bass.Init(playbackDevice);
-                Bass.CurrentDevice = playbackDevice;
-
-                _silence = Bass.CreateStream(44100, 2, BassFlags.Float, ManagedBass.Extensions.SilenceStreamProcedure);
-
-                Bass.RecordInit(LoopbackDevice.Value);
-                Bass.CurrentRecordingDevice = LoopbackDevice.Value;
-
-                var info = Bass.RecordingInfo;
-                
-                _loopback = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
-
-                BassMix.MixerAddChannel(_mixer, _loopback, BassFlags.MixerDownMix);
+                InitLoopbackDevice(loopbackDevice);
             }
             
             // mute the mixer
             Bass.ChannelSetAttribute(_mixer, ChannelAttribute.Volume, 0);
 
             Bass.ChannelSetDSP(_mixer, Procedure);
+        }
+
+        void InitRecordingDevice(int RecordingDevice)
+        {
+            Bass.RecordInit(RecordingDevice);
+            Bass.CurrentRecordingDevice = RecordingDevice;
+
+            var info = Bass.RecordingInfo;
+
+            var handle = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
+
+            _recording.Add(handle);
+
+            BassMix.MixerAddChannel(_mixer, handle, BassFlags.MixerDownMix);
+        }
+
+        void InitLoopbackDevice(int LoopbackDevice)
+        {
+            var playbackDevice = FindPlaybackDevice(LoopbackDevice);
+
+            Bass.Init(playbackDevice);
+            Bass.CurrentDevice = playbackDevice;
+
+            _silence.Add(Bass.CreateStream(44100, 2, BassFlags.Float, ManagedBass.Extensions.SilenceStreamProcedure));
+
+            Bass.RecordInit(LoopbackDevice);
+            Bass.CurrentRecordingDevice = LoopbackDevice;
+
+            var info = Bass.RecordingInfo;
+
+            var handle = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
+
+            _loopback.Add(handle);
+
+            BassMix.MixerAddChannel(_mixer, handle, BassFlags.MixerDownMix);
         }
 
         static int FindPlaybackDevice(int LoopbackDevice)
@@ -106,10 +126,10 @@ namespace Captura.Models
         {
             Bass.StreamFree(_mixer);
 
-            Bass.StreamFree(_recording);
-            Bass.StreamFree(_loopback);
+            _recording.ForEach(M => Bass.StreamFree(M));
+            _loopback.ForEach(M => Bass.StreamFree(M));
 
-            Bass.StreamFree(_silence);
+            _silence.ForEach(M => Bass.StreamFree(M));
         }
 
         /// <summary>
@@ -117,10 +137,10 @@ namespace Captura.Models
         /// </summary>
         public void Start()
         {
-            Bass.ChannelPlay(_silence);
+            _silence.ForEach(M => Bass.ChannelPlay(M));
 
-            Bass.ChannelPlay(_recording);
-            Bass.ChannelPlay(_loopback);
+            _recording.ForEach(M => Bass.ChannelPlay(M));
+            _loopback.ForEach(M => Bass.ChannelPlay(M));
 
             Bass.ChannelPlay(_mixer);
         }
@@ -132,10 +152,10 @@ namespace Captura.Models
         {
             Bass.ChannelPause(_mixer);
 
-            Bass.ChannelPause(_recording);
-            Bass.ChannelPause(_loopback);
+            _recording.ForEach(M => Bass.ChannelPause(M));
+            _loopback.ForEach(M => Bass.ChannelPause(M));
 
-            Bass.ChannelPause(_silence);
+            _silence.ForEach(M => Bass.ChannelPause(M));
         }
     }
 }
