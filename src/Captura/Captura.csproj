@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageEditorWindow.xaml.cs">
+      <DependentUpon>ImageEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\HitType.cs" />
     <Compile Include="Presentation\Controls\LayerFrame.xaml.cs">
       <DependentUpon>LayerFrame.xaml</DependentUpon>
@@ -182,6 +185,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="ImageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Controls\LayerFrame.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

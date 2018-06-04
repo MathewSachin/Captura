@@ -1,0 +1,40 @@
+﻿<Window x:Class="Captura.ImageEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura"
+        mc:Ignorable="d"
+        Title="Image Editor"
+        Height="320"
+        Width="415">
+    <DockPanel>
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Bottom">
+            <Button Content="Grayscale"
+                    Background="Gray"
+                    Foreground="White"
+                    Click="GrayscaleClick"/>
+            <Button Content="Sepia"
+                    Background="Chocolate"
+                    Foreground="White"
+                    Click="SepiaClick"/>
+            <Button Content="Negative"
+                    Click="NegativeClick"/>
+            <Button Content="Red"
+                    Click="RedClick"
+                    Background="Red"
+                    Foreground="White"/>
+            <Button Content="Green"
+                    Click="GreenClick"
+                    Background="Green"
+                    Foreground="White"/>
+            <Button Content="Blue"
+                    Click="BlueClick"
+                    Background="Blue"
+                    Foreground="White"/>
+        </StackPanel>
+        
+        <Image Name="Img"/>
+    </DockPanel>
+</Window>
