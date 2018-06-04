@@ -12,7 +12,6 @@
         AllowsTransparency="True"
         Topmost="True"
         ResizeMode="NoResize"
-        Background="#57FFFFFF"
         WindowState="Maximized">
     <Window.InputBindings>
         <KeyBinding Command="Close"
@@ -22,6 +21,11 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Grid>
+    <Grid Background="#57FFFFFF">
+        <TextBlock Text="Press Esc to Cancel"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   Style="{StaticResource Title}"/>
     </Grid>
 </Window>
