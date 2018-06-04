@@ -1,6 +1,6 @@
 ﻿namespace Captura.Models
 {
-    class BassItem : NotifyPropertyChanged, IAudioItem
+    public class BassItem : NotifyPropertyChanged, IAudioItem
     {
         public int Id { get; }
 

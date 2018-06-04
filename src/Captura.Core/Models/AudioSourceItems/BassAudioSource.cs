@@ -31,19 +31,8 @@ namespace Captura.Models
 
         public override IAudioProvider GetAudioProvider()
         {
-            var rec = AvailableRecordingSources
-                .Where(M => M.Active)
-                .Cast<BassItem>()
-                .Select(M => M.Id)
-                .ToArray();
-
-            var loop = AvailableLoopbackSources
-                .Where(M => M.Active)
-                .Cast<BassItem>()
-                .Select(M => M.Id)
-                .ToArray();
-
-            return rec.Length + loop.Length == 0 ? null : new MixedAudioProvider(rec, loop);
+            return new MixedAudioProvider(AvailableRecordingSources.Cast<BassItem>(),
+                AvailableLoopbackSources.Cast<BassItem>());
         }
 
         protected override void OnRefresh()
