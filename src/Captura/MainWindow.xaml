@@ -230,9 +230,9 @@
                                     <Frame Source="Views/HotkeyView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="Overlays">
-                                    <ScrollViewer>
-                                        <Frame Source="Views/OverlaysView.xaml"/>
-                                    </ScrollViewer>
+                                    <Button Content="Manage Overlays"
+                                            Click="OpenOverlayManager"
+                                            VerticalAlignment="Top"/>
                                 </TabItem>
                                 <TabItem Header="FFMpeg">
                                     <Frame Source="Views/FFMpegView.xaml"/>

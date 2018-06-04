@@ -79,7 +79,6 @@
     <Compile Include="Models\AudioSourceItems\BassItem.cs" />
     <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\NoSoundItem.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
     <Compile Include="Models\Discard\DiscardWriterItem.cs" />
@@ -144,6 +143,7 @@
     <Compile Include="PropertyStore.cs" />
     <Compile Include="ViewModels\ArraySettingsViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
+    <Compile Include="ViewModels\CustomOverlaysBaseViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />

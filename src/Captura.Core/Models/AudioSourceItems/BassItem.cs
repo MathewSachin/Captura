@@ -1,23 +1,29 @@
-﻿using Screna.Audio;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
-    class BassItem : NotifyPropertyChanged, IAudioItem
+    public class BassItem : NotifyPropertyChanged, IAudioItem
     {
-        readonly int _id;
+        public int Id { get; }
 
         public BassItem(int Id, string Name)
         {
-            _id = Id;
+            this.Id = Id;
             this.Name = Name;
         }
 
-        public static IAudioProvider GetAudioProvider(BassItem RecordingDevice, BassItem LoopbackDevice)
-        {
-            return new MixedAudioProvider(RecordingDevice?._id, LoopbackDevice?._id);
-        }
-
         public string Name { get; }
+
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Name;
     }

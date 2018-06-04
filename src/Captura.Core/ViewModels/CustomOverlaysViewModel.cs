@@ -1,8 +1,8 @@
 ﻿namespace Captura.ViewModels
 {
-    public class CustomOverlaysViewModel : ArraySettingsViewModel<CustomOverlaySettings>
+    public class CustomOverlaysViewModel : CustomOverlaysBaseViewModel<CustomOverlaySettings>
     {
-        public CustomOverlaysViewModel() : base("CustomOverlays.json")
+        public CustomOverlaysViewModel(Settings Settings) : base(Settings.TextOverlays)
         {
         }
     }

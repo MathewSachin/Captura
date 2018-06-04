@@ -76,10 +76,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\HitType.cs" />
+    <Compile Include="Presentation\Controls\LayerFrame.xaml.cs">
+      <DependentUpon>LayerFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
     <Compile Include="Models\VideoSourcePicker.cs" />
     <Compile Include="Presentation\Controls\WindowPicker.xaml.cs">
       <DependentUpon>WindowPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OverlayWindow.xaml.cs">
+      <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LicensesWindow.xaml.cs">
       <DependentUpon>LicensesWindow.xaml</DependentUpon>
@@ -162,9 +169,6 @@
     <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OverlaysView.xaml.cs">
-      <DependentUpon>OverlaysView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ExtrasView.xaml.cs">
       <DependentUpon>ExtrasView.xaml</DependentUpon>
     </Compile>
@@ -185,6 +189,14 @@
     <Page Include="Presentation\Controls\WindowPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Controls\LayerFrame.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OverlayWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LicensesWindow.xaml">
       <SubType>Designer</SubType>
@@ -279,10 +291,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConfigView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\OverlaysView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
