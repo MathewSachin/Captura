@@ -21,6 +21,15 @@ namespace Captura
             };
         }
 
+        public static readonly DependencyProperty CanResizeProperty = DependencyProperty.Register(
+            "CanResize", typeof(bool), typeof(LayerFrame), new PropertyMetadata(true));
+
+        public bool CanResize
+        {
+            get => (bool) GetValue(CanResizeProperty);
+            set => SetValue(CanResizeProperty, value);
+        }
+
         HitType _mouseHitType = HitType.None;
 
         Point _lastPoint;
@@ -41,6 +50,9 @@ namespace Captura
             {
                 return HitType.None;
             }
+
+            if (!CanResize)
+                return HitType.Body;
 
             const int gap = 10;
 

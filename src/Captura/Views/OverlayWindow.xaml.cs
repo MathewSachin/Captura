@@ -133,6 +133,7 @@ namespace Captura
             var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
             
             control.FontSize = Settings.FontSize;
+            control.CanResize = false;
 
             control.Padding = new Thickness(Settings.HorizontalPadding,
                 Settings.VerticalPadding,
