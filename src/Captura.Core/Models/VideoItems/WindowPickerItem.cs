@@ -15,7 +15,20 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
-        public string Name { get; } = "Window Picker";
+        const string WindowPickerName = "Window Picker";
+
+        string _name = WindowPickerName;
+
+        public string Name
+        {
+            get => _name;
+            private set
+            {
+                _name = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
@@ -25,8 +38,12 @@ namespace Captura.Models
             {
                 Transform = null;
 
+                Name = WindowPickerName;
+
                 return null;
             }
+
+            Name = $"{WindowPickerName} ({window.Title})";
 
             return new WindowProvider(window, IncludeCursor, out Transform);
         }

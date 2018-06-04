@@ -78,8 +78,8 @@
     </ApplicationDefinition>
     <Compile Include="Models\PreviewWindowService.cs" />
     <Compile Include="Models\VideoSourcePicker.cs" />
-    <Compile Include="SourcePicker.xaml.cs">
-      <DependentUpon>SourcePicker.xaml</DependentUpon>
+    <Compile Include="Presentation\Controls\WindowPicker.xaml.cs">
+      <DependentUpon>WindowPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LicensesWindow.xaml.cs">
       <DependentUpon>LicensesWindow.xaml</DependentUpon>
@@ -182,7 +182,7 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
-    <Page Include="SourcePicker.xaml">
+    <Page Include="Presentation\Controls\WindowPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

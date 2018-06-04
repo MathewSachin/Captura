@@ -6,7 +6,7 @@ namespace Captura.Models
     {
         public Window PickWindow()
         {
-            var picker = new SourcePicker();
+            var picker = new WindowPicker();
 
             picker.ShowDialog();
 

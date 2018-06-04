@@ -11,9 +11,9 @@ using Window = Screna.Window;
 
 namespace Captura
 {
-    public partial class SourcePicker
+    public partial class WindowPicker
     {
-        public SourcePicker()
+        public WindowPicker()
         {
             InitializeComponent();
 
