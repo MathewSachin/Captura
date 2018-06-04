@@ -14,7 +14,10 @@ namespace Captura
             Bind<IRegionProvider>().To<RegionSelector>().InSingletonScope();
             Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
             Bind<IPreviewWindow>().To<PreviewWindowService>().InSingletonScope();
+            Bind<IVideoSourcePicker>().To<VideoSourcePicker>().InSingletonScope();
+
             Rebind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
+            
             Bind<AboutViewModel>().ToSelf().InSingletonScope();
 
             // Bind as a Function to ensure the UI objects are referenced only after they have been created.

@@ -77,6 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Models\VideoSourcePicker.cs" />
     <Compile Include="SourcePicker.xaml.cs">
       <DependentUpon>SourcePicker.xaml</DependentUpon>
     </Compile>

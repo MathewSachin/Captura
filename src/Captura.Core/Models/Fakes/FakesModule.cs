@@ -12,6 +12,7 @@ namespace Captura
             Bind<ISystemTray>().To<FakeSystemTray>().InSingletonScope();
             Bind<IMainWindow>().To<FakeWindowProvider>().InSingletonScope();
             Bind<IPreviewWindow>().To<FakePreviewWindow>().InSingletonScope();
+            Bind<IVideoSourcePicker>().To<FakeVideoSourcePicker>().InSingletonScope();
         }
     }
 }

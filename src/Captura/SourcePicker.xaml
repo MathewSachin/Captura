@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Captura"
         mc:Ignorable="d"
         Title="Source Picker"
-        d:DesignHeight="300"
-        d:DesignWidth="300"
+        d:DesignHeight="600"
+        d:DesignWidth="800"
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
@@ -21,11 +21,24 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Grid Background="#57FFFFFF">
-        <TextBlock Text="Press Esc to Cancel"
+    <Grid Background="#57FFFFFF"
+          MouseMove="WindowMouseMove"
+          MouseLeftButtonDown="WindowMouseLeftButtonDown">
+        <TextBlock Text="Select Window or Press Esc to Cancel"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Foreground="White"
                    Style="{StaticResource Title}"/>
+        
+        <Border BorderThickness="5"
+                Visibility="Collapsed"
+                Background="#57FFFFFF"
+                Name="WindowBorder"
+                BorderBrush="#333333"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,30,0,0"
+                Width="300"
+                Height="200"/>
     </Grid>
 </Window>

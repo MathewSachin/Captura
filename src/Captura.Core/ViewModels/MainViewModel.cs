@@ -628,6 +628,11 @@ namespace Captura.ViewModels
                 return false;
             }
 
+            if (VideoViewModel.SelectedVideoSource is WindowPickerItem && imgProvider == null)
+            {
+                return false;
+            }
+
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider
                 && Settings.Gif.VariableFrameRate
                 && imgProvider is DeskDuplImageProvider deskDuplImageProvider)
