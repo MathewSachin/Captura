@@ -1,7 +1,6 @@
 ﻿using Screna.Audio;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Captura.Models
 {
@@ -29,17 +28,8 @@ namespace Captura.Models
             OnRefresh();
         }
 
-        public bool AudioAvailable => AvailableRecordingSources.Count(M => M.Active) + AvailableLoopbackSources.Count(M => M.Active) > 0;
-
         protected abstract void OnRefresh();
 
         public abstract IAudioProvider GetAudioProvider();
-
-        public static event Action AudioSourceActiveChanged;
-
-        public static void RaiseAudioSourceActiveChanged()
-        {
-            AudioSourceActiveChanged?.Invoke();
-        }
     }
 }

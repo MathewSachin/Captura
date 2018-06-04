@@ -90,7 +90,17 @@ namespace Captura.ViewModels
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
-            AudioSource.AudioSourceActiveChanged += CheckFunctionalityAvailability;
+            Settings.Audio.PropertyChanged += (Sender, Args) =>
+            {
+                switch (Args.PropertyName)
+                {
+                    case nameof(Settings.Audio.Enabled):
+                    case null:
+                    case "":
+                        CheckFunctionalityAvailability();
+                        break;
+                }
+            };
 
             VideoViewModel.PropertyChanged += (Sender, Args) =>
             {
@@ -469,7 +479,7 @@ namespace Captura.ViewModels
         
         void CheckFunctionalityAvailability()
         {
-            var audioAvailable = AudioSource.AudioAvailable;
+            var audioAvailable = Settings.Audio.Enabled;
 
             var videoAvailable = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
@@ -594,7 +604,7 @@ namespace Captura.ViewModels
 
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider)
             {
-                if (AudioSource.AudioAvailable)
+                if (Settings.Audio.Enabled)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo("Audio won't be included in the recording.\nDo you want to record?", "Gif does not support Audio"))
                     {
@@ -643,11 +653,14 @@ namespace Captura.ViewModels
 
             _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
-            IAudioProvider audioProvider;
+            IAudioProvider audioProvider = null;
 
             try
             {
-                audioProvider = AudioSource.GetAudioProvider();
+                if (Settings.Audio.Enabled)
+                {
+                    audioProvider = AudioSource.GetAudioProvider();
+                }
             }
             catch (Exception e)
             {
