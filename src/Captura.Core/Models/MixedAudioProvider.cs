@@ -32,6 +32,8 @@ namespace Captura.Models
 
         readonly Dictionary<int, LoopbackItem> _loopback = new Dictionary<int, LoopbackItem>();
         readonly Dictionary<int, RecordingItem> _recording = new Dictionary<int, RecordingItem>();
+        readonly int _filler; // Fill when no audio source is selected
+        bool _fillerAdded;
         readonly int _mixer;
         readonly object _syncLock = new object();
         bool _running;
@@ -45,6 +47,7 @@ namespace Captura.Models
                 throw new ArgumentNullException();
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
+            _filler = Bass.CreateStream(44100, 2, BassFlags.Float | BassFlags.Decode, ManagedBass.Extensions.SilenceStreamProcedure);
 
             foreach (var recordingDevice in RecordingDevices)
             {
@@ -61,7 +64,7 @@ namespace Captura.Models
 
             Bass.ChannelSetDSP(_mixer, Procedure);
         }
-
+        
         void InitRecordingDevice(BassItem RecordingDevice)
         {
             _recording.Add(RecordingDevice.Id, new RecordingItem
@@ -255,6 +258,8 @@ namespace Captura.Models
                     Bass.StreamFree(loop.SilenceStreamHandle);
                 }
 
+                Bass.StreamFree(_filler);
+
                 _running = false;
             }
         }
@@ -278,6 +283,14 @@ namespace Captura.Models
                 }
 
                 Bass.ChannelPlay(_mixer);
+
+                if (!_fillerAdded)
+                {
+                    // Add Filler only after mixer has started
+                    BassMix.MixerAddChannel(_mixer, _filler, BassFlags.Default);
+
+                    _fillerAdded = true;
+                }
 
                 _running = true;
             }
