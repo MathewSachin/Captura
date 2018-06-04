@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -29,11 +30,11 @@ namespace Captura
             Img.Source = _writableBmp;
         }
 
-        void ApplyEffect(Action EffectFunction)
+        async Task ApplyEffect(Action EffectFunction)
         {
             _imgSource.CopyPixels(_data, _stride, 0);
 
-            EffectFunction?.Invoke();
+            await Task.Run(EffectFunction);
 
             _writableBmp.WritePixels(new Int32Rect(0, 0, _imgSource.PixelWidth, _imgSource.PixelHeight), _data, _stride, 0);
         }
@@ -78,9 +79,12 @@ namespace Captura
         {
             for (var i = 0; i < _data.Length; i += 4)
             {
-                var pixel = (byte)(0.299 * _data[i + 2] + 0.587 * _data[i + 1] + 0.114 * _data[i]);
+                var pixel = 0.299 * _data[i + 2] + 0.587 * _data[i + 1] + 0.114 * _data[i];
 
-                _data[i] = _data[i + 1] = _data[i + 2] = pixel;
+                if (pixel > 255)
+                    pixel = 255;
+
+                _data[i] = _data[i + 1] = _data[i + 2] = (byte)pixel;
             }
         }
 
@@ -92,45 +96,87 @@ namespace Captura
                 var green = _data[i + 1];
                 var red = _data[i + 2];
 
+                var newRed = 0.393 * red + 0.769 * green + 0.189 * blue;
+                var newGreen = 0.349 * red + 0.686 * green + 0.168 * blue;
+                var newBlue = 0.272 * red + 0.534 * green + 0.131 * blue;
+
                 // Red
-                _data[i + 2] = (byte)(0.393 * red + 0.769 * green + 0.189 * blue);
+                _data[i + 2] = (byte)(newRed > 255 ? 255 : newRed);
 
                 // Green
-                _data[i + 1] = (byte)(0.349 * red + 0.686 * green + 0.168 * blue);
+                _data[i + 1] = (byte)(newGreen > 255 ? 255 : newGreen);
 
                 // Blue
-                _data[i] = (byte)(0.272 * red + 0.534 * green + 0.131 * blue);
+                _data[i] = (byte)(newBlue > 255 ? 255 : newBlue);
             }
         }
 
-        void SepiaClick(object Sender, RoutedEventArgs E)
+        int _brightness;
+
+        void Brightness()
         {
-            ApplyEffect(Sepia);
+            for (var i = 0; i < _data.Length; i += 4)
+            {
+                for (var j = 0; j < 3; ++j)
+                {
+                    var val = _data[i + j] + _brightness;
+                    
+                    _data[i + j] = (byte)(val > 255 ? 255 : val);
+                }
+            }
         }
 
-        void GrayscaleClick(object Sender, RoutedEventArgs E)
+        async void SepiaClick(object Sender, RoutedEventArgs E)
         {
-            ApplyEffect(Grayscale);
+            await ApplyEffect(Sepia);
         }
 
-        void NegativeClick(object Sender, RoutedEventArgs E)
+        async void GrayscaleClick(object Sender, RoutedEventArgs E)
         {
-            ApplyEffect(Negative);
+            await ApplyEffect(Grayscale);
         }
 
-        void RedClick(object Sender, RoutedEventArgs E)
+        async void NegativeClick(object Sender, RoutedEventArgs E)
         {
-            ApplyEffect(Red);
+            await ApplyEffect(Negative);
         }
 
-        void GreenClick(object Sender, RoutedEventArgs E)
+        async void RedClick(object Sender, RoutedEventArgs E)
         {
-            ApplyEffect(Green);
+            await ApplyEffect(Red);
         }
 
-        void BlueClick(object Sender, RoutedEventArgs E)
+        async void GreenClick(object Sender, RoutedEventArgs E)
         {
-            ApplyEffect(Blue);
+            await ApplyEffect(Green);
+        }
+
+        async void BlueClick(object Sender, RoutedEventArgs E)
+        {
+            await ApplyEffect(Blue);
+        }
+
+        const int BrightnessStep = 10;
+
+        async void IncreaseBrightnessClick(object Sender, RoutedEventArgs E)
+        {
+            _brightness += BrightnessStep;
+
+            await ApplyEffect(Brightness);
+        }
+
+        async void DecreaseBrightnessClick(object Sender, RoutedEventArgs E)
+        {
+            _brightness -= BrightnessStep;
+
+            await ApplyEffect(Brightness);
+        }
+
+        async void ResetBrightnessClick(object Sender, RoutedEventArgs E)
+        {
+            _brightness = 0;
+
+            await ApplyEffect(Brightness);
         }
     }
 }

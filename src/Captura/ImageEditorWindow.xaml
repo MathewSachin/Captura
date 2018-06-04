@@ -34,7 +34,20 @@
                     Background="Blue"
                     Foreground="White"/>
         </StackPanel>
-        
+
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Right"
+                    Content="+"
+                    Click="IncreaseBrightnessClick"/>
+
+            <Button Content="-"
+                    Click="DecreaseBrightnessClick"/>
+            
+            <Button Content="Brightness"
+                    HorizontalContentAlignment="Center"
+                    Click="ResetBrightnessClick"/>
+        </DockPanel>
+
         <Image Name="Img"/>
     </DockPanel>
 </Window>
