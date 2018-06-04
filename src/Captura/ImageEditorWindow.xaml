@@ -48,6 +48,19 @@
                     Click="ResetBrightnessClick"/>
         </DockPanel>
 
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Right"
+                    Content="+"
+                    Click="IncreaseContrastClick"/>
+
+            <Button Content="-"
+                    Click="DecreaseContrastClick"/>
+
+            <Button Content="Contrast"
+                    HorizontalContentAlignment="Center"
+                    Click="ResetContrastClick"/>
+        </DockPanel>
+
         <Image Name="Img"/>
     </DockPanel>
 </Window>

@@ -126,6 +126,35 @@ namespace Captura
             }
         }
 
+        int _contrastThreshold;
+
+        void Contrast()
+        {
+            var contastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
+
+            for (var i = 0; i < _data.Length; i += 4)
+            {
+                var blue = ((_data[i] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
+                var green = ((_data[i + 1] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
+                var red = ((_data[i + 2] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
+
+                byte Clip(double Val)
+                {
+                    if (Val > 255)
+                        return 255;
+
+                    if (Val < 0)
+                        return 0;
+
+                    return (byte) Val;
+                }
+
+                _data[i] = Clip(blue);
+                _data[i + 1] = Clip(green);
+                _data[i + 2] = Clip(red);
+            }
+        }
+
         async void SepiaClick(object Sender, RoutedEventArgs E)
         {
             await ApplyEffect(Sepia);
@@ -177,6 +206,33 @@ namespace Captura
             _brightness = 0;
 
             await ApplyEffect(Brightness);
+        }
+
+        async void IncreaseContrastClick(object Sender, RoutedEventArgs E)
+        {
+            if (_contrastThreshold == 100)
+                return;
+
+            _contrastThreshold += 10;
+
+            await ApplyEffect(Contrast);
+        }
+
+        async void DecreaseContrastClick(object Sender, RoutedEventArgs E)
+        {
+            if (_contrastThreshold == -100)
+                return;
+
+            _contrastThreshold -= 10;
+
+            await ApplyEffect(Contrast);
+        }
+
+        async void ResetContrastClick(object Sender, RoutedEventArgs E)
+        {
+            _contrastThreshold = 0;
+
+            await ApplyEffect(Contrast);
         }
     }
 }
