@@ -11,14 +11,34 @@
     <Window.DataContext>
         <local:ImageEditorViewModel/>
     </Window.DataContext>
+    <Window.CommandBindings>
+        <CommandBinding Command="Close"
+                        Executed="Exit"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenCommand}"
+                    Key="O"
+                    Modifiers="Control"/>
+
+        <KeyBinding Command="{Binding SaveCommand}"
+                    Key="S"
+                    Modifiers="Control"/>
+    </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Open"
-                          Command="{Binding OpenCommand}"/>
+                          Command="{Binding OpenCommand}"
+                          InputGestureText="Ctrl + O"/>
                 
                 <MenuItem Header="Save"
-                          Command="{Binding SaveCommand}"/>
+                          Command="{Binding SaveCommand}"
+                          InputGestureText="Ctrl + S"/>
+                
+                <Separator/>
+                
+                <MenuItem Header="Exit"
+                          Command="Close"/>
             </MenuItem>
         </Menu>
         

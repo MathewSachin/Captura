@@ -310,5 +310,10 @@ namespace Captura
         {
             InitializeComponent();
         }
+
+        void Exit(object Sender, RoutedEventArgs E)
+        {
+            Close();
+        }
     }
 }
