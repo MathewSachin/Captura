@@ -50,39 +50,28 @@
                           Command="{Binding UndoCommand}"
                           InputGestureText="Ctrl + Z"/>
             </MenuItem>
+            
+            <MenuItem Header="Filters">
+                <MenuItem Header="Grayscale"
+                          CommandParameter="{x:Static local:ImageEffect.Grayscale}"
+                          Command="{Binding SetEffectCommand}"/>
+                <MenuItem Header="Sepia"
+                          CommandParameter="{x:Static local:ImageEffect.Sepia}"
+                          Command="{Binding SetEffectCommand}"/>
+                <MenuItem Header="Negative"
+                          CommandParameter="{x:Static local:ImageEffect.Negative}"
+                          Command="{Binding SetEffectCommand}"/>
+                <MenuItem Header="Red"
+                          CommandParameter="{x:Static local:ImageEffect.Red}"
+                          Command="{Binding SetEffectCommand}"/>
+                <MenuItem Header="Green"
+                          CommandParameter="{x:Static local:ImageEffect.Green}"
+                          Command="{Binding SetEffectCommand}"/>
+                <MenuItem Header="Blue"
+                          CommandParameter="{x:Static local:ImageEffect.Blue}"
+                          Command="{Binding SetEffectCommand}"/>
+            </MenuItem>
         </Menu>
-        
-        <StackPanel Orientation="Horizontal"
-                    DockPanel.Dock="Bottom">
-            <Button Content="Grayscale"
-                    Background="Gray"
-                    Foreground="White"
-                    CommandParameter="{x:Static local:ImageEffect.Grayscale}"
-                    Command="{Binding SetEffectCommand}"/>
-            <Button Content="Sepia"
-                    Background="Chocolate"
-                    Foreground="White"
-                    CommandParameter="{x:Static local:ImageEffect.Sepia}"
-                    Command="{Binding SetEffectCommand}"/>
-            <Button Content="Negative"
-                    CommandParameter="{x:Static local:ImageEffect.Negative}"
-                    Command="{Binding SetEffectCommand}"/>
-            <Button Content="Red"
-                    CommandParameter="{x:Static local:ImageEffect.Red}"
-                    Command="{Binding SetEffectCommand}"
-                    Background="Red"
-                    Foreground="White"/>
-            <Button Content="Green"
-                    CommandParameter="{x:Static local:ImageEffect.Green}"
-                    Command="{Binding SetEffectCommand}"
-                    Background="Green"
-                    Foreground="White"/>
-            <Button Content="Blue"
-                    CommandParameter="{x:Static local:ImageEffect.Blue}"
-                    Command="{Binding SetEffectCommand}"
-                    Background="Blue"
-                    Foreground="White"/>
-        </StackPanel>
 
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right"
@@ -116,7 +105,6 @@
                     Command="{Binding SetContrastCommand}"/>
         </DockPanel>
 
-        <Image Name="Img"
-               Source="{Binding EditedBitmap}"/>
+        <Image Source="{Binding EditedBitmap}"/>
     </DockPanel>
 </Window>
