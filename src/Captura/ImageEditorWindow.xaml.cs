@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
 namespace Captura
 {
-    enum ImageEffect
+    public enum ImageEffect
     {
         None,
         Negative,
@@ -17,40 +18,111 @@ namespace Captura
         Sepia
     }
 
-    public partial class ImageEditorWindow
+    delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
+
+    public class ImageEditorViewModel : NotifyPropertyChanged
     {
-        readonly BitmapFrame _imgSource;
-        readonly int _stride;
-        readonly byte[] _data; // BGRA
-        readonly WriteableBitmap _writableBmp;
+        int _stride;
+        byte[] _data;
+
+        const int BrightnessStep = 10;
+        const int ContrastStep = 10;
+
+        public ICommand OpenCommand { get; }
+        public ICommand SaveCommand { get; }
+
+        public ICommand SetEffectCommand { get; }
+        public ICommand SetBrightnessCommand { get; }
+        public ICommand SetContrastCommand { get; }
+
+        public ImageEditorViewModel()
+        {
+            OpenCommand = new DelegateCommand(Open);
+            SaveCommand = new DelegateCommand(Save);
+
+            SetEffectCommand = new DelegateCommand(async M =>
+            {
+                if (M is ImageEffect effect)
+                {
+                    CurrentImageEffect = effect;
+
+                    await Update();
+                }
+            });
+
+            SetBrightnessCommand = new DelegateCommand(async M =>
+            {
+                if (M is int i || M is string s && int.TryParse(s, out i))
+                {
+                    if (i == 0)
+                        _brightness = 0;
+                    else if (i > 0)
+                        _brightness += BrightnessStep;
+                    else _brightness -= BrightnessStep;
+
+                    await Update();
+                }
+            });
+
+            SetContrastCommand = new DelegateCommand(async M =>
+            {
+                if (M is int i || M is string s && int.TryParse(s, out i))
+                {
+                    if (i == 0)
+                        _contrastThreshold = 0;
+                    else if (i > 0)
+                        _contrastThreshold += ContrastStep;
+                    else _contrastThreshold -= ContrastStep;
+
+                    await Update();
+                }
+            });
+        }
+
+        BitmapFrame _originalBmp;
+
+        public BitmapFrame OriginalBitmap
+        {
+            get => _originalBmp;
+            private set
+            {
+                _originalBmp = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
+        WriteableBitmap _editedBmp;
+
+        public WriteableBitmap EditedBitmap
+        {
+            get => _editedBmp;
+            private set
+            {
+                _editedBmp = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         ImageEffect _imageEffect = ImageEffect.None;
 
-        public ImageEditorWindow()
+        public ImageEffect CurrentImageEffect
         {
-            InitializeComponent();
-
-            var decoder = BitmapDecoder.Create(new Uri(@"C:\Users\Mathew\Pictures\FranXX\Genista.png"),
-                BitmapCreateOptions.None, BitmapCacheOption.None);
-
-            _imgSource = decoder.Frames[0];
-
-            _stride = _imgSource.PixelWidth * (_imgSource.Format.BitsPerPixel / 8);
-
-            _data = new byte[_stride * _imgSource.PixelHeight];
-
-            _writableBmp = new WriteableBitmap(_imgSource);
-
-            Img.Source = _writableBmp;
+            get => _imageEffect;
+            private set
+            {
+                _imageEffect = value;
+                
+                OnPropertyChanged();
+            }
         }
 
-        delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
-        
         void Negative(ref byte Red, ref byte Green, ref byte Blue)
         {
-            Red = (byte) (255 - Red);
-            Green = (byte) (255 - Green);
-            Blue = (byte) (255 - Blue);
+            Red = (byte)(255 - Red);
+            Green = (byte)(255 - Green);
+            Blue = (byte)(255 - Blue);
         }
 
         void Green(ref byte Red, ref byte Green, ref byte Blue)
@@ -123,9 +195,9 @@ namespace Captura
                     Byte = 255;
                 else if (val < 0)
                     Byte = 0;
-                else Byte = (byte) val;
+                else Byte = (byte)val;
             }
-            
+
             Apply(ref Red);
             Apply(ref Green);
             Apply(ref Blue);
@@ -160,7 +232,7 @@ namespace Captura
 
         async Task Update()
         {
-            _imgSource.CopyPixels(_data, _stride, 0);
+            OriginalBitmap.CopyPixels(_data, _stride, 0);
 
             ModifyPixel effectFunction = GetEffectFunction();
 
@@ -180,105 +252,37 @@ namespace Captura
                 });
             });
 
-            _writableBmp.WritePixels(new Int32Rect(0, 0, _imgSource.PixelWidth, _imgSource.PixelHeight), _data, _stride, 0);
+            EditedBitmap.WritePixels(new Int32Rect(0, 0, OriginalBitmap.PixelWidth, OriginalBitmap.PixelHeight), _data, _stride, 0);
         }
 
-        async void SepiaClick(object Sender, RoutedEventArgs E)
+        void Open()
         {
-            _imageEffect = ImageEffect.Sepia;
+            var ofd = new OpenFileDialog
+            {
+                Filter = "PNG Image|*.png",
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
 
-            await Update();
+            if (ofd.ShowDialog().GetValueOrDefault())
+            {
+                var decoder = BitmapDecoder.Create(new Uri(ofd.FileName),
+                    BitmapCreateOptions.None, BitmapCacheOption.None);
+
+                OriginalBitmap = decoder.Frames[0];
+
+                _stride = OriginalBitmap.PixelWidth * (OriginalBitmap.Format.BitsPerPixel / 8);
+
+                _data = new byte[_stride * OriginalBitmap.PixelHeight];
+
+                EditedBitmap = new WriteableBitmap(OriginalBitmap);
+            }
         }
 
-        async void GrayscaleClick(object Sender, RoutedEventArgs E)
-        {
-            _imageEffect = ImageEffect.Grayscale;
-
-            await Update();
-        }
-
-        async void NegativeClick(object Sender, RoutedEventArgs E)
-        {
-            _imageEffect = ImageEffect.Negative;
-
-            await Update();
-        }
-
-        async void RedClick(object Sender, RoutedEventArgs E)
-        {
-            _imageEffect = ImageEffect.Red;
-
-            await Update();
-        }
-
-        async void GreenClick(object Sender, RoutedEventArgs E)
-        {
-            _imageEffect = ImageEffect.Green;
-
-            await Update();
-        }
-
-        async void BlueClick(object Sender, RoutedEventArgs E)
-        {
-            _imageEffect = ImageEffect.Blue;
-
-            await Update();
-        }
-
-        const int BrightnessStep = 10;
-
-        async void IncreaseBrightnessClick(object Sender, RoutedEventArgs E)
-        {
-            _brightness += BrightnessStep;
-
-            await Update();
-        }
-
-        async void DecreaseBrightnessClick(object Sender, RoutedEventArgs E)
-        {
-            _brightness -= BrightnessStep;
-
-            await Update();
-        }
-
-        async void ResetBrightnessClick(object Sender, RoutedEventArgs E)
-        {
-            _brightness = 0;
-
-            await Update();
-        }
-
-        async void IncreaseContrastClick(object Sender, RoutedEventArgs E)
-        {
-            if (_contrastThreshold == 100)
-                return;
-
-            _contrastThreshold += 10;
-
-            await Update();
-        }
-
-        async void DecreaseContrastClick(object Sender, RoutedEventArgs E)
-        {
-            if (_contrastThreshold == -100)
-                return;
-
-            _contrastThreshold -= 10;
-
-            await Update();
-        }
-
-        async void ResetContrastClick(object Sender, RoutedEventArgs E)
-        {
-            _contrastThreshold = 0;
-
-            await Update();
-        }
-
-        void SaveClick(object Sender, RoutedEventArgs E)
+        void Save()
         {
             var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(_writableBmp));
+            encoder.Frames.Add(BitmapFrame.Create(EditedBitmap));
 
             var sfd = new SaveFileDialog
             {
@@ -292,6 +296,14 @@ namespace Captura
                 using (var stream = sfd.OpenFile())
                     encoder.Save(stream);
             }
+        }
+    }
+
+    public partial class ImageEditorWindow
+    {
+        public ImageEditorWindow()
+        {
+            InitializeComponent();
         }
     }
 }

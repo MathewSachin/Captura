@@ -8,11 +8,17 @@
         Title="Image Editor"
         Height="600"
         Width="800">
+    <Window.DataContext>
+        <local:ImageEditorViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
+                <MenuItem Header="Open"
+                          Command="{Binding OpenCommand}"/>
+                
                 <MenuItem Header="Save"
-                          Click="SaveClick"/>
+                          Command="{Binding SaveCommand}"/>
             </MenuItem>
         </Menu>
         
@@ -21,23 +27,29 @@
             <Button Content="Grayscale"
                     Background="Gray"
                     Foreground="White"
-                    Click="GrayscaleClick"/>
+                    CommandParameter="{x:Static local:ImageEffect.Grayscale}"
+                    Command="{Binding SetEffectCommand}"/>
             <Button Content="Sepia"
                     Background="Chocolate"
                     Foreground="White"
-                    Click="SepiaClick"/>
+                    CommandParameter="{x:Static local:ImageEffect.Sepia}"
+                    Command="{Binding SetEffectCommand}"/>
             <Button Content="Negative"
-                    Click="NegativeClick"/>
+                    CommandParameter="{x:Static local:ImageEffect.Negative}"
+                    Command="{Binding SetEffectCommand}"/>
             <Button Content="Red"
-                    Click="RedClick"
+                    CommandParameter="{x:Static local:ImageEffect.Red}"
+                    Command="{Binding SetEffectCommand}"
                     Background="Red"
                     Foreground="White"/>
             <Button Content="Green"
-                    Click="GreenClick"
+                    CommandParameter="{x:Static local:ImageEffect.Green}"
+                    Command="{Binding SetEffectCommand}"
                     Background="Green"
                     Foreground="White"/>
             <Button Content="Blue"
-                    Click="BlueClick"
+                    CommandParameter="{x:Static local:ImageEffect.Blue}"
+                    Command="{Binding SetEffectCommand}"
                     Background="Blue"
                     Foreground="White"/>
         </StackPanel>
@@ -45,29 +57,36 @@
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right"
                     Content="+"
-                    Click="IncreaseBrightnessClick"/>
+                    CommandParameter="1"
+                    Command="{Binding SetBrightnessCommand}"/>
 
             <Button Content="-"
-                    Click="DecreaseBrightnessClick"/>
+                    CommandParameter="-1"
+                    Command="{Binding SetBrightnessCommand}"/>
             
             <Button Content="Brightness"
                     HorizontalContentAlignment="Center"
-                    Click="ResetBrightnessClick"/>
+                    CommandParameter="0"
+                    Command="{Binding SetBrightnessCommand}"/>
         </DockPanel>
 
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right"
                     Content="+"
-                    Click="IncreaseContrastClick"/>
+                    CommandParameter="1"
+                    Command="{Binding SetContrastCommand}"/>
 
             <Button Content="-"
-                    Click="DecreaseContrastClick"/>
+                    CommandParameter="-1"
+                    Command="{Binding SetContrastCommand}"/>
 
             <Button Content="Contrast"
                     HorizontalContentAlignment="Center"
-                    Click="ResetContrastClick"/>
+                    CommandParameter="0"
+                    Command="{Binding SetContrastCommand}"/>
         </DockPanel>
 
-        <Image Name="Img"/>
+        <Image Name="Img"
+               Source="{Binding EditedBitmap}"/>
     </DockPanel>
 </Window>
