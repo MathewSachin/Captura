@@ -9,6 +9,13 @@
         Height="600"
         Width="800">
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save"
+                          Click="SaveClick"/>
+            </MenuItem>
+        </Menu>
+        
         <StackPanel Orientation="Horizontal"
                     DockPanel.Dock="Bottom">
             <Button Content="Grayscale"

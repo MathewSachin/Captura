@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace Captura
 {
@@ -272,6 +273,25 @@ namespace Captura
             _contrastThreshold = 0;
 
             await Update();
+        }
+
+        void SaveClick(object Sender, RoutedEventArgs E)
+        {
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(_writableBmp));
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = "PNG Image|*.png",
+                DefaultExt = ".png",
+                AddExtension = true
+            };
+
+            if (sfd.ShowDialog().GetValueOrDefault())
+            {
+                using (var stream = sfd.OpenFile())
+                    encoder.Save(stream);
+            }
         }
     }
 }
