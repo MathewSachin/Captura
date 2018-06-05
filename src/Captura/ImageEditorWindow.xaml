@@ -49,9 +49,29 @@
                 <MenuItem Header="Undo"
                           Command="{Binding UndoCommand}"
                           InputGestureText="Ctrl + Z"/>
+                
+                <Separator/>
+                
+                <MenuItem Header="Rotate Left"
+                          Command="{Binding RotateLeftCommand}"/>
+
+                <MenuItem Header="Rotate Right"
+                          Command="{Binding RotateRightCommand}"/>
+
+                <Separator/>
+                
+                <MenuItem Header="Flip Horizontal"
+                          Command="{Binding FlipXCommand}"/>
+
+                <MenuItem Header="Flip Vertical"
+                          Command="{Binding FlipYCommand}"/>
             </MenuItem>
-            
+
             <MenuItem Header="Filters">
+                <MenuItem Header="None"
+                          CommandParameter="{x:Static local:ImageEffect.None}"
+                          Command="{Binding SetEffectCommand}"/>
+                
                 <MenuItem Header="Grayscale"
                           CommandParameter="{x:Static local:ImageEffect.Grayscale}"
                           Command="{Binding SetEffectCommand}"/>

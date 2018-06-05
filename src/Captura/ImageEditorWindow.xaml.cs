@@ -29,6 +29,12 @@ namespace Captura
         public int Brightness { get; set; }
 
         public int Contrast { get; set; }
+
+        public int Rotation { get; set; }
+
+        public bool FlipX { get; set; }
+
+        public bool FlipY { get; set; }
     }
 
     public static class PixelFunctionFactory
@@ -127,6 +133,11 @@ namespace Captura
         public DelegateCommand SetBrightnessCommand { get; }
         public DelegateCommand SetContrastCommand { get; }
 
+        public DelegateCommand RotateRightCommand { get; }
+        public DelegateCommand RotateLeftCommand { get; }
+        public DelegateCommand FlipXCommand { get; }
+        public DelegateCommand FlipYCommand { get; }
+
         public ImageEditorViewModel()
         {
             OpenCommand = new DelegateCommand(Open);
@@ -175,6 +186,42 @@ namespace Captura
 
                     await Update();
                 }
+            }, false);
+
+            RotateRightCommand = new DelegateCommand(async M =>
+            {
+                UpdateHistory();
+
+                _rotation += 90;
+
+                await Update();
+            }, false);
+
+            RotateLeftCommand = new DelegateCommand(async M =>
+            {
+                UpdateHistory();
+
+                _rotation -= 90;
+
+                await Update();
+            }, false);
+
+            FlipXCommand = new DelegateCommand(async M =>
+            {
+                UpdateHistory();
+
+                _flipX = !_flipX;
+
+                await Update();
+            }, false);
+
+            FlipYCommand = new DelegateCommand(async M =>
+            {
+                UpdateHistory();
+
+                _flipY = !_flipY;
+
+                await Update();
             }, false);
         }
 
@@ -273,7 +320,10 @@ namespace Captura
             {
                 Brightness = _brightness,
                 Contrast = _contrastThreshold,
-                Effect = _imageEffect
+                Effect = _imageEffect,
+                Rotation = _rotation,
+                FlipX = _flipX,
+                FlipY = _flipY
             });
 
             UndoCommand.RaiseCanExecuteChanged(true);
@@ -306,9 +356,23 @@ namespace Captura
             UpdateTransformBitmap();
         }
 
+        int _rotation;
+
+        bool _flipX, _flipY;
+
         void UpdateTransformBitmap()
         {
-            TransformedBitmap = new TransformedBitmap(EditedBitmap, Transform.Identity);
+            var rotate = new RotateTransform(_rotation, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
+            var scale = new ScaleTransform(_flipX ? -1 : 1, _flipY ? -1 : 1);
+
+            TransformedBitmap = new TransformedBitmap(EditedBitmap, new TransformGroup
+            {
+                Children =
+                {
+                    rotate,
+                    scale
+                }
+            });
         }
 
         void Open()
@@ -345,13 +409,18 @@ namespace Captura
                 SetEffectCommand.RaiseCanExecuteChanged(true);
                 SetBrightnessCommand.RaiseCanExecuteChanged(true);
                 SetContrastCommand.RaiseCanExecuteChanged(true);
+
+                RotateRightCommand.RaiseCanExecuteChanged(true);
+                RotateLeftCommand.RaiseCanExecuteChanged(true);
+                FlipXCommand.RaiseCanExecuteChanged(true);
+                FlipYCommand.RaiseCanExecuteChanged(true);
             }
         }
 
         void Save()
         {
             var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(EditedBitmap));
+            encoder.Frames.Add(BitmapFrame.Create(TransformedBitmap));
 
             var sfd = new SaveFileDialog
             {
@@ -377,6 +446,9 @@ namespace Captura
             _imageEffect = state.Effect;
             _brightness = state.Brightness;
             _contrastThreshold = state.Contrast;
+            _rotation = state.Rotation;
+            _flipX = state.FlipX;
+            _flipY = state.FlipY;
 
             await Update();
 
