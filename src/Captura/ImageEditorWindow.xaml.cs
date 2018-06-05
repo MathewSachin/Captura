@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -20,16 +21,28 @@ namespace Captura
 
     delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
 
+    public class HistoryState
+    {
+        public ImageEffect Effect { get; set; }
+
+        public int Brightness { get; set; }
+
+        public int Contrast { get; set; }
+    }
+
     public class ImageEditorViewModel : NotifyPropertyChanged
     {
         int _stride;
         byte[] _data;
+
+        readonly Stack<HistoryState> _history = new Stack<HistoryState>();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
         public ICommand OpenCommand { get; }
         public DelegateCommand SaveCommand { get; }
+        public DelegateCommand UndoCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -39,11 +52,14 @@ namespace Captura
         {
             OpenCommand = new DelegateCommand(Open);
             SaveCommand = new DelegateCommand(Save, false);
+            UndoCommand = new DelegateCommand(Undo, false);
 
             SetEffectCommand = new DelegateCommand(async M =>
             {
                 if (M is ImageEffect effect)
                 {
+                    UpdateHistory();
+
                     CurrentImageEffect = effect;
 
                     await Update();
@@ -54,6 +70,8 @@ namespace Captura
             {
                 if (M is int i || M is string s && int.TryParse(s, out i))
                 {
+                    UpdateHistory();
+
                     if (i == 0)
                         _brightness = 0;
                     else if (i > 0)
@@ -68,6 +86,8 @@ namespace Captura
             {
                 if (M is int i || M is string s && int.TryParse(s, out i))
                 {
+                    UpdateHistory();
+
                     if (i == 0)
                         _contrastThreshold = 0;
                     else if (i > 0)
@@ -230,11 +250,23 @@ namespace Captura
             }
         }
 
+        void UpdateHistory()
+        {
+            _history.Push(new HistoryState
+            {
+                Brightness = _brightness,
+                Contrast = _contrastThreshold,
+                Effect = _imageEffect
+            });
+
+            UndoCommand.RaiseCanExecuteChanged(true);
+        }
+
         async Task Update()
         {
             OriginalBitmap.CopyPixels(_data, _stride, 0);
 
-            ModifyPixel effectFunction = GetEffectFunction();
+            var effectFunction = GetEffectFunction();
 
             _contrastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
 
@@ -277,6 +309,9 @@ namespace Captura
 
                 EditedBitmap = new WriteableBitmap(OriginalBitmap);
 
+                _history.Clear();
+                UndoCommand.RaiseCanExecuteChanged(false);
+
                 SaveCommand.RaiseCanExecuteChanged(true);
                 SetEffectCommand.RaiseCanExecuteChanged(true);
                 SetBrightnessCommand.RaiseCanExecuteChanged(true);
@@ -301,6 +336,23 @@ namespace Captura
                 using (var stream = sfd.OpenFile())
                     encoder.Save(stream);
             }
+        }
+
+        async void Undo()
+        {
+            if (_history.Count == 0)
+                return;
+
+            var state = _history.Pop();
+
+            _imageEffect = state.Effect;
+            _brightness = state.Brightness;
+            _contrastThreshold = state.Contrast;
+
+            await Update();
+
+            if (_history.Count == 0)
+                UndoCommand.RaiseCanExecuteChanged(false);
         }
     }
 

@@ -23,6 +23,10 @@
         <KeyBinding Command="{Binding SaveCommand}"
                     Key="S"
                     Modifiers="Control"/>
+        
+        <KeyBinding Command="{Binding UndoCommand}"
+                    Key="Z"
+                    Modifiers="Control"/>
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -39,6 +43,12 @@
                 
                 <MenuItem Header="Exit"
                           Command="Close"/>
+            </MenuItem>
+            
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo"
+                          Command="{Binding UndoCommand}"
+                          InputGestureText="Ctrl + Z"/>
             </MenuItem>
         </Menu>
         
