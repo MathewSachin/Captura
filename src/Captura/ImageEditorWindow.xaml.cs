@@ -29,16 +29,16 @@ namespace Captura
         const int ContrastStep = 10;
 
         public ICommand OpenCommand { get; }
-        public ICommand SaveCommand { get; }
+        public DelegateCommand SaveCommand { get; }
 
-        public ICommand SetEffectCommand { get; }
-        public ICommand SetBrightnessCommand { get; }
-        public ICommand SetContrastCommand { get; }
+        public DelegateCommand SetEffectCommand { get; }
+        public DelegateCommand SetBrightnessCommand { get; }
+        public DelegateCommand SetContrastCommand { get; }
 
         public ImageEditorViewModel()
         {
             OpenCommand = new DelegateCommand(Open);
-            SaveCommand = new DelegateCommand(Save);
+            SaveCommand = new DelegateCommand(Save, false);
 
             SetEffectCommand = new DelegateCommand(async M =>
             {
@@ -48,7 +48,7 @@ namespace Captura
 
                     await Update();
                 }
-            });
+            }, false);
 
             SetBrightnessCommand = new DelegateCommand(async M =>
             {
@@ -62,7 +62,7 @@ namespace Captura
 
                     await Update();
                 }
-            });
+            }, false);
 
             SetContrastCommand = new DelegateCommand(async M =>
             {
@@ -76,7 +76,7 @@ namespace Captura
 
                     await Update();
                 }
-            });
+            }, false);
         }
 
         BitmapFrame _originalBmp;
@@ -276,6 +276,11 @@ namespace Captura
                 _data = new byte[_stride * OriginalBitmap.PixelHeight];
 
                 EditedBitmap = new WriteableBitmap(OriginalBitmap);
+
+                SaveCommand.RaiseCanExecuteChanged(true);
+                SetEffectCommand.RaiseCanExecuteChanged(true);
+                SetBrightnessCommand.RaiseCanExecuteChanged(true);
+                SetContrastCommand.RaiseCanExecuteChanged(true);
             }
         }
 
