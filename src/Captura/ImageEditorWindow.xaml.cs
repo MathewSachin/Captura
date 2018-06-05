@@ -30,129 +30,107 @@ namespace Captura
             Img.Source = _writableBmp;
         }
 
-        async Task ApplyEffect(Action EffectFunction)
+        delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
+
+        async Task ApplyEffect(ModifyPixel EffectFunction)
         {
             _imgSource.CopyPixels(_data, _stride, 0);
 
-            await Task.Run(EffectFunction);
+            await Task.Run(() =>
+            {
+                for (var i = 0; i < _data.Length; i += 4)
+                {
+                    EffectFunction(ref _data[i + 2], ref _data[i + 1], ref _data[i]);
+                }
+            });
 
             _writableBmp.WritePixels(new Int32Rect(0, 0, _imgSource.PixelWidth, _imgSource.PixelHeight), _data, _stride, 0);
         }
 
-        void Negative()
+        void Negative(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                for (var j = 0; j < 3; ++j)
-                    _data[i + j] = (byte)(255 - _data[i + j]);
-            }
+            Red = (byte) (255 - Red);
+            Green = (byte) (255 - Green);
+            Blue = (byte) (255 - Blue);
         }
 
-        void Green()
+        void Green(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                _data[i] = 0;
-                _data[i + 2] = 0;
-            }
+            Red = Blue = 0;
         }
 
-        void Red()
+        void Red(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                _data[i] = 0;
-                _data[i + 1] = 0;
-            }
+            Green = Blue = 0;
         }
 
-        void Blue()
+        void Blue(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                _data[i + 1] = 0;
-                _data[i + 2] = 0;
-            }
+            Red = Green = 0;
         }
 
-        void Grayscale()
+        void Grayscale(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                var pixel = 0.299 * _data[i + 2] + 0.587 * _data[i + 1] + 0.114 * _data[i];
+            var pixel = 0.299 * Red + 0.587 * Green + 0.114 * Blue;
 
-                if (pixel > 255)
-                    pixel = 255;
+            if (pixel > 255)
+                pixel = 255;
 
-                _data[i] = _data[i + 1] = _data[i + 2] = (byte)pixel;
-            }
+            Red = Green = Blue = (byte)pixel;
         }
 
-        void Sepia()
+        void Sepia(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
-            {
-                var blue = _data[i];
-                var green = _data[i + 1];
-                var red = _data[i + 2];
+            var newRed = 0.393 * Red + 0.769 * Green + 0.189 * Blue;
+            var newGreen = 0.349 * Red + 0.686 * Green + 0.168 * Blue;
+            var newBlue = 0.272 * Red + 0.534 * Green + 0.131 * Blue;
 
-                var newRed = 0.393 * red + 0.769 * green + 0.189 * blue;
-                var newGreen = 0.349 * red + 0.686 * green + 0.168 * blue;
-                var newBlue = 0.272 * red + 0.534 * green + 0.131 * blue;
+            // Red
+            Red = (byte)(newRed > 255 ? 255 : newRed);
 
-                // Red
-                _data[i + 2] = (byte)(newRed > 255 ? 255 : newRed);
+            // Green
+            Green = (byte)(newGreen > 255 ? 255 : newGreen);
 
-                // Green
-                _data[i + 1] = (byte)(newGreen > 255 ? 255 : newGreen);
-
-                // Blue
-                _data[i] = (byte)(newBlue > 255 ? 255 : newBlue);
-            }
+            // Blue
+            Blue = (byte)(newBlue > 255 ? 255 : newBlue);
         }
 
         int _brightness;
 
-        void Brightness()
+        void Brightness(ref byte Red, ref byte Green, ref byte Blue)
         {
-            for (var i = 0; i < _data.Length; i += 4)
+            void Apply(ref byte Byte)
             {
-                for (var j = 0; j < 3; ++j)
-                {
-                    var val = _data[i + j] + _brightness;
-                    
-                    _data[i + j] = (byte)(val > 255 ? 255 : val);
-                }
+                var val = Byte + _brightness;
+
+                Byte = (byte)(val > 255 ? 255 : val);
             }
+
+            Apply(ref Red);
+            Apply(ref Green);
+            Apply(ref Blue);
         }
 
         int _contrastThreshold;
 
-        void Contrast()
+        void Contrast(ref byte Red, ref byte Green, ref byte Blue)
         {
             var contastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
 
-            for (var i = 0; i < _data.Length; i += 4)
+            void Apply(ref byte Byte)
             {
-                var blue = ((_data[i] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
-                var green = ((_data[i + 1] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
-                var red = ((_data[i + 2] / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
+                var val = ((Byte / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
 
-                byte Clip(double Val)
-                {
-                    if (Val > 255)
-                        return 255;
-
-                    if (Val < 0)
-                        return 0;
-
-                    return (byte) Val;
-                }
-
-                _data[i] = Clip(blue);
-                _data[i + 1] = Clip(green);
-                _data[i + 2] = Clip(red);
+                if (val > 255)
+                    Byte = 255;
+                else if (val < 0)
+                    Byte = 0;
+                else Byte = (byte) val;
             }
+            
+            Apply(ref Red);
+            Apply(ref Green);
+            Apply(ref Blue);
         }
 
         async void SepiaClick(object Sender, RoutedEventArgs E)
