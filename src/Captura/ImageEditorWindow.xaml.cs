@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
@@ -203,6 +204,19 @@ namespace Captura
             }
         }
 
+        TransformedBitmap _transformedBmp;
+
+        public TransformedBitmap TransformedBitmap
+        {
+            get => _transformedBmp;
+            set
+            {
+                _transformedBmp = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
         ImageEffect _imageEffect = ImageEffect.None;
 
         public ImageEffect CurrentImageEffect
@@ -288,6 +302,13 @@ namespace Captura
             });
 
             EditedBitmap.WritePixels(new Int32Rect(0, 0, OriginalBitmap.PixelWidth, OriginalBitmap.PixelHeight), _data, _stride, 0);
+
+            UpdateTransformBitmap();
+        }
+
+        void UpdateTransformBitmap()
+        {
+            TransformedBitmap = new TransformedBitmap(EditedBitmap, Transform.Identity);
         }
 
         void Open()
@@ -301,6 +322,9 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
+                _brightness = _contrastThreshold = 0;
+                _imageEffect = ImageEffect.None;
+
                 var decoder = BitmapDecoder.Create(new Uri(ofd.FileName),
                     BitmapCreateOptions.None, BitmapCacheOption.None);
 
@@ -311,6 +335,8 @@ namespace Captura
                 _data = new byte[_stride * OriginalBitmap.PixelHeight];
 
                 EditedBitmap = new WriteableBitmap(OriginalBitmap);
+                
+                UpdateTransformBitmap();
 
                 _history.Clear();
                 UndoCommand.RaiseCanExecuteChanged(false);

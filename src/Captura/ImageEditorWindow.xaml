@@ -105,6 +105,6 @@
                     Command="{Binding SetContrastCommand}"/>
         </DockPanel>
 
-        <Image Source="{Binding EditedBitmap}"/>
+        <Image Source="{Binding TransformedBitmap}"/>
     </DockPanel>
 </Window>
