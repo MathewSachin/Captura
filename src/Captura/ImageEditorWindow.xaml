@@ -93,37 +93,47 @@
             </MenuItem>
         </Menu>
 
-        <DockPanel DockPanel.Dock="Top">
-            <Button DockPanel.Dock="Right"
-                    Content="+"
-                    CommandParameter="1"
-                    Command="{Binding SetBrightnessCommand}"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <Button Content="-"
-                    CommandParameter="-1"
-                    Command="{Binding SetBrightnessCommand}"/>
-            
-            <Button Content="Brightness"
-                    HorizontalContentAlignment="Center"
-                    CommandParameter="0"
-                    Command="{Binding SetBrightnessCommand}"/>
-        </DockPanel>
+            <DockPanel Margin="3">
+                <Button DockPanel.Dock="Right"
+                        Content="+"
+                        CommandParameter="1"
+                        Command="{Binding SetBrightnessCommand}"/>
 
-        <DockPanel DockPanel.Dock="Top">
-            <Button DockPanel.Dock="Right"
-                    Content="+"
-                    CommandParameter="1"
-                    Command="{Binding SetContrastCommand}"/>
+                <Button Content="-"
+                        CommandParameter="-1"
+                        DockPanel.Dock="Right"
+                        Command="{Binding SetBrightnessCommand}"/>
 
-            <Button Content="-"
-                    CommandParameter="-1"
-                    Command="{Binding SetContrastCommand}"/>
+                <Button Content="Brightness"
+                        HorizontalContentAlignment="Center"
+                        CommandParameter="0"
+                        Command="{Binding SetBrightnessCommand}"/>
+            </DockPanel>
 
-            <Button Content="Contrast"
-                    HorizontalContentAlignment="Center"
-                    CommandParameter="0"
-                    Command="{Binding SetContrastCommand}"/>
-        </DockPanel>
+            <DockPanel Grid.Column="1"
+                       Margin="3">
+                <Button DockPanel.Dock="Right"
+                        Content="+"
+                        CommandParameter="1"
+                        Command="{Binding SetContrastCommand}"/>
+
+                <Button Content="-"
+                        CommandParameter="-1"
+                        DockPanel.Dock="Right"
+                        Command="{Binding SetContrastCommand}"/>
+
+                <Button Content="Contrast"
+                        HorizontalContentAlignment="Center"
+                        CommandParameter="0"
+                        Command="{Binding SetContrastCommand}"/>
+            </DockPanel>
+        </Grid>
 
         <Image Source="{Binding TransformedBitmap}"/>
     </DockPanel>

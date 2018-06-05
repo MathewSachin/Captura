@@ -181,8 +181,19 @@ namespace Captura
                     if (i == 0)
                         _contrastThreshold = 0;
                     else if (i > 0)
+                    {
+                        if (_contrastThreshold == 100)
+                            return;
+
                         _contrastThreshold += ContrastStep;
-                    else _contrastThreshold -= ContrastStep;
+                    }
+                    else
+                    {
+                        if (_contrastThreshold == -100)
+                            return;
+
+                        _contrastThreshold -= ContrastStep;
+                    }
 
                     await Update();
                 }
@@ -285,7 +296,11 @@ namespace Captura
             {
                 var val = Byte + _brightness;
 
-                Byte = (byte)(val > 255 ? 255 : val);
+                if (val > 255)
+                    Byte = 255;
+                else if (val < 0)
+                    Byte = 0;
+                else Byte = (byte) val;
             }
 
             Apply(ref Red);
