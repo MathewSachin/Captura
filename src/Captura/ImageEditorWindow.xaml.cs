@@ -390,6 +390,18 @@ namespace Captura
             });
         }
 
+        void Reset()
+        {
+            _brightness = _contrastThreshold = 0;
+            _imageEffect = ImageEffect.None;
+
+            _rotation = 0;
+            _flipX = _flipY = false;
+
+            _history.Clear();
+            UndoCommand.RaiseCanExecuteChanged(false);
+        }
+
         void Open()
         {
             var ofd = new OpenFileDialog
@@ -401,8 +413,7 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
-                _brightness = _contrastThreshold = 0;
-                _imageEffect = ImageEffect.None;
+                Reset();
 
                 var decoder = BitmapDecoder.Create(new Uri(ofd.FileName),
                     BitmapCreateOptions.None, BitmapCacheOption.None);
@@ -416,9 +427,6 @@ namespace Captura
                 EditedBitmap = new WriteableBitmap(OriginalBitmap);
                 
                 UpdateTransformBitmap();
-
-                _history.Clear();
-                UndoCommand.RaiseCanExecuteChanged(false);
 
                 SaveCommand.RaiseCanExecuteChanged(true);
                 SetEffectCommand.RaiseCanExecuteChanged(true);
