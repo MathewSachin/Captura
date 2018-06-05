@@ -5,12 +5,25 @@ using System.Windows.Media.Imaging;
 
 namespace Captura
 {
+    enum ImageEffect
+    {
+        None,
+        Negative,
+        Green,
+        Red,
+        Blue,
+        Grayscale,
+        Sepia
+    }
+
     public partial class ImageEditorWindow
     {
         readonly BitmapFrame _imgSource;
         readonly int _stride;
         readonly byte[] _data; // BGRA
         readonly WriteableBitmap _writableBmp;
+
+        ImageEffect _imageEffect = ImageEffect.None;
 
         public ImageEditorWindow()
         {
@@ -31,22 +44,7 @@ namespace Captura
         }
 
         delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
-
-        async Task ApplyEffect(ModifyPixel EffectFunction)
-        {
-            _imgSource.CopyPixels(_data, _stride, 0);
-
-            await Task.Run(() =>
-            {
-                for (var i = 0; i < _data.Length; i += 4)
-                {
-                    EffectFunction(ref _data[i + 2], ref _data[i + 1], ref _data[i]);
-                }
-            });
-
-            _writableBmp.WritePixels(new Int32Rect(0, 0, _imgSource.PixelWidth, _imgSource.PixelHeight), _data, _stride, 0);
-        }
-
+        
         void Negative(ref byte Red, ref byte Green, ref byte Blue)
         {
             Red = (byte) (255 - Red);
@@ -112,14 +110,13 @@ namespace Captura
         }
 
         int _contrastThreshold;
+        double _contrastLevel;
 
         void Contrast(ref byte Red, ref byte Green, ref byte Blue)
         {
-            var contastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
-
             void Apply(ref byte Byte)
             {
-                var val = ((Byte / 255.0 - 0.5) * contastLevel + 0.5) * 255.0;
+                var val = ((Byte / 255.0 - 0.5) * _contrastLevel + 0.5) * 255.0;
 
                 if (val > 255)
                     Byte = 255;
@@ -133,34 +130,98 @@ namespace Captura
             Apply(ref Blue);
         }
 
+        ModifyPixel GetEffectFunction()
+        {
+            switch (_imageEffect)
+            {
+                case ImageEffect.Negative:
+                    return Negative;
+
+                case ImageEffect.Blue:
+                    return Blue;
+
+                case ImageEffect.Green:
+                    return Green;
+
+                case ImageEffect.Red:
+                    return Red;
+
+                case ImageEffect.Sepia:
+                    return Sepia;
+
+                case ImageEffect.Grayscale:
+                    return Grayscale;
+
+                default:
+                    return null;
+            }
+        }
+
+        async Task Update()
+        {
+            _imgSource.CopyPixels(_data, _stride, 0);
+
+            ModifyPixel effectFunction = GetEffectFunction();
+
+            _contrastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
+
+            await Task.Run(() =>
+            {
+                Parallel.For(0, _data.Length / 4, I =>
+                {
+                    var i = I * 4;
+
+                    effectFunction?.Invoke(ref _data[i + 2], ref _data[i + 1], ref _data[i]);
+
+                    Brightness(ref _data[i + 2], ref _data[i + 1], ref _data[i]);
+
+                    Contrast(ref _data[i + 2], ref _data[i + 1], ref _data[i]);
+                });
+            });
+
+            _writableBmp.WritePixels(new Int32Rect(0, 0, _imgSource.PixelWidth, _imgSource.PixelHeight), _data, _stride, 0);
+        }
+
         async void SepiaClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Sepia);
+            _imageEffect = ImageEffect.Sepia;
+
+            await Update();
         }
 
         async void GrayscaleClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Grayscale);
+            _imageEffect = ImageEffect.Grayscale;
+
+            await Update();
         }
 
         async void NegativeClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Negative);
+            _imageEffect = ImageEffect.Negative;
+
+            await Update();
         }
 
         async void RedClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Red);
+            _imageEffect = ImageEffect.Red;
+
+            await Update();
         }
 
         async void GreenClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Green);
+            _imageEffect = ImageEffect.Green;
+
+            await Update();
         }
 
         async void BlueClick(object Sender, RoutedEventArgs E)
         {
-            await ApplyEffect(Blue);
+            _imageEffect = ImageEffect.Blue;
+
+            await Update();
         }
 
         const int BrightnessStep = 10;
@@ -169,21 +230,21 @@ namespace Captura
         {
             _brightness += BrightnessStep;
 
-            await ApplyEffect(Brightness);
+            await Update();
         }
 
         async void DecreaseBrightnessClick(object Sender, RoutedEventArgs E)
         {
             _brightness -= BrightnessStep;
 
-            await ApplyEffect(Brightness);
+            await Update();
         }
 
         async void ResetBrightnessClick(object Sender, RoutedEventArgs E)
         {
             _brightness = 0;
 
-            await ApplyEffect(Brightness);
+            await Update();
         }
 
         async void IncreaseContrastClick(object Sender, RoutedEventArgs E)
@@ -193,7 +254,7 @@ namespace Captura
 
             _contrastThreshold += 10;
 
-            await ApplyEffect(Contrast);
+            await Update();
         }
 
         async void DecreaseContrastClick(object Sender, RoutedEventArgs E)
@@ -203,14 +264,14 @@ namespace Captura
 
             _contrastThreshold -= 10;
 
-            await ApplyEffect(Contrast);
+            await Update();
         }
 
         async void ResetContrastClick(object Sender, RoutedEventArgs E)
         {
             _contrastThreshold = 0;
 
-            await ApplyEffect(Contrast);
+            await Update();
         }
     }
 }

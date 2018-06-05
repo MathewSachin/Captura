@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Captura"
         mc:Ignorable="d"
         Title="Image Editor"
-        Height="320"
-        Width="415">
+        Height="600"
+        Width="800">
     <DockPanel>
         <StackPanel Orientation="Horizontal"
                     DockPanel.Dock="Bottom">
