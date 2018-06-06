@@ -638,8 +638,7 @@ namespace Captura
         {
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Ink, "Pencil"),
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByPoint, "Eraser"),
-            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser"),
-            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Select, nameof(InkCanvasEditingMode.Select))
+            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser")
         };
 
         public void IncrementEditingOperationCount()
