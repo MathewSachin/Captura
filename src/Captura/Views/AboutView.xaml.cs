@@ -9,10 +9,5 @@ namespace Captura
         {
             new LicensesWindow().ShowAndFocus();
         }
-
-        void OpenImageEditor(object Sender, RoutedEventArgs E)
-        {
-            new ImageEditorWindow().ShowAndFocus();
-        }
     }
 }

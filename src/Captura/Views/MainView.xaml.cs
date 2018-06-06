@@ -11,7 +11,7 @@ namespace Captura
         
         void OpenCanvas(object Sender, RoutedEventArgs E)
         {
-            new CanvasWindow().ShowAndFocus();
+            new ImageEditorWindow().ShowAndFocus();
         }
     }
 }
