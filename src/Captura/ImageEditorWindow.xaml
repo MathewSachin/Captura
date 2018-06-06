@@ -134,6 +134,16 @@
                         Command="{Binding SetContrastCommand}"/>
             </DockPanel>
         </Grid>
+        
+        <TextBlock DockPanel.Dock="Bottom"
+                   Margin="5">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} x {1}">
+                    <Binding Path="TransformedBitmap.PixelWidth"/>
+                    <Binding Path="TransformedBitmap.PixelHeight"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
 
         <Image Source="{Binding TransformedBitmap}"/>
     </DockPanel>
