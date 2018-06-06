@@ -576,15 +576,31 @@ namespace Captura
         {
             if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null)
             {
-                //var bmp = new RenderTargetBitmap(vm.TransformedBitmap.PixelWidth,
-                //    vm.TransformedBitmap.PixelHeight,
-                //    vm.TransformedBitmap.DpiX,
-                //    vm.TransformedBitmap.DpiY,
-                //    PixelFormats.Default);
+                var drawingVisual = new DrawingVisual();
 
-                //bmp.Render(ContentGrid);
+                var copy = vm.EditedBitmap;
+                var transform = vm.TransformedBitmap.Transform;
 
-                vm.Save(vm.TransformedBitmap);
+                using (var drawingContext = drawingVisual.RenderOpen())
+                {
+                    drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
+
+                    InkCanvas.Strokes.Draw(drawingContext);
+
+                    drawingContext.Close();
+
+                    var bitmap = new RenderTargetBitmap((int)copy.Width,
+                        (int)copy.Height,
+                        copy.DpiX,
+                        copy.DpiY,
+                        PixelFormats.Pbgra32);
+
+                    bitmap.Render(drawingVisual);
+
+                    var transformedRendered = new TransformedBitmap(bitmap, transform);
+
+                    vm.Save(transformedRendered);
+                }
             }
         }
     }
