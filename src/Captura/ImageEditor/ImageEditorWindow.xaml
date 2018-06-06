@@ -67,6 +67,11 @@
                 
                 <Separator/>
                 
+                <MenuItem Header="Discard Changes"
+                          Command="{Binding DiscardChangesCommand}"/>
+                
+                <Separator/>
+                
                 <MenuItem Header="Rotate Left"
                           Command="{Binding RotateLeftCommand}"/>
 

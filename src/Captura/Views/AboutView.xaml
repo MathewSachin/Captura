@@ -62,6 +62,10 @@
                 <Button Click="ViewLicenses"
                         Content="View Licenses"
                         Margin="3"/>
+                
+                <Button Margin="3"
+                        Content="Open Image Editor (Alpha)"
+                        Click="OpenImageEditor"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

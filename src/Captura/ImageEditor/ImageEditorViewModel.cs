@@ -26,6 +26,7 @@ namespace Captura
 
         public ICommand OpenCommand { get; }
         public ICommand OpenFromClipboardCommand { get; }
+        public ICommand DiscardChangesCommand { get; }
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
 
@@ -44,6 +45,13 @@ namespace Captura
             OpenFromClipboardCommand = new DelegateCommand(OpenFromClipboard);
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
+
+            DiscardChangesCommand = new DelegateCommand(async () =>
+            {
+                Reset();
+
+                await Update();
+            });
 
             SetEffectCommand = new DelegateCommand(async M =>
             {
