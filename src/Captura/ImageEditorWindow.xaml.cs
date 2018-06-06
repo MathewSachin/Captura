@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,7 +24,9 @@ namespace Captura
 
     public delegate void ModifyPixel(ref byte Red, ref byte Green, ref byte Blue);
 
-    public class HistoryState
+    public abstract class HistoryItem { }
+
+    public class HistoryState : HistoryItem
     {
         public ImageEffect Effect { get; set; }
 
@@ -36,6 +39,12 @@ namespace Captura
         public bool FlipX { get; set; }
 
         public bool FlipY { get; set; }
+    }
+
+    public class StrokeHistory : HistoryItem
+    {
+        public List<Stroke> Added { get; } = new List<Stroke>();
+        public List<Stroke> Removed { get; } = new List<Stroke>();
     }
 
     public static class PixelFunctionFactory
@@ -121,7 +130,7 @@ namespace Captura
         int _stride;
         byte[] _data;
 
-        readonly Stack<HistoryState> _history = new Stack<HistoryState>();
+        readonly Stack<HistoryItem> _history = new Stack<HistoryItem>();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
@@ -458,24 +467,57 @@ namespace Captura
             }
         }
 
+        public InkCanvas InkCanvas { get; set; }
+
+        public void AddInkHistory(StrokeHistory HistoryItem)
+        {
+            if (_undoing)
+                return;
+
+            _history.Push(HistoryItem);
+
+            UndoCommand.RaiseCanExecuteChanged(true);
+        }
+
+        bool _undoing;
+
         async void Undo()
         {
+            _undoing = true;
+
             if (_history.Count == 0)
                 return;
 
-            var state = _history.Pop();
+            var item = _history.Pop();
 
-            _imageEffect = state.Effect;
-            _brightness = state.Brightness;
-            _contrastThreshold = state.Contrast;
-            Rotation = state.Rotation;
-            FlipX = state.FlipX;
-            FlipY = state.FlipY;
+            if (item is HistoryState state)
+            {
+                _imageEffect = state.Effect;
+                _brightness = state.Brightness;
+                _contrastThreshold = state.Contrast;
+                Rotation = state.Rotation;
+                FlipX = state.FlipX;
+                FlipY = state.FlipY;
+            }
+            else if (item is StrokeHistory strokes)
+            {
+                foreach (var stroke in strokes.Added)
+                {
+                    InkCanvas.Strokes.Remove(stroke);
+                }
+
+                foreach (var stroke in strokes.Removed)
+                {
+                    InkCanvas.Strokes.Add(stroke);
+                }
+            }
 
             await Update();
 
             if (_history.Count == 0)
                 UndoCommand.RaiseCanExecuteChanged(false);
+
+            _undoing = false;
         }
 
         public IEnumerable<KeyValuePair<InkCanvasEditingMode, string>> Tools { get; } = new[]
@@ -499,6 +541,28 @@ namespace Captura
                 {
                     if (E.PropertyName == nameof(vm.TransformedBitmap))
                         UpdateInkCanvas();
+                };
+
+                vm.InkCanvas = InkCanvas;
+
+                InkCanvas.StrokeCollected += (S, E) => vm.AddInkHistory(new StrokeHistory
+                {
+                    Added = { E.Stroke}
+                });
+
+                InkCanvas.StrokeErasing += (S, E) => vm.AddInkHistory(new StrokeHistory
+                {
+                    Removed = { E.Stroke }
+                });
+
+                InkCanvas.StrokesReplaced += (S, E) =>
+                {
+                    var item = new StrokeHistory();
+
+                    item.Added.AddRange(E.NewStrokes);
+                    item.Removed.AddRange(E.PreviousStrokes);
+
+                    vm.AddInkHistory(item);
                 };
             }
 

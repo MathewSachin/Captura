@@ -190,8 +190,7 @@
             </DockPanel>
         </Border>
         
-        <Grid Margin="10"
-              Name="ContentGrid">
+        <Grid Margin="10">
             <Image Source="{Binding TransformedBitmap}"
                    Name="Image"/>
             
