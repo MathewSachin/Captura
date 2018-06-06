@@ -1,0 +1,38 @@
+﻿<Window x:Class="Captura.CropWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Captura"
+        Title="Crop"
+        Height="600"
+        Width="800">
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom"
+              Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Click="Undo"
+                    IsEnabled="False"
+                    Content="Undo"
+                    Name="UndoButton"/>
+
+            <Button Click="Crop"
+                    IsEnabled="False"
+                    Content="Crop"
+                    Name="CropButton"
+                    Grid.Column="1"/>
+
+            <Button Click="Save"
+                    Content="Save"
+                    Name="SaveButton"
+                    Grid.Column="2"/>
+        </Grid>
+        
+        <Image Name="Image"
+               Margin="15"
+               MouseDown="Image_OnMouseDown"/>
+    </DockPanel>
+</Window>
