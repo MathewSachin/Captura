@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Image Editor"
         Height="600"
@@ -14,13 +15,16 @@
     <Window.CommandBindings>
         <CommandBinding Command="Close"
                         Executed="Exit"/>
+        
+        <CommandBinding Command="Save"
+                        Executed="OnSave"/>
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="{Binding OpenCommand}"
                     Key="O"
                     Modifiers="Control"/>
 
-        <KeyBinding Command="{Binding SaveCommand}"
+        <KeyBinding Command="Save"
                     Key="S"
                     Modifiers="Control"/>
         
@@ -36,7 +40,7 @@
                           InputGestureText="Ctrl + O"/>
                 
                 <MenuItem Header="Save"
-                          Command="{Binding SaveCommand}"
+                          Command="Save"
                           InputGestureText="Ctrl + S"/>
                 
                 <Separator/>
@@ -145,6 +149,55 @@
             </TextBlock.Text>
         </TextBlock>
 
-        <Image Source="{Binding TransformedBitmap}"/>
+        <Border BorderThickness="0,0,1,0"
+                BorderBrush="#77333333">
+            <DockPanel LastChildFill="False">
+                <ListBox ItemsSource="{Binding Tools}"
+                         SelectedValuePath="Key"
+                         Name="ModesBox"
+                         Padding="1"
+                         DockPanel.Dock="Top"
+                         HorizontalAlignment="Center"
+                         SelectionChanged="ModesBox_OnSelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                                  Width="15"
+                                  Height="15"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{Binding Value}"
+                                  Margin="5"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <xctk:ColorPicker Margin="2"
+                                  Width="40"
+                                  BorderThickness="2"
+                                  DockPanel.Dock="Bottom"
+                                  Name="ColorPicker"
+                                  SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
+                                  VerticalContentAlignment="Stretch"/>
+
+                <xctk:IntegerUpDown Name="SizeBox"
+                                    Minimum="1"
+                                    Maximum="100"
+                                    DockPanel.Dock="Bottom"
+                                    ValueChanged="SizeBox_OnValueChanged"
+                                    Margin="2"/>
+            </DockPanel>
+        </Border>
+        
+        <Grid Margin="10"
+              Name="ContentGrid">
+            <Image Source="{Binding TransformedBitmap}"
+                   Name="Image"/>
+            
+            <InkCanvas Background="Transparent"
+                       Name="InkCanvas"
+                       IsEnabled="False"/>
+        </Grid>
     </DockPanel>
 </Window>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -126,7 +127,6 @@ namespace Captura
         const int ContrastStep = 10;
 
         public ICommand OpenCommand { get; }
-        public DelegateCommand SaveCommand { get; }
         public DelegateCommand UndoCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
@@ -141,7 +141,6 @@ namespace Captura
         public ImageEditorViewModel()
         {
             OpenCommand = new DelegateCommand(Open);
-            SaveCommand = new DelegateCommand(Save, false);
             UndoCommand = new DelegateCommand(Undo, false);
 
             SetEffectCommand = new DelegateCommand(async M =>
@@ -203,7 +202,7 @@ namespace Captura
             {
                 UpdateHistory();
 
-                _rotation += 90;
+                Rotation += 90;
 
                 await Update();
             }, false);
@@ -212,7 +211,7 @@ namespace Captura
             {
                 UpdateHistory();
 
-                _rotation -= 90;
+                Rotation -= 90;
 
                 await Update();
             }, false);
@@ -221,7 +220,7 @@ namespace Captura
             {
                 UpdateHistory();
 
-                _flipX = !_flipX;
+                FlipX = !FlipX;
 
                 await Update();
             }, false);
@@ -230,7 +229,7 @@ namespace Captura
             {
                 UpdateHistory();
 
-                _flipY = !_flipY;
+                FlipY = !FlipY;
 
                 await Update();
             }, false);
@@ -336,9 +335,9 @@ namespace Captura
                 Brightness = _brightness,
                 Contrast = _contrastThreshold,
                 Effect = _imageEffect,
-                Rotation = _rotation,
-                FlipX = _flipX,
-                FlipY = _flipY
+                Rotation = Rotation,
+                FlipX = FlipX,
+                FlipY = FlipY
             });
 
             UndoCommand.RaiseCanExecuteChanged(true);
@@ -371,14 +370,15 @@ namespace Captura
             UpdateTransformBitmap();
         }
 
-        int _rotation;
+        public int Rotation { get; private set; }
 
-        bool _flipX, _flipY;
+        public bool FlipX { get; private set; }
+        public bool FlipY { get; private set; }
 
         void UpdateTransformBitmap()
         {
-            var rotate = new RotateTransform(_rotation, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
-            var scale = new ScaleTransform(_flipX ? -1 : 1, _flipY ? -1 : 1);
+            var rotate = new RotateTransform(Rotation, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
+            var scale = new ScaleTransform(FlipX ? -1 : 1, FlipY ? -1 : 1);
 
             TransformedBitmap = new TransformedBitmap(EditedBitmap, new TransformGroup
             {
@@ -395,8 +395,8 @@ namespace Captura
             _brightness = _contrastThreshold = 0;
             _imageEffect = ImageEffect.None;
 
-            _rotation = 0;
-            _flipX = _flipY = false;
+            Rotation = 0;
+            FlipX = FlipY = false;
 
             _history.Clear();
             UndoCommand.RaiseCanExecuteChanged(false);
@@ -428,7 +428,6 @@ namespace Captura
                 
                 UpdateTransformBitmap();
 
-                SaveCommand.RaiseCanExecuteChanged(true);
                 SetEffectCommand.RaiseCanExecuteChanged(true);
                 SetBrightnessCommand.RaiseCanExecuteChanged(true);
                 SetContrastCommand.RaiseCanExecuteChanged(true);
@@ -440,10 +439,10 @@ namespace Captura
             }
         }
 
-        void Save()
+        public void Save(BitmapSource Bmp)
         {
             var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(TransformedBitmap));
+            encoder.Frames.Add(BitmapFrame.Create(Bmp));
 
             var sfd = new SaveFileDialog
             {
@@ -469,15 +468,23 @@ namespace Captura
             _imageEffect = state.Effect;
             _brightness = state.Brightness;
             _contrastThreshold = state.Contrast;
-            _rotation = state.Rotation;
-            _flipX = state.FlipX;
-            _flipY = state.FlipY;
+            Rotation = state.Rotation;
+            FlipX = state.FlipX;
+            FlipY = state.FlipY;
 
             await Update();
 
             if (_history.Count == 0)
                 UndoCommand.RaiseCanExecuteChanged(false);
         }
+
+        public IEnumerable<KeyValuePair<InkCanvasEditingMode, string>> Tools { get; } = new[]
+        {
+            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Ink, "Pencil"),
+            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByPoint, "Eraser"),
+            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser"),
+            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Select, nameof(InkCanvasEditingMode.Select))
+        };
     }
 
     public partial class ImageEditorWindow
@@ -485,11 +492,100 @@ namespace Captura
         public ImageEditorWindow()
         {
             InitializeComponent();
+
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.PropertyChanged += (S, E) =>
+                {
+                    if (E.PropertyName == nameof(vm.TransformedBitmap))
+                        UpdateInkCanvas();
+                };
+            }
+
+            Image.SizeChanged += (S, E) => UpdateInkCanvas();
+
+            ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
+            ModesBox.SelectedIndex = 0;
+            SizeBox.Value = 10;
+
+            InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 
         void Exit(object Sender, RoutedEventArgs E)
         {
             Close();
+        }
+
+        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
+        {
+            if (InkCanvas != null && E.NewValue is int i)
+                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
+        }
+
+        void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            if (ModesBox.SelectedValue is InkCanvasEditingMode mode)
+            {
+                InkCanvas.EditingMode = mode;
+
+                if (mode == InkCanvasEditingMode.Ink)
+                {
+                    InkCanvas.UseCustomCursor = true;
+                    InkCanvas.Cursor = Cursors.Pen;
+                }
+                else InkCanvas.UseCustomCursor = false;
+            }
+        }
+
+        void ColorPicker_OnSelectedColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
+        {
+            if (E.NewValue != null && InkCanvas != null)
+                InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
+        }
+
+        void UpdateInkCanvas()
+        {
+            if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null && Image.ActualWidth > 0)
+            {
+                InkCanvas.IsEnabled = true;
+
+                InkCanvas.Width = vm.OriginalBitmap.PixelWidth;
+                InkCanvas.Height = vm.OriginalBitmap.PixelHeight;
+
+                var rotate = new RotateTransform(vm.Rotation, vm.OriginalBitmap.PixelWidth / 2.0, vm.OriginalBitmap.PixelHeight / 2.0);
+
+                var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
+                
+                var scale = new ScaleTransform(
+                    ((tilted ? Image.ActualHeight : Image.ActualWidth) / InkCanvas.Width) * (vm.FlipX ? -1 : 1),
+                    ((tilted ? Image.ActualWidth : Image.ActualHeight) / InkCanvas.Height) * (vm.FlipY ? -1 : 1)
+                );
+
+                InkCanvas.LayoutTransform = new TransformGroup
+                {
+                    Children =
+                    {
+                        rotate,
+                        scale
+                    }
+                };
+            }
+        }
+
+        void OnSave(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null)
+            {
+                //var bmp = new RenderTargetBitmap(vm.TransformedBitmap.PixelWidth,
+                //    vm.TransformedBitmap.PixelHeight,
+                //    vm.TransformedBitmap.DpiX,
+                //    vm.TransformedBitmap.DpiY,
+                //    PixelFormats.Default);
+
+                //bmp.Render(ContentGrid);
+
+                vm.Save(vm.TransformedBitmap);
+            }
         }
     }
 }
