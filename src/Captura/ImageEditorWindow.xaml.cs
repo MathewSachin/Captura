@@ -43,6 +43,10 @@ namespace Captura
 
     public class StrokeHistory : HistoryItem
     {
+        public int EditingOperationCount { get; set; }
+
+        public InkCanvasEditingMode EditingMode { get; set; }
+
         public List<Stroke> Added { get; } = new List<Stroke>();
         public List<Stroke> Removed { get; } = new List<Stroke>();
     }
@@ -129,6 +133,8 @@ namespace Captura
     {
         int _stride;
         byte[] _data;
+
+        int _editingOperationCount;
 
         readonly Stack<HistoryItem> _undoStack = new Stack<HistoryItem>();
         readonly Stack<HistoryItem> _redoStack = new Stack<HistoryItem>();
@@ -486,9 +492,46 @@ namespace Captura
             if (!_trackChanges)
                 return;
 
-            _undoStack.Push(HistoryItem);
+            HistoryItem.EditingMode = InkCanvas.EditingMode;
+            HistoryItem.EditingOperationCount = _editingOperationCount;
 
-            UndoCommand.RaiseCanExecuteChanged(true);
+            var merged = false;
+
+            if (_undoStack.Count > 0)
+            {
+                var peek = _undoStack.Peek();
+
+                if (HistoryItem.EditingMode == InkCanvasEditingMode.EraseByPoint
+                    && peek is StrokeHistory stroke
+                    && stroke.EditingMode == InkCanvasEditingMode.EraseByPoint
+                    && HistoryItem.EditingOperationCount == stroke.EditingOperationCount)
+                {
+                    // Possible for point-erase to have hit intersection of >1 strokes!
+                    // For each newly hit stroke, merge results into this history item.
+                    foreach (var doomed in HistoryItem.Removed)
+                    {
+                        if (stroke.Added.Contains(doomed))
+                        {
+                            stroke.Added.Remove(doomed);
+                        }
+                        else
+                        {
+                            stroke.Removed.Add(doomed);
+                        }
+                    }
+
+                    stroke.Added.AddRange(HistoryItem.Added);
+                    
+                    merged = true;
+                }
+            }
+
+            if (!merged)
+            {
+                _undoStack.Push(HistoryItem);
+
+                UndoCommand.RaiseCanExecuteChanged(true);
+            }
 
             _redoStack.Clear();
 
@@ -598,6 +641,11 @@ namespace Captura
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser"),
             new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Select, nameof(InkCanvasEditingMode.Select))
         };
+
+        public void IncrementEditingOperationCount()
+        {
+            ++_editingOperationCount;
+        }
     }
 
     public partial class ImageEditorWindow
@@ -616,22 +664,12 @@ namespace Captura
 
                 vm.InkCanvas = InkCanvas;
 
-                InkCanvas.StrokeCollected += (S, E) => vm.AddInkHistory(new StrokeHistory
-                {
-                    Added = { E.Stroke}
-                });
-
-                InkCanvas.StrokeErasing += (S, E) => vm.AddInkHistory(new StrokeHistory
-                {
-                    Removed = { E.Stroke }
-                });
-
-                InkCanvas.StrokesReplaced += (S, E) =>
+                InkCanvas.Strokes.StrokesChanged += (S, E) =>
                 {
                     var item = new StrokeHistory();
-
-                    item.Added.AddRange(E.NewStrokes);
-                    item.Removed.AddRange(E.PreviousStrokes);
+                    
+                    item.Added.AddRange(E.Added);
+                    item.Removed.AddRange(E.Removed);
 
                     vm.AddInkHistory(item);
                 };
@@ -736,6 +774,14 @@ namespace Captura
 
                     vm.Save(transformedRendered);
                 }
+            }
+        }
+
+        void InkCanvas_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.IncrementEditingOperationCount();
             }
         }
     }

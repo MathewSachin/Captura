@@ -204,7 +204,8 @@
             
             <InkCanvas Background="Transparent"
                        Name="InkCanvas"
-                       IsEnabled="False"/>
+                       IsEnabled="False"
+                       MouseUp="InkCanvas_OnMouseUp"/>
         </Grid>
     </DockPanel>
 </Window>
