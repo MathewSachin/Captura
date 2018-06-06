@@ -26,9 +26,10 @@ namespace Captura
 
         public ICommand OpenCommand { get; }
         public ICommand OpenFromClipboardCommand { get; }
-        public ICommand DiscardChangesCommand { get; }
+        public DelegateCommand DiscardChangesCommand { get; }
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
+        public DelegateCommand SaveCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -45,13 +46,14 @@ namespace Captura
             OpenFromClipboardCommand = new DelegateCommand(OpenFromClipboard);
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
+            SaveCommand = new DelegateCommand(OnSave, false);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
             {
                 Reset();
 
                 await Update();
-            });
+            }, false);
 
             SetEffectCommand = new DelegateCommand(async M =>
             {
@@ -371,6 +373,9 @@ namespace Captura
 
             UpdateTransformBitmap();
 
+            SaveCommand.RaiseCanExecuteChanged(true);
+            DiscardChangesCommand.RaiseCanExecuteChanged(true);
+
             SetEffectCommand.RaiseCanExecuteChanged(true);
             SetBrightnessCommand.RaiseCanExecuteChanged(true);
             SetContrastCommand.RaiseCanExecuteChanged(true);
@@ -559,6 +564,35 @@ namespace Captura
         public void IncrementEditingOperationCount()
         {
             ++_editingOperationCount;
+        }
+
+        void OnSave()
+        {
+            var drawingVisual = new DrawingVisual();
+
+            var copy = EditedBitmap;
+            var transform = TransformedBitmap.Transform;
+
+            using (var drawingContext = drawingVisual.RenderOpen())
+            {
+                drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
+
+                InkCanvas.Strokes.Draw(drawingContext);
+
+                drawingContext.Close();
+
+                var bitmap = new RenderTargetBitmap((int)copy.Width,
+                    (int)copy.Height,
+                    copy.DpiX,
+                    copy.DpiY,
+                    PixelFormats.Pbgra32);
+
+                bitmap.Render(drawingVisual);
+
+                var transformedRendered = new TransformedBitmap(bitmap, transform);
+
+                Save(transformedRendered);
+            }
         }
     }
 }

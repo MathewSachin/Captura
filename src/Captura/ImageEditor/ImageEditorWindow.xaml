@@ -15,16 +15,13 @@
     <Window.CommandBindings>
         <CommandBinding Command="Close"
                         Executed="Exit"/>
-        
-        <CommandBinding Command="Save"
-                        Executed="OnSave"/>
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="{Binding OpenCommand}"
                     Key="O"
                     Modifiers="Control"/>
 
-        <KeyBinding Command="Save"
+        <KeyBinding Command="{Binding SaveCommand}"
                     Key="S"
                     Modifiers="Control"/>
         
@@ -47,7 +44,7 @@
                           Command="{Binding OpenFromClipboardCommand}"/>
                 
                 <MenuItem Header="Save"
-                          Command="Save"
+                          Command="{Binding SaveCommand}"
                           InputGestureText="Ctrl + S"/>
                 
                 <Separator/>

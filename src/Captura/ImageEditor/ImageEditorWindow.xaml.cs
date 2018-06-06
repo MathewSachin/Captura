@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Captura
 {
@@ -101,38 +100,6 @@ namespace Captura
                         scale
                     }
                 };
-            }
-        }
-
-        void OnSave(object Sender, ExecutedRoutedEventArgs E)
-        {
-            if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null)
-            {
-                var drawingVisual = new DrawingVisual();
-
-                var copy = vm.EditedBitmap;
-                var transform = vm.TransformedBitmap.Transform;
-
-                using (var drawingContext = drawingVisual.RenderOpen())
-                {
-                    drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
-
-                    InkCanvas.Strokes.Draw(drawingContext);
-
-                    drawingContext.Close();
-
-                    var bitmap = new RenderTargetBitmap((int)copy.Width,
-                        (int)copy.Height,
-                        copy.DpiX,
-                        copy.DpiY,
-                        PixelFormats.Pbgra32);
-
-                    bitmap.Render(drawingVisual);
-
-                    var transformedRendered = new TransformedBitmap(bitmap, transform);
-
-                    vm.Save(transformedRendered);
-                }
             }
         }
 
