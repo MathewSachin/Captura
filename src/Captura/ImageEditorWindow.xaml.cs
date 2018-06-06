@@ -130,13 +130,15 @@ namespace Captura
         int _stride;
         byte[] _data;
 
-        readonly Stack<HistoryItem> _history = new Stack<HistoryItem>();
+        readonly Stack<HistoryItem> _undoStack = new Stack<HistoryItem>();
+        readonly Stack<HistoryItem> _redoStack = new Stack<HistoryItem>();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
         public ICommand OpenCommand { get; }
         public DelegateCommand UndoCommand { get; }
+        public DelegateCommand RedoCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -151,6 +153,7 @@ namespace Captura
         {
             OpenCommand = new DelegateCommand(Open);
             UndoCommand = new DelegateCommand(Undo, false);
+            RedoCommand = new DelegateCommand(Redo, false);
 
             SetEffectCommand = new DelegateCommand(async M =>
             {
@@ -337,9 +340,9 @@ namespace Captura
             Apply(ref Blue);
         }
 
-        void UpdateHistory()
+        HistoryState GetHistoryState()
         {
-            _history.Push(new HistoryState
+            return new HistoryState
             {
                 Brightness = _brightness,
                 Contrast = _contrastThreshold,
@@ -347,9 +350,18 @@ namespace Captura
                 Rotation = Rotation,
                 FlipX = FlipX,
                 FlipY = FlipY
-            });
+            };
+        }
+
+        void UpdateHistory()
+        {
+            _undoStack.Push(GetHistoryState());
 
             UndoCommand.RaiseCanExecuteChanged(true);
+
+            _redoStack.Clear();
+
+            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         async Task Update()
@@ -407,7 +419,7 @@ namespace Captura
             Rotation = 0;
             FlipX = FlipY = false;
 
-            _history.Clear();
+            _undoStack.Clear();
             UndoCommand.RaiseCanExecuteChanged(false);
         }
 
@@ -471,33 +483,36 @@ namespace Captura
 
         public void AddInkHistory(StrokeHistory HistoryItem)
         {
-            if (_undoing)
+            if (!_trackChanges)
                 return;
 
-            _history.Push(HistoryItem);
+            _undoStack.Push(HistoryItem);
 
             UndoCommand.RaiseCanExecuteChanged(true);
+
+            _redoStack.Clear();
+
+            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
-        bool _undoing;
+        bool _trackChanges = true;
 
         async void Undo()
         {
-            _undoing = true;
+            _trackChanges = false;
 
-            if (_history.Count == 0)
+            if (_undoStack.Count == 0)
                 return;
 
-            var item = _history.Pop();
+            var current = GetHistoryState();
+
+            var item = _undoStack.Pop();
 
             if (item is HistoryState state)
             {
-                _imageEffect = state.Effect;
-                _brightness = state.Brightness;
-                _contrastThreshold = state.Contrast;
-                Rotation = state.Rotation;
-                FlipX = state.FlipX;
-                FlipY = state.FlipY;
+                ApplyHistoryState(state);
+
+                _redoStack.Push(current);
             }
             else if (item is StrokeHistory strokes)
             {
@@ -510,14 +525,70 @@ namespace Captura
                 {
                     InkCanvas.Strokes.Add(stroke);
                 }
+
+                _redoStack.Push(item);
             }
+            
+            RedoCommand.RaiseCanExecuteChanged(true);
 
             await Update();
 
-            if (_history.Count == 0)
+            if (_undoStack.Count == 0)
                 UndoCommand.RaiseCanExecuteChanged(false);
 
-            _undoing = false;
+            _trackChanges = true;
+        }
+
+        async void Redo()
+        {
+            _trackChanges = false;
+
+            if (_redoStack.Count == 0)
+                return;
+
+            var current = GetHistoryState();
+
+            var item = _redoStack.Pop();
+
+            if (item is HistoryState state)
+            {
+                ApplyHistoryState(state);
+
+                _undoStack.Push(current);
+            }
+            else if (item is StrokeHistory strokes)
+            {
+                foreach (var stroke in strokes.Added)
+                {
+                    InkCanvas.Strokes.Add(stroke);
+                }
+
+                foreach (var stroke in strokes.Removed)
+                {
+                    InkCanvas.Strokes.Remove(stroke);
+                }
+
+                _undoStack.Push(item);
+            }
+            
+            UndoCommand.RaiseCanExecuteChanged(true);
+
+            await Update();
+
+            if (_redoStack.Count == 0)
+                RedoCommand.RaiseCanExecuteChanged(false);
+
+            _trackChanges = true;
+        }
+
+        void ApplyHistoryState(HistoryState State)
+        {
+            _imageEffect = State.Effect;
+            _brightness = State.Brightness;
+            _contrastThreshold = State.Contrast;
+            Rotation = State.Rotation;
+            FlipX = State.FlipX;
+            FlipY = State.FlipY;
         }
 
         public IEnumerable<KeyValuePair<InkCanvasEditingMode, string>> Tools { get; } = new[]

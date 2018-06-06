@@ -31,6 +31,10 @@
         <KeyBinding Command="{Binding UndoCommand}"
                     Key="Z"
                     Modifiers="Control"/>
+        
+        <KeyBinding Command="{Binding RedoCommand}"
+                    Key="Y"
+                    Modifiers="Control"/>
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -53,6 +57,10 @@
                 <MenuItem Header="Undo"
                           Command="{Binding UndoCommand}"
                           InputGestureText="Ctrl + Z"/>
+                
+                <MenuItem Header="Redo"
+                          Command="{Binding RedoCommand}"
+                          InputGestureText="Ctrl + Y"/>
                 
                 <Separator/>
                 
