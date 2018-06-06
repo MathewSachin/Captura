@@ -43,6 +43,9 @@
                           Command="{Binding OpenCommand}"
                           InputGestureText="Ctrl + O"/>
                 
+                <MenuItem Header="Open from Clipboard"
+                          Command="{Binding OpenFromClipboardCommand}"/>
+                
                 <MenuItem Header="Save"
                           Command="Save"
                           InputGestureText="Ctrl + S"/>
