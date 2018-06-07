@@ -37,6 +37,8 @@ namespace Captura
         readonly CropThumb _crtBottom;
         readonly CropThumb _crtRight;
 
+        readonly CropThumb _crtMove;
+
         // To store and manage the adorner's visual children.
         readonly VisualCollection _vc;
         #endregion
@@ -64,9 +66,9 @@ namespace Captura
             set => SetValue(FillProperty, value);
         }
 
-        static void FillPropChanged(DependencyObject d, DependencyPropertyChangedEventArgs Args)
+        static void FillPropChanged(DependencyObject D, DependencyPropertyChangedEventArgs Args)
         {
-            if (d is CroppingAdorner crp)
+            if (D is CroppingAdorner crp)
             {
                 crp._prCropMask.Fill = (Brush)Args.NewValue;
             }
@@ -112,6 +114,8 @@ namespace Captura
             BuildCorner(ref _crtBottomLeft, Cursors.SizeNESW);
             BuildCorner(ref _crtBottomRight, Cursors.SizeNWSE);
 
+            BuildCorner(ref _crtMove, Cursors.SizeAll);
+
             // Add handlers for Cropping.
             _crtBottomLeft.DragDelta += HandleBottomLeft;
             _crtBottomRight.DragDelta += HandleBottomRight;
@@ -121,6 +125,8 @@ namespace Captura
             _crtBottom.DragDelta += HandleBottom;
             _crtRight.DragDelta += HandleRight;
             _crtLeft.DragDelta += HandleLeft;
+
+            _crtMove.DragDelta += HandleMove;
 
             // We have to keep the clipping interior withing the bounds of the adorned element
             // so we have to track it's size to guarantee that...
@@ -163,6 +169,37 @@ namespace Captura
             _prCropMask.RectInterior = rcInterior;
             SetThumbs(_prCropMask.RectInterior);
             RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
+        }
+
+        void HandleMove(object Sender, DragDeltaEventArgs Args)
+        {
+            if (AdornedElement is FrameworkElement fel)
+            {
+                var rcInterior = _prCropMask.RectInterior;
+
+                var left = rcInterior.Left + Args.HorizontalChange;
+                var top = rcInterior.Top + Args.VerticalChange;
+
+                if (left < 0)
+                    left = 0;
+
+                if (left + rcInterior.Width > fel.ActualWidth)
+                    left = fel.ActualWidth - rcInterior.Width;
+
+                if (top < 0)
+                    top = 0;
+
+                if (top + rcInterior.Height > fel.ActualHeight)
+                    top = fel.ActualHeight - rcInterior.Height;
+
+                rcInterior = new Rect(left, top, rcInterior.Width, rcInterior.Height);
+
+                _prCropMask.RectInterior = rcInterior;
+
+                SetThumbs(_prCropMask.RectInterior);
+
+                RaiseEvent(new RoutedEventArgs(CropChangedEvent, this));
+            }
         }
 
         // Handler for Cropping from the bottom-left.
@@ -261,8 +298,7 @@ namespace Captura
             }
         }
         #endregion
-
-        #region Other handlers
+        
         void AdornedElement_SizeChanged(object Sender, SizeChangedEventArgs E)
         {
             var ratio = E.NewSize.Width / E.PreviousSize.Width;
@@ -276,8 +312,7 @@ namespace Captura
             
             _prCropMask.RectInterior = new Rect(intLeft, intTop, intWidth, intHeight);
         }
-        #endregion
-
+        
         #region Arranging/positioning
         void SetThumbs(Rect rc)
         {
@@ -289,6 +324,8 @@ namespace Captura
             _crtBottom.SetPos(rc.Left + rc.Width / 2, rc.Bottom);
             _crtLeft.SetPos(rc.Left, rc.Top + rc.Height / 2);
             _crtRight.SetPos(rc.Right, rc.Top + rc.Height / 2);
+
+            _crtMove.SetPos(rc.Left + rc.Width / 2, rc.Top + rc.Height / 2);
         }
 
         // Arrange the Adorners.
@@ -304,8 +341,7 @@ namespace Captura
             return FinalSize;
         }
         #endregion
-
-        #region Public interface
+        
         public BitmapSource BpsCrop(BitmapSource Bmp)
         {
             var ratio = Bmp.PixelWidth / AdornedElement.RenderSize.Width;
@@ -334,9 +370,7 @@ namespace Captura
 
             return new CroppedBitmap(Bmp, rcFrom);
         }
-        #endregion
-
-        #region Helper functions
+        
         void BuildCorner(ref CropThumb crt, Cursor crs)
         {
             if (crt != null)
@@ -347,11 +381,8 @@ namespace Captura
                 Cursor = crs
             };
 
-            // Set some arbitrary visual characteristics.
-
             _cnvThumbs.Children.Add(crt);
         }
-        #endregion
 
         #region Visual tree overrides
         // Override the VisualChildrenCount and GetVisualChild properties to interface with 
