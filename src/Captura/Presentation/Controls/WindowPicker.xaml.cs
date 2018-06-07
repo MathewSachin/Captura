@@ -51,7 +51,7 @@ namespace Captura
         {
             var pos = E.GetPosition(this);
 
-            var point = new Point((int) pos.X, (int) pos.Y);
+            var point = new Point((int) (pos.X * Dpi.X), (int) (pos.Y * Dpi.Y));
 
             var window = _windows.FirstOrDefault(M => M.Rectangle.Contains(point));
 
@@ -63,10 +63,10 @@ namespace Captura
 
                 var rect = window.Rectangle;
 
-                WindowBorder.Margin = new Thickness(rect.Left, rect.Top, 0, 0);
+                WindowBorder.Margin = new Thickness(rect.Left / Dpi.X, rect.Top / Dpi.Y, 0, 0);
 
-                WindowBorder.Width = rect.Width;
-                WindowBorder.Height = rect.Height;
+                WindowBorder.Width = rect.Width / Dpi.X;
+                WindowBorder.Height = rect.Height / Dpi.Y;
                 
                 WindowBorder.Visibility = Visibility.Visible;
             }
