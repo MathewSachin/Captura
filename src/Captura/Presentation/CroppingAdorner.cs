@@ -39,14 +39,7 @@ namespace Captura
 
         // To store and manage the adorner's visual children.
         readonly VisualCollection _vc;
-
-        // DPI for screen
-        static readonly double s_dpiX;
-
-        static readonly double s_dpiY;
         #endregion
-        
-        public Rect ClippingRectangle => _prCropMask.RectInterior;
         
         #region Routed Events
         public static readonly RoutedEvent CropChangedEvent = EventManager.RegisterRoutedEvent(
@@ -84,10 +77,7 @@ namespace Captura
         static CroppingAdorner()
         {
             var clr = Colors.Red;
-            var g = System.Drawing.Graphics.FromHwnd((IntPtr)0);
-
-            s_dpiX = g.DpiX;
-            s_dpiY = g.DpiY;
+            
             clr.A = 80;
             FillProperty.OverrideMetadata(typeof(CroppingAdorner),
                 new PropertyMetadata(
@@ -95,8 +85,8 @@ namespace Captura
                     FillPropChanged));
         }
 
-        public CroppingAdorner(UIElement adornedElement, Rect rcInit)
-            : base(adornedElement)
+        public CroppingAdorner(UIElement AdornedElement, Rect rcInit)
+            : base(AdornedElement)
         {
             _vc = new VisualCollection(this);
             _prCropMask = new PuncturedRect
@@ -135,7 +125,7 @@ namespace Captura
             // We have to keep the clipping interior withing the bounds of the adorned element
             // so we have to track it's size to guarantee that...
 
-            if (adornedElement is FrameworkElement fel)
+            if (AdornedElement is FrameworkElement fel)
             {
                 fel.SizeChanged += AdornedElement_SizeChanged;
             }
@@ -352,10 +342,15 @@ namespace Captura
 
             var rcInterior = _prCropMask.RectInterior;
 
-            var pxFromSize = UnitsToPx(rcInterior.Width * ratio, rcInterior.Height * ratio);
+            Point ToPoint(double X, double Y)
+            {
+                return new Point((int)(X * ratio), (int)(Y * ratio));
+            }
+
+            var pxFromSize = ToPoint(rcInterior.Width, rcInterior.Height);
             
-            var pxFromPos = UnitsToPx(rcInterior.Left * ratio, rcInterior.Top * ratio);
-            var pxWhole = UnitsToPx(AdornedElement.RenderSize.Width * ratio, AdornedElement.RenderSize.Height * ratio);
+            var pxFromPos = ToPoint(rcInterior.Left, rcInterior.Top);
+            var pxWhole = ToPoint(AdornedElement.RenderSize.Width, AdornedElement.RenderSize.Height);
 
             pxFromSize.X = Math.Max(Math.Min(pxWhole.X - pxFromPos.X, pxFromSize.X), 0);
             pxFromSize.Y = Math.Max(Math.Min(pxWhole.Y - pxFromPos.Y, pxFromSize.Y), 0);
@@ -385,11 +380,6 @@ namespace Captura
             // Set some arbitrary visual characteristics.
 
             _cnvThumbs.Children.Add(crt);
-        }
-
-        Point UnitsToPx(double x, double y)
-        {
-            return new Point((int)(x * s_dpiX / 96), (int)(y * s_dpiY / 96));
         }
         #endregion
 
