@@ -10,10 +10,13 @@ namespace Captura
     public partial class CropWindow
     {
         CroppingAdorner _croppingAdorner;
+        readonly string _fileName;
 
         public CropWindow(string FileName)
         {
             InitializeComponent();
+
+            _fileName = FileName;
 
             var decoder = new PngBitmapDecoder(File.OpenRead(FileName), BitmapCreateOptions.None, BitmapCacheOption.Default);
 
@@ -60,7 +63,8 @@ namespace Captura
                 AddExtension = true,
                 DefaultExt = ".png",
                 Filter = "PNG File|*.png",
-                FileName = "Untitled.png"
+                InitialDirectory = Path.GetDirectoryName(_fileName),
+                FileName = Path.GetFileName(_fileName)
             };
 
             if (sfd.ShowDialog().GetValueOrDefault())

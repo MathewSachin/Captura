@@ -43,7 +43,7 @@ namespace Captura
         
         #region Routed Events
         public static readonly RoutedEvent CropChangedEvent = EventManager.RegisterRoutedEvent(
-            "CropChanged",
+            nameof(CropChanged),
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(CroppingAdorner));
@@ -263,7 +263,6 @@ namespace Captura
         #endregion
 
         #region Other handlers
-
         void AdornedElement_SizeChanged(object Sender, SizeChangedEventArgs E)
         {
             var fel = Sender as FrameworkElement;
@@ -308,7 +307,6 @@ namespace Captura
         #endregion
 
         #region Arranging/positioning
-
         void SetThumbs(Rect rc)
         {
             _crtBottomRight.SetPos(rc.Right, rc.Bottom);

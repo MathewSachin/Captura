@@ -7,33 +7,35 @@ namespace Captura
 {
     public class PuncturedRect : Shape
     {
-        #region Dependency properties
         public static readonly DependencyProperty RectInteriorProperty =
             DependencyProperty.Register(
-                "RectInterior",
+                nameof(RectInterior),
                 typeof(Rect),
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
                     new Rect(0, 0, 0, 0),
                     FrameworkPropertyMetadataOptions.AffectsRender,
                     null,
-                    CoerceRectInterior,
-                    false
+                    CoerceRectInterior
                 ),
                 null
             );
 
-        static object CoerceRectInterior(DependencyObject d, object value)
+        static object CoerceRectInterior(DependencyObject D, object Value)
         {
-            var pr = (PuncturedRect)d;
-            var rcExterior = pr.RectExterior;
-            var rcProposed = (Rect)value;
-            var left = Math.Max(rcProposed.Left, rcExterior.Left);
-            var top = Math.Max(rcProposed.Top, rcExterior.Top);
-            var width = Math.Min(rcProposed.Right, rcExterior.Right) - left;
-            var height = Math.Min(rcProposed.Bottom, rcExterior.Bottom) - top;
-            rcProposed = new Rect(left, top, width, height);
-            return rcProposed;
+            if (D is PuncturedRect pr && Value is Rect rcProposed)
+            {
+                var rcExterior = pr.RectExterior;
+
+                var left = Math.Max(rcProposed.Left, rcExterior.Left);
+                var top = Math.Max(rcProposed.Top, rcExterior.Top);
+                var width = Math.Min(rcProposed.Right, rcExterior.Right) - left;
+                var height = Math.Min(rcProposed.Bottom, rcExterior.Bottom) - top;
+
+                return new Rect(left, top, width, height);
+            }
+
+            return Value;
         }
 
         public Rect RectInterior
@@ -41,11 +43,10 @@ namespace Captura
             get => (Rect)GetValue(RectInteriorProperty);
             set => SetValue(RectInteriorProperty, value);
         }
-
-
+        
         public static readonly DependencyProperty RectExteriorProperty =
             DependencyProperty.Register(
-                "RectExterior",
+                nameof(RectExterior),
                 typeof(Rect),
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
@@ -54,10 +55,7 @@ namespace Captura
                     FrameworkPropertyMetadataOptions.AffectsArrange |
                     FrameworkPropertyMetadataOptions.AffectsParentMeasure |
                     FrameworkPropertyMetadataOptions.AffectsParentArrange |
-                    FrameworkPropertyMetadataOptions.AffectsRender,
-                    null,
-                    null,
-                    false
+                    FrameworkPropertyMetadataOptions.AffectsRender
                 ),
                 null
             );
@@ -67,9 +65,7 @@ namespace Captura
             get => (Rect)GetValue(RectExteriorProperty);
             set => SetValue(RectExteriorProperty, value);
         }
-        #endregion
-
-        #region Constructors
+        
         public PuncturedRect() : this(new Rect(0, 0, double.MaxValue, double.MaxValue), new Rect()) { }
 
         public PuncturedRect(Rect RectExterior, Rect RectInterior)
@@ -77,9 +73,7 @@ namespace Captura
             this.RectInterior = RectInterior;
             this.RectExterior = RectExterior;
         }
-        #endregion
-
-        #region Geometry
+        
         protected override Geometry DefiningGeometry
         {
             get
@@ -101,10 +95,8 @@ namespace Captura
                 pthfInt.Segments.Add(new LineSegment(rectIntSect.TopLeft, false));
                 pthgInt.Figures.Add(pthfInt);
 
-                var cmbg = new CombinedGeometry(GeometryCombineMode.Exclude, pthgExt, pthgInt);
-                return cmbg;
+                return new CombinedGeometry(GeometryCombineMode.Exclude, pthgExt, pthgInt);
             }
         }
-        #endregion
     }
 }
