@@ -110,7 +110,8 @@
             </MenuItem>
         </Menu>
 
-        <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top"
+              Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -163,7 +164,8 @@
         </TextBlock>
 
         <Border BorderThickness="0,0,1,0"
-                BorderBrush="#77333333">
+                BorderBrush="#77333333"
+                Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}}">
             <DockPanel LastChildFill="False">
                 <ListBox ItemsSource="{Binding Tools}"
                          SelectedValuePath="Key"
@@ -216,6 +218,19 @@
                        Name="InkCanvas"
                        IsEnabled="False"
                        MouseUp="InkCanvas_OnMouseUp"/>
+            
+            <StackPanel Orientation="Horizontal"
+                        Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Button Content="Open Image from File ..."
+                        Command="{Binding OpenCommand}"
+                        Margin="5"/>
+
+                <Button Content="Open Image from Clipboard"
+                        Command="{Binding OpenFromClipboardCommand}"
+                        Margin="5"/>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>
