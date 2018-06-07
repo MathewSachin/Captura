@@ -386,7 +386,7 @@ namespace Captura
             FlipYCommand.RaiseCanExecuteChanged(true);
         }
 
-        public void Save(BitmapSource Bmp)
+        void Save(BitmapSource Bmp)
         {
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(Bmp));
@@ -395,7 +395,8 @@ namespace Captura
             {
                 Filter = "PNG Image|*.png",
                 DefaultExt = ".png",
-                AddExtension = true
+                AddExtension = true,
+                FileName = "Untitled.png"
             };
 
             if (sfd.ShowDialog().GetValueOrDefault())
