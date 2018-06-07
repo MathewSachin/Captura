@@ -265,44 +265,16 @@ namespace Captura
         #region Other handlers
         void AdornedElement_SizeChanged(object Sender, SizeChangedEventArgs E)
         {
-            var fel = Sender as FrameworkElement;
+            var ratio = E.NewSize.Width / E.PreviousSize.Width;
+
             var rcInterior = _prCropMask.RectInterior;
-            var fFixupRequired = false;
-            double
-                intLeft = rcInterior.Left,
-                intTop = rcInterior.Top,
-                intWidth = rcInterior.Width,
-                intHeight = rcInterior.Height;
-
-            if (rcInterior.Left > fel.RenderSize.Width)
-            {
-                intLeft = fel.RenderSize.Width;
-                intWidth = 0;
-                fFixupRequired = true;
-            }
-
-            if (rcInterior.Top > fel.RenderSize.Height)
-            {
-                intTop = fel.RenderSize.Height;
-                intHeight = 0;
-                fFixupRequired = true;
-            }
-
-            if (rcInterior.Right > fel.RenderSize.Width)
-            {
-                intWidth = Math.Max(0, fel.RenderSize.Width - intLeft);
-                fFixupRequired = true;
-            }
-
-            if (rcInterior.Bottom > fel.RenderSize.Height)
-            {
-                intHeight = Math.Max(0, fel.RenderSize.Height - intTop);
-                fFixupRequired = true;
-            }
-            if (fFixupRequired)
-            {
-                _prCropMask.RectInterior = new Rect(intLeft, intTop, intWidth, intHeight);
-            }
+            
+            double intLeft = rcInterior.Left * ratio,
+                intTop = rcInterior.Top * ratio,
+                intWidth = rcInterior.Width * ratio,
+                intHeight = rcInterior.Height * ratio;
+            
+            _prCropMask.RectInterior = new Rect(intLeft, intTop, intWidth, intHeight);
         }
         #endregion
 
