@@ -192,7 +192,12 @@
                                   DockPanel.Dock="Bottom"
                                   Name="ColorPicker"
                                   SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
-                                  VerticalContentAlignment="Stretch"/>
+                                  VerticalContentAlignment="Stretch"
+                                  ColorMode="ColorCanvas"
+                                  ShowAdvancedButton="True"
+                                  AdvancedButtonHeader="Color Canvas"
+                                  StandardButtonHeader="Pallette"
+                                  ShowRecentColors="True"/>
 
                 <xctk:IntegerUpDown Name="SizeBox"
                                     Minimum="1"
