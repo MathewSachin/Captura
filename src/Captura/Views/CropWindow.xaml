@@ -6,33 +6,20 @@
         Height="600"
         Width="800">
     <DockPanel>
-        <Grid DockPanel.Dock="Bottom"
-              Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Button Click="Save"
+                Content="Save"
+                DockPanel.Dock="Bottom"
+                Margin="10"/>
 
-            <Button Click="Undo"
-                    IsEnabled="False"
-                    Content="Undo"
-                    Name="UndoButton"/>
+        <StackPanel DockPanel.Dock="Right"
+                    Width="200"
+                    Margin="5">
+            <TextBlock Text="Preview"
+                       Style="{StaticResource Title}"/>
+            <Image Name="CroppedImage"/>
+        </StackPanel>
 
-            <Button Click="Crop"
-                    IsEnabled="False"
-                    Content="Crop"
-                    Name="CropButton"
-                    Grid.Column="1"/>
-
-            <Button Click="Save"
-                    Content="Save"
-                    Name="SaveButton"
-                    Grid.Column="2"/>
-        </Grid>
-        
         <Image Name="Image"
-               Margin="15"
-               MouseDown="Image_OnMouseDown"/>
+               Margin="15"/>
     </DockPanel>
 </Window>
