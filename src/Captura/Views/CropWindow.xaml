@@ -11,15 +11,26 @@
                 DockPanel.Dock="Bottom"
                 Margin="10"/>
 
-        <StackPanel DockPanel.Dock="Right"
-                    Width="200"
-                    Margin="5">
-            <TextBlock Text="Preview"
-                       Style="{StaticResource Title}"/>
-            <Image Name="CroppedImage"/>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" MinWidth="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Image Name="Image"
-               Margin="15"/>
+            <Image Name="Image"
+                   Margin="15"/>
+            
+            <GridSplitter Width="1"
+                          Grid.Column="1"/>
+
+            <StackPanel Margin="10"
+                        Grid.Column="2">
+                <TextBlock Text="Preview"
+                           Style="{StaticResource Title}"
+                           Margin="0,0,0,10"/>
+                <Image Name="CroppedImage"/>
+            </StackPanel>
+        </Grid>
     </DockPanel>
 </Window>
