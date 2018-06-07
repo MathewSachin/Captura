@@ -6,7 +6,7 @@
         Width="600"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms">
     <Grid Background="{DynamicResource WindowBackground}">
-        <WindowsFormsHost Background="Transparent">
+        <WindowsFormsHost>
             <wf:PictureBox x:Name="DisplayImage"
                            SizeMode="Zoom"/>
         </WindowsFormsHost>
