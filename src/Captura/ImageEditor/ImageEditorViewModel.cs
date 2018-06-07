@@ -26,6 +26,7 @@ namespace Captura
 
         public ICommand OpenCommand { get; }
         public ICommand OpenFromClipboardCommand { get; }
+        public ICommand NewBlankCommand { get; }
         public DelegateCommand DiscardChangesCommand { get; }
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
@@ -44,6 +45,7 @@ namespace Captura
         {
             OpenCommand = new DelegateCommand(Open);
             OpenFromClipboardCommand = new DelegateCommand(OpenFromClipboard);
+            NewBlankCommand = new DelegateCommand(NewBlank);
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
             SaveCommand = new DelegateCommand(OnSave, false);
@@ -343,6 +345,23 @@ namespace Captura
 
                 OnOpen(decoder.Frames[0]);
             }
+        }
+
+        void NewBlank()
+        {
+            var w = (int) InkCanvas.ActualWidth;
+            var h = (int) InkCanvas.ActualHeight;
+
+            var stride = w * 4;
+            var data = new byte[h * stride];
+
+            // white
+            for (var i = 0; i < data.Length; ++i)
+            {
+                data[i] = 255;
+            }
+
+            OnOpen(BitmapSource.Create(w, h, 96, 96, PixelFormats.Bgr32, null, data, stride));
         }
 
         void OpenFromClipboard()

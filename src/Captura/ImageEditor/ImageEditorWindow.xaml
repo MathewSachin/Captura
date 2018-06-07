@@ -17,6 +17,10 @@
                         Executed="Exit"/>
     </Window.CommandBindings>
     <Window.InputBindings>
+        <KeyBinding Command="{Binding NewBlankCommand}"
+                    Key="N"
+                    Modifiers="Control"/>
+        
         <KeyBinding Command="{Binding OpenCommand}"
                     Key="O"
                     Modifiers="Control"/>
@@ -36,6 +40,10 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
+                <MenuItem Header="New Blank"
+                          Command="{Binding NewBlankCommand}"
+                          InputGestureText="Ctrl + N"/>
+
                 <MenuItem Header="Open"
                           Command="{Binding OpenCommand}"
                           InputGestureText="Ctrl + O"/>
@@ -223,6 +231,10 @@
                         Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
+                <Button Content="New Blank"
+                        Command="{Binding NewBlankCommand}"
+                        Margin="5"/>
+                
                 <Button Content="Open Image from File ..."
                         Command="{Binding OpenCommand}"
                         Margin="5"/>
