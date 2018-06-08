@@ -545,7 +545,19 @@ namespace Captura.ViewModels
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
-                    var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
+                    var hWnd = Window.DesktopWindow;
+
+                    if (selectedVideoSource is WindowItem windowItem)
+                    {
+                        hWnd = windowItem.Window;
+                    }
+                    else if (selectedVideoSource is WindowPickerItem windowPicker)
+                    {
+                        var picked = windowPicker.Picker.PickWindow();
+
+                        if (picked != null)
+                            hWnd = picked;
+                    }
 
                     bmp = ScreenShotWindow(hWnd);
                     break;

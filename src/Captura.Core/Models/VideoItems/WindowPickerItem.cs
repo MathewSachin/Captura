@@ -6,11 +6,11 @@ namespace Captura.Models
 {
     public class WindowPickerItem : NotifyPropertyChanged, IVideoItem
     {
-        readonly IVideoSourcePicker _picker;
+        public IVideoSourcePicker Picker { get; }
 
         public WindowPickerItem(IVideoSourcePicker Picker)
         {
-            _picker = Picker;
+            this.Picker = Picker;
         }
 
         public override string ToString() => Name;
@@ -32,7 +32,7 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            var window = _picker.PickWindow();
+            var window = Picker.PickWindow();
 
             if (window == null)
             {
