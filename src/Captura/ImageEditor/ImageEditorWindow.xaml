@@ -37,8 +37,9 @@
                     Key="Y"
                     Modifiers="Control"/>
     </Window.InputBindings>
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
+    <DockPanel Background="{DynamicResource WindowBackground}">
+        <Menu DockPanel.Dock="Top"
+              Background="{DynamicResource WindowBackground}">
             <MenuItem Header="File">
                 <MenuItem Header="New Blank"
                           Command="{Binding NewBlankCommand}"
@@ -160,16 +161,18 @@
                         Command="{Binding SetContrastCommand}"/>
             </DockPanel>
         </Grid>
-        
-        <TextBlock DockPanel.Dock="Bottom"
-                   Margin="5">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}{0} x {1}">
-                    <Binding Path="TransformedBitmap.PixelWidth"/>
-                    <Binding Path="TransformedBitmap.PixelHeight"/>
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+
+        <Label DockPanel.Dock="Bottom"
+               Margin="5">
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} x {1}">
+                        <Binding Path="TransformedBitmap.PixelWidth"/>
+                        <Binding Path="TransformedBitmap.PixelHeight"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Label>
 
         <Border BorderThickness="0,0,1,0"
                 BorderBrush="#77333333"
