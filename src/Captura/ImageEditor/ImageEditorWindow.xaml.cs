@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using FirstFloor.ModernUI.Windows.Controls;
 
 namespace Captura
 {
@@ -116,6 +118,31 @@ namespace Captura
             if (DataContext is ImageEditorViewModel vm)
             {
                 vm.IncrementEditingOperationCount();
+            }
+        }
+
+        void ImageEditorWindow_OnClosing(object Sender, CancelEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (vm.UnsavedChanges)
+                {
+                    var result = ModernDialog.ShowMessage("Do you want to save your changes before exiting?",
+                        "Unsaved Changes",
+                        MessageBoxButton.YesNoCancel,
+                        this);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            vm.SaveCommand.ExecuteIfCan();
+                            break;
+
+                        case MessageBoxResult.Cancel:
+                            E.Cancel = true;
+                            break;
+                    }
+                }
             }
         }
     }

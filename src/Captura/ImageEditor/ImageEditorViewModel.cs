@@ -16,6 +16,8 @@ namespace Captura
         int _stride;
         byte[] _data;
 
+        public bool UnsavedChanges { get; private set; }
+
         int _editingOperationCount;
 
         readonly Stack<HistoryItem> _undoStack = new Stack<HistoryItem>();
@@ -257,6 +259,8 @@ namespace Captura
 
         void UpdateHistory()
         {
+            UnsavedChanges = true;
+
             _undoStack.Push(GetHistoryState());
 
             UndoCommand.RaiseCanExecuteChanged(true);
@@ -315,6 +319,8 @@ namespace Captura
 
         void Reset()
         {
+            UnsavedChanges = false;
+
             _brightness = _contrastThreshold = 0;
             _imageEffect = ImageEffect.None;
 
@@ -427,6 +433,8 @@ namespace Captura
             {
                 using (var stream = sfd.OpenFile())
                     encoder.Save(stream);
+
+                UnsavedChanges = false;
             }
         }
 
@@ -436,6 +444,8 @@ namespace Captura
         {
             if (!_trackChanges)
                 return;
+
+            UnsavedChanges = true;
 
             HistoryItem.EditingMode = InkCanvas.EditingMode;
             HistoryItem.EditingOperationCount = _editingOperationCount;

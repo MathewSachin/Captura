@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Image Editor"
         Height="600"
-        Width="800">
+        Width="800"
+        Closing="ImageEditorWindow_OnClosing">
     <Window.DataContext>
         <local:ImageEditorViewModel/>
     </Window.DataContext>
