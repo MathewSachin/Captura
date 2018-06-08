@@ -7,9 +7,20 @@
         Width="800">
     <DockPanel Background="{DynamicResource WindowBackground}">
         <Button Click="Save"
-                Content="Save"
                 DockPanel.Dock="Bottom"
-                Margin="10"/>
+                Margin="10">
+            <DockPanel>
+                <Path Data="{StaticResource Icon_Save}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                
+                <Label Content="Save"/>
+            </DockPanel>
+        </Button>
 
         <Grid>
             <Grid.ColumnDefinitions>
