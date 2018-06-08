@@ -1,4 +1,4 @@
-﻿<Window x:Class="Captura.WindowPicker"
+﻿<Window x:Class="Captura.ScreenPicker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -23,17 +23,15 @@
     <Grid Background="#57FFFFFF"
           MouseMove="WindowMouseMove"
           MouseLeftButtonDown="WindowMouseLeftButtonDown">
-        <TextBlock Text="Select Window or Press Esc to Cancel"
+        <TextBlock Text="Select Screen or Press Esc to Cancel"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Foreground="White"
                    Style="{StaticResource Title}"/>
         
-        <Border BorderThickness="5"
-                Visibility="Collapsed"
+        <Border Visibility="Collapsed"
                 Background="#57FFFFFF"
-                Name="WindowBorder"
-                BorderBrush="#333333"
+                Name="ScreenBorder"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
     </Grid>

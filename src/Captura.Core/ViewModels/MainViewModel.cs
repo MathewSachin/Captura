@@ -556,7 +556,10 @@ namespace Captura.ViewModels
                         var picked = windowPicker.Picker.PickWindow();
 
                         if (picked != null)
+                        {
                             hWnd = picked;
+                        }
+                        else return;
                     }
 
                     bmp = ScreenShotWindow(hWnd);
@@ -580,6 +583,16 @@ namespace Captura.ViewModels
 
                         if (hide)
                             _mainWindow.IsVisible = true;
+                    }
+                    else if (selectedVideoSource is ScreenPickerItem screenPicker)
+                    {
+                        var picked = screenPicker.Picker.PickScreen();
+
+                        if (picked != null)
+                        {
+                            bmp = ScreenShot.Capture(picked, includeCursor);
+                        }
+                        else return;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
@@ -647,7 +660,9 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            if (VideoViewModel.SelectedVideoSource is WindowPickerItem && imgProvider == null)
+            // Window Picker or Screen Picker Cancelled
+            if ((VideoViewModel.SelectedVideoSource is WindowPickerItem
+                || VideoViewModel.SelectedVideoSource is ScreenPickerItem) && imgProvider == null)
             {
                 return false;
             }

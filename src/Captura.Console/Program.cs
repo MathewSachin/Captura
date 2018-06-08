@@ -145,6 +145,7 @@ namespace Captura
 
             var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 
+            // Window Picker is skipped automatically
             foreach (var source in winProvider.OfType<WindowItem>())
             {
                 WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
@@ -160,8 +161,8 @@ namespace Captura
 
             var j = 0;
 
-            // First is Full Screen
-            foreach (var screen in scrProvider.Skip(1))
+            // First is Full Screen, Second is Screen Picker
+            foreach (var screen in scrProvider.Skip(2))
             {
                 WriteLine($"{j.ToString().PadRight(2)}: {screen}");
 
@@ -184,13 +185,13 @@ namespace Captura
             WriteLine();
 
             #region Microphones
-            if (audio.AvailableRecordingSources.Count > 1)
+            if (audio.AvailableRecordingSources.Count > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + underline);
 
-                for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableRecordingSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
                 }
 
                 WriteLine();
@@ -198,13 +199,13 @@ namespace Captura
             #endregion
 
             #region Speaker
-            if (audio.AvailableLoopbackSources.Count > 1)
+            if (audio.AvailableLoopbackSources.Count > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
 
-                for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableLoopbackSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
                 }
 
                 WriteLine();
@@ -264,8 +265,8 @@ namespace Captura
                 {
                     video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
 
-                    // First item is Full Screen
-                    video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
+                    // First item is Full Screen, Second is Screen Picker
+                    video.SelectedVideoSource = video.AvailableVideoSources[index + 2];
                 }
             }
 

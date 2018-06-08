@@ -88,6 +88,7 @@
     <Compile Include="Models\ImageOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
     <Compile Include="Models\MousePointerOverlay.cs" />
+    <Compile Include="Models\VideoItems\ScreenPickerItem.cs" />
     <Compile Include="Models\VideoItems\WindowPickerItem.cs" />
     <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
     <Compile Include="Models\WebcamItem.cs" />

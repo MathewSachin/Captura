@@ -1,4 +1,5 @@
-﻿using Screna;
+﻿using System.Windows.Forms;
+using Screna;
 
 namespace Captura.Models
 {
@@ -11,6 +12,15 @@ namespace Captura.Models
             picker.ShowDialog();
 
             return picker.SelectedWindow;
+        }
+
+        public Screen PickScreen()
+        {
+            var picker = new ScreenPicker();
+
+            picker.ShowDialog();
+
+            return picker.SelectedScreen;
         }
     }
 }
