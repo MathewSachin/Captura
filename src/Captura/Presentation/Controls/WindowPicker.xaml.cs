@@ -17,6 +17,10 @@ namespace Captura
         {
             InitializeComponent();
 
+            Left = Top = 0;
+            Width = SystemParameters.VirtualScreenWidth;
+            Height = SystemParameters.VirtualScreenHeight;
+
             UpdateBackground();
 
             _windows = Window.EnumerateVisible().ToArray();

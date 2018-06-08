@@ -11,8 +11,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        ResizeMode="NoResize"
-        WindowState="Maximized">
+        ResizeMode="NoResize">
     <Window.InputBindings>
         <KeyBinding Command="Close"
                     Key="Escape"/>
