@@ -5,7 +5,7 @@
         Title="Crop"
         Height="600"
         Width="800">
-    <DockPanel>
+    <DockPanel Background="{DynamicResource WindowBackground}">
         <Button Click="Save"
                 Content="Save"
                 DockPanel.Dock="Bottom"
@@ -26,9 +26,11 @@
 
             <StackPanel Margin="10"
                         Grid.Column="2">
-                <TextBlock Text="Preview"
-                           Style="{StaticResource Title}"
-                           Margin="0,0,0,10"/>
+                <Label Margin="0,0,0,10">
+                    <TextBlock Text="Preview"
+                               Style="{StaticResource Title}"/>
+                </Label>
+                
                 <Image Name="CroppedImage"/>
             </StackPanel>
         </Grid>
