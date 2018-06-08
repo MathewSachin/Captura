@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using Captura.Models;
 using Captura.ViewModels;
@@ -26,6 +27,17 @@ namespace Captura
             UpdateSelection(ItemsControl);
 
             UpdateSelection(ImagesItemsControl);
+        }
+
+        void AddToGrid(LayerFrame Frame, bool CanResize)
+        {
+            Grid.Children.Add(Frame);
+
+            var layer = AdornerLayer.GetAdornerLayer(Frame);
+            var adorner = new OverlayPositionAdorner(Frame, CanResize);
+            layer.Add(adorner);
+
+            adorner.PositionUpdated += Frame.RaisePositionChanged;
         }
 
         LayerFrame Generate(PositionedOverlaySettings Settings, string Name, Color Background)
@@ -86,10 +98,10 @@ namespace Captura
 
             Update();
 
-            control.PositionUpdated += (X, Y, W, H) =>
+            control.PositionUpdated += Rect =>
             {
-                Settings.X = (int)X;
-                Settings.Y = (int)Y;
+                Settings.X = (int)Rect.X;
+                Settings.Y = (int)Rect.Y;
             };
 
             return control;
@@ -114,10 +126,10 @@ namespace Captura
                 });
             };
 
-            control.PositionUpdated += (X, Y, W, H) =>
+            control.PositionUpdated += Rect =>
             {
-                Settings.ResizeWidth = (int)W;
-                Settings.ResizeHeight = (int)H;
+                Settings.ResizeWidth = (int)Rect.Width;
+                Settings.ResizeHeight = (int)Rect.Height;
             };
 
             return control;
@@ -133,7 +145,6 @@ namespace Captura
             var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
             
             control.FontSize = Settings.FontSize;
-            control.CanResize = false;
 
             control.Padding = new Thickness(Settings.HorizontalPadding,
                 Settings.VerticalPadding,
@@ -194,7 +205,7 @@ namespace Captura
         readonly List<LayerFrame> _textOverlays = new List<LayerFrame>();
         readonly List<LayerFrame> _imageOverlays = new List<LayerFrame>();
 
-        void UpdateTextOverlays(IList<CustomOverlaySettings> Settings)
+        void UpdateTextOverlays(IEnumerable<CustomOverlaySettings> Settings)
         {
             foreach (var overlay in _textOverlays)
             {
@@ -227,11 +238,11 @@ namespace Captura
 
             foreach (var overlay in _textOverlays)
             {
-                Grid.Children.Add(overlay);
+                AddToGrid(overlay, false);
             }
         }
 
-        void UpdateImageOverlays(IList<CustomImageOverlaySettings> Settings)
+        void UpdateImageOverlays(IEnumerable<CustomImageOverlaySettings> Settings)
         {
             foreach (var overlay in _imageOverlays)
             {
@@ -264,7 +275,7 @@ namespace Captura
 
             foreach (var overlay in _imageOverlays)
             {
-                Grid.Children.Add(overlay);
+                AddToGrid(overlay, true);
             }
         }
 
@@ -293,8 +304,8 @@ namespace Captura
             UpdateImageOverlays(imgOverlayVm.Collection);
             (imgOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateImageOverlays(imgOverlayVm.Collection);
 
-            Grid.Children.Add(keystrokes);
-            Grid.Children.Add(webcam);
+            AddToGrid(keystrokes, false);
+            AddToGrid(webcam, true);
         }
 
         void ItemsControl_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)

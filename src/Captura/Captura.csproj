@@ -76,6 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Presentation\CroppingAdorner.cs" />
+    <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="Views\CropWindow.xaml.cs">
+      <DependentUpon>CropWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\HitType.cs" />
     <Compile Include="Presentation\Controls\LayerFrame.xaml.cs">
       <DependentUpon>LayerFrame.xaml</DependentUpon>
@@ -85,6 +90,7 @@
     <Compile Include="Presentation\Controls\WindowPicker.xaml.cs">
       <DependentUpon>WindowPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\OverlayPositionAdorner.cs" />
     <Compile Include="Views\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
@@ -176,6 +182,9 @@
       <DependentUpon>ProxyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\ValueConverters\TimeSpanToSecondsConverter.cs" />
+    <Compile Include="Views\RecentView.xaml.cs">
+      <DependentUpon>RecentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
@@ -187,6 +196,10 @@
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
     <Page Include="Presentation\Controls\WindowPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
