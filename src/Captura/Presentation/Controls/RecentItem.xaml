@@ -22,17 +22,72 @@
                 Command="{Binding OpenCommand}">
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{local:Loc CopyPath}"
-                              Command="{Binding CopyPathCommand}"/>
-                    <MenuItem Header="{local:Loc Print}"
-                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                    <MenuItem Command="{Binding CopyPathCommand}"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Clipboard}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <Label Content="{local:Loc CopyPath}"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
                               Command="{Binding PrintCommand}"
-                              Name="PrintMenuItem"/>
-                    <MenuItem Header="Crop"
-                              Visibility="{Binding IsEnabled, ElementName=PrintMenuItem, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Click="CropClick"/>
-                    <MenuItem Header="{local:Loc Delete}"
-                              Command="{Binding DeleteCommand}"/>
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Print}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <Label Content="{local:Loc Print}"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Click="CropClick"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Crop}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                                
+                                <Label Content="Crop"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteCommand}"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Delete}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <Label Content="{local:Loc Delete}"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                 </ContextMenu>
             </Button.ContextMenu>
         </Button>
