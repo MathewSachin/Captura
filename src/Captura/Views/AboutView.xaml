@@ -39,24 +39,68 @@
                     </Grid.RowDefinitions>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/"
-                            Content="{local:Loc Source}"
-                            Margin="3"/>
+                            Margin="3">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Code}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{local:Loc Source}"/>
+                        </DockPanel>
+                    </Button>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://github.com/MathewSachin/Captura/blob/master/docs/Changelog.md"
-                            Content="{local:Loc Changelog}"
                             Grid.Column="1"
-                            Margin="3"/>
+                            Margin="3">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_History}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{local:Loc Changelog}"/>
+                        </DockPanel>
+                    </Button>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://www.paypal.me/MathewSachin"
-                            Content="{local:Loc Donate}"
                             Grid.Row="1"
-                            Margin="3"/>
+                            Margin="3">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Dollar}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{local:Loc Donate}"/>
+                        </DockPanel>
+                    </Button>
                     <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://MathewSachin.github.io/Captura"
-                            Content="Website"
                             Grid.Row="1"
                             Grid.Column="1"
-                            Margin="3"/>
+                            Margin="3">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Web}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="Website"/>
+                        </DockPanel>
+                    </Button>
                 </Grid>
 
                 <Button Click="ViewLicenses"

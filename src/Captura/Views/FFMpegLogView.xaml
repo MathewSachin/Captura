@@ -25,11 +25,24 @@
         </DockPanel>
         
         <Button DockPanel.Dock="Top"
-                Content="{local:Loc CopyToClipboard}"
                 Command="{Binding FFMpegLog.CopyToClipboardCommand}"
-                Margin="0,5"/>
+                Margin="0,5">
+            <DockPanel>
+                <Path Data="{StaticResource Icon_Clipboard}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+
+                <TextBlock Text="{local:Loc CopyToClipboard}"/>
+            </DockPanel>
+        </Button>
+
         <Label Content="{Binding FFMpegLog.Frame}"
                DockPanel.Dock="Bottom"/>
+        
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
             <TextBlock Text="{Binding FFMpegLog.Content, Mode=OneWay}"
                        Style="{StaticResource TextColor}"/>

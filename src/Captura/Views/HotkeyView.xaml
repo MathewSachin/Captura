@@ -8,8 +8,8 @@
         <Button Content="{local:Loc Reset}"
                 DockPanel.Dock="Top"
                 Command="{Binding HotKeyManager.ResetCommand}"/>
-        <ScrollViewer>
-            <ItemsControl Margin="0,5"
+        <ScrollViewer Margin="0,5">
+            <ItemsControl Margin="5"
                           ItemsSource="{Binding HotKeyManager.Hotkeys}">
                 <ItemsControl.Resources>
                     <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
