@@ -81,6 +81,7 @@
       <DependentUpon>LayerFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Presentation\OverlayPositionAdorner.cs" />
     <Compile Include="Views\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
