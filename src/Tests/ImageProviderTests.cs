@@ -11,6 +11,12 @@ namespace Captura.Tests
     [TestClass]
     public class ImageProviderTests
     {
+        [ClassInitialize]
+        public static void Init(TestContext Context)
+        {
+            ServiceProvider.LoadModule(new FakesModule());
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void OverlayImageProviderNull()
@@ -87,8 +93,8 @@ namespace Captura.Tests
         {
             var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
 
-            // There should be atleast two screen sources including Full screen
-            Assert.IsTrue(screenSourceProvider.Count() >= 2);
+            // There should be atleast 3 screen sources including Full screen and Screen Picker
+            Assert.IsTrue(screenSourceProvider.Count() >= 3);
         }
 
         [TestMethod]
