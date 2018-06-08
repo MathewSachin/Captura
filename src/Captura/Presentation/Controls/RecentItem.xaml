@@ -26,7 +26,11 @@
                               Command="{Binding CopyPathCommand}"/>
                     <MenuItem Header="{local:Loc Print}"
                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Command="{Binding PrintCommand}"/>
+                              Command="{Binding PrintCommand}"
+                              Name="PrintMenuItem"/>
+                    <MenuItem Header="Crop"
+                              Visibility="{Binding IsEnabled, ElementName=PrintMenuItem, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Click="CropClick"/>
                     <MenuItem Header="{local:Loc Delete}"
                               Command="{Binding DeleteCommand}"/>
                 </ContextMenu>

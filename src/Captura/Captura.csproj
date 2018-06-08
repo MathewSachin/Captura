@@ -76,6 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Presentation\CroppingAdorner.cs" />
+    <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="Views\CropWindow.xaml.cs">
+      <DependentUpon>CropWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\HitType.cs" />
     <Compile Include="Presentation\Controls\LayerFrame.xaml.cs">
       <DependentUpon>LayerFrame.xaml</DependentUpon>
@@ -173,6 +178,9 @@
       <DependentUpon>ProxyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\ValueConverters\TimeSpanToSecondsConverter.cs" />
+    <Compile Include="Views\RecentView.xaml.cs">
+      <DependentUpon>RecentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
@@ -183,6 +191,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Views\CropWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Controls\LayerFrame.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

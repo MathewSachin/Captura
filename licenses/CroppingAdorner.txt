@@ -1,0 +1,5 @@
+Code Project Open License (CPOL)
+
+https://www.codeproject.com/info/cpol10.aspx
+
+https://www.codeproject.com/Articles/23158/A-Photoshop-like-Cropping-Adorner-for-WPF
