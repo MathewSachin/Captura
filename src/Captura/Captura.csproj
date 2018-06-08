@@ -87,11 +87,17 @@
     <Compile Include="ImageEditor\ModifyPixel.cs" />
     <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
+    <Compile Include="Presentation\CroppingAdorner.cs" />
+    <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="Views\CropWindow.xaml.cs">
+      <DependentUpon>CropWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\HitType.cs" />
     <Compile Include="Presentation\Controls\LayerFrame.xaml.cs">
       <DependentUpon>LayerFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Presentation\OverlayPositionAdorner.cs" />
     <Compile Include="Views\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
@@ -180,6 +186,9 @@
       <DependentUpon>ProxyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\ValueConverters\TimeSpanToSecondsConverter.cs" />
+    <Compile Include="Views\RecentView.xaml.cs">
+      <DependentUpon>RecentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
@@ -191,6 +200,10 @@
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
     <Page Include="ImageEditor\ImageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

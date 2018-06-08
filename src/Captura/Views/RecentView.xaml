@@ -1,4 +1,5 @@
-<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Page x:Class="Captura.Views.RecentView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
