@@ -85,7 +85,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <Label Content="Edit"/>
+                                <TextBlock Text="Edit"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
