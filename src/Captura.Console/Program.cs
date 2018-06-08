@@ -184,13 +184,13 @@ namespace Captura
             WriteLine();
 
             #region Microphones
-            if (audio.AvailableRecordingSources.Count > 1)
+            if (audio.AvailableRecordingSources.Count > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + underline);
 
-                for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableRecordingSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
                 }
 
                 WriteLine();
@@ -198,13 +198,13 @@ namespace Captura
             #endregion
 
             #region Speaker
-            if (audio.AvailableLoopbackSources.Count > 1)
+            if (audio.AvailableLoopbackSources.Count > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
 
-                for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableLoopbackSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
                 }
 
                 WriteLine();
