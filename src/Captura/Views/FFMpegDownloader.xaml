@@ -55,8 +55,20 @@
 
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
-            <Button Content="Target Folder"
-                    ContentStringFormat="{}{0}: "/>
+            <Button>
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_Folder}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Target Folder:"/>
+                </DockPanel>
+            </Button>
+
             <Button DockPanel.Dock="Right"
                     Command="{Binding SelectFolderCommand}">
                 <Path Stretch="UniformToFill"

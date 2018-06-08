@@ -156,13 +156,24 @@
 
                 <!-- Output Folder -->
                 <DockPanel DockPanel.Dock="Bottom">                    
-                    <Button Content="{local:Loc OutFolder}"
-                            ContentStringFormat="{}{0}: "
-                            DockPanel.Dock="Left"
+                    <Button DockPanel.Dock="Left"
                             Padding="5,0"
                             VerticalContentAlignment="Center"
                             ToolTip="{local:Loc OpenOutFolder}"
-                            Command="{Binding OpenOutputFolderCommand}"/>
+                            Command="{Binding OpenOutputFolderCommand}">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Folder}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{local:Loc OutFolder}"/>
+                        </DockPanel>
+                    </Button>
+                    
                     <Button DockPanel.Dock="Right"
                             ToolTip="{local:Loc SelectOutFolder}"
                             Command="{Binding SelectOutputFolderCommand}"
@@ -193,6 +204,13 @@
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top"
                                        Margin="5,0,5,5">
+                                <Path Data="{StaticResource Icon_Translate}"
+                                      Width="15"
+                                      Height="15"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
                                 <Label Content="{local:Loc Language}"
                                        ContentStringFormat="{}{0}:"
                                        Margin="5"/>
@@ -230,9 +248,20 @@
                                     <Frame Source="Views/HotkeyView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="Overlays">
-                                    <Button Content="Manage Overlays"
-                                            Click="OpenOverlayManager"
-                                            VerticalAlignment="Top"/>
+                                    <Button Click="OpenOverlayManager"
+                                            VerticalAlignment="Top">
+                                        <DockPanel>
+                                            <Path Data="{StaticResource Icon_Settings}"
+                                                  Width="15"
+                                                  Height="15"
+                                                  Margin="0,0,10,0"
+                                                  Stretch="Uniform"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+
+                                            <TextBlock Text="Manage Overlays"/>
+                                        </DockPanel>
+                                    </Button>
                                 </TabItem>
                                 <TabItem Header="FFMpeg">
                                     <Frame Source="Views/FFMpegView.xaml"/>

@@ -6,14 +6,36 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Margin="10">
-            <Button Content="{local:Loc FFMpegLog}"
-                    Click="OpenFFMpegLog"
-                    Margin="0,5"/>
+            <Button Click="OpenFFMpegLog"
+                    Margin="0,5">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_History}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
 
-            <Button Content="Download FFMpeg"
-                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                    <TextBlock Text="{local:Loc FFMpegLog}"/>
+                </DockPanel>
+            </Button>
+
+            <Button IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                     Click="FFDownload"
-                    Margin="0,5"/>
+                    Margin="0,5">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_Download}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Download FFMpeg"/>
+                </DockPanel>
+            </Button>
 
             <Label Content="{local:Loc FFMpegFolder}"
                    Margin="0,10,0,0"
@@ -39,6 +61,14 @@
                           Width="9"
                           Data="{StaticResource Icon_Close}"/>
                 </Button>
+
+                <Path Data="{StaticResource Icon_Folder}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
 
                 <Border ToolTip="{Binding Settings.FFMpeg.FolderPath}">
                     <xctk:WatermarkTextBox IsReadOnly="True"
@@ -91,35 +121,73 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
+                <Path Data="{StaticResource Icon_Twitch}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
                 <Label Content="Twitch Key"
-                       ContentStringFormat="{}{0}: "/>
-                <TextBox Grid.Column="1"
+                       ContentStringFormat="{}{0}: "
+                       Grid.Column="1"/>
+                <TextBox Grid.Column="2"
                          Margin="2"
                          Text="{Binding Settings.FFMpeg.TwitchKey}"/>
 
+                <Path Data="{StaticResource Icon_YouTube}"
+                      Grid.Row="1"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
                 <Label Content="YouTube Live Key"
                        Grid.Row="1"
+                       Grid.Column="1"
                        ContentStringFormat="{}{0}: "/>
-                <TextBox Grid.Column="1"
+                <TextBox Grid.Column="2"
                          Grid.Row="1"
                          Margin="2"
                          Text="{Binding Settings.FFMpeg.YouTubeLiveKey}"/>
-                
+
+                <Path Data="{StaticResource Icon_Web}"
+                      Grid.Row="2"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
                 <Label Content="Custom Url"
+                       Grid.Column="1"
                        Grid.Row="2"
                        ContentStringFormat="{}{0}:"/>
                 <TextBox Grid.Row="2"
-                         Grid.Column="1"
+                         Grid.Column="2"
                          Margin="2"
                          Text="{Binding Settings.FFMpeg.CustomStreamingUrl}"/>
             </Grid>
-            
+
             <Button Margin="0,10"
-                    Content="Configure Codecs"
-                    Click="ConfigCodecs"/>
+                    Click="ConfigCodecs">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_Settings}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Configure Codecs"/>
+                </DockPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>
