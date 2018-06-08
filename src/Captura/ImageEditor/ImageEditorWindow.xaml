@@ -41,35 +41,126 @@
         <Menu DockPanel.Dock="Top"
               Background="{DynamicResource WindowBackground}">
             <MenuItem Header="File">
-                <MenuItem Header="New Blank"
-                          Command="{Binding NewBlankCommand}"
-                          InputGestureText="Ctrl + N"/>
+                <MenuItem Command="{Binding NewBlankCommand}"
+                          InputGestureText="Ctrl + N">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_NewFile}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
 
-                <MenuItem Header="Open"
-                          Command="{Binding OpenCommand}"
-                          InputGestureText="Ctrl + O"/>
+                            <Label Content="New Blank"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Command="{Binding OpenCommand}"
+                          InputGestureText="Ctrl + O">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_OpenFile}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Open"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
                 
-                <MenuItem Header="Open from Clipboard"
-                          Command="{Binding OpenFromClipboardCommand}"/>
+                <MenuItem Command="{Binding OpenFromClipboardCommand}">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Clipboard}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Open from Clipboard"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
                 
-                <MenuItem Header="Save"
-                          Command="{Binding SaveCommand}"
-                          InputGestureText="Ctrl + S"/>
+                <MenuItem Command="{Binding SaveCommand}"
+                          InputGestureText="Ctrl + S">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Save}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Save"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
                 
                 <Separator/>
                 
-                <MenuItem Header="Exit"
-                          Command="Close"/>
+                <MenuItem Command="Close">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Close}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Exit"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
             </MenuItem>
             
             <MenuItem Header="Edit">
-                <MenuItem Header="Undo"
-                          Command="{Binding UndoCommand}"
-                          InputGestureText="Ctrl + Z"/>
+                <MenuItem Command="{Binding UndoCommand}"
+                          InputGestureText="Ctrl + Z">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Undo}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Undo"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
                 
-                <MenuItem Header="Redo"
-                          Command="{Binding RedoCommand}"
-                          InputGestureText="Ctrl + Y"/>
+                <MenuItem Command="{Binding RedoCommand}"
+                          InputGestureText="Ctrl + Y">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Redo}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Redo"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
                 
                 <Separator/>
                 
@@ -78,11 +169,37 @@
                 
                 <Separator/>
                 
-                <MenuItem Header="Rotate Left"
-                          Command="{Binding RotateLeftCommand}"/>
+                <MenuItem Command="{Binding RotateLeftCommand}">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_RotateLeft}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
 
-                <MenuItem Header="Rotate Right"
-                          Command="{Binding RotateRightCommand}"/>
+                            <Label Content="Rotate Left"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Command="{Binding RotateRightCommand}">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_RotateRight}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Rotate Right"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
 
                 <Separator/>
                 
@@ -128,37 +245,85 @@
 
             <DockPanel Margin="3">
                 <Button DockPanel.Dock="Right"
-                        Content="+"
                         CommandParameter="1"
-                        Command="{Binding SetBrightnessCommand}"/>
+                        Command="{Binding SetBrightnessCommand}">
+                    <Path Data="{StaticResource Icon_Plus}"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Button>
 
-                <Button Content="-"
-                        CommandParameter="-1"
+                <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
-                        Command="{Binding SetBrightnessCommand}"/>
+                        Command="{Binding SetBrightnessCommand}">
+                    <Path Data="{StaticResource Icon_Minus}"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Button>
 
-                <Button Content="Brightness"
-                        HorizontalContentAlignment="Center"
+                <Button HorizontalContentAlignment="Center"
                         CommandParameter="0"
-                        Command="{Binding SetBrightnessCommand}"/>
+                        ToolTip="Reset Brightness"
+                        Command="{Binding SetBrightnessCommand}">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Brightness}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <Label Content="Brightness"/>
+                    </DockPanel>
+                </Button>
             </DockPanel>
 
             <DockPanel Grid.Column="1"
                        Margin="3">
                 <Button DockPanel.Dock="Right"
-                        Content="+"
                         CommandParameter="1"
-                        Command="{Binding SetContrastCommand}"/>
+                        Command="{Binding SetContrastCommand}">
+                    <Path Data="{StaticResource Icon_Plus}"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Button>
 
-                <Button Content="-"
-                        CommandParameter="-1"
+                <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
-                        Command="{Binding SetContrastCommand}"/>
+                        Command="{Binding SetContrastCommand}">
+                    <Path Data="{StaticResource Icon_Minus}"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Button>
 
-                <Button Content="Contrast"
-                        HorizontalContentAlignment="Center"
+                <Button HorizontalContentAlignment="Center"
                         CommandParameter="0"
-                        Command="{Binding SetContrastCommand}"/>
+                        ToolTip="Reset Contrast"
+                        Command="{Binding SetContrastCommand}">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Contrast}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <Label Content="Contrast"/>
+                    </DockPanel>
+                </Button>
             </DockPanel>
         </Grid>
 
@@ -234,17 +399,50 @@
                         Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                <Button Content="New Blank"
-                        Command="{Binding NewBlankCommand}"
-                        Margin="5"/>
+                <Button Command="{Binding NewBlankCommand}"
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_NewFile}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                        
+                        <Label Content="New Blank"/>
+                    </DockPanel>
+                </Button>
                 
-                <Button Content="Open Image from File ..."
-                        Command="{Binding OpenCommand}"
-                        Margin="5"/>
+                <Button Command="{Binding OpenCommand}"
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_OpenFile}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                <Button Content="Open Image from Clipboard"
-                        Command="{Binding OpenFromClipboardCommand}"
-                        Margin="5"/>
+                        <Label Content="Open Image from File ..."/>
+                    </DockPanel>
+                </Button>
+
+                <Button Command="{Binding OpenFromClipboardCommand}"
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Clipboard}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <Label Content="Open Image from Clipboard"/>
+                    </DockPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </DockPanel>
