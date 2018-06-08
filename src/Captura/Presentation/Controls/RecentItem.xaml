@@ -34,7 +34,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <Label Content="{local:Loc CopyPath}"/>
+                                <TextBlock Text="{local:Loc CopyPath}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -51,7 +51,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <Label Content="{local:Loc Print}"/>
+                                <TextBlock Text="{local:Loc Print}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -67,8 +67,8 @@
                                       Stretch="Uniform"
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
-                                
-                                <Label Content="Crop"/>
+
+                                <TextBlock Text="Crop"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -84,7 +84,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <Label Content="{local:Loc Delete}"/>
+                                <TextBlock Text="{local:Loc Delete}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
