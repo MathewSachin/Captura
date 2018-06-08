@@ -37,7 +37,7 @@ namespace Captura
         readonly CropThumb _crtBottom;
         readonly CropThumb _crtRight;
 
-        readonly CropThumb _crtMove;
+        readonly Thumb _crtMove;
 
         // To store and manage the adorner's visual children.
         readonly VisualCollection _vc;
@@ -105,6 +105,15 @@ namespace Captura
             };
 
             _vc.Add(_cnvThumbs);
+            
+            _crtMove = new Thumb
+            {
+                Cursor = Cursors.Hand,
+                Opacity = 0
+            };
+
+            _cnvThumbs.Children.Add(_crtMove);
+
             BuildCorner(ref _crtTop, Cursors.SizeNS);
             BuildCorner(ref _crtBottom, Cursors.SizeNS);
             BuildCorner(ref _crtLeft, Cursors.SizeWE);
@@ -114,21 +123,19 @@ namespace Captura
             BuildCorner(ref _crtBottomLeft, Cursors.SizeNESW);
             BuildCorner(ref _crtBottomRight, Cursors.SizeNWSE);
 
-            BuildCorner(ref _crtMove, Cursors.SizeAll);
-
             // Add handlers for Cropping.
-            _crtBottomLeft.DragDelta += HandleBottomLeft;
-            _crtBottomRight.DragDelta += HandleBottomRight;
-            _crtTopLeft.DragDelta += HandleTopLeft;
-            _crtTopRight.DragDelta += HandleTopRight;
-            _crtTop.DragDelta += HandleTop;
-            _crtBottom.DragDelta += HandleBottom;
-            _crtRight.DragDelta += HandleRight;
-            _crtLeft.DragDelta += HandleLeft;
+            _crtBottomLeft.DragDelta += (S, E) => HandleDrag(S, E, 1, 0, -1, 1);
+            _crtBottomRight.DragDelta += (S, E) => HandleDrag(S, E, 0, 0, 1, 1);
+            _crtTopLeft.DragDelta += (S, E) => HandleDrag(S, E, 1, 1, -1, -1);
+            _crtTopRight.DragDelta += (S, E) => HandleDrag(S, E, 0, 1, 1, -1);
+            _crtTop.DragDelta += (S, E) => HandleDrag(S, E, 0, 1, 0, -1);
+            _crtBottom.DragDelta += (S, E) => HandleDrag(S, E, 0, 0, 0, 1);
+            _crtRight.DragDelta += (S, E) => HandleDrag(S, E, 0, 0, 1, 0);
+            _crtLeft.DragDelta += (S, E) => HandleDrag(S, E, 1, 0, -1, 0);
 
             _crtMove.DragDelta += HandleMove;
 
-            // We have to keep the clipping interior withing the bounds of the adorned element
+            // We have to keep the clipping interior within the bounds of the adorned element
             // so we have to track it's size to guarantee that...
 
             if (AdornedElement is FrameworkElement fel)
@@ -202,99 +209,11 @@ namespace Captura
             }
         }
 
-        // Handler for Cropping from the bottom-left.
-        void HandleBottomLeft(object Sender, DragDeltaEventArgs Args)
+        void HandleDrag(object Sender, DragDeltaEventArgs Args, int L, int T, int W, int H)
         {
             if (Sender is CropThumb)
             {
-                HandleThumb(
-                    1, 0, -1, 1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the bottom-right.
-        void HandleBottomRight(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    0, 0, 1, 1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the top-right.
-        void HandleTopRight(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    0, 1, 1, -1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the top-left.
-        void HandleTopLeft(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    1, 1, -1, -1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the top.
-        void HandleTop(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    0, 1, 0, -1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the left.
-        void HandleLeft(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    1, 0, -1, 0,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the right.
-        void HandleRight(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    0, 0, 1, 0,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
-            }
-        }
-
-        // Handler for Cropping from the bottom.
-        void HandleBottom(object Sender, DragDeltaEventArgs Args)
-        {
-            if (Sender is CropThumb)
-            {
-                HandleThumb(
-                    0, 0, 0, 1,
-                    Args.HorizontalChange,
-                    Args.VerticalChange);
+                HandleThumb(L, T, W, H, Args.HorizontalChange, Args.VerticalChange);
             }
         }
         #endregion
@@ -325,7 +244,10 @@ namespace Captura
             _crtLeft.SetPos(rc.Left, rc.Top + rc.Height / 2);
             _crtRight.SetPos(rc.Right, rc.Top + rc.Height / 2);
 
-            _crtMove.SetPos(rc.Left + rc.Width / 2, rc.Top + rc.Height / 2);
+            _crtMove.Width = rc.Width;
+            _crtMove.Height = rc.Height;
+            Canvas.SetLeft(_crtMove, rc.Left);
+            Canvas.SetTop(_crtMove, rc.Top);
         }
 
         // Arrange the Adorners.
@@ -338,6 +260,7 @@ namespace Captura
 
             SetThumbs(rcInterior);
             _cnvThumbs.Arrange(rcExterior);
+
             return FinalSize;
         }
         #endregion
