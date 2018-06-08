@@ -340,11 +340,16 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
-                var decoder = BitmapDecoder.Create(new Uri(ofd.FileName),
-                    BitmapCreateOptions.None, BitmapCacheOption.None);
-
-                OnOpen(decoder.Frames[0]);
+                OpenFile(ofd.FileName);
             }
+        }
+
+        public void OpenFile(string FilePath)
+        {
+            var decoder = BitmapDecoder.Create(new Uri(FilePath),
+                BitmapCreateOptions.None, BitmapCacheOption.None);
+
+            OnOpen(decoder.Frames[0]);
         }
 
         void NewBlank()

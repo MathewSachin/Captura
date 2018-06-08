@@ -42,6 +42,14 @@ namespace Captura
             InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 
+        public void Open(string FilePath)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.OpenFile(FilePath);
+            }
+        }
+
         void Exit(object Sender, RoutedEventArgs E)
         {
             Close();
