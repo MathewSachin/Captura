@@ -22,12 +22,11 @@
     </Window.CommandBindings>
     <Grid Background="#57FFFFFF"
           MouseMove="WindowMouseMove"
-          MouseLeftButtonDown="WindowMouseLeftButtonDown">
-        <TextBlock Text="Select Screen or Press Esc to Cancel"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   Style="{StaticResource Title}"/>
+          MouseLeftButtonDown="WindowMouseLeftButtonDown"
+          Name="Grid">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
+        </Grid.Resources>
         
         <Border Visibility="Collapsed"
                 Background="#57FFFFFF"

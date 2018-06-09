@@ -2,12 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Screna;
 using Cursors = System.Windows.Input.Cursors;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Point = System.Drawing.Point;
 
@@ -26,6 +28,8 @@ namespace Captura
             UpdateBackground();
 
             _screens = Screen.AllScreens;
+
+            ShowCancelText();
         }
 
         readonly Screen[] _screens;
@@ -43,6 +47,38 @@ namespace Captura
 
                 var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
                 Background = new ImageBrush(decoder.Frames[0]);
+            }
+        }
+
+        void ShowCancelText()
+        {
+            foreach (var screen in _screens)
+            {
+                var left = screen.Bounds.Left / Dpi.X;
+                var top = screen.Bounds.Top / Dpi.Y;
+                var width = screen.Bounds.Width / Dpi.X;
+                var height = screen.Bounds.Height / Dpi.Y;
+
+                var container = new ContentControl
+                {
+                    Width = width,
+                    Height = height,
+                    Margin = new Thickness(left, top, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+
+                var textBlock = new TextBlock
+                {
+                    Text = "Select Screen or Press Esc to Cancel",
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Foreground = new SolidColorBrush(Colors.White)
+                };
+
+                container.Content = textBlock;
+
+                Grid.Children.Add(container);
             }
         }
 
