@@ -145,6 +145,7 @@ namespace Captura
 
             var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 
+            // Window Picker is skipped automatically
             foreach (var source in winProvider.OfType<WindowItem>())
             {
                 WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
@@ -160,8 +161,8 @@ namespace Captura
 
             var j = 0;
 
-            // First is Full Screen
-            foreach (var screen in scrProvider.Skip(1))
+            // First is Full Screen, Second is Screen Picker
+            foreach (var screen in scrProvider.Skip(2))
             {
                 WriteLine($"{j.ToString().PadRight(2)}: {screen}");
 
@@ -264,8 +265,8 @@ namespace Captura
                 {
                     video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
 
-                    // First item is Full Screen
-                    video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
+                    // First item is Full Screen, Second is Screen Picker
+                    video.SelectedVideoSource = video.AvailableVideoSources[index + 2];
                 }
             }
 

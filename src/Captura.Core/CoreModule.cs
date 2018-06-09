@@ -47,6 +47,8 @@ namespace Captura
                 Bind<IVideoWriterProvider>().To<SharpAviWriterProvider>().InSingletonScope();
             }
 
+            Bind<WindowPickerItem>().ToSelf().InSingletonScope();
+
             // Video Source Providers
             Bind<IVideoSourceProvider>().To<ScreenSourceProvider>().InSingletonScope();
             Bind<IVideoSourceProvider>().To<RegionSourceProvider>().InSingletonScope();

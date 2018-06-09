@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
+      <DependentUpon>ScreenPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="Views\CropWindow.xaml.cs">
@@ -86,6 +89,10 @@
       <DependentUpon>LayerFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Models\VideoSourcePicker.cs" />
+    <Compile Include="Presentation\Controls\WindowPicker.xaml.cs">
+      <DependentUpon>WindowPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\OverlayPositionAdorner.cs" />
     <Compile Include="Views\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
@@ -191,6 +198,14 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Presentation\Controls\ScreenPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\WindowPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -84,12 +84,16 @@
     <Compile Include="Models\Discard\DiscardWriterItem.cs" />
     <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
     <Compile Include="Models\Fakes\FakePreviewWindow.cs" />
+    <Compile Include="Models\Fakes\FakeVideoSourcePicker.cs" />
     <Compile Include="Models\ImageOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
     <Compile Include="Models\MousePointerOverlay.cs" />
+    <Compile Include="Models\VideoItems\ScreenPickerItem.cs" />
+    <Compile Include="Models\VideoItems\WindowPickerItem.cs" />
     <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
     <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Services\IPreviewWindow.cs" />
+    <Compile Include="Services\IVideoSourcePicker.cs" />
     <Compile Include="Settings\Models\CustomFFMpegCodec.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />

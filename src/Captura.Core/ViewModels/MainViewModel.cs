@@ -545,7 +545,22 @@ namespace Captura.ViewModels
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
-                    var hWnd = (selectedVideoSource as WindowItem)?.Window ?? Window.DesktopWindow;
+                    var hWnd = Window.DesktopWindow;
+
+                    if (selectedVideoSource is WindowItem windowItem)
+                    {
+                        hWnd = windowItem.Window;
+                    }
+                    else if (selectedVideoSource is WindowPickerItem windowPicker)
+                    {
+                        var picked = windowPicker.Picker.PickWindow();
+
+                        if (picked != null)
+                        {
+                            hWnd = picked;
+                        }
+                        else return;
+                    }
 
                     bmp = ScreenShotWindow(hWnd);
                     break;
@@ -568,6 +583,16 @@ namespace Captura.ViewModels
 
                         if (hide)
                             _mainWindow.IsVisible = true;
+                    }
+                    else if (selectedVideoSource is ScreenPickerItem screenPicker)
+                    {
+                        var picked = screenPicker.Picker.PickScreen();
+
+                        if (picked != null)
+                        {
+                            bmp = ScreenShot.Capture(picked, includeCursor);
+                        }
+                        else return;
                     }
                     else if (selectedVideoSource is ScreenItem screen)
                     {
@@ -632,6 +657,13 @@ namespace Captura.ViewModels
             {
                 ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
 
+                return false;
+            }
+
+            // Window Picker or Screen Picker Cancelled
+            if ((VideoViewModel.SelectedVideoSource is WindowPickerItem
+                || VideoViewModel.SelectedVideoSource is ScreenPickerItem) && imgProvider == null)
+            {
                 return false;
             }
 
