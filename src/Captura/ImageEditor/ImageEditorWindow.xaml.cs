@@ -145,5 +145,10 @@ namespace Captura
                 }
             }
         }
+
+        void NewWindow(object Sender, RoutedEventArgs E)
+        {
+            new ImageEditorWindow().ShowAndFocus();
+        }
     }
 }

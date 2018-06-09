@@ -128,7 +128,23 @@
                 </MenuItem>
 
                 <Separator/>
-                
+
+                <MenuItem Click="NewWindow">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Add}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="New Window"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+
                 <MenuItem Command="Close">
                     <MenuItem.Header>
                         <DockPanel>
