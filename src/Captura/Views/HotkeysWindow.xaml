@@ -1,0 +1,51 @@
+﻿<Window x:Class="Captura.Views.HotkeysWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura"
+        mc:Ignorable="d"
+        Title="Hotkeys"
+        Height="600"
+        Width="700"
+        Background="{DynamicResource WindowBackground}"
+        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid>
+        <DockPanel Margin="5">
+            <Button Content="{local:Loc Reset}"
+                    DockPanel.Dock="Top"
+                    Command="{Binding HotKeyManager.ResetCommand}"/>
+            <ScrollViewer Margin="0,5">
+                <ItemsControl Margin="5"
+                              ItemsSource="{Binding HotKeyManager.Hotkeys}">
+                    <ItemsControl.Resources>
+                        <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Margin" Value="3"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <GridSplitter Height="1"
+                                              Margin="0,10"
+                                              IsEnabled="False"
+                                              DockPanel.Dock="Top"/>
+                                
+                                <local:HotkeySelector IsEnabled="{Binding IsActive}"
+                                                      HotkeyModel="{Binding}"
+                                                      Width="200"
+                                                      DockPanel.Dock="Right"/>
+
+                                <CheckBox Margin="0,0,0,2"
+                                          IsChecked="{Binding IsActive, Mode=TwoWay}">
+                                    <TextBlock TextWrapping="Wrap"
+                                               Text="{Binding Description.Display, Mode=OneWay}"/>
+                                </CheckBox>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Window>

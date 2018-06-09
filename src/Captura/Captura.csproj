@@ -94,6 +94,9 @@
       <DependentUpon>WindowPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\OverlayPositionAdorner.cs" />
+    <Compile Include="Views\HotkeysWindow.xaml.cs">
+      <DependentUpon>HotkeysWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
@@ -213,6 +216,10 @@
     <Page Include="Presentation\Controls\LayerFrame.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HotkeysWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OverlayWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
