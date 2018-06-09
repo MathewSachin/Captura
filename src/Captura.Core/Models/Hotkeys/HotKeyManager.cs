@@ -20,6 +20,10 @@ namespace Captura
 
         public ICommand ResetCommand { get; }
 
+        public ICommand AddCommand { get; }
+
+        public ICommand RemoveCommand { get; }
+
         static HotKeyManager()
         {
             for (var i = ServiceName.None; i < ServiceName.ServiceCount; ++i)
@@ -31,6 +35,27 @@ namespace Captura
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
 
             ResetCommand = new DelegateCommand(Reset);
+
+            AddCommand = new DelegateCommand(Add);
+
+            RemoveCommand = new DelegateCommand(Remove);
+        }
+
+        void Remove(object O)
+        {
+            if (O is Hotkey hotkey)
+            {
+                hotkey.Unregister();
+
+                _hotkeys.Remove(hotkey);
+            }
+        }
+
+        void Add()
+        {
+            var hotkey = new Hotkey(new HotkeyModel(ServiceName.None, Keys.None, Modifiers.None, false));
+
+            _hotkeys.Add(hotkey);
         }
 
         public static List<Service> AllServices { get; } = new List<Service>();
@@ -64,8 +89,6 @@ namespace Captura
 
         void Populate(IEnumerable<HotkeyModel> Models)
         {
-            var nonReg = new List<Hotkey>();
-
             foreach (var model in Models)
             {
                 var hotkey = new Hotkey(model);
@@ -91,6 +114,8 @@ namespace Captura
                 }
 
                 ServiceProvider.MessageProvider.ShowError(message, "Failed to Register Hotkeys");
+
+                _notRegisteredOnStartup.Clear();
             }
         }
 

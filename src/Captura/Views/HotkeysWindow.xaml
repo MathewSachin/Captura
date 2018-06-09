@@ -13,9 +13,22 @@
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="5">
-            <Button Content="Restore Defaults"
-                    DockPanel.Dock="Top"
-                    Command="{Binding HotKeyManager.ResetCommand}"/>
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Add"
+                        Command="{Binding HotKeyManager.AddCommand}"
+                        Margin="5"/>
+                
+                <Button Content="Restore Defaults"
+                        Grid.Column="1"
+                        Command="{Binding HotKeyManager.ResetCommand}"
+                        Margin="5"/>
+            </Grid>
+            
             <ScrollViewer Margin="0,5">
                 <ItemsControl Margin="5"
                               ItemsSource="{Binding HotKeyManager.Hotkeys}">
@@ -30,9 +43,19 @@
                                               IsEnabled="False"
                                               DockPanel.Dock="Top"/>
                                 
+                                <local:ModernButton DockPanel.Dock="Right"
+                                                    CommandParameter="{Binding}"
+                                                    IconData="{StaticResource Icon_Close}"
+                                                    Command="{Binding DataContext.HotKeyManager.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}">
+                                    <local:ModernButton.LayoutTransform>
+                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                    </local:ModernButton.LayoutTransform>
+                                </local:ModernButton>
+                                
                                 <local:HotkeySelector IsEnabled="{Binding IsActive}"
                                                       HotkeyModel="{Binding}"
                                                       Width="200"
+                                                      Margin="0,0,5,0"
                                                       DockPanel.Dock="Right"/>
 
                                 <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}"/>
