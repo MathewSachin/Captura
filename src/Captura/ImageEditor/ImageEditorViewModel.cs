@@ -33,6 +33,7 @@ namespace Captura
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
         public DelegateCommand SaveCommand { get; }
+        public DelegateCommand SaveToClipboardCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -51,6 +52,7 @@ namespace Captura
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
             SaveCommand = new DelegateCommand(OnSave, false);
+            SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
             {
@@ -404,6 +406,7 @@ namespace Captura
             UpdateTransformBitmap();
 
             SaveCommand.RaiseCanExecuteChanged(true);
+            SaveToClipboardCommand.RaiseCanExecuteChanged(true);
             DiscardChangesCommand.RaiseCanExecuteChanged(true);
 
             SetEffectCommand.RaiseCanExecuteChanged(true);
@@ -414,28 +417,6 @@ namespace Captura
             RotateLeftCommand.RaiseCanExecuteChanged(true);
             FlipXCommand.RaiseCanExecuteChanged(true);
             FlipYCommand.RaiseCanExecuteChanged(true);
-        }
-
-        void Save(BitmapSource Bmp)
-        {
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(Bmp));
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = "PNG Image|*.png",
-                DefaultExt = ".png",
-                AddExtension = true,
-                FileName = "Untitled.png"
-            };
-
-            if (sfd.ShowDialog().GetValueOrDefault())
-            {
-                using (var stream = sfd.OpenFile())
-                    encoder.Save(stream);
-
-                UnsavedChanges = false;
-            }
         }
 
         public InkCanvas InkCanvas { get; set; }
@@ -603,6 +584,37 @@ namespace Captura
 
         void OnSave()
         {
+            var bmp = GetBmp();
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = "PNG Image|*.png",
+                DefaultExt = ".png",
+                AddExtension = true,
+                FileName = "Untitled.png"
+            };
+
+            if (sfd.ShowDialog().GetValueOrDefault())
+            {
+                using (var stream = sfd.OpenFile())
+                    encoder.Save(stream);
+
+                UnsavedChanges = false;
+            }
+        }
+
+        void SaveToClipboard()
+        {
+            var bmp = GetBmp();
+
+            Clipboard.SetImage(bmp);
+        }
+
+        BitmapSource GetBmp()
+        {
             var drawingVisual = new DrawingVisual();
 
             var copy = EditedBitmap;
@@ -626,7 +638,7 @@ namespace Captura
 
                 var transformedRendered = new TransformedBitmap(bitmap, transform);
 
-                Save(transformedRendered);
+                return transformedRendered;
             }
         }
     }

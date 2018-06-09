@@ -92,6 +92,8 @@
                     </MenuItem.Header>
                 </MenuItem>
                 
+                <Separator/>
+                
                 <MenuItem Command="{Binding SaveCommand}"
                           InputGestureText="Ctrl + S">
                     <MenuItem.Header>
@@ -108,7 +110,23 @@
                         </DockPanel>
                     </MenuItem.Header>
                 </MenuItem>
-                
+
+                <MenuItem Command="{Binding SaveToClipboardCommand}">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Clipboard}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="Save to Clipboard"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+
                 <Separator/>
                 
                 <MenuItem Command="Close">
