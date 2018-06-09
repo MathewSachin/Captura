@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 using Point = System.Drawing.Point;
 
 namespace Captura
@@ -39,6 +38,8 @@ namespace Captura
 
         readonly Thumb _crtMove;
 
+        readonly Border _checkButton;
+
         // To store and manage the adorner's visual children.
         readonly VisualCollection _vc;
         #endregion
@@ -55,6 +56,8 @@ namespace Captura
             add => AddHandler(CropChangedEvent, value);
             remove => RemoveHandler(CropChangedEvent, value);
         }
+
+        public event Action Checked;
         #endregion
 
         #region Dependency Properties
@@ -123,6 +126,28 @@ namespace Captura
             BuildCorner(ref _crtBottomLeft, Cursors.SizeNESW);
             BuildCorner(ref _crtBottomRight, Cursors.SizeNWSE);
 
+            var btn = new ModernButton
+            {
+                IconData = (Geometry) Application.Current.Resources["Icon_Check"],
+                Cursor = Cursors.Hand,
+                Foreground = new SolidColorBrush(Colors.White)
+            };
+
+            _checkButton = new Border
+            {
+                CornerRadius = new CornerRadius(20),
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Background = new SolidColorBrush(Colors.LimeGreen),
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(0.3),
+                Child = btn
+            };
+
+            _cnvThumbs.Children.Add(_checkButton);
+
+            btn.Click += (S, E) => Checked?.Invoke();
+            
             // Add handlers for Cropping.
             _crtBottomLeft.DragDelta += (S, E) => HandleDrag(S, E, 1, 0, -1, 1);
             _crtBottomRight.DragDelta += (S, E) => HandleDrag(S, E, 0, 0, 1, 1);
@@ -248,6 +273,9 @@ namespace Captura
             _crtMove.Height = rc.Height;
             Canvas.SetLeft(_crtMove, rc.Left);
             Canvas.SetTop(_crtMove, rc.Top);
+
+            Canvas.SetLeft(_checkButton, rc.Right - _checkButton.ActualWidth - 15);
+            Canvas.SetTop(_checkButton, rc.Bottom - _checkButton.ActualHeight - 10);
         }
 
         // Arrange the Adorners.
@@ -264,6 +292,8 @@ namespace Captura
             return FinalSize;
         }
         #endregion
+
+        public Rect SelectedRegion => _prCropMask.RectInterior;
         
         public BitmapSource BpsCrop(BitmapSource Bmp)
         {
