@@ -16,13 +16,19 @@
     <Window.CommandBindings>
         <CommandBinding Command="Close"
                         Executed="Exit"/>
+        
+        <CommandBinding Command="New"
+                        Executed="NewBlank"/>
+        
+        <CommandBinding Command="Open"
+                        Executed="Open"/>
     </Window.CommandBindings>
     <Window.InputBindings>
-        <KeyBinding Command="{Binding NewBlankCommand}"
+        <KeyBinding Command="New"
                     Key="N"
                     Modifiers="Control"/>
         
-        <KeyBinding Command="{Binding OpenCommand}"
+        <KeyBinding Command="Open"
                     Key="O"
                     Modifiers="Control"/>
 
@@ -42,7 +48,7 @@
         <Menu DockPanel.Dock="Top"
               Background="{DynamicResource WindowBackground}">
             <MenuItem Header="File">
-                <MenuItem Command="{Binding NewBlankCommand}"
+                <MenuItem Command="New"
                           InputGestureText="Ctrl + N">
                     <MenuItem.Header>
                         <DockPanel>
@@ -59,7 +65,7 @@
                     </MenuItem.Header>
                 </MenuItem>
 
-                <MenuItem Command="{Binding OpenCommand}"
+                <MenuItem Command="Open"
                           InputGestureText="Ctrl + O">
                     <MenuItem.Header>
                         <DockPanel>
@@ -76,7 +82,7 @@
                     </MenuItem.Header>
                 </MenuItem>
                 
-                <MenuItem Command="{Binding OpenFromClipboardCommand}">
+                <MenuItem Click="OpenFromClipboard">
                     <MenuItem.Header>
                         <DockPanel>
                             <Path Data="{StaticResource Icon_Clipboard}"
@@ -434,7 +440,7 @@
                         Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                <Button Command="{Binding NewBlankCommand}"
+                <Button Command="New"
                         Margin="5">
                     <DockPanel>
                         <Path Data="{StaticResource Icon_NewFile}"
@@ -449,7 +455,7 @@
                     </DockPanel>
                 </Button>
                 
-                <Button Command="{Binding OpenCommand}"
+                <Button Command="Open"
                         Margin="5">
                     <DockPanel>
                         <Path Data="{StaticResource Icon_OpenFile}"
@@ -464,7 +470,7 @@
                     </DockPanel>
                 </Button>
 
-                <Button Command="{Binding OpenFromClipboardCommand}"
+                <Button Click="OpenFromClipboard"
                         Margin="5">
                     <DockPanel>
                         <Path Data="{StaticResource Icon_Clipboard}"

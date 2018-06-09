@@ -150,5 +150,62 @@ namespace Captura
         {
             new ImageEditorWindow().ShowAndFocus();
         }
+
+        // Return false to cancel
+        bool ConfirmSaveBeforeNew(ImageEditorViewModel ViewModel)
+        {
+            if (ViewModel.UnsavedChanges)
+            {
+                var result = ModernDialog.ShowMessage("Do you want to save your changes?",
+                    "Unsaved Changes",
+                    MessageBoxButton.YesNoCancel,
+                    this);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        ViewModel.SaveCommand.ExecuteIfCan();
+                        break;
+
+                    case MessageBoxResult.Cancel:
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        void NewBlank(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.NewBlank();
+            }
+        }
+
+        void Open(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.Open();
+            }
+        }
+
+        void OpenFromClipboard(object Sender, RoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.OpenFromClipboard();
+            }
+        }
     }
 }

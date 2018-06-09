@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Captura.Models;
@@ -26,9 +25,6 @@ namespace Captura
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
-        public ICommand OpenCommand { get; }
-        public ICommand OpenFromClipboardCommand { get; }
-        public ICommand NewBlankCommand { get; }
         public DelegateCommand DiscardChangesCommand { get; }
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
@@ -46,9 +42,6 @@ namespace Captura
 
         public ImageEditorViewModel()
         {
-            OpenCommand = new DelegateCommand(Open);
-            OpenFromClipboardCommand = new DelegateCommand(OpenFromClipboard);
-            NewBlankCommand = new DelegateCommand(NewBlank);
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
             SaveCommand = new DelegateCommand(OnSave, false);
@@ -337,7 +330,7 @@ namespace Captura
             RedoCommand.RaiseCanExecuteChanged(false);
         }
 
-        void Open()
+        public void Open()
         {
             var ofd = new OpenFileDialog
             {
@@ -360,7 +353,7 @@ namespace Captura
             OnOpen(decoder.Frames[0]);
         }
 
-        void NewBlank()
+        public void NewBlank()
         {
             var w = (int) InkCanvas.ActualWidth;
             var h = (int) InkCanvas.ActualHeight;
@@ -377,7 +370,7 @@ namespace Captura
             OnOpen(BitmapSource.Create(w, h, 96, 96, PixelFormats.Bgr32, null, data, stride));
         }
 
-        void OpenFromClipboard()
+        public void OpenFromClipboard()
         {
             var img = ImageFromClipboard.Get();
 
