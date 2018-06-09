@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -330,6 +331,8 @@ namespace Captura
             RedoCommand.RaiseCanExecuteChanged(false);
         }
 
+        string _fileName;
+
         public void Open()
         {
             var ofd = new OpenFileDialog
@@ -347,8 +350,10 @@ namespace Captura
 
         public void OpenFile(string FilePath)
         {
+            _fileName = FilePath;
+
             var decoder = BitmapDecoder.Create(new Uri(FilePath),
-                BitmapCreateOptions.None, BitmapCacheOption.None);
+                BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
             OnOpen(decoder.Frames[0]);
         }
@@ -586,9 +591,19 @@ namespace Captura
             {
                 Filter = "PNG Image|*.png",
                 DefaultExt = ".png",
-                AddExtension = true,
-                FileName = "Untitled.png"
+                AddExtension = true
             };
+
+            if (_fileName != null)
+            {
+                var dir = Path.GetDirectoryName(_fileName);
+
+                if (dir != null)
+                    sfd.InitialDirectory = dir;
+                
+                sfd.FileName = Path.GetFileName(_fileName);
+            }
+            else sfd.FileName = "Untitled.png";
 
             if (sfd.ShowDialog().GetValueOrDefault())
             {
