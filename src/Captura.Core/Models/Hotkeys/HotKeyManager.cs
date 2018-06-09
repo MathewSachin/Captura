@@ -71,16 +71,21 @@ namespace Captura
                 var hotkey = new Hotkey(model);
 
                 if (hotkey.IsActive && !hotkey.IsRegistered)
-                    nonReg.Add(hotkey);
+                    _notRegisteredOnStartup.Add(hotkey);
 
                 _hotkeys.Add(hotkey);
             }
+        }
 
-            if (nonReg.Count > 0)
+        readonly List<Hotkey> _notRegisteredOnStartup = new List<Hotkey>();
+
+        public void ShowNotRegisteredOnStartup()
+        {
+            if (_notRegisteredOnStartup.Count > 0)
             {
                 var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
 
-                foreach (var hotkey in nonReg)
+                foreach (var hotkey in _notRegisteredOnStartup)
                 {
                     message += $"{hotkey.Service.Description} - {hotkey}\n\n";
                 }

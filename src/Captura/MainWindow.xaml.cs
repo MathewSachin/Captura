@@ -48,6 +48,13 @@ namespace Captura
                         vm.HotKeyManager.ProcessHotkey(id);
                     }
                 };
+
+                Loaded += (Sender, Args) =>
+                {
+                    RepositionWindowIfOutside();
+
+                    vm.HotKeyManager.ShowNotRegisteredOnStartup();
+                };
             }
 
             if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().UI.MinToTrayOnStartup)
@@ -58,8 +65,6 @@ namespace Captura
                 if (!TryExit())
                     Args.Cancel = true;
             };
-
-            Loaded += (Sender, Args) => RepositionWindowIfOutside();
         }
 
         void RepositionWindowIfOutside()
