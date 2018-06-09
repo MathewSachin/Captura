@@ -194,9 +194,6 @@
     <Compile Include="Views\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HotkeyView.xaml.cs">
-      <DependentUpon>HotkeyView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -306,10 +303,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\HotkeyView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

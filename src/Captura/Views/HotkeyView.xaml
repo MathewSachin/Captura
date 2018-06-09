@@ -1,9 +1,0 @@
-﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      x:Class="Captura.HotkeyView">
-    <Grid Margin="5">
-        <Button Content="Open Hotkey Manager"
-                Click="OpenHotkeyManager"
-                VerticalAlignment="Top"/>
-    </Grid>
-</Page>

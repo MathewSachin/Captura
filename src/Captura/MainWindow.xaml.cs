@@ -138,5 +138,10 @@ namespace Captura
         {
             new OverlayWindow().ShowAndFocus();
         }
+
+        void OpenHotkeyManager(object Sender, RoutedEventArgs E)
+        {
+            new HotkeysWindow().ShowDialog();
+        }
     }
 }
