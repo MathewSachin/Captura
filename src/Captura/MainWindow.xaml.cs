@@ -31,38 +31,35 @@ namespace Captura
             };
             
             InitializeComponent();
-            
+
+            if (DataContext is MainViewModel vm)
+            {
+                vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+
+                // Register for Windows Messages
+                ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
+                {
+                    const int wmHotkey = 786;
+
+                    if (Message.message == wmHotkey)
+                    {
+                        var id = Message.wParam.ToInt32();
+
+                        vm.HotKeyManager.ProcessHotkey(id);
+                    }
+                };
+            }
+
             if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().UI.MinToTrayOnStartup)
                 Hide();
-            
-            // Register for Windows Messages
-            ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
-            {
-                const int wmHotkey = 786;
 
-                if (Message.message == wmHotkey && DataContext is MainViewModel vm)
-                {
-                    var id = Message.wParam.ToInt32();
-
-                    vm.HotKeyManager.ProcessHotkey(id);
-                }
-            };
-            
             Closing += (Sender, Args) =>
             {
                 if (!TryExit())
                     Args.Cancel = true;
             };
 
-            Loaded += (Sender, Args) =>
-            {
-                RepositionWindowIfOutside();
-
-                if (DataContext is MainViewModel vm)
-                {
-                    vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
-                }
-            };
+            Loaded += (Sender, Args) => RepositionWindowIfOutside();
         }
 
         void RepositionWindowIfOutside()
