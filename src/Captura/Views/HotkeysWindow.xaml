@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
+        xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="Hotkeys"
         Height="600"
@@ -12,16 +13,14 @@
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="5">
-            <Button Content="{local:Loc Reset}"
+            <Button Content="Restore Defaults"
                     DockPanel.Dock="Top"
                     Command="{Binding HotKeyManager.ResetCommand}"/>
             <ScrollViewer Margin="0,5">
                 <ItemsControl Margin="5"
                               ItemsSource="{Binding HotKeyManager.Hotkeys}">
                     <ItemsControl.Resources>
-                        <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}">
-                            <Setter Property="Margin" Value="3"/>
-                        </Style>
+                        <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}"/>
                     </ItemsControl.Resources>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -36,11 +35,13 @@
                                                       Width="200"
                                                       DockPanel.Dock="Right"/>
 
-                                <CheckBox Margin="0,0,0,2"
-                                          IsChecked="{Binding IsActive, Mode=TwoWay}">
-                                    <TextBlock TextWrapping="Wrap"
-                                               Text="{Binding Description.Display, Mode=OneWay}"/>
-                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}"/>
+
+                                <ComboBox SelectedValue="{Binding Service, Mode=TwoWay}"
+                                          DisplayMemberPath="Description.Display"
+                                          ItemsSource="{x:Static captura:HotKeyManager.AllServices}"
+                                          Margin="10,0"
+                                          IsEnabled="{Binding IsActive}"/>
                             </DockPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
