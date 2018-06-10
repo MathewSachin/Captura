@@ -10,5 +10,6 @@
     <captura:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
     <captura:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
     <captura:InkToolToIconConverter x:Key="InkToolToIconConverter"/>
+    <captura:RecentItemToIconStyleConverter x:Key="RecentItemToIconStyleConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

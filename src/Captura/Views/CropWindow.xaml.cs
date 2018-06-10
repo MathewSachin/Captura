@@ -10,6 +10,7 @@ namespace Captura
     public partial class CropWindow
     {
         CroppingAdorner _croppingAdorner;
+        BitmapSource _croppedImage;
         readonly string _fileName;
 
         public CropWindow(string FileName)
@@ -18,9 +19,12 @@ namespace Captura
 
             _fileName = FileName;
 
-            var decoder = new PngBitmapDecoder(File.OpenRead(FileName), BitmapCreateOptions.None, BitmapCacheOption.Default);
+            using (var stream = File.OpenRead(FileName))
+            {
+                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
-            Image.Source = decoder.Frames[0];
+                Image.Source = decoder.Frames[0];
+            }
 
             Loaded += (S, E) =>
             {
@@ -35,17 +39,21 @@ namespace Captura
                 _croppingAdorner = new CroppingAdorner(Image, rcInterior);
 
                 layer.Add(_croppingAdorner);
-
+                
                 void RefreshCropImage()
                 {
-                    CroppedImage.Source = _croppingAdorner.BpsCrop(Image.Source as BitmapSource);
+                    _croppedImage = _croppingAdorner.BpsCrop(Image.Source as BitmapSource);
+
+                    SizeLabel.Content = _croppedImage != null
+                        ? $"{(int) _croppedImage.Width} x {(int) _croppedImage.Height}"
+                        : "";
                 }
 
                 RefreshCropImage();
 
                 _croppingAdorner.CropChanged += (Sender, Args) => RefreshCropImage();
 
-                SizeChanged += (Sender, Args) => RefreshCropImage();
+                _croppingAdorner.Checked += Save;
 
                 var clr = Colors.Black;
                 clr.A = 110;
@@ -53,9 +61,9 @@ namespace Captura
             };
         }
         
-        void Save(object Sender, RoutedEventArgs E)
+        void Save()
         {
-            if (!(CroppedImage.Source is BitmapSource bmpSource))
+            if (_croppedImage == null)
                 return;
 
             var sfd = new SaveFileDialog
@@ -70,12 +78,14 @@ namespace Captura
             if (sfd.ShowDialog().GetValueOrDefault())
             {
                 var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmpSource));
+                encoder.Frames.Add(BitmapFrame.Create(_croppedImage));
 
                 using (var stream = sfd.OpenFile())
                 {
                     encoder.Save(stream);
                 }
+
+                Close();
             }
         }
     }

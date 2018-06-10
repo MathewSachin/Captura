@@ -1,49 +1,15 @@
 ﻿<Window x:Class="Captura.CropWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:Captura"
         Title="Crop"
         Height="600"
         Width="800">
     <DockPanel Background="{DynamicResource WindowBackground}">
-        <Button Click="Save"
-                DockPanel.Dock="Bottom"
-                Margin="10">
-            <DockPanel>
-                <Path Data="{StaticResource Icon_Save}"
-                      Width="15"
-                      Height="15"
-                      Margin="0,0,10,0"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"/>
-                
-                <Label Content="Save"/>
-            </DockPanel>
-        </Button>
+        <Label Margin="10,5" 
+               DockPanel.Dock="Bottom"
+               Name="SizeLabel"/>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" MinWidth="100"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Image Name="Image"
-                   Margin="15"/>
-            
-            <GridSplitter Width="1"
-                          Grid.Column="1"/>
-
-            <StackPanel Margin="10"
-                        Grid.Column="2">
-                <Label Margin="0,0,0,10">
-                    <TextBlock Text="Preview"
-                               Style="{StaticResource Title}"/>
-                </Label>
-                
-                <Image Name="CroppedImage"/>
-            </StackPanel>
-        </Grid>
+        <Image Name="Image"
+               Margin="15"/>
     </DockPanel>
 </Window>

@@ -1,24 +1,44 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    public class Hotkey : NotifyPropertyChanged
+    public class Service : NotifyPropertyChanged
     {
-        public TextLocalizer Description { get; }
-
-        public ServiceName ServiceName { get; }
-
-        public Hotkey(HotkeyModel Model)
+        public Service(ServiceName ServiceName)
         {
-            ServiceName = Model.ServiceName;
-            Key = Model.Key;
-            Modifiers = Model.Modifiers;
-            Description = new TextLocalizer(GetDescriptionKey(Model.ServiceName));
+            this.ServiceName = ServiceName;
+        }
 
-            IsActive = Model.IsActive;
+        ServiceName _serviceName;
+
+        public ServiceName ServiceName
+        {
+            get => _serviceName;
+            set
+            {
+                _serviceName = value;
+
+                Description = new TextLocalizer(GetDescriptionKey(value));
+
+                OnPropertyChanged();
+            }
+        }
+
+        TextLocalizer _description;
+
+        public TextLocalizer Description
+        {
+            get => _description;
+            set
+            {
+                _description = value;
+                
+                OnPropertyChanged();
+            }
         }
 
         static string GetDescriptionKey(ServiceName ServiceName)
@@ -60,6 +80,31 @@ namespace Captura.Models
             }
 
             return sb.ToString();
+        }
+    }
+
+    public class Hotkey : NotifyPropertyChanged
+    {
+        Service _service;
+
+        public Service Service
+        {
+            get => _service;
+            set
+            {
+                _service = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
+        public Hotkey(HotkeyModel Model)
+        {
+            Service = HotKeyManager.AllServices.FirstOrDefault(M => M.ServiceName == Model.ServiceName);
+            Key = Model.Key;
+            Modifiers = Model.Modifiers;
+
+            IsActive = Model.IsActive;
         }
 
         bool _active;

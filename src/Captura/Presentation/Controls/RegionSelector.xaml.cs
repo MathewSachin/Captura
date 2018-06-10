@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using Captura.ViewModels;
 using Point = System.Drawing.Point;
 
 namespace Captura
@@ -22,6 +23,9 @@ namespace Captura
             Closing += (S, E) => E.Cancel = true;
 
             InitDimensionBoxes();
+
+            // Setting MainViewModel as DataContext from XAML causes crash.
+            Loaded += (S, E) => MainControls.DataContext = ServiceProvider.Get<MainViewModel>();
         }
 
         [DllImport("user32.dll")]

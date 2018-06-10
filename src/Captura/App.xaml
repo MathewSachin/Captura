@@ -20,6 +20,19 @@
             </ResourceDictionary.MergedDictionaries>
             
             <captura:NinjectServiceLocator x:Key="ServiceLocator"/>
+
+            <DrawingImage x:Key="RecordStopImageSource">
+                <DrawingImage.Drawing>
+                    <GeometryDrawing Geometry="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                     Brush="#b71c1c"/>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+            <DrawingImage x:Key="ScreenShotImageSource">
+                <DrawingImage.Drawing>
+                    <GeometryDrawing Geometry="{StaticResource Icon_Camera}"
+                                     Brush="#cccccc"/>
+                </DrawingImage.Drawing>
+            </DrawingImage>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
