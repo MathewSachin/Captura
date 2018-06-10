@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         xmlns:local="clr-namespace:Captura"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         Title="FFMpeg Downloader"
         Height="400"
         Width="600"
@@ -86,6 +87,9 @@
         <Button Content="{Binding ActionDescription}"
                 Command="{Binding StartCommand}"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
+                Margin="0,10"
+                DockPanel.Dock="Top"/>
+        
+        <mui:ModernProgressRing IsActive="{Binding IsDownloading}"/>
     </DockPanel>
 </Window>

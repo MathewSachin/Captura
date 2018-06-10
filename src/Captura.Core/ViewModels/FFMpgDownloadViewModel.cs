@@ -15,13 +15,35 @@ namespace Captura.ViewModels
 
         readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
+        bool _isDownloading;
+
+        public bool IsDownloading
+        {
+            get => _isDownloading;
+            set
+            {
+                _isDownloading = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
         public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             StartCommand = new DelegateCommand(async () =>
             {
-                var result = await Start();
+                IsDownloading = true;
 
-                AfterDownload?.Invoke(result);
+                try
+                {
+                    var result = await Start();
+
+                    AfterDownload?.Invoke(result);
+                }
+                finally
+                {
+                    IsDownloading = false;
+                }
             });
 
             SelectFolderCommand = new DelegateCommand(() =>
