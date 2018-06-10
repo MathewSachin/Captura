@@ -20,12 +20,45 @@ namespace Captura
 
         public ICommand ResetCommand { get; }
 
+        public ICommand AddCommand { get; }
+
+        public ICommand RemoveCommand { get; }
+
+        static HotKeyManager()
+        {
+            for (var i = ServiceName.None; i < ServiceName.ServiceCount; ++i)
+                AllServices.Add(new Service(i));
+        }
+
         public HotKeyManager()
         {
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
 
             ResetCommand = new DelegateCommand(Reset);
+
+            AddCommand = new DelegateCommand(Add);
+
+            RemoveCommand = new DelegateCommand(Remove);
         }
+
+        void Remove(object O)
+        {
+            if (O is Hotkey hotkey)
+            {
+                hotkey.Unregister();
+
+                _hotkeys.Remove(hotkey);
+            }
+        }
+
+        void Add()
+        {
+            var hotkey = new Hotkey(new HotkeyModel(ServiceName.None, Keys.None, Modifiers.None, false));
+
+            _hotkeys.Add(hotkey);
+        }
+
+        public static List<Service> AllServices { get; } = new List<Service>();
 
         public void RegisterAll()
         {
@@ -56,28 +89,33 @@ namespace Captura
 
         void Populate(IEnumerable<HotkeyModel> Models)
         {
-            var nonReg = new List<Hotkey>();
-
             foreach (var model in Models)
             {
                 var hotkey = new Hotkey(model);
 
                 if (hotkey.IsActive && !hotkey.IsRegistered)
-                    nonReg.Add(hotkey);
+                    _notRegisteredOnStartup.Add(hotkey);
 
                 _hotkeys.Add(hotkey);
             }
+        }
 
-            if (nonReg.Count > 0)
+        readonly List<Hotkey> _notRegisteredOnStartup = new List<Hotkey>();
+
+        public void ShowNotRegisteredOnStartup()
+        {
+            if (_notRegisteredOnStartup.Count > 0)
             {
                 var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
 
-                foreach (var hotkey in nonReg)
+                foreach (var hotkey in _notRegisteredOnStartup)
                 {
-                    message += $"{hotkey.Description} - {hotkey}\n\n";
+                    message += $"{hotkey.Service.Description} - {hotkey}\n\n";
                 }
 
                 ServiceProvider.MessageProvider.ShowError(message, "Failed to Register Hotkeys");
+
+                _notRegisteredOnStartup.Clear();
             }
         }
 
@@ -97,7 +135,7 @@ namespace Captura
             var hotkey = Hotkeys.SingleOrDefault(H => H.ID == Id);
 
             if (hotkey != null)
-                HotkeyPressed?.Invoke(hotkey.ServiceName);
+                HotkeyPressed?.Invoke(hotkey.Service.ServiceName);
         }
 
         public event Action<ServiceName> HotkeyPressed;
@@ -108,7 +146,7 @@ namespace Captura
             {
                 M.Unregister();
 
-                return new HotkeyModel(M.ServiceName, M.Key, M.Modifiers, M.IsActive);
+                return new HotkeyModel(M.Service.ServiceName, M.Key, M.Modifiers, M.IsActive);
             });
 
             try

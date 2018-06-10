@@ -231,11 +231,9 @@
                                     <Frame Source="Views/ConfigView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{local:Loc Hotkeys}">
-                                    <Frame Source="Views/HotkeyView.xaml"/>
-                                </TabItem>
-                                <TabItem Header="Overlays">
-                                    <Button Click="OpenOverlayManager"
-                                            VerticalAlignment="Top">
+                                    <Button Click="OpenHotkeyManager"
+                                            VerticalAlignment="Top"
+                                            Margin="5">
                                         <DockPanel>
                                             <Path Data="{StaticResource Icon_Settings}"
                                                   Width="15"
@@ -245,7 +243,24 @@
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"/>
 
-                                            <TextBlock Text="Manage Overlays"/>
+                                            <TextBlock Text="Configure Hotkeys"/>
+                                        </DockPanel>
+                                    </Button>
+                                </TabItem>
+                                <TabItem Header="Overlays">
+                                    <Button Click="OpenOverlayManager"
+                                            VerticalAlignment="Top"
+                                            Margin="5">
+                                        <DockPanel>
+                                            <Path Data="{StaticResource Icon_Settings}"
+                                                  Width="15"
+                                                  Height="15"
+                                                  Margin="0,0,10,0"
+                                                  Stretch="Uniform"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+
+                                            <TextBlock Text="Configure Overlays"/>
                                         </DockPanel>
                                     </Button>
                                 </TabItem>

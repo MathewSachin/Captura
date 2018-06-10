@@ -2,6 +2,8 @@
 {
     public enum ServiceName
     {
+        None = -1,
+
         /// <summary>
         /// ScreenShot.
         /// </summary>
@@ -35,6 +37,8 @@
         /// <summary>
         /// Toggle Keystrokes overlay.
         /// </summary>
-        ToggleKeystrokes
+        ToggleKeystrokes,
+        
+        ServiceCount
     }
 }

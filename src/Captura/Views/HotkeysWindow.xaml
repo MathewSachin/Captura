@@ -1,0 +1,75 @@
+﻿<Window x:Class="Captura.Views.HotkeysWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura"
+        xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+        mc:Ignorable="d"
+        Title="Hotkeys"
+        Height="600"
+        Width="700"
+        Background="{DynamicResource WindowBackground}"
+        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid>
+        <DockPanel Margin="5">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Add"
+                        Command="{Binding HotKeyManager.AddCommand}"
+                        Margin="5"/>
+                
+                <Button Content="Restore Defaults"
+                        Grid.Column="1"
+                        Command="{Binding HotKeyManager.ResetCommand}"
+                        Margin="5"/>
+            </Grid>
+            
+            <ScrollViewer Margin="0,5">
+                <ItemsControl Margin="5"
+                              ItemsSource="{Binding HotKeyManager.Hotkeys}">
+                    <ItemsControl.Resources>
+                        <Style TargetType="local:HotkeySelector" BasedOn="{StaticResource {x:Type Button}}"/>
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <GridSplitter Height="1"
+                                              Margin="0,10"
+                                              IsEnabled="False"
+                                              DockPanel.Dock="Top"/>
+                                
+                                <local:ModernButton DockPanel.Dock="Right"
+                                                    CommandParameter="{Binding}"
+                                                    IconData="{StaticResource Icon_Close}"
+                                                    Command="{Binding DataContext.HotKeyManager.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}">
+                                    <local:ModernButton.LayoutTransform>
+                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                    </local:ModernButton.LayoutTransform>
+                                </local:ModernButton>
+                                
+                                <local:HotkeySelector IsEnabled="{Binding IsActive}"
+                                                      HotkeyModel="{Binding}"
+                                                      Width="200"
+                                                      Margin="0,0,5,0"
+                                                      DockPanel.Dock="Right"/>
+
+                                <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}"/>
+
+                                <ComboBox SelectedValue="{Binding Service, Mode=TwoWay}"
+                                          DisplayMemberPath="Description.Display"
+                                          ItemsSource="{x:Static captura:HotKeyManager.AllServices}"
+                                          Margin="10,0"
+                                          IsEnabled="{Binding IsActive}"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Window>
