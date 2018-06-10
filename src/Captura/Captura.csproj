@@ -76,6 +76,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageEditor\HistoryItem.cs" />
+    <Compile Include="ImageEditor\HistoryState.cs" />
+    <Compile Include="ImageEditor\ImageEditorViewModel.cs" />
+    <Compile Include="ImageEditor\ImageEditorWindow.xaml.cs">
+      <DependentUpon>ImageEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageEditor\ImageEffect.cs" />
+    <Compile Include="ImageEditor\ImageFromClipboard.cs" />
+    <Compile Include="ImageEditor\ModifyPixel.cs" />
+    <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
+    <Compile Include="ImageEditor\StrokeHistory.cs" />
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
     </Compile>
@@ -144,9 +155,6 @@
     <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
-    <Compile Include="Views\CanvasWindow.xaml.cs">
-      <DependentUpon>CanvasWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\FFMpegDownloader.xaml.cs">
       <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
     </Compile>
@@ -199,6 +207,10 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="ImageEditor\ImageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Controls\ScreenPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -284,10 +296,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\ValueConverters\ValueConverters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CanvasWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

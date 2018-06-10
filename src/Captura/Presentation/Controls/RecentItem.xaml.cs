@@ -17,5 +17,17 @@ namespace Captura
                 new CropWindow(vm.FilePath).ShowAndFocus();
             }
         }
+
+        void EditClick(object Sender, RoutedEventArgs E)
+        {
+            if (DataContext is RecentItemViewModel vm)
+            {
+                var win = new ImageEditorWindow();
+
+                win.Open(vm.FilePath);
+
+                win.ShowAndFocus();
+            }
+        }
     }
 }

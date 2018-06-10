@@ -1,0 +1,211 @@
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using FirstFloor.ModernUI.Windows.Controls;
+
+namespace Captura
+{
+    public partial class ImageEditorWindow
+    {
+        public ImageEditorWindow()
+        {
+            InitializeComponent();
+
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.PropertyChanged += (S, E) =>
+                {
+                    if (E.PropertyName == nameof(vm.TransformedBitmap))
+                        UpdateInkCanvas();
+                };
+
+                vm.InkCanvas = InkCanvas;
+
+                InkCanvas.Strokes.StrokesChanged += (S, E) =>
+                {
+                    var item = new StrokeHistory();
+                    
+                    item.Added.AddRange(E.Added);
+                    item.Removed.AddRange(E.Removed);
+
+                    vm.AddInkHistory(item);
+                };
+            }
+
+            Image.SizeChanged += (S, E) => UpdateInkCanvas();
+
+            ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
+            ModesBox.SelectedIndex = 0;
+            SizeBox.Value = 10;
+
+            InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
+        }
+
+        public void Open(string FilePath)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.OpenFile(FilePath);
+            }
+        }
+
+        void Exit(object Sender, RoutedEventArgs E)
+        {
+            Close();
+        }
+
+        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
+        {
+            if (InkCanvas != null && E.NewValue is int i)
+                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
+        }
+
+        void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            if (ModesBox.SelectedValue is InkCanvasEditingMode mode)
+            {
+                InkCanvas.EditingMode = mode;
+
+                if (mode == InkCanvasEditingMode.Ink)
+                {
+                    InkCanvas.UseCustomCursor = true;
+                    InkCanvas.Cursor = Cursors.Pen;
+                }
+                else InkCanvas.UseCustomCursor = false;
+            }
+        }
+
+        void ColorPicker_OnSelectedColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
+        {
+            if (E.NewValue != null && InkCanvas != null)
+                InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
+        }
+
+        void UpdateInkCanvas()
+        {
+            if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null && Image.ActualWidth > 0)
+            {
+                InkCanvas.IsEnabled = true;
+
+                InkCanvas.Width = vm.OriginalBitmap.PixelWidth;
+                InkCanvas.Height = vm.OriginalBitmap.PixelHeight;
+
+                var rotate = new RotateTransform(vm.Rotation, vm.OriginalBitmap.PixelWidth / 2.0, vm.OriginalBitmap.PixelHeight / 2.0);
+
+                var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
+                
+                var scale = new ScaleTransform(
+                    ((tilted ? Image.ActualHeight : Image.ActualWidth) / InkCanvas.Width) * (vm.FlipX ? -1 : 1),
+                    ((tilted ? Image.ActualWidth : Image.ActualHeight) / InkCanvas.Height) * (vm.FlipY ? -1 : 1)
+                );
+
+                InkCanvas.LayoutTransform = new TransformGroup
+                {
+                    Children =
+                    {
+                        rotate,
+                        scale
+                    }
+                };
+            }
+        }
+
+        void InkCanvas_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.IncrementEditingOperationCount();
+            }
+        }
+
+        void ImageEditorWindow_OnClosing(object Sender, CancelEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (vm.UnsavedChanges)
+                {
+                    var result = ModernDialog.ShowMessage("Do you want to save your changes before exiting?",
+                        "Unsaved Changes",
+                        MessageBoxButton.YesNoCancel,
+                        this);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            vm.SaveCommand.ExecuteIfCan();
+                            break;
+
+                        case MessageBoxResult.Cancel:
+                            E.Cancel = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        void NewWindow(object Sender, RoutedEventArgs E)
+        {
+            new ImageEditorWindow().ShowAndFocus();
+        }
+
+        // Return false to cancel
+        bool ConfirmSaveBeforeNew(ImageEditorViewModel ViewModel)
+        {
+            if (ViewModel.UnsavedChanges)
+            {
+                var result = ModernDialog.ShowMessage("Do you want to save your changes?",
+                    "Unsaved Changes",
+                    MessageBoxButton.YesNoCancel,
+                    this);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        ViewModel.SaveCommand.ExecuteIfCan();
+                        break;
+
+                    case MessageBoxResult.Cancel:
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        void NewBlank(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.NewBlank();
+            }
+        }
+
+        void Open(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.Open();
+            }
+        }
+
+        void OpenFromClipboard(object Sender, RoutedEventArgs E)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                if (!ConfirmSaveBeforeNew(vm))
+                    return;
+
+                vm.OpenFromClipboard();
+            }
+        }
+    }
+}

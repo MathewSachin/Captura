@@ -77,6 +77,23 @@
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
+                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Click="EditClick"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Pencil}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <TextBlock Text="Edit"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                     <MenuItem Command="{Binding DeleteCommand}"
                               Margin="0,2">
                         <MenuItem.Header>
