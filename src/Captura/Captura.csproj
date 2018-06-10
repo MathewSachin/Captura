@@ -93,6 +93,10 @@
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="Presentation\ValueConverters\RecentItemToIconStyleConverter.cs" />
+    <Compile Include="ViewModels\AudioTrimmerViewModel.cs" />
+    <Compile Include="Views\AudioTrimmerWindow.xaml.cs">
+      <DependentUpon>AudioTrimmerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CropWindow.xaml.cs">
       <DependentUpon>CropWindow.xaml</DependentUpon>
     </Compile>
@@ -216,6 +220,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Controls\WindowPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AudioTrimmerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
