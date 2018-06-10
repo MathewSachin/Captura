@@ -33,7 +33,7 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        public MixedAudioProvider(IEnumerable<BassItem> Devices)
+        public MixedAudioProvider(IEnumerable<BassItem> Devices, bool MuteOutput = true)
         {
             if (Devices == null)
                 throw new ArgumentNullException();
@@ -45,9 +45,12 @@ namespace Captura.Models
             {
                 InitDevice(recordingDevice);
             }
-            
-            // mute the mixer
-            Bass.ChannelSetAttribute(_mixer, ChannelAttribute.Volume, 0);
+
+            if (MuteOutput)
+            {
+                // mute the mixer
+                Bass.ChannelSetAttribute(_mixer, ChannelAttribute.Volume, 0);
+            }
 
             Bass.ChannelSetDSP(_mixer, Procedure);
         }
