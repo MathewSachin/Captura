@@ -44,10 +44,35 @@
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
 
             <Label Background="{DynamicResource WindowBackground}"
-                   Content="{local:Loc RegionSelector}"
-                   HorizontalContentAlignment="Center"
+                   HorizontalContentAlignment="Stretch"
                    Grid.Column="1"
-                   Margin="0,-5,0,0"/>
+                   Margin="0,-5,0,0">
+                <DockPanel Name="MainControls">
+                    <local:ModernButton ToolTip="{local:Loc ScreenShot}"
+                                        Command="{Binding ScreenShotCommand}"
+                                        IconData="{StaticResource Icon_Camera}"
+                                        DockPanel.Dock="Right"
+                                        Opacity="0.9"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    <local:ModernButton ToolTip="{local:Loc RecordStop}"
+                                        Command="{Binding RecordCommand}"
+                                        Foreground="#b71c1c"
+                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    <local:ModernButton ToolTip="{local:Loc PauseResume}" 
+                                        Command="{Binding PauseCommand}"
+                                        IconData="{StaticResource Icon_Pause}"
+                                        Opacity="0.9"
+                                        WindowChrome.IsHitTestVisibleInChrome="True">
+                        <local:ModernButton.LayoutTransform>
+                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                        </local:ModernButton.LayoutTransform>
+                    </local:ModernButton>
+                    <Label Content="{Binding TimeSpan}"
+                           Margin="0,-1"
+                           HorizontalContentAlignment="Center"/>
+                </DockPanel>
+            </Label>
 
             <local:ModernButton ToolTip="{local:Loc Close}"
                                 x:Name="CloseButton"

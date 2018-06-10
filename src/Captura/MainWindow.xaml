@@ -17,20 +17,6 @@
         BorderThickness="1"
         BorderBrush="{DynamicResource Accent}"
         Topmost="{Binding Settings.UI.MainWindowTopmost}">
-    <Window.Resources>
-        <DrawingImage x:Key="RecordStopImageSource">
-            <DrawingImage.Drawing>
-                <GeometryDrawing Geometry="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
-                                 Brush="#b71c1c"/>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-        <DrawingImage x:Key="ScreenShotImageSource">
-            <DrawingImage.Drawing>
-                <GeometryDrawing Geometry="{StaticResource Icon_Camera}"
-                                 Brush="#cccccc"/>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-    </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
                       UseAeroCaptionButtons="False"
