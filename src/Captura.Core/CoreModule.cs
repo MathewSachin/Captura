@@ -39,7 +39,10 @@ namespace Captura
             Bind<IVideoWriterProvider>().To<FFMpegWriterProvider>().InSingletonScope();
             Bind<IVideoWriterProvider>().To<GifWriterProvider>().InSingletonScope();
             Bind<IVideoWriterProvider>().To<StreamingWriterProvider>().InSingletonScope();
+
+#if DEBUG
             Bind<IVideoWriterProvider>().To<DiscardWriterProvider>().InSingletonScope();
+#endif
 
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
