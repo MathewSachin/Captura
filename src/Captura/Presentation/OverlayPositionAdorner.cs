@@ -234,6 +234,16 @@ namespace Captura
 
             if (newWidth > 0 && newHeight > 0)
             {
+                if (newX < 0)
+                {
+                    newX = 0;
+                }
+
+                if (newY < 0)
+                {
+                    newY = 0;
+                }
+
                 double left = 0, top = 0, right = 0, bottom = 0;
 
                 if (har)
