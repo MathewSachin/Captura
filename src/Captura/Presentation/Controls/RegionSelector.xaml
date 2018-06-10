@@ -25,9 +25,7 @@
             BorderBrush="{DynamicResource WindowBackground}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -35,30 +33,39 @@
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
-            <local:ModernButton ToolTip="Snap to Window"
-                                IconData="{StaticResource Icon_SnapToWindow}"
-                                Background="{DynamicResource WindowBackground}"
-                                x:Name="Snapper"
-                                Margin="0,-5,0,0"
-                                PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"
-                                WindowChrome.IsHitTestVisibleInChrome="True"/>
-
             <Label Background="{DynamicResource WindowBackground}"
                    HorizontalContentAlignment="Stretch"
-                   Grid.Column="1"
-                   Margin="0,-5,0,0">
+                   Margin="-1,-5,0,0">
                 <DockPanel Name="MainControls">
+                    <local:ModernButton ToolTip="Snap to Window"
+                                        IconData="{StaticResource Icon_SnapToWindow}"
+                                        Background="{DynamicResource WindowBackground}"
+                                        x:Name="Snapper"
+                                        PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+                    <local:ModernButton ToolTip="{local:Loc Close}"
+                                        x:Name="CloseButton"
+                                        Click="CloseButton_Click"
+                                        Background="{DynamicResource WindowBackground}"
+                                        Foreground="#77ef5350"
+                                        IconData="{StaticResource Icon_Close}"
+                                        DockPanel.Dock="Right"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+
                     <local:ModernButton ToolTip="{local:Loc ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
                                         IconData="{StaticResource Icon_Camera}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    
                     <local:ModernButton ToolTip="{local:Loc RecordStop}"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    
                     <local:ModernButton ToolTip="{local:Loc PauseResume}" 
                                         Command="{Binding PauseCommand}"
                                         IconData="{StaticResource Icon_Pause}"
@@ -68,35 +75,26 @@
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
+
                     <Label Content="{Binding TimeSpan}"
                            Margin="0,-1"
                            HorizontalContentAlignment="Center"/>
                 </DockPanel>
             </Label>
 
-            <local:ModernButton ToolTip="{local:Loc Close}"
-                                x:Name="CloseButton"
-                                Click="CloseButton_Click"
-                                Background="{DynamicResource WindowBackground}"
-                                Foreground="#77ef5350"
-                                IconData="{StaticResource Icon_Close}"
-                                Grid.Column="2"
-                                Margin="0,-5,0,0"
-                                WindowChrome.IsHitTestVisibleInChrome="True"/>
-
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource Accent}"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="3">
+                    Grid.Row="1">
             </Border>
 
             <DockPanel Grid.Row="2"
-                       Grid.ColumnSpan="3"
+                       Margin="-1,0,-1,-1"
                        Background="{DynamicResource WindowBackground}">
                 <xctk:IntegerUpDown Width="60"
                                     DockPanel.Dock="Right"
                                     Margin="0,5,0,0"
                                     Name="HeightBox"/>
+                
                 <Label Content="x"
                        DockPanel.Dock="Right"
                        Margin="10,0"/>
