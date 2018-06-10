@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="Presentation\ValueConverters\RecentItemToIconStyleConverter.cs" />
     <Compile Include="Views\CropWindow.xaml.cs">
       <DependentUpon>CropWindow.xaml</DependentUpon>
     </Compile>

@@ -6,9 +6,9 @@ using System.Windows.Data;
 
 namespace Captura
 {
-    public class InkToolToIconConverter : IValueConverter
+    public class InkToolToIconConverter : OneWayConverter
     {
-        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             var app = Application.Current;
 
@@ -27,11 +27,6 @@ namespace Captura
                     return app.FindResource("Icon_Select");
             }
 
-            return Binding.DoNothing;
-        }
-
-        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
-        {
             return Binding.DoNothing;
         }
     }
