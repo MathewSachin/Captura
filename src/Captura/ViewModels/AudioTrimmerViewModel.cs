@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Win32;
 
@@ -9,14 +9,14 @@ namespace Captura
 {
     public class AudioTrimmerViewModel : NotifyPropertyChanged
     {
-        readonly MediaPlayer _player;
+        MediaElement _player;
         readonly DispatcherTimer _timer;
 
         public bool IsDragging { get; set; }
 
-        public AudioTrimmerViewModel()
+        public void AssignPlayer(MediaElement Player)
         {
-            _player = new MediaPlayer();
+            _player = Player;
 
             _player.MediaOpened += (S, E) =>
             {
@@ -24,14 +24,21 @@ namespace Captura
 
                 if (_player.NaturalDuration.HasTimeSpan)
                 {
-                    To = End = TimeSpan.FromSeconds((int) _player.NaturalDuration.TimeSpan.TotalSeconds);
+                    To = End = TimeSpan.FromSeconds((int)_player.NaturalDuration.TimeSpan.TotalSeconds);
                 }
                 else To = End = TimeSpan.Zero;
+
+                PlayCommand.RaiseCanExecuteChanged(true);
             };
 
+            _timer.Start();
+        }
+
+        public AudioTrimmerViewModel()
+        {
             _timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(100)
+                Interval = TimeSpan.FromMilliseconds(400)
             };
 
             _timer.Tick += (Sender, Args) =>
@@ -46,8 +53,6 @@ namespace Captura
                     Stop();
                 }
             };
-
-            _timer.Start();
 
             OpenCommand = new DelegateCommand(Open);
 
@@ -165,11 +170,19 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
-                _player.Open(new Uri(ofd.FileName));
+                PlayCommand.RaiseCanExecuteChanged(false);
+
+                _player.Source = new Uri(ofd.FileName);
+
+                var oldVol = _player.Volume;
+
+                // Force Load
+                _player.Play();
+                _player.Stop();
+
+                _player.Volume = oldVol;
                 
                 FilePath = ofd.FileName;
-
-                PlayCommand.RaiseCanExecuteChanged(true);
             }
         }
 
@@ -188,7 +201,7 @@ namespace Captura
 
         public TimeSpan PlaybackPosition
         {
-            get => TimeSpan.FromSeconds((int) _player.Position.TotalSeconds);
+            get => TimeSpan.FromSeconds((int) (_player?.Position.TotalSeconds ?? 0));
             set => _player.Position = value;
         }
     }

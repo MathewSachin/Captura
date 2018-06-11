@@ -7,8 +7,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:captura="clr-namespace:Captura"
         mc:Ignorable="d"
-        Title="Trim Audio"
-        Height="350"
+        Title="Trim"
+        Height="600"
         Width="600">
     <Window.DataContext>
         <captura:AudioTrimmerViewModel/>
@@ -77,6 +77,9 @@
                 Margin="5"
                 Command="{Binding OpenCommand}"/>
 
-        <Grid/>
+        <MediaElement Name="MediaElement"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual"
+                      Margin="0,10,0,0"/>
     </DockPanel>
 </Window>

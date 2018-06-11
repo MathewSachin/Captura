@@ -9,6 +9,14 @@ namespace Captura.Views
         public AudioTrimmerWindow()
         {
             InitializeComponent();
+
+            Loaded += (S, E) =>
+            {
+                if (DataContext is AudioTrimmerViewModel vm)
+                {
+                    vm.AssignPlayer(MediaElement);
+                }
+            };
         }
         
         void Slider_PreviewMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
