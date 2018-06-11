@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Captura.Models;
+using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace Captura
@@ -15,6 +15,7 @@ namespace Captura
     {
         int _stride;
         byte[] _data;
+        public Window Window { get; set; }
 
         public bool UnsavedChanges { get; private set; }
 
@@ -45,7 +46,7 @@ namespace Captura
         {
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
-            SaveCommand = new DelegateCommand(OnSave, false);
+            SaveCommand = new DelegateCommand(() => SaveToFile(), false);
             SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
@@ -355,7 +356,7 @@ namespace Captura
             var decoder = BitmapDecoder.Create(new Uri(FilePath),
                 BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
-            OnOpen(decoder.Frames[0]);
+            Open(decoder.Frames[0]);
         }
 
         public void NewBlank()
@@ -372,7 +373,7 @@ namespace Captura
                 data[i] = 255;
             }
 
-            OnOpen(BitmapSource.Create(w, h, 96, 96, PixelFormats.Bgr32, null, data, stride));
+            Open(BitmapSource.Create(w, h, 96, 96, PixelFormats.Bgr32, null, data, stride));
         }
 
         public void OpenFromClipboard()
@@ -381,15 +382,15 @@ namespace Captura
 
             if (img == null)
             {
-                ServiceProvider.Get<MessageProvider>().ShowError("No Image on Clipboard");
+                ModernDialog.ShowMessage("No Image on Clipboard", "No Image on Clipboard", MessageBoxButton.OK, Window);
 
                 return;
             }
 
-            OnOpen(img);
+            Open(img);
         }
 
-        void OnOpen(BitmapSource Frame)
+        public void Open(BitmapSource Frame)
         {
             Reset();
 
@@ -580,7 +581,7 @@ namespace Captura
             ++_editingOperationCount;
         }
 
-        void OnSave()
+        public bool SaveToFile()
         {
             var bmp = GetBmp();
 
@@ -611,7 +612,11 @@ namespace Captura
                     encoder.Save(stream);
 
                 UnsavedChanges = false;
+
+                return true;
             }
+
+            return false;
         }
 
         void SaveToClipboard()

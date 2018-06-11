@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace Captura
@@ -33,6 +34,8 @@ namespace Captura
 
                     vm.AddInkHistory(item);
                 };
+
+                vm.Window = this;
             }
 
             Image.SizeChanged += (S, E) => UpdateInkCanvas();
@@ -49,6 +52,14 @@ namespace Captura
             if (DataContext is ImageEditorViewModel vm)
             {
                 vm.OpenFile(FilePath);
+            }
+        }
+
+        public void Open(BitmapSource Bmp)
+        {
+            if (DataContext is ImageEditorViewModel vm)
+            {
+                vm.Open(Bmp);
             }
         }
 
@@ -134,10 +145,7 @@ namespace Captura
 
                     switch (result)
                     {
-                        case MessageBoxResult.Yes:
-                            vm.SaveCommand.ExecuteIfCan();
-                            break;
-
+                        case MessageBoxResult.Yes when !vm.SaveToFile():
                         case MessageBoxResult.Cancel:
                             E.Cancel = true;
                             break;

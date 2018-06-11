@@ -16,6 +16,8 @@ namespace Captura
             Bind<IPreviewWindow>().To<PreviewWindowService>().InSingletonScope();
             Bind<IVideoSourcePicker>().To<VideoSourcePicker>().InSingletonScope();
 
+            Bind<IImageWriterItem>().To<EditorWriter>().InSingletonScope();
+
             Rebind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
             
             Bind<AboutViewModel>().ToSelf().InSingletonScope();

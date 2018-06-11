@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageEditor\EditorWriter.cs" />
     <Compile Include="ImageEditor\HistoryItem.cs" />
     <Compile Include="ImageEditor\HistoryState.cs" />
     <Compile Include="ImageEditor\ImageEditorViewModel.cs" />
