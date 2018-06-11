@@ -7,7 +7,7 @@ using Microsoft.Win32;
 
 namespace Captura
 {
-    public class AudioTrimmerViewModel : NotifyPropertyChanged
+    public class TrimmerViewModel : NotifyPropertyChanged
     {
         MediaElement _player;
         readonly DispatcherTimer _timer;
@@ -34,7 +34,7 @@ namespace Captura
             _timer.Start();
         }
 
-        public AudioTrimmerViewModel()
+        public TrimmerViewModel()
         {
             _timer = new DispatcherTimer
             {

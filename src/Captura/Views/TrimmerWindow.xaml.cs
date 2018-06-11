@@ -4,15 +4,15 @@ using System.Windows.Input;
 
 namespace Captura.Views
 {
-    public partial class AudioTrimmerWindow
+    public partial class TrimmerWindow
     {
-        public AudioTrimmerWindow()
+        public TrimmerWindow()
         {
             InitializeComponent();
 
             Loaded += (S, E) =>
             {
-                if (DataContext is AudioTrimmerViewModel vm)
+                if (DataContext is TrimmerViewModel vm)
                 {
                     vm.AssignPlayer(MediaElement);
                 }
@@ -21,7 +21,7 @@ namespace Captura.Views
         
         void Slider_PreviewMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
-            if (DataContext is AudioTrimmerViewModel vm && Sender is Slider slider)
+            if (DataContext is TrimmerViewModel vm && Sender is Slider slider)
             {
                 if (!vm.IsDragging)
                     return;
@@ -34,7 +34,7 @@ namespace Captura.Views
 
         void Slider_PreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
-            if (DataContext is AudioTrimmerViewModel vm)
+            if (DataContext is TrimmerViewModel vm)
             {
                 vm.IsDragging = true;
             }
@@ -42,7 +42,7 @@ namespace Captura.Views
 
         void Slider_MouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
-            if (DataContext is AudioTrimmerViewModel vm && Sender is Slider slider)
+            if (DataContext is TrimmerViewModel vm && Sender is Slider slider)
             {
                 vm.PlaybackPosition = TimeSpan.FromSeconds(slider.Value);
             }

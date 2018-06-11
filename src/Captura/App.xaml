@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:captura="clr-namespace:Captura"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="Views/AudioTrimmerWindow.xaml"
+             StartupUri="Views/TrimmerWindow.xaml"
              Startup="Application_Startup"
              DispatcherUnhandledException="App_OnDispatcherUnhandledException">
     <Application.Resources>
