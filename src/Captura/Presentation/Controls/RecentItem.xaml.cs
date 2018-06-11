@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Captura.ViewModels;
+using Captura.Views;
 
 namespace Captura
 {
@@ -23,6 +24,18 @@ namespace Captura
             if (DataContext is RecentItemViewModel vm)
             {
                 var win = new ImageEditorWindow();
+
+                win.Open(vm.FilePath);
+
+                win.ShowAndFocus();
+            }
+        }
+
+        void TrimClick(object Sender, RoutedEventArgs E)
+        {
+            if (DataContext is RecentItemViewModel vm)
+            {
+                var win = new TrimmerWindow();
 
                 win.Open(vm.FilePath);
 
