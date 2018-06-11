@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace Captura
@@ -10,13 +14,15 @@ namespace Captura
     public class TrimmerViewModel : NotifyPropertyChanged, IDisposable
     {
         MediaElement _player;
+        Window _window;
         readonly DispatcherTimer _timer;
 
         public bool IsDragging { get; set; }
 
-        public void AssignPlayer(MediaElement Player)
+        public void AssignPlayer(MediaElement Player, Window Window)
         {
             _player = Player;
+            _window = Window;
 
             _player.MediaOpened += (S, E) =>
             {
@@ -29,6 +35,7 @@ namespace Captura
                 else To = End = TimeSpan.Zero;
 
                 PlayCommand.RaiseCanExecuteChanged(true);
+                TrimCommand.RaiseCanExecuteChanged(true);
             };
 
             _timer.Start();
@@ -57,6 +64,8 @@ namespace Captura
             OpenCommand = new DelegateCommand(Open);
 
             PlayCommand = new DelegateCommand(Play, false);
+
+            TrimCommand = new DelegateCommand(Trim, false);
         }
 
         TimeSpan _from, _to, _end;
@@ -150,15 +159,17 @@ namespace Captura
             {
                 _filePath = value;
 
-                FileName = Path.GetFileName(value);
+                FileName = Path.GetFileNameWithoutExtension(value);
 
                 OnPropertyChanged();
             }
         }
 
-        public ICommand OpenCommand { get; }
+        public DelegateCommand OpenCommand { get; }
 
         public DelegateCommand PlayCommand { get; }
+
+        public DelegateCommand TrimCommand { get; }
 
         void Open()
         {
@@ -170,8 +181,6 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
-                PlayCommand.RaiseCanExecuteChanged(false);
-
                 Open(ofd.FileName);
             }
         }
@@ -179,6 +188,7 @@ namespace Captura
         public void Open(string Path)
         {
             PlayCommand.RaiseCanExecuteChanged(false);
+            TrimCommand.RaiseCanExecuteChanged(false);
 
             _player.Source = new Uri(Path);
 
@@ -216,6 +226,69 @@ namespace Captura
         {
             _player.Close();
             _player.Source = null;
+        }
+
+        async void Trim()
+        {
+            if (!FFMpegService.FFMpegExists)
+            {
+                ModernDialog.ShowMessage("FFMpeg not Found", "FFMpeg not Found", MessageBoxButton.OK, _window);
+
+                return;
+            }
+
+            var ext = Path.GetExtension(FilePath);
+
+            var sfd = new SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = ext,
+                Filter = $"*{ext}|*{ext}",
+                FileName = Path.GetFileName(FilePath),
+                InitialDirectory = Path.GetDirectoryName(FilePath),
+                CheckPathExists = true
+            };
+
+            if (sfd.ShowDialog().GetValueOrDefault())
+            {
+                var command = $"-i \"{FilePath}\" -ss {From} -to {To} -c copy \"{sfd.FileName}\"";
+
+                var process = new Process
+                {
+                    StartInfo =
+                    {
+                        FileName = FFMpegService.FFMpegExePath,
+                        Arguments = command,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        RedirectStandardError = true
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                var output = "";
+
+                process.ErrorDataReceived += (Sender, Args) => output += "\n" + Args.Data;
+
+                OpenCommand.RaiseCanExecuteChanged(false);
+                PlayCommand.RaiseCanExecuteChanged(false);
+                TrimCommand.RaiseCanExecuteChanged(false);
+                
+                process.Start();
+
+                process.BeginErrorReadLine();
+                
+                await Task.Run(() => process.WaitForExit());
+
+                if (process.ExitCode != 0)
+                {
+                    ModernDialog.ShowMessage($"FFMpeg Output:\n{output}", "An Error Occured", MessageBoxButton.OK, _window);
+                }
+
+                OpenCommand.RaiseCanExecuteChanged(true);
+                PlayCommand.RaiseCanExecuteChanged(true);
+                TrimCommand.RaiseCanExecuteChanged(true);
+            }
         }
     }
 }

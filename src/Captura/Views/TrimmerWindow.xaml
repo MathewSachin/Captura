@@ -72,10 +72,21 @@
                    Text="{Binding End}"
                    Margin="5"/>
 
-        <Button DockPanel.Dock="Top"
-                Content="Open File ..."
-                Margin="5"
-                Command="{Binding OpenCommand}"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Open File ..."
+                    Margin="5"
+                    Command="{Binding OpenCommand}"/>
+
+            <Button Content="Trim ..."
+                    Margin="5"
+                    Grid.Column="1"
+                    Command="{Binding TrimCommand}"/>
+        </Grid>
 
         <MediaElement Name="MediaElement"
                       LoadedBehavior="Manual"

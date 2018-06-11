@@ -12,7 +12,7 @@ namespace Captura.Views
             
             if (DataContext is TrimmerViewModel vm)
             {
-                vm.AssignPlayer(MediaElement);
+                vm.AssignPlayer(MediaElement, this);
 
                 Closing += (S, E) => vm.Dispose();
             }
