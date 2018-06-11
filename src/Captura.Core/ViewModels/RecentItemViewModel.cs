@@ -16,6 +16,7 @@ namespace Captura.ViewModels
             this.IsSaving = IsSaving;
             this.ItemType = ItemType;
             IsImage = ItemType == RecentItemType.Image;
+            IsTrimmable = ItemType == RecentItemType.Audio || ItemType == RecentItemType.Video;
 
             InitCommands();
         }
@@ -89,6 +90,8 @@ namespace Captura.ViewModels
         public RecentItemType ItemType { get; }
 
         public bool IsImage { get; }
+
+        public bool IsTrimmable { get; }
 
         bool _saving;
 

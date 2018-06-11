@@ -9,16 +9,23 @@ namespace Captura.Views
         public TrimmerWindow()
         {
             InitializeComponent();
-
-            Loaded += (S, E) =>
+            
+            if (DataContext is TrimmerViewModel vm)
             {
-                if (DataContext is TrimmerViewModel vm)
-                {
-                    vm.AssignPlayer(MediaElement);
-                }
-            };
+                vm.AssignPlayer(MediaElement);
+
+                Closing += (S, E) => vm.Dispose();
+            }
         }
-        
+
+        public void Open(string FileName)
+        {
+            if (DataContext is TrimmerViewModel vm)
+            {
+                vm.Open(FileName);
+            }
+        }
+
         void Slider_PreviewMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
             if (DataContext is TrimmerViewModel vm && Sender is Slider slider)

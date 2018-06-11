@@ -43,6 +43,23 @@
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
+                    <MenuItem Visibility="{Binding IsTrimmable, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Click="TrimClick"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Trim}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <TextBlock Text="Trim"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                     <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
                               Command="{Binding PrintCommand}"
                               Margin="0,2">

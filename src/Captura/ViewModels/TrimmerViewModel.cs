@@ -7,7 +7,7 @@ using Microsoft.Win32;
 
 namespace Captura
 {
-    public class TrimmerViewModel : NotifyPropertyChanged
+    public class TrimmerViewModel : NotifyPropertyChanged, IDisposable
     {
         MediaElement _player;
         readonly DispatcherTimer _timer;
@@ -172,18 +172,25 @@ namespace Captura
             {
                 PlayCommand.RaiseCanExecuteChanged(false);
 
-                _player.Source = new Uri(ofd.FileName);
-
-                var oldVol = _player.Volume;
-
-                // Force Load
-                _player.Play();
-                _player.Stop();
-
-                _player.Volume = oldVol;
-                
-                FilePath = ofd.FileName;
+                Open(ofd.FileName);
             }
+        }
+
+        public void Open(string Path)
+        {
+            PlayCommand.RaiseCanExecuteChanged(false);
+
+            _player.Source = new Uri(Path);
+
+            var oldVol = _player.Volume;
+
+            // Force Load
+            _player.Play();
+            _player.Stop();
+
+            _player.Volume = oldVol;
+
+            FilePath = Path;
         }
 
         bool _isPlaying;
@@ -203,6 +210,12 @@ namespace Captura
         {
             get => TimeSpan.FromSeconds((int) (_player?.Position.TotalSeconds ?? 0));
             set => _player.Position = value;
+        }
+
+        public void Dispose()
+        {
+            _player.Close();
+            _player.Source = null;
         }
     }
 }
