@@ -63,14 +63,15 @@
                     MouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
         </DockPanel>
 
-        <TextBlock DockPanel.Dock="Top"
-                   Text="{Binding FileName, TargetNullValue='No File Loaded'}"
-                   Margin="5"
-                   Style="{StaticResource Title}"/>
-        
-        <TextBlock DockPanel.Dock="Top"
-                   Text="{Binding End}"
-                   Margin="5"/>
+        <Label DockPanel.Dock="Top"
+               Margin="5">
+            <TextBlock Text="{Binding FileName, TargetNullValue='No File Loaded'}"
+                       Style="{StaticResource Title}"/>
+        </Label>
+
+        <Label DockPanel.Dock="Top"
+               Margin="5"
+               Content="{Binding End}"/>
 
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -78,14 +79,36 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Content="Open File ..."
-                    Margin="5"
-                    Command="{Binding OpenCommand}"/>
+            <Button Margin="5"
+                    Command="{Binding OpenCommand}">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_OpenFile}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
 
-            <Button Content="Trim ..."
-                    Margin="5"
+                    <TextBlock Text="Open File ..."/>
+                </DockPanel>
+            </Button>
+
+            <Button Margin="5"
                     Grid.Column="1"
-                    Command="{Binding TrimCommand}"/>
+                    Command="{Binding TrimCommand}">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_Trim}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Trim ..."/>
+                </DockPanel>
+            </Button>
         </Grid>
 
         <MediaElement Name="MediaElement"
