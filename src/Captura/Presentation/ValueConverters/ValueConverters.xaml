@@ -12,5 +12,6 @@
     <captura:InkToolToIconConverter x:Key="InkToolToIconConverter"/>
     <captura:RecentItemToIconStyleConverter x:Key="RecentItemToIconStyleConverter"/>
     <captura:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter"/>
+    <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

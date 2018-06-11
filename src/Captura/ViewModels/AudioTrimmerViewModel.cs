@@ -57,9 +57,12 @@ namespace Captura
             set
             {
                 _from = value;
-                
-                Stop();
-                
+
+                if (IsPlaying && value + TimeSpan.FromSeconds(1) >= _player.Position)
+                {
+                    Stop();
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -95,7 +98,10 @@ namespace Captura
             {
                 _to = value;
 
-                Stop();
+                if (IsPlaying && _player.Position + TimeSpan.FromSeconds(1) >= value)
+                {
+                    Stop();
+                }
                 
                 OnPropertyChanged();
             }

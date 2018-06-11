@@ -39,15 +39,22 @@
 
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="10,20">
+            <captura:ModernButton Margin="5,0"
+                                  Command="{Binding PlayCommand}"
+                                  Style="{Binding IsPlaying, Converter={StaticResource IsPlayingToButtonStyleConverter}}"/>
+
             <Label Content="{Binding PlaybackPosition}"
-                   Margin="5"
-                   Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                   Margin="5,0"
+                   Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
+                   DockPanel.Dock="Right"/>
 
             <Slider Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
                     Value="{Binding PlaybackPosition, Converter={StaticResource TimeSpanToSecondsConverter}, Mode=OneWay}"
-                    SelectionEnd="{Binding PlaybackPosition, Converter={StaticResource TimeSpanToSecondsConverter}, Mode=OneWay}"
+                    SelectionEnd="{Binding To, Converter={StaticResource TimeSpanToSecondsConverter}, Mode=OneWay}"
                     Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
-                    SelectionStart="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"/>
+                    SelectionStart="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    IsSelectionRangeEnabled="True"
+                    VerticalAlignment="Center"/>
         </DockPanel>
 
         <TextBlock DockPanel.Dock="Top"
@@ -58,17 +65,12 @@
         <TextBlock DockPanel.Dock="Top"
                    Text="{Binding End}"
                    Margin="5"/>
-        
+
         <Button DockPanel.Dock="Top"
                 Content="Open File ..."
                 Margin="5"
                 Command="{Binding OpenCommand}"/>
 
-        <Button Margin="5"
-                Content="Play"
-                Command="{Binding PlayCommand}"
-                DockPanel.Dock="Top"/>
-        
         <Grid/>
     </DockPanel>
 </Window>
