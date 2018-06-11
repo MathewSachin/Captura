@@ -12,6 +12,8 @@ namespace Captura
         readonly MediaPlayer _player;
         readonly DispatcherTimer _timer;
 
+        public bool IsDragging { get; set; }
+
         public AudioTrimmerViewModel()
         {
             _player = new MediaPlayer();
@@ -34,9 +36,12 @@ namespace Captura
 
             _timer.Tick += (Sender, Args) =>
             {
+                if (IsDragging)
+                    return;
+
                 RaisePropertyChanged(nameof(PlaybackPosition));
 
-                if (IsPlaying && _player.Position >= To)
+                if (IsPlaying && _player.Position >= To || _player.Position <= From)
                 {
                     Stop();
                 }
@@ -181,6 +186,10 @@ namespace Captura
             }
         }
 
-        public TimeSpan PlaybackPosition => TimeSpan.FromSeconds((int) _player.Position.TotalSeconds);
+        public TimeSpan PlaybackPosition
+        {
+            get => TimeSpan.FromSeconds((int) _player.Position.TotalSeconds);
+            set => _player.Position = value;
+        }
     }
 }

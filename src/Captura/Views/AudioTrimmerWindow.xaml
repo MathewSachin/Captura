@@ -54,7 +54,13 @@
                     Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     SelectionStart="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     IsSelectionRangeEnabled="True"
-                    Style="{StaticResource RoundSlider}"/>
+                    Style="{StaticResource RoundSlider}"
+                    IsMoveToPointEnabled="True"
+                    IsManipulationEnabled="True" 
+                    IsTabStop="False"
+                    PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp" 
+                    PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
+                    MouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
         </DockPanel>
 
         <TextBlock DockPanel.Dock="Top"
