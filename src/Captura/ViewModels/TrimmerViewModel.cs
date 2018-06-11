@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Threading;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
@@ -30,7 +29,7 @@ namespace Captura
 
                 if (_player.NaturalDuration.HasTimeSpan)
                 {
-                    To = End = TimeSpan.FromSeconds((int)_player.NaturalDuration.TimeSpan.TotalSeconds);
+                    To = End = _player.NaturalDuration.TimeSpan;
                 }
                 else To = End = TimeSpan.Zero;
 
@@ -45,7 +44,7 @@ namespace Captura
         {
             _timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(400)
+                Interval = TimeSpan.FromMilliseconds(100)
             };
 
             _timer.Tick += (Sender, Args) =>
@@ -218,7 +217,7 @@ namespace Captura
 
         public TimeSpan PlaybackPosition
         {
-            get => TimeSpan.FromSeconds((int) (_player?.Position.TotalSeconds ?? 0));
+            get => _player?.Position ?? TimeSpan.Zero;
             set => _player.Position = value;
         }
 
@@ -251,7 +250,9 @@ namespace Captura
 
             if (sfd.ShowDialog().GetValueOrDefault())
             {
-                var command = $"-i \"{FilePath}\" -ss {From} -to {To} -c copy \"{sfd.FileName}\"";
+                _player.Close();
+
+                var command = $"-i \"{FilePath}\" -ss {From} -to {To} {(_player.HasAudio ? "-acodec copy" : "")} \"{sfd.FileName}\"";
 
                 var process = new Process
                 {

@@ -95,6 +95,7 @@
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="Presentation\ValueConverters\IsPlayingToButtonStyleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\RecentItemToIconStyleConverter.cs" />
+    <Compile Include="Presentation\ValueConverters\IntegralTimeSpanConverter.cs" />
     <Compile Include="ViewModels\TrimmerViewModel.cs" />
     <Compile Include="Views\TrimmerWindow.xaml.cs">
       <DependentUpon>TrimmerWindow.xaml</DependentUpon>

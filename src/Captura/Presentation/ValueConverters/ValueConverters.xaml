@@ -13,5 +13,6 @@
     <captura:RecentItemToIconStyleConverter x:Key="RecentItemToIconStyleConverter"/>
     <captura:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter"/>
     <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
+    <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

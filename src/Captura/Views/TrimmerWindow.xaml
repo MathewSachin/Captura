@@ -22,9 +22,9 @@
         <DockPanel LastChildFill="False"
                    DockPanel.Dock="Bottom"
                    Margin="5">
-            <Label Content="{Binding From}"/>
+            <Label Content="{Binding From, Converter={StaticResource IntegralTimeSpanConverter}}"/>
             <Label DockPanel.Dock="Right"
-                   Content="{Binding To}"/>
+                   Content="{Binding To, Converter={StaticResource IntegralTimeSpanConverter}}"/>
         </DockPanel>
 
         <xctk:RangeSlider Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
@@ -43,7 +43,7 @@
                                   Command="{Binding PlayCommand}"
                                   Style="{Binding IsPlaying, Converter={StaticResource IsPlayingToButtonStyleConverter}}"/>
 
-            <Label Content="{Binding PlaybackPosition}"
+            <Label Content="{Binding PlaybackPosition, Converter={StaticResource IntegralTimeSpanConverter}}"
                    Margin="5,0"
                    Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
                    DockPanel.Dock="Right"/>
@@ -71,7 +71,7 @@
 
         <Label DockPanel.Dock="Top"
                Margin="5"
-               Content="{Binding End}"/>
+               Content="{Binding End, Converter={StaticResource IntegralTimeSpanConverter}}"/>
 
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>

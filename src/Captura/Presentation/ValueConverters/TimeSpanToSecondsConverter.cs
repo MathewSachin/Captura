@@ -17,7 +17,7 @@ namespace Captura
         public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             if (Value is double seconds)
-                return TimeSpan.FromSeconds((int)seconds);
+                return TimeSpan.FromSeconds(seconds);
 
             return Binding.DoNothing;
         }
