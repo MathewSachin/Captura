@@ -54,7 +54,7 @@
                     Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     SelectionStart="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"
                     IsSelectionRangeEnabled="True"
-                    VerticalAlignment="Center"/>
+                    Style="{StaticResource RoundSlider}"/>
         </DockPanel>
 
         <TextBlock DockPanel.Dock="Top"

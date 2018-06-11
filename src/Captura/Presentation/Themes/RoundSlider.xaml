@@ -1,0 +1,115 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground"
+                     Color="#FFE7EAEA"/>
+    <LinearGradientBrush x:Key="HorizontalSliderTrackNormalBorder" 
+                         EndPoint="0,1" 
+                         StartPoint="0,0">
+        <GradientStop Color="#FFAEB1AF"
+                      Offset="0.1"/>
+        <GradientStop Color="White"
+                      Offset=".9"/>
+    </LinearGradientBrush>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <Style x:Key="SliderRepeatButtonStyle"
+           TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle"
+                Value="true"/>
+        <Setter Property="IsTabStop"
+                Value="false"/>
+        <Setter Property="Focusable"
+                Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="Transparent"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomThumbForSlider"
+           TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle"
+                Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Ellipse Fill="White"
+                             Stroke="#B7000000"
+                             Height="15"
+                             Width="15"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Slider}"
+           x:Key="RoundSlider">
+        <Setter Property="VerticalAlignment" 
+                Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Slider}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"
+                                               MinHeight="{TemplateBinding MinHeight}"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TickBar x:Name="TopTick" 
+                                     Visibility="Collapsed" 
+                                     Fill="{TemplateBinding Foreground}"
+                                     Placement="Top" 
+                                     Height="4"
+                                     Grid.Row="0"/>
+                            <TickBar x:Name="BottomTick" 
+                                     Visibility="Collapsed"
+                                     Fill="{TemplateBinding Foreground}"
+                                     Placement="Bottom" 
+                                     Height="4" 
+                                     Grid.Row="0"/>
+                            <Border x:Name="TrackBackground" 
+                                    Background="{StaticResource HorizontalSliderTrackNormalBackground}"
+                                    BorderBrush="{StaticResource HorizontalSliderTrackNormalBorder}"                                        
+                                    BorderThickness="1" 
+                                    CornerRadius="1"
+                                    Margin="5,0" 
+                                    VerticalAlignment="Center"
+                                    Height="4.0"
+                                    Grid.Row="1">
+                                <Canvas Margin="-6,-1">
+                                    <Rectangle Visibility="{TemplateBinding IsSelectionRangeEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                               x:Name="PART_SelectionRange" 
+                                               Height="4.0"
+                                               Fill="{DynamicResource Accent}"
+                                               StrokeThickness="1.0"/>
+                                </Canvas>
+                            </Border>
+                            <Track x:Name="PART_Track" 
+                                   Grid.Row="1">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}" 
+                                                  Command="{x:Static Slider.DecreaseLarge}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}" 
+                                                  Command="{x:Static Slider.IncreaseLarge}"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" 
+                                           Style="{StaticResource CustomThumbForSlider}"
+                                           Background="Black"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
