@@ -21,7 +21,22 @@ namespace Captura.Models
 
             _logItems.Insert(0, item);
 
+            SelectedLogItem = item;
+
             return item;
+        }
+
+        FFMpegLogItem _selectedLogItem;
+
+        public FFMpegLogItem SelectedLogItem
+        {
+            get => _selectedLogItem;
+            set
+            {
+                _selectedLogItem = value; 
+                
+                OnPropertyChanged();
+            }
         }
 
         public static FFMpegLog Instance { get; } = new FFMpegLog();
