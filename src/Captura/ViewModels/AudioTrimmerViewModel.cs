@@ -41,7 +41,7 @@ namespace Captura
 
                 RaisePropertyChanged(nameof(PlaybackPosition));
 
-                if (IsPlaying && _player.Position >= To || _player.Position <= From)
+                if (IsPlaying && _player.Position > To || _player.Position < From)
                 {
                     Stop();
                 }
