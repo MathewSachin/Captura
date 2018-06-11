@@ -96,7 +96,7 @@ namespace Captura
 
         public static Action FFMpegDownloader { get; set; }
 
-        public static Process StartFFMpeg(string Arguments)
+        public static Process StartFFMpeg(string Arguments, string OutputFileName)
         {
             var process = new Process
             {
@@ -111,8 +111,10 @@ namespace Captura
                 },
                 EnableRaisingEvents = true
             };
+
+            var logItem = FFMpegLog.Instance.CreateNew(Path.GetFileName(OutputFileName));
                         
-            process.ErrorDataReceived += (s, e) => FFMpegLog.Instance.Write(e.Data);
+            process.ErrorDataReceived += (s, e) => logItem.Write(e.Data);
 
             process.Start();
 

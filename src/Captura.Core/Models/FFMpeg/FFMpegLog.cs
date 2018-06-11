@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
 
 namespace Captura.Models
 {
@@ -7,55 +6,24 @@ namespace Captura.Models
     {
         FFMpegLog()
         {
-            CopyToClipboardCommand = new DelegateCommand(() =>
-            {
-                Content.WriteToClipboard();
-            });
+            LogItems = new ReadOnlyObservableCollection<FFMpegLogItem>(_logItems);
+        }
+
+        readonly ObservableCollection<FFMpegLogItem> _logItems = new ObservableCollection<FFMpegLogItem>();
+
+        public ReadOnlyObservableCollection<FFMpegLogItem> LogItems { get; }
+
+        public FFMpegLogItem CreateNew(string Name)
+        {
+            var item = new FFMpegLogItem(Name);
+
+            item.RemoveRequested += () => _logItems.Remove(item);
+
+            _logItems.Insert(0, item);
+
+            return item;
         }
 
         public static FFMpegLog Instance { get; } = new FFMpegLog();
-
-        string _content, _frame;
-
-        public void Reset()
-        {
-            Content = Frame = "";
-        }
-
-        public void Write(string Text)
-        {
-            if (Text == null)
-                return;
-
-            if (Text.StartsWith("frame=") || Text.StartsWith("size="))
-            {
-                Frame = Text;
-            }
-            else Content += Text + Environment.NewLine;
-        }
-
-        public string Frame
-        {
-            get => _frame;
-            private set
-            {
-                _frame = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public string Content
-        {
-            get => _content;
-            private set
-            {
-                _content = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand CopyToClipboardCommand { get; }
     }
 }

@@ -5,7 +5,7 @@
         Title="{local:Loc FFMpegLog}"
         Height="600"
         Width="600"
-        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
+        DataContext="{Binding MainViewModel.FFMpegLog, Source={StaticResource ServiceLocator}}"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
@@ -23,29 +23,52 @@
             <Label Content="{local:Loc FFMpegLog}"
                    Margin="10,0"/>
         </DockPanel>
-        
-        <Button DockPanel.Dock="Top"
-                Command="{Binding FFMpegLog.CopyToClipboardCommand}"
-                Margin="0,5">
-            <DockPanel>
-                <Path Data="{StaticResource Icon_Clipboard}"
-                      Width="15"
-                      Height="15"
-                      Margin="0,0,10,0"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"/>
 
-                <TextBlock Text="{local:Loc CopyToClipboard}"/>
+        <ListView ItemsSource="{Binding LogItems}"
+                  x:Name="LogItemsList"
+                  SelectedIndex="0"
+                  Width="200"
+                  Padding="5,0"
+                  BorderThickness="0,0,0.6,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <DockPanel DataContext="{Binding SelectedItem, ElementName=LogItemsList}"
+                   Visibility="{Binding SelectedItem, ElementName=LogItemsList, Converter={StaticResource NotNullConverter}}"
+                   Margin="5">
+            <DockPanel DockPanel.Dock="Top">
+                <local:ModernButton IconData="{StaticResource Icon_Delete}"
+                                    DockPanel.Dock="Right"
+                                    Command="{Binding RemoveCommand}"
+                                    Foreground="#b71c1c"/>
+                
+                <Button Command="{Binding CopyToClipboardCommand}"
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Clipboard}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{local:Loc CopyToClipboard}"/>
+                    </DockPanel>
+                </Button>
             </DockPanel>
-        </Button>
 
-        <Label Content="{Binding FFMpegLog.Frame}"
-               DockPanel.Dock="Bottom"/>
-        
-        <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <TextBlock Text="{Binding FFMpegLog.Content, Mode=OneWay}"
-                       Style="{StaticResource TextColor}"/>
-        </ScrollViewer>
+            <Label Content="{Binding Frame}"
+                   DockPanel.Dock="Bottom"/>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding Content, Mode=OneWay}"
+                           Style="{StaticResource TextColor}"/>
+            </ScrollViewer>
+        </DockPanel>
     </DockPanel>
 </Window>

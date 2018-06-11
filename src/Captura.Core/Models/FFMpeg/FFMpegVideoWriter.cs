@@ -64,7 +64,7 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
-            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"");
+            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"", Args.FileName);
         }
 
         /// <summary>

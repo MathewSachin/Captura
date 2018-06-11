@@ -85,6 +85,7 @@
     <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
     <Compile Include="Models\Fakes\FakePreviewWindow.cs" />
     <Compile Include="Models\Fakes\FakeVideoSourcePicker.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegLogItem.cs" />
     <Compile Include="Models\ImageOverlay.cs" />
     <Compile Include="Models\FFMpeg\FFMpegVideoWriterArgs.cs" />
     <Compile Include="Models\MousePointerOverlay.cs" />

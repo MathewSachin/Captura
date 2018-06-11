@@ -623,8 +623,6 @@ namespace Captura.ViewModels
 
                     return false;
                 }
-
-                FFMpegLog.Reset();
             }
 
             if (VideoViewModel.SelectedVideoWriterKind is GifWriterProvider)
