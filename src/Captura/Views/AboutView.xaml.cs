@@ -9,5 +9,10 @@ namespace Captura
         {
             new LicensesWindow().ShowAndFocus();
         }
+
+        void Translate(object Sender, RoutedEventArgs E)
+        {
+            new TranslationWindow().ShowAndFocus();
+        }
     }
 }
