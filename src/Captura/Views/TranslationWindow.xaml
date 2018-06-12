@@ -8,14 +8,14 @@
         mc:Ignorable="d"
         Title="Translation"
         Height="600"
-        Width="800">
+        Width="900">
     <Window.DataContext>
         <captura:TranslationViewModel/>
     </Window.DataContext>
     <DockPanel Background="{DynamicResource WindowBackground}">
         <ListView ItemsSource="{Binding AvailableCultures}"
                   SelectedValue="{Binding SelectedCulture, Mode=TwoWay}"
-                  Width="170"
+                  Width="160"
                   Padding="5"
                   Margin="0,0,5,0"
                   BorderThickness="0,0,0.6,0">
@@ -25,6 +25,81 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <Border BorderThickness="0.6,0,0,0"
+                BorderBrush="{DynamicResource ItemText}"
+                Margin="10,0,0,0"
+                Padding="10"
+                Width="200"
+                DockPanel.Dock="Right">
+            <StackPanel>
+                <Label>
+                    <TextBlock Text="Contributing"
+                               Style="{StaticResource Title}"
+                               Margin="0,0,0,10"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock Style="{StaticResource Heading2}"
+                               Text="New Language"
+                               Margin="0,5"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="1. Create a copy of en.json in 'src/Captura.Core/Languages' folder."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="2. Rename the copied file to [CultureID].json where 'CultureID' is the language identifier."
+                               Style="{StaticResource Small}"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="3. Do Translation in the new file."
+                               Style="{StaticResource Small}"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="4. Commit. Create Pull Request."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock Style="{StaticResource Heading2}"
+                               Text="Using this interface"
+                               Margin="0,5"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="This interface can be used to update translation files in the app's running directory."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="1. After updating translations, Save your work."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="2. Copy the file from Languages folder in app's running directory to 'src/Captura.Core/Languages' folder."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="3. Commit. Create Pull Request."
+                               Style="{StaticResource Small}"/>
+                </Label>
+            </StackPanel>
+        </Border>
 
         <Border>
             <DockPanel Visibility="{Binding SelectedCulture, Converter={StaticResource NotNullConverter}}">
@@ -69,7 +144,7 @@
                 </DockPanel>
                 
                 <Border DockPanel.Dock="Top"
-                        Margin="0,10,5,10"
+                        Margin="0,10"
                         BorderBrush="{DynamicResource ItemText}"
                         BorderThickness="0,0,0,1"/>
 
