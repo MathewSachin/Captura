@@ -3,6 +3,7 @@ using Screna;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ManagedBass;
 
 namespace Captura.Models
 {
@@ -256,11 +257,36 @@ namespace Captura.Models
             return _mouseClickSettings.Color;
         }
 
+        float _currentMouseRatio;
+        const float MouseRatioDeltaUp = 0.9f;
+        const float MouseRatioDeltaDown = 0.25f;
+        const float MouseRatioMin = 0.6f;
+        const float MouseRatioMax = 1.2f;
+
         void DrawClicks(Graphics g, Func<Point, Point> Transform)
         {
-            if (_mouseClicked)
+            if (_mouseClicked && _currentMouseRatio < MouseRatioMax)
             {
-                var clickRadius = _mouseClickSettings.Radius;
+                _currentMouseRatio += MouseRatioDeltaUp;
+
+                if (_currentMouseRatio > MouseRatioMax)
+                {
+                    _currentMouseRatio = MouseRatioMax;
+                }
+            }
+            else if (!_mouseClicked && _currentMouseRatio > MouseRatioMin)
+            {
+                _currentMouseRatio -= MouseRatioDeltaDown;
+
+                if (_currentMouseRatio < MouseRatioMin)
+                {
+                    _currentMouseRatio = MouseRatioMin;
+                }
+            }
+
+            if (_currentMouseRatio > MouseRatioMin)
+            {
+                var clickRadius = _mouseClickSettings.Radius * _currentMouseRatio;
 
                 var curPos = MouseCursor.CursorPosition;
 
@@ -272,17 +298,25 @@ namespace Captura.Models
                 var x = curPos.X - clickRadius;
                 var y = curPos.Y - clickRadius;
 
-                g.FillEllipse(new SolidBrush(GetClickCirleColor()), x, y, d, d);
+                var color = GetClickCirleColor();
 
-                var border = _mouseClickSettings.BorderThickness;
+                color = Color.FromArgb((byte) (color.A * _currentMouseRatio).Clip(0, 255), color);
+
+                g.FillEllipse(new SolidBrush(color), x, y, d, d);
+
+                var border = _mouseClickSettings.BorderThickness * _currentMouseRatio;
 
                 if (border > 0)
                 {
-                    x -= border / 2;
-                    y -= border / 2;
+                    x -= border / 2f;
+                    y -= border / 2f;
                     d += border;
 
-                    g.DrawEllipse(new Pen(_mouseClickSettings.BorderColor, border), x, y, d, d);
+                    var borderColor = _mouseClickSettings.BorderColor;
+
+                    borderColor = Color.FromArgb((byte) (borderColor.A * _currentMouseRatio).Clip(0, 255), borderColor);
+
+                    g.DrawEllipse(new Pen(borderColor, border), x, y, d, d);
                 }
             }
         }
