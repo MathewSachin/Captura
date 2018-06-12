@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Input;
 
 namespace Captura.Models
@@ -12,18 +13,22 @@ namespace Captura.Models
             this.Name = Name;
             CopyToClipboardCommand = new DelegateCommand(() =>
             {
-                Content.WriteToClipboard();
+                _complete.ToString().WriteToClipboard();
             });
 
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
         }
 
-        string _content, _frame;
+        string _content = "", _frame = "";
+
+        readonly StringBuilder _complete = new StringBuilder();
 
         public void Write(string Text)
         {
             if (Text == null)
                 return;
+
+            _complete.AppendLine(Text);
 
             if (Text.StartsWith("frame=") || Text.StartsWith("size="))
             {
