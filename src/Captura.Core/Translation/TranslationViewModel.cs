@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 
 namespace Captura
@@ -47,6 +48,10 @@ namespace Captura
                 .GetType()
                 .GetProperties()
                 .Select(M => new LanguageField(M.Name, this));
+
+            SaveCommand = new DelegateCommand(Save);
+
+            DiscardChangesCommand = new DelegateCommand(() => SelectedCulture = SelectedCulture);
         }
 
         readonly ObservableCollection<CultureInfo> _cultures = new ObservableCollection<CultureInfo>();
@@ -108,5 +113,18 @@ namespace Captura
                 }
             }
         }
+
+        public ICommand SaveCommand { get; }
+
+        void Save()
+        {
+            try
+            {
+                File.WriteAllText(Path.Combine(_langDir, $"{_selectedCulture.Name}.json"), _currentLanguage.ToString());
+            }
+            catch { }
+        }
+
+        public ICommand DiscardChangesCommand { get; }
     }
 }
