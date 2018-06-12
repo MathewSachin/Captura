@@ -44,20 +44,30 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Path Data="{StaticResource Icon_Border}"
+                  Width="15"
+                  Height="15"
+                  Margin="0,0,10,0"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+
             <Label Content="Border"
+                   Grid.Column="1"
                    ContentStringFormat="{}{0}: "/>
 
             <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Margin="5"
                                 ToolTip="{local:Loc BorderThickness}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
-                              Grid.Column="2"
+                              Grid.Column="3"
                               Margin="0,5"
                               ToolTip="{local:Loc BorderColor}"/>
         </Grid>
@@ -83,6 +93,14 @@
         </Grid>
 
         <DockPanel>
+            <Path Data="{StaticResource Icon_RoundCorner}"
+                  Width="15"
+                  Height="15"
+                  Margin="0,0,10,0"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+            
             <Label Content="{local:Loc CornerRadius}"
                    ContentStringFormat="{}{0}: "
                    Margin="0,5,5,5"/>

@@ -19,14 +19,36 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Content="Add"
-                        Command="{Binding HotKeyManager.AddCommand}"
-                        Margin="5"/>
+                <Button Command="{Binding HotKeyManager.AddCommand}"
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Plus}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Add"/>
+                    </DockPanel>
+                </Button>
                 
-                <Button Content="Restore Defaults"
-                        Grid.Column="1"
+                <Button Grid.Column="1"
                         Command="{Binding HotKeyManager.ResetCommand}"
-                        Margin="5"/>
+                        Margin="5">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Restore}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Restore Defaults"/>
+                    </DockPanel>
+                </Button>
             </Grid>
             
             <ScrollViewer Margin="0,5">

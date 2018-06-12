@@ -36,15 +36,25 @@
         <Grid Margin="0,15,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Path Data="{StaticResource Icon_Opacity}"
+                  Width="15"
+                  Height="15"
+                  Margin="0,0,10,0"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+
             <Label Content="{local:Loc Opacity}"
                    ContentStringFormat="{}{0}: "
+                   Grid.Column="1"
                    Margin="0,3"/>
 
             <xctk:IntegerUpDown Value="{Binding Opacity, Mode=TwoWay}"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Minimum="1"
                                 Maximum="100"/>
         </Grid>
