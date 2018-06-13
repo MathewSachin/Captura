@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Captura.Models;
 
 namespace Captura
 {
@@ -11,7 +12,7 @@ namespace Captura
 
         void Hide()
         {
-            Visibility = Visibility.Collapsed;
+            ServiceProvider.Get<ISystemTray>().HideNotification();
         }
 
         void OnClose()
