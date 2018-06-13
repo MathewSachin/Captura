@@ -28,13 +28,8 @@ namespace Captura.Models
             _popupContainer.Visibility = Visibility.Collapsed;
         }
 
-        public void ShowScreenShotNotification(string FilePath)
+        void Show()
         {
-            if (!_settings.UI.TrayNotify)
-                return;
-
-            _popupContainer.Add(new ScreenShotBalloon(FilePath));
-
             var trayIcon = _trayIcon.Invoke();
 
             if (trayIcon != null && _first)
@@ -47,6 +42,16 @@ namespace Captura.Models
             _popupContainer.Visibility = Visibility.Visible;
         }
 
+        public void ShowScreenShotNotification(string FilePath)
+        {
+            if (!_settings.UI.TrayNotify)
+                return;
+
+            _popupContainer.Add(new ScreenShotBalloon(FilePath));
+
+            Show();
+        }
+
         public void ShowTextNotification(string Text, int Duration, Action OnClick)
         {
             if (!_settings.UI.TrayNotify)
@@ -54,16 +59,7 @@ namespace Captura.Models
 
             _popupContainer.Add(new TextBalloon(Text, OnClick));
 
-            var trayIcon = _trayIcon.Invoke();
-
-            if (trayIcon != null && _first)
-            {
-                trayIcon.ShowCustomBalloon(_popupContainer, PopupAnimation.Scroll, null);
-
-                _first = false;
-            }
-
-            _popupContainer.Visibility = Visibility.Visible;
+            Show();
         }
     }
 }
