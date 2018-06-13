@@ -9,9 +9,14 @@ namespace Captura
             InitializeComponent();
         }
 
-        void OnClose()
+        void Hide()
         {
             Visibility = Visibility.Collapsed;
+        }
+
+        void OnClose()
+        {
+            Hide();
 
             ItemsControl.Items.Clear();
         }
@@ -24,7 +29,7 @@ namespace Captura
 
             if (ItemsControl.Items.Count == 0)
             {
-                Visibility = Visibility.Collapsed;
+                Hide();
             }
         }
 
