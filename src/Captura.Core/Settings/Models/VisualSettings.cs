@@ -73,13 +73,7 @@
             get => Get(3);
             set => Set(value);
         }
-
-        public int ScreenShotNotifyTimeout
-        {
-            get => Get(5000);
-            set => Set(value);
-        }
-
+        
         public bool HideRegionSelectorWhenRecording
         {
             get => Get(false);

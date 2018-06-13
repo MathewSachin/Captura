@@ -8,11 +8,18 @@ namespace Captura.Models
 {
     public class ClipboardWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        readonly ISystemTray _systemTray;
+
+        public ClipboardWriter(ISystemTray SystemTray)
+        {
+            _systemTray = SystemTray;
+        }
+
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 
-            Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
+            _systemTray.ShowMessage(LanguageManager.Instance.ImgSavedClipboard);
 
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
 

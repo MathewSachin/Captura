@@ -32,6 +32,26 @@ namespace Captura.Models
                 new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(100))));
         }
 
+        public void ShowMessage(string Message)
+        {
+            if (!_settings.UI.TrayNotify)
+                return;
+
+            _popupContainer.Add(new StatusBalloon(Message, false));
+
+            Show();
+        }
+
+        public void ShowError(string Error)
+        {
+            if (!_settings.UI.TrayNotify)
+                return;
+
+            _popupContainer.Add(new StatusBalloon(Error, true));
+
+            Show();
+        }
+
         void Show()
         {
             var trayIcon = _trayIcon.Invoke();
@@ -57,7 +77,7 @@ namespace Captura.Models
             Show();
         }
 
-        public void ShowTextNotification(string Text, int Duration, Action OnClick)
+        public void ShowTextNotification(string Text, Action OnClick)
         {
             if (!_settings.UI.TrayNotify)
                 return;

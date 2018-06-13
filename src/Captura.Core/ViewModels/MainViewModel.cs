@@ -265,7 +265,7 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Paused;
                 Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                _systemTray.ShowTextNotification(Loc.Paused, 3000, null);
+                _systemTray.ShowTextNotification(Loc.Paused, null);
             }
         }
 
@@ -495,11 +495,11 @@ namespace Captura.ViewModels
             {
                 var allTasks = VideoViewModel.AvailableImageWriters
                     .Where(M => M.Active)
-                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, Status, RecentViewModel));
+                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, RecentViewModel));
 
                 Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
-            else _systemTray.ShowTextNotification(Loc.ImgEmpty, 5000, null);
+            else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
         }
 
         public Bitmap ScreenShotWindow(Window hWnd)
@@ -890,7 +890,7 @@ namespace Captura.ViewModels
                     savingRecentItem.FilePath.WriteToClipboard();
 
                 _systemTray.ShowTextNotification((savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved) + ": " +
-                    Path.GetFileName(savingRecentItem.FilePath), 5000, () =>
+                    Path.GetFileName(savingRecentItem.FilePath), () =>
                     {
                         ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
                     });

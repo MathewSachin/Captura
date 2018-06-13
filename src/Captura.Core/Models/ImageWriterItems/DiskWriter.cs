@@ -22,11 +22,10 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             try
             {
-
                 _settings.EnsureOutPath();
 
                 var extension = Format.Equals(ImageFormat.Icon) ? "ico"
@@ -36,8 +35,7 @@ namespace Captura.Models
                 var fileName = FileName ?? Path.Combine(_settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
 
                 Image.Save(fileName, Format);
-
-                Status.LocalizationKey = nameof(LanguageManager.ImgSavedDisk);
+                
                 Recents.Add(fileName, RecentItemType.Image, false);
 
                 // Copy path to clipboard only when clipboard writer is off
@@ -49,8 +47,6 @@ namespace Captura.Models
             catch (Exception e)
             {
                 _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{e}");
-
-                Status.LocalizationKey = nameof(LanguageManager.NotSaved);
             }
 
             return Task.CompletedTask;

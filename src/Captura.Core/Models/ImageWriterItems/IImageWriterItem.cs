@@ -7,7 +7,7 @@ namespace Captura.Models
 {
     public interface IImageWriterItem
     {
-        Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents);
+        Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents);
 
         string Display { get; }
 

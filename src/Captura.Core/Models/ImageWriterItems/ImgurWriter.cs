@@ -34,7 +34,7 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             var ritem = Recents.Add($"{_loc.ImgurUploading} (0%)", RecentItemType.Link, true);
                                 
@@ -75,12 +75,19 @@ namespace Captura.Models
                 catch (Exception e)
                 {
                     ritem.Display = _loc.ImgurFailed;
-                    Status.LocalizationKey = nameof(LanguageManager.ImgurFailed);
 
-                    var yes = _messageProvider.ShowYesNo($"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                    _systemTray.ShowError(LanguageManager.Instance.ImgurFailed);
 
-                    if (yes)
-                        await _diskWriter.Save(Image, Format, FileName, Status, Recents);
+                    if (!_diskWriter.Active)
+                    {
+                        ServiceProvider.Get<IMainWindow>().IsVisible = true;
+
+                        var yes = _messageProvider.ShowYesNo(
+                            $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+
+                        if (yes)
+                            await _diskWriter.Save(Image, Format, FileName, Recents);
+                    }
 
                     return;
                 }
@@ -94,9 +101,9 @@ namespace Captura.Models
                 ritem.FilePath = ritem.Display = link;
                 ritem.Saved();
 
-                _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", _settings.UI.ScreenShotNotifyTimeout, () => Process.Start(link));
+                _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", () => Process.Start(link));
 
-                Status.LocalizationKey = nameof(LanguageManager.ImgurSuccess);
+                _systemTray.ShowMessage(LanguageManager.Instance.ImgurSuccess);
             }
         }
 
