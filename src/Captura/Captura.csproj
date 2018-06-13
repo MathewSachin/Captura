@@ -88,8 +88,7 @@
     <Compile Include="ImageEditor\ModifyPixel.cs" />
     <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
-    <Compile Include="Presentation\Controls\IRemoveRequester.cs" />
-    <Compile Include="Presentation\Controls\ITrayProgress.cs" />
+    <Compile Include="Models\IRemoveRequester.cs" />
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
     </Compile>

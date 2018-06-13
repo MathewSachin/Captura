@@ -26,5 +26,7 @@ namespace Captura.Models
             // ReSharper disable once LocalizableElement
             Console.WriteLine($"{LanguageManager.Instance.ScreenShotSaved}: {FilePath}");
         }
+
+        public ITrayProgress ShowProgress() => new TrayProgressViewModel();
     }
 }

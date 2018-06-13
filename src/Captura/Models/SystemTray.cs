@@ -86,5 +86,19 @@ namespace Captura.Models
 
             Show();
         }
+
+        public ITrayProgress ShowProgress()
+        {
+            var vm = new TrayProgressViewModel();
+
+            if (!_settings.UI.TrayNotify)
+                return vm;
+
+            _notificationStack.Add(new ProgressBalloon(vm));
+
+            Show();
+
+            return vm;
+        }
     }
 }

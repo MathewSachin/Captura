@@ -102,8 +102,6 @@ namespace Captura.Models
                 ritem.Saved();
 
                 _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", () => Process.Start(link));
-
-                _systemTray.ShowMessage(LanguageManager.Instance.ImgurSuccess);
             }
         }
 

@@ -73,6 +73,7 @@
     <Compile Include="CoreModule.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Services\ITrayProgress.cs" />
     <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Translation\LanguageFields.cs" />
     <Compile Include="Translation\LanguageManager.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
     <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
+    <Compile Include="ViewModels\TrayProgressViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="WithPreviewWriter.cs" />

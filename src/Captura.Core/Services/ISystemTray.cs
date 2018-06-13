@@ -13,5 +13,7 @@ namespace Captura.Models
         void ShowMessage(string Message);
 
         void ShowError(string Error);
+
+        ITrayProgress ShowProgress();
     }
 }
