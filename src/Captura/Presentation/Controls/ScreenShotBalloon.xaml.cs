@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
 using System.IO;
 using System.Diagnostics;
 using System;
@@ -32,21 +31,11 @@ namespace Captura
 
         void OnClose()
         {
-            // the tray icon assigned this attached property to simplify access
-            var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon?.CloseBalloon();
+            RemoveRequested?.Invoke();
         }
 
-        /// <summary>
-        /// If the users hovers over the balloon, we don't close it.
-        /// </summary>
-        void grid_MouseEnter(object Sender, MouseEventArgs E)
-        {
-            // the tray icon assigned this attached property to simplify access
-            var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon?.ResetBalloonCloseTimer();
-        }
-
+        public event Action RemoveRequested;
+        
         void Image_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             ServiceProvider.LaunchFile(new ProcessStartInfo(_filePath));

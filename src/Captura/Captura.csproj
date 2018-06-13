@@ -91,6 +91,9 @@
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Presentation\Controls\PopupContainer.xaml.cs">
+      <DependentUpon>PopupContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="Presentation\ValueConverters\IsPlayingToButtonStyleConverter.cs" />
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Controls\ScreenPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\PopupContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
