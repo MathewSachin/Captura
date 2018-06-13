@@ -49,6 +49,8 @@ namespace Captura
             Element.BeginAnimation(HeightProperty, anim);
         }
 
+        const int MaxItems = 5;
+
         public void Add(FrameworkElement Element)
         {
             switch (Element)
@@ -67,6 +69,19 @@ namespace Captura
             }
 
             ItemsControl.Items.Insert(0, Element);
+
+            if (ItemsControl.Items.Count > MaxItems)
+            {
+                var itemsToRemove = ItemsControl.Items
+                    .OfType<FrameworkElement>()
+                    .Skip(MaxItems)
+                    .ToArray();
+
+                foreach (var frameworkElement in itemsToRemove)
+                {
+                    Remove(frameworkElement);
+                }
+            }
         }
     }
 }
