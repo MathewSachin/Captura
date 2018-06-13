@@ -57,6 +57,7 @@ namespace Captura
             {
                 case ScreenShotBalloon screenShotBalloon:
                     screenShotBalloon.RemoveRequested += () => Remove(screenShotBalloon);
+                    screenShotBalloon.Expander.IsExpanded = true;
                     break;
 
                 case TextBalloon textBalloon:
@@ -66,6 +67,14 @@ namespace Captura
                 case StatusBalloon statusBalloon:
                     statusBalloon.RemoveRequested += () => Remove(statusBalloon);
                     break;
+            }
+
+            foreach (var item in ItemsControl.Items)
+            {
+                if (item is ScreenShotBalloon screenShotBalloon)
+                {
+                    screenShotBalloon.Expander.IsExpanded = false;
+                }
             }
 
             ItemsControl.Items.Insert(0, Element);

@@ -6,7 +6,8 @@
              Padding="5,0,0,0"
              BorderBrush="{DynamicResource Accent}">
     <DockPanel>
-        <Expander IsExpanded="False">
+        <Expander IsExpanded="False"
+                  Name="Expander">
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
