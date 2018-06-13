@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media.Animation;
 using Captura.Models;
 
 namespace Captura
@@ -19,19 +22,31 @@ namespace Captura
         {
             Hide();
 
-            ItemsControl.Items.Clear();
+            var copy = ItemsControl.Items.OfType<FrameworkElement>().ToArray();
+
+            foreach (var frameworkElement in copy)
+            {
+                Remove(frameworkElement);
+            }
         }
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();
 
         void Remove(FrameworkElement Element)
         {
-            ItemsControl.Items.Remove(Element);
+            var anim = new DoubleAnimation(Element.ActualHeight, 0, new Duration(TimeSpan.FromMilliseconds(200)));
 
-            if (ItemsControl.Items.Count == 0)
+            anim.Completed += (S, E) =>
             {
-                Hide();
-            }
+                ItemsControl.Items.Remove(Element);
+
+                if (ItemsControl.Items.Count == 0)
+                {
+                    Hide();
+                }
+            };
+
+            Element.BeginAnimation(HeightProperty, anim);
         }
 
         public void Add(FrameworkElement Element)

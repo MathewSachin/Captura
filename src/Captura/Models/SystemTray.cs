@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Animation;
 
 namespace Captura.Models
 {
@@ -21,11 +22,14 @@ namespace Captura.Models
         {
             _trayIcon = TaskbarIcon;
             _settings = Settings;
+
+            _popupContainer.Opacity = 0;
         }
 
         public void HideNotification()
         {
-            _popupContainer.Visibility = Visibility.Collapsed;
+            _popupContainer.BeginAnimation(UIElement.OpacityProperty,
+                new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(100))));
         }
 
         void Show()
@@ -39,7 +43,8 @@ namespace Captura.Models
                 _first = false;
             }
 
-            _popupContainer.Visibility = Visibility.Visible;
+            _popupContainer.BeginAnimation(UIElement.OpacityProperty,
+                new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(300))));
         }
 
         public void ShowScreenShotNotification(string FilePath)
