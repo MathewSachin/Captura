@@ -24,7 +24,7 @@ namespace Captura
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.UriSource = new Uri(FilePath);
             image.EndInit();
-            img.Source = image;
+            Img.Source = image;
         }
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();

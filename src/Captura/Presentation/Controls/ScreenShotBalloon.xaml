@@ -2,8 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
-             Background="#333333"
-             Foreground="White"
              BorderThickness="0,1,0,0"
              Padding="5,0,0,0"
              BorderBrush="{DynamicResource Accent}">
@@ -23,25 +21,27 @@
                                         Foreground="LightPink"
                                         IconData="{StaticResource Icon_Close}"
                                         DockPanel.Dock="Right"/>
-                    
-                    <TextBlock Text="{local:Loc ScreenShotSaved}"
-                               VerticalAlignment="Center"
-                               Foreground="White"
-                               Margin="5"/>
 
-                    <TextBlock DockPanel.Dock="Bottom"
-                               Padding="5"
-                               Foreground="White"
-                               VerticalAlignment="Center">
-                        (<Run Text="{Binding Mode=OneWay}"/>)
-                    </TextBlock>
+                    <Label>
+                        <TextBlock Text="{local:Loc ScreenShotSaved}"
+                                   VerticalAlignment="Center"
+                                   Margin="5"/>
+                    </Label>
+
+                    <Label>
+                        <TextBlock DockPanel.Dock="Bottom"
+                                   Padding="5"
+                                   VerticalAlignment="Center">
+                            (<Run Text="{Binding Mode=OneWay}"/>)
+                        </TextBlock>
+                    </Label>
                 </DockPanel>
             </Expander.Header>
 
             <Image Cursor="Hand"
                    MouseUp="Image_MouseUp"
-                   Margin="5"
-                   Name="img"/>
+                   Name="Img"
+                   Margin="-6,0,-2,-1"/>
         </Expander>
     </DockPanel>
 </UserControl>
