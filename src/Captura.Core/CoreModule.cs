@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using Ninject;
 using Ninject.Modules;
 
 namespace Captura
@@ -31,9 +32,13 @@ namespace Captura
             Bind<HotKeyManager>().ToSelf().InSingletonScope();
 
             // Image Writers
-            Bind<IImageWriterItem>().To<DiskWriter>().InSingletonScope();
-            Bind<IImageWriterItem>().To<ClipboardWriter>().InSingletonScope();
-            Bind<IImageWriterItem>().To<ImgurWriter>().InSingletonScope();
+            Bind<DiskWriter>().ToSelf().InSingletonScope();
+            Bind<ClipboardWriter>().ToSelf().InSingletonScope();
+            Bind<ImgurWriter>().ToSelf().InSingletonScope();
+
+            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<DiskWriter>()).InSingletonScope();
+            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<ClipboardWriter>()).InSingletonScope();
+            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<ImgurWriter>()).InSingletonScope();
 
             // Video Writer Providers
             Bind<IVideoWriterProvider>().To<FFMpegWriterProvider>().InSingletonScope();
