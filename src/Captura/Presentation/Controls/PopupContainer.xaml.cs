@@ -51,14 +51,19 @@ namespace Captura
 
         public void Add(FrameworkElement Element)
         {
-            if (Element is ScreenShotBalloon screenShotBalloon)
+            switch (Element)
             {
-                screenShotBalloon.RemoveRequested += () => Remove(screenShotBalloon);
-            }
+                case ScreenShotBalloon screenShotBalloon:
+                    screenShotBalloon.RemoveRequested += () => Remove(screenShotBalloon);
+                    break;
 
-            if (Element is TextBalloon textBalloon)
-            {
-                textBalloon.RemoveRequested += () => Remove(textBalloon);
+                case TextBalloon textBalloon:
+                    textBalloon.RemoveRequested += () => Remove(textBalloon);
+                    break;
+
+                case StatusBalloon statusBalloon:
+                    statusBalloon.RemoveRequested += () => Remove(statusBalloon);
+                    break;
             }
 
             ItemsControl.Items.Insert(0, Element);
