@@ -103,6 +103,11 @@
 
         <Border>
             <DockPanel Visibility="{Binding SelectedCulture, Converter={StaticResource NotNullConverter}}">
+                <DockPanel.InputBindings>
+                    <KeyBinding Key="S"
+                                Modifiers="Control"
+                                Command="{Binding SaveCommand}"/>
+                </DockPanel.InputBindings>
                 <DockPanel DockPanel.Dock="Top">
                     <Button DockPanel.Dock="Right"
                             Margin="5,10,10,10"
