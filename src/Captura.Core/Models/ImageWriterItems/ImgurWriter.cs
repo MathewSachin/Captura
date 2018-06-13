@@ -80,8 +80,6 @@ namespace Captura.Models
 
                     progressItem.PrimaryText = _loc.ImgurFailed;
 
-                    _systemTray.ShowError(LanguageManager.Instance.ImgurFailed);
-
                     if (!_diskWriter.Active)
                     {
                         ServiceProvider.Get<IMainWindow>().IsVisible = true;
@@ -106,6 +104,7 @@ namespace Captura.Models
 
                 progressItem.Finished = true;
                 progressItem.Success = true;
+                progressItem.PrimaryText = _loc.ImgurSuccess;
                 progressItem.SecondaryText = link;
 
                 progressItem.RegisterClick(() => Process.Start(link));

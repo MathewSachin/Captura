@@ -6,9 +6,11 @@ namespace Captura
 {
     public partial class ProgressBalloon : IRemoveRequester
     {
+        public TrayProgressViewModel ViewModel { get; }
+
         public ProgressBalloon(TrayProgressViewModel ViewModel)
         {
-            DataContext = ViewModel;
+            this.ViewModel = ViewModel;
 
             InitializeComponent();
         }
