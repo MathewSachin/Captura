@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Captura
 {
-    public partial class StatusBalloon
+    public partial class StatusBalloon : IRemoveRequester
     {
         public StatusBalloon(string Text, bool Error)
         {

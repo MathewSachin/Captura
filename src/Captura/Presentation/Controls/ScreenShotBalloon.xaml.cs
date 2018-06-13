@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace Captura
 {
-    public partial class ScreenShotBalloon
+    public partial class ScreenShotBalloon : IRemoveRequester
     {
         readonly string _filePath;
 

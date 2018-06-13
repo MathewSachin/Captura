@@ -4,7 +4,7 @@ using System;
 
 namespace Captura
 {
-    public partial class TextBalloon
+    public partial class TextBalloon : IRemoveRequester
     {
         readonly Action _onClick;
         

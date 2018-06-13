@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Captura.ProgressBalloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura"
+             BorderThickness="0,1,0,0"
+             Padding="5,0,0,0"
+             BorderBrush="{DynamicResource Accent}">
+    <DockPanel>
+        <local:ModernButton ToolTip="{local:Loc Close}"
+                            Click="CloseButton_Click"
+                            Foreground="LightPink"
+                            IconData="{StaticResource Icon_Close}"
+                            DockPanel.Dock="Right"/>
+        
+        <Label>
+            <TextBlock Text="{Binding}"
+                       VerticalAlignment="Center"
+                       Padding="5"
+                       MouseUp="TextBlock_MouseUp"
+                       Cursor="Hand"/>
+        </Label>
+    </DockPanel>
+</UserControl>

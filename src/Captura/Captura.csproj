@@ -88,6 +88,8 @@
     <Compile Include="ImageEditor\ModifyPixel.cs" />
     <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
+    <Compile Include="Presentation\Controls\IRemoveRequester.cs" />
+    <Compile Include="Presentation\Controls\ITrayProgress.cs" />
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
     </Compile>
@@ -96,6 +98,9 @@
     </Compile>
     <Compile Include="Presentation\Controls\StatusBalloon.xaml.cs">
       <DependentUpon>StatusBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\ProgressBalloon.xaml.cs">
+      <DependentUpon>ProgressBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
@@ -236,6 +241,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Controls\StatusBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\ProgressBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

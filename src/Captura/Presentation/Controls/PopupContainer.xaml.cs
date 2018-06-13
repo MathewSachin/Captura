@@ -53,21 +53,13 @@ namespace Captura
 
         public void Add(FrameworkElement Element)
         {
-            switch (Element)
+            if (Element is IRemoveRequester removeRequester)
             {
-                case ScreenShotBalloon screenShotBalloon:
-                    screenShotBalloon.RemoveRequested += () => Remove(screenShotBalloon);
-                    screenShotBalloon.Expander.IsExpanded = true;
-                    break;
-
-                case TextBalloon textBalloon:
-                    textBalloon.RemoveRequested += () => Remove(textBalloon);
-                    break;
-
-                case StatusBalloon statusBalloon:
-                    statusBalloon.RemoveRequested += () => Remove(statusBalloon);
-                    break;
+                removeRequester.RemoveRequested += () => Remove(Element);
             }
+
+            if (Element is ScreenShotBalloon ssBalloon)
+                ssBalloon.Expander.IsExpanded = true;
 
             foreach (var item in ItemsControl.Items)
             {
