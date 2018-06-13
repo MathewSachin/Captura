@@ -16,19 +16,19 @@ namespace Captura.Models
         readonly Func<TaskbarIcon> _trayIcon;
         readonly Settings _settings;
 
-        readonly PopupContainer _popupContainer = new PopupContainer();
+        readonly NotificationStack _notificationStack = new NotificationStack();
 
         public SystemTray(Func<TaskbarIcon> TaskbarIcon, Settings Settings)
         {
             _trayIcon = TaskbarIcon;
             _settings = Settings;
 
-            _popupContainer.Opacity = 0;
+            _notificationStack.Opacity = 0;
         }
 
         public void HideNotification()
         {
-            _popupContainer.BeginAnimation(UIElement.OpacityProperty,
+            _notificationStack.BeginAnimation(UIElement.OpacityProperty,
                 new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(100))));
         }
 
@@ -37,7 +37,7 @@ namespace Captura.Models
             if (!_settings.UI.TrayNotify)
                 return;
 
-            _popupContainer.Add(new StatusBalloon(Message, false));
+            _notificationStack.Add(new StatusBalloon(Message, false));
 
             Show();
         }
@@ -47,7 +47,7 @@ namespace Captura.Models
             if (!_settings.UI.TrayNotify)
                 return;
 
-            _popupContainer.Add(new StatusBalloon(Error, true));
+            _notificationStack.Add(new StatusBalloon(Error, true));
 
             Show();
         }
@@ -58,12 +58,12 @@ namespace Captura.Models
 
             if (trayIcon != null && _first)
             {
-                trayIcon.ShowCustomBalloon(_popupContainer, PopupAnimation.Scroll, null);
+                trayIcon.ShowCustomBalloon(_notificationStack, PopupAnimation.Scroll, null);
 
                 _first = false;
             }
 
-            _popupContainer.BeginAnimation(UIElement.OpacityProperty,
+            _notificationStack.BeginAnimation(UIElement.OpacityProperty,
                 new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(300))));
         }
 
@@ -72,7 +72,7 @@ namespace Captura.Models
             if (!_settings.UI.TrayNotify)
                 return;
 
-            _popupContainer.Add(new ScreenShotBalloon(FilePath));
+            _notificationStack.Add(new ScreenShotBalloon(FilePath));
 
             Show();
         }
@@ -82,7 +82,7 @@ namespace Captura.Models
             if (!_settings.UI.TrayNotify)
                 return;
 
-            _popupContainer.Add(new TextBalloon(Text, OnClick));
+            _notificationStack.Add(new TextBalloon(Text, OnClick));
 
             Show();
         }

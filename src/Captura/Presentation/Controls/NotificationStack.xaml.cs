@@ -6,9 +6,9 @@ using Captura.Models;
 
 namespace Captura
 {
-    public partial class PopupContainer
+    public partial class NotificationStack
     {
-        public PopupContainer()
+        public NotificationStack()
         {
             InitializeComponent();
         }

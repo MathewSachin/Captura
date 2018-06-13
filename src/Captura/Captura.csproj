@@ -93,8 +93,8 @@
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\PopupContainer.xaml.cs">
-      <DependentUpon>PopupContainer.xaml</DependentUpon>
+    <Compile Include="Presentation\Controls\NotificationStack.xaml.cs">
+      <DependentUpon>NotificationStack.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Controls\StatusBalloon.xaml.cs">
       <DependentUpon>StatusBalloon.xaml</DependentUpon>
@@ -236,7 +236,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Controls\PopupContainer.xaml">
+    <Page Include="Presentation\Controls\NotificationStack.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
