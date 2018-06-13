@@ -20,14 +20,6 @@
                     (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
-                <TextBlock DockPanel.Dock="Bottom"
-                           HorizontalAlignment="Right"
-                           Margin="0,0,0,10">
-                    <Hyperlink CommandParameter="https://github.com/MathewSachin/Captura/blob/master/docs/Translation.md">
-                        <Run Text="{local:Loc WantToTranslate}"/>
-                    </Hyperlink>
-                </TextBlock>
-
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -106,6 +98,21 @@
                 <Button Click="ViewLicenses"
                         Content="View Licenses"
                         Margin="3"/>
+
+                <Button Margin="3"
+                        Click="Translate">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Translate}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{local:Loc WantToTranslate}"/>
+                    </DockPanel>
+                </Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

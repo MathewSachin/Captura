@@ -1,0 +1,181 @@
+﻿<Window x:Class="Captura.Views.TranslationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura.Views"
+        xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+        mc:Ignorable="d"
+        Title="Translation"
+        Height="600"
+        Width="900">
+    <Window.DataContext>
+        <captura:TranslationViewModel/>
+    </Window.DataContext>
+    <DockPanel Background="{DynamicResource WindowBackground}">
+        <ListView ItemsSource="{Binding AvailableCultures}"
+                  SelectedValue="{Binding SelectedCulture, Mode=TwoWay}"
+                  Width="160"
+                  Padding="5"
+                  Margin="0,0,5,0"
+                  BorderThickness="0,0,0.6,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayName, Mode=OneWay}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <Border BorderThickness="0.6,0,0,0"
+                BorderBrush="{DynamicResource ItemText}"
+                Margin="10,0,0,0"
+                Padding="10"
+                Width="200"
+                DockPanel.Dock="Right">
+            <StackPanel>
+                <Label>
+                    <TextBlock Text="Contributing"
+                               Style="{StaticResource Title}"
+                               Margin="0,0,0,10"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock Style="{StaticResource Heading2}"
+                               Text="New Language"
+                               Margin="0,5"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="1. Create a copy of en.json in 'src/Captura.Core/Languages' folder."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="2. Rename the copied file to [CultureID].json where 'CultureID' is the language identifier."
+                               Style="{StaticResource Small}"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="3. Do Translation in the new file."
+                               Style="{StaticResource Small}"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="4. Commit. Create Pull Request."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock Style="{StaticResource Heading2}"
+                               Text="Using this interface"
+                               Margin="0,5"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="This interface can be used to update translation files in the app's running directory."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="1. After updating translations, Save your work."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="2. Copy the file from Languages folder in app's running directory to 'src/Captura.Core/Languages' folder."
+                               Style="{StaticResource Small}"/>
+                </Label>
+
+                <Label>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="3. Commit. Create Pull Request."
+                               Style="{StaticResource Small}"/>
+                </Label>
+            </StackPanel>
+        </Border>
+
+        <Border>
+            <DockPanel Visibility="{Binding SelectedCulture, Converter={StaticResource NotNullConverter}}">
+                <DockPanel.InputBindings>
+                    <KeyBinding Key="S"
+                                Modifiers="Control"
+                                Command="{Binding SaveCommand}"/>
+                </DockPanel.InputBindings>
+                <DockPanel DockPanel.Dock="Top">
+                    <Button DockPanel.Dock="Right"
+                            Margin="5,10,10,10"
+                            Command="{Binding SaveCommand}">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Save}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="Save"/>
+                        </DockPanel>
+                    </Button>
+
+                    <Button DockPanel.Dock="Right"
+                            Margin="5,10"
+                            Command="{Binding DiscardChangesCommand}">
+                        <DockPanel>
+                            <Path Data="{StaticResource Icon_Close}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="Discard Changes"/>
+                        </DockPanel>
+                    </Button>
+
+                    <Label Margin="5">
+                        <TextBlock Style="{StaticResource Title}">
+                            <Run Text="{Binding SelectedCulture.Name, Mode=OneWay}"/> | <Run Text="{Binding SelectedCulture.DisplayName, Mode=OneWay}"/> (<Run Text="{Binding SelectedCulture.NativeName, Mode=OneWay}"/>)
+                        </TextBlock>
+                    </Label>
+                </DockPanel>
+                
+                <Border DockPanel.Dock="Top"
+                        Margin="0,10"
+                        BorderBrush="{DynamicResource ItemText}"
+                        BorderThickness="0,0,0,1"/>
+
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Fields}"
+                                  Grid.IsSharedSizeScope="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TranslationFieldLabel"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Label Content="{Binding Key}"
+                                           Margin="5"/>
+                                    
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="5"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>

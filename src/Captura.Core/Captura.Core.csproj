@@ -73,7 +73,9 @@
     <Compile Include="CoreModule.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="LanguageManager.cs" />
+    <Compile Include="Translation\LanguageField.cs" />
+    <Compile Include="Translation\LanguageFields.cs" />
+    <Compile Include="Translation\LanguageManager.cs" />
     <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
     <Compile Include="Models\AudioSourceItems\BassItem.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
     <Compile Include="PropertyStore.cs" />
+    <Compile Include="Translation\TranslationViewModel.cs" />
     <Compile Include="ViewModels\ArraySettingsViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysBaseViewModel.cs" />
