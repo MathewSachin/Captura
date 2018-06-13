@@ -80,6 +80,9 @@ namespace Captura
 
                 foreach (var frameworkElement in itemsToRemove)
                 {
+                    if (frameworkElement is ProgressBalloon progressBalloon && !progressBalloon.ViewModel.Finished)
+                        continue;
+
                     Remove(frameworkElement);
                 }
             }
