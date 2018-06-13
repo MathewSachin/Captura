@@ -36,13 +36,14 @@ namespace Captura.Models
 
         public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
-            var ritem = Recents.Add($"{_loc.ImgurUploading} (0%)", RecentItemType.Link, true);
-                                
+            var progressItem = _systemTray.ShowProgress();
+            progressItem.PrimaryText = _loc.ImgurUploading;
+
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (s, e) =>
                 {
-                    ritem.Display = $"{_loc.ImgurUploading} ({e.ProgressPercentage}%)";
+                    progressItem.Progress = e.ProgressPercentage;
                 };
 
                 w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
@@ -74,7 +75,10 @@ namespace Captura.Models
                 }
                 catch (Exception e)
                 {
-                    ritem.Display = _loc.ImgurFailed;
+                    progressItem.Finished = true;
+                    progressItem.Success = false;
+
+                    progressItem.PrimaryText = _loc.ImgurFailed;
 
                     _systemTray.ShowError(LanguageManager.Instance.ImgurFailed);
 
@@ -98,10 +102,13 @@ namespace Captura.Models
                 if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                     link.WriteToClipboard();
 
-                ritem.FilePath = ritem.Display = link;
-                ritem.Saved();
+                Recents.Add(link, RecentItemType.Link, false);
 
-                _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", () => Process.Start(link));
+                progressItem.Finished = true;
+                progressItem.Success = true;
+                progressItem.SecondaryText = link;
+
+                progressItem.RegisterClick(() => Process.Start(link));
             }
         }
 
