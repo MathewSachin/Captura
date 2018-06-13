@@ -45,7 +45,7 @@
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://github.com/MathewSachin/Captura/blob/master/docs/Changelog.md"
+                            CommandParameter="https://mathewsachin.github.io/Captura/changelog"
                             Grid.Column="1"
                             Margin="3">
                         <DockPanel>
