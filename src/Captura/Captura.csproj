@@ -171,7 +171,6 @@
     <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\WindowBorderToggler.cs" />
     <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />

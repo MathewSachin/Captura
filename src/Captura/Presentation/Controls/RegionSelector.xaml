@@ -41,7 +41,7 @@
                                         IconData="{StaticResource Icon_SnapToWindow}"
                                         Background="{DynamicResource WindowBackground}"
                                         x:Name="Snapper"
-                                        PreviewMouseLeftButtonDown="SnapButton_PreviewMouseLeftButtonDown"
+                                        Click="Snapper_OnClick"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
 
                     <local:ModernButton ToolTip="{local:Loc Close}"

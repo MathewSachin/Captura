@@ -68,12 +68,6 @@
             set => Set(value);
         }
 
-        public int RegionBorderThickness
-        {
-            get => Get(3);
-            set => Set(value);
-        }
-        
         public bool HideRegionSelectorWhenRecording
         {
             get => Get(false);

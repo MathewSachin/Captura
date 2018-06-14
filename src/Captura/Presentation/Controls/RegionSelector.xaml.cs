@@ -1,19 +1,18 @@
 ﻿using Captura.Models;
 using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Input;
 using Captura.ViewModels;
-using Point = System.Drawing.Point;
 
 namespace Captura
 {
     public partial class RegionSelector : IRegionProvider
     {
-        public RegionSelector(Settings Settings)
+        readonly IVideoSourcePicker _videoSourcePicker;
+
+        public RegionSelector(IVideoSourcePicker VideoSourcePicker)
         {
-            _settings = Settings;
+            _videoSourcePicker = VideoSourcePicker;
 
             InitializeComponent();
 
@@ -28,25 +27,13 @@ namespace Captura
             Loaded += (S, E) => MainControls.DataContext = ServiceProvider.Get<MainViewModel>();
         }
 
-        [DllImport("user32.dll")]
-        static extern IntPtr WindowFromPoint(Point Point);
-        
-        readonly Settings _settings;
-        bool _captured;
-        IntPtr _win;
-
         const int LeftOffset = 7,
             TopOffset = 37,
             WidthBorder = 14,
             HeightBorder = 74;
 
         Rectangle? _region;
-
-        void ToggleBorder(IntPtr Window)
-        {
-            WindowBorderToggler.Toggle(Window, _settings.UI.RegionBorderThickness);
-        }
-
+        
         void InitDimensionBoxes()
         {
             WidthBox.Minimum = (int)((MinWidth - WidthBorder) * Dpi.X);
@@ -95,79 +82,10 @@ namespace Captura
 
             SelectorHidden?.Invoke();
         }
-
-        void SnapButton_PreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
-        {
-            _captured = true;
-
-            DragMove();
-
-            _captured = false;
-            
-            try
-            {
-                if (_win == IntPtr.Zero)
-                {
-                    _win = GetBelowWindow();
-                }
-                else ToggleBorder(_win);
-
-                if (_win != IntPtr.Zero)
-                {
-                    SelectedRegion = new Screna.Window(_win).Rectangle;
-
-                    // Prevent going outside
-                    if (Left < 0)
-                    {
-                        // Decrease Width
-                        try { Width += Left; }
-                        catch { }
-                        finally { Left = 0; }
-                    }
-
-                    if (Top < 0)
-                    {
-                        // Decrease Height
-                        try { Height += Top; }
-                        catch { }
-                        finally { Top = 0; }
-                    }
-                }
-            }
-            finally
-            {
-                _win = IntPtr.Zero;
-            }
-        }
-
-        IntPtr GetBelowWindow()
-        {
-            return WindowFromPoint(new Point((int)((Left - 1) * Dpi.X), (int)((Top - 1) * Dpi.Y)));
-        }
         
-        void SelectWindow()
-        {
-            var oldwin = _win;
-
-            _win = GetBelowWindow();
-
-            if (oldwin == IntPtr.Zero)
-                ToggleBorder(_win);
-            else if (oldwin != _win)
-            {
-                ToggleBorder(oldwin);
-                ToggleBorder(_win);
-            }
-        }
-
         protected override void OnLocationChanged(EventArgs E)
         {
             base.OnLocationChanged(E);
-            
-            if (_captured)
-            {
-                SelectWindow();
-            }
 
             UpdateRegion();
         }
@@ -268,5 +186,32 @@ namespace Captura
 
         public IVideoItem VideoSource { get; }
         #endregion
+
+        void Snapper_OnClick(object Sender, RoutedEventArgs E)
+        {
+            var win = _videoSourcePicker.PickWindow();
+
+            if (win == null)
+                return;
+
+            SelectedRegion = win.Rectangle;
+
+            // Prevent going outside
+            if (Left < 0)
+            {
+                // Decrease Width
+                try { Width += Left; }
+                catch { }
+                finally { Left = 0; }
+            }
+
+            if (Top < 0)
+            {
+                // Decrease Height
+                try { Height += Top; }
+                catch { }
+                finally { Top = 0; }
+            }
+        }
     }
 }
