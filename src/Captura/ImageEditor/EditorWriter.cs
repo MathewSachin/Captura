@@ -14,7 +14,7 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             using (var stream = new MemoryStream())
             {

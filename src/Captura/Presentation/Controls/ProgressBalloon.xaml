@@ -1,19 +1,34 @@
-﻿<UserControl x:Class="Captura.TextBalloon"
+﻿<UserControl x:Class="Captura.ProgressBalloon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
              BorderThickness="0,1,0,0"
              Padding="5,0,0,0"
-             BorderBrush="{DynamicResource Accent}">
+             BorderBrush="{DynamicResource Accent}"
+             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <DockPanel>
+        <ProgressBar Value="{Binding Progress}"
+                     Height="5"
+                     Margin="-5,0,0,0"
+                     DockPanel.Dock="Bottom"/>
+        
         <local:ModernButton ToolTip="{local:Loc Close}"
                             Click="CloseButton_Click"
                             Foreground="LightPink"
                             IconData="{StaticResource Icon_Close}"
                             DockPanel.Dock="Right"/>
+
+        <Label DockPanel.Dock="Bottom"
+               Visibility="{Binding SecondaryText, Converter={StaticResource NotNullConverter}}">
+            <TextBlock Text="{Binding SecondaryText}"
+                       Padding="5,0,5,5"
+                       MouseUp="TextBlock_MouseUp"
+                       Cursor="Hand"
+                       Style="{StaticResource Small}"/>
+        </Label>
         
         <Label>
-            <TextBlock Text="{Binding}"
+            <TextBlock Text="{Binding PrimaryText}"
                        VerticalAlignment="Center"
                        Padding="5"
                        MouseUp="TextBlock_MouseUp"

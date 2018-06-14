@@ -88,8 +88,18 @@
     <Compile Include="ImageEditor\ModifyPixel.cs" />
     <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
+    <Compile Include="Models\IRemoveRequester.cs" />
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">
       <DependentUpon>ScreenPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\NotificationStack.xaml.cs">
+      <DependentUpon>NotificationStack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\StatusBalloon.xaml.cs">
+      <DependentUpon>StatusBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Controls\ProgressBalloon.xaml.cs">
+      <DependentUpon>ProgressBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
@@ -222,6 +232,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Controls\ScreenPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\NotificationStack.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\StatusBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Controls\ProgressBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

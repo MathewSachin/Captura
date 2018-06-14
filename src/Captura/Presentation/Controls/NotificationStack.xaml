@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Captura.NotificationStack"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura"
+             Width="400"
+             Margin="10,60"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Accent}"
+             Background="{DynamicResource WindowBackground}">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <local:ModernButton ToolTip="{local:Loc Close}"
+                                Click="CloseButton_Click"
+                                IconData="{StaticResource Icon_ClearNotifications}"
+                                DockPanel.Dock="Right"/>
+
+            <Label>
+                <TextBlock Text="Notifications"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource Title}"
+                           Padding="5"/>
+            </Label>
+        </DockPanel>
+        
+        <ScrollViewer>
+            <ItemsControl Name="ItemsControl"/>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

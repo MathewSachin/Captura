@@ -4,15 +4,13 @@ using System;
 
 namespace Captura
 {
-    public partial class TextBalloon : IRemoveRequester
+    public partial class ProgressBalloon : IRemoveRequester
     {
-        readonly Action _onClick;
-        
-        public TextBalloon(string Text, Action OnClick)
-        {
-            DataContext = Text;
+        public TrayProgressViewModel ViewModel { get; }
 
-            _onClick = OnClick;
+        public ProgressBalloon(TrayProgressViewModel ViewModel)
+        {
+            this.ViewModel = ViewModel;
 
             InitializeComponent();
         }
@@ -28,9 +26,15 @@ namespace Captura
         
         void TextBlock_MouseUp(object Sender, MouseButtonEventArgs E)
         {
-            _onClick?.Invoke();
+            if (DataContext is TrayProgressViewModel vm)
+            {
+                if (vm.OnClick == null)
+                    return;
 
-            OnClose();
+                vm.OnClick.Invoke();
+
+                OnClose();
+            }
         }
     }
 }

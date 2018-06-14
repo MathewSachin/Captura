@@ -34,15 +34,16 @@ namespace Captura.Models
             LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
-            var ritem = Recents.Add($"{_loc.ImgurUploading} (0%)", RecentItemType.Link, true);
-                                
+            var progressItem = _systemTray.ShowProgress();
+            progressItem.PrimaryText = _loc.ImgurUploading;
+
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (s, e) =>
                 {
-                    ritem.Display = $"{_loc.ImgurUploading} ({e.ProgressPercentage}%)";
+                    progressItem.Progress = e.ProgressPercentage;
                 };
 
                 w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
@@ -74,13 +75,21 @@ namespace Captura.Models
                 }
                 catch (Exception e)
                 {
-                    ritem.Display = _loc.ImgurFailed;
-                    Status.LocalizationKey = nameof(LanguageManager.ImgurFailed);
+                    progressItem.Finished = true;
+                    progressItem.Success = false;
 
-                    var yes = _messageProvider.ShowYesNo($"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                    progressItem.PrimaryText = _loc.ImgurFailed;
 
-                    if (yes)
-                        await _diskWriter.Save(Image, Format, FileName, Status, Recents);
+                    if (!_diskWriter.Active)
+                    {
+                        ServiceProvider.Get<IMainWindow>().IsVisible = true;
+
+                        var yes = _messageProvider.ShowYesNo(
+                            $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+
+                        if (yes)
+                            await _diskWriter.Save(Image, Format, FileName, Recents);
+                    }
 
                     return;
                 }
@@ -91,12 +100,14 @@ namespace Captura.Models
                 if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                     link.WriteToClipboard();
 
-                ritem.FilePath = ritem.Display = link;
-                ritem.Saved();
+                Recents.Add(link, RecentItemType.Link, false);
 
-                _systemTray.ShowTextNotification($"{_loc.ImgurSuccess}: {link}", _settings.UI.ScreenShotNotifyTimeout, () => Process.Start(link));
+                progressItem.Finished = true;
+                progressItem.Success = true;
+                progressItem.PrimaryText = _loc.ImgurSuccess;
+                progressItem.SecondaryText = link;
 
-                Status.LocalizationKey = nameof(LanguageManager.ImgurSuccess);
+                progressItem.RegisterClick(() => Process.Start(link));
             }
         }
 

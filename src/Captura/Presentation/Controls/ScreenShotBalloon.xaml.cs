@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
 using System.IO;
 using System.Diagnostics;
 using System;
@@ -8,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace Captura
 {
-    public partial class ScreenShotBalloon
+    public partial class ScreenShotBalloon : IRemoveRequester
     {
         readonly string _filePath;
 
@@ -25,28 +24,18 @@ namespace Captura
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.UriSource = new Uri(FilePath);
             image.EndInit();
-            img.Source = image;
+            Img.Source = image;
         }
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();
 
         void OnClose()
         {
-            // the tray icon assigned this attached property to simplify access
-            var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon?.CloseBalloon();
+            RemoveRequested?.Invoke();
         }
 
-        /// <summary>
-        /// If the users hovers over the balloon, we don't close it.
-        /// </summary>
-        void grid_MouseEnter(object Sender, MouseEventArgs E)
-        {
-            // the tray icon assigned this attached property to simplify access
-            var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon?.ResetBalloonCloseTimer();
-        }
-
+        public event Action RemoveRequested;
+        
         void Image_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             ServiceProvider.LaunchFile(new ProcessStartInfo(_filePath));

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Captura.TextBalloon"
+﻿<UserControl x:Class="Captura.StatusBalloon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
@@ -16,8 +16,7 @@
             <TextBlock Text="{Binding}"
                        VerticalAlignment="Center"
                        Padding="5"
-                       MouseUp="TextBlock_MouseUp"
-                       Cursor="Hand"/>
+                       Name="TextBlock"/>
         </Label>
     </DockPanel>
 </UserControl>
