@@ -1,13 +1,15 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using Screna;
 
 namespace Captura.Models
 {
     public class VideoSourcePicker : IVideoSourcePicker
     {
-        public Window PickWindow()
+        public Window PickWindow(IEnumerable<IntPtr> SkipWindows = null)
         {
-            var picker = new WindowPicker();
+            var picker = new WindowPicker(SkipWindows);
 
             picker.ShowDialog();
 

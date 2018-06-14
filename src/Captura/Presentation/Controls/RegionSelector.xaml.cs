@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Interop;
 using Captura.ViewModels;
 
 namespace Captura
@@ -189,7 +190,9 @@ namespace Captura
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
         {
-            var win = _videoSourcePicker.PickWindow();
+            var wih = new WindowInteropHelper(this);
+
+            var win = _videoSourcePicker.PickWindow(new [] { wih.Handle });
 
             if (win == null)
                 return;

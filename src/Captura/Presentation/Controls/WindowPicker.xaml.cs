@@ -1,4 +1,6 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -18,8 +20,12 @@ namespace Captura
 {
     public partial class WindowPicker
     {
-        public WindowPicker()
+        readonly IEnumerable<IntPtr> _skipWindows;
+
+        public WindowPicker(IEnumerable<IntPtr> SkipWindows)
         {
+            _skipWindows = SkipWindows ?? new IntPtr[0];
+
             InitializeComponent();
 
             Left = Top = 0;
@@ -96,7 +102,9 @@ namespace Captura
 
             var point = new Point((int) (pos.X * Dpi.X), (int) (pos.Y * Dpi.Y));
 
-            var window = _windows.FirstOrDefault(M => M.Rectangle.Contains(point));
+            var window = _windows
+                .Where(M => !_skipWindows.Contains(M.Handle))
+                .FirstOrDefault(M => M.Rectangle.Contains(point));
 
             if (window != null)
             {
