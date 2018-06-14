@@ -73,6 +73,8 @@
     <Compile Include="CoreModule.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Models\FFMpeg\FFMpegPostProcessingWriter.cs" />
+    <Compile Include="Models\VideoWriterItems\FFMpegPostProcessingItem.cs" />
     <Compile Include="Services\ITrayProgress.cs" />
     <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Translation\LanguageFields.cs" />

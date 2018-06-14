@@ -1,11 +1,16 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace Captura.Models
 {
     public class FFMpegLog : NotifyPropertyChanged
     {
+        readonly SynchronizationContext _syncContext;
+
         FFMpegLog()
         {
+            _syncContext = SynchronizationContext.Current;
+
             LogItems = new ReadOnlyObservableCollection<FFMpegLogItem>(_logItems);
         }
 
@@ -19,7 +24,7 @@ namespace Captura.Models
 
             item.RemoveRequested += () => _logItems.Remove(item);
 
-            _logItems.Insert(0, item);
+            _syncContext.Post(S => _logItems.Insert(0, item), null);
 
             SelectedLogItem = item;
 

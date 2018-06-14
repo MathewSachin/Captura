@@ -21,6 +21,11 @@ namespace Captura.Models
                 yield return codec;
             }
 
+            foreach (var codec in FFMpegPostProcessingItem.Items)
+            {
+                yield return codec;
+            }
+
             foreach (var item in _settings.FFMpeg.CustomCodecs)
             {
                 yield return new FFMpegItem(item);
