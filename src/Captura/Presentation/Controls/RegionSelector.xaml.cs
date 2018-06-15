@@ -15,6 +15,8 @@ namespace Captura
     {
         readonly IVideoSourcePicker _videoSourcePicker;
 
+        bool _widthBoxChanging, _heightBoxChanging, _resizing;
+
         public RegionSelector(IVideoSourcePicker VideoSourcePicker)
         {
             _videoSourcePicker = VideoSourcePicker;
@@ -89,10 +91,17 @@ namespace Captura
 
             void SizeChange()
             {
+                if (_widthBoxChanging || _heightBoxChanging)
+                    return;
+
+                _resizing = true;
+
                 var selectedRegion = SelectedRegion;
 
                 WidthBox.Value = selectedRegion.Width;
                 HeightBox.Value = selectedRegion.Height;
+
+                _resizing = false;
             }
 
             SizeChanged += (S, E) => SizeChange();
@@ -101,25 +110,33 @@ namespace Captura
 
             WidthBox.ValueChanged += (S, E) =>
             {
-                if (E.NewValue is int width)
+                if (!_resizing && E.NewValue is int width)
                 {
+                    _widthBoxChanging = true;
+
                     var selectedRegion = SelectedRegion;
 
                     selectedRegion.Width = width;
 
                     SelectedRegion = selectedRegion;
+
+                    _widthBoxChanging = false;
                 }
             };
 
             HeightBox.ValueChanged += (S, E) =>
             {
-                if (E.NewValue is int height)
+                if (!_resizing && E.NewValue is int height)
                 {
+                    _heightBoxChanging = true;
+
                     var selectedRegion = SelectedRegion;
 
                     selectedRegion.Height = height;
 
                     SelectedRegion = selectedRegion;
+
+                    _heightBoxChanging = false;
                 }
             };
         }
