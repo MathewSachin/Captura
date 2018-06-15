@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Captura
 {
@@ -27,7 +26,7 @@ namespace Captura
                     return app.FindResource("Icon_Select");
             }
 
-            return Binding.DoNothing;
+            return app.FindResource("Icon_Cursor");
         }
     }
 }

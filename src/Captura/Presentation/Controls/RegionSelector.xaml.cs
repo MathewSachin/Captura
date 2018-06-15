@@ -1,9 +1,13 @@
 ﻿using Captura.Models;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using Captura.ViewModels;
+using Color = System.Windows.Media.Color;
 
 namespace Captura
 {
@@ -26,12 +30,55 @@ namespace Captura
 
             // Setting MainViewModel as DataContext from XAML causes crash.
             Loaded += (S, E) => MainControls.DataContext = ServiceProvider.Get<MainViewModel>();
+
+            ModesBox.ItemsSource = new[]
+            {
+                new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.None, "Pointer"),
+                new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Ink, "Pencil"),
+                new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByPoint, "Eraser"),
+                new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser")
+            };
+
+            ModesBox.SelectedIndex = 0;
+            ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
+            SizeBox.Value = 10;
+
+            InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 
-        const int LeftOffset = 7,
-            TopOffset = 37,
-            WidthBorder = 14,
-            HeightBorder = 74;
+        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
+        {
+            if (InkCanvas != null && E.NewValue is int i)
+                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
+        }
+
+        void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            if (ModesBox.SelectedValue is InkCanvasEditingMode mode)
+            {
+                InkCanvas.EditingMode = mode;
+
+                if (mode == InkCanvasEditingMode.Ink)
+                {
+                    InkCanvas.UseCustomCursor = true;
+                    InkCanvas.Cursor = Cursors.Pen;
+                }
+                else InkCanvas.UseCustomCursor = false;
+
+                InkCanvas.Visibility = mode == InkCanvasEditingMode.None ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        void ColorPicker_OnSelectedColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
+        {
+            if (E.NewValue != null && InkCanvas != null)
+                InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
+        }
+
+        const int LeftOffset = 43,
+            TopOffset = 38,
+            WidthBorder = LeftOffset + 7,
+            HeightBorder = TopOffset + 37;
 
         Rectangle? _region;
         
@@ -103,6 +150,8 @@ namespace Captura
         protected override void OnRenderSizeChanged(SizeChangedInfo SizeInfo)
         {
             UpdateRegion();
+
+            InkCanvas.Strokes.Clear();
 
             base.OnRenderSizeChanged(SizeInfo);
         }

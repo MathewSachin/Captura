@@ -25,6 +25,7 @@
             BorderBrush="{DynamicResource WindowBackground}">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -32,10 +33,56 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
+            
+            <DockPanel Background="{DynamicResource WindowBackground}"
+                       Grid.Row="1"
+                       LastChildFill="False"
+                       Margin="-5,0,0,0">
+                <ListBox Name="ModesBox"
+                         SelectedValuePath="Key"
+                         DockPanel.Dock="Top"
+                         HorizontalAlignment="Center"
+                         SelectionChanged="ModesBox_OnSelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                                  Width="15"
+                                  Height="15"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{Binding Value}"
+                                  Margin="5"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <xctk:ColorPicker Margin="0,2"
+                                  BorderThickness="2"
+                                  Width="35"
+                                  DockPanel.Dock="Bottom"
+                                  Name="ColorPicker"
+                                  SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
+                                  VerticalContentAlignment="Stretch"
+                                  ColorMode="ColorCanvas"
+                                  ShowAdvancedButton="True"
+                                  AdvancedButtonHeader="Color Canvas"
+                                  StandardButtonHeader="Pallette"
+                                  ShowRecentColors="True"/>
+
+                <xctk:IntegerUpDown Name="SizeBox"
+                                    Minimum="1"
+                                    Maximum="99"
+                                    DockPanel.Dock="Bottom"
+                                    ValueChanged="SizeBox_OnValueChanged"
+                                    Margin="0,2"
+                                    Width="40"/>
+            </DockPanel>
 
             <Label Background="{DynamicResource WindowBackground}"
                    HorizontalContentAlignment="Stretch"
-                   Margin="-1,-5,0,0">
+                   Margin="-1,-5,0,0"
+                   Grid.ColumnSpan="2">
                 <DockPanel Name="MainControls">
                     <local:ModernButton ToolTip="Snap to Window"
                                         IconData="{StaticResource Icon_SnapToWindow}"
@@ -84,12 +131,16 @@
 
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource Accent}"
-                    Grid.Row="1">
+                    Grid.Row="1"
+                    Grid.Column="1">
+                <InkCanvas Background="#01000000"
+                           Name="InkCanvas"/>
             </Border>
 
             <DockPanel Grid.Row="2"
                        Margin="-1,0,-1,-1"
-                       Background="{DynamicResource WindowBackground}">
+                       Background="{DynamicResource WindowBackground}"
+                       Grid.ColumnSpan="2">
                 <xctk:IntegerUpDown Width="60"
                                     DockPanel.Dock="Right"
                                     Margin="0,5,0,0"
