@@ -29,13 +29,21 @@ namespace Captura.Models
 
         public static IEnumerable<FFMpegPostProcessingItem> Items { get; } = new[]
         {
-            new FFMpegPostProcessingItem("WebM (Vp8 | AAC)", ".webm", VideoQuality =>
+            new FFMpegPostProcessingItem("WebM (Vp8 | Opus)", ".webm", VideoQuality =>
             {
                 // quality: 63 (lowest) to 4 (highest)
                 var crf = 63 - ((VideoQuality - 1) * 59) / 99;
 
                 return $"-vcodec libvpx -crf {crf} -b:v 1M";
-            }, FFMpegAudioItem.Aac)
+            }, FFMpegAudioItem.Opus),
+
+            new FFMpegPostProcessingItem("WebM (Vp9 | Opus)", ".webm", VideoQuality =>
+            {
+                // quality: 63 (lowest) to 0 (highest)
+                var crf = (63 * (100 - VideoQuality)) / 99;
+
+                return $"-vcodec libvpx-vp9 -crf {crf} -b:v 0";
+            }, FFMpegAudioItem.Opus)
         };
     }
 }
