@@ -475,6 +475,21 @@ namespace Captura
 
         bool _trackChanges = true;
 
+        public void RemoveLastHistory()
+        {
+            _trackChanges = false;
+
+            if (_undoStack.Count == 0)
+                return;
+
+            _undoStack.Pop();
+
+            if (_undoStack.Count == 0)
+                UndoCommand.RaiseCanExecuteChanged(false);
+
+            _trackChanges = true;
+        }
+
         async void Undo()
         {
             _trackChanges = false;

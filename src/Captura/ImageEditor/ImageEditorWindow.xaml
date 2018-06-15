@@ -384,8 +384,7 @@
                 BorderBrush="#77333333"
                 Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}}">
             <DockPanel LastChildFill="False">
-                <ListBox ItemsSource="{Binding Tools}"
-                         SelectedValuePath="Key"
+                <ListBox ItemsSource="{x:Static local:ExtendedInkTool.Tools}"
                          Name="ModesBox"
                          Padding="1"
                          DockPanel.Dock="Top"
@@ -393,13 +392,13 @@
                          SelectionChanged="ModesBox_OnSelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                            <Path Data="{Binding ToolName, Converter={StaticResource InkToolToIconConverter}}"
                                   Width="15"
                                   Height="15"
                                   Stretch="Uniform"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  ToolTip="{Binding Value}"
+                                  ToolTip="{Binding ToolName}"
                                   Margin="5"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -431,8 +430,8 @@
             <Image Source="{Binding TransformedBitmap}"
                    Name="Image"/>
             
-            <InkCanvas Background="Transparent"
-                       Name="InkCanvas"
+            <local:ExtendedInkCanvas  Background="Transparent"
+                       x:Name="InkCanvas"
                        IsEnabled="False"
                        MouseUp="InkCanvas_OnMouseUp"/>
             

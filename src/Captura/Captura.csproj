@@ -76,7 +76,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageEditor\ExtendedInkTool.cs" />
+    <Compile Include="ImageEditor\LineDynamicRenderer.cs" />
     <Compile Include="ImageEditor\EditorWriter.cs" />
+    <Compile Include="ImageEditor\ExtendedInkCanvas.cs" />
     <Compile Include="ImageEditor\HistoryItem.cs" />
     <Compile Include="ImageEditor\HistoryState.cs" />
     <Compile Include="ImageEditor\ImageEditorViewModel.cs" />

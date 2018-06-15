@@ -76,16 +76,9 @@ namespace Captura
 
         void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
         {
-            if (ModesBox.SelectedValue is InkCanvasEditingMode mode)
+            if (ModesBox.SelectedValue is ExtendedInkTool tool)
             {
-                InkCanvas.EditingMode = mode;
-
-                if (mode == InkCanvasEditingMode.Ink)
-                {
-                    InkCanvas.UseCustomCursor = true;
-                    InkCanvas.Cursor = Cursors.Pen;
-                }
-                else InkCanvas.UseCustomCursor = false;
+                InkCanvas.SetInkTool(tool);
             }
         }
 
