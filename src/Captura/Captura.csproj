@@ -76,7 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageEditor\EllipseDynamicRenderer.cs" />
     <Compile Include="ImageEditor\RectangleDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\EllipseStroke.cs" />
     <Compile Include="ImageEditor\RectangleStroke.cs" />
     <Compile Include="ImageEditor\ExtendedInkTool.cs" />
     <Compile Include="ImageEditor\LineDynamicRenderer.cs" />
