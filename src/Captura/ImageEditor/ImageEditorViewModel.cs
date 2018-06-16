@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -473,6 +475,43 @@ namespace Captura
             RedoCommand.RaiseCanExecuteChanged(false);
         }
 
+        public void AddSelectHistory(SelectHistory HistoryItem)
+        {
+            if (!_trackChanges)
+                return;
+
+            UnsavedChanges = true;
+
+            HistoryItem.EditingOperationCount = _editingOperationCount;
+
+            var merged = false;
+
+            if (_undoStack.Count > 0)
+            {
+                var peek = _undoStack.Peek();
+
+                if (peek is SelectHistory select
+                    && HistoryItem.EditingOperationCount == select.EditingOperationCount
+                    && StrokeCollectionsAreEqual(HistoryItem.Selection, select.Selection))
+                {
+                    select.NewRect = HistoryItem.NewRect;
+
+                    merged = true;
+                }
+            }
+
+            if (!merged)
+            {
+                _undoStack.Push(HistoryItem);
+
+                UndoCommand.RaiseCanExecuteChanged(true);
+            }
+
+            _redoStack.Clear();
+
+            RedoCommand.RaiseCanExecuteChanged(false);
+        }
+
         bool _trackChanges = true;
 
         public void RemoveLastHistory()
@@ -521,6 +560,13 @@ namespace Captura
 
                 _redoStack.Push(item);
             }
+            else if (item is SelectHistory select)
+            {
+                var m = GetTransformFromRectToRect(select.NewRect, select.OldRect);
+                select.Selection.Transform(m, false);
+
+                _redoStack.Push(select);
+            }
             
             RedoCommand.RaiseCanExecuteChanged(true);
 
@@ -563,7 +609,14 @@ namespace Captura
 
                 _undoStack.Push(item);
             }
-            
+            else if (item is SelectHistory select)
+            {
+                var m = GetTransformFromRectToRect(select.OldRect, select.NewRect);
+                select.Selection.Transform(m, false);
+
+                _undoStack.Push(select);
+            }
+
             UndoCommand.RaiseCanExecuteChanged(true);
 
             await Update();
@@ -583,14 +636,7 @@ namespace Captura
             FlipX = State.FlipX;
             FlipY = State.FlipY;
         }
-
-        public IEnumerable<KeyValuePair<InkCanvasEditingMode, string>> Tools { get; } = new[]
-        {
-            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.Ink, "Pencil"),
-            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByPoint, "Eraser"),
-            new KeyValuePair<InkCanvasEditingMode, string>(InkCanvasEditingMode.EraseByStroke, "Stroke Eraser")
-        };
-
+        
         public void IncrementEditingOperationCount()
         {
             ++_editingOperationCount;
@@ -689,6 +735,31 @@ namespace Captura
 
                 return transformedRendered;
             }
+        }
+
+        static Matrix GetTransformFromRectToRect(Rect Source, Rect Destination)
+        {
+            var m = Matrix.Identity;
+
+            m.Translate(-Source.X, -Source.Y);
+            m.Scale(Destination.Width / Source.Width, Destination.Height / Source.Height);
+            m.Translate(Destination.X, Destination.Y);
+
+            return m;
+        }
+
+        static bool StrokeCollectionsAreEqual(StrokeCollection A, StrokeCollection B)
+        {
+            if (A == null && B == null)
+                return true;
+
+            if (A == null || B == null)
+                return false;
+
+            if (A.Count != B.Count)
+                return false;
+
+            return !A.Where((T, I) => T != B[I]).Any();
         }
     }
 }

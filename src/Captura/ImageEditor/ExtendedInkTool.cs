@@ -30,6 +30,7 @@ namespace Captura
         public const string Pen = nameof(Pen);
         public const string Eraser = nameof(Eraser);
         public const string StrokeEraser = "Stroke Eraser";
+        public const string Select = nameof(Select);
         public const string Line = nameof(Line);
         public const string Rectangle = nameof(Rectangle);
         public const string Ellipse = nameof(Ellipse);
@@ -39,6 +40,7 @@ namespace Captura
             new ExtendedInkTool(Pen, InkCanvasEditingMode.Ink, () => new DynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Eraser, InkCanvasEditingMode.EraseByPoint),
             new ExtendedInkTool(StrokeEraser, InkCanvasEditingMode.EraseByStroke),
+            new ExtendedInkTool(Select, InkCanvasEditingMode.Select),
             new ExtendedInkTool(Line, InkCanvasEditingMode.Ink, () => new LineDynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Rectangle, InkCanvasEditingMode.Ink, () => new RectangleDynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Ellipse, InkCanvasEditingMode.Ink, () => new EllipseDynamicRenderer(), Cursors.Pen)

@@ -35,6 +35,19 @@ namespace Captura
                     vm.AddInkHistory(item);
                 };
 
+                void SelectionMovingOrResizing(object Sender, InkCanvasSelectionEditingEventArgs Args)
+                {
+                    vm.AddSelectHistory(new SelectHistory
+                    {
+                        NewRect = Args.NewRectangle,
+                        OldRect = Args.OldRectangle,
+                        Selection = InkCanvas.GetSelectedStrokes()
+                    });
+                }
+
+                InkCanvas.SelectionMoving += SelectionMovingOrResizing;
+                InkCanvas.SelectionResizing += SelectionMovingOrResizing;
+
                 vm.Window = this;
             }
 

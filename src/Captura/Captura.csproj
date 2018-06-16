@@ -94,6 +94,7 @@
     <Compile Include="ImageEditor\ImageFromClipboard.cs" />
     <Compile Include="ImageEditor\ModifyPixel.cs" />
     <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
+    <Compile Include="ImageEditor\SelectHistory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
     <Compile Include="Presentation\Controls\ScreenPicker.xaml.cs">

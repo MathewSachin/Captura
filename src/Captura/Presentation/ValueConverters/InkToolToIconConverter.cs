@@ -26,6 +26,7 @@ namespace Captura
                     return app.FindResource("Icon_StrokeEraser");
 
                 case InkCanvasEditingMode.Select:
+                case ExtendedInkTool.Select:
                     return app.FindResource("Icon_Select");
 
                 case ExtendedInkTool.Line:
