@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
+using Captura.ImageEditor;
 
 namespace Captura
 {
@@ -26,7 +27,7 @@ namespace Captura
 
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs E)
         {
-            if (DynamicRenderer is LineDynamicRenderer)
+            void AddCustomStroke(Stroke CustomStroke)
             {
                 Strokes.Remove(E.Stroke);
 
@@ -37,19 +38,31 @@ namespace Captura
                     vm.RemoveLastHistory();
                 }
 
-                var customStroke = new Stroke(new StylusPointCollection(new []
-                {
-                    E.Stroke.StylusPoints.First(),
-                    E.Stroke.StylusPoints.Last()
-                }), E.Stroke.DrawingAttributes);
+                Strokes.Add(CustomStroke);
 
-                Strokes.Add(customStroke);
-
-                var args = new InkCanvasStrokeCollectedEventArgs(customStroke);
+                var args = new InkCanvasStrokeCollectedEventArgs(CustomStroke);
 
                 base.OnStrokeCollected(args);
             }
-            else base.OnStrokeCollected(E);
+
+            switch (DynamicRenderer)
+            {
+                case LineDynamicRenderer _:
+                    AddCustomStroke(new Stroke(new StylusPointCollection(new []
+                    {
+                        E.Stroke.StylusPoints.First(),
+                        E.Stroke.StylusPoints.Last()
+                    }), E.Stroke.DrawingAttributes));
+                    break;
+
+                case RectangleDynamicRenderer _:
+                    AddCustomStroke(new RectangleStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
+                    break;
+
+                default:
+                    base.OnStrokeCollected(E);
+                    break;
+            }
         }
     }
 }

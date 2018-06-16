@@ -30,6 +30,9 @@ namespace Captura
 
                 case ExtendedInkTool.Line:
                     return app.FindResource("Icon_Line");
+
+                case ExtendedInkTool.Rectangle:
+                    return app.FindResource("Icon_Rectangle");
             }
 
             return app.FindResource("Icon_Cursor");

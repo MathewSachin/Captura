@@ -30,13 +30,15 @@ namespace Captura
         public const string Eraser = nameof(Eraser);
         public const string StrokeEraser = "Stroke Eraser";
         public const string Line = nameof(Line);
+        public const string Rectangle = nameof(Rectangle);
 
         public static ExtendedInkTool[] Tools { get; } =
         {
             new ExtendedInkTool(Pen, InkCanvasEditingMode.Ink, () => new DynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Eraser, InkCanvasEditingMode.EraseByPoint),
             new ExtendedInkTool(StrokeEraser, InkCanvasEditingMode.EraseByStroke),
-            new ExtendedInkTool(Line, InkCanvasEditingMode.Ink, () => new LineDynamicRenderer())
+            new ExtendedInkTool(Line, InkCanvasEditingMode.Ink, () => new LineDynamicRenderer(), Cursors.Pen),
+            new ExtendedInkTool(Rectangle, InkCanvasEditingMode.Ink, () => new RectangleDynamicRenderer(), Cursors.Pen)
         };
     }
 }

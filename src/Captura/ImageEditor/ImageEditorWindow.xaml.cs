@@ -42,7 +42,7 @@ namespace Captura
 
             ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
             ModesBox.SelectedIndex = 0;
-            SizeBox.Value = 10;
+            SizeBox.Value = 2;
 
             InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
