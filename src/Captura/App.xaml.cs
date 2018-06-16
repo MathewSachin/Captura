@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Captura.Views;
 using CommandLine;
 
 namespace Captura
@@ -22,10 +23,7 @@ namespace Captura
 
             Args.Handled = true;
 
-            MessageBox.Show($"Unexpected error occured. Captura might still continue functioning.\n\n{Args.Exception}",
-                "Unexpected error occured",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            new ExceptionWindow(Args.Exception).ShowDialog();
         }
 
         void Application_Startup(object Sender, StartupEventArgs Args)
@@ -38,10 +36,10 @@ namespace Captura
 
                 File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
 
-                MessageBox.Show($"Unexpected error occured. Captura will exit.\n\n{E.ExceptionObject}",
-                    "App Crash",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                if (E.ExceptionObject is Exception e)
+                {
+                    new ExceptionWindow(e).ShowDialog();
+                }
 
                 Shutdown();
             };

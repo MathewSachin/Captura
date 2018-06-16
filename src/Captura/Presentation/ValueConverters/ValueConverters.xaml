@@ -14,5 +14,6 @@
     <captura:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter"/>
     <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
     <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
+    <captura:GetTypeConverter x:Key="GetTypeConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

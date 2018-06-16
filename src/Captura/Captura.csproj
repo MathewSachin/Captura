@@ -111,10 +111,15 @@
     </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="Presentation\ValueConverters\GetTypeConverter.cs" />
     <Compile Include="Presentation\ValueConverters\IsPlayingToButtonStyleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\RecentItemToIconStyleConverter.cs" />
     <Compile Include="Presentation\ValueConverters\IntegralTimeSpanConverter.cs" />
     <Compile Include="ViewModels\TrimmerViewModel.cs" />
+    <Compile Include="ViewModels\ExceptionViewModel.cs" />
+    <Compile Include="Views\ExceptionWindow.xaml.cs">
+      <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TranslationWindow.xaml.cs">
       <DependentUpon>TranslationWindow.xaml</DependentUpon>
     </Compile>
@@ -259,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Themes\RoundSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExceptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
