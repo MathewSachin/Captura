@@ -21,7 +21,7 @@ namespace Captura
 
             using (var stream = File.OpenRead(FileName))
             {
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
                 Image.Source = decoder.Frames[0];
             }
@@ -70,14 +70,35 @@ namespace Captura
             {
                 AddExtension = true,
                 DefaultExt = ".png",
-                Filter = "PNG File|*.png",
+                Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg|Bitmap Image|*.bmp|TIFF Image|*.tiff",
                 InitialDirectory = Path.GetDirectoryName(_fileName),
-                FileName = Path.GetFileName(_fileName)
+                FileName = Path.GetFileNameWithoutExtension(_fileName)
             };
 
             if (sfd.ShowDialog().GetValueOrDefault())
             {
-                var encoder = new PngBitmapEncoder();
+                BitmapEncoder encoder;
+
+                // Filter Index starts from 1
+                switch (sfd.FilterIndex)
+                {
+                    case 2:
+                        encoder = new JpegBitmapEncoder();
+                        break;
+
+                    case 3:
+                        encoder = new BmpBitmapEncoder();
+                        break;
+
+                    case 4:
+                        encoder = new TiffBitmapEncoder();
+                        break;
+
+                    default:
+                        encoder = new PngBitmapEncoder();
+                        break;
+                }
+
                 encoder.Frames.Add(BitmapFrame.Create(_croppedImage));
 
                 using (var stream = sfd.OpenFile())
