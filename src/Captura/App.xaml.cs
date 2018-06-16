@@ -38,7 +38,7 @@ namespace Captura
 
                 if (E.ExceptionObject is Exception e)
                 {
-                    new ExceptionWindow(e).ShowDialog();
+                    Current.Dispatcher.Invoke(() => new ExceptionWindow(e).ShowDialog());
                 }
 
                 Shutdown();
