@@ -50,13 +50,30 @@
                               Command="{Binding RecordCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource RecordStopImageSource}"
-                                   Width="15"
+                                   Width="13"
                                    Margin="5"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="{local:Loc PauseResumeRecording}"
-                              Command="{Binding PauseCommand}"/>
+                              Command="{Binding PauseCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="10"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource Icon_Pause}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                                <Image.LayoutTransform>
+                                    <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                                </Image.LayoutTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                     <Separator/>
 
@@ -64,21 +81,47 @@
                               Command="{Binding ScreenShotCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
-                                   Width="15"
+                                   Width="13"
                                    Margin="5"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="{local:Loc ScreenShotActiveWindow}"
-                              Command="{Binding ScreenShotActiveCommand}"/>
+                              Command="{Binding ScreenShotActiveCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ScreenShotImageSource}"
+                                   Width="13"
+                                   Margin="5"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                     <MenuItem Header="{local:Loc ScreenShotDesktop}"
-                              Command="{Binding ScreenShotDesktopCommand}"/>
+                              Command="{Binding ScreenShotDesktopCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource ScreenShotImageSource}"
+                                   Width="13"
+                                   Margin="5"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                     <Separator/>
 
                     <MenuItem Header="{local:Loc Exit}"
-                              Click="MenuExit_Click"/>
+                              Click="MenuExit_Click">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource Icon_Close}"
+                                                             Brush="#b71c1c"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
