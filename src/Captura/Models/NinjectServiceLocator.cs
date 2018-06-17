@@ -21,6 +21,7 @@ namespace Captura
         public ProxySettingsViewModel ProxySettingsViewModel => ServiceProvider.Get<ProxySettingsViewModel>();
 
         public LicensesViewModel LicensesViewModel => ServiceProvider.Get<LicensesViewModel>();
+        public CrashLogsViewModel CrashLogsViewModel => ServiceProvider.Get<CrashLogsViewModel>();
 
         public FFMpegCodecsViewModel FfMpegCodecsViewModel => ServiceProvider.Get<FFMpegCodecsViewModel>();
     }

@@ -1,0 +1,67 @@
+﻿<Window x:Class="Captura.Views.CrashLogsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Captura"
+        Title="Crash Logs"
+        Height="700"
+        Width="650"
+        DataContext="{Binding CrashLogsViewModel, Source={StaticResource ServiceLocator}}">
+    <Window.InputBindings>
+        <KeyBinding Key="C"
+                    Modifiers="Control"
+                    Command="{Binding CopyToClipboardCommand}"/>
+    </Window.InputBindings>
+    <DockPanel Background="{DynamicResource WindowBackground}">
+        <ListView ItemsSource="{Binding CrashLogs}"
+                  SelectedValue="{Binding SelectedCrashLog, Mode=TwoWay}"
+                  Width="160"
+                  Padding="5,0"
+                  BorderThickness="0,0,0.6,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <DockPanel DockPanel.Dock="Top"
+                   Visibility="{Binding SelectedCrashLog, Converter={StaticResource NotNullConverter}}"
+                   Margin="5">
+            <local:ModernButton IconData="{StaticResource Icon_Delete}"
+                                DockPanel.Dock="Right"
+                                Command="{Binding RemoveCommand}"
+                                Foreground="#b71c1c"/>
+
+            <Button Command="{Binding CopyToClipboardCommand}"
+                    Margin="5">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_Clipboard}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="{local:Loc CopyToClipboard}"/>
+                </DockPanel>
+            </Button>
+        </DockPanel>
+
+        <Border DataContext="{Binding SelectedCrashLog}"
+                Margin="10,5">
+            <DockPanel>
+                <Label Margin="5"
+                       DockPanel.Dock="Top">
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource Heading1}"/>
+                </Label>
+
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <Label Margin="5"
+                           VerticalContentAlignment="Top"
+                           Content="{Binding Content}"/>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>

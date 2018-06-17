@@ -25,7 +25,7 @@
         </DockPanel>
 
         <ListView ItemsSource="{Binding LogItems}"
-                  SelectedValue="{Binding SelectedLogItem, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedLogItem, Mode=TwoWay}"
                   Width="200"
                   Padding="5,0"
                   BorderThickness="0,0,0.6,0">
@@ -39,6 +39,11 @@
         <DockPanel DataContext="{Binding SelectedLogItem}"
                    Visibility="{Binding Converter={StaticResource NotNullConverter}}"
                    Margin="5">
+            <DockPanel.InputBindings>
+                <KeyBinding Key="C"
+                            Modifiers="Control"
+                            Command="{Binding CopyToClipboardCommand}"/>
+            </DockPanel.InputBindings>
             <DockPanel DockPanel.Dock="Top">
                 <local:ModernButton IconData="{StaticResource Icon_Delete}"
                                     DockPanel.Dock="Right"

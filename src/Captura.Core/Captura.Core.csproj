@@ -203,7 +203,8 @@
     <Compile Include="Models\DownloadFFMpeg.cs" />
     <Compile Include="ViewModels\FFMpegCodecsViewModel.cs" />
     <Compile Include="ViewModels\FFMpgDownloadViewModel.cs" />
-    <Compile Include="Models\LicenseItem.cs" />
+    <Compile Include="Models\FileContentItem.cs" />
+    <Compile Include="ViewModels\CrashLogsViewModel.cs" />
     <Compile Include="ViewModels\LicensesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\Properties.cs" />

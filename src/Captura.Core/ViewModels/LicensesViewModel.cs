@@ -16,10 +16,10 @@ namespace Captura.ViewModels
 
             if (Directory.Exists(folder))
             {
-                Licenses = Directory.EnumerateFiles(folder).Select(FileName => new LicenseItem(FileName));
+                Licenses = Directory.EnumerateFiles(folder).Select(FileName => new FileContentItem(FileName));
             }
         }
 
-        public IEnumerable<LicenseItem> Licenses { get; }
+        public IEnumerable<FileContentItem> Licenses { get; }
     }
 }

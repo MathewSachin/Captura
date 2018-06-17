@@ -14,5 +14,10 @@ namespace Captura
         {
             new TranslationWindow().ShowAndFocus();
         }
+
+        void ViewCrashLogs(object Sender, RoutedEventArgs E)
+        {
+            new CrashLogsWindow().ShowAndFocus();
+        }
     }
 }

@@ -121,6 +121,9 @@
     <Compile Include="Views\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CrashLogsWindow.xaml.cs">
+      <DependentUpon>CrashLogsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TranslationWindow.xaml.cs">
       <DependentUpon>TranslationWindow.xaml</DependentUpon>
     </Compile>
@@ -271,6 +274,10 @@
     <Page Include="Views\ExceptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CrashLogsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TranslationWindow.xaml">
       <SubType>Designer</SubType>

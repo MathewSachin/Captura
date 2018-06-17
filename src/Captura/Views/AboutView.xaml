@@ -99,6 +99,21 @@
                         Content="View Licenses"
                         Margin="3"/>
 
+                <Button Click="ViewCrashLogs"
+                        Margin="3">
+                    <DockPanel>
+                        <Path Data="{StaticResource Icon_Error}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="View Crash Logs"/>
+                    </DockPanel>
+                </Button>
+
                 <Button Margin="3"
                         Click="Translate">
                     <DockPanel>
