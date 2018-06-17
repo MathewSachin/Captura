@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace Captura.Models
 {
@@ -71,12 +72,32 @@ namespace Captura.Models
 
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
-                w.UploadProgressChanged += (s, e) =>
+                w.UploadProgressChanged += (S, E) =>
                 {
-                    progressItem.Progress = e.ProgressPercentage;
+                    progressItem.Progress = E.ProgressPercentage;
                 };
 
-                w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
+                if (_settings.Imgur.Anonymous)
+                {
+                    w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(_settings.Imgur.AccessToken))
+                    {
+                        return new Exception("Not logged in to Imgur");
+                    }
+
+                    if (_settings.Imgur.IsExpired())
+                    {
+                        if (!await RefreshToken())
+                        {
+                            return new Exception("Failed to Refresh Imgur token");
+                        }
+                    }
+
+                    w.Headers.Add("Authorization", $"Bearer {_settings.Imgur.AccessToken}");
+                }
 
                 NameValueCollection values;
 
@@ -90,18 +111,16 @@ namespace Captura.Models
                     };
                 }
 
-                XDocument xdoc;
+                ImgurUploadResponse uploadResponse;
 
                 try
                 {
-                    var response = await w.UploadValuesTaskAsync("https://api.imgur.com/3/upload.xml", values);
-
-                    xdoc = XDocument.Load(new MemoryStream(response));
-
-                    var xAttribute = xdoc.Root?.Attribute("success");
-
-                    if (xAttribute == null || int.Parse(xAttribute.Value) != 1)
+                    uploadResponse = await UploadValuesAsync<ImgurUploadResponse>(w, "https://api.imgur.com/3/upload.json", values);
+                    
+                    if (!uploadResponse.Success)
+                    {
                         throw new Exception("Response indicates Failure");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -113,7 +132,7 @@ namespace Captura.Models
                     return e;
                 }
 
-                var link = xdoc.Root.Element("link").Value;
+                var link = uploadResponse.Data.Link;
 
                 progressItem.Finished = true;
                 progressItem.Success = true;
@@ -123,6 +142,47 @@ namespace Captura.Models
                 progressItem.RegisterClick(() => Process.Start(link));
 
                 return link;
+            }
+        }
+
+        static async Task<T> UploadValuesAsync<T>(WebClient WebClient, string Url, NameValueCollection Values)
+        {
+            // Task.Run done to prevent UI thread from freezing when upload fails.
+            var response = await Task.Run(async () => await WebClient.UploadValuesTaskAsync(Url, Values));
+
+            return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(response));
+        }
+
+        public void Authorize()
+        {
+            // response_type should be token, other types have been deprecated.
+            // access_token and refresh_token will be available in query string parameters attached to redirect URL entered during registration.
+            // eg: http://example.com#access_token=ACCESS_TOKEN&token_type=Bearer&expires_in=3600
+            // currently unable to retrieve them.
+            Process.Start($"https://api.imgur.com/oauth2/authorize?response_type=token&client_id={ApiKeys.ImgurClientId}");
+        }
+        
+        public async Task<bool> RefreshToken()
+        {
+            var args = new NameValueCollection
+            {
+                { "refresh_token", _settings.Imgur.RefreshToken },
+                { "client_id", ApiKeys.ImgurClientId },
+                { "client_secret", ApiKeys.ImgurSecret },
+                { "grant_type", "refresh_token" }
+            };
+
+            using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
+            {
+                var token = await UploadValuesAsync<ImgurRefreshTokenResponse>(w, "https://api.imgur.com/oauth2/token.json", args);
+
+                if (string.IsNullOrEmpty(token?.AccessToken))
+                    return false;
+
+                _settings.Imgur.AccessToken = token.AccessToken;
+                _settings.Imgur.RefreshToken = token.RefreshToken;
+                _settings.Imgur.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(token.ExpiresIn);
+                return true;
             }
         }
 

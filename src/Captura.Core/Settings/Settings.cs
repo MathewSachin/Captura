@@ -70,6 +70,8 @@ namespace Captura
 
         public ProxySettings Proxy { get; } = new ProxySettings();
 
+        public ImgurSettings Imgur { get; } = new ImgurSettings();
+
         public WebcamOverlaySettings WebcamOverlay { get; set; } = new WebcamOverlaySettings();
 
         public MouseOverlaySettings MousePointerOverlay { get; set; } = new MouseOverlaySettings

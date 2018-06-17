@@ -56,8 +56,6 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -74,8 +72,12 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\FFMpeg\FFMpegPostProcessingWriter.cs" />
+    <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
+    <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
+    <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegPostProcessingItem.cs" />
     <Compile Include="Services\ITrayProgress.cs" />
+    <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Translation\LanguageFields.cs" />
     <Compile Include="Translation\LanguageManager.cs" />
