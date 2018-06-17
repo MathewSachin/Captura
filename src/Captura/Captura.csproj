@@ -77,6 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ImageEditor\EllipseDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\LineStroke.cs" />
     <Compile Include="ImageEditor\RectangleDynamicRenderer.cs" />
     <Compile Include="ImageEditor\EllipseStroke.cs" />
     <Compile Include="ImageEditor\RectangleStroke.cs" />

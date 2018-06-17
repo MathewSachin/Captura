@@ -48,11 +48,7 @@ namespace Captura
             switch (DynamicRenderer)
             {
                 case LineDynamicRenderer _:
-                    AddCustomStroke(new Stroke(new StylusPointCollection(new []
-                    {
-                        E.Stroke.StylusPoints.First(),
-                        E.Stroke.StylusPoints.Last()
-                    }), E.Stroke.DrawingAttributes));
+                    AddCustomStroke(new LineStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
                     break;
 
                 case RectangleDynamicRenderer _:
