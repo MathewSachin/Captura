@@ -1,7 +1,10 @@
 ﻿using Captura.Models;
 using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using Screna;
 
 namespace Captura.ViewModels
 {
@@ -35,11 +38,6 @@ namespace Captura.ViewModels
                 FilePath.WriteToClipboard();
             }, !IsSaving);
 
-            PrintCommand = new DelegateCommand(() =>
-            {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(FilePath) { Verb = "Print" });
-            }, CanPrint);
-
             DeleteCommand = new DelegateCommand(() =>
             {
                 if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FilePath}?", "Confirm Deletion"))
@@ -57,9 +55,62 @@ namespace Captura.ViewModels
                     ServiceProvider.MessageProvider.ShowError(e.ToString(), $"Could not Delete file: {FilePath}");
                 }
             }, !IsSaving);
-        }
 
-        bool CanPrint => !IsSaving && ItemType == RecentItemType.Image;
+            CopyToClipboardCommand = new DelegateCommand(() =>
+            {
+                if (!File.Exists(FilePath))
+                {
+                    ServiceProvider.MessageProvider.ShowError("File not Found");
+
+                    return;
+                }
+
+                try
+                {
+                    var img = (Bitmap) Image.FromFile(FilePath);
+
+                    img.WriteToClipboard();
+                }
+                catch (Exception e)
+                {
+                    ServiceProvider.MessageProvider.ShowError(e.ToString(), "Copy to Clipboard failed");
+                }
+            });
+
+            UploadToImgurCommand = new DelegateCommand(async () =>
+            {
+                if (!File.Exists(FilePath))
+                {
+                    ServiceProvider.MessageProvider.ShowError("File not Found");
+
+                    return;
+                }
+
+                try
+                {
+                    var img = (Bitmap)Image.FromFile(FilePath);
+
+                    var imgur = ServiceProvider.Get<ImgurWriter>();
+
+                    var response = await imgur.Save(img, ImageFormat.Png);
+
+                    switch (response)
+                    {
+                        case Exception ex:
+                            ServiceProvider.MessageProvider.ShowError(ex.ToString(), "Upload to Imgur failed");
+                            break;
+
+                        case string link:
+                            link.WriteToClipboard();
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ServiceProvider.MessageProvider.ShowError(e.ToString(), "Upload to Imgur failed");
+                }
+            });
+        }
 
         string _filePath;
 
@@ -117,8 +168,6 @@ namespace Captura.ViewModels
             OpenCommand.RaiseCanExecuteChanged(true);
             DeleteCommand.RaiseCanExecuteChanged(true);
             CopyPathCommand.RaiseCanExecuteChanged(true);
-
-            PrintCommand.RaiseCanExecuteChanged(CanPrint);
         }
 
         public DelegateCommand RemoveCommand { get; private set; }
@@ -127,7 +176,9 @@ namespace Captura.ViewModels
 
         public DelegateCommand CopyPathCommand { get; private set; }
 
-        public DelegateCommand PrintCommand { get; private set; }
+        public DelegateCommand CopyToClipboardCommand { get; private set; }
+
+        public DelegateCommand UploadToImgurCommand { get; private set; }
 
         public DelegateCommand DeleteCommand { get; private set; }
 

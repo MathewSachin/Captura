@@ -61,11 +61,11 @@
                         </MenuItem.Header>
                     </MenuItem>
                     <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Command="{Binding PrintCommand}"
+                              Command="{Binding CopyToClipboardCommand}"
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Print}"
+                                <Path Data="{StaticResource Icon_Clipboard}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -73,7 +73,24 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="{local:Loc Print}"/>
+                                <TextBlock Text="Copy Image to Clipboard"/>
+                            </DockPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Command="{Binding UploadToImgurCommand}"
+                              Margin="0,2">
+                        <MenuItem.Header>
+                            <DockPanel>
+                                <Path Data="{StaticResource Icon_Upload}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,10,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+
+                                <TextBlock Text="Upload to Imgur"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>

@@ -36,6 +36,36 @@ namespace Captura.Models
 
         public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
+            var response = await Save(Image, Format);
+
+            switch (response)
+            {
+                case string link:
+                    Recents.Add(link, RecentItemType.Link, false);
+
+                    // Copy path to clipboard only when clipboard writer is off
+                    if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
+                        link.WriteToClipboard();
+                    break;
+
+                case Exception e:
+                    if (!_diskWriter.Active)
+                    {
+                        ServiceProvider.Get<IMainWindow>().IsVisible = true;
+
+                        var yes = _messageProvider.ShowYesNo(
+                            $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+
+                        if (yes)
+                            await _diskWriter.Save(Image, Format, FileName, Recents);
+                    }
+                    break;
+            }
+        }
+
+        // Returns Link on success, Exception on failure
+        public async Task<object> Save(Bitmap Image, ImageFormat Format)
+        {
             var progressItem = _systemTray.ShowProgress();
             progressItem.PrimaryText = _loc.ImgurUploading;
 
@@ -80,27 +110,10 @@ namespace Captura.Models
 
                     progressItem.PrimaryText = _loc.ImgurFailed;
 
-                    if (!_diskWriter.Active)
-                    {
-                        ServiceProvider.Get<IMainWindow>().IsVisible = true;
-
-                        var yes = _messageProvider.ShowYesNo(
-                            $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
-
-                        if (yes)
-                            await _diskWriter.Save(Image, Format, FileName, Recents);
-                    }
-
-                    return;
+                    return e;
                 }
 
                 var link = xdoc.Root.Element("link").Value;
-
-                // Copy path to clipboard only when clipboard writer is off
-                if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
-                    link.WriteToClipboard();
-
-                Recents.Add(link, RecentItemType.Link, false);
 
                 progressItem.Finished = true;
                 progressItem.Success = true;
@@ -108,6 +121,8 @@ namespace Captura.Models
                 progressItem.SecondaryText = link;
 
                 progressItem.RegisterClick(() => Process.Start(link));
+
+                return link;
             }
         }
 
