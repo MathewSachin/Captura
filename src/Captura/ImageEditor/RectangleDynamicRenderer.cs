@@ -24,7 +24,7 @@ namespace Captura
             base.OnStylusDown(RawStylusInput);
         }
 
-        public static void Draw(DrawingContext DrawingContext, Point Start, Point End, Pen Pen)
+        public static void Prepare(ref Point Start, ref Point End, out double Width, out double Height)
         {
             if (End.X < Start.X)
             {
@@ -40,15 +40,26 @@ namespace Captura
                 End.Y = t;
             }
 
-            var w = End.X - Start.X;
-            var h = End.Y - Start.Y;
+            Width = End.X - Start.X;
+            Height = End.Y - Start.Y;
+
+            if (Width <= 0)
+                Width = 1;
+
+            if (Height <= 0)
+                Height = 1;
 
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
             {
-                w = h = Math.Min(w, h);
+                Width = Height = Math.Min(Width, Height);
             }
+        }
 
-            var r = new Rect(Start, new Size(w <= 0 ? 1 : w, h <= 0 ? 1 : h));
+        public static void Draw(DrawingContext DrawingContext, Point Start, Point End, Pen Pen)
+        {
+            Prepare(ref Start, ref End, out var w, out var h);
+            
+            var r = new Rect(Start, new Size(w, h));
 
             DrawingContext.DrawRectangle(null, Pen, r);
         }

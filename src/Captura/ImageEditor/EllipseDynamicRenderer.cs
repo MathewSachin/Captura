@@ -23,6 +23,15 @@ namespace Captura
             base.OnStylusDown(RawStylusInput);
         }
 
+        public static void Draw(DrawingContext DrawingContext, Point Start, Point End, Pen Pen)
+        {
+            RectangleDynamicRenderer.Prepare(ref Start, ref End, out var w, out var h);
+
+            var center = new Point(Start.X + w / 2, Start.Y + h / 2);
+
+            DrawingContext.DrawEllipse(null, Pen, center, w / 2, h / 2);
+        }
+
         protected override void OnDraw(DrawingContext DrawingContext, StylusPointCollection StylusPoints, Geometry Geometry, Brush FillBrush)
         {
             if (!_isManipulating)
@@ -35,35 +44,10 @@ namespace Captura
 
             _isManipulating = false;
 
-            var first = new Point(_firstPoint.X, _firstPoint.Y);
-            var last = StylusPoints.First().ToPoint();
-
-            if (last.X < first.X)
-            {
-                var t = first.X;
-                first.X = last.X;
-                last.X = t;
-            }
-
-            if (last.Y < first.Y)
-            {
-                var t = first.Y;
-                first.Y = last.Y;
-                last.Y = t;
-            }
-
-            var w = last.X - first.X;
-            var h = last.Y - first.Y;
-
-            if (w <= 0)
-                w = 1;
-
-            if (h <= 0)
-                h = 1;
-
-            var center = new Point(first.X + w / 2, first.Y + h / 2);
-
-            DrawingContext.DrawEllipse(null, new Pen(FillBrush, 2), center, w / 2, h / 2);
+            Draw(DrawingContext,
+                _firstPoint,
+                StylusPoints.First().ToPoint(),
+                new Pen(FillBrush, 2));
         }
 
         protected override void OnStylusUp(RawStylusInput RawStylusInput)
