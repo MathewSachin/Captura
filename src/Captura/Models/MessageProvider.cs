@@ -13,7 +13,7 @@ namespace Captura.Models
             {
                 var dialog = new ModernDialog
                 {
-                    Title = LanguageManager.Instance.ErrorOccured,
+                    Title = LanguageManager.Instance.ErrorOccurred,
                     Content = new StackPanel
                     {
                         Children =

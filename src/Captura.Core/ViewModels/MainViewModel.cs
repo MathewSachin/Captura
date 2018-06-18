@@ -644,7 +644,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (VideoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
-                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccured);
+                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
 
                 if (yes)
                     VideoViewModel.SelectedVideoSourceKind = VideoViewModel.AvailableVideoSourceKinds[0];
@@ -745,11 +745,11 @@ namespace Captura.ViewModels
 
             Status.LocalizationKey = Settings.StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
 
-            _recorder.ErrorOccured += E =>
+            _recorder.ErrorOccurred += E =>
             {
                 if (_syncContext != null)
-                    _syncContext.Post(S => OnErrorOccured(E), null);
-                else OnErrorOccured(E);
+                    _syncContext.Post(S => OnErrorOccurred(E), null);
+                else OnErrorOccurred(E);
             };
             
             if (Settings.StartDelay > 0)
@@ -771,12 +771,12 @@ namespace Captura.ViewModels
             return true;
         }
 
-        void OnErrorOccured(Exception E)
+        void OnErrorOccurred(Exception E)
         {
             var cancelled = E is OperationCanceledException;
 
             if (!cancelled)
-                Status.LocalizationKey = nameof(LanguageManager.ErrorOccured);
+                Status.LocalizationKey = nameof(LanguageManager.ErrorOccurred);
                         
             AfterRecording();
 
@@ -876,7 +876,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError($"Error occured when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.\n\n{e}");
+                ServiceProvider.MessageProvider.ShowError($"Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.\n\n{e}");
 
                 return;
             }

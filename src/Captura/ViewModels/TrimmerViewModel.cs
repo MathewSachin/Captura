@@ -283,7 +283,7 @@ namespace Captura
 
                 if (process.ExitCode != 0)
                 {
-                    ModernDialog.ShowMessage($"FFMpeg Output:\n{output}", "An Error Occured", MessageBoxButton.OK, _window);
+                    ModernDialog.ShowMessage($"FFMpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
                 }
 
                 OpenCommand.RaiseCanExecuteChanged(true);

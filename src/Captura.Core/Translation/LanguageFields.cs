@@ -182,7 +182,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ErrorOccured
+        public string ErrorOccurred
         {
             get => Get();
             set => Set(value);

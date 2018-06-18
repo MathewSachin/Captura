@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Captura.Views"
         xmlns:captura="clr-namespace:Captura"
         mc:Ignorable="d"
-        Title="Exception Occured"
+        Title="Exception Occurred"
         Height="500"
         Width="700">
     <Window.DataContext>
@@ -30,7 +30,7 @@
                   Fill="LightPink"/>
 
             <Label>
-                <TextBlock Text="An unhandled exception occured. Here are the details."
+                <TextBlock Text="An unhandled exception occurred. Here are the details."
                            TextWrapping="Wrap"/>
             </Label>
         </DockPanel>

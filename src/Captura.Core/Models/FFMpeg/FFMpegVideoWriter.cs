@@ -95,7 +95,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occured with FFMpeg");
+                throw new Exception("An Error Occurred with FFMpeg");
             }
 
             if (_firstAudio)
@@ -118,7 +118,7 @@ namespace Captura.Models
             if (_ffmpegProcess.HasExited)
             {
                 Frame.Dispose();
-                throw new Exception($"An Error Occured with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
+                throw new Exception($"An Error Occurred with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
             
             if (_firstFrame)

@@ -48,7 +48,7 @@ namespace Captura.Tests.Views
             process?.WaitForExit();
 
             if (process == null || process.ExitCode != 0)
-                Assert.Fail($"Error occured when taking ScreenShot, hWnd: {Window}, FileName: {FileName}, ExitCode: {process?.ExitCode}");
+                Assert.Fail($"Error occurred when taking ScreenShot, hWnd: {Window}, FileName: {FileName}, ExitCode: {process?.ExitCode}");
 
             Assert.IsTrue(File.Exists(FileName), $"ScreenShot was not saved: {FileName}");
         }

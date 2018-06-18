@@ -47,14 +47,14 @@ namespace Screna
             _continueCapturing.Set();
         }
 
-        void Dispose(bool ErrorOccured)
+        void Dispose(bool ErrorOccurred)
         {
             // Resume if Paused
             _continueCapturing.Set();
             
             _stopCapturing.Set();
 
-            if (!ErrorOccured)
+            if (!ErrorOccurred)
                 _recordTask.Wait();
 
             _continueCapturing.Dispose();
@@ -111,7 +111,7 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccured?.Invoke(e);
+                ErrorOccurred?.Invoke(e);
 
                 Dispose(true);
             }
@@ -120,6 +120,6 @@ namespace Screna
         /// <summary>
         /// Fired when an Error occurs.
         /// </summary>
-        public event Action<Exception> ErrorOccured;
+        public event Action<Exception> ErrorOccurred;
     }
 }

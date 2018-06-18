@@ -89,7 +89,7 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccured?.Invoke(e);
+                ErrorOccurred?.Invoke(e);
 
                 Dispose(true, false);
             }
@@ -164,7 +164,7 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccured?.Invoke(e);
+                ErrorOccurred?.Invoke(e);
 
                 Dispose(false, true);
             }
@@ -220,7 +220,7 @@ namespace Screna
         /// <summary>
         /// Fired when an error occurs
         /// </summary>
-        public event Action<Exception> ErrorOccured;
+        public event Action<Exception> ErrorOccurred;
 
         void ThrowIfDisposed()
         {

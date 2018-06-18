@@ -20,6 +20,6 @@ namespace Screna
         /// <summary>
         /// Fired when an error occurs.
         /// </summary>
-        event Action<Exception> ErrorOccured;
+        event Action<Exception> ErrorOccurred;
     }
 }

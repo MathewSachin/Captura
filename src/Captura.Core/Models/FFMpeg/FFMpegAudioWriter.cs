@@ -34,7 +34,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occured with FFMpeg");
+                throw new Exception("An Error Occurred with FFMpeg");
             }
 
             _ffmpegIn.Write(Data, Offset, Count);
