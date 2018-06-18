@@ -41,12 +41,13 @@ namespace Captura.Models
 
             switch (response)
             {
-                case string link:
-                    Recents.Add(link, RecentItemType.Link, false);
+                case ImgurUploadResponse uploadResponse:
+                    var recentItem = Recents.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
+                    recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
 
                     // Copy path to clipboard only when clipboard writer is off
                     if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
-                        link.WriteToClipboard();
+                        uploadResponse.Data.Link.WriteToClipboard();
                     break;
 
                 case Exception e:
@@ -64,12 +65,60 @@ namespace Captura.Models
             }
         }
 
-        // Returns Link on success, Exception on failure
+        public async Task DeleteUploadedFile(string DeleteHash)
+        {
+            var request = WebRequest.Create($"https://api.imgur.com/3/image/{DeleteHash}");
+
+            request.Proxy = _settings.Proxy.GetWebProxy();
+            request.Headers.Add("Authorization", await GetAuthorizationHeader());
+            request.Method = "DELETE";
+
+            var stream = (await request.GetResponseAsync()).GetResponseStream();
+
+            if (stream != null)
+            {
+                var reader = new StreamReader(stream);
+
+                var text = await reader.ReadToEndAsync();
+
+                var res = JsonConvert.DeserializeObject<ImgurResponse>(text);
+
+                if (res.Success)
+                    return;
+            }
+
+            throw new Exception();
+        }
+
+        async Task<string> GetAuthorizationHeader()
+        {
+            if (_settings.Imgur.Anonymous)
+            {
+                return $"Client-ID {ApiKeys.ImgurClientId}";
+            }
+
+            if (string.IsNullOrWhiteSpace(_settings.Imgur.AccessToken))
+            {
+                throw new Exception("Not logged in to Imgur");
+            }
+
+            if (_settings.Imgur.IsExpired())
+            {
+                if (!await RefreshToken())
+                {
+                    throw new Exception("Failed to Refresh Imgur token");
+                }
+            }
+
+            return $"Bearer {_settings.Imgur.AccessToken}";
+        }
+
+        // Returns ImgurUploadResponse on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
             var progressItem = _systemTray.ShowProgress();
             progressItem.PrimaryText = _loc.ImgurUploading;
-
+            
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
                 w.UploadProgressChanged += (S, E) =>
@@ -77,26 +126,13 @@ namespace Captura.Models
                     progressItem.Progress = E.ProgressPercentage;
                 };
 
-                if (_settings.Imgur.Anonymous)
+                try
                 {
-                    w.Headers.Add("Authorization", $"Client-ID {ApiKeys.ImgurClientId}");
+                    w.Headers.Add("Authorization", await GetAuthorizationHeader());
                 }
-                else
+                catch (Exception e)
                 {
-                    if (string.IsNullOrWhiteSpace(_settings.Imgur.AccessToken))
-                    {
-                        return new Exception("Not logged in to Imgur");
-                    }
-
-                    if (_settings.Imgur.IsExpired())
-                    {
-                        if (!await RefreshToken())
-                        {
-                            return new Exception("Failed to Refresh Imgur token");
-                        }
-                    }
-
-                    w.Headers.Add("Authorization", $"Bearer {_settings.Imgur.AccessToken}");
+                    return e;
                 }
 
                 NameValueCollection values;
@@ -141,7 +177,7 @@ namespace Captura.Models
 
                 progressItem.RegisterClick(() => Process.Start(link));
 
-                return link;
+                return uploadResponse;
             }
         }
 

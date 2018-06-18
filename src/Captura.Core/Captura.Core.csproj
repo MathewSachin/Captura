@@ -74,6 +74,7 @@
     <Compile Include="Models\FFMpeg\FFMpegPostProcessingWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
+    <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
     <Compile Include="Models\VideoWriterItems\FFMpegPostProcessingItem.cs" />
     <Compile Include="Services\ITrayProgress.cs" />

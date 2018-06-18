@@ -8,10 +8,13 @@ namespace Captura.Models
 
         public RecentItemType ItemType { get; set; }
 
-        public RecentItemModel(string FilePath, RecentItemType ItemType)
+        public string DeleteHash { get; set; }
+
+        public RecentItemModel(string FilePath, RecentItemType ItemType, string DeleteHash)
         {
             this.FilePath = FilePath;
             this.ItemType = ItemType;
+            this.DeleteHash = DeleteHash;
         }
 
         // Default constructor required by Settings

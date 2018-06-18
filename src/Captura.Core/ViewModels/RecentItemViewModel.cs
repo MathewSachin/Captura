@@ -38,22 +38,29 @@ namespace Captura.ViewModels
                 FilePath.WriteToClipboard();
             }, !IsSaving);
 
-            DeleteCommand = new DelegateCommand(() =>
+            DeleteCommand = new DelegateCommand(async () =>
             {
                 if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FilePath}?", "Confirm Deletion"))
                     return;
 
                 try
                 {
-                    File.Delete(FilePath);
-
-                    // Remove from List
-                    OnRemove?.Invoke();
+                    if (ItemType == RecentItemType.Link && !string.IsNullOrWhiteSpace(DeleteHash))
+                    {
+                        await ServiceProvider.Get<ImgurWriter>().DeleteUploadedFile(DeleteHash);
+                    }
+                    else File.Delete(FilePath);
                 }
                 catch (Exception e)
                 {
-                    ServiceProvider.MessageProvider.ShowError(e.ToString(), $"Could not Delete file: {FilePath}");
+                    ServiceProvider.MessageProvider.ShowError(e.ToString(), $"Could not Delete: {FilePath}");
+
+                    return;
                 }
+
+                // Remove from List
+                OnRemove?.Invoke();
+
             }, !IsSaving);
 
             CopyToClipboardCommand = new DelegateCommand(() =>
@@ -100,8 +107,8 @@ namespace Captura.ViewModels
                             ServiceProvider.MessageProvider.ShowError(ex.ToString(), "Upload to Imgur failed");
                             break;
 
-                        case string link:
-                            link.WriteToClipboard();
+                        case ImgurUploadResponse uploadResponse:
+                            uploadResponse.Data.Link.WriteToClipboard();
                             break;
                     }
                 }
@@ -143,6 +150,8 @@ namespace Captura.ViewModels
         public bool IsImage { get; }
 
         public bool IsTrimmable { get; }
+
+        public string DeleteHash { get; set; }
 
         bool _saving;
 

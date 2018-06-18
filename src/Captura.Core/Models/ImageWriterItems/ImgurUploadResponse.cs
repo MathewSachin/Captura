@@ -2,15 +2,9 @@
 
 namespace Captura.Models
 {
-    public class ImgurUploadResponse
+    public class ImgurUploadResponse : ImgurResponse
     {
         [JsonProperty("data")]
         public ImgurData Data { get; set; }
-
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-
-        [JsonProperty("status")]
-        public int Status { get; set; }
     }
 }
