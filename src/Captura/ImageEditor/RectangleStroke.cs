@@ -1,20 +1,37 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Captura.ImageEditor
 {
     public class RectangleStroke : Stroke
     {
-        public RectangleStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttributes) : base(StylusPoints, DrawingAttributes) { }
-
-        protected override void DrawCore(DrawingContext DrawingContext, DrawingAttributes DrawingAttribs)
+        static StylusPointCollection Points(StylusPointCollection StylusPointCollection)
         {
-            RectangleDynamicRenderer.Draw(DrawingContext,
-                StylusPoints.First().ToPoint(),
-                StylusPoints.Last().ToPoint(),
-                new Pen(new SolidColorBrush(DrawingAttribs.Color), DrawingAttribs.Width));
+            var start = StylusPointCollection.First().ToPoint();
+            var end = StylusPointCollection.Last().ToPoint();
+
+            RectangleDynamicRenderer.Prepare(ref start, ref end, out var w, out var h);
+
+            return new StylusPointCollection(new []
+            {
+                start,
+                new Point(start.X, end.Y),
+                end,
+                new Point(end.X, start.Y),
+                start
+            });
         }
+
+        static DrawingAttributes ModifyAttribs(DrawingAttributes DrawingAttributes)
+        {
+            DrawingAttributes.FitToCurve = false;
+
+            return DrawingAttributes;
+        }
+
+        public RectangleStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttributes)
+            : base(Points(StylusPoints), ModifyAttribs(DrawingAttributes)) { }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Captura
 {
@@ -18,10 +17,5 @@ namespace Captura
         }
 
         public LineStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttributes) : base(Points(StylusPoints), DrawingAttributes) { }
-
-        protected override void DrawCore(DrawingContext DrawingContext, DrawingAttributes DrawingAttribs)
-        {
-            base.DrawCore(DrawingContext, DrawingAttribs);
-        }
     }
 }
