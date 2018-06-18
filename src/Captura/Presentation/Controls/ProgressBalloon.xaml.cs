@@ -32,8 +32,6 @@ namespace Captura
                     return;
 
                 vm.OnClick.Invoke();
-
-                OnClose();
             }
         }
     }

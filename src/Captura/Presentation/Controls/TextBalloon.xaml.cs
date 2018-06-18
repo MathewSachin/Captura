@@ -29,8 +29,6 @@ namespace Captura
         void TextBlock_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             _onClick?.Invoke();
-
-            OnClose();
         }
     }
 }

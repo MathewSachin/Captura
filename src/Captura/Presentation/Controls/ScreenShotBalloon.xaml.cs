@@ -39,8 +39,6 @@ namespace Captura
         void Image_MouseUp(object Sender, MouseButtonEventArgs E)
         {
             ServiceProvider.LaunchFile(new ProcessStartInfo(_filePath));
-
-            OnClose();
         }
     }
 }
