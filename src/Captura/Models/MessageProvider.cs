@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Captura.Views;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace Captura.Models
@@ -72,6 +74,14 @@ namespace Captura.Models
                 dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton, dialog.CancelButton };
 
                 dialog.ShowDialog();
+            });
+        }
+
+        public void ShowException(Exception Exception, string Message)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                new ExceptionWindow(Exception, Message).ShowDialog();
             });
         }
 

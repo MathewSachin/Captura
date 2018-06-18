@@ -653,7 +653,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
+                ServiceProvider.MessageProvider.ShowException(e, e.Message);
 
                 return false;
             }
@@ -694,7 +694,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
+                ServiceProvider.MessageProvider.ShowException(e, e.Message);
 
                 imgProvider?.Dispose();
 
@@ -709,7 +709,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError(e.ToString(), e.Message);
+                ServiceProvider.MessageProvider.ShowException(e, e.Message);
 
                 imgProvider?.Dispose();
                 audioProvider?.Dispose();
@@ -781,7 +781,7 @@ namespace Captura.ViewModels
             AfterRecording();
 
             if (!cancelled)
-                ServiceProvider.MessageProvider.ShowError(E.ToString(), E.Message);
+                ServiceProvider.MessageProvider.ShowException(E, E.Message);
         }
 
         void AfterRecording()
@@ -876,7 +876,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowError($"Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.\n\n{e}");
+                ServiceProvider.MessageProvider.ShowException(e, "Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.");
 
                 return;
             }

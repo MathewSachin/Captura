@@ -5,13 +5,13 @@ namespace Captura.Views
 {
     public partial class ExceptionWindow
     {
-        public ExceptionWindow(Exception Exception)
+        public ExceptionWindow(Exception Exception, string Message = null)
         {
             InitializeComponent();
 
             if (DataContext is ExceptionViewModel vm)
             {
-                vm.Init(Exception);
+                vm.Init(Exception, Message);
             }
         }
 

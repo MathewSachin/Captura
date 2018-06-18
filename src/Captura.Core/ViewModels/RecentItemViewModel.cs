@@ -53,7 +53,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception e)
                 {
-                    ServiceProvider.MessageProvider.ShowError(e.ToString(), $"Could not Delete: {FilePath}");
+                    ServiceProvider.MessageProvider.ShowException(e, $"Could not Delete: {FilePath}");
 
                     return;
                 }
@@ -80,7 +80,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception e)
                 {
-                    ServiceProvider.MessageProvider.ShowError(e.ToString(), "Copy to Clipboard failed");
+                    ServiceProvider.MessageProvider.ShowException(e, "Copy to Clipboard failed");
                 }
             });
 
@@ -104,7 +104,7 @@ namespace Captura.ViewModels
                     switch (response)
                     {
                         case Exception ex:
-                            ServiceProvider.MessageProvider.ShowError(ex.ToString(), "Upload to Imgur failed");
+                            ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
                             break;
 
                         case ImgurUploadResponse uploadResponse:
@@ -114,7 +114,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception e)
                 {
-                    ServiceProvider.MessageProvider.ShowError(e.ToString(), "Upload to Imgur failed");
+                    ServiceProvider.MessageProvider.ShowException(e, "Upload to Imgur failed");
                 }
             });
         }

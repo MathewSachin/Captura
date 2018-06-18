@@ -46,7 +46,7 @@ namespace Captura.Models
             }
             catch (Exception e)
             {
-                _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{e}");
+                _messageProvider.ShowException(e, LanguageManager.Instance.NotSaved);
             }
 
             return Task.CompletedTask;

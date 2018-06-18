@@ -1,4 +1,6 @@
-﻿namespace Captura.Models
+﻿using System;
+
+namespace Captura.Models
 {
     public interface IMessageProvider
     {
@@ -7,5 +9,7 @@
         bool ShowYesNo(string Message, string Title);
 
         void ShowFFmpegUnavailable();
+
+        void ShowException(Exception Exception, string Message);
     }
 }

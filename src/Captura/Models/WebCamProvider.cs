@@ -52,7 +52,7 @@ namespace Captura.Models
                     }
                     catch (Exception e)
                     {
-                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\n\n\n{e}");
+                        ServiceProvider.MessageProvider.ShowException(e, "Could not Start Webcam");
                     }
                 }
 

@@ -17,6 +17,11 @@ namespace Captura.Models
             ShowError("FFmpeg is not available.\nYou can install ffmpeg by calling: captura ffmpeg --install [path]");
         }
 
+        public void ShowException(Exception Exception, string Message)
+        {
+            ShowError(Exception.ToString());
+        }
+
         public bool ShowYesNo(string Message, string Title)
         {
             Console.Write($"{Message} (Y/N):");

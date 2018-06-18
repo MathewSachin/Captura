@@ -17,8 +17,24 @@ namespace Captura
             });
         }
 
-        public void Init(Exception Exception)
+        string _message = "An unhandled exception occurred. Here are the details.";
+
+        public string Message
         {
+            get => _message;
+            set
+            {
+                _message = value;
+                
+                OnPropertyChanged();
+            }
+        }
+
+        public void Init(Exception Exception, string Msg)
+        {
+            if (Msg != null)
+                Message = Msg;
+
             while (Exception != null)
             {
                 Exceptions.Add(Exception);

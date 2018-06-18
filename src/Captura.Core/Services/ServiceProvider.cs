@@ -52,7 +52,7 @@ namespace Captura
             }
             catch (Exception e)
             {
-                MessageProvider.ShowError($"Could not open file: {StartInfo.FileName}\n\n\n{e}");
+                MessageProvider.ShowException(e, $"Could not open file: {StartInfo.FileName}");
             }
         }
 
