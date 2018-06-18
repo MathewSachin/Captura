@@ -85,7 +85,7 @@ namespace Captura.ViewModels
 
             SelectOutputFolderCommand = new DelegateCommand(SelectOutputFolder);
 
-            ResetFFMpegFolderCommand = new DelegateCommand(() => Settings.FFMpeg.FolderPath = "");
+            ResetFFmpegFolderCommand = new DelegateCommand(() => Settings.FFmpeg.FolderPath = "");
             #endregion
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
@@ -613,13 +613,13 @@ namespace Captura.ViewModels
         
         public bool StartRecording(string FileName = null)
         {
-            if (VideoViewModel.SelectedVideoWriterKind is FFMpegWriterProvider ||
+            if (VideoViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 VideoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
-                (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider && VideoViewModel.SelectedVideoSource is FFMpegAudioItem))
+                (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider && VideoViewModel.SelectedVideoSource is FFmpegAudioItem))
             {
-                if (!FFMpegService.FFMpegExists)
+                if (!FFmpegService.FFmpegExists)
                 {
-                    ServiceProvider.MessageProvider.ShowFFMpegUnavailable();
+                    ServiceProvider.MessageProvider.ShowFFmpegUnavailable();
 
                     return false;
                 }

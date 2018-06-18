@@ -12,9 +12,9 @@ namespace Captura.Models
             Console.Error.WriteLine(Message);
         }
 
-        public void ShowFFMpegUnavailable()
+        public void ShowFFmpegUnavailable()
         {
-            ShowError("FFMpeg is not available.\nYou can install ffmpeg by calling: captura ffmpeg --install [path]");
+            ShowError("FFmpeg is not available.\nYou can install ffmpeg by calling: captura ffmpeg --install [path]");
         }
 
         public bool ShowYesNo(string Message, string Title)

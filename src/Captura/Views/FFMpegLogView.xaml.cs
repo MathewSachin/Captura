@@ -2,9 +2,9 @@
 
 namespace Captura
 {
-    public partial class FFMpegLogView
+    public partial class FFmpegLogView
     {
-        FFMpegLogView()
+        FFmpegLogView()
         {
             InitializeComponent();
 
@@ -16,7 +16,7 @@ namespace Captura
             };
         }
 
-        public static FFMpegLogView Instance { get; } = new FFMpegLogView();
+        public static FFmpegLogView Instance { get; } = new FFmpegLogView();
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
     }

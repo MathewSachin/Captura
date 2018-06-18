@@ -4,13 +4,13 @@ using Captura.ViewModels;
 
 namespace Captura.Views
 {
-    public partial class FFMpegDownloader
+    public partial class FFmpegDownloader
     {
-        public FFMpegDownloader()
+        public FFmpegDownloader()
         {
             DataContextChanged += (s, e) =>
             {
-                if (DataContext is FFMpegDownloadViewModel vm)
+                if (DataContext is FFmpegDownloadViewModel vm)
                 {
                     vm.CloseWindowAction += Close;
 

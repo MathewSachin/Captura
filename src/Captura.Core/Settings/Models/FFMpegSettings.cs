@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    public class FFMpegSettings : PropertyStore
+    public class FFmpegSettings : PropertyStore
     {
         public string FolderPath
         {
@@ -22,7 +22,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public ObservableCollection<CustomFFMpegCodec> CustomCodecs { get; } = new ObservableCollection<CustomFFMpegCodec>();
+        public ObservableCollection<CustomFFmpegCodec> CustomCodecs { get; } = new ObservableCollection<CustomFFmpegCodec>();
 
         public string CustomStreamingUrl
         {

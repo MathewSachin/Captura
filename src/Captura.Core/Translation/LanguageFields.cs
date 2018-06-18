@@ -200,13 +200,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string FFMpegFolder
+        public string FFmpegFolder
         {
             get => Get();
             set => Set(value);
         }
 
-        public string FFMpegLog
+        public string FFmpegLog
         {
             get => Get();
             set => Set(value);
@@ -662,7 +662,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string SelectFFMpegFolder
+        public string SelectFFmpegFolder
         {
             get => Get();
             set => Set(value);

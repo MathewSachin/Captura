@@ -229,9 +229,9 @@ namespace Captura
 
         async void Trim()
         {
-            if (!FFMpegService.FFMpegExists)
+            if (!FFmpegService.FFmpegExists)
             {
-                ModernDialog.ShowMessage("FFMpeg not Found", "FFMpeg not Found", MessageBoxButton.OK, _window);
+                ModernDialog.ShowMessage("FFmpeg not Found", "FFmpeg not Found", MessageBoxButton.OK, _window);
 
                 return;
             }
@@ -258,7 +258,7 @@ namespace Captura
                 {
                     StartInfo =
                     {
-                        FileName = FFMpegService.FFMpegExePath,
+                        FileName = FFmpegService.FFmpegExePath,
                         Arguments = command,
                         UseShellExecute = false,
                         CreateNoWindow = true,
@@ -283,7 +283,7 @@ namespace Captura
 
                 if (process.ExitCode != 0)
                 {
-                    ModernDialog.ShowMessage($"FFMpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
+                    ModernDialog.ShowMessage($"FFmpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
                 }
 
                 OpenCommand.RaiseCanExecuteChanged(true);

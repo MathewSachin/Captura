@@ -3,24 +3,24 @@ using System.Threading;
 
 namespace Captura.Models
 {
-    public class FFMpegLog : NotifyPropertyChanged
+    public class FFmpegLog : NotifyPropertyChanged
     {
         readonly SynchronizationContext _syncContext;
 
-        FFMpegLog()
+        FFmpegLog()
         {
             _syncContext = SynchronizationContext.Current;
 
-            LogItems = new ReadOnlyObservableCollection<FFMpegLogItem>(_logItems);
+            LogItems = new ReadOnlyObservableCollection<FFmpegLogItem>(_logItems);
         }
 
-        readonly ObservableCollection<FFMpegLogItem> _logItems = new ObservableCollection<FFMpegLogItem>();
+        readonly ObservableCollection<FFmpegLogItem> _logItems = new ObservableCollection<FFmpegLogItem>();
 
-        public ReadOnlyObservableCollection<FFMpegLogItem> LogItems { get; }
+        public ReadOnlyObservableCollection<FFmpegLogItem> LogItems { get; }
 
-        public FFMpegLogItem CreateNew(string Name)
+        public FFmpegLogItem CreateNew(string Name)
         {
-            var item = new FFMpegLogItem(Name);
+            var item = new FFmpegLogItem(Name);
 
             item.RemoveRequested += () => _logItems.Remove(item);
 
@@ -31,9 +31,9 @@ namespace Captura.Models
             return item;
         }
 
-        FFMpegLogItem _selectedLogItem;
+        FFmpegLogItem _selectedLogItem;
 
-        public FFMpegLogItem SelectedLogItem
+        public FFmpegLogItem SelectedLogItem
         {
             get => _selectedLogItem;
             set
@@ -44,6 +44,6 @@ namespace Captura.Models
             }
         }
 
-        public static FFMpegLog Instance { get; } = new FFMpegLog();
+        public static FFmpegLog Instance { get; } = new FFmpegLog();
     }
 }

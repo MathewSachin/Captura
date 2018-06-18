@@ -1,10 +1,10 @@
 ﻿namespace Captura.Models
 {
-    public class FFMpegVideoWriterArgs : VideoWriterArgs
+    public class FFmpegVideoWriterArgs : VideoWriterArgs
     {
-        public static FFMpegVideoWriterArgs FromVideoWriterArgs(VideoWriterArgs Args, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
+        public static FFmpegVideoWriterArgs FromVideoWriterArgs(VideoWriterArgs Args, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider)
         {
-            return new FFMpegVideoWriterArgs
+            return new FFmpegVideoWriterArgs
             {
                 FileName = Args.FileName,
                 ImageProvider = Args.ImageProvider,
@@ -17,8 +17,8 @@
             };
         }
 
-        public FFMpegVideoArgsProvider VideoArgsProvider { get; set; }
-        public FFMpegAudioArgsProvider AudioArgsProvider { get; set; }
+        public FFmpegVideoArgsProvider VideoArgsProvider { get; set; }
+        public FFmpegAudioArgsProvider AudioArgsProvider { get; set; }
         public int Frequency { get; set; } = 44100;
         public int Channels { get; set; } = 2;
         public string OutputArgs { get; set; } = "";

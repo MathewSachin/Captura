@@ -4,13 +4,13 @@ using Screna;
 namespace Captura.Models
 {
     // ReSharper disable once InconsistentNaming
-    public class FFMpegPostProcessingItem : IVideoWriterItem
+    public class FFmpegPostProcessingItem : IVideoWriterItem
     {
         readonly string _name;
-        readonly FFMpegVideoArgsProvider _videoArgsProvider;
-        readonly FFMpegAudioArgsProvider _audioArgsProvider;
+        readonly FFmpegVideoArgsProvider _videoArgsProvider;
+        readonly FFmpegAudioArgsProvider _audioArgsProvider;
 
-        public FFMpegPostProcessingItem(string Name, string Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
+        public FFmpegPostProcessingItem(string Name, string Extension, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider)
         {
             _name = Name;
             _videoArgsProvider = VideoArgsProvider;
@@ -22,28 +22,28 @@ namespace Captura.Models
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new FFMpegPostProcessingWriter(FFMpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider));
+            return new FFmpegPostProcessingWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider));
         }
 
         public override string ToString() => _name + " (Post Processing)";
 
-        public static IEnumerable<FFMpegPostProcessingItem> Items { get; } = new[]
+        public static IEnumerable<FFmpegPostProcessingItem> Items { get; } = new[]
         {
-            new FFMpegPostProcessingItem("WebM (Vp8 | Opus)", ".webm", VideoQuality =>
+            new FFmpegPostProcessingItem("WebM (Vp8 | Opus)", ".webm", VideoQuality =>
             {
                 // quality: 63 (lowest) to 4 (highest)
                 var crf = 63 - ((VideoQuality - 1) * 59) / 99;
 
                 return $"-vcodec libvpx -crf {crf} -b:v 1M";
-            }, FFMpegAudioItem.Opus),
+            }, FFmpegAudioItem.Opus),
 
-            new FFMpegPostProcessingItem("WebM (Vp9 | Opus)", ".webm", VideoQuality =>
+            new FFmpegPostProcessingItem("WebM (Vp9 | Opus)", ".webm", VideoQuality =>
             {
                 // quality: 63 (lowest) to 0 (highest)
                 var crf = (63 * (100 - VideoQuality)) / 99;
 
                 return $"-vcodec libvpx-vp9 -crf {crf} -b:v 0";
-            }, FFMpegAudioItem.Opus)
+            }, FFmpegAudioItem.Opus)
         };
     }
 }

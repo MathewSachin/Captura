@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
-    <Compile Include="CmdOptions\FFMpegCmdOptions.cs" />
+    <Compile Include="CmdOptions\FFmpegCmdOptions.cs" />
     <Compile Include="CmdOptions\ListCmdOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

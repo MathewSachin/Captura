@@ -18,7 +18,7 @@ namespace Captura
             Bind<ProxySettingsViewModel>().ToSelf().InSingletonScope();
             Bind<LicensesViewModel>().ToSelf().InSingletonScope();
             Bind<CrashLogsViewModel>().ToSelf().InSingletonScope();
-            Bind<FFMpegCodecsViewModel>().ToSelf().InSingletonScope();
+            Bind<FFmpegCodecsViewModel>().ToSelf().InSingletonScope();
 
             Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
             Bind<CustomImageOverlaysViewModel>().ToSelf().InSingletonScope();
@@ -42,7 +42,7 @@ namespace Captura
             Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<ImgurWriter>()).InSingletonScope();
 
             // Video Writer Providers
-            Bind<IVideoWriterProvider>().To<FFMpegWriterProvider>().InSingletonScope();
+            Bind<IVideoWriterProvider>().To<FFmpegWriterProvider>().InSingletonScope();
             Bind<IVideoWriterProvider>().To<GifWriterProvider>().InSingletonScope();
             Bind<IVideoWriterProvider>().To<StreamingWriterProvider>().InSingletonScope();
 

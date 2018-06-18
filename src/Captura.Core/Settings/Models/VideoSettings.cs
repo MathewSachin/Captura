@@ -4,7 +4,7 @@
     {
         public string WriterKind
         {
-            get => Get("FFMpeg");
+            get => Get("FFmpeg");
             set => Set(value);
         }
         

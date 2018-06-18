@@ -1,11 +1,11 @@
-﻿<Window x:Class="Captura.FFMpegLogView"
+﻿<Window x:Class="Captura.FFmpegLogView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
-        Title="{local:Loc FFMpegLog}"
+        Title="{local:Loc FFmpegLog}"
         Height="600"
         Width="600"
-        DataContext="{Binding MainViewModel.FFMpegLog, Source={StaticResource ServiceLocator}}"
+        DataContext="{Binding MainViewModel.FFmpegLog, Source={StaticResource ServiceLocator}}"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
@@ -20,7 +20,7 @@
                                 IconData="{StaticResource Icon_Close}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
-            <Label Content="{local:Loc FFMpegLog}"
+            <Label Content="{local:Loc FFmpegLog}"
                    Margin="10,0"/>
         </DockPanel>
 

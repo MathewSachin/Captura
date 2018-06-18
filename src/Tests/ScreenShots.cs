@@ -65,7 +65,7 @@ namespace Captura.Tests.Views
             var tabs = new[]
             {
                 LanguageManager.Instance.Main,
-                LanguageManager.Instance.Configure, LanguageManager.Instance.Hotkeys, "Overlays", "FFMpeg", LanguageManager.Instance.Proxy, LanguageManager.Instance.Extras,
+                LanguageManager.Instance.Configure, LanguageManager.Instance.Hotkeys, "Overlays", "FFmpeg", LanguageManager.Instance.Proxy, LanguageManager.Instance.Extras,
                 LanguageManager.Instance.Recent,
                 LanguageManager.Instance.About
             };

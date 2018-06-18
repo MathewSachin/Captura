@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 namespace Captura.Models
 {
     /// <summary>
-    /// Encode Video using FFMpeg.exe
+    /// Encode Video using FFmpeg.exe
     /// </summary>
-    public class FFMpegWriter : IVideoFileWriter
+    public class FFmpegWriter : IVideoFileWriter
     {
         readonly NamedPipeServerStream _audioPipe;
 
@@ -24,9 +24,9 @@ namespace Captura.Models
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
         /// <summary>
-        /// Creates a new instance of <see cref="FFMpegWriter"/>.
+        /// Creates a new instance of <see cref="FFmpegWriter"/>.
         /// </summary>
-        public FFMpegWriter(FFMpegVideoWriterArgs Args)
+        public FFmpegWriter(FFmpegVideoWriterArgs Args)
         {
             var settings = ServiceProvider.Get<Settings>();
 
@@ -38,10 +38,10 @@ namespace Captura.Models
             var videoInArgs = $"-framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
 
-            if (settings.FFMpeg.Resize)
+            if (settings.FFmpeg.Resize)
             {
-                var width = settings.FFMpeg.ResizeWidth;
-                var height = settings.FFMpeg.ResizeHeight;
+                var width = settings.FFmpeg.ResizeWidth;
+                var height = settings.FFmpeg.ResizeHeight;
 
                 if (width % 2 == 1)
                     ++width;
@@ -64,7 +64,7 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
 
-            _ffmpegProcess = FFMpegService.StartFFMpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"", Args.FileName);
+            _ffmpegProcess = FFmpegService.StartFFmpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"", Args.FileName);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occurred with FFMpeg");
+                throw new Exception("An Error Occurred with FFmpeg");
             }
 
             if (_firstAudio)
@@ -118,7 +118,7 @@ namespace Captura.Models
             if (_ffmpegProcess.HasExited)
             {
                 Frame.Dispose();
-                throw new Exception($"An Error Occurred with FFMpeg, Exit Code: {_ffmpegProcess.ExitCode}");
+                throw new Exception($"An Error Occurred with FFmpeg, Exit Code: {_ffmpegProcess.ExitCode}");
             }
             
             if (_firstFrame)

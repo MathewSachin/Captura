@@ -10,7 +10,7 @@ namespace Captura.Models
         {
             yield return WaveItem.Instance;
 
-            foreach (var item in FFMpegAudioItem.Items)
+            foreach (var item in FFmpegAudioItem.Items)
             {
                 yield return item;
             }

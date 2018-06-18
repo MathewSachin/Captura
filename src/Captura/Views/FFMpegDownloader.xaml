@@ -1,15 +1,15 @@
-﻿<Window x:Class="Captura.Views.FFMpegDownloader"
+﻿<Window x:Class="Captura.Views.FFmpegDownloader"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         xmlns:local="clr-namespace:Captura"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-        Title="FFMpeg Downloader"
+        Title="FFmpeg Downloader"
         Height="400"
         Width="600"
         ResizeMode="NoResize"
         Background="{DynamicResource WindowBackground}"
-        DataContext="{Binding FFMpegDownloadViewModel, Source={StaticResource ServiceLocator}}">
+        DataContext="{Binding FFmpegDownloadViewModel, Source={StaticResource ServiceLocator}}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
                       UseAeroCaptionButtons="False"
@@ -26,7 +26,7 @@
                                 IconData="{StaticResource Icon_Close}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
-            <Label Content="FFMpeg Downloader"
+            <Label Content="FFmpeg Downloader"
                    Margin="10,0"/>
         </DockPanel>
         
@@ -49,8 +49,8 @@
                    Margin="0,5"
                    TextAlignment="Center"
                    Style="{StaticResource TextColor}">
-            FFMpeg adds support for more output formats to Captura.<LineBreak/>
-            Latest build of FFMpeg is downloaded. This can also be used to update FFMpeg.<LineBreak/>
+            FFmpeg adds support for more output formats to Captura.<LineBreak/>
+            Latest build of FFmpeg is downloaded. This can also be used to update FFmpeg.<LineBreak/>
             The Download size is nearly 30 MB.
         </TextBlock>
 

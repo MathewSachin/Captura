@@ -6,6 +6,6 @@
 
         bool ShowYesNo(string Message, string Title);
 
-        void ShowFFMpegUnavailable();
+        void ShowFFmpegUnavailable();
     }
 }

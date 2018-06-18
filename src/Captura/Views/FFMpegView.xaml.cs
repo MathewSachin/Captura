@@ -2,21 +2,21 @@
 
 namespace Captura
 {
-    public partial class FFMpegView
+    public partial class FFmpegView
     {
-        void OpenFFMpegLog(object Sender, RoutedEventArgs E)
+        void OpenFFmpegLog(object Sender, RoutedEventArgs E)
         {
-            FFMpegLogView.Instance.ShowAndFocus();
+            FFmpegLogView.Instance.ShowAndFocus();
         }
         
         void FFDownload(object Sender, RoutedEventArgs E)
         {
-            FFMpegService.FFMpegDownloader?.Invoke();
+            FFmpegService.FFmpegDownloader?.Invoke();
         }
 
         void ConfigCodecs(object Sender, RoutedEventArgs E)
         {
-            new FFMpegCodecWindow().ShowAndFocus();
+            new FFmpegCodecWindow().ShowAndFocus();
         }
     }
 }

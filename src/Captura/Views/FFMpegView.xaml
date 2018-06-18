@@ -1,4 +1,4 @@
-﻿<Page x:Class="Captura.FFMpegView"
+﻿<Page x:Class="Captura.FFmpegView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
@@ -6,7 +6,7 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Margin="10">
-            <Button Click="OpenFFMpegLog"
+            <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>
                     <Path Data="{StaticResource Icon_History}"
@@ -17,7 +17,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="{local:Loc FFMpegLog}"/>
+                    <TextBlock Text="{local:Loc FFmpegLog}"/>
                 </DockPanel>
             </Button>
 
@@ -33,18 +33,18 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Download FFMpeg"/>
+                    <TextBlock Text="Download FFmpeg"/>
                 </DockPanel>
             </Button>
 
-            <Label Content="{local:Loc FFMpegFolder}"
+            <Label Content="{local:Loc FFmpegFolder}"
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>
 
             <DockPanel Margin="0,5">
                 <Button DockPanel.Dock="Right"
-                        ToolTip="{local:Loc SelectFFMpegFolder}"
-                        Command="{Binding SelectFFMpegFolderCommand}"
+                        ToolTip="{local:Loc SelectFFmpegFolder}"
+                        Command="{Binding SelectFFmpegFolderCommand}"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                     <Path Stretch="UniformToFill"
                           Height="4"
@@ -53,7 +53,7 @@
                 </Button>
                 <Button DockPanel.Dock="Right"
                         ToolTip="{local:Loc Reset}"
-                        Command="{Binding ResetFFMpegFolderCommand}"
+                        Command="{Binding ResetFFmpegFolderCommand}"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                         VerticalContentAlignment="Center">
                     <Path Stretch="UniformToFill"
@@ -70,11 +70,11 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
 
-                <Border ToolTip="{Binding Settings.FFMpeg.FolderPath}">
+                <Border ToolTip="{Binding Settings.FFmpeg.FolderPath}">
                     <xctk:WatermarkTextBox IsReadOnly="True"
                                            IsEnabled="False"
                                            Watermark="Load From PATH or App Directory"
-                                           Text="{Binding Settings.FFMpeg.FolderPath}"/>
+                                           Text="{Binding Settings.FFmpeg.FolderPath}"/>
                 </Border>
             </DockPanel>
 
@@ -91,22 +91,22 @@
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Content="{local:Loc Resize}"
-                          IsChecked="{Binding Settings.FFMpeg.Resize}"
+                          IsChecked="{Binding Settings.FFmpeg.Resize}"
                           Margin="0,0,5,0"/>
 
-                <xctk:IntegerUpDown Value="{Binding Settings.FFMpeg.ResizeWidth}"
+                <xctk:IntegerUpDown Value="{Binding Settings.FFmpeg.ResizeWidth}"
                                     Grid.Column="1"
                                     Minimum="2"
-                                    IsEnabled="{Binding Settings.FFMpeg.Resize}"/>
+                                    IsEnabled="{Binding Settings.FFmpeg.Resize}"/>
 
                 <Label Content="x"
                        Grid.Column="2"
                        Margin="5,0"/>
 
-                <xctk:IntegerUpDown Value="{Binding Settings.FFMpeg.ResizeHeight}"
+                <xctk:IntegerUpDown Value="{Binding Settings.FFmpeg.ResizeHeight}"
                                     Grid.Column="3"
                                     Minimum="2"
-                                    IsEnabled="{Binding Settings.FFMpeg.Resize}"/>
+                                    IsEnabled="{Binding Settings.FFmpeg.Resize}"/>
             </Grid>
 
             <Label Content="Streaming"
@@ -137,7 +137,7 @@
                        Grid.Column="1"/>
                 <TextBox Grid.Column="2"
                          Margin="2"
-                         Text="{Binding Settings.FFMpeg.TwitchKey}"/>
+                         Text="{Binding Settings.FFmpeg.TwitchKey}"/>
 
                 <Path Data="{StaticResource Icon_YouTube}"
                       Grid.Row="1"
@@ -154,7 +154,7 @@
                 <TextBox Grid.Column="2"
                          Grid.Row="1"
                          Margin="2"
-                         Text="{Binding Settings.FFMpeg.YouTubeLiveKey}"/>
+                         Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
 
                 <Path Data="{StaticResource Icon_Web}"
                       Grid.Row="2"
@@ -171,7 +171,7 @@
                 <TextBox Grid.Row="2"
                          Grid.Column="2"
                          Margin="2"
-                         Text="{Binding Settings.FFMpeg.CustomStreamingUrl}"/>
+                         Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
             </Grid>
 
             <Button Margin="0,10"

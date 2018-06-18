@@ -4,12 +4,12 @@ using Screna;
 
 namespace Captura.Models
 {
-    public class StreamingItem : FFMpegItem
+    public class StreamingItem : FFmpegItem
     {
-        readonly FFMpegItem _baseItem;
+        readonly FFmpegItem _baseItem;
         readonly Func<string> _linkFunction;
 
-        StreamingItem(string Name, Func<string> LinkFunction, FFMpegItem BaseItem) : base(Name, () => BaseItem.Extension)
+        StreamingItem(string Name, Func<string> LinkFunction, FFmpegItem BaseItem) : base(Name, () => BaseItem.Extension)
         {
             _baseItem = BaseItem;
             _linkFunction = LinkFunction;
@@ -28,19 +28,19 @@ namespace Captura.Models
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return $"rtmp://live.twitch.tv/app/{settings.FFMpeg.TwitchKey}";
+                return $"rtmp://live.twitch.tv/app/{settings.FFmpeg.TwitchKey}";
             }, x264),
             new StreamingItem("YouTube Live", () =>
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return $"rtmp://a.rtmp.youtube.com/live2/{settings.FFMpeg.YouTubeLiveKey}";
+                return $"rtmp://a.rtmp.youtube.com/live2/{settings.FFmpeg.YouTubeLiveKey}";
             }, x264),
             new StreamingItem("Custom", () =>
             {
                 var settings = ServiceProvider.Get<Settings>();
 
-                return settings.FFMpeg.CustomStreamingUrl;
+                return settings.FFmpeg.CustomStreamingUrl;
             }, x264),
         };
     }

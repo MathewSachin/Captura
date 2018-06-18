@@ -5,18 +5,18 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class FFMpegCodecsViewModel : ViewModelBase
+    public class FFmpegCodecsViewModel : ViewModelBase
     {
-        public FFMpegCodecsViewModel(Settings Settings, LanguageManager LanguageManager)
+        public FFmpegCodecsViewModel(Settings Settings, LanguageManager LanguageManager)
             : base(Settings, LanguageManager)
         {
-            AddCustomCodecCommand = new DelegateCommand(() => Settings.FFMpeg.CustomCodecs.Add(new CustomFFMpegCodec()));
+            AddCustomCodecCommand = new DelegateCommand(() => Settings.FFmpeg.CustomCodecs.Add(new CustomFFmpegCodec()));
 
             RemoveCustomCodecCommand = new DelegateCommand(M =>
             {
-                if (M is CustomFFMpegCodec codec)
+                if (M is CustomFFmpegCodec codec)
                 {
-                    Settings.FFMpeg.CustomCodecs.Remove(codec);
+                    Settings.FFmpeg.CustomCodecs.Remove(codec);
                 }
             });
         }
@@ -25,6 +25,6 @@ namespace Captura.ViewModels
 
         public ICommand RemoveCustomCodecCommand { get; }
 
-        public IEnumerable<string> AudioCodecNames => FFMpegAudioItem.Items.Select(M => M.Name.Split(' ')[0]);
+        public IEnumerable<string> AudioCodecNames => FFmpegAudioItem.Items.Select(M => M.Name.Split(' ')[0]);
     }
 }

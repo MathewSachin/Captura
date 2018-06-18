@@ -34,7 +34,7 @@ namespace Captura
             
             ServiceProvider.LoadModule(new FakesModule());
 
-            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFMpegCmdOptions, ListCmdOptions>(Args)
+            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions>(Args)
                 .WithParsed<ListCmdOptions>(Options => List())
                 .WithParsed<StartCmdOptions>(Options =>
                 {
@@ -76,11 +76,11 @@ namespace Captura
                         Shot(vm, Options);
                     }
                 })
-                .WithParsed<FFMpegCmdOptions>(Options =>
+                .WithParsed<FFmpegCmdOptions>(Options =>
                 {
                     Banner();
 
-                    FFMpeg(Options);
+                    FFmpeg(Options);
                 });
         }
 
@@ -91,7 +91,7 @@ namespace Captura
             var underline = $"\n{new string('-', 30)}";
 
             #region FFmpeg
-            var ffmpegExists = FFMpegService.FFMpegExists;
+            var ffmpegExists = FFmpegService.FFmpegExists;
 
             WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
 
@@ -101,7 +101,7 @@ namespace Captura
             {
                 WriteLine("FFmpeg ENCODERS" + underline);
 
-                var writerProvider = ServiceProvider.Get<FFMpegWriterProvider>();
+                var writerProvider = ServiceProvider.Get<FFmpegWriterProvider>();
 
                 var i = 0;
 
@@ -312,12 +312,12 @@ namespace Captura
 
             var video = ViewModel.VideoViewModel;
 
-            // FFMpeg
-            if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
+            // FFmpeg
+            if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                video.SelectedVideoWriterKind = ServiceProvider.Get<FFMpegWriterProvider>();
+                video.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
                 if (index < video.AvailableVideoSources.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
@@ -354,11 +354,11 @@ namespace Captura
             }
         }
 
-        static async void FFMpeg(FFMpegCmdOptions FFMpegOptions)
+        static async void FFmpeg(FFmpegCmdOptions FFmpegOptions)
         {
-            if (FFMpegOptions.Install != null)
+            if (FFmpegOptions.Install != null)
             {
-                var downloadFolder = FFMpegOptions.Install;
+                var downloadFolder = FFmpegOptions.Install;
 
                 if (!Directory.Exists(downloadFolder))
                 {
@@ -366,9 +366,9 @@ namespace Captura
                     return;
                 }
 
-                var ffMpegDownload = ServiceProvider.Get<FFMpegDownloadViewModel>();
+                var ffMpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
 
-                ffMpegDownload.TargetFolder = FFMpegOptions.Install;
+                ffMpegDownload.TargetFolder = FFmpegOptions.Install;
 
                 await ffMpegDownload.Start();
                 

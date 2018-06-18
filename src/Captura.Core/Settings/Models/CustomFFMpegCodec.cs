@@ -1,6 +1,6 @@
 ﻿namespace Captura
 {
-    public class CustomFFMpegCodec : PropertyStore
+    public class CustomFFmpegCodec : PropertyStore
     {
         public string Name
         {

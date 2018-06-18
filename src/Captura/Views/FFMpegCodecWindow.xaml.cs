@@ -1,8 +1,8 @@
 ﻿namespace Captura
 {
-    public partial class FFMpegCodecWindow
+    public partial class FFmpegCodecWindow
     {
-        public FFMpegCodecWindow()
+        public FFmpegCodecWindow()
         {
             InitializeComponent();
         }

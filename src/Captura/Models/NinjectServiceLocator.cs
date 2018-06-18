@@ -16,13 +16,13 @@ namespace Captura
 
         public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
 
-        public FFMpegDownloadViewModel FFMpegDownloadViewModel => ServiceProvider.Get<FFMpegDownloadViewModel>();
+        public FFmpegDownloadViewModel FFmpegDownloadViewModel => ServiceProvider.Get<FFmpegDownloadViewModel>();
 
         public ProxySettingsViewModel ProxySettingsViewModel => ServiceProvider.Get<ProxySettingsViewModel>();
 
         public LicensesViewModel LicensesViewModel => ServiceProvider.Get<LicensesViewModel>();
         public CrashLogsViewModel CrashLogsViewModel => ServiceProvider.Get<CrashLogsViewModel>();
 
-        public FFMpegCodecsViewModel FfMpegCodecsViewModel => ServiceProvider.Get<FFMpegCodecsViewModel>();
+        public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
     }
 }

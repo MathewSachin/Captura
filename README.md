@@ -36,7 +36,7 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
   - [Dev Builds](#dev-builds)
 - [Build Notes](#build-notes)
 - [System Requirements](#system-requirements)
-- [FFMpeg](#ffmpeg)
+- [FFmpeg](#ffmpeg)
 - Other Links
   - [Changelog](https://mathewsachin.github.io/Captura/changelog)
   - [Continuous Integration](https://mathewsachin.github.io/Captura/ci)
@@ -95,26 +95,26 @@ Dev builds can be unstable and should be used for testing purposes only.
 - 2 GHz CPU (Recommended).
 - 4 GB RAM (Recommended).
 - **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
-- Using the **FFMpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
+- Using the **FFmpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
 - **Desktop Duplication API** is only available on **Windows 8** and above.
 - For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
 
-## FFMpeg
+## FFmpeg
 
-[FFMpeg](http://ffmpeg.org/) is an open-source cross-platform solution to record, convert and stream audio and video.
+[FFmpeg](http://ffmpeg.org/) is an open-source cross-platform solution to record, convert and stream audio and video.
 It adds support for more output formats like **H.264** for Video and **Mp3**, **AAC** etc. when capturing **Only Audio**.
 
-FFMpeg is configured on the **FFMpeg** section in the **Configure** tab.
+FFmpeg is configured on the **FFmpeg** section in the **Configure** tab.
 
 Due to its large size (approx. 30MB), it is not included in the downloads.
-If you already have FFMpeg on your system, you can just set the path to the folder containing it.
+If you already have FFmpeg on your system, you can just set the path to the folder containing it.
 If it is installed globally (available in PATH), you don't have to do anything.
-If you don't have FFMpeg or want to update, use the inbuilt **FFMpeg Downloader**.
-FFMpeg needs to be downloaded only once.
+If you don't have FFmpeg or want to update, use the inbuilt **FFmpeg Downloader**.
+FFmpeg needs to be downloaded only once.
 
-In cases where the **FFMpeg Downloader** fails, please download manually from <https://ffmpeg.zeranoe.com/builds/> and set FFMpeg folder in `Configure | FFMpeg`.
+In cases where the **FFmpeg Downloader** fails, please download manually from <https://ffmpeg.zeranoe.com/builds/> and set FFmpeg folder in `Configure | FFmpeg`.
 
-If you don't want to use FFMpeg, you can switch to `SharpAvi`.
+If you don't want to use FFmpeg, you can switch to `SharpAvi`.
 
 ## License
 

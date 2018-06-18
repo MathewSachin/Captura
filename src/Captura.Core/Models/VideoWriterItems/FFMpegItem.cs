@@ -7,44 +7,44 @@ using Screna;
 
 namespace Captura.Models
 {
-    public class FFMpegItem : IVideoWriterItem
+    public class FFmpegItem : IVideoWriterItem
     {
         // MP4 (x264, AAC)
-        public static FFMpegItem x264 { get; } = new FFMpegItem("Mp4 (x264 | AAC)", () => ".mp4", VideoQuality =>
+        public static FFmpegItem x264 { get; } = new FFmpegItem("Mp4 (x264 | AAC)", () => ".mp4", VideoQuality =>
         {
-            var settings = ServiceProvider.Get<Settings>().FFMpeg.X264;
+            var settings = ServiceProvider.Get<Settings>().FFmpeg.X264;
 
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;
 
             return $"-vcodec libx264 -crf {crf} -pix_fmt {settings.PixelFormat} -preset {settings.Preset}";
-        }, FFMpegAudioItem.Aac);
+        }, FFmpegAudioItem.Aac);
 
         // Avi (Xvid, Mp3)
-        public static FFMpegItem Avi { get; } = new FFMpegItem("Avi (Xvid | Mp3)", () => ".avi", VideoQuality =>
+        public static FFmpegItem Avi { get; } = new FFmpegItem("Avi (Xvid | Mp3)", () => ".avi", VideoQuality =>
         {
             // quality: 31 (lowest) to 1 (highest)
             var qscale = 31 - ((VideoQuality - 1) * 30) / 99;
 
             return $"-vcodec libxvid -qscale:v {qscale}";
-        }, FFMpegAudioItem.Mp3);
+        }, FFmpegAudioItem.Mp3);
 
         // Gif (No Audio)
-        public static FFMpegItem Gif { get; } = new FFMpegItem("Gif (No Audio)", () => ".gif", VideoQuality => "", FFMpegAudioItem.Mp3);
+        public static FFmpegItem Gif { get; } = new FFmpegItem("Gif (No Audio)", () => ".gif", VideoQuality => "", FFmpegAudioItem.Mp3);
 
         // MP4 (HEVC Intel QSV, AAC)
-        public static FFMpegItem HEVC_QSV { get; } = new FFMpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", () => ".mp4",
-            VideoQuality => "-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast", FFMpegAudioItem.Aac);
+        public static FFmpegItem HEVC_QSV { get; } = new FFmpegItem("Mp4 (HEVC Intel QSV | AAC) (Skylake or above)", () => ".mp4",
+            VideoQuality => "-vcodec hevc_qsv -load_plugin hevc_hw -q 2 -preset:v veryfast", FFmpegAudioItem.Aac);
 
         // MP4 (H.264 NVENC, AAC)
-        public static FFMpegItem H264_NVENC { get; } = new FFMpegItem("Mp4 (H.264 NVENC | AAC) (Alpha)", () => ".mp4",
-            VideoQuality => "-c:v h264_nvenc -profile high444p -pixel_format yuv444p -preset fast", FFMpegAudioItem.Aac);
+        public static FFmpegItem H264_NVENC { get; } = new FFmpegItem("Mp4 (H.264 NVENC | AAC) (Alpha)", () => ".mp4",
+            VideoQuality => "-c:v h264_nvenc -profile high444p -pixel_format yuv444p -preset fast", FFmpegAudioItem.Aac);
 
         // MP4 (HEVC NVENC, AAC)
-        public static FFMpegItem HEVC_NVENC { get; } = new FFMpegItem("Mp4 (HEVC NVENC | AAC) (Alpha)", () => ".mp4",
-            VideoQuality => "-c:v hevc_nvenc -profile high444p -pixel_format yuv444p -preset slow", FFMpegAudioItem.Aac);
+        public static FFmpegItem HEVC_NVENC { get; } = new FFmpegItem("Mp4 (HEVC NVENC | AAC) (Alpha)", () => ".mp4",
+            VideoQuality => "-c:v hevc_nvenc -profile high444p -pixel_format yuv444p -preset slow", FFmpegAudioItem.Aac);
 
-        public static IEnumerable<FFMpegItem> Items { get; } = new[]
+        public static IEnumerable<FFmpegItem> Items { get; } = new[]
         {
             x264,
             Avi,
@@ -54,27 +54,27 @@ namespace Captura.Models
             HEVC_NVENC
         };
         
-        FFMpegItem(string Name, Func<string> Extension, FFMpegVideoArgsProvider VideoArgsProvider, FFMpegAudioArgsProvider AudioArgsProvider)
+        FFmpegItem(string Name, Func<string> Extension, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider)
             : this(Name, Extension)
         {
             _videoArgsProvider = VideoArgsProvider;
             _audioArgsProvider = AudioArgsProvider;
         }
 
-        protected FFMpegItem(string Name, Func<string> Extension)
+        protected FFmpegItem(string Name, Func<string> Extension)
         {
             _name = Name;
             _extension = Extension;
         }
 
-        public FFMpegItem(CustomFFMpegCodec CustomCodec) : this(CustomCodec.Name,
+        public FFmpegItem(CustomFFmpegCodec CustomCodec) : this(CustomCodec.Name,
             () => CustomCodec.Extension)
         {
             _videoArgsProvider = VideoQuality => CustomCodec.Args;
 
-            _audioArgsProvider = FFMpegAudioItem.Mp3;
+            _audioArgsProvider = FFmpegAudioItem.Mp3;
 
-            foreach (var audioItem in FFMpegAudioItem.Items)
+            foreach (var audioItem in FFmpegAudioItem.Items)
             {
                 if (audioItem.Name.Split(' ')[0] == CustomCodec.AudioFormat)
                 {
@@ -89,21 +89,21 @@ namespace Captura.Models
         public string Extension => _extension?.Invoke();
 
         readonly string _name;
-        readonly FFMpegVideoArgsProvider _videoArgsProvider;
-        readonly FFMpegAudioArgsProvider _audioArgsProvider;
+        readonly FFmpegVideoArgsProvider _videoArgsProvider;
+        readonly FFmpegAudioArgsProvider _audioArgsProvider;
         public override string ToString() => _name;
 
         public virtual IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new FFMpegWriter(FFMpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider));
+            return new FFmpegWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider));
         }
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args, string OutputArgs)
         {
-            var args = FFMpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider);
+            var args = FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, _videoArgsProvider, _audioArgsProvider);
             args.OutputArgs = OutputArgs;
 
-            return new FFMpegWriter(args);
+            return new FFmpegWriter(args);
         }
     }
 }

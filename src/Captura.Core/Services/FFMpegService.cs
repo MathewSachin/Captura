@@ -8,35 +8,35 @@ using System.Windows.Forms;
 
 namespace Captura
 {
-    public static class FFMpegService
+    public static class FFmpegService
     {
-        public const string FFMpegExeName = "ffmpeg.exe";
+        public const string FFmpegExeName = "ffmpeg.exe";
 
         static Settings GetSettings() => ServiceProvider.Get<Settings>();
 
-        public static bool FFMpegExists
+        public static bool FFmpegExists
         {
             get
             {
                 var settings = GetSettings();
 
-                // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFMpeg.FolderPath))
+                // FFmpeg folder
+                if (!string.IsNullOrWhiteSpace(settings.FFmpeg.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFMpeg.FolderPath, FFMpegExeName);
+                    var path = Path.Combine(settings.FFmpeg.FolderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return true;
                 }
 
                 // application directory
-                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFMpegExeName);
+                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFmpegExeName);
 
                 if (File.Exists(cpath))
                     return true;
 
                 // Current working directory
-                if (File.Exists(FFMpegExeName))
+                if (File.Exists(FFmpegExeName))
                     return true;
 
                 // PATH
@@ -44,7 +44,7 @@ namespace Captura
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = FFMpegExeName,
+                        FileName = FFmpegExeName,
                         Arguments = "-version",
                         UseShellExecute = false,
                         CreateNoWindow = true
@@ -56,53 +56,53 @@ namespace Captura
             }
         }
 
-        public static string FFMpegExePath
+        public static string FFmpegExePath
         {
             get
             {
                 var settings = GetSettings();
 
-                // FFMpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFMpeg.FolderPath))
+                // FFmpeg folder
+                if (!string.IsNullOrWhiteSpace(settings.FFmpeg.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFMpeg.FolderPath, FFMpegExeName);
+                    var path = Path.Combine(settings.FFmpeg.FolderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return path;
                 }
 
                 // application directory
-                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFMpegExeName);
+                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFmpegExeName);
 
-                return File.Exists(cpath) ? cpath : FFMpegExeName;
+                return File.Exists(cpath) ? cpath : FFmpegExeName;
             }
         }
 
-        public static void SelectFFMpegFolder()
+        public static void SelectFFmpegFolder()
         {
             var settings = GetSettings();
 
             using (var dlg = new VistaFolderBrowserDialog
             {
-                SelectedPath = settings.FFMpeg.FolderPath,
+                SelectedPath = settings.FFmpeg.FolderPath,
                 UseDescriptionForTitle = true,
-                Description = LanguageManager.Instance.SelectFFMpegFolder
+                Description = LanguageManager.Instance.SelectFFmpegFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    settings.FFMpeg.FolderPath = dlg.SelectedPath;
+                    settings.FFmpeg.FolderPath = dlg.SelectedPath;
             }
         }
 
-        public static Action FFMpegDownloader { get; set; }
+        public static Action FFmpegDownloader { get; set; }
 
-        public static Process StartFFMpeg(string Arguments, string OutputFileName)
+        public static Process StartFFmpeg(string Arguments, string OutputFileName)
         {
             var process = new Process
             {
                 StartInfo =
                 {
-                    FileName = FFMpegExePath,
+                    FileName = FFmpegExePath,
                     Arguments = Arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -112,7 +112,7 @@ namespace Captura
                 EnableRaisingEvents = true
             };
 
-            var logItem = FFMpegLog.Instance.CreateNew(Path.GetFileName(OutputFileName));
+            var logItem = FFmpegLog.Instance.CreateNew(Path.GetFileName(OutputFileName));
                         
             process.ErrorDataReceived += (s, e) => logItem.Write(e.Data);
 

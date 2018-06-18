@@ -158,8 +158,8 @@
     <Compile Include="Presentation\Controls\ImageOverlaySettingsControl.xaml.cs">
       <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegCodecWindow.xaml.cs">
-      <DependentUpon>FFMpegCodecWindow.xaml</DependentUpon>
+    <Compile Include="Views\FFmpegCodecWindow.xaml.cs">
+      <DependentUpon>FFmpegCodecWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MainModule.cs" />
     <Compile Include="Models\CmdOptions.cs" />
@@ -191,17 +191,17 @@
     <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
     <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
-    <Compile Include="Views\FFMpegDownloader.xaml.cs">
-      <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
+    <Compile Include="Views\FFmpegDownloader.xaml.cs">
+      <DependentUpon>FFmpegDownloader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegView.xaml.cs">
-      <DependentUpon>FFMpegView.xaml</DependentUpon>
+    <Compile Include="Views\FFmpegView.xaml.cs">
+      <DependentUpon>FFmpegView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegLogView.xaml.cs">
-      <DependentUpon>FFMpegLogView.xaml</DependentUpon>
+    <Compile Include="Views\FFmpegLogView.xaml.cs">
+      <DependentUpon>FFmpegLogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -315,7 +315,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\FFMpegCodecWindow.xaml">
+    <Page Include="Views\FFmpegCodecWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -367,15 +367,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FFMpegDownloader.xaml">
+    <Page Include="Views\FFmpegDownloader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FFMpegView.xaml">
+    <Page Include="Views\FFmpegView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\FFMpegLogView.xaml">
+    <Page Include="Views\FFmpegLogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

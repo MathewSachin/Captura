@@ -307,8 +307,8 @@
                                         </DockPanel>
                                     </Button>
                                 </TabItem>
-                                <TabItem Header="FFMpeg">
-                                    <Frame Source="Views/FFMpegView.xaml"/>
+                                <TabItem Header="FFmpeg">
+                                    <Frame Source="Views/FFmpegView.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{local:Loc Proxy}">
                                     <Frame Source="Views/ProxyView.xaml"/>

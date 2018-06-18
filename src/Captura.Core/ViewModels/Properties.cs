@@ -60,7 +60,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public FFMpegLog FFMpegLog { get; } = FFMpegLog.Instance;
+        public FFmpegLog FFmpegLog { get; } = FFmpegLog.Instance;
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
@@ -153,9 +153,9 @@ namespace Captura.ViewModels
             }
         }
 
-        public DelegateCommand SelectFFMpegFolderCommand { get; } = new DelegateCommand(FFMpegService.SelectFFMpegFolder);
+        public DelegateCommand SelectFFmpegFolderCommand { get; } = new DelegateCommand(FFmpegService.SelectFFmpegFolder);
 
-        public DelegateCommand ResetFFMpegFolderCommand { get; }
+        public DelegateCommand ResetFFmpegFolderCommand { get; }
         #endregion
 
         #region Nested ViewModels

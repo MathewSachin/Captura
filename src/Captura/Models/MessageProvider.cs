@@ -49,23 +49,23 @@ namespace Captura.Models
             });
         }
 
-        public void ShowFFMpegUnavailable()
+        public void ShowFFmpegUnavailable()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var dialog = new ModernDialog
                 {
-                    Title = "FFMpeg Unavailable",
-                    Content = "FFMpeg was not found on your system.\n\nSelect FFMpeg Folder if you alrady have FFMpeg on your system, else Download FFMpeg."
+                    Title = "FFmpeg Unavailable",
+                    Content = "FFmpeg was not found on your system.\n\nSelect FFmpeg Folder if you alrady have FFmpeg on your system, else Download FFmpeg."
                 };
 
-                // Yes -> Select FFMpeg Folder
-                dialog.YesButton.Content = LanguageManager.Instance.SelectFFMpegFolder;
-                dialog.YesButton.Click += (s, e) => FFMpegService.SelectFFMpegFolder();
+                // Yes -> Select FFmpeg Folder
+                dialog.YesButton.Content = LanguageManager.Instance.SelectFFmpegFolder;
+                dialog.YesButton.Click += (s, e) => FFmpegService.SelectFFmpegFolder();
 
-                // No -> Download FFMpeg
-                dialog.NoButton.Content = "Download FFMpeg";
-                dialog.NoButton.Click += (s, e) => FFMpegService.FFMpegDownloader?.Invoke();
+                // No -> Download FFmpeg
+                dialog.NoButton.Content = "Download FFmpeg";
+                dialog.NoButton.Click += (s, e) => FFmpegService.FFmpegDownloader?.Invoke();
 
                 dialog.CancelButton.Content = "Cancel";
 

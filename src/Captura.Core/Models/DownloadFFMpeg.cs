@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Captura.ViewModels
 {
-    public static class DownloadFFMpeg
+    public static class DownloadFFmpeg
     {
-        static readonly Uri FFMpegUri;
-        static readonly string FFMpegArchivePath;
+        static readonly Uri FFmpegUri;
+        static readonly string FFmpegArchivePath;
 
-        static DownloadFFMpeg()
+        static DownloadFFmpeg()
         {
             var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
 
-            FFMpegUri = new Uri($"https://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.zip");
+            FFmpegUri = new Uri($"https://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.zip");
 
-            FFMpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
+            FFmpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
         }
 
         public static async Task DownloadArchive(Action<int> Progress, IWebProxy Proxy, CancellationToken CancellationToken)
@@ -33,7 +33,7 @@ namespace Captura.ViewModels
                     Progress?.Invoke(e.ProgressPercentage);
                 };
                 
-                await webClient.DownloadFileTaskAsync(FFMpegUri, FFMpegArchivePath);
+                await webClient.DownloadFileTaskAsync(FFmpegUri, FFmpegArchivePath);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Captura.ViewModels
         {
             await Task.Run(() =>
             {
-                using (var archive = ZipFile.OpenRead(FFMpegArchivePath))
+                using (var archive = ZipFile.OpenRead(FFmpegArchivePath))
                 {
                     var ffmpegEntry = archive.Entries.First(M => M.Name == ExeName);
 

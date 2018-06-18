@@ -4,11 +4,11 @@ using System.Windows.Input;
 
 namespace Captura.Models
 {
-    public class FFMpegLogItem : NotifyPropertyChanged
+    public class FFmpegLogItem : NotifyPropertyChanged
     {
         public string Name { get; }
 
-        public FFMpegLogItem(string Name)
+        public FFmpegLogItem(string Name)
         {
             this.Name = Name;
             CopyToClipboardCommand = new DelegateCommand(() =>

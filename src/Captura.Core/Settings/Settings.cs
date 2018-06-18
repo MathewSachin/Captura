@@ -91,7 +91,7 @@ namespace Captura
 
         public AudioSettings Audio { get; } = new AudioSettings();
 
-        public FFMpegSettings FFMpeg { get; } = new FFMpegSettings();
+        public FFmpegSettings FFmpeg { get; } = new FFmpegSettings();
 
         public GifSettings Gif { get; } = new GifSettings();
 

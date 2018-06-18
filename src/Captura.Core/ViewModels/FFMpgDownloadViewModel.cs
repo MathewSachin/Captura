@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Captura.ViewModels
 {
-    public class FFMpegDownloadViewModel : ViewModelBase
+    public class FFmpegDownloadViewModel : ViewModelBase
     {
         public DelegateCommand StartCommand { get; }
 
@@ -28,7 +28,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public FFMpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
+        public FFmpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
             StartCommand = new DelegateCommand(async () =>
             {
@@ -52,7 +52,7 @@ namespace Captura.ViewModels
                 {
                     SelectedPath = TargetFolder,
                     UseDescriptionForTitle = true,
-                    Description = LanguageManager.SelectFFMpegFolder
+                    Description = LanguageManager.SelectFFmpegFolder
                 })
                 {
                     if (dlg.ShowDialog() == DialogResult.OK)
@@ -95,7 +95,7 @@ namespace Captura.ViewModels
 
             try
             {
-                await DownloadFFMpeg.DownloadArchive(P =>
+                await DownloadFFmpeg.DownloadArchive(P =>
                 {
                     Progress = P;
 
@@ -124,7 +124,7 @@ namespace Captura.ViewModels
 
             try
             {
-                await DownloadFFMpeg.ExtractTo(TargetFolder);
+                await DownloadFFmpeg.ExtractTo(TargetFolder);
             }
             catch (UnauthorizedAccessException)
             {
@@ -137,8 +137,8 @@ namespace Captura.ViewModels
                 return false;
             }
             
-            // Update FFMpeg folder setting
-            Settings.FFMpeg.FolderPath = TargetFolder;
+            // Update FFmpeg folder setting
+            Settings.FFmpeg.FolderPath = TargetFolder;
             
             Status = "Done";
             ActionDescription = Finish;

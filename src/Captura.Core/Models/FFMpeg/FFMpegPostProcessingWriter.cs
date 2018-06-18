@@ -4,18 +4,18 @@ using Screna;
 namespace Captura.Models
 {
     // ReSharper disable once InconsistentNaming
-    public class FFMpegPostProcessingWriter : IVideoFileWriter
+    public class FFmpegPostProcessingWriter : IVideoFileWriter
     {
         readonly IVideoFileWriter _ffMpegWriter;
         readonly string _tempFileName;
-        readonly FFMpegVideoWriterArgs _args;
+        readonly FFmpegVideoWriterArgs _args;
 
-        public FFMpegPostProcessingWriter(FFMpegVideoWriterArgs Args)
+        public FFmpegPostProcessingWriter(FFmpegVideoWriterArgs Args)
         {
             _args = Args;
             _tempFileName = Path.GetTempFileName();
 
-            _ffMpegWriter = FFMpegItem.x264.GetVideoFileWriter(new VideoWriterArgs
+            _ffMpegWriter = FFmpegItem.x264.GetVideoFileWriter(new VideoWriterArgs
             {
                 AudioProvider = Args.AudioProvider,
                 AudioQuality = Args.AudioQuality,
@@ -41,7 +41,7 @@ namespace Captura.Models
                 audioOutArgs = _args.AudioArgsProvider(_args.AudioQuality);
             }
 
-            var process = FFMpegService.StartFFMpeg($"{videoInArgs} {videoOutArgs} {audioOutArgs} {_args.OutputArgs} \"{_args.FileName}\"", _args.FileName);
+            var process = FFmpegService.StartFFmpeg($"{videoInArgs} {videoOutArgs} {audioOutArgs} {_args.OutputArgs} \"{_args.FileName}\"", _args.FileName);
 
             process.WaitForExit();
 
