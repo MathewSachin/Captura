@@ -7,14 +7,21 @@ namespace Captura
 {
     public class LineStroke : Stroke
     {
-        public LineStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttributes) : base(StylusPoints, DrawingAttributes) { }
+        static StylusPointCollection Points(StylusPointCollection StylusPoints)
+        {
+            var start = StylusPoints.First().ToPoint();
+            var end = StylusPoints.Last().ToPoint();
+
+            LineDynamicRenderer.Prepare(ref start, ref end);
+
+            return new StylusPointCollection(new[] { start, end });
+        }
+
+        public LineStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttributes) : base(Points(StylusPoints), DrawingAttributes) { }
 
         protected override void DrawCore(DrawingContext DrawingContext, DrawingAttributes DrawingAttribs)
         {
-            LineDynamicRenderer.Draw(DrawingContext, 
-                StylusPoints.First().ToPoint(),
-                StylusPoints.Last().ToPoint(),
-                new Pen(new SolidColorBrush(DrawingAttribs.Color), DrawingAttribs.Width));
+            base.DrawCore(DrawingContext, DrawingAttribs);
         }
     }
 }

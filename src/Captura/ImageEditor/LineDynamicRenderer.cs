@@ -24,7 +24,7 @@ namespace Captura
             base.OnStylusDown(RawStylusInput);
         }
 
-        public static void Draw(DrawingContext DrawingContext, Point Start, Point End, Pen Pen)
+        public static void Prepare(ref Point Start, ref Point End)
         {
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
             {
@@ -50,6 +50,11 @@ namespace Captura
                     End.Y = Start.Y + Math.Sign(sdy) * d;
                 }
             }
+        }
+
+        static void Draw(DrawingContext DrawingContext, Point Start, Point End, Pen Pen)
+        {
+            Prepare(ref Start, ref End);
 
             DrawingContext.DrawLine(Pen, Start, End);
         }
