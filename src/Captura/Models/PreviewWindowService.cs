@@ -30,8 +30,11 @@ namespace Captura.Models
 
                 if (!_previewWindow.IsVisible)
                     return;
-                
-                _previewWindow.DisplayImage.Image = Frame.Bitmap;
+
+                if (Frame is FrameBase frame)
+                {
+                    _previewWindow.DisplayImage.Image = frame.Bitmap;
+                }
             });
         }
         

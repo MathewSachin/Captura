@@ -78,11 +78,8 @@ namespace Captura.Tests
 
                     using (var img = imgProvider.Capture())
                     {
-                        if (img.Bitmap != null)
-                        {
-                            Assert.AreEqual(img.Bitmap.Width, screen.Screen.Bounds.Width);
-                            Assert.AreEqual(img.Bitmap.Height, screen.Screen.Bounds.Height);
-                        }
+                        Assert.AreEqual(img.Width, screen.Screen.Bounds.Width);
+                        Assert.AreEqual(img.Height, screen.Screen.Bounds.Height);
                     }
                 }
             }
@@ -118,11 +115,8 @@ namespace Captura.Tests
 
                 using (var img = imgProvider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(img.Bitmap.Width, rect.Width);
-                        Assert.AreEqual(img.Bitmap.Height, rect.Height);
-                    }
+                    Assert.AreEqual(img.Width, rect.Width);
+                    Assert.AreEqual(img.Height, rect.Height);
                 }
             }
         }
@@ -139,14 +133,11 @@ namespace Captura.Tests
 
                 using (var img = imgProvider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(img.Bitmap.Width, imgProvider.Width);
-                        Assert.AreEqual(img.Bitmap.Height, imgProvider.Height);
+                    Assert.AreEqual(img.Width, imgProvider.Width);
+                    Assert.AreEqual(img.Height, imgProvider.Height);
 
-                        Assert.IsTrue(img.Bitmap.Width % 2 == 0);
-                        Assert.IsTrue(img.Bitmap.Height % 2 == 0);
-                    }
+                    Assert.IsTrue(img.Width % 2 == 0);
+                    Assert.IsTrue(img.Height % 2 == 0);
                 }
             }
         }
@@ -164,11 +155,8 @@ namespace Captura.Tests
 
                 using (var img = provider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(provider.Width, img.Bitmap.Width);
-                        Assert.AreEqual(provider.Height, img.Bitmap.Height);
-                    }
+                    Assert.AreEqual(provider.Width, img.Width);
+                    Assert.AreEqual(provider.Height, img.Height);
                 }
             }
         }

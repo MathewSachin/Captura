@@ -63,11 +63,7 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    var image = Frame.Bitmap;
-
-                    var bits = image.LockBits(new Rectangle(Point.Empty, image.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-                    Marshal.Copy(bits.Scan0, _videoBuffer, 0, _videoBuffer.Length);
-                    image.UnlockBits(bits);
+                    Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
                 }
             }
 

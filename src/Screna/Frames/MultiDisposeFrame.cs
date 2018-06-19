@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.IO;
 
 namespace Screna
 {
@@ -38,7 +38,18 @@ namespace Screna
             }
         }
 
-        public Bitmap Bitmap => _frame.Bitmap;
+        public void SaveGif(Stream Stream)
+        {
+            _frame.SaveGif(Stream);
+        }
+
+        public int Width => _frame.Width;
+        public int Height => _frame.Height;
+
+        public void CopyTo(byte[] Buffer, int Length)
+        {
+            _frame.CopyTo(Buffer, Length);
+        }
 
         public IBitmapEditor GetEditor() => _frame.GetEditor();
     }

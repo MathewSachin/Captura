@@ -1,11 +1,17 @@
 ﻿using System;
-using System.Drawing;
+using System.IO;
 
 namespace Screna
 {
     public interface IBitmapFrame : IDisposable
     {
-        Bitmap Bitmap { get; }
+        void SaveGif(Stream Stream);
+
+        int Width { get; }
+
+        int Height { get; }
+
+        void CopyTo(byte[] Buffer, int Length);
 
         IBitmapEditor GetEditor();
     }

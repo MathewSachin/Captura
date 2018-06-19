@@ -64,16 +64,14 @@ namespace Screna
                 if (Frame is RepeatFrame)
                     return;
 
-                var image = Frame.Bitmap;
-
-                _width = image.Width;
-                _height = image.Height;
+                _width = Frame.Width;
+                _height = Frame.Height;
             }
 
             if (!(Frame is RepeatFrame))
             {
                 using (Frame)
-                    Frame.Bitmap.Save(_gifStream, ImageFormat.Gif);
+                    Frame.SaveGif(_gifStream);
             }
 
             // Steal the global color table info
