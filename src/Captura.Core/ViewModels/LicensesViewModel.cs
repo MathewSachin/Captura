@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using Captura.Models;
@@ -16,10 +15,28 @@ namespace Captura.ViewModels
 
             if (Directory.Exists(folder))
             {
-                Licenses = Directory.EnumerateFiles(folder).Select(FileName => new FileContentItem(FileName));
+                Licenses = Directory.EnumerateFiles(folder).Select(FileName => new FileContentItem(FileName)).ToArray();
+
+                if (Licenses.Length > 0)
+                {
+                    SelectedLicense = Licenses[0];
+                }
             }
         }
 
-        public IEnumerable<FileContentItem> Licenses { get; }
+        public FileContentItem[] Licenses { get; }
+
+        FileContentItem _selectedLicense;
+
+        public FileContentItem SelectedLicense
+        {
+            get => _selectedLicense;
+            set
+            {
+                _selectedLicense = value;
+                
+                OnPropertyChanged();
+            }
+        }
     }
 }

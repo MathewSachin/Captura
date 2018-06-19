@@ -10,6 +10,8 @@ namespace Captura.ViewModels
 {
     public class RecentItemViewModel : NotifyPropertyChanged
     {
+        public RecentItemViewModel() { }
+
         public RecentItemViewModel(string FilePath, RecentItemType ItemType, bool IsSaving)
         {
             this.FilePath = FilePath;

@@ -2,6 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:captura="clr-namespace:Captura"
+             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+             xmlns:captura1="clr-namespace:Captura;assembly=Captura.Core"
              ShutdownMode="OnMainWindowClose"
              StartupUri="MainWindow.xaml"
              Startup="Application_Startup"
@@ -19,7 +21,12 @@
                 <ResourceDictionary Source="Presentation/MaterialDesignIcons.xaml"/>
                 <ResourceDictionary Source="Presentation/ValueConverters/ValueConverters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
+            <viewModels:RecentItemViewModel x:Key="DummyRecentItemViewModel"/>
+            <captura1:ImageOverlaySettings x:Key="DummyImageOverlaySettings"/>
+            <captura1:PositionedOverlaySettings x:Key="DummyPositionedOverlaySettings"/>
+            <captura1:TextOverlaySettings x:Key="DummyTextOverlaySettings"/>
+
             <captura:NinjectServiceLocator x:Key="ServiceLocator"/>
 
             <DrawingImage x:Key="RecordStopImageSource">

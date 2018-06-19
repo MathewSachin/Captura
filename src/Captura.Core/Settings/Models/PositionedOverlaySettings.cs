@@ -1,7 +1,7 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 namespace Captura
 {
-    public abstract class PositionedOverlaySettings : PropertyStore
+    public class PositionedOverlaySettings : PropertyStore
     {
         public Alignment HorizontalAlignment
         {

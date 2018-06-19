@@ -26,36 +26,40 @@ namespace Captura
 
             var cultures = new List<CultureInfo>();
 
-            var files  = Directory.EnumerateFiles(_langDir, "*.json");
-
             _settings = ServiceProvider.Get<Settings>();
 
-            foreach (var file in files)
+            if (Directory.Exists(_langDir))
             {
-                var cultureName = Path.GetFileNameWithoutExtension(file);
-
-                try
+                foreach (var file in Directory.EnumerateFiles(_langDir, "*.json"))
                 {
-                    if (cultureName == null)
-                        continue;
+                    var cultureName = Path.GetFileNameWithoutExtension(file);
 
-                    var culture = CultureInfo.GetCultureInfo(cultureName);
-
-                    cultures.Add(culture);
-
-                    if (cultureName == _settings.UI.Language)
+                    try
                     {
-                        CurrentCulture = culture;
+                        if (cultureName == null)
+                            continue;
+
+                        var culture = CultureInfo.GetCultureInfo(cultureName);
+
+                        cultures.Add(culture);
+
+                        if (cultureName == _settings.UI.Language)
+                        {
+                            CurrentCulture = culture;
+                        }
                     }
-                }
-                catch
-                {
-                    // Ignore
+                    catch
+                    {
+                        // Ignore
+                    }
                 }
             }
 
             if (_currentCulture == null)
                 CurrentCulture = new CultureInfo("en");
+
+            if (cultures.Count == 0)
+                cultures.Add(CurrentCulture);
 
             cultures.Sort((X, Y) => string.Compare(X.DisplayName, Y.DisplayName, StringComparison.Ordinal));
 
@@ -114,7 +118,8 @@ namespace Captura
                     && !string.IsNullOrWhiteSpace(s))
                     return s;
 
-                if (_defaultLanguage.TryGetValue(Key, out value)
+                if (_defaultLanguage != null
+                    && _defaultLanguage.TryGetValue(Key, out value)
                     && value.ToString() is string t
                     && !string.IsNullOrWhiteSpace(t))
                     return t;
