@@ -54,6 +54,12 @@ namespace Captura
                     RepositionWindowIfOutside();
 
                     vm.HotKeyManager.ShowNotRegisteredOnStartup();
+
+                    if (vm.AudioSource is NoAudioSource)
+                    {
+                        ServiceProvider.MessageProvider.ShowError(
+                            "Could not find bass.dll or bassmix.dll.\nAudio Recording will not be available.", "No Audio");
+                    }
                 };
             }
 

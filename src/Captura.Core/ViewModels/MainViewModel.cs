@@ -389,12 +389,6 @@ namespace Captura.ViewModels
 
             if (Remembered)
                 RestoreRemembered();
-
-            if (AudioSource is NoAudioSource)
-            {
-                ServiceProvider.MessageProvider.ShowError(
-                    "Could not find bass.dll or bassmix.dll.\nAudio Recording will not be available.", "No Audio");
-            }
         }
 
         void Remember()

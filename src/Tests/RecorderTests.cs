@@ -157,23 +157,5 @@ namespace Captura.Tests
 
             recorder.Stop();
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        public void DisposeTwice()
-        {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
-
-            var recorder = new Recorder(videoWriter, imageProvider, 10);
-
-            using (recorder)
-            {
-            }
-
-            using (recorder)
-            {
-            }
-        }
     }
 }

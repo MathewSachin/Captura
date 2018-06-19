@@ -27,6 +27,8 @@ namespace Screna
         readonly ManualResetEvent _continueCapturing;
 
         readonly Task _writeTask, _recordTask;
+
+        readonly object _syncLock = new object();
         #endregion
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Screna
             }
             catch (Exception e)
             {
-                lock (_frames)
+                lock (_syncLock)
                 {
                     if (!_disposed)
                     {
@@ -170,7 +172,7 @@ namespace Screna
             }
             catch (Exception e)
             {
-                lock (_frames)
+                lock (_syncLock)
                 {
                     if (!_disposed)
                     {
@@ -192,7 +194,7 @@ namespace Screna
             {
                 if (_imageProvider == null)
                 {
-                    lock (_frames)
+                    lock (_syncLock)
                     {
                         if (!_disposed)
                         {
@@ -208,7 +210,7 @@ namespace Screna
         #region Dispose
         void Dispose(bool TerminateRecord, bool TerminateWrite)
         {
-            lock (_frames)
+            lock (_syncLock)
             {
                 if (_disposed)
                     return;
@@ -258,7 +260,7 @@ namespace Screna
 
         void ThrowIfDisposed()
         {
-            lock (_frames)
+            lock (_syncLock)
             {
                 if (_disposed)
                     throw new ObjectDisposedException("this");
