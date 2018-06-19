@@ -17,7 +17,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="{local:Loc FFmpegLog}"/>
+                    <TextBlock Text="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </DockPanel>
             </Button>
 
@@ -37,13 +37,13 @@
                 </DockPanel>
             </Button>
 
-            <Label Content="{local:Loc FFmpegFolder}"
+            <Label Content="{Binding FFmpegFolder, Source={StaticResource Loc}, Mode=OneWay}"
                    Margin="0,10,0,0"
                    FontWeight="Bold"/>
 
             <DockPanel Margin="0,5">
                 <Button DockPanel.Dock="Right"
-                        ToolTip="{local:Loc SelectFFmpegFolder}"
+                        ToolTip="{Binding SelectFFmpegFolder, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding SelectFFmpegFolderCommand}"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                     <Path Stretch="UniformToFill"
@@ -52,7 +52,7 @@
                           Data="{StaticResource IconMore}"/>
                 </Button>
                 <Button DockPanel.Dock="Right"
-                        ToolTip="{local:Loc Reset}"
+                        ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding ResetFFmpegFolderCommand}"
                         IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                         VerticalContentAlignment="Center">
@@ -90,7 +90,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <CheckBox Content="{local:Loc Resize}"
+                <CheckBox Content="{Binding Resize, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.FFmpeg.Resize}"
                           Margin="0,0,5,0"/>
 

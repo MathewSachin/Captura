@@ -17,14 +17,14 @@
             </Expander.HeaderTemplate>
             <Expander.Header>
                 <DockPanel DockPanel.Dock="Top">
-                    <local:ModernButton ToolTip="{local:Loc Close}"
+                    <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="LightPink"
                                         IconData="{StaticResource IconClose}"
                                         DockPanel.Dock="Right"/>
 
                     <Label>
-                        <TextBlock Text="{local:Loc ScreenShotSaved}"
+                        <TextBlock Text="{Binding ScreenShotSaved, Source={StaticResource Loc}, Mode=OneWay}"
                                    VerticalAlignment="Center"
                                    Margin="5"/>
                     </Label>

@@ -9,9 +9,9 @@
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
-        MaxWidth="{local:Loc WindowWidth}"
-        MinWidth="{local:Loc WindowWidth}"
-        Title="{local:Loc AppName}"
+        MaxWidth="{Binding WindowWidth, Source={StaticResource Loc}, Mode=OneWay}"
+        MinWidth="{Binding WindowWidth, Source={StaticResource Loc}, Mode=OneWay}"
+        Title="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"
         Left="{Binding Settings.UI.MainWindowLeft}"
         Top="{Binding Settings.UI.MainWindowTop}"
         BorderThickness="1"
@@ -25,14 +25,14 @@
     </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
-                         Description="{local:Loc AppName}">
+                         Description="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
-                                 Description="{local:Loc ScreenShot}"
+                                 Description="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource ScreenShotImageSource}"/>
                 <ThumbButtonInfo Command="{Binding RecordCommand}"
-                                 Description="{local:Loc RecordStop}"
+                                 Description="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource RecordStopImageSource}"/>
             </TaskbarItemInfo.ThumbButtonInfos>
@@ -42,11 +42,11 @@
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
-                        ToolTipText="{local:Loc AppName}"
+                        ToolTipText="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{local:Loc StartStopRecording}"
+                    <MenuItem Header="{Binding StartStopRecording, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding RecordCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource RecordStopImageSource}"
@@ -55,7 +55,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="{local:Loc PauseResumeRecording}"
+                    <MenuItem Header="{Binding PauseResumeRecording, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding PauseCommand}">
                         <MenuItem.Icon>
                             <Image Width="10"
@@ -77,7 +77,7 @@
 
                     <Separator/>
 
-                    <MenuItem Header="{local:Loc ScreenShot}"
+                    <MenuItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding ScreenShotCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
@@ -86,7 +86,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="{local:Loc ScreenShotActiveWindow}"
+                    <MenuItem Header="{Binding ScreenShotActiveWindow, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding ScreenShotActiveCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
@@ -95,7 +95,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="{local:Loc ScreenShotDesktop}"
+                    <MenuItem Header="{Binding ScreenShotDesktop, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding ScreenShotDesktopCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
@@ -106,7 +106,7 @@
 
                     <Separator/>
 
-                    <MenuItem Header="{local:Loc Exit}"
+                    <MenuItem Header="{Binding Exit, Source={StaticResource Loc}, Mode=OneWay}"
                               Click="MenuExit_Click">
                         <MenuItem.Icon>
                             <Image Width="13"
@@ -137,15 +137,15 @@
             </Expander.HeaderTemplate>
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
-                    <local:ModernButton ToolTip="{local:Loc ScreenShot}"
+                    <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         Opacity="0.9"/>
-                    <local:ModernButton ToolTip="{local:Loc RecordStop}"
+                    <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
-                    <local:ModernButton ToolTip="{local:Loc PauseResume}" 
+                    <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
                                         Command="{Binding PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9">
@@ -153,17 +153,17 @@
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
-                    <local:ModernButton ToolTip="{local:Loc Close}"
+                    <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"
                                         IconData="{StaticResource IconClose}"
                                         DockPanel.Dock="Right"/>
-                    <local:ModernButton ToolTip="{local:Loc MinTray}"
+                    <local:ModernButton ToolTip="{Binding MinTray, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="HideButton_Click"
                                         IconData="{StaticResource IconDoubleDown}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
-                    <local:ModernButton ToolTip="{local:Loc Minimize}"
+                    <local:ModernButton ToolTip="{Binding Minimize, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="MinButton_Click"
                                         IconData="{StaticResource IconMinimize}"
                                         Opacity="0.7"
@@ -177,7 +177,7 @@
                 </DockPanel>
             </Expander.Header>
             <DockPanel Margin="-5,0,0,0"
-                       Height="{local:Loc WindowHeight}">
+                       Height="{Binding WindowHeight, Source={StaticResource Loc}, Mode=OneWay}">
                 <Label Margin="5"
                        Content="{Binding Status.Display}"
                        Opacity="0.9"
@@ -188,7 +188,7 @@
                     <Button DockPanel.Dock="Left"
                             Padding="5,0"
                             VerticalContentAlignment="Center"
-                            ToolTip="{local:Loc OpenOutFolder}"
+                            ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                             Command="{Binding OpenOutputFolderCommand}">
                         <DockPanel>
                             <Path Data="{StaticResource IconFolder}"
@@ -199,12 +199,12 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{local:Loc OutFolder}"/>
+                            <TextBlock Text="{Binding OutFolder, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
                     
                     <Button DockPanel.Dock="Right"
-                            ToolTip="{local:Loc SelectOutFolder}"
+                            ToolTip="{Binding SelectOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                             Command="{Binding SelectOutputFolderCommand}"
                             IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
                         <Path Stretch="UniformToFill"
@@ -226,10 +226,10 @@
                             <mui:TransitioningContentControl Content="{Binding}"/>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
-                    <TabItem Header="{local:Loc Main}">
+                    <TabItem Header="{Binding Main, Source={StaticResource Loc}, Mode=OneWay}">
                         <Frame Source="Views/MainView.xaml"/>
                     </TabItem>
-                    <TabItem Header="{local:Loc Configure}">
+                    <TabItem Header="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top"
                                        Margin="5,0,5,5">
@@ -240,7 +240,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <Label Content="{local:Loc Language}"
+                                <Label Content="{Binding Language, Source={StaticResource Loc}, Mode=OneWay}"
                                        ContentStringFormat="{}{0}:"
                                        Margin="5"/>
                                 <ComboBox VerticalAlignment="Center" 
@@ -270,10 +270,10 @@
                                         </DockPanel>
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
-                                <TabItem Header="{local:Loc Options}">
+                                <TabItem Header="{Binding Options, Source={StaticResource Loc}, Mode=OneWay}">
                                     <Frame Source="Views/ConfigView.xaml"/>
                                 </TabItem>
-                                <TabItem Header="{local:Loc Hotkeys}">
+                                <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
                                     <Button Click="OpenHotkeyManager"
                                             VerticalAlignment="Top"
                                             Margin="5">
@@ -310,19 +310,19 @@
                                 <TabItem Header="FFmpeg">
                                     <Frame Source="Views/FFmpegView.xaml"/>
                                 </TabItem>
-                                <TabItem Header="{local:Loc Proxy}">
+                                <TabItem Header="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
                                     <Frame Source="Views/ProxyView.xaml"/>
                                 </TabItem>
-                                <TabItem Header="{local:Loc Extras}">
+                                <TabItem Header="{Binding Extras, Source={StaticResource Loc}, Mode=OneWay}">
                                     <Frame Source="Views/ExtrasView.xaml"/>                               
                                 </TabItem>
                             </TabControl>
                         </DockPanel>
                     </TabItem>
-                    <TabItem Header="{local:Loc Recent}">
+                    <TabItem Header="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}">
                         <Frame Source="Views/RecentView.xaml"/>
                     </TabItem>
-                    <TabItem Header="{local:Loc About}">
+                    <TabItem Header="{Binding About, Source={StaticResource Loc}, Mode=OneWay}">
                         <Frame Source="Views/AboutView.xaml"/>
                     </TabItem>
                 </TabControl>

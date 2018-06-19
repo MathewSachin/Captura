@@ -18,7 +18,7 @@ namespace Captura
 
         public static LanguageManager Instance { get; } = new LanguageManager();
 
-        public LanguageManager()
+        LanguageManager()
         {
             _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
 

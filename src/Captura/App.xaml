@@ -21,6 +21,9 @@
                 <ResourceDictionary Source="Presentation/MaterialDesignIcons.xaml"/>
                 <ResourceDictionary Source="Presentation/ValueConverters/ValueConverters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <x:Static x:Key="Loc"
+                      Member="captura1:LanguageManager.Instance"/>
 
             <viewModels:RecentItemViewModel x:Key="DummyRecentItemViewModel"/>
             <captura1:ImageOverlaySettings x:Key="DummyImageOverlaySettings"/>

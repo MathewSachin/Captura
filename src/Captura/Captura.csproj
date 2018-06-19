@@ -206,7 +206,6 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Loc.cs" />
     <Compile Include="Presentation\ValueConverters\DrawingToWpfColorConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NegatingConverter.cs" />
     <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />

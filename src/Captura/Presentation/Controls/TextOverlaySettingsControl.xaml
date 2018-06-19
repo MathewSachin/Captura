@@ -28,16 +28,16 @@
                                 Value="{Binding FontSize, Mode=TwoWay}"
                                 Grid.Column="1"
                                 Margin="10,5,5,5"
-                                ToolTip="{local:Loc FontSize}"/>
+                                ToolTip="{Binding FontSize, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding FontColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                               Grid.Column="2"
                               Margin="0,5"
-                              ToolTip="{local:Loc Color}"/>
+                              ToolTip="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"/>
         </Grid>
         
         <DockPanel>
-            <Label Content="{local:Loc BackColor}"
+            <Label Content="{Binding BackColor, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}: "
                    Margin="0,5,5,5"/>
 
@@ -68,12 +68,12 @@
             <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
                                 Grid.Column="2"
                                 Margin="5"
-                                ToolTip="{local:Loc BorderThickness}"/>
+                                ToolTip="{Binding BorderThickness, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                               Grid.Column="3"
                               Margin="0,5"
-                              ToolTip="{local:Loc BorderColor}"/>
+                              ToolTip="{Binding BorderColor, Source={StaticResource Loc}, Mode=OneWay}"/>
         </Grid>
 
         <Grid>
@@ -105,7 +105,7 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"/>
             
-            <Label Content="{local:Loc CornerRadius}"
+            <Label Content="{Binding CornerRadius, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}: "
                    Margin="0,5,5,5"/>
 

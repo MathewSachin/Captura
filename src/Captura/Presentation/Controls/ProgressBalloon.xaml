@@ -12,7 +12,7 @@
                      Margin="-5,0,0,0"
                      DockPanel.Dock="Bottom"/>
         
-        <local:ModernButton ToolTip="{local:Loc Close}"
+        <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                             Click="CloseButton_Click"
                             Foreground="LightPink"
                             IconData="{StaticResource IconClose}"

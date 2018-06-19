@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="{local:Loc RegionSelector}"
+        Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Height="500"
         Background="Transparent"
         Width="400"
@@ -91,7 +91,7 @@
                                         Click="Snapper_OnClick"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-                    <local:ModernButton ToolTip="{local:Loc Close}"
+                    <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         x:Name="CloseButton"
                                         Click="CloseButton_Click"
                                         Background="{DynamicResource WindowBackground}"
@@ -100,20 +100,20 @@
                                         DockPanel.Dock="Right"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-                    <local:ModernButton ToolTip="{local:Loc ScreenShot}"
+                    <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
                     
-                    <local:ModernButton ToolTip="{local:Loc RecordStop}"
+                    <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
                     
-                    <local:ModernButton ToolTip="{local:Loc PauseResume}" 
+                    <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
                                         Command="{Binding PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9"

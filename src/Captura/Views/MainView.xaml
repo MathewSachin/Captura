@@ -7,27 +7,27 @@
         <DockPanel>
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
-                <local:ModernButton ToolTip="{local:Loc Refresh}"
+                <local:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding RefreshCommand}"
                                     IconData="{StaticResource IconRefresh}"/>
                 <local:ModernButton ToolTip="Open Canvas"
                                     Click="OpenCanvas"
                                     IconData="{StaticResource IconBrush}"/>
-                <local:ModernButton ToolTip="{local:Loc OpenOutFolder}"
+                <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{StaticResource IconFolder}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="5,0,0,0">
-                <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
+                <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource IconCursor}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
-                <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
+                <local:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource IconHand}"
                                           IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
-                <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
+                <local:ModernToggleButton ToolTip="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource IconKeyboard}"
                                           IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
@@ -35,7 +35,7 @@
         </DockPanel>
 
 
-        <Label Content="{local:Loc Video}"
+        <Label Content="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"
                FontWeight="Bold"
                Margin="10,3"
                FontSize="15"/>
@@ -54,7 +54,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{local:Loc VideoSource}"/>
+                  ToolTip="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
@@ -81,7 +81,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{local:Loc WebCam}"/>
+                  ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
             
             <Button Content="Preview"
                     DockPanel.Dock="Right"
@@ -108,7 +108,7 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ToolTip="{local:Loc VideoEncoder}"/>
+                  ToolTip="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <ComboBox VerticalAlignment="Center" 
                       Margin="7,0,0,0"
@@ -134,7 +134,7 @@
         
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc FrameRate}"
+            <Label Content="{Binding FrameRate, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Video.FrameRate}"
                    Margin="5,0"
@@ -152,7 +152,7 @@
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc Quality}"
+            <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Video.Quality}"
                    ContentStringFormat="{}{0:N0}%"
@@ -168,7 +168,7 @@
         </DockPanel>
 
         <Label Margin="10,15,0,3"
-               Content="{local:Loc ScreenShot}"
+               Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                FontWeight="Bold"
                FontSize="15"/>
 
@@ -182,7 +182,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Content="{local:Loc SaveLocation}"
+            <Label Content="{Binding SaveLocation, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}: "
                    Margin="0,0,5,0"/>
 
@@ -202,7 +202,7 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <Label Content="{local:Loc ImgFormat}"
+            <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}: "
                    Grid.Row="1"
                    Margin="0,5,5,0"/>
@@ -215,7 +215,7 @@
                       Margin="0,5,0,0"/>
         </Grid>
 
-        <CheckBox Content="{local:Loc Audio}"
+        <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                   IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
                   FontWeight="Bold"
@@ -238,7 +238,7 @@
                                           Stretch="Uniform"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
-                                          ToolTip="{local:Loc MicSource}"/>
+                                          ToolTip="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
                             
                                     <TextBlock Text="{Binding Name, Mode=OneWay}"/>
                                 </DockPanel>
@@ -260,7 +260,7 @@
                                           Stretch="Uniform"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
-                                          ToolTip="{local:Loc LoopbackSource}"/>
+                                          ToolTip="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                                     <TextBlock Text="{Binding Name, Mode=OneWay}"/>
                                 </DockPanel>
@@ -273,7 +273,7 @@
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
-            <Label Content="{local:Loc Quality}"
+            <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Audio.Quality}"
                    ContentStringFormat="{}{0:N0}%"

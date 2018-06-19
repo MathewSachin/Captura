@@ -46,14 +46,14 @@
                             <Label ContentStringFormat="{}{0}: "
                                    Margin="0,5,5,5">
                                 <TextBlock TextWrapping="Wrap"
-                                           Text="{local:Loc MaxTextLength}"/>
+                                           Text="{Binding MaxTextLength, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </Label>
                             <xctk:IntegerUpDown Minimum="1"
                                                 Value="{Binding MaxTextLength, Mode=TwoWay}"
                                                 Grid.Column="1"
                                                 Margin="0,5"/>
 
-                            <Label Content="{local:Loc Timeout}"
+                            <Label Content="{Binding Timeout, Source={StaticResource Loc}, Mode=OneWay}"
                                    ContentStringFormat="{}{0}: "
                                    Margin="0,5,5,5"
                                    Grid.Row="1"/>
@@ -111,7 +111,7 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Content="{local:Loc Radius}"
+                                    <Label Content="{Binding Radius, Source={StaticResource Loc}, Mode=OneWay}"
                                            ContentStringFormat="{}{0}: "
                                            Margin="0,5,5,5"/>
                                     <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
@@ -119,7 +119,7 @@
                                                         Margin="0,5"
                                                         Grid.Column="1"/>
 
-                                    <Label Content="{local:Loc Color}"
+                                    <Label Content="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"
                                            ContentStringFormat="{}{0}: "
                                            Margin="0,5,5,5"
                                            Grid.Row="1"/>
@@ -164,7 +164,7 @@
                         <Expander Margin="5"
                                   IsExpanded="True">
                             <Expander.Header>
-                                <Label Content="{local:Loc MouseClicks}"/>
+                                <Label Content="{Binding MouseClicks, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </Expander.Header>
 
                             <StackPanel Margin="5"
@@ -181,7 +181,7 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Content="{local:Loc Radius}"
+                                    <Label Content="{Binding Radius, Source={StaticResource Loc}, Mode=OneWay}"
                                            ContentStringFormat="{}{0}: "
                                            Margin="0,5,5,5"/>
                                     <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
@@ -189,7 +189,7 @@
                                                         Margin="0,5"
                                                         Grid.Column="1"/>
 
-                                    <Label Content="{local:Loc Color}"
+                                    <Label Content="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"
                                            ContentStringFormat="{}{0}: "
                                            Margin="0,5,5,5"
                                            Grid.Row="1"/>

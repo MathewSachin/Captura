@@ -16,7 +16,7 @@
                 <TextBlock TextWrapping="Wrap"
                            LineHeight="30"
                            Style="{StaticResource TextColor}">
-                    <Run FontSize="20" Text="{local:Loc AppName}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                    <Run FontSize="20" Text="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
                     (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 
@@ -41,7 +41,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{local:Loc Source}"/>
+                            <TextBlock Text="{Binding Source, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding HyperlinkCommand}"
@@ -57,7 +57,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{local:Loc Changelog}"/>
+                            <TextBlock Text="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding HyperlinkCommand}"
@@ -73,7 +73,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{local:Loc Donate}"/>
+                            <TextBlock Text="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding HyperlinkCommand}"
@@ -125,7 +125,7 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{local:Loc WantToTranslate}"/>
+                        <TextBlock Text="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
             </StackPanel>

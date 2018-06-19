@@ -42,7 +42,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="{local:Loc CopyToClipboard}"/>
+                    <TextBlock Text="{Binding CopyToClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </DockPanel>
             </Button>
         </DockPanel>

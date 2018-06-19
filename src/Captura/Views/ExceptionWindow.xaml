@@ -49,7 +49,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="{captura:Loc FFmpegLog}"/>
+                    <TextBlock Text="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </DockPanel>
             </Button>
             
