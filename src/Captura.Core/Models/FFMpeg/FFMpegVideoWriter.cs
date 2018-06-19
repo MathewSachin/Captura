@@ -1,10 +1,8 @@
 ﻿using Screna;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO.Pipes;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Captura.Models
 {
@@ -113,6 +111,8 @@ namespace Captura.Models
 
         bool _firstFrame = true;
 
+        Task _lastFrameTask;
+
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
@@ -134,6 +134,8 @@ namespace Captura.Models
                 _firstFrame = false;
             }
 
+            _lastFrameTask?.Wait();
+
             if (!(Frame is RepeatFrame))
             {
                 using (Frame)
@@ -142,7 +144,7 @@ namespace Captura.Models
                 }
             }
             
-            _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+            _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
         }
     }
 }

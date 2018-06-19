@@ -103,7 +103,7 @@ namespace Screna
             }
         }
 
-        const int MaxFrameCount = 15;
+        const int MaxFrameCount = 10;
 
         async Task DoRecord()
         {
@@ -217,37 +217,34 @@ namespace Screna
         #region Dispose
         void Dispose(bool TerminateRecord, bool TerminateWrite)
         {
-            lock (_syncLock)
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            _audioProvider?.Stop();
+            _audioProvider?.Dispose();
+
+            if (_videoWriter != null)
             {
-                if (_disposed)
-                    return;
+                _frames.CompleteAdding();
 
-                _audioProvider?.Stop();
-                _audioProvider?.Dispose();
+                _continueCapturing.Set();
 
-                if (_videoWriter != null)
-                {
-                    _frames.CompleteAdding();
+                if (TerminateRecord)
+                    _recordTask.Wait();
 
-                    _continueCapturing.Set();
+                if (TerminateWrite)
+                    _writeTask.Wait();
 
-                    if (TerminateRecord)
-                        _recordTask.Wait();
+                _videoWriter.Dispose();
+                _frames.Dispose();
 
-                    if (TerminateWrite)
-                        _writeTask.Wait();
-
-                    _videoWriter.Dispose();
-                    _frames.Dispose();
-
-                    _continueCapturing.Dispose();
-                }
-                else _audioWriter.Dispose();
-
-                _imageProvider?.Dispose();
-
-                _disposed = true;
+                _continueCapturing.Dispose();
             }
+            else _audioWriter.Dispose();
+
+            _imageProvider?.Dispose();
         }
 
         /// <summary>
@@ -255,7 +252,10 @@ namespace Screna
         /// </summary>
         public void Dispose()
         {
-            Dispose(true, true);
+            lock (_syncLock)
+            {
+                Dispose(true, true);
+            }
         }
 
         bool _disposed;
