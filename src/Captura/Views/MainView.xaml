@@ -9,27 +9,27 @@
                                 DockPanel.Dock="Right">
                 <local:ModernButton ToolTip="{local:Loc Refresh}"
                                     Command="{Binding RefreshCommand}"
-                                    IconData="{StaticResource Icon_Refresh}"/>
+                                    IconData="{StaticResource IconRefresh}"/>
                 <local:ModernButton ToolTip="Open Canvas"
                                     Click="OpenCanvas"
-                                    IconData="{StaticResource Icon_Brush}"/>
+                                    IconData="{StaticResource IconBrush}"/>
                 <local:ModernButton ToolTip="{local:Loc OpenOutFolder}"
                                     Command="{Binding OpenOutputFolderCommand}"
-                                    IconData="{StaticResource Icon_Folder}"/>
+                                    IconData="{StaticResource IconFolder}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="5,0,0,0">
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeCursor}"
                                           IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                          IconData="{StaticResource Icon_Cursor}"
+                                          IconData="{StaticResource IconCursor}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeClicks}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
-                                          IconData="{StaticResource Icon_Hand}"
+                                          IconData="{StaticResource IconHand}"
                                           IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="{local:Loc IncludeKeys}"
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
-                                          IconData="{StaticResource Icon_Keyboard}"
+                                          IconData="{StaticResource IconKeyboard}"
                                           IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
             </StackPanel>
         </DockPanel>
@@ -47,7 +47,7 @@
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
 
-            <Path Data="{StaticResource Icon_Screen}"
+            <Path Data="{StaticResource IconScreen}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -74,7 +74,7 @@
         </Grid>
 
         <DockPanel Margin="0,5">
-            <Path Data="{StaticResource Icon_Webcam}"
+            <Path Data="{StaticResource IconWebcam}"
                   Width="15"
                   Height="15"
                   Margin="10,0,7,0"
@@ -101,7 +101,7 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Path Data="{StaticResource Icon_Video}"
+            <Path Data="{StaticResource IconVideo}"
                   Width="15"
                   Height="15"
                   Margin="10,0,0,0"
@@ -231,7 +231,7 @@
                             <CheckBox Margin="10,5,0,5"
                                       IsChecked="{Binding Active, Mode=TwoWay}">
                                 <DockPanel>
-                                    <Path Data="{StaticResource Icon_Mic}"
+                                    <Path Data="{StaticResource IconMic}"
                                           Width="15"
                                           Height="15"
                                           Margin="5,0"
@@ -253,7 +253,7 @@
                             <CheckBox Margin="10,5,0,5"
                                       IsChecked="{Binding Active, Mode=TwoWay}">
                                 <DockPanel>
-                                    <Path Data="{StaticResource Icon_Speaker}"
+                                    <Path Data="{StaticResource IconSpeaker}"
                                           Width="15"
                                           Height="15"
                                           Margin="5,0"

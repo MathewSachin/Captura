@@ -52,7 +52,7 @@
                           InputGestureText="Ctrl + N">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_NewFile}"
+                            <Path Data="{StaticResource IconNewFile}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -69,7 +69,7 @@
                           InputGestureText="Ctrl + O">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_OpenFile}"
+                            <Path Data="{StaticResource IconOpenFile}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -85,7 +85,7 @@
                 <MenuItem Click="OpenFromClipboard">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Clipboard}"
+                            <Path Data="{StaticResource IconClipboard}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -104,7 +104,7 @@
                           InputGestureText="Ctrl + S">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Save}"
+                            <Path Data="{StaticResource IconSave}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -120,7 +120,7 @@
                 <MenuItem Command="{Binding SaveToClipboardCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Clipboard}"
+                            <Path Data="{StaticResource IconClipboard}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -138,7 +138,7 @@
                 <MenuItem Click="NewWindow">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Add}"
+                            <Path Data="{StaticResource IconAdd}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -154,7 +154,7 @@
                 <MenuItem Command="Close">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Close}"
+                            <Path Data="{StaticResource IconClose}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -173,7 +173,7 @@
                           InputGestureText="Ctrl + Z">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Undo}"
+                            <Path Data="{StaticResource IconUndo}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -190,7 +190,7 @@
                           InputGestureText="Ctrl + Y">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Redo}"
+                            <Path Data="{StaticResource IconRedo}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -213,7 +213,7 @@
                 <MenuItem Command="{Binding RotateLeftCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_RotateLeft}"
+                            <Path Data="{StaticResource IconRotateLeft}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -229,7 +229,7 @@
                 <MenuItem Command="{Binding RotateRightCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_RotateRight}"
+                            <Path Data="{StaticResource IconRotateRight}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -288,7 +288,7 @@
                 <Button DockPanel.Dock="Right"
                         CommandParameter="1"
                         Command="{Binding SetBrightnessCommand}">
-                    <Path Data="{StaticResource Icon_Plus}"
+                    <Path Data="{StaticResource IconPlus}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -299,7 +299,7 @@
                 <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
                         Command="{Binding SetBrightnessCommand}">
-                    <Path Data="{StaticResource Icon_Minus}"
+                    <Path Data="{StaticResource IconMinus}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -312,7 +312,7 @@
                         ToolTip="Reset Brightness"
                         Command="{Binding SetBrightnessCommand}">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Brightness}"
+                        <Path Data="{StaticResource IconBrightness}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -330,7 +330,7 @@
                 <Button DockPanel.Dock="Right"
                         CommandParameter="1"
                         Command="{Binding SetContrastCommand}">
-                    <Path Data="{StaticResource Icon_Plus}"
+                    <Path Data="{StaticResource IconPlus}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -341,7 +341,7 @@
                 <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
                         Command="{Binding SetContrastCommand}">
-                    <Path Data="{StaticResource Icon_Minus}"
+                    <Path Data="{StaticResource IconMinus}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -354,7 +354,7 @@
                         ToolTip="Reset Contrast"
                         Command="{Binding SetContrastCommand}">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Contrast}"
+                        <Path Data="{StaticResource IconContrast}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -442,7 +442,7 @@
                 <Button Command="New"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_NewFile}"
+                        <Path Data="{StaticResource IconNewFile}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -457,7 +457,7 @@
                 <Button Command="Open"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_OpenFile}"
+                        <Path Data="{StaticResource IconOpenFile}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -472,7 +472,7 @@
                 <Button Click="OpenFromClipboard"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Clipboard}"
+                        <Path Data="{StaticResource IconClipboard}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"

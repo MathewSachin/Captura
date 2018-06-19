@@ -63,7 +63,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource Icon_Pause}"
+                                            <GeometryDrawing Geometry="{StaticResource IconPause}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -114,7 +114,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource Icon_Close}"
+                                            <GeometryDrawing Geometry="{StaticResource IconClose}"
                                                              Brush="#b71c1c"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -139,7 +139,7 @@
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{local:Loc ScreenShot}"
                                         Command="{Binding ScreenShotCommand}"
-                                        IconData="{StaticResource Icon_Camera}"
+                                        IconData="{StaticResource IconCamera}"
                                         Opacity="0.9"/>
                     <local:ModernButton ToolTip="{local:Loc RecordStop}"
                                         Command="{Binding RecordCommand}"
@@ -147,7 +147,7 @@
                                         IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{local:Loc PauseResume}" 
                                         Command="{Binding PauseCommand}"
-                                        IconData="{StaticResource Icon_Pause}"
+                                        IconData="{StaticResource IconPause}"
                                         Opacity="0.9">
                         <local:ModernButton.LayoutTransform>
                             <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
@@ -156,16 +156,16 @@
                     <local:ModernButton ToolTip="{local:Loc Close}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"
-                                        IconData="{StaticResource Icon_Close}"
+                                        IconData="{StaticResource IconClose}"
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{local:Loc MinTray}"
                                         Click="HideButton_Click"
-                                        IconData="{StaticResource Icon_DoubleDown}"
+                                        IconData="{StaticResource IconDoubleDown}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{local:Loc Minimize}"
                                         Click="MinButton_Click"
-                                        IconData="{StaticResource Icon_Minimize}"
+                                        IconData="{StaticResource IconMinimize}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
                     <Grid Margin="0,-2"
@@ -191,7 +191,7 @@
                             ToolTip="{local:Loc OpenOutFolder}"
                             Command="{Binding OpenOutputFolderCommand}">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Folder}"
+                            <Path Data="{StaticResource IconFolder}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -210,7 +210,7 @@
                         <Path Stretch="UniformToFill"
                               Height="4"
                               Width="16"
-                              Data="{StaticResource Icon_More}"/>
+                              Data="{StaticResource IconMore}"/>
                     </Button>
                     <Border ToolTip="{Binding Settings.OutPath}">
                         <TextBox IsReadOnly="True"
@@ -233,7 +233,7 @@
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top"
                                        Margin="5,0,5,5">
-                                <Path Data="{StaticResource Icon_Translate}"
+                                <Path Data="{StaticResource IconTranslate}"
                                       Width="15"
                                       Height="15"
                                       Stretch="Uniform"
@@ -278,7 +278,7 @@
                                             VerticalAlignment="Top"
                                             Margin="5">
                                         <DockPanel>
-                                            <Path Data="{StaticResource Icon_Settings}"
+                                            <Path Data="{StaticResource IconSettings}"
                                                   Width="15"
                                                   Height="15"
                                                   Margin="0,0,10,0"
@@ -295,7 +295,7 @@
                                             VerticalAlignment="Top"
                                             Margin="5">
                                         <DockPanel>
-                                            <Path Data="{StaticResource Icon_Settings}"
+                                            <Path Data="{StaticResource IconSettings}"
                                                   Width="15"
                                                   Height="15"
                                                   Margin="0,0,10,0"

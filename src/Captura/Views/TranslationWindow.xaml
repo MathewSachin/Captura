@@ -113,7 +113,7 @@
                             Margin="5,10,10,10"
                             Command="{Binding SaveCommand}">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Save}"
+                            <Path Data="{StaticResource IconSave}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -129,7 +129,7 @@
                             Margin="5,10"
                             Command="{Binding DiscardChangesCommand}">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Close}"
+                            <Path Data="{StaticResource IconClose}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"

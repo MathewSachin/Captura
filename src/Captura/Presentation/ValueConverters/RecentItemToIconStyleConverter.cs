@@ -16,16 +16,16 @@ namespace Captura
             switch (Value)
             {
                 case RecentItemType.Image:
-                    return app.FindResource("Icon_Image");
+                    return app.FindResource("IconImage");
 
                 case RecentItemType.Video:
-                    return app.FindResource("Icon_Video");
+                    return app.FindResource("IconVideo");
 
                 case RecentItemType.Audio:
-                    return app.FindResource("Icon_Music");
+                    return app.FindResource("IconMusic");
 
                 case RecentItemType.Link:
-                    return app.FindResource("Icon_Link");
+                    return app.FindResource("IconLink");
 
                 default:
                     return null;

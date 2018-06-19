@@ -137,7 +137,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Path Data="{StaticResource Icon_Border}"
+                                    <Path Data="{StaticResource IconBorder}"
                                           Width="15"
                                           Height="15"
                                           Margin="0,0,10,0"
@@ -225,7 +225,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Path Data="{StaticResource Icon_Border}"
+                                    <Path Data="{StaticResource IconBorder}"
                                           Width="15"
                                           Height="15"
                                           Margin="0,0,10,0"
@@ -263,7 +263,7 @@
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
-                                            IconData="{StaticResource Icon_Add}"
+                                            IconData="{StaticResource IconAdd}"
                                             DockPanel.Dock="Right"/>
                         <Label Content="Supported Replacement Tokens: %elapsed%"/>
                     </DockPanel>
@@ -292,7 +292,7 @@
                             <local:ModernButton ToolTip="Remove"
                                                 Command="{Binding DataContext.RemoveCommand, ElementName=ItemsControl}"
                                                 CommandParameter="{Binding}"
-                                                IconData="{StaticResource Icon_Close}"
+                                                IconData="{StaticResource IconClose}"
                                                 DockPanel.Dock="Right"/>
 
                             <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
@@ -312,7 +312,7 @@
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
-                                            IconData="{StaticResource Icon_Add}"
+                                            IconData="{StaticResource IconAdd}"
                                             DockPanel.Dock="Right"/>
 
                         <Label Content="Images can be used as watermarks"/>
@@ -342,7 +342,7 @@
                             <local:ModernButton ToolTip="Remove"
                                                 Command="{Binding DataContext.RemoveCommand, ElementName=ImagesItemsControl}"
                                                 CommandParameter="{Binding}"
-                                                IconData="{StaticResource Icon_Close}"
+                                                IconData="{StaticResource IconClose}"
                                                 DockPanel.Dock="Right"/>
 
                             <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"

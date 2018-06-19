@@ -22,7 +22,7 @@
             <Path Stretch="UniformToFill"
                   Height="10"
                   Width="10"
-                  Data="{StaticResource Icon_Close}"/>
+                  Data="{StaticResource IconClose}"/>
         </Button>
         <Button Content="{Binding Display}"
                 BorderThickness="0"
@@ -35,7 +35,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Clipboard}"
+                                <Path Data="{StaticResource IconClipboard}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -52,7 +52,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Trim}"
+                                <Path Data="{StaticResource IconTrim}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -69,7 +69,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Clipboard}"
+                                <Path Data="{StaticResource IconClipboard}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -86,7 +86,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Upload}"
+                                <Path Data="{StaticResource IconUpload}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -103,7 +103,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Crop}"
+                                <Path Data="{StaticResource IconCrop}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -120,7 +120,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Pencil}"
+                                <Path Data="{StaticResource IconPencil}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -136,7 +136,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource Icon_Delete}"
+                                <Path Data="{StaticResource IconDelete}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"

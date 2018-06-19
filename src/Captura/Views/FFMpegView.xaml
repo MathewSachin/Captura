@@ -9,7 +9,7 @@
             <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_History}"
+                    <Path Data="{StaticResource IconHistory}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -25,7 +25,7 @@
                     Click="FFDownload"
                     Margin="0,5">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_Download}"
+                    <Path Data="{StaticResource IconDownload}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -49,7 +49,7 @@
                     <Path Stretch="UniformToFill"
                           Height="4"
                           Width="16"
-                          Data="{StaticResource Icon_More}"/>
+                          Data="{StaticResource IconMore}"/>
                 </Button>
                 <Button DockPanel.Dock="Right"
                         ToolTip="{local:Loc Reset}"
@@ -59,10 +59,10 @@
                     <Path Stretch="UniformToFill"
                           Height="10"
                           Width="9"
-                          Data="{StaticResource Icon_Close}"/>
+                          Data="{StaticResource IconClose}"/>
                 </Button>
 
-                <Path Data="{StaticResource Icon_Folder}"
+                <Path Data="{StaticResource IconFolder}"
                       Width="15"
                       Height="15"
                       Margin="0,0,10,0"
@@ -125,7 +125,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Path Data="{StaticResource Icon_Twitch}"
+                <Path Data="{StaticResource IconTwitch}"
                       Width="15"
                       Height="15"
                       Margin="0,0,10,0"
@@ -139,7 +139,7 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.TwitchKey}"/>
 
-                <Path Data="{StaticResource Icon_YouTube}"
+                <Path Data="{StaticResource IconYouTube}"
                       Grid.Row="1"
                       Width="15"
                       Height="15"
@@ -156,7 +156,7 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
 
-                <Path Data="{StaticResource Icon_Web}"
+                <Path Data="{StaticResource IconWeb}"
                       Grid.Row="2"
                       Width="15"
                       Height="15"
@@ -177,7 +177,7 @@
             <Button Margin="0,10"
                     Click="ConfigCodecs">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_Settings}"
+                    <Path Data="{StaticResource IconSettings}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"

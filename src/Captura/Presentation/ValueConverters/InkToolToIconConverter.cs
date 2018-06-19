@@ -15,31 +15,31 @@ namespace Captura
             {
                 case InkCanvasEditingMode.Ink:
                 case ExtendedInkTool.Pen:
-                    return app.FindResource("Icon_Pencil");
+                    return app.FindResource("IconPencil");
 
                 case InkCanvasEditingMode.EraseByPoint:
                 case ExtendedInkTool.Eraser:
-                    return app.FindResource("Icon_Eraser");
+                    return app.FindResource("IconEraser");
 
                 case InkCanvasEditingMode.EraseByStroke:
                 case ExtendedInkTool.StrokeEraser:
-                    return app.FindResource("Icon_StrokeEraser");
+                    return app.FindResource("IconStrokeEraser");
 
                 case InkCanvasEditingMode.Select:
                 case ExtendedInkTool.Select:
-                    return app.FindResource("Icon_Select");
+                    return app.FindResource("IconSelect");
 
                 case ExtendedInkTool.Line:
-                    return app.FindResource("Icon_Line");
+                    return app.FindResource("IconLine");
 
                 case ExtendedInkTool.Rectangle:
-                    return app.FindResource("Icon_Rectangle");
+                    return app.FindResource("IconRectangle");
 
                 case ExtendedInkTool.Ellipse:
-                    return app.FindResource("Icon_Ellipse");
+                    return app.FindResource("IconEllipse");
             }
 
-            return app.FindResource("Icon_Cursor");
+            return app.FindResource("IconCursor");
         }
     }
 }

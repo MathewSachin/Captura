@@ -11,7 +11,7 @@
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{local:Loc Close}"
                                 Click="CloseButton_Click"
-                                IconData="{StaticResource Icon_ClearNotifications}"
+                                IconData="{StaticResource IconClearNotifications}"
                                 DockPanel.Dock="Right"/>
 
             <Label>

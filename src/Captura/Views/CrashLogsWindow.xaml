@@ -26,7 +26,7 @@
         <DockPanel DockPanel.Dock="Top"
                    Visibility="{Binding SelectedCrashLog, Converter={StaticResource NotNullConverter}}"
                    Margin="5">
-            <local:ModernButton IconData="{StaticResource Icon_Delete}"
+            <local:ModernButton IconData="{StaticResource IconDelete}"
                                 DockPanel.Dock="Right"
                                 Command="{Binding RemoveCommand}"
                                 Foreground="#b71c1c"/>
@@ -34,7 +34,7 @@
             <Button Command="{Binding CopyToClipboardCommand}"
                     Margin="5">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_Clipboard}"
+                    <Path Data="{StaticResource IconClipboard}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"

@@ -44,7 +44,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Path Data="{StaticResource Icon_Opacity}"
+            <Path Data="{StaticResource IconOpacity}"
                   Width="15"
                   Height="15"
                   Margin="0,0,10,0"

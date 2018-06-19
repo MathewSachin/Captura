@@ -20,7 +20,7 @@
     <DockPanel Background="{DynamicResource WindowBackground}">
         <DockPanel DockPanel.Dock="Top"
                    Margin="10">
-            <Path Data="{StaticResource Icon_Error}"
+            <Path Data="{StaticResource IconError}"
                   Width="15"
                   Height="15"
                   Margin="0,0,10,0"
@@ -41,7 +41,7 @@
             <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_History}"
+                    <Path Data="{StaticResource IconHistory}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -56,7 +56,7 @@
             <Button Margin="5"
                     Command="{Binding CopyToClipboardCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_Clipboard}"
+                    <Path Data="{StaticResource IconClipboard}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"

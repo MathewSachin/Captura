@@ -67,7 +67,7 @@
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCustomCodecCommand}"
-                                            IconData="{StaticResource Icon_Add}"/>
+                                            IconData="{StaticResource IconAdd}"/>
                         
                         <Label Content="Add Codec"
                                VerticalAlignment="Center"/>
@@ -98,7 +98,7 @@
                                                                 Grid.Column="2"
                                                                 CommandParameter="{Binding}"
                                                                 Command="{Binding DataContext.RemoveCustomCodecCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                                                IconData="{StaticResource Icon_Close}"/>
+                                                                IconData="{StaticResource IconClose}"/>
                                     
                                             <Label Content="Name"/>
                                             

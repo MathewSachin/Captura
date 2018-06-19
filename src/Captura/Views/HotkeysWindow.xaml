@@ -22,7 +22,7 @@
                 <Button Command="{Binding HotKeyManager.AddCommand}"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Plus}"
+                        <Path Data="{StaticResource IconPlus}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -38,7 +38,7 @@
                         Command="{Binding HotKeyManager.ResetCommand}"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Restore}"
+                        <Path Data="{StaticResource IconRestore}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -67,7 +67,7 @@
                                 
                                 <local:ModernButton DockPanel.Dock="Right"
                                                     CommandParameter="{Binding}"
-                                                    IconData="{StaticResource Icon_Close}"
+                                                    IconData="{StaticResource IconClose}"
                                                     Command="{Binding DataContext.HotKeyManager.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}">
                                     <local:ModernButton.LayoutTransform>
                                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>

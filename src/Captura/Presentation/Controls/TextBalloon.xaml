@@ -9,7 +9,7 @@
         <local:ModernButton ToolTip="{local:Loc Close}"
                             Click="CloseButton_Click"
                             Foreground="LightPink"
-                            IconData="{StaticResource Icon_Close}"
+                            IconData="{StaticResource IconClose}"
                             DockPanel.Dock="Right"/>
         
         <Label>

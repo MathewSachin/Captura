@@ -82,7 +82,7 @@
             <Button Margin="5"
                     Command="{Binding OpenCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_OpenFile}"
+                    <Path Data="{StaticResource IconOpenFile}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -98,7 +98,7 @@
                     Grid.Column="1"
                     Command="{Binding TrimCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource Icon_Trim}"
+                    <Path Data="{StaticResource IconTrim}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"

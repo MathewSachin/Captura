@@ -33,7 +33,7 @@
                             CommandParameter="https://github.com/MathewSachin/Captura/"
                             Margin="3">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Code}"
+                            <Path Data="{StaticResource IconCode}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -49,7 +49,7 @@
                             Grid.Column="1"
                             Margin="3">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_History}"
+                            <Path Data="{StaticResource IconHistory}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -65,7 +65,7 @@
                             Grid.Row="1"
                             Margin="3">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Dollar}"
+                            <Path Data="{StaticResource IconDollar}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -82,7 +82,7 @@
                             Grid.Column="1"
                             Margin="3">
                         <DockPanel>
-                            <Path Data="{StaticResource Icon_Web}"
+                            <Path Data="{StaticResource IconWeb}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -102,7 +102,7 @@
                 <Button Click="ViewCrashLogs"
                         Margin="3">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Error}"
+                        <Path Data="{StaticResource IconError}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -117,7 +117,7 @@
                 <Button Margin="3"
                         Click="Translate">
                     <DockPanel>
-                        <Path Data="{StaticResource Icon_Translate}"
+                        <Path Data="{StaticResource IconTranslate}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"

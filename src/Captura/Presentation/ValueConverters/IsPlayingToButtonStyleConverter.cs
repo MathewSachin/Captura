@@ -13,7 +13,7 @@ namespace Captura
         {
             if (Value is bool b)
             {
-                var icon = Application.Current.FindResource(b ? "Icon_Stop" : "Icon_Play");
+                var icon = Application.Current.FindResource(b ? "IconStop" : "IconPlay");
                 var color = b ? Colors.OrangeRed : Colors.LimeGreen;
 
                 return new Style(typeof(ModernButton), (Style) Application.Current.Resources[typeof(ModernButton)])
