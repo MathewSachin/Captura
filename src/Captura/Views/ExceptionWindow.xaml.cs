@@ -19,5 +19,10 @@ namespace Captura.Views
         {
             Close();
         }
+
+        void OpenFFmpegLog(object Sender, RoutedEventArgs E)
+        {
+            FFmpegLogView.Instance.ShowAndFocus();
+        }
     }
 }

@@ -38,11 +38,11 @@ namespace Captura.Models
 
         // MP4 (H.264 NVENC, AAC)
         public static FFmpegItem H264_NVENC { get; } = new FFmpegItem("Mp4 (H.264 NVENC | AAC) (Alpha)", () => ".mp4",
-            VideoQuality => "-c:v h264_nvenc -profile high444p -pixel_format yuv444p -preset fast", FFmpegAudioItem.Aac);
+            VideoQuality => "-c:v h264_nvenc -profile:v high444p -pixel_format yuv444p -preset fast", FFmpegAudioItem.Aac);
 
         // MP4 (HEVC NVENC, AAC)
         public static FFmpegItem HEVC_NVENC { get; } = new FFmpegItem("Mp4 (HEVC NVENC | AAC) (Alpha)", () => ".mp4",
-            VideoQuality => "-c:v hevc_nvenc -profile high444p -pixel_format yuv444p -preset slow", FFmpegAudioItem.Aac);
+            VideoQuality => "-c:v hevc_nvenc -profile:v high444p -pixel_format yuv444p -preset slow", FFmpegAudioItem.Aac);
 
         public static IEnumerable<FFmpegItem> Items { get; } = new[]
         {

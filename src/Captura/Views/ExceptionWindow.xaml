@@ -38,6 +38,21 @@
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
+            <Button Click="OpenFFmpegLog"
+                    Margin="0,5">
+                <DockPanel>
+                    <Path Data="{StaticResource Icon_History}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="{captura:Loc FFmpegLog}"/>
+                </DockPanel>
+            </Button>
+            
             <Button Margin="5"
                     Command="{Binding CopyToClipboardCommand}">
                 <DockPanel>
