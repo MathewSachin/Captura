@@ -30,6 +30,6 @@ namespace Captura.Models
 
         protected abstract void OnRefresh();
 
-        public abstract IAudioProvider GetAudioProvider();
+        public abstract IAudioProvider GetAudioProvider(int FrameRate);
     }
 }

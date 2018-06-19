@@ -33,10 +33,20 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        public MixedAudioProvider(IEnumerable<BassItem> Devices, bool MuteOutput = true)
+        public MixedAudioProvider(IEnumerable<BassItem> Devices, int FrameRate, bool MuteOutput = true)
         {
             if (Devices == null)
                 throw new ArgumentNullException();
+
+            var updatePeriod = 1000 / FrameRate;
+
+            Bass.UpdatePeriod = updatePeriod.Clip(5, 100);
+
+            for (var i = 0; i < BufferCount; ++i)
+            {
+                // Update Period (ms) * Frequency * Bps * Channels
+                _buffers.Add(new byte[updatePeriod * 44 * 4 * 2]);
+            }
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
             _filler = Bass.CreateStream(44100, 2, BassFlags.Float | BassFlags.Decode, ManagedBass.Extensions.SilenceStreamProcedure);
@@ -117,17 +127,34 @@ namespace Captura.Models
             if (Device.Active)
                 AddDevice();
         }
-        
-        byte[] _buffer;
+
+        const int BufferCount = 3;
+
+        int _bufferIndex;
+
+        readonly List<byte[]> _buffers = new List<byte[]>();
+
+        byte[] GetBuffer(int Length)
+        {
+            _bufferIndex = ++_bufferIndex % BufferCount;
+
+            if (_buffers[_bufferIndex] == null || _buffers[_bufferIndex].Length < Length)
+            {
+                _buffers[_bufferIndex] = new byte[Length + 1000];
+
+                Console.WriteLine($"New Audio Buffer Allocated: {Length}");
+            }
+
+            return _buffers[_bufferIndex];
+        }
 
         void Procedure(int Handle, int Channel, IntPtr Buffer, int Length, IntPtr User)
         {
-            if (_buffer == null || _buffer.Length < Length)
-                _buffer = new byte[Length];
+            var buffer = GetBuffer(Length);
 
-            Marshal.Copy(Buffer, _buffer, 0, Length);
+            Marshal.Copy(Buffer, buffer, 0, Length);
 
-            DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, Length));
+            DataAvailable?.Invoke(this, new DataAvailableEventArgs(buffer, Length));
         }
         
         /// <summary>

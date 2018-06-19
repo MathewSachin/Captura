@@ -7,7 +7,7 @@ namespace Captura.Models
     /// </summary>
     public class NoAudioSource : AudioSource
     {
-        public override IAudioProvider GetAudioProvider() => null;
+        public override IAudioProvider GetAudioProvider(int FrameRate) => null;
 
         protected override void OnRefresh() { }
     }

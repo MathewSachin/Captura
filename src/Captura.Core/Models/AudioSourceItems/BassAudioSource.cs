@@ -29,11 +29,13 @@ namespace Captura.Models
         // Check if all BASS dependencies are present
         public static bool Available { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
-        public override IAudioProvider GetAudioProvider()
+        public override IAudioProvider GetAudioProvider(int FrameRate)
         {
             return new MixedAudioProvider(AvailableRecordingSources
                 .Concat(AvailableLoopbackSources)
-                .Cast<BassItem>(), !ServiceProvider.Get<Settings>().Audio.PlaybackRecordingRealTime);
+                .Cast<BassItem>(),
+                FrameRate,
+                !ServiceProvider.Get<Settings>().Audio.PlaybackRecordingRealTime);
         }
 
         protected override void OnRefresh()

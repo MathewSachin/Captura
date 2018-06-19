@@ -689,7 +689,7 @@ namespace Captura.ViewModels
             {
                 if (Settings.Audio.Enabled)
                 {
-                    audioProvider = AudioSource.GetAudioProvider();
+                    audioProvider = AudioSource.GetAudioProvider(Settings.Video.FrameRate);
                 }
             }
             catch (Exception e)
