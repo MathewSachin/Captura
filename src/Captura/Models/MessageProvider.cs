@@ -77,11 +77,17 @@ namespace Captura.Models
             });
         }
 
-        public void ShowException(Exception Exception, string Message)
+        public void ShowException(Exception Exception, string Message, bool Blocking = false)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                new ExceptionWindow(Exception, Message).ShowDialog();
+                var win = new ExceptionWindow(Exception, Message);
+
+                if (Blocking)
+                {
+                    win.ShowDialog();
+                }
+                else win.ShowAndFocus();
             });
         }
 

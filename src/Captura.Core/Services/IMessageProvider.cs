@@ -10,6 +10,6 @@ namespace Captura.Models
 
         void ShowFFmpegUnavailable();
 
-        void ShowException(Exception Exception, string Message);
+        void ShowException(Exception Exception, string Message, bool Blocking = false);
     }
 }

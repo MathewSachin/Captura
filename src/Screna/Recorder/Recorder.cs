@@ -89,9 +89,15 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccurred?.Invoke(e);
+                lock (_frames)
+                {
+                    if (!_disposed)
+                    {
+                        ErrorOccurred?.Invoke(e);
 
-                Dispose(true, false);
+                        Dispose(true, false);
+                    }
+                }
             }
         }
 
@@ -164,47 +170,75 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccurred?.Invoke(e);
+                lock (_frames)
+                {
+                    if (!_disposed)
+                    {
+                        ErrorOccurred?.Invoke(e);
 
-                Dispose(false, true);
+                        Dispose(false, true);
+                    }
+                }
             }
         }
 
         void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
         {
-            _videoWriter.WriteAudio(E.Buffer, E.Length);            
+            try
+            {
+                _videoWriter.WriteAudio(E.Buffer, E.Length);
+            }
+            catch (Exception e)
+            {
+                if (_imageProvider == null)
+                {
+                    lock (_frames)
+                    {
+                        if (!_disposed)
+                        {
+                            ErrorOccurred?.Invoke(e);
+
+                            Dispose(true, true);
+                        }
+                    }
+                }
+            }
         }
 
         #region Dispose
         void Dispose(bool TerminateRecord, bool TerminateWrite)
         {
-            ThrowIfDisposed();
-
-            _audioProvider?.Stop();
-            _audioProvider?.Dispose();
-
-            if (_videoWriter != null)
+            lock (_frames)
             {
-                _frames.CompleteAdding();
+                if (_disposed)
+                    return;
 
-                _continueCapturing.Set();
+                _audioProvider?.Stop();
+                _audioProvider?.Dispose();
 
-                if (TerminateRecord)
-                    _recordTask.Wait();
+                if (_videoWriter != null)
+                {
+                    _frames.CompleteAdding();
 
-                if (TerminateWrite)
-                    _writeTask.Wait();
+                    _continueCapturing.Set();
 
-                _videoWriter.Dispose();
-                _frames.Dispose();
+                    if (TerminateRecord)
+                        _recordTask.Wait();
 
-                _continueCapturing.Dispose();
+                    if (TerminateWrite)
+                        _writeTask.Wait();
+
+                    _videoWriter.Dispose();
+                    _frames.Dispose();
+
+                    _continueCapturing.Dispose();
+                }
+                else _audioWriter.Dispose();
+
+                _imageProvider?.Dispose();
+
+                _disposed = true;
             }
-            else _audioWriter.Dispose();
-
-            _imageProvider?.Dispose();
-
-            _disposed = true;
         }
 
         /// <summary>
@@ -224,8 +258,11 @@ namespace Screna
 
         void ThrowIfDisposed()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("this");
+            lock (_frames)
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException("this");
+            }
         }
         #endregion
 
