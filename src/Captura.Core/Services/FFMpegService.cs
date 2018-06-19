@@ -3,6 +3,7 @@ using Ookii.Dialogs;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -121,6 +122,20 @@ namespace Captura
             process.BeginErrorReadLine();
             
             return process;
+        }
+
+        public static bool WaitForConnection(this NamedPipeServerStream ServerStream, int Timeout)
+        {
+            var asyncResult = ServerStream.BeginWaitForConnection(Ar => {}, null);
+
+            if (asyncResult.AsyncWaitHandle.WaitOne(Timeout))
+            {
+                ServerStream.EndWaitForConnection(asyncResult);
+
+                return ServerStream.IsConnected;
+            }
+
+            return false;
         }
     }
 }

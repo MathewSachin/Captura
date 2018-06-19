@@ -100,7 +100,10 @@ namespace Captura.Models
 
             if (_firstAudio)
             {
-                _audioPipe.WaitForConnection();
+                if (!_audioPipe.WaitForConnection(5000))
+                {
+                    throw new Exception("Cannot connect Audio pipe to FFmpeg");
+                }
 
                 _firstAudio = false;
             }
@@ -123,7 +126,10 @@ namespace Captura.Models
             
             if (_firstFrame)
             {
-                _ffmpegIn.WaitForConnection();
+                if (!_ffmpegIn.WaitForConnection(5000))
+                {
+                    throw new Exception("Cannot connect Video pipe to FFmpeg");
+                }
 
                 _firstFrame = false;
             }

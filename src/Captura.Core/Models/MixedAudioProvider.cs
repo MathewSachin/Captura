@@ -44,8 +44,7 @@ namespace Captura.Models
 
             for (var i = 0; i < BufferCount; ++i)
             {
-                // Update Period (ms) * Frequency * Bps * Channels
-                _buffers.Add(new byte[updatePeriod * 44 * 4 * 2]);
+                _buffers.Add(new byte[0]);
             }
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
