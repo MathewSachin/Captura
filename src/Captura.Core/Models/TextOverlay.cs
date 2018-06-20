@@ -57,7 +57,7 @@ namespace Captura.Models
 
         protected abstract string GetText();
         
-        public virtual void Draw(Graphics g, Func<Point, Point> PointTransform = null)
+        public virtual void Draw(Graphics G, Func<Point, Point> PointTransform = null)
         {
             var text = GetText();
 
@@ -68,20 +68,20 @@ namespace Captura.Models
 
             var font = new Font(FontFamily.GenericMonospace, fontSize);
 
-            var size = g.MeasureString(text, font);
+            var size = G.MeasureString(text, font);
 
             int paddingX = _overlaySettings.HorizontalPadding, paddingY = _overlaySettings.VerticalPadding;
 
-            var rect = new RectangleF(GetLeft(_overlaySettings, g.VisibleClipBounds.Width, size.Width),
-                GetTop(_overlaySettings, g.VisibleClipBounds.Height, size.Height),
+            var rect = new RectangleF(GetLeft(_overlaySettings, G.VisibleClipBounds.Width, size.Width),
+                GetTop(_overlaySettings, G.VisibleClipBounds.Height, size.Height),
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
 
-            g.FillRoundedRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
+            G.FillRoundedRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
                 rect,
                 _overlaySettings.CornerRadius);
 
-            g.DrawString(text,
+            G.DrawString(text,
                 font,
                 new SolidBrush(_overlaySettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
@@ -92,7 +92,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                g.DrawRoundedRectangle(new Pen(_overlaySettings.BorderColor, border),
+                G.DrawRoundedRectangle(new Pen(_overlaySettings.BorderColor, border),
                     rect,
                     _overlaySettings.CornerRadius);
             }

@@ -4,6 +4,7 @@ using Screna;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeRedundantParentheses
 
 namespace Captura.Models
 {

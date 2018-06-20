@@ -15,10 +15,11 @@ namespace Screna
     {
         #region PInvoke
         const string DllName = "user32.dll";
-        
-        [DllImport(DllName)] 
-        static extern bool IsWindow(IntPtr hWnd);
 
+        // ReSharper disable InconsistentNaming
+        [DllImport(DllName)]
+        static extern bool IsWindow(IntPtr hWnd);
+        
         [DllImport(DllName)]
         static extern IntPtr GetDesktopWindow();
 
@@ -41,6 +42,7 @@ namespace Screna
 
         [DllImport(DllName)]
         static extern bool IsWindowVisible(IntPtr hWnd);
+        // ReSharper restore InconsistentNaming
         #endregion
 
         /// <summary>

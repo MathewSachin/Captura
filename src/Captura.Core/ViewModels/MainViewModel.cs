@@ -541,19 +541,21 @@ namespace Captura.ViewModels
                 case WindowSourceProvider _:
                     var hWnd = Window.DesktopWindow;
 
-                    if (selectedVideoSource is WindowItem windowItem)
+                    switch (selectedVideoSource)
                     {
-                        hWnd = windowItem.Window;
-                    }
-                    else if (selectedVideoSource is WindowPickerItem windowPicker)
-                    {
-                        var picked = windowPicker.Picker.PickWindow();
+                        case WindowItem windowItem:
+                            hWnd = windowItem.Window;
+                            break;
 
-                        if (picked != null)
-                        {
-                            hWnd = picked;
-                        }
-                        else return;
+                        case WindowPickerItem windowPicker:
+                            var picked = windowPicker.Picker.PickWindow();
+
+                            if (picked != null)
+                            {
+                                hWnd = picked;
+                            }
+                            else return;
+                            break;
                     }
 
                     bmp = ScreenShotWindow(hWnd);
@@ -561,36 +563,38 @@ namespace Captura.ViewModels
 
                 case DeskDuplSourceProvider _:
                 case ScreenSourceProvider _:
-                    if (selectedVideoSource is FullScreenItem)
+                    switch (selectedVideoSource)
                     {
-                        var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
+                        case FullScreenItem _:
+                            var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
 
-                        if (hide)
-                        {
-                            _mainWindow.IsVisible = false;
+                            if (hide)
+                            {
+                                _mainWindow.IsVisible = false;
 
-                            // Ensure that the Window is hidden
-                            await Task.Delay(300);
-                        }
+                                // Ensure that the Window is hidden
+                                await Task.Delay(300);
+                            }
 
-                        bmp = ScreenShot.Capture(includeCursor);
+                            bmp = ScreenShot.Capture(includeCursor);
 
-                        if (hide)
-                            _mainWindow.IsVisible = true;
-                    }
-                    else if (selectedVideoSource is ScreenPickerItem screenPicker)
-                    {
-                        var picked = screenPicker.Picker.PickScreen();
+                            if (hide)
+                                _mainWindow.IsVisible = true;
+                            break;
 
-                        if (picked != null)
-                        {
-                            bmp = ScreenShot.Capture(picked, includeCursor);
-                        }
-                        else return;
-                    }
-                    else if (selectedVideoSource is ScreenItem screen)
-                    {
-                        bmp = screen.Capture(includeCursor);
+                        case ScreenPickerItem screenPicker:
+                            var picked = screenPicker.Picker.PickScreen();
+
+                            if (picked != null)
+                            {
+                                bmp = ScreenShot.Capture(picked, includeCursor);
+                            }
+                            else return;
+                            break;
+
+                        case ScreenItem screen:
+                            bmp = screen.Capture(includeCursor);
+                            break;
                     }
                     
                     bmp = bmp?.Transform(Settings.ScreenShots);

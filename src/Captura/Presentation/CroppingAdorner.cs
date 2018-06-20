@@ -90,14 +90,14 @@ namespace Captura
                     FillPropChanged));
         }
 
-        public CroppingAdorner(UIElement AdornedElement, Rect rcInit)
+        public CroppingAdorner(UIElement AdornedElement, Rect RectInit)
             : base(AdornedElement)
         {
             _vc = new VisualCollection(this);
             _prCropMask = new PuncturedRect
             {
                 IsHitTestVisible = false,
-                RectInterior = rcInit,
+                RectInterior = RectInit,
                 Fill = Fill
             };
             _vc.Add(_prCropMask);
@@ -173,30 +173,30 @@ namespace Captura
         #region Thumb handlers
         // Generic handler for Cropping
         void HandleThumb(
-            double drcL,
-            double drcT,
-            double drcW,
-            double drcH,
-            double dx,
-            double dy)
+            double DeltaRatioLeft,
+            double DeltaRatioTop,
+            double DeltaRatioWidth,
+            double DeltaRatioHeight,
+            double DeltaX,
+            double DeltaY)
         {
             var rcInterior = _prCropMask.RectInterior;
 
-            if (rcInterior.Width + drcW * dx < 0)
+            if (rcInterior.Width + DeltaRatioWidth * DeltaX < 0)
             {
-                dx = -rcInterior.Width / drcW;
+                DeltaX = -rcInterior.Width / DeltaRatioWidth;
             }
 
-            if (rcInterior.Height + drcH * dy < 0)
+            if (rcInterior.Height + DeltaRatioHeight * DeltaY < 0)
             {
-                dy = -rcInterior.Height / drcH;
+                DeltaY = -rcInterior.Height / DeltaRatioHeight;
             }
 
             rcInterior = new Rect(
-                rcInterior.Left + drcL * dx,
-                rcInterior.Top + drcT * dy,
-                rcInterior.Width + drcW * dx,
-                rcInterior.Height + drcH * dy);
+                rcInterior.Left + DeltaRatioLeft * DeltaX,
+                rcInterior.Top + DeltaRatioTop * DeltaY,
+                rcInterior.Width + DeltaRatioWidth * DeltaX,
+                rcInterior.Height + DeltaRatioHeight * DeltaY);
 
             _prCropMask.RectInterior = rcInterior;
             SetThumbs(_prCropMask.RectInterior);
@@ -258,24 +258,24 @@ namespace Captura
         }
         
         #region Arranging/positioning
-        void SetThumbs(Rect rc)
+        void SetThumbs(Rect Rect)
         {
-            _crtBottomRight.SetPos(rc.Right, rc.Bottom);
-            _crtTopLeft.SetPos(rc.Left, rc.Top);
-            _crtTopRight.SetPos(rc.Right, rc.Top);
-            _crtBottomLeft.SetPos(rc.Left, rc.Bottom);
-            _crtTop.SetPos(rc.Left + rc.Width / 2, rc.Top);
-            _crtBottom.SetPos(rc.Left + rc.Width / 2, rc.Bottom);
-            _crtLeft.SetPos(rc.Left, rc.Top + rc.Height / 2);
-            _crtRight.SetPos(rc.Right, rc.Top + rc.Height / 2);
+            _crtBottomRight.SetPos(Rect.Right, Rect.Bottom);
+            _crtTopLeft.SetPos(Rect.Left, Rect.Top);
+            _crtTopRight.SetPos(Rect.Right, Rect.Top);
+            _crtBottomLeft.SetPos(Rect.Left, Rect.Bottom);
+            _crtTop.SetPos(Rect.Left + Rect.Width / 2, Rect.Top);
+            _crtBottom.SetPos(Rect.Left + Rect.Width / 2, Rect.Bottom);
+            _crtLeft.SetPos(Rect.Left, Rect.Top + Rect.Height / 2);
+            _crtRight.SetPos(Rect.Right, Rect.Top + Rect.Height / 2);
 
-            _crtMove.Width = rc.Width;
-            _crtMove.Height = rc.Height;
-            Canvas.SetLeft(_crtMove, rc.Left);
-            Canvas.SetTop(_crtMove, rc.Top);
+            _crtMove.Width = Rect.Width;
+            _crtMove.Height = Rect.Height;
+            Canvas.SetLeft(_crtMove, Rect.Left);
+            Canvas.SetTop(_crtMove, Rect.Top);
 
-            Canvas.SetLeft(_checkButton, rc.Right - _checkButton.ActualWidth - 15);
-            Canvas.SetTop(_checkButton, rc.Bottom - _checkButton.ActualHeight - 10);
+            Canvas.SetLeft(_checkButton, Rect.Right - _checkButton.ActualWidth - 15);
+            Canvas.SetTop(_checkButton, Rect.Bottom - _checkButton.ActualHeight - 10);
         }
 
         // Arrange the Adorners.
@@ -293,8 +293,6 @@ namespace Captura
         }
         #endregion
 
-        public Rect SelectedRegion => _prCropMask.RectInterior;
-        
         public BitmapSource BpsCrop(BitmapSource Bmp)
         {
             var ratio = Bmp.PixelWidth / AdornedElement.RenderSize.Width;
@@ -324,17 +322,17 @@ namespace Captura
             return new CroppedBitmap(Bmp, rcFrom);
         }
         
-        void BuildCorner(ref CropThumb crt, Cursor crs)
+        void BuildCorner(ref CropThumb Thumb, Cursor CustomCursor)
         {
-            if (crt != null)
+            if (Thumb != null)
                 return;
 
-            crt = new CropThumb(CpxThumbWidth)
+            Thumb = new CropThumb(CpxThumbWidth)
             {
-                Cursor = crs
+                Cursor = CustomCursor
             };
 
-            _cnvThumbs.Children.Add(crt);
+            _cnvThumbs.Children.Add(Thumb);
         }
 
         #region Visual tree overrides
@@ -347,24 +345,24 @@ namespace Captura
         
         class CropThumb : Thumb
         {
-            readonly int _cpx;
+            readonly int _width;
 
-            public CropThumb(int cpx)
+            public CropThumb(int Width)
             {
-                _cpx = cpx;
+                _width = Width;
             }
             
             protected override Visual GetVisualChild(int Index) => null;
 
             protected override void OnRender(DrawingContext DrawingContext)
             {
-                DrawingContext.DrawRoundedRectangle(Brushes.White, new Pen(Brushes.Black, 1), new Rect(new Size(_cpx, _cpx)), 1, 1);
+                DrawingContext.DrawRoundedRectangle(Brushes.White, new Pen(Brushes.Black, 1), new Rect(new Size(_width, _width)), 1, 1);
             }
 
             public void SetPos(double X, double Y)
             {
-                Canvas.SetTop(this, Y - _cpx / 2.0);
-                Canvas.SetLeft(this, X - _cpx / 2.0);
+                Canvas.SetTop(this, Y - _width / 2.0);
+                Canvas.SetLeft(this, X - _width / 2.0);
             }
         }
     }

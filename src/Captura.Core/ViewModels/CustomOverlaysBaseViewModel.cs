@@ -3,17 +3,26 @@ using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
-    public abstract class CustomOverlaysBaseViewModel<T> where T : new()
+    public abstract class CustomOverlaysBaseViewModel<T> : NotifyPropertyChanged where T : class, new()
     {
-        public CustomOverlaysBaseViewModel(ObservableCollection<T> Collection)
+        protected CustomOverlaysBaseViewModel(ObservableCollection<T> Collection)
         {
             _collection = Collection;
 
             this.Collection = new ReadOnlyObservableCollection<T>(_collection);
 
-            AddCommand = new DelegateCommand(() => _collection.Add(new T()));
+            AddCommand = new DelegateCommand(OnAddExecute);
 
             RemoveCommand = new DelegateCommand(OnRemoveExecute);
+        }
+
+        void OnAddExecute()
+        {
+            var item = new T();
+
+            _collection.Add(item);
+
+            SelectedItem = item;
         }
 
         void OnRemoveExecute(object O)
@@ -22,6 +31,8 @@ namespace Captura.ViewModels
             {
                 _collection.Remove(setting);
             }
+
+            SelectedItem = _collection.Count > 0 ? _collection[0] : null;
         }
 
         readonly ObservableCollection<T> _collection;
@@ -31,5 +42,18 @@ namespace Captura.ViewModels
         public ICommand AddCommand { get; }
 
         public ICommand RemoveCommand { get; }
+
+        T _selectedItem;
+
+        public T SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                
+                OnPropertyChanged();
+            }
+        }
     }
 }

@@ -37,8 +37,8 @@ namespace Captura.Tests.Console
                 Trace.WriteLine($"{Prefix}: {Data}");
             }
 
-            process.ErrorDataReceived += (s, e) => Write(e.Data, "Err");
-            process.OutputDataReceived += (s, e) => Write(e.Data, "Out");
+            process.ErrorDataReceived += (S, E) => Write(E.Data, "Err");
+            process.OutputDataReceived += (S, E) => Write(E.Data, "Out");
 
             return process;
         }

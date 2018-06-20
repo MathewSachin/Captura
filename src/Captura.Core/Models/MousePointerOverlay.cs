@@ -16,7 +16,7 @@ namespace Captura.Models
         /// <summary>
         /// Draws overlay.
         /// </summary>
-        public void Draw(Graphics g, Func<Point, Point> Transform = null)
+        public void Draw(Graphics G, Func<Point, Point> Transform = null)
         {
             if (!_settings.Display)
                 return;
@@ -33,7 +33,7 @@ namespace Captura.Models
             var x = curPos.X - clickRadius;
             var y = curPos.Y - clickRadius;
 
-            g.FillEllipse(new SolidBrush(_settings.Color), x, y, d, d);
+            G.FillEllipse(new SolidBrush(_settings.Color), x, y, d, d);
 
             var border = _settings.BorderThickness;
 
@@ -43,7 +43,7 @@ namespace Captura.Models
                 y -= border / 2;
                 d += border;
 
-                g.DrawEllipse(new Pen(_settings.BorderColor, border), x, y, d, d);
+                G.DrawEllipse(new Pen(_settings.BorderColor, border), x, y, d, d);
             }
         }
 

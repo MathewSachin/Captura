@@ -20,7 +20,7 @@ namespace Captura
 
         public static WebCamWindow Instance { get; } = new WebCamWindow();
 
-        public WebcamControl GetWebCamControl() => webCameraControl;
+        public WebcamControl GetWebCamControl() => WebCameraControl;
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
         

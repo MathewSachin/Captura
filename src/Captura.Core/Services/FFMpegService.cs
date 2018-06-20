@@ -115,7 +115,7 @@ namespace Captura
 
             var logItem = FFmpegLog.Instance.CreateNew(Path.GetFileName(OutputFileName));
                         
-            process.ErrorDataReceived += (s, e) => logItem.Write(e.Data);
+            process.ErrorDataReceived += (S, E) => logItem.Write(E.Data);
 
             process.Start();
 

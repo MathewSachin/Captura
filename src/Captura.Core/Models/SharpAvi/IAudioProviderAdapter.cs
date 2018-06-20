@@ -54,15 +54,15 @@ namespace Captura.Models
 
         public int SamplesPerSecond => _provider.WaveFormat.SampleRate;
 
-        public int EncodeBlock(byte[] source, int sourceOffset, int sourceCount, byte[] destination, int destinationOffset)
+        public int EncodeBlock(byte[] Source, int SourceOffset, int SourceCount, byte[] Destination, int DestinationOffset)
         {
-            Array.Copy(source, sourceOffset, destination, destinationOffset, sourceCount);
+            Array.Copy(Source, SourceOffset, Destination, DestinationOffset, SourceCount);
 
-            return sourceCount;
+            return SourceCount;
         }
 
-        public int Flush(byte[] destination, int destinationOffset) => 0;
+        public int Flush(byte[] Destination, int DestinationOffset) => 0;
 
-        public int GetMaxEncodedLength(int sourceCount) => sourceCount;
+        public int GetMaxEncodedLength(int SourceCount) => SourceCount;
     }
 }

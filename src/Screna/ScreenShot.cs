@@ -15,9 +15,10 @@ namespace Screna
         #region PInvoke
         const string DllName = "user32.dll";
 
+        // ReSharper disable InconsistentNaming
         [DllImport("dwmapi.dll")]
         static extern int DwmGetWindowAttribute(IntPtr hWnd, int dWAttribute, ref RECT pvAttribute, int cbAttribute);
-
+        
         [DllImport(DllName)]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPositionFlags wFlags);
 
@@ -29,6 +30,7 @@ namespace Screna
 
         [DllImport(DllName)]
         static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
+        // ReSharper restore InconsistentNaming
         #endregion
 
         /// <summary>

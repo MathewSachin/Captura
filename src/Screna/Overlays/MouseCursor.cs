@@ -14,6 +14,7 @@ namespace Screna
         #region PInvoke
         const string DllName = "user32.dll";
 
+        // ReSharper disable InconsistentNaming
         [DllImport(DllName)]
         static extern bool DestroyIcon(IntPtr hIcon);
 
@@ -31,8 +32,9 @@ namespace Screna
 
         [DllImport("gdi32.dll")]
         static extern bool DeleteObject(IntPtr HObject);
+        // ReSharper restore InconsistentNaming
         #endregion
-        
+
         const int CursorShowing = 1;
                 
         /// <summary>
@@ -54,9 +56,9 @@ namespace Screna
         /// <summary>
         /// Draws this overlay.
         /// </summary>
-        /// <param name="g">A <see cref="Graphics"/> object to draw upon.</param>
+        /// <param name="G">A <see cref="Graphics"/> object to draw upon.</param>
         /// <param name="Transform">Point Transform Function.</param>
-        public static void Draw(Graphics g, Func<Point, Point> Transform = null)
+        public static void Draw(Graphics G, Func<Point, Point> Transform = null)
         {
             // ReSharper disable once RedundantAssignment
             // ReSharper disable once InlineOutVariableDeclaration
@@ -107,7 +109,7 @@ namespace Screna
 
             try
             {
-                g.DrawImage(icon, new Rectangle(location, icon.Size));
+                G.DrawImage(icon, new Rectangle(location, icon.Size));
             }
             catch (ArgumentException) { }
         }

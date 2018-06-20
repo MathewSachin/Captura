@@ -270,8 +270,7 @@
 
                     <ListView Margin="5"
                               ItemsSource="{Binding Collection}"
-                              Name="ItemsControl"
-                              SelectionChanged="ItemsControl_OnSelectionChanged">
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Overlay"/>
@@ -281,28 +280,28 @@
 
                     <GridSplitter Width="1"/>
 
-                    <DockPanel DataContext="{Binding SelectedItem, ElementName=ItemsControl}"
+                    <DockPanel Visibility="{Binding SelectedItem, Converter={StaticResource NotNullConverter}}"
                                Margin="10"
-                               VerticalAlignment="Top"
-                               IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                               VerticalAlignment="Top">
                         <local:TextOverlaySettingsControl Margin="0,5"
+                                                          DataContext="{Binding SelectedItem}"
                                                           DockPanel.Dock="Bottom"/>
 
                         <DockPanel DockPanel.Dock="Top">
                             <local:ModernButton ToolTip="Remove"
-                                                Command="{Binding DataContext.RemoveCommand, ElementName=ItemsControl}"
-                                                CommandParameter="{Binding}"
+                                                Command="{Binding RemoveCommand}"
+                                                CommandParameter="{Binding SelectedItem}"
                                                 IconData="{StaticResource IconClose}"
                                                 DockPanel.Dock="Right"/>
 
-                            <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                            <CheckBox IsChecked="{Binding SelectedItem.Display, Mode=TwoWay}"
                                       Content="Display"/>
                         </DockPanel>
 
                         <Label Content="Text"
                                ContentStringFormat="{}{0}: "/>
 
-                        <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5,0"/>
                     </DockPanel>
                 </DockPanel>
@@ -320,8 +319,7 @@
 
                     <ListView Margin="5"
                               ItemsSource="{Binding Collection}"
-                              Name="ImagesItemsControl"
-                              SelectionChanged="ItemsControl_OnSelectionChanged">
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Image"/>
@@ -331,21 +329,21 @@
 
                     <GridSplitter Width="1"/>
 
-                    <DockPanel DataContext="{Binding SelectedItem, ElementName=ImagesItemsControl}"
-                               Margin="10"
+                    <DockPanel Margin="10"
                                VerticalAlignment="Top"
-                               IsEnabled="{Binding Converter={StaticResource NotNullConverter}}">
+                               Visibility="{Binding SelectedItem, Converter={StaticResource NotNullConverter}}">
                         <local:ImageOverlaySettingsControl DockPanel.Dock="Bottom"
-                                                           Margin="0,5"/>
+                                                           Margin="0,5"
+                                                           DataContext="{Binding SelectedItem}"/>
 
                         <DockPanel DockPanel.Dock="Top">
                             <local:ModernButton ToolTip="Remove"
-                                                Command="{Binding DataContext.RemoveCommand, ElementName=ImagesItemsControl}"
-                                                CommandParameter="{Binding}"
+                                                Command="{Binding RemoveCommand}"
+                                                CommandParameter="{Binding SelectedItem}"
                                                 IconData="{StaticResource IconClose}"
                                                 DockPanel.Dock="Right"/>
 
-                            <CheckBox IsChecked="{Binding Display, Mode=TwoWay}"
+                            <CheckBox IsChecked="{Binding SelectedItem.Display, Mode=TwoWay}"
                                       Content="Display"/>
                         </DockPanel>
 
@@ -354,10 +352,10 @@
 
                         <Button Content="..."
                                 DockPanel.Dock="Right"
-                                Command="{Binding DataContext.ChangeCommand, ElementName=ImagesItemsControl}"
-                                CommandParameter="{Binding}"/>
+                                Command="{Binding ChangeCommand}"
+                                CommandParameter="{Binding SelectedItem}"/>
 
-                        <TextBox Text="{Binding Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding SelectedItem.Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5,0"/>
                     </DockPanel>
                 </DockPanel>

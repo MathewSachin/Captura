@@ -30,6 +30,6 @@
                    Margin="10,0"/>
         </DockPanel>
         
-        <local:WebcamControl x:Name="webCameraControl"/>
+        <local:WebcamControl x:Name="WebCameraControl"/>
     </DockPanel>
 </Window>

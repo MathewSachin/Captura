@@ -12,7 +12,7 @@ namespace Captura.ImageEditor
             var start = StylusPointCollection.First().ToPoint();
             var end = StylusPointCollection.Last().ToPoint();
 
-            RectangleDynamicRenderer.Prepare(ref start, ref end, out var w, out var h);
+            RectangleDynamicRenderer.Prepare(ref start, ref end, out var _, out var _);
 
             return new StylusPointCollection(new []
             {

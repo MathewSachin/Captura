@@ -147,14 +147,14 @@ namespace Screna
         }
 
         static byte[] _buffer;
-        static readonly byte[] _header = new byte[11];
+        static readonly byte[] Header = new byte[11];
 
         static void WriteImageBlock(Stream SourceGif, BinaryWriter Writer, bool IncludeColorTable, int X, int Y, int Width, int Height)
         {
             SourceGif.Position = SourceImageBlockPosition; // Locating the image block
             
-            SourceGif.Read(_header, 0, _header.Length);
-            Writer.Write(_header[0]); // Separator
+            SourceGif.Read(Header, 0, Header.Length);
+            Writer.Write(Header[0]); // Separator
             Writer.Write((short)X); // Position X
             Writer.Write((short)Y); // Position Y
             Writer.Write((short)Width); // Width
@@ -166,12 +166,12 @@ namespace Screna
                 Writer.Write((byte)(SourceGif.ReadByte() & 0x3f | 0x80)); // Enabling local color table
                 WriteColorTable(SourceGif, Writer);
             }
-            else Writer.Write((byte)(_header[9] & 0x07 | 0x07)); // Disabling local color table
+            else Writer.Write((byte)(Header[9] & 0x07 | 0x07)); // Disabling local color table
 
-            Writer.Write(_header[10]); // LZW Min Code Size
+            Writer.Write(Header[10]); // LZW Min Code Size
 
             // Read/Write image data
-            SourceGif.Position = SourceImageBlockPosition + _header.Length;
+            SourceGif.Position = SourceImageBlockPosition + Header.Length;
 
             var dataLength = SourceGif.ReadByte();
             while (dataLength > 0)

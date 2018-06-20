@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Captura
 {
@@ -6,7 +8,10 @@ namespace Captura
     {
         protected virtual string GetValue(string Key) => "";
 
+        // ReSharper disable once VirtualMemberNeverOverridden.Global
+        // ReSharper disable UnusedParameter.Global
         protected virtual void SetValue(string Key, string Value) { }
+        // ReSharper restore UnusedParameter.Global
 
         string Get([CallerMemberName] string PropertyName = null)
         {

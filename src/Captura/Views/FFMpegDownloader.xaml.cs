@@ -8,7 +8,7 @@ namespace Captura.Views
     {
         public FFmpegDownloader()
         {
-            DataContextChanged += (s, e) =>
+            DataContextChanged += (S, E) =>
             {
                 if (DataContext is FFmpegDownloadViewModel vm)
                 {

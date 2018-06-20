@@ -63,11 +63,11 @@ namespace Captura.Models
 
                 // Yes -> Select FFmpeg Folder
                 dialog.YesButton.Content = LanguageManager.Instance.SelectFFmpegFolder;
-                dialog.YesButton.Click += (s, e) => FFmpegService.SelectFFmpegFolder();
+                dialog.YesButton.Click += (S, E) => FFmpegService.SelectFFmpegFolder();
 
                 // No -> Download FFmpeg
                 dialog.NoButton.Content = "Download FFmpeg";
-                dialog.NoButton.Click += (s, e) => FFmpegService.FFmpegDownloader?.Invoke();
+                dialog.NoButton.Click += (S, E) => FFmpegService.FFmpegDownloader?.Invoke();
 
                 dialog.CancelButton.Content = "Cancel";
 
@@ -109,7 +109,7 @@ namespace Captura.Models
                 var result = false;
 
                 dialog.YesButton.Content = LanguageManager.Instance.Yes;
-                dialog.YesButton.Click += (s, e) => result = true;
+                dialog.YesButton.Click += (S, E) => result = true;
 
                 dialog.NoButton.Content = LanguageManager.Instance.No;
 

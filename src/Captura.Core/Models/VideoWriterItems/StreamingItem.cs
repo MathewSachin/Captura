@@ -41,7 +41,7 @@ namespace Captura.Models
                 var settings = ServiceProvider.Get<Settings>();
 
                 return settings.FFmpeg.CustomStreamingUrl;
-            }, x264),
+            }, x264)
         };
     }
 }

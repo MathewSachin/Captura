@@ -1,4 +1,5 @@
-﻿namespace Captura
+﻿// ReSharper disable RedundantAssignment
+namespace Captura
 {
     public static class PixelFunctionFactory
     {

@@ -21,34 +21,34 @@ namespace Captura.Models
             return new FFmpegAudioWriter(FileName, AudioQuality, AudioArgsProvider, Wf.SampleRate, Wf.Channels);
         }
 
-        public static FFmpegAudioArgsProvider Aac { get; } = q =>
+        public static FFmpegAudioArgsProvider Aac { get; } = Quality =>
         {
             // bitrate: 32k to 512k (steps of 32k)
-            var b = 32 * (1 + (15 * (q - 1)) / 99);
+            var b = 32 * (1 + (15 * (Quality - 1)) / 99);
 
             return $"-c:a aac {Experimental} -b:a {b}k";
         };
 
-        public static FFmpegAudioArgsProvider Mp3 { get; } = q =>
+        public static FFmpegAudioArgsProvider Mp3 { get; } = Quality =>
         {
             // quality: 9 (lowest) to 0 (highest)
-            var qscale = (100 - q) / 11;
+            var qscale = (100 - Quality) / 11;
 
             return $"-c:a libmp3lame -qscale:a {qscale}";
         };
 
-        public static FFmpegAudioArgsProvider Vorbis { get; } = q =>
+        public static FFmpegAudioArgsProvider Vorbis { get; } = Quality =>
         {
             // quality: 0 (lowest) to 10 (highest)
-            var qscale = (10 * (q - 1)) / 99;
+            var qscale = (10 * (Quality - 1)) / 99;
 
             return $"-c:a libvorbis -qscale:a {qscale}";
         };
 
-        public static FFmpegAudioArgsProvider Opus { get; } = q =>
+        public static FFmpegAudioArgsProvider Opus { get; } = Quality =>
         {
             // quality: 0 (lowest) to 10 (highest)
-            var qscale = (10 * (q - 1)) / 99;
+            var qscale = (10 * (Quality - 1)) / 99;
 
             return $"-c:a libopus -compression_level {qscale}";
         };

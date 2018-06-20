@@ -28,9 +28,9 @@ namespace Captura.ViewModels
             {
                 CancellationToken.Register(() => webClient.CancelAsync());
 
-                webClient.DownloadProgressChanged += (s, e) =>
+                webClient.DownloadProgressChanged += (S, E) =>
                 {
-                    Progress?.Invoke(e.ProgressPercentage);
+                    Progress?.Invoke(E.ProgressPercentage);
                 };
                 
                 await webClient.DownloadFileTaskAsync(FFmpegUri, FFmpegArchivePath);

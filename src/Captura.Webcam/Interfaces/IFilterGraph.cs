@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
 
 namespace Captura.Webcam
 {

@@ -85,7 +85,7 @@ namespace Screna
             _imagePool = new ImagePool(Width, Height);
         }
 
-        void OnCapture(Graphics g)
+        void OnCapture(Graphics G)
         {
             if (!_window.IsAlive)
             {
@@ -96,7 +96,7 @@ namespace Screna
             
             if (rect.Width == Width && rect.Height == Height)
             {
-                g.CopyFromScreen(rect.Location,
+                G.CopyFromScreen(rect.Location,
                     Point.Empty,
                     rect.Size,
                     CopyPixelOperation.SourceCopy);
@@ -116,9 +116,9 @@ namespace Screna
                 var resizeWidth = rect.Width * ratio;
                 var resizeHeight = rect.Height * ratio;
 
-                g.Clear(Color.Transparent);
+                G.Clear(Color.Transparent);
                 
-                g.DrawImage(_fullWidthFrame.Bitmap,
+                G.DrawImage(_fullWidthFrame.Bitmap,
                     new RectangleF(0, 0, resizeWidth, resizeHeight),
                     new RectangleF(0, 0, rect.Width, rect.Height), 
                     GraphicsUnit.Pixel);

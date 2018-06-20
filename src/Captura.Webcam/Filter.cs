@@ -16,6 +16,7 @@ namespace Captura.Webcam
         public string MonikerString { get; }
 
         /// <summary> Create a new filter from its moniker string. </summary>
+        // ReSharper disable once UnusedMember.Global
         public Filter(string MonikerString)
         {
             Name = GetName(MonikerString);
@@ -70,7 +71,7 @@ namespace Captura.Webcam
         }
 
         /// <summary> Get a moniker's human-readable name based on a moniker string. </summary>
-        static string GetName(string monikerString)
+        static string GetName(string MonikerString)
         {
             IMoniker parser = null;
             IMoniker moniker = null;
@@ -78,7 +79,7 @@ namespace Captura.Webcam
             try
             {
                 parser = GetAnyMoniker();
-                parser.ParseDisplayName(null, null, monikerString, out int _, out moniker);
+                parser.ParseDisplayName(null, null, MonikerString, out int _, out moniker);
                 return GetName(parser);
             }
             finally
@@ -141,15 +142,14 @@ namespace Captura.Webcam
         }
 
         /// <summary>
-        ///  Compares the current instance with another object of 
-        ///  the same type.
+        ///  Compares the current instance with another object of the same type.
         /// </summary>
-        public int CompareTo(object obj)
+        public int CompareTo(object Obj)
         {
-            if (obj == null)
+            if (Obj == null)
                 return 1;
 
-            var f = (Filter)obj;
+            var f = (Filter)Obj;
 
             return string.Compare(Name, f.Name, StringComparison.Ordinal);
         }

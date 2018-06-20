@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+// ReSharper disable InconsistentNaming
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Captura.Webcam
 {
@@ -223,6 +225,7 @@ namespace Captura.Webcam
                     hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out o);
 
                     if (hr != 0)
+                        // ReSharper disable once RedundantAssignment
                         o = null;
                 }
 

@@ -73,20 +73,19 @@ namespace Captura.ViewModels
         
         public async Task<bool> Start()
         {
-            if (ActionDescription == CancelDownload)
+            switch (ActionDescription)
             {
-                _cancellationTokenSource.Cancel();
+                case CancelDownload:
+                    _cancellationTokenSource.Cancel();
 
-                CloseWindowAction.Invoke();
+                    CloseWindowAction.Invoke();
                 
-                return false;
-            }
+                    return false;
 
-            if (ActionDescription == Finish)
-            {
-                CloseWindowAction?.Invoke();
+                case Finish:
+                    CloseWindowAction?.Invoke();
 
-                return true;
+                    return true;
             }
 
             ActionDescription = CancelDownload;

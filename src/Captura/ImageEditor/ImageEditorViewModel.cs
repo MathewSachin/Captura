@@ -540,32 +540,34 @@ namespace Captura
 
             var item = _undoStack.Pop();
 
-            if (item is HistoryState state)
+            switch (item)
             {
-                ApplyHistoryState(state);
+                case HistoryState state:
+                    ApplyHistoryState(state);
 
-                _redoStack.Push(current);
-            }
-            else if (item is StrokeHistory strokes)
-            {
-                foreach (var stroke in strokes.Added)
-                {
-                    InkCanvas.Strokes.Remove(stroke);
-                }
+                    _redoStack.Push(current);
+                    break;
 
-                foreach (var stroke in strokes.Removed)
-                {
-                    InkCanvas.Strokes.Add(stroke);
-                }
+                case StrokeHistory strokes:
+                    foreach (var stroke in strokes.Added)
+                    {
+                        InkCanvas.Strokes.Remove(stroke);
+                    }
 
-                _redoStack.Push(item);
-            }
-            else if (item is SelectHistory select)
-            {
-                var m = GetTransformFromRectToRect(select.NewRect, select.OldRect);
-                select.Selection.Transform(m, false);
+                    foreach (var stroke in strokes.Removed)
+                    {
+                        InkCanvas.Strokes.Add(stroke);
+                    }
 
-                _redoStack.Push(select);
+                    _redoStack.Push(item);
+                    break;
+
+                case SelectHistory select:
+                    var m = GetTransformFromRectToRect(select.NewRect, select.OldRect);
+                    select.Selection.Transform(m, false);
+
+                    _redoStack.Push(select);
+                    break;
             }
             
             RedoCommand.RaiseCanExecuteChanged(true);
@@ -589,32 +591,34 @@ namespace Captura
 
             var item = _redoStack.Pop();
 
-            if (item is HistoryState state)
+            switch (item)
             {
-                ApplyHistoryState(state);
+                case HistoryState state:
+                    ApplyHistoryState(state);
 
-                _undoStack.Push(current);
-            }
-            else if (item is StrokeHistory strokes)
-            {
-                foreach (var stroke in strokes.Added)
-                {
-                    InkCanvas.Strokes.Add(stroke);
-                }
+                    _undoStack.Push(current);
+                    break;
 
-                foreach (var stroke in strokes.Removed)
-                {
-                    InkCanvas.Strokes.Remove(stroke);
-                }
+                case StrokeHistory strokes:
+                    foreach (var stroke in strokes.Added)
+                    {
+                        InkCanvas.Strokes.Add(stroke);
+                    }
 
-                _undoStack.Push(item);
-            }
-            else if (item is SelectHistory select)
-            {
-                var m = GetTransformFromRectToRect(select.OldRect, select.NewRect);
-                select.Selection.Transform(m, false);
+                    foreach (var stroke in strokes.Removed)
+                    {
+                        InkCanvas.Strokes.Remove(stroke);
+                    }
 
-                _undoStack.Push(select);
+                    _undoStack.Push(item);
+                    break;
+
+                case SelectHistory select:
+                    var m = GetTransformFromRectToRect(select.OldRect, select.NewRect);
+                    select.Selection.Transform(m, false);
+
+                    _undoStack.Push(select);
+                    break;
             }
 
             UndoCommand.RaiseCanExecuteChanged(true);

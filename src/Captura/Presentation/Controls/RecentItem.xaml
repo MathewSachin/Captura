@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:local="clr-namespace:Captura"
              d:DataContext="{StaticResource DummyRecentItemViewModel}">
     <DockPanel IsEnabled="{Binding IsSaving, Converter={StaticResource NegatingConverter}}"
                Margin="0,2">

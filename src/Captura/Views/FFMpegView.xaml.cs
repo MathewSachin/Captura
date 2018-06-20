@@ -9,7 +9,7 @@ namespace Captura
             FFmpegLogView.Instance.ShowAndFocus();
         }
         
-        void FFDownload(object Sender, RoutedEventArgs E)
+        void FFmpegDownload(object Sender, RoutedEventArgs E)
         {
             FFmpegService.FFmpegDownloader?.Invoke();
         }

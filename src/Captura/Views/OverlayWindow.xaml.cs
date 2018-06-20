@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Captura.Models;
@@ -23,10 +22,6 @@ namespace Captura
             };
 
             SizeChanged += (S, E) => UpdateSizeText();
-
-            UpdateSelection(ItemsControl);
-
-            UpdateSelection(ImagesItemsControl);
         }
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
@@ -306,20 +301,6 @@ namespace Captura
 
             AddToGrid(keystrokes, false);
             AddToGrid(webcam, true);
-        }
-
-        void ItemsControl_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
-        {
-            if (Sender is ListView listView)
-                UpdateSelection(listView);
-        }
-
-        void UpdateSelection(ListView Sender)
-        {
-            if (Sender.SelectedIndex == -1 && Sender.HasItems)
-            {
-                Sender.SelectedIndex = 0;
-            }
         }
     }
 }
