@@ -19,7 +19,7 @@ namespace Screna
         readonly IAudioFileWriter _audioWriter;
         readonly IImageProvider _imageProvider;
 
-        readonly int _frameRate;
+        readonly int _frameRate, _maxFrameCount;
 
         readonly BlockingCollection<IBitmapFrame> _frames;
         readonly Stopwatch _sw;
@@ -48,6 +48,7 @@ namespace Screna
                 throw new ArgumentException("Frame Rate must be possitive", nameof(FrameRate));
 
             _frameRate = FrameRate;
+            _maxFrameCount = _frameRate * 3; // 3 seconds
 
             _continueCapturing = new ManualResetEvent(false);
 
@@ -87,6 +88,9 @@ namespace Screna
                     {
                         _videoWriter.WriteFrame(img);
                     }
+
+                    if (_frames.Count > _maxFrameCount)
+                        break;
                 }
             }
             catch (Exception e)
@@ -102,8 +106,6 @@ namespace Screna
                 }
             }
         }
-
-        const int MaxFrameCount = 30;
 
         async Task DoRecord()
         {
@@ -145,7 +147,7 @@ namespace Screna
 
                 while (CanContinue() && !_frames.IsAddingCompleted)
                 {
-                    if (_frames.Count > MaxFrameCount)
+                    if (_frames.Count > _maxFrameCount)
                     {
                         throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a lower Frame Rate or another Codec.");
                     }
