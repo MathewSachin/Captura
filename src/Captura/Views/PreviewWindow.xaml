@@ -3,12 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Preview"
         Height="400"
-        Width="600"
-        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms">
+        Width="600">
     <Grid Background="{DynamicResource WindowBackground}">
-        <WindowsFormsHost>
-            <wf:PictureBox x:Name="DisplayImage"
-                           SizeMode="Zoom"/>
-        </WindowsFormsHost>
+        <Image Name="DisplayImage"/>
     </Grid>
 </Window>

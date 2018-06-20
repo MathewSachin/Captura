@@ -1,4 +1,8 @@
-﻿using Screna;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Screna;
 
 namespace Captura.Models
 {
@@ -17,6 +21,9 @@ namespace Captura.Models
             };
         }
 
+        WriteableBitmap _writeableBitmap;
+        byte[] _buffer;
+
         public void Display(IBitmapFrame Frame)
         {
             _previewWindow.Dispatcher.Invoke(() =>
@@ -30,11 +37,26 @@ namespace Captura.Models
 
                 if (!_previewWindow.IsVisible)
                     return;
-
-                if (Frame is FrameBase frame)
+                
+                if (_writeableBitmap == null
+                    || _writeableBitmap.PixelWidth != Frame.Width
+                    || _writeableBitmap.PixelHeight != Frame.Height)
                 {
-                    _previewWindow.DisplayImage.Image = frame.Bitmap;
+                    _writeableBitmap = new WriteableBitmap(Frame.Width, Frame.Height, 96, 96, PixelFormats.Bgra32, null);
+                        
+                    _buffer = new byte[Frame.Width * Frame.Height * 4];
+
+                    Console.WriteLine($"Preview Bitmap Allocated: {_buffer.Length}");
+
+                    _previewWindow.DisplayImage.Source = _writeableBitmap;
                 }
+
+                if (_previewWindow.DisplayImage.Source == null)
+                    _previewWindow.DisplayImage.Source = _writeableBitmap;
+                
+                Frame.CopyTo(_buffer, _buffer.Length);
+
+                _writeableBitmap.WritePixels(new Int32Rect(0, 0, Frame.Width, Frame.Height), _buffer, Frame.Width * 4, 0);
             });
         }
         
@@ -47,7 +69,7 @@ namespace Captura.Models
                 _lastFrame?.Dispose();
                 _lastFrame = null;
 
-                _previewWindow.DisplayImage.Image = null;
+                _previewWindow.DisplayImage.Source = null;
             });
         }
 
