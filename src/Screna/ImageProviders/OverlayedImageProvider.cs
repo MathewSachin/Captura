@@ -28,9 +28,7 @@ namespace Screna
             Height = ImageProvider.Height;
         }
 
-        /// <summary>
-        /// Captures an Image.
-        /// </summary>
+        /// <inheritdoc />
         public IBitmapFrame Capture()
         {
             var bmp = _imageProvider.Capture();
@@ -42,11 +40,9 @@ namespace Screna
             }
             
             using (var editor = bmp.GetEditor())
-
             {
-                if (_overlays != null)
-                    foreach (var overlay in _overlays)
-                        overlay?.Draw(editor.Graphics, _transform);
+                foreach (var overlay in _overlays)
+                    overlay?.Draw(editor.Graphics, _transform);
             }
 
             return bmp;
@@ -62,9 +58,6 @@ namespace Screna
         public void Dispose()
         {
             _imageProvider.Dispose();
-
-            if (_overlays == null)
-                return;
 
             foreach (var overlay in _overlays)
                 overlay?.Dispose();

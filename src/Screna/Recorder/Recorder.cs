@@ -103,7 +103,7 @@ namespace Screna
             }
         }
 
-        const int MaxFrameCount = 10;
+        const int MaxFrameCount = 30;
 
         async Task DoRecord()
         {
@@ -147,7 +147,7 @@ namespace Screna
                 {
                     if (_frames.Count > MaxFrameCount)
                     {
-                        throw new Exception("System can't keep up with the Recording. Frames are not being written. Try a lower Frame Rate or another Codec.");
+                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a lower Frame Rate or another Codec.");
                     }
 
                     var timestamp = DateTime.Now;

@@ -30,6 +30,8 @@ namespace Captura.Models
 
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
 
+            Console.WriteLine($"Video Buffer Allocated: {_videoBuffer.Length}");
+
             var audioPipeName = GetPipeName();
             var videoPipeName = GetPipeName();
 
@@ -57,10 +59,13 @@ namespace Captura.Models
                 audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Args.Frequency} -ac {Args.Channels} -i {PipePrefix}{audioPipeName}";
                 audioOutArgs = Args.AudioArgsProvider(Args.AudioQuality);
 
-                _audioPipe = new NamedPipeServerStream(audioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
+                // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
+                var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);
+
+                _audioPipe = new NamedPipeServerStream(audioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, audioBufferSize);
             }
 
-            _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 10000, 10000);
+            _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
 
             _ffmpegProcess = FFmpegService.StartFFmpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"", Args.FileName);
         }
@@ -84,6 +89,8 @@ namespace Captura.Models
 
         bool _firstAudio = true;
 
+        Task _lastAudio;
+
         /// <summary>
         /// Write audio block to Audio Stream.
         /// </summary>
@@ -106,7 +113,9 @@ namespace Captura.Models
                 _firstAudio = false;
             }
 
-            _audioPipe.WriteAsync(Buffer, 0, Length);
+            _lastAudio?.Wait();
+
+            _lastAudio = _audioPipe.WriteAsync(Buffer, 0, Length);
         }
 
         bool _firstFrame = true;
@@ -143,7 +152,7 @@ namespace Captura.Models
                     Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
                 }
             }
-            
+
             _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
         }
     }

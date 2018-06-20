@@ -38,6 +38,8 @@ namespace Screna
 
                 _frames.Add(frame);
 
+                Console.WriteLine($"New Frame Allocated: {_frames.Count - 1}");
+
                 return frame;
             }
         }
