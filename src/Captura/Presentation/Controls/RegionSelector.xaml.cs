@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using Captura.ViewModels;
 using Color = System.Windows.Media.Color;
 
@@ -67,7 +68,9 @@ namespace Captura
                 }
                 else InkCanvas.UseCustomCursor = false;
 
-                InkCanvas.Visibility = mode == InkCanvasEditingMode.None ? Visibility.Collapsed : Visibility.Visible;
+                InkCanvas.Background = new SolidColorBrush(mode == InkCanvasEditingMode.None
+                    ? Colors.Transparent
+                    : Color.FromArgb(1, 0, 0, 0));
             }
         }
 

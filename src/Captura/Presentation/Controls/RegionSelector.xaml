@@ -133,7 +133,7 @@
                     BorderBrush="{DynamicResource Accent}"
                     Grid.Row="1"
                     Grid.Column="1">
-                <InkCanvas Background="#01000000"
+                <InkCanvas Background="Transparent"
                            Name="InkCanvas"/>
             </Border>
 
