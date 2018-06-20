@@ -4,7 +4,18 @@
         Title="Preview"
         Height="400"
         Width="600">
-    <Grid Background="{DynamicResource WindowBackground}">
-        <Image Name="DisplayImage"/>
-    </Grid>
+    <DockPanel Background="{DynamicResource WindowBackground}">
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="5">
+            <Label Content="Stretch"
+                   ContentStringFormat="{}{0}: "
+                   Margin="0,0,10,0"/>
+
+            <ComboBox Name="StrectValues"
+                      SelectionChanged="StrectValues_OnSelectionChanged"/>
+        </DockPanel>
+        
+        <Image Name="DisplayImage"
+               Stretch="Fill"/>
+    </DockPanel>
 </Window>
