@@ -60,6 +60,11 @@ namespace Captura
                 _right.DragDelta += (S, E) => HandleDrag(HitType.Right, E);
                 _bottom.DragDelta += (S, E) => HandleDrag(HitType.Bottom, E);
             }
+
+            Opacity = 0.01;
+
+            MouseEnter += (S, E) => Opacity = 1;
+            MouseLeave += (S, E) => Opacity = 0.01;
         }
 
         void HandleDrag(HitType MouseHitType, DragDeltaEventArgs Args)
