@@ -45,7 +45,6 @@
 
             <Label Content="{Binding PlaybackPosition, Converter={StaticResource IntegralTimeSpanConverter}}"
                    Margin="5,0"
-                   Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
                    DockPanel.Dock="Right"/>
 
             <Slider Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -114,6 +113,7 @@
         <MediaElement Name="MediaElement"
                       LoadedBehavior="Manual"
                       UnloadedBehavior="Manual"
+                      ScrubbingEnabled="True"
                       Margin="0,10,0,0"/>
     </DockPanel>
 </Window>

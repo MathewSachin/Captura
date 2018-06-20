@@ -33,6 +33,8 @@ namespace Captura
                 }
                 else To = End = TimeSpan.Zero;
 
+                PlaybackPosition = From;
+
                 PlayCommand.RaiseCanExecuteChanged(true);
                 TrimCommand.RaiseCanExecuteChanged(true);
             };
@@ -81,6 +83,11 @@ namespace Captura
                     Stop();
                 }
 
+                if (!IsPlaying)
+                {
+                    PlaybackPosition = value;
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -93,6 +100,8 @@ namespace Captura
             _player.Stop();
 
             IsPlaying = false;
+
+            PlaybackPosition = From;
         }
 
         void Play()
@@ -120,7 +129,12 @@ namespace Captura
                 {
                     Stop();
                 }
-                
+
+                if (!IsPlaying)
+                {
+                    PlaybackPosition = value;
+                }
+
                 OnPropertyChanged();
             }
         }
