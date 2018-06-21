@@ -355,20 +355,9 @@ namespace Captura.ViewModels
                     VideoViewModel.AvailableImageWriters[0].Active = true;
                 }
             }
-
-            // Restore Webcam
-            if (!string.IsNullOrEmpty(Settings.Video.Webcam))
-            {
-                var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Video.Webcam);
-
-                if (webcam != null)
-                {
-                    WebCamProvider.SelectedCam = webcam;
-                }
-            }
         }
 
-        bool _persist, _hotkeys;
+        bool _persist, _hotkeys, _remembered;
 
         public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)
         {
@@ -388,7 +377,36 @@ namespace Captura.ViewModels
             VideoViewModel.Init();
 
             if (Remembered)
+            {
+                _remembered = true;
+
                 RestoreRemembered();
+            }
+        }
+
+        public void ViewLoaded()
+        {
+            if (_remembered)
+            {
+                // Restore Webcam
+                if (!string.IsNullOrEmpty(Settings.Video.Webcam))
+                {
+                    var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Video.Webcam);
+
+                    if (webcam != null)
+                    {
+                        WebCamProvider.SelectedCam = webcam;
+                    }
+                }
+            }
+
+            HotKeyManager.ShowNotRegisteredOnStartup();
+
+            if (AudioSource is NoAudioSource)
+            {
+                ServiceProvider.MessageProvider.ShowError(
+                    "Could not find bass.dll or bassmix.dll.\nAudio Recording will not be available.", "No Audio");
+            }
         }
 
         void Remember()
