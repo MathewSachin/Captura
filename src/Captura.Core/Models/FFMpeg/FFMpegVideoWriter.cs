@@ -35,7 +35,7 @@ namespace Captura.Models
             var audioPipeName = GetPipeName();
             var videoPipeName = GetPipeName();
 
-            var videoInArgs = $"-framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
+            var videoInArgs = $"-thread_queue_size 512 -framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
 
             if (settings.FFmpeg.Resize)
@@ -56,7 +56,7 @@ namespace Captura.Models
             
             if (Args.AudioProvider != null)
             {
-                audioInArgs = $"-f s16le -acodec pcm_s16le -ar {Args.Frequency} -ac {Args.Channels} -i {PipePrefix}{audioPipeName}";
+                audioInArgs = $"-thread_queue_size 512 -f s16le -acodec pcm_s16le -ar {Args.Frequency} -ac {Args.Channels} -i {PipePrefix}{audioPipeName}";
                 audioOutArgs = Args.AudioArgsProvider(Args.AudioQuality);
 
                 // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
