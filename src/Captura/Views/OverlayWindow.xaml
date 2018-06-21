@@ -8,13 +8,14 @@
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         mc:Ignorable="d"
         Title="Overlays"
-        Height="800"
-        Width="1200">
+        Height="500"
+        Width="800"
+        SizeChanged="OverlayWindow_OnSizeChanged">
     <Grid Background="{DynamicResource WindowBackground}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="350"/>
+            <ColumnDefinition Width="Auto" MinWidth="200"/>
         </Grid.ColumnDefinitions>
         
         <TabControl Grid.Column="2"
@@ -381,13 +382,18 @@
                        Background="#B7333333"
                        Foreground="White"/>
 
-            <Grid Name="Grid"
-                  Background="Transparent">
-                <TextBlock Style="{StaticResource Heading1}"
-                           Foreground="LightGray"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           Text="{Binding Tag, ElementName=Grid, Mode=OneWay}"/>
+            <Grid Background="Transparent"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center">
+                <Image Name="Img"
+                       Stretch="Uniform"
+                       Loaded="Img_OnLoaded"/>
+                
+                <Grid Name="Grid">
+                    <Grid.LayoutTransform>
+                        <ScaleTransform x:Name="Scale"/>
+                    </Grid.LayoutTransform>
+                </Grid>
             </Grid>
         </DockPanel>
     </Grid>

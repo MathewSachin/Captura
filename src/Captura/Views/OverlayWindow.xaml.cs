@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
+using Screna;
+using Color = System.Windows.Media.Color;
 
 namespace Captura
 {
@@ -279,7 +286,57 @@ namespace Captura
             Grid.Tag = $"{(int)Grid.ActualWidth} x {(int)Grid.ActualHeight}";
         }
 
-        void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
+        async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
+        {
+            PlaceOverlays();
+
+            await UpdateBackground();
+        }
+
+        async Task UpdateBackground()
+        {
+            var vm = ServiceProvider.Get<MainViewModel>();
+
+            Bitmap bmp;
+
+            switch (vm.VideoViewModel.SelectedVideoSource)
+            {
+                case WindowPickerItem _:
+                case ScreenPickerItem _:
+                case FullScreenItem _:
+                    bmp = ScreenShot.Capture();
+                    break;
+
+                default:
+                    bmp = await vm.GetScreenShot();
+                    break;
+            }
+
+            using (bmp)
+            {
+                var stream = new MemoryStream();
+                bmp.Save(stream, ImageFormat.Png);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+                Img.Source = decoder.Frames[0];
+            }
+        }
+
+        void UpdateScale()
+        {
+            if (Img.Source == null)
+                return;
+
+            var scaleX = Img.ActualWidth / Img.Source.Width;
+            var scaleY = Img.ActualHeight / Img.Source.Height;
+
+            Scale.ScaleX = scaleX;
+            Scale.ScaleY = scaleY;
+        }
+
+        void PlaceOverlays()
         {
             UpdateSizeText();
 
@@ -301,6 +358,16 @@ namespace Captura
 
             AddToGrid(keystrokes, false);
             AddToGrid(webcam, true);
+        }
+
+        void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
+        {
+            UpdateScale();
+        }
+
+        void Img_OnLoaded(object Sender, RoutedEventArgs E)
+        {
+            UpdateScale();
         }
     }
 }

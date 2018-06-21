@@ -549,6 +549,13 @@ namespace Captura.ViewModels
         {
             _systemTray.HideNotification();
 
+            var bmp = await GetScreenShot();
+
+            SaveScreenShot(bmp, FileName);
+        }
+
+        public async Task<Bitmap> GetScreenShot()
+        {
             Bitmap bmp = null;
 
             var selectedVideoSource = VideoViewModel.SelectedVideoSource;
@@ -572,7 +579,7 @@ namespace Captura.ViewModels
                             {
                                 hWnd = picked;
                             }
-                            else return;
+                            else return null;
                             break;
                     }
 
@@ -607,14 +614,14 @@ namespace Captura.ViewModels
                             {
                                 bmp = ScreenShot.Capture(picked, includeCursor);
                             }
-                            else return;
+                            else return null;
                             break;
 
                         case ScreenItem screen:
                             bmp = screen.Capture(includeCursor);
                             break;
                     }
-                    
+
                     bmp = bmp?.Transform(Settings.ScreenShots);
                     break;
 
@@ -624,7 +631,7 @@ namespace Captura.ViewModels
                     break;
             }
 
-            SaveScreenShot(bmp, FileName);
+            return bmp;
         }
         
         public bool StartRecording(string FileName = null)
