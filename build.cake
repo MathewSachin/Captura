@@ -121,6 +121,18 @@ void NativeRestore()
     }
 }
 
+void CopyLicenses()
+{
+    var consoleOutput = $"src/Captura.Console/bin/{configuration}/";
+    var uiOutput = $"src/Captura/bin/{configuration}/";
+    var testOutput = $"src/Tests/bin/{configuration}/";
+
+    foreach (var output in new[] { consoleOutput, uiOutput, testOutput })
+    {
+        CopyDirectory("licenses", output + "licenses");
+    }
+}
+
 void PopulateOutput()
 {
     // Copy License files
@@ -220,6 +232,8 @@ Task("Build")
     });
 
     NativeRestore();
+
+    CopyLicenses();
 });
 
 Task("Clean-Output").Does(() => CleanDirectory("Output"));
