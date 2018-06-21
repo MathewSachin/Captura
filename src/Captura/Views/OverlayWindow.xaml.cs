@@ -332,8 +332,8 @@ namespace Captura
             var scaleX = Img.ActualWidth / Img.Source.Width;
             var scaleY = Img.ActualHeight / Img.Source.Height;
 
-            Scale.ScaleX = scaleX;
-            Scale.ScaleY = scaleY;
+            Scale.ScaleX = scaleX / Dpi.X;
+            Scale.ScaleY = scaleY / Dpi.Y;
         }
 
         void PlaceOverlays()
