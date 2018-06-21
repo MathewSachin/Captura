@@ -14,6 +14,11 @@ namespace Captura.ViewModels
             AddCommand = new DelegateCommand(OnAddExecute);
 
             RemoveCommand = new DelegateCommand(OnRemoveExecute);
+
+            if (Collection.Count > 0)
+            {
+                SelectedItem = Collection[0];
+            }
         }
 
         void OnAddExecute()
