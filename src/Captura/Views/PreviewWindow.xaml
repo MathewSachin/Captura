@@ -1,12 +1,29 @@
 ﻿<Window x:Class="Captura.PreviewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:captura="clr-namespace:Captura"
         Title="Preview"
         Height="400"
-        Width="600">
+        Width="600"
+        MouseDoubleClick="PreviewWindow_OnMouseDoubleClick"
+        MouseMove="PreviewWindow_OnMouseMove"
+        IsVisibleChanged="PreviewWindow_OnIsVisibleChanged">
+    <Window.CommandBindings>
+        <CommandBinding Command="Zoom"
+                        Executed="Zoom_OnExecuted"/>
+        <CommandBinding Command="DecreaseZoom"
+                        Executed="DecreaseZoom_OnExecuted"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="F11"
+                    Command="Zoom"/>
+        <KeyBinding Key="Escape"
+                    Command="DecreaseZoom"/>
+    </Window.InputBindings>
     <DockPanel Background="{DynamicResource WindowBackground}">
         <DockPanel DockPanel.Dock="Top"
-                   Margin="5">
+                   Margin="5"
+                   Name="ConfigPanel">
             <Label Content="Stretch"
                    ContentStringFormat="{}{0}: "
                    Margin="0,0,10,0"/>
@@ -14,8 +31,22 @@
             <ComboBox Name="StrectValues"
                       SelectionChanged="StrectValues_OnSelectionChanged"/>
         </DockPanel>
-        
-        <Image Name="DisplayImage"
-               Stretch="Fill"/>
+
+        <Grid>
+            <Image Name="DisplayImage"
+                   Stretch="Fill"/>
+            
+            <Border Background="{DynamicResource Accent}"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Margin="20"
+                    Opacity="0.8"
+                    Name="Toggler">
+                <captura:ModernButton IconData="{StaticResource IconExpand}"
+                                      Foreground="White"
+                                      x:Name="ToggleButton"
+                                      Click="Fullscreen_OnClick"/>
+            </Border>
+        </Grid>
     </DockPanel>
 </Window>
