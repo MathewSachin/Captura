@@ -13,13 +13,12 @@
         SizeChanged="OverlayWindow_OnSizeChanged">
     <Grid Background="{DynamicResource WindowBackground}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="280" MinWidth="280"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="220"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <TabControl Grid.Column="2"
-                    Background="Transparent"
+        <TabControl Background="Transparent"
                     BorderThickness="0">
             <TabControl.ContentTemplate>
                 <DataTemplate>
@@ -372,19 +371,10 @@
                       Opacity="0.3"
                       Background="{StaticResource ItemText}"/>
         
-        <DockPanel>
-            <TextBlock DockPanel.Dock="Top"
-                       Text="Positioning"
-                       Background="#B7333333"
-                       Foreground="White"
-                       Padding="5"
-                       Style="{StaticResource Heading1}"/>
-
-            <TextBlock Text="Not to Scale"
-                       DockPanel.Dock="Bottom"
-                       Padding="5"
-                       Background="#B7333333"
-                       Foreground="White"/>
+        <DockPanel Grid.Column="2">
+            <Label DockPanel.Dock="Top"
+                   Content="Preview (Not to Scale)"
+                   Padding="5"/>
 
             <Grid Background="Transparent"
                   VerticalAlignment="Center"
