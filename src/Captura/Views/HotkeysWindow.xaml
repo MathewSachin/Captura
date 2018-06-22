@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Hotkeys"
         Height="600"
-        Width="700"
+        Width="550"
         Background="{DynamicResource WindowBackground}"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>

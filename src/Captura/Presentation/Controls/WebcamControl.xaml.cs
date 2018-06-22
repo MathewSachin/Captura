@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Interop;
 using Captura.Webcam;
+using Point = System.Drawing.Point;
 
 namespace Captura
 {
@@ -13,13 +14,6 @@ namespace Captura
         public WebcamControl()
         {
             InitializeComponent();
-        }
-
-        double Scale()
-        {
-            var source = PresentationSource.FromVisual(this);
-
-            return source?.CompositionTarget?.TransformToDevice.M11 ?? 1d;
         }
 
         public void Refresh()
@@ -37,7 +31,7 @@ namespace Captura
                 Capture = new CaptureWebcam(VideoDevice)
                 {
                     PreviewWindow = source.Handle,
-                    Scale = Scale()
+                    Scale = Dpi.X
                 };
                 
                 SizeChanged += (S, E) => OnSizeChange();
@@ -64,18 +58,18 @@ namespace Captura
                 Capture = new CaptureWebcam(VideoDevice)
                 {
                     PreviewWindow = source.Handle,
-                    Scale = Scale()
+                    Scale = Dpi.X
                 };
                 
                 Capture.StartPreview();
 
-                Capture.OnPreviewWindowResize(50 * Dpi.X, 40 * Dpi.Y, new System.Drawing.Point((int)(257 * Dpi.X), (int) Dpi.Y));
+                Capture.OnPreviewWindowResize(50, 40, new Point(257, 1));
             }
         }
 
         void OnSizeChange()
         {
-            Capture?.OnPreviewWindowResize(ActualWidth, ActualHeight, new System.Drawing.Point(5, 40));
+            Capture?.OnPreviewWindowResize(ActualWidth, ActualHeight, new Point(5, 40));
         }
 
         void WebcamControl_OnIsVisibleChanged(object Sender, DependencyPropertyChangedEventArgs E)
