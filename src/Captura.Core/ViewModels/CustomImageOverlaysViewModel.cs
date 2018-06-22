@@ -5,7 +5,7 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class CustomImageOverlaysViewModel : CustomOverlaysBaseViewModel<CustomImageOverlaySettings>
+    public class CustomImageOverlaysViewModel : OverlayListViewModel<CustomImageOverlaySettings>
     {
         public CustomImageOverlaysViewModel(Settings Settings) : base(Settings.ImageOverlays)
         {

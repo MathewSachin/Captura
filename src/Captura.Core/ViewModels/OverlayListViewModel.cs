@@ -3,9 +3,9 @@ using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
-    public abstract class CustomOverlaysBaseViewModel<T> : NotifyPropertyChanged where T : class, new()
+    public abstract class OverlayListViewModel<T> : NotifyPropertyChanged where T : class, new()
     {
-        protected CustomOverlaysBaseViewModel(ObservableCollection<T> Collection)
+        protected OverlayListViewModel(ObservableCollection<T> Collection)
         {
             _collection = Collection;
 

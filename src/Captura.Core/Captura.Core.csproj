@@ -79,6 +79,8 @@
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
     <Compile Include="Models\VideoWriterItems\FFmpegPostProcessingItem.cs" />
     <Compile Include="Services\ITrayProgress.cs" />
+    <Compile Include="Models\CensorOverlay.cs" />
+    <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Translation\LanguageFields.cs" />
@@ -155,7 +157,8 @@
     <Compile Include="Translation\TranslationViewModel.cs" />
     <Compile Include="ViewModels\ArraySettingsViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
-    <Compile Include="ViewModels\CustomOverlaysBaseViewModel.cs" />
+    <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
+    <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />

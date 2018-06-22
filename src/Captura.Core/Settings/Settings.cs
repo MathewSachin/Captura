@@ -84,6 +84,8 @@ namespace Captura
         public KeystrokesSettings Keystrokes { get; set; } = new KeystrokesSettings();
 
         public TextOverlaySettings Elapsed { get; set; } = new TextOverlaySettings();
+
+        public ObservableCollection<CensorOverlaySettings> Censored { get; } = new ObservableCollection<CensorOverlaySettings>();
         
         public VisualSettings UI { get; } = new VisualSettings();
 
