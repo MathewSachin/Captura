@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -6,7 +7,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
@@ -27,8 +30,6 @@ namespace Captura
             {
                 ServiceProvider.Get<Settings>().Save();
             };
-
-            SizeChanged += (S, E) => UpdateSizeText();
         }
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
@@ -280,12 +281,7 @@ namespace Captura
                 AddToGrid(overlay, true);
             }
         }
-
-        void UpdateSizeText()
-        {
-            Grid.Tag = $"{(int)Grid.ActualWidth} x {(int)Grid.ActualHeight}";
-        }
-
+        
         async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             PlaceOverlays();
@@ -338,9 +334,9 @@ namespace Captura
 
         void PlaceOverlays()
         {
-            UpdateSizeText();
-
             var settings = ServiceProvider.Get<Settings>();
+
+            PrepareMouseClick(settings.Clicks);
 
             var webcam = Webcam(settings.WebcamOverlay);
             AddToGrid(webcam, true);
@@ -362,6 +358,21 @@ namespace Captura
             (imgOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateImageOverlays(imgOverlayVm.Collection);
         }
 
+        void PrepareMouseClick(MouseClickSettings Settings)
+        {
+            MouseClick.Width = Settings.Radius * 2;
+            MouseClick.Height = Settings.Radius * 2;
+            
+            Settings.PropertyChanged += (S, E) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MouseClick.Width = Settings.Radius * 2;
+                    MouseClick.Height = Settings.Radius * 2;
+                });
+            };
+        }
+
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
         {
             UpdateScale();
@@ -370,6 +381,22 @@ namespace Captura
         void Img_OnLoaded(object Sender, RoutedEventArgs E)
         {
             UpdateScale();
+        }
+
+        void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
+        {
+            var position = E.GetPosition(Grid);
+
+            MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight - 2, 0, 0);
+
+            MouseClick.Fill = new SolidColorBrush(Colors.Blue);
+
+            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(200))));
+        }
+
+        void UIElement_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        {
+            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(200))));
         }
     }
 }

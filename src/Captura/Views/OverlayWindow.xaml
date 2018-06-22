@@ -378,7 +378,9 @@
 
             <Grid Background="Transparent"
                   VerticalAlignment="Center"
-                  HorizontalAlignment="Center">
+                  HorizontalAlignment="Center"
+                  MouseDown="UIElement_OnMouseDown"
+                  MouseUp="UIElement_OnMouseUp">
                 <Image Name="Img"
                        Stretch="Uniform"
                        Loaded="Img_OnLoaded"/>
@@ -387,6 +389,14 @@
                     <Grid.LayoutTransform>
                         <ScaleTransform x:Name="Scale"/>
                     </Grid.LayoutTransform>
+                    
+                    <Ellipse Name="MouseClick"
+                             DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}"
+                             StrokeThickness="{Binding Settings.Clicks.BorderThickness}"
+                             Stroke="{Binding Settings.Clicks.BorderColor, Converter={StaticResource WpfColorConverter}}"
+                             Opacity="0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
                 </Grid>
             </Grid>
         </DockPanel>
