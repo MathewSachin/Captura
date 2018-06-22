@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-// ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Captura
@@ -32,12 +31,6 @@ namespace Captura
         }
 
         public string AlwaysOnTop
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string AppName
         {
             get => Get();
             set => Set(value);
@@ -152,12 +145,6 @@ namespace Captura
         }
 
         public string CornerRadius
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string CustomizeClickAndKeysOverlays
         {
             get => Get();
             set => Set(value);
@@ -806,18 +793,6 @@ namespace Captura
         }
 
         public string Window
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string WindowHeight
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string WindowWidth
         {
             get => Get();
             set => Set(value);

@@ -1,7 +1,6 @@
 {
   "About": "About",
   "AlwaysOnTop": "Sempre in cima",
-  "AppName": "Captura",
   "Audio": "Audio",
   "AudioSaved": "Audio salvato",
   "BackColor": "Colore di sfondo",
@@ -21,7 +20,6 @@
   "CopyPath": "Copia percorso",
   "CopyToClipboard": "Copia nella clipboard",
   "CornerRadius": "Raggio angolo",
-  "CustomizeClickAndKeysOverlays": "Personalizza l'overlay di click e keystrokes",  
   "Delete": "Cancella",
   "Disk": "Disco",
   "Donate": "Dona",
@@ -128,7 +126,5 @@
   "WebCam": "Webcam",
   "WebCamView": "WebCam View",
   "Window": "Finestra",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Sì"
 }

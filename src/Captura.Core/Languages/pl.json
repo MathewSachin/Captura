@@ -1,7 +1,6 @@
 {
   "About": "O programie",
   "AlwaysOnTop": "Zawsze na wierzchu",
-  "AppName": "Captura",
   "Audio": "Dźwięk",
   "AudioSaved": "Zapisano dźwięk",
   "BackColor": "Kolor tła",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopiuj ścieżkę",
   "CopyToClipboard": "Kopiuj do Schowka",
   "CornerRadius": "Promień rogów",
-  "CustomizeClickAndKeysOverlays": "Dostosuj nakładkę kliknięć i naciśnięć klawiszy",  
   "Delete": "Usuń",
   "Disk": "Dysk",
   "Donate": "Wspomóż",
@@ -128,7 +126,5 @@
   "WebCam": "Kamerka",
   "WebCamView": "Widok kamerki",
   "Window": "Okno",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Tak"
 }

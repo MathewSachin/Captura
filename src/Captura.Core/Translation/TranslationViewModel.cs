@@ -47,7 +47,8 @@ namespace Captura
             Fields = new LanguageFields()
                 .GetType()
                 .GetProperties()
-                .Select(M => new LanguageField(M.Name, this));
+                .Select(M => new LanguageField(M.Name, this))
+                .ToArray();
 
             SaveCommand = new DelegateCommand(Save);
 
@@ -58,7 +59,7 @@ namespace Captura
 
         public ReadOnlyObservableCollection<CultureInfo> AvailableCultures { get; }
 
-        public IEnumerable<LanguageField> Fields { get; }
+        public LanguageField[] Fields { get; }
 
         CultureInfo _selectedCulture;
 
@@ -120,7 +121,17 @@ namespace Captura
         {
             try
             {
-                File.WriteAllText(Path.Combine(_langDir, $"{_selectedCulture.Name}.json"), _currentLanguage.ToString());
+                var jenum = _currentLanguage
+                    .Properties()
+                    .Where(M => Fields.Any(F => F.Key == M.Name))
+                    .OrderBy(M => M.Name)
+                    .ToArray();
+
+                var jobj = new JObject(jenum);
+
+                var path = Path.Combine(_langDir, $"{_selectedCulture.Name}.json");
+
+                File.WriteAllText(path, jobj.ToString());
             }
             catch { }
         }

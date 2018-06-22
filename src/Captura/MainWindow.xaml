@@ -9,9 +9,8 @@
         ResizeMode="CanMinimize"
         Icon="Captura.ico"
         SizeToContent="Height"
-        MaxWidth="{Binding WindowWidth, Source={StaticResource Loc}, Mode=OneWay}"
-        MinWidth="{Binding WindowWidth, Source={StaticResource Loc}, Mode=OneWay}"
-        Title="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"
+        MaxWidth="420"
+        Title="Captura"
         Left="{Binding Settings.UI.MainWindowLeft}"
         Top="{Binding Settings.UI.MainWindowTop}"
         BorderThickness="1"
@@ -25,7 +24,7 @@
     </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
-                         Description="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}">
+                         Description="Captura">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
                                  Description="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
@@ -42,7 +41,7 @@
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
-                        ToolTipText="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"
+                        ToolTipText="Captura"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
@@ -177,7 +176,7 @@
                 </DockPanel>
             </Expander.Header>
             <DockPanel Margin="-5,0,0,0"
-                       Height="{Binding WindowHeight, Source={StaticResource Loc}, Mode=OneWay}">
+                       Height="560">
                 <Label Margin="5"
                        Content="{Binding Status.Display}"
                        Opacity="0.9"

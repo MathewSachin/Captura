@@ -1,7 +1,6 @@
 {
   "About": "نبذة عن البرنامج",
   "AlwaysOnTop": "دائماً في الأعلى",
-  "AppName": "Captura",
   "Audio": "صوت",
   "AudioSaved": "تم حفظ ملف الصوت",
   "BackColor": "لون الخلفية",
@@ -21,7 +20,6 @@
   "CopyPath": "انسخ المسار",
   "CopyToClipboard": "انسخ إلى الحافظة",
   "CornerRadius": "نصف قطر الركن",
-  "CustomizeClickAndKeysOverlays": "عدل تجهيزات النقر والمفاتيح",  
   "Delete": "احذف",
   "Disk": "قرص",
   "Donate": "تبرع",
@@ -128,7 +126,5 @@
   "WebCam": "كامير الويب",
   "WebCamView": "منظر كاميرا الويب",
   "Window": "نافذة",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Yes"
 }

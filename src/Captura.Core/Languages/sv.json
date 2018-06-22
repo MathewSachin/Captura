@@ -1,7 +1,6 @@
 {
   "About": "Om",
   "AlwaysOnTop": "Fönster Alltid Överst",
-  "AppName": "Captura",
   "Audio": "Ljud",
   "AudioSaved": "Ljudet Sparat",
   "BackColor": "Bakgrundsfärg",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopiera Sökväg",
   "CopyToClipboard": "Kopiera",
   "CornerRadius": "Kantavrundning",
-  "CustomizeClickAndKeysOverlays": "Skräddarsy Klick och Tangenttryckningar Overlay",  
   "Delete": "Radera",
   "Disk": "Hårddisk",
   "Donate": "Donera",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "WebCam Vy",
   "Window": "Fönster",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ja"
 }

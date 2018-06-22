@@ -1,7 +1,6 @@
 {
   "About": "Acerca de",
   "AlwaysOnTop": "Siempre visible",
-  "AppName": "Captura",
   "Audio": "Audio",
   "AudioSaved": "Audio guardado",
   "BackColor": "Color del fondo",
@@ -21,7 +20,6 @@
   "CopyPath": "Copiar ruta",
   "CopyToClipboard": "Copiar al portapapeles",
   "CornerRadius": "Radio del borde",
-  "CustomizeClickAndKeysOverlays": "Personalizar clics y pulsaciones de teclas",  
   "Delete": "Eliminar",
   "DesktopDuplication": "Duplicación de escritorio",
   "Disk": "Unidad",
@@ -130,7 +128,5 @@
   "WebCam": "Cámara web",
   "WebCamView": "Vista de cámara web",
   "Window": "Ventana",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Sí"
 }

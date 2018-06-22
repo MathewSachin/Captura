@@ -1,7 +1,6 @@
 {
   "About": "Tentang",
   "AlwaysOnTop": "Selalu di atas",
-  "AppName": "Captura",
   "Audio": "Suara",
   "AudioSaved": "Suara disimpan",
   "BackColor": "Warna Dasar",
@@ -21,7 +20,6 @@
   "CopyPath": "Jalur salin",
   "CopyToClipboard": "Salin ke papan klip",
   "CornerRadius": "Jarak pojok",
-  "CustomizeClickAndKeysOverlays": "Mengkustomisasi posisi Klik dan Ketukan kunci ",  
   "Delete": "Hapus",
   "Disk": "Cakram",
   "Donate": "Donasi",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "Tampak Webcam",
   "Window": "Jendela",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ya"
 }

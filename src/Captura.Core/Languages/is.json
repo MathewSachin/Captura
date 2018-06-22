@@ -1,7 +1,6 @@
 {
   "About": "Um",
   "AlwaysOnTop": "Alltaf efst uppi",
-  "AppName": "Captura",
   "Audio": "Hljóð",
   "AudioSaved": "Hljóð vistað",
   "BackColor": "Baklitur",
@@ -21,7 +20,6 @@
   "CopyPath": "Afritunarleið",
   "CopyToClipboard": "Afrita á klemmuspjald",
   "CornerRadius": "Hornradíus",
-  "CustomizeClickAndKeysOverlays": "Aðlaga smelli og lyklayfirlögn",  
   "Delete": "Eyða",
   "Disk": "Diskur",
   "Donate": "Gefa",
@@ -128,7 +126,5 @@
   "WebCam": "Vefmyndavél",
   "WebCamView": "Vefmyndavélssýn",
   "Window": "Gluggi",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Já"
 }

@@ -1,7 +1,6 @@
 {
   "About": "Over",
   "AlwaysOnTop": "Altijd Bovenaan",
-  "AppName": "Captura",
   "Audio": "Audio",
   "AudioSaved": "Audio Bewaard",
   "BackColor": "Kleur Achterkant",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopieer Bestandslocatie",
   "CopyToClipboard": "Kopieer Naar Het Prikbord",
   "CornerRadius": "Straal Hoeken",
-  "CustomizeClickAndKeysOverlays": "Stel de Klik- en Toetsaanslag Overlay in",  
   "Delete": "Verwijder",
   "Disk": "Schijf",
   "Donate": "Doneer",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "WebCam View",
   "Window": "Venster",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ja"
 }

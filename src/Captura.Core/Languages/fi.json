@@ -1,7 +1,6 @@
 {
   "About": "Tietoja",
   "AlwaysOnTop": "Aina päällimmäisenä",
-  "AppName": "Captura",
   "Audio": "Ääni",
   "AudioSaved": "Ääni tallennettu",
   "BackColor": "Taustaväri",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopioi polku",
   "CopyToClipboard": "Kopioi leikepöydälle",
   "CornerRadius": "Kulman pyöreys",
-  "CustomizeClickAndKeysOverlays": "Mukauta hiiren ja näppäimistön painallusten ulkoasua",  
   "Delete": "Poista",
   "Disk": "Levy",
   "Donate": "Lahjoita",
@@ -128,7 +126,5 @@
   "WebCam": "Webkamera",
   "WebCamView": "Webkameran näkymä",
   "Window": "Ikkuna",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Kyllä"
 }

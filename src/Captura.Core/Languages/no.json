@@ -1,7 +1,6 @@
 {
   "About": "Om",
   "AlwaysOnTop": "Alltid øverst",
-  "AppName": "Captura",
   "Audio": "Lyd",
   "AudioSaved": "Lyd lagret",
   "BackColor": "Bakgrunnsfarge",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopi filsti",
   "CopyToClipboard": "Kopier til utklippstavle",
   "CornerRadius": "Hjørneradius",
-  "CustomizeClickAndKeysOverlays": "Tilpass klikk og tastetrykk overlegg",  
   "Delete": "Slett",
   "Disk": "Harddisk",
   "Donate": "Doner",
@@ -128,7 +126,5 @@
   "WebCam": "Webkamera",
   "WebCamView": "Webkamera visning",
   "Window": "Vindu",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ja"
 }

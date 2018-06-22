@@ -1,7 +1,6 @@
 {
   "About": "Hakkında",
   "AlwaysOnTop": "Her zaman Üstte",
-  "AppName": "Captura",
   "Audio": "Ses",
   "AudioSaved": "Ses Kaydedildi",
   "BackColor": "Arka Renk",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopyalama Konumu",
   "CopyToClipboard": "Panoya Kopyala",
   "CornerRadius": "Renk Etki Alanı",
-  "CustomizeClickAndKeysOverlays": "Tıklama ve Tuş Vuruşu Kaplamalarını Özelleştir",  
   "Delete": "Sil",
   "Disk": "Disk",
   "Donate": "Bağış Yap",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "WebCam Görüntüsü",
   "Window": "Pencere",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Evet"
 }

@@ -1,7 +1,6 @@
 {
   "About": "Инфо",
   "AlwaysOnTop": "Всегда на переднем плане",
-  "AppName": "Captura",
   "Audio": "Звук",
   "AudioSaved": "Звук сохранен",
   "BackColor": "Цвет фона",
@@ -21,7 +20,6 @@
   "CopyPath": "Путь копирования",
   "CopyToClipboard": "Скопировать в буфер обмена",
   "CornerRadius": "Радиус углов",
-  "CustomizeClickAndKeysOverlays": "Настройка визуализации щелчков мыши и нажатий клавиш",  
   "Delete": "Удалить",
   "Disk": "Диск",
   "Donate": "Пожертвовать",
@@ -125,7 +123,5 @@
   "WebCam": "Веб-камера",
   "WebCamView": "Вид веб-камеры",
   "Window": "Окно",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Да"
 }

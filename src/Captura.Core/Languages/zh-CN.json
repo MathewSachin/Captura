@@ -1,7 +1,6 @@
-﻿{
+{
   "About": "关于",
   "AlwaysOnTop": "保持顶部",
-  "AppName": "Captura",
   "Audio": "音频",
   "AudioSaved": "音频已保存",
   "BackColor": "背景色",
@@ -21,7 +20,6 @@
   "CopyPath": "复制路径",
   "CopyToClipboard": "复制到剪切板",
   "CornerRadius": "圆角半径",
-  "CustomizeClickAndKeysOverlays": "自定义点击和按键效果",
   "Delete": "删除",
   "DesktopDuplication": "桌面复制",
   "Disk": "硬盘",
@@ -130,7 +128,5 @@
   "WebCam": "摄像头",
   "WebCamView": "摄像头视图",
   "Window": "窗口",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "是"
 }

@@ -1,7 +1,6 @@
 {
   "About": "Über",
   "AlwaysOnTop": "Immer im Vordergrund",
-  "AppName": "Captura",
   "Audio": "Audio",
   "AudioSaved": "Audio gespeichert",
   "BackColor": "Hintergrundfarbe",
@@ -21,7 +20,6 @@
   "CopyPath": "Pfad kopieren",
   "CopyToClipboard": "In Zwischenablage kopieren",
   "CornerRadius": "Eckenradius",
-  "CustomizeClickAndKeysOverlays": "Klick und Tastendruck Overlays anpassen",  
   "Delete": "Löschen",
   "Disk": "Festplatte",
   "Donate": "Spenden",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "WebCam Anzeige",
   "Window": "Fenster",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ja"
 }

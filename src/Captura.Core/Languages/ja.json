@@ -1,7 +1,6 @@
 {
   "About": "バージョン情報",
   "AlwaysOnTop": "常に前面に表示",
-  "AppName": "Captura",
   "Audio": "音声",
   "AudioSaved": "音声が保存されました",
   "BackColor": "背景色",
@@ -21,7 +20,6 @@
   "CopyPath": "パスをコピー",
   "CopyToClipboard": "クリップボードにコピー",
   "CornerRadius": "縁の半径",
-  "CustomizeClickAndKeysOverlays": "クリックとキー入力のオーバーレイ表示を調整",  
   "Delete": "削除",
   "DesktopDuplication": "デスクトップに複製",
   "Disk": "ディスク",
@@ -130,7 +128,5 @@
   "WebCam": "ウェブカメラ",
   "WebCamView": "ウェブカメラの表示",
   "Window": "ウィンドウ",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "はい"
 }

@@ -15,7 +15,7 @@
                 <TextBlock TextWrapping="Wrap"
                            LineHeight="30"
                            Style="{StaticResource TextColor}">
-                    <Run FontSize="20" Text="{Binding AppName, Source={StaticResource Loc}, Mode=OneWay}"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                    <Run FontSize="20" Text="Captura"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
                     (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
                 </TextBlock>
 

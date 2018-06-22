@@ -1,7 +1,6 @@
 {
   "About": "Despre",
   "AlwaysOnTop": "Întotdeauna deasupra",
-  "AppName": "Captura",
   "Audio": "Audio",
   "AudioSaved": "Audio salvat",
   "BackColor": "Culoarea de pe fundal",
@@ -21,7 +20,6 @@
   "CopyPath": "Copiaza cale",
   "CopyToClipboard": "Copiază în clipboard",
   "CornerRadius": "Raza colțurilor",
-  "CustomizeClickAndKeysOverlays": "Customizează Click și Keystrokes Overlays",  
   "Delete": "Șterge",
   "Disk": "Disc",
   "Donate": "Donaează",
@@ -128,7 +126,5 @@
   "WebCam": "WebCam",
   "WebCamView": "WebCam View",
   "Window": "Window",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Da"
 }

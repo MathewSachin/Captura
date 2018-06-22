@@ -20,7 +20,6 @@
   "CopyPath": "Copiar Caminho",
   "CopyToClipboard": "Copiar para Área de Transferência",
   "CornerRadius": "Raio do Canto",
-  "CustomizeClickAndKeysOverlays": "Personalizar Efeitos de Clique e Teclas Pressionadas",  
   "Delete": "Excluir",
   "Disk": "Disco",
   "Donate": "Doar",
@@ -122,6 +121,5 @@
   "WebCam": "Webcam",
   "WebCamView": "Visualização da Webcam",
   "Window": "Janela",
-  "WindowWidth": "420",
   "Yes": "Sim"
 }

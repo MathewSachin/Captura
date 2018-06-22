@@ -1,7 +1,6 @@
 {
   "About": "O Aplikaci",
   "AlwaysOnTop": "Vždy Navrchu",
-  "AppName": "Captura",
   "Audio": "Zvuk",
   "AudioSaved": "Zvuk Uložen",
   "BackColor": "Barva Pozadí",
@@ -21,7 +20,6 @@
   "CopyPath": "Kopírovat cestu",
   "CopyToClipboard": "Kopírovat do schránky",
   "CornerRadius": "Zakulacení Rohů",
-  "CustomizeClickAndKeysOverlays": "Upravit překrytí kliků a stisků kláves",  
   "Delete": "Smazat",
   "Disk": "Disk",
   "Donate": "Darovat",
@@ -128,7 +126,5 @@
   "WebCam": "Webová kamera",
   "WebCamView": "Zobrazení webové kamery",
   "Window": "Okno",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "Ano"
 }

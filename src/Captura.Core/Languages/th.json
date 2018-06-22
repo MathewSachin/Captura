@@ -1,7 +1,6 @@
 {
   "About": "เกี่ยวกับ",
   "AlwaysOnTop": "อยู่บนสุดเสมอ",
-  "AppName": "Captura",
   "Audio": "บันทึกเสียง",
   "AudioSaved": "บันทึกเสียงเรียบร้อย",
   "BackColor": "สีพื้นหลัง",
@@ -21,7 +20,6 @@
   "CopyPath": "คัดลอกที่อยู่ไฟล์",
   "CopyToClipboard": "คัดลอกไปยังคลิปบอร์ด",
   "CornerRadius": "รัศมีหัวมุม",
-  "CustomizeClickAndKeysOverlays": "ตั้งค่าการคลิกเมาส์และปุ่มกดโอเวอร์เลย์",  
   "Delete": "ลบ",
   "Disk": "ดิสก์",
   "Donate": "บริจาค",
@@ -128,7 +126,5 @@
   "WebCam": "เว็บแคม",
   "WebCamView": "ดูเว็บแคม",
   "Window": "หน้าต่าง",
-  "WindowHeight": "560",
-  "WindowWidth": "420",
   "Yes": "ใช่"
 }
