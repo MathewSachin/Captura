@@ -12,9 +12,14 @@
         <captura:TranslationViewModel/>
     </Window.DataContext>
     <DockPanel Background="{DynamicResource WindowBackground}">
+        <Button Content="Clean All"
+                DockPanel.Dock="Bottom"
+                Margin="5,10,5,5"
+                Command="{Binding CleanAllCommand}"/>
+
         <ListView ItemsSource="{Binding AvailableCultures}"
                   SelectedValue="{Binding SelectedCulture, Mode=TwoWay}"
-                  Width="160"
+                  Width="190"
                   Padding="5"
                   Margin="0,0,5,0"
                   BorderThickness="0,0,0.6,0">
@@ -24,7 +29,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
+
         <Border BorderThickness="0.6,0,0,0"
                 BorderBrush="{DynamicResource ItemText}"
                 Margin="10,0,0,0"
@@ -37,13 +42,13 @@
                                Style="{StaticResource Title}"
                                Margin="0,0,0,10"/>
                 </Label>
-                
+
                 <Label>
                     <TextBlock Style="{StaticResource Heading2}"
                                Text="New Language"
                                Margin="0,5"/>
                 </Label>
-                
+
                 <Label>
                     <TextBlock TextWrapping="Wrap"
                                Text="1. Create a copy of en.json in 'src/Captura.Core/Languages' folder."
@@ -55,13 +60,13 @@
                                Text="2. Rename the copied file to [CultureID].json where 'CultureID' is the language identifier."
                                Style="{StaticResource Small}"/>
                 </Label>
-                
+
                 <Label>
                     <TextBlock TextWrapping="Wrap"
                                Text="3. Do Translation in the new file."
                                Style="{StaticResource Small}"/>
                 </Label>
-                
+
                 <Label>
                     <TextBlock TextWrapping="Wrap"
                                Text="4. Commit. Create Pull Request."

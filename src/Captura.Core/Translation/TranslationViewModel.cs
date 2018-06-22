@@ -53,6 +53,8 @@ namespace Captura
             SaveCommand = new DelegateCommand(Save);
 
             DiscardChangesCommand = new DelegateCommand(() => SelectedCulture = SelectedCulture);
+
+            CleanAllCommand = new DelegateCommand(CleanAll);
         }
 
         readonly ObservableCollection<CultureInfo> _cultures = new ObservableCollection<CultureInfo>();
@@ -119,9 +121,14 @@ namespace Captura
 
         void Save()
         {
+            Save(_currentLanguage, _selectedCulture);
+        }
+
+        void Save(JObject Object, CultureInfo Culture)
+        {
             try
             {
-                var jenum = _currentLanguage
+                var jenum = Object
                     .Properties()
                     .Where(M => Fields.Any(F => F.Key == M.Name))
                     .OrderBy(M => M.Name)
@@ -129,13 +136,25 @@ namespace Captura
 
                 var jobj = new JObject(jenum);
 
-                var path = Path.Combine(_langDir, $"{_selectedCulture.Name}.json");
+                var path = Path.Combine(_langDir, $"{Culture.Name}.json");
 
                 File.WriteAllText(path, jobj.ToString());
             }
             catch { }
         }
 
+        void CleanAll()
+        {
+            foreach (var culture in AvailableCultures)
+            {
+                var jobj = LoadLang(culture.Name);
+
+                Save(jobj, culture);
+            }
+        }
+
         public ICommand DiscardChangesCommand { get; }
+
+        public ICommand CleanAllCommand { get; }
     }
 }

@@ -714,12 +714,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string UseProxy
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string UseProxyAuth
         {
             get => Get();
