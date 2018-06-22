@@ -2,20 +2,65 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
-using Captura.Models;
+using System.Windows.Threading;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace Captura
 {
     public partial class NotificationStack
     {
+        static readonly TimeSpan TimeoutToHide = TimeSpan.FromSeconds(5);
+        DateTime _lastMouseMoveTime;
+        readonly DispatcherTimer _timer;
+
         public NotificationStack()
         {
             InitializeComponent();
+
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+
+            _timer.Tick += TimerOnTick;
+
+            _timer.Start();
         }
 
-        void Hide()
+        void TimerOnTick(object Sender, EventArgs Args)
         {
-            ServiceProvider.Get<ISystemTray>().HideNotification();
+            var elapsed = DateTime.Now - _lastMouseMoveTime;
+
+            if (elapsed >= TimeoutToHide)
+            {
+                var unfinished = ItemsControl.Items
+                    .OfType<ProgressBalloon>()
+                    .Any(M => !M.ViewModel.Finished);
+
+                if (!unfinished)
+                {
+                    Hide();
+                }
+                else _lastMouseMoveTime = DateTime.Now;
+            }
+        }
+
+        public void Hide()
+        {
+            BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(100))));
+
+            if (_timer.IsEnabled)
+                _timer.Stop();
+        }
+
+        public void Show()
+        {
+            _lastMouseMoveTime = DateTime.Now;
+
+            BeginAnimation(OpacityProperty, new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(300))));
+
+            if (!_timer.IsEnabled)
+                _timer.Start();
         }
 
         void OnClose()
@@ -86,6 +131,13 @@ namespace Captura
                     Remove(frameworkElement);
                 }
             }
+        }
+
+        void NotificationStack_OnMouseMove(object Sender, MouseEventArgs E)
+        {
+            _lastMouseMoveTime = DateTime.Now;
+
+            Show();
         }
     }
 }

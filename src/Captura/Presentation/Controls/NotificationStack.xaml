@@ -6,7 +6,8 @@
              Margin="10,60"
              BorderThickness="1"
              BorderBrush="{DynamicResource Accent}"
-             Background="{DynamicResource WindowBackground}">
+             Background="{DynamicResource WindowBackground}"
+             MouseMove="NotificationStack_OnMouseMove">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"

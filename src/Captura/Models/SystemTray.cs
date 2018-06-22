@@ -1,8 +1,6 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using System;
-using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Media.Animation;
 
 namespace Captura.Models
 {
@@ -28,8 +26,7 @@ namespace Captura.Models
 
         public void HideNotification()
         {
-            _notificationStack.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(100))));
+            _notificationStack.Hide();
         }
 
         public void ShowMessage(string Message)
@@ -58,13 +55,12 @@ namespace Captura.Models
 
             if (trayIcon != null && _first)
             {
-                trayIcon.ShowCustomBalloon(_notificationStack, PopupAnimation.Scroll, null);
+                trayIcon.ShowCustomBalloon(_notificationStack, PopupAnimation.None, null);
 
                 _first = false;
             }
 
-            _notificationStack.BeginAnimation(UIElement.OpacityProperty,
-                new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(300))));
+            _notificationStack.Show();
         }
 
         public void ShowScreenShotNotification(string FilePath)
