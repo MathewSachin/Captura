@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="200"/>
+            <ColumnDefinition Width="Auto" MinWidth="220"/>
         </Grid.ColumnDefinitions>
         
         <TabControl Grid.Column="2"
@@ -259,14 +259,19 @@
                     <local:ImageOverlaySettingsControl/>
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Elapsed"
+                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <local:TextOverlaySettingsControl Margin="5"
+                                                  DataContext="{Binding Settings.Elapsed}"
+                                                  DockPanel.Dock="Bottom"/>
+            </TabItem>
             <TabItem Header="Text">
                 <DockPanel DataContext="{Binding MainViewModel.CustomOverlays, Source={StaticResource ServiceLocator}}">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
-                                            IconData="{StaticResource IconAdd}"
-                                            DockPanel.Dock="Right"/>
-                        <Label Content="Supported Replacement Tokens: %elapsed%"/>
+                                            IconData="{StaticResource IconAdd}"/>
+                        <Label Content="Add More"/>
                     </DockPanel>
 
                     <ListView Margin="5"
@@ -312,10 +317,9 @@
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
-                                            IconData="{StaticResource IconAdd}"
-                                            DockPanel.Dock="Right"/>
+                                            IconData="{StaticResource IconAdd}"/>
 
-                        <Label Content="Images can be used as watermarks"/>
+                        <Label Content="Add More"/>
                     </DockPanel>
 
                     <ListView Margin="5"

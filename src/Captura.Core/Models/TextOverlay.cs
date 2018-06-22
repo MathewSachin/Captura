@@ -59,6 +59,9 @@ namespace Captura.Models
         
         public virtual void Draw(Graphics G, Func<Point, Point> PointTransform = null)
         {
+            if (!_overlaySettings.Display)
+                return;
+
             var text = GetText();
 
             if (string.IsNullOrWhiteSpace(text))

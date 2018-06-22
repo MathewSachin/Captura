@@ -342,9 +342,14 @@ namespace Captura
 
             var settings = ServiceProvider.Get<Settings>();
 
-            var keystrokes = Keystrokes(settings.Keystrokes);
-
             var webcam = Webcam(settings.WebcamOverlay);
+            AddToGrid(webcam, true);
+
+            var keystrokes = Keystrokes(settings.Keystrokes);
+            AddToGrid(keystrokes, false);
+
+            var elapsed = Text(settings.Elapsed, "00:00:00");
+            AddToGrid(elapsed, false);
 
             var textOverlayVm = ServiceProvider.Get<CustomOverlaysViewModel>();
 
@@ -355,9 +360,6 @@ namespace Captura
 
             UpdateImageOverlays(imgOverlayVm.Collection);
             (imgOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateImageOverlays(imgOverlayVm.Collection);
-
-            AddToGrid(keystrokes, false);
-            AddToGrid(webcam, true);
         }
 
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)

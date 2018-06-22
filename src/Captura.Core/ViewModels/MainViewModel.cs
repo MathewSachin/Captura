@@ -853,8 +853,10 @@ namespace Captura.ViewModels
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
             
+            overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
+            
             // Custom Overlays
-            overlays.AddRange(CustomOverlays.Collection.Where(M => M.Display).Select(M => new CustomOverlay(M, () => TimeSpan)));
+            overlays.AddRange(CustomOverlays.Collection.Select(M => new CustomOverlay(M)));
 
             // Custom Image Overlays
             foreach (var overlay in CustomImageOverlays.Collection.Where(M => M.Display))

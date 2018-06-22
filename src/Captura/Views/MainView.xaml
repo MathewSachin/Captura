@@ -31,6 +31,10 @@
                                           Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource IconKeyboard}"
                                           IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
+                <local:ModernToggleButton ToolTip="Elapsed"
+                                          IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                                          IconData="{StaticResource IconTimer}"
+                                          IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}"/>
             </StackPanel>
         </DockPanel>
 

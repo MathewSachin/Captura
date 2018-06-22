@@ -82,6 +82,8 @@ namespace Captura
         public MouseClickSettings Clicks { get; set; } = new MouseClickSettings();
         
         public KeystrokesSettings Keystrokes { get; set; } = new KeystrokesSettings();
+
+        public TextOverlaySettings Elapsed { get; set; } = new TextOverlaySettings();
         
         public VisualSettings UI { get; } = new VisualSettings();
 

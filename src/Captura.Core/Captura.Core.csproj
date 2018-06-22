@@ -71,6 +71,7 @@
     <Compile Include="CoreModule.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Models\ElapsedOverlay.cs" />
     <Compile Include="Models\FFmpeg\FFmpegPostProcessingWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />

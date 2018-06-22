@@ -51,6 +51,7 @@ namespace Captura
                         vm.Settings.WebcamOverlay = dummySettings.WebcamOverlay;
                         vm.Settings.Clicks = dummySettings.Clicks;
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
+                        vm.Settings.Elapsed = dummySettings.Elapsed;
 
                         foreach (var overlay in dummySettings.TextOverlays)
                         {
