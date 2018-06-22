@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -34,6 +35,8 @@ namespace Captura
         void AddToGrid(LayerFrame Frame, bool CanResize)
         {
             Grid.Children.Add(Frame);
+
+            Panel.SetZIndex(Frame, 0);
 
             var layer = AdornerLayer.GetAdornerLayer(Frame);
             var adorner = new OverlayPositionAdorner(Frame, CanResize);
@@ -263,6 +266,8 @@ namespace Captura
             foreach (var overlay in _censorOverlays)
             {
                 AddToGrid(overlay, true);
+
+                Panel.SetZIndex(overlay, -1);
             }
         }
 
@@ -300,6 +305,8 @@ namespace Captura
             foreach (var overlay in _textOverlays)
             {
                 AddToGrid(overlay, false);
+
+                Panel.SetZIndex(overlay, 1);
             }
         }
 
@@ -337,6 +344,8 @@ namespace Captura
             foreach (var overlay in _imageOverlays)
             {
                 AddToGrid(overlay, true);
+
+                Panel.SetZIndex(overlay, 2);
             }
         }
 
