@@ -387,7 +387,7 @@ namespace Captura
         {
             var position = E.GetPosition(Grid);
 
-            MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight - 2, 0, 0);
+            MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight / 2, 0, 0);
 
             MouseClick.Fill = new SolidColorBrush(Colors.Blue);
 
