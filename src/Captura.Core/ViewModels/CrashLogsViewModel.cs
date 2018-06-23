@@ -16,7 +16,8 @@ namespace Captura.ViewModels
             {
                 CrashLogs = new ObservableCollection<FileContentItem>(Directory
                     .EnumerateFiles(folder)
-                    .Select(FileName => new FileContentItem(FileName)));
+                    .Select(FileName => new FileContentItem(FileName))
+                    .Reverse());
 
                 if (CrashLogs.Count > 0)
                 {

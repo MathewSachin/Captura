@@ -3,19 +3,19 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Captura
 {
     public class StateToRecordButtonGeometryConverter : OneWayConverter
     {
-        readonly Geometry _recordGeometry = new EllipseGeometry(new Point(), 50, 50),
-            _stopGeometry = new RectangleGeometry(new Rect(new Point(), new Size(50, 50)));
-
         public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
+            var app = Application.Current;
+
             if (Value is RecorderState state)
-                return state == RecorderState.NotRecording ? _recordGeometry : _stopGeometry;
+                return state == RecorderState.NotRecording
+                    ? app.Resources["IconRecord"]
+                    : app.Resources["IconStop"];
 
             return Binding.DoNothing;
         }
