@@ -30,6 +30,8 @@ namespace Captura
             {
                 ServiceProvider.Get<Settings>().Save();
             };
+
+            UpdateBackground();
         }
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
@@ -294,14 +296,12 @@ namespace Captura
             }
         }
         
-        async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
+        void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             PlaceOverlays();
-
-            await UpdateBackground();
         }
 
-        async Task UpdateBackground()
+        async void UpdateBackground()
         {
             var vm = ServiceProvider.Get<MainViewModel>();
 

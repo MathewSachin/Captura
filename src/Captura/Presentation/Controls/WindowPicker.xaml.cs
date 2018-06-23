@@ -80,7 +80,7 @@ namespace Captura
                     Text = "Select Window or Press Esc to Cancel",
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Foreground = new SolidColorBrush(Colors.White)
+                    Foreground = new SolidColorBrush(Colors.Black)
                 };
 
                 container.Content = textBlock;
