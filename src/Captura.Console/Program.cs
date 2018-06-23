@@ -49,6 +49,7 @@ namespace Captura
                         dummySettings.Load();
 
                         vm.Settings.WebcamOverlay = dummySettings.WebcamOverlay;
+                        vm.Settings.MousePointerOverlay = dummySettings.MousePointerOverlay;
                         vm.Settings.Clicks = dummySettings.Clicks;
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
                         vm.Settings.Elapsed = dummySettings.Elapsed;
