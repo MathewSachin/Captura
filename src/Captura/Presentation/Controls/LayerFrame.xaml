@@ -4,14 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             Background="Brown"
-             Name="This">
-    <Grid>
-        <Label Content="{Binding Tag, ElementName=This}"
-               HorizontalAlignment="Center"
-               Foreground="{Binding Foreground, ElementName=This}"/>
-    </Grid>
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border Name="Border"
+            Background="Brown">
+        <Label Name="Label"
+               HorizontalAlignment="Center"/>
+    </Border>
     <UserControl.Effect>
         <DropShadowEffect ShadowDepth="1"
                           Opacity="0.5"/>

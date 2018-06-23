@@ -47,11 +47,17 @@ namespace Captura
         {
             var control = new LayerFrame
             {
-                Tag = Name,
-                Background = new SolidColorBrush(Background),
-                Foreground = new SolidColorBrush(Colors.White),
+                Border =
+                {
+                    Background = new SolidColorBrush(Background)
+                },
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = VerticalAlignment.Top,
+                Label =
+                {
+                    Content = Name,
+                    Foreground = new SolidColorBrush(Colors.White)
+                }
             };
 
             void Update()
@@ -147,47 +153,53 @@ namespace Captura
         {
             var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
             
-            control.FontSize = Settings.FontSize;
+            control.Label.FontSize = Settings.FontSize;
 
-            control.Padding = new Thickness(Settings.HorizontalPadding,
+            control.Border.Padding = new Thickness(Settings.HorizontalPadding,
                 Settings.VerticalPadding,
                 Settings.HorizontalPadding,
                 Settings.VerticalPadding);
 
-            control.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-            control.BorderThickness = new Thickness(Settings.BorderThickness);
-            control.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+            control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+            control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
+            control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+
+            control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
 
             Settings.PropertyChanged += (S, E) =>
             {
                 switch (E.PropertyName)
                 {
                     case nameof(Settings.BackgroundColor):
-                        control.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
+                        control.Border.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
                         break;
 
                     case nameof(Settings.FontColor):
-                        control.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
+                        control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
                         break;
 
                     case nameof(Settings.BorderThickness):
-                        control.BorderThickness = new Thickness(Settings.BorderThickness);
+                        control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
                         break;
 
                     case nameof(Settings.BorderColor):
-                        control.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                        control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
                         break;
 
                     case nameof(Settings.FontSize):
-                        control.FontSize = Settings.FontSize;
+                        control.Label.FontSize = Settings.FontSize;
                         break;
 
                     case nameof(Settings.HorizontalPadding):
                     case nameof(Settings.VerticalPadding):
-                        control.Padding = new Thickness(Settings.HorizontalPadding,
+                        control.Border.Padding = new Thickness(Settings.HorizontalPadding,
                             Settings.VerticalPadding,
                             Settings.HorizontalPadding,
                             Settings.VerticalPadding);
+                        break;
+
+                    case nameof(Settings.CornerRadius):
+                        control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
                         break;
                 }
             };
@@ -227,7 +239,7 @@ namespace Captura
                     switch (E.PropertyName)
                     {
                         case nameof(setting.Text):
-                            control.Tag = setting.Text;
+                            control.Label.Content = setting.Text;
                             break;
 
                         case nameof(setting.Display):
@@ -264,7 +276,7 @@ namespace Captura
                     switch (E.PropertyName)
                     {
                         case nameof(setting.Source):
-                            control.Tag = setting.Source;
+                            control.Label.Content = setting.Source;
                             break;
 
                         case nameof(setting.Display):
@@ -367,7 +379,7 @@ namespace Captura
 
                 MouseClick.Width = MouseClick.Height = d;
                 MouseClick.StrokeThickness = Settings.BorderThickness;
-                MouseClick.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
+                MouseClick.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
             }
 
             Update();
@@ -383,8 +395,8 @@ namespace Captura
 
                 MousePointer.Width = MousePointer.Height = d;
                 MousePointer.StrokeThickness = Settings.BorderThickness;
-                MousePointer.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
-                MousePointer.Fill = new SolidColorBrush(ToColor(Settings.Color));
+                MousePointer.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                MousePointer.Fill = new SolidColorBrush(ConvertColor(Settings.Color));
             }
 
             Update();
@@ -402,11 +414,6 @@ namespace Captura
             UpdateScale();
         }
 
-        Color ToColor(System.Drawing.Color C)
-        {
-            return Color.FromArgb(C.A, C.R, C.G, C.B);
-        }
-
         Color GetClickColor(MouseButton Button)
         {
             var settings = ServiceProvider.Get<Settings>();
@@ -414,13 +421,13 @@ namespace Captura
             switch (Button)
             {
                 case MouseButton.Middle:
-                    return ToColor(settings.Clicks.MiddleClickColor);
+                    return ConvertColor(settings.Clicks.MiddleClickColor);
 
                 case MouseButton.Right:
-                    return ToColor(settings.Clicks.RightClickColor);
+                    return ConvertColor(settings.Clicks.RightClickColor);
                     
                 default:
-                    return ToColor(settings.Clicks.Color);
+                    return ConvertColor(settings.Clicks.Color);
             }
         }
 
