@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -6,7 +7,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
@@ -27,8 +30,6 @@ namespace Captura
             {
                 ServiceProvider.Get<Settings>().Save();
             };
-
-            SizeChanged += (S, E) => UpdateSizeText();
         }
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
@@ -280,12 +281,7 @@ namespace Captura
                 AddToGrid(overlay, true);
             }
         }
-
-        void UpdateSizeText()
-        {
-            Grid.Tag = $"{(int)Grid.ActualWidth} x {(int)Grid.ActualHeight}";
-        }
-
+        
         async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             PlaceOverlays();
@@ -338,9 +334,10 @@ namespace Captura
 
         void PlaceOverlays()
         {
-            UpdateSizeText();
-
             var settings = ServiceProvider.Get<Settings>();
+
+            PrepareMousePointer(settings.MousePointerOverlay);
+            PrepareMouseClick(settings.Clicks);
 
             var webcam = Webcam(settings.WebcamOverlay);
             AddToGrid(webcam, true);
@@ -362,6 +359,39 @@ namespace Captura
             (imgOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateImageOverlays(imgOverlayVm.Collection);
         }
 
+        void PrepareMouseClick(MouseClickSettings Settings)
+        {
+            void Update()
+            {
+                var d = (Settings.Radius + Settings.BorderThickness) * 2;
+
+                MouseClick.Width = MouseClick.Height = d;
+                MouseClick.StrokeThickness = Settings.BorderThickness;
+                MouseClick.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
+            }
+
+            Update();
+            
+            Settings.PropertyChanged += (S, E) => Dispatcher.Invoke(Update);
+        }
+
+        void PrepareMousePointer(MouseOverlaySettings Settings)
+        {
+            void Update()
+            {
+                var d = (Settings.Radius + Settings.BorderThickness) * 2;
+
+                MousePointer.Width = MousePointer.Height = d;
+                MousePointer.StrokeThickness = Settings.BorderThickness;
+                MousePointer.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
+                MousePointer.Fill = new SolidColorBrush(ToColor(Settings.Color));
+            }
+
+            Update();
+
+            Settings.PropertyChanged += (S, E) => Dispatcher.Invoke(Update);
+        }
+
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
         {
             UpdateScale();
@@ -370,6 +400,92 @@ namespace Captura
         void Img_OnLoaded(object Sender, RoutedEventArgs E)
         {
             UpdateScale();
+        }
+
+        Color ToColor(System.Drawing.Color C)
+        {
+            return Color.FromArgb(C.A, C.R, C.G, C.B);
+        }
+
+        Color GetClickColor(MouseButton Button)
+        {
+            var settings = ServiceProvider.Get<Settings>();
+
+            switch (Button)
+            {
+                case MouseButton.Middle:
+                    return ToColor(settings.Clicks.MiddleClickColor);
+
+                case MouseButton.Right:
+                    return ToColor(settings.Clicks.RightClickColor);
+                    
+                default:
+                    return ToColor(settings.Clicks.Color);
+            }
+        }
+
+        bool _dragging;
+
+        void UpdateMouseClickPosition(MouseEventArgs E)
+        {
+            var position = E.GetPosition(Grid);
+
+            MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight / 2, 0, 0);
+        }
+
+        void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
+        {
+            _dragging = true;
+
+            UpdateMouseClickPosition(E);
+
+            MouseClick.Fill = new SolidColorBrush(GetClickColor(E.ChangedButton));
+
+            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(200))));
+        }
+
+        void MouseClickEnd()
+        {
+            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(300))));
+
+            _dragging = false;
+        }
+
+        void UIElement_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        {
+            MouseClickEnd();
+        }
+
+        void UIElement_OnMouseMove(object Sender, MouseEventArgs E)
+        {
+            if (_dragging)
+            {
+                UpdateMouseClickPosition(E);
+            }
+
+            if (ServiceProvider.Get<Settings>().MousePointerOverlay.Display)
+                MousePointer.Visibility = Visibility.Visible;
+
+            var position = E.GetPosition(Grid);
+
+            if (position.X <= 0 || position.Y <= 0)
+            {
+                MousePointer.Visibility = Visibility.Collapsed;
+
+                return;
+            }
+
+            position.X -= MouseClick.ActualWidth / 2;
+            position.Y -= MouseClick.ActualHeight / 2;
+
+            MousePointer.Margin = new Thickness(position.X, position.Y, 0, 0);
+        }
+
+        void UIElement_OnMouseLeave(object Sender, MouseEventArgs E)
+        {
+            MouseClickEnd();
+
+            MousePointer.Visibility = Visibility.Collapsed;
         }
     }
 }

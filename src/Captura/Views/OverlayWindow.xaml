@@ -378,7 +378,11 @@
 
             <Grid Background="Transparent"
                   VerticalAlignment="Center"
-                  HorizontalAlignment="Center">
+                  HorizontalAlignment="Center"
+                  MouseDown="UIElement_OnMouseDown"
+                  MouseUp="UIElement_OnMouseUp"
+                  MouseMove="UIElement_OnMouseMove"
+                  MouseLeave="UIElement_OnMouseLeave">
                 <Image Name="Img"
                        Stretch="Uniform"
                        Loaded="Img_OnLoaded"/>
@@ -387,6 +391,16 @@
                     <Grid.LayoutTransform>
                         <ScaleTransform x:Name="Scale"/>
                     </Grid.LayoutTransform>
+                    
+                    <Ellipse Name="MousePointer"
+                             Visibility="Collapsed"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+
+                    <Ellipse Name="MouseClick"
+                             Opacity="0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
                 </Grid>
             </Grid>
         </DockPanel>
