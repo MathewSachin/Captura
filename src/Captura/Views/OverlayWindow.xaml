@@ -391,9 +391,6 @@
                     </Grid.LayoutTransform>
                     
                     <Ellipse Name="MouseClick"
-                             DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}"
-                             StrokeThickness="{Binding Settings.Clicks.BorderThickness}"
-                             Stroke="{Binding Settings.Clicks.BorderColor, Converter={StaticResource WpfColorConverter}}"
                              Opacity="0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"/>

@@ -360,17 +360,18 @@ namespace Captura
 
         void PrepareMouseClick(MouseClickSettings Settings)
         {
-            MouseClick.Width = Settings.Radius * 2;
-            MouseClick.Height = Settings.Radius * 2;
-            
-            Settings.PropertyChanged += (S, E) =>
+            void Update()
             {
-                Dispatcher.Invoke(() =>
-                {
-                    MouseClick.Width = Settings.Radius * 2;
-                    MouseClick.Height = Settings.Radius * 2;
-                });
-            };
+                var d = (Settings.Radius + Settings.BorderThickness) * 2;
+
+                MouseClick.Width = MouseClick.Height = d;
+                MouseClick.StrokeThickness = Settings.BorderThickness;
+                MouseClick.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
+            }
+
+            Update();
+            
+            Settings.PropertyChanged += (S, E) => Dispatcher.Invoke(Update);
         }
 
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
@@ -383,20 +384,42 @@ namespace Captura
             UpdateScale();
         }
 
+        Color ToColor(System.Drawing.Color C)
+        {
+            return Color.FromArgb(C.A, C.R, C.G, C.B);
+        }
+
+        Color GetClickColor(MouseButton Button)
+        {
+            var settings = ServiceProvider.Get<Settings>();
+
+            switch (Button)
+            {
+                case MouseButton.Middle:
+                    return ToColor(settings.Clicks.MiddleClickColor);
+
+                case MouseButton.Right:
+                    return ToColor(settings.Clicks.RightClickColor);
+                    
+                default:
+                    return ToColor(settings.Clicks.Color);
+            }
+        }
+
         void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
         {
             var position = E.GetPosition(Grid);
 
             MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight / 2, 0, 0);
 
-            MouseClick.Fill = new SolidColorBrush(Colors.Blue);
+            MouseClick.Fill = new SolidColorBrush(GetClickColor(E.ChangedButton));
 
             MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(200))));
         }
 
         void UIElement_OnMouseUp(object Sender, MouseButtonEventArgs E)
         {
-            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(200))));
+            MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(300))));
         }
     }
 }
