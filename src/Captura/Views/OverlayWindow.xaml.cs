@@ -336,6 +336,7 @@ namespace Captura
         {
             var settings = ServiceProvider.Get<Settings>();
 
+            PrepareMousePointer(settings.MousePointerOverlay);
             PrepareMouseClick(settings.Clicks);
 
             var webcam = Webcam(settings.WebcamOverlay);
@@ -371,6 +372,23 @@ namespace Captura
 
             Update();
             
+            Settings.PropertyChanged += (S, E) => Dispatcher.Invoke(Update);
+        }
+
+        void PrepareMousePointer(MouseOverlaySettings Settings)
+        {
+            void Update()
+            {
+                var d = (Settings.Radius + Settings.BorderThickness) * 2;
+
+                MousePointer.Width = MousePointer.Height = d;
+                MousePointer.StrokeThickness = Settings.BorderThickness;
+                MousePointer.Stroke = new SolidColorBrush(ToColor(Settings.BorderColor));
+                MousePointer.Fill = new SolidColorBrush(ToColor(Settings.Color));
+            }
+
+            Update();
+
             Settings.PropertyChanged += (S, E) => Dispatcher.Invoke(Update);
         }
 
@@ -444,11 +462,30 @@ namespace Captura
             {
                 UpdateMouseClickPosition(E);
             }
+
+            if (ServiceProvider.Get<Settings>().MousePointerOverlay.Display)
+                MousePointer.Visibility = Visibility.Visible;
+
+            var position = E.GetPosition(Grid);
+
+            if (position.X <= 0 || position.Y <= 0)
+            {
+                MousePointer.Visibility = Visibility.Collapsed;
+
+                return;
+            }
+
+            position.X -= MouseClick.ActualWidth / 2;
+            position.Y -= MouseClick.ActualHeight / 2;
+
+            MousePointer.Margin = new Thickness(position.X, position.Y, 0, 0);
         }
 
         void UIElement_OnMouseLeave(object Sender, MouseEventArgs E)
         {
             MouseClickEnd();
+
+            MousePointer.Visibility = Visibility.Collapsed;
         }
     }
 }

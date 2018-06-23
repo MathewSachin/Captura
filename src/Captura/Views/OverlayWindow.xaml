@@ -392,6 +392,11 @@
                         <ScaleTransform x:Name="Scale"/>
                     </Grid.LayoutTransform>
                     
+                    <Ellipse Name="MousePointer"
+                             Visibility="Collapsed"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+
                     <Ellipse Name="MouseClick"
                              Opacity="0"
                              HorizontalAlignment="Left"
