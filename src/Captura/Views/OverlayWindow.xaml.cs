@@ -406,20 +406,49 @@ namespace Captura
             }
         }
 
-        void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
+        bool _dragging;
+
+        void UpdateMouseClickPosition(MouseEventArgs E)
         {
             var position = E.GetPosition(Grid);
 
             MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight / 2, 0, 0);
+        }
+
+        void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
+        {
+            _dragging = true;
+
+            UpdateMouseClickPosition(E);
 
             MouseClick.Fill = new SolidColorBrush(GetClickColor(E.ChangedButton));
 
             MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(200))));
         }
 
-        void UIElement_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        void MouseClickEnd()
         {
             MouseClick.BeginAnimation(OpacityProperty, new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(300))));
+
+            _dragging = false;
+        }
+
+        void UIElement_OnMouseUp(object Sender, MouseButtonEventArgs E)
+        {
+            MouseClickEnd();
+        }
+
+        void UIElement_OnMouseMove(object Sender, MouseEventArgs E)
+        {
+            if (_dragging)
+            {
+                UpdateMouseClickPosition(E);
+            }
+        }
+
+        void UIElement_OnMouseLeave(object Sender, MouseEventArgs E)
+        {
+            MouseClickEnd();
         }
     }
 }

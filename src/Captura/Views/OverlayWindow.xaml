@@ -380,7 +380,9 @@
                   VerticalAlignment="Center"
                   HorizontalAlignment="Center"
                   MouseDown="UIElement_OnMouseDown"
-                  MouseUp="UIElement_OnMouseUp">
+                  MouseUp="UIElement_OnMouseUp"
+                  MouseMove="UIElement_OnMouseMove"
+                  MouseLeave="UIElement_OnMouseLeave">
                 <Image Name="Img"
                        Stretch="Uniform"
                        Loaded="Img_OnLoaded"/>
