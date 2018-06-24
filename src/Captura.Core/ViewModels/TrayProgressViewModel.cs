@@ -4,12 +4,9 @@ namespace Captura
 {
     public class TrayProgressViewModel : NotifyPropertyChanged, ITrayProgress
     {
-        public Action OnClick { get; private set; }
+        public event Action Click;
 
-        public void RegisterClick(Action Handler)
-        {
-            OnClick = Handler;
-        }
+        public void RaiseClick() => Click?.Invoke();
 
         int _progress;
 

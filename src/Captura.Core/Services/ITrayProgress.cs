@@ -4,8 +4,6 @@ namespace Captura
 {
     public interface ITrayProgress
     {
-        void RegisterClick(Action OnClick);
-
         int Progress { get; set; }
 
         string PrimaryText { get; set; }
@@ -15,5 +13,7 @@ namespace Captura
         bool Finished { get; set; }
 
         bool Success { get; set; }
+
+        event Action Click;
     }
 }

@@ -2,9 +2,23 @@
 {
     public partial class TranslationWindow
     {
-        public TranslationWindow()
+        TranslationWindow()
         {
             InitializeComponent();
+        }
+
+        static TranslationWindow _instance;
+
+        public static void ShowInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new TranslationWindow();
+
+                _instance.Closed += (S, E) => _instance = null;
+            }
+
+            _instance.ShowAndFocus();
         }
     }
 }

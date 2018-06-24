@@ -28,10 +28,7 @@ namespace Captura
         {
             if (DataContext is TrayProgressViewModel vm)
             {
-                if (vm.OnClick == null)
-                    return;
-
-                vm.OnClick.Invoke();
+                vm.RaiseClick();
             }
         }
     }

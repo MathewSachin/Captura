@@ -19,7 +19,9 @@ namespace Captura.Models
 
         public IVideoItem VideoSource => new FakeRegionItem(SelectedRegion);
 
+#pragma warning disable CS0067
         public event Action SelectorHidden;
+#pragma warning restore CS0067
 
         public void Lock() { }
 

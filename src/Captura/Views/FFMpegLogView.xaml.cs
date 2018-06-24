@@ -7,17 +7,22 @@ namespace Captura
         FFmpegLogView()
         {
             InitializeComponent();
-
-            Closing += (S, E) =>
-            {
-                Hide();
-
-                E.Cancel = true;
-            };
         }
 
-        public static FFmpegLogView Instance { get; } = new FFmpegLogView();
-
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
+
+        static FFmpegLogView _instance;
+
+        public static void ShowInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new FFmpegLogView();
+
+                _instance.Closed += (S, E) => _instance = null;
+            }
+
+            _instance.ShowAndFocus();
+        }
     }
 }

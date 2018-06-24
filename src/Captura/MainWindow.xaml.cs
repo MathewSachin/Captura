@@ -141,12 +141,12 @@ namespace Captura
 
         void OpenOverlayManager(object Sender, RoutedEventArgs E)
         {
-            new OverlayWindow().ShowAndFocus();
+            OverlayWindow.ShowInstance();
         }
 
         void OpenHotkeyManager(object Sender, RoutedEventArgs E)
         {
-            new HotkeysWindow().ShowAndFocus();
+            HotkeysWindow.ShowInstance();
         }
     }
 }

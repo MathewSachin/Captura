@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -21,7 +20,7 @@ namespace Captura
 {
     public partial class OverlayWindow
     {
-        public OverlayWindow()
+        OverlayWindow()
         {
             InitializeComponent();
 
@@ -33,6 +32,20 @@ namespace Captura
             };
 
             UpdateBackground();
+        }
+
+        static OverlayWindow _instance;
+
+        public static void ShowInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new OverlayWindow();
+
+                _instance.Closed += (S, E) => _instance = null;
+            }
+
+            _instance.ShowAndFocus();
         }
 
         void AddToGrid(LayerFrame Frame, bool CanResize)

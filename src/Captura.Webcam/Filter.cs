@@ -95,10 +95,10 @@ namespace Captura.Webcam
         /// <summary>
         ///  This method gets a IMoniker object.
         /// 
-        ///  HACK: The only way to create a IMoniker from a moniker 
-        ///  string is to use IMoniker.ParseDisplayName(). So I 
-        ///  need ANY IMoniker object so that I can call 
-        ///  ParseDisplayName(). Does anyone have a better solution?
+        ///  The only way to create a IMoniker from a moniker 
+        ///  string is to use IMoniker.ParseDisplayName().
+        ///  So I need ANY IMoniker object so that I can call ParseDisplayName().
+        ///  Does anyone have a better solution?
         /// 
         ///  This assumes there is at least one video compressor filter
         ///  installed on the system.

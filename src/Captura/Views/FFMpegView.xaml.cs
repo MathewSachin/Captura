@@ -6,7 +6,7 @@ namespace Captura
     {
         void OpenFFmpegLog(object Sender, RoutedEventArgs E)
         {
-            FFmpegLogView.Instance.ShowAndFocus();
+            FFmpegLogView.ShowInstance();
         }
         
         void FFmpegDownload(object Sender, RoutedEventArgs E)
@@ -16,7 +16,7 @@ namespace Captura
 
         void ConfigCodecs(object Sender, RoutedEventArgs E)
         {
-            new FFmpegCodecWindow().ShowAndFocus();
+            FFmpegCodecWindow.ShowInstance();
         }
     }
 }

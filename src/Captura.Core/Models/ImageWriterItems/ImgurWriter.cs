@@ -175,7 +175,7 @@ namespace Captura.Models
                 progressItem.PrimaryText = _loc.ImgurSuccess;
                 progressItem.SecondaryText = link;
 
-                progressItem.RegisterClick(() => Process.Start(link));
+                progressItem.Click += () => Process.Start(link);
 
                 return uploadResponse;
             }

@@ -7,17 +7,17 @@ namespace Captura
     {
         void ViewLicenses(object Sender, RoutedEventArgs E)
         {
-            new LicensesWindow().ShowAndFocus();
+            LicensesWindow.ShowInstance();
         }
 
         void Translate(object Sender, RoutedEventArgs E)
         {
-            new TranslationWindow().ShowAndFocus();
+            TranslationWindow.ShowInstance();
         }
 
         void ViewCrashLogs(object Sender, RoutedEventArgs E)
         {
-            new CrashLogsWindow().ShowAndFocus();
+            CrashLogsWindow.ShowInstance();
         }
     }
 }
