@@ -51,7 +51,8 @@ namespace Captura.ViewModels
             HotKeyManager HotKeyManager,
             CustomOverlaysViewModel CustomOverlays,
             CustomImageOverlaysViewModel CustomImageOverlays,
-            IPreviewWindow PreviewWindow) : base(Settings, LanguageManager)
+            IPreviewWindow PreviewWindow,
+            CensorOverlaysViewModel CensorOverlays) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -65,6 +66,7 @@ namespace Captura.ViewModels
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
             _previewWindow = PreviewWindow;
+            this.CensorOverlays = CensorOverlays;
 
             ShowPreviewCommand = new DelegateCommand(() => _previewWindow.Show());
 
@@ -848,7 +850,12 @@ namespace Captura.ViewModels
             if (imageProvider == null)
                 return null;
 
-            var overlays = new List<IOverlay> { _webcamOverlay, new MousePointerOverlay(Settings.MousePointerOverlay) };
+            var overlays = new List<IOverlay>
+            {
+                new CensorOverlay(Settings.Censored),
+                _webcamOverlay,
+                new MousePointerOverlay(Settings.MousePointerOverlay)
+            };
 
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));

@@ -84,6 +84,8 @@ namespace Captura.ViewModels
 
         public CustomImageOverlaysViewModel CustomImageOverlays { get; }
 
+        public CensorOverlaysViewModel CensorOverlays { get; }
+
         #region ScreenShot
         public IEnumerable<ImageFormat> ScreenShotImageFormats { get; } = new[]
         {

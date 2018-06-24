@@ -22,6 +22,7 @@ namespace Captura
 
             Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
             Bind<CustomImageOverlaysViewModel>().ToSelf().InSingletonScope();
+            Bind<CensorOverlaysViewModel>().ToSelf().InSingletonScope();
 
             // Settings
             Bind<Settings>().ToSelf().InSingletonScope();

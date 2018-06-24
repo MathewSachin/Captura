@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -37,6 +38,8 @@ namespace Captura
         void AddToGrid(LayerFrame Frame, bool CanResize)
         {
             Grid.Children.Add(Frame);
+
+            Panel.SetZIndex(Frame, 0);
 
             var layer = AdornerLayer.GetAdornerLayer(Frame);
             var adorner = new OverlayPositionAdorner(Frame, CanResize);
@@ -209,6 +212,31 @@ namespace Captura
             return control;
         }
 
+        LayerFrame Censor(CensorOverlaySettings Settings)
+        {
+            var control = Generate(Settings, "Censored", Colors.Black);
+
+            control.Width = Settings.Width;
+            control.Height = Settings.Height;
+
+            Settings.PropertyChanged += (S, E) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    control.Width = Settings.Width;
+                    control.Height = Settings.Height;
+                });
+            };
+
+            control.PositionUpdated += Rect =>
+            {
+                Settings.Width = (int)Rect.Width;
+                Settings.Height = (int)Rect.Height;
+            };
+
+            return control;
+        }
+
         static Color ConvertColor(System.Drawing.Color C)
         {
             return Color.FromArgb(C.A, C.R, C.G, C.B);
@@ -221,6 +249,42 @@ namespace Captura
 
         readonly List<LayerFrame> _textOverlays = new List<LayerFrame>();
         readonly List<LayerFrame> _imageOverlays = new List<LayerFrame>();
+        readonly List<LayerFrame> _censorOverlays = new List<LayerFrame>();
+
+        void UpdateCensorOverlays(IEnumerable<CensorOverlaySettings> Settings)
+        {
+            foreach (var overlay in _censorOverlays)
+            {
+                Grid.Children.Remove(overlay);
+            }
+
+            _censorOverlays.Clear();
+
+            foreach (var setting in Settings)
+            {
+                var control = Censor(setting);
+                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+
+                setting.PropertyChanged += (S, E) =>
+                {
+                    switch (E.PropertyName)
+                    {
+                        case nameof(setting.Display):
+                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+                            break;
+                    }
+                };
+
+                _censorOverlays.Add(control);
+            }
+
+            foreach (var overlay in _censorOverlays)
+            {
+                AddToGrid(overlay, true);
+
+                Panel.SetZIndex(overlay, -1);
+            }
+        }
 
         void UpdateTextOverlays(IEnumerable<CustomOverlaySettings> Settings)
         {
@@ -256,6 +320,8 @@ namespace Captura
             foreach (var overlay in _textOverlays)
             {
                 AddToGrid(overlay, false);
+
+                Panel.SetZIndex(overlay, 1);
             }
         }
 
@@ -293,6 +359,8 @@ namespace Captura
             foreach (var overlay in _imageOverlays)
             {
                 AddToGrid(overlay, true);
+
+                Panel.SetZIndex(overlay, 2);
             }
         }
         
@@ -347,6 +415,11 @@ namespace Captura
         void PlaceOverlays()
         {
             var settings = ServiceProvider.Get<Settings>();
+
+            var censorOverlayVm = ServiceProvider.Get<CensorOverlaysViewModel>();
+
+            UpdateCensorOverlays(censorOverlayVm.Collection);
+            (censorOverlayVm.Collection as INotifyCollectionChanged).CollectionChanged += (S, E) => UpdateCensorOverlays(censorOverlayVm.Collection);
 
             PrepareMousePointer(settings.MousePointerOverlay);
             PrepareMouseClick(settings.Clicks);

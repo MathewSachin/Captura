@@ -54,6 +54,11 @@ namespace Captura
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
                         vm.Settings.Elapsed = dummySettings.Elapsed;
 
+                        foreach (var overlay in dummySettings.Censored)
+                        {
+                            vm.Settings.Censored.Add(overlay);
+                        }
+
                         foreach (var overlay in dummySettings.TextOverlays)
                         {
                             vm.Settings.TextOverlays.Add(overlay);
