@@ -20,7 +20,7 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=Captura-Setup
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=src/Captura/Captura.ico
+SetupIconFile=src/Captura/Images/Captura.ico
 OutputDir=temp
 
 [Languages]

@@ -76,7 +76,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Captura\Captura.ico">
+    <Content Include="..\Captura\Images\Captura.ico">
       <Link>Captura.ico</Link>
     </Content>
   </ItemGroup>
