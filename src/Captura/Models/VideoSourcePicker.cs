@@ -9,20 +9,12 @@ namespace Captura.Models
     {
         public Window PickWindow(IEnumerable<IntPtr> SkipWindows = null)
         {
-            var picker = new WindowPicker(SkipWindows);
-
-            picker.ShowDialog();
-
-            return picker.SelectedWindow;
+            return VideoSourcePickerWindow.PickWindow(SkipWindows);
         }
 
         public Screen PickScreen()
         {
-            var picker = new ScreenPicker();
-
-            picker.ShowDialog();
-
-            return picker.SelectedScreen;
+            return VideoSourcePickerWindow.PickScreen();
         }
     }
 }

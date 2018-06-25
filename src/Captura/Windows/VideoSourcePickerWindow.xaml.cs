@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -18,14 +19,21 @@ using Window = Screna.Window;
 
 namespace Captura
 {
-    public partial class WindowPicker
+    public partial class VideoSourcePickerWindow
     {
-        readonly IEnumerable<IntPtr> _skipWindows;
-
-        public WindowPicker(IEnumerable<IntPtr> SkipWindows)
+        enum VideoPickerMode
         {
-            _skipWindows = SkipWindows ?? new IntPtr[0];
+            Window,
+            Screen
+        }
 
+        VideoPickerMode _mode;
+
+        public List<IntPtr> SkipWindows { get; } = new List<IntPtr>();
+
+        VideoSourcePickerWindow(VideoPickerMode Mode)
+        {
+            _mode = Mode;
             InitializeComponent();
 
             Left = Top = 0;
@@ -34,12 +42,17 @@ namespace Captura
 
             UpdateBackground();
 
-            ShowCancelText();
-
+            _screens = Screen.AllScreens;
             _windows = Window.EnumerateVisible().ToArray();
+
+            ShowCancelText();
         }
 
+        readonly Screen[] _screens;
+
         readonly Window[] _windows;
+
+        public Screen SelectedScreen { get; private set; }
 
         public Window SelectedWindow { get; private set; }
 
@@ -59,7 +72,7 @@ namespace Captura
 
         void ShowCancelText()
         {
-            foreach (var screen in Screen.AllScreens)
+            foreach (var screen in _screens)
             {
                 var left = screen.Bounds.Left / Dpi.X;
                 var top = screen.Bounds.Top / Dpi.Y;
@@ -77,7 +90,7 @@ namespace Captura
 
                 var textBlock = new TextBlock
                 {
-                    Text = "Select Window or Press Esc to Cancel",
+                    Text = $"Select {_mode} or Press Esc to Cancel",
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     Foreground = new SolidColorBrush(Colors.Black)
@@ -91,6 +104,7 @@ namespace Captura
 
         void CloseClick(object Sender, RoutedEventArgs E)
         {
+            SelectedScreen = null;
             SelectedWindow = null;
 
             Close();
@@ -102,41 +116,85 @@ namespace Captura
 
             var point = new Point((int) (pos.X * Dpi.X), (int) (pos.Y * Dpi.Y));
 
-            var window = _windows
-                .Where(M => !_skipWindows.Contains(M.Handle))
-                .FirstOrDefault(M => M.Rectangle.Contains(point));
-
-            if (window != null)
+            void UpdateBorderAndCursor(Rectangle? Rect)
             {
-                SelectedWindow = window;
+                if (Rect == null)
+                {
+                    Cursor = Cursors.Arrow;
 
-                Cursor = Cursors.Hand;
+                    Border.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    Cursor = Cursors.Hand;
 
-                var rect = window.Rectangle;
+                    var rect = Rect.Value;
 
-                WindowBorder.Margin = new Thickness(rect.Left / Dpi.X, rect.Top / Dpi.Y, 0, 0);
+                    Border.Margin = new Thickness(rect.Left / Dpi.X, rect.Top / Dpi.Y, 0, 0);
 
-                WindowBorder.Width = rect.Width / Dpi.X;
-                WindowBorder.Height = rect.Height / Dpi.Y;
-                
-                WindowBorder.Visibility = Visibility.Visible;
+                    Border.Width = rect.Width / Dpi.X;
+                    Border.Height = rect.Height / Dpi.Y;
+
+                    Border.Visibility = Visibility.Visible;
+                }
             }
-            else
+
+            switch (_mode)
             {
-                SelectedWindow = null;
+                case VideoPickerMode.Screen:
+                    SelectedScreen = _screens.FirstOrDefault(M => M.Bounds.Contains(point));
 
-                Cursor = Cursors.Arrow;
+                    UpdateBorderAndCursor(SelectedScreen?.Bounds);
+                    break;
 
-                WindowBorder.Visibility = Visibility.Collapsed;
+                case VideoPickerMode.Window:
+                    SelectedWindow = _windows
+                        .Where(M => !SkipWindows.Contains(M.Handle))
+                        .FirstOrDefault(M => M.Rectangle.Contains(point));
+                    
+                    UpdateBorderAndCursor(SelectedWindow?.Rectangle);
+                    break;
             }
         }
 
         void WindowMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
-            if (SelectedWindow != null)
+            switch (_mode)
             {
-                Close();
+                case VideoPickerMode.Screen when SelectedScreen != null:
+                case VideoPickerMode.Window when SelectedWindow != null:
+                    Close();
+                    break;
             }
+        }
+
+        public static Screen PickScreen()
+        {
+            var picker = new VideoSourcePickerWindow(VideoPickerMode.Screen);
+
+            picker.ShowDialog();
+
+            return picker.SelectedScreen;
+        }
+
+        public static Window PickWindow(IEnumerable<IntPtr> SkipWindows)
+        {
+            var picker = new VideoSourcePickerWindow(VideoPickerMode.Window)
+            {
+                Border =
+                {
+                    BorderThickness = new Thickness(5)
+                }
+            };
+
+            if (SkipWindows != null)
+            {
+                picker.SkipWindows.AddRange(SkipWindows);
+            }
+
+            picker.ShowDialog();
+
+            return picker.SelectedWindow;
         }
     }
 }

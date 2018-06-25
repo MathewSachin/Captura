@@ -97,8 +97,8 @@
     <Compile Include="ImageEditor\SelectHistory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
-    <Compile Include="Windows\ScreenPicker.xaml.cs">
-      <DependentUpon>ScreenPicker.xaml</DependentUpon>
+    <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
+      <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NotificationStack.xaml.cs">
       <DependentUpon>NotificationStack.xaml</DependentUpon>
@@ -138,9 +138,6 @@
     </Compile>
     <Compile Include="Models\PreviewWindowService.cs" />
     <Compile Include="Models\VideoSourcePicker.cs" />
-    <Compile Include="Windows\WindowPicker.xaml.cs">
-      <DependentUpon>WindowPicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Presentation\OverlayPositionAdorner.cs" />
     <Compile Include="Windows\HotkeysWindow.xaml.cs">
       <DependentUpon>HotkeysWindow.xaml</DependentUpon>
@@ -245,7 +242,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ScreenPicker.xaml">
+    <Page Include="Windows\VideoSourcePickerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -260,10 +257,6 @@
     <Page Include="Controls\ProgressBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\WindowPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Themes\RoundSlider.xaml">
       <SubType>Designer</SubType>
