@@ -5,8 +5,9 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
              mc:Ignorable="d"
-             d:DataContext="{StaticResource DummyImageOverlaySettings}">
+             d:DataContext="{d:DesignInstance captura:ImageOverlaySettings}">
     <StackPanel>
         <local:PositionSettingsControl/>
 

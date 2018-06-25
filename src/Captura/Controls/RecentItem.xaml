@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              mc:Ignorable="d"
-             d:DataContext="{StaticResource DummyRecentItemViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:RecentItemViewModel}">
     <DockPanel IsEnabled="{Binding IsSaving, Converter={StaticResource NegatingConverter}}"
                Margin="0,2">
         <Path Stretch="Uniform"
