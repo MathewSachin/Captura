@@ -1,6 +1,6 @@
 ﻿namespace Captura
 {
-    public partial class ConfigView
+    public partial class ConfigPage
     {
     }
 }

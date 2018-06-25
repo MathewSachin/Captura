@@ -7,7 +7,7 @@
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
         ResizeMode="CanMinimize"
-        Icon="Captura.ico"
+        Icon="../Images/Captura.ico"
         SizeToContent="Height"
         MaxWidth="420"
         Title="Captura"
@@ -226,7 +226,7 @@
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                     <TabItem Header="{Binding Main, Source={StaticResource Loc}, Mode=OneWay}">
-                        <Frame Source="Views/MainView.xaml"/>
+                        <Frame Source="../Pages/MainPage.xaml"/>
                     </TabItem>
                     <TabItem Header="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}">
                         <DockPanel>
@@ -270,7 +270,7 @@
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
                                 <TabItem Header="{Binding Options, Source={StaticResource Loc}, Mode=OneWay}">
-                                    <Frame Source="Views/ConfigView.xaml"/>
+                                    <Frame Source="../Pages/ConfigPage.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
                                     <Button Click="OpenHotkeyManager"
@@ -307,22 +307,22 @@
                                     </Button>
                                 </TabItem>
                                 <TabItem Header="FFmpeg">
-                                    <Frame Source="Views/FFmpegView.xaml"/>
+                                    <Frame Source="../Pages/FFmpegPage.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
-                                    <Frame Source="Views/ProxyView.xaml"/>
+                                    <Frame Source="../Pages/ProxyPage.xaml"/>
                                 </TabItem>
                                 <TabItem Header="{Binding Extras, Source={StaticResource Loc}, Mode=OneWay}">
-                                    <Frame Source="Views/ExtrasView.xaml"/>                               
+                                    <Frame Source="../Pages/ExtrasPage.xaml"/>                               
                                 </TabItem>
                             </TabControl>
                         </DockPanel>
                     </TabItem>
                     <TabItem Header="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}">
-                        <Frame Source="Views/RecentView.xaml"/>
+                        <Frame Source="../Pages/RecentPage.xaml"/>
                     </TabItem>
                     <TabItem Header="{Binding About, Source={StaticResource Loc}, Mode=OneWay}">
-                        <Frame Source="Views/AboutView.xaml"/>
+                        <Frame Source="../Pages/AboutPage.xaml"/>
                     </TabItem>
                 </TabControl>
             </DockPanel>

@@ -2,22 +2,22 @@
 
 namespace Captura
 {
-    public partial class FFmpegLogView
+    public partial class FFmpegLogWindow
     {
-        FFmpegLogView()
+        FFmpegLogWindow()
         {
             InitializeComponent();
         }
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
 
-        static FFmpegLogView _instance;
+        static FFmpegLogWindow _instance;
 
         public static void ShowInstance()
         {
             if (_instance == null)
             {
-                _instance = new FFmpegLogView();
+                _instance = new FFmpegLogWindow();
 
                 _instance.Closed += (S, E) => _instance = null;
             }

@@ -4,20 +4,20 @@ using System.Globalization;
 
 namespace Captura
 {
-    public class StateToTaskbarOverlayConverter : OneWayConverter
-    {
+    public class StateToTrayIconSourceConverter : OneWayConverter
+    {        
         public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            switch(Value)
+            switch (Value)
             {
                 case RecorderState.Recording:
-                    return "record.ico";
+                    return "/Images/record.ico";
 
                 case RecorderState.Paused:
-                    return "pause.ico";
+                    return "/Images/pause.ico";
 
                 default:
-                    return null;
+                    return "/Images/Captura.ico";
             }
         }
     }

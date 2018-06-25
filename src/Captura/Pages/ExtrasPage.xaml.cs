@@ -5,7 +5,7 @@ using Captura.ViewModels;
 
 namespace Captura
 {
-    public partial class ExtrasView
+    public partial class ExtrasPage
     {
         void SelectedAccentColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
         {

@@ -2,7 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
-      x:Class="Captura.MainView">
+      x:Class="Captura.MainPage">
     <StackPanel Margin="-5,0,0,0">        
         <DockPanel>
             <StackPanel Orientation="Horizontal"

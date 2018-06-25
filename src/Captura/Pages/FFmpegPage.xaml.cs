@@ -2,11 +2,11 @@
 
 namespace Captura
 {
-    public partial class FFmpegView
+    public partial class FFmpegPage
     {
         void OpenFFmpegLog(object Sender, RoutedEventArgs E)
         {
-            FFmpegLogView.ShowInstance();
+            FFmpegLogWindow.ShowInstance();
         }
         
         void FFmpegDownload(object Sender, RoutedEventArgs E)

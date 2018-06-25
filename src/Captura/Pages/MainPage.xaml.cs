@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    public partial class MainView
+    public partial class MainPage
     {
         void Preview_Click(object Sender, RoutedEventArgs E)
         {

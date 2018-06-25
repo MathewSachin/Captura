@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              xmlns:captura1="clr-namespace:Captura;assembly=Captura.Core"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="MainWindow.xaml"
+             StartupUri="Windows/MainWindow.xaml"
              Startup="Application_Startup"
              DispatcherUnhandledException="App_OnDispatcherUnhandledException">
     <Application.Resources>
@@ -19,7 +19,7 @@
                 <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RoundSlider.xaml"/>
                 <ResourceDictionary Source="Presentation/MaterialDesignIcons.xaml"/>
-                <ResourceDictionary Source="Presentation/ValueConverters/ValueConverters.xaml"/>
+                <ResourceDictionary Source="ValueConverters/ValueConverters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <x:Static x:Key="Loc"

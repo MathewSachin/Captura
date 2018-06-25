@@ -3,7 +3,7 @@ using Captura.Views;
 
 namespace Captura
 {
-    public partial class AboutView
+    public partial class AboutPage
     {
         void ViewLicenses(object Sender, RoutedEventArgs E)
         {

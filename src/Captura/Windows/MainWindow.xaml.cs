@@ -13,7 +13,7 @@ namespace Captura
     {
         public static MainWindow Instance { get; private set; }
 
-        FFmpegDownloader _downloader;
+        FFmpegDownloaderWindow _downloader;
 
         public MainWindow()
         {
@@ -23,7 +23,7 @@ namespace Captura
             {
                 if (_downloader == null)
                 {
-                    _downloader = new FFmpegDownloader();
+                    _downloader = new FFmpegDownloaderWindow();
                     _downloader.Closed += (Sender, Args) => _downloader = null;
                 }
 
