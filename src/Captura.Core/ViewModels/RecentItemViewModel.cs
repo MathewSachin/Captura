@@ -10,6 +10,7 @@ namespace Captura.ViewModels
 {
     public class RecentItemViewModel : NotifyPropertyChanged
     {
+        // ReSharper disable once UnusedMember.Global
         public RecentItemViewModel() { }
 
         public RecentItemViewModel(string FilePath, RecentItemType ItemType, bool IsSaving)
@@ -40,85 +41,90 @@ namespace Captura.ViewModels
                 FilePath.WriteToClipboard();
             }, !IsSaving);
 
-            DeleteCommand = new DelegateCommand(async () =>
+            DeleteCommand = new DelegateCommand(OnDeleteExecute, !IsSaving);
+
+            CopyToClipboardCommand = new DelegateCommand(OnCopyToClipboardExecute);
+
+            UploadToImgurCommand = new DelegateCommand(OnUploadToImgurExecute);
+        }
+
+        async void OnUploadToImgurExecute()
+        {
+            if (!File.Exists(FilePath))
             {
-                if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FilePath}?", "Confirm Deletion"))
-                    return;
+                ServiceProvider.MessageProvider.ShowError("File not Found");
 
-                try
-                {
-                    if (ItemType == RecentItemType.Link && !string.IsNullOrWhiteSpace(DeleteHash))
-                    {
-                        await ServiceProvider.Get<ImgurWriter>().DeleteUploadedFile(DeleteHash);
-                    }
-                    else File.Delete(FilePath);
-                }
-                catch (Exception e)
-                {
-                    ServiceProvider.MessageProvider.ShowException(e, $"Could not Delete: {FilePath}");
+                return;
+            }
 
-                    return;
-                }
-
-                // Remove from List
-                OnRemove?.Invoke();
-
-            }, !IsSaving);
-
-            CopyToClipboardCommand = new DelegateCommand(() =>
+            try
             {
-                if (!File.Exists(FilePath))
+                var img = (Bitmap) Image.FromFile(FilePath);
+
+                var imgur = ServiceProvider.Get<ImgurWriter>();
+
+                var response = await imgur.Save(img, ImageFormat.Png);
+
+                switch (response)
                 {
-                    ServiceProvider.MessageProvider.ShowError("File not Found");
+                    case Exception ex:
+                        ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
+                        break;
 
-                    return;
+                    case ImgurUploadResponse uploadResponse:
+                        uploadResponse.Data.Link.WriteToClipboard();
+                        break;
                 }
-
-                try
-                {
-                    var img = (Bitmap) Image.FromFile(FilePath);
-
-                    img.WriteToClipboard();
-                }
-                catch (Exception e)
-                {
-                    ServiceProvider.MessageProvider.ShowException(e, "Copy to Clipboard failed");
-                }
-            });
-
-            UploadToImgurCommand = new DelegateCommand(async () =>
+            }
+            catch (Exception e)
             {
-                if (!File.Exists(FilePath))
+                ServiceProvider.MessageProvider.ShowException(e, "Upload to Imgur failed");
+            }
+        }
+
+        void OnCopyToClipboardExecute()
+        {
+            if (!File.Exists(FilePath))
+            {
+                ServiceProvider.MessageProvider.ShowError("File not Found");
+
+                return;
+            }
+
+            try
+            {
+                var img = (Bitmap) Image.FromFile(FilePath);
+
+                img.WriteToClipboard();
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowException(e, "Copy to Clipboard failed");
+            }
+        }
+
+        async void OnDeleteExecute()
+        {
+            if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FilePath}?", "Confirm Deletion"))
+                return;
+
+            try
+            {
+                if (ItemType == RecentItemType.Link && !string.IsNullOrWhiteSpace(DeleteHash))
                 {
-                    ServiceProvider.MessageProvider.ShowError("File not Found");
-
-                    return;
+                    await ServiceProvider.Get<ImgurWriter>().DeleteUploadedFile(DeleteHash);
                 }
+                else File.Delete(FilePath);
+            }
+            catch (Exception e)
+            {
+                ServiceProvider.MessageProvider.ShowException(e, $"Could not Delete: {FilePath}");
 
-                try
-                {
-                    var img = (Bitmap)Image.FromFile(FilePath);
+                return;
+            }
 
-                    var imgur = ServiceProvider.Get<ImgurWriter>();
-
-                    var response = await imgur.Save(img, ImageFormat.Png);
-
-                    switch (response)
-                    {
-                        case Exception ex:
-                            ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
-                            break;
-
-                        case ImgurUploadResponse uploadResponse:
-                            uploadResponse.Data.Link.WriteToClipboard();
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    ServiceProvider.MessageProvider.ShowException(e, "Upload to Imgur failed");
-                }
-            });
+            // Remove from List
+            OnRemove?.Invoke();
         }
 
         string _filePath;

@@ -11,6 +11,7 @@ namespace Captura.Models
         public FFmpegLogItem(string Name)
         {
             this.Name = Name;
+
             CopyToClipboardCommand = new DelegateCommand(() =>
             {
                 _complete.ToString().WriteToClipboard();

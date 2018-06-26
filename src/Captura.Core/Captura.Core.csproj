@@ -155,7 +155,6 @@
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
     <Compile Include="PropertyStore.cs" />
     <Compile Include="Translation\TranslationViewModel.cs" />
-    <Compile Include="ViewModels\ArraySettingsViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />

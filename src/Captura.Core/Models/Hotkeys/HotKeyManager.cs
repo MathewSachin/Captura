@@ -121,13 +121,16 @@ namespace Captura
 
         static IEnumerable<HotkeyModel> Defaults()
         {
-            yield return new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true);
-            yield return new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true);
-            yield return new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true);
-            yield return new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true);
-            yield return new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true);
-            yield return new HotkeyModel(ServiceName.ToggleMouseClicks, Keys.F10, Modifiers.Alt, false);
-            yield return new HotkeyModel(ServiceName.ToggleKeystrokes, Keys.F11, Modifiers.Alt, false);
+            return new[]
+            {
+                new HotkeyModel(ServiceName.Recording, Keys.F9, Modifiers.Alt, true),
+                new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true),
+                new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true),
+                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true),
+                new HotkeyModel(ServiceName.ToggleMouseClicks, Keys.F10, Modifiers.Alt, false),
+                new HotkeyModel(ServiceName.ToggleKeystrokes, Keys.F11, Modifiers.Alt, false)
+            };
         }
         
         public void ProcessHotkey(int Id)

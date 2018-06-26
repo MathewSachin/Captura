@@ -30,35 +30,39 @@ namespace Captura.ViewModels
 
         public FFmpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
         {
-            StartCommand = new DelegateCommand(async () =>
+            StartCommand = new DelegateCommand(OnStartExecute);
+
+            SelectFolderCommand = new DelegateCommand(OnSelectFolderExecute);
+        }
+
+        async void OnStartExecute()
+        {
+            IsDownloading = true;
+
+            try
             {
-                IsDownloading = true;
+                var result = await Start();
 
-                try
-                {
-                    var result = await Start();
-
-                    AfterDownload?.Invoke(result);
-                }
-                finally
-                {
-                    IsDownloading = false;
-                }
-            });
-
-            SelectFolderCommand = new DelegateCommand(() =>
+                AfterDownload?.Invoke(result);
+            }
+            finally
             {
-                using (var dlg = new VistaFolderBrowserDialog
-                {
-                    SelectedPath = TargetFolder,
-                    UseDescriptionForTitle = true,
-                    Description = LanguageManager.SelectFFmpegFolder
-                })
-                {
-                    if (dlg.ShowDialog() == DialogResult.OK)
-                        TargetFolder = dlg.SelectedPath;
-                }
-            });
+                IsDownloading = false;
+            }
+        }
+
+        void OnSelectFolderExecute()
+        {
+            using (var dlg = new VistaFolderBrowserDialog
+            {
+                SelectedPath = TargetFolder,
+                UseDescriptionForTitle = true,
+                Description = Loc.SelectFFmpegFolder
+            })
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                    TargetFolder = dlg.SelectedPath;
+            }
         }
 
         const string CancelDownload = "Cancel Download";

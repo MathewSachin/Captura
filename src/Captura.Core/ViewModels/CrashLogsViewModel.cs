@@ -27,20 +27,22 @@ namespace Captura.ViewModels
 
             CopyToClipboardCommand = new DelegateCommand(() => SelectedCrashLog?.Content.WriteToClipboard());
 
-            RemoveCommand = new DelegateCommand(() =>
+            RemoveCommand = new DelegateCommand(OnRemoveExecute);
+        }
+
+        void OnRemoveExecute()
+        {
+            if (SelectedCrashLog != null)
             {
-                if (SelectedCrashLog != null)
+                if (File.Exists(SelectedCrashLog.FileName))
                 {
-                    if (File.Exists(SelectedCrashLog.FileName))
-                    {
-                        File.Delete(SelectedCrashLog.FileName);
-                    }
-
-                    CrashLogs.Remove(SelectedCrashLog);
-
-                    SelectedCrashLog = CrashLogs.Count > 0 ? CrashLogs[0] : null;
+                    File.Delete(SelectedCrashLog.FileName);
                 }
-            });
+
+                CrashLogs.Remove(SelectedCrashLog);
+
+                SelectedCrashLog = CrashLogs.Count > 0 ? CrashLogs[0] : null;
+            }
         }
 
         public ObservableCollection<FileContentItem> CrashLogs { get; }
