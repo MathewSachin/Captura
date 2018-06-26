@@ -24,54 +24,47 @@ namespace Captura.Models
         WriteableBitmap _writeableBitmap;
         byte[] _buffer;
 
-        public void Display(IBitmapFrame Frame)
+        public void Init(int Width, int Height)
         {
             _previewWindow.Dispatcher.Invoke(() =>
             {
-                if (Frame is RepeatFrame)
+                if (_writeableBitmap != null
+                    && _writeableBitmap.PixelWidth == Width
+                    && _writeableBitmap.PixelHeight == Height)
                     return;
 
-                _lastFrame?.Dispose();
+                _writeableBitmap = new WriteableBitmap(Width, Height, 96, 96, PixelFormats.Bgra32, null);
 
-                _lastFrame = Frame;
+                _buffer = new byte[Width * Height * 4];
 
+                Console.WriteLine($"Preview Bitmap Allocated: {_buffer.Length}");
+
+                _previewWindow.DisplayImage.Source = _writeableBitmap;
+            });
+        }
+
+        public void Display(IBitmapFrame Frame)
+        {
+            if (Frame is RepeatFrame)
+                return;
+
+            _previewWindow.Dispatcher.Invoke(() =>
+            {
                 if (!_previewWindow.IsVisible)
-                    return;
-                
-                if (_writeableBitmap == null
-                    || _writeableBitmap.PixelWidth != Frame.Width
-                    || _writeableBitmap.PixelHeight != Frame.Height)
                 {
-                    _writeableBitmap = new WriteableBitmap(Frame.Width, Frame.Height, 96, 96, PixelFormats.Bgra32, null);
-                        
-                    _buffer = new byte[Frame.Width * Frame.Height * 4];
+                    Frame.Dispose();
 
-                    Console.WriteLine($"Preview Bitmap Allocated: {_buffer.Length}");
-
-                    _previewWindow.DisplayImage.Source = _writeableBitmap;
+                    return;
                 }
 
-                if (_previewWindow.DisplayImage.Source == null)
-                    _previewWindow.DisplayImage.Source = _writeableBitmap;
-                
-                Frame.CopyTo(_buffer, _buffer.Length);
+                using (Frame)
+                    Frame.CopyTo(_buffer, _buffer.Length);
 
                 _writeableBitmap.WritePixels(new Int32Rect(0, 0, Frame.Width, Frame.Height), _buffer, Frame.Width * 4, 0);
             });
         }
-        
-        IBitmapFrame _lastFrame;
 
-        public void Dispose()
-        {
-            _previewWindow.Dispatcher.Invoke(() =>
-            {
-                _lastFrame?.Dispose();
-                _lastFrame = null;
-
-                _previewWindow.DisplayImage.Source = null;
-            });
-        }
+        public void Dispose() { }
 
         public void Show()
         {

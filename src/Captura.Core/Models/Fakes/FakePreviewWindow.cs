@@ -6,6 +6,8 @@ namespace Captura.Models
     {
         public void Dispose() { }
 
+        public void Init(int Width, int Height) { }
+
         public void Display(IBitmapFrame Frame)
         {
             Frame.Dispose();

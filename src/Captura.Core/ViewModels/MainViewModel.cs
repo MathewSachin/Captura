@@ -830,6 +830,8 @@ namespace Captura.ViewModels
             if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
+            _previewWindow.Init(ImgProvider.Width, ImgProvider.Height);
+
             return new WithPreviewWriter(VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
             {
                 FileName = _currentFileName,
