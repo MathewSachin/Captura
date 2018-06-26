@@ -15,6 +15,7 @@ using Captura.Models;
 using Captura.ViewModels;
 using Screna;
 using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
 
 namespace Captura
 {
@@ -61,19 +62,19 @@ namespace Captura
             adorner.PositionUpdated += Frame.RaisePositionChanged;
         }
 
-        LayerFrame Generate(PositionedOverlaySettings Settings, string Name, Color Background)
+        LayerFrame Generate(PositionedOverlaySettings Settings, string Text, Color BackgroundColor)
         {
             var control = new LayerFrame
             {
                 Border =
                 {
-                    Background = new SolidColorBrush(Background)
+                    Background = new SolidColorBrush(BackgroundColor)
                 },
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 Label =
                 {
-                    Content = Name,
+                    Content = Text,
                     Foreground = new SolidColorBrush(Colors.White)
                 }
             };
@@ -134,9 +135,9 @@ namespace Captura
             return control;
         }
 
-        LayerFrame Image(ImageOverlaySettings Settings, string Name)
+        LayerFrame Image(ImageOverlaySettings Settings, string Text)
         {
-            var control = Generate(Settings, Name, Colors.Brown);
+            var control = Generate(Settings, Text, Colors.Brown);
 
             control.Width = Settings.ResizeWidth;
             control.Height = Settings.ResizeHeight;
@@ -519,18 +520,16 @@ namespace Captura
 
         bool _dragging;
 
-        void UpdateMouseClickPosition(MouseEventArgs E)
+        void UpdateMouseClickPosition(Point Position)
         {
-            var position = E.GetPosition(Grid);
-
-            MouseClick.Margin = new Thickness(position.X - MouseClick.ActualWidth / 2, position.Y - MouseClick.ActualHeight / 2, 0, 0);
+            MouseClick.Margin = new Thickness(Position.X - MouseClick.ActualWidth / 2, Position.Y - MouseClick.ActualHeight / 2, 0, 0);
         }
 
         void UIElement_OnMouseDown(object Sender, MouseButtonEventArgs E)
         {
             _dragging = true;
 
-            UpdateMouseClickPosition(E);
+            UpdateMouseClickPosition(E.GetPosition(Grid));
 
             MouseClick.Fill = new SolidColorBrush(GetClickColor(E.ChangedButton));
 
@@ -549,23 +548,30 @@ namespace Captura
             MouseClickEnd();
         }
 
+        bool IsOutsideGrid(Point Point)
+        {
+            return Point.X <= 0 || Point.Y <= 0
+                   || Point.X + MouseClick.ActualWidth / 2 >= Grid.ActualWidth
+                   || Point.Y + MouseClick.ActualHeight / 2 >= Grid.ActualHeight;
+        }
+
         void UIElement_OnMouseMove(object Sender, MouseEventArgs E)
         {
-            if (_dragging)
-            {
-                UpdateMouseClickPosition(E);
-            }
-
             if (ServiceProvider.Get<Settings>().MousePointerOverlay.Display)
                 MousePointer.Visibility = Visibility.Visible;
 
             var position = E.GetPosition(Grid);
 
-            if (position.X <= 0 || position.Y <= 0)
+            if (IsOutsideGrid(position))
             {
                 MousePointer.Visibility = Visibility.Collapsed;
 
                 return;
+            }
+
+            if (_dragging)
+            {
+                UpdateMouseClickPosition(position);
             }
 
             position.X -= MouseClick.ActualWidth / 2;
