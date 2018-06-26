@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Captura
@@ -16,7 +17,15 @@ namespace Captura
 
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            return DoConvert(Value);
+            if (Value is bool b)
+            {
+                if (TargetType == typeof(Visibility))
+                    return b ? Visibility.Collapsed : Visibility.Visible;
+
+                return !b;
+            }
+
+            return Binding.DoNothing;
         }
 
         public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)

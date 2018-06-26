@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Captura.Views;
 using CommandLine;
@@ -68,8 +67,7 @@ namespace Captura
 
             if (!string.IsNullOrEmpty(accent))
             {
-                if (ColorConverter.ConvertFromString(accent) is Color accentColor)
-                    AppearanceManager.Current.AccentColor = accentColor;
+                AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
             }
 
             // A quick fix for WpfToolkit not being copied to build output of console project

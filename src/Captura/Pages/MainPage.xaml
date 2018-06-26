@@ -1,6 +1,7 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
       x:Class="Captura.MainPage">
     <StackPanel Margin="-5,0,0,0">        
@@ -136,23 +137,39 @@
                     Margin="7,0"/>
         </Grid>
         
-        <DockPanel Margin="10,5,0,5"
-                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+        <Grid Margin="10,5,0,5"
+              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
             <Label Content="{Binding FrameRate, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Video.FrameRate}"
                    Margin="5,0"
                    MinWidth="15"
                    ContentStringFormat="{}{0:N0}"
-                   HorizontalContentAlignment="Right"/>
+                   HorizontalContentAlignment="Right"
+                   Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
+                   Grid.Column="1"/>
             <Slider Minimum="1"
                     Maximum="30"
                     SelectionStart="8"
                     SelectionEnd="12"
                     IsSelectionRangeEnabled="True"
                     Value="{Binding Settings.Video.FrameRate}"
-                    Interval="1"/>
-        </DockPanel>
+                    Interval="1"
+                    Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Grid.Column="2"/>
+            <xctk:IntegerUpDown Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource NegatingConverter}}"
+                                Margin="10,0,5,0"
+                                Minimum="1"
+                                Maximum="120"
+                                Value="{Binding Settings.Video.FrameRate}"
+                                Grid.Column="2"/>
+        </Grid>
 
         <DockPanel Margin="10,5,0,5"
                    IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">

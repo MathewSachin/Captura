@@ -73,9 +73,9 @@ namespace Captura.ViewModels
             #region Commands
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
             
-            ScreenShotActiveCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
+            ScreenShotActiveCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
 
-            ScreenShotDesktopCommand = new DelegateCommand(() => SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
+            ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
             
             RecordCommand = new DelegateCommand(OnRecordExecute);
             
@@ -502,7 +502,7 @@ namespace Captura.ViewModels
             ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
 
-        public void SaveScreenShot(Bitmap Bmp, string FileName = null)
+        public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
         {
             // Save to Disk or Clipboard
             if (Bmp != null)
@@ -511,7 +511,7 @@ namespace Captura.ViewModels
                     .Where(M => M.Active)
                     .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, RecentViewModel));
 
-                Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
+                await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
             else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
         }
@@ -553,7 +553,7 @@ namespace Captura.ViewModels
 
             var bmp = await GetScreenShot();
 
-            SaveScreenShot(bmp, FileName);
+            await SaveScreenShot(bmp, FileName);
         }
 
         public async Task<Bitmap> GetScreenShot()

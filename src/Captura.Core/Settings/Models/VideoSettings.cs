@@ -43,5 +43,19 @@
             get => Get(10);
             set => Set(value);
         }
+
+        public bool FpsLimit
+        {
+            get => Get(true);
+            set
+            {
+                Set(value);
+
+                if (value && FrameRate > 30)
+                {
+                    FrameRate = 30;
+                }
+            }
+        }
     }
 }

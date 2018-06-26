@@ -12,20 +12,19 @@ namespace Captura
     {
         bool _editing;
 
-        Hotkey _hotkey;
-
-        static readonly SolidColorBrush RedBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef5350"));
+        static readonly SolidColorBrush RedBrush = new SolidColorBrush(WpfExtensions.ParseColor("#ef5350"));
 
         static readonly SolidColorBrush WhiteBrush = new SolidColorBrush(Colors.White);
 
-        public static readonly DependencyProperty HotkeyModelProperty = DependencyProperty.Register(nameof(HotkeyModel), typeof(Hotkey), typeof(HotkeySelector), new UIPropertyMetadata(PropertyChangedCallback));
+        public static readonly DependencyProperty HotkeyModelProperty = DependencyProperty.Register(nameof(HotkeyModel),
+            typeof(Hotkey),
+            typeof(HotkeySelector),
+            new UIPropertyMetadata(HotkeyModelChangedCallback));
 
-        static void PropertyChangedCallback(DependencyObject Sender, DependencyPropertyChangedEventArgs Args)
+        static void HotkeyModelChangedCallback(DependencyObject Sender, DependencyPropertyChangedEventArgs Args)
         {
             if (Sender is HotkeySelector selector && Args.NewValue is Hotkey hotkey)
             {
-                selector._hotkey = hotkey;
-
                 selector.TextColor();
 
                 hotkey.PropertyChanged += (S, E) =>
@@ -51,7 +50,7 @@ namespace Captura
 
         void TextColor()
         {
-            if (_hotkey.IsActive && !_hotkey.IsRegistered)
+            if (HotkeyModel.IsActive && !HotkeyModel.IsRegistered)
             {
                 Background = RedBrush;
 
@@ -67,12 +66,12 @@ namespace Captura
 
         void HotkeyEdited(Keys NewKey, Modifiers NewModifiers)
         {
-            _hotkey.Change(NewKey, NewModifiers);
+            HotkeyModel.Change(NewKey, NewModifiers);
 
             // Red Text on Error
             TextColor();
 
-            Content = _hotkey.ToString();
+            Content = HotkeyModel.ToString();
 
             _editing = false;
         }
@@ -83,7 +82,7 @@ namespace Captura
 
             _editing = !_editing;
 
-            Content = _editing ? "Press new Hotkey..." : _hotkey.ToString();
+            Content = _editing ? "Press new Hotkey..." : HotkeyModel.ToString();
         }
 
         protected override void OnLostFocus(RoutedEventArgs E)
@@ -99,7 +98,7 @@ namespace Captura
                 return;
 
             _editing = false;
-            Content = _hotkey.ToString();
+            Content = HotkeyModel.ToString();
         }
 
         static bool IsValid(KeyEventArgs E)
