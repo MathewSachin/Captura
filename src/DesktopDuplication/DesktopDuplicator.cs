@@ -7,6 +7,7 @@ using SharpDX.DXGI;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Threading.Tasks;
 using Device = SharpDX.Direct3D11.Device;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
@@ -29,7 +30,7 @@ namespace DesktopDuplication
 
         public int Timeout { get; set; }
 
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, int Monitor, int Adapter = 0)
+        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, int Monitor)
         {
             _rect = Rect;
             _includeCursor = IncludeCursor;
@@ -37,7 +38,7 @@ namespace DesktopDuplication
             Adapter1 adapter;
             try
             {
-                adapter = new Factory1().GetAdapter1(Adapter);
+                adapter = new Factory1().Adapters1.First(M => M.GetOutputCount() > 0);
             }
             catch (SharpDXException e)
             {
