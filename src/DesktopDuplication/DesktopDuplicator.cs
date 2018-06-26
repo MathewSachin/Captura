@@ -146,7 +146,7 @@ namespace DesktopDuplication
             // Release source and dest locks
             frame.UnlockBits(mapDest);
 
-            if (_includeCursor && _frameInfo.PointerPosition.Visible)
+            if (_includeCursor && (_frameInfo.LastMouseUpdateTime == 0 || _frameInfo.PointerPosition.Visible))
             {
                 using (var g = Graphics.FromImage(frame))
                     MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
