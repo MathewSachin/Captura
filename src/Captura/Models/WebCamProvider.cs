@@ -79,7 +79,7 @@ namespace Captura.Models
         {
             try
             {
-                return _camControl.Dispatcher.Invoke(() => _camControl.Capture.GetFrame());
+                return _camControl.Dispatcher.Invoke(() => _camControl.Capture?.GetFrame());
             }
             catch { return null; }
         }

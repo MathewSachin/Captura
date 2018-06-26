@@ -530,6 +530,11 @@ namespace Captura.Webcam
             var bufferSize = 0;
             _sampGrabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
 
+            if (bufferSize <= 0)
+            {
+                return null;
+            }
+
             if (_savedArray == null || _savedArray.Length < bufferSize)
                 _savedArray = new byte[bufferSize + 64000];
             
