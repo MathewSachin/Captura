@@ -19,7 +19,8 @@ namespace Screna
         readonly IAudioFileWriter _audioWriter;
         readonly IImageProvider _imageProvider;
 
-        readonly int _frameRate, _maxFrameCount;
+        readonly int _frameRate, _maxFrameCount, _congestionFrameCount;
+        bool _congestion;
 
         readonly BlockingCollection<IBitmapFrame> _frames;
         readonly Stopwatch _sw;
@@ -48,7 +49,8 @@ namespace Screna
                 throw new ArgumentException("Frame Rate must be possitive", nameof(FrameRate));
 
             _frameRate = FrameRate;
-            _maxFrameCount = _frameRate * 3; // 3 seconds
+            _congestionFrameCount = _frameRate * 2; // 2 seconds
+            _maxFrameCount = _frameRate * 4; // 4 seconds
 
             _continueCapturing = new ManualResetEvent(false);
 
@@ -86,6 +88,11 @@ namespace Screna
 
                     if (img != null)
                     {
+                        if (img is RepeatFrame && _congestion)
+                        {
+                            continue;
+                        }
+
                         _videoWriter.WriteFrame(img);
                     }
 
@@ -147,9 +154,22 @@ namespace Screna
 
                 while (CanContinue() && !_frames.IsAddingCompleted)
                 {
+                    if (!_congestion && _frames.Count > _congestionFrameCount)
+                    {
+                        _congestion = true;
+
+                        Console.WriteLine("Congestion: ON");
+                    }
+                    else if (_congestion && _frames.Count < _congestionFrameCount / 2)
+                    {
+                        _congestion = false;
+
+                        Console.WriteLine("Congestion: OFF");
+                    }
+
                     if (_frames.Count > _maxFrameCount)
                     {
-                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a lower Frame Rate or another Codec.");
+                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a smaller region, lower Frame Rate or another Codec.");
                     }
 
                     var timestamp = DateTime.Now;
@@ -161,13 +181,16 @@ namespace Screna
                         if (!AddFrame(frame))
                             return;
 
-                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                        var diff = requiredFrames - frameCount;
-
-                        for (var i = 0; i < diff; ++i)
+                        if (!_congestion)
                         {
-                            if (!AddFrame(RepeatFrame.Instance))
-                                return;
+                            var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+                            var diff = requiredFrames - frameCount;
+
+                            for (var i = 0; i < diff; ++i)
+                            {
+                                if (!AddFrame(RepeatFrame.Instance))
+                                    return;
+                            }
                         }
                     }
 
