@@ -25,17 +25,7 @@ namespace Screna
         {
             lock (_pool)
             {
-                while (_pool.Count > MaxFreeFrames)
-                {
-                    if (_pool.Dequeue() is ReusableFrame freeFrame)
-                    {
-                        _frames.Remove(freeFrame);
-
-                        freeFrame.Destroy();
-
-                        Console.WriteLine($"Frame Destroyed: {_frames.Count - 1}");
-                    }
-                }
+                DestroyFreeFrames();
 
                 if (_pool.Count > 0)
                     return _pool.Dequeue();
@@ -47,6 +37,8 @@ namespace Screna
                     lock (_pool)
                     {
                         _pool.Enqueue(frame);
+
+                        DestroyFreeFrames();
                     }
                 };
 
@@ -55,6 +47,21 @@ namespace Screna
                 Console.WriteLine($"New Frame Allocated: {_frames.Count - 1}");
 
                 return frame;
+            }
+        }
+
+        void DestroyFreeFrames()
+        {
+            while (_pool.Count > MaxFreeFrames)
+            {
+                if (_pool.Dequeue() is ReusableFrame freeFrame)
+                {
+                    _frames.Remove(freeFrame);
+
+                    freeFrame.Destroy();
+
+                    Console.WriteLine($"Frame Destroyed: {_frames.Count - 1}");
+                }
             }
         }
 
