@@ -1,4 +1,5 @@
-﻿using Screna;
+﻿using System.Threading.Tasks;
+using Screna;
 
 namespace Captura.Models
 {
@@ -30,7 +31,7 @@ namespace Captura.Models
                 var frame = new MultiDisposeFrame(Image, 2);
 
                 _writer.WriteFrame(frame);
-                _preview.Display(frame);
+                Task.Run(() => _preview.Display(frame));
             }
         }
 

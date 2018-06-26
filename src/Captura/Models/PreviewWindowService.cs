@@ -10,6 +10,8 @@ namespace Captura.Models
     {
         readonly PreviewWindow _previewWindow = new PreviewWindow();
 
+        bool _visible;
+
         public PreviewWindowService()
         {
             // Prevent Closing by User
@@ -19,10 +21,15 @@ namespace Captura.Models
 
                 _previewWindow.Hide();
             };
+
+            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
         }
 
         WriteableBitmap _writeableBitmap;
         byte[] _buffer;
+
+        DateTime _timestamp;
+        readonly TimeSpan _minInterval = TimeSpan.FromMilliseconds(200);
 
         public void Init(int Width, int Height)
         {
@@ -48,18 +55,20 @@ namespace Captura.Models
             if (Frame is RepeatFrame)
                 return;
 
+            if (!_visible || DateTime.Now - _timestamp < _minInterval)
+            {
+                Frame.Dispose();
+
+                return;
+            }
+
+            _timestamp = DateTime.Now;
+
+            using (Frame)
+                Frame.CopyTo(_buffer, _buffer.Length);
+
             _previewWindow.Dispatcher.Invoke(() =>
             {
-                if (!_previewWindow.IsVisible)
-                {
-                    Frame.Dispose();
-
-                    return;
-                }
-
-                using (Frame)
-                    Frame.CopyTo(_buffer, _buffer.Length);
-
                 _writeableBitmap.WritePixels(new Int32Rect(0, 0, Frame.Width, Frame.Height), _buffer, Frame.Width * 4, 0);
             });
         }
