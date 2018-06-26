@@ -19,10 +19,24 @@ namespace Screna
         readonly List<ReusableFrame> _frames = new List<ReusableFrame>();
         readonly Queue<IBitmapFrame> _pool = new Queue<IBitmapFrame>();
 
+        const int MaxFreeFrames = 5;
+
         public IBitmapFrame Get()
         {
             lock (_pool)
             {
+                while (_pool.Count > MaxFreeFrames)
+                {
+                    if (_pool.Dequeue() is ReusableFrame freeFrame)
+                    {
+                        _frames.Remove(freeFrame);
+
+                        freeFrame.Destroy();
+
+                        Console.WriteLine($"Frame Destroyed: {_frames.Count - 1}");
+                    }
+                }
+
                 if (_pool.Count > 0)
                     return _pool.Dequeue();
 
