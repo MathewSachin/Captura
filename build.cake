@@ -136,27 +136,27 @@ void CopyLicenses()
 void PopulateOutput()
 {
     // Copy License files
-    CopyDirectory("licenses", "Output/licenses");
+    CopyDirectory("licenses", "dist/licenses");
 
     var binFolder = $"src/Captura.Console/bin/{configuration}/";
 
     // Copy Assemblies
-    CopyFiles(binFolder + "*.dll", "Output");
+    CopyFiles(binFolder + "*.dll", "dist");
     
     // Copy Languages
-    CopyDirectory(binFolder + "Languages", "Output/Languages");
+    CopyDirectory(binFolder + "Languages", "dist/Languages");
 
     // Copy executables and config files
-    CopyFiles(binFolder + "*.exe*", "Output");
+    CopyFiles(binFolder + "*.exe*", "dist");
 
     // For Debug builds
     if (configuration == "Debug")
     {
         // Copy symbol files
-        CopyFiles(binFolder + "*.pdb", "Output");
+        CopyFiles(binFolder + "*.pdb", "dist");
 
         // Copy Xml Documentation
-        CopyFiles(binFolder + "*.xml", "Output");
+        CopyFiles(binFolder + "*.xml", "dist");
     }
 }
 
@@ -236,7 +236,7 @@ Task("Build")
     CopyLicenses();
 });
 
-Task("Clean-Output").Does(() => CleanDirectory("Output"));
+Task("Clean-Output").Does(() => CleanDirectory("dist"));
 
 Task("Populate-Output")
     .IsDependentOn("Clean-Output")
@@ -245,7 +245,7 @@ Task("Populate-Output")
 
 Task("Pack-Portable")
     .IsDependentOn("Populate-Output")
-    .Does(() => Zip("Output", "temp/Captura-Portable.zip"));
+    .Does(() => Zip("dist", "temp/Captura-Portable.zip"));
 
 Task("Pack-Setup")
     .WithCriteria(configuration == "Release")
