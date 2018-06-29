@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Screna
+namespace Captura
 {
     /// <summary>
     /// Carries out the process of recording Audio and/or Video.

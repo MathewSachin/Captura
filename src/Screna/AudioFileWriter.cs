@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Captura.Audio;
 using static System.Text.Encoding;
 
 namespace Screna.Audio

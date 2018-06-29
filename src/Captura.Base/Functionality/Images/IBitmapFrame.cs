@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Screna
+namespace Captura
 {
     public interface IBitmapFrame : IDisposable
     {

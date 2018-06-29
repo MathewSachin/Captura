@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Screna.Audio;
+using Captura.Audio;
 using ManagedBass;
 
 namespace Captura.Models

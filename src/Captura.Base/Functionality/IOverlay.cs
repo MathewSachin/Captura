@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Screna
+namespace Captura
 {
     /// <summary>
     /// Draws over a Capured image.

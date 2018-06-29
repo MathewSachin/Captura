@@ -1,14 +1,14 @@
-﻿namespace Screna.Native
+﻿namespace Captura.Native
 {
-    enum GetWindowEnum { Owner = 4 }
+    public enum GetWindowEnum { Owner = 4 }
 
-    enum SetWindowPositionFlags
+    public enum SetWindowPositionFlags
     {
         ShowWindow = 0x400,
         NoActivate = 0x0010
     }
 
-    enum WindowStyles : long
+    public enum WindowStyles : long
     {
         Child = 0x40000000,
         ToolWindow = 0x00000080,
@@ -16,7 +16,7 @@
         SizeBox = 0x00040000L
     }
 
-    enum GetWindowLongValue
+    public enum GetWindowLongValue
     {
         Style = -16,
         ExStyle = -20

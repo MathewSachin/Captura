@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{388D8B28-E629-4684-8537-8D78719B69E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Captura</RootNamespace>
+    <AssemblyName>Captura.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Functionality\Audio\DataAvailableEventArgs.cs" />
+    <Compile Include="Functionality\Audio\IAudioFileWriter.cs" />
+    <Compile Include="Functionality\Audio\IAudioProvider.cs" />
+    <Compile Include="Functionality\Audio\WaveFormat\WaveFormat.cs" />
+    <Compile Include="Functionality\Audio\WaveFormat\WaveFormatEncoding.cs" />
+    <Compile Include="Functionality\Images\IBitmapEditor.cs" />
+    <Compile Include="Functionality\Images\IBitmapFrame.cs" />
+    <Compile Include="Functionality\Images\IImageProvider.cs" />
+    <Compile Include="Functionality\IOverlay.cs" />
+    <Compile Include="Functionality\IRecorder.cs" />
+    <Compile Include="Functionality\IVideoFileWriter.cs" />
+    <Compile Include="IWindow.cs" />
+    <Compile Include="Provision\IAudioItem.cs" />
+    <Compile Include="Provision\IMainWindow.cs" />
+    <Compile Include="Provision\IMessageProvider.cs" />
+    <Compile Include="Provision\IPreviewWindow.cs" />
+    <Compile Include="Provision\IRegionProvider.cs" />
+    <Compile Include="Provision\ISystemTray.cs" />
+    <Compile Include="Provision\ITrayProgress.cs" />
+    <Compile Include="Provision\IVideoItem.cs" />
+    <Compile Include="Provision\IVideoSourcePicker.cs" />
+    <Compile Include="Provision\IVideoSourceProvider.cs" />
+    <Compile Include="Provision\IVideoWriterItem.cs" />
+    <Compile Include="Provision\IVideoWriterProvider.cs" />
+    <Compile Include="Provision\IWebcamItem.cs" />
+    <Compile Include="Provision\IWebCamProvider.cs" />
+    <Compile Include="Provision\VideoWriterArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

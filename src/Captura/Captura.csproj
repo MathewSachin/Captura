@@ -423,6 +423,10 @@
     <SplashScreen Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>

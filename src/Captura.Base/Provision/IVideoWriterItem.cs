@@ -1,6 +1,4 @@
-﻿using Screna;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     /// <summary>
     /// Items to show in Video Writers list.

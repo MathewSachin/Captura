@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Screna.Audio
+namespace Captura.Audio
 {
     /// <summary>
     /// Represents a Wave file format

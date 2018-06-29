@@ -1,5 +1,4 @@
-﻿using Screna;
-using Screna.Audio;
+﻿using Captura.Audio;
 using System;
 using System.Drawing;
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Captura;
+using Captura.Models;
 
 namespace Screna
 {
@@ -46,7 +48,7 @@ namespace Screna
             }
         }
 
-        readonly Window _window;
+        readonly IWindow _window;
         readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
         readonly ImagePool _imagePool;
@@ -54,7 +56,7 @@ namespace Screna
         // used when resizing window frames.
         static ReusableFrame _fullWidthFrame;
 
-        static Func<Point, Point> GetTransformer(Window Window)
+        static Func<Point, Point> GetTransformer(IWindow Window)
         {
             var initialSize = Window.Rectangle.Even().Size;
 
@@ -71,7 +73,7 @@ namespace Screna
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        public WindowProvider(Window Window, bool IncludeCursor, out Func<Point, Point> Transform)
+        public WindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> Transform)
         {
             _window = Window ?? throw new ArgumentNullException(nameof(Window));
             _includeCursor = IncludeCursor;

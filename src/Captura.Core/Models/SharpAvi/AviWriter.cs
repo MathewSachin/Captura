@@ -1,4 +1,4 @@
-﻿using Screna.Audio;
+﻿using Captura.Audio;
 using System.Collections.Generic;
 using SharpAvi.Codecs;
 using SharpAvi.Output;

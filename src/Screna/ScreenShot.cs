@@ -1,9 +1,10 @@
-﻿using Screna.Native;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Captura.Models;
+using Captura.Native;
 
 namespace Screna
 {
@@ -47,7 +48,7 @@ namespace Screna
             return Capture(Screen.Bounds, IncludeCursor);
         }
 
-        public static Bitmap Capture(Window Window, bool IncludeCursor = false)
+        public static Bitmap Capture(IWindow Window, bool IncludeCursor = false)
         {
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
@@ -68,9 +69,9 @@ namespace Screna
         /// <summary>
         /// Capture transparent Screenshot of a Window.
         /// </summary>
-        /// <param name="Window">The <see cref="Window"/> to Capture.</param>
+        /// <param name="Window">The <see cref="IWindow"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        public static Bitmap CaptureTransparent(Window Window, bool IncludeCursor = false)
+        public static Bitmap CaptureTransparent(IWindow Window, bool IncludeCursor = false)
         {
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
@@ -146,7 +147,7 @@ namespace Screna
         /// </param>
         /// <param name="ResizeWidth">Capture Width.</param>
         /// <param name="ResizeHeight">Capture Height.</param>
-        public static Bitmap CaptureTransparent(Window Window, bool IncludeCursor, bool DoResize, int ResizeWidth, int ResizeHeight)
+        public static Bitmap CaptureTransparent(IWindow Window, bool IncludeCursor, bool DoResize, int ResizeWidth, int ResizeHeight)
         {
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Screna
+namespace Captura
 {
     /// <summary>
     /// Creates a video from individual frames and writes them to a file.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Screna
+namespace Captura
 {
     /// <summary>
     /// Data Available Event Args.

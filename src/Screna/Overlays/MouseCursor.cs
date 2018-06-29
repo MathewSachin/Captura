@@ -1,8 +1,8 @@
-﻿using Screna.Native;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Captura.Native;
 
 namespace Screna
 {
@@ -11,30 +11,6 @@ namespace Screna
     /// </summary>
     public static class MouseCursor
     {
-        #region PInvoke
-        const string DllName = "user32.dll";
-
-        // ReSharper disable InconsistentNaming
-        [DllImport(DllName)]
-        static extern bool DestroyIcon(IntPtr hIcon);
-
-        [DllImport(DllName)]
-        static extern IntPtr CopyIcon(IntPtr hIcon);
-
-        [DllImport(DllName)]
-        static extern bool GetCursorInfo(out CursorInfo pci);
-
-        [DllImport(DllName)]
-        static extern bool GetIconInfo(IntPtr hIcon, out IconInfo piconinfo);
-
-        [DllImport(DllName)]
-        static extern bool GetCursorPos(ref Point lpPoint);
-
-        [DllImport("gdi32.dll")]
-        static extern bool DeleteObject(IntPtr HObject);
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         const int CursorShowing = 1;
                 
         /// <summary>
@@ -45,7 +21,7 @@ namespace Screna
             get
             {
                 var p = new Point();
-                GetCursorPos(ref p);
+                User32.GetCursorPos(ref p);
                 return p;
             }
         }
@@ -64,7 +40,7 @@ namespace Screna
             // ReSharper disable once InlineOutVariableDeclaration
             var cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
 
-            if (!GetCursorInfo(out cursorInfo))
+            if (!User32.GetCursorInfo(out cursorInfo))
                 return;
 
             if (cursorInfo.flags != CursorShowing)
@@ -82,12 +58,12 @@ namespace Screna
             }
             else
             {
-                var hIcon = CopyIcon(cursorInfo.hCursor);
+                var hIcon = User32.CopyIcon(cursorInfo.hCursor);
 
                 if (hIcon == IntPtr.Zero)
                     return;
 
-                if (!GetIconInfo(hIcon, out var icInfo))
+                if (!User32.GetIconInfo(hIcon, out var icInfo))
                     return;
 
                 icon = Icon.FromHandle(hIcon).ToBitmap();
@@ -95,10 +71,10 @@ namespace Screna
 
                 Cursors.Add(cursorInfo.hCursor, Tuple.Create(icon, hotspot));
 
-                DestroyIcon(hIcon);
+                User32.DestroyIcon(hIcon);
 
-                DeleteObject(icInfo.hbmColor);
-                DeleteObject(icInfo.hbmMask);
+                Gdi32.DeleteObject(icInfo.hbmColor);
+                Gdi32.DeleteObject(icInfo.hbmMask);
             }
 
             var location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,

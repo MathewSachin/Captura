@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication", "Deskt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Webcam", "Captura.Webcam\Captura.Webcam.csproj", "{8CE140BC-61D1-4A4A-A313-A966D961282C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Base", "Captura.Base\Captura.Base.csproj", "{388D8B28-E629-4684-8537-8D78719B69E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Native", "Captura.Native\Captura.Native.csproj", "{81F2E68E-4708-4D52-8419-51888F22D05E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,14 @@ Global
 		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{388D8B28-E629-4684-8537-8D78719B69E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{388D8B28-E629-4684-8537-8D78719B69E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{388D8B28-E629-4684-8537-8D78719B69E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{388D8B28-E629-4684-8537-8D78719B69E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F2E68E-4708-4D52-8419-51888F22D05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F2E68E-4708-4D52-8419-51888F22D05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F2E68E-4708-4D52-8419-51888F22D05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F2E68E-4708-4D52-8419-51888F22D05E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

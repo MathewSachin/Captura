@@ -1,4 +1,4 @@
-namespace Screna.Audio
+namespace Captura.Audio
 {
     /// <summary>
     /// WaveFormat Encoding

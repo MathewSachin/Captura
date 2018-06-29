@@ -3,12 +3,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Screna.Native
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct PixelData { public byte Blue, Green, Red, Alpha; }
+    public struct PixelData { public byte Blue, Green, Red, Alpha; }
 
-    unsafe class UnsafeBitmap : IDisposable
+    public unsafe class UnsafeBitmap : IDisposable
     {
         readonly Bitmap _inputBitmap;
         BitmapData _bitmapData;

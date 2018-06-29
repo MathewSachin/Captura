@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Screna.Audio
+namespace Captura.Audio
 {
     /// <summary>
     /// Provides Recorded Audio.

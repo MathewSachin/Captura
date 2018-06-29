@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Screna.Audio
+namespace Captura.Audio
 {
     /// <summary>
     /// Encodes Audio into an audio file.

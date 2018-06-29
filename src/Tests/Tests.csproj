@@ -79,6 +79,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Console\Captura.Console.csproj">
       <Project>{cc710d4d-dfe8-4b31-bd7e-59ad80737e13}</Project>
       <Name>Captura.Console</Name>

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using Captura.Audio;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -516,11 +517,11 @@ namespace Captura.ViewModels
             else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
         }
 
-        public Bitmap ScreenShotWindow(Window hWnd)
+        public Bitmap ScreenShotWindow(IWindow hWnd)
         {
             _systemTray.HideNotification();
 
-            if (hWnd == Window.DesktopWindow)
+            if (hWnd.Handle == Window.DesktopWindow.Handle)
             {
                 return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShots);
             }
@@ -566,7 +567,7 @@ namespace Captura.ViewModels
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
-                    var hWnd = Window.DesktopWindow;
+                    IWindow hWnd = Window.DesktopWindow;
 
                     switch (selectedVideoSource)
                     {

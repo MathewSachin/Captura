@@ -49,6 +49,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}</Project>
       <Name>Screna</Name>

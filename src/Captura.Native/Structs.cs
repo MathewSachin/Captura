@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-namespace Screna.Native
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct IconInfo
+    public struct IconInfo
     {
         public bool fIcon;
         public int xHotspot;
@@ -17,7 +17,7 @@ namespace Screna.Native
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct CursorInfo
+    public struct CursorInfo
     {
         public int cbSize;
         public int flags;
@@ -26,7 +26,7 @@ namespace Screna.Native
     }
 
     [Serializable, StructLayout(LayoutKind.Sequential)]
-    struct RECT
+    public struct RECT
     {
         public int Left;
         public int Top;

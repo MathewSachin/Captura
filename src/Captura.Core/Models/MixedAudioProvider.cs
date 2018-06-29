@@ -4,9 +4,8 @@ using System.Linq;
 using ManagedBass;
 using ManagedBass.Mix;
 using System.Runtime.InteropServices;
-using Wf = Screna.Audio.WaveFormat;
-using Screna.Audio;
-using Screna;
+using Wf = Captura.Audio.WaveFormat;
+using Captura.Audio;
 
 namespace Captura.Models
 {

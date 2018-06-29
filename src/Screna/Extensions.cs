@@ -1,8 +1,8 @@
-﻿using Screna.Native;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using Captura.Native;
 
 namespace Screna
 {
