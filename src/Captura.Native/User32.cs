@@ -58,5 +58,23 @@ namespace Captura.Native
 
         [DllImport(DllName)]
         public static extern bool GetCursorPos(ref Point lpPoint);
+
+        [DllImport(DllName)]
+        public static extern bool UnregisterHotKey(IntPtr Hwnd, int Id);
+
+        [DllImport(DllName)]
+        public static extern bool RegisterHotKey(IntPtr Hwnd, int Id, int Modifiers, uint VirtualKey);
+
+        [DllImport(DllName)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPositionFlags wFlags);
+
+        [DllImport(DllName)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport(DllName)]
+        public static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport(DllName)]
+        public static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 }

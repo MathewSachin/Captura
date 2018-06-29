@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Captura.Native
 {
-    public class Gdi32
+    public static class Gdi32
     {
         const string DllName = "gdi32.dll";
 

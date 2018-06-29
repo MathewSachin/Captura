@@ -13,27 +13,6 @@ namespace Screna
     /// </summary>
     public static class ScreenShot
     {
-        #region PInvoke
-        const string DllName = "user32.dll";
-
-        // ReSharper disable InconsistentNaming
-        [DllImport("dwmapi.dll")]
-        static extern int DwmGetWindowAttribute(IntPtr hWnd, int dWAttribute, ref RECT pvAttribute, int cbAttribute);
-        
-        [DllImport(DllName)]
-        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPositionFlags wFlags);
-
-        [DllImport(DllName)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport(DllName)]
-        static extern bool IsIconic(IntPtr hWnd);
-
-        [DllImport(DllName)]
-        static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         /// <summary>
         /// Captures a Specific <see cref="Screen"/>.
         /// </summary>
@@ -89,7 +68,7 @@ namespace Screna
 
             const int extendedFrameBounds = 0;
 
-            if (DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
+            if (DwmApi.DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
                 // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
                 User32.GetWindowRect(Window.Handle, out r);
 
@@ -101,8 +80,8 @@ namespace Screna
             // This check handles if the window is outside of the visible screen
             R.Intersect(WindowProvider.DesktopRectangle);
 
-            ShowWindow(backdrop.Handle, 4);
-            SetWindowPos(backdrop.Handle, Window.Handle,
+            User32.ShowWindow(backdrop.Handle, 4);
+            User32.SetWindowPos(backdrop.Handle, Window.Handle,
                 R.Left, R.Top,
                 R.Width, R.Height,
                 SetWindowPositionFlags.NoActivate);
@@ -162,23 +141,23 @@ namespace Screna
                 // Hide the taskbar, just incase it gets in the way
                 if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
                 {
-                    ShowWindow(startButtonHandle, 0);
-                    ShowWindow(taskbarHandle, 0);
+                    User32.ShowWindow(startButtonHandle, 0);
+                    User32.ShowWindow(taskbarHandle, 0);
                     Application.DoEvents();
                 }
 
-                if (IsIconic(Window.Handle))
+                if (User32.IsIconic(Window.Handle))
                 {
-                    ShowWindow(Window.Handle, 1);
+                    User32.ShowWindow(Window.Handle, 1);
                     Thread.Sleep(300); // Wait for window to be restored
                 }
                 else
                 {
-                    ShowWindow(Window.Handle, 5);
+                    User32.ShowWindow(Window.Handle, 5);
                     Thread.Sleep(100);
                 }
 
-                SetForegroundWindow(Window.Handle);
+                User32.SetForegroundWindow(Window.Handle);
 
                 var r = new RECT();
 
@@ -186,7 +165,7 @@ namespace Screna
                 {
                     User32.GetWindowRect(Window.Handle, out r);
 
-                    SetWindowPos(Window.Handle, IntPtr.Zero, r.Left, r.Top, ResizeWidth, ResizeHeight, SetWindowPositionFlags.ShowWindow);
+                    User32.SetWindowPos(Window.Handle, IntPtr.Zero, r.Left, r.Top, ResizeWidth, ResizeHeight, SetWindowPositionFlags.ShowWindow);
 
                     Thread.Sleep(100);
                 }
@@ -196,7 +175,7 @@ namespace Screna
                 var R = r.ToRectangle();
 
                 if (canResize)
-                    SetWindowPos(Window.Handle, IntPtr.Zero,
+                    User32.SetWindowPos(Window.Handle, IntPtr.Zero,
                         R.Left, R.Top,
                         R.Width, R.Height,
                         SetWindowPositionFlags.ShowWindow);
@@ -207,8 +186,8 @@ namespace Screna
             {
                 if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
                 {
-                    ShowWindow(startButtonHandle, 1);
-                    ShowWindow(taskbarHandle, 1);
+                    User32.ShowWindow(startButtonHandle, 1);
+                    User32.ShowWindow(taskbarHandle, 1);
                 }
             }
         }

@@ -1,88 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
+using Captura.Native;
 
 namespace Captura.Models
 {
-    public class Service : NotifyPropertyChanged
-    {
-        public Service(ServiceName ServiceName)
-        {
-            this.ServiceName = ServiceName;
-        }
-
-        ServiceName _serviceName;
-
-        public ServiceName ServiceName
-        {
-            get => _serviceName;
-            set
-            {
-                _serviceName = value;
-
-                Description = new TextLocalizer(GetDescriptionKey(value));
-
-                OnPropertyChanged();
-            }
-        }
-
-        TextLocalizer _description;
-
-        public TextLocalizer Description
-        {
-            get => _description;
-            set
-            {
-                _description = value;
-                
-                OnPropertyChanged();
-            }
-        }
-
-        static string GetDescriptionKey(ServiceName ServiceName)
-        {
-            switch (ServiceName)
-            {
-                case ServiceName.Recording:
-                    return nameof(LanguageManager.StartStopRecording);
-
-                case ServiceName.Pause:
-                    return nameof(LanguageManager.PauseResumeRecording);
-
-                case ServiceName.ScreenShot:
-                    return nameof(LanguageManager.ScreenShot);
-
-                case ServiceName.ActiveScreenShot:
-                    return nameof(LanguageManager.ScreenShotActiveWindow);
-
-                case ServiceName.DesktopScreenShot:
-                    return nameof(LanguageManager.ScreenShotDesktop);
-
-                default:
-                    return SpaceAtCapitals(ServiceName);
-            }
-        }
-
-        static string SpaceAtCapitals<T>(T Obj)
-        {
-            var s = Obj.ToString();
-
-            var sb = new StringBuilder();
-
-            for (var i = 0; i < s.Length; ++i)
-            {
-                if (i != 0 && char.IsUpper(s[i]))
-                    sb.Append(" ");
-
-                sb.Append(s[i]);
-            }
-
-            return sb.ToString();
-        }
-    }
-
     public class Hotkey : NotifyPropertyChanged
     {
         Service _service;
@@ -137,13 +60,13 @@ namespace Captura.Models
 
             // Generate Unique ID
             var uid = Guid.NewGuid().ToString("N");
-            ID = GlobalAddAtom(uid);
+            ID = Kernel32.GlobalAddAtom(uid);
             
-            if (RegisterHotKey(IntPtr.Zero, ID, Modifiers, Key))
+            if (User32.RegisterHotKey(IntPtr.Zero, ID, (int) Modifiers, (uint) Key))
                 IsRegistered = true;
             else
             {
-                GlobalDeleteAtom(ID);
+                Kernel32.GlobalDeleteAtom(ID);
                 ID = 0;
             }
         }
@@ -152,12 +75,12 @@ namespace Captura.Models
 
         public Modifiers Modifiers { get; private set; }
 
-        public void Change(Keys Key, Modifiers Modifiers)
+        public void Change(Keys NewKey, Modifiers NewModifiers)
         {
             Unregister();
 
-            this.Key = Key;
-            this.Modifiers = Modifiers;
+            Key = NewKey;
+            Modifiers = NewModifiers;
 
             Register();
         }
@@ -167,30 +90,14 @@ namespace Captura.Models
             if (!IsRegistered)
                 return;
 
-            if (UnregisterHotKey(IntPtr.Zero, ID))
+            if (User32.UnregisterHotKey(IntPtr.Zero, ID))
             {
                 IsRegistered = false;
 
-                GlobalDeleteAtom(ID);
+                Kernel32.GlobalDeleteAtom(ID);
                 ID = 0;
             }
         }
-
-        #region Native
-        const string User32 = "user32", Kernel32 = "kernel32";
-
-        [DllImport(Kernel32)]
-        static extern ushort GlobalAddAtom(string Text);
-
-        [DllImport(Kernel32)]
-        static extern ushort GlobalDeleteAtom(ushort Atom);
-
-        [DllImport(User32)]
-        static extern bool UnregisterHotKey(IntPtr Hwnd, int Id);
-
-        [DllImport(User32)]
-        static extern bool RegisterHotKey(IntPtr Hwnd, int Id, Modifiers Modifiers, Keys VirtualKey);
-        #endregion
 
         public override string ToString()
         {
