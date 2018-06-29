@@ -45,9 +45,9 @@ namespace Captura.Models
 
             Name = $"{ScreenPickerName} ({screen.DeviceName})";
 
-            Transform = P => new Point(P.X - screen.Bounds.X, P.Y - screen.Bounds.Y);
+            Transform = P => new Point(P.X - screen.Rectangle.X, P.Y - screen.Rectangle.Y);
 
-            return new RegionProvider(screen.Bounds, IncludeCursor);
+            return new RegionProvider(screen.Rectangle, IncludeCursor);
         }
     }
 }

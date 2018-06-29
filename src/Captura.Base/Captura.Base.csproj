@@ -36,7 +36,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functionality\Audio\DataAvailableEventArgs.cs" />
@@ -56,6 +55,7 @@
     <Compile Include="Provision\IMessageProvider.cs" />
     <Compile Include="Provision\IPreviewWindow.cs" />
     <Compile Include="Provision\IRegionProvider.cs" />
+    <Compile Include="IScreen.cs" />
     <Compile Include="Provision\ISystemTray.cs" />
     <Compile Include="Provision\ITrayProgress.cs" />
     <Compile Include="Provision\IVideoItem.cs" />

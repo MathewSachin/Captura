@@ -615,7 +615,7 @@ namespace Captura.ViewModels
 
                             if (picked != null)
                             {
-                                bmp = ScreenShot.Capture(picked, includeCursor);
+                                bmp = ScreenShot.Capture(picked.Rectangle, includeCursor);
                             }
                             else return null;
                             break;

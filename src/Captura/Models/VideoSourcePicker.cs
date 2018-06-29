@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using Captura.Models;
 
 namespace Captura.Models
 {
@@ -12,7 +10,7 @@ namespace Captura.Models
             return VideoSourcePickerWindow.PickWindow(SkipWindows);
         }
 
-        public Screen PickScreen()
+        public IScreen PickScreen()
         {
             return VideoSourcePickerWindow.PickScreen();
         }
