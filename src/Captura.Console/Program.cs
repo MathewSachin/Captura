@@ -397,7 +397,7 @@ namespace Captura
                 {
                     var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName);
+                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {
