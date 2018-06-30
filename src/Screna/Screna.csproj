@@ -57,7 +57,6 @@
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Overlays\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
