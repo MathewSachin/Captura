@@ -35,14 +35,19 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Structs\CursorInfo.cs" />
     <Compile Include="DwmApi.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="Enums\GetWindowEnum.cs" />
     <Compile Include="EnumWindowsProc.cs" />
     <Compile Include="Gdi32.cs" />
+    <Compile Include="Enums\GetWindowLongValue.cs" />
     <Compile Include="Kernel32.cs" />
-    <Compile Include="Structs.cs" />
+    <Compile Include="Structs\RECT.cs" />
+    <Compile Include="Enums\SetWindowPositionFlags.cs" />
+    <Compile Include="Structs\IconInfo.cs" />
     <Compile Include="UnsafeBitmap.cs" />
     <Compile Include="User32.cs" />
+    <Compile Include="Enums\WindowStyles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
