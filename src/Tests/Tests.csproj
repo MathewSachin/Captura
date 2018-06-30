@@ -106,6 +106,7 @@
     <Compile Include="PropertyStoreTests.cs" />
     <Compile Include="ScreenShots.cs" />
     <Compile Include="RecorderTests.cs" />
+    <Compile Include="TestManager.cs" />
     <Compile Include="WindowTests.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
