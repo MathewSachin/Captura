@@ -66,6 +66,7 @@
     <Compile Include="Provision\IWebcamItem.cs" />
     <Compile Include="Provision\IWebCamProvider.cs" />
     <Compile Include="Provision\VideoWriterArgs.cs" />
+    <Compile Include="RepeatFrame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

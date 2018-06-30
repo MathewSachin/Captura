@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
-using Screna;
 
 namespace Captura.Models
 {

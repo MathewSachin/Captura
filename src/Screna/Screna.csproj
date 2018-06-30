@@ -38,7 +38,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Frames\EditorBase.cs" />
     <Compile Include="Frames\MultiDisposeFrame.cs" />
-    <Compile Include="Frames\RepeatFrame.cs" />
     <Compile Include="Frames\FrameBase.cs" />
     <Compile Include="Frames\ImagePool.cs" />
     <Compile Include="Frames\OneTimeEditor.cs" />

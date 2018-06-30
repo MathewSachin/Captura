@@ -2,7 +2,7 @@
 using System.IO;
 using Captura;
 
-namespace Screna
+namespace Captura
 {
     public class RepeatFrame : IBitmapFrame
     {
