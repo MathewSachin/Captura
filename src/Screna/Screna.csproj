@@ -44,18 +44,20 @@
     <Compile Include="Frames\OneTimeFrame.cs" />
     <Compile Include="Frames\ReusableEditor.cs" />
     <Compile Include="Frames\ReusableFrame.cs" />
+    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
+    <Compile Include="MouseCursor.cs" />
     <Compile Include="Recorder\Recorder.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="VideoWriter\GifWriter.cs" />
     <Compile Include="ImageProviders\RegionProvider.cs" />
     <Compile Include="ImageProviders\WindowProvider.cs" />
-    <Compile Include="Overlays\MouseCursor.cs" />
     <Compile Include="Recorder\VFRGifRecorder.cs" />
     <Compile Include="ScreenShot.cs" />
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Overlays\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

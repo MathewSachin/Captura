@@ -28,9 +28,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -110,9 +107,6 @@
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
-    <Compile Include="Models\MouseKeyHook\DummyKeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
     <Compile Include="Models\TextOverlay.cs" />
     <Compile Include="Models\VideoSourceProviders\DeskDuplSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\NoVideoSourceProvider.cs" />
@@ -125,26 +119,21 @@
     <Compile Include="Settings\Models\GifSettings.cs" />
     <Compile Include="Settings\Models\FFmpegSettings.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
-    <Compile Include="Settings\Models\MouseOverlaySettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="Settings\Models\X264Settings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
-    <Compile Include="PropertyStore.cs" />
     <Compile Include="Translation\TranslationViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
-    <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
     <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Services\FFmpegService.cs" />
     <Compile Include="Models\DeskDuplImageProvider.cs" />
-    <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
     <Compile Include="Models\RecentItemModel.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
@@ -162,14 +151,9 @@
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />
     <Compile Include="Services\ServiceName.cs" />
-    <Compile Include="Models\Alignment.cs" />
-    <Compile Include="Settings\Models\KeystrokesSettings.cs" />
-    <Compile Include="Settings\Models\MouseClickSettings.cs" />
-    <Compile Include="Settings\Models\PositionedOverlaySettings.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
     <Compile Include="Settings\Models\ProxySettings.cs" />
     <Compile Include="TextLocalizer.cs" />
-    <Compile Include="Settings\Models\TextOverlaySettings.cs" />
     <Compile Include="Models\DownloadFFmpeg.cs" />
     <Compile Include="ViewModels\FFmpegCodecsViewModel.cs" />
     <Compile Include="ViewModels\FFmpgDownloadViewModel.cs" />
@@ -195,6 +179,10 @@
       <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
       <Name>Captura.Bass</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
+      <Project>{6cc6e9c8-9a94-4fb0-8396-47e2ecbd8300}</Project>
+      <Name>Captura.MouseKeyHook</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
       <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
       <Name>Captura.Native</Name>
@@ -217,6 +205,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\MouseKeyHook\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

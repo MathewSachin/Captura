@@ -1,8 +1,8 @@
 ﻿using Gma.System.MouseKeyHook;
-using Screna;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Screna;
 
 namespace Captura.Models
 {
@@ -241,7 +241,7 @@ namespace Captura.Models
             }
         }
 
-        Color GetClickCirleColor()
+        Color GetClickCircleColor()
         {
             if (_mouseButtons.HasFlag(MouseButtons.Right))
             {
@@ -308,7 +308,7 @@ namespace Captura.Models
                 var x = curPos.X - clickRadius;
                 var y = curPos.Y - clickRadius;
 
-                var color = GetClickCirleColor();
+                var color = GetClickCircleColor();
 
                 color = Color.FromArgb(ToByte(color.A * _currentMouseRatio), color);
 

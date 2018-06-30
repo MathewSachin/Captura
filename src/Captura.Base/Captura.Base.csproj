@@ -33,6 +33,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alignment.cs" />
     <Compile Include="AudioSource.cs" />
     <Compile Include="Binder.cs" />
     <Compile Include="Functionality\Audio\DataAvailableEventArgs.cs" />
@@ -49,7 +50,10 @@
     <Compile Include="IBinder.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IWindow.cs" />
+    <Compile Include="MouseOverlaySettings.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
+    <Compile Include="PositionedOverlaySettings.cs" />
+    <Compile Include="PropertyStore.cs" />
     <Compile Include="Provision\IAudioItem.cs" />
     <Compile Include="Provision\IMainWindow.cs" />
     <Compile Include="Provision\IMessageProvider.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="Provision\VideoWriterArgs.cs" />
     <Compile Include="RepeatFrame.cs" />
     <Compile Include="ServiceProvider.cs" />
+    <Compile Include="TextOverlaySettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
