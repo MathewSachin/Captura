@@ -11,14 +11,12 @@ namespace Captura.Models
         public Screen Screen { get; }
 
         readonly int _index;
-        readonly bool _desktopDuplication;
 
-        ScreenItem(int Index, bool DesktopDuplication)
+        ScreenItem(int Index)
         {
             Screen = Screen.AllScreens[Index];
 
             _index = Index;
-            _desktopDuplication = DesktopDuplication;
         }
 
         public static int Count => Screen.AllScreens.Length;
@@ -28,12 +26,12 @@ namespace Captura.Models
             return ScreenShot.Capture(Screen, Cursor);
         }
 
-        public static IEnumerable<ScreenItem> Enumerate(bool DesktopDuplication)
+        public static IEnumerable<ScreenItem> Enumerate()
         {
             var n = Count;
 
             for (var i = 0; i < n; ++i)
-                yield return new ScreenItem(i, DesktopDuplication);
+                yield return new ScreenItem(i);
         }
 
         public string Name => Screen.DeviceName;
@@ -43,9 +41,6 @@ namespace Captura.Models
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
             Transform = P => new Point(P.X - Screen.Bounds.X, P.Y - Screen.Bounds.Y);
-            
-            if (_desktopDuplication)
-                return new DeskDuplImageProvider(_index, new Rectangle(Point.Empty, Screen.Bounds.Size), IncludeCursor);
 
             return new RegionProvider(Screen.Bounds, IncludeCursor);
         }

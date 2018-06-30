@@ -17,7 +17,7 @@ namespace Captura.Models
 
             yield return _screenPickerItem;
 
-            foreach (var screen in ScreenItem.Enumerate(false))
+            foreach (var screen in ScreenItem.Enumerate())
             {
                 yield return screen;
             }

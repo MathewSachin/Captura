@@ -108,7 +108,6 @@
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
     <Compile Include="Models\TextOverlay.cs" />
-    <Compile Include="Models\VideoSourceProviders\DeskDuplSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\NoVideoSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\RegionSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\ScreenSourceProvider.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Services\FFmpegService.cs" />
-    <Compile Include="Models\DeskDuplImageProvider.cs" />
     <Compile Include="Models\RecentItemModel.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
@@ -205,7 +203,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\MouseKeyHook\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

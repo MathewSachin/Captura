@@ -1,21 +1,25 @@
 ﻿using System.Drawing;
 using Screna;
 using DesktopDuplication;
+using SharpDX.DXGI;
 
 namespace Captura.Models
 {
     public class DeskDuplImageProvider : IImageProvider
     {
         DesktopDuplicator _dupl;
-        readonly int _monitor;
         readonly bool _includeCursor;
         readonly Rectangle _rectangle;
+        readonly Adapter1 _adapter;
+        readonly Output1 _output;
 
         public int Timeout { get; set; }
 
-        public DeskDuplImageProvider(int Monitor, Rectangle Rectangle, bool IncludeCursor)
+        internal DeskDuplImageProvider(Adapter1 Adapter, Output1 Output, Rectangle Rectangle, bool IncludeCursor)
         {
-            _monitor = Monitor;
+            _adapter = Adapter;
+            _output = Output;
+
             _includeCursor = IncludeCursor;
             _rectangle = Rectangle;
 
@@ -29,7 +33,7 @@ namespace Captura.Models
         {
             _dupl?.Dispose();
 
-            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _monitor)
+            _dupl = new DesktopDuplicator(_rectangle, _includeCursor, _adapter, _output)
             {
                 Timeout = Timeout
             };
