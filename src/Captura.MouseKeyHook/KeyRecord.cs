@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    public class KeyRecord : IKeyRecord
+    class KeyRecord : IKeyRecord
     {
         public KeyRecord(KeyEventArgs KeyEventArgs)
         {

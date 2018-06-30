@@ -2,7 +2,7 @@ using System;
 
 namespace Captura.Models
 {
-    public class DummyKeyRecord : IKeyRecord
+    class DummyKeyRecord : IKeyRecord
     {
         public DummyKeyRecord(string Display)
         {

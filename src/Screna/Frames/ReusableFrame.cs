@@ -4,7 +4,7 @@ using Captura;
 
 namespace Screna
 {
-    public class ReusableFrame : FrameBase
+    class ReusableFrame : FrameBase
     {
         readonly ReusableEditor _editor;
 

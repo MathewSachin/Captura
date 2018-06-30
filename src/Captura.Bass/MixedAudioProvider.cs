@@ -13,7 +13,7 @@ namespace Captura.Models
     /// Provides mixed audio from Microphone input and Speaker Output (Wasapi Loopback).
     /// Requires the presence of bass.dll and bassmix.dll.
     /// </summary>
-    public class MixedAudioProvider : IAudioProvider
+    class MixedAudioProvider : IAudioProvider
     {
         class RecordingItem
         {

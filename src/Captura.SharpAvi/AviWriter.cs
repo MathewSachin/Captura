@@ -9,7 +9,7 @@ namespace Captura.Models
     /// <summary>
     /// Writes an AVI file.
     /// </summary>
-    public class AviWriter : IVideoFileWriter
+    class AviWriter : IVideoFileWriter
     {
         #region Fields
         readonly AviInternalWriter _writer;

@@ -2,7 +2,7 @@ using System;
 
 namespace Captura.Models
 {
-    public class RepeatKeyRecord : IKeyRecord
+    class RepeatKeyRecord : IKeyRecord
     {
         public RepeatKeyRecord(KeyRecord Repeated)
         {

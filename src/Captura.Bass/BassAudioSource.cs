@@ -8,6 +8,7 @@ namespace Captura.Models
     /// ManagedBass Audio Source.
     /// Use <see cref="Available"/> to check if all dependencies are present.
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class BassAudioSource : AudioSource
     {
         public BassAudioSource()

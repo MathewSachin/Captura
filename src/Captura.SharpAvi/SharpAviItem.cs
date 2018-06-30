@@ -1,6 +1,6 @@
 ﻿namespace Captura.Models
 {
-    public class SharpAviItem : IVideoWriterItem
+    class SharpAviItem : IVideoWriterItem
     {
         readonly AviCodec _codec;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
-    public class KeyRecords : IEnumerable<IKeyRecord>
+    class KeyRecords : IEnumerable<IKeyRecord>
     {
         readonly List<IKeyRecord> _records = new List<IKeyRecord>();
 

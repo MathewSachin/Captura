@@ -5,7 +5,7 @@ namespace Captura.Models
     /// <summary>
     /// Represents an Avi Codec.
     /// </summary>
-    public class AviCodec
+    class AviCodec
     {
         internal FourCC FourCC { get; }
 

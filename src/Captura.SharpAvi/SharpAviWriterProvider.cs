@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class SharpAviWriterProvider : IVideoWriterProvider
     {
         public string Name => "SharpAvi";

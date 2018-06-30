@@ -3,7 +3,7 @@ using Captura;
 
 namespace Screna
 {
-    public abstract class EditorBase : IBitmapEditor
+    abstract class EditorBase : IBitmapEditor
     {
         public Graphics Graphics { get; }
 

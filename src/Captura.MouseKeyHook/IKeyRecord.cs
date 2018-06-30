@@ -1,7 +1,8 @@
 using System;
 
-namespace Captura.Models {
-    public interface IKeyRecord
+namespace Captura.Models
+{
+    interface IKeyRecord
     {
         DateTime TimeStamp { get; }
 
