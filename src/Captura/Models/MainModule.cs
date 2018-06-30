@@ -1,30 +1,29 @@
 ﻿using System;
 using Captura.Models;
 using Hardcodet.Wpf.TaskbarNotification;
-using Ninject.Modules;
 
 namespace Captura
 {
-    public class MainModule : NinjectModule
+    public class MainModule : IModule
     {
-        public override void Load()
+        public void OnLoad(IBinder Binder)
         {
             // Use singleton to ensure the same instance is used every time.
-            Bind<IMessageProvider>().To<MessageProvider>().InSingletonScope();
-            Bind<IRegionProvider>().To<RegionSelector>().InSingletonScope();
-            Bind<ISystemTray>().To<SystemTray>().InSingletonScope();
-            Bind<IPreviewWindow>().To<PreviewWindowService>().InSingletonScope();
-            Bind<IVideoSourcePicker>().To<VideoSourcePicker>().InSingletonScope();
+            Binder.Bind<IMessageProvider, MessageProvider>();
+            Binder.Bind<IRegionProvider, RegionSelector>();
+            Binder.Bind<ISystemTray, SystemTray>();
+            Binder.Bind<IPreviewWindow, PreviewWindowService>();
+            Binder.Bind<IVideoSourcePicker, VideoSourcePicker>();
 
-            Bind<IImageWriterItem>().To<EditorWriter>().InSingletonScope();
+            Binder.Bind<IImageWriterItem, EditorWriter>();
 
-            Rebind<IWebCamProvider>().To<WebCamProvider>().InSingletonScope();
+            Binder.Bind<IWebCamProvider, WebCamProvider>();
             
-            Bind<AboutViewModel>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<AboutViewModel>();
 
             // Bind as a Function to ensure the UI objects are referenced only after they have been created.
-            Bind<Func<TaskbarIcon>>().ToConstant<Func<TaskbarIcon>>(() => MainWindow.Instance.SystemTray);
-            Bind<IMainWindow>().ToMethod(M => new MainWindowProvider(() => MainWindow.Instance)).InSingletonScope();
+            Binder.Bind<Func<TaskbarIcon>>(() => () => MainWindow.Instance.SystemTray);
+            Binder.Bind<IMainWindow>(() => new MainWindowProvider(() => MainWindow.Instance));
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Ninject;
-using Ninject.Modules;
 
 namespace Captura
 {
@@ -34,11 +33,11 @@ namespace Captura
             }
         }
 
-        static IKernel Kernel { get; } = new StandardKernel(new CoreModule());
+        static IKernel Kernel { get; } = new StandardKernel();
 
-        public static void LoadModule(INinjectModule Module)
+        public static void LoadModule(IModule Module)
         {
-            Kernel.Load(Module);
+            Kernel.Load(new Binder(Module));
         }
 
         public static T Get<T>() => Kernel.Get<T>();

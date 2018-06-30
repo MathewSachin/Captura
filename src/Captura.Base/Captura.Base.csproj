@@ -34,10 +34,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioSource.cs" />
+    <Compile Include="Binder.cs" />
     <Compile Include="Functionality\Audio\DataAvailableEventArgs.cs" />
     <Compile Include="Functionality\Audio\IAudioFileWriter.cs" />
     <Compile Include="Functionality\Audio\IAudioProvider.cs" />
@@ -49,7 +54,10 @@
     <Compile Include="Functionality\IOverlay.cs" />
     <Compile Include="Functionality\IRecorder.cs" />
     <Compile Include="Functionality\IVideoFileWriter.cs" />
+    <Compile Include="IBinder.cs" />
+    <Compile Include="IModule.cs" />
     <Compile Include="IWindow.cs" />
+    <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Provision\IAudioItem.cs" />
     <Compile Include="Provision\IMainWindow.cs" />
     <Compile Include="Provision\IMessageProvider.cs" />
@@ -67,9 +75,13 @@
     <Compile Include="Provision\IWebCamProvider.cs" />
     <Compile Include="Provision\VideoWriterArgs.cs" />
     <Compile Include="RepeatFrame.cs" />
+    <Compile Include="ServiceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

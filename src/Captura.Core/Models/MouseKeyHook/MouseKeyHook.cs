@@ -3,7 +3,6 @@ using Screna;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using ManagedBass;
 
 namespace Captura.Models
 {
@@ -263,6 +262,17 @@ namespace Captura.Models
         const float MouseRatioMin = 0.6f;
         const float MouseRatioMax = 1.2f;
 
+        byte ToByte(double Value)
+        {
+            if (Value > 255)
+                return 255;
+
+            if (Value < 0)
+                return 0;
+
+            return (byte) Value;
+        }
+
         void DrawClicks(Graphics G, Func<Point, Point> Transform)
         {
             if (_mouseClicked && _currentMouseRatio < MouseRatioMax)
@@ -300,7 +310,7 @@ namespace Captura.Models
 
                 var color = GetClickCirleColor();
 
-                color = Color.FromArgb((byte) (color.A * _currentMouseRatio).Clip(0, 255), color);
+                color = Color.FromArgb(ToByte(color.A * _currentMouseRatio), color);
 
                 G.FillEllipse(new SolidBrush(color), x, y, d, d);
 
@@ -314,7 +324,7 @@ namespace Captura.Models
 
                     var borderColor = _mouseClickSettings.BorderColor;
 
-                    borderColor = Color.FromArgb((byte) (borderColor.A * _currentMouseRatio).Clip(0, 255), borderColor);
+                    borderColor = Color.FromArgb(ToByte(borderColor.A * _currentMouseRatio), borderColor);
 
                     G.DrawEllipse(new Pen(borderColor, border), x, y, d, d);
                 }

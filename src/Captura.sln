@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Native", "Captura.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.SharpAvi", "Captura.SharpAvi\Captura.SharpAvi.csproj", "{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Bass", "Captura.Bass\Captura.Bass.csproj", "{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

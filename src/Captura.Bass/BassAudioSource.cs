@@ -34,8 +34,9 @@ namespace Captura.Models
             return new MixedAudioProvider(AvailableRecordingSources
                 .Concat(AvailableLoopbackSources)
                 .Cast<BassItem>(),
-                FrameRate,
-                !ServiceProvider.Get<Settings>().Audio.PlaybackRecordingRealTime);
+                FrameRate//, TODO: Playback realtime requires Settings
+                //!ServiceProvider.Get<Settings>().Audio.PlaybackRecordingRealTime
+                );
         }
 
         protected override void OnRefresh()

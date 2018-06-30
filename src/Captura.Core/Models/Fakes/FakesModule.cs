@@ -1,18 +1,20 @@
 ﻿using Captura.Models;
-using Ninject.Modules;
 
 namespace Captura
 {
-    public class FakesModule : NinjectModule
+    public class FakesModule : IModule
     {
-        public override void Load()
+        public void OnLoad(IBinder Binder)
         {
-            Bind<IMessageProvider>().To<FakeMessageProvider>().InSingletonScope();
-            Bind<IRegionProvider>().ToConstant(FakeRegionProvider.Instance);
-            Bind<ISystemTray>().To<FakeSystemTray>().InSingletonScope();
-            Bind<IMainWindow>().To<FakeWindowProvider>().InSingletonScope();
-            Bind<IPreviewWindow>().To<FakePreviewWindow>().InSingletonScope();
-            Bind<IVideoSourcePicker>().To<FakeVideoSourcePicker>().InSingletonScope();
+            // Webcam Provider
+            Binder.Bind<IWebCamProvider, CoreWebCamProvider>();
+
+            Binder.Bind<IMessageProvider, FakeMessageProvider>();
+            Binder.Bind<IRegionProvider>(() => FakeRegionProvider.Instance);
+            Binder.Bind<ISystemTray, FakeSystemTray>();
+            Binder.Bind<IMainWindow, FakeWindowProvider>();
+            Binder.Bind<IPreviewWindow, FakePreviewWindow>();
+            Binder.Bind<IVideoSourcePicker, FakeVideoSourcePicker>();
         }
     }
 }

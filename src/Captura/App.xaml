@@ -24,7 +24,7 @@
             <x:Static x:Key="Loc"
                       Member="core:LanguageManager.Instance"/>
 
-            <captura:NinjectServiceLocator x:Key="ServiceLocator"/>
+            <captura:ServiceLocator x:Key="ServiceLocator"/>
 
             <DrawingImage x:Key="RecordStopImageSource">
                 <DrawingImage.Drawing>

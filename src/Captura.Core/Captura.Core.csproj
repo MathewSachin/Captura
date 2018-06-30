@@ -31,17 +31,8 @@
     <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
-    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.2.0.4\lib\net45\ManagedBass.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.Mix.2.1.0\lib\netstandard1.4\ManagedBass.Mix.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ookii.Dialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
@@ -83,9 +74,6 @@
     <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Translation\LanguageFields.cs" />
     <Compile Include="Translation\LanguageManager.cs" />
-    <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\BassItem.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
@@ -155,7 +143,6 @@
     <Compile Include="Models\WebcamOverlay.cs" />
     <Compile Include="Services\FFmpegService.cs" />
     <Compile Include="Models\DeskDuplImageProvider.cs" />
-    <Compile Include="Models\MixedAudioProvider.cs" />
     <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
     <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
     <Compile Include="Models\RecentItemModel.cs" />
@@ -172,11 +159,9 @@
     <Compile Include="Models\VideoWriterItems\FFmpegVideoArgsProvider.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterProviders\GifWriterProvider.cs" />
-    <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />
     <Compile Include="Services\ServiceName.cs" />
-    <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Models\Alignment.cs" />
     <Compile Include="Settings\Models\KeystrokesSettings.cs" />
     <Compile Include="Settings\Models\MouseClickSettings.cs" />
@@ -205,6 +190,10 @@
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
       <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
       <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj">
+      <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
+      <Name>Captura.Bass</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
       <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>

@@ -43,6 +43,8 @@ namespace Captura
                 Shutdown();
             };
 
+            ServiceProvider.LoadModule(new CoreModule());
+
             Parser.Default.ParseArguments<CmdOptions>(Args.Args)
                 .WithParsed(M => CmdOptions = M);
 
