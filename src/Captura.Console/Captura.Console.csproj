@@ -70,6 +70,10 @@
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
+      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
+      <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura\Captura.csproj">
       <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
       <Name>Captura</Name>

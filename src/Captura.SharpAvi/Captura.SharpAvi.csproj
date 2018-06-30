@@ -54,6 +54,8 @@
     <Compile Include="AviCodec.cs" />
     <Compile Include="AviWriter.cs" />
     <Compile Include="IAudioProviderAdapter.cs" />
+    <Compile Include="SharpAviItem.cs" />
+    <Compile Include="SharpAviWriterProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
