@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Screna;
 
 namespace Captura.Models
 {
@@ -26,21 +25,21 @@ namespace Captura.Models
         {
             new StreamingItem("Twitch", () =>
             {
-                var settings = ServiceProvider.Get<Settings>();
+                var settings = ServiceProvider.Get<FFmpegSettings>();
 
-                return $"rtmp://live.twitch.tv/app/{settings.FFmpeg.TwitchKey}";
+                return $"rtmp://live.twitch.tv/app/{settings.TwitchKey}";
             }, x264),
             new StreamingItem("YouTube Live", () =>
             {
-                var settings = ServiceProvider.Get<Settings>();
+                var settings = ServiceProvider.Get<FFmpegSettings>();
 
-                return $"rtmp://a.rtmp.youtube.com/live2/{settings.FFmpeg.YouTubeLiveKey}";
+                return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
             }, x264),
             new StreamingItem("Custom", () =>
             {
-                var settings = ServiceProvider.Get<Settings>();
+                var settings = ServiceProvider.Get<FFmpegSettings>();
 
-                return settings.FFmpeg.CustomStreamingUrl;
+                return settings.CustomStreamingUrl;
             }, x264)
         };
     }

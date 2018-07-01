@@ -7,9 +7,9 @@ namespace Captura.Models
     {
         public string Name => "FFmpeg";
 
-        readonly Settings _settings;
+        readonly FFmpegSettings _settings;
 
-        public FFmpegWriterProvider(Settings Settings)
+        public FFmpegWriterProvider(FFmpegSettings Settings)
         {
             _settings = Settings;
         }
@@ -26,7 +26,7 @@ namespace Captura.Models
                 yield return codec;
             }
 
-            foreach (var item in _settings.FFmpeg.CustomCodecs)
+            foreach (var item in _settings.CustomCodecs)
             {
                 yield return new FFmpegItem(item);
             }

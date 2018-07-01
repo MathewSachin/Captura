@@ -1,5 +1,4 @@
-﻿using Screna;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO.Pipes;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace Captura.Models
         /// </summary>
         public FFmpegWriter(FFmpegVideoWriterArgs Args)
         {
-            var settings = ServiceProvider.Get<Settings>();
+            var settings = ServiceProvider.Get<FFmpegSettings>();
 
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
 
@@ -38,10 +37,10 @@ namespace Captura.Models
             var videoInArgs = $"-thread_queue_size 512 -framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
 
-            if (settings.FFmpeg.Resize)
+            if (settings.Resize)
             {
-                var width = settings.FFmpeg.ResizeWidth;
-                var height = settings.FFmpeg.ResizeHeight;
+                var width = settings.ResizeWidth;
+                var height = settings.ResizeHeight;
 
                 if (width % 2 == 1)
                     ++width;

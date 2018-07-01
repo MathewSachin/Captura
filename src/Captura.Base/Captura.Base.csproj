@@ -33,6 +33,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="NoVideoItem.cs" />
     <Compile Include="Settings\AudioSettings.cs" />
     <Compile Include="Settings\Alignment.cs" />
     <Compile Include="Audio\AudioSource.cs" />

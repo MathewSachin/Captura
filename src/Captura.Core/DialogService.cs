@@ -3,11 +3,6 @@ using Ookii.Dialogs;
 
 namespace Captura.Models
 {
-    public interface IDialogService
-    {
-        string PickFolder(string Current, string Description);
-    }
-
     public class DialogService : IDialogService
     {
         public string PickFolder(string Current, string Description)

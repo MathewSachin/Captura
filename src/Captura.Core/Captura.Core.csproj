@@ -54,18 +54,15 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="DialogService.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ElapsedOverlay.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegPostProcessingWriter.cs" />
     <Compile Include="Models\Hotkeys\Service.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegPostProcessingItem.cs" />
     <Compile Include="Models\CensorOverlay.cs" />
-    <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Translation\LanguageField.cs" />
@@ -78,14 +75,11 @@
     <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
     <Compile Include="Models\Fakes\FakePreviewWindow.cs" />
     <Compile Include="Models\Fakes\FakeVideoSourcePicker.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegLogItem.cs" />
     <Compile Include="Models\ImageOverlay.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegVideoWriterArgs.cs" />
     <Compile Include="Models\MousePointerOverlay.cs" />
     <Compile Include="Models\VideoItems\ScreenPickerItem.cs" />
     <Compile Include="Models\VideoItems\WindowPickerItem.cs" />
     <Compile Include="Models\WebcamItem.cs" />
-    <Compile Include="Settings\Models\CustomFFmpegCodec.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\CustomOverlay.cs" />
     <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
@@ -95,10 +89,6 @@
     <Compile Include="Models\Fakes\FakeSystemTray.cs" />
     <Compile Include="Models\CoreWebCamProvider.cs" />
     <Compile Include="Models\Fakes\FakeWindowProvider.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegAudioArgsProvider.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegAudioWriter.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegLog.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegVideoWriter.cs" />
     <Compile Include="Models\Hotkeys\HotKey.cs" />
     <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
     <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
@@ -112,14 +102,10 @@
     <Compile Include="Models\VideoSourceProviders\RegionSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\ScreenSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\WindowSourceProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\FFmpegWriterProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\StreamingWriterProvider.cs" />
     <Compile Include="Settings\Models\GifSettings.cs" />
-    <Compile Include="Settings\Models\FFmpegSettings.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
-    <Compile Include="Settings\Models\X264Settings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
@@ -128,21 +114,15 @@
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
-    <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
     <Compile Include="Models\WebcamOverlay.cs" />
-    <Compile Include="Services\FFmpegService.cs" />
     <Compile Include="Models\RecentItemModel.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
-    <Compile Include="Models\VideoItems\FFmpegAudioItem.cs" />
-    <Compile Include="Models\VideoItems\NoVideoItem.cs" />
     <Compile Include="Models\VideoSourceProviders\VideoSourceProviderBase.cs" />
     <Compile Include="Models\VideoItems\FullScreenItem.cs" />
     <Compile Include="Models\VideoItems\WaveItem.cs" />
     <Compile Include="Models\VideoItems\WindowItem.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegItem.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegVideoArgsProvider.cs" />
     <Compile Include="Models\VideoWriterItems\GifItem.cs" />
     <Compile Include="Models\VideoWriterProviders\GifWriterProvider.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
@@ -175,6 +155,10 @@
     <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj">
       <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
       <Name>Captura.Bass</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
+      <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
+      <Name>Captura.FFmpeg</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
       <Project>{6cc6e9c8-9a94-4fb0-8396-47e2ecbd8300}</Project>

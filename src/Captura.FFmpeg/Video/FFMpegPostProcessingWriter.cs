@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Screna;
 
 namespace Captura.Models
 {

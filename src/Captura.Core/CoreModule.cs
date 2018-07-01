@@ -22,6 +22,7 @@ namespace Captura
             // Settings
             Binder.BindSingleton<Settings>();
             Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
 
             // Localization
             Binder.Bind(() => LanguageManager.Instance);
@@ -61,6 +62,9 @@ namespace Captura
             Binder.Bind<IVideoSourceProvider, WindowSourceProvider>();
             Binder.Bind<IVideoSourceProvider, DeskDuplSourceProvider>();
             Binder.Bind<IVideoSourceProvider, NoVideoSourceProvider>();
+
+            // Folder Browser Dialog
+            Binder.Bind<IDialogService, DialogService>();
 
             // Check if Bass is available
             if (BassAudioSource.Available)

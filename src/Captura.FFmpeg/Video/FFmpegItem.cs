@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Screna;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
@@ -13,7 +12,7 @@ namespace Captura.Models
         // MP4 (x264, AAC)
         public static FFmpegItem x264 { get; } = new FFmpegItem("Mp4 (x264 | AAC)", () => ".mp4", VideoQuality =>
         {
-            var settings = ServiceProvider.Get<Settings>().FFmpeg.X264;
+            var settings = ServiceProvider.Get<FFmpegSettings>().X264;
 
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - VideoQuality)) / 99;

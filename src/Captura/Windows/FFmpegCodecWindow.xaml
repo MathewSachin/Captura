@@ -4,6 +4,7 @@
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:local="clr-namespace:Captura"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:ffmpeg="clr-namespace:Captura;assembly=Captura.FFmpeg"
         Title="FFmpeg Codecs"
         Height="500"
         Width="500"
@@ -35,7 +36,7 @@
                            Margin="0,5,5,5"/>
                     
                     <ComboBox Grid.Column="1"
-                              ItemsSource="{x:Static captura:X264Settings.PixelFormats}"
+                              ItemsSource="{x:Static ffmpeg:X264Settings.PixelFormats}"
                               SelectedValue="{Binding Settings.FFmpeg.X264.PixelFormat, Mode=TwoWay}"
                               Margin="0,5"/>
 
@@ -52,7 +53,7 @@
 
                     <ComboBox Grid.Column="1"
                               Grid.Row="2"
-                              ItemsSource="{x:Static captura:X264Settings.Presets}"
+                              ItemsSource="{x:Static ffmpeg:X264Settings.Presets}"
                               SelectedValue="{Binding Settings.FFmpeg.X264.Preset, Mode=TwoWay}"
                               Margin="0,5"/>
 

@@ -426,6 +426,10 @@
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
+      <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
+      <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
       <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
       <Name>Captura.MouseKeyHook</Name>

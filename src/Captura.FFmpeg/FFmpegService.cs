@@ -1,11 +1,9 @@
 ﻿using Captura.Models;
-using Ookii.Dialogs;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Captura
 {
@@ -13,7 +11,7 @@ namespace Captura
     {
         public const string FFmpegExeName = "ffmpeg.exe";
 
-        static Settings GetSettings() => ServiceProvider.Get<Settings>();
+        static FFmpegSettings GetSettings() => ServiceProvider.Get<FFmpegSettings>();
 
         public static bool FFmpegExists
         {
@@ -22,9 +20,9 @@ namespace Captura
                 var settings = GetSettings();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFmpeg.FolderPath))
+                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFmpeg.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return true;
@@ -64,9 +62,9 @@ namespace Captura
                 var settings = GetSettings();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FFmpeg.FolderPath))
+                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
                 {
-                    var path = Path.Combine(settings.FFmpeg.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return path;
@@ -83,16 +81,12 @@ namespace Captura
         {
             var settings = GetSettings();
 
-            using (var dlg = new VistaFolderBrowserDialog
-            {
-                SelectedPath = settings.FFmpeg.FolderPath,
-                UseDescriptionForTitle = true,
-                Description = LanguageManager.Instance.SelectFFmpegFolder
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    settings.FFmpeg.FolderPath = dlg.SelectedPath;
-            }
+            var dialogService = ServiceProvider.Get<IDialogService>();
+
+            var folder = dialogService.PickFolder(settings.FolderPath, LanguageManager.Instance.SelectFFmpegFolder);
+            
+            if (!string.IsNullOrWhiteSpace(folder))
+                settings.FolderPath = folder;
         }
 
         public static Action FFmpegDownloader { get; set; }
