@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+        xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
         mc:Ignorable="d"
         Title="Translation"
         Height="600"
         Width="900">
     <Window.DataContext>
-        <captura:TranslationViewModel/>
+        <loc:TranslationViewModel/>
     </Window.DataContext>
     <DockPanel Background="{DynamicResource WindowBackground}">
         <Button Content="Clean All"

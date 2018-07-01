@@ -63,7 +63,6 @@
     <Compile Include="Models\CensorOverlay.cs" />
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
-    <Compile Include="Translation\LanguageField.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
@@ -105,7 +104,6 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
-    <Compile Include="Translation\TranslationViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
