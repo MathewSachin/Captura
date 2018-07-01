@@ -1,6 +1,7 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using Captura.Views;
@@ -71,6 +72,16 @@ namespace Captura
             {
                 AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
             }
+
+            if (!string.IsNullOrWhiteSpace(settings.UI.Language))
+            {
+                var matchedCulture = LanguageManager.Instance.AvailableCultures.FirstOrDefault(M => M.Name == settings.UI.Language);
+
+                if (matchedCulture != null)
+                    LanguageManager.Instance.CurrentCulture = matchedCulture;
+            }
+
+            LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
 
             // A quick fix for WpfToolkit not being copied to build output of console project
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed

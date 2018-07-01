@@ -28,8 +28,8 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ookii.Dialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
@@ -67,8 +67,6 @@
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Translation\LanguageField.cs" />
-    <Compile Include="Translation\LanguageFields.cs" />
-    <Compile Include="Translation\LanguageManager.cs" />
     <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
     <Compile Include="Models\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
@@ -160,6 +158,10 @@
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
       <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
       <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
+      <Name>Captura.Loc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
       <Project>{6cc6e9c8-9a94-4fb0-8396-47e2ecbd8300}</Project>

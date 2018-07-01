@@ -13,9 +13,7 @@ namespace Captura
         readonly JObject _defaultLanguage;
         JObject _currentLanguage;
         readonly string _langDir;
-
-        readonly Settings _settings;
-
+        
         public static LanguageManager Instance { get; } = new LanguageManager();
 
         LanguageManager()
@@ -25,9 +23,7 @@ namespace Captura
             _defaultLanguage = LoadLang("en");
 
             var cultures = new List<CultureInfo>();
-
-            _settings = ServiceProvider.Get<Settings>();
-
+            
             if (Directory.Exists(_langDir))
             {
                 foreach (var file in Directory.EnumerateFiles(_langDir, "*.json"))
@@ -42,11 +38,6 @@ namespace Captura
                         var culture = CultureInfo.GetCultureInfo(cultureName);
 
                         cultures.Add(culture);
-
-                        if (cultureName == _settings.UI.Language)
-                        {
-                            CurrentCulture = culture;
-                        }
                     }
                     catch
                     {
@@ -78,8 +69,6 @@ namespace Captura
                 _currentCulture = value;
 
                 Thread.CurrentThread.CurrentUICulture = value;
-
-                _settings.UI.Language = value.Name;
 
                 _currentLanguage = LoadLang(value.Name);
 
