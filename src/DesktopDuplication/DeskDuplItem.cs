@@ -4,7 +4,7 @@ using SharpDX.DXGI;
 
 namespace Captura.Models
 {
-    class DeskDuplItem : NotifyPropertyChanged, IVideoItem
+    public class DeskDuplItem : NotifyPropertyChanged, IVideoItem
     {
         readonly Adapter1 _adapter;
         readonly Output1 _output;
@@ -19,10 +19,20 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
+        public Rectangle Rectangle
+        {
+            get
+            {
+                var rawRect = _output.Description.DesktopBounds;
+
+                return new Rectangle(rawRect.Left, rawRect.Top, rawRect.Right - rawRect.Left, rawRect.Bottom - rawRect.Top);
+            }
+        }
+
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            var rawRect = _output.Description.DesktopBounds;
-            var rect = new Rectangle(rawRect.Left, rawRect.Top, rawRect.Right - rawRect.Left, rawRect.Bottom - rawRect.Top);
+            var rect = Rectangle;
+            rect.Location = Point.Empty;
 
             Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
 

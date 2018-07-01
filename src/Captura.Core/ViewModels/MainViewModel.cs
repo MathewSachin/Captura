@@ -591,6 +591,12 @@ namespace Captura.ViewModels
                     break;
 
                 case DeskDuplSourceProvider _:
+                    if (selectedVideoSource is DeskDuplItem deskDuplItem)
+                    {
+                        bmp = ScreenShot.Capture(deskDuplItem.Rectangle, includeCursor);
+                    }
+                    break;
+
                 case ScreenSourceProvider _:
                     switch (selectedVideoSource)
                     {
