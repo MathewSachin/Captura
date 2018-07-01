@@ -750,17 +750,26 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            if (videoEncoder is GifWriter gif && Settings.Gif.VariableFrameRate)
+            switch (videoEncoder)
             {
-                _recorder = new VFRGifRecorder(gif, imgProvider);
-            }
-            else if (_isVideo)
-            {
-                _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
-            }
-            else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
-            {
-                _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider.WaveFormat, Settings.Audio.Quality), audioProvider);
+                case GifWriter gif when Settings.Gif.VariableFrameRate:
+                    _recorder = new VFRGifRecorder(gif, imgProvider);
+                    break;
+
+                case WithPreviewWriter previewWriter when previewWriter.OriginalWriter is GifWriter gif && Settings.Gif.VariableFrameRate:
+                    _recorder = new VFRGifRecorder(gif, imgProvider);
+                    break;
+
+                default:
+                    if (_isVideo)
+                    {
+                        _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
+                    }
+                    else if (VideoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
+                    {
+                        _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider?.WaveFormat, Settings.Audio.Quality), audioProvider);
+                    }
+                    break;
             }
 
             if (VideoViewModel.SelectedVideoSourceKind is RegionSourceProvider)

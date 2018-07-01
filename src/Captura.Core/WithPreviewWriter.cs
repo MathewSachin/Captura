@@ -6,17 +6,17 @@ namespace Captura.Models
     public class WithPreviewWriter : IVideoFileWriter
     {
         readonly IPreviewWindow _preview;
-        readonly IVideoFileWriter _writer;
+        public IVideoFileWriter OriginalWriter { get; }
 
         public WithPreviewWriter(IVideoFileWriter Writer, IPreviewWindow Preview)
         {
-            _writer = Writer;
+            OriginalWriter = Writer;
             _preview = Preview;
         }
 
         public void Dispose()
         {
-            _writer.Dispose();
+            OriginalWriter.Dispose();
             _preview.Dispose();
         }
 
@@ -24,22 +24,22 @@ namespace Captura.Models
         {
             if (Image is RepeatFrame)
             {
-                _writer.WriteFrame(Image);
+                OriginalWriter.WriteFrame(Image);
             }
             else
             {
                 var frame = new MultiDisposeFrame(Image, 2);
 
-                _writer.WriteFrame(frame);
+                OriginalWriter.WriteFrame(frame);
                 Task.Run(() => _preview.Display(frame));
             }
         }
 
-        public bool SupportsAudio => _writer.SupportsAudio;
+        public bool SupportsAudio => OriginalWriter.SupportsAudio;
 
         public void WriteAudio(byte[] Buffer, int Length)
         {
-            _writer.WriteAudio(Buffer, Length);
+            OriginalWriter.WriteAudio(Buffer, Length);
         }
     }
 }
