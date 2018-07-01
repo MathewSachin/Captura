@@ -33,6 +33,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\AudioSettings.cs" />
     <Compile Include="Settings\Alignment.cs" />
     <Compile Include="Audio\AudioSource.cs" />
     <Compile Include="Services\Binder.cs" />

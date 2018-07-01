@@ -21,9 +21,10 @@ namespace Captura
 
             // Settings
             Binder.BindSingleton<Settings>();
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
 
             // Localization
-            Binder.Bind<LanguageManager>(() => LanguageManager.Instance);
+            Binder.Bind(() => LanguageManager.Instance);
 
             // Hotkeys
             Binder.BindSingleton<HotKeyManager>();

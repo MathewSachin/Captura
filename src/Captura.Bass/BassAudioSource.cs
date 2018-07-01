@@ -11,8 +11,12 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class BassAudioSource : AudioSource
     {
-        public BassAudioSource()
+        readonly AudioSettings _settings;
+
+        public BassAudioSource(AudioSettings Settings)
         {
+            _settings = Settings;
+
             // Initialises Default Playback Device.
             Bass.Init();
 
@@ -35,8 +39,8 @@ namespace Captura.Models
             return new MixedAudioProvider(AvailableRecordingSources
                 .Concat(AvailableLoopbackSources)
                 .Cast<BassItem>(),
-                FrameRate//, TODO: Playback realtime requires Settings
-                //!ServiceProvider.Get<Settings>().Audio.PlaybackRecordingRealTime
+                FrameRate,
+                !_settings.PlaybackRecordingRealTime
                 );
         }
 

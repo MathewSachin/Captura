@@ -114,7 +114,6 @@
     <Compile Include="Models\VideoSourceProviders\WindowSourceProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\FFmpegWriterProvider.cs" />
     <Compile Include="Models\VideoWriterProviders\StreamingWriterProvider.cs" />
-    <Compile Include="Settings\Models\AudioSettings.cs" />
     <Compile Include="Settings\Models\GifSettings.cs" />
     <Compile Include="Settings\Models\FFmpegSettings.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
