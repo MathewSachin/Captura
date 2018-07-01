@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:captura="clr-namespace:Captura"
              xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
-             xmlns:loc="clr-namespace:Captura;assembly=Captura"
+             xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
              ShutdownMode="OnMainWindowClose"
              StartupUri="Windows/MainWindow.xaml"
              Startup="Application_Startup"
