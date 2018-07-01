@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="IClipboardService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="NoVideoItem.cs" />
     <Compile Include="Settings\AudioSettings.cs" />

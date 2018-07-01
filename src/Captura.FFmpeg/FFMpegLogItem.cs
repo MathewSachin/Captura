@@ -8,13 +8,13 @@ namespace Captura.Models
     {
         public string Name { get; }
 
-        public FFmpegLogItem(string Name)
+        public FFmpegLogItem(string Name, IClipboardService ClipboardService)
         {
             this.Name = Name;
 
             CopyToClipboardCommand = new DelegateCommand(() =>
             {
-                _complete.ToString().WriteToClipboard();
+                ClipboardService.SetText(_complete.ToString());
             });
 
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());

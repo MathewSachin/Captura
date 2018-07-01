@@ -53,7 +53,8 @@ namespace Captura.ViewModels
             CustomOverlaysViewModel CustomOverlays,
             CustomImageOverlaysViewModel CustomImageOverlays,
             IPreviewWindow PreviewWindow,
-            CensorOverlaysViewModel CensorOverlays) : base(Settings, LanguageManager)
+            CensorOverlaysViewModel CensorOverlays,
+            FFmpegLog FFmpegLog) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -68,6 +69,7 @@ namespace Captura.ViewModels
             this.CustomImageOverlays = CustomImageOverlays;
             _previewWindow = PreviewWindow;
             this.CensorOverlays = CensorOverlays;
+            this.FFmpegLog = FFmpegLog;
 
             ShowPreviewCommand = new DelegateCommand(() => _previewWindow.Show());
 

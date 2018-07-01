@@ -25,7 +25,7 @@ namespace Screna
         /// <summary>
         /// Writes a Bitmap to Clipboard while taking care of Transparency
         /// </summary>
-        public static void WriteToClipboard(this Bitmap Bmp, bool PreserveTransparency = true)
+        public static void WriteToClipboard(this Image Bmp, bool PreserveTransparency = true)
         {
             if (PreserveTransparency)
             {

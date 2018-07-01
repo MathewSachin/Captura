@@ -66,6 +66,12 @@ namespace Captura
             // Folder Browser Dialog
             Binder.Bind<IDialogService, DialogService>();
 
+            // Clipboard
+            Binder.Bind<IClipboardService, ClipboardService>();
+
+            // FFmpeg Log
+            Binder.BindSingleton<FFmpegLog>();
+
             // Check if Bass is available
             if (BassAudioSource.Available)
             {

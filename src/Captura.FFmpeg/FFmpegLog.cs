@@ -7,8 +7,11 @@ namespace Captura.Models
     {
         readonly SynchronizationContext _syncContext;
 
-        FFmpegLog()
+        readonly IClipboardService _clipboardService;
+
+        public FFmpegLog(IClipboardService ClipboardService)
         {
+            _clipboardService = ClipboardService;
             _syncContext = SynchronizationContext.Current;
 
             LogItems = new ReadOnlyObservableCollection<FFmpegLogItem>(_logItems);
@@ -20,7 +23,7 @@ namespace Captura.Models
 
         public FFmpegLogItem CreateNew(string Name)
         {
-            var item = new FFmpegLogItem(Name);
+            var item = new FFmpegLogItem(Name, _clipboardService);
 
             item.RemoveRequested += () => _logItems.Remove(item);
 
@@ -43,7 +46,5 @@ namespace Captura.Models
                 OnPropertyChanged();
             }
         }
-
-        public static FFmpegLog Instance { get; } = new FFmpegLog();
     }
 }

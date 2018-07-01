@@ -107,7 +107,7 @@ namespace Captura
                 EnableRaisingEvents = true
             };
 
-            var logItem = FFmpegLog.Instance.CreateNew(Path.GetFileName(OutputFileName));
+            var logItem = ServiceProvider.Get<FFmpegLog>().CreateNew(Path.GetFileName(OutputFileName));
                         
             process.ErrorDataReceived += (S, E) => logItem.Write(E.Data);
 

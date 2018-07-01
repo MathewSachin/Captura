@@ -54,7 +54,8 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
-    <Compile Include="DialogService.cs" />
+    <Compile Include="Services\ClipboardService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ElapsedOverlay.cs" />
     <Compile Include="Models\Hotkeys\Service.cs" />

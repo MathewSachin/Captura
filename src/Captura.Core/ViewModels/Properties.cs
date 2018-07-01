@@ -60,7 +60,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public FFmpegLog FFmpegLog { get; } = FFmpegLog.Instance;
+        public FFmpegLog FFmpegLog { get; }
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
