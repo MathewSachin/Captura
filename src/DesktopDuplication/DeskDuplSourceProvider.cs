@@ -5,8 +5,18 @@ using SharpDX.DXGI;
 
 namespace Captura.Models
 {
-    public class DeskDuplSourceProvider : IVideoSourceProvider
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class DeskDuplSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
+        readonly LanguageManager _loc;
+
+        public DeskDuplSourceProvider(LanguageManager Loc)
+        {
+            _loc = Loc;
+
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
+        }
+
         public IEnumerator<IVideoItem> GetEnumerator()
         {
             var outputs = new Factory1()
@@ -24,7 +34,7 @@ namespace Captura.Models
             }
         }
 
-        public string Name => LanguageManager.Instance.DesktopDuplication;
+        public string Name => _loc.DesktopDuplication;
 
         public override string ToString() => Name;
 

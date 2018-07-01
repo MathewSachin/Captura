@@ -56,6 +56,8 @@ namespace Captura
             }
 
             Binder.BindSingleton<WindowPickerItem>();
+            Binder.BindSingleton<ScreenPickerItem>();
+            Binder.BindSingleton<FullScreenItem>();
 
             // Video Source Providers
             Binder.Bind<IVideoSourceProvider, ScreenSourceProvider>();

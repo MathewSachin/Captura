@@ -12,14 +12,16 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
+        readonly LanguageManager _loc;
 
-        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings)
+        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings, LanguageManager Loc)
         {
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
+            _loc = Loc;
 
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
@@ -46,13 +48,13 @@ namespace Captura.Models
             }
             catch (Exception e)
             {
-                _messageProvider.ShowException(e, LanguageManager.Instance.NotSaved);
+                _messageProvider.ShowException(e, _loc.NotSaved);
             }
 
             return Task.CompletedTask;
         }
 
-        public string Display => LanguageManager.Instance.Disk;
+        public string Display => _loc.Disk;
 
         bool _active;
 

@@ -147,7 +147,7 @@ namespace Captura.ViewModels
             {
                 SelectedPath = Settings.OutPath,
                 UseDescriptionForTitle = true,
-                Description = LanguageManager.Instance.SelectOutFolder
+                Description = Loc.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

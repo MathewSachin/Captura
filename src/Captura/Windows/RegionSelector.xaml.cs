@@ -18,13 +18,13 @@ namespace Captura
 
         bool _widthBoxChanging, _heightBoxChanging, _resizing;
 
-        public RegionSelector(IVideoSourcePicker VideoSourcePicker)
+        public RegionSelector(IVideoSourcePicker VideoSourcePicker, LanguageManager Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
 
             InitializeComponent();
 
-            VideoSource = new RegionItem(this);
+            VideoSource = new RegionItem(this, Loc);
 
             // Prevent Closing by User
             Closing += (S, E) => E.Cancel = true;

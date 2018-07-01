@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Screna;
 using System;
 using System.Drawing;
 
@@ -8,12 +7,14 @@ namespace Captura
     class RegionItem : NotifyPropertyChanged, IVideoItem
     {
         readonly RegionSelector _selector;
+        readonly LanguageManager _loc;
 
-        public RegionItem(RegionSelector RegionSelector)
+        public RegionItem(RegionSelector RegionSelector, LanguageManager Loc)
         {
             _selector = RegionSelector;
+            _loc = Loc;
 
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
@@ -28,7 +29,7 @@ namespace Captura
             return new StaticRegionProvider(_selector, IncludeCursor);
         }
 
-        public string Name => LanguageManager.Instance.RegionSelector;
+        public string Name => _loc.RegionSelector;
 
         public override string ToString() => Name;
     }

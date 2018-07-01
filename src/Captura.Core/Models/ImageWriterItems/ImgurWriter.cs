@@ -32,7 +32,7 @@ namespace Captura.Models
             _settings = Settings;
             _loc = LanguageManager;
 
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)

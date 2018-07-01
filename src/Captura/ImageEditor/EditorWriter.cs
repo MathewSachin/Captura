@@ -7,11 +7,12 @@ using System.Windows.Media.Imaging;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorWriter : NotifyPropertyChanged, IImageWriterItem
     {
         public EditorWriter()
         {
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            // LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)

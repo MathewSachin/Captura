@@ -6,7 +6,7 @@ namespace Captura.Models
 {
     class FakeRegionItem : NotifyPropertyChanged, IVideoItem
     {
-        Rectangle _rect;
+        readonly Rectangle _rect;
 
         public FakeRegionItem(Rectangle Region)
         {

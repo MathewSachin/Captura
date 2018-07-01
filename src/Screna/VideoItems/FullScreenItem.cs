@@ -4,18 +4,21 @@ using System.Drawing;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FullScreenItem : NotifyPropertyChanged, IVideoItem
     {
-        public static FullScreenItem Instance { get; } = new FullScreenItem();
+        readonly LanguageManager _loc;
 
-        FullScreenItem()
+        public FullScreenItem(LanguageManager Loc)
         {
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
+            _loc = Loc;
+
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
                 
         public override string ToString() => Name;
 
-        public string Name => LanguageManager.Instance.FullScreen;
+        public string Name => _loc.FullScreen;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
