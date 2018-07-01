@@ -27,6 +27,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
@@ -43,6 +45,7 @@
     <Compile Include="Audio\FFmpegAudioArgsProvider.cs" />
     <Compile Include="Audio\FFmpegAudioItem.cs" />
     <Compile Include="Audio\FFmpegAudioWriter.cs" />
+    <Compile Include="DownloadFFmpeg.cs" />
     <Compile Include="Video\FFmpegItem.cs" />
     <Compile Include="FFmpegLog.cs" />
     <Compile Include="FFMpegLogItem.cs" />

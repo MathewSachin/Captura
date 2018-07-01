@@ -38,8 +38,6 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -125,7 +123,6 @@
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
     <Compile Include="Settings\Models\ProxySettings.cs" />
     <Compile Include="TextLocalizer.cs" />
-    <Compile Include="Models\DownloadFFmpeg.cs" />
     <Compile Include="ViewModels\FFmpegCodecsViewModel.cs" />
     <Compile Include="ViewModels\FFmpgDownloadViewModel.cs" />
     <Compile Include="Models\FileContentItem.cs" />
