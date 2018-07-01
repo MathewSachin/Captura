@@ -1,13 +1,12 @@
-﻿using Ookii.Dialogs;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class FFmpegDownloadViewModel : ViewModelBase
+    public class FFmpegDownloadViewModel : NotifyPropertyChanged
     {
         public DelegateCommand StartCommand { get; }
 
@@ -28,8 +27,18 @@ namespace Captura.ViewModels
             }
         }
 
-        public FFmpegDownloadViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
+        readonly IDialogService _dialogService;
+        readonly ProxySettings _proxySettings;
+        readonly FFmpegSettings _ffmpegSettings;
+        readonly LanguageManager _loc;
+
+        public FFmpegDownloadViewModel(IDialogService DialogService, ProxySettings ProxySettings, LanguageManager Loc, FFmpegSettings FfmpegSettings)
         {
+            _dialogService = DialogService;
+            _proxySettings = ProxySettings;
+            _loc = Loc;
+            _ffmpegSettings = FfmpegSettings;
+
             StartCommand = new DelegateCommand(OnStartExecute);
 
             SelectFolderCommand = new DelegateCommand(OnSelectFolderExecute);
@@ -53,16 +62,10 @@ namespace Captura.ViewModels
 
         void OnSelectFolderExecute()
         {
-            using (var dlg = new VistaFolderBrowserDialog
-            {
-                SelectedPath = TargetFolder,
-                UseDescriptionForTitle = true,
-                Description = Loc.SelectFFmpegFolder
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    TargetFolder = dlg.SelectedPath;
-            }
+            var folder = _dialogService.PickFolder(TargetFolder, _loc.SelectFFmpegFolder);
+
+            if (!string.IsNullOrWhiteSpace(folder))
+                TargetFolder = folder;
         }
 
         const string CancelDownload = "Cancel Download";
@@ -105,7 +108,7 @@ namespace Captura.ViewModels
                     Status = $"Downloading ({P}%)";
 
                     ProgressChanged?.Invoke(P);
-                }, Settings.Proxy.GetWebProxy(), _cancellationTokenSource.Token);
+                }, _proxySettings.GetWebProxy(), _cancellationTokenSource.Token);
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
@@ -141,7 +144,7 @@ namespace Captura.ViewModels
             }
             
             // Update FFmpeg folder setting
-            Settings.FFmpeg.FolderPath = TargetFolder;
+            _ffmpegSettings.FolderPath = TargetFolder;
             
             Status = "Done";
             ActionDescription = Finish;

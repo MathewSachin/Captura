@@ -5,18 +5,21 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class FFmpegCodecsViewModel : ViewModelBase
+    public class FFmpegCodecsViewModel : NotifyPropertyChanged
     {
-        public FFmpegCodecsViewModel(Settings Settings, LanguageManager LanguageManager)
-            : base(Settings, LanguageManager)
+        public FFmpegSettings Settings { get; }
+
+        public FFmpegCodecsViewModel(FFmpegSettings Settings)
         {
-            AddCustomCodecCommand = new DelegateCommand(() => Settings.FFmpeg.CustomCodecs.Add(new CustomFFmpegCodec()));
+            this.Settings = Settings;
+
+            AddCustomCodecCommand = new DelegateCommand(() => Settings.CustomCodecs.Add(new CustomFFmpegCodec()));
 
             RemoveCustomCodecCommand = new DelegateCommand(M =>
             {
                 if (M is CustomFFmpegCodec codec)
                 {
-                    Settings.FFmpeg.CustomCodecs.Remove(codec);
+                    Settings.CustomCodecs.Remove(codec);
                 }
             });
         }

@@ -46,6 +46,8 @@
     <Compile Include="Audio\FFmpegAudioItem.cs" />
     <Compile Include="Audio\FFmpegAudioWriter.cs" />
     <Compile Include="DownloadFFmpeg.cs" />
+    <Compile Include="FFmpegCodecsViewModel.cs" />
+    <Compile Include="FFmpgDownloadViewModel.cs" />
     <Compile Include="Video\FFmpegItem.cs" />
     <Compile Include="FFmpegLog.cs" />
     <Compile Include="FFMpegLogItem.cs" />

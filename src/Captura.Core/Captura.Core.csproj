@@ -91,9 +91,6 @@
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
-    <Compile Include="Settings\Models\ProxySettings.cs" />
-    <Compile Include="ViewModels\FFmpegCodecsViewModel.cs" />
-    <Compile Include="ViewModels\FFmpgDownloadViewModel.cs" />
     <Compile Include="Models\FileContentItem.cs" />
     <Compile Include="ViewModels\CrashLogsViewModel.cs" />
     <Compile Include="ViewModels\LicensesViewModel.cs" />

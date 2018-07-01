@@ -24,6 +24,7 @@ namespace Captura
             Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
             Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
 
             // Localization
             Binder.Bind(() => LanguageManager.Instance);
