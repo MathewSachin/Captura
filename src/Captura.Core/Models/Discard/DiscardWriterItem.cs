@@ -1,6 +1,4 @@
-﻿using Screna;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     public class DiscardWriterItem : IVideoWriterItem
     {

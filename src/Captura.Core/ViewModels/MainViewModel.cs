@@ -1,6 +1,5 @@
 ﻿using Captura.Models;
 using Screna;
-using Screna.Audio;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using Captura.Audio;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -52,7 +52,8 @@ namespace Captura.ViewModels
             CustomOverlaysViewModel CustomOverlays,
             CustomImageOverlaysViewModel CustomImageOverlays,
             IPreviewWindow PreviewWindow,
-            CensorOverlaysViewModel CensorOverlays) : base(Settings, LanguageManager)
+            CensorOverlaysViewModel CensorOverlays,
+            FFmpegLog FFmpegLog) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -67,6 +68,7 @@ namespace Captura.ViewModels
             this.CustomImageOverlays = CustomImageOverlays;
             _previewWindow = PreviewWindow;
             this.CensorOverlays = CensorOverlays;
+            this.FFmpegLog = FFmpegLog;
 
             ShowPreviewCommand = new DelegateCommand(() => _previewWindow.Show());
 
@@ -516,11 +518,11 @@ namespace Captura.ViewModels
             else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
         }
 
-        public Bitmap ScreenShotWindow(Window hWnd)
+        public Bitmap ScreenShotWindow(IWindow hWnd)
         {
             _systemTray.HideNotification();
 
-            if (hWnd == Window.DesktopWindow)
+            if (hWnd.Handle == Window.DesktopWindow.Handle)
             {
                 return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShots);
             }
@@ -566,7 +568,7 @@ namespace Captura.ViewModels
             switch (VideoViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
-                    var hWnd = Window.DesktopWindow;
+                    IWindow hWnd = Window.DesktopWindow;
 
                     switch (selectedVideoSource)
                     {
@@ -589,6 +591,12 @@ namespace Captura.ViewModels
                     break;
 
                 case DeskDuplSourceProvider _:
+                    if (selectedVideoSource is DeskDuplItem deskDuplItem)
+                    {
+                        bmp = ScreenShot.Capture(deskDuplItem.Rectangle, includeCursor);
+                    }
+                    break;
+
                 case ScreenSourceProvider _:
                     switch (selectedVideoSource)
                     {
@@ -614,7 +622,7 @@ namespace Captura.ViewModels
 
                             if (picked != null)
                             {
-                                bmp = ScreenShot.Capture(picked, includeCursor);
+                                bmp = ScreenShot.Capture(picked.Rectangle, includeCursor);
                             }
                             else return null;
                             break;

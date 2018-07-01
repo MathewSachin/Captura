@@ -42,6 +42,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeskDuplImageProvider.cs" />
+    <Compile Include="DeskDuplItem.cs" />
+    <Compile Include="DeskDuplSourceProvider.cs" />
     <Compile Include="DesktopDuplicator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +52,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}</Project>
       <Name>Screna</Name>

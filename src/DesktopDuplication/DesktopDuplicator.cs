@@ -7,8 +7,8 @@ using SharpDX.DXGI;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Threading.Tasks;
+using Captura;
 using Device = SharpDX.Direct3D11.Device;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 
@@ -30,34 +30,12 @@ namespace DesktopDuplication
 
         public int Timeout { get; set; }
 
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, int Monitor)
+        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter1 Adapter, Output1 Output)
         {
             _rect = Rect;
             _includeCursor = IncludeCursor;
-
-            Adapter1 adapter;
-            try
-            {
-                adapter = new Factory1().Adapters1.First(M => M.GetOutputCount() > 0);
-            }
-            catch (SharpDXException e)
-            {
-                throw new Exception("Could not find the specified graphics card adapter.", e);
-            }
-
-            _device = new Device(adapter);
-
-            Output output;
-            try
-            {
-                output = adapter.GetOutput(Monitor);
-            }
-            catch (SharpDXException e)
-            {
-                throw new Exception("Could not find the specified output device.", e);
-            }
-
-            var output1 = output.QueryInterface<Output1>();
+            
+            _device = new Device(Adapter);
 
             var textureDesc = new Texture2DDescription
             {
@@ -75,7 +53,7 @@ namespace DesktopDuplication
 
             try
             {
-                _deskDupl = output1.DuplicateOutput(_device);
+                _deskDupl = Output.DuplicateOutput(_device);
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.NotCurrentlyAvailable)
             {

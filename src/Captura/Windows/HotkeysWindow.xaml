@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+        xmlns:hotkeys="clr-namespace:Captura;assembly=Captura.Hotkeys"
         mc:Ignorable="d"
         Title="Hotkeys"
         Height="600"
@@ -84,7 +85,7 @@
 
                                 <ComboBox SelectedValue="{Binding Service, Mode=TwoWay}"
                                           DisplayMemberPath="Description.Display"
-                                          ItemsSource="{x:Static captura:HotKeyManager.AllServices}"
+                                          ItemsSource="{x:Static hotkeys:HotKeyManager.AllServices}"
                                           Margin="10,0"
                                           IsEnabled="{Binding IsActive}"/>
                             </DockPanel>

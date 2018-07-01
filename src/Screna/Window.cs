@@ -1,68 +1,37 @@
-﻿using Screna.Native;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Captura.Models;
+using Captura.Native;
 
 namespace Screna
 {
     /// <summary>
     /// Minimal representation of a Window.
     /// </summary>
-    public class Window
+    public class Window : IWindow
     {
-        #region PInvoke
-        const string DllName = "user32.dll";
-
-        // ReSharper disable InconsistentNaming
-        [DllImport(DllName)]
-        static extern bool IsWindow(IntPtr hWnd);
-        
-        [DllImport(DllName)]
-        static extern IntPtr GetDesktopWindow();
-
-        [DllImport(DllName)]
-        static extern IntPtr GetForegroundWindow();
-
-        [DllImport(DllName)]
-        static extern bool EnumWindows(EnumWindowsProc proc, IntPtr lParam);
-
-        delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
-        [DllImport(DllName)]
-        static extern int GetWindowText(IntPtr hWnd, [Out] StringBuilder lpString, int nMaxCount);
-
-        [DllImport(DllName)]
-        static extern IntPtr GetWindow(IntPtr hWnd, GetWindowEnum uCmd);
-
-        [DllImport(DllName)]
-        static extern int GetWindowTextLength(IntPtr hWnd);
-
-        [DllImport(DllName)]
-        static extern bool IsWindowVisible(IntPtr hWnd);
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         /// <summary>
         /// Creates a new instance of <see cref="Window"/>.
         /// </summary>
         /// <param name="Handle">The Window Handle.</param>
         public Window(IntPtr Handle)
         {
-            if (!IsWindow(Handle))
+            if (!User32.IsWindow(Handle))
                 throw new ArgumentException("Not a Window.", nameof(Handle));
 
             this.Handle = Handle;
         }
 
-        public bool IsAlive => IsWindow(Handle);
+        public bool IsAlive => User32.IsWindow(Handle);
 
         /// <summary>
         /// Gets whether the Window is Visible.
         /// </summary>
-        public bool IsVisible => IsWindowVisible(Handle);
+        public bool IsVisible => User32.IsWindowVisible(Handle);
 
         /// <summary>
         /// Gets the Window Handle.
@@ -76,8 +45,8 @@ namespace Screna
         {
             get
             {
-                var title = new StringBuilder(GetWindowTextLength(Handle) + 1);
-                GetWindowText(Handle, title, title.Capacity);
+                var title = new StringBuilder(User32.GetWindowTextLength(Handle) + 1);
+                User32.GetWindowText(Handle, title, title.Capacity);
                 return title.ToString();
             }
         }
@@ -101,12 +70,12 @@ namespace Screna
         /// <summary>
         /// Gets the Desktop Window.
         /// </summary>
-        public static Window DesktopWindow { get; } = new Window(GetDesktopWindow());
+        public static Window DesktopWindow { get; } = new Window(User32.GetDesktopWindow());
 
         /// <summary>
         /// Gets the Foreground Window.
         /// </summary>
-        public static Window ForegroundWindow => new Window(GetForegroundWindow());
+        public static Window ForegroundWindow => new Window(User32.GetForegroundWindow());
         
         /// <summary>
         /// Gets the Taskbar Window - Shell_TrayWnd.
@@ -120,7 +89,7 @@ namespace Screna
         {
             var list = new List<Window>();
 
-            EnumWindows((Handle, Param) =>
+            User32.EnumWindows((Handle, Param) =>
             {
                 var wh = new Window(Handle);
 
@@ -143,7 +112,7 @@ namespace Screna
 
                 if (!User32.GetWindowLong(hWnd, GetWindowLongValue.ExStyle).HasFlag(WindowStyles.AppWindow))
                 {
-                    if (GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
+                    if (User32.GetWindow(hWnd, GetWindowEnum.Owner) != IntPtr.Zero)
                         continue;
 
                     if (User32.GetWindowLong(hWnd, GetWindowLongValue.ExStyle).HasFlag(WindowStyles.ToolWindow))
@@ -156,7 +125,7 @@ namespace Screna
                 const int dwmCloaked = 14;
 
                 // Exclude suspended Windows apps
-                DwmGetWindowAttribute(hWnd, dwmCloaked, out var cloaked, Marshal.SizeOf<bool>());
+                DwmApi.DwmGetWindowAttribute(hWnd, dwmCloaked, out var cloaked, Marshal.SizeOf<bool>());
 
                 if (cloaked)
                     continue;
@@ -164,9 +133,6 @@ namespace Screna
                 yield return window;
             }
         }
-
-        [DllImport("dwmapi.dll")]
-        static extern int DwmGetWindowAttribute(IntPtr Window, int Attribute, out bool Value, int Size);
 
         /// <summary>
         /// Returns the Widow Title.

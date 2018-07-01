@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Captura.Models;
 using Screna;
 using Cursors = System.Windows.Input.Cursors;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -168,13 +169,13 @@ namespace Captura
             }
         }
 
-        public static Screen PickScreen()
+        public static IScreen PickScreen()
         {
             var picker = new VideoSourcePickerWindow(VideoPickerMode.Screen);
 
             picker.ShowDialog();
 
-            return picker.SelectedScreen;
+            return new ScreenWrapper(picker.SelectedScreen);
         }
 
         public static Window PickWindow(IEnumerable<IntPtr> SkipWindows)

@@ -62,12 +62,14 @@ namespace Captura.Tests.Views
         {
             Directory.CreateDirectory("Tabs");
 
+            var loc = ServiceProvider.Get<LanguageManager>();
+
             var tabs = new[]
             {
-                LanguageManager.Instance.Main,
-                LanguageManager.Instance.Configure, LanguageManager.Instance.Hotkeys, "Overlays", "FFmpeg", LanguageManager.Instance.Proxy, LanguageManager.Instance.Extras,
-                LanguageManager.Instance.Recent,
-                LanguageManager.Instance.About
+                loc.Main,
+                loc.Configure, loc.Hotkeys, "Overlays", "FFmpeg", loc.Proxy, loc.Extras,
+                loc.Recent,
+                loc.About
             };
 
             foreach (var tabName in tabs)

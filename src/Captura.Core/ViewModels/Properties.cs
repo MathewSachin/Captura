@@ -60,7 +60,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public FFmpegLog FFmpegLog { get; } = FFmpegLog.Instance;
+        public FFmpegLog FFmpegLog { get; }
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
@@ -147,7 +147,7 @@ namespace Captura.ViewModels
             {
                 SelectedPath = Settings.OutPath,
                 UseDescriptionForTitle = true,
-                Description = LanguageManager.Instance.SelectOutFolder
+                Description = Loc.SelectOutFolder
             })
             {
                 if (dlg.ShowDialog() == DialogResult.OK)

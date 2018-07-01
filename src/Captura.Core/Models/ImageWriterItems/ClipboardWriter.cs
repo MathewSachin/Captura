@@ -6,27 +6,30 @@ using System.Threading.Tasks;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ClipboardWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly ISystemTray _systemTray;
+        readonly LanguageManager _loc;
 
-        public ClipboardWriter(ISystemTray SystemTray)
+        public ClipboardWriter(ISystemTray SystemTray, LanguageManager Loc)
         {
             _systemTray = SystemTray;
+            _loc = Loc;
+
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 
-            _systemTray.ShowMessage(LanguageManager.Instance.ImgSavedClipboard);
-
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            _systemTray.ShowMessage(_loc.ImgSavedClipboard);
 
             return Task.CompletedTask;
         }
 
-        public string Display => LanguageManager.Instance.Clipboard;
+        public string Display => _loc.Clipboard;
 
         bool _active;
 

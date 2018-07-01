@@ -5,6 +5,7 @@
         xmlns:local="clr-namespace:Captura"
         xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
         ResizeMode="CanMinimize"
         Icon="../Images/Captura.ico"
@@ -244,7 +245,7 @@
                                        Margin="5"/>
                                 <ComboBox VerticalAlignment="Center" 
                                           Margin="5"
-                                          DataContext="{x:Static core:LanguageManager.Instance}"
+                                          DataContext="{x:Static loc:LanguageManager.Instance}"
                                           ItemsSource="{Binding AvailableCultures}"
                                           SelectedValue="{Binding CurrentCulture, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>

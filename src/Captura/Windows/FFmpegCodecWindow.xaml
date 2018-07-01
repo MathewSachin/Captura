@@ -4,10 +4,10 @@
         xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:local="clr-namespace:Captura"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:ffmpeg="clr-namespace:Captura;assembly=Captura.FFmpeg"
         Title="FFmpeg Codecs"
         Height="500"
-        Width="500"
-        DataContext="{Binding FFmpegCodecsViewModel, Source={StaticResource ServiceLocator}}">
+        Width="500">
     <Grid Background="{DynamicResource WindowBackground}">
         <TabControl Background="Transparent"
                     BorderThickness="0">
@@ -18,7 +18,7 @@
             </TabControl.ContentTemplate>
             <TabItem Header="x264">
                 <Grid Margin="5"
-                      DataContext="{Binding}">
+                      DataContext="{Binding FFmpegCodecsViewModel, Source={StaticResource ServiceLocator}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -35,8 +35,8 @@
                            Margin="0,5,5,5"/>
                     
                     <ComboBox Grid.Column="1"
-                              ItemsSource="{x:Static captura:X264Settings.PixelFormats}"
-                              SelectedValue="{Binding Settings.FFmpeg.X264.PixelFormat, Mode=TwoWay}"
+                              ItemsSource="{x:Static ffmpeg:X264Settings.PixelFormats}"
+                              SelectedValue="{Binding Settings.X264.PixelFormat, Mode=TwoWay}"
                               Margin="0,5"/>
 
                     <Label Content="yuv420p has wider support whereas yuv444p has better quality"
@@ -52,8 +52,8 @@
 
                     <ComboBox Grid.Column="1"
                               Grid.Row="2"
-                              ItemsSource="{x:Static captura:X264Settings.Presets}"
-                              SelectedValue="{Binding Settings.FFmpeg.X264.Preset, Mode=TwoWay}"
+                              ItemsSource="{x:Static ffmpeg:X264Settings.Presets}"
+                              SelectedValue="{Binding Settings.X264.Preset, Mode=TwoWay}"
                               Margin="0,5"/>
 
                     <Label Content="ultrafast is recommended"
@@ -63,7 +63,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Custom">
-                <DockPanel DataContext="{Binding}">
+                <DockPanel DataContext="{Binding FFmpegCodecsViewModel, Source={StaticResource ServiceLocator}}"
+                           Name="CustomCodecsPanel">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCustomCodecCommand}"
@@ -74,7 +75,7 @@
                     </DockPanel>
                     
                     <ScrollViewer>
-                        <ItemsControl ItemsSource="{Binding Settings.FFmpeg.CustomCodecs}">
+                        <ItemsControl ItemsSource="{Binding Settings.CustomCodecs}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Margin="5"
@@ -125,7 +126,7 @@
                                             <Label Content="Audio Format"
                                                    Grid.Row="3"/>
                                             
-                                            <ComboBox ItemsSource="{Binding DataContext.AudioCodecNames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                            <ComboBox ItemsSource="{Binding DataContext.AudioCodecNames, ElementName=CustomCodecsPanel}"
                                                       SelectedValue="{Binding AudioFormat, Mode=TwoWay}"
                                                       Grid.Row="3"
                                                       Grid.Column="1"

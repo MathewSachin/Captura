@@ -2,7 +2,7 @@
 
 namespace Screna
 {
-    public class OneTimeEditor : EditorBase
+    class OneTimeEditor : EditorBase
     {
         public OneTimeEditor(Graphics Graphics) : base(Graphics) { }
 

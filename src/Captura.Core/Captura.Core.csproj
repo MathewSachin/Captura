@@ -28,40 +28,19 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.2.0.4\lib\net45\ManagedBass.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.Mix.2.1.0\lib\netstandard1.4\ManagedBass.Mix.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ookii.Dialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpAvi, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpAvi.2.1.0\lib\net45\SharpAvi.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Languages\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -69,146 +48,49 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Models\NoVideoSourceProvider.cs" />
+    <Compile Include="Services\ClipboardService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Models\ElapsedOverlay.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegPostProcessingWriter.cs" />
+    <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegPostProcessingItem.cs" />
-    <Compile Include="Services\ITrayProgress.cs" />
-    <Compile Include="Models\CensorOverlay.cs" />
+    <Compile Include="Models\Overlays\CensorOverlay.cs" />
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
-    <Compile Include="Translation\LanguageField.cs" />
-    <Compile Include="Translation\LanguageFields.cs" />
-    <Compile Include="Translation\LanguageManager.cs" />
-    <Compile Include="Models\AudioSourceItems\AudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\BassAudioSource.cs" />
-    <Compile Include="Models\AudioSourceItems\BassItem.cs" />
-    <Compile Include="Models\AudioSourceItems\IAudioItem.cs" />
-    <Compile Include="Models\AudioSourceItems\NoAudioSource.cs" />
-    <Compile Include="Models\CustomImageOverlay.cs" />
+    <Compile Include="Models\NoAudioSource.cs" />
+    <Compile Include="Models\Overlays\CustomImageOverlay.cs" />
     <Compile Include="Models\Discard\DiscardWriter.cs" />
     <Compile Include="Models\Discard\DiscardWriterItem.cs" />
     <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
-    <Compile Include="Models\Fakes\FakePreviewWindow.cs" />
-    <Compile Include="Models\Fakes\FakeVideoSourcePicker.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegLogItem.cs" />
-    <Compile Include="Models\ImageOverlay.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegVideoWriterArgs.cs" />
-    <Compile Include="Models\MousePointerOverlay.cs" />
-    <Compile Include="Models\VideoItems\ScreenPickerItem.cs" />
-    <Compile Include="Models\VideoItems\WindowPickerItem.cs" />
-    <Compile Include="Models\VideoWriterItems\VideoWriterArgs.cs" />
+    <Compile Include="Models\Overlays\ImageOverlay.cs" />
+    <Compile Include="Models\Overlays\MousePointerOverlay.cs" />
     <Compile Include="Models\WebcamItem.cs" />
-    <Compile Include="Services\IPreviewWindow.cs" />
-    <Compile Include="Services\IVideoSourcePicker.cs" />
-    <Compile Include="Settings\Models\CustomFFmpegCodec.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
-    <Compile Include="Models\CustomOverlay.cs" />
-    <Compile Include="Models\Fakes\FakeMessageProvider.cs" />
-    <Compile Include="Models\Fakes\FakeRegionItem.cs" />
-    <Compile Include="Models\Fakes\FakeRegionProvider.cs" />
-    <Compile Include="Models\Fakes\FakesModule.cs" />
-    <Compile Include="Models\Fakes\FakeSystemTray.cs" />
-    <Compile Include="Models\CoreWebCamProvider.cs" />
-    <Compile Include="Models\Fakes\FakeWindowProvider.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegAudioArgsProvider.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegAudioWriter.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegLog.cs" />
-    <Compile Include="Models\FFmpeg\FFmpegVideoWriter.cs" />
-    <Compile Include="Models\Hotkeys\HotKey.cs" />
-    <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
-    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
-    <Compile Include="Models\Hotkeys\Modifiers.cs" />
+    <Compile Include="Models\Overlays\CustomOverlay.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
-    <Compile Include="Models\MouseKeyHook\DummyKeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\IKeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\KeyRecords.cs" />
-    <Compile Include="Models\TextOverlay.cs" />
-    <Compile Include="Models\VideoSourceProviders\DeskDuplSourceProvider.cs" />
-    <Compile Include="Models\VideoSourceProviders\IVideoSourceProvider.cs" />
-    <Compile Include="Models\VideoSourceProviders\NoVideoSourceProvider.cs" />
-    <Compile Include="Models\VideoSourceProviders\RegionSourceProvider.cs" />
-    <Compile Include="Models\VideoSourceProviders\ScreenSourceProvider.cs" />
-    <Compile Include="Models\VideoSourceProviders\WindowSourceProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\FFmpegWriterProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\IVideoWriterProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\SharpAviWriterProvider.cs" />
-    <Compile Include="Models\VideoWriterProviders\StreamingWriterProvider.cs" />
-    <Compile Include="Settings\Models\AudioSettings.cs" />
-    <Compile Include="Settings\Models\GifSettings.cs" />
-    <Compile Include="Settings\Models\FFmpegSettings.cs" />
+    <Compile Include="Models\Overlays\TextOverlay.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
-    <Compile Include="Settings\Models\MouseOverlaySettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
-    <Compile Include="Settings\Models\X264Settings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
-    <Compile Include="PropertyStore.cs" />
-    <Compile Include="Translation\TranslationViewModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
-    <Compile Include="Models\MouseKeyHook\RepeatKeyRecord.cs" />
-    <Compile Include="Models\VideoWriterItems\StreamingItem.cs" />
-    <Compile Include="Models\WebcamOverlay.cs" />
-    <Compile Include="Services\FFmpegService.cs" />
-    <Compile Include="Models\DeskDuplImageProvider.cs" />
-    <Compile Include="Services\IMainWindow.cs" />
-    <Compile Include="Services\IMessageProvider.cs" />
-    <Compile Include="Services\IRegionProvider.cs" />
-    <Compile Include="Services\ISystemTray.cs" />
-    <Compile Include="Services\IWebcamItem.cs" />
-    <Compile Include="Services\IWebCamProvider.cs" />
-    <Compile Include="Models\MixedAudioProvider.cs" />
-    <Compile Include="Models\MouseKeyHook\KeyRecord.cs" />
-    <Compile Include="Models\MouseKeyHook\MouseKeyHook.cs" />
+    <Compile Include="Models\Overlays\WebcamOverlay.cs" />
     <Compile Include="Models\RecentItemModel.cs" />
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
-    <Compile Include="Models\SharpAvi\AviCodec.cs" />
-    <Compile Include="Models\SharpAvi\AviWriter.cs" />
-    <Compile Include="Models\SharpAvi\IAudioProviderAdapter.cs" />
-    <Compile Include="Models\VideoItems\FFmpegAudioItem.cs" />
-    <Compile Include="Models\VideoItems\NoVideoItem.cs" />
-    <Compile Include="Models\VideoItems\IVideoItem.cs" />
-    <Compile Include="Models\VideoSourceProviders\VideoSourceProviderBase.cs" />
-    <Compile Include="Models\VideoItems\FullScreenItem.cs" />
-    <Compile Include="Models\VideoItems\WaveItem.cs" />
-    <Compile Include="Models\VideoItems\WindowItem.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegItem.cs" />
-    <Compile Include="Models\VideoWriterItems\FFmpegVideoArgsProvider.cs" />
-    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
-    <Compile Include="Models\VideoWriterItems\IVideoWriterItem.cs" />
-    <Compile Include="Models\VideoWriterItems\SharpAviItem.cs" />
-    <Compile Include="Models\VideoWriterProviders\GifWriterProvider.cs" />
-    <Compile Include="NotifyPropertyChanged.cs" />
-    <Compile Include="Models\VideoItems\ScreenItem.cs" />
-    <Compile Include="ObjectLocalizer.cs" />
-    <Compile Include="Services\ServiceName.cs" />
-    <Compile Include="Services\ServiceProvider.cs" />
-    <Compile Include="Models\Alignment.cs" />
-    <Compile Include="Settings\Models\KeystrokesSettings.cs" />
-    <Compile Include="Settings\Models\MouseClickSettings.cs" />
-    <Compile Include="Settings\Models\PositionedOverlaySettings.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
-    <Compile Include="Settings\Models\ProxySettings.cs" />
-    <Compile Include="TextLocalizer.cs" />
-    <Compile Include="Settings\Models\TextOverlaySettings.cs" />
-    <Compile Include="Models\DownloadFFmpeg.cs" />
-    <Compile Include="ViewModels\FFmpegCodecsViewModel.cs" />
-    <Compile Include="ViewModels\FFmpgDownloadViewModel.cs" />
     <Compile Include="Models\FileContentItem.cs" />
     <Compile Include="ViewModels\CrashLogsViewModel.cs" />
     <Compile Include="ViewModels\LicensesViewModel.cs" />
@@ -223,6 +105,34 @@
     <Compile Include="WithPreviewWriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj">
+      <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
+      <Name>Captura.Bass</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
+      <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
+      <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj">
+      <Project>{a9baff4d-03e1-4e6a-9075-c50874c04cc7}</Project>
+      <Name>Captura.Hotkeys</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
+      <Project>{6cc6e9c8-9a94-4fb0-8396-47e2ecbd8300}</Project>
+      <Name>Captura.MouseKeyHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
+      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
+      <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>

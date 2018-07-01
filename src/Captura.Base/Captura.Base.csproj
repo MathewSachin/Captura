@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProjectGuid>{388D8B28-E629-4684-8537-8D78719B69E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Captura</RootNamespace>
+    <AssemblyName>Captura.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="IClipboardService.cs" />
+    <Compile Include="Settings\ProxySettings.cs" />
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="NoVideoItem.cs" />
+    <Compile Include="Settings\AudioSettings.cs" />
+    <Compile Include="Settings\Alignment.cs" />
+    <Compile Include="Audio\AudioSource.cs" />
+    <Compile Include="Services\Binder.cs" />
+    <Compile Include="Audio\DataAvailableEventArgs.cs" />
+    <Compile Include="Audio\IAudioFileWriter.cs" />
+    <Compile Include="Audio\IAudioProvider.cs" />
+    <Compile Include="Audio\WaveFormat\WaveFormat.cs" />
+    <Compile Include="Audio\WaveFormat\WaveFormatEncoding.cs" />
+    <Compile Include="Images\IBitmapEditor.cs" />
+    <Compile Include="Images\IBitmapFrame.cs" />
+    <Compile Include="Images\IImageProvider.cs" />
+    <Compile Include="IOverlay.cs" />
+    <Compile Include="IRecorder.cs" />
+    <Compile Include="Video\IVideoFileWriter.cs" />
+    <Compile Include="Services\IBinder.cs" />
+    <Compile Include="Services\IModule.cs" />
+    <Compile Include="IWindow.cs" />
+    <Compile Include="Settings\MouseOverlaySettings.cs" />
+    <Compile Include="NotifyPropertyChanged.cs" />
+    <Compile Include="Settings\PositionedOverlaySettings.cs" />
+    <Compile Include="Settings\PropertyStore.cs" />
+    <Compile Include="Audio\IAudioItem.cs" />
+    <Compile Include="Services\IMainWindow.cs" />
+    <Compile Include="Services\IMessageProvider.cs" />
+    <Compile Include="Services\IPreviewWindow.cs" />
+    <Compile Include="Services\IRegionProvider.cs" />
+    <Compile Include="IScreen.cs" />
+    <Compile Include="Services\ISystemTray.cs" />
+    <Compile Include="Services\ITrayProgress.cs" />
+    <Compile Include="Video\IVideoItem.cs" />
+    <Compile Include="Services\IVideoSourcePicker.cs" />
+    <Compile Include="Video\IVideoSourceProvider.cs" />
+    <Compile Include="Video\IVideoWriterItem.cs" />
+    <Compile Include="Video\IVideoWriterProvider.cs" />
+    <Compile Include="Services\IWebcamItem.cs" />
+    <Compile Include="Services\IWebCamProvider.cs" />
+    <Compile Include="Video\VideoWriterArgs.cs" />
+    <Compile Include="Images\RepeatFrame.cs" />
+    <Compile Include="Services\ServiceProvider.cs" />
+    <Compile Include="Settings\TextOverlaySettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

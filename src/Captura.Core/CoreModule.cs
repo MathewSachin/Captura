@@ -1,77 +1,87 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
-using Ninject;
-using Ninject.Modules;
 
 namespace Captura
 {
-    public class CoreModule : NinjectModule
+    public class CoreModule : IModule
     {
-        public override void Load()
+        public void OnLoad(IBinder Binder)
         {
-            // Webcam Provider
-            Bind<IWebCamProvider>().To<CoreWebCamProvider>().InSingletonScope();
-
             // Singleton View Models
-            Bind<MainViewModel>().ToSelf().InSingletonScope();
-            Bind<VideoViewModel>().ToSelf().InSingletonScope();
-            Bind<ProxySettingsViewModel>().ToSelf().InSingletonScope();
-            Bind<LicensesViewModel>().ToSelf().InSingletonScope();
-            Bind<CrashLogsViewModel>().ToSelf().InSingletonScope();
-            Bind<FFmpegCodecsViewModel>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<MainViewModel>();
+            Binder.BindSingleton<VideoViewModel>();
+            Binder.BindSingleton<ProxySettingsViewModel>();
+            Binder.BindSingleton<LicensesViewModel>();
+            Binder.BindSingleton<CrashLogsViewModel>();
+            Binder.BindSingleton<FFmpegCodecsViewModel>();
 
-            Bind<CustomOverlaysViewModel>().ToSelf().InSingletonScope();
-            Bind<CustomImageOverlaysViewModel>().ToSelf().InSingletonScope();
-            Bind<CensorOverlaysViewModel>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<CustomOverlaysViewModel>();
+            Binder.BindSingleton<CustomImageOverlaysViewModel>();
+            Binder.BindSingleton<CensorOverlaysViewModel>();
 
             // Settings
-            Bind<Settings>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<Settings>();
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
 
             // Localization
-            Bind<LanguageManager>().ToMethod(M => LanguageManager.Instance).InSingletonScope();
+            Binder.Bind(() => LanguageManager.Instance);
 
             // Hotkeys
-            Bind<HotKeyManager>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<HotKeyManager>();
 
             // Image Writers
-            Bind<DiskWriter>().ToSelf().InSingletonScope();
-            Bind<ClipboardWriter>().ToSelf().InSingletonScope();
-            Bind<ImgurWriter>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<DiskWriter>();
+            Binder.BindSingleton<ClipboardWriter>();
+            Binder.BindSingleton<ImgurWriter>();
 
-            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<DiskWriter>()).InSingletonScope();
-            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<ClipboardWriter>()).InSingletonScope();
-            Bind<IImageWriterItem>().ToMethod(M => Kernel?.Get<ImgurWriter>()).InSingletonScope();
+            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<DiskWriter>);
+            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ClipboardWriter>);
+            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImgurWriter>);
 
             // Video Writer Providers
-            Bind<IVideoWriterProvider>().To<FFmpegWriterProvider>().InSingletonScope();
-            Bind<IVideoWriterProvider>().To<GifWriterProvider>().InSingletonScope();
-            Bind<IVideoWriterProvider>().To<StreamingWriterProvider>().InSingletonScope();
+            Binder.Bind<IVideoWriterProvider, FFmpegWriterProvider>();
+            Binder.Bind<IVideoWriterProvider, GifWriterProvider>();
+            Binder.Bind<IVideoWriterProvider, StreamingWriterProvider>();
 
 #if DEBUG
-            Bind<IVideoWriterProvider>().To<DiscardWriterProvider>().InSingletonScope();
+            Binder.Bind<IVideoWriterProvider, DiscardWriterProvider>();
 #endif
 
             // Check if SharpAvi is available
             if (ServiceProvider.FileExists("SharpAvi.dll"))
             {
-                Bind<IVideoWriterProvider>().To<SharpAviWriterProvider>().InSingletonScope();
+                Binder.Bind<IVideoWriterProvider, SharpAviWriterProvider>();
             }
 
-            Bind<WindowPickerItem>().ToSelf().InSingletonScope();
+            Binder.BindSingleton<WindowPickerItem>();
+            Binder.BindSingleton<ScreenPickerItem>();
+            Binder.BindSingleton<FullScreenItem>();
 
             // Video Source Providers
-            Bind<IVideoSourceProvider>().To<ScreenSourceProvider>().InSingletonScope();
-            Bind<IVideoSourceProvider>().To<RegionSourceProvider>().InSingletonScope();
-            Bind<IVideoSourceProvider>().To<WindowSourceProvider>().InSingletonScope();
-            Bind<IVideoSourceProvider>().To<DeskDuplSourceProvider>().InSingletonScope();
-            Bind<IVideoSourceProvider>().To<NoVideoSourceProvider>().InSingletonScope();
+            Binder.Bind<IVideoSourceProvider, ScreenSourceProvider>();
+            Binder.Bind<IVideoSourceProvider, RegionSourceProvider>();
+            Binder.Bind<IVideoSourceProvider, WindowSourceProvider>();
+            Binder.Bind<IVideoSourceProvider, DeskDuplSourceProvider>();
+            Binder.Bind<IVideoSourceProvider, NoVideoSourceProvider>();
+
+            // Folder Browser Dialog
+            Binder.Bind<IDialogService, DialogService>();
+
+            // Clipboard
+            Binder.Bind<IClipboardService, ClipboardService>();
+
+            // FFmpeg Log
+            Binder.BindSingleton<FFmpegLog>();
 
             // Check if Bass is available
             if (BassAudioSource.Available)
             {
-                Bind<AudioSource>().To<BassAudioSource>().InSingletonScope();
+                Binder.Bind<AudioSource, BassAudioSource>();
             }
-            else Bind<AudioSource>().To<NoAudioSource>().InSingletonScope();
+            else Binder.Bind<AudioSource, NoAudioSource>();
         }
     }
 }

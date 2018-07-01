@@ -34,45 +34,57 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\AudioFileWriters\AudioFileWriter.cs" />
-    <Compile Include="Audio\IAudioProvider.cs" />
-    <Compile Include="Audio\WaveFormat\WaveFormat.cs" />
-    <Compile Include="Audio\WaveFormat\WaveFormatEncoding.cs" />
-    <Compile Include="Audio\AudioFileWriters\IAudioFileWriter.cs" />
-    <Compile Include="EventArgs\DataAvailableEventArgs.cs" />
+    <Compile Include="AudioFileWriter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Frames\EditorBase.cs" />
     <Compile Include="Frames\MultiDisposeFrame.cs" />
-    <Compile Include="Frames\RepeatFrame.cs" />
     <Compile Include="Frames\FrameBase.cs" />
-    <Compile Include="Frames\IBitmapEditor.cs" />
-    <Compile Include="Frames\IBitmapFrame.cs" />
     <Compile Include="Frames\ImagePool.cs" />
     <Compile Include="Frames\OneTimeEditor.cs" />
     <Compile Include="Frames\OneTimeFrame.cs" />
     <Compile Include="Frames\ReusableEditor.cs" />
     <Compile Include="Frames\ReusableFrame.cs" />
+    <Compile Include="Gif\GifItem.cs" />
+    <Compile Include="Gif\GifSettings.cs" />
+    <Compile Include="Gif\GifWriterProvider.cs" />
+    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
-    <Compile Include="Recorder\IRecorder.cs" />
+    <Compile Include="MouseCursor.cs" />
     <Compile Include="Recorder\Recorder.cs" />
     <Compile Include="Timing.cs" />
-    <Compile Include="VideoWriter\GifWriter.cs" />
+    <Compile Include="Gif\GifWriter.cs" />
     <Compile Include="ImageProviders\RegionProvider.cs" />
-    <Compile Include="VideoWriter\IVideoFileWriter.cs" />
-    <Compile Include="ImageProviders\IImageProvider.cs" />
     <Compile Include="ImageProviders\WindowProvider.cs" />
-    <Compile Include="Overlays\MouseCursor.cs" />
-    <Compile Include="Native\Enums.cs" />
-    <Compile Include="Native\Structs.cs" />
-    <Compile Include="Native\User32.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="Overlays\IOverlay.cs" />
     <Compile Include="Recorder\VFRGifRecorder.cs" />
     <Compile Include="ScreenShot.cs" />
-    <Compile Include="Native\UnsafeBitmap.cs" />
+    <Compile Include="VideoItems\FullScreenItem.cs" />
+    <Compile Include="VideoItems\ScreenItem.cs" />
+    <Compile Include="VideoItems\ScreenPickerItem.cs" />
+    <Compile Include="VideoItems\WaveItem.cs" />
+    <Compile Include="VideoItems\WindowItem.cs" />
+    <Compile Include="VideoItems\WindowPickerItem.cs" />
+    <Compile Include="VideoSourceProviders\RegionSourceProvider.cs" />
+    <Compile Include="VideoSourceProviders\ScreenSourceProvider.cs" />
+    <Compile Include="VideoSourceProviders\VideoSourceProviderBase.cs" />
+    <Compile Include="VideoSourceProviders\WindowSourceProvider.cs" />
+    <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
+      <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
+      <Name>Captura.Native</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

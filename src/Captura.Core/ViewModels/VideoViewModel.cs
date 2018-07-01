@@ -147,7 +147,7 @@ namespace Captura.ViewModels
             }
         }
 
-        IVideoItem _videoSource = FullScreenItem.Instance;
+        IVideoItem _videoSource;
 
         public IVideoItem SelectedVideoSource
         {

@@ -1,9 +1,10 @@
-﻿using Screna.Audio;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Captura;
+using Captura.Audio;
 
 namespace Screna
 {

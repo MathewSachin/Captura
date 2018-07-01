@@ -1,8 +1,8 @@
-﻿using Screna.Native;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using Captura.Native;
 
 namespace Screna
 {
@@ -25,7 +25,7 @@ namespace Screna
         /// <summary>
         /// Writes a Bitmap to Clipboard while taking care of Transparency
         /// </summary>
-        public static void WriteToClipboard(this Bitmap Bmp, bool PreserveTransparency = true)
+        public static void WriteToClipboard(this Image Bmp, bool PreserveTransparency = true)
         {
             if (PreserveTransparency)
             {
@@ -72,12 +72,19 @@ namespace Screna
                 {
                     var pixel = b[x, y];
 
+                    bool Condition()
+                    {
+                        return TrimColor.A == 0
+                               && pixel->Alpha != 0
+                               ||
+                               TrimColor.R != pixel->Red
+                               && TrimColor.G != pixel->Green
+                               && TrimColor.B != pixel->Blue;
+                    }
+
                     if (r.Left == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Left = x;
 
@@ -99,10 +106,7 @@ namespace Screna
 
                     if (r.Top == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Top = y;
 
@@ -124,10 +128,7 @@ namespace Screna
 
                     if (r.Right == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Right = x + 1;
 
@@ -150,10 +151,7 @@ namespace Screna
                     if (r.Bottom != -1)
                         continue;
 
-                    if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                        (TrimColor.R != pixel->Red &&
-                         TrimColor.G != pixel->Green &&
-                         TrimColor.B != pixel->Blue))
+                    if (Condition())
                     {
                         r.Bottom = y + 1;
                         break;

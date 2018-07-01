@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using Captura;
 
 namespace Screna
 {
-    public class ReusableFrame : FrameBase
+    class ReusableFrame : FrameBase
     {
         readonly ReusableEditor _editor;
 

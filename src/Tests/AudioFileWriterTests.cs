@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Captura.Audio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Screna.Audio;
 

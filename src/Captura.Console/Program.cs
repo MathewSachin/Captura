@@ -29,10 +29,11 @@ namespace Captura
                 return;
             }
 
+            ServiceProvider.LoadModule(new CoreModule());
+            ServiceProvider.LoadModule(new FakesModule());
+
             // Hide on Full Screen Screenshot doesn't work on Console
             ServiceProvider.Get<Settings>().UI.HideOnFullScreenShot = false;
-            
-            ServiceProvider.LoadModule(new FakesModule());
 
             Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions>(Args)
                 .WithParsed<ListCmdOptions>(Options => List())
@@ -396,7 +397,7 @@ namespace Captura
                 {
                     var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName);
+                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {

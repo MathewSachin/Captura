@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:captura="clr-namespace:Captura"
              xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
+             xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
              ShutdownMode="OnMainWindowClose"
              StartupUri="Windows/MainWindow.xaml"
              Startup="Application_Startup"
@@ -22,9 +23,9 @@
             </ResourceDictionary.MergedDictionaries>
             
             <x:Static x:Key="Loc"
-                      Member="core:LanguageManager.Instance"/>
+                      Member="loc:LanguageManager.Instance"/>
 
-            <captura:NinjectServiceLocator x:Key="ServiceLocator"/>
+            <captura:ServiceLocator x:Key="ServiceLocator"/>
 
             <DrawingImage x:Key="RecordStopImageSource">
                 <DrawingImage.Drawing>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using Captura.Native;
 using Clipboard = System.Windows.Forms.Clipboard;
 using DataFormats = System.Windows.Forms.DataFormats;
 
@@ -11,9 +11,6 @@ namespace Captura
 {
     public static class ImageFromClipboard
     {
-        [DllImport("gdi32.dll")]
-        static extern bool DeleteObject(IntPtr Object);
-
         public static BitmapSource Get()
         {
             if (Clipboard.ContainsImage())
@@ -33,7 +30,7 @@ namespace Captura
                         }
                         finally
                         {
-                            DeleteObject(hBitmap);
+                            Gdi32.DeleteObject(hBitmap);
                         }
                     }
                 }

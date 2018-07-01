@@ -3,33 +3,26 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform>AnyCPU</Platform>
     <ProjectGuid>{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Captura</RootNamespace>
     <AssemblyName>captura</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>..\Captura\Images\Captura.ico</ApplicationIcon>
@@ -41,9 +34,6 @@
     <Reference Include="ModernUI.Xceed.Toolkit">
       <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -52,6 +42,15 @@
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
     <Compile Include="CmdOptions\FFmpegCmdOptions.cs" />
     <Compile Include="CmdOptions\ListCmdOptions.cs" />
+    <Compile Include="CoreWebCamProvider.cs" />
+    <Compile Include="Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Fakes\FakePreviewWindow.cs" />
+    <Compile Include="Fakes\FakeRegionItem.cs" />
+    <Compile Include="Fakes\FakeRegionProvider.cs" />
+    <Compile Include="Fakes\FakesModule.cs" />
+    <Compile Include="Fakes\FakeSystemTray.cs" />
+    <Compile Include="Fakes\FakeVideoSourcePicker.cs" />
+    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />
@@ -62,13 +61,45 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj">
+      <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
+      <Name>Captura.Bass</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
+      <Project>{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}</Project>
+      <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
+      <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
+      <Name>Captura.MouseKeyHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
+      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
+      <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
+      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
+      <Name>Captura.Webcam</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura\Captura.csproj">
       <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
       <Name>Captura</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
+      <Project>{222C215B-663F-4BD6-9B3E-8FA99C867B22}</Project>
+      <Name>DesktopDuplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
