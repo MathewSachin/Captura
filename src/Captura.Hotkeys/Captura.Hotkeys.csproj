@@ -4,20 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform>AnyCPU</Platform>
-    <ProjectGuid>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</ProjectGuid>
+    <ProjectGuid>{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Captura</RootNamespace>
-    <AssemblyName>Captura.Loc</AssemblyName>
+    <RootNamespace>Captura.Hotkeys</RootNamespace>
+    <AssemblyName>Captura.Hotkeys</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>full</DebugType>    
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -30,25 +30,29 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Languages\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="LanguageField.cs" />
-    <Compile Include="LanguageFields.cs" />
-    <Compile Include="LanguageManager.cs" />
-    <Compile Include="ObjectLocalizer.cs" />
-    <Compile Include="TextLocalizer.cs" />
-    <Compile Include="TranslationViewModel.cs" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
       <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
       <Name>Captura.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
+      <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
+      <Name>Captura.Native</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HotKey.cs" />
+    <Compile Include="HotKeyManager.cs" />
+    <Compile Include="HotkeyModel.cs" />
+    <Compile Include="Modifiers.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="ServiceName.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

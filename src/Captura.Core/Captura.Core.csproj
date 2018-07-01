@@ -54,7 +54,6 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
-    <Compile Include="Models\Hotkeys\Service.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
@@ -72,10 +71,6 @@
     <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\Overlays\CustomOverlay.cs" />
-    <Compile Include="Models\Hotkeys\HotKey.cs" />
-    <Compile Include="Models\Hotkeys\HotKeyManager.cs" />
-    <Compile Include="Models\Hotkeys\HotkeyModel.cs" />
-    <Compile Include="Models\Hotkeys\Modifiers.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
@@ -96,11 +91,8 @@
     <Compile Include="Models\RecentItemType.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
-    <Compile Include="ObjectLocalizer.cs" />
-    <Compile Include="Services\ServiceName.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
     <Compile Include="Settings\Models\ProxySettings.cs" />
-    <Compile Include="TextLocalizer.cs" />
     <Compile Include="ViewModels\FFmpegCodecsViewModel.cs" />
     <Compile Include="ViewModels\FFmpgDownloadViewModel.cs" />
     <Compile Include="Models\FileContentItem.cs" />
@@ -128,6 +120,10 @@
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
       <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
       <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj">
+      <Project>{a9baff4d-03e1-4e6a-9075-c50874c04cc7}</Project>
+      <Name>Captura.Hotkeys</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
       <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>

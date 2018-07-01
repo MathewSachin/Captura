@@ -430,6 +430,10 @@
       <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
       <Name>Captura.FFmpeg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj">
+      <Project>{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}</Project>
+      <Name>Captura.Hotkeys</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
       <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
       <Name>Captura.Loc</Name>
