@@ -16,7 +16,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>    
+    <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -42,6 +42,15 @@
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
     <Compile Include="CmdOptions\FFmpegCmdOptions.cs" />
     <Compile Include="CmdOptions\ListCmdOptions.cs" />
+    <Compile Include="CoreWebCamProvider.cs" />
+    <Compile Include="Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Fakes\FakePreviewWindow.cs" />
+    <Compile Include="Fakes\FakeRegionItem.cs" />
+    <Compile Include="Fakes\FakeRegionProvider.cs" />
+    <Compile Include="Fakes\FakesModule.cs" />
+    <Compile Include="Fakes\FakeSystemTray.cs" />
+    <Compile Include="Fakes\FakeVideoSourcePicker.cs" />
+    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />
@@ -68,6 +77,10 @@
       <Project>{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}</Project>
       <Name>Captura.FFmpeg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
       <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
       <Name>Captura.MouseKeyHook</Name>
@@ -75,6 +88,10 @@
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
       <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
       <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
+      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
+      <Name>Captura.Webcam</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura\Captura.csproj">
       <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
