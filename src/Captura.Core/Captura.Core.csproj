@@ -95,7 +95,6 @@
     <Compile Include="Models\VideoSourceProviders\RegionSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\ScreenSourceProvider.cs" />
     <Compile Include="Models\VideoSourceProviders\WindowSourceProvider.cs" />
-    <Compile Include="Settings\Models\GifSettings.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
@@ -115,8 +114,6 @@
     <Compile Include="Models\VideoItems\FullScreenItem.cs" />
     <Compile Include="Models\VideoItems\WaveItem.cs" />
     <Compile Include="Models\VideoItems\WindowItem.cs" />
-    <Compile Include="Models\VideoWriterItems\GifItem.cs" />
-    <Compile Include="Models\VideoWriterProviders\GifWriterProvider.cs" />
     <Compile Include="Models\VideoItems\ScreenItem.cs" />
     <Compile Include="ObjectLocalizer.cs" />
     <Compile Include="Services\ServiceName.cs" />

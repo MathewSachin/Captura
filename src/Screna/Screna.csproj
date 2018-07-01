@@ -44,12 +44,15 @@
     <Compile Include="Frames\OneTimeFrame.cs" />
     <Compile Include="Frames\ReusableEditor.cs" />
     <Compile Include="Frames\ReusableFrame.cs" />
+    <Compile Include="Gif\GifItem.cs" />
+    <Compile Include="Gif\GifSettings.cs" />
+    <Compile Include="Gif\GifWriterProvider.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
     <Compile Include="MouseCursor.cs" />
     <Compile Include="Recorder\Recorder.cs" />
     <Compile Include="Timing.cs" />
-    <Compile Include="VideoWriter\GifWriter.cs" />
+    <Compile Include="Gif\GifWriter.cs" />
     <Compile Include="ImageProviders\RegionProvider.cs" />
     <Compile Include="ImageProviders\WindowProvider.cs" />
     <Compile Include="Recorder\VFRGifRecorder.cs" />
@@ -63,6 +66,10 @@
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
       <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
       <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
+      <Name>Captura.Loc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
       <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>

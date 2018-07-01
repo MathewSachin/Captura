@@ -24,7 +24,7 @@ namespace Captura.Models
             }
         }
 
-        public string Name => "Desktop Duplication";
+        public string Name => LanguageManager.Instance.DesktopDuplication;
 
         public override string ToString() => Name;
 
