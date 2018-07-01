@@ -33,6 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <None Include="Languages\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LanguageFields.cs" />
