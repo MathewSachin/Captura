@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ookii.Dialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -51,6 +54,9 @@
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
     <Compile Include="MouseCursor.cs" />
     <Compile Include="Recorder\Recorder.cs" />
+    <Compile Include="ScreenWrapper.cs" />
+    <Compile Include="Services\ClipboardService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Timing.cs" />
     <Compile Include="Gif\GifWriter.cs" />
     <Compile Include="ImageProviders\RegionProvider.cs" />
@@ -85,6 +91,9 @@
       <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
       <Name>Captura.Native</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

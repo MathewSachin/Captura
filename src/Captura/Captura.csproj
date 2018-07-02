@@ -87,7 +87,6 @@
     <Compile Include="ImageEditor\SelectHistory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
-    <Compile Include="Models\ScreenWrapper.cs" />
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>

@@ -1,7 +1,9 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Captura;
 using Captura.Native;
 
 namespace Screna
@@ -20,6 +22,18 @@ namespace Screna
                 --Rect.Height;
 
             return Rect;
+        }
+
+        public static void WriteToClipboard(this string S)
+        {
+            if (S == null)
+                return;
+
+            try { Clipboard.SetText(S); }
+            catch (ExternalException)
+            {
+                ServiceProvider.MessageProvider?.ShowError($"Copy to Clipboard failed:\n\n{S}");
+            }
         }
 
         /// <summary>

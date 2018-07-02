@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace Captura
@@ -13,18 +11,6 @@ namespace Captura
         {
             if (Command.CanExecute(null))
                 Command.Execute(null);
-        }
-
-        public static void WriteToClipboard(this string S)
-        {
-            if (S == null)
-                return;
-
-            try { Clipboard.SetText(S); }
-            catch (ExternalException)
-            {
-                ServiceProvider.MessageProvider?.ShowError($"Copy to Clipboard failed:\n\n{S}");
-            }
         }
 
         public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)

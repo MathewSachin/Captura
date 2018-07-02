@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Captura.Models;
 
@@ -7,8 +6,12 @@ namespace Captura.ViewModels
 {
     public class CustomImageOverlaysViewModel : OverlayListViewModel<CustomImageOverlaySettings>
     {
-        public CustomImageOverlaysViewModel(Settings Settings) : base(Settings.ImageOverlays)
+        readonly IDialogService _dialogService;
+
+        public CustomImageOverlaysViewModel(Settings Settings, IDialogService DialogService) : base(Settings.ImageOverlays)
         {
+            _dialogService = DialogService;
+
             ChangeCommand = new DelegateCommand(Change);
         }
 
@@ -18,17 +21,13 @@ namespace Captura.ViewModels
         {
             if (M is CustomImageOverlaySettings settings)
             {
-                var ofd = new OpenFileDialog
-                {
-                     CheckFileExists = true,
-                     CheckPathExists = true,
-                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                     Title = "Select Image"
-                };
+                var fileName = _dialogService.PickFile(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                    "Select Image");
 
-                if (ofd.ShowDialog() == DialogResult.OK)
+                if (fileName != null)
                 {
-                    settings.Source = ofd.FileName;
+                    settings.Source = fileName;
                 }
             }
         }

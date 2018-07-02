@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateCommand.cs" />
-    <Compile Include="IClipboardService.cs" />
+    <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Settings\ProxySettings.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="NoVideoItem.cs" />

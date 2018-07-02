@@ -31,13 +31,8 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ookii.Dialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -49,8 +44,6 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="Models\NoVideoSourceProvider.cs" />
-    <Compile Include="Services\ClipboardService.cs" />
-    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurData.cs" />

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Captura.Models;
+using Screna;
 
 namespace Captura.ViewModels
 {
