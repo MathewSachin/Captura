@@ -32,6 +32,8 @@ namespace Captura.ViewModels
         readonly IRegionProvider _regionProvider;
         readonly WebcamOverlay _webcamOverlay;
         readonly IMainWindow _mainWindow;
+
+        readonly IDialogService _dialogService;
         #endregion
 
         readonly IPreviewWindow _previewWindow;
@@ -53,7 +55,8 @@ namespace Captura.ViewModels
             CustomImageOverlaysViewModel CustomImageOverlays,
             IPreviewWindow PreviewWindow,
             CensorOverlaysViewModel CensorOverlays,
-            FFmpegLog FFmpegLog) : base(Settings, LanguageManager)
+            FFmpegLog FFmpegLog,
+            IDialogService DialogService) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -67,6 +70,7 @@ namespace Captura.ViewModels
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
             _previewWindow = PreviewWindow;
+            _dialogService = DialogService;
             this.CensorOverlays = CensorOverlays;
             this.FFmpegLog = FFmpegLog;
 

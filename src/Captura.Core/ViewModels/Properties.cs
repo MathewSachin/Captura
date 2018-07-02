@@ -1,10 +1,8 @@
 ﻿using Captura.Models;
-using Ookii.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace Captura.ViewModels
 {
@@ -143,16 +141,10 @@ namespace Captura.ViewModels
 
         void SelectOutputFolder()
         {
-            using (var dlg = new VistaFolderBrowserDialog
-            {
-                SelectedPath = Settings.OutPath,
-                UseDescriptionForTitle = true,
-                Description = Loc.SelectOutFolder
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                    Settings.OutPath = dlg.SelectedPath;
-            }
+            var folder = _dialogService.PickFolder(Settings.OutPath, Loc.SelectOutFolder);
+
+            if (folder != null)
+                Settings.OutPath = folder;
         }
 
         public DelegateCommand SelectFFmpegFolderCommand { get; } = new DelegateCommand(FFmpegService.SelectFFmpegFolder);

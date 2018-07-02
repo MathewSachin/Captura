@@ -46,13 +46,18 @@
 
                 <Label>
                     <TextBlock Style="{StaticResource Heading2}"
-                               Text="New Language"
-                               Margin="0,5"/>
+                               Text="New Language"/>
+                </Label>
+                
+                <Label>
+                    <TextBlock Text="Visual Studio is NOT required"
+                               Style="{StaticResource Small}"
+                               Margin="0,0,0,8"/>
                 </Label>
 
                 <Label>
                     <TextBlock TextWrapping="Wrap"
-                               Text="1. Create a copy of en.json in 'src/Captura.Core/Languages' folder."
+                               Text="1. Create a copy of en.json in 'src/Captura.Loc/Languages' folder."
                                Style="{StaticResource Small}"/>
                 </Label>
 
