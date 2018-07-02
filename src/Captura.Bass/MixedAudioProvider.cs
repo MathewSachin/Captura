@@ -4,6 +4,7 @@ using System.Linq;
 using ManagedBass;
 using ManagedBass.Mix;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Wf = Captura.Audio.WaveFormat;
 using Captura.Audio;
 
@@ -47,7 +48,7 @@ namespace Captura.Models
             }
 
             _mixer = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
-            _filler = Bass.CreateStream(44100, 2, BassFlags.Float | BassFlags.Decode, ManagedBass.Extensions.SilenceStreamProcedure);
+            _filler = Bass.CreateStream(44100, 2, BassFlags.Decode, Extensions.SilenceStreamProcedure);
 
             foreach (var recordingDevice in Devices)
             {
@@ -70,60 +71,60 @@ namespace Captura.Models
                 DeviceId = Device.Id
             });
 
-            void AddDevice()
-            {
-                lock (_syncLock)
-                {
-                    if (_devices[Device.Id].RecordingHandle != 0)
-                        return;
-
-                    Bass.RecordInit(Device.Id);
-                    Bass.CurrentRecordingDevice = Device.Id;
-
-                    var info = Bass.RecordingInfo;
-
-                    var handle = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.Float | BassFlags.RecordPause, null);
-
-                    _devices[Device.Id].RecordingHandle = handle;
-
-                    BassMix.MixerAddChannel(_mixer, handle, BassFlags.MixerDownMix);
-
-                    if (_running)
-                    {
-                        Bass.ChannelPlay(handle);
-                    }
-                }
-            }
-
-            void RemoveDevice()
-            {
-                lock (_syncLock)
-                {
-                    if (_devices[Device.Id].RecordingHandle == 0)
-                        return;
-
-                    var handle = _devices[Device.Id].RecordingHandle;
-
-                    BassMix.MixerRemoveChannel(handle);
-
-                    Bass.StreamFree(handle);
-
-                    _devices[Device.Id].RecordingHandle = 0;
-                }
-            }
-
             Device.PropertyChanged += (S, E) =>
             {
                 if (E.PropertyName == nameof(Device.Active))
                 {
                     if (Device.Active)
-                        AddDevice();
-                    else RemoveDevice();
+                        AddDevice(Device);
+                    else RemoveDevice(Device);
                 }
             };
 
             if (Device.Active)
-                AddDevice();
+                AddDevice(Device);
+        }
+
+        void RemoveDevice(BassItem Device)
+        {
+            lock (_syncLock)
+            {
+                if (_devices[Device.Id].RecordingHandle == 0)
+                    return;
+
+                var handle = _devices[Device.Id].RecordingHandle;
+
+                BassMix.MixerRemoveChannel(handle);
+
+                Bass.StreamFree(handle);
+
+                _devices[Device.Id].RecordingHandle = 0;
+            }
+        }
+
+        void AddDevice(BassItem Device)
+        {
+            lock (_syncLock)
+            {
+                if (_devices[Device.Id].RecordingHandle != 0)
+                    return;
+
+                Bass.RecordInit(Device.Id);
+                Bass.CurrentRecordingDevice = Device.Id;
+
+                var info = Bass.RecordingInfo;
+
+                var handle = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.RecordPause, null);
+
+                _devices[Device.Id].RecordingHandle = handle;
+
+                BassMix.MixerAddChannel(_mixer, handle, BassFlags.MixerDownMix | BassFlags.MixerLimit);
+
+                if (_running)
+                {
+                    Bass.ChannelPlay(handle);
+                }
+            }
         }
 
         const int BufferCount = 3;
@@ -152,7 +153,7 @@ namespace Captura.Models
 
             Marshal.Copy(Buffer, buffer, 0, Length);
 
-            DataAvailable?.Invoke(this, new DataAvailableEventArgs(buffer, Length));
+            Task.Run(() => DataAvailable?.Invoke(this, new DataAvailableEventArgs(buffer, Length)));
         }
         
         /// <summary>
