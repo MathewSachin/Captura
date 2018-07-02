@@ -1,25 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using Screna;
 using System;
+using System.Linq;
+using Monitor = System.Windows.Forms.Screen;
 
 namespace Captura.Models
 {
     public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {
-        public Screen Screen { get; }
+        public IScreen Screen { get; }
 
-        readonly int _index;
-
-        ScreenItem(int Index)
+        ScreenItem(IScreen Screen)
         {
-            Screen = Screen.AllScreens[Index];
-
-            _index = Index;
+            this.Screen = Screen;
         }
 
-        public static int Count => Screen.AllScreens.Length;
+        public static int Count => Monitor.AllScreens.Length;
 
         public Bitmap Capture(bool Cursor)
         {
@@ -28,10 +25,7 @@ namespace Captura.Models
 
         public static IEnumerable<ScreenItem> Enumerate()
         {
-            var n = Count;
-
-            for (var i = 0; i < n; ++i)
-                yield return new ScreenItem(i);
+            return Monitor.AllScreens.Select(M => new ScreenItem(new ScreenWrapper(M)));
         }
 
         public string Name => Screen.DeviceName;
@@ -40,9 +34,9 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            Transform = P => new Point(P.X - Screen.Bounds.X, P.Y - Screen.Bounds.Y);
+            Transform = P => new Point(P.X - Screen.Rectangle.X, P.Y - Screen.Rectangle.Y);
 
-            return new RegionProvider(Screen.Bounds, IncludeCursor);
+            return new RegionProvider(Screen.Rectangle, IncludeCursor);
         }
     }
 }

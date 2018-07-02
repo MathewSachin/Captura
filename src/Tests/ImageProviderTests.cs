@@ -73,13 +73,13 @@ namespace Captura.Tests
             {
                 using (var imgProvider = screen.GetImageProvider(false, out var _))
                 {
-                    Assert.AreEqual(imgProvider.Width, screen.Screen.Bounds.Width);
-                    Assert.AreEqual(imgProvider.Height, screen.Screen.Bounds.Height);
+                    Assert.AreEqual(imgProvider.Width, screen.Screen.Rectangle.Width);
+                    Assert.AreEqual(imgProvider.Height, screen.Screen.Rectangle.Height);
 
                     using (var img = imgProvider.Capture())
                     {
-                        Assert.AreEqual(img.Width, screen.Screen.Bounds.Width);
-                        Assert.AreEqual(img.Height, screen.Screen.Bounds.Height);
+                        Assert.AreEqual(img.Width, screen.Screen.Rectangle.Width);
+                        Assert.AreEqual(img.Height, screen.Screen.Rectangle.Height);
                     }
                 }
             }

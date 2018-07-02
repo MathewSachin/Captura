@@ -16,15 +16,15 @@ namespace Screna
         /// <summary>
         /// Captures a Specific <see cref="Screen"/>.
         /// </summary>
-        /// <param name="Screen">The <see cref="Screen"/> to Capture.</param>
+        /// <param name="Screen">The <see cref="IScreen"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
         /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(Screen Screen, bool IncludeCursor = false)
+        public static Bitmap Capture(IScreen Screen, bool IncludeCursor = false)
         {
             if (Screen == null)
                 throw new ArgumentNullException(nameof(Screen));
 
-            return Capture(Screen.Bounds, IncludeCursor);
+            return Capture(Screen.Rectangle, IncludeCursor);
         }
 
         public static Bitmap Capture(IWindow Window, bool IncludeCursor = false)
