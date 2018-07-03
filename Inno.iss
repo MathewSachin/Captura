@@ -4,7 +4,7 @@
 #define MyAppName "Captura"
 #define MyAppPublisher "Mathew Sachin"
 #define MyAppURL "https://MathewSachin.github.io/Captura"
-#define MyAppExeName "Captura.UI.exe"
+#define MyAppExeName "captura.exe"
 
 [Setup]
 AppId={{C1670C5E-5042-4300-9491-6BFFF963823F}

@@ -29,9 +29,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaptureWebcam.cs" />
+    <Compile Include="CoreWebCamProvider.cs" />
     <Compile Include="Enumerations\GraphState.cs" />
     <Compile Include="Enumerations\PinDirection.cs" />
     <Compile Include="Filter.cs" />
@@ -61,10 +63,21 @@
     <Compile Include="Structures\RECT.cs" />
     <Compile Include="Structures\VideoInfoHeader.cs" />
     <Compile Include="Uuid.cs" />
+    <Compile Include="WebcamItem.cs" />
     <Compile Include="WorkAround.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

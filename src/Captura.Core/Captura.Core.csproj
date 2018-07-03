@@ -35,7 +35,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -43,6 +42,14 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Fakes\FakePreviewWindow.cs" />
+    <Compile Include="Fakes\FakeRegionItem.cs" />
+    <Compile Include="Fakes\FakeRegionProvider.cs" />
+    <Compile Include="Fakes\FakesModule.cs" />
+    <Compile Include="Fakes\FakeSystemTray.cs" />
+    <Compile Include="Fakes\FakeVideoSourcePicker.cs" />
+    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Models\NoVideoSourceProvider.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
@@ -60,7 +67,6 @@
     <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
     <Compile Include="Models\Overlays\ImageOverlay.cs" />
     <Compile Include="Models\Overlays\MousePointerOverlay.cs" />
-    <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
     <Compile Include="Models\Overlays\CustomOverlay.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />

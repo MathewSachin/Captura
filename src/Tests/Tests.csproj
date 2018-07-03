@@ -43,9 +43,6 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ModernUI.Xceed.Toolkit">
-      <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.8.3\lib\net45\Moq.dll</HintPath>
     </Reference>
@@ -82,10 +79,6 @@
       <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
       <Name>Captura.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Captura.Console\Captura.Console.csproj">
-      <Project>{cc710d4d-dfe8-4b31-bd7e-59ad80737e13}</Project>
-      <Name>Captura.Console</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
@@ -93,10 +86,6 @@
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
       <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
       <Name>Captura.Loc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura\Captura.csproj">
-      <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
-      <Name>Captura</Name>
     </ProjectReference>
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
       <Project>{222C215B-663F-4BD6-9B3E-8FA99C867B22}</Project>

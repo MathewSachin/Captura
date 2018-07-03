@@ -19,7 +19,7 @@ namespace Captura.Tests.Views
         [ClassInitialize]
         public static void Init(TestContext Context)
         {
-            _app = Application.Launch(new ProcessStartInfo("captura.ui.exe", "--no-persist"));
+            _app = Application.Launch(new ProcessStartInfo(TestManager.GetUiPath(), "--no-persist"));
 
             _mainWindow = _app.GetWindow("Captura");
         }
@@ -38,7 +38,7 @@ namespace Captura.Tests.Views
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = "captura",
+                FileName = TestManager.GetCliPath(),
                 Arguments = $"shot --source win:{Window} -f {FileName}",
                 UseShellExecute = false,
                 CreateNoWindow = true

@@ -23,10 +23,15 @@ namespace Captura
         {
             if (Args.Length == 0)
             {
-                Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "Captura.UI.exe"));
+                var uiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "captura.exe");
 
-                return;
+                if (File.Exists(uiPath))
+                {
+                    Process.Start(uiPath);
+
+                    return;
+                }
             }
 
             ServiceProvider.LoadModule(new CoreModule());

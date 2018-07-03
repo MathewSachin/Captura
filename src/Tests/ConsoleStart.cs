@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System.Threading;
 
@@ -13,7 +14,7 @@ namespace Captura.Tests.Console
             {
                 StartInfo =
                 {
-                    FileName = "captura",
+                    FileName = TestManager.GetCliPath(),
                     Arguments = Arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true,

@@ -6,7 +6,8 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
-    class CoreWebCamProvider : NotifyPropertyChanged, IWebCamProvider
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class CoreWebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
         public CoreWebCamProvider()
         {
