@@ -55,7 +55,7 @@
 
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
-            <Button>
+            <Button Command="{Binding OpenFolderCommand}">
                 <DockPanel>
                     <Path Data="{StaticResource IconFolder}"
                           Width="15"
@@ -76,7 +76,8 @@
                       Width="16"
                       Data="{StaticResource IconMore}"/>
             </Button>
-            <Border ToolTip="{Binding TargetFolder, Mode=OneWay}">
+            <Border ToolTip="{Binding TargetFolder, Mode=OneWay}"
+                    MouseUp="SelectTargetFolder">
                 <TextBox IsReadOnly="True"
                          IsEnabled="False"
                          Text="{Binding TargetFolder, Mode=OneWay}"/>

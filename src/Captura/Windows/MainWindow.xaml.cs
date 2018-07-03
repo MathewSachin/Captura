@@ -148,5 +148,13 @@ namespace Captura
         {
             HotkeysWindow.ShowInstance();
         }
+
+        void SelectTargetFolder(object Sender, MouseButtonEventArgs E)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.SelectOutputFolderCommand.ExecuteIfCan();
+            }
+        }
     }
 }

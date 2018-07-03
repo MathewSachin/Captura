@@ -1,16 +1,22 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Captura.Models;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegDownloadViewModel : NotifyPropertyChanged
     {
         public DelegateCommand StartCommand { get; }
 
         public DelegateCommand SelectFolderCommand { get; }
+
+        public ICommand OpenFolderCommand { get; }
 
         readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
@@ -32,16 +38,24 @@ namespace Captura.ViewModels
         readonly FFmpegSettings _ffmpegSettings;
         readonly LanguageManager _loc;
 
-        public FFmpegDownloadViewModel(IDialogService DialogService, ProxySettings ProxySettings, LanguageManager Loc, FFmpegSettings FfmpegSettings)
+        public FFmpegDownloadViewModel(IDialogService DialogService, ProxySettings ProxySettings, LanguageManager Loc, FFmpegSettings FFmpegSettings)
         {
             _dialogService = DialogService;
             _proxySettings = ProxySettings;
             _loc = Loc;
-            _ffmpegSettings = FfmpegSettings;
+            _ffmpegSettings = FFmpegSettings;
 
             StartCommand = new DelegateCommand(OnStartExecute);
 
             SelectFolderCommand = new DelegateCommand(OnSelectFolderExecute);
+
+            OpenFolderCommand = new DelegateCommand(() =>
+            {
+                if (Directory.Exists(_ffmpegSettings.FolderPath))
+                {
+                    Process.Start(_ffmpegSettings.FolderPath);
+                }
+            });
         }
 
         async void OnStartExecute()

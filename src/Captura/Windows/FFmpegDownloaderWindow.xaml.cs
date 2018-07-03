@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Shell;
 using Captura.ViewModels;
 
@@ -35,5 +36,13 @@ namespace Captura.Views
         }
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
+
+        void SelectTargetFolder(object Sender, MouseButtonEventArgs E)
+        {
+            if (DataContext is FFmpegDownloadViewModel vm)
+            {
+                vm.SelectFolderCommand.ExecuteIfCan();
+            }
+        }
     }
 }

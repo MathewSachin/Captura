@@ -69,7 +69,8 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
 
-                <Border ToolTip="{Binding Settings.FFmpeg.FolderPath}">
+                <Border ToolTip="{Binding Settings.FFmpeg.FolderPath}"
+                        MouseUp="SelectFFmpegFolder">
                     <xctk:WatermarkTextBox IsReadOnly="True"
                                            IsEnabled="False"
                                            Watermark="Load From PATH or App Directory"

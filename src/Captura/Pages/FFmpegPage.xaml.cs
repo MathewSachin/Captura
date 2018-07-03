@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Input;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -17,6 +19,14 @@ namespace Captura
         void ConfigCodecs(object Sender, RoutedEventArgs E)
         {
             FFmpegCodecWindow.ShowInstance();
+        }
+
+        void SelectFFmpegFolder(object Sender, MouseButtonEventArgs E)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.SelectFFmpegFolderCommand.ExecuteIfCan();
+            }
         }
     }
 }
