@@ -221,6 +221,12 @@ namespace Screna
         {
             try
             {
+                lock (_syncLock)
+                {
+                    if (_disposed)
+                        return;
+                }
+
                 _videoWriter.WriteAudio(E.Buffer, E.Length);
             }
             catch (Exception e)
