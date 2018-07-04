@@ -307,11 +307,13 @@ namespace Captura
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count)
             {
+                ViewModel.Settings.Audio.Enabled = true;
                 source.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count)
             {
+                ViewModel.Settings.Audio.Enabled = true;
                 source.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }
