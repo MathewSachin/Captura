@@ -58,6 +58,9 @@ namespace Captura
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
                         vm.Settings.Elapsed = dummySettings.Elapsed;
 
+                        // FFmpeg Path
+                        vm.Settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
+
                         foreach (var overlay in dummySettings.Censored)
                         {
                             vm.Settings.Censored.Add(overlay);
