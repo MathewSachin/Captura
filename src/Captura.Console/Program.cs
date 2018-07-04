@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Captura.Native;
 using CommandLine;
 using Screna;
 using static System.Console;
@@ -28,6 +29,8 @@ namespace Captura
 
                 return;
             }
+
+            ShCore.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessSystemDPIAware);
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());

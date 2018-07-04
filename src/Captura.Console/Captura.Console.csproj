@@ -85,6 +85,10 @@
       <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
       <Name>Captura.MouseKeyHook</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
+      <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
+      <Name>Captura.Native</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
       <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
       <Name>Captura.SharpAvi</Name>
