@@ -284,24 +284,45 @@ namespace Captura
                 }
             }
 
-            // Desktop Duplication
-            else if (CommonOptions is StartCmdOptions && Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+            // Window
+            else if (Regex.IsMatch(CommonOptions.Source, @"^win:\d+$"))
             {
-                var index = int.Parse(CommonOptions.Source.Substring(9));
+                var handle = new IntPtr(int.Parse(CommonOptions.Source.Substring(4)));
 
-                if (index < ScreenItem.Count)
+                var winProvider = ServiceProvider.Get<WindowSourceProvider>();
+
+                var matchingWin = winProvider.OfType<WindowItem>().FirstOrDefault(M => M.Window.Handle == handle);
+
+                if (matchingWin != null)
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+                    video.SelectedVideoSourceKind = winProvider;
 
-                    video.SelectedVideoSource = video.AvailableVideoSources[index];
+                    video.SelectedVideoSource = matchingWin;
                 }
             }
 
-            // No Video for Start
-            else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
+            // Start command only
+            else if (CommonOptions is StartCmdOptions)
             {
-                video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
-            }            
+                // Desktop Duplication
+                if (Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+                {
+                    var index = int.Parse(CommonOptions.Source.Substring(9));
+
+                    if (index < ScreenItem.Count)
+                    {
+                        video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+
+                        video.SelectedVideoSource = video.AvailableVideoSources[index];
+                    }
+                }
+
+                // No Video for Start
+                else if (CommonOptions.Source == "none")
+                {
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
+                }
+            }
         }
 
         static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
