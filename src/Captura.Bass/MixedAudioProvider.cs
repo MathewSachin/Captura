@@ -106,7 +106,7 @@ namespace Captura.Models
             }
         }
 
-        int FindPlaybackDevice(DeviceInfo LoopbackDeviceInfo)
+        static int FindPlaybackDevice(DeviceInfo LoopbackDeviceInfo)
         {
             for (var i = 0; Bass.GetDeviceInfo(i, out var info); ++i)
             {

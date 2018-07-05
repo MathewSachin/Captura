@@ -50,7 +50,7 @@ namespace Captura.Models
 
         public bool IsRegistered { get; private set; }
 
-        public ushort ID { get; private set; }
+        public ushort Id { get; private set; }
 
         public void Register()
         {
@@ -59,14 +59,14 @@ namespace Captura.Models
 
             // Generate Unique ID
             var uid = Guid.NewGuid().ToString("N");
-            ID = Kernel32.GlobalAddAtom(uid);
+            Id = Kernel32.GlobalAddAtom(uid);
             
-            if (User32.RegisterHotKey(IntPtr.Zero, ID, (int) Modifiers, (uint) Key))
+            if (User32.RegisterHotKey(IntPtr.Zero, Id, (int) Modifiers, (uint) Key))
                 IsRegistered = true;
             else
             {
-                Kernel32.GlobalDeleteAtom(ID);
-                ID = 0;
+                Kernel32.GlobalDeleteAtom(Id);
+                Id = 0;
             }
         }
         
@@ -89,12 +89,12 @@ namespace Captura.Models
             if (!IsRegistered)
                 return;
 
-            if (User32.UnregisterHotKey(IntPtr.Zero, ID))
+            if (User32.UnregisterHotKey(IntPtr.Zero, Id))
             {
                 IsRegistered = false;
 
-                Kernel32.GlobalDeleteAtom(ID);
-                ID = 0;
+                Kernel32.GlobalDeleteAtom(Id);
+                Id = 0;
             }
         }
 

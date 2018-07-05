@@ -262,7 +262,7 @@ namespace Captura.Models
         const float MouseRatioMin = 0.6f;
         const float MouseRatioMax = 1.2f;
 
-        byte ToByte(double Value)
+        static byte ToByte(double Value)
         {
             if (Value > 255)
                 return 255;

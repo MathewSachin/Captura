@@ -9,7 +9,7 @@ namespace Captura
 {
     public static class FFmpegService
     {
-        public const string FFmpegExeName = "ffmpeg.exe";
+        const string FFmpegExeName = "ffmpeg.exe";
 
         static FFmpegSettings GetSettings() => ServiceProvider.Get<FFmpegSettings>();
 

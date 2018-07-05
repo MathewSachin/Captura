@@ -16,8 +16,8 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        public int Width { get; }
-        public int Height { get; }
+        public int Width { get; } = -1;
+        public int Height { get; } = -1;
 
         public void CopyTo(byte[] Buffer, int Length)
         {

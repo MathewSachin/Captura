@@ -89,6 +89,7 @@ namespace Screna
 
                     if (img != null)
                     {
+                        // Avoid writing Repeat frames during congestion
                         if (img is RepeatFrame && _congestion)
                         {
                             continue;
@@ -97,6 +98,7 @@ namespace Screna
                         _videoWriter.WriteFrame(img);
                     }
 
+                    // Stop Writing
                     if (_frames.Count > _maxFrameCount)
                         break;
                 }
