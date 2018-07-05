@@ -417,12 +417,12 @@
                                   StandardButtonHeader="Pallette"
                                   ShowRecentColors="True"/>
 
-                <xctk:IntegerUpDown Name="SizeBox"
-                                    Minimum="1"
-                                    Maximum="100"
-                                    DockPanel.Dock="Bottom"
-                                    ValueChanged="SizeBox_OnValueChanged"
-                                    Margin="2"/>
+                <local:NumberBox x:Name="SizeBox"
+                                 Minimum="1"
+                                 Maximum="100"
+                                 DockPanel.Dock="Bottom"
+                                 ValueChanged="SizeBox_OnValueChanged"
+                                 Margin="2"/>
             </DockPanel>
         </Border>
         

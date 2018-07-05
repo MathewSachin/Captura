@@ -81,10 +81,10 @@ namespace Captura
             Close();
         }
 
-        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
+        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<int> E)
         {
-            if (InkCanvas != null && E.NewValue is int i)
-                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
+            if (InkCanvas != null)
+                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = E.NewValue;
         }
 
         void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
