@@ -65,6 +65,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\NumberBox.xaml.cs">
+      <DependentUpon>NumberBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\EllipseDynamicRenderer.cs" />
     <Compile Include="ImageEditor\Strokes\LineStroke.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\RectangleDynamicRenderer.cs" />
@@ -228,6 +231,10 @@
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Controls\NumberBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageEditor\ImageEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

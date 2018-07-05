@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Captura.NumberBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Name="This">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <TextBox Grid.RowSpan="2"
+                 Text="{Binding Text, Mode=TwoWay, ElementName=This}"
+                 VerticalContentAlignment="Center"
+                 HorizontalContentAlignment="Right"
+                 GotKeyboardFocus="TextBox_OnGotKeyboardFocus"
+                 BorderThickness="0"
+                 PreviewMouseLeftButtonDown="TextBox_OnPreviewMouseLeftButtonDown">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Up"
+                            Command="{Binding IncreaseCommand, ElementName=This}"/>
+                <KeyBinding Key="Down"
+                            Command="{Binding DecreaseCommand, ElementName=This}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        
+        <RepeatButton Grid.Column="1"
+                      Padding="5,0"
+                      IsTabStop="False"
+                      BorderThickness="0"
+                      Command="{Binding IncreaseCommand, ElementName=This}">
+            <Path Data="{StaticResource IconChevronUp}"
+                  Width="7"
+                  Height="5"
+                  Stretch="Uniform"/>
+        </RepeatButton>
+        
+        <RepeatButton Grid.Column="1"
+                      Grid.Row="1"
+                      Padding="5,0"
+                      IsTabStop="False"
+                      BorderThickness="0"
+                      Command="{Binding DecreaseCommand, ElementName=This}">
+            <Path Data="{StaticResource IconChevronDown}"
+                  Width="7"
+                  Height="5"
+                  Stretch="Uniform"/>
+        </RepeatButton>
+    </Grid>
+</UserControl>
