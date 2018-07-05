@@ -70,13 +70,13 @@
                                   StandardButtonHeader="Pallette"
                                   ShowRecentColors="True"/>
 
-                <xctk:IntegerUpDown Name="SizeBox"
-                                    Minimum="1"
-                                    Maximum="99"
-                                    DockPanel.Dock="Bottom"
-                                    ValueChanged="SizeBox_OnValueChanged"
-                                    Margin="0,2"
-                                    Width="40"/>
+                <local:NumberBox x:Name="SizeBox"
+                                 Minimum="1"
+                                 Maximum="99"
+                                 DockPanel.Dock="Bottom"
+                                 ValueChanged="SizeBox_OnValueChanged"
+                                 Margin="0,2"
+                                 Width="40"/>
             </DockPanel>
 
             <Label Background="{DynamicResource WindowBackground}"
@@ -141,19 +141,19 @@
                        Margin="-1,0,-1,-1"
                        Background="{DynamicResource WindowBackground}"
                        Grid.ColumnSpan="2">
-                <xctk:IntegerUpDown Width="60"
-                                    DockPanel.Dock="Right"
-                                    Margin="0,5,0,0"
-                                    Name="HeightBox"/>
+                <local:NumberBox Width="60"
+                                 DockPanel.Dock="Right"
+                                 Margin="0,5,0,0"
+                                 x:Name="HeightBox"/>
                 
                 <Label Content="x"
                        DockPanel.Dock="Right"
                        Margin="10,0"/>
 
-                <xctk:IntegerUpDown Width="60"
-                                    DockPanel.Dock="Right"
-                                    Margin="0,5,0,0"
-                                    Name="WidthBox"/>
+                <local:NumberBox Width="60"
+                                 DockPanel.Dock="Right"
+                                 Margin="0,5,0,0"
+                                 x:Name="WidthBox"/>
 
                 <CheckBox DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}"
                           IsChecked="{Binding Settings.UI.HideRegionSelectorWhenRecording}"

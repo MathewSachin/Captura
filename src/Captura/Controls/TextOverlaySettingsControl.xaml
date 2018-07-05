@@ -5,7 +5,6 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
              xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance base:TextOverlaySettings}">
@@ -26,11 +25,11 @@
                   ToolTip="Font"/>
 
 
-            <xctk:IntegerUpDown Minimum="1"
-                                Value="{Binding FontSize, Mode=TwoWay}"
-                                Grid.Column="1"
-                                Margin="10,5,5,5"
-                                ToolTip="{Binding FontSize, Source={StaticResource Loc}, Mode=OneWay}"/>
+            <local:NumberBox Minimum="1"
+                             Value="{Binding FontSize, Mode=TwoWay}"
+                             Grid.Column="1"
+                             Margin="10,5,5,5"
+                             ToolTip="{Binding FontSize, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding FontColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                               Grid.Column="2"
@@ -67,10 +66,10 @@
                    Grid.Column="1"
                    ContentStringFormat="{}{0}: "/>
 
-            <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
-                                Grid.Column="2"
-                                Margin="5"
-                                ToolTip="{Binding BorderThickness, Source={StaticResource Loc}, Mode=OneWay}"/>
+            <local:NumberBox Value="{Binding BorderThickness, Mode=TwoWay}"
+                             Grid.Column="2"
+                             Margin="5"
+                             ToolTip="{Binding BorderThickness, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                               Grid.Column="3"
@@ -89,13 +88,13 @@
                    ContentStringFormat="{}{0}: "
                    Margin="0,5"/>
 
-            <xctk:IntegerUpDown Value="{Binding HorizontalPadding, Mode=TwoWay}"
-                                Grid.Column="1"
-                                Margin="5"/>
+            <local:NumberBox Value="{Binding HorizontalPadding, Mode=TwoWay}"
+                             Grid.Column="1"
+                             Margin="5"/>
 
-            <xctk:IntegerUpDown Value="{Binding VerticalPadding, Mode=TwoWay}"
-                                Grid.Column="2"
-                                Margin="0,5"/>
+            <local:NumberBox Value="{Binding VerticalPadding, Mode=TwoWay}"
+                             Grid.Column="2"
+                             Margin="0,5"/>
         </Grid>
 
         <DockPanel>
@@ -111,8 +110,8 @@
                    ContentStringFormat="{}{0}: "
                    Margin="0,5,5,5"/>
 
-            <xctk:IntegerUpDown Value="{Binding CornerRadius, Mode=TwoWay}"
-                                Margin="0,5"/>
+            <local:NumberBox Value="{Binding CornerRadius, Mode=TwoWay}"
+                             Margin="0,5"/>
         </DockPanel>
 
         <local:PositionSettingsControl/>
