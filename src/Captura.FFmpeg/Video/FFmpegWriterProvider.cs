@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegWriterProvider : IVideoWriterProvider
     {
         public string Name => "FFmpeg";

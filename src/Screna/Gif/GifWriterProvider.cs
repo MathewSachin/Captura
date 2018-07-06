@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class GifWriterProvider : NotifyPropertyChanged, IVideoWriterProvider
     {
         readonly LanguageManager _loc;

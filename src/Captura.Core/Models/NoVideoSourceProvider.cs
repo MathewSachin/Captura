@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class NoVideoSourceProvider : VideoSourceProviderBase
     {
         public NoVideoSourceProvider(LanguageManager Loc) : base(Loc) { }

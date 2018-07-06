@@ -4,6 +4,7 @@ using System.Windows.Controls.Primitives;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     class SystemTray : ISystemTray
     {
         bool _first = true;

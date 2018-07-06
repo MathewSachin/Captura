@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class StreamingWriterProvider : IVideoWriterProvider
     {
         public string Name => "Streaming (Alpha)";

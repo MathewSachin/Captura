@@ -131,6 +131,7 @@ namespace Captura
                     .Properties()
                     .Where(M => Fields.Any(F => F.Key == M.Name))
                     .OrderBy(M => M.Name)
+                    .Cast<object>()
                     .ToArray();
 
                 var jobj = new JObject(jenum);

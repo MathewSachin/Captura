@@ -17,6 +17,7 @@ using Window = Screna.Window;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
         #region Fields

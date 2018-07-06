@@ -2,6 +2,7 @@
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class GifItem : IVideoWriterItem
     {
         readonly GifSettings _settings;

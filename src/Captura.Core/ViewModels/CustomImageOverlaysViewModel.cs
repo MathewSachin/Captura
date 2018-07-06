@@ -4,6 +4,7 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class CustomImageOverlaysViewModel : OverlayListViewModel<CustomImageOverlaySettings>
     {
         readonly IDialogService _dialogService;
