@@ -41,6 +41,9 @@ namespace Captura.Models
         {
             switch (ServiceName)
             {
+                case ServiceName.None:
+                    return nameof(LanguageManager.None);
+
                 case ServiceName.Recording:
                     return nameof(LanguageManager.StartStopRecording);
 
@@ -55,6 +58,12 @@ namespace Captura.Models
 
                 case ServiceName.DesktopScreenShot:
                     return nameof(LanguageManager.ScreenShotDesktop);
+
+                case ServiceName.ToggleMouseClicks:
+                    return nameof(LanguageManager.ToggleMouseClicks);
+
+                case ServiceName.ToggleKeystrokes:
+                    return nameof(LanguageManager.ToggleKeystrokes);
 
                 default:
                     return SpaceAtCapitals(ServiceName);

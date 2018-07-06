@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Captura
 {
@@ -25,6 +26,12 @@ namespace Captura
         }
 
         public string About
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Add
         {
             get => Get();
             set => Set(value);
@@ -396,6 +403,18 @@ namespace Captura
             set => Set(value);
         }
 
+        public string MinTrayStartup
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MinTrayClose
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string MouseClicks
         {
             get => Get();
@@ -409,6 +428,12 @@ namespace Captura
         }
 
         public string NoAudio
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string None
         {
             get => Get();
             set => Set(value);
@@ -499,6 +524,12 @@ namespace Captura
         }
 
         public string Port
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Preview
         {
             get => Get();
             set => Set(value);
@@ -600,6 +631,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string RestoreDefaults
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Right
         {
             get => Get();
@@ -619,6 +656,12 @@ namespace Captura
         }
 
         public string Screen
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ScreenPicker
         {
             get => Get();
             set => Set(value);
@@ -697,6 +740,18 @@ namespace Captura
         }
 
         public string Timeout
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ToggleMouseClicks
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ToggleKeystrokes
         {
             get => Get();
             set => Set(value);
@@ -787,6 +842,12 @@ namespace Captura
         }
 
         public string Window
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string WindowPicker
         {
             get => Get();
             set => Set(value);

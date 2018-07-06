@@ -31,7 +31,7 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <TextBlock Text="Add"/>
+                        <TextBlock Text="{Binding Add, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
                 
@@ -47,7 +47,7 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <TextBlock Text="Restore Defaults"/>
+                        <TextBlock Text="{Binding RestoreDefaults, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
             </Grid>
