@@ -15,7 +15,7 @@ namespace Captura
         
         public TranslationViewModel()
         {
-            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
+            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Languages");
             
             var files = Directory.EnumerateFiles(_langDir, "*.json");
 

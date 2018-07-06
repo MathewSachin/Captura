@@ -18,7 +18,7 @@ namespace Captura
 
         LanguageManager()
         {
-            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
+            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Languages");
 
             _defaultLanguage = LoadLang("en");
 

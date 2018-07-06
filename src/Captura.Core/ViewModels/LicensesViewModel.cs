@@ -9,7 +9,7 @@ namespace Captura.ViewModels
     {
         public LicensesViewModel()
         {
-            var selfPath = Assembly.GetExecutingAssembly().Location;
+            var selfPath = Assembly.GetEntryAssembly().Location;
 
             var folder = Path.Combine(Path.GetDirectoryName(selfPath), "licenses");
 
