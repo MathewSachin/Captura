@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Windows;
-using System.Windows.Interop;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Media.Imaging;
-using Captura.Native;
 using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace Captura
@@ -14,15 +12,11 @@ namespace Captura
         {
             if (Clipboard.ContainsImage() && Clipboard.GetImage() is Bitmap bitmap)
             {
-                var hBitmap = bitmap.GetHbitmap();
+                using (var ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, ImageFormat.Png);
 
-                try
-                {
-                    return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                }
-                finally
-                {
-                    Gdi32.DeleteObject(hBitmap);
+                    return BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad).Frames[0];
                 }
             }
 

@@ -437,10 +437,6 @@
       <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
       <Name>Captura.MouseKeyHook</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
-      <Project>{81f2e68e-4708-4d52-8419-51888f22d05e}</Project>
-      <Name>Captura.Native</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
