@@ -904,7 +904,21 @@ namespace Captura.ViewModels
 
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }
-        
+
+        readonly object _stopRecTaskLock = new object();
+        readonly List<Task> _stopRecTasks = new List<Task>();
+
+        public int RunningStopRecordingCount
+        {
+            get
+            {
+                lock (_stopRecTaskLock)
+                {
+                    return _stopRecTasks.Count(M => !M.IsCompleted);
+                }
+            }
+        }
+
         public async Task StopRecording()
         {
             Status.LocalizationKey = nameof(LanguageManager.Stopped);
@@ -921,6 +935,11 @@ namespace Captura.ViewModels
             var rec = _recorder;
             
             var task = Task.Run(() => rec.Dispose());
+
+            lock (_stopRecTaskLock)
+            {
+                _stopRecTasks.Add(task);
+            }
             
             AfterRecording();
 
@@ -928,6 +947,11 @@ namespace Captura.ViewModels
             {
                 // Ensure saved
                 await task;
+
+                lock (_stopRecTaskLock)
+                {
+                    _stopRecTasks.Remove(task);
+                }
             }
             catch (Exception e)
             {
