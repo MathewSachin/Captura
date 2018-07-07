@@ -336,7 +336,10 @@ Task("Test")
 Task("Default").IsDependentOn("Populate-Output");
 
 Task("Install-Inno")
-    .Does(() => ChocolateyInstall("innosetup"));
+    .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
+    {
+        LimitOutput = true
+    }));
 
 Task("CI")
     .IsDependentOn("Test")
