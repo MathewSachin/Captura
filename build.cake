@@ -358,7 +358,7 @@ Task("Default").IsDependentOn("Populate-Output");
 Task("Install-Inno")
     .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
     {
-        NotSilent = false
+        ArgumentCustomization = Args => Args.Append("--no-progress")
     }));
 #endregion
 
