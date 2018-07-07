@@ -10,6 +10,7 @@ var tag = Argument<string>("apptag", null);
 var chocoVersion = tag?.Substring(1);
 var prerelease = false;
 
+// Deploy on Release Tag builds
 var deploy = configuration == "Release" && !string.IsNullOrWhiteSpace(tag);
 
 const string slnPath = "src/Captura.sln";
@@ -24,13 +25,16 @@ bool apiKeyEmbed, assemblyInfoUpdate;
 #region Functions
 void HandleTag()
 {
+    // Not a Tag Build
     if (string.IsNullOrWhiteSpace(tag))
         return;
 
+    // Stable Release
     if (IsMatch(tag, @"^v\d+\.\d+\.\d+$"))
     {
         version = tag;
     }
+    // Prerelease
     else if (IsMatch(tag, @"^v\d+\.\d+\.\d+-[^\s]+$"))
     {
         prerelease = true;
@@ -256,7 +260,7 @@ Teardown(context =>
 #endregion
 
 #region Tasks
-Task("Clean").Does(() =>
+var cleanTask = Task("Clean").Does(() =>
 {
     MSBuild(slnPath, settings =>
     {
@@ -266,10 +270,10 @@ Task("Clean").Does(() =>
     });
 });
 
-Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
+var nugetRestoreTask = Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
 
-Task("Build")
-    .IsDependentOn("NuGet-Restore")
+var buildTask = Task("Build")
+    .IsDependentOn(nugetRestoreTask)
     .Does(() =>
 {
     MSBuild(slnPath, settings =>
@@ -284,20 +288,20 @@ Task("Build")
     CopyLicenses();
 });
 
-Task("Clean-Output").Does(() => CleanDirectory("dist"));
+var cleanOutputTask = Task("Clean-Output").Does(() => CleanDirectory("dist"));
 
-Task("Populate-Output")
-    .IsDependentOn("Clean-Output")
-    .IsDependentOn("Build")
+var populateOutputTask = Task("Populate-Output")
+    .IsDependentOn(cleanOutputTask)
+    .IsDependentOn(buildTask)
     .Does(() => PopulateOutput());
 
-Task("Pack-Portable")
-    .IsDependentOn("Populate-Output")
+var packPortableTask = Task("Pack-Portable")
+    .IsDependentOn(populateOutputTask)
     .Does(() => Zip("dist", "temp/Captura-Portable.zip"));
 
-Task("Pack-Setup")
+var packSetupTask = Task("Pack-Setup")
     .WithCriteria(configuration == "Release")
-    .IsDependentOn("Populate-Output")
+    .IsDependentOn(populateOutputTask)
     .Does(() =>
 {
     InnoSetup("Inno.iss", new InnoSetupSettings
@@ -307,15 +311,15 @@ Task("Pack-Setup")
     });
 });
 
-Task("Pack-Choco")
+var packChocoTask = Task("Pack-Choco")
     .WithCriteria(deploy)
-    .IsDependentOn("Pack-Portable")
+    .IsDependentOn(packPortableTask)
     .Does(() => PackChoco(tag, chocoVersion));
 
-Task("Deploy-GitHub")
+var deployGitHubTask = Task("Deploy-GitHub")
     .WithCriteria(deploy)
-    .IsDependentOn("Pack-Portable")
-    .IsDependentOn("Pack-Setup")
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(packSetupTask)
     .Does(() => 
 {
     // Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)
@@ -337,10 +341,10 @@ Task("Deploy-GitHub")
         tag);
 });
 
-Task("Deploy-Choco")
+var deployChocoTask = Task("Deploy-Choco")
     .WithCriteria(deploy)
-    .IsDependentOn("Pack-Choco")
-    .IsDependentOn("Deploy-GitHub")
+    .IsDependentOn(packChocoTask)
+    .IsDependentOn(deployGitHubTask)
     .Does(() =>
 {
     ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
@@ -349,13 +353,13 @@ Task("Deploy-Choco")
     });
 });
 
-Task("Test")
-    .IsDependentOn("Build")
+var testTask = Task("Test")
+    .IsDependentOn(buildTask)
     .Does(() => XUnit2($"src/Tests/bin/{configuration}/Captura.Tests.dll"));
 
-Task("Default").IsDependentOn("Populate-Output");
+var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
 
-Task("Install-Inno")
+var installInnoTask = Task("Install-Inno")
     .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
     {
         ArgumentCustomization = Args => Args.Append("--no-progress")
@@ -384,13 +388,13 @@ var artifacts = new []
 
 Task("CI")
     .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
-    .IsDependentOn("Test")
-    .IsDependentOn("Pack-Portable")
-    .IsDependentOn("Install-Inno")
-    .IsDependentOn("Pack-Setup")
-    .IsDependentOn("Pack-Choco")
-    .IsDependentOn("Deploy-GitHub")
-    .IsDependentOn("Deploy-Choco")
+    .IsDependentOn(testTask)
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(installInnoTask)
+    .IsDependentOn(packSetupTask)
+    .IsDependentOn(packChocoTask)
+    .IsDependentOn(deployGitHubTask)
+    .IsDependentOn(deployChocoTask)
     .Does(() =>
 {
     AppVeyor.UpdateBuildVersion($"{version}.{EnvironmentVariable("APPVEYOR_BUILD_NUMBER")}");
