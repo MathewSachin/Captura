@@ -1,4 +1,5 @@
 #tool "nuget:?package=xunit.runner.console"
+#tool "nuget:?package=gitreleasemanager"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -286,17 +287,66 @@ Task("Pack-Choco")
     .IsDependentOn("Pack-Portable")
     .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
 
+Task("Deploy-Choco")
+    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
+    .IsDependentOn("Pack-Choco")
+    .Does(() =>
+{
+    var chocoVersion = Environment("$env:APPVEYOR_REPO_TAG_NAME").Substring(1);
+
+    ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
+    {
+        ApiKey = Environment("choco_key")
+    });
+});
+
+Task("Deploy-GitHub")
+    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
+    .IsDependentOn("Pack-Portable")
+    .IsDependentOn("Pack-Setup")
+    .Does(() => 
+{
+    // Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)
+    GitReleaseManagerCreate("MathewSachin",
+        Environment("git_key"),
+        "MathewSachin",
+        "Captura",
+        new GitReleaseManagerCreateSettings
+        {
+            Name = $"Captura {Environment("APPVEYOR_REPO_TAG_NAME")}",
+            Prerelease = Environment("prerelease") == "true",
+            Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
+        });
+
+    GitReleaseManagerPublish("MathewSachin",
+        Environment("git_key"),
+        "MathewSachin",
+        "Captura",
+        Environment("APPVEYOR_REPO_TAG_NAME"),
+        new GitReleaseManagerPublishSettings
+        {
+            Prerelease = Environment("prerelease") == "true",
+            Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
+        });
+});
+
 Task("Test")
     .IsDependentOn("Build")
     .Does(() => XUnit2($"src/Tests/bin/{configuration}/Captura.Tests.dll"));
 
 Task("Default").IsDependentOn("Populate-Output");
 
+Task("Install-Inno")
+    .Does(() => ChocolateyInstall("innosetup"));
+
 Task("CI")
     .IsDependentOn("Test")
     .IsDependentOn("Pack-Portable")
+    .IsDependentOn("Install-Inno")
     .IsDependentOn("Pack-Setup")
-    .IsDependentOn("Pack-Choco");
+    .IsDependentOn("Pack-Choco")
+    .IsDependentOn("Deploy-Choco")
+    .IsDependentOn("Deploy-GitHub");
 #endregion
 
 // Start
