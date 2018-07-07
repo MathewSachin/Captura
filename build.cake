@@ -1,3 +1,5 @@
+#tool "nuget:?package=xunit.runner.console"
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var version = Argument<string>("appversion", null);
@@ -284,9 +286,14 @@ Task("Pack-Choco")
     .IsDependentOn("Pack-Portable")
     .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
 
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => XUnit2($"src/Tests/bin/{configuration}/Captura.Tests.dll"));
+
 Task("Default").IsDependentOn("Populate-Output");
 
 Task("CI")
+    .IsDependentOn("Test")
     .IsDependentOn("Pack-Portable")
     .IsDependentOn("Pack-Setup")
     .IsDependentOn("Pack-Choco");

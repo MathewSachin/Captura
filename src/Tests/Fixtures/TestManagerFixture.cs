@@ -1,24 +1,25 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Captura.Tests
 {
-    [TestClass]
-    public class TestManager
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class TestManagerFixture : IDisposable
     {
-        [AssemblyInitialize]
-        public static void Init(TestContext Context)
+        public TestManagerFixture()
         {
             ServiceProvider.LoadModule(new CoreModule());
 
             ServiceProvider.LoadModule(new FakesModule());
         }
 
+        public void Dispose() { }
+
         static string GetPath(string FolderName, string FileName)
         {
-            var path = Assembly.GetExecutingAssembly().Location;
+            var path = typeof(IOverlay).Assembly.CodeBase
+                .Split(new [] {"///"}, StringSplitOptions.None)[1];
 
 #if DEBUG
             const string config = "Debug";

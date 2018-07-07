@@ -34,6 +34,8 @@ artifacts:
   - path: temp/captura.*.nupkg
     name: Chocolatey
 
+test: off
+
 deploy:
   - provider: GitHub
     tag: $(APPVEYOR_REPO_TAG_NAME)

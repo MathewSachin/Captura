@@ -1,42 +1,39 @@
 ﻿using System;
 using System.IO;
 using Captura.Audio;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Screna.Audio;
+using Xunit;
 
 namespace Captura.Tests
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class AudioFileWriterTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullAudioOutputStream()
         {
-            using (new AudioFileWriter(OutStream: null, Format: new WaveFormat()))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                
-            }
+                using (new AudioFileWriter(OutStream: null, Format: new WaveFormat())) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullWaveFormat()
         {
-            using (new AudioFileWriter(Stream.Null, null))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new AudioFileWriter(Stream.Null, null)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullFileName()
         {
-            using (new AudioFileWriter(FileName: null, Format: new WaveFormat()))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new AudioFileWriter(FileName: null, Format: new WaveFormat())) { }
+            });
         }
     }
 }

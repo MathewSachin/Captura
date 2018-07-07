@@ -1,105 +1,105 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Screna;
+using Xunit;
 
 namespace Captura.Tests
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class RecorderTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        readonly MoqFixture _moq;
+
+        public RecorderTests(MoqFixture Moq)
+        {
+            _moq = Moq;
+        }
+
+        [Fact]
         public void NullVideoWriter()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
 
-            using (new Recorder(null, imageProvider, 10))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                
-            }
+                using (new Recorder(null, imageProvider, 10)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullImageProvider()
         {
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
+            var videoWriter = _moq.GetVideoFileWriterMock().Object;
 
-            using (new Recorder(videoWriter, null, 10))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new Recorder(videoWriter, null, 10)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullAudioWriter()
         {
-            var audioProvider = MoqFactory.GetAudioProviderMock().Object;
+            var audioProvider = _moq.GetAudioProviderMock().Object;
 
-            using (new Recorder(null, audioProvider))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new Recorder(null, audioProvider)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullAudioProvider()
         {
-            var audioWriter = MoqFactory.GetAudioFileWriterMock().Object;
+            var audioWriter = _moq.GetAudioFileWriterMock().Object;
 
-            using (new Recorder(audioWriter, null))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new Recorder(audioWriter, null)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void NullGifWriter()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
 
-            using (new VFRGifRecorder(null, imageProvider))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new VFRGifRecorder(null, imageProvider)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void NegativeFrameRate()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
+            var videoWriter = _moq.GetVideoFileWriterMock().Object;
 
-            using (new Recorder(videoWriter, imageProvider, -1))
+            Assert.Throws<ArgumentException>(() =>
             {
-                
-            }
+                using (new Recorder(videoWriter, imageProvider, -1)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ZeroFrameRate()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
+            var videoWriter = _moq.GetVideoFileWriterMock().Object;
 
-            using (new Recorder(videoWriter, imageProvider, 0))
+            Assert.Throws<ArgumentException>(() =>
             {
-
-            }
+                using (new Recorder(videoWriter, imageProvider, 0)) { }
+            });
         }
 
-        [TestMethod]
+        [Fact]
         public void RecorderVideoDispose()
         {
-            var imgProviderMock = MoqFactory.GetImageProviderMock();
-            var videoWriterMock = MoqFactory.GetVideoFileWriterMock();
-            var audioProviderMock = MoqFactory.GetAudioProviderMock();
+            var imgProviderMock = _moq.GetImageProviderMock();
+            var videoWriterMock = _moq.GetVideoFileWriterMock();
+            var audioProviderMock = _moq.GetAudioProviderMock();
 
             using (new Recorder(videoWriterMock.Object, imgProviderMock.Object, 10, audioProviderMock.Object))
             {
@@ -111,11 +111,11 @@ namespace Captura.Tests
             audioProviderMock.Verify(M => M.Dispose(), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void RecorderAudioDispose()
         {
-            var audioWriterMock = MoqFactory.GetAudioFileWriterMock();
-            var audioProviderMock = MoqFactory.GetAudioProviderMock();
+            var audioWriterMock = _moq.GetAudioFileWriterMock();
+            var audioProviderMock = _moq.GetAudioProviderMock();
 
             using (new Recorder(audioWriterMock.Object, audioProviderMock.Object))
             {
@@ -126,12 +126,11 @@ namespace Captura.Tests
             audioProviderMock.Verify(M => M.Dispose(), Times.Once);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
+        [Fact]
         public void StartAfterDisposed()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
+            var videoWriter = _moq.GetVideoFileWriterMock().Object;
 
             var recorder = new Recorder(videoWriter, imageProvider, 10);
 
@@ -139,15 +138,14 @@ namespace Captura.Tests
             {
             }
 
-            recorder.Start();
+            Assert.Throws<ObjectDisposedException>(() => recorder.Start());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
+        [Fact]
         public void StopAfterDisposed()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var videoWriter = MoqFactory.GetVideoFileWriterMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
+            var videoWriter = _moq.GetVideoFileWriterMock().Object;
 
             var recorder = new Recorder(videoWriter, imageProvider, 10);
 
@@ -155,7 +153,7 @@ namespace Captura.Tests
             {
             }
 
-            recorder.Stop();
+            Assert.Throws<ObjectDisposedException>(() => recorder.Stop());
         }
     }
 }

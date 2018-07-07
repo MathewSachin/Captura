@@ -1,20 +1,21 @@
-﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading;
+using Xunit;
 
 namespace Captura.Tests.Console
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class ConsoleStartTests
     {
         static Process Start(string Arguments)
         {
+            var path = TestManagerFixture.GetCliPath();
+
             var process = new Process
             {
                 StartInfo =
                 {
-                    FileName = TestManager.GetCliPath(),
+                    FileName = path,
                     Arguments = Arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -44,8 +45,7 @@ namespace Captura.Tests.Console
             return process;
         }
         
-        [TestMethod]
-        [Timeout(5000)]
+        [Fact]
         public void StartGif()
         {
             var process = Start("start --encoder gif");
@@ -54,20 +54,19 @@ namespace Captura.Tests.Console
 
             process.StandardInput.WriteLine('q');
 
-            process.WaitForExit();
+            Assert.True(process.WaitForExit(5000), "Timeout");
 
-            Assert.AreEqual(process.ExitCode, 0, $"Process exited with exit code: {process.ExitCode}");
+            Assert.Equal(0, process.ExitCode);
         }
 
-        [TestMethod]
-        [Timeout(5000)]
+        [Fact]
         public void StartGifFixedDuration()
         {
             var process = Start("start --encoder gif --length 1");
 
-            process.WaitForExit();
+            Assert.True(process.WaitForExit(5000), "Timeout");
 
-            Assert.AreEqual(process.ExitCode, 0, $"Process exited with exit code: {process.ExitCode}");
+            Assert.Equal(0, process.ExitCode);
         }
     }
 }

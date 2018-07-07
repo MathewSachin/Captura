@@ -1,13 +1,17 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Captura.Audio;
 using Moq;
 using Screna;
 
 namespace Captura.Tests
 {
-    public static class MoqFactory
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class MoqFixture : IDisposable
     {
-        public static Mock<IImageProvider> GetImageProviderMock(int Width = 100, int Height = 50)
+        public void Dispose() { }
+
+        public Mock<IImageProvider> GetImageProviderMock(int Width = 100, int Height = 50)
         {
             var mock = new Mock<IImageProvider>();
 
@@ -20,7 +24,7 @@ namespace Captura.Tests
             return mock;
         }
 
-        public static Mock<IAudioProvider> GetAudioProviderMock()
+        public Mock<IAudioProvider> GetAudioProviderMock()
         {
             var mock = new Mock<IAudioProvider>();
 
@@ -29,12 +33,12 @@ namespace Captura.Tests
             return mock;
         }
 
-        public static Mock<IAudioFileWriter> GetAudioFileWriterMock()
+        public Mock<IAudioFileWriter> GetAudioFileWriterMock()
         {
             return new Mock<IAudioFileWriter>();
         }
 
-        public static Mock<IVideoFileWriter> GetVideoFileWriterMock()
+        public Mock<IVideoFileWriter> GetVideoFileWriterMock()
         {
             var mock = new Mock<IVideoFileWriter>();
 
@@ -46,7 +50,7 @@ namespace Captura.Tests
             return mock;
         }
 
-        public static Mock<IOverlay> GetOverlayMock()
+        public Mock<IOverlay> GetOverlayMock()
         {
             return new Mock<IOverlay>();
         }
