@@ -4,6 +4,9 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var version = Argument<string>("appversion", null);
+var tag = Argument<string>("apptag", null);
+
+var deploy = AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
 
 #region Fields
 const string slnPath = "src/Captura.sln";
@@ -283,51 +286,47 @@ Task("Pack-Setup")
 
 Task("Pack-Choco")
     // Run only on AppVeyor Release Tag builds
-    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
+    .WithCriteria(deploy)
     .IsDependentOn("Pack-Portable")
     .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
 
-Task("Deploy-Choco")
-    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
-    .IsDependentOn("Pack-Choco")
-    .Does(() =>
-{
-    var chocoVersion = Environment("$env:APPVEYOR_REPO_TAG_NAME").Substring(1);
-
-    ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
-    {
-        ApiKey = Environment("choco_key")
-    });
-});
-
 Task("Deploy-GitHub")
-    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
+    .WithCriteria(deploy)
     .IsDependentOn("Pack-Portable")
     .IsDependentOn("Pack-Setup")
     .Does(() => 
 {
     // Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)
     GitReleaseManagerCreate("MathewSachin",
-        Environment("git_key"),
+        EnvironmentVariable("git_key"),
         "MathewSachin",
         "Captura",
         new GitReleaseManagerCreateSettings
         {
-            Name = $"Captura {Environment("APPVEYOR_REPO_TAG_NAME")}",
-            Prerelease = Environment("prerelease") == "true",
+            Name = $"Captura {EnvironmentVariable("APPVEYOR_REPO_TAG_NAME")}",
+            Prerelease = EnvironmentVariable("prerelease") == "true",
             Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
         });
 
     GitReleaseManagerPublish("MathewSachin",
-        Environment("git_key"),
+        EnvironmentVariable("git_key"),
         "MathewSachin",
         "Captura",
-        Environment("APPVEYOR_REPO_TAG_NAME"),
-        new GitReleaseManagerPublishSettings
-        {
-            Prerelease = Environment("prerelease") == "true",
-            Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
-        });
+        EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"));
+});
+
+Task("Deploy-Choco")
+    .WithCriteria(deploy)
+    .IsDependentOn("Pack-Choco")
+    .IsDependentOn("Deploy-GitHub")
+    .Does(() =>
+{
+    var chocoVersion = EnvironmentVariable("$env:APPVEYOR_REPO_TAG_NAME").Substring(1);
+
+    ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
+    {
+        ApiKey = EnvironmentVariable("choco_key")
+    });
 });
 
 Task("Test")
@@ -345,8 +344,8 @@ Task("CI")
     .IsDependentOn("Install-Inno")
     .IsDependentOn("Pack-Setup")
     .IsDependentOn("Pack-Choco")
-    .IsDependentOn("Deploy-Choco")
-    .IsDependentOn("Deploy-GitHub");
+    .IsDependentOn("Deploy-GitHub")
+    .IsDependentOn("Deploy-Choco");
 #endregion
 
 // Start
