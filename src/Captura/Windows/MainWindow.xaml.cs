@@ -126,6 +126,12 @@ namespace Captura
                         "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                         return false;
                 }
+                else if (vm.RunningStopRecordingCount > 0)
+                {
+                    if (!ServiceProvider.MessageProvider.ShowYesNo(
+                        "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
+                        return false;
+                }
 
                 vm.Dispose();
             }

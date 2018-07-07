@@ -5,6 +5,7 @@ namespace Captura
     /// <summary>
     /// Command-line options for the WPF app.
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class CmdOptions
     {
         [Option("reset", HelpText = "Reset all setting values to default.")]

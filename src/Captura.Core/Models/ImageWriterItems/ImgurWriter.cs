@@ -13,6 +13,7 @@ using Screna;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ImgurWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly DiskWriter _diskWriter;

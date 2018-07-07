@@ -9,7 +9,7 @@ namespace Captura
 {
     public class RecentItemToIconStyleConverter : OneWayConverter
     {
-        object GetIcon(object Value)
+        static object GetIcon(object Value)
         {
             var app = Application.Current;
 
@@ -32,7 +32,7 @@ namespace Captura
             }
         }
 
-        Color GetColor(object Value)
+        static Color GetColor(object Value)
         {
             switch (Value)
             {

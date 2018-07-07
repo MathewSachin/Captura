@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Captura.Native;
 using CommandLine;
 using Screna;
 using static System.Console;
@@ -33,6 +34,8 @@ namespace Captura
                     return;
                 }
             }
+
+            ShCore.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessSystemDPIAware);
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());
@@ -59,6 +62,9 @@ namespace Captura
                         vm.Settings.Clicks = dummySettings.Clicks;
                         vm.Settings.Keystrokes = dummySettings.Keystrokes;
                         vm.Settings.Elapsed = dummySettings.Elapsed;
+
+                        // FFmpeg Path
+                        vm.Settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
 
                         foreach (var overlay in dummySettings.Censored)
                         {
@@ -283,24 +289,45 @@ namespace Captura
                 }
             }
 
-            // Desktop Duplication
-            else if (CommonOptions is StartCmdOptions && Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+            // Window
+            else if (Regex.IsMatch(CommonOptions.Source, @"^win:\d+$"))
             {
-                var index = int.Parse(CommonOptions.Source.Substring(9));
+                var handle = new IntPtr(int.Parse(CommonOptions.Source.Substring(4)));
 
-                if (index < ScreenItem.Count)
+                var winProvider = ServiceProvider.Get<WindowSourceProvider>();
+
+                var matchingWin = winProvider.OfType<WindowItem>().FirstOrDefault(M => M.Window.Handle == handle);
+
+                if (matchingWin != null)
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+                    video.SelectedVideoSourceKind = winProvider;
 
-                    video.SelectedVideoSource = video.AvailableVideoSources[index];
+                    video.SelectedVideoSource = matchingWin;
                 }
             }
 
-            // No Video for Start
-            else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
+            // Start command only
+            else if (CommonOptions is StartCmdOptions)
             {
-                video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
-            }            
+                // Desktop Duplication
+                if (Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+                {
+                    var index = int.Parse(CommonOptions.Source.Substring(9));
+
+                    if (index < ScreenItem.Count)
+                    {
+                        video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+
+                        video.SelectedVideoSource = video.AvailableVideoSources[index];
+                    }
+                }
+
+                // No Video for Start
+                else if (CommonOptions.Source == "none")
+                {
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
+                }
+            }
         }
 
         static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
@@ -309,11 +336,13 @@ namespace Captura
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count)
             {
+                ViewModel.Settings.Audio.Enabled = true;
                 source.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count)
             {
+                ViewModel.Settings.Audio.Enabled = true;
                 source.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }

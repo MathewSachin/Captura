@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Captura
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class HotKeyManager : IDisposable
     {
         readonly ObservableCollection<Hotkey> _hotkeys = new ObservableCollection<Hotkey>();
@@ -135,7 +136,7 @@ namespace Captura
         
         public void ProcessHotkey(int Id)
         {
-            var hotkey = Hotkeys.SingleOrDefault(H => H.ID == Id);
+            var hotkey = Hotkeys.SingleOrDefault(H => H.Id == Id);
 
             if (hotkey != null)
                 HotkeyPressed?.Invoke(hotkey.Service.ServiceName);

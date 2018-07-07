@@ -24,14 +24,14 @@ namespace Captura
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
         
-        void CaptureImage_OnClick(object Sender, RoutedEventArgs E)
+        async void CaptureImage_OnClick(object Sender, RoutedEventArgs E)
         {
             try
             {
                 var img = ServiceProvider.Get<WebCamProvider>().Capture();
                 
                 if (img != null)
-                    ServiceProvider.Get<MainViewModel>().SaveScreenShot(img);
+                    await ServiceProvider.Get<MainViewModel>().SaveScreenShot(img);
             }
             catch { }
         }

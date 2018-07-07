@@ -501,7 +501,7 @@ namespace Captura
             UpdateScale();
         }
 
-        Color GetClickColor(MouseButton Button)
+        static Color GetClickColor(MouseButton Button)
         {
             var settings = ServiceProvider.Get<Settings>();
 

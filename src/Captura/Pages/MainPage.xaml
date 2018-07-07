@@ -4,7 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
       x:Class="Captura.MainPage">
-    <StackPanel Margin="-5,0,0,0">        
+    <StackPanel Margin="-5,0,0,0">
         <DockPanel>
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
@@ -87,8 +87,8 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
-            
-            <Button Content="Preview"
+
+            <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
                     DockPanel.Dock="Right"
                     Click="Preview_Click"
                     Padding="10,0"
@@ -130,7 +130,7 @@
                       Grid.Column="2"
                       IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
-            <Button Content="Preview"
+            <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
                     Grid.Column="3"
                     Command="{Binding ShowPreviewCommand}"
                     Padding="10,0"

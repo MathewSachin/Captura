@@ -89,6 +89,7 @@ namespace Screna
 
                     if (img != null)
                     {
+                        // Avoid writing Repeat frames during congestion
                         if (img is RepeatFrame && _congestion)
                         {
                             continue;
@@ -97,6 +98,7 @@ namespace Screna
                         _videoWriter.WriteFrame(img);
                     }
 
+                    // Stop Writing
                     if (_frames.Count > _maxFrameCount)
                         break;
                 }
@@ -122,7 +124,7 @@ namespace Screna
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
 
-                Task<IBitmapFrame> task = null;
+                Task<bool> task = null;
 
                 // Returns false when stopped
                 bool AddFrame(IBitmapFrame Frame)
@@ -177,9 +179,8 @@ namespace Screna
 
                     if (task != null)
                     {
-                        var frame = await task;
-
-                        if (!AddFrame(frame))
+                        // If false, stop recording
+                        if (!await task)
                             return;
 
                         if (!_congestion)
@@ -195,7 +196,9 @@ namespace Screna
                         }
                     }
 
-                    task = Task.Factory.StartNew(() => _imageProvider.Capture());
+                    task = Task.Factory
+                        .StartNew(() => _imageProvider.Capture())
+                        .ContinueWith(T => AddFrame(T.Result));
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 

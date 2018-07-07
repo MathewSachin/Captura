@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class RecentViewModel : ViewModelBase, IDisposable
     {
         readonly ObservableCollection<RecentItemViewModel> _recentList = new ObservableCollection<RecentItemViewModel>();

@@ -45,13 +45,13 @@
                 <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnStartup}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
-                               Text="Minimize to Tray on Startup"/>
+                               Text="{Binding MinTrayStartup, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </CheckBox>
 
                 <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnClose}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
-                               Text="Minimize To Tray when Closed"/>
+                               Text="{Binding MinTrayClose, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </CheckBox>
 
                 <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"

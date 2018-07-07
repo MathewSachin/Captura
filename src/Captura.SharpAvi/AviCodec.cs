@@ -7,6 +7,7 @@ namespace Captura.Models
     /// </summary>
     class AviCodec
     {
+        // ReSharper disable once InconsistentNaming
         internal FourCC FourCC { get; }
 
         /// <summary>
@@ -14,6 +15,7 @@ namespace Captura.Models
         /// </summary>
         public string Name { get; }
 
+        // ReSharper disable once InconsistentNaming
         internal AviCodec(FourCC FourCC, string Name)
         {
             this.FourCC = FourCC;

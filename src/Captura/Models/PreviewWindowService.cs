@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class PreviewWindowService : IPreviewWindow
     {
         readonly PreviewWindow _previewWindow = new PreviewWindow();

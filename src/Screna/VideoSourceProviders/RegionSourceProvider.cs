@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class RegionSourceProvider : VideoSourceProviderBase
     {
         readonly IRegionProvider _regionProvider;

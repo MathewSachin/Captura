@@ -127,6 +127,60 @@
                         <TextBlock Text="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
+                
+                <Label Margin="0,15,0,5">
+                    <TextBlock Text="Tools"/>
+                </Label>
+                
+                <WrapPanel Margin="3">
+                    <Button ToolTip="Image Editor"
+                            Padding="5"
+                            Margin="0,0,10,10"
+                            Click="OpenImageEditor">
+                        <Path Data="{StaticResource IconPencil}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Button>
+
+                    <Button ToolTip="Audio/Video Trimmer"
+                            Padding="5"
+                            Margin="0,0,10,10"
+                            Click="OpenAudioVideoTrimmer">
+                        <Path Data="{StaticResource IconTrim}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Button>
+
+                    <Button ToolTip="Image Cropper"
+                            Padding="5"
+                            Margin="0,0,10,10"
+                            Click="OpenImageCropper">
+                        <Path Data="{StaticResource IconCrop}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Button>
+
+                    <Button ToolTip="Upload to Imgur"
+                            Padding="5"
+                            Margin="0,0,10,10"
+                            Click="UploadToImgur">
+                        <Path Data="{StaticResource IconUpload}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Button>
+                </WrapPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

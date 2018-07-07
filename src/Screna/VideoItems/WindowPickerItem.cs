@@ -4,31 +4,24 @@ using System.Drawing;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class WindowPickerItem : NotifyPropertyChanged, IVideoItem
     {
         public IVideoSourcePicker Picker { get; }
 
-        public WindowPickerItem(IVideoSourcePicker Picker)
+        readonly LanguageManager _loc;
+
+        public WindowPickerItem(IVideoSourcePicker Picker, LanguageManager Loc)
         {
             this.Picker = Picker;
+            _loc = Loc;
+
+            _loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         public override string ToString() => Name;
-
-        const string WindowPickerName = "Window Picker";
-
-        string _name = WindowPickerName;
-
-        public string Name
-        {
-            get => _name;
-            private set
-            {
-                _name = value;
-                
-                OnPropertyChanged();
-            }
-        }
+        
+        public string Name => _loc.WindowPicker;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
@@ -37,13 +30,9 @@ namespace Captura.Models
             if (window == null)
             {
                 Transform = null;
-
-                Name = WindowPickerName;
-
+                
                 return null;
             }
-
-            Name = $"{WindowPickerName} ({window.Title})";
 
             return new WindowProvider(window, IncludeCursor, out Transform);
         }

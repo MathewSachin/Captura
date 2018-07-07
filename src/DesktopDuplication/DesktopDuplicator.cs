@@ -30,7 +30,7 @@ namespace DesktopDuplication
 
         public int Timeout { get; set; }
 
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter1 Adapter, Output1 Output)
+        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter Adapter, Output1 Output)
         {
             _rect = Rect;
             _includeCursor = IncludeCursor;

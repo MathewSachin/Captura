@@ -3,6 +3,7 @@ using Screna;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class WindowSourceProvider : VideoSourceProviderBase
     {
         readonly WindowPickerItem _windowPickerItem;

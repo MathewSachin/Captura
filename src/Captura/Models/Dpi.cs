@@ -6,6 +6,7 @@ namespace Captura
     /// Provides DPI scaling factor.
     /// Only needs to be used when dealing with WPF since their sizes are specified in Device Independent Pixels.
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class Dpi
     {
         static Dpi()

@@ -1,5 +1,6 @@
 ﻿namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FakePreviewWindow : IPreviewWindow
     {
         public void Dispose() { }

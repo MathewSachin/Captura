@@ -4,31 +4,24 @@ using System.Drawing;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScreenPickerItem : NotifyPropertyChanged, IVideoItem
     {
         public IVideoSourcePicker Picker { get; }
 
-        public ScreenPickerItem(IVideoSourcePicker Picker)
+        readonly LanguageManager _loc;
+
+        public ScreenPickerItem(IVideoSourcePicker Picker, LanguageManager Loc)
         {
             this.Picker = Picker;
+            _loc = Loc;
+
+            _loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         public override string ToString() => Name;
 
-        const string ScreenPickerName = "Screen Picker";
-
-        string _name = ScreenPickerName;
-
-        public string Name
-        {
-            get => _name;
-            private set
-            {
-                _name = value;
-                
-                OnPropertyChanged();
-            }
-        }
+        public string Name => _loc.ScreenPicker;
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
@@ -38,12 +31,8 @@ namespace Captura.Models
             {
                 Transform = null;
 
-                Name = ScreenPickerName;
-
                 return null;
             }
-
-            Name = $"{ScreenPickerName} ({screen.DeviceName})";
 
             Transform = P => new Point(P.X - screen.Rectangle.X, P.Y - screen.Rectangle.Y);
 

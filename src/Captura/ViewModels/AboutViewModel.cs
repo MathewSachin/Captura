@@ -6,6 +6,7 @@ using System.Windows.Input;
 
 namespace Captura
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class AboutViewModel : ViewModelBase
     {
         public ICommand HyperlinkCommand { get; }

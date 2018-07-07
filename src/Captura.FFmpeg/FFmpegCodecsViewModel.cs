@@ -5,6 +5,7 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegCodecsViewModel : NotifyPropertyChanged
     {
         public FFmpegSettings Settings { get; }

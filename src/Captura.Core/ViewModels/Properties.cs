@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public partial class MainViewModel
     {
         public bool MouseKeyHookAvailable { get; } = ServiceProvider.FileExists("Gma.System.MouseKeyHook.dll");

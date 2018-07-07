@@ -28,7 +28,7 @@ namespace Captura
             Screen
         }
 
-        VideoPickerMode _mode;
+        readonly VideoPickerMode _mode;
 
         public List<IntPtr> SkipWindows { get; } = new List<IntPtr>();
 

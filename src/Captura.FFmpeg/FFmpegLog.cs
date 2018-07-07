@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegLog : NotifyPropertyChanged
     {
         readonly SynchronizationContext _syncContext;

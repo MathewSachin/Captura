@@ -2,6 +2,7 @@
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     class FakeMessageProvider : IMessageProvider
     {
         public void ShowError(string Message, string Header = null)
