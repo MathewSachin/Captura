@@ -19,19 +19,8 @@ cache:
   # preserve "packages" directory but reset if packages.config is modified
   - src\packages -> **\packages.config
 
-before_build:
-  - ps: appveyor/Update-Version.ps1
-
 # Build using Cake
 build_script:
-  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version "$env:AppVersion"
-
-artifacts:
-  - path: temp/Captura-Portable.zip
-    name: Portable
-  - path: temp/Captura-Setup.exe
-    name: Setup
-  - path: temp/captura.*.nupkg
-    name: Chocolatey
+  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -tag $env:APPVEYOR_REPO_TAG_NAME
 
 test: off

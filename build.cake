@@ -1,14 +1,17 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
+using static System.Text.RegularExpressions.Regex;
 
+#region Fields
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var version = Argument<string>("appversion", null);
 var tag = Argument<string>("apptag", null);
+var chocoVersion = tag?.Substring(1);
+var prerelease = false;
 
-var deploy = AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
+var deploy = configuration == "Release" && !string.IsNullOrWhiteSpace(tag);
 
-#region Fields
 const string slnPath = "src/Captura.sln";
 const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
 const string imgurEnv = "imgur_client_id";
@@ -19,6 +22,24 @@ bool apiKeyEmbed, assemblyInfoUpdate;
 #endregion
 
 #region Functions
+void HandleTag()
+{
+    if (string.IsNullOrWhiteSpace(tag))
+        return;
+
+    if (IsMatch(tag, @"^v\d+\.\d+\.\d+$"))
+    {
+        version = tag;
+    }
+    else if (IsMatch(tag, @"^v\d+\.\d+\.\d+-[^\s]+$"))
+    {
+        prerelease = true;
+
+        version = tag.Split('-')[0];
+    }
+    else throw new System.ArgumentException("Invalid Tag Format", "Tag");
+}
+
 void UpdateVersion(string AssemblyInfoPath)
 {
     var content = FileRead(AssemblyInfoPath);
@@ -212,6 +233,8 @@ void PackChoco(string Tag, string Version)
 #region Setup / Teardown
 Setup(context =>
 {
+    HandleTag();
+
     HandleVersion();
 
     EmbedApiKeys();
@@ -285,10 +308,9 @@ Task("Pack-Setup")
 });
 
 Task("Pack-Choco")
-    // Run only on AppVeyor Release Tag builds
     .WithCriteria(deploy)
     .IsDependentOn("Pack-Portable")
-    .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
+    .Does(() => PackChoco(tag, chocoVersion));
 
 Task("Deploy-GitHub")
     .WithCriteria(deploy)
@@ -303,8 +325,8 @@ Task("Deploy-GitHub")
         "Captura",
         new GitReleaseManagerCreateSettings
         {
-            Name = $"Captura {EnvironmentVariable("APPVEYOR_REPO_TAG_NAME")}",
-            Prerelease = EnvironmentVariable("prerelease") == "true",
+            Name = $"Captura {tag}",
+            Prerelease = prerelease,
             Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
         });
 
@@ -312,7 +334,7 @@ Task("Deploy-GitHub")
         EnvironmentVariable("git_key"),
         "MathewSachin",
         "Captura",
-        EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"));
+        tag);
 });
 
 Task("Deploy-Choco")
@@ -321,8 +343,6 @@ Task("Deploy-Choco")
     .IsDependentOn("Deploy-GitHub")
     .Does(() =>
 {
-    var chocoVersion = EnvironmentVariable("$env:APPVEYOR_REPO_TAG_NAME").Substring(1);
-
     ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
     {
         ApiKey = EnvironmentVariable("choco_key")
@@ -338,17 +358,54 @@ Task("Default").IsDependentOn("Populate-Output");
 Task("Install-Inno")
     .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
     {
-        LimitOutput = true
+        NotSilent = false
     }));
+#endregion
+
+#region AppVeyor
+class Artifact
+{
+    public Artifact(string Name, string Path)
+    {
+        this.Name = Name;
+        this.Path = Path;
+    }
+
+    public string Name { get; }
+    public string Path { get; }
+}
+
+var artifacts = new []
+{
+    new Artifact("Portable", "temp/Captura-Portable.zip"),
+    new Artifact("Setup", "temp/Captura-Setup.exe"),
+    new Artifact("Chocolatey", $"temp/captura.{chocoVersion}.nupkg")
+};
 
 Task("CI")
+    .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
     .IsDependentOn("Test")
     .IsDependentOn("Pack-Portable")
     .IsDependentOn("Install-Inno")
     .IsDependentOn("Pack-Setup")
     .IsDependentOn("Pack-Choco")
     .IsDependentOn("Deploy-GitHub")
-    .IsDependentOn("Deploy-Choco");
+    .IsDependentOn("Deploy-Choco")
+    .Does(() =>
+{
+    AppVeyor.UpdateBuildVersion($"{version}.{EnvironmentVariable("APPVEYOR_BUILD_NUMBER")}");
+
+    foreach (var artifact in artifacts)
+    {
+        if (FileExists(artifact.Path))
+        {
+            AppVeyor.UploadArtifact(artifact.Path, new AppVeyorUploadArtifactsSettings
+            {
+                DeploymentName = artifact.Name
+            });
+        }
+    }
+});
 #endregion
 
 // Start
