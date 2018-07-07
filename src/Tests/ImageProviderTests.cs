@@ -11,12 +11,6 @@ namespace Captura.Tests
     [TestClass]
     public class ImageProviderTests
     {
-        [ClassInitialize]
-        public static void Init(TestContext Context)
-        {
-            ServiceProvider.LoadModule(new FakesModule());
-        }
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void OverlayImageProviderNull()

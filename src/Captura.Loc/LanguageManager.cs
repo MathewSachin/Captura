@@ -18,30 +18,35 @@ namespace Captura
 
         LanguageManager()
         {
-            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
+            var entryLocation = Assembly.GetEntryAssembly()?.Location;
+
+            var cultures = new List<CultureInfo>();
 
             _defaultLanguage = LoadLang("en");
 
-            var cultures = new List<CultureInfo>();
-            
-            if (Directory.Exists(_langDir))
+            if (entryLocation != null)
             {
-                foreach (var file in Directory.EnumerateFiles(_langDir, "*.json"))
+                _langDir = Path.Combine(Path.GetDirectoryName(entryLocation), "Languages");
+                
+                if (Directory.Exists(_langDir))
                 {
-                    var cultureName = Path.GetFileNameWithoutExtension(file);
-
-                    try
+                    foreach (var file in Directory.EnumerateFiles(_langDir, "*.json"))
                     {
-                        if (cultureName == null)
-                            continue;
+                        var cultureName = Path.GetFileNameWithoutExtension(file);
 
-                        var culture = CultureInfo.GetCultureInfo(cultureName);
+                        try
+                        {
+                            if (cultureName == null)
+                                continue;
 
-                        cultures.Add(culture);
-                    }
-                    catch
-                    {
-                        // Ignore
+                            var culture = CultureInfo.GetCultureInfo(cultureName);
+
+                            cultures.Add(culture);
+                        }
+                        catch
+                        {
+                            // Ignore
+                        }
                     }
                 }
             }
@@ -82,10 +87,10 @@ namespace Captura
 
         JObject LoadLang(string LanguageId)
         {
-            var filePath = Path.Combine(_langDir, $"{LanguageId}.json");
-
             try
             {
+                var filePath = Path.Combine(_langDir, $"{LanguageId}.json");
+
                 return JObject.Parse(File.ReadAllText(filePath));
             }
             catch

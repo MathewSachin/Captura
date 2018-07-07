@@ -29,7 +29,7 @@ namespace Captura
                 }
 
                 // application directory
-                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFmpegExeName);
+                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
 
                 if (File.Exists(cpath))
                     return true;
@@ -71,7 +71,7 @@ namespace Captura
                 }
 
                 // application directory
-                var cpath = Path.Combine(Assembly.GetExecutingAssembly().Location, FFmpegExeName);
+                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
 
                 return File.Exists(cpath) ? cpath : FFmpegExeName;
             }

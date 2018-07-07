@@ -7,7 +7,7 @@
     <ProjectGuid>{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Captura</RootNamespace>
-    <AssemblyName>captura</AssemblyName>
+    <AssemblyName>captura-cli</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ErrorReport>prompt</ErrorReport>
@@ -31,9 +31,6 @@
     <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="ModernUI.Xceed.Toolkit">
-      <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -42,15 +39,6 @@
     <Compile Include="CmdOptions\CommonCmdOptions.cs" />
     <Compile Include="CmdOptions\FFmpegCmdOptions.cs" />
     <Compile Include="CmdOptions\ListCmdOptions.cs" />
-    <Compile Include="CoreWebCamProvider.cs" />
-    <Compile Include="Fakes\FakeMessageProvider.cs" />
-    <Compile Include="Fakes\FakePreviewWindow.cs" />
-    <Compile Include="Fakes\FakeRegionItem.cs" />
-    <Compile Include="Fakes\FakeRegionProvider.cs" />
-    <Compile Include="Fakes\FakesModule.cs" />
-    <Compile Include="Fakes\FakeSystemTray.cs" />
-    <Compile Include="Fakes\FakeVideoSourcePicker.cs" />
-    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CmdOptions\ShotCmdOptions.cs" />
@@ -97,10 +85,6 @@
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Captura\Captura.csproj">
-      <Project>{0b496e01-f328-4969-832c-c75977b4f4e6}</Project>
-      <Name>Captura</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
       <Project>{222C215B-663F-4BD6-9B3E-8FA99C867B22}</Project>
       <Name>DesktopDuplication</Name>
@@ -116,4 +100,15 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF NOT $(Configuration)==Debug (
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV
+IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
+cd "$(TargetDir)"
+del *.dll
+del *.pdb
+del *.xml
+del *.dll.config
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

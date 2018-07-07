@@ -15,26 +15,29 @@ namespace Captura
         
         public TranslationViewModel()
         {
-            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Languages");
-            
-            var files = Directory.EnumerateFiles(_langDir, "*.json");
+            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Languages");
 
-            foreach (var file in files)
+            if (Directory.Exists(_langDir))
             {
-                var cultureName = Path.GetFileNameWithoutExtension(file);
+                var files = Directory.EnumerateFiles(_langDir, "*.json");
 
-                try
+                foreach (var file in files)
                 {
-                    if (cultureName == null)
-                        continue;
+                    var cultureName = Path.GetFileNameWithoutExtension(file);
 
-                    var culture = CultureInfo.GetCultureInfo(cultureName);
+                    try
+                    {
+                        if (cultureName == null)
+                            continue;
 
-                    _cultures.Add(culture);
-                }
-                catch
-                {
-                    // Ignore
+                        var culture = CultureInfo.GetCultureInfo(cultureName);
+
+                        _cultures.Add(culture);
+                    }
+                    catch
+                    {
+                        // Ignore
+                    }
                 }
             }
 
@@ -79,10 +82,10 @@ namespace Captura
         
         JObject LoadLang(string LanguageId)
         {
-            var filePath = Path.Combine(_langDir, $"{LanguageId}.json");
-
             try
             {
+                var filePath = Path.Combine(_langDir, $"{LanguageId}.json");
+
                 return JObject.Parse(File.ReadAllText(filePath));
             }
             catch

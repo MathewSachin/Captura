@@ -116,8 +116,17 @@ void NativeRestore()
 
     foreach (var output in new[] { consoleOutput, uiOutput, testOutput })
     {
-        CopyFileToDirectory(bass, output);
-        CopyFileToDirectory(bassmix, output);
+        var path = output;
+
+        if (configuration != "Debug")
+        {
+            path += "/lib/";
+        }
+
+        EnsureDirectoryExists(path);
+
+        CopyFileToDirectory(bass, path);
+        CopyFileToDirectory(bassmix, path);
     }
 }
 
@@ -138,25 +147,35 @@ void PopulateOutput()
     // Copy License files
     CopyDirectory("licenses", "dist/licenses");
 
-    var binFolder = $"src/Captura.Console/bin/{configuration}/";
-
-    // Copy Assemblies
-    CopyFiles(binFolder + "*.dll", "dist");
+    var consoleBinFolder = $"src/Captura.Console/bin/{configuration}/";
+    var uiBinFolder = $"src/Captura/bin/{configuration}/";
     
     // Copy Languages
-    CopyDirectory(binFolder + "Languages", "dist/Languages");
+    CopyDirectory(uiBinFolder + "Languages", "dist/Languages");
 
     // Copy executables and config files
-    CopyFiles(binFolder + "*.exe*", "dist");
+    CopyFiles(consoleBinFolder + "*.exe*", "dist");
+    CopyFiles(uiBinFolder + "*.exe*", "dist");
 
     // For Debug builds
     if (configuration == "Debug")
     {
+        // Copy Assemblies
+        CopyFiles(consoleBinFolder + "*.dll", "dist");
+        CopyFiles(uiBinFolder + "*.dll", "dist");
+
         // Copy symbol files
-        CopyFiles(binFolder + "*.pdb", "dist");
+        CopyFiles(consoleBinFolder + "*.pdb", "dist");
+        CopyFiles(uiBinFolder + "*.pdb", "dist");
 
         // Copy Xml Documentation
-        CopyFiles(binFolder + "*.xml", "dist");
+        CopyFiles(consoleBinFolder + "*.xml", "dist");
+        CopyFiles(uiBinFolder + "*.xml", "dist");
+    }
+    else
+    {
+        CopyDirectory(consoleBinFolder + "lib", "dist/lib");
+        CopyDirectory(uiBinFolder + "lib", "dist/lib");
     }
 }
 

@@ -82,10 +82,6 @@ namespace Captura
             }
 
             LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
-
-            // A quick fix for WpfToolkit not being copied to build output of console project
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Xceed.Wpf.Toolkit.ColorSortingMode.Alphabetical.ToString();
         }
     }
 }
