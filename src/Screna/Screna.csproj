@@ -52,6 +52,7 @@
     <Compile Include="Gif\GifWriterProvider.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ImageProviders\OverlayedImageProvider.cs" />
+    <Compile Include="ImageProviders\RegionProviderOld.cs" />
     <Compile Include="MouseCursor.cs" />
     <Compile Include="Recorder\Recorder.cs" />
     <Compile Include="ScreenWrapper.cs" />
