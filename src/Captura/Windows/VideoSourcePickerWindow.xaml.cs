@@ -175,10 +175,10 @@ namespace Captura
 
             picker.ShowDialog();
 
-            return new ScreenWrapper(picker.SelectedScreen);
+            return picker.SelectedScreen == null ? null : new ScreenWrapper(picker.SelectedScreen);
         }
 
-        public static Window PickWindow(IEnumerable<IntPtr> SkipWindows)
+        public static IWindow PickWindow(IEnumerable<IntPtr> SkipWindows)
         {
             var picker = new VideoSourcePickerWindow(VideoPickerMode.Window)
             {
