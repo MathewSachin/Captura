@@ -15,7 +15,6 @@ using Screna;
 using Cursors = System.Windows.Input.Cursors;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using Point = System.Drawing.Point;
 using Window = Screna.Window;
 
 namespace Captura
@@ -30,14 +29,15 @@ namespace Captura
 
         readonly VideoPickerMode _mode;
 
-        public List<IntPtr> SkipWindows { get; } = new List<IntPtr>();
+        List<IntPtr> SkipWindows { get; } = new List<IntPtr>();
 
         VideoSourcePickerWindow(VideoPickerMode Mode)
         {
             _mode = Mode;
             InitializeComponent();
 
-            Left = Top = 0;
+            Left = SystemParameters.VirtualScreenLeft;
+            Top = SystemParameters.VirtualScreenTop;
             Width = SystemParameters.VirtualScreenWidth;
             Height = SystemParameters.VirtualScreenHeight;
 
@@ -75,8 +75,8 @@ namespace Captura
         {
             foreach (var screen in _screens)
             {
-                var left = screen.Bounds.Left / Dpi.X;
-                var top = screen.Bounds.Top / Dpi.Y;
+                var left = -Left + screen.Bounds.Left / Dpi.X;
+                var top = -Top + screen.Bounds.Top / Dpi.Y;
                 var width = screen.Bounds.Width / Dpi.X;
                 var height = screen.Bounds.Height / Dpi.Y;
 
@@ -113,9 +113,7 @@ namespace Captura
 
         void WindowMouseMove(object Sender, MouseEventArgs E)
         {
-            var pos = E.GetPosition(this);
-
-            var point = new Point((int) (pos.X * Dpi.X), (int) (pos.Y * Dpi.Y));
+            var point = MouseCursor.CursorPosition;
 
             void UpdateBorderAndCursor(Rectangle? Rect)
             {
@@ -131,7 +129,7 @@ namespace Captura
 
                     var rect = Rect.Value;
 
-                    Border.Margin = new Thickness(rect.Left / Dpi.X, rect.Top / Dpi.Y, 0, 0);
+                    Border.Margin = new Thickness(-Left + rect.Left / Dpi.X, -Top + rect.Top / Dpi.Y, 0, 0);
 
                     Border.Width = rect.Width / Dpi.X;
                     Border.Height = rect.Height / Dpi.Y;
