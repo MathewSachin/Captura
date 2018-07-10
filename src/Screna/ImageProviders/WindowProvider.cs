@@ -17,10 +17,6 @@ namespace Screna
         /// </summary>
         public static Rectangle DesktopRectangle => SystemInformation.VirtualScreen;
 
-        public static void RefreshDesktopSize()
-        {
-        }
-
         readonly IWindow _window;
         readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
