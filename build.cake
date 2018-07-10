@@ -1,5 +1,6 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
+using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
 #region Fields
@@ -14,12 +15,8 @@ var prerelease = false;
 var deploy = configuration == "Release" && !string.IsNullOrWhiteSpace(tag);
 
 const string slnPath = "src/Captura.sln";
-const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
-const string imgurEnv = "imgur_client_id";
-const string uiAssemblyInfo = "src/Captura/Properties/AssemblyInfo.cs";
-const string consoleAssemblyInfo = "src/Captura.Console/Properties/AssemblyInfo.cs";
 
-bool apiKeyEmbed, assemblyInfoUpdate;
+var replacedFiles = new List<(string OriginalPath, string Backup)>();
 #endregion
 
 #region Functions
@@ -68,6 +65,9 @@ void RestoreFile(string From, string To)
 
 void HandleVersion()
 {
+    const string uiAssemblyInfo = "src/Captura/Properties/AssemblyInfo.cs";
+    const string consoleAssemblyInfo = "src/Captura.Console/Properties/AssemblyInfo.cs";
+
     if (string.IsNullOrWhiteSpace(version))
     {
         // Read from AssemblyInfo
@@ -76,12 +76,13 @@ void HandleVersion()
     else
     {
         // Update AssemblyInfo files
-        assemblyInfoUpdate = true;
-
         EnsureDirectoryExists("temp");
 
         CopyFileToDirectory(uiAssemblyInfo, "temp");
         CopyFile(consoleAssemblyInfo, "temp/console.cs");
+
+        replacedFiles.Add((uiAssemblyInfo, "temp/AssemblyInfo.cs"));
+        replacedFiles.Add((consoleAssemblyInfo, "temp/console.cs"));
 
         UpdateVersion(uiAssemblyInfo);
         UpdateVersion(consoleAssemblyInfo);
@@ -90,16 +91,18 @@ void HandleVersion()
 
 void EmbedApiKeys()
 {
+    const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
+    const string imgurEnv = "imgur_client_id";
+
     // Embed Api Keys in Release builds
     if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
     {
-        apiKeyEmbed = true;
-
         EnsureDirectoryExists("temp");
 
         Information("Embedding Api Keys from Environment Variables ...");
 
         CopyFileToDirectory(apiKeysPath, "temp");
+        replacedFiles.Add((apiKeysPath, "temp/ApiKeys.cs"));
 
         var apiKeysOriginalContent = FileRead(apiKeysPath);
 
@@ -246,16 +249,7 @@ Setup(context =>
 
 Teardown(context =>
 {
-    if (apiKeyEmbed)
-    {
-        RestoreFile("temp/ApiKeys.cs", apiKeysPath);
-    }
-
-    if (assemblyInfoUpdate)
-    {
-        RestoreFile("temp/AssemblyInfo.cs", uiAssemblyInfo);
-        RestoreFile("temp/console.cs", consoleAssemblyInfo);
-    }
+    replacedFiles.ForEach(M => RestoreFile(M.Backup, M.OriginalPath));
 });
 #endregion
 
