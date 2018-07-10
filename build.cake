@@ -16,7 +16,43 @@ var deploy = configuration == "Release" && !string.IsNullOrWhiteSpace(tag);
 
 const string slnPath = "src/Captura.sln";
 
-var replacedFiles = new List<(string OriginalPath, string Backup)>();
+public class Backup : System.IDisposable
+{
+    readonly ICakeContext _context;
+
+    public static List<Backup> Backups { get; } = new List<Backup>();
+
+    public Backup(ICakeContext Context, string OriginalPath, string BackupPath)
+    {
+        _context = Context;
+
+        this.OriginalPath = OriginalPath;
+        this.BackupPath = BackupPath;
+
+        _context.CopyFile(OriginalPath, BackupPath);
+    }
+
+    public string OriginalPath { get; }
+
+    public string BackupPath { get; }
+
+    public void Restore()
+    {
+        _context.DeleteFile(OriginalPath);
+        _context.MoveFile(BackupPath, OriginalPath);
+    }
+
+    public void Dispose()
+    {
+        Restore();
+    }
+}
+
+void CreateBackup(string OriginalPath, string BackupPath)
+{
+    var backup = new Backup(Context, OriginalPath, BackupPath);
+    Backup.Backups.Add(backup);
+}
 #endregion
 
 #region Functions
@@ -57,12 +93,6 @@ string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
 
 void FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
 
-void RestoreFile(string From, string To)
-{
-    DeleteFile(To);
-    MoveFile(From, To);
-}
-
 void HandleVersion()
 {
     const string uiAssemblyInfo = "src/Captura/Properties/AssemblyInfo.cs";
@@ -76,13 +106,8 @@ void HandleVersion()
     else
     {
         // Update AssemblyInfo files
-        EnsureDirectoryExists("temp");
-
-        CopyFileToDirectory(uiAssemblyInfo, "temp");
-        CopyFile(consoleAssemblyInfo, "temp/console.cs");
-
-        replacedFiles.Add((uiAssemblyInfo, "temp/AssemblyInfo.cs"));
-        replacedFiles.Add((consoleAssemblyInfo, "temp/console.cs"));
+        CreateBackup(uiAssemblyInfo, "temp/AssemblyInfo.cs");
+        CreateBackup(consoleAssemblyInfo, "temp/console.cs");
 
         UpdateVersion(uiAssemblyInfo);
         UpdateVersion(consoleAssemblyInfo);
@@ -97,12 +122,9 @@ void EmbedApiKeys()
     // Embed Api Keys in Release builds
     if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
     {
-        EnsureDirectoryExists("temp");
-
         Information("Embedding Api Keys from Environment Variables ...");
 
-        CopyFileToDirectory(apiKeysPath, "temp");
-        replacedFiles.Add((apiKeysPath, "temp/ApiKeys.cs"));
+        CreateBackup(apiKeysPath, "temp/ApiKeys.cs");
 
         var apiKeysOriginalContent = FileRead(apiKeysPath);
 
@@ -115,8 +137,6 @@ void EmbedApiKeys()
 // Restores native dlls
 void NativeRestore()
 {
-    EnsureDirectoryExists("temp");
-
     var bass = "temp/bass/bass.dll";
     var bassmix = "temp/bassmix/bassmix.dll";
 
@@ -223,23 +243,25 @@ void PackChoco(string Tag, string Version)
 
     var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
 
-    CopyFileToDirectory(chocoInstallScript, "temp");
-
-    FileWrite(chocoInstallScript, newContent);
-
-    ChocolateyPack("choco/captura.nuspec", new ChocolateyPackSettings
+    using (var backup = new Backup(Context, chocoInstallScript, "temp/cinst.ps1"))
     {
-        Version = Version,
-        ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
-    });
+        FileWrite(chocoInstallScript, newContent);
 
-    RestoreFile("temp/chocolateyinstall.ps1", chocoInstallScript);
+        ChocolateyPack("choco/captura.nuspec", new ChocolateyPackSettings
+        {
+            Version = Version,
+            ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
+        });
+    }
 }
 #endregion
 
 #region Setup / Teardown
 Setup(context =>
 {
+    EnsureDirectoryExists("temp");
+    EnsureDirectoryExists("dist");
+
     HandleTag();
 
     HandleVersion();
@@ -249,7 +271,7 @@ Setup(context =>
 
 Teardown(context =>
 {
-    replacedFiles.ForEach(M => RestoreFile(M.Backup, M.OriginalPath));
+    Backup.Backups.ForEach(M => M.Restore());
 });
 #endregion
 
