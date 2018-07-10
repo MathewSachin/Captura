@@ -15,31 +15,10 @@ namespace Screna
         /// <summary>
         /// A <see cref="Rectangle"/> representing the entire Desktop.
         /// </summary>
-        public static Rectangle DesktopRectangle { get; private set; }
-
-        static WindowProvider()
-        {
-            RefreshDesktopSize();
-        }
+        public static Rectangle DesktopRectangle => SystemInformation.VirtualScreen;
 
         public static void RefreshDesktopSize()
         {
-            var height = 0;
-            var width = 0;
-
-            foreach (var screen in Screen.AllScreens)
-            {
-                var w = screen.Bounds.X + screen.Bounds.Width;
-                var h = screen.Bounds.Y + screen.Bounds.Height;
-
-                if (height < h)
-                    height = h;
-
-                if (width < w)
-                    width = w;
-            }
-
-            DesktopRectangle = new Rectangle(0, 0, width, height);
         }
 
         readonly IWindow _window;
