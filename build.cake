@@ -10,13 +10,17 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", Release);
 var version = Argument<string>("appversion", null);
 var tag = Argument<string>("apptag", null);
-var chocoVersion = tag?.Substring(1);
+var chocoVersion = tag?.Substring(1) ?? "";
 var prerelease = false;
 
 // Deploy on Release Tag builds
 var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 
 const string slnPath = "src/Captura.sln";
+
+const string PortablePath = "temp/Captura-Portable.zip";
+const string SetupPath = "temp/Captura-Setup.exe";
+readonly string ChocoPkgPath = $"temp/captura.{chocoVersion}.nupkg";
 
 public class Backup : System.IDisposable
 {
@@ -237,7 +241,7 @@ void PopulateOutput()
 
 void PackChoco(string Tag, string Version)
 {
-    var checksum = CalculateFileHash("temp/Captura-Portable.zip").ToHex();
+    var checksum = CalculateFileHash(PortablePath).ToHex();
 
     var chocoInstallScript = "choco/tools/chocolateyinstall.ps1";
 
@@ -315,7 +319,7 @@ var populateOutputTask = Task("Populate-Output")
 
 var packPortableTask = Task("Pack-Portable")
     .IsDependentOn(populateOutputTask)
-    .Does(() => Zip("dist", "temp/Captura-Portable.zip"));
+    .Does(() => Zip("dist", PortablePath));
 
 var packSetupTask = Task("Pack-Setup")
     .WithCriteria(configuration == Release)
@@ -341,13 +345,17 @@ var deployGitHubTask = Task("Deploy-GitHub")
     .Does(() => 
 {
     const string releaseNotesPath = "temp/release_notes.md";
+    const string changelogUrl = "https://mathewsachin.github.io/Captura/changelog";
 
-    FileWrite(releaseNotesPath, "Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)");
+    FileWrite(releaseNotesPath, $"Description: [Changelog]({changelogUrl})");
 
-    GitReleaseManagerCreate("MathewSachin",
+    const string RepoOwner = "MathewSachin";
+    const string RepoName = "Captura";
+
+    GitReleaseManagerCreate(RepoOwner,
         EnvironmentVariable("git_key"),
-        "MathewSachin",
-        "Captura",
+        RepoOwner,
+        RepoName,
         new GitReleaseManagerCreateSettings
         {
             Name = $"Captura {tag}",
@@ -356,10 +364,10 @@ var deployGitHubTask = Task("Deploy-GitHub")
             Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
         });
 
-    GitReleaseManagerPublish("MathewSachin",
+    GitReleaseManagerPublish(RepoOwner,
         EnvironmentVariable("git_key"),
-        "MathewSachin",
-        "Captura",
+        RepoOwner,
+        RepoName,
         tag);
 });
 
@@ -369,7 +377,7 @@ var deployChocoTask = Task("Deploy-Choco")
     .IsDependentOn(deployGitHubTask)
     .Does(() =>
 {
-    ChocolateyPush($"temp/captura.{chocoVersion}.nupkg", new ChocolateyPushSettings
+    ChocolateyPush(ChocoPkgPath, new ChocolateyPushSettings
     {
         ApiKey = EnvironmentVariable("choco_key")
     });
@@ -403,9 +411,9 @@ class Artifact
 
 var artifacts = new []
 {
-    new Artifact("Portable", "temp/Captura-Portable.zip"),
-    new Artifact("Setup", "temp/Captura-Setup.exe"),
-    new Artifact("Chocolatey", $"temp/captura.{chocoVersion}.nupkg")
+    new Artifact("Portable", PortablePath),
+    new Artifact("Setup", SetupPath),
+    new Artifact("Chocolatey", ChocoPkgPath)
 };
 
 Task("CI")
