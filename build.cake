@@ -340,7 +340,10 @@ var deployGitHubTask = Task("Deploy-GitHub")
     .IsDependentOn(packSetupTask)
     .Does(() => 
 {
-    // Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)
+    const string releaseNotesPath = "temp/release_notes.md";
+
+    FileWrite(releaseNotesPath, "Description: [Changelog](https://mathewsachin.github.io/Captura/changelog)");
+
     GitReleaseManagerCreate("MathewSachin",
         EnvironmentVariable("git_key"),
         "MathewSachin",
@@ -348,6 +351,7 @@ var deployGitHubTask = Task("Deploy-GitHub")
         new GitReleaseManagerCreateSettings
         {
             Name = $"Captura {tag}",
+            InputFilePath = releaseNotesPath,
             Prerelease = prerelease,
             Assets = "temp/Captura-Portable.zip,temp/Captura-Setup.exe"
         });
