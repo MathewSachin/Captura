@@ -20,7 +20,7 @@ namespace Screna
 
             _transform = P => new Point(P.X - _region.X, P.Y - _region.Y);
 
-            _hdcSrc = User32.GetWindowDC(Window.DesktopWindow.Handle);
+            _hdcSrc = User32.GetDC(IntPtr.Zero);
 
             _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
             _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
@@ -39,7 +39,7 @@ namespace Screna
         public void Dispose()
         {
             Gdi32.DeleteDC(_hdcDest);
-            User32.ReleaseDC(Window.DesktopWindow.Handle, _hdcSrc);
+            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
             Gdi32.DeleteObject(_hBitmap);
         }
 

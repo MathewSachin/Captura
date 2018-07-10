@@ -81,6 +81,9 @@ namespace Captura.Native
         public static extern IntPtr GetWindowDC(IntPtr hWnd);
 
         [DllImport(DllName)]
+        public static extern IntPtr GetDC(IntPtr hWnd);
+
+        [DllImport(DllName)]
         public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport(DllName)]
