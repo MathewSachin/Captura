@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
 #region Fields
+const string Release = "Release";
+
 var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
+var configuration = Argument("configuration", Release);
 var version = Argument<string>("appversion", null);
 var tag = Argument<string>("apptag", null);
 var chocoVersion = tag?.Substring(1);
 var prerelease = false;
 
 // Deploy on Release Tag builds
-var deploy = configuration == "Release" && !string.IsNullOrWhiteSpace(tag);
+var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 
 const string slnPath = "src/Captura.sln";
 
@@ -120,7 +122,7 @@ void EmbedApiKeys()
     const string imgurEnv = "imgur_client_id";
 
     // Embed Api Keys in Release builds
-    if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
+    if (configuration == Release && HasEnvironmentVariable(imgurEnv))
     {
         Information("Embedding Api Keys from Environment Variables ...");
 
@@ -316,7 +318,7 @@ var packPortableTask = Task("Pack-Portable")
     .Does(() => Zip("dist", "temp/Captura-Portable.zip"));
 
 var packSetupTask = Task("Pack-Setup")
-    .WithCriteria(configuration == "Release")
+    .WithCriteria(configuration == Release)
     .IsDependentOn(populateOutputTask)
     .Does(() =>
 {
