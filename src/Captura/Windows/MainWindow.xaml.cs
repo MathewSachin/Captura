@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
+using System.Linq;
 using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Screna;
@@ -75,7 +77,7 @@ namespace Captura
                 (int)(ActualWidth * Dpi.X),
                 (int)(ActualHeight * Dpi.Y));
             
-            if (!WindowProvider.DesktopRectangle.Contains(rect))
+            if (!Screen.AllScreens.Any(M => M.Bounds.Contains(rect)))
             {
                 Left = 50;
                 Top = 50;
