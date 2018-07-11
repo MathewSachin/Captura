@@ -27,7 +27,9 @@ readonly var slnPath = sourceFolder + File("Captura.sln");
 readonly var PortablePath = tempFolder + File("Captura-Portable.zip");
 readonly var SetupPath = tempFolder + File("Captura-Setup.exe");
 readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
+#endregion
 
+#region Backup
 public class Backup : IDisposable
 {
     readonly ICakeContext _context;
@@ -241,10 +243,10 @@ void PopulateOutput()
     if (configuration != Release)
     {
         // Assemblies, Symbol Files and XML Documentation
-        foreach (var pattern in new [] { "/*.dll", "/*.pdb", "/*.xml" })
+        foreach (var extension in new [] { ".dll", ".pdb", ".xml" })
         {
-            CopyFiles(consoleBinFolder.Path + pattern, distFolder);
-            CopyFiles(uiBinFolder.Path + pattern, distFolder);
+            CopyFiles(consoleBinFolder.Path + "/*" + extension, distFolder);
+            CopyFiles(uiBinFolder.Path + "/*" + extension, distFolder);
         }
     }
     else
