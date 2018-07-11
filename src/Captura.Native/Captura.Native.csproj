@@ -31,8 +31,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ProcessDPIAwareness.cs" />
-    <Compile Include="ShCore.cs" />
     <Compile Include="Structs\CursorInfo.cs" />
     <Compile Include="DwmApi.cs" />
     <Compile Include="Enums\GetWindowEnum.cs" />
