@@ -17,7 +17,12 @@ environment:
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified
-  - src\packages -> **\packages.config
+  - src\packages -> src\**\packages.config
+  - tools -> tools\packages.config
+  - temp\bass -> src\**\packages.config
+  - temp\bass.zip -> src\**\packages.config
+  - temp\bassmix -> src\**\packages.config
+  - temp\bassmix.zip -> src\**\packages.config
 
 # Build using Cake
 build_script:

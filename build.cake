@@ -28,7 +28,7 @@ readonly var PortablePath = tempFolder + File("Captura-Portable.zip");
 readonly var SetupPath = tempFolder + File("Captura-Setup.exe");
 readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
 
-public class Backup : System.IDisposable
+public class Backup : IDisposable
 {
     readonly ICakeContext _context;
 
@@ -89,7 +89,7 @@ void HandleTag()
 
         version = tag.Split('-')[0];
     }
-    else throw new System.ArgumentException("Invalid Tag Format", "Tag");
+    else throw new ArgumentException("Invalid Tag Format", "Tag");
 }
 
 void UpdateVersion(string AssemblyInfoPath)
