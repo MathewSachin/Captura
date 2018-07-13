@@ -16,6 +16,11 @@
 
     <Style TargetType="Path">
         <Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Fill" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
     <Style TargetType="xctk:ColorPicker" BasedOn="{StaticResource {x:Type xctk:ColorPicker}}">
