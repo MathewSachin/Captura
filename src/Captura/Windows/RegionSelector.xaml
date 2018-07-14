@@ -108,22 +108,22 @@
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
                     
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding RecordCommand}"
+                                        Command="{Binding RecordingViewModel.RecordCommand}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                        IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
                     
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
-                                        Command="{Binding PauseCommand}"
+                                        Command="{Binding RecordingViewModel.PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True">
                         <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
 
-                    <Label Content="{Binding TimeSpan}"
+                    <Label Content="{Binding RecordingViewModel.TimeSpan}"
                            Margin="0,-1"
                            HorizontalContentAlignment="Center"/>
                 </DockPanel>

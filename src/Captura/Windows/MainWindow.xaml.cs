@@ -122,13 +122,13 @@ namespace Captura
         {
             if (DataContext is MainViewModel vm)
             {
-                if (vm.RecorderState == RecorderState.Recording)
+                if (vm.RecordingViewModel.RecorderState == RecorderState.Recording)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo(
                         "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                         return false;
                 }
-                else if (vm.RunningStopRecordingCount > 0)
+                else if (vm.RecordingViewModel.RunningStopRecordingCount > 0)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo(
                         "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))

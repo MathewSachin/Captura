@@ -83,6 +83,7 @@
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="Models\RememberByName.cs" />
+    <Compile Include="ViewModels\RecordingViewModel.cs" />
     <Compile Include="ViewModels\ScreenShotViewModel.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="ViewModels\CrashLogsViewModel.cs" />
     <Compile Include="ViewModels\LicensesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Properties.cs" />
     <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
     <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />

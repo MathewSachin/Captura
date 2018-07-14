@@ -191,12 +191,6 @@ namespace Captura
             WriteLine();
             #endregion
 
-            #region MouseKeyHook
-            WriteLine($"MouseKeyHook Available: {(ServiceProvider.Get<MainViewModel>().MouseKeyHookAvailable ? "YES" : "NO")}");
-
-            WriteLine();
-            #endregion
-
             var audio = ServiceProvider.Get<AudioSource>();
 
             WriteLine($"ManagedBass Available: {(audio is BassAudioSource ? "YES" : "NO")}");
@@ -479,7 +473,7 @@ namespace Captura
             ViewModel.Settings.Audio.Quality = StartOptions.AudioQuality;
             ViewModel.Settings.Video.Quality = StartOptions.VideoQuality;
 
-            if (!ViewModel.RecordCommand.CanExecute(null))
+            if (!ViewModel.RecordingViewModel.RecordCommand.CanExecute(null))
             {
                 WriteLine("Nothing to Record");
 
@@ -489,14 +483,14 @@ namespace Captura
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            if (!ViewModel.StartRecording(StartOptions.FileName))
+            if (!ViewModel.RecordingViewModel.StartRecording(StartOptions.FileName))
                 return;
 
             Task.Factory.StartNew(() =>
             {
                 Loop(ViewModel, StartOptions);
 
-                ViewModel.StopRecording().Wait();
+                ViewModel.RecordingViewModel.StopRecording().Wait();
 
                 Application.Exit();
             });
@@ -551,9 +545,9 @@ namespace Captura
                     if (c != 'p')
                         continue;
 
-                    ViewModel.PauseCommand.ExecuteIfCan();
+                    ViewModel.RecordingViewModel.PauseCommand.ExecuteIfCan();
 
-                    if (ViewModel.RecorderState != RecorderState.Paused)
+                    if (ViewModel.RecordingViewModel.RecorderState != RecorderState.Paused)
                     {
                         WriteLine("Resumed");
                     }
