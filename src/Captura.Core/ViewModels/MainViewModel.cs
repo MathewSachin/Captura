@@ -13,7 +13,6 @@ using System.Windows.Input;
 using Captura.Audio;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
-using Window = Screna.Window;
 
 namespace Captura.ViewModels
 {
@@ -41,6 +40,8 @@ namespace Captura.ViewModels
 
         readonly RememberByName _rememberByName;
 
+        public ScreenShotViewModel ScreenShotViewModel { get; }
+
         public ICommand ShowPreviewCommand { get; }
         
         public MainViewModel(AudioSource AudioSource,
@@ -60,7 +61,8 @@ namespace Captura.ViewModels
             CensorOverlaysViewModel CensorOverlays,
             FFmpegLog FFmpegLog,
             IDialogService DialogService,
-            RememberByName RememberByName) : base(Settings, LanguageManager)
+            RememberByName RememberByName,
+            ScreenShotViewModel ScreenShotViewModel) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -76,18 +78,13 @@ namespace Captura.ViewModels
             _previewWindow = PreviewWindow;
             _dialogService = DialogService;
             _rememberByName = RememberByName;
+            this.ScreenShotViewModel = ScreenShotViewModel;
             this.CensorOverlays = CensorOverlays;
             this.FFmpegLog = FFmpegLog;
 
             ShowPreviewCommand = new DelegateCommand(() => _previewWindow.Show());
 
             #region Commands
-            ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
-            
-            ScreenShotActiveCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
-
-            ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
-            
             RecordCommand = new DelegateCommand(OnRecordExecute);
             
             RefreshCommand = new DelegateCommand(OnRefresh);
@@ -141,23 +138,23 @@ namespace Captura.ViewModels
                 switch (Service)
                 {
                     case ServiceName.Recording:
-                        RecordCommand?.ExecuteIfCan();
+                        RecordCommand.ExecuteIfCan();
                         break;
 
                     case ServiceName.Pause:
-                        PauseCommand?.ExecuteIfCan();
+                        PauseCommand.ExecuteIfCan();
                         break;
 
                     case ServiceName.ScreenShot:
-                        ScreenShotCommand?.ExecuteIfCan();
+                        ScreenShotViewModel.ScreenShotCommand.ExecuteIfCan();
                         break;
 
                     case ServiceName.ActiveScreenShot:
-                        ScreenShotActiveCommand?.ExecuteIfCan();
+                        ScreenShotViewModel.ScreenShotActiveCommand.ExecuteIfCan();
                         break;
 
                     case ServiceName.DesktopScreenShot:
-                        ScreenShotDesktopCommand?.ExecuteIfCan();
+                        ScreenShotViewModel.ScreenShotDesktopCommand.ExecuteIfCan();
                         break;
 
                     case ServiceName.ToggleMouseClicks:
@@ -258,6 +255,7 @@ namespace Captura.ViewModels
 
         void OnPauseExecute()
         {
+            // Resume
             if (RecorderState == RecorderState.Paused)
             {
                 _systemTray.HideNotification();
@@ -269,7 +267,7 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Recording;
                 Status.LocalizationKey = nameof(LanguageManager.Recording);
             }
-            else
+            else // Pause
             {
                 _recorder.Stop();
                 _timer?.Stop();
@@ -305,7 +303,7 @@ namespace Captura.ViewModels
             {
                 _remembered = true;
 
-                _rememberByName.RestoreRemembered(ScreenShotImageFormats, out _screenShotImageFormat);
+                _rememberByName.RestoreRemembered();
             }
         }
 
@@ -348,7 +346,7 @@ namespace Captura.ViewModels
             // Remember things if not console.
             if (_persist)
             {
-                _rememberByName.Remember(SelectedScreenShotImageFormat);
+                _rememberByName.Remember();
 
                 Settings.Save();
             }
@@ -377,147 +375,7 @@ namespace Captura.ViewModels
             
             RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
 
-            ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
-        }
-
-        public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
-        {
-            // Save to Disk or Clipboard
-            if (Bmp != null)
-            {
-                var allTasks = VideoViewModel.AvailableImageWriters
-                    .Where(M => M.Active)
-                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, RecentViewModel));
-
-                await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
-            }
-            else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
-        }
-
-        public Bitmap ScreenShotWindow(IWindow hWnd)
-        {
-            _systemTray.HideNotification();
-
-            if (hWnd.Handle == Window.DesktopWindow.Handle)
-            {
-                return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShots);
-            }
-
-            var bmp = ScreenShot.CaptureTransparent(hWnd,
-                Settings.IncludeCursor,
-                Settings.ScreenShots.Resize,
-                Settings.ScreenShots.ResizeWidth,
-                Settings.ScreenShots.ResizeHeight);
-
-            // Capture without Transparency
-            if (bmp == null)
-            {
-                try
-                {
-                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform(Settings.ScreenShots);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-
-            return bmp.Transform(Settings.ScreenShots, true);
-        }
-
-        public async void CaptureScreenShot(string FileName = null)
-        {
-            _systemTray.HideNotification();
-
-            var bmp = await GetScreenShot();
-
-            await SaveScreenShot(bmp, FileName);
-        }
-
-        public async Task<Bitmap> GetScreenShot()
-        {
-            Bitmap bmp = null;
-
-            var selectedVideoSource = VideoViewModel.SelectedVideoSource;
-            var includeCursor = Settings.IncludeCursor;
-
-            switch (VideoViewModel.SelectedVideoSourceKind)
-            {
-                case WindowSourceProvider _:
-                    IWindow hWnd = Window.DesktopWindow;
-
-                    switch (selectedVideoSource)
-                    {
-                        case WindowItem windowItem:
-                            hWnd = windowItem.Window;
-                            break;
-
-                        case WindowPickerItem windowPicker:
-                            var picked = windowPicker.Picker.PickWindow();
-
-                            if (picked != null)
-                            {
-                                hWnd = picked;
-                            }
-                            else return null;
-                            break;
-                    }
-
-                    bmp = ScreenShotWindow(hWnd);
-                    break;
-
-                case DeskDuplSourceProvider _:
-                    if (selectedVideoSource is DeskDuplItem deskDuplItem)
-                    {
-                        bmp = ScreenShot.Capture(deskDuplItem.Rectangle, includeCursor);
-                    }
-                    break;
-
-                case ScreenSourceProvider _:
-                    switch (selectedVideoSource)
-                    {
-                        case FullScreenItem _:
-                            var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
-
-                            if (hide)
-                            {
-                                _mainWindow.IsVisible = false;
-
-                                // Ensure that the Window is hidden
-                                await Task.Delay(300);
-                            }
-
-                            bmp = ScreenShot.Capture(includeCursor);
-
-                            if (hide)
-                                _mainWindow.IsVisible = true;
-                            break;
-
-                        case ScreenPickerItem screenPicker:
-                            var picked = screenPicker.Picker.PickScreen();
-
-                            if (picked != null)
-                            {
-                                bmp = ScreenShot.Capture(picked.Rectangle, includeCursor);
-                            }
-                            else return null;
-                            break;
-
-                        case ScreenItem screen:
-                            bmp = screen.Capture(includeCursor);
-                            break;
-                    }
-
-                    bmp = bmp?.Transform(Settings.ScreenShots);
-                    break;
-
-                case RegionSourceProvider _:
-                    bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
-                    bmp = bmp.Transform(Settings.ScreenShots);
-                    break;
-            }
-
-            return bmp;
+            ScreenShotViewModel.ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
         
         public bool StartRecording(string FileName = null)
@@ -772,7 +630,6 @@ namespace Captura.ViewModels
                     // Ignore Errors like Image not found, Invalid Image
                 }
             }
-            
 
             return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
         }

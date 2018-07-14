@@ -14,6 +14,7 @@ namespace Captura.Models
         readonly AudioSource _audioSource;
         readonly IRegionProvider _regionProvider;
         readonly IWebCamProvider _webCamProvider;
+        readonly ScreenShotViewModel _screenShotViewModel;
 
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
 
@@ -21,16 +22,18 @@ namespace Captura.Models
             VideoViewModel VideoViewModel,
             AudioSource AudioSource,
             IRegionProvider RegionProvider,
-            IWebCamProvider WebCamProvider)
+            IWebCamProvider WebCamProvider,
+            ScreenShotViewModel ScreenShotViewModel)
         {
             _settings = Settings;
             _videoViewModel = VideoViewModel;
             _audioSource = AudioSource;
             _regionProvider = RegionProvider;
             _webCamProvider = WebCamProvider;
+            _screenShotViewModel = ScreenShotViewModel;
         }
 
-        public void Remember(ImageFormat SelectedScreenShotImageFormat)
+        public void Remember()
         {
             // Remember Video Source
             _settings.Video.SourceKind = _videoViewModel.SelectedVideoSourceKind.Name;
@@ -63,7 +66,7 @@ namespace Captura.Models
                 .ToArray();
 
             // Remember ScreenShot Format
-            _settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();
+            _settings.ScreenShots.ImageFormat = _screenShotViewModel.SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
             _settings.ScreenShots.SaveTargets = _videoViewModel.AvailableImageWriters
@@ -75,8 +78,7 @@ namespace Captura.Models
             _settings.Video.Webcam = _webCamProvider.SelectedCam.Name;
         }
 
-        public void RestoreRemembered(IEnumerable<ImageFormat> ScreenShotImageFormats,
-            out ImageFormat SelectedScreenShotImageFormat)
+        public void RestoreRemembered()
         {
             // Restore Video Source
             if (!string.IsNullOrEmpty(_settings.Video.SourceKind))
@@ -139,16 +141,13 @@ namespace Captura.Models
                 }
             }
 
-            var formats = ScreenShotImageFormats.ToArray();
-            SelectedScreenShotImageFormat = formats[0];
-
             // Restore ScreenShot Format
             if (!string.IsNullOrEmpty(_settings.ScreenShots.ImageFormat))
             {
-                var format = formats.FirstOrDefault(F => F.ToString() == _settings.ScreenShots.ImageFormat);
+                var format = _screenShotViewModel.ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == _settings.ScreenShots.ImageFormat);
 
                 if (format != null)
-                    SelectedScreenShotImageFormat = format;
+                    _screenShotViewModel.SelectedScreenShotImageFormat = format;
             }
 
             // Restore ScreenShot Target

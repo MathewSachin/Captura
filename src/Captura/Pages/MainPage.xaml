@@ -231,8 +231,8 @@
             <ComboBox VerticalAlignment="Center"
                       Grid.Row="1"
                       Grid.Column="1"
-                      ItemsSource="{Binding ScreenShotImageFormats}"
-                      SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"
+                      ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
+                      SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"
                       Margin="0,5,0,0"/>
         </Grid>
 

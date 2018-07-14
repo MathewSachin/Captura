@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
-        xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
@@ -27,7 +26,7 @@
         <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
                          Description="Captura">
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
+                <ThumbButtonInfo Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                  Description="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource ScreenShotImageSource}"/>
@@ -78,7 +77,7 @@
                     <Separator/>
 
                     <MenuItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -87,7 +86,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotActiveWindow, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotActiveCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotActiveCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -96,7 +95,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotDesktop, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotDesktopCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotDesktopCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -138,7 +137,7 @@
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotCommand}"
+                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         Opacity="0.9"/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"

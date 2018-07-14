@@ -101,7 +101,7 @@
                                         WindowChrome.IsHitTestVisibleInChrome="True"/>
 
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotCommand}"
+                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 
 namespace Captura.ViewModels
 {
@@ -84,45 +83,8 @@ namespace Captura.ViewModels
         public CustomImageOverlaysViewModel CustomImageOverlays { get; }
 
         public CensorOverlaysViewModel CensorOverlays { get; }
-
-        #region ScreenShot
-        public IEnumerable<ImageFormat> ScreenShotImageFormats { get; } = new[]
-        {
-            ImageFormat.Png,
-            ImageFormat.Jpeg,
-            ImageFormat.Bmp,
-            ImageFormat.Tiff,
-            ImageFormat.Wmf,
-            ImageFormat.Exif,
-            ImageFormat.Gif,
-            ImageFormat.Icon,
-            ImageFormat.Emf
-        };
-
-        ImageFormat _screenShotImageFormat = ImageFormat.Png;
-
-        public ImageFormat SelectedScreenShotImageFormat
-        {
-            get => _screenShotImageFormat;
-            set
-            {
-                if (_screenShotImageFormat == value)
-                    return;
-
-                _screenShotImageFormat = value;
-
-                OnPropertyChanged();
-            }
-        }
-        #endregion
         
         #region Commands
-        public DelegateCommand ScreenShotCommand { get; }
-
-        public DelegateCommand ScreenShotActiveCommand { get; }
-
-        public DelegateCommand ScreenShotDesktopCommand { get; }
-
         public DelegateCommand RecordCommand { get; }
 
         public DelegateCommand RefreshCommand { get; }

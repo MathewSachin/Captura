@@ -429,9 +429,9 @@ namespace Captura
 
                 try
                 {
-                    var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
+                    var bmp = ViewModel.ScreenShotViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
+                    ViewModel.ScreenShotViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {
@@ -442,7 +442,7 @@ namespace Captura
             {
                 HandleVideoSource(ViewModel, ShotOptions);
 
-                ViewModel.CaptureScreenShot(ShotOptions.FileName);
+                ViewModel.ScreenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
         }
 

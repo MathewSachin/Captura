@@ -14,6 +14,7 @@ namespace Captura
             Binder.BindSingleton<LicensesViewModel>();
             Binder.BindSingleton<CrashLogsViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
+            Binder.BindSingleton<ScreenShotViewModel>();
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
