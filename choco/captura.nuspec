@@ -2,16 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>captura</id>
-    <version>5.0.0</version>
+    <version>8.0.0</version>
     <title>Captura</title>
     <authors>Mathew Sachin</authors>
     <projectUrl>https://MathewSachin.github.io/Captura</projectUrl>
     <projectSourceUrl>https://github.com/MathewSachin/Captura</projectSourceUrl>
     <iconUrl>https://raw.githubusercontent.com/MathewSachin/Captura/master/src/Captura/Logo.png</iconUrl>
-    <licenseUrl>https://github.com/MathewSachin/Captura/blob/master/LICENSE.md</licenseUrl>
+    <licenseUrl>https://MathewSachin.github.io/Captura/license</licenseUrl>
     <packageSourceUrl>https://github.com/MathewSachin/Captura/tree/master/choco</packageSourceUrl>
     <bugTrackerUrl>https://github.com/MathewSachin/Captura/issues</bugTrackerUrl>
-    <docsUrl>https://github.com/MathewSachin/Captura/wiki</docsUrl>
+    <docsUrl>https://MathewSachin.github.io/Captura</docsUrl>
     <mailingListUrl>https://gitter.im/MathewSachin/Captura</mailingListUrl>
     <copyright>(c) 2018 Mathew Sachin</copyright>
     <tags>captura screen capture recording loopback screenshot screencast</tags>
@@ -19,7 +19,7 @@
     <description>
 Captura is an application to capture Screen/Audio/Cursor/Clicks/Keystrokes.
     </description>
-    <releaseNotes>[Changelog](https://github.com/MathewSachin/Captura/wiki/Changelog)</releaseNotes>
+    <releaseNotes>[Changelog](https://MathewSachin.github.io/Captura/changelog)</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
