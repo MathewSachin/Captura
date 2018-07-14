@@ -35,7 +35,7 @@ namespace Captura
                 }
             }
 
-            ShCore.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessSystemDPIAware);
+            User32.SetProcessDPIAware();
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());

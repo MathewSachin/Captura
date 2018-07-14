@@ -88,5 +88,8 @@ namespace Captura.Native
 
         [DllImport(DllName)]
         public static extern bool FillRect(IntPtr hDC, ref RECT Rect, IntPtr Brush);
+
+        [DllImport(DllName)]
+        public static extern bool SetProcessDPIAware();
     }
 }

@@ -28,7 +28,7 @@ namespace Captura
         {
             try
             {
-                var img = ServiceProvider.Get<WebCamProvider>().Capture();
+                var img = ServiceProvider.Get<IWebCamProvider>().Capture();
                 
                 if (img != null)
                     await ServiceProvider.Get<MainViewModel>().SaveScreenShot(img);
