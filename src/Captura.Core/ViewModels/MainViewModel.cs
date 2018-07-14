@@ -39,6 +39,8 @@ namespace Captura.ViewModels
 
         readonly IPreviewWindow _previewWindow;
 
+        readonly RememberByName _rememberByName;
+
         public ICommand ShowPreviewCommand { get; }
         
         public MainViewModel(AudioSource AudioSource,
@@ -57,7 +59,8 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             CensorOverlaysViewModel CensorOverlays,
             FFmpegLog FFmpegLog,
-            IDialogService DialogService) : base(Settings, LanguageManager)
+            IDialogService DialogService,
+            RememberByName RememberByName) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -72,6 +75,7 @@ namespace Captura.ViewModels
             this.CustomImageOverlays = CustomImageOverlays;
             _previewWindow = PreviewWindow;
             _dialogService = DialogService;
+            _rememberByName = RememberByName;
             this.CensorOverlays = CensorOverlays;
             this.FFmpegLog = FFmpegLog;
 
@@ -278,94 +282,6 @@ namespace Captura.ViewModels
             }
         }
 
-        void RestoreRemembered()
-        {
-            // Restore Video Source
-            if (!string.IsNullOrEmpty(Settings.Video.SourceKind))
-            {
-                var kind = VideoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == Settings.Video.SourceKind);
-
-                if (kind != null)
-                {
-                    VideoViewModel.SelectedVideoSourceKind = kind;
-
-                    switch (kind)
-                    {
-                        case RegionSourceProvider _:
-                            if (RectangleConverter.ConvertFromInvariantString(Settings.Video.Source) is Rectangle rect)
-                                _regionProvider.SelectedRegion = rect;
-                            break;
-
-                        default:
-                            var source = VideoViewModel.AvailableVideoSources
-                                .FirstOrDefault(S => S.ToString() == Settings.Video.Source);
-
-                            if (source != null)
-                                VideoViewModel.SelectedVideoSource = source;
-                            break;
-                    }
-                }
-            }
-
-            // Restore Video Codec
-            if (!string.IsNullOrEmpty(Settings.Video.WriterKind))
-            {
-                var kind = VideoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == Settings.Video.WriterKind);
-
-                if (kind != null)
-                {
-                    VideoViewModel.SelectedVideoWriterKind = kind;
-
-                    var codec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == Settings.Video.Writer);
-
-                    if (codec != null)
-                        VideoViewModel.SelectedVideoWriter = codec;
-                }
-            }
-            
-            // Restore Microphones
-            if (Settings.Audio.Microphones != null)
-            {
-                foreach (var source in AudioSource.AvailableRecordingSources)
-                {
-                    source.Active = Settings.Audio.Microphones.Contains(source.Name);
-                }
-            }
-
-            // Restore Loopback Speakers
-            if (Settings.Audio.Speakers != null)
-            {
-                foreach (var source in AudioSource.AvailableLoopbackSources)
-                {
-                    source.Active = Settings.Audio.Speakers.Contains(source.Name);
-                }
-            }
-
-            // Restore ScreenShot Format
-            if (!string.IsNullOrEmpty(Settings.ScreenShots.ImageFormat))
-            {
-                var format = ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == Settings.ScreenShots.ImageFormat);
-
-                if (format != null)
-                    SelectedScreenShotImageFormat = format;
-            }
-
-            // Restore ScreenShot Target
-            if (Settings.ScreenShots.SaveTargets != null)
-            {
-                foreach (var imageWriter in VideoViewModel.AvailableImageWriters)
-                {
-                    imageWriter.Active = Settings.ScreenShots.SaveTargets.Contains(imageWriter.Display);
-                }
-
-                // Activate First if none
-                if (!VideoViewModel.AvailableImageWriters.Any(M => M.Active))
-                {
-                    VideoViewModel.AvailableImageWriters[0].Active = true;
-                }
-            }
-        }
-
         bool _persist, _hotkeys, _remembered;
 
         public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)
@@ -389,7 +305,7 @@ namespace Captura.ViewModels
             {
                 _remembered = true;
 
-                RestoreRemembered();
+                _rememberByName.RestoreRemembered(ScreenShotImageFormats, out _screenShotImageFormat);
             }
         }
 
@@ -417,51 +333,6 @@ namespace Captura.ViewModels
                     "Could not find bass.dll or bassmix.dll.\nAudio Recording will not be available.", "No Audio");
             }
         }
-
-        void Remember()
-        {
-            // Remember Video Source
-            Settings.Video.SourceKind = VideoViewModel.SelectedVideoSourceKind.Name;
-
-            switch (VideoViewModel.SelectedVideoSourceKind)
-            {
-                case RegionSourceProvider _:
-                    var rect = _regionProvider.SelectedRegion;
-                    Settings.Video.Source = RectangleConverter.ConvertToInvariantString(rect);
-                    break;
-
-                default:
-                    Settings.Video.Source = VideoViewModel.SelectedVideoSource.ToString();
-                    break;
-            }
-
-            // Remember Video Codec
-            Settings.Video.WriterKind = VideoViewModel.SelectedVideoWriterKind.Name;
-            Settings.Video.Writer = VideoViewModel.SelectedVideoWriter.ToString();
-
-            // Remember Audio Sources
-            Settings.Audio.Microphones = AudioSource.AvailableRecordingSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-
-            Settings.Audio.Speakers = AudioSource.AvailableLoopbackSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-            
-            // Remember ScreenShot Format
-            Settings.ScreenShots.ImageFormat = SelectedScreenShotImageFormat.ToString();
-
-            // Remember ScreenShot Target
-            Settings.ScreenShots.SaveTargets = VideoViewModel.AvailableImageWriters
-                .Where(M => M.Active)
-                .Select(M => M.Display)
-                .ToArray();
-
-            // Remember Webcam
-            Settings.Video.Webcam = WebCamProvider.SelectedCam.Name;
-        }
         
         public void Dispose()
         {
@@ -477,7 +348,7 @@ namespace Captura.ViewModels
             // Remember things if not console.
             if (_persist)
             {
-                Remember();
+                _rememberByName.Remember(SelectedScreenShotImageFormat);
 
                 Settings.Save();
             }

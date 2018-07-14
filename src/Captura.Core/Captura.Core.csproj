@@ -82,6 +82,7 @@
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
+    <Compile Include="Models\RememberByName.cs" />
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\Overlays\WebcamOverlay.cs" />
