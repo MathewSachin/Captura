@@ -25,7 +25,7 @@ namespace Captura.Models
 
         public bool ShowYesNo(string Message, string Title)
         {
-            Console.Write($"{Message} (Y/N):");
+            Console.Write($"{Message} (Y/N): ");
 
             var reply = Console.ReadLine();
 

@@ -28,6 +28,9 @@ namespace Captura
 
         [Option('t', "length", HelpText = "Length of Recording in seconds.")]
         public int Length { get; set; }
+
+        [Option('y', HelpText = "Overwrite existing file")]
+        public bool Overwrite { get; set; }
         
         [Option("keys", HelpText = "Include Keystrokes in Recording (default = false).")]
         public bool Keys { get; set; }

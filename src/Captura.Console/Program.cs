@@ -456,9 +456,14 @@ namespace Captura
 
             if (File.Exists(StartOptions.FileName))
             {
-                WriteLine("Output File Already Exists");
+                if (!StartOptions.Overwrite)
+                {
+                    if (!ServiceProvider.MessageProvider
+                        .ShowYesNo("Output File Already Exists, Do you want to overwrite?", ""))
+                        return;
+                }
 
-                return;
+                File.Delete(StartOptions.FileName);
             }
 
             HandleVideoSource(ViewModel, StartOptions);
