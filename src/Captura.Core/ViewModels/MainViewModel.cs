@@ -802,6 +802,8 @@ namespace Captura.ViewModels
 
             RecorderState = RecorderState.Recording;
 
+            CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
+
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
 
@@ -849,6 +851,8 @@ namespace Captura.ViewModels
         void AfterRecording()
         {
             RecorderState = RecorderState.NotRecording;
+
+            CanChangeWebcam = true;
 
             _recorder = null;
 

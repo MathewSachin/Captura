@@ -96,6 +96,7 @@
 
             <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                       SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
+                      IsEnabled="{Binding CanChangeWebcam}"
                       DisplayMemberPath="Name"/>
         </DockPanel>
 

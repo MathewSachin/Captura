@@ -38,6 +38,19 @@ namespace Captura.ViewModels
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
             new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise")
         };
+
+        bool _canChangeWebcam = true;
+
+        public bool CanChangeWebcam
+        {
+            get => _canChangeWebcam;
+            set
+            {
+                _canChangeWebcam = value;
+                
+                OnPropertyChanged();
+            }
+        }
         
         RecorderState _recorderState = RecorderState.NotRecording;
 
