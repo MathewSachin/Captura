@@ -19,6 +19,10 @@
                       Content="Remove FPS limit"
                       Margin="0,5"/>
 
+            <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
+                      Content="Record Webcam to separate file"
+                      Margin="0,5"/>
+
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

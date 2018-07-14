@@ -13,5 +13,9 @@ namespace Captura.Models
         void Refresh();
 
         Bitmap Capture();
+
+        int Width { get; }
+
+        int Height { get; }
     }
 }

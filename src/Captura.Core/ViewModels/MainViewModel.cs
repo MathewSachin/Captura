@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using Captura.Audio;
+using Captura.Webcam;
 using Microsoft.Win32;
 using Timer = System.Timers.Timer;
 using Window = Screna.Window;
@@ -743,7 +744,7 @@ namespace Captura.ViewModels
 
             try
             {
-                videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
+                videoEncoder = GetVideoFileWriterWithPreview(imgProvider, audioProvider);
             }
             catch (Exception e)
             {
@@ -775,6 +776,20 @@ namespace Captura.ViewModels
                         _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider?.WaveFormat, Settings.Audio.Quality), audioProvider);
                     }
                     break;
+            }
+
+            if (_isVideo && WebCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
+            {
+                var webcamImgProvider = new WebcamImageProvider(WebCamProvider);
+
+                var webcamFileName = Path.Combine(Path.GetDirectoryName(_currentFileName),
+                    Path.GetFileNameWithoutExtension(_currentFileName) + "-webcam" + Path.GetExtension(_currentFileName));
+
+                var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
+
+                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate, null);
+
+                _recorder = new MultiRecorder(_recorder, webcamRecorder);
             }
 
             if (VideoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
@@ -847,22 +862,30 @@ namespace Captura.ViewModels
                 _regionProvider.Release();
         }
 
-        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
+        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider, string FileName = null)
+        {
+            if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
+                return null;
+            
+            return VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            {
+                FileName = FileName ?? _currentFileName,
+                FrameRate = Settings.Video.FrameRate,
+                VideoQuality = Settings.Video.Quality,
+                ImageProvider = ImgProvider,
+                AudioQuality = Settings.Audio.Quality,
+                AudioProvider = AudioProvider
+            });
+        }
+
+        IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
             if (VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
             _previewWindow.Init(ImgProvider.Width, ImgProvider.Height);
 
-            return new WithPreviewWriter(VideoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
-            {
-                FileName = _currentFileName,
-                FrameRate = Settings.Video.FrameRate,
-                VideoQuality = Settings.Video.Quality,
-                ImageProvider = ImgProvider,
-                AudioQuality = Settings.Audio.Quality,
-                AudioProvider = AudioProvider
-            }), _previewWindow);
+            return new WithPreviewWriter(GetVideoFileWriter(ImgProvider, AudioProvider), _previewWindow);
         }
         
         IImageProvider GetImageProvider()
@@ -876,10 +899,15 @@ namespace Captura.ViewModels
 
             var overlays = new List<IOverlay>
             {
-                new CensorOverlay(Settings.Censored),
-                _webcamOverlay,
-                new MousePointerOverlay(Settings.MousePointerOverlay)
+                new CensorOverlay(Settings.Censored)
             };
+
+            if (!Settings.WebcamOverlay.SeparateFile)
+            {
+                overlays.Add(_webcamOverlay);
+            }
+
+            overlays.Add(new MousePointerOverlay(Settings.MousePointerOverlay));
 
             if (MouseKeyHookAvailable)
                 overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
