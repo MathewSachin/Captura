@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Captura.Audio;
 using Captura.Models;
+using Captura.Webcam;
 using Microsoft.Win32;
 using Screna;
 using Timer = System.Timers.Timer;
@@ -32,6 +33,7 @@ namespace Captura.ViewModels
         readonly WebcamOverlay _webcamOverlay;
         readonly IMainWindow _mainWindow;
         readonly IPreviewWindow _previewWindow;
+        readonly IWebCamProvider _webCamProvider;
 
         readonly VideoViewModel _videoViewModel;
         readonly AudioSource _audioSource;
@@ -59,7 +61,8 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             VideoViewModel VideoViewModel,
             AudioSource AudioSource,
-            RecentViewModel RecentViewModel) : base(Settings, LanguageManager)
+            RecentViewModel RecentViewModel,
+            IWebCamProvider WebCamProvider) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
@@ -72,6 +75,7 @@ namespace Captura.ViewModels
             _videoViewModel = VideoViewModel;
             _audioSource = AudioSource;
             _recentViewModel = RecentViewModel;
+            _webCamProvider = WebCamProvider;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -93,6 +97,19 @@ namespace Captura.ViewModels
                 _recorderState = value;
 
                 PauseCommand.RaiseCanExecuteChanged(value != RecorderState.NotRecording);
+
+                OnPropertyChanged();
+            }
+        }
+
+        bool _canChangeWebcam = true;
+
+        public bool CanChangeWebcam
+        {
+            get => _canChangeWebcam;
+            set
+            {
+                _canChangeWebcam = value;
 
                 OnPropertyChanged();
             }
@@ -278,7 +295,7 @@ namespace Captura.ViewModels
 
             try
             {
-                videoEncoder = GetVideoFileWriter(imgProvider, audioProvider);
+                videoEncoder = GetVideoFileWriterWithPreview(imgProvider, audioProvider);
             }
             catch (Exception e)
             {
@@ -312,6 +329,20 @@ namespace Captura.ViewModels
                     break;
             }
 
+            if (_isVideo && _webCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
+            {
+                var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
+
+                var webcamFileName = Path.Combine(Path.GetDirectoryName(_currentFileName),
+                    Path.GetFileNameWithoutExtension(_currentFileName) + "-webcam" + Path.GetExtension(_currentFileName));
+
+                var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
+
+                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate, null);
+
+                _recorder = new MultiRecorder(_recorder, webcamRecorder);
+            }
+
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
                 _regionProvider.Lock();
 
@@ -321,6 +352,8 @@ namespace Captura.ViewModels
                 _mainWindow.IsMinimized = true;
 
             RecorderState = RecorderState.Recording;
+
+            CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
 
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
@@ -370,6 +403,8 @@ namespace Captura.ViewModels
         {
             RecorderState = RecorderState.NotRecording;
 
+            CanChangeWebcam = true;
+
             _recorder = null;
 
             _timer?.Stop();
@@ -382,22 +417,30 @@ namespace Captura.ViewModels
                 _regionProvider.Release();
         }
 
-        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider)
+        IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
             if (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
             _previewWindow.Init(ImgProvider.Width, ImgProvider.Height);
 
-            return new WithPreviewWriter(_videoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            return new WithPreviewWriter(GetVideoFileWriter(ImgProvider, AudioProvider), _previewWindow);
+        }
+
+        IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider, string FileName = null)
+        {
+            if (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
+                return null;
+
+            return _videoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
             {
-                FileName = _currentFileName,
+                FileName = FileName ?? _currentFileName,
                 FrameRate = Settings.Video.FrameRate,
                 VideoQuality = Settings.Video.Quality,
                 ImageProvider = ImgProvider,
                 AudioQuality = Settings.Audio.Quality,
                 AudioProvider = AudioProvider
-            }), _previewWindow);
+            });
         }
 
         IImageProvider GetImageProvider()
@@ -411,12 +454,17 @@ namespace Captura.ViewModels
 
             var overlays = new List<IOverlay>
             {
-                new CensorOverlay(Settings.Censored),
-                _webcamOverlay,
-                new MousePointerOverlay(Settings.MousePointerOverlay),
-                new MouseKeyHook(Settings.Clicks, Settings.Keystrokes),
-                new ElapsedOverlay(Settings.Elapsed, () => TimeSpan)
+                new CensorOverlay(Settings.Censored)
             };
+
+            if (!Settings.WebcamOverlay.SeparateFile)
+            {
+                overlays.Add(_webcamOverlay);
+            }
+
+            overlays.Add(new MousePointerOverlay(Settings.MousePointerOverlay));
+            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
+            overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
 
             // Custom Overlays
             overlays.AddRange(CustomOverlays.Collection.Select(M => new CustomOverlay(M)));
