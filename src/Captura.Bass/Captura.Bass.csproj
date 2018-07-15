@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BassAudioSource.cs" />
     <Compile Include="BassItem.cs" />
+    <Compile Include="BassAudioProvider.cs" />
     <Compile Include="MixedAudioProvider.cs" />
   </ItemGroup>
   <ItemGroup>

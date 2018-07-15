@@ -2,6 +2,12 @@
 {
     public class AudioSettings : PropertyStore
     {
+        public bool SeparateFilePerSource
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
         public bool Enabled
         {
             get => Get(false);
