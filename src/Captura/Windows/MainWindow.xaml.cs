@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
+using System.Linq;
 using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Screna;
@@ -75,7 +77,7 @@ namespace Captura
                 (int)(ActualWidth * Dpi.X),
                 (int)(ActualHeight * Dpi.Y));
             
-            if (!WindowProvider.DesktopRectangle.Contains(rect))
+            if (!Screen.AllScreens.Any(M => M.Bounds.Contains(rect)))
             {
                 Left = 50;
                 Top = 50;
@@ -120,13 +122,13 @@ namespace Captura
         {
             if (DataContext is MainViewModel vm)
             {
-                if (vm.RecorderState == RecorderState.Recording)
+                if (vm.RecordingViewModel.RecorderState == RecorderState.Recording)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo(
                         "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                         return false;
                 }
-                else if (vm.RunningStopRecordingCount > 0)
+                else if (vm.RecordingViewModel.RunningStopRecordingCount > 0)
                 {
                     if (!ServiceProvider.MessageProvider.ShowYesNo(
                         "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))

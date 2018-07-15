@@ -265,7 +265,7 @@
                                                   DockPanel.Dock="Bottom"/>
             </TabItem>
             <TabItem Header="Censor">
-                <DockPanel DataContext="{Binding MainViewModel.CensorOverlays, Source={StaticResource ServiceLocator}}">
+                <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CensorOverlays, Source={StaticResource ServiceLocator}}">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
@@ -331,7 +331,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Text">
-                <DockPanel DataContext="{Binding MainViewModel.CustomOverlays, Source={StaticResource ServiceLocator}}">
+                <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CustomOverlays, Source={StaticResource ServiceLocator}}">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"
@@ -378,7 +378,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Images">
-                <DockPanel DataContext="{Binding MainViewModel.CustomImageOverlays, Source={StaticResource ServiceLocator}}">
+                <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CustomImageOverlays, Source={StaticResource ServiceLocator}}">
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCommand}"

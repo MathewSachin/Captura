@@ -76,5 +76,8 @@ namespace Captura.Native
 
         [DllImport(DllName)]
         public static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport(DllName)]
+        public static extern bool SetProcessDPIAware();
     }
 }

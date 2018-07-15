@@ -1,7 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Captura;
 
 namespace Screna
@@ -31,7 +33,12 @@ namespace Screna
         {
             var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
-            Marshal.Copy(bits.Scan0, Buffer, 0, Length);
+            Parallel.For(0, Height, Y =>
+            {
+                var absStride = Math.Abs(bits.Stride);
+
+                Marshal.Copy(bits.Scan0 + (Y * bits.Stride), Buffer, Y * absStride, absStride);
+            });
 
             Bitmap.UnlockBits(bits);
         }

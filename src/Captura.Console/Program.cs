@@ -35,7 +35,7 @@ namespace Captura
                 }
             }
 
-            ShCore.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessSystemDPIAware);
+            User32.SetProcessDPIAware();
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());
@@ -187,12 +187,6 @@ namespace Captura
 
                 ++j;
             }
-
-            WriteLine();
-            #endregion
-
-            #region MouseKeyHook
-            WriteLine($"MouseKeyHook Available: {(ServiceProvider.Get<MainViewModel>().MouseKeyHookAvailable ? "YES" : "NO")}");
 
             WriteLine();
             #endregion
@@ -429,9 +423,9 @@ namespace Captura
 
                 try
                 {
-                    var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
+                    var bmp = ViewModel.ScreenShotViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
+                    ViewModel.ScreenShotViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {
@@ -442,7 +436,7 @@ namespace Captura
             {
                 HandleVideoSource(ViewModel, ShotOptions);
 
-                ViewModel.CaptureScreenShot(ShotOptions.FileName);
+                ViewModel.ScreenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
         }
 
@@ -456,9 +450,14 @@ namespace Captura
 
             if (File.Exists(StartOptions.FileName))
             {
-                WriteLine("Output File Already Exists");
+                if (!StartOptions.Overwrite)
+                {
+                    if (!ServiceProvider.MessageProvider
+                        .ShowYesNo("Output File Already Exists, Do you want to overwrite?", ""))
+                        return;
+                }
 
-                return;
+                File.Delete(StartOptions.FileName);
             }
 
             HandleVideoSource(ViewModel, StartOptions);
@@ -474,7 +473,7 @@ namespace Captura
             ViewModel.Settings.Audio.Quality = StartOptions.AudioQuality;
             ViewModel.Settings.Video.Quality = StartOptions.VideoQuality;
 
-            if (!ViewModel.RecordCommand.CanExecute(null))
+            if (!ViewModel.RecordingViewModel.RecordCommand.CanExecute(null))
             {
                 WriteLine("Nothing to Record");
 
@@ -484,14 +483,14 @@ namespace Captura
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            if (!ViewModel.StartRecording(StartOptions.FileName))
+            if (!ViewModel.RecordingViewModel.StartRecording(StartOptions.FileName))
                 return;
 
             Task.Factory.StartNew(() =>
             {
                 Loop(ViewModel, StartOptions);
 
-                ViewModel.StopRecording().Wait();
+                ViewModel.RecordingViewModel.StopRecording().Wait();
 
                 Application.Exit();
             });
@@ -546,9 +545,9 @@ namespace Captura
                     if (c != 'p')
                         continue;
 
-                    ViewModel.PauseCommand.ExecuteIfCan();
+                    ViewModel.RecordingViewModel.PauseCommand.ExecuteIfCan();
 
-                    if (ViewModel.RecorderState != RecorderState.Paused)
+                    if (ViewModel.RecordingViewModel.RecorderState != RecorderState.Paused)
                     {
                         WriteLine("Resumed");
                     }
