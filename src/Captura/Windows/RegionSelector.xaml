@@ -3,6 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Height="500"
         Background="Transparent"
@@ -83,7 +87,8 @@
                    HorizontalContentAlignment="Stretch"
                    Margin="-1,-5,0,0"
                    Grid.ColumnSpan="2">
-                <DockPanel Name="MainControls">
+                <DockPanel Name="MainControls"
+                           d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
                     <local:ModernButton ToolTip="Snap to Window"
                                         IconData="{StaticResource IconSnapToWindow}"
                                         Background="{DynamicResource WindowBackground}"
