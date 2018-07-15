@@ -21,19 +21,17 @@
             <StackPanel Orientation="Horizontal"
                         Margin="5,0,0,0">
                 <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                          IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource IconCursor}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
                 <local:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
-                                          Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource IconHand}"
                                           IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
-                                          Visibility="{Binding MouseKeyHookAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
                                           IconData="{StaticResource IconKeyboard}"
                                           IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
                 <local:ModernToggleButton ToolTip="Elapsed"
-                                          IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource IconTimer}"
                                           IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}"/>
             </StackPanel>
@@ -67,13 +65,13 @@
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
                       DisplayMemberPath="Name"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center" 
                       Margin="3,0,7,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       DisplayMemberPath="Name"
                       Grid.Column="2"/>
         </Grid>
@@ -96,7 +94,7 @@
 
             <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                       SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                      IsEnabled="{Binding CanChangeWebcam}"
+                      IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
                       DisplayMemberPath="Name"/>
         </DockPanel>
 
@@ -122,14 +120,14 @@
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
                       DisplayMemberPath="Name"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <ComboBox VerticalAlignment="Center"
                       Margin="5,0,0,0"
                       ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                       SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
                       Grid.Column="2"
-                      IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
             <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
                     Grid.Column="3"
@@ -139,7 +137,7 @@
         </Grid>
         
         <Grid Margin="10,5,0,5"
-              IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+              IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -173,7 +171,7 @@
         </Grid>
 
         <DockPanel Margin="10,5,0,5"
-                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Video.Quality}"
@@ -232,14 +230,14 @@
             <ComboBox VerticalAlignment="Center"
                       Grid.Row="1"
                       Grid.Column="1"
-                      ItemsSource="{Binding ScreenShotImageFormats}"
-                      SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"
+                      ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
+                      SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"
                       Margin="0,5,0,0"/>
         </Grid>
 
         <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                   IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
-                  IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                   FontWeight="Bold"
                   Margin="10,15,0,3"
                   FontSize="15"/>
@@ -294,7 +292,7 @@
         </ScrollViewer>
 
         <DockPanel Margin="10,5,0,5"
-                   IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
             <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                    ContentStringFormat="{}{0}:"/>
             <Label Content="{Binding Settings.Audio.Quality}"

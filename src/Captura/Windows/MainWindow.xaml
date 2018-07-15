@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
-        xmlns:core="clr-namespace:Captura;assembly=Captura.Core"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
@@ -24,14 +23,14 @@
                       CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Overlay="{Binding RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
+        <TaskbarItemInfo Overlay="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
                          Description="Captura">
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo Command="{Binding ScreenShotCommand}"
+                <ThumbButtonInfo Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                  Description="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource ScreenShotImageSource}"/>
-                <ThumbButtonInfo Command="{Binding RecordCommand}"
+                <ThumbButtonInfo Command="{Binding RecordingViewModel.RecordCommand}"
                                  Description="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource RecordStopImageSource}"/>
@@ -41,13 +40,13 @@
     <Grid Background="{DynamicResource WindowBackground}">
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
-                        IconSource="{Binding RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
+                        IconSource="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
                         ToolTipText="Captura"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{Binding StartStopRecording, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding RecordCommand}">
+                              Command="{Binding RecordingViewModel.RecordCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource RecordStopImageSource}"
                                    Width="13"
@@ -56,7 +55,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding PauseResumeRecording, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding PauseCommand}">
+                              Command="{Binding RecordingViewModel.PauseCommand}">
                         <MenuItem.Icon>
                             <Image Width="10"
                                    Margin="5">
@@ -69,7 +68,7 @@
                                     </DrawingImage>
                                 </Image.Source>
                                 <Image.LayoutTransform>
-                                    <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                                    <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                                 </Image.LayoutTransform>
                             </Image>
                         </MenuItem.Icon>
@@ -78,7 +77,7 @@
                     <Separator/>
 
                     <MenuItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -87,7 +86,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotActiveWindow, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotActiveCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotActiveCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -96,7 +95,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotDesktop, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotDesktopCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotDesktopCommand}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -138,19 +137,19 @@
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotCommand}"
+                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         Opacity="0.9"/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding RecordCommand}"
+                                        Command="{Binding RecordingViewModel.RecordCommand}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                                        IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
-                                        Command="{Binding PauseCommand}"
+                                        Command="{Binding RecordingViewModel.PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9">
                         <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
+                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
                         </local:ModernButton.LayoutTransform>
                     </local:ModernButton>
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
@@ -170,7 +169,7 @@
                                         DockPanel.Dock="Right"/>
                     <Grid Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
-                        <Label Content="{Binding TimeSpan}"
+                        <Label Content="{Binding RecordingViewModel.TimeSpan}"
                                Margin="0,-1"
                                HorizontalContentAlignment="Center"/>
                     </Grid>
@@ -179,7 +178,7 @@
             <DockPanel Margin="-5,0,0,0"
                        Height="560">
                 <Label Margin="5"
-                       Content="{Binding Status.Display}"
+                       Content="{Binding RecordingViewModel.Status.Display}"
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
 
@@ -206,7 +205,7 @@
                     <Button DockPanel.Dock="Right"
                             ToolTip="{Binding SelectOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                             Command="{Binding SelectOutputFolderCommand}"
-                            IsEnabled="{Binding RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                            IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                         <Path Stretch="UniformToFill"
                               Height="4"
                               Width="16"

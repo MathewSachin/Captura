@@ -398,7 +398,7 @@ namespace Captura
                     break;
 
                 default:
-                    bmp = await vm.GetScreenShot();
+                    bmp = await vm.ScreenShotViewModel.GetScreenShot();
                     break;
             }
 
