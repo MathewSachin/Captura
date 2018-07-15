@@ -46,8 +46,8 @@ namespace Captura.Models
 
         public override IAudioProvider[] GetMultipleAudioProviders()
         {
-            return AvailableRecordingSources
-                .Concat(AvailableLoopbackSources)
+            return AvailableRecordingSources.Where(M => M.Active)
+                .Concat(AvailableLoopbackSources.Where(M => M.Active))
                 .Cast<BassItem>()
                 .Select(M => new BassAudioProvider(M))
                 .ToArray<IAudioProvider>();

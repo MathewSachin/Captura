@@ -335,7 +335,45 @@ namespace Captura.ViewModels
                     }
                     else if (_videoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
                     {
-                        _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider?.WaveFormat, Settings.Audio.Quality), audioProvider);
+                        IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
+                        {
+                            return new Recorder(
+                                audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
+                                    Settings.Audio.Quality), AudioProvider);
+                        }
+
+                        if (!Settings.Audio.SeparateFilePerSource)
+                        {
+                            _recorder = GetAudioRecorder(audioProvider);
+                        }
+                        else
+                        {
+                            if (Settings.Audio.SeparateFilePerSource)
+                            {
+                                var index = 0;
+
+                                string GetAudioFileName()
+                                {
+                                    return Path.ChangeExtension(_currentFileName, $".{index++}{Path.GetExtension(_currentFileName)}");
+                                }
+
+                                var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+                                if (audioProviders.Length > 0)
+                                {
+                                    var recorders = audioProviders.Select(M => GetAudioRecorder(M, GetAudioFileName()))
+                                        .ToArray();
+
+                                    _recorder = new MultiRecorder(recorders);
+                                }
+                                else
+                                {
+                                    ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
+
+                                    return false;
+                                }
+                            }
+                        }
                     }
                     break;
             }
@@ -344,12 +382,11 @@ namespace Captura.ViewModels
             {
                 var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
 
-                var webcamFileName = Path.Combine(Path.GetDirectoryName(_currentFileName),
-                    Path.GetFileNameWithoutExtension(_currentFileName) + "-webcam" + Path.GetExtension(_currentFileName));
+                var webcamFileName = Path.ChangeExtension(_currentFileName, $".webcam{Path.GetExtension(_currentFileName)}");
 
                 var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
 
-                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate, null);
+                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate);
 
                 _recorder = new MultiRecorder(_recorder, webcamRecorder);
             }
