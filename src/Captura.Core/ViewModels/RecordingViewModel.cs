@@ -350,21 +350,23 @@ namespace Captura.ViewModels
                         {
                             if (Settings.Audio.SeparateFilePerSource)
                             {
-                                var index = 0;
-
-                                string GetAudioFileName()
+                                string GetAudioFileName(int Index)
                                 {
-                                    return Path.ChangeExtension(_currentFileName, $".{index++}{Path.GetExtension(_currentFileName)}");
+                                    return Path.ChangeExtension(_currentFileName, $".{Index}{Path.GetExtension(_currentFileName)}");
                                 }
 
                                 var audioProviders = _audioSource.GetMultipleAudioProviders();
 
                                 if (audioProviders.Length > 0)
                                 {
-                                    var recorders = audioProviders.Select(M => GetAudioRecorder(M, GetAudioFileName()))
+                                    var recorders = audioProviders
+                                        .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
                                         .ToArray();
 
                                     _recorder = new MultiRecorder(recorders);
+
+                                    // Set to first file
+                                    _currentFileName = GetAudioFileName(0);
                                 }
                                 else
                                 {
