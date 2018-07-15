@@ -348,38 +348,37 @@ namespace Captura.ViewModels
                         }
                         else
                         {
-                            if (Settings.Audio.SeparateFilePerSource)
+                            string GetAudioFileName(int Index)
                             {
-                                string GetAudioFileName(int Index)
-                                {
-                                    return Path.ChangeExtension(_currentFileName, $".{Index}{Path.GetExtension(_currentFileName)}");
-                                }
+                                return Path.ChangeExtension(_currentFileName,
+                                    $".{Index}{Path.GetExtension(_currentFileName)}");
+                            }
 
-                                var audioProviders = _audioSource.GetMultipleAudioProviders();
+                            var audioProviders = _audioSource.GetMultipleAudioProviders();
 
-                                if (audioProviders.Length > 0)
-                                {
-                                    var recorders = audioProviders
-                                        .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
-                                        .ToArray();
+                            if (audioProviders.Length > 0)
+                            {
+                                var recorders = audioProviders
+                                    .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
+                                    .ToArray();
 
-                                    _recorder = new MultiRecorder(recorders);
+                                _recorder = new MultiRecorder(recorders);
 
-                                    // Set to first file
-                                    _currentFileName = GetAudioFileName(0);
-                                }
-                                else
-                                {
-                                    ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
+                                // Set to first file
+                                _currentFileName = GetAudioFileName(0);
+                            }
+                            else
+                            {
+                                ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
 
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                     }
                     break;
             }
 
+            // Separate file for webcam
             if (_isVideo && _webCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
             {
                 var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
@@ -391,6 +390,36 @@ namespace Captura.ViewModels
                 var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate);
 
                 _recorder = new MultiRecorder(_recorder, webcamRecorder);
+            }
+
+            // Separate file for every audio source
+            if (_isVideo && Settings.Audio.Enabled && Settings.Audio.SeparateFilePerSource)
+            {
+                var audioWriter = WaveItem.Instance;
+                
+                IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
+                {
+                    return new Recorder(
+                        audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
+                            Settings.Audio.Quality), AudioProvider);
+                }
+
+                string GetAudioFileName(int Index)
+                {
+                    return Path.ChangeExtension(_currentFileName, $".{Index}.wav");
+                }
+
+                var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+                if (audioProviders.Length > 0)
+                {
+                    var recorders = audioProviders
+                        .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
+                        .Concat(new[] {_recorder})
+                        .ToArray();
+
+                    _recorder = new MultiRecorder(recorders);
+                }
             }
 
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
