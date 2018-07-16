@@ -102,7 +102,7 @@ namespace Captura.ViewModels
             }
         }
 
-        bool _canChangeWebcam = true;
+        bool _canChangeWebcam = true, _canChangeAudioSources = true;
 
         public bool CanChangeWebcam
         {
@@ -111,6 +111,17 @@ namespace Captura.ViewModels
             {
                 _canChangeWebcam = value;
 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CanChangeAudioSources
+        {
+            get => _canChangeAudioSources;
+            set
+            {
+                _canChangeAudioSources = value;
+                
                 OnPropertyChanged();
             }
         }
@@ -277,9 +288,9 @@ namespace Captura.ViewModels
 
             try
             {
-                if (Settings.Audio.Enabled)
+                if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
                 {
-                    audioProvider = _audioSource.GetAudioProvider(Settings.Video.FrameRate);
+                    audioProvider = _audioSource.GetMixedAudioProvider(Settings.Video.FrameRate);
                 }
             }
             catch (Exception e)
@@ -324,23 +335,91 @@ namespace Captura.ViewModels
                     }
                     else if (_videoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
                     {
-                        _recorder = new Recorder(audioWriter.GetAudioFileWriter(_currentFileName, audioProvider?.WaveFormat, Settings.Audio.Quality), audioProvider);
+                        IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
+                        {
+                            return new Recorder(
+                                audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
+                                    Settings.Audio.Quality), AudioProvider);
+                        }
+
+                        if (!Settings.Audio.SeparateFilePerSource)
+                        {
+                            _recorder = GetAudioRecorder(audioProvider);
+                        }
+                        else
+                        {
+                            string GetAudioFileName(int Index)
+                            {
+                                return Path.ChangeExtension(_currentFileName,
+                                    $".{Index}{Path.GetExtension(_currentFileName)}");
+                            }
+
+                            var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+                            if (audioProviders.Length > 0)
+                            {
+                                var recorders = audioProviders
+                                    .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
+                                    .ToArray();
+
+                                _recorder = new MultiRecorder(recorders);
+
+                                // Set to first file
+                                _currentFileName = GetAudioFileName(0);
+                            }
+                            else
+                            {
+                                ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
+
+                                return false;
+                            }
+                        }
                     }
                     break;
             }
 
+            // Separate file for webcam
             if (_isVideo && _webCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
             {
                 var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
 
-                var webcamFileName = Path.Combine(Path.GetDirectoryName(_currentFileName),
-                    Path.GetFileNameWithoutExtension(_currentFileName) + "-webcam" + Path.GetExtension(_currentFileName));
+                var webcamFileName = Path.ChangeExtension(_currentFileName, $".webcam{Path.GetExtension(_currentFileName)}");
 
                 var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
 
-                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate, null);
+                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate);
 
                 _recorder = new MultiRecorder(_recorder, webcamRecorder);
+            }
+
+            // Separate file for every audio source
+            if (_isVideo && Settings.Audio.Enabled && Settings.Audio.SeparateFilePerSource)
+            {
+                var audioWriter = WaveItem.Instance;
+                
+                IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
+                {
+                    return new Recorder(
+                        audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
+                            Settings.Audio.Quality), AudioProvider);
+                }
+
+                string GetAudioFileName(int Index)
+                {
+                    return Path.ChangeExtension(_currentFileName, $".{Index}.wav");
+                }
+
+                var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+                if (audioProviders.Length > 0)
+                {
+                    var recorders = audioProviders
+                        .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
+                        .Concat(new[] {_recorder})
+                        .ToArray();
+
+                    _recorder = new MultiRecorder(recorders);
+                }
             }
 
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
@@ -354,6 +433,7 @@ namespace Captura.ViewModels
             RecorderState = RecorderState.Recording;
 
             CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
+            CanChangeAudioSources = !Settings.Audio.SeparateFilePerSource;
 
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
@@ -403,7 +483,7 @@ namespace Captura.ViewModels
         {
             RecorderState = RecorderState.NotRecording;
 
-            CanChangeWebcam = true;
+            CanChangeWebcam = CanChangeAudioSources = true;
 
             _recorder = null;
 

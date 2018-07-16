@@ -198,7 +198,7 @@ namespace Screna
 
                     task = Task.Factory
                         .StartNew(() => _imageProvider.Capture())
-                        .ContinueWith(T => AddFrame(T.Result));
+                        .ContinueWith(T => AddFrame(T.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 

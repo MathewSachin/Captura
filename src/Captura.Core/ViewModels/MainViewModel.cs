@@ -165,8 +165,6 @@ namespace Captura.ViewModels
 
         void OnRefresh()
         {
-            WindowProvider.RefreshDesktopSize();
-
             #region Video Source
             var lastVideoSourceName = VideoViewModel.SelectedVideoSource?.Name;
 
