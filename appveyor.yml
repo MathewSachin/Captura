@@ -12,8 +12,8 @@ environment:
     secure: Y/2WUSisk7oLSQNY1YzUxw==
   choco_key:
     secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
-  git_key: # might require to use password here
-    secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
+  git_key:
+    secure: uhvhrrZd7L8MK4CrDGkM1A==
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified

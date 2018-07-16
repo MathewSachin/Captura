@@ -354,11 +354,6 @@ var packSetupTask = Task("Pack-Setup")
     });
 });
 
-var packChocoTask = Task("Pack-Choco")
-    .WithCriteria(deploy)
-    .IsDependentOn(packPortableTask)
-    .Does(() => PackChoco(tag, chocoVersion));
-
 var deployGitHubTask = Task("Deploy-GitHub")
     .WithCriteria(deploy)
     .IsDependentOn(packPortableTask)
@@ -391,6 +386,12 @@ var deployGitHubTask = Task("Deploy-GitHub")
         RepoName,
         tag);
 });
+
+var packChocoTask = Task("Pack-Choco")
+    .WithCriteria(deploy)
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(deployGitHubTask)
+    .Does(() => PackChoco(tag, chocoVersion));
 
 var deployChocoTask = Task("Deploy-Choco")
     .WithCriteria(deploy)
