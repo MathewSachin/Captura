@@ -1,35 +1,42 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
+using Captura.Native;
 
 namespace Screna
 {
-    /// <summary>
-    /// Captures the Region specified by a Rectangle.
-    /// </summary>
     public class RegionProvider : IImageProvider
     {
         Rectangle _region;
-        readonly ImagePool _imagePool;
         readonly bool _includeCursor;
         readonly Func<Point, Point> _transform;
 
-        /// <summary>
-        /// Creates a new instance of <see cref="RegionProvider"/>.
-        /// </summary>
+        readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
+
         public RegionProvider(Rectangle Region, bool IncludeCursor)
         {
-            Region = Region.Even();
-
             _region = Region;
             _includeCursor = IncludeCursor;
 
+            // Width and Height must be even.
+            // Use these for Bitmap size, but capture as per region size
+            Width = _region.Width;
+            if (Width % 2 == 1)
+                ++Width;
+            
+            Height = _region.Height;
+            if (Height % 2 == 1)
+                ++Height;
+
             _transform = P => new Point(P.X - _region.X, P.Y - _region.Y);
 
-            _imagePool = new ImagePool(Region.Width, Region.Height);
-        }
+            _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-        bool _outsideBounds;
+            _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
+            _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
+
+            Gdi32.SelectObject(_hdcDest, _hBitmap);
+        }
 
         public void UpdateLocation(Point P)
         {
@@ -37,56 +44,31 @@ namespace Screna
                 return;
 
             _region.Location = P;
-
-            _outsideBounds = !WindowProvider.DesktopRectangle.Contains(_region);
-        }
-        
-        public IBitmapFrame Capture()
-        {
-            var bmp = _imagePool.Get();
-
-            try
-            {
-                using (var editor = bmp.GetEditor())
-                {
-                    if (_outsideBounds)
-                        editor.Graphics.Clear(Color.Transparent);
-
-                    editor.Graphics.CopyFromScreen(_region.Location,
-                        Point.Empty,
-                        _region.Size,
-                        CopyPixelOperation.SourceCopy);
-
-                    if (_includeCursor)
-                        MouseCursor.Draw(editor.Graphics, _transform);
-                }
-                
-                return bmp;
-            }
-            catch
-            {
-                bmp.Dispose();
-
-                return RepeatFrame.Instance;
-            }
         }
 
-        /// <summary>
-        /// Height of Captured image.
-        /// </summary>
-        public int Height => _region.Height;
-
-        /// <summary>
-        /// Width of Captured image.
-        /// </summary>
-        public int Width => _region.Width;
-
-        /// <summary>
-        /// Frees all resources used by this instance.
-        /// </summary>
         public void Dispose()
         {
-            _imagePool.Dispose();
+            Gdi32.DeleteDC(_hdcDest);
+            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
+            Gdi32.DeleteObject(_hBitmap);
         }
+
+        public IBitmapFrame Capture()
+        {
+            Gdi32.BitBlt(_hdcDest, 0, 0, _region.Width, _region.Height,
+                _hdcSrc, _region.X, _region.Y,
+                (int) CopyPixelOperation.SourceCopy);
+
+            var img = new OneTimeFrame(Image.FromHbitmap(_hBitmap));
+
+            if (_includeCursor)
+                using (var editor = img.GetEditor())
+                    MouseCursor.Draw(editor.Graphics, _transform);
+
+            return img;
+        }
+
+        public int Height { get; }
+        public int Width { get; }
     }
 }
