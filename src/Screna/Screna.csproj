@@ -42,11 +42,8 @@
     <Compile Include="Frames\EditorBase.cs" />
     <Compile Include="Frames\MultiDisposeFrame.cs" />
     <Compile Include="Frames\FrameBase.cs" />
-    <Compile Include="Frames\ImagePool.cs" />
-    <Compile Include="Frames\OneTimeEditor.cs" />
     <Compile Include="Frames\OneTimeFrame.cs" />
     <Compile Include="Frames\ReusableEditor.cs" />
-    <Compile Include="Frames\ReusableFrame.cs" />
     <Compile Include="Gif\GifItem.cs" />
     <Compile Include="Gif\GifSettings.cs" />
     <Compile Include="Gif\GifWriterProvider.cs" />
