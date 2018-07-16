@@ -82,14 +82,16 @@ void HandleTag()
     // Stable Release
     if (IsMatch(tag, StableVersionRegex))
     {
-        version = tag;
+        version = tag.Substring(1);
     }
     // Prerelease
     else if (IsMatch(tag, PrereleaseVersionRegex))
     {
         prerelease = true;
 
-        version = tag.Split('-')[0];
+        version = tag.Split('-')[0].Substring(1);
+
+        Information("Update version");
     }
     else throw new ArgumentException("Invalid Tag Format", "Tag");
 }
