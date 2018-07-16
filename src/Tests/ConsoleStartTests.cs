@@ -54,7 +54,7 @@ namespace Captura.Tests.Console
 
             process.StandardInput.WriteLine('q');
 
-            Assert.True(process.WaitForExit(5000), "Timeout");
+            process.WaitForExit();
 
             Assert.Equal(0, process.ExitCode);
         }
@@ -64,7 +64,7 @@ namespace Captura.Tests.Console
         {
             var process = Start("start --encoder gif --length 1");
 
-            Assert.True(process.WaitForExit(5000), "Timeout");
+            process.WaitForExit();
 
             Assert.Equal(0, process.ExitCode);
         }
