@@ -8,7 +8,8 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NoAudioSource : AudioSource
     {
-        public override IAudioProvider GetAudioProvider(int FrameRate) => null;
+        public override IAudioProvider GetMixedAudioProvider(int FrameRate) => null;
+        public override IAudioProvider[] GetMultipleAudioProviders() => new IAudioProvider[0];
 
         protected override void OnRefresh() { }
     }
