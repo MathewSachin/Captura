@@ -56,7 +56,7 @@ namespace Captura.Models
 
         protected abstract string GetText();
         
-        public virtual void Draw(Graphics G, Func<Point, Point> PointTransform = null)
+        public virtual void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
         {
             if (!_overlaySettings.Display)
                 return;
@@ -70,20 +70,20 @@ namespace Captura.Models
 
             var font = new Font(FontFamily.GenericMonospace, fontSize);
 
-            var size = G.MeasureString(text, font);
+            var size = Editor.Graphics.MeasureString(text, font);
 
             int paddingX = _overlaySettings.HorizontalPadding, paddingY = _overlaySettings.VerticalPadding;
 
-            var rect = new RectangleF(GetLeft(_overlaySettings, G.VisibleClipBounds.Width, size.Width),
-                GetTop(_overlaySettings, G.VisibleClipBounds.Height, size.Height),
+            var rect = new RectangleF(GetLeft(_overlaySettings, Editor.Width, size.Width),
+                GetTop(_overlaySettings, Editor.Height, size.Height),
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
 
-            G.FillRoundedRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
+            Editor.Graphics.FillRoundedRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
                 rect,
                 _overlaySettings.CornerRadius);
 
-            G.DrawString(text,
+            Editor.Graphics.DrawString(text,
                 font,
                 new SolidBrush(_overlaySettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
@@ -94,7 +94,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                G.DrawRoundedRectangle(new Pen(_overlaySettings.BorderColor, border),
+                Editor.Graphics.DrawRoundedRectangle(new Pen(_overlaySettings.BorderColor, border),
                     rect,
                     _overlaySettings.CornerRadius);
             }

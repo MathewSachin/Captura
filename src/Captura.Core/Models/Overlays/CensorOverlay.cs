@@ -55,18 +55,19 @@ namespace Captura
             }
         }
 
-        public void Draw(Graphics G, Func<Point, Point> PointTransform = null)
+        public void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
         {
             foreach (var overlaySetting in _overlaySettings)
             {
                 if (!overlaySetting.Display)
                     continue;
 
-                G.FillRectangle(new SolidBrush(Color.Black),
-                    GetLeft(overlaySetting, G.VisibleClipBounds.Width),
-                    GetTop(overlaySetting, G.VisibleClipBounds.Height),
-                    overlaySetting.Width,
-                    overlaySetting.Height);
+                Editor.FillRectangle(new SolidBrush(Color.Black),
+                    new RectangleF(
+                        GetLeft(overlaySetting, Editor.Width),
+                        GetTop(overlaySetting, Editor.Height),
+                        overlaySetting.Width,
+                        overlaySetting.Height));
             }
         }
     }

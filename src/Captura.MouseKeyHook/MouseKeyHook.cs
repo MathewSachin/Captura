@@ -162,16 +162,16 @@ namespace Captura.Models
         /// <summary>
         /// Draws overlay.
         /// </summary>
-        public void Draw(Graphics G, Func<Point, Point> Transform = null)
+        public void Draw(IBitmapEditor Editor, Func<Point, Point> Transform = null)
         {
             if (_mouseClickSettings.Display)
-                DrawClicks(G, Transform);
+                DrawClicks(Editor, Transform);
 
             if (_keystrokesSettings.Display)
-                DrawKeys(G);
+                DrawKeys(Editor);
         }
 
-        void DrawKeys(Graphics G)
+        void DrawKeys(IBitmapEditor Editor)
         {
             if (_records?.Last == null)
                 return;
@@ -189,11 +189,11 @@ namespace Captura.Models
                 if ((DateTime.Now - keyRecord.TimeStamp).TotalSeconds > _records.Size * _keystrokesSettings.Timeout)
                     continue;
                 
-                DrawKeys(_keystrokesSettings, G, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
+                DrawKeys(_keystrokesSettings, Editor, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
 
                 var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
 
-                var height = G.MeasureString("A", keystrokeFont).Height;
+                var height = Editor.Graphics.MeasureString("A", keystrokeFont).Height;
 
                 offsetY += height + _keystrokesSettings.HistorySpacing;
 
@@ -207,24 +207,24 @@ namespace Captura.Models
             }
         }
 
-        static void DrawKeys(KeystrokesSettings KeystrokesSettings, Graphics G, string Text, int FontSize, byte Opacity, float OffsetY)
+        static void DrawKeys(KeystrokesSettings KeystrokesSettings, IBitmapEditor Editor, string Text, int FontSize, byte Opacity, float OffsetY)
         {
             var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
 
-            var size = G.MeasureString(Text, keystrokeFont);
+            var size = Editor.Graphics.MeasureString(Text, keystrokeFont);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
-            var rect = new RectangleF(GetLeft(KeystrokesSettings, G.VisibleClipBounds.Width, size.Width),
-                GetTop(KeystrokesSettings, G.VisibleClipBounds.Height, size.Height, OffsetY),
+            var rect = new RectangleF(GetLeft(KeystrokesSettings, Editor.Width, size.Width),
+                GetTop(KeystrokesSettings, Editor.Height, size.Height, OffsetY),
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
             
-            G.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
+            Editor.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
                 rect,
                 KeystrokesSettings.CornerRadius);
             
-            G.DrawString(Text,
+            Editor.Graphics.DrawString(Text,
                 keystrokeFont,
                 new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.FontColor)),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
@@ -235,7 +235,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                G.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
+                Editor.Graphics.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
@@ -273,7 +273,7 @@ namespace Captura.Models
             return (byte) Value;
         }
 
-        void DrawClicks(Graphics G, Func<Point, Point> Transform)
+        void DrawClicks(IBitmapEditor Editor, Func<Point, Point> Transform)
         {
             if (_mouseClicked && _currentMouseRatio < MouseRatioMax)
             {
@@ -312,7 +312,7 @@ namespace Captura.Models
 
                 color = Color.FromArgb(ToByte(color.A * _currentMouseRatio), color);
 
-                G.FillEllipse(new SolidBrush(color), x, y, d, d);
+                Editor.FillEllipse(new SolidBrush(color), new RectangleF(x, y, d, d));
 
                 var border = _mouseClickSettings.BorderThickness * _currentMouseRatio;
 
@@ -326,7 +326,7 @@ namespace Captura.Models
 
                     borderColor = Color.FromArgb(ToByte(borderColor.A * _currentMouseRatio), borderColor);
 
-                    G.DrawEllipse(new Pen(borderColor, border), x, y, d, d);
+                    Editor.DrawEllipse(new Pen(borderColor, border), new RectangleF(x, y, d, d));
                 }
             }
         }

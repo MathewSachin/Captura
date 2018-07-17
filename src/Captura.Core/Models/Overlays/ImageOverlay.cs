@@ -16,19 +16,24 @@ namespace Captura.Models
             _settings = Settings;
         }
 
-        public void Draw(Graphics G, Func<Point, Point> PointTransform = null)
+        public void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
         {
             var img = GetImage();
 
             if (img == null)
                 return;
 
-            if (_settings.Resize)
-                img = img.Resize(new Size(_settings.ResizeWidth, _settings.ResizeHeight), false, _disposeImages);
-
             try
             {
-                var point = GetPosition(new Size((int) G.VisibleClipBounds.Width, (int) G.VisibleClipBounds.Height), img.Size);
+                var targetSize = img.Size;
+
+                if (_settings.Resize)
+                    targetSize = new Size(_settings.ResizeWidth, _settings.ResizeHeight);
+
+                var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
+                var destRect = new Rectangle(point, targetSize);
+
+                var g = Editor.Graphics;
 
                 if (_settings.Opacity < 100)
                 {
@@ -40,9 +45,9 @@ namespace Captura.Models
                     var imgAttribute = new ImageAttributes();
                     imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                    G.DrawImage(img, new Rectangle(point, img.Size), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+                    g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
                 }
-                else G.DrawImage(img, point);
+                else g.DrawImage(img, destRect);
             }
             catch { }
             finally

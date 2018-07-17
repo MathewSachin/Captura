@@ -16,7 +16,7 @@ namespace Captura.Models
         /// <summary>
         /// Draws overlay.
         /// </summary>
-        public void Draw(Graphics G, Func<Point, Point> Transform = null)
+        public void Draw(IBitmapEditor Editor, Func<Point, Point> Transform = null)
         {
             if (!_settings.Display)
                 return;
@@ -33,7 +33,7 @@ namespace Captura.Models
             var x = curPos.X - clickRadius;
             var y = curPos.Y - clickRadius;
 
-            G.FillEllipse(new SolidBrush(_settings.Color), x, y, d, d);
+            Editor.FillEllipse(new SolidBrush(_settings.Color), new RectangleF(x, y, d, d));
 
             var border = _settings.BorderThickness;
 
@@ -43,7 +43,7 @@ namespace Captura.Models
                 y -= border / 2;
                 d += border;
 
-                G.DrawEllipse(new Pen(_settings.BorderColor, border), x, y, d, d);
+                Editor.DrawEllipse(new Pen(_settings.BorderColor, border), new RectangleF(x, y, d, d));
             }
         }
 

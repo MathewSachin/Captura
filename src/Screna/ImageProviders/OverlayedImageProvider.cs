@@ -43,7 +43,7 @@ namespace Screna
             using (var editor = bmp.GetEditor())
             {
                 foreach (var overlay in _overlays)
-                    overlay?.Draw(editor.Graphics, _transform);
+                    overlay?.Draw(editor, _transform);
             }
 
             return bmp;
