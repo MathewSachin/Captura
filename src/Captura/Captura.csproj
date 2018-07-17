@@ -455,13 +455,13 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT $(Configuration)==Debug (
-ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV > NUL
 IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
+echo Moved Libraries to lib folder
 cd "$(TargetDir)"
 del *.dll
 del *.pdb
 del *.xml
-del *.dll.config
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>

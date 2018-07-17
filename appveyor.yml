@@ -1,4 +1,4 @@
-version: 6.0.{build}
+version: 8.0.{build}
 
 image: Visual Studio 2017
 
@@ -6,55 +6,27 @@ configuration:
 - Debug
 - Release
 
+# Used in build.cake
 environment:
-  # Used in build.cake
   imgur_client_id:
     secure: Y/2WUSisk7oLSQNY1YzUxw==
-
-install:
-  # Install Inno Setup
-  - choco install innosetup -y
+  choco_key:
+    secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
+  git_key:
+    secure: uhvhrrZd7L8MK4CrDGkM1A==
 
 cache:
   # preserve "packages" directory but reset if packages.config is modified
-  - src\packages -> **\packages.config
-
-before_build:
-  - ps: appveyor/Update-Version.ps1
+  - src\packages -> src\**\packages.config
+  - tools -> tools\packages.config
+  - temp\bass
+  - temp\bass.zip
+  - temp\bassmix
+  - temp\bassmix.zip
+  - '%TEMP%\chocolatey'
 
 # Build using Cake
 build_script:
-  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -version "$env:AppVersion"
-
-artifacts:
-  - path: temp/Captura-Portable.zip
-    name: Portable
-  - path: temp/Captura-Setup.exe
-    name: Setup
-  - path: temp/captura.*.nupkg
-    name: Chocolatey
+  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -tag $env:APPVEYOR_REPO_TAG_NAME
 
 test: off
-
-deploy:
-  - provider: GitHub
-    tag: $(APPVEYOR_REPO_TAG_NAME)
-    release: Captura $(APPVEYOR_REPO_TAG_NAME)
-    prerelease: $(prerelease)
-    description: "[Changelog](https://mathewsachin.github.io/Captura/changelog)"
-    auth_token:
-      secure: 0wnIqpTY1N2oq6WQS9O5Mow0LA43Qo5ZnvuRLrpA/Lah675ffhF16SGcpa7B+Iou
-    artifact: Portable, Setup
-    on:
-      configuration: Release
-      appveyor_repo_tag: true
-
-  - provider: NuGet
-    server: https://chocolatey.org
-    api_key:
-      secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
-    artifact: Chocolatey
-    on:
-      configuration: Release
-      appveyor_repo_tag: true
-

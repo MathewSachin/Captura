@@ -1,20 +1,101 @@
 #tool "nuget:?package=xunit.runner.console"
-
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
-var version = Argument<string>("appversion", null);
+#tool "nuget:?package=gitreleasemanager"
+using System.Collections.Generic;
+using static System.Text.RegularExpressions.Regex;
 
 #region Fields
-const string slnPath = "src/Captura.sln";
-const string apiKeysPath = "src/Captura.Core/ApiKeys.cs";
-const string imgurEnv = "imgur_client_id";
-const string uiAssemblyInfo = "src/Captura/Properties/AssemblyInfo.cs";
-const string consoleAssemblyInfo = "src/Captura.Console/Properties/AssemblyInfo.cs";
+const string Release = "Release";
 
-bool apiKeyEmbed, assemblyInfoUpdate;
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", Release);
+var version = Argument<string>("appversion", null);
+var tag = Argument<string>("apptag", null);
+var chocoVersion = tag?.Substring(1) ?? "";
+var prerelease = false;
+
+// Deploy on Release Tag builds
+var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
+
+readonly var sourceFolder = Directory("src");
+readonly var tempFolder = Directory("temp");
+readonly var distFolder = Directory("dist");
+readonly var licensesFolder = Directory("licenses");
+readonly var chocoFolder = Directory("choco");
+
+readonly var slnPath = sourceFolder + File("Captura.sln");
+
+readonly var PortablePath = tempFolder + File("Captura-Portable.zip");
+readonly var SetupPath = tempFolder + File("Captura-Setup.exe");
+readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
+#endregion
+
+#region Backup
+public class Backup : IDisposable
+{
+    readonly ICakeContext _context;
+
+    public static List<Backup> Backups { get; } = new List<Backup>();
+
+    public Backup(ICakeContext Context, string OriginalPath, string BackupPath)
+    {
+        _context = Context;
+
+        this.OriginalPath = OriginalPath;
+        this.BackupPath = BackupPath;
+
+        _context.CopyFile(OriginalPath, BackupPath);
+    }
+
+    public string OriginalPath { get; }
+
+    public string BackupPath { get; }
+
+    public void Restore()
+    {
+        _context.DeleteFile(OriginalPath);
+        _context.MoveFile(BackupPath, OriginalPath);
+    }
+
+    public void Dispose()
+    {
+        Restore();
+    }
+}
+
+void CreateBackup(string OriginalPath, string BackupPath)
+{
+    var backup = new Backup(Context, OriginalPath, BackupPath);
+    Backup.Backups.Add(backup);
+}
 #endregion
 
 #region Functions
+void HandleTag()
+{
+    // Not a Tag Build
+    if (string.IsNullOrWhiteSpace(tag))
+        return;
+
+    const string StableVersionRegex = @"^v\d+\.\d+\.\d+$";
+    const string PrereleaseVersionRegex = @"^v\d+\.\d+\.\d+-[^\s]+$";
+
+    // Stable Release
+    if (IsMatch(tag, StableVersionRegex))
+    {
+        version = tag.Substring(1);
+    }
+    // Prerelease
+    else if (IsMatch(tag, PrereleaseVersionRegex))
+    {
+        prerelease = true;
+
+        version = tag.Split('-')[0].Substring(1);
+
+        Information("Update version");
+    }
+    else throw new ArgumentException("Invalid Tag Format", "Tag");
+}
+
 void UpdateVersion(string AssemblyInfoPath)
 {
     var content = FileRead(AssemblyInfoPath);
@@ -31,14 +112,12 @@ string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
 
 void FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
 
-void RestoreFile(string From, string To)
-{
-    DeleteFile(To);
-    MoveFile(From, To);
-}
-
 void HandleVersion()
 {
+    var assemblyInfoFile = File("Properties/AssemblyInfo.cs");
+    var uiAssemblyInfo = sourceFolder + Directory("Captura") + assemblyInfoFile;
+    var consoleAssemblyInfo = sourceFolder + Directory("Captura.Console") + assemblyInfoFile;
+
     if (string.IsNullOrWhiteSpace(version))
     {
         // Read from AssemblyInfo
@@ -47,12 +126,8 @@ void HandleVersion()
     else
     {
         // Update AssemblyInfo files
-        assemblyInfoUpdate = true;
-
-        EnsureDirectoryExists("temp");
-
-        CopyFileToDirectory(uiAssemblyInfo, "temp");
-        CopyFile(consoleAssemblyInfo, "temp/console.cs");
+        CreateBackup(uiAssemblyInfo, tempFolder + File("AssemblyInfo.cs"));
+        CreateBackup(consoleAssemblyInfo, tempFolder + File("console.cs"));
 
         UpdateVersion(uiAssemblyInfo);
         UpdateVersion(consoleAssemblyInfo);
@@ -61,16 +136,15 @@ void HandleVersion()
 
 void EmbedApiKeys()
 {
+    var apiKeysPath = sourceFolder + File("Captura.Core/ApiKeys.cs");
+    const string imgurEnv = "imgur_client_id";
+
     // Embed Api Keys in Release builds
-    if (configuration == "Release" && HasEnvironmentVariable(imgurEnv))
+    if (configuration == Release && HasEnvironmentVariable(imgurEnv))
     {
-        apiKeyEmbed = true;
-
-        EnsureDirectoryExists("temp");
-
         Information("Embedding Api Keys from Environment Variables ...");
 
-        CopyFileToDirectory(apiKeysPath, "temp");
+        CreateBackup(apiKeysPath, tempFolder + File("ApiKeys.cs"));
 
         var apiKeysOriginalContent = FileRead(apiKeysPath);
 
@@ -80,13 +154,21 @@ void EmbedApiKeys()
     }
 }
 
+IEnumerable<ConvertableDirectoryPath> EnumerateOutputFolders()
+{
+    var outputProjectNames = new[] { "Captura.Console", "Captura", "Tests" };
+
+    foreach (var output in outputProjectNames)
+    {
+        yield return sourceFolder + Directory(output) + Directory("bin") + Directory(configuration);
+    }
+}
+
 // Restores native dlls
 void NativeRestore()
 {
-    EnsureDirectoryExists("temp");
-
-    var bass = "temp/bass/bass.dll";
-    var bassmix = "temp/bassmix/bassmix.dll";
+    var bass = tempFolder + File("bass/bass.dll");
+    var bassmix = tempFolder + File("bassmix/bassmix.dll");
 
     Information("Restoring Native libraries...");
 
@@ -94,35 +176,37 @@ void NativeRestore()
     {
         Information("Downloading BASS...");
 
-        DownloadFile("http://www.un4seen.com/files/bass24.zip", "temp/bass.zip");
+        var bassZipPath =  tempFolder + File("bass.zip");
+        const string bassUrl = "http://www.un4seen.com/files/bass24.zip";
+
+        DownloadFile(bassUrl, bassZipPath);
 
         Information("Extracting BASS ...");
 
-        Unzip("temp/bass.zip", "temp/bass");
+        Unzip(bassZipPath, tempFolder + Directory("bass"));
     }
 
     if (!FileExists(bassmix))
     {
         Information("Downloading BASSmix...");
 
-        DownloadFile("http://www.un4seen.com/files/bassmix24.zip", "temp/bassmix.zip");
+        var bassMixZipPath =  tempFolder + File("bassmix.zip");
+        const string bassMixUrl = "http://www.un4seen.com/files/bassmix24.zip";
+
+        DownloadFile(bassMixUrl, bassMixZipPath);
 
         Information("Extracting BASSmix...");
 
-        Unzip("temp/bassmix.zip", "temp/bassmix");
+        Unzip(bassMixZipPath, tempFolder + Directory("bassmix"));
     }
 
-    var consoleOutput = $"src/Captura.Console/bin/{configuration}/";
-    var uiOutput = $"src/Captura/bin/{configuration}/";
-    var testOutput = $"src/Tests/bin/{configuration}/";
-
-    foreach (var output in new[] { consoleOutput, uiOutput, testOutput })
+    foreach (var output in EnumerateOutputFolders())
     {
         var path = output;
 
-        if (configuration != "Debug")
+        if (configuration == Release)
         {
-            path += "/lib/";
+            path += Directory("lib");
         }
 
         EnsureDirectoryExists(path);
@@ -134,80 +218,77 @@ void NativeRestore()
 
 void CopyLicenses()
 {
-    var consoleOutput = $"src/Captura.Console/bin/{configuration}/";
-    var uiOutput = $"src/Captura/bin/{configuration}/";
-    var testOutput = $"src/Tests/bin/{configuration}/";
-
-    foreach (var output in new[] { consoleOutput, uiOutput, testOutput })
+    foreach (var output in EnumerateOutputFolders())
     {
-        CopyDirectory("licenses", output + "licenses");
+        var path = output + Directory("licenses");
+
+        CopyDirectory(licensesFolder, path);
     }
 }
 
 void PopulateOutput()
 {
     // Copy License files
-    CopyDirectory("licenses", "dist/licenses");
+    CopyDirectory(licensesFolder, distFolder + Directory("licenses"));
 
-    var consoleBinFolder = $"src/Captura.Console/bin/{configuration}/";
-    var uiBinFolder = $"src/Captura/bin/{configuration}/";
+    var consoleBinFolder = sourceFolder + Directory("Captura.Console/bin") + Directory(configuration);
+    var uiBinFolder = sourceFolder + Directory("Captura/bin") + Directory(configuration);
     
     // Copy Languages
-    CopyDirectory(uiBinFolder + "Languages", "dist/Languages");
+    CopyDirectory(uiBinFolder + Directory("Languages"), distFolder + Directory("Languages"));
 
     // Copy executables and config files
-    CopyFiles(consoleBinFolder + "*.exe*", "dist");
-    CopyFiles(uiBinFolder + "*.exe*", "dist");
+    CopyFiles(consoleBinFolder.Path + "/*.exe*", distFolder);
+    CopyFiles(uiBinFolder.Path + "/*.exe*", distFolder);
 
     // For Debug builds
-    if (configuration == "Debug")
+    if (configuration != Release)
     {
-        // Copy Assemblies
-        CopyFiles(consoleBinFolder + "*.dll", "dist");
-        CopyFiles(uiBinFolder + "*.dll", "dist");
-
-        // Copy symbol files
-        CopyFiles(consoleBinFolder + "*.pdb", "dist");
-        CopyFiles(uiBinFolder + "*.pdb", "dist");
-
-        // Copy Xml Documentation
-        CopyFiles(consoleBinFolder + "*.xml", "dist");
-        CopyFiles(uiBinFolder + "*.xml", "dist");
+        // Assemblies, Symbol Files and XML Documentation
+        foreach (var extension in new [] { ".dll", ".pdb", ".xml" })
+        {
+            CopyFiles(consoleBinFolder.Path + "/*" + extension, distFolder);
+            CopyFiles(uiBinFolder.Path + "/*" + extension, distFolder);
+        }
     }
     else
     {
-        CopyDirectory(consoleBinFolder + "lib", "dist/lib");
-        CopyDirectory(uiBinFolder + "lib", "dist/lib");
+        CopyDirectory(consoleBinFolder + Directory("lib"), distFolder + Directory("lib"));
+        CopyDirectory(uiBinFolder + Directory("lib"), distFolder + Directory("lib"));
     }
 }
 
 void PackChoco(string Tag, string Version)
 {
-    var checksum = CalculateFileHash("temp/Captura-Portable.zip").ToHex();
+    var checksum = CalculateFileHash(PortablePath).ToHex();
 
-    var chocoInstallScript = "choco/tools/chocolateyinstall.ps1";
+    var chocoInstallScript = chocoFolder + File("tools/chocolateyinstall.ps1");
 
     var originalContent = FileRead(chocoInstallScript);
 
     var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
 
-    CopyFileToDirectory(chocoInstallScript, "temp");
-
-    FileWrite(chocoInstallScript, newContent);
-
-    ChocolateyPack("choco/captura.nuspec", new ChocolateyPackSettings
+    using (var backup = new Backup(Context, chocoInstallScript, tempFolder + File("cinst.ps1")))
     {
-        Version = Version,
-        ArgumentCustomization = Args => Args.Append("--outputdirectory temp")
-    });
+        FileWrite(chocoInstallScript, newContent);
 
-    RestoreFile("temp/chocolateyinstall.ps1", chocoInstallScript);
+        ChocolateyPack(chocoFolder + File("captura.nuspec"), new ChocolateyPackSettings
+        {
+            Version = Version,
+            ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
+        });
+    }
 }
 #endregion
 
 #region Setup / Teardown
 Setup(context =>
 {
+    EnsureDirectoryExists(tempFolder);
+    EnsureDirectoryExists(distFolder);
+
+    HandleTag();
+
     HandleVersion();
 
     EmbedApiKeys();
@@ -215,21 +296,12 @@ Setup(context =>
 
 Teardown(context =>
 {
-    if (apiKeyEmbed)
-    {
-        RestoreFile("temp/ApiKeys.cs", apiKeysPath);
-    }
-
-    if (assemblyInfoUpdate)
-    {
-        RestoreFile("temp/AssemblyInfo.cs", uiAssemblyInfo);
-        RestoreFile("temp/console.cs", consoleAssemblyInfo);
-    }
+    Backup.Backups.ForEach(M => M.Restore());
 });
 #endregion
 
 #region Tasks
-Task("Clean").Does(() =>
+var cleanTask = Task("Clean").Does(() =>
 {
     MSBuild(slnPath, settings =>
     {
@@ -239,10 +311,10 @@ Task("Clean").Does(() =>
     });
 });
 
-Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
+var nugetRestoreTask = Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
 
-Task("Build")
-    .IsDependentOn("NuGet-Restore")
+var buildTask = Task("Build")
+    .IsDependentOn(nugetRestoreTask)
     .Does(() =>
 {
     MSBuild(slnPath, settings =>
@@ -257,46 +329,139 @@ Task("Build")
     CopyLicenses();
 });
 
-Task("Clean-Output").Does(() => CleanDirectory("dist"));
+var cleanOutputTask = Task("Clean-Output").Does(() => CleanDirectory(distFolder));
 
-Task("Populate-Output")
-    .IsDependentOn("Clean-Output")
-    .IsDependentOn("Build")
+var populateOutputTask = Task("Populate-Output")
+    .IsDependentOn(cleanOutputTask)
+    .IsDependentOn(buildTask)
     .Does(() => PopulateOutput());
 
-Task("Pack-Portable")
-    .IsDependentOn("Populate-Output")
-    .Does(() => Zip("dist", "temp/Captura-Portable.zip"));
+var packPortableTask = Task("Pack-Portable")
+    .IsDependentOn(populateOutputTask)
+    .Does(() => Zip(distFolder, PortablePath));
 
-Task("Pack-Setup")
-    .WithCriteria(configuration == "Release")
-    .IsDependentOn("Populate-Output")
+var packSetupTask = Task("Pack-Setup")
+    .WithCriteria(configuration == Release)
+    .IsDependentOn(populateOutputTask)
     .Does(() =>
 {
-    InnoSetup("Inno.iss", new InnoSetupSettings
+    const string InnoScriptPath = "Inno.iss";
+
+    InnoSetup(InnoScriptPath, new InnoSetupSettings
     {
         QuietMode = InnoSetupQuietMode.Quiet,
         ArgumentCustomization = Args => Args.Append($"/DMyAppVersion={version}")
     });
 });
 
-Task("Pack-Choco")
-    // Run only on AppVeyor Release Tag builds
-    .WithCriteria(AppVeyor.IsRunningOnAppVeyor && configuration == "Release" && HasEnvironmentVariable("APPVEYOR_REPO_TAG_NAME"))
-    .IsDependentOn("Pack-Portable")
-    .Does(() => PackChoco(EnvironmentVariable("APPVEYOR_REPO_TAG_NAME"), EnvironmentVariable("TagVersion")));
+var deployGitHubTask = Task("Deploy-GitHub")
+    .WithCriteria(deploy)
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(packSetupTask)
+    .Does(() => 
+{
+    var releaseNotesPath = tempFolder + File("release_notes.md");
+    const string changelogUrl = "https://mathewsachin.github.io/Captura/changelog";
 
-Task("Test")
-    .IsDependentOn("Build")
-    .Does(() => XUnit2($"src/Tests/bin/{configuration}/Captura.Tests.dll"));
+    FileWrite(releaseNotesPath, $"[Changelog]({changelogUrl})");
 
-Task("Default").IsDependentOn("Populate-Output");
+    const string RepoOwner = "MathewSachin";
+    const string RepoName = "Captura";
+
+    GitReleaseManagerCreate(RepoOwner,
+        EnvironmentVariable("git_key"),
+        RepoOwner,
+        RepoName,
+        new GitReleaseManagerCreateSettings
+        {
+            Name = $"Captura {tag}",
+            InputFilePath = releaseNotesPath,
+            Prerelease = prerelease,
+            Assets = $"{PortablePath},{SetupPath}"
+        });
+
+    GitReleaseManagerPublish(RepoOwner,
+        EnvironmentVariable("git_key"),
+        RepoOwner,
+        RepoName,
+        tag);
+});
+
+var packChocoTask = Task("Pack-Choco")
+    .WithCriteria(deploy)
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(deployGitHubTask)
+    .Does(() => PackChoco(tag, chocoVersion));
+
+var deployChocoTask = Task("Deploy-Choco")
+    .WithCriteria(deploy)
+    .IsDependentOn(packChocoTask)
+    .IsDependentOn(deployGitHubTask)
+    .Does(() =>
+{
+    ChocolateyPush(ChocoPkgPath, new ChocolateyPushSettings
+    {
+        ApiKey = EnvironmentVariable("choco_key")
+    });
+});
+
+var testTask = Task("Test")
+    .IsDependentOn(buildTask)
+    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/Captura.Tests.dll")));
+
+var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
+
+var installInnoTask = Task("Install-Inno")
+    .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
+    {
+        ArgumentCustomization = Args => Args.Append("--no-progress")
+    }));
+#endregion
+
+#region AppVeyor
+class Artifact
+{
+    public Artifact(string Name, string Path)
+    {
+        this.Name = Name;
+        this.Path = Path;
+    }
+
+    public string Name { get; }
+    public string Path { get; }
+}
+
+var artifacts = new []
+{
+    new Artifact("Portable", PortablePath),
+    new Artifact("Setup", SetupPath),
+    new Artifact("Chocolatey", ChocoPkgPath)
+};
 
 Task("CI")
-    .IsDependentOn("Test")
-    .IsDependentOn("Pack-Portable")
-    .IsDependentOn("Pack-Setup")
-    .IsDependentOn("Pack-Choco");
+    .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
+    .IsDependentOn(testTask)
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(installInnoTask)
+    .IsDependentOn(packSetupTask)
+    .IsDependentOn(packChocoTask)
+    .IsDependentOn(deployGitHubTask)
+    .IsDependentOn(deployChocoTask)
+    .Does(() =>
+{
+    AppVeyor.UpdateBuildVersion($"{version}.{EnvironmentVariable("APPVEYOR_BUILD_NUMBER")}");
+
+    foreach (var artifact in artifacts)
+    {
+        if (FileExists(artifact.Path))
+        {
+            AppVeyor.UploadArtifact(artifact.Path, new AppVeyorUploadArtifactsSettings
+            {
+                DeploymentName = artifact.Name
+            });
+        }
+    }
+});
 #endregion
 
 // Start
