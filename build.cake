@@ -363,7 +363,7 @@ var deployGitHubTask = Task("Deploy-GitHub")
     var releaseNotesPath = tempFolder + File("release_notes.md");
     const string changelogUrl = "https://mathewsachin.github.io/Captura/changelog";
 
-    FileWrite(releaseNotesPath, $"Description: [Changelog]({changelogUrl})");
+    FileWrite(releaseNotesPath, $"[Changelog]({changelogUrl})");
 
     const string RepoOwner = "MathewSachin";
     const string RepoName = "Captura";
