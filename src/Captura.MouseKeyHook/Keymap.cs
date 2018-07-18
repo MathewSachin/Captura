@@ -5,17 +5,57 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class Keymap
+    public class Keymap : NotifyPropertyChanged
     {
         List<KeymapItem> _parsed;
         List<KeymapItem> _capsLocked;
+        readonly string _keymapDir;
 
-        const string KeymapFileName = "kmap.dat";
+        public const string DefaultKeymapFileName = "English";
+
+        public Keymap()
+        {
+            _keymapDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "keymaps");
+
+            if (Directory.Exists(_keymapDir))
+            {
+                var files = Directory.EnumerateFiles(_keymapDir, "*.dat");
+
+                AvailableKeymaps = files.Select(Path.GetFileNameWithoutExtension);
+
+                SelectedKeymap = DefaultKeymapFileName;
+            }
+        }
+
+        public IEnumerable<string> AvailableKeymaps { get; }
+
+        string _selectedKeymap;
+
+        public string SelectedKeymap
+        {
+            get => _selectedKeymap;
+            set
+            {
+                var filePath = Path.Combine(_keymapDir, value + ".dat");
+
+                if (!File.Exists(filePath))
+                    return;
+
+                _selectedKeymap = value;
+
+                var lines = File.ReadAllLines(filePath);
+
+                Parse(lines);
+
+                OnPropertyChanged();
+            }
+        }
 
         void Init(List<KeymapItem> Parsed, List<KeymapItem> CapsLocked)
         {
@@ -82,20 +122,6 @@ namespace Captura.Models
             }
 
             Init(parsed, capsLocked);
-        }
-
-        public void Load()
-        {
-            try
-            {
-                var lines = File.ReadAllLines(KeymapFileName);
-
-                Parse(lines);
-            }
-            catch
-            {
-                // Ignore errors
-            }
         }
 
         public string Find(Keys Keys, bool CapsLock = false)

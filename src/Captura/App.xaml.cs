@@ -84,7 +84,14 @@ namespace Captura
 
             LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
 
-            ServiceProvider.Get<Keymap>().Load();
+            var keymap = ServiceProvider.Get<Keymap>();
+
+            if (!string.IsNullOrWhiteSpace(settings.Keystrokes.KeymapName))
+            {
+                keymap.SelectedKeymap = settings.Keystrokes.KeymapName;
+            }
+
+            keymap.PropertyChanged += (S, E) => settings.Keystrokes.KeymapName = keymap.SelectedKeymap;
         }
     }
 }

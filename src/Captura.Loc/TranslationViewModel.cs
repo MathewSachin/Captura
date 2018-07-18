@@ -15,7 +15,7 @@ namespace Captura
         
         public TranslationViewModel()
         {
-            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Languages");
+            _langDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "languages");
 
             if (Directory.Exists(_langDir))
             {
