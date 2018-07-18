@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "object",
+    "properties": {
+        "Name": { "type": "string" },
+        "Mappings": {
+            "type": "array",
+            "items": {
+                "properties": {
+                    "Shift": { "type": "boolean" },                
+                    "Alt": { "type": "boolean" },                
+                    "Control": { "type": "boolean" },                
+                    "CapsLock": { "type": "boolean" },
+                    "Keys": { "type": "object" }
+                },
+                "required": ["Keys"]   
+            }
+        }
+    },
+    "required": ["Name", "Mappings"]
+}

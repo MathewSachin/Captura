@@ -202,25 +202,26 @@ Divide = /
 Decimal = .
 NumLock = NumLock
 
-Oemtilde = `
 Shift + Oemtilde = ~
-OemMinus = -
 Shift + OemMinus = _
-Oemplus = =
 Shift + Oemplus = +
-OemCloseBrackets = ]
 Shift + OemCloseBrackets = }
-OemOpenBrackets = [
 Shift + OemOpenBrackets = {
-OemPipe = \
 Shift + OemPipe = |
-OemQuotes = '
 Shift + OemQuotes = "
-OemSemicolon = ;
 Shift + OemSemicolon = :
-OemPeriod = .
 Shift + OemPeriod = >
-Oemcomma = ,
 Shift + Oemcomma = <
-OemQuestion = /
 Shift + OemQuestion = ?
+
+Oemtilde = `
+OemMinus = -
+Oemplus = =
+OemCloseBrackets = ]
+OemOpenBrackets = [
+OemPipe = \
+OemQuotes = '
+OemSemicolon = ;
+OemPeriod = .
+Oemcomma = ,
+OemQuestion = /
