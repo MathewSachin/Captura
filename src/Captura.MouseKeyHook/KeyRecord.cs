@@ -5,10 +5,11 @@ namespace Captura.Models
 {
     class KeyRecord : IKeyRecord
     {
-        readonly Keymap _keymap = new Keymap();
+        readonly Keymap _keymap;
 
-        public KeyRecord(KeyEventArgs KeyEventArgs)
+        public KeyRecord(KeyEventArgs KeyEventArgs, Keymap Keymap)
         {
+            _keymap = Keymap;
             TimeStamp = DateTime.Now;
 
             Key = KeyEventArgs.KeyCode;

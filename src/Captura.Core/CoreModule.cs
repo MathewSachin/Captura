@@ -28,6 +28,9 @@ namespace Captura
             Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
 
+            // Keymap
+            Binder.BindSingleton<Keymap>();
+
             // Localization
             Binder.Bind(() => LanguageManager.Instance);
 

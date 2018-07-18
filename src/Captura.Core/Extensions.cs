@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Input;
+using Captura.Models;
+using Newtonsoft.Json;
 
 namespace Captura
 {
@@ -13,7 +16,26 @@ namespace Captura
                 Command.Execute(null);
         }
 
-        public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)
+        public static void LoadKeymap()
+        {
+            if (ServiceProvider.FileExists("kmap.json"))
+            {
+                try
+                {
+                    var json = File.ReadAllText("kmap.json");
+
+                    var keymap = ServiceProvider.Get<Keymap>();
+
+                    JsonConvert.PopulateObject(json, keymap);
+                }
+                catch
+                {
+                    // Ignore errors
+                }
+            }
+        }
+
+        static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)
         {
             var resizeWidth = Resize.Width;
             var resizeHeight = Resize.Height;

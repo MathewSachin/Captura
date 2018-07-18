@@ -21,17 +21,18 @@ namespace Captura.Models
         
         readonly KeyRecords _records;
 
-        readonly Keymap _keymap = new Keymap();
+        readonly Keymap _keymap;
         #endregion
         
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings)
+        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings, Keymap Keymap)
         {
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;
-            
+            _keymap = Keymap;
+
             _hook = Hook.GlobalEvents();
             
             _hook.MouseDown += (S, E) =>
@@ -58,7 +59,7 @@ namespace Captura.Models
                 return;
             }
 
-            var record = new KeyRecord(Args);
+            var record = new KeyRecord(Args, _keymap);
 
             var display = record.Display;
 
@@ -94,7 +95,7 @@ namespace Captura.Models
 
             _modifierSingleDown = false;
 
-            var record = new KeyRecord(Args);
+            var record = new KeyRecord(Args, _keymap);
             
             if (_records.Last == null)
             {

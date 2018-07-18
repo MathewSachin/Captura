@@ -82,6 +82,8 @@ namespace Captura
             }
 
             LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
+
+            Extensions.LoadKeymap();
         }
     }
 }
