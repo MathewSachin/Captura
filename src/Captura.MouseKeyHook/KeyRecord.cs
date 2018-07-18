@@ -5,6 +5,8 @@ namespace Captura.Models
 {
     class KeyRecord : IKeyRecord
     {
+        readonly Keymap _keymap = new Keymap();
+
         public KeyRecord(KeyEventArgs KeyEventArgs)
         {
             TimeStamp = DateTime.Now;
@@ -34,22 +36,7 @@ namespace Captura.Models
         bool IsSpecialDPadCharacter => !Alt && !Control && Shift && (Key >= Keys.D0 && Key <= Keys.D9);
 
         bool IsOem => Key.ToString().Contains("Oem");
-
-        static readonly char[] DPadChars = {
-            ')',
-            '!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*',
-            '('
-        };
-
-        char AsSpecialDPadCharacter => DPadChars[Key - Keys.D0];
-
+        
         int AsNum
         {
             get
@@ -117,7 +104,30 @@ namespace Captura.Models
             }
         }
         
-        string Modifiers => $"{(Control ? "Ctrl + " : "")}{(Shift ? "Shift + " : "")}{(Alt ? "Alt + " : "")}";
+        string Modifiers
+        {
+            get
+            {
+                var result = "";
+
+                if (Control)
+                {
+                    result += $"{_keymap.Control} + ";
+                }
+
+                if (Shift)
+                {
+                    result += $"{_keymap.Shift} + ";
+                }
+
+                if (Alt)
+                {
+                    result += $"{_keymap.Alt} + ";
+                }
+
+                return result;
+            }
+        }
 
         string GetDisplay()
         {
@@ -127,46 +137,72 @@ namespace Captura.Models
                 case Keys.ShiftKey:
                 case Keys.LShiftKey:
                 case Keys.RShiftKey:
-                    return "Shift";
+                    return _keymap.Shift;
 
                 case Keys.Control:
                 case Keys.ControlKey:
                 case Keys.LControlKey:
                 case Keys.RControlKey:
-                    return "Ctrl";
+                    return _keymap.Control;
 
                 case Keys.Alt:
                 case Keys.Menu:
                 case Keys.LMenu:
                 case Keys.RMenu:
-                    return "Alt";
+                    return _keymap.Alt;
 
                 case Keys.LWin:
                 case Keys.RWin:
-                    return "Win";
+                    return _keymap.Windows;
             }
 
             var result = "";
 
             if (IsSpecialDPadCharacter)
-                result = AsSpecialDPadCharacter.ToString();
+                result = _keymap.SpecialDPad[Key - Keys.D0].ToString();
 
             else if (IsOem)
-                result = Modifiers + AsOemChar;
+            {
+                // Retreive first to ensure Shift is handled correctly
+                var oemChar = AsOemChar;
+
+                result = Modifiers + oemChar;
+            }
 
             else if (IsNum)
-                result = Modifiers + AsNum;
+            {
+                result = Modifiers;
+
+                // Shift has been handled already for special D-pad chars
+                if (Control || Alt)
+                {
+                    // Ctrl, Alt shortcuts in English
+                    result += AsNum;
+                }
+                else result += _keymap.Numbers[AsNum]; // Language specific
+            }
 
             else if (IsAlpha)
             {
-                var upperCase = Control || Alt || (Shift ^ Console.CapsLock);
-
-                var keyString = Key.ToString();
-
                 if (Control || Alt)
                     result = Modifiers;
 
-                result += upperCase ? keyString.ToUpper() : keyString.ToLower();
+                if (Control || Alt)
+                {
+                    // Ctrl, Alt shortcuts in English
+                    result += Key.ToString().ToUpper();
+                }
+                else
+                {
+                    // Language specific
+                    var upperCase = Control || Alt || (Shift ^ Console.CapsLock);
+
+                    var index = Key - Keys.A;
+
+                    result += upperCase
+                        ? _keymap.Uppercase[index]
+                        : _keymap.Lowercase[index];
+                }
             }
 
             else
