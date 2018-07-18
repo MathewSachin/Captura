@@ -123,11 +123,11 @@ namespace Captura.Models
                 // Handled on Key Up
                 _modifierSingleDown = true;
             }
-            else if (_records.Last is KeyRecord keyRecord && keyRecord.Key == record.Key)
+            else if (_records.Last is KeyRecord keyRecord && keyRecord.Display == display)
             {
                 _records.Last = new RepeatKeyRecord(record);
             }
-            else if (_records.Last is RepeatKeyRecord repeatRecord && repeatRecord.Repeated.Key == record.Key)
+            else if (_records.Last is RepeatKeyRecord repeatRecord && repeatRecord.Repeated.Display == display)
             {
                 repeatRecord.Increment();
             }
