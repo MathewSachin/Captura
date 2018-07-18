@@ -29,9 +29,7 @@ namespace Captura.Models
         public bool Alt { get; }
         
         public string Display { get; }
-
-        bool IsAlpha => Key >= Keys.A && Key <= Keys.Z;
-
+        
         bool IsNum => (Key >= Keys.D0 && Key <= Keys.D9) || (Key >= Keys.NumPad0 && Key <= Keys.NumPad9);
 
         bool IsSpecialDPadCharacter => !Alt && !Control && Shift && (Key >= Keys.D0 && Key <= Keys.D9);
@@ -157,20 +155,20 @@ namespace Captura.Models
                     return _keymap.Windows;
             }
 
-            var result = "";
-
             if (IsSpecialDPadCharacter)
-                result = _keymap.SpecialDPad[Key - Keys.D0].ToString();
+                return _keymap.SpecialDPad[Key - Keys.D0];
 
-            else if (IsOem)
+            if (IsOem)
             {
                 // Retreive first to ensure Shift is handled correctly
                 var oemChar = AsOemChar;
 
-                result = Modifiers + oemChar;
+                return Modifiers + oemChar;
             }
 
-            else if (IsNum)
+            var result = "";
+
+            if (IsNum)
             {
                 result = Modifiers;
 
@@ -183,20 +181,20 @@ namespace Captura.Models
                 else result += _keymap.Numbers[AsNum]; // Language specific
             }
 
-            else if (IsAlpha)
+            // Alphabet
+            else if (Key >= Keys.A && Key <= Keys.Z)
             {
                 if (Control || Alt)
+                {
                     result = Modifiers;
 
-                if (Control || Alt)
-                {
-                    // Ctrl, Alt shortcuts in English
+                    // Ctrl, Alt shortcuts in English Uppercase
                     result += Key.ToString().ToUpper();
                 }
                 else
                 {
                     // Language specific
-                    var upperCase = Control || Alt || (Shift ^ Console.CapsLock);
+                    var upperCase = Shift ^ Console.CapsLock;
 
                     var index = Key - Keys.A;
 
