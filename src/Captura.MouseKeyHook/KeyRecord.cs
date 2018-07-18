@@ -5,11 +5,13 @@ namespace Captura.Models
 {
     class KeyRecord : IKeyRecord
     {
+        readonly KeyEventArgs _eventArgs;
         readonly Keymap _keymap;
 
         public KeyRecord(KeyEventArgs KeyEventArgs, Keymap Keymap)
         {
             _keymap = Keymap;
+            _eventArgs = KeyEventArgs;
             TimeStamp = DateTime.Now;
 
             Key = KeyEventArgs.KeyCode;
@@ -23,19 +25,9 @@ namespace Captura.Models
         public DateTime TimeStamp { get; }
 
         public Keys Key { get; }
-        
-        public bool Control { get; }
-        public bool Shift { get; private set; }
-        public bool Alt { get; }
-        
-        public string Display { get; }
-        
+
         bool IsNum => (Key >= Keys.D0 && Key <= Keys.D9) || (Key >= Keys.NumPad0 && Key <= Keys.NumPad9);
 
-        bool IsSpecialDPadCharacter => !Alt && !Control && Shift && (Key >= Keys.D0 && Key <= Keys.D9);
-
-        bool IsOem => Key.ToString().Contains("Oem");
-        
         int AsNum
         {
             get
@@ -46,62 +38,12 @@ namespace Captura.Models
                 return Key - Keys.NumPad0;
             }
         }
+
+        public bool Control { get; }
+        public bool Shift { get; }
+        public bool Alt { get; }
         
-        string Oem(char ShiftChar, char NonShiftChar)
-        {
-            if (Shift)
-            {
-                Shift = false;
-
-                return ShiftChar.ToString();
-            }
-
-            return NonShiftChar.ToString();
-        }
-
-        string AsOemChar
-        {
-            get
-            {
-                switch (Key)
-                {
-                    case Keys.Oemtilde:
-                        return Oem('~', '`');
-
-                    case Keys.OemMinus:
-                        return Oem('_', '-');
-
-                    case Keys.Oemplus:
-                        return Oem('+', '=');
-
-                    case Keys.Oem6:
-                        return Oem('}', ']');
-
-                    case Keys.OemOpenBrackets:
-                        return Oem('{', '[');
-
-                    case Keys.Oem5:
-                        return Oem('|', '\\');
-
-                    case Keys.Oem7:
-                        return Oem('\'', '"');
-
-                    case Keys.Oem1:
-                        return Oem(':', ';');
-
-                    case Keys.OemPeriod:
-                        return Oem('>', '.');
-
-                    case Keys.Oemcomma:
-                        return Oem('<', ',');
-
-                    case Keys.OemQuestion:
-                        return Oem('?', '/');
-                }
-
-                return Key.ToString();
-            }
-        }
+        public string Display { get; }
         
         string Modifiers
         {
@@ -149,150 +91,34 @@ namespace Captura.Models
                 case Keys.LMenu:
                 case Keys.RMenu:
                     return _keymap.Alt;
-
-                case Keys.LWin:
-                case Keys.RWin:
-                    return _keymap.Windows;
             }
 
-            if (IsSpecialDPadCharacter)
-                return _keymap.SpecialDPad[Key - Keys.D0];
+            var found = _keymap.Find(_eventArgs.Modifiers | Key, Console.CapsLock);
 
-            if (IsOem)
+            if (found != null)
+                return found;
+
+            if (_eventArgs.Modifiers == 0)
             {
-                // Retreive first to ensure Shift is handled correctly
-                var oemChar = AsOemChar;
+                found = _keymap.Find(Key, Console.CapsLock);
 
-                return Modifiers + oemChar;
+                return found ?? Key.ToString();
             }
-
-            var result = "";
 
             if (IsNum)
             {
-                result = Modifiers;
-
-                // Shift has been handled already for special D-pad chars
-                if (Control || Alt)
-                {
-                    // Ctrl, Alt shortcuts in English
-                    result += AsNum;
-                }
-                else result += _keymap.Numbers[AsNum]; // Language specific
+                return Modifiers + AsNum;
             }
 
             // Alphabet
-            else if (Key >= Keys.A && Key <= Keys.Z)
+            if (Key >= Keys.A && Key <= Keys.Z)
             {
-                if (Control || Alt)
-                {
-                    result = Modifiers;
-
-                    // Ctrl, Alt shortcuts in English Uppercase
-                    result += Key.ToString().ToUpper();
-                }
-                else
-                {
-                    // Language specific
-                    var upperCase = Shift ^ Console.CapsLock;
-
-                    var index = Key - Keys.A;
-
-                    result += upperCase
-                        ? _keymap.Uppercase[index]
-                        : _keymap.Lowercase[index];
-                }
+                return Modifiers + Key.ToString().ToUpper();
             }
 
-            else
-            {
-                result = Modifiers;
+            found = _keymap.Find(Key, Console.CapsLock);
 
-                switch (Key)
-                {
-                    case Keys.Decimal:
-                        result += ".";
-                        break;
-
-                    case Keys.Add:
-                        result += "+";
-                        break;
-
-                    case Keys.Subtract:
-                        result += "-";
-                        break;
-
-                    case Keys.Multiply:
-                        result += "*";
-                        break;
-
-                    case Keys.Divide:
-                        result += "/";
-                        break;
-
-                    case Keys.Escape:
-                        result += "Esc";
-                        break;
-
-                    case Keys.Delete:
-                        result += "Del";
-                        break;
-
-                    case Keys.PageUp:
-                        result += "Pg Up";
-                        break;
-
-                    case Keys.PageDown:
-                        result += "Pg Dn";
-                        break;
-
-                    case Keys.PrintScreen:
-                        result += "Prt Sc";
-                        break;
-
-                    case Keys.VolumeMute:
-                        result += "Mute";
-                        break;
-
-                    case Keys.VolumeUp:
-                        result += "Vol +";
-                        break;
-                    
-                    case Keys.VolumeDown:
-                        result += "Vol -";
-                        break;
-
-                    case Keys.Up:
-                        result += " ↑ ";
-                        break;
-
-                    case Keys.Down:
-                        result += " ↓ ";
-                        break;
-
-                    case Keys.Left:
-                        result += " ← ";
-                        break;
-
-                    case Keys.Right:
-                        result += " → ";
-                        break;
-
-                    case Keys.NumLock:
-                        result += $"NumLock: {(Console.NumberLock ? "On" : "Off")}";
-                        break;
-
-                    case Keys.CapsLock:
-                        result += $"CapsLock: {(Console.CapsLock ? "On" : "Off")}";
-                        break;
-
-                    default:
-                        result += Key;
-                        break;
-                }
-            }
-
-            return result;
+            return Modifiers + (found ?? Key.ToString());
         }
 
         public override string ToString() => Display;

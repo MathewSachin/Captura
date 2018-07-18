@@ -241,6 +241,9 @@ void PopulateOutput()
     CopyFiles(consoleBinFolder.Path + "/*.exe*", distFolder);
     CopyFiles(uiBinFolder.Path + "/*.exe*", distFolder);
 
+    // Copy Keymap file
+    CopyFileToDirectory(uiBinFolder + File("kmap.dat"), distFolder);
+
     // For Debug builds
     if (configuration != Release)
     {

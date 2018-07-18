@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using Captura.Models;
 using Captura.Views;
 using CommandLine;
 
@@ -83,7 +84,7 @@ namespace Captura
 
             LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
 
-            Extensions.LoadKeymap();
+            ServiceProvider.Get<Keymap>().Load();
         }
     }
 }
