@@ -159,21 +159,23 @@ Decimal = .
 NumLock = NumLock
 
 Oemtilde = ൊ
-Shift + Oemtilde = ഒ
 OemMinus = -
-Shift + OemMinus = ഃ
 Oemplus = ൃ
-Shift + Oemplus = ഋ
 OemCloseBrackets = ർ
-Shift + OemCloseBrackets = ഞ
 OemOpenBrackets = ഡ
-Shift + OemOpenBrackets = ഢ
 OemQuotes = ട
-Shift + OemQuotes = ഠ
 OemSemicolon = ച
-Shift + OemSemicolon = ഛ
 OemPeriod = .
-Shift + OemPeriod = ൽ
 Oemcomma = ,
-Shift + Oemcomma = ഷ
 OemQuestion = യ
+
+
+Shift + Oemtilde = ഒ
+Shift + OemMinus = ഃ
+Shift + Oemplus = ഋ
+Shift + OemCloseBrackets = ഞ
+Shift + OemOpenBrackets = ഢ
+Shift + OemQuotes = ഠ
+Shift + OemSemicolon = ഛ
+Shift + OemPeriod = ൽ
+Shift + Oemcomma = ഷ
