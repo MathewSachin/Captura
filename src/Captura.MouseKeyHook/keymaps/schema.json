@@ -2,20 +2,37 @@
   "$schema": "http://json-schema.org/draft-04/schema",
   "type": "object",
   "properties": {
-    "Name": { "type": "string" },
+    "Name": {
+      "type": "string",
+      "description": "Name of the layout. This is displayed in the layout selection menu."
+    },
     "Mappings": {
       "type": "array",
+      "description": "Mappings grouped by the state of modifier keys and Caps Lock",
       "items": {
         "properties": {
           "On": {
             "type": "array",
+            "description": "Match Any of these conditions",
             "items": {
               "type": "object",
               "properties": {
-                "Shift": { "type": "boolean" },
-                "Alt": { "type": "boolean" },
-                "Control": { "type": "boolean" },
-                "CapsLock": { "type": "boolean" }
+                "Shift": {
+                  "type": "boolean",
+                  "description": "Is Shift key pressed?"
+                },
+                "Alt": {
+                  "type": "boolean",
+                  "description": "Is Alt key pressed?"
+                },
+                "Control": {
+                  "type": "boolean",
+                  "description": "Is Control key pressed?"
+                },
+                "CapsLock": {
+                  "type": "boolean",
+                  "description": "Is Caps Lock On?"
+                }
               },
               "additionalProperties": false
             },
@@ -23,6 +40,7 @@
           },
           "Keys": {
             "type": "object",
+            "description": "Key to text mappings. if no matching mapping is found, name of Key is used.",
             "properties": {
               "LButton": { "type": "string" },
               "RButton": { "type": "string" },
