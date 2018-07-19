@@ -131,86 +131,90 @@ Shift + Y ^= y
 Shift + Z ^= z
 
 Control + Alt + Q = æ
+Control + Alt + E = ē
+Control + Alt + R = r̥
+Control + Alt + T = ṭ
+Control + Alt + Y = ñ
+Control + Alt + U = ū
+Control + Alt + I = ī
+Control + Alt + O = ō
+Control + Alt + A = ā
+
+
 Control + Alt + Shift + Q = Æ
 Control + Alt + Q ^= Æ
 Control + Alt + Shift + Q = æ
 
-Control + Alt + E = ē
 Control + Alt + Shift + E = Ē
 Control + Alt + E ^= Ē
 Control + Alt + Shift + E ^= ē
 
-Control + Alt + R = r̥
 Control + Alt + Shift + R = R̥
 Control + Alt + R ^= R̥
 Control + Alt + Shift + R ^= r̥
 
-Control + Alt + T = ṭ
 Control + Alt + Shift + T = Ṭ
 Control + Alt + T ^= Ṭ
 Control + Alt + Shift + T ^= ṭ
 
-Control + Alt + Y = ñ
 Control + Alt + Shift + Y = Ñ
 Control + Alt + Y ^= Ñ
 Control + Alt + Shift + Y ^= ñ
 
-Control + Alt + U = ū
 Control + Alt + Shift + U = Ū
 Control + Alt + U ^= Ū
 Control + Alt + Shift + U ^= ū
 
-Control + Alt + I = ī
 Control + Alt + Shift + I = Ī
 Control + Alt + I ^= Ī
 Control + Alt + Shift + I ^= ī
 
-Control + Alt + O = ō
 Control + Alt + Shift + O = Ō
 Control + Alt + O ^= Ō
 Control + Alt + Shift + O ^= ō
 
-Control + Alt + A = ā
 Control + Alt + Shift + A = Ā
 Control + Alt + A ^= Ā
 Control + Alt + Shift + A ^= ā
 
-Control + Alt + R = ś
-Control + Alt + Shift + R = Ś
-Control + Alt + R ^= Ś
-Control + Alt + Shift + R ^= ś
-
+Control + Alt + S = ś
 Control + Alt + D = ḍ
+Control + Alt + G = ṅ
+Control + Alt + H = ḥ
+Control + Alt + L = l̥
+Control + Alt + X = ṣ
+Control + Alt + N = ṇ
+Control + Alt + M = ṁ
+
+
+Control + Alt + Shift + S = Ś
+Control + Alt + S ^= Ś
+Control + Alt + Shift + S ^= ś
+
 Control + Alt + Shift + D = Ḍ
 Control + Alt + D ^= Ḍ
 Control + Alt + Shift + D ^= ḍ
 
-Control + Alt + G = ṅ
 Control + Alt + Shift + G = Ṅ
 Control + Alt + G ^= Ṅ
 Control + Alt + Shift + G ^= ṅ
 
-Control + Alt + H = ḥ
 Control + Alt + Shift + H = Ḥ
 Control + Alt + H ^= Ḥ
 Control + Alt + Shift + H ^= ḥ
 
-Control + Alt + L = l̥
 Control + Alt + Shift + L = L̥
 Control + Alt + L ^= L̥
 Control + Alt + Shift + L ^= l̥
 
-Control + Alt + X = ṣ
 Control + Alt + Shift + X = Ṣ
 Control + Alt + X ^= Ṣ
 Control + Alt + Shift + X ^= ṣ
 
-Control + Alt + N = ṇ
 Control + Alt + Shift + N = Ṇ
 Control + Alt + N ^= Ṇ
 Control + Alt + Shift + N ^= ṇ
 
-Control + Alt + M = ṁ
 Control + Alt + Shift + M = Ṁ
 Control + Alt + M ^= Ṁ
 Control + Alt + Shift + M ^= ṁ

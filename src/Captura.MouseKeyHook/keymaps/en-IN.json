@@ -194,6 +194,65 @@
         "Y": "y",
         "Z": "z"
       }
+    },
+    {
+      "On": [
+        { "Control": true, "Shift": true },
+        { "Control": true, "Alt": true }
+      ],
+      "Keys": {
+        "D4": "₹"
+      }
+    },
+    {
+      "On": [
+        { "Control": true, "Alt": true },
+        { "Control": true, "Alt": true, "Shift": true, "CapsLock": true }
+      ],
+      "Keys": {
+        "Q": "æ",
+        "E": "ē",
+        "R": "r̥",
+        "T": "ṭ",
+        "Y": "ñ",
+        "U": "ū",
+        "I": "ī",
+        "O": "ō",
+        "A": "ā",
+        "S": "ś",
+        "D": "ḍ",
+        "G": "ṅ",
+        "H": "ḥ",
+        "L": "l̥",
+        "X": "ṣ",
+        "N": "ṇ",
+        "M": "ṁ"
+      }
+    },
+    {
+      "On": [
+        { "Control": true, "Alt": true, "Shift": true },
+        { "Control": true, "Alt": true, "CapsLock": true }
+      ],
+      "Keys": {
+        "Q": "Æ",
+        "E": "Ē",
+        "R": "R̥",
+        "T": "Ṭ",
+        "Y": "Ñ",
+        "U": "Ū",
+        "I": "Ī",
+        "O": "Ō",
+        "A": "Ā",
+        "S": "Ś",
+        "D": "Ḍ",
+        "G": "Ṅ",
+        "H": "Ḥ",
+        "L": "L̥",
+        "X": "Ṣ",
+        "N": "Ṇ",
+        "M": "Ṁ"
+      }
     }
   ]
 }
