@@ -91,6 +91,7 @@
                             <ComboBox DataContext="{Binding Keymap, Source={StaticResource ServiceLocator}}"
                                       ItemsSource="{Binding AvailableKeymaps}"
                                       SelectedValue="{Binding SelectedKeymap, Mode=TwoWay}"
+                                      DisplayMemberPath="Name"
                                       Grid.Row="4"
                                       Grid.Column="1"
                                       Margin="0,5"/>

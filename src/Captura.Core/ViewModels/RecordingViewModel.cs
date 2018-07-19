@@ -35,7 +35,7 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
 
-        readonly Keymap _keymap;
+        readonly KeymapViewModel _keymap;
 
         readonly VideoViewModel _videoViewModel;
         readonly AudioSource _audioSource;
@@ -65,7 +65,7 @@ namespace Captura.ViewModels
             AudioSource AudioSource,
             RecentViewModel RecentViewModel,
             IWebCamProvider WebCamProvider,
-            Keymap Keymap) : base(Settings, LanguageManager)
+            KeymapViewModel Keymap) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;

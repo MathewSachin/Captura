@@ -30,7 +30,7 @@ namespace Captura
 
         public string KeymapName
         {
-            get => Get(Keymap.DefaultKeymapFileName);
+            get => Get(KeymapViewModel.DefaultKeymapFileName);
             set => Set(value);
         }
     }

@@ -84,14 +84,17 @@ namespace Captura
 
             LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
 
-            var keymap = ServiceProvider.Get<Keymap>();
+            var keymap = ServiceProvider.Get<KeymapViewModel>();
 
             if (!string.IsNullOrWhiteSpace(settings.Keystrokes.KeymapName))
             {
-                keymap.SelectedKeymap = settings.Keystrokes.KeymapName;
+                var matched = keymap.AvailableKeymaps.FirstOrDefault(M => M.Name == settings.Keystrokes.KeymapName);
+
+                if (matched != null)
+                    keymap.SelectedKeymap = matched;
             }
 
-            keymap.PropertyChanged += (S, E) => settings.Keystrokes.KeymapName = keymap.SelectedKeymap;
+            keymap.PropertyChanged += (S, E) => settings.Keystrokes.KeymapName = keymap.SelectedKeymap.Name;
         }
     }
 }

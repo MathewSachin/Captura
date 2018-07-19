@@ -29,7 +29,7 @@ namespace Captura
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
 
             // Keymap
-            Binder.BindSingleton<Keymap>();
+            Binder.BindSingleton<KeymapViewModel>();
 
             // Localization
             Binder.Bind(() => LanguageManager.Instance);

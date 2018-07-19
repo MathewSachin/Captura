@@ -21,13 +21,13 @@ namespace Captura.Models
         
         readonly KeyRecords _records;
 
-        readonly Keymap _keymap;
+        readonly KeymapViewModel _keymap;
         #endregion
         
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings, Keymap Keymap)
+        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings, KeymapViewModel Keymap)
         {
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;

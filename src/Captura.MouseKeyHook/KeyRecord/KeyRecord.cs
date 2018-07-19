@@ -6,9 +6,9 @@ namespace Captura.Models
     class KeyRecord : IKeyRecord
     {
         readonly KeyEventArgs _eventArgs;
-        readonly Keymap _keymap;
+        readonly KeymapViewModel _keymap;
 
-        public KeyRecord(KeyEventArgs KeyEventArgs, Keymap Keymap)
+        public KeyRecord(KeyEventArgs KeyEventArgs, KeymapViewModel Keymap)
         {
             _keymap = Keymap;
             _eventArgs = KeyEventArgs;
@@ -93,14 +93,23 @@ namespace Captura.Models
                     return _keymap.Alt;
             }
 
-            var found = _keymap.Find(_eventArgs.Modifiers | Key, Console.CapsLock);
+            var found = _keymap.Find(Key, new ModifierStates
+            {
+                CapsLock = Console.CapsLock,
+                Alt = Alt,
+                Control = Control,
+                Shift = Shift
+            });
 
             if (found != null)
                 return found;
 
             if (_eventArgs.Modifiers == 0)
             {
-                found = _keymap.Find(Key, Console.CapsLock);
+                found = _keymap.Find(Key, new ModifierStates
+                {
+                    CapsLock = Console.CapsLock
+                });
 
                 return found ?? Key.ToString();
             }
@@ -116,7 +125,10 @@ namespace Captura.Models
                 return Modifiers + Key.ToString().ToUpper();
             }
 
-            found = _keymap.Find(Key, Console.CapsLock);
+            found = _keymap.Find(Key, new ModifierStates
+            {
+                CapsLock = Console.CapsLock
+            });
 
             return Modifiers + (found ?? Key.ToString());
         }
