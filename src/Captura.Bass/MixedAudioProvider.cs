@@ -32,16 +32,10 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        public MixedAudioProvider(IEnumerable<BassItem> Devices, int FrameRate, bool MuteOutput = true)
+        public MixedAudioProvider(IEnumerable<BassItem> Devices, bool MuteOutput = true)
         {
             if (Devices == null)
                 throw new ArgumentNullException();
-
-            var updatePeriod = 1000 / FrameRate;
-
-            Bass.UpdatePeriod = updatePeriod.Clip(5, 100);
-
-            Console.WriteLine($"BASS Update Period: {Bass.UpdatePeriod}");
 
             for (var i = 0; i < BufferCount; ++i)
             {

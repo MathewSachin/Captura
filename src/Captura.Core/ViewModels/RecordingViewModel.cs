@@ -294,7 +294,7 @@ namespace Captura.ViewModels
             {
                 if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
                 {
-                    audioProvider = _audioSource.GetMixedAudioProvider(Settings.Video.FrameRate);
+                    audioProvider = _audioSource.GetMixedAudioProvider();
                 }
             }
             catch (Exception e)
