@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Modifiers.cs" />
     <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Settings\ProxySettings.cs" />
     <Compile Include="Services\IDialogService.cs" />

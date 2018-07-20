@@ -41,6 +41,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
 
                             <Label ContentStringFormat="{}{0}: "
@@ -81,6 +82,19 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,5"/>
+                            
+                            <Label Content="Keymap"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="4"/>
+                            
+                            <ComboBox DataContext="{Binding Keymap, Source={StaticResource ServiceLocator}}"
+                                      ItemsSource="{Binding AvailableKeymaps}"
+                                      SelectedValue="{Binding SelectedKeymap, Mode=TwoWay}"
+                                      DisplayMemberPath="Name"
+                                      Grid.Row="4"
+                                      Grid.Column="1"
+                                      Margin="0,5"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>

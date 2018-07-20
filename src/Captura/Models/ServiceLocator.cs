@@ -1,4 +1,5 @@
-﻿using Captura.ViewModels;
+﻿using Captura.Models;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -24,5 +25,7 @@ namespace Captura
         public CrashLogsViewModel CrashLogsViewModel => ServiceProvider.Get<CrashLogsViewModel>();
 
         public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
+
+        public KeymapViewModel Keymap => ServiceProvider.Get<KeymapViewModel>();
     }
 }

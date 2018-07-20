@@ -1,0 +1,201 @@
+{
+  "$schema": "./schema.json",
+  "Name": "Malayalam",
+  "Mappings": [
+    {
+      "On": [{ }],
+      "Keys": {
+        "Control": "Ctrl",
+        "ControlKey": "Ctrl",
+        "LControlKey": "Ctrl",
+        "RControlKey": "Ctrl",
+
+        "Alt": "Alt",
+        "Menu": "Alt",
+        "LMenu": "Alt",
+        "RMenu": "Alt",
+        
+        "Shift": "Shift",
+        "ShiftKey": "Shift",
+        "LShiftKey": "Shift",
+        "RShiftKey": "Shift",
+        
+        "LWin": "Win",
+        "RWin": "Win",
+
+        "A": "ോ",
+        "B": "വ",
+        "C": "മ",
+        "D": "്",
+        "E": "ാ",
+        "F": "ി",
+        "G": "ു",
+        "H": "പ",
+        "I": "ഗ",
+        "J": "ര",
+        "K": "ക",
+        "L": "ത",
+        "M": "സ",
+        "N": "ല",
+        "O": "ദ",
+        "P": "ജ",
+        "Q": "ൌ",
+        "R": "ീ",
+        "S": "േ",
+        "T": "ൂ",
+        "U": "ഹ",
+        "V": "ന",
+        "W": "ൈ",
+        "X": "ം",
+        "Y": "ബ",
+        "Z": "െ",
+        
+        "D0": "0",
+        "D1": "1",
+        "D2": "2",
+        "D3": "3",
+        "D4": "4",
+        "D5": "5",
+        "D6": "6",
+        "D7": "7",
+        "D8": "8",
+        "D9": "9",
+        
+        "NumPad0": "0",
+        "NumPad1": "1",
+        "NumPad2": "2",
+        "NumPad3": "3",
+        "NumPad4": "4",
+        "NumPad5": "5",
+        "NumPad6": "6",
+        "NumPad7": "7",
+        "NumPad8": "8",
+        "NumPad9": "9",
+        
+        "Escape": "Esc",
+        "Back": "Backspace",
+        
+        "PageUp": "Pg Up",
+        "PageDown": "Pg Dn",
+        
+        "Left": "Left",
+        "Right": "Right",
+        "Up": "Up",
+        "Down": "Down",
+        
+        "PrintScreen": "Prt Sc",
+        "Insert": "Ins",
+        "Delete": "Del",
+        
+        "VolumeDown": "Vol -",
+        "VolumeUp": "Vol +",
+        "VolumeMute": "Mute",
+        
+        "BrowserBack": "Browser Back",
+        "BrowserForward": "Browser Forward",
+        "BrowserRefresh": "Browser Refresh",
+        "BrowserStop": "Browser Stop",
+        "BrowserSearch": "Browser Search",
+        "BrowserFavorites": "Browser Favourites",
+        "BrowserHome": "Browser Home",
+        
+        "MediaNextTrack": "Next Track",
+        "MediaPreviousTrack": "Prev Track",
+        "MediaStop": "Stop",
+        "MediaPlayPause": "Play / Pause",
+        "SelectMedia": "Select Media",
+        
+        "LaunchMail": "Launch Mail",
+        
+        "Multiply": "*",
+        "Add": "+",
+        "Subtract": "-",
+        "Divide": "/",
+        "Decimal": ".",
+        "NumLock": "NumLock",
+        
+        "Oemtilde": "ൊ",
+        "OemMinus": "-",
+        "Oemplus": "ൃ",
+        "OemCloseBrackets": "ർ",
+        "OemOpenBrackets": "ഡ",
+        "OemQuotes": "ട",
+        "OemSemicolon": "ച",
+        "OemPeriod": ".",
+        "Oemcomma": ",",
+        "OemQuestion": "യ"
+      }
+    },
+    {
+      "On": [{ "Control": true, "Shift": true }],
+      "Keys": {
+        "D4": "₹"
+      }
+    },
+    {
+      "On": [{ "Shift": true }],
+      "Keys": {
+        "A": "ഓ",
+        "B": "ഴ",
+        "C": "ണ",
+        "D": "അ",
+        "E": "ആ",
+        "F": "ഇ",
+        "G": "ഉ",
+        "H": "ഫ",
+        "I": "ഘ",
+        "J": "റ",
+        "K": "ഖ",
+        "L": "ഥ",
+        "M": "ശ",
+        "N": "ള",
+        "O": "ധ",
+        "P": "ഝ",
+        "Q": "ഔ",
+        "R": "ഈ",
+        "S": "ഏ",
+        "T": "ഊ",
+        "U": "ങ",
+        "V": "ൻ",
+        "W": "ഐ",
+        "X": "ൺ",
+        "Y": "ഭ",
+        "Z": "എ",
+
+        "D0": ")",
+        "D3": "്ര",
+        "D6": "ൿ",
+        "D7": "ക്ഷ",
+        "D8": "ൾ",
+        "D9": "(",
+
+        "Oemtilde": "ഒ",
+        "OemMinus": "ഃ",
+        "Oemplus": "ഋ",
+        "OemCloseBrackets": "ഞ",
+        "OemOpenBrackets": "ഢ",
+        "OemQuotes": "ഠ",
+        "OemSemicolon": "ഛ",
+        "OemPeriod": "ൽ",
+        "Oemcomma": "ഷ"
+      }
+    },
+    {
+      "On": [{ "Control": true, "Alt": true }],
+      "Keys": {
+        "D0": "൦",
+        "D1": "൧",
+        "D2": "൨",
+        "D3": "൩",
+        "D4": "൪",
+        "D5": "൫",
+        "D6": "൬",
+        "D7": "൭",
+        "D8": "൮",
+        "D9": "൯",
+
+        "Q": "ൗ"
+      }
+    }
+  ]
+}

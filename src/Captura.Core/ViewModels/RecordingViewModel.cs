@@ -35,6 +35,8 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
 
+        readonly KeymapViewModel _keymap;
+
         readonly VideoViewModel _videoViewModel;
         readonly AudioSource _audioSource;
         readonly RecentViewModel _recentViewModel;
@@ -62,7 +64,8 @@ namespace Captura.ViewModels
             VideoViewModel VideoViewModel,
             AudioSource AudioSource,
             RecentViewModel RecentViewModel,
-            IWebCamProvider WebCamProvider) : base(Settings, LanguageManager)
+            IWebCamProvider WebCamProvider,
+            KeymapViewModel Keymap) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
@@ -76,6 +79,7 @@ namespace Captura.ViewModels
             _audioSource = AudioSource;
             _recentViewModel = RecentViewModel;
             _webCamProvider = WebCamProvider;
+            _keymap = Keymap;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -543,7 +547,7 @@ namespace Captura.ViewModels
             }
 
             overlays.Add(new MousePointerOverlay(Settings.MousePointerOverlay));
-            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes));
+            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes, _keymap));
             overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
 
             // Custom Overlays

@@ -20,16 +20,19 @@ namespace Captura.Models
         MouseButtons _mouseButtons;
         
         readonly KeyRecords _records;
+
+        readonly KeymapViewModel _keymap;
         #endregion
         
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings)
+        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings, KeymapViewModel Keymap)
         {
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;
-            
+            _keymap = Keymap;
+
             _hook = Hook.GlobalEvents();
             
             _hook.MouseDown += (S, E) =>
@@ -56,21 +59,30 @@ namespace Captura.Models
                 return;
             }
 
-            var record = new KeyRecord(Args);
+            var record = new KeyRecord(Args, _keymap);
 
-            if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
+            var display = record.Display;
+
+            if (display == _keymap.Control
+                || display == _keymap.Alt
+                || display == _keymap.Shift)
             {
-                if (_records.Last?.Display == record.Display)
+                if (_records.Last?.Display == display)
                 {
                     _records.Last = new RepeatKeyRecord(record);
                 }
-                else if (_records.Last is RepeatKeyRecord repeat && repeat.Repeated.Display == record.Display)
+                else if (_records.Last is RepeatKeyRecord repeat && repeat.Repeated.Display == display)
                 {
                     repeat.Increment();
                 }
-                else _records.Add(record);
+                else if (_modifierSingleDown)
+                {
+                    _records.Add(record);
+                }
             }
         }
+
+        bool _modifierSingleDown;
 
         void OnKeyDown(object Sender, KeyEventArgs Args)
         {
@@ -81,7 +93,9 @@ namespace Captura.Models
                 return;
             }
 
-            var record = new KeyRecord(Args);
+            _modifierSingleDown = false;
+
+            var record = new KeyRecord(Args, _keymap);
             
             if (_records.Last == null)
             {
@@ -92,22 +106,28 @@ namespace Captura.Models
 
             var elapsed = (record.TimeStamp - _records.Last.TimeStamp).TotalSeconds;
 
-            if (record.Display.Length == 1
-                && (_records.Last is DummyKeyRecord || _records.Last.Display.Length == 1)
-                && record.Display.Length + _records.Last.Display.Length <= _keystrokesSettings.MaxTextLength
+            var display = record.Display;
+            var lastDisplay = _records.Last.Display;
+
+            if (display.Length == 1
+                && (_records.Last is DummyKeyRecord || lastDisplay.Length == 1)
+                && display.Length + lastDisplay.Length <= _keystrokesSettings.MaxTextLength
                 && elapsed <= _keystrokesSettings.Timeout)
             {
-                _records.Last = new DummyKeyRecord(_records.Last.Display + record.Display);
+                _records.Last = new DummyKeyRecord(lastDisplay + display);
             }
-            else if (record.Display == "Ctrl" || record.Display == "Alt" || record.Display == "Shift")
+            else if (display == _keymap.Control
+                || display == _keymap.Alt
+                || display == _keymap.Shift)
             {
-                // Handle in OnKeyUp
+                // Handled on Key Up
+                _modifierSingleDown = true;
             }
-            else if (_records.Last is KeyRecord keyRecord && keyRecord.Key == record.Key)
+            else if (_records.Last is KeyRecord keyRecord && keyRecord.Display == display)
             {
                 _records.Last = new RepeatKeyRecord(record);
             }
-            else if (_records.Last is RepeatKeyRecord repeatRecord && repeatRecord.Repeated.Key == record.Key)
+            else if (_records.Last is RepeatKeyRecord repeatRecord && repeatRecord.Repeated.Display == display)
             {
                 repeatRecord.Increment();
             }

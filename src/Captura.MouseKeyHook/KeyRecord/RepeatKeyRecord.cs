@@ -11,6 +11,10 @@ namespace Captura.Models
             Increment();
         }
 
+        public bool Control => Repeated.Control;
+        public bool Shift => Repeated.Shift;
+        public bool Alt => Repeated.Alt;
+
         public DateTime TimeStamp { get; private set; }
 
         public KeyRecord Repeated { get; }

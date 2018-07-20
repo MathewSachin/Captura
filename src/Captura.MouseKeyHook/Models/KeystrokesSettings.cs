@@ -1,4 +1,6 @@
-﻿namespace Captura
+﻿using Captura.Models;
+
+namespace Captura
 {
     public class KeystrokesSettings : TextOverlaySettings
     {
@@ -23,6 +25,12 @@
         public int HistorySpacing
         {
             get => Get(10);
+            set => Set(value);
+        }
+
+        public string KeymapName
+        {
+            get => Get(KeymapViewModel.DefaultKeymapFileName);
             set => Set(value);
         }
     }

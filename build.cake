@@ -235,11 +235,14 @@ void PopulateOutput()
     var uiBinFolder = sourceFolder + Directory("Captura/bin") + Directory(configuration);
     
     // Copy Languages
-    CopyDirectory(uiBinFolder + Directory("Languages"), distFolder + Directory("Languages"));
+    CopyDirectory(uiBinFolder + Directory("Languages"), distFolder + Directory("languages"));
 
     // Copy executables and config files
     CopyFiles(consoleBinFolder.Path + "/*.exe*", distFolder);
     CopyFiles(uiBinFolder.Path + "/*.exe*", distFolder);
+
+    // Copy Keymap file
+    CopyDirectory(uiBinFolder + Directory("keymaps"), distFolder + Directory("keymaps"));
 
     // For Debug builds
     if (configuration != Release)

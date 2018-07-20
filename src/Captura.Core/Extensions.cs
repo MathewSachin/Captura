@@ -13,7 +13,7 @@ namespace Captura
                 Command.Execute(null);
         }
 
-        public static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)
+        static Bitmap Resize(this Bitmap Image, Size Resize, bool KeepAspectRatio, bool DisposeOriginal = true)
         {
             var resizeWidth = Resize.Width;
             var resizeHeight = Resize.Height;
