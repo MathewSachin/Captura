@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +12,6 @@ namespace Captura.Models
     public class KeymapViewModel : NotifyPropertyChanged
     {
         Keymap _keymap;
-        readonly string _keymapDir;
 
         public const string DefaultKeymapFileName = "en";
 
@@ -32,13 +30,13 @@ namespace Captura.Models
 
         public KeymapViewModel()
         {
-            _keymapDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "keymaps");
+            var keymapDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "keymaps");
 
-            if (Directory.Exists(_keymapDir))
+            if (Directory.Exists(keymapDir))
             {
-                var files = Directory.EnumerateFiles(_keymapDir, "*.json");
+                var files = Directory.EnumerateFiles(keymapDir, "*.json");
 
-                AvailableKeymaps = files
+                _keymaps.AddRange(files
                     .Where(M => !M.Contains("schema"))
                     .Select(M =>
                     {
@@ -47,14 +45,25 @@ namespace Captura.Models
                         var name = JObject.Parse(content)["Name"];
 
                         return new KeymapItem(M, name.ToString());
-                    }).ToList();
-
-                if (AvailableKeymaps.Count > 0)
-                    SelectedKeymap = AvailableKeymaps[0];
+                    }));
             }
+
+            if (AvailableKeymaps.Count == 0)
+            {
+                var empty = new KeymapItem("", "Empty");
+
+                _keymap = new Keymap();
+
+                _keymaps.Add(empty);
+
+                _selectedKeymap = empty;
+            }
+            else SelectedKeymap = AvailableKeymaps[0];
         }
 
-        public IReadOnlyList<KeymapItem> AvailableKeymaps { get; }
+        readonly List<KeymapItem> _keymaps = new List<KeymapItem>();
+
+        public IReadOnlyList<KeymapItem> AvailableKeymaps => _keymaps;
 
         KeymapItem _selectedKeymap;
 
