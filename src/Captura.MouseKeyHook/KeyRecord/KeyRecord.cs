@@ -8,6 +8,8 @@ namespace Captura.Models
         readonly KeyEventArgs _eventArgs;
         readonly KeymapViewModel _keymap;
 
+        readonly bool _capsLock;
+
         public KeyRecord(KeyEventArgs KeyEventArgs, KeymapViewModel Keymap)
         {
             _keymap = Keymap;
@@ -18,6 +20,8 @@ namespace Captura.Models
             Control = KeyEventArgs.Control;
             Shift = KeyEventArgs.Shift;
             Alt = KeyEventArgs.Alt;
+
+            _capsLock = Console.CapsLock;
 
             Display = GetDisplay();
         }
@@ -95,7 +99,7 @@ namespace Captura.Models
 
             var found = _keymap.Find(Key, new ModifierStates
             {
-                CapsLock = Console.CapsLock,
+                CapsLock = _capsLock,
                 Alt = Alt,
                 Control = Control,
                 Shift = Shift
@@ -108,7 +112,7 @@ namespace Captura.Models
             {
                 found = _keymap.Find(Key, new ModifierStates
                 {
-                    CapsLock = Console.CapsLock
+                    CapsLock = _capsLock
                 });
 
                 return found ?? Key.ToString();
@@ -127,7 +131,7 @@ namespace Captura.Models
 
             found = _keymap.Find(Key, new ModifierStates
             {
-                CapsLock = Console.CapsLock
+                CapsLock = _capsLock
             });
 
             return Modifiers + (found ?? Key.ToString());
