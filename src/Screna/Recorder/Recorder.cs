@@ -95,12 +95,16 @@ namespace Screna
                             continue;
                         }
 
+                        // Dispose all frames and Stop Writing
+                        // using lock here will cause a deadlock
+                        if (_disposed)
+                        {
+                            img.Dispose();
+                            continue;
+                        }
+
                         _videoWriter.WriteFrame(img);
                     }
-
-                    // Stop Writing
-                    if (_frames.Count > _maxFrameCount)
-                        break;
                 }
             }
             catch (Exception e)
