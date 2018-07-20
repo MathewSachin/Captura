@@ -34,7 +34,7 @@ namespace Captura.Models
             var audioPipeName = GetPipeName();
             var videoPipeName = GetPipeName();
 
-            var videoInArgs = $"-thread_queue_size 512 -framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
+            var videoInArgs = $"-thread_queue_size 512 -use_wallclock_as_timestamps 1 -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
             var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
 
             if (settings.Resize)
@@ -79,6 +79,8 @@ namespace Captura.Models
             _audioPipe?.Dispose();
 
             _ffmpegProcess.WaitForExit();
+
+            Console.WriteLine($"Skipped {_framesSkipped} frames");
         }
 
         /// <summary>
@@ -121,6 +123,8 @@ namespace Captura.Models
 
         Task _lastFrameTask;
 
+        int _framesSkipped;
+
         /// <summary>
         /// Writes an Image frame.
         /// </summary>
@@ -144,12 +148,15 @@ namespace Captura.Models
 
             _lastFrameTask?.Wait();
 
-            if (!(Frame is RepeatFrame))
+            if (Frame is RepeatFrame)
             {
-                using (Frame)
-                {
-                    Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
-                }
+                ++_framesSkipped;
+                return;
+            }
+
+            using (Frame)
+            {
+                Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
             }
 
             _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
