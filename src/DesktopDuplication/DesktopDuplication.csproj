@@ -35,8 +35,17 @@
     <Reference Include="SharpDX.Direct3D11, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.Direct3D11.4.1.0\lib\net45\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct3D9.4.1.0\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.DXGI, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.DXGI.4.1.0\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Mathematics.4.1.0\lib\net45\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.MediaFoundation, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.MediaFoundation.4.1.0\lib\net45\SharpDX.MediaFoundation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
