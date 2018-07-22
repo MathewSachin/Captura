@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Screna;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

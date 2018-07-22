@@ -91,6 +91,8 @@ namespace DesktopDuplication
             // for IMFTrackedSample to notify when the sample is released
             trackedSample.SetAllocator(this, null);
 
+            mediaBuffer.CurrentLength = mediaBuffer.QueryInterface<Buffer2D>().ContiguousLength;
+
             // Attach the created buffer to the sample
             sample.AddBuffer(mediaBuffer);
 

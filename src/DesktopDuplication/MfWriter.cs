@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.MediaFoundation;
 
@@ -6,8 +8,8 @@ namespace DesktopDuplication
 {
     public class MfWriter : IDisposable
     {
-        const int BitRate = 800_000;
-        readonly Guid _encodingFormat = VideoFormatGuids.Mp4v;
+        const int BitRate = 1_000_000;
+        readonly Guid _encodingFormat = VideoFormatGuids.H264;
         readonly Guid _inputFormat = VideoFormatGuids.Rgb32;
 
         long _prevFrameTicks;
@@ -15,9 +17,9 @@ namespace DesktopDuplication
         readonly SinkWriter _writer;
         readonly int _streamIndex;
 
-        static long ToLong(int Low, int High)
+        static long PackLong(int Low, int High)
         {
-            return (long)(((uint)Low) | (ulong)(High << 32));
+            return ((uint)Low << 32) | (uint)High;
         }
 
         public MfWriter(Device Device, int Fps, int Width, int Height)
@@ -27,38 +29,34 @@ namespace DesktopDuplication
             attr.Set(SinkWriterAttributeKeys.LowLatency, true);
 
             var devMan = new DXGIDeviceManager();
-            MediaFactory.CreateDXGIDeviceManager(out var resetToken, devMan);
             devMan.ResetDevice(Device);
-
             attr.Set(SinkWriterAttributeKeys.D3DManager, devMan);
 
-            _writer = MediaFactory.CreateSinkWriterFromURL("output.mp4", null, attr);
+            _writer = MediaFactory.CreateSinkWriterFromURL(@"output.mp4", null, attr);
 
             using (var mediaTypeOut = new MediaType())
             {
-                MediaFactory.CreateMediaType(mediaTypeOut);
-
                 mediaTypeOut.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Video);
                 mediaTypeOut.Set(MediaTypeAttributeKeys.Subtype, _encodingFormat);
                 mediaTypeOut.Set(MediaTypeAttributeKeys.AvgBitrate, BitRate);
                 mediaTypeOut.Set(MediaTypeAttributeKeys.InterlaceMode, (int) VideoInterlaceMode.Progressive);
-                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameSize, ToLong(Width, Height));
-                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameRate, ToLong(Fps * 1000, 1000));
-                mediaTypeOut.Set(MediaTypeAttributeKeys.PixelAspectRatio, ToLong(1, 1));
+                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
+                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
+                mediaTypeOut.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
 
                 _writer.AddStream(mediaTypeOut, out _streamIndex);
             }
 
             using (var mediaTypeIn = new MediaType())
             {
-                MediaFactory.CreateMediaType(mediaTypeIn);
+                var mediaAttr = new MediaAttributes();
 
                 mediaTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Video);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.Subtype, _inputFormat);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.InterlaceMode, (int) VideoInterlaceMode.Progressive);
-                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, ToLong(Width, Height));
-                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, ToLong(Fps * 1000, 1000));
-                mediaTypeIn.Set(MediaTypeAttributeKeys.PixelAspectRatio, ToLong(1, 1));
+                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
+                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
+                mediaTypeIn.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
 
                 _writer.SetInputMediaType(_streamIndex, mediaTypeIn, null);
             }
@@ -75,8 +73,8 @@ namespace DesktopDuplication
             if (_prevFrameTicks == 0)
                 _prevFrameTicks = nowTicks;
 
-            Sample.SetSampleTime(_prevFrameTicks);
-            Sample.SetSampleDuration(nowTicks - _prevFrameTicks);
+            Sample.SampleTime = _prevFrameTicks;
+            Sample.SampleDuration = nowTicks - _prevFrameTicks;
 
             _prevFrameTicks = nowTicks;
 

@@ -14,11 +14,8 @@ namespace DesktopDuplication
         #region Fields
         readonly Device _device;
         readonly OutputDuplication _deskDupl;
-        OutputDuplicateFrameInformation _frameInfo;
 
         Rectangle _rect;
-
-        readonly bool _includeCursor;
         #endregion
 
         public int Timeout { get; set; }
@@ -26,15 +23,17 @@ namespace DesktopDuplication
         readonly TextureAllocator _textureAllocator;
         readonly MfWriter _writer;
 
-        public DeskDuplMediaFoundation(Rectangle Rect, bool IncludeCursor, Adapter Adapter, Output1 Output)
+        public int Fps { get; }
+
+        public DeskDuplMediaFoundation(Rectangle Rect, Adapter Adapter, Output1 Output, int Fps)
         {
             MfManager.Startup();
 
             _rect = Rect;
-            _includeCursor = IncludeCursor;
+            this.Fps = Fps;
             
-            _device = new Device(Adapter);
-            _writer = new MfWriter(_device, 30, _rect.Width, _rect.Height);
+            _device = new Device(Adapter, DeviceCreationFlags.VideoSupport);
+            _writer = new MfWriter(_device, Fps, _rect.Width, _rect.Height);
 
             var textureDesc = new Texture2DDescription
             {
@@ -72,7 +71,7 @@ namespace DesktopDuplication
 
             try
             {
-                _deskDupl.AcquireNextFrame(Timeout, out _frameInfo, out desktopResource);
+                _deskDupl.AcquireNextFrame(Timeout, out var frameInfo, out desktopResource);
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
             {
