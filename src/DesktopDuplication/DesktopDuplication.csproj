@@ -54,7 +54,11 @@
     <Compile Include="DeskDuplImageProvider.cs" />
     <Compile Include="DeskDuplItem.cs" />
     <Compile Include="DeskDuplSourceProvider.cs" />
+    <Compile Include="DeskDuplMediaFoundation.cs" />
     <Compile Include="DesktopDuplicator.cs" />
+    <Compile Include="MfManager.cs" />
+    <Compile Include="MfWriter.cs" />
+    <Compile Include="TextureAllocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
