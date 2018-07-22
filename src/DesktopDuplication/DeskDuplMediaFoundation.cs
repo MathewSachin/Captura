@@ -14,7 +14,8 @@ namespace DesktopDuplication
     {
         #region Fields
         readonly Device _device;
-        readonly OutputDuplication _deskDupl;
+        readonly Output1 _output;
+        OutputDuplication _deskDupl;
 
         Rectangle _rect;
         #endregion
@@ -31,6 +32,7 @@ namespace DesktopDuplication
             MfManager.Startup();
 
             _rect = Rect;
+            _output = Output;
             this.Fps = Fps;
             
             _device = new Device(Adapter, DeviceCreationFlags.VideoSupport);
@@ -51,9 +53,16 @@ namespace DesktopDuplication
 
             _textureAllocator = new TextureAllocator(textureDesc, _device);
             
+            ReInit();
+        }
+
+        void ReInit()
+        {
+            _deskDupl?.Dispose();
+
             try
             {
-                _deskDupl = Output.DuplicateOutput(_device);
+                _deskDupl = _output.DuplicateOutput(_device);
             }
             catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.NotCurrentlyAvailable)
             {
@@ -79,7 +88,9 @@ namespace DesktopDuplication
             }
             catch (SharpDXException e) when (e.ResultCode.Failure)
             {
-                throw new Exception("Failed to acquire next frame.", e);
+                ReInit();
+                return;
+                //throw new Exception("Failed to acquire next frame.", e);
             }
 
             var texture = _textureAllocator.AllocateTexture();
