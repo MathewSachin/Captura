@@ -17,9 +17,21 @@ namespace DesktopDuplication
         readonly SinkWriter _writer;
         readonly int _streamIndex;
 
-        static long PackLong(int Low, int High)
+        static long PackLong(int Left, int Right)
         {
-            return ((uint)Low << 32) | (uint)High;
+            //implicit conversion of left to a long
+            long res = Left;
+
+            //shift the bits creating an empty space on the right
+            // ex: 0x0000CFFF becomes 0xCFFF0000
+            res = (res << 32);
+
+            //combine the bits on the right with the previous value
+            // ex: 0xCFFF0000 | 0x0000ABCD becomes 0xCFFFABCD
+            res = res | (uint)Right; //uint first to prevent loss of signed bit
+
+            //return the combined result
+            return res;
         }
 
         public MfWriter(Device Device, int Fps, int Width, int Height)
@@ -49,8 +61,6 @@ namespace DesktopDuplication
 
             using (var mediaTypeIn = new MediaType())
             {
-                var mediaAttr = new MediaAttributes();
-
                 mediaTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Video);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.Subtype, _inputFormat);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.InterlaceMode, (int) VideoInterlaceMode.Progressive);
@@ -92,6 +102,7 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
+            _writer.Finalize();
             _writer.Dispose();
         }
     }

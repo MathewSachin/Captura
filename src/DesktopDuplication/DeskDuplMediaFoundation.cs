@@ -4,6 +4,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
+using SharpDX.Direct3D;
 using Device = SharpDX.Direct3D11.Device;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -37,7 +38,7 @@ namespace DesktopDuplication
 
             var textureDesc = new Texture2DDescription
             {
-                CpuAccessFlags = CpuAccessFlags.Read,
+                CpuAccessFlags = CpuAccessFlags.None,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
                 Width = _rect.Width,
@@ -45,8 +46,7 @@ namespace DesktopDuplication
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
-                SampleDescription = {Count = 1, Quality = 0},
-                Usage = ResourceUsage.Staging
+                SampleDescription = {Count = 1, Quality = 0}
             };
 
             _textureAllocator = new TextureAllocator(textureDesc, _device);
@@ -122,6 +122,8 @@ namespace DesktopDuplication
             {
                 _deskDupl?.Dispose();
                 _device?.Dispose();
+
+                _writer.Dispose();
 
                 _textureAllocator.Dispose();
 

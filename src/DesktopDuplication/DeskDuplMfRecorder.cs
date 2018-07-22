@@ -43,10 +43,10 @@ namespace Screna
             if (!ErrorOccurred)
                 _recordTask.Wait();
 
+            _deskDupl.Dispose();
+
             _continueCapturing.Dispose();
             _stopCapturing.Dispose();
-
-            _deskDupl.Dispose();
         }
 
         /// <summary>
