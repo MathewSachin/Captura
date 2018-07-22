@@ -34,7 +34,7 @@ namespace DesktopDuplication
             return res;
         }
 
-        public MfWriter(Device Device, int Fps, int Width, int Height)
+        public MfWriter(Device Device, int Fps, int Width, int Height, string FileName)
         {
             var attr = new MediaAttributes(3);
             attr.Set(SinkWriterAttributeKeys.ReadwriteEnableHardwareTransforms, 1);
@@ -44,7 +44,7 @@ namespace DesktopDuplication
             devMan.ResetDevice(Device);
             attr.Set(SinkWriterAttributeKeys.D3DManager, devMan);
 
-            _writer = MediaFactory.CreateSinkWriterFromURL(@"output.mp4", null, attr);
+            _writer = MediaFactory.CreateSinkWriterFromURL(FileName, null, attr);
 
             using (var mediaTypeOut = new MediaType())
             {

@@ -26,7 +26,7 @@ namespace DesktopDuplication
 
         public int Fps { get; }
 
-        public DeskDuplMediaFoundation(Rectangle Rect, Adapter Adapter, Output1 Output, int Fps)
+        public DeskDuplMediaFoundation(Rectangle Rect, Adapter Adapter, Output1 Output, int Fps, string FileName)
         {
             MfManager.Startup();
 
@@ -34,7 +34,7 @@ namespace DesktopDuplication
             this.Fps = Fps;
             
             _device = new Device(Adapter, DeviceCreationFlags.VideoSupport);
-            _writer = new MfWriter(_device, Fps, _rect.Width, _rect.Height);
+            _writer = new MfWriter(_device, Fps, _rect.Width, _rect.Height, FileName);
 
             var textureDesc = new Texture2DDescription
             {

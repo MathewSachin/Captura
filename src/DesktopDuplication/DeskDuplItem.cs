@@ -41,12 +41,12 @@ namespace Captura.Models
             return new DeskDuplImageProvider(_adapter, _output, rect, IncludeCursor);
         }
 
-        public IRecorder GetRecorder(int Fps)
+        public IRecorder GetRecorder(int Fps, string FileName)
         {
             var rect = Rectangle;
             rect.Location = Point.Empty;
 
-            var deskDuplProvider = new DeskDuplMediaFoundation(rect, _adapter, _output, Fps);
+            var deskDuplProvider = new DeskDuplMediaFoundation(rect, _adapter, _output, Fps, FileName);
 
             return new DeskDuplMfRecorder(deskDuplProvider);
         }

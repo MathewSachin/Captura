@@ -427,7 +427,7 @@ namespace Captura.ViewModels
                 }
             }
 
-            _recorder = (ServiceProvider.Get<DeskDuplSourceProvider>().First() as DeskDuplItem).GetRecorder(Settings.Video.FrameRate);
+            _recorder = (ServiceProvider.Get<DeskDuplSourceProvider>().First() as DeskDuplItem).GetRecorder(Settings.Video.FrameRate, _currentFileName);
 
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
                 _regionProvider.Lock();
