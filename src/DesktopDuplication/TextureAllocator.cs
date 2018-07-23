@@ -13,7 +13,7 @@ namespace DesktopDuplication
         readonly Texture2DDescription _textureDescription;
         readonly Device _device;
 
-        const int TextureCount = 120;
+        const int TextureCount = 15;
         readonly Texture2D[] _textures = new Texture2D[TextureCount];
         int _currentTexture = -1;
 

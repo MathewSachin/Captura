@@ -30,7 +30,7 @@ namespace DesktopDuplication
         public int Fps { get; }
 
         DateTime _lastAcquireTime;
-        int _frameIntervalMs;
+        readonly int _frameIntervalMs;
 
         public DeskDuplMediaFoundation(Rectangle Rect, Adapter Adapter, Output1 Output, int Fps, string FileName)
         {
@@ -102,6 +102,8 @@ namespace DesktopDuplication
                     ReleaseFrame();
             }
 
+            _writeTask?.Wait();
+
             _writeTask = Task.Run(() =>
             {
                 var sample = _textureAllocator.CreateSample(texture);
@@ -111,8 +113,6 @@ namespace DesktopDuplication
         }
 
         Task _writeTask;
-
-        double _minms = 10000000;
 
         bool AcquireFrame(out Resource DesktopResource)
         {
@@ -208,8 +208,6 @@ namespace DesktopDuplication
                 }
             }
             catch { }
-
-            Console.WriteLine(_minms);
         }
     }
 }

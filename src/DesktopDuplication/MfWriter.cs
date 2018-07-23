@@ -87,7 +87,10 @@ namespace DesktopDuplication
         {
             lock (_syncLock)
             {
-                var nowTicks = _stopwatch.ElapsedTicks;
+                if (_disposed)
+                    return;
+
+                var nowTicks = _stopwatch.Elapsed.Ticks;
 
                 if (_prevFrameTicks == 0)
                     _prevFrameTicks = nowTicks;
@@ -96,9 +99,6 @@ namespace DesktopDuplication
                 Sample.SampleDuration = nowTicks - _prevFrameTicks;
 
                 _prevFrameTicks = nowTicks;
-            
-                if (_disposed)
-                    return;
 
                 if (_first)
                 {
