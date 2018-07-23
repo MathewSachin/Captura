@@ -84,7 +84,7 @@ namespace DesktopDuplication
             if (!AcquireFrame(out var desktopResource))
                 return;
 
-            var texture = _textureAllocator.AllocateTexture();
+            var allocatedTexture = _textureAllocator.AllocateTexture();
             
             using (desktopResource)
             {
@@ -92,7 +92,7 @@ namespace DesktopDuplication
                 {
                     var resourceRegion = new ResourceRegion(_rect.Left, _rect.Top, 0, _rect.Right, _rect.Bottom, 1);
 
-                    _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, resourceRegion, texture, 0);
+                    _device.ImmediateContext.CopySubresourceRegion(tempTexture, 0, resourceRegion, allocatedTexture.Texture, 0);
                 }
             }
 
@@ -106,9 +106,7 @@ namespace DesktopDuplication
 
             _writeTask = Task.Run(() =>
             {
-                var sample = _textureAllocator.CreateSample(texture);
-
-                _writer.Write(sample);
+                _writer.Write(allocatedTexture.Sample);
             });
         }
 

@@ -51,6 +51,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllocatedTexture.cs" />
     <Compile Include="DeskDuplImageProvider.cs" />
     <Compile Include="DeskDuplItem.cs" />
     <Compile Include="DeskDuplSourceProvider.cs" />
