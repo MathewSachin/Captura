@@ -8,7 +8,7 @@ namespace DesktopDuplication
 {
     public class MfWriter : IDisposable
     {
-        const int BitRate = 1_000_000;
+        const int BitRate = 4_000_000;
         readonly Guid _encodingFormat = VideoFormatGuids.H264;
         readonly Guid _inputFormat = VideoFormatGuids.Rgb32;
 

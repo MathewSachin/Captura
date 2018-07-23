@@ -7,11 +7,15 @@ namespace DesktopDuplication
 {
     public class TextureAllocator : AsyncCallbackBase, IDisposable
     {
-        ConcurrentStack<Texture2D> _mFreeStack;
+        //ConcurrentStack<Texture2D> _mFreeStack;
         static readonly Guid D3D11Texture2D = new Guid("6f15aaf2-d208-4e89-9ab4-489535d34f9c");
 
         readonly Texture2DDescription _textureDescription;
         readonly Device _device;
+
+        const int TextureCount = 30;
+        readonly Texture2D[] _textures = new Texture2D[TextureCount];
+        int _currentTexture = -1;
 
         // If all textures are the exact same size and color format,
         // consider making those parameters private class members and
@@ -20,7 +24,7 @@ namespace DesktopDuplication
         {
             _textureDescription = TextureDescription;
             _device = Device;
-            _mFreeStack = new ConcurrentStack<Texture2D>();
+            //_mFreeStack = new ConcurrentStack<Texture2D>();
         }
 
         bool _disposedValue;
@@ -34,14 +38,19 @@ namespace DesktopDuplication
                     // Dispose managed resources here
                 }
 
-                if (_mFreeStack != null)
-                {
-                    while (_mFreeStack.TryPop(out var texture))
-                    {
-                        texture.Dispose();
-                    }
+                //if (_mFreeStack != null)
+                //{
+                //    while (_mFreeStack.TryPop(out var texture))
+                //    {
+                //        texture.Dispose();
+                //    }
 
-                    _mFreeStack = null;
+                //    _mFreeStack = null;
+                //}
+
+                foreach (var texture in _textures)
+                {
+                    texture?.Dispose();
                 }
 
                 _disposedValue = true;
@@ -68,12 +77,14 @@ namespace DesktopDuplication
 
         public Texture2D AllocateTexture()
         {
-            if (_mFreeStack.TryPop(out var existingTexture))
-            {
-                return existingTexture;
-            }
+            //if (_mFreeStack.TryPop(out var existingTexture))
+            //{
+            //    return existingTexture;
+            //}
 
-            return InternalAllocateNewTexture();
+            _currentTexture = ++_currentTexture % TextureCount;
+
+            return _textures[_currentTexture] ?? (_textures[_currentTexture] = InternalAllocateNewTexture());
         }
 
         public Sample CreateSample(Texture2D Texture)
@@ -103,7 +114,7 @@ namespace DesktopDuplication
         // out of can be returned to the allocator manually.
         void ReturnFreeTexture(Texture2D FreeTexture)
         {
-            _mFreeStack.Push(FreeTexture);
+            //_mFreeStack.Push(FreeTexture);
         }
 
         public override void Invoke(AsyncResult Result)
