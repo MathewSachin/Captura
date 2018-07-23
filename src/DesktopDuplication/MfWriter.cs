@@ -39,8 +39,10 @@ namespace DesktopDuplication
 
         public MfWriter(Device Device, int Fps, int Width, int Height, string FileName)
         {
-            var attr = new MediaAttributes(3);
+            var attr = new MediaAttributes(5);
             attr.Set(SinkWriterAttributeKeys.ReadwriteEnableHardwareTransforms, 1);
+            attr.Set(SinkWriterAttributeKeys.ReadwriteDisableConverters, 0);
+            attr.Set(TranscodeAttributeKeys.TranscodeContainertype, TranscodeContainerTypeGuids.Mpeg4);
             attr.Set(SinkWriterAttributeKeys.LowLatency, true);
 
             var devMan = new DXGIDeviceManager();
