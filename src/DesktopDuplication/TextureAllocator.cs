@@ -13,7 +13,7 @@ namespace DesktopDuplication
         readonly Texture2DDescription _textureDescription;
         readonly Device _device;
 
-        const int TextureCount = 30;
+        const int TextureCount = 120;
         readonly Texture2D[] _textures = new Texture2D[TextureCount];
         int _currentTexture = -1;
 
@@ -93,14 +93,14 @@ namespace DesktopDuplication
             var sample = MediaFactory.CreateVideoSampleFromSurface(null);
             
             // Query the IMFSample to see if it implements IMFTrackedSample
-            var trackedSample = sample.QueryInterface<TrackedSample>();
+            //var trackedSample = sample.QueryInterface<TrackedSample>();
             
             // Create the media buffer from the texture
             MediaFactory.CreateDXGISurfaceBuffer(D3D11Texture2D, Texture, 0, false, out var mediaBuffer);
 
             // Set the owning instance of this class as the allocator
             // for IMFTrackedSample to notify when the sample is released
-            trackedSample.SetAllocator(this, null);
+            //trackedSample.SetAllocator(this, null);
 
             mediaBuffer.CurrentLength = mediaBuffer.QueryInterface<Buffer2D>().ContiguousLength;
 

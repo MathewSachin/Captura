@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -11,6 +12,8 @@ namespace DesktopDuplication
         const int BitRate = 4_000_000;
         readonly Guid _encodingFormat = VideoFormatGuids.H264;
         readonly Guid _inputFormat = VideoFormatGuids.Rgb32;
+
+        readonly Stopwatch _stopwatch = new Stopwatch();
 
         long _prevFrameTicks;
 
@@ -72,38 +75,57 @@ namespace DesktopDuplication
             }
 
             _writer.BeginWriting();
+
+            _stopwatch.Start();
         }
 
         bool _first = true;
 
+        readonly object _syncLock = new object();
+
         public void Write(Sample Sample)
         {
-            var nowTicks = DateTime.Now.Ticks;
-
-            if (_prevFrameTicks == 0)
-                _prevFrameTicks = nowTicks;
-
-            Sample.SampleTime = _prevFrameTicks;
-            Sample.SampleDuration = nowTicks - _prevFrameTicks;
-
-            _prevFrameTicks = nowTicks;
-
-            if (_first)
+            lock (_syncLock)
             {
-                _writer.SendStreamTick(_streamIndex, nowTicks);
+                var nowTicks = _stopwatch.ElapsedTicks;
 
-                Sample.Set(SampleAttributeKeys.Discontinuity, true);
+                if (_prevFrameTicks == 0)
+                    _prevFrameTicks = nowTicks;
 
-                _first = false;
+                Sample.SampleTime = _prevFrameTicks;
+                Sample.SampleDuration = nowTicks - _prevFrameTicks;
+
+                _prevFrameTicks = nowTicks;
+            
+                if (_disposed)
+                    return;
+
+                if (_first)
+                {
+                    _writer.SendStreamTick(_streamIndex, nowTicks);
+
+                    Sample.Set(SampleAttributeKeys.Discontinuity, true);
+
+                    _first = false;
+                }
+
+                _writer.WriteSample(_streamIndex, Sample);
             }
-
-            _writer.WriteSample(_streamIndex, Sample);
         }
+
+        bool _disposed;
 
         public void Dispose()
         {
-            _writer.Finalize();
-            _writer.Dispose();
+            lock (_syncLock)
+            {
+                _disposed = true;
+
+                _writer.Finalize();
+                _writer.Dispose();
+
+                _stopwatch.Stop();
+            }
         }
     }
 }

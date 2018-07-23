@@ -4,9 +4,11 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
+using System.Threading.Tasks;
 using SharpDX.Direct3D;
 using Device = SharpDX.Direct3D11.Device;
 using Rectangle = System.Drawing.Rectangle;
+using Resource = SharpDX.DXGI.Resource;
 
 namespace DesktopDuplication
 {
@@ -27,13 +29,16 @@ namespace DesktopDuplication
 
         public int Fps { get; }
 
+        DateTime _lastAcquireTime;
+        int _frameIntervalMs;
+
         public DeskDuplMediaFoundation(Rectangle Rect, Adapter Adapter, Output1 Output, int Fps, string FileName)
         {
-            MfManager.Startup();
-
             _rect = Rect;
             _output = Output;
             this.Fps = Fps;
+
+            _frameIntervalMs = 1000 / Fps;
             
             _device = new Device(Adapter, DeviceCreationFlags.VideoSupport);
             _writer = new MfWriter(_device, Fps, _rect.Width, _rect.Height, FileName);
@@ -76,22 +81,8 @@ namespace DesktopDuplication
         
         public void Capture()
         {
-            SharpDX.DXGI.Resource desktopResource;
-
-            try
-            {
-                _deskDupl.AcquireNextFrame(Timeout, out var frameInfo, out desktopResource);
-            }
-            catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
-            {
+            if (!AcquireFrame(out var desktopResource))
                 return;
-            }
-            catch (SharpDXException e) when (e.ResultCode.Failure)
-            {
-                ReInit();
-                return;
-                //throw new Exception("Failed to acquire next frame.", e);
-            }
 
             var texture = _textureAllocator.AllocateTexture();
             
@@ -105,13 +96,76 @@ namespace DesktopDuplication
                 }
             }
 
-            ReleaseFrame();
+            lock (_syncLock)
+            {
+                if (!_disposed)
+                    ReleaseFrame();
+            }
 
-            var sample = _textureAllocator.CreateSample(texture);
+            _writeTask = Task.Run(() =>
+            {
+                var sample = _textureAllocator.CreateSample(texture);
 
-            _writer.Write(sample);
+                _writer.Write(sample);
+            });
         }
-        
+
+        Task _writeTask;
+
+        double _minms = 10000000;
+
+        bool AcquireFrame(out Resource DesktopResource)
+        {
+            DesktopResource = null;
+
+            try
+            {
+                lock (_syncLock)
+                {
+                    while (!_disposed)
+                    {
+                        _deskDupl.AcquireNextFrame(Timeout, out var frameInfo, out DesktopResource);
+
+                        var now = DateTime.Now;
+
+                        var diff = (now - _lastAcquireTime).TotalMilliseconds;
+
+                        // Drop Frame
+                        if (diff < _frameIntervalMs / 4.0)
+                        {
+                            ReleaseFrame();
+                        }
+                        else
+                        {
+                            _lastAcquireTime = now;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+            catch (SharpDXException e) when (e.Descriptor == SharpDX.DXGI.ResultCode.WaitTimeout)
+            {
+                return false;
+            }
+            catch (SharpDXException e) when (e.ResultCode.Failure)
+            {
+                lock (_syncLock)
+                    if (!_disposed)
+                        ReInit();
+
+                return false;
+                //throw new Exception("Failed to acquire next frame.", e);
+            }
+            catch (NullReferenceException)
+            {
+                // Happens on end
+                return false;
+            }
+        }
+
         void ReleaseFrame()
         {
             try
@@ -127,20 +181,35 @@ namespace DesktopDuplication
             }
         }
 
+        bool _disposed;
+
+        readonly object _syncLock = new object();
+
         public void Dispose()
         {
             try
             {
-                _deskDupl?.Dispose();
-                _device?.Dispose();
+                lock (_syncLock)
+                {
+                    if (_disposed)
+                        return;
 
-                _writer.Dispose();
+                    _disposed = true;
 
-                _textureAllocator.Dispose();
+                    _deskDupl?.Dispose();
 
-                MfManager.Shutdown();
+                    _writeTask?.Wait();
+
+                    _device?.Dispose();
+
+                    _writer.Dispose();
+
+                    _textureAllocator.Dispose();
+                }
             }
             catch { }
+
+            Console.WriteLine(_minms);
         }
     }
 }

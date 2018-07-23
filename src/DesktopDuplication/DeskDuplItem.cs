@@ -46,7 +46,10 @@ namespace Captura.Models
             var rect = Rectangle;
             rect.Location = Point.Empty;
 
-            var deskDuplProvider = new DeskDuplMediaFoundation(rect, _adapter, _output, Fps, FileName);
+            var deskDuplProvider = new DeskDuplMediaFoundation(rect, _adapter, _output, Fps, FileName)
+            {
+                Timeout = 500
+            };
 
             return new DeskDuplMfRecorder(deskDuplProvider);
         }

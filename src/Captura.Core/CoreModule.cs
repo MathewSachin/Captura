@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -7,6 +8,8 @@ namespace Captura
     {
         public void OnLoad(IBinder Binder)
         {
+            MfManager.Startup();
+
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
             Binder.BindSingleton<VideoViewModel>();

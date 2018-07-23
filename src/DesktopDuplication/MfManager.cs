@@ -2,7 +2,7 @@
 
 namespace DesktopDuplication
 {
-    static class MfManager
+    public static class MfManager
     {
         public static void Startup()
         {

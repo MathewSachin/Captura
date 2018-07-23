@@ -33,12 +33,21 @@ namespace Screna
             _continueCapturing.Set();
         }
 
+        bool _disposed;
+
         void Dispose(bool ErrorOccurred)
         {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
             // Resume if Paused
             _continueCapturing.Set();
             
             _stopCapturing.Set();
+
+            _captureTask?.Wait();
 
             if (!ErrorOccurred)
                 _recordTask.Wait();
@@ -65,29 +74,29 @@ namespace Screna
             _continueCapturing.Reset();
         }
 
+        Task _captureTask;
+
         async Task Record()
         {
             var frameInterval = TimeSpan.FromSeconds(1.0 / _deskDupl.Fps);
 
             try
             {
-                Task task = null;
-
                 while (!_stopCapturing.WaitOne(0) && _continueCapturing.WaitOne())
                 {
                     var timestamp = DateTime.Now;
 
-                    if (task != null)
+                    if (_captureTask != null)
                     {
-                        await task;
+                        await _captureTask;
                     }
 
-                    task = Task.Factory.StartNew(() => _deskDupl.Capture());
+                    _captureTask = Task.Factory.StartNew(() => _deskDupl.Capture());
 
-                    var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
+                    //var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 
-                    if (timeTillNextFrame > TimeSpan.Zero)
-                        Thread.Sleep(timeTillNextFrame);
+                    //if (timeTillNextFrame > TimeSpan.Zero)
+                    //    Thread.Sleep(timeTillNextFrame);
                 }
             }
             catch (Exception e)

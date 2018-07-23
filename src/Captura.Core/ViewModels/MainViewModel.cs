@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using DesktopDuplication;
 
 namespace Captura.ViewModels
 {
@@ -297,6 +298,8 @@ namespace Captura.ViewModels
 
                 Settings.Save();
             }
+
+            MfManager.Shutdown();
         }
         
         void CheckFunctionalityAvailability()
