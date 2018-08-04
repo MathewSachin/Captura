@@ -2,11 +2,42 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>        
         <ScrollViewer>
             <StackPanel Margin="5"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                <Label Margin="0,0,0,5"
+                       Content="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       FontSize="15"/>
+                
+                <DockPanel Margin="5,5,0,5">
+                    <Path Data="{StaticResource IconTranslate}"
+                          Width="15"
+                          Height="15"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <Label Content="{Binding Language, Source={StaticResource Loc}, Mode=OneWay}"
+                           ContentStringFormat="{}{0}:"
+                           Margin="5,0,10,0"/>
+                    <ComboBox VerticalAlignment="Center"
+                              DataContext="{x:Static loc:LanguageManager.Instance}"
+                              ItemsSource="{Binding AvailableCultures}"
+                              SelectedValue="{Binding CurrentCulture, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding DisplayName, Mode=OneWay}"/> (<Run Text="{Binding NativeName, Mode=OneWay}"/>)
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+
                 <Grid Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -65,89 +96,44 @@
                     <TextBlock TextWrapping="Wrap"
                                Text="{Binding CopyOutPathClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </CheckBox>
-                
+
                 <CheckBox Content="{Binding AlwaysOnTop, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
-                
-                <CheckBox IsChecked="{Binding Settings.UI.HideOnFullScreenShot}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="{Binding HideOnFullScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </CheckBox>
 
-                <Label Margin="0,10,0,3"
-                       Content="{Binding Gif, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
+                <Button Click="OpenHotkeyManager"
+                        VerticalAlignment="Top"
+                        Margin="0,15,0,2">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconSettings}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                <CheckBox Margin="0,2"
-                          Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                          IsChecked="{Binding Settings.Gif.VariableFrameRate}"/>
+                        <TextBlock Text="Configure Hotkeys"/>
+                    </DockPanel>
+                </Button>
 
-                <DockPanel Margin="0,2">
-                    <CheckBox Content="{Binding Repeat, Source={StaticResource Loc}, Mode=OneWay}"
-                              Margin="0,0,5,0"
-                              DockPanel.Dock="Left"
-                              IsChecked="{Binding Settings.Gif.Repeat}"/>
+                <Button Click="OpenOverlayManager"
+                        VerticalAlignment="Top"
+                        Margin="0,2,0,15">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconSettings}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                    <xctk:IntegerUpDown IsEnabled="{Binding Settings.Gif.Repeat}"
-                                        Value="{Binding Settings.Gif.RepeatCount}"/>
-                </DockPanel>
+                        <TextBlock Text="Configure Overlays"/>
+                    </DockPanel>
+                </Button>
 
-                <Label Margin="0,10,0,3"
-                       Content="{Binding ScreenShotTransforms, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
-
-                <Grid Margin="0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <CheckBox Content="{Binding Resize, Source={StaticResource Loc}, Mode=OneWay}"
-                              IsChecked="{Binding Settings.ScreenShots.Resize}"
-                              Margin="0,0,5,0"/>
-
-                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShots.ResizeWidth}"
-                                        Grid.Column="1"
-                                        Minimum="1"
-                                        IsEnabled="{Binding Settings.ScreenShots.Resize}"/>
-
-                    <Label Content="x"
-                           Grid.Column="2"
-                           Margin="5,0"/>
-
-                    <xctk:IntegerUpDown Value="{Binding Settings.ScreenShots.ResizeHeight}"
-                                        Grid.Column="3"
-                                        Minimum="1"
-                                        IsEnabled="{Binding Settings.ScreenShots.Resize}"/>
-                </Grid>
-
-                <StackPanel Margin="0,5"
-                            Orientation="Horizontal">
-                    <Label Content="{Binding Flip, Source={StaticResource Loc}, Mode=OneWay}"
-                           ContentStringFormat="{}{0}:"/>
-                    
-                    <CheckBox Content="{Binding Horizontal, Source={StaticResource Loc}, Mode=OneWay}"
-                              IsChecked="{Binding Settings.ScreenShots.FlipHorizontal}"
-                              Margin="10,0"/>
-
-                    <CheckBox Content="{Binding Vertical, Source={StaticResource Loc}, Mode=OneWay}"
-                              IsChecked="{Binding Settings.ScreenShots.FlipVertical}"/>
-                </StackPanel>
-
-                <DockPanel Margin="0,5">
-                    <Label Content="{Binding Rotate, Source={StaticResource Loc}, Mode=OneWay}"
-                           ContentStringFormat="{}{0}: "
-                           VerticalContentAlignment="Center"/>
-                    <ComboBox Margin="5,0,0,0"
-                              ItemsSource="{Binding Rotations}"
-                              SelectedValuePath="Key"
-                              DisplayMemberPath="Value"
-                              SelectedValue="{Binding Settings.ScreenShots.RotateBy}"/>
-                </DockPanel>
+                <Frame Source="ExtrasPage.xaml"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Screna;
 
 namespace Captura
 {
@@ -146,16 +145,6 @@ namespace Captura
         void MenuExit_Click(object Sender, RoutedEventArgs Args) => Close();
 
         void HideButton_Click(object Sender, RoutedEventArgs Args) => Hide();
-
-        void OpenOverlayManager(object Sender, RoutedEventArgs E)
-        {
-            OverlayWindow.ShowInstance();
-        }
-
-        void OpenHotkeyManager(object Sender, RoutedEventArgs E)
-        {
-            HotkeysWindow.ShowInstance();
-        }
 
         void SelectTargetFolder(object Sender, MouseButtonEventArgs E)
         {

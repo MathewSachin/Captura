@@ -5,6 +5,11 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Margin="10">
+            <Label Margin="0,0,0,5"
+                   Content="FFmpeg"
+                   FontWeight="Bold"
+                   FontSize="15"/>
+            
             <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>

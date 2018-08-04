@@ -65,6 +65,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\AudioPage.xaml.cs">
+      <DependentUpon>AudioPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\EllipseDynamicRenderer.cs" />
     <Compile Include="ImageEditor\Strokes\LineStroke.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\RectangleDynamicRenderer.cs" />
@@ -87,6 +90,12 @@
     <Compile Include="ImageEditor\SelectHistory.cs" />
     <Compile Include="ImageEditor\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
+    <Compile Include="Pages\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ScreenShotsPage.xaml.cs">
+      <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>
@@ -228,7 +237,19 @@
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Pages\AudioPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageEditor\ImageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\VideoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ScreenShotsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -455,7 +476,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT $(Configuration)==Debug (
-ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV > NUL
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV &gt; NUL
 IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
 echo Moved Libraries to lib folder
 cd "$(TargetDir)"

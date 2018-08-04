@@ -1,0 +1,90 @@
+﻿<Page x:Class="Captura.AudioPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Audio">
+    <Grid>
+        <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
+                    Margin="5,0,0,0">
+            <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                      IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      FontWeight="Bold"
+                      Margin="0,0,0,5"
+                      FontSize="15"/>
+
+            <ScrollViewer IsEnabled="{Binding Settings.Audio.Enabled}">
+                <StackPanel IsEnabled="{Binding RecordingViewModel.CanChangeAudioSources}">
+                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="0,5"
+                                          IsChecked="{Binding Active, Mode=TwoWay}">
+                                    <DockPanel>
+                                        <Path Data="{StaticResource IconMic}"
+                                              Width="15"
+                                              Height="15"
+                                              Margin="5,0"
+                                              Stretch="Uniform"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              ToolTip="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                                        <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                                    </DockPanel>
+                                </CheckBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableLoopbackSources}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="0,5,0,5"
+                                          IsChecked="{Binding Active, Mode=TwoWay}">
+                                    <DockPanel>
+                                        <Path Data="{StaticResource IconSpeaker}"
+                                              Width="15"
+                                              Height="15"
+                                              Margin="5,0"
+                                              Stretch="Uniform"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              ToolTip="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                                        <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                                    </DockPanel>
+                                </CheckBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+
+            <DockPanel Margin="0,5"
+                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
+                       ContentStringFormat="{}{0}:"/>
+                <Label Content="{Binding Settings.Audio.Quality}"
+                       ContentStringFormat="{}{0:N0}%"
+                       Margin="5,0"
+                       MinWidth="30"
+                       HorizontalContentAlignment="Right"/>
+                <Slider Minimum="1" 
+                        Maximum="100"
+                        SelectionStart="40"
+                        SelectionEnd="60"
+                        IsSelectionRangeEnabled="True"
+                        Value="{Binding Settings.Audio.Quality}"/>
+            </DockPanel>
+
+            <CheckBox IsChecked="{Binding Settings.Audio.PlaybackRecordingRealTime}"
+                      Content="Playback recorded audio in real-time"
+                      IsEnabled="{Binding Settings.Audio.SeparateFilePerSource, Converter={StaticResource NegatingConverter}}"
+                      Margin="0,25,0,5"/>
+
+            <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
+                      Content="Separate files for every audio source"
+                      Margin="0,5"/>
+        </StackPanel>
+    </Grid>
+</Page>
