@@ -22,8 +22,6 @@ namespace Captura
 
             var cultures = new List<CultureInfo>();
 
-            _defaultLanguage = LoadLang("en");
-
             if (entryLocation != null)
             {
                 _langDir = Path.Combine(Path.GetDirectoryName(entryLocation), "Languages");
@@ -50,6 +48,8 @@ namespace Captura
                     }
                 }
             }
+
+            _defaultLanguage = LoadLang("en");
 
             if (_currentCulture == null)
                 CurrentCulture = new CultureInfo("en");
