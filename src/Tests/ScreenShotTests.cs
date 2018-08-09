@@ -1,6 +1,5 @@
 ﻿using System;
 using TestStack.White.UIItems.TabItems;
-using TestStack.White.UIItems.Finders;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
@@ -47,23 +46,15 @@ namespace Captura.Tests.Views
         {
             Directory.CreateDirectory("Tabs");
 
-            var loc = ServiceProvider.Get<LanguageManager>();
+            var tab = _appRunner.MainWindow.Get<Tab>();
+            
+            var i = 0;
 
-            var tabs = new[]
+            foreach (var tabPage in tab.Pages)
             {
-                loc.Main,
-                loc.Configure, loc.Hotkeys, "Overlays", "FFmpeg", loc.Proxy, loc.Extras,
-                loc.Recent,
-                loc.About
-            };
+                tabPage.Select();
 
-            foreach (var tabName in tabs)
-            {
-                var tab = _appRunner.MainWindow.Get<TabPage>(SearchCriteria.ByText(tabName));
-
-                tab.Select();
-
-                Shot($"Tabs/{tabName}.png", _appRunner.App.Process.MainWindowHandle);
+                Shot($"Tabs/{i++}.png", _appRunner.App.Process.MainWindowHandle);
             }
         }
     }
