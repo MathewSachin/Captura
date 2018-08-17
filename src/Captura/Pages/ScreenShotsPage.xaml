@@ -11,16 +11,6 @@
                    FontWeight="Bold"
                    FontSize="15"/>
 
-            <DockPanel Margin="0,5">
-                <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
-                       ContentStringFormat="{}{0}: "
-                       Margin="0,0,5,0"/>
-
-                <ComboBox VerticalAlignment="Center"
-                          ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
-                          SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"/>
-            </DockPanel>
-
             <CheckBox IsChecked="{Binding Settings.UI.HideOnFullScreenShot}"
                       Margin="0,5">
                 <TextBlock TextWrapping="Wrap"
@@ -29,6 +19,62 @@
 
             <Label Content="{Binding SaveLocation, Source={StaticResource Loc}, Mode=OneWay}"
                    Margin="0,5,0,5"/>
+            
+            <Grid Margin="0,5">
+                <Grid.Resources>
+                    <Style TargetType="Path" x:Key="SsLocIcon" BasedOn="{StaticResource {x:Type Path}}">
+                        <Setter Property="Width" Value="15"/>
+                        <Setter Property="Height" Value="15"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Stretch" Value="Uniform"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <xctk:SplitButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Padding="10,0">
+                    <Path Data="{StaticResource IconNewFile}"
+                          Style="{StaticResource SsLocIcon}"/>
+                    
+                    <xctk:SplitButton.DropDownContent>
+                        <DockPanel Margin="10">
+                            <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,0,5,0"/>
+
+                            <ComboBox VerticalAlignment="Center"
+                                      ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
+                                      SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"/>
+                        </DockPanel>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+
+                <Button ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
+                        Grid.Column="1"
+                        Margin="5,0">
+                    <Path Data="{StaticResource IconClipboard}"
+                          Style="{StaticResource SsLocIcon}"/>
+                </Button>
+
+                <xctk:SplitButton ToolTip="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Content="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Grid.Column="2"
+                                  Padding="10,0"/>
+
+                <Button ToolTip="Image Editor"
+                        Grid.Column="3"
+                        Margin="5,0,0,0">
+                    <Path Data="{StaticResource IconPencil}"
+                          Style="{StaticResource SsLocIcon}"/>
+                </Button>
+            </Grid>
 
             <ItemsControl ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
                           Margin="0,0,0,5">
