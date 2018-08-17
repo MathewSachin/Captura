@@ -28,6 +28,10 @@
         <Setter Property="ShowAdvancedButton" Value="False"/>
     </Style>
     
+    <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+        <Setter Property="Foreground" Value="{DynamicResource ModernButtonText}"/>
+    </Style>
+    
     <Style TargetType="TabItem">
         <Setter Property="Template">
             <Setter.Value>

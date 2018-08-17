@@ -110,6 +110,122 @@
                           DisplayMemberPath="Name"
                           Grid.Column="2"/>
             </Grid>
+            
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <xctk:SplitButton Content="FFmpeg"
+                                  Padding="10">
+                    <xctk:SplitButton.DropDownContent>
+                        <Frame Source="FFmpegPage.xaml"/>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+
+                <xctk:SplitButton Content="GIF"
+                                  Grid.Column="1"
+                                  Margin="5,0"
+                                  Padding="10">
+                    <xctk:SplitButton.DropDownContent>
+                        <StackPanel Margin="10">
+                            <CheckBox Margin="0,2"
+                                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IsChecked="{Binding Settings.Gif.VariableFrameRate}"/>
+
+                            <DockPanel Margin="0,2">
+                                <CheckBox Content="{Binding Repeat, Source={StaticResource Loc}, Mode=OneWay}"
+                                          Margin="0,0,5,0"
+                                          DockPanel.Dock="Left"
+                                          IsChecked="{Binding Settings.Gif.Repeat}"/>
+
+                                <xctk:IntegerUpDown IsEnabled="{Binding Settings.Gif.Repeat}"
+                                                    Value="{Binding Settings.Gif.RepeatCount}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+
+                <xctk:SplitButton Content="SharpAvi"
+                                  Padding="10"
+                                  Grid.Column="2"/>
+
+                <xctk:SplitButton Content="Stream"
+                                  Padding="10"
+                                  Margin="5,0"
+                                  Grid.Column="3">
+                    <xctk:SplitButton.DropDownContent>
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" MinWidth="200"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Path Data="{StaticResource IconTwitch}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                            <Label Content="Twitch Key"
+                                   ContentStringFormat="{}{0}: "
+                                   Grid.Column="1"/>    
+                            <TextBox Grid.Column="2"
+                                     Margin="2"
+                                     Text="{Binding Settings.FFmpeg.TwitchKey}"/>
+
+                            <Path Data="{StaticResource IconYouTube}"
+                                  Grid.Row="1"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                            <Label Content="YouTube Live Key"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   ContentStringFormat="{}{0}: "/>
+                            <TextBox Grid.Column="2"
+                                     Grid.Row="1"
+                                     Margin="2"
+                                     Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
+
+                            <Path Data="{StaticResource IconWeb}"
+                                  Grid.Row="2"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                            <Label Content="Custom Url"
+                                   Grid.Column="1"
+                                   Grid.Row="2"
+                                   ContentStringFormat="{}{0}:"/>
+                            <TextBox Grid.Row="2"
+                                     Grid.Column="2"
+                                     Margin="2"
+                                     Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
+                        </Grid>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+
+                <Button Content="Discard"
+                        Padding="10"
+                        Grid.Column="4"/>
+            </Grid>
 
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
@@ -144,7 +260,7 @@
                     </ComboBox.ToolTip>
                 </ComboBox>
 
-                    <ComboBox VerticalAlignment="Center"
+                <ComboBox VerticalAlignment="Center"
                           Margin="5,0,0,0"
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
@@ -239,24 +355,6 @@
             <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
                       Content="Record Webcam to separate file"
                       Margin="0,5"/>
-
-            <Label Margin="0,15,0,3"
-                   Content="{Binding Gif, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"/>
-
-            <CheckBox Margin="0,2"
-                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Settings.Gif.VariableFrameRate}"/>
-
-            <DockPanel Margin="0,2">
-                <CheckBox Content="{Binding Repeat, Source={StaticResource Loc}, Mode=OneWay}"
-                          Margin="0,0,5,0"
-                          DockPanel.Dock="Left"
-                          IsChecked="{Binding Settings.Gif.Repeat}"/>
-
-                <xctk:IntegerUpDown IsEnabled="{Binding Settings.Gif.Repeat}"
-                                    Value="{Binding Settings.Gif.RepeatCount}"/>
-            </DockPanel>
         </StackPanel>
     </Grid>
 </Page>

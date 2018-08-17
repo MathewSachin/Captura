@@ -110,17 +110,6 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Label Content="FF"
-                           FontWeight="UltraBold"
-                           FontSize="13"
-                           Margin="0,3"
-                           ToolTip="FFmpeg"/>
-                </TabItem.Header>
-                
-                <Frame Source="FFmpegPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
                     <Path Data="{StaticResource IconSettings}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"/>
