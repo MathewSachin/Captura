@@ -17,5 +17,7 @@ namespace Captura.Models
         }
 
         public string Name { get; } = "Discard";
+
+        public string Description => "For testing purposes.";
     }
 }

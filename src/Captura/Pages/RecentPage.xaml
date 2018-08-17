@@ -6,21 +6,23 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="10">
-            <Label Margin="0,0,0,5"
-                   Content="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"
-                   DockPanel.Dock="Top"
-                   FontWeight="Bold"
-                   FontSize="15"/>
-            
             <DockPanel DockPanel.Dock="Top"
                        Margin="0,0,0,10">
                 <Button Content="{Binding Clear, Source={StaticResource Loc}, Mode=OneWay}"
                         ToolTip="{Binding ClearRecentList, Source={StaticResource Loc}, Mode=OneWay}"
                         DockPanel.Dock="Right"
                         Command="{Binding RecentViewModel.ClearCommand}"/>
+
+                <Label Content="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       FontSize="15"/>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Top"
+                       Margin="0,0,0,10">
                 <Label Content="{Binding MaxRecent, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>
-                <xctk:IntegerUpDown Margin="5,0,10,0"
+                <xctk:IntegerUpDown Margin="5,0,0,0"
                                     Value="{Binding Settings.RecentMax}"/>
             </DockPanel>
             <ScrollViewer>

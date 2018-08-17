@@ -38,7 +38,18 @@
                           ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
                           SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
                           DisplayMemberPath="Name"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <ComboBox.ToolTip>
+                        <StackPanel MinWidth="200">
+                            <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Name}"
+                                   ContentStringFormat="{}Video Source Kind: {0}"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                            
+                            <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Description}"/>
+                        </StackPanel>
+                    </ComboBox.ToolTip>
+                </ComboBox>
 
                 <ComboBox VerticalAlignment="Center" 
                           Margin="3,0,0,0"
@@ -52,10 +63,10 @@
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
-                <Path Data="{StaticResource IconVideo}"
+                <Path Data="{StaticResource IconVideoFile}"
                       Width="15"
                       Height="15"
                       Stretch="Uniform"
@@ -69,9 +80,20 @@
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
                           DisplayMemberPath="Name"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <ComboBox.ToolTip>
+                        <StackPanel MinWidth="200">
+                            <Label Content="{Binding VideoViewModel.SelectedVideoWriterKind.Name}"
+                                   ContentStringFormat="{}Video Writer Kind: {0}"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
 
-                <ComboBox VerticalAlignment="Center"
+                            <Label Content="{Binding VideoViewModel.SelectedVideoWriterKind.Description}"/>
+                        </StackPanel>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+
+                    <ComboBox VerticalAlignment="Center"
                           Margin="5,0,0,0"
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
@@ -85,9 +107,10 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="{Binding FrameRate, Source={StaticResource Loc}, Mode=OneWay}"
+                <Label Content="FPS"
                        ContentStringFormat="{}{0}:"/>
                 <Label Content="{Binding Settings.Video.FrameRate}"
                        Margin="5,0"
@@ -96,6 +119,7 @@
                        HorizontalContentAlignment="Right"
                        Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
                        Grid.Column="1"/>
+                
                 <Slider Minimum="1"
                         Maximum="30"
                         SelectionStart="8"
@@ -111,6 +135,11 @@
                                     Maximum="120"
                                     Value="{Binding Settings.Video.FrameRate}"
                                     Grid.Column="2"/>
+
+                <CheckBox IsChecked="{Binding Settings.Video.FpsLimit}"
+                          Content="Limit"
+                          Margin="5,0,0,0"
+                          Grid.Column="3"/>
             </Grid>
 
             <DockPanel Margin="0,5"
@@ -129,10 +158,6 @@
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Video.Quality}"/>
             </DockPanel>
-
-            <CheckBox IsChecked="{Binding Settings.Video.FpsLimit, Converter={StaticResource NegatingConverter}}"
-                      Content="Remove FPS limit"
-                      Margin="0,5"/>
 
             <Label Margin="0,15,0,3"
                    Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"

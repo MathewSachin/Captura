@@ -27,5 +27,7 @@ namespace Captura.Models
         }
 
         public override string Name => Loc.Screen;
+
+        public override string Description => "Record a specific screen.";
     }
 }

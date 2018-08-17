@@ -19,5 +19,7 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public abstract string Name { get; }
+
+        public abstract string Description { get; }
     }
 }

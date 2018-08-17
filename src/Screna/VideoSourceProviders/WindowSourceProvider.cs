@@ -24,5 +24,9 @@ namespace Captura.Models
         }
 
         public override string Name => Loc.Window;
+
+        public override string Description =>
+            @"Record a specific window.
+The video is of the initial size of the window.";
     }
 }

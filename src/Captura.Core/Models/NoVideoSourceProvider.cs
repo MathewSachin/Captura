@@ -18,5 +18,9 @@ namespace Captura.Models
         }
 
         public override string Name => Loc.OnlyAudio;
+
+        public override string Description =>
+            @"No Video recorded.
+Can be used for audio-only recording.";
     }
 }

@@ -17,5 +17,7 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public string Description => "Encode Avi videos using SharpAvi.";
     }
 }

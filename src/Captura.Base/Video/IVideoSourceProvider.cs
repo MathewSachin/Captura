@@ -5,5 +5,7 @@ namespace Captura.Models
     public interface IVideoSourceProvider : IEnumerable<IVideoItem>
     {
         string Name { get; }
+
+        string Description { get; }
     }
 }

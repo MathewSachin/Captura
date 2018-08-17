@@ -42,5 +42,11 @@ namespace Captura.Models
         {
             return GetEnumerator();
         }
+
+        public string Description =>
+            @"Faster API for recording screen as well as fullscreen DirectX games.
+Not all games are recordable.
+Requires Windows 8 or above.
+If it does not work, try running Captura on the Integrated Graphics card.";
     }
 }

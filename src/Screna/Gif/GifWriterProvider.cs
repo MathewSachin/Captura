@@ -27,5 +27,8 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public string Description => @"Use internal Gif encoder.
+Variable Frame Rate mode is recommended.";
     }
 }

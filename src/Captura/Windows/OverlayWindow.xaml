@@ -453,7 +453,7 @@
         
         <DockPanel Grid.Column="2">
             <Label DockPanel.Dock="Top"
-                   Content="Preview (Not to Scale)"
+                   Content="Preview (Font Size - Not to Scale)"
                    Padding="5"/>
 
             <Grid Background="Transparent"

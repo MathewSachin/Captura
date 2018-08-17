@@ -16,5 +16,7 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public string Description => "Stream to streaming sites using FFmpeg (Alpha).";
     }
 }
