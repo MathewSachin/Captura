@@ -18,6 +18,57 @@
             </DockPanel>
 
             <Grid Margin="0,5">
+                <Grid.Resources>
+                    <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
+                        <Setter Property="Width" Value="20"/>
+                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Stretch" Value="Uniform"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}">
+                    <Path Data="{StaticResource IconNoVideo}"
+                          Style="{StaticResource VideoSourceIcon}"/>
+                </xctk:SplitButton>
+                
+                <Button Grid.Column="1"
+                        Margin="5,0"
+                        ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}">
+                    <Path Data="{StaticResource IconMultipleMonitor}"
+                          Style="{StaticResource VideoSourceIcon}"/>
+                </Button>
+
+                <xctk:SplitButton ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Grid.Column="2">
+                    <Path Data="{StaticResource IconScreen}"
+                          Style="{StaticResource VideoSourceIcon}"/>
+                </xctk:SplitButton>
+
+                <Button Grid.Column="3"
+                        Margin="5,0"
+                        ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}">
+                    <Path Data="{StaticResource IconWindow}"
+                          Style="{StaticResource VideoSourceIcon}"/>
+                </Button>
+
+                <xctk:SplitButton ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Grid.Column="4">
+                    <Path Data="{StaticResource IconRegion}"
+                          Style="{StaticResource VideoSourceIcon}"/>
+                </xctk:SplitButton>
+            </Grid>
+
+            <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="3*"/>
