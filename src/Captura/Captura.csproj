@@ -204,7 +204,6 @@
     <Compile Include="ValueConverters\DrawingToWpfColorConverter.cs" />
     <Compile Include="ValueConverters\NegatingConverter.cs" />
     <Compile Include="ValueConverters\NotRecordingConverter.cs" />
-    <Compile Include="ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="ValueConverters\StateToTrayIconSourceConverter.cs" />
     <Compile Include="ValueConverters\StateToRecordButtonGeometryConverter.cs" />
     <Compile Include="ValueConverters\StateToTaskbarOverlayConverter.cs" />

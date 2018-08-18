@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Height="500"
@@ -129,9 +130,19 @@
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
                                         ToolTipService.Placement="Top">
-                        <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
-                        </local:ModernButton.LayoutTransform>
+                        <local:ModernButton.Style>
+                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="{x:Static models:RecorderState.Paused}">
+                                        <Setter Property="LayoutTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="90"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ModernButton.Style>
                     </local:ModernButton>
 
                     <Label Content="{Binding RecordingViewModel.TimeSpan}"
