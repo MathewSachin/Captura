@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
-      xmlns:models1="clr-namespace:Captura.Models;assembly=Screna"
+      xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       Title="Video">
     <Grid>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
@@ -59,9 +59,13 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:ScreenSourceProvider}">
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:ScreenSourceProvider}"/>
+                                            <Condition Binding="{Binding VideoViewModel.SelectedVideoSource, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:FullScreenItem}"/>
+                                        </MultiDataTrigger.Conditions>
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Path.Style>
@@ -74,7 +78,7 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:ScreenSourceProvider}">
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:ScreenSourceProvider}">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -90,7 +94,7 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:WindowSourceProvider}">
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:WindowSourceProvider}">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -105,7 +109,7 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:RegionSourceProvider}">
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
