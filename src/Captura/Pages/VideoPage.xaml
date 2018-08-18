@@ -59,13 +59,9 @@
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                 <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:ScreenSourceProvider}"/>
-                                            <Condition Binding="{Binding VideoViewModel.SelectedVideoSource, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:FullScreenItem}"/>
-                                        </MultiDataTrigger.Conditions>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:FullScreenSourceProvider}">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </MultiDataTrigger>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Path.Style>

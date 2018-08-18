@@ -68,6 +68,7 @@
     <Compile Include="VideoItems\WindowItem.cs" />
     <Compile Include="VideoItems\WindowPickerItem.cs" />
     <Compile Include="VideoSourceProviders\RegionSourceProvider.cs" />
+    <Compile Include="VideoSourceProviders\FullScreenSourceProvider.cs" />
     <Compile Include="VideoSourceProviders\ScreenSourceProvider.cs" />
     <Compile Include="VideoSourceProviders\VideoSourceProviderBase.cs" />
     <Compile Include="VideoSourceProviders\WindowSourceProvider.cs" />

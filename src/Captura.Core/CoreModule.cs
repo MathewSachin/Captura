@@ -68,6 +68,7 @@ namespace Captura
 
             // Video Source Providers
             Binder.Bind<IVideoSourceProvider, ScreenSourceProvider>();
+            Binder.Bind<IVideoSourceProvider, FullScreenSourceProvider>();
             Binder.Bind<IVideoSourceProvider, RegionSourceProvider>();
             Binder.Bind<IVideoSourceProvider, WindowSourceProvider>();
             Binder.Bind<IVideoSourceProvider, DeskDuplSourceProvider>();
