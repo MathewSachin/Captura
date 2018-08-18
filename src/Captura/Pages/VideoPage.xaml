@@ -2,6 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
+      xmlns:models1="clr-namespace:Captura.Models;assembly=Screna"
       Title="Video">
     <Grid>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
@@ -37,34 +39,79 @@
                 </Grid.ColumnDefinitions>
 
                 <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}">
-                    <Path Data="{StaticResource IconNoVideo}"
-                          Style="{StaticResource VideoSourceIcon}"/>
+                    <Path Data="{StaticResource IconNoVideo}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </xctk:SplitButton>
                 
                 <Button Grid.Column="1"
                         Margin="5,0"
                         ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}">
-                    <Path Data="{StaticResource IconMultipleMonitor}"
-                          Style="{StaticResource VideoSourceIcon}"/>
+                    <Path Data="{StaticResource IconMultipleMonitor}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:ScreenSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </Button>
 
                 <xctk:SplitButton ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
                                   Grid.Column="2">
-                    <Path Data="{StaticResource IconScreen}"
-                          Style="{StaticResource VideoSourceIcon}"/>
+                    <Path Data="{StaticResource IconScreen}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:ScreenSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </xctk:SplitButton>
 
                 <Button Grid.Column="3"
                         Margin="5,0"
                         ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}">
-                    <Path Data="{StaticResource IconWindow}"
-                          Style="{StaticResource VideoSourceIcon}"/>
+                    <Path Data="{StaticResource IconWindow}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:WindowSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </Button>
 
                 <xctk:SplitButton ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
                                   Grid.Column="4">
-                    <Path Data="{StaticResource IconRegion}"
-                          Style="{StaticResource VideoSourceIcon}"/>
+                    <Path Data="{StaticResource IconRegion}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models1:RegionSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </xctk:SplitButton>
             </Grid>
 
