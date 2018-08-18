@@ -129,9 +129,19 @@
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
                                         ToolTipService.Placement="Top">
-                        <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
-                        </local:ModernButton.LayoutTransform>
+                        <local:ModernButton.Style>
+                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                        <Setter Property="LayoutTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="90"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ModernButton.Style>
                     </local:ModernButton>
 
                     <Label Content="{Binding RecordingViewModel.TimeSpan}"
