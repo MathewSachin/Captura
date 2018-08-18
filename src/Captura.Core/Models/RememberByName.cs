@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing;
 using System.Linq;
 using Captura.ViewModels;
 
@@ -46,7 +44,7 @@ namespace Captura.Models
                     break;
 
                 default:
-                    _settings.Video.Source = _videoViewModel.SelectedVideoSource.ToString();
+                    _settings.Video.Source = _videoViewModel.SelectedVideoSource?.ToString();
                     break;
             }
 
