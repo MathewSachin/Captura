@@ -7,15 +7,20 @@ namespace Captura.Models
     {
         public NoVideoSourceProvider(LanguageManager Loc) : base(Loc) { }
 
-        public override IEnumerator<IVideoItem> GetEnumerator()
+        public IEnumerator<IVideoItem> Sources
         {
-            yield return WaveItem.Instance;
-
-            foreach (var item in FFmpegAudioItem.Items)
+            get
             {
-                yield return item;
+                yield return WaveItem.Instance;
+
+                foreach (var item in FFmpegAudioItem.Items)
+                {
+                    yield return item;
+                }
             }
         }
+
+        public override IVideoItem Source => WaveItem.Instance;
 
         public override string Name => Loc.OnlyAudio;
 

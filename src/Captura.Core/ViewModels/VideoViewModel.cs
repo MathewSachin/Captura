@@ -72,9 +72,9 @@ namespace Captura.ViewModels
             // RegionSelector should only be shown on Region Capture.
             _regionProvider.SelectorVisible = SelectedVideoSourceKind is RegionSourceProvider;
 
-            foreach (var source in SelectedVideoSourceKind)
+            if (SelectedVideoSourceKind.Source != null)
             {
-                _videoSources.Add(source);
+                _videoSources.Add(SelectedVideoSourceKind.Source);
             }
 
             // Set first source as default

@@ -162,12 +162,10 @@ namespace Captura
             #region Windows
             WriteLine("AVAILABLE WINDOWS" + underline);
 
-            var winProvider = ServiceProvider.Get<WindowSourceProvider>();
-
             // Window Picker is skipped automatically
-            foreach (var source in winProvider.OfType<WindowItem>())
+            foreach (var source in Window.EnumerateVisible())
             {
-                WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
+                WriteLine($"{source.Handle.ToString().PadRight(10)}: {source.Title}");
             }
 
             WriteLine();
@@ -176,14 +174,12 @@ namespace Captura
             #region Screens
             WriteLine("AVAILABLE SCREENS" + underline);
 
-            var scrProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
             var j = 0;
 
             // First is Full Screen, Second is Screen Picker
-            foreach (var screen in scrProvider.Skip(2))
+            foreach (var screen in ScreenItem.Enumerate())
             {
-                WriteLine($"{j.ToString().PadRight(2)}: {screen}");
+                WriteLine($"{j.ToString().PadRight(2)}: {screen.Name}");
 
                 ++j;
             }
@@ -290,14 +286,11 @@ namespace Captura
 
                 var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 
-                var matchingWin = winProvider.OfType<WindowItem>().FirstOrDefault(M => M.Window.Handle == handle);
+                var matchingWin = new WindowItem(new Window(handle));
 
-                if (matchingWin != null)
-                {
-                    video.SelectedVideoSourceKind = winProvider;
+                video.SelectedVideoSourceKind = winProvider;
 
-                    video.SelectedVideoSource = matchingWin;
-                }
+                video.SelectedVideoSource = matchingWin;
             }
 
             // Start command only

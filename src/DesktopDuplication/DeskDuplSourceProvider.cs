@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using SharpDX.DXGI;
 
@@ -9,16 +7,23 @@ namespace Captura.Models
     public class DeskDuplSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
         readonly LanguageManager _loc;
+        readonly IVideoSourcePicker _videoSourcePicker;
 
-        public DeskDuplSourceProvider(LanguageManager Loc)
+        public DeskDuplSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker)
         {
             _loc = Loc;
+            _videoSourcePicker = VideoSourcePicker;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
-        public IEnumerator<IVideoItem> GetEnumerator()
+        public void PickScreen()
         {
+            var screen = _videoSourcePicker.PickScreen();
+
+            if (screen == null)
+                return;
+
             var outputs = new Factory1()
                 .Adapters1
                 .SelectMany(M => M.Outputs
@@ -28,20 +33,28 @@ namespace Captura.Models
                         Output = N.QueryInterface<Output1>()
                     }));
 
-            foreach (var output in outputs)
+            var match = outputs.FirstOrDefault(M =>
             {
-                yield return new DeskDuplItem(output.Adapter, output.Output);
+                var r1 = M.Output.Description.DesktopBounds;
+                var r2 = screen.Rectangle;
+
+                return r1.Left == r2.Left
+                       && r1.Right == r2.Right
+                       && r1.Top == r2.Top
+                       && r1.Bottom == r2.Bottom;
+            });
+
+            if (match != null)
+            {
+                Source = new DeskDuplItem(match.Adapter, match.Output);
             }
         }
+
+        public IVideoItem Source { get; private set; }
 
         public string Name => _loc.DesktopDuplication;
 
         public override string ToString() => Name;
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
 
         public string Description =>
             @"Faster API for recording screen as well as fullscreen DirectX games.
