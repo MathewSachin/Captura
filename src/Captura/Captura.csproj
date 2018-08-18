@@ -112,7 +112,6 @@
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="ValueConverters\GetTypeConverter.cs" />
     <Compile Include="ValueConverters\IsPlayingToButtonStyleConverter.cs" />
-    <Compile Include="ValueConverters\RecentItemToIconStyleConverter.cs" />
     <Compile Include="ValueConverters\IntegralTimeSpanConverter.cs" />
     <Compile Include="ViewModels\TrimmerViewModel.cs" />
     <Compile Include="ViewModels\ExceptionViewModel.cs" />
