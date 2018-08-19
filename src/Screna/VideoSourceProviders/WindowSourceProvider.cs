@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Screna;
 
 namespace Captura.Models
@@ -13,9 +14,9 @@ namespace Captura.Models
             _videoSourcePicker = VideoSourcePicker;
         }
 
-        public bool PickWindow()
+        public bool PickWindow(IEnumerable<IntPtr> SkipWindows = null)
         {
-            var window = _videoSourcePicker.PickWindow();
+            var window = _videoSourcePicker.PickWindow(SkipWindows);
 
             if (window == null)
                 return false;

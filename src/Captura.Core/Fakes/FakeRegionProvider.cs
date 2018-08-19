@@ -26,5 +26,7 @@ namespace Captura.Models
         public void Lock() { }
 
         public void Release() { }
+
+        public IntPtr Handle => IntPtr.Zero;
     }
 }

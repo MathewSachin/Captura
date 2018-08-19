@@ -260,13 +260,14 @@ namespace Captura
         }
 
         public IVideoItem VideoSource => _regionItem;
+
+        public IntPtr Handle => new WindowInteropHelper(this).Handle;
+
         #endregion
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
         {
-            var wih = new WindowInteropHelper(this);
-
-            var win = _videoSourcePicker.PickWindow(new [] { wih.Handle });
+            var win = _videoSourcePicker.PickWindow(new [] { Handle });
 
             if (win == null)
                 return;

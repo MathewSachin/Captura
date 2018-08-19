@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
@@ -59,7 +60,7 @@ namespace Captura.ViewModels
 
             SetWindowSourceCommand = new DelegateCommand(() =>
             {
-                if (WindowSourceProvider.PickWindow())
+                if (WindowSourceProvider.PickWindow(new [] { RegionProvider.Handle }))
                 {
                     SelectedVideoSourceKind = WindowSourceProvider;
                 }
