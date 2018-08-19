@@ -6,6 +6,16 @@
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       Title="Video">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
+                <Setter Property="Width" Value="20"/>
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
             <DockPanel Margin="0,0,0,5">
@@ -15,8 +25,7 @@
                         Padding="10,0"/>
 
                 <Label Content="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"
-                       FontSize="15"/>
+                       FontWeight="Bold"/>
             </DockPanel>
             
             <Border BorderThickness="0.5"
@@ -35,16 +44,6 @@
 
             <Grid Margin="0,5"
                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Grid.Resources>
-                    <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
-                        <Setter Property="Width" Value="20"/>
-                        <Setter Property="Height" Value="20"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Stretch" Value="Uniform"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -137,10 +136,10 @@
 
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
-                   FontSize="15"
                    Margin="0,5"/>
 
-            <Grid Margin="0,5">
+            <Grid Margin="0,5"
+                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -355,35 +354,91 @@
                         Value="{Binding Settings.Video.Quality}"/>
             </DockPanel>
 
-            <Label Margin="0,15,0,3"
-                   Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"/>
+            <Grid Margin="0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <DockPanel Margin="0,5">
-                <Path Data="{StaticResource IconWebcam}"
-                      Width="15"
-                      Height="15"
-                      Margin="0,0,7,0"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
+                <Label Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       Margin="0,5"/>
 
-                <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
-                        DockPanel.Dock="Right"
-                        Click="Preview_Click"
-                        Padding="10,0"
-                        Margin="3,0"/>
+                <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                     Padding="5"
+                                     Grid.Row="1"
+                                     HorizontalAlignment="Left">
+                    <Path Style="{StaticResource VideoSourceIcon}"
+                          Data="{StaticResource IconWebcam}"/>
 
-                <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
-                          SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
-                          DisplayMemberPath="Name"/>
-            </DockPanel>
+                    <xctk:DropDownButton.DropDownContent>
+                        <StackPanel Margin="10" MinWidth="250">
+                            <Label Margin="0,3"
+                                   Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                   FontWeight="Bold"/>
 
-            <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
-                      Content="Record Webcam to separate file"
-                      Margin="0,5"/>
+                            <DockPanel Margin="0,5">
+                                <Path Data="{StaticResource IconWebcam}"
+                                      Width="15"
+                                      Height="15"
+                                      Margin="0,0,7,0"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                                <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
+                                        DockPanel.Dock="Right"
+                                        Click="Preview_Click"
+                                        Padding="10,0"
+                                        Margin="3,0"/>
+
+                                <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
+                                          SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
+                                          IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
+                                          DisplayMemberPath="Name"/>
+                            </DockPanel>
+
+                            <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
+                                      Content="Record Webcam to separate file"
+                                      Margin="0,5"/>
+                        </StackPanel>
+                    </xctk:DropDownButton.DropDownContent>
+                </xctk:DropDownButton>
+
+                <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       Margin="0,5"
+                       Grid.Column="2"/>
+
+                <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                                     Padding="5"
+                                     Grid.Column="2"
+                                     Grid.Row="1"
+                                     HorizontalAlignment="Left">
+                    <Path Data="{StaticResource IconMic}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+
+                    <xctk:DropDownButton.DropDownContent>
+                        <Frame Source="AudioPage.xaml"
+                               Margin="10"/>
+                    </xctk:DropDownButton.DropDownContent>
+                </xctk:DropDownButton>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

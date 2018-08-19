@@ -65,21 +65,12 @@
             </TabControl.ContentTemplate>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconVideo}"
+                    <Path Data="{StaticResource IconHome}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
                 <Frame Source="VideoPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Path Data="{StaticResource IconSpeaker}"
-                          Style="{StaticResource TabIcon}"
-                          ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </TabItem.Header>
-                
-                <Frame Source="AudioPage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
