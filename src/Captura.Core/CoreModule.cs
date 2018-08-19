@@ -48,19 +48,11 @@ namespace Captura
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImgurWriter>);
 
             // Video Writer Providers
-            Binder.Bind<IVideoWriterProvider, FFmpegWriterProvider>();
-            Binder.Bind<IVideoWriterProvider, GifWriterProvider>();
-            Binder.Bind<IVideoWriterProvider, StreamingWriterProvider>();
-
-#if DEBUG
-            Binder.Bind<IVideoWriterProvider, DiscardWriterProvider>();
-#endif
-
-            // Check if SharpAvi is available
-            if (ServiceProvider.FileExists("SharpAvi.dll"))
-            {
-                Binder.Bind<IVideoWriterProvider, SharpAviWriterProvider>();
-            }
+            Binder.BindSingleton<FFmpegWriterProvider>();
+            Binder.BindSingleton<GifWriterProvider>();
+            Binder.BindSingleton<StreamingWriterProvider>();
+            Binder.BindSingleton<DiscardWriterProvider>();
+            Binder.BindSingleton<SharpAviWriterProvider>();
 
             Binder.BindSingleton<FullScreenItem>();
 

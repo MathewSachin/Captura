@@ -108,17 +108,17 @@ namespace Captura.Models
             // Restore Video Codec
             if (!string.IsNullOrEmpty(_settings.Video.WriterKind))
             {
-                var kind = _videoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
+                //var kind = _videoViewModel.AvailableVideoWriterKinds.FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
 
-                if (kind != null)
-                {
-                    _videoViewModel.SelectedVideoWriterKind = kind;
+                //if (kind != null)
+                //{
+                //    _videoViewModel.SelectedVideoWriterKind = kind;
 
-                    var codec = _videoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
+                //    var codec = _videoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
 
-                    if (codec != null)
-                        _videoViewModel.SelectedVideoWriter = codec;
-                }
+                //    if (codec != null)
+                //        _videoViewModel.SelectedVideoWriter = codec;
+                //}
             }
 
             // Restore Microphones

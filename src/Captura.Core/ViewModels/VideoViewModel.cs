@@ -13,15 +13,10 @@ namespace Captura.ViewModels
         readonly IRegionProvider _regionProvider;
         readonly FullScreenSourceProvider _fullScreenProvider;
 
-        public ICommand SetFullScreenSourceCommand { get; }
-        public ICommand SetScreenSourceCommand { get; }
-        public ICommand SetWindowSourceCommand { get; }
-        public ICommand SetRegionSourceCommand { get; }
-        public ICommand SetNoVideoSourceCommand { get; }
+        public ICommand SetSourceCommand { get; }
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
-            IEnumerable<IVideoWriterProvider> VideoWriterProviders,
             Settings Settings,
             LanguageManager LanguageManager,
             FullScreenSourceProvider FullScreenProvider,
@@ -29,10 +24,14 @@ namespace Captura.ViewModels
             ScreenSourceProvider ScreenSourceProvider,
             WindowSourceProvider WindowSourceProvider,
             RegionSourceProvider RegionSourceProvider,
-            NoVideoSourceProvider NoVideoSourceProvider) : base(Settings, LanguageManager)
+            NoVideoSourceProvider NoVideoSourceProvider,
+            FFmpegWriterProvider FFmpegWriterProvider,
+            SharpAviWriterProvider SharpAviWriterProvider,
+            GifWriterProvider GifWriterProvider,
+            StreamingWriterProvider StreamingWriterProvider,
+            DiscardWriterProvider DiscardWriterProvider) : base(Settings, LanguageManager)
             // ReSharper restore SuggestBaseTypeForParameter
         {
-            AvailableVideoWriterKinds = new ReadOnlyObservableCollection<IVideoWriterProvider>(_videoWriterKinds);
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
             AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
@@ -40,29 +39,42 @@ namespace Captura.ViewModels
             _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            SetFullScreenSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = FullScreenProvider);
-            SetRegionSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = RegionSourceProvider);
-            SetNoVideoSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = NoVideoSourceProvider);
-
-            SetScreenSourceCommand = new DelegateCommand(() =>
+            SetSourceCommand = new DelegateCommand(M =>
             {
-                // Select first screen if there is only one
-                if (ScreenItem.Count == 1)
-                {
-                    ScreenSourceProvider.Set(0);
-                    SelectedVideoSourceKind = ScreenSourceProvider;
-                }
-                else if (ScreenSourceProvider.PickScreen())
-                {
-                    SelectedVideoSourceKind = ScreenSourceProvider;
-                }
-            });
+                if (!(M is Type type))
+                    return;
 
-            SetWindowSourceCommand = new DelegateCommand(() =>
-            {
-                if (WindowSourceProvider.PickWindow(new [] { RegionProvider.Handle }))
+                if (type == typeof(FullScreenSourceProvider))
                 {
-                    SelectedVideoSourceKind = WindowSourceProvider;
+                    SelectedVideoSourceKind = FullScreenProvider;
+                }
+                else if (type == typeof(RegionSourceProvider))
+                {
+                    SelectedVideoSourceKind = RegionSourceProvider;
+                }
+                else if (type == typeof(NoVideoSourceProvider))
+                {
+                    SelectedVideoSourceKind = NoVideoSourceProvider;
+                }
+                else if (type == typeof(ScreenSourceProvider))
+                {
+                    // Select first screen if there is only one
+                    if (ScreenItem.Count == 1)
+                    {
+                        ScreenSourceProvider.Set(0);
+                        SelectedVideoSourceKind = ScreenSourceProvider;
+                    }
+                    else if (ScreenSourceProvider.PickScreen())
+                    {
+                        SelectedVideoSourceKind = ScreenSourceProvider;
+                    }
+                }
+                else if (type == typeof(WindowSourceProvider))
+                {
+                    if (WindowSourceProvider.PickWindow(new[] { RegionProvider.Handle }))
+                    {
+                        SelectedVideoSourceKind = WindowSourceProvider;
+                    }
                 }
             });
 
@@ -71,18 +83,12 @@ namespace Captura.ViewModels
                 _imageWriters.Add(imageWriter);
             }
 
-            foreach (var videoWriterProvider in VideoWriterProviders)
-            {
-                _videoWriterKinds.Add(videoWriterProvider);
-            }
-
             SetDefaultSource();
 
             if (!AvailableImageWriters.Any(M => M.Active))
                 AvailableImageWriters[0].Active = true;
 
-            if (AvailableVideoWriterKinds.Count > 0)
-                SelectedVideoWriterKind = AvailableVideoWriterKinds[0];
+            SelectedVideoWriterKind = FFmpegWriterProvider;
         }
 
         public void SetDefaultSource()
@@ -102,8 +108,8 @@ namespace Captura.ViewModels
                     SetDefaultSource();
             };
         }
-        
-        public void RefreshVideoSources()
+
+        void RefreshVideoSources()
         {
             // RegionSelector should only be shown on Region Capture.
             _regionProvider.SelectorVisible = SelectedVideoSourceKind is RegionSourceProvider;
@@ -122,10 +128,6 @@ namespace Captura.ViewModels
             if (_videoWriters.Count > 0)
                 SelectedVideoWriter = _videoWriters[0];
         }
-
-        readonly ObservableCollection<IVideoWriterProvider> _videoWriterKinds = new ObservableCollection<IVideoWriterProvider>();
-
-        public ReadOnlyObservableCollection<IVideoWriterProvider> AvailableVideoWriterKinds { get; }
 
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
 

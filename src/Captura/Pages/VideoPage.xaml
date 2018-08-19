@@ -55,7 +55,8 @@
                 </Grid.ColumnDefinitions>
 
                 <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Command="{Binding VideoViewModel.SetNoVideoSourceCommand}">
+                                  Command="{Binding VideoViewModel.SetSourceCommand}"
+                                  CommandParameter="{x:Type models:NoVideoSourceProvider}">
                     <Path Data="{StaticResource IconNoVideo}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -72,7 +73,8 @@
                 <Button Grid.Column="1"
                         Margin="5,0"
                         ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}"
-                        Command="{Binding VideoViewModel.SetFullScreenSourceCommand}">
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type screna:FullScreenSourceProvider}">
                     <Path Data="{StaticResource IconMultipleMonitor}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -88,7 +90,8 @@
 
                 <xctk:SplitButton ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
                                   Grid.Column="2"
-                                  Command="{Binding VideoViewModel.SetScreenSourceCommand}">
+                                  Command="{Binding VideoViewModel.SetSourceCommand}"
+                                  CommandParameter="{x:Type screna:ScreenSourceProvider}">
                     <Path Data="{StaticResource IconScreen}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -105,7 +108,8 @@
                 <Button Grid.Column="3"
                         Margin="5,0"
                         ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}"
-                        Command="{Binding VideoViewModel.SetWindowSourceCommand}">
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type screna:WindowSourceProvider}">
                     <Path Data="{StaticResource IconWindow}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -121,7 +125,8 @@
 
                 <xctk:SplitButton ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
                                   Grid.Column="4"
-                                  Command="{Binding VideoViewModel.SetRegionSourceCommand}">
+                                  Command="{Binding VideoViewModel.SetSourceCommand}"
+                                  CommandParameter="{x:Type screna:RegionSourceProvider}">
                     <Path Data="{StaticResource IconRegion}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
