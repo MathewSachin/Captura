@@ -24,19 +24,24 @@ namespace Captura.Models
             if (screen == null)
                 return;
 
+            Set(screen);
+        }
+
+        public void Set(IScreen Screen)
+        {
             var outputs = new Factory1()
-                .Adapters1
-                .SelectMany(M => M.Outputs
-                    .Select(N => new
-                    {
-                        Adapter = M,
-                        Output = N.QueryInterface<Output1>()
-                    }));
+                            .Adapters1
+                            .SelectMany(M => M.Outputs
+                                .Select(N => new
+                                {
+                                    Adapter = M,
+                                    Output = N.QueryInterface<Output1>()
+                                }));
 
             var match = outputs.FirstOrDefault(M =>
             {
                 var r1 = M.Output.Description.DesktopBounds;
-                var r2 = screen.Rectangle;
+                var r2 = Screen.Rectangle;
 
                 return r1.Left == r2.Left
                        && r1.Right == r2.Right

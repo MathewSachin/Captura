@@ -7,14 +7,10 @@ namespace Captura
     class RegionItem : NotifyPropertyChanged, IVideoItem
     {
         readonly RegionSelector _selector;
-        readonly LanguageManager _loc;
 
-        public RegionItem(RegionSelector RegionSelector, LanguageManager Loc)
+        public RegionItem(RegionSelector RegionSelector)
         {
             _selector = RegionSelector;
-            _loc = Loc;
-
-            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
@@ -29,7 +25,18 @@ namespace Captura
             return new StaticRegionProvider(_selector, IncludeCursor);
         }
 
-        public string Name => _loc.RegionSelector;
+        string _name;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Name;
     }

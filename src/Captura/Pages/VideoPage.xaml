@@ -14,12 +14,27 @@
                         Command="{Binding ShowPreviewCommand}"
                         Padding="10,0"/>
 
-                <Label Content="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"
+                <Label Content="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"
                        FontSize="15"/>
             </DockPanel>
+            
+            <Border BorderThickness="0.5"
+                    BorderBrush="{DynamicResource ModernButtonBorder}"
+                    Padding="5,2"
+                    Margin="0,2">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Name}"/>
+                    <Label Content="-"
+                           Visibility="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"
+                           Margin="5,0"/>
+                    <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
+                           Visibility="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"/>
+                </StackPanel>
+            </Border>
 
-            <Grid Margin="0,5">
+            <Grid Margin="0,5"
+                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <Grid.Resources>
                     <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
                         <Setter Property="Width" Value="20"/>
@@ -38,7 +53,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}">
+                <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Command="{Binding VideoViewModel.SetNoVideoSourceCommand}">
                     <Path Data="{StaticResource IconNoVideo}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -51,10 +67,11 @@
                         </Path.Style>
                     </Path>
                 </xctk:SplitButton>
-                
+
                 <Button Grid.Column="1"
                         Margin="5,0"
-                        ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}">
+                        ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}"
+                        Command="{Binding VideoViewModel.SetFullScreenSourceCommand}">
                     <Path Data="{StaticResource IconMultipleMonitor}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -69,7 +86,8 @@
                 </Button>
 
                 <xctk:SplitButton ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Grid.Column="2">
+                                  Grid.Column="2"
+                                  Command="{Binding VideoViewModel.SetScreenSourceCommand}">
                     <Path Data="{StaticResource IconScreen}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -85,7 +103,8 @@
 
                 <Button Grid.Column="3"
                         Margin="5,0"
-                        ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}">
+                        ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}"
+                        Command="{Binding VideoViewModel.SetWindowSourceCommand}">
                     <Path Data="{StaticResource IconWindow}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -100,7 +119,8 @@
                 </Button>
 
                 <xctk:SplitButton ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Grid.Column="4">
+                                  Grid.Column="4"
+                                  Command="{Binding VideoViewModel.SetRegionSourceCommand}">
                     <Path Data="{StaticResource IconRegion}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -115,49 +135,11 @@
                 </xctk:SplitButton>
             </Grid>
 
-            <Grid Margin="0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="5*"/>
-                </Grid.ColumnDefinitions>
+            <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
+                   FontWeight="Bold"
+                   FontSize="15"
+                   Margin="0,5"/>
 
-                <Path Data="{StaticResource IconScreen}"
-                      Width="15"
-                      Height="15"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      ToolTip="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                <ComboBox VerticalAlignment="Center" 
-                          Margin="7,0,0,0"
-                          Grid.Column="1"
-                          ItemsSource="{Binding VideoViewModel.AvailableVideoSourceKinds}"
-                          SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
-                          DisplayMemberPath="Name"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                    <ComboBox.ToolTip>
-                        <StackPanel MinWidth="200">
-                            <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Name}"
-                                   ContentStringFormat="{}Video Source Kind: {0}"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,5"/>
-                            
-                            <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Description}"/>
-                        </StackPanel>
-                    </ComboBox.ToolTip>
-                </ComboBox>
-
-                <ComboBox VerticalAlignment="Center" 
-                          Margin="3,0,0,0"
-                          ItemsSource="{Binding VideoViewModel.AvailableVideoSources}" 
-                          SelectedValue="{Binding VideoViewModel.SelectedVideoSource, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                          DisplayMemberPath="Name"
-                          Grid.Column="2"/>
-            </Grid>
-            
             <Grid Margin="0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

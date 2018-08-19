@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Screna;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -100,7 +99,6 @@ namespace Captura.ViewModels
                 switch (Args.PropertyName)
                 {
                     case nameof(VideoViewModel.SelectedVideoSourceKind):
-                    case nameof(VideoViewModel.SelectedVideoSource):
                     case null:
                     case "":
                         CheckFunctionalityAvailability();
@@ -165,19 +163,6 @@ namespace Captura.ViewModels
 
         void OnRefresh()
         {
-            #region Video Source
-            var lastVideoSourceName = VideoViewModel.SelectedVideoSource?.Name;
-
-            VideoViewModel.RefreshVideoSources();
-
-            var matchingVideoSource = VideoViewModel.AvailableVideoSources.FirstOrDefault(M => M.Name == lastVideoSourceName);
-
-            if (matchingVideoSource != null)
-            {
-                VideoViewModel.SelectedVideoSource = matchingVideoSource;
-            }
-            #endregion
-
             #region Video Codec
             var lastVideoCodecName = VideoViewModel.SelectedVideoWriter?.ToString();
 

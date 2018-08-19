@@ -1,3 +1,4 @@
+using System;
 using Screna;
 
 namespace Captura.Models
@@ -12,12 +13,20 @@ namespace Captura.Models
             _videoSourcePicker = VideoSourcePicker;
         }
 
-        public void PickWindow()
+        public bool PickWindow()
         {
             var window = _videoSourcePicker.PickWindow();
 
-            if (window != null)
-                _source = new WindowItem(new Window(window.Handle));
+            if (window == null)
+                return false;
+
+            _source = new WindowItem(new Window(window.Handle));
+            return true;
+        }
+
+        public void Set(IntPtr Handle)
+        {
+            _source = new WindowItem(new Window(Handle));
         }
 
         IVideoItem _source;

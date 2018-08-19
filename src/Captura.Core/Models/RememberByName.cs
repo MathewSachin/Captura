@@ -44,7 +44,7 @@ namespace Captura.Models
                     break;
 
                 default:
-                    _settings.Video.Source = _videoViewModel.SelectedVideoSource?.ToString();
+                    //_settings.Video.Source = _videoViewModel.SelectedVideoSource?.ToString();
                     break;
             }
 
@@ -81,28 +81,28 @@ namespace Captura.Models
             // Restore Video Source
             if (!string.IsNullOrEmpty(_settings.Video.SourceKind))
             {
-                var kind = _videoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == _settings.Video.SourceKind);
+                //var kind = _videoViewModel.AvailableVideoSourceKinds.FirstOrDefault(M => M.Name == _settings.Video.SourceKind);
 
-                if (kind != null)
-                {
-                    _videoViewModel.SelectedVideoSourceKind = kind;
+                //if (kind != null)
+                //{
+                //    _videoViewModel.SelectedVideoSourceKind = kind;
 
-                    switch (kind)
-                    {
-                        case RegionSourceProvider _:
-                            if (RectangleConverter.ConvertFromInvariantString(_settings.Video.Source) is Rectangle rect)
-                               _regionProvider.SelectedRegion = rect;
-                            break;
+                //    switch (kind)
+                //    {
+                //        case RegionSourceProvider _:
+                //            if (RectangleConverter.ConvertFromInvariantString(_settings.Video.Source) is Rectangle rect)
+                //               _regionProvider.SelectedRegion = rect;
+                //            break;
 
-                        default:
-                            var source = _videoViewModel.AvailableVideoSources
-                                .FirstOrDefault(S => S.ToString() == _settings.Video.Source);
+                //        default:
+                //            var source = _videoViewModel.AvailableVideoSources
+                //                .FirstOrDefault(S => S.ToString() == _settings.Video.Source);
 
-                            if (source != null)
-                                _videoViewModel.SelectedVideoSource = source;
-                            break;
-                    }
-                }
+                //            if (source != null)
+                //                _videoViewModel.SelectedVideoSource = source;
+                //            break;
+                //    }
+                //}
             }
 
             // Restore Video Codec

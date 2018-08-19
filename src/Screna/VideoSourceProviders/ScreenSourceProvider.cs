@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -10,12 +12,20 @@ namespace Captura.Models
             _videoSourcePicker = VideoSourcePicker;
         }
 
-        public void PickScreen()
+        public bool PickScreen()
         {
             var screen = _videoSourcePicker.PickScreen();
 
-            if (screen != null)
-                _source = new ScreenItem(screen);
+            if (screen == null)
+                return false;
+
+            _source = new ScreenItem(screen);
+            return true;
+        }
+
+        public void Set(int Index)
+        {
+            _source = new ScreenItem(new ScreenWrapper(Screen.AllScreens[Index]));
         }
 
         IVideoItem _source;

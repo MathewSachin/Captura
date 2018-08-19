@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
@@ -9,23 +10,54 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         readonly IRegionProvider _regionProvider;
+        readonly FullScreenSourceProvider _fullScreenProvider;
+
+        public ICommand SetFullScreenSourceCommand { get; }
+        public ICommand SetScreenSourceCommand { get; }
+        public ICommand SetWindowSourceCommand { get; }
+        public ICommand SetRegionSourceCommand { get; }
+        public ICommand SetNoVideoSourceCommand { get; }
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
             IEnumerable<IVideoWriterProvider> VideoWriterProviders,
-            IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             Settings Settings,
-            LanguageManager LanguageManager) : base(Settings, LanguageManager)
+            LanguageManager LanguageManager,
+            FullScreenSourceProvider FullScreenProvider,
+            // ReSharper disable SuggestBaseTypeForParameter
+            ScreenSourceProvider ScreenSourceProvider,
+            WindowSourceProvider WindowSourceProvider,
+            RegionSourceProvider RegionSourceProvider,
+            NoVideoSourceProvider NoVideoSourceProvider) : base(Settings, LanguageManager)
+            // ReSharper restore SuggestBaseTypeForParameter
         {
             AvailableVideoWriterKinds = new ReadOnlyObservableCollection<IVideoWriterProvider>(_videoWriterKinds);
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
-            AvailableVideoSourceKinds = new ReadOnlyObservableCollection<IVideoSourceProvider>(_videoSourceKinds);
-            AvailableVideoSources = new ReadOnlyObservableCollection<IVideoItem>(_videoSources);
-
             AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
 
             _regionProvider = RegionProvider;
+            _fullScreenProvider = FullScreenProvider;
+
+            SetFullScreenSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = FullScreenProvider);
+            SetRegionSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = RegionSourceProvider);
+            SetNoVideoSourceCommand = new DelegateCommand(() => SelectedVideoSourceKind = NoVideoSourceProvider);
+
+            SetScreenSourceCommand = new DelegateCommand(() =>
+            {
+                if (ScreenSourceProvider.PickScreen())
+                {
+                    SelectedVideoSourceKind = ScreenSourceProvider;
+                }
+            });
+
+            SetWindowSourceCommand = new DelegateCommand(() =>
+            {
+                if (WindowSourceProvider.PickWindow())
+                {
+                    SelectedVideoSourceKind = WindowSourceProvider;
+                }
+            });
 
             foreach (var imageWriter in ImageWriters)
             {
@@ -37,19 +69,18 @@ namespace Captura.ViewModels
                 _videoWriterKinds.Add(videoWriterProvider);
             }
 
-            foreach (var videoSourceProvider in VideoSourceProviders)
-            {
-                _videoSourceKinds.Add(videoSourceProvider);
-            }
-            
+            SetDefaultSource();
+
             if (!AvailableImageWriters.Any(M => M.Active))
                 AvailableImageWriters[0].Active = true;
 
             if (AvailableVideoWriterKinds.Count > 0)
                 SelectedVideoWriterKind = AvailableVideoWriterKinds[0];
+        }
 
-            if (AvailableVideoSourceKinds.Count > 0)
-                SelectedVideoSourceKind = AvailableVideoSourceKinds[0];
+        public void SetDefaultSource()
+        {
+            SelectedVideoSourceKind = _fullScreenProvider;
         }
 
         public void Init()
@@ -61,25 +92,14 @@ namespace Captura.ViewModels
             _regionProvider.SelectorHidden += () =>
             {
                 if (SelectedVideoSourceKind is RegionSourceProvider)
-                    SelectedVideoSourceKind = AvailableVideoSourceKinds[0];
+                    SetDefaultSource();
             };
         }
         
         public void RefreshVideoSources()
         {
-            _videoSources.Clear();
-
             // RegionSelector should only be shown on Region Capture.
             _regionProvider.SelectorVisible = SelectedVideoSourceKind is RegionSourceProvider;
-
-            if (SelectedVideoSourceKind.Source != null)
-            {
-                _videoSources.Add(SelectedVideoSourceKind.Source);
-            }
-
-            // Set first source as default
-            if (AvailableVideoSources.Count > 0)
-                SelectedVideoSource = AvailableVideoSources[0];
         }
 
         public void RefreshCodecs()
@@ -122,14 +142,6 @@ namespace Captura.ViewModels
             }
         }
 
-        readonly ObservableCollection<IVideoSourceProvider> _videoSourceKinds = new ObservableCollection<IVideoSourceProvider>();
-
-        public ReadOnlyObservableCollection<IVideoSourceProvider> AvailableVideoSourceKinds { get; }
-
-        readonly ObservableCollection<IVideoItem> _videoSources = new ObservableCollection<IVideoItem>();
-
-        public ReadOnlyObservableCollection<IVideoItem> AvailableVideoSources { get; }
-
         IVideoSourceProvider _videoSourceKind;
 
         public IVideoSourceProvider SelectedVideoSourceKind
@@ -145,22 +157,6 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
 
                 RefreshVideoSources();
-            }
-        }
-
-        IVideoItem _videoSource;
-
-        public IVideoItem SelectedVideoSource
-        {
-            get => _videoSource;
-            set
-            {
-                if (value == null && AvailableVideoSources.Count > 0)
-                    value = AvailableVideoSources[0];
-
-                _videoSource = value;
-
-                OnPropertyChanged();
             }
         }
 

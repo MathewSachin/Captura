@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -272,10 +271,11 @@ namespace Captura
 
                 if (index < ScreenItem.Count)
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
+                    var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
 
-                    // First item is Full Screen, Second is Screen Picker
-                    video.SelectedVideoSource = video.AvailableVideoSources[index + 2];
+                    screenSourceProvider.Set(index);
+
+                    video.SelectedVideoSourceKind = screenSourceProvider;
                 }
             }
 
@@ -286,11 +286,9 @@ namespace Captura
 
                 var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 
-                var matchingWin = new WindowItem(new Window(handle));
+                winProvider.Set(handle);
 
                 video.SelectedVideoSourceKind = winProvider;
-
-                video.SelectedVideoSource = matchingWin;
             }
 
             // Start command only
@@ -303,9 +301,11 @@ namespace Captura
 
                     if (index < ScreenItem.Count)
                     {
-                        video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+                        var deskDuplSourceProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
 
-                        video.SelectedVideoSource = video.AvailableVideoSources[index];
+                        deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
+
+                        video.SelectedVideoSourceKind = deskDuplSourceProvider;
                     }
                 }
 
@@ -348,7 +348,7 @@ namespace Captura
 
                 video.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
@@ -359,7 +359,7 @@ namespace Captura
 
                 video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
