@@ -4,6 +4,8 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
+      xmlns:ffmpeg="clr-namespace:Captura.Models;assembly=Captura.FFmpeg"
+      xmlns:sharpavi="clr-namespace:Captura.Models;assembly=Captura.SharpAvi"
       Title="Video">
     <Grid>
         <Grid.Resources>
@@ -153,6 +155,15 @@
                     <xctk:SplitButton.DropDownContent>
                         <Frame Source="FFmpegPage.xaml"/>
                     </xctk:SplitButton.DropDownContent>
+                    <xctk:SplitButton.Style>
+                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:FFmpegWriterProvider}">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </xctk:SplitButton.Style>
                 </xctk:SplitButton>
 
                 <xctk:SplitButton Content="GIF"
@@ -176,14 +187,34 @@
                             </DockPanel>
                         </StackPanel>
                     </xctk:SplitButton.DropDownContent>
+                    <xctk:SplitButton.Style>
+                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </xctk:SplitButton.Style>
                 </xctk:SplitButton>
 
                 <xctk:SplitButton Content="SharpAvi"
                                   Padding="10"
-                                  Grid.Column="2"/>
+                                  Grid.Column="2">
+                    <xctk:SplitButton.Style>
+                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type sharpavi:SharpAviWriterProvider}">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </xctk:SplitButton.Style>
+                </xctk:SplitButton>
 
                 <xctk:SplitButton Content="Stream"
                                   Padding="10"
+                                  ToolTip="Alpha Feature"
                                   Margin="5,0"
                                   Grid.Column="3">
                     <xctk:SplitButton.DropDownContent>
@@ -248,11 +279,30 @@
                                      Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
                         </Grid>
                     </xctk:SplitButton.DropDownContent>
+                    <xctk:SplitButton.Style>
+                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:StreamingWriterProvider}">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </xctk:SplitButton.Style>
                 </xctk:SplitButton>
 
                 <Button Content="Discard"
                         Padding="10"
-                        Grid.Column="4"/>
+                        Grid.Column="4">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
 
             <Grid Margin="0,5">
@@ -261,16 +311,8 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
-                <Path Data="{StaticResource IconVideoFile}"
-                      Width="15"
-                      Height="15"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      ToolTip="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                <ComboBox VerticalAlignment="Center" 
-                          Margin="7,0,0,0"
+                <ComboBox VerticalAlignment="Center"
                           Grid.Column="1"
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
@@ -293,7 +335,20 @@
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
                           Grid.Column="2"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
             </Grid>
 
             <Grid Margin="0,5"
