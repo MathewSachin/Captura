@@ -45,7 +45,13 @@ namespace Captura.ViewModels
 
             SetScreenSourceCommand = new DelegateCommand(() =>
             {
-                if (ScreenSourceProvider.PickScreen())
+                // Select first screen if there is only one
+                if (ScreenItem.Count == 1)
+                {
+                    ScreenSourceProvider.Set(0);
+                    SelectedVideoSourceKind = ScreenSourceProvider;
+                }
+                else if (ScreenSourceProvider.PickScreen())
                 {
                     SelectedVideoSourceKind = ScreenSourceProvider;
                 }
