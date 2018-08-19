@@ -14,6 +14,7 @@ namespace Captura.ViewModels
         readonly FullScreenSourceProvider _fullScreenProvider;
 
         public ICommand SetSourceCommand { get; }
+        public ICommand SetWriterCommand { get; }
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
@@ -75,6 +76,33 @@ namespace Captura.ViewModels
                     {
                         SelectedVideoSourceKind = WindowSourceProvider;
                     }
+                }
+            });
+
+            SetWriterCommand = new DelegateCommand(M =>
+            {
+                if (!(M is Type type))
+                    return;
+
+                if (type == typeof(FFmpegWriterProvider))
+                {
+                    SelectedVideoWriterKind = FFmpegWriterProvider;
+                }
+                else if (type == typeof(SharpAviWriterProvider))
+                {
+                    SelectedVideoWriterKind = SharpAviWriterProvider;
+                }
+                else if (type == typeof(GifWriterProvider))
+                {
+                    SelectedVideoWriterKind = GifWriterProvider;
+                }
+                else if (type == typeof(StreamingWriterProvider))
+                {
+                    SelectedVideoWriterKind = StreamingWriterProvider;
+                }
+                else if (type == typeof(DiscardWriterProvider))
+                {
+                    SelectedVideoWriterKind = DiscardWriterProvider;
                 }
             });
 

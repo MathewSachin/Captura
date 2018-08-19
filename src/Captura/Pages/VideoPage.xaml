@@ -148,15 +148,17 @@
             <Grid Margin="0,5"
                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
                 <xctk:SplitButton Content="FFmpeg"
-                                  Padding="10">
+                                  Padding="10"
+                                  Command="{Binding VideoViewModel.SetWriterCommand}"
+                                  CommandParameter="{x:Type ffmpeg:FFmpegWriterProvider}">
                     <xctk:SplitButton.DropDownContent>
                         <Frame Source="FFmpegPage.xaml"/>
                     </xctk:SplitButton.DropDownContent>
@@ -174,7 +176,9 @@
                 <xctk:SplitButton Content="GIF"
                                   Grid.Column="1"
                                   Margin="5,0"
-                                  Padding="10">
+                                  Padding="10"
+                                  Command="{Binding VideoViewModel.SetWriterCommand}"
+                                  CommandParameter="{x:Type screna:GifWriterProvider}">
                     <xctk:SplitButton.DropDownContent>
                         <StackPanel Margin="10">
                             <CheckBox Margin="0,2"
@@ -203,25 +207,29 @@
                     </xctk:SplitButton.Style>
                 </xctk:SplitButton>
 
-                <xctk:SplitButton Content="SharpAvi"
-                                  Padding="10"
-                                  Grid.Column="2">
-                    <xctk:SplitButton.Style>
-                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                <Button Content="SharpAvi"
+                        Padding="10"
+                        Grid.Column="2"
+                        Command="{Binding VideoViewModel.SetWriterCommand}"
+                        CommandParameter="{x:Type sharpavi:SharpAviWriterProvider}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type sharpavi:SharpAviWriterProvider}">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </xctk:SplitButton.Style>
-                </xctk:SplitButton>
+                    </Button.Style>
+                </Button>
 
                 <xctk:SplitButton Content="Stream"
                                   Padding="10"
                                   ToolTip="Alpha Feature"
                                   Margin="5,0"
-                                  Grid.Column="3">
+                                  Grid.Column="3"
+                                  Command="{Binding VideoViewModel.SetWriterCommand}"
+                                  CommandParameter="{x:Type ffmpeg:StreamingWriterProvider}">
                     <xctk:SplitButton.DropDownContent>
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
@@ -297,7 +305,9 @@
 
                 <Button Content="Discard"
                         Padding="10"
-                        Grid.Column="4">
+                        Grid.Column="4"
+                        Command="{Binding VideoViewModel.SetWriterCommand}"
+                        CommandParameter="{x:Type models:DiscardWriterProvider}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
@@ -310,51 +320,24 @@
                 </Button>
             </Grid>
 
-            <Grid Margin="0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="5*"/>
-                </Grid.ColumnDefinitions>
-
-                <ComboBox VerticalAlignment="Center"
-                          Grid.Column="1"
-                          ItemsSource="{Binding VideoViewModel.AvailableVideoWriterKinds}" 
-                          SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
-                          DisplayMemberPath="Name"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                    <ComboBox.ToolTip>
-                        <StackPanel MinWidth="200">
-                            <Label Content="{Binding VideoViewModel.SelectedVideoWriterKind.Name}"
-                                   ContentStringFormat="{}Video Writer Kind: {0}"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,5"/>
-
-                            <Label Content="{Binding VideoViewModel.SelectedVideoWriterKind.Description}"/>
-                        </StackPanel>
-                    </ComboBox.ToolTip>
-                </ComboBox>
-
-                <ComboBox VerticalAlignment="Center"
-                          Margin="5,0,0,0"
-                          ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
-                          SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
-                          Grid.Column="2"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                    <ComboBox.Style>
-                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ComboBox.Style>
-                </ComboBox>
-            </Grid>
+            <ComboBox VerticalAlignment="Center"
+                      Margin="0,5"
+                      ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
+                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
 
             <Grid Margin="0,5"
                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
