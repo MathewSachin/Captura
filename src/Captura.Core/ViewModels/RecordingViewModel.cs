@@ -10,6 +10,7 @@ using System.Timers;
 using Captura.Audio;
 using Captura.Models;
 using Captura.Webcam;
+using DesktopDuplication;
 using Microsoft.Win32;
 using Screna;
 using Timer = System.Timers.Timer;
@@ -425,6 +426,8 @@ namespace Captura.ViewModels
                     _recorder = new MultiRecorder(recorders);
                 }
             }
+
+            _recorder = (ServiceProvider.Get<DeskDuplSourceProvider>().First() as DeskDuplItem).GetRecorder(Settings.Video.FrameRate, _currentFileName);
 
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
                 _regionProvider.Lock();

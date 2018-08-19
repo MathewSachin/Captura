@@ -1,5 +1,7 @@
 using System;
 using System.Drawing;
+using DesktopDuplication;
+using Screna;
 using SharpDX.DXGI;
 
 namespace Captura.Models
@@ -34,9 +36,22 @@ namespace Captura.Models
             var rect = Rectangle;
             rect.Location = Point.Empty;
 
-            Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
+            Transform = P => P;
 
             return new DeskDuplImageProvider(_adapter, _output, rect, IncludeCursor);
+        }
+
+        public IRecorder GetRecorder(int Fps, string FileName)
+        {
+            var rect = Rectangle;
+            rect.Location = Point.Empty;
+
+            var deskDuplProvider = new DeskDuplMediaFoundation(rect, _adapter, _output, Fps, FileName)
+            {
+                Timeout = 500
+            };
+
+            return new DeskDuplMfRecorder(deskDuplProvider);
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Captura;
 using Device = SharpDX.Direct3D11.Device;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
+using Rectangle = System.Drawing.Rectangle;
+using Point = System.Drawing.Point;
 
 namespace DesktopDuplication
 {
