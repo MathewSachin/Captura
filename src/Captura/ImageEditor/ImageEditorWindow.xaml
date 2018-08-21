@@ -398,6 +398,7 @@
                                   Stretch="Uniform"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
                                   ToolTip="{Binding ToolName}"
                                   Margin="5"/>
                         </DataTemplate>
