@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Captura.ViewModels
@@ -12,6 +13,7 @@ namespace Captura.ViewModels
     {
         readonly IRegionProvider _regionProvider;
         readonly FullScreenSourceProvider _fullScreenProvider;
+        readonly IMainWindow _mainWindow;
 
         public ICommand SetSourceCommand { get; }
         public ICommand SetWriterCommand { get; }
@@ -30,7 +32,8 @@ namespace Captura.ViewModels
             SharpAviWriterProvider SharpAviWriterProvider,
             GifWriterProvider GifWriterProvider,
             StreamingWriterProvider StreamingWriterProvider,
-            DiscardWriterProvider DiscardWriterProvider) : base(Settings, LanguageManager)
+            DiscardWriterProvider DiscardWriterProvider,
+            IMainWindow MainWindow) : base(Settings, LanguageManager)
             // ReSharper restore SuggestBaseTypeForParameter
         {
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
@@ -40,7 +43,7 @@ namespace Captura.ViewModels
             _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            SetSourceCommand = new DelegateCommand(M =>
+            SetSourceCommand = new DelegateCommand(async M =>
             {
                 if (!(M is Type type))
                     return;
@@ -72,9 +75,21 @@ namespace Captura.ViewModels
                 }
                 else if (type == typeof(WindowSourceProvider))
                 {
-                    if (WindowSourceProvider.PickWindow(new[] { RegionProvider.Handle }))
+                    _mainWindow.IsVisible = false;
+
+                    // Wait for MainWindow to hide
+                    await Task.Delay(300);
+
+                    try
                     {
-                        SelectedVideoSourceKind = WindowSourceProvider;
+                        if (WindowSourceProvider.PickWindow(new[] {RegionProvider.Handle}))
+                        {
+                            SelectedVideoSourceKind = WindowSourceProvider;
+                        }
+                    }
+                    finally
+                    {
+                        _mainWindow.IsVisible = true;
                     }
                 }
             });
@@ -117,6 +132,7 @@ namespace Captura.ViewModels
                 AvailableImageWriters[0].Active = true;
 
             SelectedVideoWriterKind = FFmpegWriterProvider;
+            _mainWindow = MainWindow;
         }
 
         public void SetDefaultSource()
