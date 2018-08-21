@@ -28,6 +28,7 @@ namespace Captura.ViewModels
             WindowSourceProvider WindowSourceProvider,
             RegionSourceProvider RegionSourceProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
+            DeskDuplSourceProvider DeskDuplSourceProvider,
             FFmpegWriterProvider FFmpegWriterProvider,
             SharpAviWriterProvider SharpAviWriterProvider,
             GifWriterProvider GifWriterProvider,
@@ -71,6 +72,18 @@ namespace Captura.ViewModels
                     else if (ScreenSourceProvider.PickScreen())
                     {
                         SelectedVideoSourceKind = ScreenSourceProvider;
+                    }
+                }
+                else if (type == typeof(DeskDuplSourceProvider))
+                {
+                    // Select first screen if there is only one
+                    if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
+                    {
+                        SelectedVideoSourceKind = DeskDuplSourceProvider;
+                    }
+                    else if (DeskDuplSourceProvider.PickScreen())
+                    {
+                        SelectedVideoSourceKind = DeskDuplSourceProvider;
                     }
                 }
                 else if (type == typeof(WindowSourceProvider))

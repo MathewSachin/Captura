@@ -17,17 +17,33 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
-        public void PickScreen()
+        public bool PickScreen()
         {
             var screen = _videoSourcePicker.PickScreen();
 
-            if (screen == null)
-                return;
-
-            Set(screen);
+            return screen != null && Set(screen);
         }
 
-        public void Set(IScreen Screen)
+        public bool SelectFirst()
+        {
+            var output = new Factory1()
+                .Adapters1
+                .SelectMany(M => M.Outputs
+                    .Select(N => new
+                    {
+                        Adapter = M,
+                        Output = N.QueryInterface<Output1>()
+                    })).FirstOrDefault();
+
+            if (output == null)
+                return false;
+
+            Source = new DeskDuplItem(output.Adapter, output.Output);
+
+            return true;
+        }
+
+        public bool Set(IScreen Screen)
         {
             var outputs = new Factory1()
                             .Adapters1
@@ -49,10 +65,12 @@ namespace Captura.Models
                        && r1.Bottom == r2.Bottom;
             });
 
-            if (match != null)
-            {
-                Source = new DeskDuplItem(match.Adapter, match.Output);
-            }
+            if (match == null)
+                return false;
+
+            Source = new DeskDuplItem(match.Adapter, match.Output);
+
+            return true;
         }
 
         public IVideoItem Source { get; private set; }

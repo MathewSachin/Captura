@@ -6,6 +6,7 @@
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       xmlns:ffmpeg="clr-namespace:Captura.Models;assembly=Captura.FFmpeg"
       xmlns:sharpavi="clr-namespace:Captura.Models;assembly=Captura.SharpAvi"
+      xmlns:deskdupl="clr-namespace:Captura.Models;assembly=DesktopDuplication"
       Title="Video">
     <Grid>
         <Grid.Resources>
@@ -53,11 +54,19 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                
+                <Grid.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Padding" Value="0,5"/>
+                    </Style>
+                </Grid.Resources>
 
                 <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
                                   Command="{Binding VideoViewModel.SetSourceCommand}"
-                                  CommandParameter="{x:Type models:NoVideoSourceProvider}">
+                                  CommandParameter="{x:Type models:NoVideoSourceProvider}"
+                                  Margin="0,0,2,0">
                     <Path Data="{StaticResource IconNoVideo}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -72,7 +81,7 @@
                 </xctk:SplitButton>
 
                 <Button Grid.Column="1"
-                        Margin="5,0"
+                        Margin="2,0"
                         ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding VideoViewModel.SetSourceCommand}"
                         CommandParameter="{x:Type screna:FullScreenSourceProvider}">
@@ -89,10 +98,11 @@
                     </Path>
                 </Button>
 
-                <xctk:SplitButton ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Grid.Column="2"
-                                  Command="{Binding VideoViewModel.SetSourceCommand}"
-                                  CommandParameter="{x:Type screna:ScreenSourceProvider}">
+                <Button ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
+                        Grid.Column="2"
+                        Margin="2,0"
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type screna:ScreenSourceProvider}">
                     <Path Data="{StaticResource IconScreen}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -104,10 +114,10 @@
                             </Style>
                         </Path.Style>
                     </Path>
-                </xctk:SplitButton>
+                </Button>
 
                 <Button Grid.Column="3"
-                        Margin="5,0"
+                        Margin="2,0"
                         ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding VideoViewModel.SetSourceCommand}"
                         CommandParameter="{x:Type screna:WindowSourceProvider}">
@@ -124,10 +134,11 @@
                     </Path>
                 </Button>
 
-                <xctk:SplitButton ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Grid.Column="4"
-                                  Command="{Binding VideoViewModel.SetSourceCommand}"
-                                  CommandParameter="{x:Type screna:RegionSourceProvider}">
+                <Button ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
+                        Grid.Column="4"
+                        Margin="2,0"
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type screna:RegionSourceProvider}">
                     <Path Data="{StaticResource IconRegion}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -139,7 +150,25 @@
                             </Style>
                         </Path.Style>
                     </Path>
-                </xctk:SplitButton>
+                </Button>
+
+                <Button ToolTip="{Binding DesktopDuplication, Source={StaticResource Loc}, Mode=OneWay}"
+                        Grid.Column="5"
+                        Margin="2,0,0,0"
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type deskdupl:DeskDuplSourceProvider}">
+                    <Path Data="{StaticResource IconGame}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type deskdupl:DeskDuplSourceProvider}">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button>
             </Grid>
 
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
