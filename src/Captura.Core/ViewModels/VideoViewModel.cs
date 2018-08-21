@@ -13,7 +13,8 @@ namespace Captura.ViewModels
     {
         readonly IRegionProvider _regionProvider;
         readonly FullScreenSourceProvider _fullScreenProvider;
-        readonly IMainWindow _mainWindow;
+
+        public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
         public ICommand SetSourceCommand { get; }
         public ICommand SetWriterCommand { get; }
@@ -34,9 +35,11 @@ namespace Captura.ViewModels
             GifWriterProvider GifWriterProvider,
             StreamingWriterProvider StreamingWriterProvider,
             DiscardWriterProvider DiscardWriterProvider,
-            IMainWindow MainWindow) : base(Settings, LanguageManager)
             // ReSharper restore SuggestBaseTypeForParameter
+            IMainWindow MainWindow) : base(Settings, LanguageManager)
         {
+            this.NoVideoSourceProvider = NoVideoSourceProvider;
+
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
             AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
@@ -63,47 +66,15 @@ namespace Captura.ViewModels
                 }
                 else if (type == typeof(ScreenSourceProvider))
                 {
-                    // Select first screen if there is only one
-                    if (ScreenItem.Count == 1)
-                    {
-                        ScreenSourceProvider.Set(0);
-                        SelectedVideoSourceKind = ScreenSourceProvider;
-                    }
-                    else if (ScreenSourceProvider.PickScreen())
-                    {
-                        SelectedVideoSourceKind = ScreenSourceProvider;
-                    }
+                    await SetScreenSource(ScreenSourceProvider, MainWindow);
                 }
                 else if (type == typeof(DeskDuplSourceProvider))
                 {
-                    // Select first screen if there is only one
-                    if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
-                    {
-                        SelectedVideoSourceKind = DeskDuplSourceProvider;
-                    }
-                    else if (DeskDuplSourceProvider.PickScreen())
-                    {
-                        SelectedVideoSourceKind = DeskDuplSourceProvider;
-                    }
+                    await SetDeskDuplSource(DeskDuplSourceProvider, MainWindow);
                 }
                 else if (type == typeof(WindowSourceProvider))
                 {
-                    _mainWindow.IsVisible = false;
-
-                    // Wait for MainWindow to hide
-                    await Task.Delay(300);
-
-                    try
-                    {
-                        if (WindowSourceProvider.PickWindow(new[] {RegionProvider.Handle}))
-                        {
-                            SelectedVideoSourceKind = WindowSourceProvider;
-                        }
-                    }
-                    finally
-                    {
-                        _mainWindow.IsVisible = true;
-                    }
+                    await SetWindowSource(RegionProvider, WindowSourceProvider, MainWindow);
                 }
             });
 
@@ -145,7 +116,83 @@ namespace Captura.ViewModels
                 AvailableImageWriters[0].Active = true;
 
             SelectedVideoWriterKind = FFmpegWriterProvider;
-            _mainWindow = MainWindow;
+        }
+
+        async Task SetWindowSource(IRegionProvider RegionProvider, WindowSourceProvider WindowSourceProvider, IMainWindow MainWindow)
+        {
+            MainWindow.IsVisible = false;
+
+            // Wait for MainWindow to hide
+            await Task.Delay(300);
+
+            try
+            {
+                if (WindowSourceProvider.PickWindow(new[] {RegionProvider.Handle}))
+                {
+                    SelectedVideoSourceKind = WindowSourceProvider;
+                }
+            }
+            finally
+            {
+                MainWindow.IsVisible = true;
+            }
+        }
+
+        async Task SetDeskDuplSource(DeskDuplSourceProvider DeskDuplSourceProvider, IMainWindow MainWindow)
+        {
+            // Select first screen if there is only one
+            if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
+            {
+                SelectedVideoSourceKind = DeskDuplSourceProvider;
+            }
+            else
+            {
+                MainWindow.IsVisible = false;
+
+                // Wait for MainWindow to hide
+                await Task.Delay(300);
+
+                try
+                {
+                    if (DeskDuplSourceProvider.PickScreen())
+                    {
+                        SelectedVideoSourceKind = DeskDuplSourceProvider;
+                    }
+                }
+                finally
+                {
+                    MainWindow.IsVisible = true;
+                }
+            }
+        }
+
+        async Task SetScreenSource(ScreenSourceProvider ScreenSourceProvider, IMainWindow MainWindow)
+        {
+            // Select first screen if there is only one
+            if (ScreenItem.Count == 1)
+            {
+                ScreenSourceProvider.Set(0);
+                SelectedVideoSourceKind = ScreenSourceProvider;
+            }
+            else
+            {
+                MainWindow.IsVisible = false;
+
+                // Wait for MainWindow to hide
+                await Task.Delay(300);
+
+                try
+                {
+                    if (ScreenSourceProvider.PickScreen())
+                    {
+                        SelectedVideoSourceKind = ScreenSourceProvider;
+                    }
+                }
+                finally
+                {
+                    MainWindow.IsVisible = true;
+                }
+            }
         }
 
         public void SetDefaultSource()

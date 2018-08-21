@@ -56,7 +56,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Grid.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Padding" Value="0,5"/>
@@ -78,6 +78,18 @@
                             </Style>
                         </Path.Style>
                     </Path>
+
+                    <xctk:SplitButton.DropDownContent>
+                        <StackPanel Margin="10"
+                                    MinWidth="200">
+                            <Label Content="Audio Format"
+                                   Margin="0,0,0,5"/>
+                            
+                            <ComboBox ItemsSource="{Binding VideoViewModel.NoVideoSourceProvider.Sources}"
+                                      SelectedValue="{Binding VideoViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
+                                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                        </StackPanel>
+                    </xctk:SplitButton.DropDownContent>
                 </xctk:SplitButton>
 
                 <Button Grid.Column="1"
