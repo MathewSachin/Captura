@@ -16,6 +16,7 @@
                 <Setter Property="Stretch" Value="Uniform"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"/>
             </Style>
         </Grid.Resources>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
