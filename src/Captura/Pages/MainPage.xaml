@@ -51,6 +51,7 @@
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Stretch" Value="Uniform"/>
+                    <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Label}}"/>
                 </Style>
             </TabControl.Resources>
             <TabControl.ContentTemplate>
