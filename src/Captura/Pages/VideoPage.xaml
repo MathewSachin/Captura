@@ -63,10 +63,10 @@
                     </Style>
                 </Grid.Resources>
 
-                <xctk:SplitButton ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Command="{Binding VideoViewModel.SetSourceCommand}"
-                                  CommandParameter="{x:Type models:NoVideoSourceProvider}"
-                                  Margin="0,0,2,0">
+                <Button ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
+                        Command="{Binding VideoViewModel.SetSourceCommand}"
+                        CommandParameter="{x:Type models:NoVideoSourceProvider}"
+                        Margin="0,0,2,0">
                     <Path Data="{StaticResource IconNoVideo}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
@@ -78,19 +78,7 @@
                             </Style>
                         </Path.Style>
                     </Path>
-
-                    <xctk:SplitButton.DropDownContent>
-                        <StackPanel Margin="10"
-                                    MinWidth="200">
-                            <Label Content="Audio Format"
-                                   Margin="0,0,0,5"/>
-                            
-                            <ComboBox ItemsSource="{Binding VideoViewModel.NoVideoSourceProvider.Sources}"
-                                      SelectedValue="{Binding VideoViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
-                                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                        </StackPanel>
-                    </xctk:SplitButton.DropDownContent>
-                </xctk:SplitButton>
+                </Button>
 
                 <Button Grid.Column="1"
                         Margin="2,0"
@@ -183,6 +171,26 @@
                 </Button>
             </Grid>
 
+            <DockPanel Margin="0,5">
+                <Label Content="Audio Format"
+                       Margin="0,0,5,0"/>
+
+                <ComboBox ItemsSource="{Binding VideoViewModel.NoVideoSourceProvider.Sources}"
+                          SelectedValue="{Binding VideoViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                
+                <DockPanel.Style>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+            </DockPanel>
+
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>
@@ -215,39 +223,22 @@
                     </xctk:SplitButton.Style>
                 </xctk:SplitButton>
 
-                <xctk:SplitButton Content="GIF"
+                <Button Content="GIF"
                                   Grid.Column="1"
                                   Margin="5,0"
                                   Padding="10"
                                   Command="{Binding VideoViewModel.SetWriterCommand}"
                                   CommandParameter="{x:Type screna:GifWriterProvider}">
-                    <xctk:SplitButton.DropDownContent>
-                        <StackPanel Margin="10">
-                            <CheckBox Margin="0,2"
-                                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                                      IsChecked="{Binding Settings.Gif.VariableFrameRate}"/>
-
-                            <DockPanel Margin="0,2">
-                                <CheckBox Content="{Binding Repeat, Source={StaticResource Loc}, Mode=OneWay}"
-                                          Margin="0,0,5,0"
-                                          DockPanel.Dock="Left"
-                                          IsChecked="{Binding Settings.Gif.Repeat}"/>
-
-                                <xctk:IntegerUpDown IsEnabled="{Binding Settings.Gif.Repeat}"
-                                                    Value="{Binding Settings.Gif.RepeatCount}"/>
-                            </DockPanel>
-                        </StackPanel>
-                    </xctk:SplitButton.DropDownContent>
-                    <xctk:SplitButton.Style>
-                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </xctk:SplitButton.Style>
-                </xctk:SplitButton>
+                    </Button.Style>
+                </Button>
 
                 <Button Content="SharpAvi"
                         Padding="10"
@@ -381,6 +372,21 @@
                 </ComboBox.Style>
             </ComboBox>
 
+            <CheckBox Margin="0,5"
+                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
+                      IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
             <Grid Margin="0,5"
                   IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                 <Grid.ColumnDefinitions>
@@ -420,6 +426,22 @@
                           Content="Limit"
                           Margin="5,0,0,0"
                           Grid.Column="3"/>
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
+                                    <Condition Binding="{Binding Settings.Gif.VariableFrameRate}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
             </Grid>
 
             <DockPanel Margin="0,5"
@@ -437,6 +459,19 @@
                         SelectionEnd="80"
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Video.Quality}"/>
+
+                <DockPanel.Style>
+                    <Style TargetType="DockPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
             </DockPanel>
 
             <Grid Margin="0,5">
