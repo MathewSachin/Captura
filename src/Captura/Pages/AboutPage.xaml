@@ -33,17 +33,6 @@
                               VerticalAlignment="Center"/>
                     </Button>
                     <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://mathewsachin.github.io/Captura/changelog"
-                            Margin="3"
-                            ToolTip="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}">
-                        <Path Data="{StaticResource IconHistory}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Command="{Binding HyperlinkCommand}"
                             CommandParameter="https://www.paypal.me/MathewSachin"
                             Margin="3"
                             ToolTip="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}">
@@ -65,21 +54,27 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
                     </Button>
-                    <Button Margin="3"
-                            Click="Translate"
-                            ToolTip="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}">
-                        <Path Data="{StaticResource IconTranslate}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                    </Button>
                 </StackPanel>
 
                 <Button Click="ViewLicenses"
                         Content="View Licenses"
                         Margin="3"/>
+
+                <Button Command="{Binding HyperlinkCommand}"
+                        CommandParameter="https://mathewsachin.github.io/Captura/changelog"
+                        Margin="3">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconHistory}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              Margin="0,0,10,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </DockPanel>
+                </Button>
 
                 <Button Click="ViewCrashLogs"
                         Margin="3">
@@ -93,6 +88,21 @@
                               VerticalAlignment="Center"/>
 
                         <TextBlock Text="View Crash Logs"/>
+                    </DockPanel>
+                </Button>
+
+                <Button Margin="3"
+                        Click="Translate">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconTranslate}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              Margin="0,0,10,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
 

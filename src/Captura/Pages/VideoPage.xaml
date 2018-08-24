@@ -155,6 +155,7 @@
                 <Button ToolTip="{Binding DesktopDuplication, Source={StaticResource Loc}, Mode=OneWay}"
                         Grid.Column="5"
                         Margin="2,0,0,0"
+                        IsEnabled="{Binding Windows8OrAbove}"
                         Command="{Binding VideoViewModel.SetSourceCommand}"
                         CommandParameter="{x:Type deskdupl:DeskDuplSourceProvider}">
                     <Path Data="{StaticResource IconGame}">
