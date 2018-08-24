@@ -17,6 +17,16 @@
                            Text="{Binding HideOnFullScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
+            <DockPanel Margin="0,5">
+                <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+
+                <ComboBox VerticalAlignment="Center"
+                          ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
+                          SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"/>
+            </DockPanel>
+
             <Label Content="{Binding SaveLocation, Source={StaticResource Loc}, Mode=OneWay}"
                    Margin="0,5,0,5"/>
             
@@ -38,54 +48,78 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <xctk:SplitButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Padding="10,0">
-                    <Path Data="{StaticResource IconNewFile}"
-                          Style="{StaticResource SsLocIcon}"/>
-                    
-                    <xctk:SplitButton.DropDownContent>
-                        <DockPanel Margin="10">
-                            <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
-                                   ContentStringFormat="{}{0}: "
-                                   Margin="0,0,5,0"/>
-
-                            <ComboBox VerticalAlignment="Center"
-                                      ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
-                                      SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"/>
-                        </DockPanel>
-                    </xctk:SplitButton.DropDownContent>
-                </xctk:SplitButton>
+                <Button ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
+                        Padding="10,0"
+                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                        CommandParameter="{Binding ScreenShotViewModel.DiskWriter}">
+                    <Path Data="{StaticResource IconNewFile}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ScreenShotViewModel.DiskWriter.Active}" Value="True">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button>
 
                 <Button ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
                         Grid.Column="1"
-                        Margin="5,0">
-                    <Path Data="{StaticResource IconClipboard}"
-                          Style="{StaticResource SsLocIcon}"/>
+                        Margin="5,0"
+                        Padding="10,0"
+                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                        CommandParameter="{Binding ScreenShotViewModel.ClipboardWriter}">
+                    <Path Data="{StaticResource IconClipboard}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ScreenShotViewModel.ClipboardWriter.Active}" Value="True">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </Button>
 
                 <xctk:SplitButton ToolTip="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
                                   Content="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
                                   Grid.Column="2"
-                                  Padding="10,0"/>
+                                  Padding="10,0"
+                                  Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                                  CommandParameter="{Binding ScreenShotViewModel.ImgurWriter}">
+                    <xctk:SplitButton.Style>
+                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ScreenShotViewModel.ImgurWriter.Active}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </xctk:SplitButton.Style>
+                </xctk:SplitButton>
 
                 <Button ToolTip="Image Editor"
                         Grid.Column="3"
-                        Margin="5,0,0,0">
-                    <Path Data="{StaticResource IconPencil}"
-                          Style="{StaticResource SsLocIcon}"/>
+                        Margin="5,0,0,0"
+                        Padding="10,0"
+                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                        CommandParameter="{Binding EditorWriter, Source={StaticResource ServiceLocator}}">
+                    <Path Data="{StaticResource IconPencil}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}" Value="True">
+                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
                 </Button>
             </Grid>
-
-            <ItemsControl ItemsSource="{Binding VideoViewModel.AvailableImageWriters}"
-                          Margin="0,0,0,5">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox IsChecked="{Binding Active, Mode=TwoWay}"
-                                  Content="{Binding Display}"
-                                  Margin="0,3"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
 
             <Label Margin="0,10,0,3"
                    Content="{Binding ScreenShotTransforms, Source={StaticResource Loc}, Mode=OneWay}"

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Captura.Models;
 using Screna;
 
@@ -17,19 +18,39 @@ namespace Captura.ViewModels
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
 
+        public DiskWriter DiskWriter { get; }
+        public ClipboardWriter ClipboardWriter { get; }
+        public ImgurWriter ImgurWriter { get; }
+
+        public ICommand SourceToggleCommand { get; } = new DelegateCommand(OnSourceToggleExecute);
+
+        static void OnSourceToggleExecute(object M)
+        {
+            if (M is IImageWriterItem imageWriter)
+            {
+                imageWriter.Active = !imageWriter.Active;
+            }
+        }
+
         public ScreenShotViewModel(VideoViewModel VideoViewModel,
             RecentViewModel RecentViewModel,
             ISystemTray SystemTray,
             LanguageManager Loc,
             Settings Settings,
             IRegionProvider RegionProvider,
-            IMainWindow MainWindow) : base(Settings, Loc)
+            IMainWindow MainWindow,
+            DiskWriter DiskWriter,
+            ClipboardWriter ClipboardWriter,
+            ImgurWriter ImgurWriter) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
             _recentViewModel = RecentViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
+            this.DiskWriter = DiskWriter;
+            this.ClipboardWriter = ClipboardWriter;
+            this.ImgurWriter = ImgurWriter;
 
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
 
