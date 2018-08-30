@@ -392,6 +392,7 @@ namespace Captura
             switch (vm.VideoViewModel.SelectedVideoSourceKind?.Source)
             {
                 case FullScreenItem _:
+                case NoVideoItem _:
                     bmp = ScreenShot.Capture();
                     break;
 
