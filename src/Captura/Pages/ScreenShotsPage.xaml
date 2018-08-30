@@ -84,22 +84,22 @@
                     </Path>
                 </Button>
 
-                <xctk:SplitButton ToolTip="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Content="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
-                                  Grid.Column="2"
-                                  Padding="10,0"
-                                  Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
-                                  CommandParameter="{Binding ScreenShotViewModel.ImgurWriter}">
-                    <xctk:SplitButton.Style>
-                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                <Button ToolTip="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
+                        Content="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
+                        Grid.Column="2"
+                        Padding="10,0"
+                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                        CommandParameter="{Binding ScreenShotViewModel.ImgurWriter}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ScreenShotViewModel.ImgurWriter.Active}" Value="True">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </xctk:SplitButton.Style>
-                </xctk:SplitButton>
+                    </Button.Style>
+                </Button>
 
                 <Button ToolTip="Image Editor"
                         Grid.Column="3"
