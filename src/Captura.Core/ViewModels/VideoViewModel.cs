@@ -12,11 +12,30 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         readonly IRegionProvider _regionProvider;
+        readonly IMainWindow _mainWindow;
         readonly FullScreenSourceProvider _fullScreenProvider;
 
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
-        public ICommand SetSourceCommand { get; }
+        public ObservableCollection<VideoSourceModel> VideoSources { get; } = new ObservableCollection<VideoSourceModel>();
+
+        const string NoVideoDescription = @"No Video recorded.
+Can be used for audio-only recording.";
+
+        const string FullScreenDescription = "Record Fullscreen.";
+
+        const string ScreenDescription = "Record a specific screen.";
+
+        const string WindowDescription = @"Record a specific window.
+The video is of the initial size of the window.";
+
+        const string RegionDescription = "Record region selected using Region Selector.";
+
+        const string DeskDuplDescription = @"Faster API for recording screen as well as fullscreen DirectX games.
+Not all games are recordable.
+Requires Windows 8 or above.
+If it does not work, try running Captura on the Integrated Graphics card.";
+
         public ICommand SetWriterCommand { get; }
 
         public VideoViewModel(IRegionProvider RegionProvider,
@@ -39,6 +58,7 @@ namespace Captura.ViewModels
             IMainWindow MainWindow) : base(Settings, LanguageManager)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
+            _mainWindow = MainWindow;
 
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
@@ -47,36 +67,16 @@ namespace Captura.ViewModels
             _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            SetSourceCommand = new DelegateCommand(async M =>
-            {
-                if (!(M is Type type))
-                    return;
+            VideoSources.Add(new VideoSourceModel(NoVideoSourceProvider, nameof(Loc.OnlyAudio), NoVideoDescription, "IconNoVideo"));
+            VideoSources.Add(new VideoSourceModel(FullScreenProvider, nameof(Loc.FullScreen), FullScreenDescription, "IconMultipleMonitor"));
+            VideoSources.Add(new VideoSourceModel(ScreenSourceProvider, nameof(Loc.Screen), ScreenDescription, "IconScreen"));
+            VideoSources.Add(new VideoSourceModel(WindowSourceProvider, nameof(Loc.Window), WindowDescription, "IconWindow"));
+            VideoSources.Add(new VideoSourceModel(RegionSourceProvider, nameof(Loc.Region), RegionDescription, "IconRegion"));
 
-                if (type == typeof(FullScreenSourceProvider))
-                {
-                    SelectedVideoSourceKind = FullScreenProvider;
-                }
-                else if (type == typeof(RegionSourceProvider))
-                {
-                    SelectedVideoSourceKind = RegionSourceProvider;
-                }
-                else if (type == typeof(NoVideoSourceProvider))
-                {
-                    SelectedVideoSourceKind = NoVideoSourceProvider;
-                }
-                else if (type == typeof(ScreenSourceProvider))
-                {
-                    await SetScreenSource(ScreenSourceProvider, MainWindow);
-                }
-                else if (type == typeof(DeskDuplSourceProvider))
-                {
-                    await SetDeskDuplSource(DeskDuplSourceProvider, MainWindow);
-                }
-                else if (type == typeof(WindowSourceProvider))
-                {
-                    await SetWindowSource(RegionProvider, WindowSourceProvider, MainWindow);
-                }
-            });
+            if (Windows8OrAbove)
+            {
+                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, nameof(Loc.DesktopDuplication), DeskDuplDescription, "IconGame"));
+            }
 
             SetWriterCommand = new DelegateCommand(M =>
             {
@@ -118,7 +118,19 @@ namespace Captura.ViewModels
             SelectedVideoWriterKind = FFmpegWriterProvider;
         }
 
-        async Task SetWindowSource(IRegionProvider RegionProvider, WindowSourceProvider WindowSourceProvider, IMainWindow MainWindow)
+        public bool Windows8OrAbove
+        {
+            get
+            {
+                // All versions above Windows 8 give the same version number
+                var version = new Version(6, 2, 9200, 0);
+
+                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                       Environment.OSVersion.Version >= version;
+            }
+        }
+
+        async Task SetWindowSource(WindowSourceProvider WindowSourceProvider, IMainWindow MainWindow)
         {
             MainWindow.IsVisible = false;
 
@@ -127,9 +139,9 @@ namespace Captura.ViewModels
 
             try
             {
-                if (WindowSourceProvider.PickWindow(new[] {RegionProvider.Handle}))
+                if (WindowSourceProvider.PickWindow(new[] {_regionProvider.Handle}))
                 {
-                    SelectedVideoSourceKind = WindowSourceProvider;
+                    _videoSourceKind = WindowSourceProvider;
                 }
             }
             finally
@@ -143,7 +155,7 @@ namespace Captura.ViewModels
             // Select first screen if there is only one
             if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
             {
-                SelectedVideoSourceKind = DeskDuplSourceProvider;
+                _videoSourceKind = DeskDuplSourceProvider;
             }
             else
             {
@@ -156,7 +168,7 @@ namespace Captura.ViewModels
                 {
                     if (DeskDuplSourceProvider.PickScreen())
                     {
-                        SelectedVideoSourceKind = DeskDuplSourceProvider;
+                        _videoSourceKind = DeskDuplSourceProvider;
                     }
                 }
                 finally
@@ -172,7 +184,7 @@ namespace Captura.ViewModels
             if (ScreenItem.Count == 1)
             {
                 ScreenSourceProvider.Set(0);
-                SelectedVideoSourceKind = ScreenSourceProvider;
+                _videoSourceKind = ScreenSourceProvider;
             }
             else
             {
@@ -185,7 +197,7 @@ namespace Captura.ViewModels
                 {
                     if (ScreenSourceProvider.PickScreen())
                     {
-                        SelectedVideoSourceKind = ScreenSourceProvider;
+                        _videoSourceKind = ScreenSourceProvider;
                     }
                 }
                 finally
@@ -257,20 +269,39 @@ namespace Captura.ViewModels
 
         IVideoSourceProvider _videoSourceKind;
 
+        async void SetSelectedVideoSourceKind(IVideoSourceProvider Value)
+        {
+            if (_videoSourceKind == Value)
+                return;
+
+            switch (Value)
+            {
+                case ScreenSourceProvider screenSourceProvider:
+                    await SetScreenSource(screenSourceProvider, _mainWindow);
+                    break;
+
+                case DeskDuplSourceProvider deskDuplSourceProvider:
+                    await SetDeskDuplSource(deskDuplSourceProvider, _mainWindow);
+                    break;
+
+                case WindowSourceProvider windowSourceProvider:
+                    await SetWindowSource(windowSourceProvider, _mainWindow);
+                    break;
+                
+                default:
+                    _videoSourceKind = Value;
+                    break;
+            }
+
+            RaisePropertyChanged(nameof(SelectedVideoSourceKind));
+
+            RefreshVideoSources();
+        }
+
         public IVideoSourceProvider SelectedVideoSourceKind
         {
             get => _videoSourceKind;
-            set
-            {
-                if (_videoSourceKind == value)
-                    return;
-
-                _videoSourceKind = value;
-                
-                OnPropertyChanged();
-
-                RefreshVideoSources();
-            }
+            set => SetSelectedVideoSourceKind(value);
         }
 
         IVideoWriterItem _writer;

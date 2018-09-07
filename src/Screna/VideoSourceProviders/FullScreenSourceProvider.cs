@@ -11,7 +11,5 @@ namespace Captura.Models
         public override IVideoItem Source { get; }
 
         public override string Name => Loc.FullScreen;
-
-        public override string Description => "Record Fullscreen.";
     }
 }

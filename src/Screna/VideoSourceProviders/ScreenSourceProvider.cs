@@ -33,7 +33,5 @@ namespace Captura.Models
         public override IVideoItem Source => _source;
 
         public override string Name => Loc.Screen;
-
-        public override string Description => "Record a specific screen.";
     }
 }

@@ -5,7 +5,5 @@ namespace Captura.Models
         string Name { get; }
 
         IVideoItem Source { get; }
-
-        string Description { get; }
     }
 }

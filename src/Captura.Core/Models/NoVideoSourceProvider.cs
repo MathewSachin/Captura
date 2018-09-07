@@ -32,9 +32,5 @@ namespace Captura.Models
         public override IVideoItem Source => _selectedSource;
 
         public override string Name => Loc.OnlyAudio;
-
-        public override string Description =>
-            @"No Video recorded.
-Can be used for audio-only recording.";
     }
 }

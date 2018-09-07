@@ -6,7 +6,6 @@
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       xmlns:ffmpeg="clr-namespace:Captura.Models;assembly=Captura.FFmpeg"
       xmlns:sharpavi="clr-namespace:Captura.Models;assembly=Captura.SharpAvi"
-      xmlns:deskdupl="clr-namespace:Captura.Models;assembly=DesktopDuplication"
       Title="Video">
     <Grid>
         <Grid.Resources>
@@ -46,131 +45,34 @@
                 </StackPanel>
             </Border>
 
-            <Grid Margin="0,5"
-                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <ListView Margin="0,5"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      ItemsSource="{Binding VideoViewModel.VideoSources}"
+                      SelectedValuePath="Provider"
+                      SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
+                      BorderThickness="0.4">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#01000000">
+                            <Grid.ToolTip>
+                                <StackPanel MinWidth="200">
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                               FontWeight="Bold"/>
 
-                <Grid.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Padding" Value="0,5"/>
-                    </Style>
-                </Grid.Resources>
-
-                <Button ToolTip="{Binding OnlyAudio, Source={StaticResource Loc}, Mode=OneWay}"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type models:NoVideoSourceProvider}"
-                        Margin="0,0,2,0">
-                    <Path Data="{StaticResource IconNoVideo}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-
-                <Button Grid.Column="1"
-                        Margin="2,0"
-                        ToolTip="{Binding FullScreen, Source={StaticResource Loc}, Mode=OneWay}"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type screna:FullScreenSourceProvider}">
-                    <Path Data="{StaticResource IconMultipleMonitor}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:FullScreenSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-
-                <Button ToolTip="{Binding Screen, Source={StaticResource Loc}, Mode=OneWay}"
-                        Grid.Column="2"
-                        Margin="2,0"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type screna:ScreenSourceProvider}">
-                    <Path Data="{StaticResource IconScreen}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:ScreenSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-
-                <Button Grid.Column="3"
-                        Margin="2,0"
-                        ToolTip="{Binding Window, Source={StaticResource Loc}, Mode=OneWay}"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type screna:WindowSourceProvider}">
-                    <Path Data="{StaticResource IconWindow}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:WindowSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-
-                <Button ToolTip="{Binding Region, Source={StaticResource Loc}, Mode=OneWay}"
-                        Grid.Column="4"
-                        Margin="2,0"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type screna:RegionSourceProvider}">
-                    <Path Data="{StaticResource IconRegion}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-
-                <Button ToolTip="{Binding DesktopDuplication, Source={StaticResource Loc}, Mode=OneWay}"
-                        Grid.Column="5"
-                        Margin="2,0,0,0"
-                        IsEnabled="{Binding Windows8OrAbove}"
-                        Command="{Binding VideoViewModel.SetSourceCommand}"
-                        CommandParameter="{x:Type deskdupl:DeskDuplSourceProvider}">
-                    <Path Data="{StaticResource IconGame}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type deskdupl:DeskDuplSourceProvider}">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Button>
-            </Grid>
+                                    <TextBlock Text="{Binding Description, Mode=OneWay}"/>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <Path Data="{Binding IconResourceKey, Converter={StaticResource StaticResourceConverter}}"
+                                  Style="{StaticResource VideoSourceIcon}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <DockPanel Margin="0,5">
                 <Label Content="Audio Format"

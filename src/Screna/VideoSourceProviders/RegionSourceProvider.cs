@@ -11,7 +11,5 @@ namespace Captura.Models
         public override IVideoItem Source { get; }
 
         public override string Name => Loc.Region;
-
-        public override string Description => "Record region selected using Region Selector.";
     }
 }

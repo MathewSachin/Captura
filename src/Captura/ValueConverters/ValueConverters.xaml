@@ -13,5 +13,6 @@
     <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
     <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
     <captura:GetTypeConverter x:Key="GetTypeConverter"/>
+    <captura:StaticResourceConverter x:Key="StaticResourceConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>
