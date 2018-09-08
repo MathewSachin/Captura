@@ -61,7 +61,7 @@
                         <Grid Background="#01000000">
                             <Grid.ToolTip>
                                 <StackPanel MinWidth="200">
-                                    <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                    <TextBlock Text="{Binding Name.Display, Mode=OneWay}"
                                                FontWeight="Bold"/>
 
                                     <TextBlock Text="{Binding Description, Mode=OneWay}"/>
@@ -108,30 +108,27 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <xctk:SplitButton Content="FFmpeg"
-                                  Padding="10,0"
-                                  Command="{Binding VideoViewModel.SetWriterCommand}"
-                                  CommandParameter="{x:Type ffmpeg:FFmpegWriterProvider}">
-                    <xctk:SplitButton.DropDownContent>
-                        <Frame Source="FFmpegPage.xaml"/>
-                    </xctk:SplitButton.DropDownContent>
-                    <xctk:SplitButton.Style>
-                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                <Button Content="FFmpeg"
+                        Padding="10,0"
+                        Command="{Binding VideoViewModel.SetWriterCommand}"
+                        CommandParameter="{x:Type ffmpeg:FFmpegWriterProvider}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:FFmpegWriterProvider}">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </xctk:SplitButton.Style>
-                </xctk:SplitButton>
+                    </Button.Style>
+                </Button>
 
                 <Button Content="GIF"
-                                  Grid.Column="1"
-                                  Margin="5,0"
-                                  Padding="10,0"
-                                  Command="{Binding VideoViewModel.SetWriterCommand}"
-                                  CommandParameter="{x:Type screna:GifWriterProvider}">
+                        Grid.Column="1"
+                        Margin="5,0"
+                        Padding="10,0"
+                        Command="{Binding VideoViewModel.SetWriterCommand}"
+                        CommandParameter="{x:Type screna:GifWriterProvider}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
@@ -159,85 +156,23 @@
                     </Button.Style>
                 </Button>
 
-                <xctk:SplitButton Content="Stream"
-                                  Padding="10,0"
-                                  ToolTip="Alpha Feature"
-                                  Margin="5,0"
-                                  Grid.Column="3"
-                                  Command="{Binding VideoViewModel.SetWriterCommand}"
-                                  CommandParameter="{x:Type ffmpeg:StreamingWriterProvider}">
-                    <xctk:SplitButton.DropDownContent>
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*" MinWidth="200"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Path Data="{StaticResource IconTwitch}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                            <Label Content="Twitch Key"
-                                   ContentStringFormat="{}{0}: "
-                                   Grid.Column="1"/>    
-                            <TextBox Grid.Column="2"
-                                     Margin="2"
-                                     Text="{Binding Settings.FFmpeg.TwitchKey}"/>
-
-                            <Path Data="{StaticResource IconYouTube}"
-                                  Grid.Row="1"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                            <Label Content="YouTube Live Key"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   ContentStringFormat="{}{0}: "/>
-                            <TextBox Grid.Column="2"
-                                     Grid.Row="1"
-                                     Margin="2"
-                                     Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
-
-                            <Path Data="{StaticResource IconWeb}"
-                                  Grid.Row="2"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                            <Label Content="Custom Url"
-                                   Grid.Column="1"
-                                   Grid.Row="2"
-                                   ContentStringFormat="{}{0}:"/>
-                            <TextBox Grid.Row="2"
-                                     Grid.Column="2"
-                                     Margin="2"
-                                     Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
-                        </Grid>
-                    </xctk:SplitButton.DropDownContent>
-                    <xctk:SplitButton.Style>
-                        <Style TargetType="xctk:SplitButton" BasedOn="{StaticResource {x:Type xctk:SplitButton}}">
+                <Button Content="Stream"
+                        Padding="10,0"
+                        ToolTip="Alpha Feature"
+                        Margin="5,0"
+                        Grid.Column="3"
+                        Command="{Binding VideoViewModel.SetWriterCommand}"
+                        CommandParameter="{x:Type ffmpeg:StreamingWriterProvider}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:StreamingWriterProvider}">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </xctk:SplitButton.Style>
-                </xctk:SplitButton>
+                    </Button.Style>
+                </Button>
 
                 <Button Content="Discard"
                         Padding="10,2"

@@ -128,6 +128,72 @@
                     <TextBlock Text="Configure Codecs"/>
                 </DockPanel>
             </Button>
+
+            <Label Margin="0,10,0,0"
+                   Content="Streaming Keys"
+                   FontWeight="Bold"
+                   FontSize="15"/>
+
+            <Grid Margin="0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" MinWidth="200"/>
+                </Grid.ColumnDefinitions>
+
+                <Path Data="{StaticResource IconTwitch}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                <Label Content="Twitch Key"
+                       ContentStringFormat="{}{0}: "
+                       Grid.Column="1"/>
+                <TextBox Grid.Column="2"
+                         Margin="2"
+                         Text="{Binding Settings.FFmpeg.TwitchKey}"/>
+
+                <Path Data="{StaticResource IconYouTube}"
+                      Grid.Row="1"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                <Label Content="YouTube Live Key"
+                       Grid.Row="1"
+                       Grid.Column="1"
+                       ContentStringFormat="{}{0}: "/>
+                <TextBox Grid.Column="2"
+                         Grid.Row="1"
+                         Margin="2"
+                         Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
+
+                <Path Data="{StaticResource IconWeb}"
+                      Grid.Row="2"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                <Label Content="Custom Url"
+                       Grid.Column="1"
+                       Grid.Row="2"
+                       ContentStringFormat="{}{0}:"/>
+                <TextBox Grid.Row="2"
+                         Grid.Column="2"
+                         Margin="2"
+                         Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>
