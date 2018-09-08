@@ -48,7 +48,8 @@
                       ItemsSource="{Binding VideoViewModel.VideoSources}"
                       SelectedValuePath="Provider"
                       SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
-                      BorderThickness="0.4">
+                      BorderThickness="0.4"
+                      SelectionMode="Single">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="1"/>
@@ -101,7 +102,8 @@
                           ItemsSource="{Binding VideoViewModel.VideoWriterProviders}"
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                          BorderThickness="0.4">
+                          BorderThickness="0.4"
+                          SelectionMode="Single">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="1"/>
