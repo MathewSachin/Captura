@@ -127,6 +127,13 @@ namespace Captura.Models
 
         void RestoreVideoSource()
         {
+            IScreen GetMatchingScreen()
+            {
+                return ScreenItem.Enumerate()
+                    .Select(M => M.Screen)
+                    .FirstOrDefault(M => M.DeviceName == _settings.Video.Source);
+            }
+
             switch (_settings.Video.SourceKind)
             {
                 case VideoSourceKindEnum.Region:
@@ -159,12 +166,30 @@ namespace Captura.Models
                     break;
 
                 case VideoSourceKindEnum.Screen:
-                    // TODO: Restore Remembered Screen
+                {
+                    var screen = GetMatchingScreen();
+
+                    if (screen != null)
+                    {
+                        _screenSourceProvider.Set(screen);
+                        _videoViewModel.RestoreSourceKind(_screenSourceProvider);
+                    }
+
                     break;
+                }
 
                 case VideoSourceKindEnum.DeskDupl:
-                    // TODO: Restore Remembered DeskDupl
+                {
+                    var screen = GetMatchingScreen();
+
+                    if (screen != null)
+                    {
+                        _deskDuplSourceProvider.Set(screen);
+                        _videoViewModel.RestoreSourceKind(_deskDuplSourceProvider);
+                    }
+
                     break;
+                }
             }
         }
 

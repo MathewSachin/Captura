@@ -15,7 +15,7 @@ namespace Captura.Models
             _output = Output;
         }
 
-        public string Name => $"{_output.Description.DeviceName} ({_adapter.Description1.Description})";
+        public string Name => _output.Description.DeviceName;
 
         public override string ToString() => Name;
 

@@ -25,7 +25,12 @@ namespace Captura.Models
 
         public void Set(int Index)
         {
-            _source = new ScreenItem(new ScreenWrapper(Screen.AllScreens[Index]));
+            Set(new ScreenWrapper(Screen.AllScreens[Index]));
+        }
+
+        public void Set(IScreen Screen)
+        {
+            _source = new ScreenItem(Screen);
         }
 
         IVideoItem _source;
