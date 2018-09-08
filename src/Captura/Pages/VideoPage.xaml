@@ -92,243 +92,257 @@
                 </DockPanel.Style>
             </DockPanel>
 
-            <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"
-                   Margin="0,5"/>
-            
-            <ListView Margin="0,5"
-                      ItemsSource="{Binding VideoViewModel.VideoWriterProviders}"
-                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                      BorderThickness="0.4">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="1"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Background="#01000000">
-                            <Grid.ToolTip>
-                                <StackPanel MinWidth="200">
-                                    <TextBlock Text="{Binding Name, Mode=OneWay}"
-                                               FontWeight="Bold"/>
-
-                                    <TextBlock Text="{Binding Description, Mode=OneWay}"/>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            
-                            <TextBlock Text="{Binding Name, Mode=OneWay}"
-                                       HorizontalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <ComboBox VerticalAlignment="Center"
-                      Margin="0,5"
-                      ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
-                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.AvailableVideoWriters.Count}" Value="1">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Style>
-            </ComboBox>
-
-            <CheckBox Margin="0,5"
-                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}">
-                <CheckBox.Style>
-                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </CheckBox.Style>
-            </CheckBox>
-
-            <Grid Margin="0,5"
-                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Label Content="FPS"
-                       ContentStringFormat="{}{0}:"/>
-                <Label Content="{Binding Settings.Video.FrameRate}"
-                       Margin="5,0"
-                       MinWidth="15"
-                       ContentStringFormat="{}{0:N0}"
-                       HorizontalContentAlignment="Right"
-                       Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
-                       Grid.Column="1"/>
-                
-                <Slider Minimum="1"
-                        Maximum="30"
-                        SelectionStart="8"
-                        SelectionEnd="12"
-                        IsSelectionRangeEnabled="True"
-                        Value="{Binding Settings.Video.FrameRate}"
-                        Interval="1"
-                        Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
-                        Grid.Column="2"/>
-                <xctk:IntegerUpDown Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource NegatingConverter}}"
-                                    Margin="10,0,0,0"
-                                    Minimum="1"
-                                    Maximum="120"
-                                    Value="{Binding Settings.Video.FrameRate}"
-                                    Grid.Column="2"/>
-
-                <CheckBox IsChecked="{Binding Settings.Video.FpsLimit}"
-                          Content="Limit"
-                          Margin="5,0,0,0"
-                          Grid.Column="3"/>
-
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
-                                    <Condition Binding="{Binding Settings.Gif.VariableFrameRate}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-            </Grid>
-
-            <DockPanel Margin="0,5"
-                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
-                       ContentStringFormat="{}{0}:"/>
-                <Label Content="{Binding Settings.Video.Quality}"
-                       ContentStringFormat="{}{0:N0}%"
-                       Margin="5,0"
-                       MinWidth="30"
-                       HorizontalContentAlignment="Right"/>
-                <Slider Minimum="1" 
-                        Maximum="100"
-                        SelectionStart="60"
-                        SelectionEnd="80"
-                        IsSelectionRangeEnabled="True"
-                        Value="{Binding Settings.Video.Quality}"/>
-
-                <DockPanel.Style>
-                    <Style TargetType="DockPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DockPanel.Style>
-            </DockPanel>
-
-            <Grid Margin="0,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="15"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Label Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+            <StackPanel>
+                <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"
                        Margin="0,5"/>
 
-                <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                                     Padding="5"
-                                     Grid.Row="1"
-                                     HorizontalAlignment="Left">
-                    <Path Style="{StaticResource VideoSourceIcon}"
-                          Data="{StaticResource IconWebcam}"/>
+                <ListView Margin="0,5"
+                          ItemsSource="{Binding VideoViewModel.VideoWriterProviders}"
+                          SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                          BorderThickness="0.4">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="#01000000">
+                                <Grid.ToolTip>
+                                    <StackPanel MinWidth="200">
+                                        <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                                   FontWeight="Bold"/>
 
-                    <xctk:DropDownButton.DropDownContent>
-                        <StackPanel Margin="10" MinWidth="250">
-                            <Label Margin="0,3"
-                                   Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                                   FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Description, Mode=OneWay}"/>
+                                    </StackPanel>
+                                </Grid.ToolTip>
 
-                            <DockPanel Margin="0,5">
-                                <Path Data="{StaticResource IconWebcam}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,7,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
+                                <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                           HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                                <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
-                                        DockPanel.Dock="Right"
-                                        Click="Preview_Click"
-                                        Padding="10,0"
-                                        Margin="3,0"/>
+                <ComboBox VerticalAlignment="Center"
+                          Margin="0,5"
+                          ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
+                          SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.AvailableVideoWriters.Count}" Value="1">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
 
-                                <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
-                                          SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                                          IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
-                                          DisplayMemberPath="Name"/>
-                            </DockPanel>
+                <CheckBox Margin="0,5"
+                          Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
+                          IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
 
-                            <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
-                                      Content="Record Webcam to separate file"
-                                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                      Margin="0,5"/>
-                        </StackPanel>
-                    </xctk:DropDownButton.DropDownContent>
-                </xctk:DropDownButton>
+                <Grid Margin="0,5"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"
-                       Margin="0,5"
-                       Grid.Column="2"/>
+                    <Label Content="FPS"
+                           ContentStringFormat="{}{0}:"/>
+                    <Label Content="{Binding Settings.Video.FrameRate}"
+                           Margin="5,0"
+                           MinWidth="15"
+                           ContentStringFormat="{}{0:N0}"
+                           HorizontalContentAlignment="Right"
+                           Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
+                           Grid.Column="1"/>
 
-                <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                                     Padding="5"
-                                     Grid.Column="2"
-                                     Grid.Row="1"
-                                     HorizontalAlignment="Left">
-                    <Path Data="{StaticResource IconMic}">
-                        <Path.Style>
-                            <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
-                                        <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
+                    <Slider Minimum="1"
+                            Maximum="30"
+                            SelectionStart="8"
+                            SelectionEnd="12"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.Video.FrameRate}"
+                            Interval="1"
+                            Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Grid.Column="2"/>
+                    <xctk:IntegerUpDown Visibility="{Binding Settings.Video.FpsLimit, Converter={StaticResource NegatingConverter}}"
+                                        Margin="10,0,0,0"
+                                        Minimum="1"
+                                        Maximum="120"
+                                        Value="{Binding Settings.Video.FrameRate}"
+                                        Grid.Column="2"/>
 
-                    <xctk:DropDownButton.DropDownContent>
-                        <Frame Source="AudioPage.xaml"
-                               Margin="10"/>
-                    </xctk:DropDownButton.DropDownContent>
-                </xctk:DropDownButton>
-            </Grid>
+                    <CheckBox IsChecked="{Binding Settings.Video.FpsLimit}"
+                              Content="Limit"
+                              Margin="5,0,0,0"
+                              Grid.Column="3"/>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
+                                        <Condition Binding="{Binding Settings.Gif.VariableFrameRate}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+
+                <DockPanel Margin="0,5"
+                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                    <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
+                           ContentStringFormat="{}{0}:"/>
+                    <Label Content="{Binding Settings.Video.Quality}"
+                           ContentStringFormat="{}{0:N0}%"
+                           Margin="5,0"
+                           MinWidth="30"
+                           HorizontalContentAlignment="Right"/>
+                    <Slider Minimum="1" 
+                            Maximum="100"
+                            SelectionStart="60"
+                            SelectionEnd="80"
+                            IsSelectionRangeEnabled="True"
+                            Value="{Binding Settings.Video.Quality}"/>
+
+                    <DockPanel.Style>
+                        <Style TargetType="DockPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Style>
+                </DockPanel>
+
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+            </StackPanel>
+
+            <StackPanel Margin="0,5"
+                        Orientation="Horizontal">
+                <StackPanel Margin="0,0,15,0">
+                    <Label Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                           FontWeight="Bold"
+                           Margin="0,5"/>
+
+                    <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                         Padding="5"
+                                         HorizontalAlignment="Left">
+                        <Path Style="{StaticResource VideoSourceIcon}"
+                              Data="{StaticResource IconWebcam}"/>
+
+                        <xctk:DropDownButton.DropDownContent>
+                            <StackPanel Margin="10"
+                                        MinWidth="250">
+                                <Label Margin="0,3"
+                                       Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                       FontWeight="Bold"/>
+
+                                <DockPanel Margin="0,5">
+                                    <Path Data="{StaticResource IconWebcam}"
+                                          Width="15"
+                                          Height="15"
+                                          Margin="0,0,7,0"
+                                          Stretch="Uniform"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                                    <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
+                                            DockPanel.Dock="Right"
+                                            Click="Preview_Click"
+                                            Padding="10,0"
+                                            Margin="3,0"/>
+
+                                    <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
+                                              SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
+                                              IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
+                                              DisplayMemberPath="Name"/>
+                                </DockPanel>
+
+                                <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
+                                          Content="Record Webcam to separate file"
+                                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                                          Margin="0,5"/>
+                            </StackPanel>
+                        </xctk:DropDownButton.DropDownContent>
+                    </xctk:DropDownButton>
+
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                           FontWeight="Bold"
+                           Margin="0,5"/>
+
+                    <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                                         Padding="5"
+                                         HorizontalAlignment="Left">
+                        <Path Data="{StaticResource IconMic}">
+                            <Path.Style>
+                                <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+
+                        <xctk:DropDownButton.DropDownContent>
+                            <Frame Source="AudioPage.xaml"
+                                   Margin="10"/>
+                        </xctk:DropDownButton.DropDownContent>
+                    </xctk:DropDownButton>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>
