@@ -29,7 +29,7 @@
 
             <Label Content="{Binding SaveLocation, Source={StaticResource Loc}, Mode=OneWay}"
                    Margin="0,5,0,5"/>
-            
+
             <Grid Margin="0,5">
                 <Grid.Resources>
                     <Style TargetType="Path" x:Key="SsLocIcon" BasedOn="{StaticResource {x:Type Path}}">

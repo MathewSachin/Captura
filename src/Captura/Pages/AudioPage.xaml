@@ -77,14 +77,17 @@
                         Value="{Binding Settings.Audio.Quality}"/>
             </DockPanel>
 
-            <CheckBox IsChecked="{Binding Settings.Audio.PlaybackRecordingRealTime}"
-                      Content="Playback recorded audio in real-time"
-                      IsEnabled="{Binding Settings.Audio.SeparateFilePerSource, Converter={StaticResource NegatingConverter}}"
-                      Margin="0,25,0,5"/>
+            <StackPanel IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                        Margin="0,20,0,0">
+                <CheckBox IsChecked="{Binding Settings.Audio.PlaybackRecordingRealTime}"
+                          Content="Playback recorded audio in real-time"
+                          IsEnabled="{Binding Settings.Audio.SeparateFilePerSource, Converter={StaticResource NegatingConverter}}"
+                          Margin="0,5"/>
 
-            <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
-                      Content="Separate files for every audio source"
-                      Margin="0,5"/>
+                <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
+                          Content="Separate files for every audio source"
+                          Margin="0,5"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

@@ -109,7 +109,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <xctk:SplitButton Content="FFmpeg"
-                                  Padding="10"
+                                  Padding="10,0"
                                   Command="{Binding VideoViewModel.SetWriterCommand}"
                                   CommandParameter="{x:Type ffmpeg:FFmpegWriterProvider}">
                     <xctk:SplitButton.DropDownContent>
@@ -129,7 +129,7 @@
                 <Button Content="GIF"
                                   Grid.Column="1"
                                   Margin="5,0"
-                                  Padding="10"
+                                  Padding="10,0"
                                   Command="{Binding VideoViewModel.SetWriterCommand}"
                                   CommandParameter="{x:Type screna:GifWriterProvider}">
                     <Button.Style>
@@ -144,7 +144,7 @@
                 </Button>
 
                 <Button Content="SharpAvi"
-                        Padding="10"
+                        Padding="10,0"
                         Grid.Column="2"
                         Command="{Binding VideoViewModel.SetWriterCommand}"
                         CommandParameter="{x:Type sharpavi:SharpAviWriterProvider}">
@@ -160,7 +160,7 @@
                 </Button>
 
                 <xctk:SplitButton Content="Stream"
-                                  Padding="10"
+                                  Padding="10,0"
                                   ToolTip="Alpha Feature"
                                   Margin="5,0"
                                   Grid.Column="3"
@@ -240,7 +240,7 @@
                 </xctk:SplitButton>
 
                 <Button Content="Discard"
-                        Padding="10"
+                        Padding="10,2"
                         Grid.Column="4"
                         Command="{Binding VideoViewModel.SetWriterCommand}"
                         CommandParameter="{x:Type models:DiscardWriterProvider}">
@@ -264,10 +264,7 @@
                 <ComboBox.Style>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                            <DataTrigger Binding="{Binding VideoViewModel.AvailableVideoWriters.Count}" Value="1">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -429,6 +426,7 @@
 
                             <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
                                       Content="Record Webcam to separate file"
+                                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                       Margin="0,5"/>
                         </StackPanel>
                     </xctk:DropDownButton.DropDownContent>
