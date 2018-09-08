@@ -283,6 +283,11 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             set => SetSelectedVideoSourceKind(value);
         }
 
+        public void RestoreSourceKind(IVideoSourceProvider SourceProvider)
+        {
+            _videoSourceKind = SourceProvider;
+        }
+
         IVideoWriterItem _writer;
 
         public IVideoWriterItem SelectedVideoWriter

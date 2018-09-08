@@ -154,7 +154,7 @@ namespace Captura.Models
                     if (window != null)
                     {
                         _windowSourceProvider.Set(window.Handle);
-                        _videoViewModel.SelectedVideoSourceKind = _windowSourceProvider;
+                        _videoViewModel.RestoreSourceKind(_windowSourceProvider);
                     }
                     break;
 
