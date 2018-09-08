@@ -4,8 +4,6 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
-      xmlns:ffmpeg="clr-namespace:Captura.Models;assembly=Captura.FFmpeg"
-      xmlns:sharpavi="clr-namespace:Captura.Models;assembly=Captura.SharpAvi"
       Title="Video">
     <Grid>
         <Grid.Resources>
@@ -97,99 +95,35 @@
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>
+            
+            <ListView Margin="0,5"
+                      ItemsSource="{Binding VideoViewModel.VideoWriterProviders}"
+                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      BorderThickness="0.4">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#01000000">
+                            <Grid.ToolTip>
+                                <StackPanel MinWidth="200">
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                               FontWeight="Bold"/>
 
-            <Grid Margin="0,5"
-                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <Button Content="FFmpeg"
-                        Padding="10,0"
-                        Command="{Binding VideoViewModel.SetWriterCommand}"
-                        CommandParameter="{x:Type ffmpeg:FFmpegWriterProvider}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:FFmpegWriterProvider}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button Content="GIF"
-                        Grid.Column="1"
-                        Margin="5,0"
-                        Padding="10,0"
-                        Command="{Binding VideoViewModel.SetWriterCommand}"
-                        CommandParameter="{x:Type screna:GifWriterProvider}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button Content="SharpAvi"
-                        Padding="10,0"
-                        Grid.Column="2"
-                        Command="{Binding VideoViewModel.SetWriterCommand}"
-                        CommandParameter="{x:Type sharpavi:SharpAviWriterProvider}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type sharpavi:SharpAviWriterProvider}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button Content="Stream"
-                        Padding="10,0"
-                        ToolTip="Alpha Feature"
-                        Margin="5,0"
-                        Grid.Column="3"
-                        Command="{Binding VideoViewModel.SetWriterCommand}"
-                        CommandParameter="{x:Type ffmpeg:StreamingWriterProvider}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type ffmpeg:StreamingWriterProvider}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <Button Content="Discard"
-                        Padding="10,2"
-                        Grid.Column="4"
-                        Command="{Binding VideoViewModel.SetWriterCommand}"
-                        CommandParameter="{x:Type models:DiscardWriterProvider}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
-                                    <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
+                                    <TextBlock Text="{Binding Description, Mode=OneWay}"/>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            
+                            <TextBlock Text="{Binding Name, Mode=OneWay}"
+                                       HorizontalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <ComboBox VerticalAlignment="Center"
                       Margin="0,5"

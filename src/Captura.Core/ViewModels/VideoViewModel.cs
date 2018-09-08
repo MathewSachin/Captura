@@ -19,6 +19,8 @@ namespace Captura.ViewModels
 
         public ObservableCollection<VideoSourceModel> VideoSources { get; } = new ObservableCollection<VideoSourceModel>();
 
+        public ObservableCollection<IVideoWriterProvider> VideoWriterProviders { get; } = new ObservableCollection<IVideoWriterProvider>();
+
         const string NoVideoDescription = @"No Video recorded.
 Can be used for audio-only recording.";
 
@@ -35,8 +37,6 @@ The video is of the initial size of the window.";
 Not all games are recordable.
 Requires Windows 8 or above.
 If it does not work, try running Captura on the Integrated Graphics card.";
-
-        public ICommand SetWriterCommand { get; }
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
@@ -78,32 +78,11 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                 VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, nameof(Loc.DesktopDuplication), DeskDuplDescription, "IconGame"));
             }
 
-            SetWriterCommand = new DelegateCommand(M =>
-            {
-                if (!(M is Type type))
-                    return;
-
-                if (type == typeof(FFmpegWriterProvider))
-                {
-                    SelectedVideoWriterKind = FFmpegWriterProvider;
-                }
-                else if (type == typeof(SharpAviWriterProvider))
-                {
-                    SelectedVideoWriterKind = SharpAviWriterProvider;
-                }
-                else if (type == typeof(GifWriterProvider))
-                {
-                    SelectedVideoWriterKind = GifWriterProvider;
-                }
-                else if (type == typeof(StreamingWriterProvider))
-                {
-                    SelectedVideoWriterKind = StreamingWriterProvider;
-                }
-                else if (type == typeof(DiscardWriterProvider))
-                {
-                    SelectedVideoWriterKind = DiscardWriterProvider;
-                }
-            });
+            VideoWriterProviders.Add(FFmpegWriterProvider);
+            VideoWriterProviders.Add(GifWriterProvider);
+            VideoWriterProviders.Add(SharpAviWriterProvider);
+            VideoWriterProviders.Add(StreamingWriterProvider);
+            VideoWriterProviders.Add(DiscardWriterProvider);
 
             foreach (var imageWriter in ImageWriters)
             {
