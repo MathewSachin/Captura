@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Screna;
 
 namespace Captura.Models
@@ -8,26 +7,31 @@ namespace Captura.Models
     public class WindowSourceProvider : VideoSourceProviderBase
     {
         readonly IVideoSourcePicker _videoSourcePicker;
+        readonly IRegionProvider _regionProvider;
 
-        public WindowSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker) : base(Loc)
+        public WindowSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker, IRegionProvider RegionProvider) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
+            _regionProvider = RegionProvider;
         }
 
-        public bool PickWindow(IEnumerable<IntPtr> SkipWindows = null)
+        public bool PickWindow()
         {
-            var window = _videoSourcePicker.PickWindow(SkipWindows);
+            var window = _videoSourcePicker.PickWindow(new [] { _regionProvider.Handle });
 
             if (window == null)
                 return false;
 
             _source = new WindowItem(new Window(window.Handle));
+
+            RaisePropertyChanged(nameof(Source));
             return true;
         }
 
         public void Set(IntPtr Handle)
         {
             _source = new WindowItem(new Window(Handle));
+            RaisePropertyChanged(nameof(Source));
         }
 
         IVideoItem _source;

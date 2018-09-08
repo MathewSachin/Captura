@@ -109,27 +109,7 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             }
         }
 
-        async Task SetWindowSource(WindowSourceProvider WindowSourceProvider, IMainWindow MainWindow)
-        {
-            MainWindow.IsVisible = false;
-
-            // Wait for MainWindow to hide
-            await Task.Delay(300);
-
-            try
-            {
-                if (WindowSourceProvider.PickWindow(new[] {_regionProvider.Handle}))
-                {
-                    _videoSourceKind = WindowSourceProvider;
-                }
-            }
-            finally
-            {
-                MainWindow.IsVisible = true;
-            }
-        }
-
-        async Task SetDeskDuplSource(DeskDuplSourceProvider DeskDuplSourceProvider, IMainWindow MainWindow)
+        void SetDeskDuplSource(DeskDuplSourceProvider DeskDuplSourceProvider)
         {
             // Select first screen if there is only one
             if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
@@ -138,26 +118,14 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             }
             else
             {
-                MainWindow.IsVisible = false;
-
-                // Wait for MainWindow to hide
-                await Task.Delay(300);
-
-                try
+                if (DeskDuplSourceProvider.PickScreen())
                 {
-                    if (DeskDuplSourceProvider.PickScreen())
-                    {
-                        _videoSourceKind = DeskDuplSourceProvider;
-                    }
-                }
-                finally
-                {
-                    MainWindow.IsVisible = true;
+                    _videoSourceKind = DeskDuplSourceProvider;
                 }
             }
         }
 
-        async Task SetScreenSource(ScreenSourceProvider ScreenSourceProvider, IMainWindow MainWindow)
+        void SetScreenSource(ScreenSourceProvider ScreenSourceProvider)
         {
             // Select first screen if there is only one
             if (ScreenItem.Count == 1)
@@ -167,21 +135,9 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             }
             else
             {
-                MainWindow.IsVisible = false;
-
-                // Wait for MainWindow to hide
-                await Task.Delay(300);
-
-                try
+                if (ScreenSourceProvider.PickScreen())
                 {
-                    if (ScreenSourceProvider.PickScreen())
-                    {
-                        _videoSourceKind = ScreenSourceProvider;
-                    }
-                }
-                finally
-                {
-                    MainWindow.IsVisible = true;
+                    _videoSourceKind = ScreenSourceProvider;
                 }
             }
         }
@@ -248,39 +204,40 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
         IVideoSourceProvider _videoSourceKind;
 
-        async void SetSelectedVideoSourceKind(IVideoSourceProvider Value)
-        {
-            if (_videoSourceKind == Value)
-                return;
-
-            switch (Value)
-            {
-                case ScreenSourceProvider screenSourceProvider:
-                    await SetScreenSource(screenSourceProvider, _mainWindow);
-                    break;
-
-                case DeskDuplSourceProvider deskDuplSourceProvider:
-                    await SetDeskDuplSource(deskDuplSourceProvider, _mainWindow);
-                    break;
-
-                case WindowSourceProvider windowSourceProvider:
-                    await SetWindowSource(windowSourceProvider, _mainWindow);
-                    break;
-                
-                default:
-                    _videoSourceKind = Value;
-                    break;
-            }
-
-            RaisePropertyChanged(nameof(SelectedVideoSourceKind));
-
-            RefreshVideoSources();
-        }
-
         public IVideoSourceProvider SelectedVideoSourceKind
         {
             get => _videoSourceKind;
-            set => SetSelectedVideoSourceKind(value);
+            set
+            {
+                if (_videoSourceKind == value)
+                    return;
+
+                switch (value)
+                {
+                    case ScreenSourceProvider screenSourceProvider:
+                        SetScreenSource(screenSourceProvider);
+                        break;
+
+                    case DeskDuplSourceProvider deskDuplSourceProvider:
+                        SetDeskDuplSource(deskDuplSourceProvider);
+                        break;
+
+                    case WindowSourceProvider windowSourceProvider:
+                        if (windowSourceProvider.PickWindow())
+                        {
+                            _videoSourceKind = windowSourceProvider;
+                        }
+                        break;
+
+                    default:
+                        _videoSourceKind = value;
+                        break;
+                }
+
+                OnPropertyChanged();
+
+                RefreshVideoSources();
+            }
         }
 
         public void RestoreSourceKind(IVideoSourceProvider SourceProvider)

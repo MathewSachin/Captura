@@ -73,7 +73,18 @@ namespace Captura.Models
             return true;
         }
 
-        public IVideoItem Source { get; private set; }
+        IVideoItem _source;
+
+        public IVideoItem Source
+        {
+            get => _source;
+            private set
+            {
+                _source = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public string Name => _loc.DesktopDuplication;
 

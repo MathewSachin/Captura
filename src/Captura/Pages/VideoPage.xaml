@@ -71,6 +71,11 @@
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnVideoSourceReSelect"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
 
             <DockPanel Margin="0,5">

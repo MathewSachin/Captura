@@ -20,6 +20,7 @@ namespace Captura.Models
                 return false;
 
             _source = new ScreenItem(screen);
+            RaisePropertyChanged(nameof(Source));
             return true;
         }
 
@@ -31,6 +32,7 @@ namespace Captura.Models
         public void Set(IScreen Screen)
         {
             _source = new ScreenItem(Screen);
+            RaisePropertyChanged(nameof(Source));
         }
 
         IVideoItem _source;
