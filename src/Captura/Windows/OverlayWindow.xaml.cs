@@ -389,11 +389,10 @@ namespace Captura
 
             Bitmap bmp;
 
-            switch (vm.VideoViewModel.SelectedVideoSource)
+            switch (vm.VideoViewModel.SelectedVideoSourceKind?.Source)
             {
-                case WindowPickerItem _:
-                case ScreenPickerItem _:
                 case FullScreenItem _:
+                case NoVideoItem _:
                     bmp = ScreenShot.Capture();
                     break;
 

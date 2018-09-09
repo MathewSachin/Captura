@@ -1,30 +1,43 @@
-using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScreenSourceProvider : VideoSourceProviderBase
     {
-        readonly ScreenPickerItem _screenPickerItem;
-        readonly FullScreenItem _fullScreenItem;
-
-        public ScreenSourceProvider(LanguageManager Loc, ScreenPickerItem ScreenPickerItem, FullScreenItem FullScreenItem) : base(Loc)
+        readonly IVideoSourcePicker _videoSourcePicker;
+        
+        public ScreenSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker) : base(Loc)
         {
-            _screenPickerItem = ScreenPickerItem;
-            _fullScreenItem = FullScreenItem;
+            _videoSourcePicker = VideoSourcePicker;
         }
 
-        public override IEnumerator<IVideoItem> GetEnumerator()
+        public bool PickScreen()
         {
-            yield return _fullScreenItem;
+            var screen = _videoSourcePicker.PickScreen();
 
-            yield return _screenPickerItem;
+            if (screen == null)
+                return false;
 
-            foreach (var screen in ScreenItem.Enumerate())
-            {
-                yield return screen;
-            }
+            _source = new ScreenItem(screen);
+            RaisePropertyChanged(nameof(Source));
+            return true;
         }
+
+        public void Set(int Index)
+        {
+            Set(new ScreenWrapper(Screen.AllScreens[Index]));
+        }
+
+        public void Set(IScreen Screen)
+        {
+            _source = new ScreenItem(Screen);
+            RaisePropertyChanged(nameof(Source));
+        }
+
+        IVideoItem _source;
+
+        public override IVideoItem Source => _source;
 
         public override string Name => Loc.Screen;
     }

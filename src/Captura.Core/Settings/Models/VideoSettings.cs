@@ -1,5 +1,15 @@
 ﻿namespace Captura
 {
+    public enum VideoSourceKindEnum
+    {
+        NoVideo,
+        Window,
+        Screen,
+        FullScreen,
+        Region,
+        DeskDupl
+    }
+
     public class VideoSettings : PropertyStore
     {
         public string WriterKind
@@ -14,9 +24,9 @@
             set => Set(value);
         }
         
-        public string SourceKind
+        public VideoSourceKindEnum SourceKind
         {
-            get => Get("Screen");
+            get => Get(VideoSourceKindEnum.FullScreen);
             set => Set(value);
         }
 

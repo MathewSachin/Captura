@@ -53,22 +53,25 @@ namespace Captura.Models
             H264_NVENC,
             HEVC_NVENC
         };
+
+        public string Description { get; }
         
-        FFmpegItem(string Name, Func<string> Extension, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider)
-            : this(Name, Extension)
+        FFmpegItem(string Name, Func<string> Extension, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider, string Description = "")
+            : this(Name, Extension, Description)
         {
             _videoArgsProvider = VideoArgsProvider;
             _audioArgsProvider = AudioArgsProvider;
         }
 
-        protected FFmpegItem(string Name, Func<string> Extension)
+        protected FFmpegItem(string Name, Func<string> Extension, string Description)
         {
             _name = Name;
             _extension = Extension;
+            this.Description = Description;
         }
 
         public FFmpegItem(CustomFFmpegCodec CustomCodec) : this(CustomCodec.Name,
-            () => CustomCodec.Extension)
+            () => CustomCodec.Extension, "Custom Codec")
         {
             _videoArgsProvider = VideoQuality => CustomCodec.Args;
 

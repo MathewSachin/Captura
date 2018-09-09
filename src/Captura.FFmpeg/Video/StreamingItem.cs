@@ -8,7 +8,7 @@ namespace Captura.Models
         readonly FFmpegItem _baseItem;
         readonly Func<string> _linkFunction;
 
-        StreamingItem(string Name, Func<string> LinkFunction, FFmpegItem BaseItem) : base(Name, () => BaseItem.Extension)
+        StreamingItem(string Name, Func<string> LinkFunction, FFmpegItem BaseItem, string Description) : base(Name, () => BaseItem.Extension, Description)
         {
             _baseItem = BaseItem;
             _linkFunction = LinkFunction;
@@ -28,19 +28,19 @@ namespace Captura.Models
                 var settings = ServiceProvider.Get<FFmpegSettings>();
 
                 return $"rtmp://live.twitch.tv/app/{settings.TwitchKey}";
-            }, x264),
+            }, x264, "Stream to Twitch"),
             new StreamingItem("YouTube Live", () =>
             {
                 var settings = ServiceProvider.Get<FFmpegSettings>();
 
                 return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
-            }, x264),
+            }, x264, "Stream to YouTube Live (Not Tested)"),
             new StreamingItem("Custom", () =>
             {
                 var settings = ServiceProvider.Get<FFmpegSettings>();
 
                 return settings.CustomStreamingUrl;
-            }, x264)
+            }, x264, "Stream to custom service")
         };
     }
 }

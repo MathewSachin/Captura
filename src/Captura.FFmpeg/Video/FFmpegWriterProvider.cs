@@ -36,5 +36,8 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public string Description => @"Use FFmpeg for encoding.
+Requires ffmpeg.exe, if not found option for downloading or specifying path is shown.";
     }
 }

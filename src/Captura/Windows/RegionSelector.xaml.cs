@@ -15,6 +15,7 @@ namespace Captura
     public partial class RegionSelector : IRegionProvider
     {
         readonly IVideoSourcePicker _videoSourcePicker;
+        readonly RegionItem _regionItem;
 
         bool _widthBoxChanging, _heightBoxChanging, _resizing;
 
@@ -24,7 +25,7 @@ namespace Captura
 
             InitializeComponent();
 
-            VideoSource = new RegionItem(this, Loc);
+            _regionItem = new RegionItem(this);
 
             // Prevent Closing by User
             Closing += (S, E) => E.Cancel = true;
@@ -197,6 +198,10 @@ namespace Captura
                     (int)((Top + TopOffset) * Dpi.Y),
                     (int)((Width - WidthBorder) * Dpi.X),
                     (int)((Height - HeightBorder) * Dpi.Y)));
+
+            _regionItem.Name = _region.ToString().Replace("{", "")
+                .Replace("}", "")
+                .Replace(",", ", ");
         }
 
         // Ignoring Borders and Header
@@ -254,14 +259,15 @@ namespace Captura
             });
         }
 
-        public IVideoItem VideoSource { get; }
+        public IVideoItem VideoSource => _regionItem;
+
+        public IntPtr Handle => new WindowInteropHelper(this).Handle;
+
         #endregion
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
         {
-            var wih = new WindowInteropHelper(this);
-
-            var win = _videoSourcePicker.PickWindow(new [] { wih.Handle });
+            var win = _videoSourcePicker.PickWindow(new [] { Handle });
 
             if (win == null)
                 return;

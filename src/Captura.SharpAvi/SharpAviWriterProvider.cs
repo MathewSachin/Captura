@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using SharpAvi.Codecs;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Captura.Models
 {
@@ -11,11 +11,18 @@ namespace Captura.Models
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            return AviWriter.EnumerateEncoders().Select(Codec => new SharpAviItem(Codec)).GetEnumerator();
+            yield return new SharpAviItem(AviCodec.MotionJpeg, "Motion JPEG encoder using WPF's JPG encoder");
+            yield return new SharpAviItem(AviCodec.Uncompressed, "Uncompressed Avi");
+            yield return new SharpAviItem(AviCodec.Lagarith, "Lagarith codec needs to be installed manually and configured to use RGB mode with Null Frames disabled.");
+
+            foreach (var codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs())
+                yield return new SharpAviItem(new AviCodec(codec.Codec, codec.Name), "");
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public string Description => "Encode Avi videos using SharpAvi.";
     }
 }

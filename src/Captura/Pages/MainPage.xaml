@@ -41,6 +41,19 @@
                     TabStripPlacement="Left"
                     BorderThickness="0"
                     Margin="10,5">
+            <TabControl.Resources>
+                <Style x:Key="TabIcon"
+                       TargetType="Path"
+                       BasedOn="{StaticResource {x:Type Path}}">
+                    <Setter Property="Margin" Value="0,5"/>
+                    <Setter Property="Width" Value="15"/>
+                    <Setter Property="Height" Value="15"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Stretch" Value="Uniform"/>
+                    <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Label}}"/>
+                </Style>
+            </TabControl.Resources>
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <DockPanel>
@@ -53,13 +66,8 @@
             </TabControl.ContentTemplate>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconVideo}"
-                          Width="15"
-                          Height="15"
-                          Stretch="Uniform"
-                          Margin="0,5"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                    <Path Data="{StaticResource IconHome}"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
@@ -67,27 +75,8 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconSpeaker}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </TabItem.Header>
-                
-                <Frame Source="AudioPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Path Data="{StaticResource IconImage}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                    <Path Data="{StaticResource IconCamera}"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
@@ -96,12 +85,7 @@
             <TabItem>
                 <TabItem.Header>
                     <Path Data="{StaticResource IconHistory}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
@@ -110,12 +94,7 @@
             <TabItem>
                 <TabItem.Header>
                     <Path Data="{StaticResource IconWeb}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
@@ -124,22 +103,18 @@
             <TabItem>
                 <TabItem.Header>
                     <Label Content="FF"
-                           FontWeight="UltraBold"
-                           FontSize="13"
-                           Margin="0,3"
+                           Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Label}}"
+                           FontWeight="Bold"
+                           Padding="0,4"
                            ToolTip="FFmpeg"/>
                 </TabItem.Header>
+                
                 <Frame Source="FFmpegPage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <Path Data="{StaticResource IconSettings}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
@@ -148,12 +123,7 @@
             <TabItem>
                 <TabItem.Header>
                     <Path Data="{StaticResource IconHelp}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,5"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          Style="{StaticResource TabIcon}"
                           ToolTip="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
                 

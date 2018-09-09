@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Captura.Models
 {
     public abstract class VideoSourceProviderBase : NotifyPropertyChanged, IVideoSourceProvider
@@ -14,9 +11,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
-        public abstract IEnumerator<IVideoItem> GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public abstract IVideoItem Source { get; }
 
         public abstract string Name { get; }
     }

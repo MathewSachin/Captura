@@ -1,6 +1,7 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       x:Class="Captura.AboutPage"
       DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
@@ -12,91 +13,76 @@
         <ScrollViewer>
             <StackPanel MinWidth="150"
                         Margin="10">
-                <TextBlock TextWrapping="Wrap"
-                           LineHeight="30"
-                           Style="{StaticResource TextColor}">
-                    <Run FontSize="20" Text="Captura"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
-                    (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
-                </TextBlock>
+                <DockPanel>
+                    <mui:ModernButton Command="{Binding HyperlinkCommand}"
+                                      CommandParameter="https://github.com/MathewSachin/Captura/"
+                                      Margin="3"
+                                      DockPanel.Dock="Right"
+                                      IconData="{StaticResource IconGitHub}"
+                                      IconHeight="25"
+                                      IconWidth="25"
+                                      EllipseDiameter="35"
+                                      EllipseStrokeThickness="0"
+                                      ToolTip="View on GitHub"/>
 
-                <Grid Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://github.com/MathewSachin/Captura/"
-                            Margin="3">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconCode}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap"
+                               LineHeight="30"
+                               Style="{StaticResource TextColor}">
+                        <Run FontSize="20" Text="Captura"/> <Run Text="{Binding AppVersion, Mode=OneWay}"/><LineBreak/>
+                        (c) <Run Text="{Binding Year, Source={x:Static sys:DateTime.Now}, Mode=OneWay}"/> <Hyperlink CommandParameter="https://github.com/MathewSachin">Mathew Sachin</Hyperlink>
+                    </TextBlock>
+                </DockPanel>
 
-                            <TextBlock Text="{Binding Source, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://mathewsachin.github.io/Captura/changelog"
-                            Grid.Column="1"
-                            Margin="3">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconHistory}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
+                <Button Command="{Binding HyperlinkCommand}"
+                        CommandParameter="https://www.paypal.me/MathewSachin"
+                        Margin="3">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconPayPal}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              Margin="0,0,10,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://www.paypal.me/MathewSachin"
-                            Grid.Row="1"
-                            Margin="3">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconDollar}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </DockPanel>
+                </Button>
+                <Button Command="{Binding HyperlinkCommand}"
+                        CommandParameter="https://MathewSachin.github.io/Captura"
+                        Margin="3">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconWeb}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              Margin="0,0,10,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Command="{Binding HyperlinkCommand}"
-                            CommandParameter="https://MathewSachin.github.io/Captura"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="3">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconWeb}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-
-                            <TextBlock Text="Website"/>
-                        </DockPanel>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="Website"/>
+                    </DockPanel>
+                </Button>
 
                 <Button Click="ViewLicenses"
                         Content="View Licenses"
-                        Margin="3"/>
+                        Margin="3,15,3,3"/>
+
+                <Button Command="{Binding HyperlinkCommand}"
+                        CommandParameter="https://mathewsachin.github.io/Captura/changelog"
+                        Margin="3">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconHistory}"
+                              Width="15"
+                              Height="15"
+                              Stretch="Uniform"
+                              Margin="0,0,10,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </DockPanel>
+                </Button>
 
                 <Button Click="ViewCrashLogs"
                         Margin="3">
@@ -119,15 +105,15 @@
                         <Path Data="{StaticResource IconTranslate}"
                               Width="15"
                               Height="15"
-                              Margin="0,0,10,0"
                               Stretch="Uniform"
+                              Margin="0,0,10,0"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
                         <TextBlock Text="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
-                
+
                 <Label Margin="0,15,0,5">
                     <TextBlock Text="Tools"/>
                 </Label>

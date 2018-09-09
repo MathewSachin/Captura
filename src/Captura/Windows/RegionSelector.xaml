@@ -56,6 +56,8 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
                                   ToolTip="{Binding Value}"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
+                                  ToolTipService.Placement="Left"
                                   Margin="5"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -89,43 +91,58 @@
                    Grid.ColumnSpan="2">
                 <DockPanel Name="MainControls"
                            d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
-                    <local:ModernButton ToolTip="Snap to Window"
-                                        IconData="{StaticResource IconSnapToWindow}"
+                    <local:ModernButton IconData="{StaticResource IconSnapToWindow}"
                                         Background="{DynamicResource WindowBackground}"
                                         x:Name="Snapper"
                                         Click="Snapper_OnClick"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="Snap to Window"
+                                        ToolTipService.Placement="Top"/>
 
-                    <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
-                                        x:Name="CloseButton"
+                    <local:ModernButton x:Name="CloseButton"
                                         Click="CloseButton_Click"
                                         Background="{DynamicResource WindowBackground}"
                                         Foreground="#77ef5350"
                                         IconData="{StaticResource IconClose}"
                                         DockPanel.Dock="Right"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
+                                        ToolTipService.Placement="Top"/>
 
-                    <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
+                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
                                         IconData="{StaticResource IconCamera}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
+                                        ToolTipService.Placement="Top"/>
                     
-                    <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding RecordingViewModel.RecordCommand}"
+                    <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
+                                        ToolTipService.Placement="Top"/>
                     
-                    <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
-                                        Command="{Binding RecordingViewModel.PauseCommand}"
+                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True">
-                        <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
-                        </local:ModernButton.LayoutTransform>
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
+                                        ToolTipService.Placement="Top">
+                        <local:ModernButton.Style>
+                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                        <Setter Property="LayoutTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="90"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ModernButton.Style>
                     </local:ModernButton>
 
                     <Label Content="{Binding RecordingViewModel.TimeSpan}"

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
-using Captura.Models;
 using Moq;
 using Screna;
 using Xunit;
@@ -59,45 +57,6 @@ namespace Captura.Tests
             {
                 using (new WindowProvider(null, false, out var _)) { }
             });
-        }
-
-        [Fact]
-        public void ScreenImageSize()
-        {
-            var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
-            if (screenSourceProvider.FirstOrDefault() is ScreenItem screen)
-            {
-                using (var imgProvider = screen.GetImageProvider(false, out var _))
-                {
-                    Assert.Equal(imgProvider.Width, screen.Screen.Rectangle.Width);
-                    Assert.Equal(imgProvider.Height, screen.Screen.Rectangle.Height);
-
-                    using (var img = imgProvider.Capture())
-                    {
-                        Assert.Equal(img.Width, screen.Screen.Rectangle.Width);
-                        Assert.Equal(img.Height, screen.Screen.Rectangle.Height);
-                    }
-                }
-            }
-        }
-
-        [Fact]
-        public void ScreenCount()
-        {
-            var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
-            // There should be atleast 3 screen sources including Full screen and Screen Picker
-            Assert.True(screenSourceProvider.Count() >= 3);
-        }
-
-        [Fact]
-        public void DeskDuplCount()
-        {
-            var deskDuplProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
-            
-            // Atleast one screen
-            Assert.True(deskDuplProvider.Any());
         }
 
         [Fact]

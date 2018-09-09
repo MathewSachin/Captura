@@ -91,12 +91,13 @@ Dev builds can be unstable and should be used for testing purposes only.
 
 ## System Requirements
 
-- Verified on **Windows 10**. Might work on earlier versions also.
+- Verified on **Windows 10**. Atleast Windows Vista is required.
+- If you are on Windows 7 or earlier, make sure Aero is enabled.
+- **Desktop Duplication API** is only available on **Windows 8** and above.
 - 2 GHz CPU (Recommended).
 - 4 GB RAM (Recommended).
 - **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
 - Using the **FFmpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
-- **Desktop Duplication API** is only available on **Windows 8** and above.
 - For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
 
 ## FFmpeg

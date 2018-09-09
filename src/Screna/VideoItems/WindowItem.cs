@@ -6,20 +6,12 @@ namespace Captura.Models
 {
     public class WindowItem : NotifyPropertyChanged, IVideoItem
     {
-        public Window Window { get; }
+        public IWindow Window { get; }
 
-        public static readonly WindowItem TaskBar = new WindowItem(Window.Taskbar, "[TaskBar]");
-
-        public WindowItem(Window Window)
+        public WindowItem(IWindow Window)
         {
             this.Window = Window;
             Name = Window.Title;
-        }
-
-        public WindowItem(Window Window, string Name)
-        {
-            this.Window = Window;
-            this.Name = Name;
         }
 
         public override string ToString() => Name;

@@ -14,6 +14,8 @@ namespace Captura.Models
 
         public string Extension { get; } = ".gif";
 
+        public string Description => "Encode GIF";
+
         public override string ToString() => "Gif";
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)

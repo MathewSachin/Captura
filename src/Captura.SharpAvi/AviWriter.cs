@@ -99,19 +99,6 @@ namespace Captura.Models
         }
 
         /// <summary>
-        /// Enumerates all available Avi Encoders.
-        /// </summary>
-        public static IEnumerable<AviCodec> EnumerateEncoders()
-        {
-            yield return AviCodec.MotionJpeg;
-            yield return AviCodec.Uncompressed;
-            yield return AviCodec.Lagarith;
-            
-            foreach (var codec in Mpeg4VideoEncoderVcm.GetAvailableCodecs())
-                yield return new AviCodec(codec.Codec, codec.Name);
-        }
-
-        /// <summary>
         /// Write audio block to Audio Stream.
         /// </summary>
         /// <param name="Buffer">Buffer containing audio data.</param>

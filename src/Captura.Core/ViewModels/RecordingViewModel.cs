@@ -220,7 +220,8 @@ namespace Captura.ViewModels
         {
             if (_videoViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 _videoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
-                (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider && _videoViewModel.SelectedVideoSource is FFmpegAudioItem))
+                (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
+                && noVideoSourceProvider.Source is FFmpegAudioItem))
             {
                 if (!FFmpegService.FFmpegExists)
                 {
@@ -252,7 +253,7 @@ namespace Captura.ViewModels
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
 
                 if (yes)
-                    _videoViewModel.SelectedVideoSourceKind = _videoViewModel.AvailableVideoSourceKinds[0];
+                    _videoViewModel.SetDefaultSource();
 
                 return false;
             }
@@ -260,13 +261,6 @@ namespace Captura.ViewModels
             {
                 ServiceProvider.MessageProvider.ShowException(e, e.Message);
 
-                return false;
-            }
-
-            // Window Picker or Screen Picker Cancelled
-            if ((_videoViewModel.SelectedVideoSource is WindowPickerItem
-                || _videoViewModel.SelectedVideoSource is ScreenPickerItem) && imgProvider == null)
-            {
                 return false;
             }
 
@@ -283,7 +277,7 @@ namespace Captura.ViewModels
 
             var extension = _videoViewModel.SelectedVideoWriter.Extension;
 
-            if (_videoViewModel.SelectedVideoSource is NoVideoItem x)
+            if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
                 extension = x.Extension;
 
             _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
@@ -337,7 +331,7 @@ namespace Captura.ViewModels
                     {
                         _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
                     }
-                    else if (_videoViewModel.SelectedVideoSource is NoVideoItem audioWriter)
+                    else if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
                     {
                         IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
                         {
@@ -531,7 +525,7 @@ namespace Captura.ViewModels
         {
             Func<Point, Point> transform = P => P;
 
-            var imageProvider = _videoViewModel.SelectedVideoSource?.GetImageProvider(Settings.IncludeCursor, out transform);
+            var imageProvider = _videoViewModel.SelectedVideoSourceKind?.Source?.GetImageProvider(Settings.IncludeCursor, out transform);
 
             if (imageProvider == null)
                 return null;

@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+             xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:RecentItemViewModel}">
     <DockPanel IsEnabled="{Binding IsSaving, Converter={StaticResource NegatingConverter}}"
@@ -11,8 +12,30 @@
         <Path Stretch="Uniform"
               Height="15"
               Width="15"
-              Margin="0,0,5,0"
-              Style="{Binding ItemType, Converter={StaticResource RecentItemToIconStyleConverter}}"/>
+              Margin="0,0,5,0">
+            <Path.Style>
+                <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Image}">
+                            <Setter Property="Data" Value="{StaticResource IconImage}"/>
+                            <Setter Property="Fill" Value="YellowGreen"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Video}">
+                            <Setter Property="Data" Value="{StaticResource IconVideo}"/>
+                            <Setter Property="Fill" Value="OrangeRed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Audio}">
+                            <Setter Property="Data" Value="{StaticResource IconMusic}"/>
+                            <Setter Property="Fill" Value="DodgerBlue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Link}">
+                            <Setter Property="Data" Value="{StaticResource IconLink}"/>
+                            <Setter Property="Fill" Value="MediumPurple"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
         <Button DockPanel.Dock="Right"
                 ToolTip="{Binding RemoveFromList, Source={StaticResource Loc}, Mode=OneWay}"
                 BorderBrush="Transparent"

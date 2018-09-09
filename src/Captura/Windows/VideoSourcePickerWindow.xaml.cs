@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Screna;
+using Color = System.Windows.Media.Color;
 using Cursors = System.Windows.Input.Cursors;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -94,7 +95,9 @@ namespace Captura
                     Text = $"Select {_mode} or Press Esc to Cancel",
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Foreground = new SolidColorBrush(Colors.Black)
+                    Padding = new Thickness(10, 5, 10, 5),
+                    Foreground = new SolidColorBrush(Colors.White),
+                    Background = new SolidColorBrush(Color.FromArgb(183, 0, 0, 0))
                 };
 
                 container.Content = textBlock;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using Screna;
 
 namespace Captura.Models
@@ -6,22 +6,37 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WindowSourceProvider : VideoSourceProviderBase
     {
-        readonly WindowPickerItem _windowPickerItem;
+        readonly IVideoSourcePicker _videoSourcePicker;
+        readonly IRegionProvider _regionProvider;
 
-        public WindowSourceProvider(LanguageManager Loc, WindowPickerItem WindowPickerItem) : base(Loc)
+        public WindowSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker, IRegionProvider RegionProvider) : base(Loc)
         {
-            _windowPickerItem = WindowPickerItem;
+            _videoSourcePicker = VideoSourcePicker;
+            _regionProvider = RegionProvider;
         }
 
-        public override IEnumerator<IVideoItem> GetEnumerator()
+        public bool PickWindow()
         {
-            yield return _windowPickerItem;
+            var window = _videoSourcePicker.PickWindow(new [] { _regionProvider.Handle });
 
-            yield return WindowItem.TaskBar;
+            if (window == null)
+                return false;
 
-            foreach (var win in Window.EnumerateVisible())
-                yield return new WindowItem(win);
+            _source = new WindowItem(new Window(window.Handle));
+
+            RaisePropertyChanged(nameof(Source));
+            return true;
         }
+
+        public void Set(IntPtr Handle)
+        {
+            _source = new WindowItem(new Window(Handle));
+            RaisePropertyChanged(nameof(Source));
+        }
+
+        IVideoItem _source;
+
+        public override IVideoItem Source => _source;
 
         public override string Name => Loc.Window;
     }

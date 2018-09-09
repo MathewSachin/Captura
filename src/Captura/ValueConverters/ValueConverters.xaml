@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:captura="clr-namespace:Captura">
-    <captura:StateToPauseButtonAngleConverter x:Key="StateToPauseButtonAngleConverter"/>
     <captura:StateToRecordButtonGeometryConverter x:Key="StateToRecordButtonGeometryConverter"/>
     <captura:StateToTaskbarOverlayConverter x:Key="StateToTaskbarOverlayConverter"/>
     <captura:NotRecordingConverter x:Key="NotRecordingConverter"/>
@@ -10,10 +9,10 @@
     <captura:StateToTrayIconSourceConverter x:Key="StateToTrayIconSourceConverter"/>
     <captura:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
     <captura:InkToolToIconConverter x:Key="InkToolToIconConverter"/>
-    <captura:RecentItemToIconStyleConverter x:Key="RecentItemToIconStyleConverter"/>
     <captura:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter"/>
     <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
     <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
     <captura:GetTypeConverter x:Key="GetTypeConverter"/>
+    <captura:StaticResourceConverter x:Key="StaticResourceConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

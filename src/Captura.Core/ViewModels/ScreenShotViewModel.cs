@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Captura.Models;
 using Screna;
 
@@ -17,19 +18,39 @@ namespace Captura.ViewModels
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
 
+        public DiskWriter DiskWriter { get; }
+        public ClipboardWriter ClipboardWriter { get; }
+        public ImgurWriter ImgurWriter { get; }
+
+        public ICommand SourceToggleCommand { get; } = new DelegateCommand(OnSourceToggleExecute);
+
+        static void OnSourceToggleExecute(object M)
+        {
+            if (M is IImageWriterItem imageWriter)
+            {
+                imageWriter.Active = !imageWriter.Active;
+            }
+        }
+
         public ScreenShotViewModel(VideoViewModel VideoViewModel,
             RecentViewModel RecentViewModel,
             ISystemTray SystemTray,
             LanguageManager Loc,
             Settings Settings,
             IRegionProvider RegionProvider,
-            IMainWindow MainWindow) : base(Settings, Loc)
+            IMainWindow MainWindow,
+            DiskWriter DiskWriter,
+            ClipboardWriter ClipboardWriter,
+            ImgurWriter ImgurWriter) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
             _recentViewModel = RecentViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
+            this.DiskWriter = DiskWriter;
+            this.ClipboardWriter = ClipboardWriter;
+            this.ImgurWriter = ImgurWriter;
 
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
 
@@ -102,7 +123,7 @@ namespace Captura.ViewModels
         {
             Bitmap bmp = null;
 
-            var selectedVideoSource = _videoViewModel.SelectedVideoSource;
+            var selectedVideoSource = _videoViewModel.SelectedVideoSourceKind?.Source;
             var includeCursor = Settings.IncludeCursor;
 
             switch (_videoViewModel.SelectedVideoSourceKind)
@@ -114,16 +135,6 @@ namespace Captura.ViewModels
                     {
                         case WindowItem windowItem:
                             hWnd = windowItem.Window;
-                            break;
-
-                        case WindowPickerItem windowPicker:
-                            var picked = windowPicker.Picker.PickWindow();
-
-                            if (picked != null)
-                            {
-                                hWnd = picked;
-                            }
-                            else return null;
                             break;
                     }
 
@@ -137,40 +148,26 @@ namespace Captura.ViewModels
                     }
                     break;
 
-                case ScreenSourceProvider _:
-                    switch (selectedVideoSource)
+                case FullScreenSourceProvider _:
+                    var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
+
+                    if (hide)
                     {
-                        case FullScreenItem _:
-                            var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
+                        _mainWindow.IsVisible = false;
 
-                            if (hide)
-                            {
-                                _mainWindow.IsVisible = false;
-
-                                // Ensure that the Window is hidden
-                                await Task.Delay(300);
-                            }
-
-                            bmp = ScreenShot.Capture(includeCursor);
-
-                            if (hide)
-                                _mainWindow.IsVisible = true;
-                            break;
-
-                        case ScreenPickerItem screenPicker:
-                            var picked = screenPicker.Picker.PickScreen();
-
-                            if (picked != null)
-                            {
-                                bmp = ScreenShot.Capture(picked.Rectangle, includeCursor);
-                            }
-                            else return null;
-                            break;
-
-                        case ScreenItem screen:
-                            bmp = screen.Capture(includeCursor);
-                            break;
+                        // Ensure that the Window is hidden
+                        await Task.Delay(300);
                     }
+
+                    bmp = ScreenShot.Capture(includeCursor);
+
+                    if (hide)
+                        _mainWindow.IsVisible = true;
+                    break;
+
+                case ScreenSourceProvider _:
+                    if (selectedVideoSource is ScreenItem screen)
+                        bmp = screen.Capture(includeCursor);
 
                     bmp = bmp?.Transform(Settings.ScreenShots);
                     break;

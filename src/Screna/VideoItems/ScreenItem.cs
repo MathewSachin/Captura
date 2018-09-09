@@ -11,7 +11,7 @@ namespace Captura.Models
     {
         public IScreen Screen { get; }
 
-        ScreenItem(IScreen Screen)
+        public ScreenItem(IScreen Screen)
         {
             this.Screen = Screen;
         }

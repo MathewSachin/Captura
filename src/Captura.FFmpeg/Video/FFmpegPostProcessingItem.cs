@@ -26,6 +26,8 @@ namespace Captura.Models
 
         public override string ToString() => _name + " (Post Processing)";
 
+        public string Description => "Encoding is done after recording has been finished.";
+
         public static IEnumerable<FFmpegPostProcessingItem> Items { get; } = new[]
         {
             new FFmpegPostProcessingItem("WebM (Vp8 | Opus)", ".webm", VideoQuality =>

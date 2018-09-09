@@ -80,6 +80,7 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
+    <Compile Include="ViewModels\VideoSourceModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
     <Compile Include="Models\RememberByName.cs" />

@@ -114,11 +114,27 @@
                                     IsEnabled="{Binding Settings.FFmpeg.Resize}"/>
             </Grid>
 
-            <Label Content="Streaming"
-                   Margin="0,10,0,0"
-                   FontWeight="Bold"/>
+            <Button Margin="0,10"
+                    Click="ConfigCodecs">
+                <DockPanel>
+                    <Path Data="{StaticResource IconSettings}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
 
-            <Grid>
+                    <TextBlock Text="Configure Codecs"/>
+                </DockPanel>
+            </Button>
+
+            <Label Margin="0,10,0,0"
+                   Content="Streaming Keys"
+                   FontWeight="Bold"
+                   FontSize="15"/>
+
+            <Grid Margin="0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -127,7 +143,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="200"/>
                 </Grid.ColumnDefinitions>
 
                 <Path Data="{StaticResource IconTwitch}"
@@ -178,21 +194,6 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
             </Grid>
-
-            <Button Margin="0,10"
-                    Click="ConfigCodecs">
-                <DockPanel>
-                    <Path Data="{StaticResource IconSettings}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,0,10,0"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"/>
-
-                    <TextBlock Text="Configure Codecs"/>
-                </DockPanel>
-            </Button>
         </StackPanel>
     </Grid>
 </Page>

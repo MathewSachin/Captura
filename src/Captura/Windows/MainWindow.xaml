@@ -3,13 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:Captura"
-        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-        xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
         ResizeMode="CanMinimize"
         Icon="../Images/Captura.ico"
         SizeToContent="Height"
-        MaxWidth="420"
+        MaxWidth="450"
         Title="Captura"
         Left="{Binding Settings.UI.MainWindowLeft}"
         Top="{Binding Settings.UI.MainWindowTop}"
@@ -67,9 +65,19 @@
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
                                 </Image.Source>
-                                <Image.LayoutTransform>
-                                    <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
-                                </Image.LayoutTransform>
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                                <Setter Property="LayoutTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="90"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
                             </Image>
                         </MenuItem.Icon>
                     </MenuItem>
@@ -148,9 +156,19 @@
                                         Command="{Binding RecordingViewModel.PauseCommand}"
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9">
-                        <local:ModernButton.LayoutTransform>
-                            <RotateTransform Angle="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToPauseButtonAngleConverter}}"/>
-                        </local:ModernButton.LayoutTransform>
+                        <local:ModernButton.Style>
+                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                        <Setter Property="LayoutTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="90"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ModernButton.Style>
                     </local:ModernButton>
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
@@ -176,7 +194,7 @@
                 </DockPanel>
             </Expander.Header>
             <DockPanel Margin="-5,0,0,0"
-                       Height="560">
+                       Height="520">
                 <Label Margin="5"
                        Content="{Binding RecordingViewModel.Status.Display}"
                        Opacity="0.9"

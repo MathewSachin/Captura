@@ -48,30 +48,21 @@ namespace Captura
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImgurWriter>);
 
             // Video Writer Providers
-            Binder.Bind<IVideoWriterProvider, FFmpegWriterProvider>();
-            Binder.Bind<IVideoWriterProvider, GifWriterProvider>();
-            Binder.Bind<IVideoWriterProvider, StreamingWriterProvider>();
+            Binder.BindSingleton<FFmpegWriterProvider>();
+            Binder.BindSingleton<GifWriterProvider>();
+            Binder.BindSingleton<StreamingWriterProvider>();
+            Binder.BindSingleton<DiscardWriterProvider>();
+            Binder.BindSingleton<SharpAviWriterProvider>();
 
-#if DEBUG
-            Binder.Bind<IVideoWriterProvider, DiscardWriterProvider>();
-#endif
-
-            // Check if SharpAvi is available
-            if (ServiceProvider.FileExists("SharpAvi.dll"))
-            {
-                Binder.Bind<IVideoWriterProvider, SharpAviWriterProvider>();
-            }
-
-            Binder.BindSingleton<WindowPickerItem>();
-            Binder.BindSingleton<ScreenPickerItem>();
             Binder.BindSingleton<FullScreenItem>();
 
             // Video Source Providers
-            Binder.Bind<IVideoSourceProvider, ScreenSourceProvider>();
-            Binder.Bind<IVideoSourceProvider, RegionSourceProvider>();
-            Binder.Bind<IVideoSourceProvider, WindowSourceProvider>();
-            Binder.Bind<IVideoSourceProvider, DeskDuplSourceProvider>();
-            Binder.Bind<IVideoSourceProvider, NoVideoSourceProvider>();
+            Binder.BindSingleton<ScreenSourceProvider>();
+            Binder.BindSingleton<FullScreenSourceProvider>();
+            Binder.BindSingleton<RegionSourceProvider>();
+            Binder.BindSingleton<WindowSourceProvider>();
+            Binder.BindSingleton<DeskDuplSourceProvider>();
+            Binder.BindSingleton<NoVideoSourceProvider>();
 
             // Folder Browser Dialog
             Binder.Bind<IDialogService, DialogService>();

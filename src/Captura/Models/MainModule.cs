@@ -15,7 +15,8 @@ namespace Captura
             Binder.Bind<IPreviewWindow, PreviewWindowService>();
             Binder.Bind<IVideoSourcePicker, VideoSourcePicker>();
 
-            Binder.Bind<IImageWriterItem, EditorWriter>();
+            Binder.BindSingleton<EditorWriter>();
+            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<EditorWriter>);
 
             Binder.Bind<IWebCamProvider, WebCamProvider>();
             

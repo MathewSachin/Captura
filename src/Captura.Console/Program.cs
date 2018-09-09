@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -162,12 +161,10 @@ namespace Captura
             #region Windows
             WriteLine("AVAILABLE WINDOWS" + underline);
 
-            var winProvider = ServiceProvider.Get<WindowSourceProvider>();
-
             // Window Picker is skipped automatically
-            foreach (var source in winProvider.OfType<WindowItem>())
+            foreach (var source in Window.EnumerateVisible())
             {
-                WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
+                WriteLine($"{source.Handle.ToString().PadRight(10)}: {source.Title}");
             }
 
             WriteLine();
@@ -176,14 +173,12 @@ namespace Captura
             #region Screens
             WriteLine("AVAILABLE SCREENS" + underline);
 
-            var scrProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
             var j = 0;
 
             // First is Full Screen, Second is Screen Picker
-            foreach (var screen in scrProvider.Skip(2))
+            foreach (var screen in ScreenItem.Enumerate())
             {
-                WriteLine($"{j.ToString().PadRight(2)}: {screen}");
+                WriteLine($"{j.ToString().PadRight(2)}: {screen.Name}");
 
                 ++j;
             }
@@ -276,10 +271,11 @@ namespace Captura
 
                 if (index < ScreenItem.Count)
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
+                    var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
 
-                    // First item is Full Screen, Second is Screen Picker
-                    video.SelectedVideoSource = video.AvailableVideoSources[index + 2];
+                    screenSourceProvider.Set(index);
+
+                    video.SelectedVideoSourceKind = screenSourceProvider;
                 }
             }
 
@@ -290,14 +286,9 @@ namespace Captura
 
                 var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 
-                var matchingWin = winProvider.OfType<WindowItem>().FirstOrDefault(M => M.Window.Handle == handle);
+                winProvider.Set(handle);
 
-                if (matchingWin != null)
-                {
-                    video.SelectedVideoSourceKind = winProvider;
-
-                    video.SelectedVideoSource = matchingWin;
-                }
+                video.SelectedVideoSourceKind = winProvider;
             }
 
             // Start command only
@@ -310,9 +301,11 @@ namespace Captura
 
                     if (index < ScreenItem.Count)
                     {
-                        video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+                        var deskDuplSourceProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
 
-                        video.SelectedVideoSource = video.AvailableVideoSources[index];
+                        deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
+
+                        video.SelectedVideoSourceKind = deskDuplSourceProvider;
                     }
                 }
 
@@ -355,7 +348,7 @@ namespace Captura
 
                 video.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
@@ -366,7 +359,7 @@ namespace Captura
 
                 video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 

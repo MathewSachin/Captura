@@ -11,9 +11,19 @@ namespace Captura
         {
             var b = Value != null;
 
-            if (Value is ICollection collection)
+            switch (Value)
             {
-                b = collection.Count != 0;
+                case ICollection collection:
+                    b = collection.Count != 0;
+                    break;
+
+                case string str:
+                    b = !string.IsNullOrWhiteSpace(str);
+                    break;
+
+                case int i:
+                    b = i != 0;
+                    break;
             }
 
             if ((Parameter is bool inverse || Parameter is string s && bool.TryParse(s, out inverse)) && inverse)

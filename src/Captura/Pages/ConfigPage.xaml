@@ -6,8 +6,7 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>        
         <ScrollViewer>
-            <StackPanel Margin="5"
-                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+            <StackPanel Margin="5">
                 <Label Margin="0,0,0,5"
                        Content="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"
@@ -38,7 +37,8 @@
                     </ComboBox>
                 </DockPanel>
 
-                <Grid Margin="0,0,0,5">
+                <Grid Margin="0,0,0,5"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -54,7 +54,8 @@
 
                     <xctk:IntegerUpDown Value="{Binding Settings.StartDelay, Mode=TwoWay}"
                                         Grid.Column="1"
-                                        Margin="0,2"/>
+                                        Margin="0,2"
+                                        ToolTip="Milliseconds to wait before starting recording"/>
 
                     <Label Content="{Binding CaptureDuration, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
@@ -64,7 +65,8 @@
                     <xctk:IntegerUpDown Value="{Binding Settings.Duration, Mode=TwoWay}"
                                         Grid.Row="1"
                                         Grid.Column="1"
-                                        Margin="0,2"/>
+                                        Margin="0,2"
+                                        ToolTip="No of seconds after which recording is stopped automatically. 0 = don't stop automatically"/>
                 </Grid>
 
                 <CheckBox IsChecked="{Binding Settings.UI.MinimizeOnStart}"
@@ -101,37 +103,44 @@
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
 
-                <Button Click="OpenHotkeyManager"
-                        VerticalAlignment="Top"
-                        Margin="0,15,0,2">
-                    <DockPanel>
-                        <Path Data="{StaticResource IconSettings}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Configure Hotkeys"/>
-                    </DockPanel>
-                </Button>
+                    <Button Click="OpenHotkeyManager"
+                            VerticalAlignment="Top"
+                            Margin="0,0,5,0">
+                        <DockPanel>
+                            <Path Data="{StaticResource IconSettings}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
 
-                <Button Click="OpenOverlayManager"
-                        VerticalAlignment="Top"
-                        Margin="0,2,0,15">
-                    <DockPanel>
-                        <Path Data="{StaticResource IconSettings}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                            <TextBlock Text="Hotkeys"/>
+                        </DockPanel>
+                    </Button>
 
-                        <TextBlock Text="Configure Overlays"/>
-                    </DockPanel>
-                </Button>
+                    <Button Click="OpenOverlayManager"
+                            VerticalAlignment="Top"
+                            Grid.Column="1">
+                        <DockPanel>
+                            <Path Data="{StaticResource IconSettings}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="Overlays"/>
+                        </DockPanel>
+                    </Button>
+                </Grid>
 
                 <Frame Source="ExtrasPage.xaml"/>
             </StackPanel>

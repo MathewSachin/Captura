@@ -96,6 +96,7 @@
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\StaticResourceConverter.cs" />
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>
@@ -112,7 +113,6 @@
     <Compile Include="Presentation\PuncturedRect.cs" />
     <Compile Include="ValueConverters\GetTypeConverter.cs" />
     <Compile Include="ValueConverters\IsPlayingToButtonStyleConverter.cs" />
-    <Compile Include="ValueConverters\RecentItemToIconStyleConverter.cs" />
     <Compile Include="ValueConverters\IntegralTimeSpanConverter.cs" />
     <Compile Include="ViewModels\TrimmerViewModel.cs" />
     <Compile Include="ViewModels\ExceptionViewModel.cs" />
@@ -204,7 +204,6 @@
     <Compile Include="ValueConverters\DrawingToWpfColorConverter.cs" />
     <Compile Include="ValueConverters\NegatingConverter.cs" />
     <Compile Include="ValueConverters\NotRecordingConverter.cs" />
-    <Compile Include="ValueConverters\StateToPauseButtonAngleConverter.cs" />
     <Compile Include="ValueConverters\StateToTrayIconSourceConverter.cs" />
     <Compile Include="ValueConverters\StateToRecordButtonGeometryConverter.cs" />
     <Compile Include="ValueConverters\StateToTaskbarOverlayConverter.cs" />
@@ -458,9 +457,17 @@
       <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
       <Name>Captura.MouseKeyHook</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
+      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
+      <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
+      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
+      <Name>DesktopDuplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>

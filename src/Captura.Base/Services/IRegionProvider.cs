@@ -16,5 +16,7 @@ namespace Captura.Models
         void Release();
 
         event Action SelectorHidden;
+
+        IntPtr Handle { get; }
     }
 }
