@@ -4,12 +4,15 @@
     {
         readonly AviCodec _codec;
 
-        public SharpAviItem(AviCodec Codec)
+        public SharpAviItem(AviCodec Codec, string Description)
         {
             _codec = Codec;
+            this.Description = Description;
         }
 
         public string Extension { get; } = ".avi";
+
+        public string Description { get; }
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {

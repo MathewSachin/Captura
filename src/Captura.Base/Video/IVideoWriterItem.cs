@@ -8,6 +8,8 @@
         // file extension including the leading dot
         string Extension { get; }
 
+        string Description { get; }
+
         IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args);
     }
 }

@@ -10,5 +10,7 @@
         }
 
         public override string ToString() => "Discard";
+
+        public string Description => "For testing purposes.";
     }
 }

@@ -17,6 +17,7 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
-        public string Description => "Stream to streaming sites using FFmpeg (Alpha).";
+        public string Description => @"Stream to streaming sites using FFmpeg (Alpha).
+API keys can be set on FFmpeg settings page.";
     }
 }

@@ -147,6 +147,18 @@
                             </Style.Triggers>
                         </Style>
                     </ComboBox.Style>
+                    <ComboBox.ToolTip>
+                        <StackPanel MinWidth="200">
+                            <Label Content="{Binding VideoViewModel.SelectedVideoWriter, Mode=OneWay}"
+                                   FontWeight="Bold"/>
+
+                            <Label Content="{Binding VideoViewModel.SelectedVideoWriter.Extension, Mode=OneWay}"
+                                   ContentStringFormat="{}File extension: {0}"/>
+                            
+                            <TextBlock Text="{Binding VideoViewModel.SelectedVideoWriter.Description, Mode=OneWay}"
+                                       Visibility="{Binding VideoViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}}"/>
+                        </StackPanel>
+                    </ComboBox.ToolTip>
                 </ComboBox>
 
                 <CheckBox Margin="0,5"
