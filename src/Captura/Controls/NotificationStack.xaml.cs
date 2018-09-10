@@ -135,6 +135,9 @@ namespace Captura
 
         void NotificationStack_OnMouseMove(object Sender, MouseEventArgs E)
         {
+            if (ItemsControl.Items.Count == 0)
+                return;
+
             _lastMouseMoveTime = DateTime.Now;
 
             Show();
