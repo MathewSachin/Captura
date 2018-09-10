@@ -65,6 +65,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CollapsedBar.xaml.cs">
+      <DependentUpon>CollapsedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\WebcamPage.xaml.cs">
+      <DependentUpon>WebcamPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AudioPage.xaml.cs">
       <DependentUpon>AudioPage.xaml</DependentUpon>
     </Compile>
@@ -236,6 +242,14 @@
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Page Include="Controls\CollapsedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\WebcamPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\AudioPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

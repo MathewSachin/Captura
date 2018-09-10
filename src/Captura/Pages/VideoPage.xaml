@@ -288,39 +288,9 @@
                               Data="{StaticResource IconWebcam}"/>
 
                         <xctk:DropDownButton.DropDownContent>
-                            <StackPanel Margin="10"
-                                        MinWidth="250">
-                                <Label Margin="0,3"
-                                       Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                                       FontWeight="Bold"/>
-
-                                <DockPanel Margin="0,5">
-                                    <Path Data="{StaticResource IconWebcam}"
-                                          Width="15"
-                                          Height="15"
-                                          Margin="0,0,7,0"
-                                          Stretch="Uniform"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                                    <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
-                                            DockPanel.Dock="Right"
-                                            Click="Preview_Click"
-                                            Padding="10,0"
-                                            Margin="3,0"/>
-
-                                    <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
-                                              SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                                              IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
-                                              DisplayMemberPath="Name"/>
-                                </DockPanel>
-
-                                <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
-                                          Content="Record Webcam to separate file"
-                                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                          Margin="0,5"/>
-                            </StackPanel>
+                            <Frame Source="WebcamPage.xaml"
+                                   Margin="10"
+                                   MinWidth="250"/>
                         </xctk:DropDownButton.DropDownContent>
                     </xctk:DropDownButton>
 

@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Captura.CollapsedBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:captura="clr-namespace:Captura"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
+             mc:Ignorable="d">
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
+                <Setter Property="Width" Value="12"/>
+                <Setter Property="Height" Value="12"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"/>
+            </Style>
+            <Style TargetType="captura:ModernToggleButton" BasedOn="{StaticResource {x:Type captura:ModernToggleButton}}">
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </DockPanel.Resources>
+        <DockPanel DockPanel.Dock="Top">
+            <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                                 DockPanel.Dock="Right"
+                                 Margin="0,5,5,5">
+                <Path Data="{StaticResource IconMic}">
+                    <Path.Style>
+                        <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
+                                    <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+
+                <xctk:DropDownButton.DropDownContent>
+                    <Frame Source="../Pages/AudioPage.xaml"
+                           Margin="10"/>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
+
+            <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                 Padding="5"
+                                 DockPanel.Dock="Right"
+                                 Margin="0,5,5,5">
+                <Path Style="{StaticResource VideoSourceIcon}"
+                      Data="{StaticResource IconWebcam}"/>
+
+                <xctk:DropDownButton.DropDownContent>
+                    <Frame Source="../Pages/WebcamPage.xaml"
+                           Margin="10"
+                           MinWidth="250"/>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
+
+            <captura:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Command="{Binding OpenOutputFolderCommand}"
+                                  IconData="{StaticResource IconFolder}"
+                                  DockPanel.Dock="Right"/>
+
+            <StackPanel Orientation="Horizontal">
+                <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
+                                            IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                                            IconData="{StaticResource IconCursor}"
+                                            IsChecked="{Binding Settings.IncludeCursor}"/>
+                <captura:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
+                                            IconData="{StaticResource IconHand}"
+                                            IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
+                <captura:ModernToggleButton ToolTip="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
+                                            IconData="{StaticResource IconKeyboard}"
+                                            IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <ListView Margin="0,5"
+                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      ItemsSource="{Binding VideoViewModel.VideoSources}"
+                      SelectedValuePath="Provider"
+                      SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
+                      BorderThickness="0.4"
+                      SelectionMode="Single">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#01000000">
+                            <Grid.ToolTip>
+                                <StackPanel MinWidth="200">
+                                    <TextBlock Text="{Binding Name.Display, Mode=OneWay}"
+                                               FontWeight="Bold"/>
+
+                                    <TextBlock Text="{Binding Description, Mode=OneWay}"/>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <Path Data="{Binding IconResourceKey, Converter={StaticResource StaticResourceConverter}}"
+                                  Style="{StaticResource VideoSourceIcon}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnVideoSourceReSelect"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

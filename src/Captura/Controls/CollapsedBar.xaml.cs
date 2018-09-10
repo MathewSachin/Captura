@@ -4,9 +4,9 @@ using Captura.Models;
 
 namespace Captura
 {
-    public partial class VideoPage
+    public partial class CollapsedBar
     {
-        public VideoPage()
+        public CollapsedBar()
         {
             InitializeComponent();
         }

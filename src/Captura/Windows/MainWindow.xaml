@@ -36,6 +36,11 @@
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Grid Background="{DynamicResource WindowBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
@@ -134,6 +139,7 @@
         </tb:TaskbarIcon>
 
         <Expander Padding="5,0,0,0"
+                  Grid.Row="0"
                   IsExpanded="{Binding Settings.UI.Expanded}">
             <Expander.HeaderTemplate>
                 <DataTemplate>
@@ -240,5 +246,11 @@
                 <Frame Source="../Pages/MainPage.xaml"/>
             </DockPanel>
         </Expander>
+        
+        <Grid Grid.Row="1"
+              Margin="0,0,0,5"
+              Visibility="{Binding Settings.UI.Expanded, Converter={StaticResource NegatingConverter}}">
+            <local:CollapsedBar/>
+        </Grid>
     </Grid>
 </Window>

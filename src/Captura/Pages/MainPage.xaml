@@ -51,7 +51,7 @@
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Stretch" Value="Uniform"/>
-                    <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Label}}"/>
+                    <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"/>
                 </Style>
             </TabControl.Resources>
             <TabControl.ContentTemplate>
@@ -103,7 +103,7 @@
             <TabItem>
                 <TabItem.Header>
                     <Label Content="FF"
-                           Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Label}}"
+                           Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
                            FontWeight="Bold"
                            Padding="0,4"
                            ToolTip="FFmpeg"/>
