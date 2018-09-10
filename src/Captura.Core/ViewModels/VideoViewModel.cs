@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
@@ -22,7 +20,8 @@ namespace Captura.ViewModels
         public ObservableCollection<IVideoWriterProvider> VideoWriterProviders { get; } = new ObservableCollection<IVideoWriterProvider>();
 
         const string NoVideoDescription = @"No Video recorded.
-Can be used for audio-only recording.";
+Can be used for audio-only recording.
+Make sure Audio sources are enabled.";
 
         const string FullScreenDescription = "Record Fullscreen.";
 

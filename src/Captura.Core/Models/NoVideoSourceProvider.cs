@@ -8,8 +8,8 @@ namespace Captura.Models
         public NoVideoSourceProvider(LanguageManager Loc) : base(Loc)
         {
             Sources = new IVideoItem[] {WaveItem.Instance}
-              .Concat(FFmpegAudioItem.Items)
-              .ToArray();
+                .Concat(FFmpegAudioItem.Items)
+                .ToArray();
         }
 
         public IVideoItem[] Sources { get; }

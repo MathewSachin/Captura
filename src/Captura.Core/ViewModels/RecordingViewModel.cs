@@ -257,6 +257,12 @@ namespace Captura.ViewModels
 
                 return false;
             }
+            catch (ObjectDisposedException) when (_videoViewModel.SelectedVideoSourceKind is WindowSourceProvider)
+            {
+                ServiceProvider.MessageProvider.ShowError("Selected Window has been Closed.", "Window Closed");
+
+                return false;
+            }
             catch (Exception e)
             {
                 ServiceProvider.MessageProvider.ShowException(e, e.Message);

@@ -20,6 +20,11 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
+            if (!Window.IsAlive)
+            {
+                throw new ObjectDisposedException(nameof(Window));
+            }
+
             return new WindowProvider(Window, IncludeCursor, out Transform);
         }
     }
