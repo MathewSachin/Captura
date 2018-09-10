@@ -37,6 +37,7 @@
     </Style>
 
     <Style TargetType="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
