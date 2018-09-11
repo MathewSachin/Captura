@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Screna;
 
@@ -22,12 +23,20 @@ namespace Captura.Models
         readonly KeyRecords _records;
 
         readonly KeymapViewModel _keymap;
+        readonly Func<TimeSpan> _elapsed;
+
+        FileStream _keystrokeFileStream;
+        TextWriter _textWriter;
         #endregion
         
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        public MouseKeyHook(MouseClickSettings MouseClickSettings, KeystrokesSettings KeystrokesSettings, KeymapViewModel Keymap)
+        public MouseKeyHook(MouseClickSettings MouseClickSettings,
+            KeystrokesSettings KeystrokesSettings,
+            KeymapViewModel Keymap,
+            string FileName,
+            Func<TimeSpan> Elapsed)
         {
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;
@@ -43,11 +52,40 @@ namespace Captura.Models
             };
 
             _hook.MouseUp += (S, E) => _mouseClicked = false;
-            
-            _records = new KeyRecords(KeystrokesSettings.HistoryCount);
 
-            _hook.KeyDown += OnKeyDown;
-            _hook.KeyUp += OnKeyUp;
+            if (KeystrokesSettings.SeparateTextFile)
+            {
+                _elapsed = Elapsed;
+
+                var dir = Path.GetDirectoryName(FileName);
+                var fileNameWoExt = Path.GetFileNameWithoutExtension(FileName);
+
+                var targetName = $"{fileNameWoExt}.keys.txt";
+
+                var path = dir == null ? targetName : Path.Combine(dir, targetName);
+
+                _keystrokeFileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+                _textWriter = new StreamWriter(_keystrokeFileStream);
+
+                _hook.KeyDown += (S, E) =>
+                {
+                    if (!_keystrokesSettings.Display)
+                    {
+                        return;
+                    }
+
+                    var record = new KeyRecord(E, _keymap);
+
+                    _textWriter.WriteLine($"{_elapsed.Invoke()}: {record.Display}");
+                };
+            }
+            else
+            {
+                _records = new KeyRecords(KeystrokesSettings.HistoryCount);
+
+                _hook.KeyDown += OnKeyDown;
+                _hook.KeyUp += OnKeyUp;
+            }
         }
 
         void OnKeyUp(object Sender, KeyEventArgs Args)
@@ -357,6 +395,9 @@ namespace Captura.Models
         public void Dispose()
         {
             _hook?.Dispose();
+
+            _textWriter?.Dispose();
+            _keystrokeFileStream?.Dispose();
         }
     }
 }

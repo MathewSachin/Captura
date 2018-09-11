@@ -218,6 +218,17 @@ namespace Captura.ViewModels
 
         public bool StartRecording(string FileName = null)
         {
+            Settings.EnsureOutPath();
+
+            _isVideo = !(_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
+
+            var extension = _videoViewModel.SelectedVideoWriter.Extension;
+
+            if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
+                extension = x.Extension;
+
+            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
+
             if (_videoViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 _videoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
                 (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
@@ -277,16 +288,6 @@ namespace Captura.ViewModels
                 deskDuplImageProvider.Timeout = 5000;
             }
 
-            Settings.EnsureOutPath();
-
-            _isVideo = !(_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
-
-            var extension = _videoViewModel.SelectedVideoWriter.Extension;
-
-            if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
-                extension = x.Extension;
-
-            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
 
             IAudioProvider audioProvider = null;
 
@@ -547,7 +548,7 @@ namespace Captura.ViewModels
             }
 
             overlays.Add(new MousePointerOverlay(Settings.MousePointerOverlay));
-            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes, _keymap));
+            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes, _keymap, _currentFileName, () => TimeSpan));
             overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
 
             // Custom Overlays
