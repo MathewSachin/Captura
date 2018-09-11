@@ -33,5 +33,11 @@ namespace Captura
             get => Get(KeymapViewModel.DefaultKeymapFileName);
             set => Set(value);
         }
+
+        public bool SeparateTextFile
+        {
+            get => Get(false);
+            set => Set(value);
+        }
     }
 }
