@@ -31,7 +31,8 @@
                                 DataContext="{Binding Settings.Keystrokes}">
                         <CheckBox Content="Save to separate Text file"
                                   IsChecked="{Binding SeparateTextFile, Mode=TwoWay}"
-                                  Margin="0,3"/>
+                                  Margin="0,3"
+                                  IsEnabled="{Binding MainViewModel.RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}"/>
                         
                         <DockPanel Margin="0,3">
                             <Label Content="Keymap"
