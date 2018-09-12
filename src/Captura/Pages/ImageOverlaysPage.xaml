@@ -1,0 +1,59 @@
+﻿<Page x:Class="Captura.ImageOverlaysPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:captura="clr-namespace:Captura"
+      Title="Image Overlays">
+    <Grid>
+        <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CustomImageOverlays, Source={StaticResource ServiceLocator}}">
+            <DockPanel DockPanel.Dock="Top">
+                <captura:ModernButton ToolTip="Add"
+                                      Command="{Binding AddCommand}"
+                                      IconData="{StaticResource IconAdd}"/>
+
+                <Label Content="Add More"/>
+            </DockPanel>
+
+            <ListView Margin="5"
+                      ItemsSource="{Binding Collection}"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="Image"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <GridSplitter Width="1"/>
+
+            <DockPanel Margin="10"
+                       VerticalAlignment="Top"
+                       Visibility="{Binding SelectedItem, Converter={StaticResource NotNullConverter}}">
+                <captura:ImageOverlaySettingsControl DockPanel.Dock="Bottom"
+                                                     Margin="0,5"
+                                                     DataContext="{Binding SelectedItem}"/>
+
+                <DockPanel DockPanel.Dock="Top">
+                    <captura:ModernButton ToolTip="Remove"
+                                          Command="{Binding RemoveCommand}"
+                                          CommandParameter="{Binding SelectedItem}"
+                                          IconData="{StaticResource IconClose}"
+                                          DockPanel.Dock="Right"/>
+
+                    <CheckBox IsChecked="{Binding SelectedItem.Display, Mode=TwoWay}"
+                              Content="Display"/>
+                </DockPanel>
+
+                <Label Content="Source"
+                       ContentStringFormat="{}{0}: "/>
+
+                <Button Content="..."
+                        DockPanel.Dock="Right"
+                        Command="{Binding ChangeCommand}"
+                        CommandParameter="{Binding SelectedItem}"/>
+
+                <TextBox Text="{Binding SelectedItem.Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5,0"/>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Page>

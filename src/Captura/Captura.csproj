@@ -68,6 +68,21 @@
     <Compile Include="Controls\CollapsedBar.xaml.cs">
       <DependentUpon>CollapsedBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
+      <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ImageOverlaysPage.xaml.cs">
+      <DependentUpon>ImageOverlaysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\KeystrokesPage.xaml.cs">
+      <DependentUpon>KeystrokesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MouseOverlayPage.xaml.cs">
+      <DependentUpon>MouseOverlayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TextOverlaysPage.xaml.cs">
+      <DependentUpon>TextOverlaysPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\WebcamPage.xaml.cs">
       <DependentUpon>WebcamPage.xaml</DependentUpon>
     </Compile>
@@ -243,6 +258,26 @@
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
     <Page Include="Controls\CollapsedBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CensorOverlaysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ImageOverlaysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\KeystrokesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MouseOverlayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TextOverlaysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

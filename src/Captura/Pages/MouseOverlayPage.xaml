@@ -1,0 +1,172 @@
+﻿<Page x:Class="Captura.MouseOverlayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      Title="Mouse Overlay">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <Expander Margin="5"
+                          IsExpanded="True">
+                    <Expander.Header>
+                        <Label Content="Mouse Pointer"/>
+                    </Expander.Header>
+
+                    <StackPanel Margin="5"
+                                DataContext="{Binding Settings.MousePointerOverlay}">
+
+                        <CheckBox Content="Display"
+                                  IsChecked="{Binding Display, Mode=TwoWay}"
+                                  Margin="0,5"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="{Binding Radius, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"/>
+                            <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
+                                                Minimum="1"
+                                                Margin="0,5"
+                                                Grid.Column="1"/>
+
+                            <Label Content="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="1"/>
+                            <xctk:ColorPicker SelectedColor="{Binding Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Row="1"
+                                              Grid.Column="1"
+                                              Margin="0,5"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Path Data="{StaticResource IconBorder}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Border"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Column="1"/>
+
+                            <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
+                                                Grid.Column="2"
+                                                Margin="5"/>
+
+                            <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Column="3"
+                                              Margin="0,5"/>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Margin="5"
+                          IsExpanded="True">
+                    <Expander.Header>
+                        <Label Content="{Binding MouseClicks, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </Expander.Header>
+
+                    <StackPanel Margin="5"
+                                DataContext="{Binding Settings.Clicks}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="{Binding Radius, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"/>
+                            <xctk:IntegerUpDown Value="{Binding Radius, Mode=TwoWay}"
+                                                Minimum="1"
+                                                Margin="0,5"
+                                                Grid.Column="1"/>
+
+                            <Label Content="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="1"/>
+                            <xctk:ColorPicker SelectedColor="{Binding Color, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Row="1"
+                                              Grid.Column="1"
+                                              Margin="0,5"/>
+
+                            <Label Content="Right Click Color"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="2"/>
+                            <xctk:ColorPicker SelectedColor="{Binding RightClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Row="2"
+                                              Grid.Column="1"
+                                              Margin="0,5"/>
+
+                            <Label Content="Middle Click Color"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Row="3"/>
+                            <xctk:ColorPicker SelectedColor="{Binding MiddleClickColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Row="3"
+                                              Grid.Column="1"
+                                              Margin="0,5"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Path Data="{StaticResource IconBorder}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="Border"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,5,5,5"
+                                   Grid.Column="1"/>
+
+                            <xctk:IntegerUpDown Value="{Binding BorderThickness, Mode=TwoWay}"
+                                                Grid.Column="2"
+                                                Margin="5"/>
+
+                            <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                              Grid.Column="3"
+                                              Margin="0,5"/>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
