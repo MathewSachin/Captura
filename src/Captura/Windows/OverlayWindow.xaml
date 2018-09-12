@@ -29,15 +29,32 @@
                 <ScrollViewer DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
                     <StackPanel Margin="5"
                                 DataContext="{Binding Settings.Keystrokes}">
-                        <local:TextOverlaySettingsControl/>
+                        <CheckBox Content="Save to separate Text file"
+                                  IsChecked="{Binding SeparateTextFile, Mode=TwoWay}"
+                                  Margin="0,3"
+                                  IsEnabled="{Binding MainViewModel.RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}"/>
+                        
+                        <DockPanel Margin="0,3">
+                            <Label Content="Keymap"
+                                   ContentStringFormat="{}{0}: "
+                                   Margin="0,0,5,0"/>
 
-                        <Grid Margin="0,3">
+                            <ComboBox DataContext="{Binding Keymap, Source={StaticResource ServiceLocator}}"
+                                      ItemsSource="{Binding AvailableKeymaps}"
+                                      SelectedValue="{Binding SelectedKeymap, Mode=TwoWay}"
+                                      DisplayMemberPath="Name"/>
+                        </DockPanel>
+
+                        <local:TextOverlaySettingsControl Visibility="{Binding SeparateTextFile, Converter={StaticResource NegatingConverter}}"
+                                                          Margin="0,3"/>
+
+                        <Grid Margin="0,3"
+                              Visibility="{Binding SeparateTextFile, Converter={StaticResource NegatingConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -82,19 +99,6 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,5"/>
-                            
-                            <Label Content="Keymap"
-                                   ContentStringFormat="{}{0}: "
-                                   Margin="0,5,5,5"
-                                   Grid.Row="4"/>
-                            
-                            <ComboBox DataContext="{Binding Keymap, Source={StaticResource ServiceLocator}}"
-                                      ItemsSource="{Binding AvailableKeymaps}"
-                                      SelectedValue="{Binding SelectedKeymap, Mode=TwoWay}"
-                                      DisplayMemberPath="Name"
-                                      Grid.Row="4"
-                                      Grid.Column="1"
-                                      Margin="0,5"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>

@@ -258,7 +258,26 @@ namespace Captura
 
         LayerFrame Keystrokes(KeystrokesSettings Settings)
         {
-            return Text(Settings, "Keystrokes");
+            var control = Text(Settings, "Keystrokes");
+
+            void SetVisibility()
+            {
+                control.Visibility = Settings.SeparateTextFile ? Visibility.Collapsed : Visibility;
+            }
+
+            SetVisibility();
+
+            Settings.PropertyChanged += (S, E) =>
+            {
+                switch (E.PropertyName)
+                {
+                    case nameof(Settings.SeparateTextFile):
+                        SetVisibility();
+                        break;
+                }
+            };
+
+            return control;
         }
 
         readonly List<LayerFrame> _textOverlays = new List<LayerFrame>();
