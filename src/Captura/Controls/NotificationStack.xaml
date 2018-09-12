@@ -8,6 +8,13 @@
              BorderBrush="{DynamicResource Accent}"
              Background="{DynamicResource WindowBackground}"
              MouseMove="NotificationStack_OnMouseMove">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
