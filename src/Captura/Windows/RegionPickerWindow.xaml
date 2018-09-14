@@ -10,7 +10,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Cursor="Cross">
     <Window.InputBindings>
         <KeyBinding Command="Close"
                     Key="Escape"/>
@@ -19,9 +20,10 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Grid Background="#57FFFFFF"
+    <Grid Background="#27FFFFFF"
           MouseMove="WindowMouseMove"
           MouseLeftButtonDown="WindowMouseLeftButtonDown"
+          MouseLeftButtonUp="WindowMouseLeftButtonUp"
           Name="Grid">
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>

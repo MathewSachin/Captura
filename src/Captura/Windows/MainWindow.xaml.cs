@@ -55,6 +55,8 @@ namespace Captura
                     RepositionWindowIfOutside();
 
                     vm.ViewLoaded();
+
+                    RegionPickerWindow.PickRegion();
                 };
             }
 

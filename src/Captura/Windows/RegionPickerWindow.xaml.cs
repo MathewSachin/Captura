@@ -11,6 +11,7 @@ using Screna;
 using Color = System.Windows.Media.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using Point = System.Windows.Point;
 
 namespace Captura
 {
@@ -29,8 +30,6 @@ namespace Captura
 
             ShowCancelText();
         }
-
-        public Rectangle? SelectedRegion { get; private set; }
 
         void UpdateBackground()
         {
@@ -82,17 +81,83 @@ namespace Captura
 
         void CloseClick(object Sender, RoutedEventArgs E)
         {
-            SelectedRegion = null;
+            _start = _end = null;
 
             Close();
         }
 
         void WindowMouseMove(object Sender, MouseEventArgs E)
         {
+            if (_isDragging)
+            {
+                
+            }
         }
+
+        bool _isDragging;
+        Point? _start, _end;
 
         void WindowMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
+            _isDragging = true;
+            _start = E.GetPosition(this);
+
+            CaptureMouse();
+        }
+
+        void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
+        {
+            _isDragging = false;
+            _end = E.GetPosition(this);
+
+            ReleaseMouseCapture();
+        }
+
+        Rect? GetRegion()
+        {
+            if (_start == null || _end == null)
+            {
+                return null;
+            }
+
+            var end = _end.Value;
+            var start = _start.Value;
+
+            if (end.X < start.X)
+            {
+                var t = start.X;
+                start.X = end.X;
+                end.X = t;
+            }
+
+            if (end.Y < start.Y)
+            {
+                var t = start.Y;
+                start.Y = end.Y;
+                end.Y = t;
+            }
+
+            var width = end.X - start.X;
+            var height = end.Y - start.Y;
+
+            return new Rect(start.X, start.Y, width, height);
+        }
+
+        Rectangle? GetRegionScaled()
+        {
+            var rect = GetRegion();
+
+            if (rect == null)
+            {
+                return null;
+            }
+
+            var r = rect.Value;
+
+            return new Rectangle((int)(r.X * Dpi.X),
+                (int)(r.Y * Dpi.Y),
+                (int)(r.Width * Dpi.X),
+                (int)(r.Height * Dpi.Y));
         }
 
         public static Rectangle? PickRegion()
@@ -101,7 +166,7 @@ namespace Captura
 
             picker.ShowDialog();
 
-            return picker.SelectedRegion;
+            return picker.GetRegionScaled();
         }
     }
 }
