@@ -97,11 +97,22 @@ namespace Captura
 
         bool _isDragging;
         Point? _start, _end;
+        CroppingAdorner _croppingAdorner;
 
         void WindowMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             _isDragging = true;
             _start = E.GetPosition(this);
+            _end = null;
+
+            if (_croppingAdorner != null)
+            {
+                var layer = AdornerLayer.GetAdornerLayer(Grid);
+
+                layer.Remove(_croppingAdorner);
+
+                _croppingAdorner = null;
+            }
         }
 
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
@@ -116,13 +127,17 @@ namespace Captura
             if (rect == null)
                 return;
 
-            var croppingAdorner = new CroppingAdorner(Grid, rect.Value);
+            _croppingAdorner = new CroppingAdorner(Grid, rect.Value);
 
-            layer.Add(croppingAdorner);
+            var clr = Colors.Black;
+            clr.A = 110;
+            _croppingAdorner.Fill = new SolidColorBrush(clr);
 
-            croppingAdorner.Checked += () =>
+            layer.Add(_croppingAdorner);
+
+            _croppingAdorner.Checked += () =>
             {
-                var r = croppingAdorner.SelectedRegion;
+                var r = _croppingAdorner.SelectedRegion;
 
                 _start = r.Location;
                 _end = r.BottomRight;
