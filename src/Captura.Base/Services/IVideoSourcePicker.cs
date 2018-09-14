@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -8,5 +9,7 @@ namespace Captura.Models
         IWindow PickWindow(IEnumerable<IntPtr> SkipWindows = null);
 
         IScreen PickScreen();
+
+        Rectangle? PickRegion();
     }
 }
