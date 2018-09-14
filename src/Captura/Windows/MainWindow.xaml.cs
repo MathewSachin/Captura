@@ -50,13 +50,18 @@ namespace Captura
                     }
                 };
 
-                Loaded += (Sender, Args) =>
+                Loaded += async (Sender, Args) =>
                 {
                     RepositionWindowIfOutside();
 
                     vm.ViewLoaded();
 
-                    RegionPickerWindow.PickRegion();
+                    var region = RegionPickerWindow.PickRegion();
+
+                    if (region != null)
+                    {
+                        await vm.ScreenShotViewModel.SaveScreenShot(Screna.ScreenShot.Capture(region.Value));
+                    }
                 };
             }
 

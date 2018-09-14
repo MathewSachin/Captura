@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -101,8 +102,6 @@ namespace Captura
         {
             _isDragging = true;
             _start = E.GetPosition(this);
-
-            CaptureMouse();
         }
 
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
@@ -110,7 +109,26 @@ namespace Captura
             _isDragging = false;
             _end = E.GetPosition(this);
 
-            ReleaseMouseCapture();
+            var layer = AdornerLayer.GetAdornerLayer(Grid);
+
+            var rect = GetRegion();
+
+            if (rect == null)
+                return;
+
+            var croppingAdorner = new CroppingAdorner(Grid, rect.Value);
+
+            layer.Add(croppingAdorner);
+
+            croppingAdorner.Checked += () =>
+            {
+                var r = croppingAdorner.SelectedRegion;
+
+                _start = r.Location;
+                _end = r.BottomRight;
+
+                Close();
+            };
         }
 
         Rect? GetRegion()
@@ -139,6 +157,11 @@ namespace Captura
 
             var width = end.X - start.X;
             var height = end.Y - start.Y;
+
+            if (width < 0.01 || height < 0.01)
+            {
+                return null;
+            }
 
             return new Rect(start.X, start.Y, width, height);
         }

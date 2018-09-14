@@ -293,6 +293,8 @@ namespace Captura
         }
         #endregion
 
+        public Rect SelectedRegion => _prCropMask.RectInterior;
+
         public BitmapSource BpsCrop(BitmapSource Bmp)
         {
             var ratio = Bmp.PixelWidth / AdornedElement.RenderSize.Width;
