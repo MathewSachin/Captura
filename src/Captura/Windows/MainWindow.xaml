@@ -136,7 +136,6 @@
                         </MenuItem.Icon>
                     </MenuItem>
                       
-                      
                     <MenuItem Header="ScreenShot (Screen)"
                               Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand}">
                         <MenuItem.Icon>

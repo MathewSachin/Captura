@@ -160,7 +160,7 @@ namespace Captura.ViewModels
 
                     case ServiceName.ScreenShotRegion:
                         ScreenShotViewModel.ScreenshotRegionCommand.ExecuteIfCan();
-                        break
+                        break;
 
                     case ServiceName.ScreenShotScreen:
                         ScreenShotViewModel.ScreenshotScreenCommand.ExecuteIfCan();
