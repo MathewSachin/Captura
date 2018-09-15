@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Captura.Views;
+using Captura.Windows;
 
 namespace Captura
 {
@@ -13,6 +14,11 @@ namespace Captura
         void OpenHotkeyManager(object Sender, RoutedEventArgs E)
         {
             HotkeysWindow.ShowInstance();
+        }
+
+        void OpenFileNameFormatter(object Sender, RoutedEventArgs E)
+        {
+            new FileNameFormatWindow().ShowDialog();
         }
     }
 }

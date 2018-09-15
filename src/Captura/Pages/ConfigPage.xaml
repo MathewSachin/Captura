@@ -102,6 +102,10 @@
                 <CheckBox Content="{Binding AlwaysOnTop, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
+                
+                <Button Margin="0,2"
+                        Content="Configure File Naming ..."
+                        Click="OpenFileNameFormatter"/>
 
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>

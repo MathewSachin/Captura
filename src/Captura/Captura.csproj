@@ -118,6 +118,9 @@
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
+    <Compile Include="Windows\FileNameFormatWindow.xaml.cs">
+      <DependentUpon>FileNameFormatWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ScreenShotsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FileNameFormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
