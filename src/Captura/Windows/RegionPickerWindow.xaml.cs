@@ -87,6 +87,22 @@ namespace Captura
             Close();
         }
 
+        void UpdateSizeDisplay(Rect? Rect)
+        {
+            if (Rect == null)
+            {
+                SizeText.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SizeText.Text = $"{(int) Rect.Value.Width} x {(int) Rect.Value.Height}";
+
+                SizeText.Margin = new Thickness(30, 20, 0, 0);
+
+                SizeText.Visibility = Visibility.Visible;
+            }
+        }
+
         void WindowMouseMove(object Sender, MouseEventArgs E)
         {
             if (_isDragging)
@@ -94,6 +110,8 @@ namespace Captura
                 _end = E.GetPosition(this);
 
                 var r = GetRegion();
+
+                UpdateSizeDisplay(r);
 
                 if (r == null)
                 {
@@ -142,6 +160,8 @@ namespace Captura
 
             var rect = GetRegion();
 
+            UpdateSizeDisplay(rect);
+
             if (rect == null)
                 return;
 
@@ -152,6 +172,8 @@ namespace Captura
             _croppingAdorner.Fill = new SolidColorBrush(clr);
 
             layer.Add(_croppingAdorner);
+
+            _croppingAdorner.CropChanged += (S, Args) => UpdateSizeDisplay(_croppingAdorner.SelectedRegion);
 
             _croppingAdorner.Checked += () =>
             {

@@ -36,5 +36,13 @@
                 Name="Border"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
+
+        <TextBlock Visibility="Collapsed"
+                   Padding="10,5"
+                   Name="SizeText"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Foreground="White"
+                   Background="#B7000000"/>
     </Grid>
 </Window>
