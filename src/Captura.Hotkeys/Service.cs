@@ -65,6 +65,12 @@ namespace Captura.Models
                 case ServiceName.ToggleKeystrokes:
                     return nameof(LanguageManager.ToggleKeystrokes);
 
+                case ServiceName.ScreenShotScreen:
+                    return "ScreenShot (Screen)";
+
+                case ServiceName.ScreenShotWindow:
+                    return "ScreenShot (Window)";
+
                 default:
                     return SpaceAtCapitals(ServiceName);
             }

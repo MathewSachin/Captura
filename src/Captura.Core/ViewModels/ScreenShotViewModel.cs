@@ -17,6 +17,7 @@ namespace Captura.ViewModels
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
+        readonly IVideoSourcePicker _sourcePicker;
 
         public DiskWriter DiskWriter { get; }
         public ClipboardWriter ClipboardWriter { get; }
@@ -41,13 +42,15 @@ namespace Captura.ViewModels
             IMainWindow MainWindow,
             DiskWriter DiskWriter,
             ClipboardWriter ClipboardWriter,
-            ImgurWriter ImgurWriter) : base(Settings, Loc)
+            ImgurWriter ImgurWriter,
+            IVideoSourcePicker SourcePicker) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
             _recentViewModel = RecentViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
+            _sourcePicker = SourcePicker;
             this.DiskWriter = DiskWriter;
             this.ClipboardWriter = ClipboardWriter;
             this.ImgurWriter = ImgurWriter;
@@ -57,6 +60,10 @@ namespace Captura.ViewModels
             ScreenShotActiveCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
 
             ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
+
+            ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenshotWindow());
+
+            ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenshotScreen());
         }
 
         public DelegateCommand ScreenShotCommand { get; }
@@ -65,9 +72,36 @@ namespace Captura.ViewModels
 
         public DelegateCommand ScreenShotDesktopCommand { get; }
 
+        public DelegateCommand ScreenshotWindowCommand { get; }
+
+        public DelegateCommand ScreenshotScreenCommand { get; }
+
+        async Task ScreenshotWindow()
+        {
+            var window = _sourcePicker.PickWindow();
+
+            if (window != null)
+            {
+                var img = ScreenShot.Capture(window);
+
+                await SaveScreenShot(img);
+            }
+        }
+
+        async Task ScreenshotScreen()
+        {
+            var screen = _sourcePicker.PickScreen();
+
+            if (screen != null)
+            {
+                var img = ScreenShot.Capture(screen);
+
+                await SaveScreenShot(img);
+            }
+        }
+
         public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
         {
-            // Save to Disk or Clipboard
             if (Bmp != null)
             {
                 var allTasks = _videoViewModel.AvailableImageWriters

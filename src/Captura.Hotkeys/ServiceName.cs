@@ -38,6 +38,16 @@
         /// Toggle Keystrokes overlay.
         /// </summary>
         ToggleKeystrokes,
+
+        /// <summary>
+        /// ScreenShot using Screen Picker.
+        /// </summary>
+        ScreenShotScreen,
+
+        /// <summary>
+        /// ScreenShot using Window Picker.
+        /// </summary>
+        ScreenShotWindow,
         
         ServiceCount
     }
