@@ -1,14 +1,10 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Screna;
 using Color = System.Windows.Media.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -27,23 +23,7 @@ namespace Captura
             Width = SystemParameters.VirtualScreenWidth;
             Height = SystemParameters.VirtualScreenHeight;
 
-            UpdateBackground();
-
             ShowCancelText();
-        }
-
-        void UpdateBackground()
-        {
-            using (var bmp = ScreenShot.Capture())
-            {
-                var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormat.Png);
-
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                Background = new ImageBrush(decoder.Frames[0]);
-            }
         }
 
         void ShowCancelText()
