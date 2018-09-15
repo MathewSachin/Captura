@@ -160,6 +160,14 @@ namespace Captura.ViewModels
 
                     case ServiceName.ScreenShotRegion:
                         ScreenShotViewModel.ScreenshotRegionCommand.ExecuteIfCan();
+                        break
+
+                    case ServiceName.ScreenShotScreen:
+                        ScreenShotViewModel.ScreenshotScreenCommand.ExecuteIfCan();
+                        break;
+
+                    case ServiceName.ScreenShotWindow:
+                        ScreenShotViewModel.ScreenshotWindowCommand.ExecuteIfCan();
                         break;
                 }
             };

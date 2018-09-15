@@ -118,7 +118,7 @@
                     </MenuItem>
                     
                     <Separator/>
-                    
+
                     <MenuItem Header="ScreenShot (Region)"
                               Command="{Binding ScreenShotViewModel.ScreenshotRegionCommand}">
                         <MenuItem.Icon>
@@ -135,7 +135,42 @@
                             </Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    
+                      
+                      
+                    <MenuItem Header="ScreenShot (Screen)"
+                              Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource IconScreen}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="ScreenShot (Window)"
+                              Command="{Binding ScreenShotViewModel.ScreenshotWindowCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource IconWindow}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
                     <Separator/>
 
                     <MenuItem Header="{Binding Exit, Source={StaticResource Loc}, Mode=OneWay}"

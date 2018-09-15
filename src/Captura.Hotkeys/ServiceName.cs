@@ -43,6 +43,16 @@
         /// Screenshot Region (using Region Picker).
         /// </summary>
         ScreenShotRegion,
+
+        /// <summary>
+        /// ScreenShot using Screen Picker.
+        /// </summary>
+        ScreenShotScreen,
+
+        /// <summary>
+        /// ScreenShot using Window Picker.
+        /// </summary>
+        ScreenShotWindow,
         
         ServiceCount
     }

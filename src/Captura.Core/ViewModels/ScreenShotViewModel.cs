@@ -62,6 +62,10 @@ namespace Captura.ViewModels
             ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
             ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenshotRegion());
+
+            ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenshotWindow());
+
+            ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenshotScreen());
         }
 
         public DelegateCommand ScreenShotCommand { get; }
@@ -71,6 +75,10 @@ namespace Captura.ViewModels
         public DelegateCommand ScreenShotDesktopCommand { get; }
 
         public DelegateCommand ScreenshotRegionCommand { get; }
+
+        public DelegateCommand ScreenshotWindowCommand { get; }
+
+        public DelegateCommand ScreenshotScreenCommand { get; }
 
         async Task ScreenshotRegion()
         {
@@ -82,9 +90,32 @@ namespace Captura.ViewModels
             await SaveScreenShot(ScreenShot.Capture(region.Value));
         }
 
+        async Task ScreenshotWindow()
+        {
+            var window = _sourcePicker.PickWindow();
+
+            if (window != null)
+            {
+                var img = ScreenShot.Capture(window);
+
+                await SaveScreenShot(img);
+            }
+        }
+
+        async Task ScreenshotScreen()
+        {
+            var screen = _sourcePicker.PickScreen();
+
+            if (screen != null)
+            {
+                var img = ScreenShot.Capture(screen);
+
+                await SaveScreenShot(img);
+            }
+        }
+
         public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
         {
-            // Save to Disk or Clipboard
             if (Bmp != null)
             {
                 var allTasks = _videoViewModel.AvailableImageWriters

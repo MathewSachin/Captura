@@ -68,6 +68,12 @@ namespace Captura.Models
                 case ServiceName.ScreenShotRegion:
                     return "Screenshot (Region)";
 
+                case ServiceName.ScreenShotScreen:
+                    return "ScreenShot (Screen)";
+
+                case ServiceName.ScreenShotWindow:
+                    return "ScreenShot (Window)";
+
                 default:
                     return SpaceAtCapitals(ServiceName);
             }
