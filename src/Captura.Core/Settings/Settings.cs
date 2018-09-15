@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using Newtonsoft.Json;
@@ -131,6 +132,17 @@ namespace Captura
         {
             get => Get<string>();
             set => Set(value);
+        }
+
+        public string FilenameFormat
+        {
+            get => Get("%YYYY%-%MM%-%DD%-%HH%-%mm%-%ss%%");
+            set => Set(value);
+        }
+
+        public string GetFileName(string Extension, string FileName = null)
+        {
+            return FileName ?? Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{Extension}");
         }
 
         public bool IncludeCursor

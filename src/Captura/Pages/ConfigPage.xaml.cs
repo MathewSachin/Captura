@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using Captura.Views;
-using Captura.Windows;
 
 namespace Captura
 {
