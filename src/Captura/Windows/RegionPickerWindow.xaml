@@ -28,5 +28,13 @@
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
         </Grid.Resources>
+
+        <Border Visibility="Collapsed"
+                Background="#57FFFFFF"
+                BorderBrush = "#333333"
+                BorderThickness="0.5"
+                Name="Border"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
     </Grid>
 </Window>

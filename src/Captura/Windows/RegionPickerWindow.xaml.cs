@@ -91,7 +91,24 @@ namespace Captura
         {
             if (_isDragging)
             {
-                
+                _end = E.GetPosition(this);
+
+                var r = GetRegion();
+
+                if (r == null)
+                {
+                    Border.Visibility = Visibility.Collapsed;
+                    return;
+                }
+
+                var rect = r.Value;
+
+                Border.Margin = new Thickness(-Left + rect.Left, -Top + rect.Top, 0, 0);
+
+                Border.Width = rect.Width;
+                Border.Height = rect.Height;
+
+                Border.Visibility = Visibility.Visible;
             }
         }
 
@@ -119,6 +136,7 @@ namespace Captura
         {
             _isDragging = false;
             _end = E.GetPosition(this);
+            Border.Visibility = Visibility.Collapsed;
 
             var layer = AdornerLayer.GetAdornerLayer(Grid);
 
