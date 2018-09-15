@@ -38,6 +38,11 @@
         /// Toggle Keystrokes overlay.
         /// </summary>
         ToggleKeystrokes,
+
+        /// <summary>
+        /// Screenshot Region (using Region Picker).
+        /// </summary>
+        ScreenShotRegion,
         
         ServiceCount
     }

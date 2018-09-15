@@ -157,6 +157,10 @@ namespace Captura.ViewModels
                     case ServiceName.ToggleKeystrokes:
                         Settings.Keystrokes.Display = !Settings.Keystrokes.Display;
                         break;
+
+                    case ServiceName.ScreenShotRegion:
+                        ScreenShotViewModel.ScreenshotRegionCommand.ExecuteIfCan();
+                        break;
                 }
             };
         }
