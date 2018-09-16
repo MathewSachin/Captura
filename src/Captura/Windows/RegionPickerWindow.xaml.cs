@@ -87,7 +87,7 @@ namespace Captura
         {
             if (_isDragging)
             {
-                _end = E.GetPosition(this);
+                _end = E.GetPosition(Grid);
 
                 var r = GetRegion();
 
@@ -101,7 +101,7 @@ namespace Captura
 
                 var rect = r.Value;
 
-                Border.Margin = new Thickness(-Left + rect.Left, -Top + rect.Top, 0, 0);
+                Border.Margin = new Thickness(rect.Left, rect.Top, 0, 0);
 
                 Border.Width = rect.Width;
                 Border.Height = rect.Height;
@@ -117,7 +117,7 @@ namespace Captura
         void WindowMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             _isDragging = true;
-            _start = E.GetPosition(this);
+            _start = E.GetPosition(Grid);
             _end = null;
 
             if (_croppingAdorner != null)
@@ -133,7 +133,7 @@ namespace Captura
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
             _isDragging = false;
-            _end = E.GetPosition(this);
+            _end = E.GetPosition(Grid);
             Border.Visibility = Visibility.Collapsed;
 
             var layer = AdornerLayer.GetAdornerLayer(Grid);
@@ -212,8 +212,8 @@ namespace Captura
 
             var r = rect.Value;
 
-            return new Rectangle((int)(r.X * Dpi.X),
-                (int)(r.Y * Dpi.Y),
+            return new Rectangle((int) ((Left + r.X) * Dpi.X),
+                (int)((Top + r.Y) * Dpi.Y),
                 (int)(r.Width * Dpi.X),
                 (int)(r.Height * Dpi.Y));
         }
