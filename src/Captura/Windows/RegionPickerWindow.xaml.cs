@@ -1,10 +1,14 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Screna;
 using Color = System.Windows.Media.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -23,40 +27,20 @@ namespace Captura
             Width = SystemParameters.VirtualScreenWidth;
             Height = SystemParameters.VirtualScreenHeight;
 
-            ShowCancelText();
+            UpdateBackground();
         }
 
-        void ShowCancelText()
+        void UpdateBackground()
         {
-            foreach (var screen in Screen.AllScreens)
+            using (var bmp = ScreenShot.Capture())
             {
-                var left = -Left + screen.Bounds.Left / Dpi.X;
-                var top = -Top + screen.Bounds.Top / Dpi.Y;
-                var width = screen.Bounds.Width / Dpi.X;
-                var height = screen.Bounds.Height / Dpi.Y;
+                var stream = new MemoryStream();
+                bmp.Save(stream, ImageFormat.Png);
 
-                var container = new ContentControl
-                {
-                    Width = width,
-                    Height = height,
-                    Margin = new Thickness(left, top, 0, 0),
-                    VerticalAlignment = VerticalAlignment.Top,
-                    HorizontalAlignment = HorizontalAlignment.Left
-                };
+                stream.Seek(0, SeekOrigin.Begin);
 
-                var textBlock = new TextBlock
-                {
-                    Text = $"Drag to Select Region or Press Esc to Cancel",
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Padding = new Thickness(10, 5, 10, 5),
-                    Foreground = new SolidColorBrush(Colors.White),
-                    Background = new SolidColorBrush(Color.FromArgb(183, 0, 0, 0))
-                };
-
-                container.Content = textBlock;
-
-                Grid.Children.Add(container);
+                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+                BgImg.Source = decoder.Frames[0];
             }
         }
 

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Region Picker"
         d:DesignHeight="600"
@@ -30,6 +31,20 @@
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
         </Grid.Resources>
 
+        <xctk:MagnifierManager.Magnifier>
+            <xctk:Magnifier Radius="100"
+                            Style="{StaticResource RegionPickerMagnifier}"
+                            ZoomFactor=".4"
+                            BorderThickness="1"
+                            BorderBrush="#B7000000">
+                <xctk:Magnifier.RenderTransform>
+                    <TranslateTransform X="100" Y="100"/>
+                </xctk:Magnifier.RenderTransform>
+            </xctk:Magnifier>
+        </xctk:MagnifierManager.Magnifier>
+
+        <Image Name="BgImg"/>
+
         <Border Visibility="Collapsed"
                 Background="#57FFFFFF"
                 BorderBrush = "#333333"
@@ -47,3 +62,4 @@
                    Background="#B7000000"/>
     </Grid>
 </Window>
+
