@@ -54,7 +54,8 @@
                 VerticalAlignment="Top"/>
 
         <TextBlock Visibility="Collapsed"
-                   Padding="10,5"
+                   Padding="5,2"
+                   FontSize="14"
                    Name="SizeText"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
