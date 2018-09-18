@@ -16,6 +16,16 @@
         SizeToContent="WidthAndHeight"
         Name="This">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Thumb">
+                <Setter Property="Opacity" Value="0.01"/>
+                <EventSetter Event="DragDelta" Handler="Thumb_OnDragDelta"/>
+            </Style>
+            <Style x:Key="CornerThumb" TargetType="Thumb" BasedOn="{StaticResource {x:Type Thumb}}">
+                <Setter Property="Height" Value="5"/>
+                <Setter Property="Width" Value="5"/>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
@@ -29,8 +39,8 @@
                 Name="Region"
                 Height="500"
                 Width="400"
-                MinHeight="50"
-                MinWidth="50">
+                MinHeight="200"
+                MinWidth="300">
             <Border.BorderBrush>
                 <DrawingBrush TileMode="Tile" Viewport="0,0,0.05,0.05">
                     <DrawingBrush.Drawing>
@@ -63,31 +73,47 @@
 
         <Thumb VerticalAlignment="Top"
                Height="2"
-               Opacity="0.01"
                Cursor="SizeNS"
-               Tag="Top"
-               DragDelta="Thumb_OnDragDelta"/>
+               Tag="Top"/>
 
         <Thumb VerticalAlignment="Bottom"
                Height="2"
-               Opacity="0.01"
                Cursor="SizeNS"
-               Tag="Bottom"
-               DragDelta="Thumb_OnDragDelta"/>
+               Tag="Bottom"/>
 
         <Thumb HorizontalAlignment="Left"
                Width="2"
-               Opacity="0.01"
                Cursor="SizeWE"
-               Tag="Left"
-               DragDelta="Thumb_OnDragDelta"/>
+               Tag="Left"/>
         
         <Thumb HorizontalAlignment="Right"
                Width="2"
-               Opacity="0.01"
                Cursor="SizeWE"
-               Tag="Right"
-               DragDelta="Thumb_OnDragDelta"/>
+               Tag="Right"/>
+
+        <Thumb HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Style="{StaticResource CornerThumb}"
+               Cursor="SizeNWSE"
+               Tag="TopLeft"/>
+
+        <Thumb HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Style="{StaticResource CornerThumb}"
+               Cursor="SizeNESW"
+               Tag="TopRight"/>
+
+        <Thumb HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               Style="{StaticResource CornerThumb}"
+               Cursor="SizeNESW"
+               Tag="BottomLeft"/>
+
+        <Thumb HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Style="{StaticResource CornerThumb}"
+               Cursor="SizeNWSE"
+               Tag="BottomRight"/>
 
         <Grid Grid.Row="1"
               Grid.Column="0"

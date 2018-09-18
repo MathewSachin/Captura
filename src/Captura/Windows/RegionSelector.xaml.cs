@@ -294,24 +294,98 @@ namespace Captura
         {
             if (Sender is FrameworkElement element)
             {
+                void DoTop()
+                {
+                    var oldTop = Top;
+                    var top = Top + E.VerticalChange;
+
+                    if (top > 0)
+                        Top = top;
+                    else
+                    {
+                        Top = 0;
+                        return;
+                    }
+
+                    var height = Region.Height - E.VerticalChange;
+
+                    if (height > Region.MinHeight)
+                        Region.Height = height;
+                    else Top = oldTop;
+                }
+
+                void DoLeft()
+                {
+                    var oldLeft = Left;
+                    var left = Left + E.HorizontalChange;
+
+                    if (left > 0)
+                        Left = left;
+                    else
+                    {
+                        Left = 0;
+                        return;
+                    }
+
+                    var width = Region.Width - E.HorizontalChange;
+
+                    if (width > Region.MinWidth)
+                        Region.Width = width;
+                    else Left = oldLeft;
+                }
+
+                void DoBottom()
+                {
+                    var height = Region.Height + E.VerticalChange;
+
+                    if (height > 0)
+                        Region.Height = height;
+                }
+
+                void DoRight()
+                {
+                    var width = Region.Width + E.HorizontalChange;
+
+                    if (width > 0)
+                        Region.Width = width;
+                }
+
                 switch (element.Tag)
                 {
                     case "Top":
-                        Top += E.VerticalChange;
-                        Region.Height -= E.VerticalChange;
+                        DoTop();
                         break;
 
                     case "Bottom":
-                        Region.Height += E.VerticalChange;
+                        DoBottom();
                         break;
 
                     case "Left":
-                        Left += E.HorizontalChange;
-                        Region.Width -= E.HorizontalChange;
+                        DoLeft();
                         break;
 
                     case "Right":
-                        Region.Width += E.HorizontalChange;
+                        DoRight();
+                        break;
+
+                    case "TopLeft":
+                        DoTop();
+                        DoLeft();
+                        break;
+
+                    case "TopRight":
+                        DoTop();
+                        DoRight();
+                        break;
+
+                    case "BottomLeft":
+                        DoBottom();
+                        DoLeft();
+                        break;
+
+                    case "BottomRight":
+                        DoBottom();
+                        DoRight();
                         break;
                 }
             }
