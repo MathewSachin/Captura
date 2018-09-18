@@ -8,15 +8,13 @@
         xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
-        Height="500"
         Background="Transparent"
-        Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        ResizeMode="CanResize"
-        MinHeight="50"
-        MinWidth="50">
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Name="This">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -27,7 +25,12 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Border BorderThickness="2">
+        <Border BorderThickness="2"
+                Name="Region"
+                Height="500"
+                Width="400"
+                MinHeight="50"
+                MinWidth="50">
             <Border.BorderBrush>
                 <DrawingBrush TileMode="Tile" Viewport="0,0,0.05,0.05">
                     <DrawingBrush.Drawing>
@@ -62,8 +65,7 @@
               Grid.Column="0"
               Margin="0,10,0,0">
             <Border BorderThickness="1"
-                    BorderBrush="{DynamicResource Accent}"
-                    HorizontalAlignment="Right">
+                    BorderBrush="{DynamicResource Accent}">
                 <DockPanel HorizontalAlignment="Right"
                            Background="{DynamicResource WindowBackground}">
                     <xctk:IntegerUpDown Width="60"
@@ -80,11 +82,24 @@
                                         Margin="3"
                                         Name="WidthBox"/>
                 </DockPanel>
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Width, ElementName=This, Converter={StaticResource IsLessThanConverter}, ConverterParameter=500}" Value="True">
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="Margin" Value="0,40,0,0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
             </Border>
 
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource Accent}"
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
                 <DockPanel Name="MainControls"
                            Background="{DynamicResource WindowBackground}"
                            d:DataContext="{d:DesignInstance viewModels:MainViewModel}">

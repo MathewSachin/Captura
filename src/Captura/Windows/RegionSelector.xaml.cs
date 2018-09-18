@@ -81,17 +81,15 @@ namespace Captura
                 InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
         }
 
-        const int LeftOffset = 43,
-            TopOffset = 38,
-            WidthBorder = LeftOffset + 7,
-            HeightBorder = TopOffset + 37;
+        const int LeftOffset = 2,
+            TopOffset = 2;
 
         Rectangle? _region;
         
         void InitDimensionBoxes()
         {
-            WidthBox.Minimum = (int)((MinWidth - WidthBorder) * Dpi.X);
-            HeightBox.Minimum = (int)((MinHeight - HeightBorder) * Dpi.Y);
+            WidthBox.Minimum = (int)((Region.MinWidth - LeftOffset * 2) * Dpi.X);
+            HeightBox.Minimum = (int)((Region.MinHeight - TopOffset * 2) * Dpi.Y);
 
             void SizeChange()
             {
@@ -196,8 +194,8 @@ namespace Captura
             _region = Dispatcher.Invoke(() =>
                 new Rectangle((int)((Left + LeftOffset) * Dpi.X),
                     (int)((Top + TopOffset) * Dpi.Y),
-                    (int)((Width - WidthBorder) * Dpi.X),
-                    (int)((Height - HeightBorder) * Dpi.Y)));
+                    (int)((Region.ActualWidth - 2 * LeftOffset) * Dpi.X),
+                    (int)((Region.ActualHeight - 2 * TopOffset) * Dpi.Y)));
 
             _regionItem.Name = _region.ToString().Replace("{", "")
                 .Replace("}", "")
@@ -221,8 +219,8 @@ namespace Captura
                 
                 Dispatcher.Invoke(() =>
                 {
-                    Width = value.Width / Dpi.X + WidthBorder;
-                    Height = value.Height / Dpi.Y + HeightBorder;
+                    Region.Width = value.Width / Dpi.X + 2 * LeftOffset;
+                    Region.Height = value.Height / Dpi.Y + 2 * TopOffset;
 
                     Left = value.Left / Dpi.X - LeftOffset;
                     Top = value.Top / Dpi.Y - TopOffset;
@@ -262,7 +260,6 @@ namespace Captura
         public IVideoItem VideoSource => _regionItem;
 
         public IntPtr Handle => new WindowInteropHelper(this).Handle;
-
         #endregion
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)

@@ -14,5 +14,6 @@
     <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
     <captura:GetTypeConverter x:Key="GetTypeConverter"/>
     <captura:StaticResourceConverter x:Key="StaticResourceConverter"/>
+    <captura:IsLessThanConverter x:Key="IsLessThanConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>
