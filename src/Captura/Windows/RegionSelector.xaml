@@ -16,6 +16,17 @@
         SizeToContent="WidthAndHeight"
         Name="This">
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="BlurWithoutHover" TargetType="FrameworkElement">
+                <Setter Property="Opacity" Value="0.2"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
@@ -175,7 +186,8 @@
                 Grid.RowSpan="2"
                 BorderBrush="{DynamicResource Accent}"
                 BorderThickness="1"
-                VerticalAlignment="Top">
+                VerticalAlignment="Top"
+                Style="{StaticResource BlurWithoutHover}">
             <DockPanel Background="{DynamicResource WindowBackground}"
                        LastChildFill="False">
                 <ListBox Name="ModesBox"
