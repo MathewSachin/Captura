@@ -24,17 +24,44 @@
                               Stretch="Uniform"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Opacity="0.8"/>
+                              Opacity="0.8">
+                            <Path.LayoutTransform>
+                                <ScaleTransform x:Name="IconScale"/>
+                            </Path.LayoutTransform>
+                        </Path>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}" />
                             <Setter Property="Opacity" TargetName="icon" Value="1"/>
-                            <Setter Property="LayoutTransform" TargetName="icon">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
-                                </Setter.Value>
-                            </Setter>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.2"
+                                                         Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.2"
+                                                         Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1"
+                                                         Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="IconScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1"
+                                                         Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Foreground" Value="{DynamicResource Accent}" />

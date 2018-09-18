@@ -22,8 +22,7 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Grid Background="#27FFFFFF"
-          MouseMove="WindowMouseMove"
+    <Grid MouseMove="WindowMouseMove"
           MouseLeftButtonDown="WindowMouseLeftButtonDown"
           MouseLeftButtonUp="WindowMouseLeftButtonUp"
           Name="Grid">
@@ -36,10 +35,22 @@
                             Style="{StaticResource RegionPickerMagnifier}"
                             ZoomFactor=".4"
                             BorderThickness="1"
-                            BorderBrush="#B7000000">
+                            BorderBrush="#B7000000"
+                            Opacity="0">
                 <xctk:Magnifier.RenderTransform>
                     <TranslateTransform X="100" Y="100"/>
                 </xctk:Magnifier.RenderTransform>
+                <xctk:Magnifier.Triggers>
+                    <EventTrigger RoutedEvent="xctk:Magnifier.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="1"
+                                                 Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </xctk:Magnifier.Triggers>
             </xctk:Magnifier>
         </xctk:MagnifierManager.Magnifier>
 

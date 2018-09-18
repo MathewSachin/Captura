@@ -225,16 +225,33 @@
                                         IconData="{StaticResource IconPause}"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}">
+                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
+                                        RenderTransformOrigin="0.5,0.5">
+                        <local:ModernButton.RenderTransform>
+                            <RotateTransform/>
+                        </local:ModernButton.RenderTransform>
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
-                                        <Setter Property="LayoutTransform">
-                                            <Setter.Value>
-                                                <RotateTransform Angle="90"/>
-                                            </Setter.Value>
-                                        </Setter>
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="90"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="0"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
