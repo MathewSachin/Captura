@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -287,6 +288,33 @@ namespace Captura
         void UIElement_OnPreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             DragMove();
+        }
+
+        void Thumb_OnDragDelta(object Sender, DragDeltaEventArgs E)
+        {
+            if (Sender is FrameworkElement element)
+            {
+                switch (element.Tag)
+                {
+                    case "Top":
+                        Top += E.VerticalChange;
+                        Region.Height -= E.VerticalChange;
+                        break;
+
+                    case "Bottom":
+                        Region.Height += E.VerticalChange;
+                        break;
+
+                    case "Left":
+                        Left += E.HorizontalChange;
+                        Region.Width -= E.HorizontalChange;
+                        break;
+
+                    case "Right":
+                        Region.Width += E.HorizontalChange;
+                        break;
+                }
+            }
         }
     }
 }

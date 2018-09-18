@@ -61,6 +61,34 @@
                        Name="InkCanvas"/>
         </Border>
 
+        <Thumb VerticalAlignment="Top"
+               Height="2"
+               Opacity="0.01"
+               Cursor="SizeNS"
+               Tag="Top"
+               DragDelta="Thumb_OnDragDelta"/>
+
+        <Thumb VerticalAlignment="Bottom"
+               Height="2"
+               Opacity="0.01"
+               Cursor="SizeNS"
+               Tag="Bottom"
+               DragDelta="Thumb_OnDragDelta"/>
+
+        <Thumb HorizontalAlignment="Left"
+               Width="2"
+               Opacity="0.01"
+               Cursor="SizeWE"
+               Tag="Left"
+               DragDelta="Thumb_OnDragDelta"/>
+        
+        <Thumb HorizontalAlignment="Right"
+               Width="2"
+               Opacity="0.01"
+               Cursor="SizeWE"
+               Tag="Right"
+               DragDelta="Thumb_OnDragDelta"/>
+
         <Grid Grid.Row="1"
               Grid.Column="0"
               Margin="0,10,0,0">
