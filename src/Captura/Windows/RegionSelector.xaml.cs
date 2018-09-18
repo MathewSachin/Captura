@@ -291,5 +291,10 @@ namespace Captura
                 finally { Top = 0; }
             }
         }
+
+        void UIElement_OnPreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
+        {
+            DragMove();
+        }
     }
 }
