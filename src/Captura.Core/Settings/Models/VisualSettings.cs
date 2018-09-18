@@ -68,12 +68,6 @@
             set => Set(value);
         }
 
-        public bool HideRegionSelectorWhenRecording
-        {
-            get => Get(false);
-            set => Set(value);
-        }
-
         public string Language
         {
             get => Get("en");

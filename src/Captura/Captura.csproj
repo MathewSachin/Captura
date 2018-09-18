@@ -102,6 +102,7 @@
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
       <DependentUpon>RegionPickerWindow.xaml</DependentUpon>
