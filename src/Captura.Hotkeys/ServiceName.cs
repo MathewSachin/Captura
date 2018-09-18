@@ -40,6 +40,11 @@
         ToggleKeystrokes,
 
         /// <summary>
+        /// Screenshot Region (using Region Picker).
+        /// </summary>
+        ScreenShotRegion,
+
+        /// <summary>
         /// ScreenShot using Screen Picker.
         /// </summary>
         ScreenShotScreen,

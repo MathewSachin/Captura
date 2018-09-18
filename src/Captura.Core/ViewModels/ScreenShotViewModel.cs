@@ -61,6 +61,8 @@ namespace Captura.ViewModels
 
             ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
 
+            ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenshotRegion());
+
             ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenshotWindow());
 
             ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenshotScreen());
@@ -72,9 +74,21 @@ namespace Captura.ViewModels
 
         public DelegateCommand ScreenShotDesktopCommand { get; }
 
+        public DelegateCommand ScreenshotRegionCommand { get; }
+
         public DelegateCommand ScreenshotWindowCommand { get; }
 
         public DelegateCommand ScreenshotScreenCommand { get; }
+
+        async Task ScreenshotRegion()
+        {
+            var region = _sourcePicker.PickRegion();
+
+            if (region == null)
+                return;
+
+            await SaveScreenShot(ScreenShot.Capture(region.Value));
+        }
 
         async Task ScreenshotWindow()
         {

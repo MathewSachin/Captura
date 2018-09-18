@@ -1,0 +1,71 @@
+﻿<!--***********************************************************************************
+   Extended WPF Toolkit
+   Copyright (C) 2007-2013 Xceed Software Inc.
+   This program is provided to you under the terms of the Microsoft Public
+   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   For more features, controls, and fast professional support,
+   pick up the Plus Edition at http://xceed.com/wpf_toolkit
+   Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
+  **********************************************************************************-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:converters="clr-namespace:Xceed.Wpf.Toolkit.Mag.Converters;assembly=Xceed.Wpf.Toolkit">
+    <converters:RadiusConverter x:Key="RadiusConverter" />
+    <xctk:BorderThicknessToStrokeThicknessConverter x:Key="BorderToStrokeThicknessConverter" />
+    
+    <Style TargetType="{x:Type xctk:Magnifier}" x:Key="RegionPickerMagnifier">
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type xctk:Magnifier}">
+                    <Grid>
+                        <Ellipse Fill="{TemplateBinding Background}" />
+                        <Ellipse Stroke="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" 
+                                 StrokeThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BorderToStrokeThicknessConverter}}">
+                            <Ellipse.Fill>
+                                <VisualBrush x:Name="PART_VisualBrush"
+                                             ViewboxUnits="Absolute"
+                                             Visual="{Binding Target, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <Grid Margin="5">
+                            <Grid.Resources>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Fill" Value="White"/>
+                                    <Setter Property="Stroke" Value="#B7000000"/>
+                                    <Setter Property="StrokeThickness" Value="1"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Rectangle Grid.Row="1"
+                                       Height="5"/>
+                            <Rectangle Grid.Row="1"
+                                       Grid.Column="2"
+                                       Height="5"/>
+                            
+                            <Rectangle Grid.Column="1"
+                                       Grid.Row="0"
+                                       Width="5"/>
+                            <Rectangle Grid.Column="1"
+                                       Grid.Row="2"
+                                       Width="5"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

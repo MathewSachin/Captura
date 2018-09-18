@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -14,6 +15,11 @@ namespace Captura.Models
         public IScreen PickScreen()
         {
             return VideoSourcePickerWindow.PickScreen();
+        }
+
+        public Rectangle? PickRegion()
+        {
+            return RegionPickerWindow.PickRegion();
         }
     }
 }

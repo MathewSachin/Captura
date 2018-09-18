@@ -119,6 +119,23 @@
                     
                     <Separator/>
 
+                    <MenuItem Header="ScreenShot (Region)"
+                              Command="{Binding ScreenShotViewModel.ScreenshotRegionCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource IconCrop}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                      
                     <MenuItem Header="ScreenShot (Screen)"
                               Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand}">
                         <MenuItem.Icon>

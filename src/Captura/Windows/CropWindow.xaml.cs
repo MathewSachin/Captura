@@ -9,7 +9,6 @@ namespace Captura
 {
     public partial class CropWindow
     {
-        CroppingAdorner _croppingAdorner;
         BitmapSource _croppedImage;
         readonly string _fileName;
 
@@ -36,13 +35,13 @@ namespace Captura
 
                 var layer = AdornerLayer.GetAdornerLayer(Image);
 
-                _croppingAdorner = new CroppingAdorner(Image, rcInterior);
+                var croppingAdorner = new CroppingAdorner(Image, rcInterior);
 
-                layer.Add(_croppingAdorner);
+                layer.Add(croppingAdorner);
                 
                 void RefreshCropImage()
                 {
-                    _croppedImage = _croppingAdorner.BpsCrop(Image.Source as BitmapSource);
+                    _croppedImage = croppingAdorner.BpsCrop(Image.Source as BitmapSource);
 
                     SizeLabel.Content = _croppedImage != null
                         ? $"{(int) _croppedImage.Width} x {(int) _croppedImage.Height}"
@@ -51,13 +50,13 @@ namespace Captura
 
                 RefreshCropImage();
 
-                _croppingAdorner.CropChanged += (Sender, Args) => RefreshCropImage();
+                croppingAdorner.CropChanged += (Sender, Args) => RefreshCropImage();
 
-                _croppingAdorner.Checked += Save;
+                croppingAdorner.Checked += Save;
 
                 var clr = Colors.Black;
                 clr.A = 110;
-                _croppingAdorner.Fill = new SolidColorBrush(clr);
+                croppingAdorner.Fill = new SolidColorBrush(clr);
             };
         }
         
