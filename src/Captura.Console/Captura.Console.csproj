@@ -28,9 +28,6 @@
     <ApplicationIcon>..\Captura\Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -46,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
@@ -99,10 +95,15 @@
       <Link>Captura.ico</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser">
+      <Version>2.2.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT $(Configuration)==Debug (
-ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV > NUL
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV &gt; NUL
 IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
 echo Moved Libraries to lib folder
 cd "$(TargetDir)"
