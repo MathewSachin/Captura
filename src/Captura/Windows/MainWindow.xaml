@@ -275,27 +275,38 @@
                                Margin="0,-1"
                                HorizontalContentAlignment="Center"
                                RenderTransformOrigin="0.5,0.5">
-                            <Label.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            </Label.RenderTransform>
-                            <Label.Triggers>
-                                <EventTrigger RoutedEvent="Label.Loaded">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
-                                                             To="2"
-                                                             Duration="00:00:00.5"
-                                                             AutoReverse="True"
-                                                             RepeatBehavior="Forever"/>
-                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
-                                                             To="2"
-                                                             Duration="00:00:00.5"
-                                                             AutoReverse="True"
-                                                             RepeatBehavior="Forever"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Label.Triggers>
+                            <Label.Style>
+                                <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="Visibility" Value="Visible">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard Name="BeginCountdownAnim">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                                         To="2"
+                                                                         Duration="00:00:00.5"
+                                                                         AutoReverse="True"
+                                                                         RepeatBehavior="Forever"/>
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                                         To="2"
+                                                                         Duration="00:00:00.5"
+                                                                         AutoReverse="True"
+                                                                         RepeatBehavior="Forever"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="BeginCountdownAnim"/>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
                         </Label>
                     </Grid>
                 </DockPanel>
