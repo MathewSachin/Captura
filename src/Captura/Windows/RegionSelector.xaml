@@ -265,11 +265,11 @@
                            HorizontalContentAlignment="Center"
                            PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"/>
 
-                    <Label Content="{Binding RecordingViewModel.Countdown}"
-                           Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                    <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                           Content="{Binding RecordingViewModel.Countdown}"
                            Margin="10,-1"
-                           HorizontalContentAlignment="Center"
-                           PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"/>
+                           PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
+                           Style="{StaticResource CountdownLabel}"/>
                 </DockPanel>
             </Border>
         </Grid>
