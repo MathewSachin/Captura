@@ -265,8 +265,38 @@
                     <Grid Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding RecordingViewModel.TimeSpan}"
+                               Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
                                Margin="0,-1"
+                               Name="DurationLabel"
                                HorizontalContentAlignment="Center"/>
+
+                        <Label Content="{Binding RecordingViewModel.Countdown}"
+                               Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                               Margin="0,-1"
+                               HorizontalContentAlignment="Center"
+                               RenderTransformOrigin="0.5,0.5">
+                            <Label.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Label.RenderTransform>
+                            <Label.Triggers>
+                                <EventTrigger RoutedEvent="Label.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                             To="2"
+                                                             Duration="00:00:00.5"
+                                                             AutoReverse="True"
+                                                             RepeatBehavior="Forever"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                             To="2"
+                                                             Duration="00:00:00.5"
+                                                             AutoReverse="True"
+                                                             RepeatBehavior="Forever"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Label.Triggers>
+                        </Label>
                     </Grid>
                 </DockPanel>
             </Expander.Header>

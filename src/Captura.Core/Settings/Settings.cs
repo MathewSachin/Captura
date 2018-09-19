@@ -103,7 +103,7 @@ namespace Captura
 
         public ObservableCollection<CustomImageOverlaySettings> ImageOverlays { get; } = new ObservableCollection<CustomImageOverlaySettings>();
 
-        public int StartDelay
+        public int PreStartCountdown
         {
             get => Get(0);
             set => Set(value);

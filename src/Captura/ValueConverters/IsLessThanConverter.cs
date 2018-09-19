@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Captura
@@ -10,7 +11,12 @@ namespace Captura
         {
             if (double.TryParse(Value?.ToString(), out var left) && double.TryParse(Parameter?.ToString(), out var right))
             {
-                return left < right;
+                var b =  left < right;
+
+                if (TargetType == typeof(Visibility))
+                    return b ? Visibility.Visible : Visibility.Collapsed;
+
+                return b;
             }
 
             return Binding.DoNothing;

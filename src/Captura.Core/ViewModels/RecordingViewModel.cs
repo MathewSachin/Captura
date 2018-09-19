@@ -197,18 +197,41 @@ namespace Captura.ViewModels
 
         public void InitTimer()
         {
-            _timer = new Timer(500);
+            _timer = new Timer(250);
             _timer.Elapsed += TimerOnElapsed;
         }
 
+        bool _waiting;
+
         async void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
+            if (Countdown > 0)
+            {
+                if (_timing.Elapsed.TotalSeconds > 1)
+                {
+                    _timing.Stop();
+
+                    --Countdown;
+
+                    _timing.Start();
+                }
+
+                return;
+            }
+
+            if (_waiting)
+            {
+                _waiting = false;
+
+                InternalStartRecording();
+            }
+
             TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
 
             var duration = Settings.Duration;
 
             // If Capture Duration is set and reached
-            if (duration > 0 && TimeSpan.TotalSeconds >= Settings.StartDelay / 1000 + duration)
+            if (duration > 0 && TimeSpan.TotalSeconds >= duration)
             {
                 if (_syncContext != null)
                     _syncContext.Post(async State => await StopRecording(), null);
@@ -442,9 +465,7 @@ namespace Captura.ViewModels
 
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
-
-            Status.LocalizationKey = Settings.StartDelay > 0 ? nameof(LanguageManager.Waiting) : nameof(LanguageManager.Recording);
-
+            
             _recorder.ErrorOccurred += E =>
             {
                 if (_syncContext != null)
@@ -452,23 +473,42 @@ namespace Captura.ViewModels
                 else OnErrorOccurred(E);
             };
 
-            if (Settings.StartDelay > 0)
+            _waiting = false;
+
+            if (Settings.PreStartCountdown > 0)
             {
-                Task.Factory.StartNew(async () =>
-                {
-                    await Task.Delay(Settings.StartDelay);
+                Status.LocalizationKey = nameof(LanguageManager.Waiting);
 
-                    Status.LocalizationKey = nameof(LanguageManager.Recording);
+                Countdown = Settings.PreStartCountdown;
 
-                    _recorder.Start();
-                });
+                _waiting = true;
             }
-            else _recorder.Start();
+            else InternalStartRecording();
 
             _timing?.Start();
             _timer?.Start();
 
             return true;
+        }
+
+        void InternalStartRecording()
+        {
+            Status.LocalizationKey = nameof(LanguageManager.Recording);
+
+            _recorder.Start();
+        }
+
+        int _countdown;
+
+        public int Countdown
+        {
+            get => _countdown;
+            set
+            {
+                _countdown = value;
+
+                OnPropertyChanged();
+            }
         }
 
         void OnErrorOccurred(Exception E)
