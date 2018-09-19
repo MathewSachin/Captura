@@ -27,7 +27,7 @@
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
         </Grid.Resources>
         
-        <Border Visibility="Collapsed"
+        <Border Opacity="0"
                 Background="#57FFFFFF"
                 BorderBrush = "#333333"
                 Name="Border"

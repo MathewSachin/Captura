@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Screna;
@@ -72,6 +73,17 @@ namespace Captura
             }
         }
 
+        void BeginClose()
+        {
+            var duration = new Duration(TimeSpan.FromMilliseconds(200));
+
+            var opacityAnim = new DoubleAnimation(0, duration);
+
+            opacityAnim.Completed += (S, E) => Close();
+
+            BeginAnimation(OpacityProperty, opacityAnim);
+        }
+
         void ShowCancelText()
         {
             foreach (var screen in _screens)
@@ -111,35 +123,60 @@ namespace Captura
             SelectedScreen = null;
             SelectedWindow = null;
 
-            Close();
+            BeginClose();
+        }
+
+        Rectangle? _lastRectangle;
+
+        void UpdateBorderAndCursor(Rectangle? Rect)
+        {
+            if (_lastRectangle == Rect)
+                return;
+
+            _lastRectangle = Rect;
+
+            var storyboard = new Storyboard();
+
+            var duration = new Duration(TimeSpan.FromMilliseconds(100));
+
+            if (Rect == null)
+            {
+                Cursor = Cursors.Arrow;
+
+                var opacityAnim = new DoubleAnimation(0, duration);
+                Storyboard.SetTargetProperty(opacityAnim, new PropertyPath(nameof(Opacity)));
+                storyboard.Children.Add(opacityAnim);
+            }
+            else
+            {
+                Cursor = Cursors.Hand;
+
+                var opacityAnim = new DoubleAnimation(1, duration);
+                Storyboard.SetTargetProperty(opacityAnim, new PropertyPath(nameof(Opacity)));
+                storyboard.Children.Add(opacityAnim);
+
+                var rect = Rect.Value;
+
+                var margin = new Thickness(-Left + rect.Left / Dpi.X, -Top + rect.Top / Dpi.Y, 0, 0);
+                var marginAnim = new ThicknessAnimation(margin, duration);
+                Storyboard.SetTargetProperty(marginAnim, new PropertyPath(nameof(Margin)));
+                storyboard.Children.Add(marginAnim);
+
+                var widthAnim = new DoubleAnimation(Border.ActualWidth, rect.Width / Dpi.X, duration);
+                Storyboard.SetTargetProperty(widthAnim, new PropertyPath(nameof(Width)));
+                storyboard.Children.Add(widthAnim);
+
+                var heightAnim = new DoubleAnimation(Border.ActualHeight, rect.Height / Dpi.Y, duration);
+                Storyboard.SetTargetProperty(heightAnim, new PropertyPath(nameof(Height)));
+                storyboard.Children.Add(heightAnim);
+            }
+
+            Border.BeginStoryboard(storyboard);
         }
 
         void WindowMouseMove(object Sender, MouseEventArgs E)
         {
             var point = MouseCursor.CursorPosition;
-
-            void UpdateBorderAndCursor(Rectangle? Rect)
-            {
-                if (Rect == null)
-                {
-                    Cursor = Cursors.Arrow;
-
-                    Border.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    Cursor = Cursors.Hand;
-
-                    var rect = Rect.Value;
-
-                    Border.Margin = new Thickness(-Left + rect.Left / Dpi.X, -Top + rect.Top / Dpi.Y, 0, 0);
-
-                    Border.Width = rect.Width / Dpi.X;
-                    Border.Height = rect.Height / Dpi.Y;
-
-                    Border.Visibility = Visibility.Visible;
-                }
-            }
 
             switch (_mode)
             {
@@ -165,7 +202,7 @@ namespace Captura
             {
                 case VideoPickerMode.Screen when SelectedScreen != null:
                 case VideoPickerMode.Window when SelectedWindow != null:
-                    Close();
+                    BeginClose();
                     break;
             }
         }
