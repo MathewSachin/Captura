@@ -541,6 +541,8 @@ namespace Captura.ViewModels
             _timer?.Stop();
             _timing.Stop();
 
+            Countdown = 0;
+
             if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
 
