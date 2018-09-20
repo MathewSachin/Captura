@@ -477,6 +477,8 @@ namespace Captura.ViewModels
 
             if (Settings.PreStartCountdown > 0)
             {
+                PauseCommand.RaiseCanExecuteChanged(false);
+
                 Status.LocalizationKey = nameof(LanguageManager.Waiting);
 
                 Countdown = Settings.PreStartCountdown;
@@ -496,6 +498,10 @@ namespace Captura.ViewModels
             Status.LocalizationKey = nameof(LanguageManager.Recording);
 
             _recorder.Start();
+
+            if (_syncContext != null)
+                _syncContext.Post(S => PauseCommand.RaiseCanExecuteChanged(true), null);
+            else PauseCommand.RaiseCanExecuteChanged(true);
         }
 
         int _countdown;
