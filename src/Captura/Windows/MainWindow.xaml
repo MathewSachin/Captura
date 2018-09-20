@@ -265,8 +265,16 @@
                     <Grid Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
                         <Label Content="{Binding RecordingViewModel.TimeSpan}"
+                               Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
                                Margin="0,-1"
+                               Name="DurationLabel"
                                HorizontalContentAlignment="Center"/>
+
+                        <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                               Margin="0,-1"
+                               Style="{StaticResource CountdownLabel}"
+                               HorizontalAlignment="Center"
+                               Content="{Binding RecordingViewModel.Countdown}"/>
                     </Grid>
                 </DockPanel>
             </Expander.Header>
