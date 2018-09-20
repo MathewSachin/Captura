@@ -638,8 +638,11 @@ namespace Captura.ViewModels
 
             RecentItemViewModel savingRecentItem = null;
 
+            // Reference current file name
+            var fileName = _currentFileName;
+
             // Assume saving to file only when extension is present
-            if (!string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
+            if (!_waiting && !string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
             {
                 savingRecentItem = _recentViewModel.Add(_currentFileName, _isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
             }
@@ -656,6 +659,9 @@ namespace Captura.ViewModels
 
             AfterRecording();
 
+            var wasWaiting = _waiting;
+            _waiting = false;
+
             try
             {
                 // Ensure saved
@@ -671,6 +677,18 @@ namespace Captura.ViewModels
                 ServiceProvider.MessageProvider.ShowException(e, "Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.");
 
                 return;
+            }
+
+            if (wasWaiting)
+            {
+                try
+                {
+                    File.Delete(fileName);
+                }
+                catch
+                {
+                    // Ignore Errors
+                }
             }
 
             if (savingRecentItem != null)
