@@ -273,6 +273,7 @@
                         <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
                                Margin="0,-1"
                                Style="{StaticResource CountdownLabel}"
+                               HorizontalAlignment="Center"
                                Content="{Binding RecordingViewModel.Countdown}"/>
                     </Grid>
                 </DockPanel>
