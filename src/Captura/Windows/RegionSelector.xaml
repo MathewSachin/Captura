@@ -258,12 +258,17 @@
                         </local:ModernButton.Style>
                     </local:ModernButton>
 
-                    <Label Content="{Binding RecordingViewModel.TimeSpan}"
-                           Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
-                           Margin="10,-1"
-                           Name="DurationLabel"
-                           HorizontalContentAlignment="Center"
-                           PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10,-1"
+                                PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
+                                Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                Name="DurationLabel">
+                        <Label Content="{Binding RecordingViewModel.TimeSpan}"/>
+
+                        <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
+                               ContentStringFormat="{} / {0}"
+                               Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
+                    </StackPanel>
 
                     <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
                            Content="{Binding RecordingViewModel.Countdown}"
