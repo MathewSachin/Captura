@@ -10,9 +10,11 @@
     <captura:DrawingToWpfColorConverter x:Key="WpfColorConverter"/>
     <captura:InkToolToIconConverter x:Key="InkToolToIconConverter"/>
     <captura:TimeSpanToSecondsConverter x:Key="TimeSpanToSecondsConverter"/>
+    <captura:SecondsToTimeSpanConverter x:Key="SecondsToTimeSpanConverter"/>
     <captura:IsPlayingToButtonStyleConverter x:Key="IsPlayingToButtonStyleConverter"/>
     <captura:IntegralTimeSpanConverter x:Key="IntegralTimeSpanConverter"/>
     <captura:GetTypeConverter x:Key="GetTypeConverter"/>
     <captura:StaticResourceConverter x:Key="StaticResourceConverter"/>
+    <captura:IsLessThanConverter x:Key="IsLessThanConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

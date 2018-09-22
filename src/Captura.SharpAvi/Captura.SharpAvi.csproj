@@ -26,9 +26,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpAvi, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpAvi.2.1.1\lib\net45\SharpAvi.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -41,14 +38,16 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AviCodec.cs" />
     <Compile Include="AviWriter.cs" />
     <Compile Include="IAudioProviderAdapter.cs" />
     <Compile Include="SharpAviItem.cs" />
     <Compile Include="SharpAviWriterProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpAvi">
+      <Version>2.1.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

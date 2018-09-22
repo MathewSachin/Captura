@@ -233,9 +233,9 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                         break;
                 }
 
-                OnPropertyChanged();
-
                 RefreshVideoSources();
+
+                OnPropertyChanged();
             }
         }
 

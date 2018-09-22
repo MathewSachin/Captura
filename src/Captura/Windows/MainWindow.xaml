@@ -119,6 +119,23 @@
                     
                     <Separator/>
 
+                    <MenuItem Header="ScreenShot (Region)"
+                              Command="{Binding ScreenShotViewModel.ScreenshotRegionCommand}">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource IconCrop}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                      
                     <MenuItem Header="ScreenShot (Screen)"
                               Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand}">
                         <MenuItem.Icon>
@@ -198,16 +215,33 @@
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
                                         Command="{Binding RecordingViewModel.PauseCommand}"
                                         IconData="{StaticResource IconPause}"
-                                        Opacity="0.9">
+                                        Opacity="0.9"
+                                        RenderTransformOrigin="0.5,0.5">
+                        <local:ModernButton.RenderTransform>
+                            <RotateTransform/>
+                        </local:ModernButton.RenderTransform>
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
-                                        <Setter Property="LayoutTransform">
-                                            <Setter.Value>
-                                                <RotateTransform Angle="90"/>
-                                            </Setter.Value>
-                                        </Setter>
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="90"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="0"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -230,9 +264,25 @@
                                         DockPanel.Dock="Right"/>
                     <Grid Margin="0,-2"
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
-                        <Label Content="{Binding RecordingViewModel.TimeSpan}"
+                        <StackPanel Margin="10,-1"
+                                    Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                    Name="DurationLabel"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Label Content="{Binding RecordingViewModel.TimeSpan}"/>
+
+                            <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
+                                   ContentStringFormat="{}{0}"
+                                   HorizontalAlignment="Center"
+                                   FontSize="8"
+                                   Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
+                        </StackPanel>
+
+                        <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
                                Margin="0,-1"
-                               HorizontalContentAlignment="Center"/>
+                               Style="{StaticResource CountdownLabel}"
+                               HorizontalAlignment="Center"
+                               Content="{Binding RecordingViewModel.Countdown}"/>
                     </Grid>
                 </DockPanel>
             </Expander.Header>

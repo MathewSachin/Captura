@@ -19,19 +19,31 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Grid Background="#57FFFFFF"
-          MouseMove="WindowMouseMove"
+    <Grid MouseMove="WindowMouseMove"
           MouseLeftButtonDown="WindowMouseLeftButtonDown"
-          Name="Grid">
+          Name="Grid"
+          Background="Transparent">
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
         </Grid.Resources>
         
-        <Border Visibility="Collapsed"
+        <Border Opacity="0"
                 Background="#57FFFFFF"
                 BorderBrush = "#333333"
                 Name="Border"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
+
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Grid.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                        To="#57FFFFFF"
+                                        Duration="0:0:0.15"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
     </Grid>
 </Window>

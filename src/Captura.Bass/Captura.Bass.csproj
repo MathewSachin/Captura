@@ -26,16 +26,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedBass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.2.0.4\lib\net45\ManagedBass.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBass.Mix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.Mix.2.1.0\lib\netstandard1.4\ManagedBass.Mix.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -51,6 +42,14 @@
       <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
       <Name>Captura.Base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ManagedBass">
+      <Version>2.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="ManagedBass.Mix">
+      <Version>2.1.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

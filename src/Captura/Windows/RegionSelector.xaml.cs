@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -81,17 +82,15 @@ namespace Captura
                 InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
         }
 
-        const int LeftOffset = 43,
-            TopOffset = 38,
-            WidthBorder = LeftOffset + 7,
-            HeightBorder = TopOffset + 37;
+        const int LeftOffset = 2,
+            TopOffset = 2;
 
         Rectangle? _region;
         
         void InitDimensionBoxes()
         {
-            WidthBox.Minimum = (int)((MinWidth - WidthBorder) * Dpi.X);
-            HeightBox.Minimum = (int)((MinHeight - HeightBorder) * Dpi.Y);
+            WidthBox.Minimum = (int)((Region.MinWidth - LeftOffset * 2) * Dpi.X);
+            HeightBox.Minimum = (int)((Region.MinHeight - TopOffset * 2) * Dpi.Y);
 
             void SizeChange()
             {
@@ -196,8 +195,8 @@ namespace Captura
             _region = Dispatcher.Invoke(() =>
                 new Rectangle((int)((Left + LeftOffset) * Dpi.X),
                     (int)((Top + TopOffset) * Dpi.Y),
-                    (int)((Width - WidthBorder) * Dpi.X),
-                    (int)((Height - HeightBorder) * Dpi.Y)));
+                    (int)((Region.ActualWidth - 2 * LeftOffset) * Dpi.X),
+                    (int)((Region.ActualHeight - 2 * TopOffset) * Dpi.Y)));
 
             _regionItem.Name = _region.ToString().Replace("{", "")
                 .Replace("}", "")
@@ -221,8 +220,8 @@ namespace Captura
                 
                 Dispatcher.Invoke(() =>
                 {
-                    Width = value.Width / Dpi.X + WidthBorder;
-                    Height = value.Height / Dpi.Y + HeightBorder;
+                    Region.Width = value.Width / Dpi.X + 2 * LeftOffset;
+                    Region.Height = value.Height / Dpi.Y + 2 * TopOffset;
 
                     Left = value.Left / Dpi.X - LeftOffset;
                     Top = value.Top / Dpi.Y - TopOffset;
@@ -238,11 +237,6 @@ namespace Captura
                 Snapper.IsEnabled = CloseButton.IsEnabled = false;
 
                 WidthBox.IsEnabled = HeightBox.IsEnabled = false;
-
-                if (ServiceProvider.Get<Settings>().UI.HideRegionSelectorWhenRecording)
-                {
-                    Hide();
-                }
             });
         }
         
@@ -262,7 +256,6 @@ namespace Captura
         public IVideoItem VideoSource => _regionItem;
 
         public IntPtr Handle => new WindowInteropHelper(this).Handle;
-
         #endregion
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
@@ -289,6 +282,112 @@ namespace Captura
                 try { Height += Top; }
                 catch { }
                 finally { Top = 0; }
+            }
+        }
+
+        void UIElement_OnPreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
+        {
+            DragMove();
+        }
+
+        void Thumb_OnDragDelta(object Sender, DragDeltaEventArgs E)
+        {
+            if (Sender is FrameworkElement element)
+            {
+                void DoTop()
+                {
+                    var oldTop = Top;
+                    var top = Top + E.VerticalChange;
+
+                    if (top > 0)
+                        Top = top;
+                    else
+                    {
+                        Top = 0;
+                        return;
+                    }
+
+                    var height = Region.Height - E.VerticalChange;
+
+                    if (height > Region.MinHeight)
+                        Region.Height = height;
+                    else Top = oldTop;
+                }
+
+                void DoLeft()
+                {
+                    var oldLeft = Left;
+                    var left = Left + E.HorizontalChange;
+
+                    if (left > 0)
+                        Left = left;
+                    else
+                    {
+                        Left = 0;
+                        return;
+                    }
+
+                    var width = Region.Width - E.HorizontalChange;
+
+                    if (width > Region.MinWidth)
+                        Region.Width = width;
+                    else Left = oldLeft;
+                }
+
+                void DoBottom()
+                {
+                    var height = Region.Height + E.VerticalChange;
+
+                    if (height > 0)
+                        Region.Height = height;
+                }
+
+                void DoRight()
+                {
+                    var width = Region.Width + E.HorizontalChange;
+
+                    if (width > 0)
+                        Region.Width = width;
+                }
+
+                switch (element.Tag)
+                {
+                    case "Top":
+                        DoTop();
+                        break;
+
+                    case "Bottom":
+                        DoBottom();
+                        break;
+
+                    case "Left":
+                        DoLeft();
+                        break;
+
+                    case "Right":
+                        DoRight();
+                        break;
+
+                    case "TopLeft":
+                        DoTop();
+                        DoLeft();
+                        break;
+
+                    case "TopRight":
+                        DoTop();
+                        DoRight();
+                        break;
+
+                    case "BottomLeft":
+                        DoBottom();
+                        DoLeft();
+                        break;
+
+                    case "BottomRight":
+                        DoBottom();
+                        DoRight();
+                        break;
+                }
             }
         }
     }

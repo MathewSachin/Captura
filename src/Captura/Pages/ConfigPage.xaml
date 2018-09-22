@@ -48,14 +48,13 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="{Binding StartDelay, Source={StaticResource Loc}, Mode=OneWay}"
+                    <Label Content="Pre Start Countdown (seconds)"
                            ContentStringFormat="{}{0}: "
                            Margin="0,2,10,2"/>
 
-                    <xctk:IntegerUpDown Value="{Binding Settings.StartDelay, Mode=TwoWay}"
+                    <xctk:IntegerUpDown Value="{Binding Settings.PreStartCountdown, Mode=TwoWay}"
                                         Grid.Column="1"
-                                        Margin="0,2"
-                                        ToolTip="Milliseconds to wait before starting recording"/>
+                                        Margin="0,2"/>
 
                     <Label Content="{Binding CaptureDuration, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
