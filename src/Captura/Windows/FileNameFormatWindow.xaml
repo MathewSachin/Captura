@@ -4,182 +4,41 @@
         Title="Filename Format"
         Height="450"
         Width="800"
-        Background="{DynamicResource WindowBackground}">
+        Background="{DynamicResource WindowBackground}"
+        Name="This">
     <Grid Margin="5">
-        <Grid Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <ItemsControl ItemsSource="{Binding FormatGroups, ElementName=This}"
+                      Margin="5"
+                      Grid.IsSharedSizeScope="True">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Label Content="{Binding Name}"
+                               FontWeight="Bold"
+                               Margin="0,5,0,2"/>
 
-            <Label Content="Year"
-                   FontWeight="Bold"
-                   Margin="0,5,0,2"/>
+                        <ItemsControl ItemsSource="{Binding Formats}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="FormatName"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
 
-            <Label Content="%yyyy%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="1"/>
+                                        <Label Content="{Binding Format}"
+                                               FontWeight="DemiBold"/>
 
-            <Label Content="Year (2018)"
-                   Grid.Column="2"
-                   Grid.Row="1"/>
-
-            <Label Content="%yy%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="2"/>
-
-            <Label Content="Year (18)"
-                   Grid.Column="2"
-                   Grid.Row="2"/>
-
-            <Label Content="Month"
-                   Grid.Row="3"
-                   Grid.Column="0"
-                   FontWeight="Bold"
-                   Margin="0,5,0,2"/>
-
-            <Label Content="%MMMM%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="4"/>
-
-            <Label Content="Month (September)"
-                   Grid.Column="2"
-                   Grid.Row="4"/>
-
-            <Label Content="%MMM%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="5"/>
-
-            <Label Content="Month (Sep)"
-                   Grid.Column="2"
-                   Grid.Row="5"/>
-
-            <Label Content="%MMMM%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="6"/>
-
-            <Label Content="Month (09)"
-                   Grid.Column="2"
-                   Grid.Row="6"/>
-
-            <Label Content="Date"
-                   Grid.Row="7"
-                   Grid.Column="0"
-                   FontWeight="Bold"
-                   Margin="0,5,0,2"/>
-
-            <Label Content="%dd%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="8"/>
-
-            <Label Content="Date (22)"
-                   Grid.Column="2"
-                   Grid.Row="8"/>
-
-            <Label Content="%ddd%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="9"/>
-
-            <Label Content="Day (Tue)"
-                   Grid.Column="2"
-                   Grid.Row="9"/>
-
-            <Label Content="%dddd%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="10"/>
-
-            <Label Content="Day (Tuesday)"
-                   Grid.Column="2"
-                   Grid.Row="10"/>
-
-            <Label Content="Time"
-                   Grid.Row="11"
-                   Grid.Column="0"
-                   FontWeight="Bold"
-                   Margin="0,5,0,2"/>
-
-            <Label Content="%HH%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="12"/>
-
-            <Label Content="Hours (24 hr) (20)"
-                   Grid.Column="2"
-                   Grid.Row="12"/>
-
-            <Label Content="%hh%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="13"/>
-
-            <Label Content="Hours (12 hr) (08)"
-                   Grid.Column="2"
-                   Grid.Row="13"/>
-
-            <Label Content="%mm%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="14"/>
-
-            <Label Content="Minutes (58)"
-                   Grid.Column="2"
-                   Grid.Row="14"/>
-
-            <Label Content="%ss%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="15"/>
-
-            <Label Content="Seconds (54)"
-                   Grid.Column="2"
-                   Grid.Row="15"/>
-
-            <Label Content="%tt%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="16"/>
-
-            <Label Content="AM / PM"
-                   Grid.Column="2"
-                   Grid.Row="16"/>
-
-            <Label Content="%zzz%"
-                   FontWeight="DemiBold"
-                   Grid.Column="0"
-                   Grid.Row="17"/>
-
-            <Label Content="Time Zone (+05:30)"
-                   Grid.Column="2"
-                   Grid.Row="17"/>
-        </Grid>
+                                        <Label Content="{Binding Description}"
+                                               Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
