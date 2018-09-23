@@ -6,7 +6,8 @@
         Height="450"
         Width="800"
         Background="{DynamicResource WindowBackground}"
-        Name="This">
+        Name="This"
+        ResizeMode="NoResize">
     <DockPanel Margin="5">
         <ItemsControl ItemsSource="{Binding FormatGroups, ElementName=This}"
                       Margin="20,5"
@@ -43,7 +44,14 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <StackPanel>
+        <StackPanel Margin="5">
+            <Label Content="File Name Format"
+                   ContentStringFormat="{}{0}:"
+                   FontWeight="Bold"/>
+
+            <TextBox Margin="0,2,0,10"
+                     Text="{Binding MainViewModel.Settings.FilenameFormat, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
+
             <captura:OutputFolderControl/>
         </StackPanel>
     </DockPanel>
