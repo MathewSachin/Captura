@@ -1,15 +1,17 @@
 ﻿<Window x:Class="Captura.FileNameFormatWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:captura="clr-namespace:Captura"
         Title="Filename Format"
         Height="450"
         Width="800"
         Background="{DynamicResource WindowBackground}"
         Name="This">
-    <Grid Margin="5">
+    <DockPanel Margin="5">
         <ItemsControl ItemsSource="{Binding FormatGroups, ElementName=This}"
-                      Margin="5"
-                      Grid.IsSharedSizeScope="True">
+                      Margin="20,5"
+                      Grid.IsSharedSizeScope="True"
+                      DockPanel.Dock="Right">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -40,5 +42,9 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </Grid>
+
+        <StackPanel>
+            <captura:OutputFolderControl/>
+        </StackPanel>
+    </DockPanel>
 </Window>
