@@ -6,10 +6,10 @@
         Height="450"
         Width="800"
         Background="{DynamicResource WindowBackground}"
-        Name="This"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}">
     <DockPanel Margin="5">
-        <ItemsControl ItemsSource="{Binding FormatGroups, ElementName=This}"
+        <ItemsControl ItemsSource="{Binding FormatGroups}"
                       Margin="20,5"
                       Grid.IsSharedSizeScope="True"
                       DockPanel.Dock="Right">
@@ -50,7 +50,7 @@
                    FontWeight="Bold"/>
 
             <TextBox Margin="0,2,0,10"
-                     Text="{Binding MainViewModel.Settings.FilenameFormat, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
+                     Text="{Binding Settings.FilenameFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <captura:OutputFolderControl/>
         </StackPanel>
