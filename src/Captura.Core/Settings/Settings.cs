@@ -145,7 +145,7 @@ namespace Captura
             if (FileName != null)
                 return FileName;
 
-            if (FilenameFormat == null)
+            if (string.IsNullOrWhiteSpace(FilenameFormat))
                 return Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
 
             var now = DateTime.Now;

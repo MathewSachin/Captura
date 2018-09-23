@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System.IO;
+using Captura.Models;
 
 namespace Captura.ViewModels
 {
@@ -37,5 +38,27 @@ namespace Captura.ViewModels
                 new FileNameFormatItem("%zzz%", "Time Zone (+05:30)")
             })
         };
+
+        public string FilenameFormat
+        {
+            get => Settings.FilenameFormat;
+            set
+            {
+                var invalidChars = Path.GetInvalidFileNameChars();
+
+                foreach (var invalidChar in invalidChars)
+                {
+                    value = value.Replace(invalidChar.ToString(), "");
+                }
+
+                Settings.FilenameFormat = value;
+
+                OnPropertyChanged();
+
+                RaisePropertyChanged(nameof(FilenamePreview));
+            }
+        }
+
+        public string FilenamePreview => Settings.GetFileName(".mp4");
     }
 }

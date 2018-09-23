@@ -50,7 +50,14 @@
                    FontWeight="Bold"/>
 
             <TextBox Margin="0,2,0,10"
-                     Text="{Binding Settings.FilenameFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding FilenameFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Content="File Name Preview"
+                   ContentStringFormat="{}{0}:"
+                   FontWeight="Bold"/>
+
+            <Label Margin="0,2,0,10"
+                   Content="{Binding FilenamePreview}"/>
 
             <captura:OutputFolderControl/>
         </StackPanel>
