@@ -104,7 +104,8 @@
                 
                 <Button Margin="0,2"
                         Content="Configure File Naming ..."
-                        Click="OpenFileNameFormatter"/>
+                        Click="OpenFileNameFormatter"
+                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
