@@ -263,7 +263,8 @@
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
                     <Grid Margin="0,-2"
-                          PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown">
+                          PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown"
+                          Background="#01000000">
                         <StackPanel Margin="10,-1"
                                     Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
                                     Name="DurationLabel"
