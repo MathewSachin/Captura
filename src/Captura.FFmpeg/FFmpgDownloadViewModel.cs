@@ -47,15 +47,36 @@ namespace Captura.ViewModels
 
             StartCommand = new DelegateCommand(OnStartExecute);
 
+            SetDefaultTargetFolderToLocalAppData();
+
             SelectFolderCommand = new DelegateCommand(OnSelectFolderExecute);
 
             OpenFolderCommand = new DelegateCommand(() =>
             {
-                if (Directory.Exists(_ffmpegSettings.FolderPath))
+                if (Directory.Exists(_targetFolder))
                 {
-                    Process.Start(_ffmpegSettings.FolderPath);
+                    Process.Start(_targetFolder);
                 }
             });
+        }
+
+        void SetDefaultTargetFolderToLocalAppData()
+        {
+            if (!string.IsNullOrWhiteSpace(_ffmpegSettings.FolderPath))
+            {
+                _targetFolder = _ffmpegSettings.FolderPath;
+            }
+            else
+            {
+                var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+                _targetFolder = Path.Combine(localAppDataPath, "Captura");
+            }
+
+            if (!Directory.Exists(_targetFolder))
+            {
+                Directory.CreateDirectory(_targetFolder);
+            }
         }
 
         async void OnStartExecute()
@@ -181,7 +202,7 @@ namespace Captura.ViewModels
             }
         }
 
-        string _targetFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string _targetFolder;
 
         public string TargetFolder
         {
