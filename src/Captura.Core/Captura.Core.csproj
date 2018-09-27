@@ -72,6 +72,9 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Models\VisualSettings.cs" />
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
+    <Compile Include="Models\FileNameFormatGroup.cs" />
+    <Compile Include="Models\FileNameFormatItem.cs" />
+    <Compile Include="ViewModels\FileNameFormatViewModel.cs" />
     <Compile Include="ViewModels\VideoSourceModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />

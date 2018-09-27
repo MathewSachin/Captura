@@ -250,7 +250,7 @@ namespace Captura.ViewModels
             if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
                 extension = x.Extension;
 
-            _currentFileName = FileName ?? Path.Combine(Settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{extension}");
+            _currentFileName = Settings.GetFileName(extension, FileName);
 
             if (_videoViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 _videoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||

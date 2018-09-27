@@ -26,6 +26,8 @@ namespace Captura
 
         public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
 
+        public FileNameFormatViewModel FileNameFormatViewModel => ServiceProvider.Get<FileNameFormatViewModel>();
+
         public KeymapViewModel Keymap => ServiceProvider.Get<KeymapViewModel>();
 
         public EditorWriter EditorWriter => ServiceProvider.Get<EditorWriter>();

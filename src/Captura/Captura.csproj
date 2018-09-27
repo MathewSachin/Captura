@@ -53,6 +53,9 @@
     <Compile Include="Controls\CollapsedBar.xaml.cs">
       <DependentUpon>CollapsedBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OutputFolderControl.xaml.cs">
+      <DependentUpon>OutputFolderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,9 @@
     </Compile>
     <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
+    <Compile Include="Windows\FileNameFormatWindow.xaml.cs">
+      <DependentUpon>FileNameFormatWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValueConverters\SecondsToTimeSpanConverter.cs" />
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
       <DependentUpon>RegionPickerWindow.xaml</DependentUpon>
@@ -251,6 +257,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\OutputFolderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -288,6 +298,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ScreenShotsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FileNameFormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

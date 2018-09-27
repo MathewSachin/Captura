@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using Newtonsoft.Json;
@@ -131,6 +132,58 @@ namespace Captura
         {
             get => Get<string>();
             set => Set(value);
+        }
+
+        public string FilenameFormat
+        {
+            get => Get("%yyyy%-%MM%-%dd%-%HH%-%mm%-%ss%");
+            set => Set(value);
+        }
+
+        public string GetFileName(string Extension, string FileName = null)
+        {
+            if (FileName != null)
+                return FileName;
+
+            if (string.IsNullOrWhiteSpace(FilenameFormat))
+                return Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
+
+            var now = DateTime.Now;
+
+            var filename = FilenameFormat
+                .Replace("%yyyy%", now.ToString("yyyy"))
+                .Replace("%yy%", now.ToString("yy"))
+                
+                .Replace("%MMMM%", now.ToString("MMMM"))
+                .Replace("%MMM%", now.ToString("MMM"))
+                .Replace("%MM%", now.ToString("MM"))
+                
+                .Replace("%dd%", now.ToString("dd"))
+                .Replace("%ddd%", now.ToString("ddd"))
+                .Replace("%dddd%", now.ToString("dddd"))
+                
+                .Replace("%HH%", now.ToString("HH"))
+                .Replace("%hh%", now.ToString("hh"))
+
+                .Replace("%mm%", now.ToString("mm"))
+                .Replace("%ss%", now.ToString("ss"))
+                .Replace("%tt%", now.ToString("tt"))
+                .Replace("%zzz%", now.ToString("zzz"));
+            
+            var path = Path.Combine(OutPath, $"{filename}{Extension}");
+
+            if (!File.Exists(path))
+                return path;
+
+            var i = 1;
+
+            do
+            {
+                path = Path.Combine(OutPath, $"{filename} ({i++}){Extension}");
+            }
+            while (File.Exists(path));
+
+            return path;
         }
 
         public bool IncludeCursor

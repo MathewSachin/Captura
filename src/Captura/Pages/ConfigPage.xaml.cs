@@ -14,5 +14,10 @@ namespace Captura
         {
             HotkeysWindow.ShowInstance();
         }
+
+        void OpenFileNameFormatter(object Sender, RoutedEventArgs E)
+        {
+            new FileNameFormatWindow().ShowDialog();
+        }
     }
 }

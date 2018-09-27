@@ -294,42 +294,7 @@
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
 
-                <!-- Output Folder -->
-                <DockPanel DockPanel.Dock="Bottom">                    
-                    <Button DockPanel.Dock="Left"
-                            Padding="5,0"
-                            VerticalContentAlignment="Center"
-                            ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
-                            Command="{Binding OpenOutputFolderCommand}">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconFolder}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-
-                            <TextBlock Text="{Binding OutFolder, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-                    
-                    <Button DockPanel.Dock="Right"
-                            ToolTip="{Binding SelectOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
-                            Command="{Binding SelectOutputFolderCommand}"
-                            IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
-                        <Path Stretch="UniformToFill"
-                              Height="4"
-                              Width="16"
-                              Data="{StaticResource IconMore}"/>
-                    </Button>
-                    <Border ToolTip="{Binding Settings.OutPath}"
-                            MouseUp="SelectTargetFolder">
-                        <TextBox IsReadOnly="True"
-                                 IsEnabled="False"
-                                 Text="{Binding Settings.OutPath}"/>
-                    </Border>
-                </DockPanel>
+                <local:OutputFolderControl DockPanel.Dock="Bottom"/>
 
                 <Frame Source="../Pages/MainPage.xaml"/>
             </DockPanel>

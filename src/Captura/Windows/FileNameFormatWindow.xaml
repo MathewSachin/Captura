@@ -1,0 +1,65 @@
+﻿<Window x:Class="Captura.FileNameFormatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:captura="clr-namespace:Captura"
+        Title="Filename Format"
+        Height="450"
+        Width="800"
+        Background="{DynamicResource WindowBackground}"
+        ResizeMode="NoResize"
+        DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}">
+    <DockPanel Margin="5">
+        <ItemsControl ItemsSource="{Binding FormatGroups}"
+                      Margin="20,5"
+                      Grid.IsSharedSizeScope="True"
+                      DockPanel.Dock="Right">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Label Content="{Binding Name}"
+                               FontWeight="Bold"
+                               Margin="0,5,0,2"/>
+
+                        <ItemsControl ItemsSource="{Binding Formats}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="FormatName"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Content="{Binding Format}"
+                                               FontWeight="DemiBold"/>
+
+                                        <Label Content="{Binding Description}"
+                                               Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StackPanel Margin="5">
+            <Label Content="File Name Format"
+                   ContentStringFormat="{}{0}:"
+                   FontWeight="Bold"/>
+
+            <TextBox Margin="0,2,0,10"
+                     Text="{Binding FilenameFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Content="File Name Preview"
+                   ContentStringFormat="{}{0}:"
+                   FontWeight="Bold"/>
+
+            <Label Margin="0,2,0,10"
+                   Content="{Binding FilenamePreview}"/>
+
+            <captura:OutputFolderControl/>
+        </StackPanel>
+    </DockPanel>
+</Window>
