@@ -214,7 +214,14 @@
                     <CheckBox IsChecked="{Binding Settings.Video.FpsLimit}"
                               Content="Limit"
                               Margin="5,0,0,0"
-                              Grid.Column="3"/>
+                              Grid.Column="3">
+                        <CheckBox.ToolTip>
+                            <TextBlock MaxWidth="300"
+                                       TextWrapping="Wrap">
+This Limit option is to prevent system crashes due to using high FPS on full screen or large region sizes.
+                            </TextBlock>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
 
                     <Grid.Style>
                         <Style TargetType="Grid">
