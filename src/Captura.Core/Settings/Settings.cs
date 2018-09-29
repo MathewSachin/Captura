@@ -145,6 +145,9 @@ namespace Captura
             if (FileName != null)
                 return FileName;
 
+            if (!Extension.StartsWith("."))
+                Extension = $".{Extension}";
+
             if (string.IsNullOrWhiteSpace(FilenameFormat))
                 return Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
 
