@@ -124,7 +124,7 @@ namespace Captura.ViewModels
 
                 await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
-            else _systemTray.ShowTextNotification(Loc.ImgEmpty, null);
+            else _systemTray.ShowNotification().PrimaryText = Loc.ImgEmpty;
         }
 
         public Bitmap ScreenShotWindow(IWindow hWnd)

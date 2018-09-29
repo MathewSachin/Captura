@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Captura.ProgressBalloon"
+﻿<UserControl x:Class="Captura.NotificationBalloon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Captura"
@@ -10,7 +10,8 @@
         <ProgressBar Value="{Binding Progress}"
                      Height="5"
                      Margin="-5,0,0,0"
-                     DockPanel.Dock="Bottom"/>
+                     DockPanel.Dock="Bottom"
+                     Visibility="{Binding Progress, Converter={StaticResource NotNullConverter}}"/>
         
         <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                             Click="CloseButton_Click"
@@ -19,20 +20,19 @@
                             DockPanel.Dock="Right"/>
 
         <Label DockPanel.Dock="Bottom"
-               Visibility="{Binding SecondaryText, Converter={StaticResource NotNullConverter}}">
+               Visibility="{Binding SecondaryText, Converter={StaticResource NotNullConverter}}"
+               MouseUp="TextBlock_MouseUp"
+               Cursor="Hand">
             <TextBlock Text="{Binding SecondaryText}"
                        Padding="5,0,5,5"
-                       MouseUp="TextBlock_MouseUp"
-                       Cursor="Hand"
                        Style="{StaticResource Small}"/>
         </Label>
-        
-        <Label>
+
+        <Label MouseUp="TextBlock_MouseUp"
+               Cursor="Hand">
             <TextBlock Text="{Binding PrimaryText}"
                        VerticalAlignment="Center"
-                       Padding="5"
-                       MouseUp="TextBlock_MouseUp"
-                       Cursor="Hand"/>
+                       Padding="5"/>
         </Label>
     </DockPanel>
 </UserControl>

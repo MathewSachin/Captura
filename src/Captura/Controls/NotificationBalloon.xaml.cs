@@ -4,15 +4,15 @@ using System;
 
 namespace Captura
 {
-    public partial class TextBalloon : IRemoveRequester
+    public partial class NotificationBalloon : IRemoveRequester
     {
-        readonly Action _onClick;
-        
-        public TextBalloon(string Text, Action OnClick)
-        {
-            DataContext = Text;
+        public NotificationViewModel ViewModel { get; }
 
-            _onClick = OnClick;
+        public NotificationBalloon(NotificationViewModel ViewModel)
+        {
+            this.ViewModel = ViewModel;
+
+            ViewModel.RemoveRequested += OnClose;
 
             InitializeComponent();
         }
@@ -28,7 +28,7 @@ namespace Captura
         
         void TextBlock_MouseUp(object Sender, MouseButtonEventArgs E)
         {
-            _onClick?.Invoke();
+            ViewModel.RaiseClick();
 
             OnClose();
         }

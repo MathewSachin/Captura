@@ -65,7 +65,7 @@
     <Compile Include="Services\IRegionProvider.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="Services\ISystemTray.cs" />
-    <Compile Include="Services\ITrayProgress.cs" />
+    <Compile Include="Services\INotification.cs" />
     <Compile Include="Video\IVideoItem.cs" />
     <Compile Include="Services\IVideoSourcePicker.cs" />
     <Compile Include="Video\IVideoSourceProvider.cs" />

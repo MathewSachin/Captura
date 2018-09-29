@@ -168,6 +168,8 @@ namespace Captura.ViewModels
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
         }
 
+        INotification _pauseNotification;
+
         void OnPauseExecute()
         {
             // Resume
@@ -181,6 +183,8 @@ namespace Captura.ViewModels
 
                 RecorderState = RecorderState.Recording;
                 Status.LocalizationKey = nameof(LanguageManager.Recording);
+
+                _pauseNotification?.Remove();
             }
             else // Pause
             {
@@ -191,7 +195,9 @@ namespace Captura.ViewModels
                 RecorderState = RecorderState.Paused;
                 Status.LocalizationKey = nameof(LanguageManager.Paused);
 
-                _systemTray.ShowTextNotification(Loc.Paused, null);
+                _pauseNotification = _systemTray.ShowNotification();
+                _pauseNotification.PrimaryText = Loc.Paused;
+                _pauseNotification.Click += OnPauseExecute;
             }
         }
 
@@ -532,6 +538,8 @@ namespace Captura.ViewModels
 
         void AfterRecording()
         {
+            _pauseNotification?.Remove();
+
             RecorderState = RecorderState.NotRecording;
 
             CanChangeWebcam = CanChangeAudioSources = true;
@@ -699,11 +707,13 @@ namespace Captura.ViewModels
                 if (Settings.CopyOutPathToClipboard)
                     savingRecentItem.FilePath.WriteToClipboard();
 
-                _systemTray.ShowTextNotification((savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved) + ": " +
-                    Path.GetFileName(savingRecentItem.FilePath), () =>
-                    {
-                        ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
-                    });
+                var notification = _systemTray.ShowNotification();
+                notification.PrimaryText = savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
+                notification.SecondaryText = Path.GetFileName(savingRecentItem.FilePath);
+                notification.Click += () =>
+                {
+                    ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
+                };
             }
         }
     }

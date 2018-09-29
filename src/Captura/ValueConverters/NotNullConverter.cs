@@ -24,6 +24,10 @@ namespace Captura
                 case int i:
                     b = i != 0;
                     break;
+
+                case double d:
+                    b = Math.Abs(d) > 0.01;
+                    break;
             }
 
             if ((Parameter is bool inverse || Parameter is string s && bool.TryParse(s, out inverse)) && inverse)

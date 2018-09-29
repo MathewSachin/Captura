@@ -35,6 +35,7 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="Fakes\FakeMessageProvider.cs" />
+    <Compile Include="Fakes\FakeNotification.cs" />
     <Compile Include="Fakes\FakePreviewWindow.cs" />
     <Compile Include="Fakes\FakeRegionItem.cs" />
     <Compile Include="Fakes\FakeRegionProvider.cs" />

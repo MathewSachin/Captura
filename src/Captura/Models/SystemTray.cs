@@ -30,26 +30,6 @@ namespace Captura.Models
             _notificationStack.Hide();
         }
 
-        public void ShowMessage(string Message)
-        {
-            if (!_settings.UI.TrayNotify)
-                return;
-
-            _notificationStack.Add(new StatusBalloon(Message, false));
-
-            Show();
-        }
-
-        public void ShowError(string Error)
-        {
-            if (!_settings.UI.TrayNotify)
-                return;
-
-            _notificationStack.Add(new StatusBalloon(Error, true));
-
-            Show();
-        }
-
         void Show()
         {
             var trayIcon = _trayIcon.Invoke();
@@ -74,24 +54,14 @@ namespace Captura.Models
             Show();
         }
 
-        public void ShowTextNotification(string Text, Action OnClick)
+        public INotification ShowNotification()
         {
-            if (!_settings.UI.TrayNotify)
-                return;
-
-            _notificationStack.Add(new TextBalloon(Text, OnClick));
-
-            Show();
-        }
-
-        public ITrayProgress ShowProgress()
-        {
-            var vm = new TrayProgressViewModel();
+            var vm = new NotificationViewModel();
 
             if (!_settings.UI.TrayNotify)
                 return vm;
 
-            _notificationStack.Add(new ProgressBalloon(vm));
+            _notificationStack.Add(new NotificationBalloon(vm));
 
             Show();
 

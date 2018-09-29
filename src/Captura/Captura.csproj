@@ -120,11 +120,8 @@
     <Compile Include="Controls\NotificationStack.xaml.cs">
       <DependentUpon>NotificationStack.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\StatusBalloon.xaml.cs">
-      <DependentUpon>StatusBalloon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ProgressBalloon.xaml.cs">
-      <DependentUpon>ProgressBalloon.xaml</DependentUpon>
+    <Compile Include="Controls\NotificationBalloon.xaml.cs">
+      <DependentUpon>NotificationBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\CroppingAdorner.cs" />
     <Compile Include="Presentation\PuncturedRect.cs" />
@@ -181,9 +178,6 @@
     <Compile Include="Models\ServiceLocator.cs" />
     <Compile Include="Models\SystemTray.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
-    <Compile Include="Controls\TextBalloon.xaml.cs">
-      <DependentUpon>TextBalloon.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ScreenShotBalloon.xaml.cs">
       <DependentUpon>ScreenShotBalloon.xaml</DependentUpon>
     </Compile>
@@ -321,11 +315,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\StatusBalloon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ProgressBalloon.xaml">
+    <Page Include="Controls\NotificationBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -380,10 +370,6 @@
     <Page Include="Windows\FFmpegCodecWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TextBalloon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ScreenShotBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>

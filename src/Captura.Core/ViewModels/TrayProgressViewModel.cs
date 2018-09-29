@@ -2,9 +2,12 @@
 
 namespace Captura
 {
-    public class TrayProgressViewModel : NotifyPropertyChanged, ITrayProgress
+    public class NotificationViewModel : NotifyPropertyChanged, INotification
     {
         public event Action Click;
+        public event Action RemoveRequested;
+
+        public void Remove() => RemoveRequested?.Invoke();
 
         public void RaiseClick() => Click?.Invoke();
 

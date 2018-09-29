@@ -2,7 +2,7 @@
 
 namespace Captura
 {
-    public interface ITrayProgress
+    public interface INotification
     {
         int Progress { get; set; }
 
@@ -15,5 +15,7 @@ namespace Captura
         bool Success { get; set; }
 
         event Action Click;
+
+        void Remove();
     }
 }
