@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 
 namespace Captura.ViewModels
 {
@@ -10,8 +11,10 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         readonly IRegionProvider _regionProvider;
-        readonly IMainWindow _mainWindow;
         readonly FullScreenSourceProvider _fullScreenProvider;
+
+        // To prevent deselection or cancelling selection
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
@@ -52,12 +55,11 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             SharpAviWriterProvider SharpAviWriterProvider,
             GifWriterProvider GifWriterProvider,
             StreamingWriterProvider StreamingWriterProvider,
-            DiscardWriterProvider DiscardWriterProvider,
+            DiscardWriterProvider DiscardWriterProvider
             // ReSharper restore SuggestBaseTypeForParameter
-            IMainWindow MainWindow) : base(Settings, LanguageManager)
+            ) : base(Settings, LanguageManager)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
-            _mainWindow = MainWindow;
 
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
@@ -193,9 +195,12 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                 if (_writerKind == value)
                     return;
 
-                _writerKind = value;
+                if (value != null)
+                    _writerKind = value;
 
-                OnPropertyChanged();
+                if (_syncContext != null)
+                    _syncContext.Post(S => RaisePropertyChanged(nameof(SelectedVideoWriterKind)), null);
+                else OnPropertyChanged();
 
                 RefreshCodecs();
             }
@@ -229,13 +234,18 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                         break;
 
                     default:
-                        _videoSourceKind = value;
+                        if (value != null)
+                            _videoSourceKind = value;
                         break;
                 }
 
                 RefreshVideoSources();
 
-                OnPropertyChanged();
+                if (_syncContext != null)
+                {
+                    _syncContext.Post(S => RaisePropertyChanged(nameof(SelectedVideoSourceKind)), null);
+                }
+                else OnPropertyChanged();
             }
         }
 

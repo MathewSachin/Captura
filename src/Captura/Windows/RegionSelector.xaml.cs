@@ -82,8 +82,8 @@ namespace Captura
                 InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
         }
 
-        const int LeftOffset = 2,
-            TopOffset = 2;
+        const int LeftOffset = 3,
+            TopOffset = 3;
 
         Rectangle? _region;
         
