@@ -13,6 +13,8 @@ namespace Captura
             _screen = Screen;
         }
 
+        public static int Count => Screen.AllScreens.Length;
+
         public Rectangle Rectangle => _screen.Bounds;
 
         public string DeviceName => _screen.DeviceName;

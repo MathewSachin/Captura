@@ -23,11 +23,11 @@ namespace Captura
                         windowSourceProvider.PickWindow();
                         break;
 
-                    case ScreenSourceProvider screenSourceProvider:
+                    case ScreenSourceProvider screenSourceProvider when (ScreenWrapper.Count > 1):
                         screenSourceProvider.PickScreen();
                         break;
 
-                    case DeskDuplSourceProvider deskDuplSourceProvider:
+                    case DeskDuplSourceProvider deskDuplSourceProvider when (ScreenWrapper.Count > 1):
                         deskDuplSourceProvider.PickScreen();
                         break;
                 }
