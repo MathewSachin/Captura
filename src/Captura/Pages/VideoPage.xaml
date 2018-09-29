@@ -295,37 +295,22 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                 </Frame.Style>
             </Frame>
 
-            <StackPanel Margin="0,5"
-                        Orientation="Horizontal">
-                <StackPanel Margin="0,0,15,0">
-                    <Label Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                           FontWeight="Bold"
-                           Margin="0,5"/>
+            <DockPanel>
+                <DockPanel.Style>
+                    <Style TargetType="DockPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
 
-                    <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                                         Padding="5"
-                                         HorizontalAlignment="Left">
-                        <Path Style="{StaticResource VideoSourceIcon}"
-                              Data="{StaticResource IconWebcam}"/>
+                <GridSplitter IsEnabled="False"
+                              DockPanel.Dock="Top"
+                              Height="1"
+                              Margin="0,10"/>
 
-                        <xctk:DropDownButton.DropDownContent>
-                            <Frame Source="WebcamPage.xaml"
-                                   Margin="10"
-                                   MinWidth="250"/>
-                        </xctk:DropDownButton.DropDownContent>
-                    </xctk:DropDownButton>
-
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                </StackPanel>
-                
                 <StackPanel>
                     <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                            FontWeight="Bold"
@@ -351,18 +336,11 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                                    Margin="10"/>
                         </xctk:DropDownButton.DropDownContent>
                     </xctk:DropDownButton>
-
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
                 </StackPanel>
-            </StackPanel>
+
+                <Frame Source="WebcamPage.xaml"
+                       Margin="15,0,0,0"/>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </Page>
