@@ -47,8 +47,6 @@ namespace Captura.ViewModels
         public CustomOverlaysViewModel CustomOverlays { get; }
         public CustomImageOverlaysViewModel CustomImageOverlays { get; }
         public CensorOverlaysViewModel CensorOverlays { get; }
-
-        public TextLocalizer Status { get; } = new TextLocalizer(nameof(LanguageManager.Ready));
         #endregion
 
         public RecordingViewModel(Settings Settings,
@@ -182,7 +180,6 @@ namespace Captura.ViewModels
                 _timer?.Start();
 
                 RecorderState = RecorderState.Recording;
-                Status.LocalizationKey = nameof(LanguageManager.Recording);
 
                 _pauseNotification?.Remove();
             }
@@ -193,7 +190,6 @@ namespace Captura.ViewModels
                 _timing?.Pause();
 
                 RecorderState = RecorderState.Paused;
-                Status.LocalizationKey = nameof(LanguageManager.Paused);
 
                 _pauseNotification = _systemTray.ShowNotification();
                 _pauseNotification.PrimaryText = Loc.Paused;
@@ -485,8 +481,6 @@ namespace Captura.ViewModels
             {
                 PauseCommand.RaiseCanExecuteChanged(false);
 
-                Status.LocalizationKey = nameof(LanguageManager.Waiting);
-
                 Countdown = Settings.PreStartCountdown;
 
                 _waiting = true;
@@ -501,8 +495,6 @@ namespace Captura.ViewModels
 
         void InternalStartRecording()
         {
-            Status.LocalizationKey = nameof(LanguageManager.Recording);
-
             _recorder.Start();
 
             if (_syncContext != null)
@@ -526,9 +518,6 @@ namespace Captura.ViewModels
         void OnErrorOccurred(Exception E)
         {
             var cancelled = E is OperationCanceledException;
-
-            if (!cancelled)
-                Status.LocalizationKey = nameof(LanguageManager.ErrorOccurred);
 
             AfterRecording();
 
@@ -642,8 +631,6 @@ namespace Captura.ViewModels
 
         public async Task StopRecording()
         {
-            Status.LocalizationKey = nameof(LanguageManager.Stopped);
-
             RecentItemViewModel savingRecentItem = null;
 
             // Reference current file name

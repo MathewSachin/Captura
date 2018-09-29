@@ -224,8 +224,6 @@ namespace Captura.ViewModels
                 WebCamProvider.SelectedCam = matchingWebcam;
             }
             #endregion
-
-            RecordingViewModel.Status.LocalizationKey = nameof(LanguageManager.Refreshed);
         }
 
         public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)

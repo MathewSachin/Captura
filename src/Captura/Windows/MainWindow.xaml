@@ -290,7 +290,7 @@
             <DockPanel Margin="-5,0,0,0"
                        Height="520">
                 <Label Margin="5"
-                       Content="{Binding RecordingViewModel.Status.Display}"
+                       Content="© Mathew Sachin"
                        Opacity="0.9"
                        DockPanel.Dock="Bottom"/>
 

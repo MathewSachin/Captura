@@ -31,7 +31,8 @@
                   Data="{StaticResource IconMore}"/>
         </Button>
         <Border ToolTip="{Binding Settings.OutPath}"
-                MouseUp="SelectTargetFolder">
+                MouseUp="SelectTargetFolder"
+                Cursor="Hand">
             <TextBox IsReadOnly="True"
                      IsEnabled="False"
                      Text="{Binding Settings.OutPath}"/>
