@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Background="Transparent"
@@ -45,7 +46,10 @@
                 <DrawingBrush TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource WindowBackground}">
+                            <GeometryDrawing>
+                                <GeometryDrawing.Brush>
+                                    <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+                                </GeometryDrawing.Brush>
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,10,10" />
@@ -54,7 +58,10 @@
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
 
-                            <GeometryDrawing Brush="{DynamicResource Accent}">
+                            <GeometryDrawing>
+                                <GeometryDrawing.Brush>
+                                    <SolidColorBrush Color="{DynamicResource AccentColor}"/>
+                                </GeometryDrawing.Brush>
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="10,0,10,10" />
@@ -66,6 +73,30 @@
                     </DrawingBrush.Drawing>
                 </DrawingBrush>
             </Border.BorderBrush>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn}" Value="{x:Static models:RecorderState.Recording}">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard Name="RedStoryboard">
+                                    <Storyboard>
+                                        <ColorAnimation To="#ef5350"
+                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
+                                                        Duration="00:00:00.5"/>
+
+                                        <ColorAnimation To="White"
+                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
+                                                        Duration="00:00:00.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="RedStoryboard"/>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
 
             <InkCanvas Background="Transparent"
                        Name="InkCanvas"/>
