@@ -42,7 +42,7 @@
                 MinHeight="200"
                 MinWidth="300">
             <Border.BorderBrush>
-                <DrawingBrush TileMode="Tile" Viewport="0,0,0.05,0.05">
+                <DrawingBrush TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
                             <GeometryDrawing Brush="{DynamicResource WindowBackground}">
