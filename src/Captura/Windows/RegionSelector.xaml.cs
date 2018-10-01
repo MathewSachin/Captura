@@ -350,10 +350,16 @@ namespace Captura
                         Region.Width = width;
                 }
 
+                void DoMove()
+                {
+                    Left += E.HorizontalChange;
+                    Top += E.VerticalChange;
+                }
+
                 switch (element.Tag)
                 {
                     case "Top":
-                        DoTop();
+                        DoMove();
                         break;
 
                     case "Bottom":

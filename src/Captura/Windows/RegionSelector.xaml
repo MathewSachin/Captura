@@ -76,7 +76,7 @@
               IsEnabled="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}">
             <Thumb VerticalAlignment="Top"
                    Height="2"
-                   Cursor="SizeNS"
+                   Cursor="SizeAll"
                    Tag="Top"/>
 
             <Thumb VerticalAlignment="Bottom"
