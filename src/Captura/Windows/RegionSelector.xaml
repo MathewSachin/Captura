@@ -71,49 +71,53 @@
                        Name="InkCanvas"/>
         </Border>
 
-        <Thumb VerticalAlignment="Top"
-               Height="2"
-               Cursor="SizeNS"
-               Tag="Top"/>
+        <Grid Grid.Row="0"
+              Grid.Column="0"
+              IsEnabled="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}">
+            <Thumb VerticalAlignment="Top"
+                   Height="2"
+                   Cursor="SizeNS"
+                   Tag="Top"/>
 
-        <Thumb VerticalAlignment="Bottom"
-               Height="2"
-               Cursor="SizeNS"
-               Tag="Bottom"/>
+            <Thumb VerticalAlignment="Bottom"
+                   Height="2"
+                   Cursor="SizeNS"
+                   Tag="Bottom"/>
 
-        <Thumb HorizontalAlignment="Left"
-               Width="2"
-               Cursor="SizeWE"
-               Tag="Left"/>
-        
-        <Thumb HorizontalAlignment="Right"
-               Width="2"
-               Cursor="SizeWE"
-               Tag="Right"/>
+            <Thumb HorizontalAlignment="Left"
+                   Width="2"
+                   Cursor="SizeWE"
+                   Tag="Left"/>
+            
+            <Thumb HorizontalAlignment="Right"
+                   Width="2"
+                   Cursor="SizeWE"
+                   Tag="Right"/>
 
-        <Thumb HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               Style="{StaticResource CornerThumb}"
-               Cursor="SizeNWSE"
-               Tag="TopLeft"/>
+            <Thumb HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNWSE"
+                   Tag="TopLeft"/>
 
-        <Thumb HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               Style="{StaticResource CornerThumb}"
-               Cursor="SizeNESW"
-               Tag="TopRight"/>
+            <Thumb HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNESW"
+                   Tag="TopRight"/>
 
-        <Thumb HorizontalAlignment="Left"
-               VerticalAlignment="Bottom"
-               Style="{StaticResource CornerThumb}"
-               Cursor="SizeNESW"
-               Tag="BottomLeft"/>
+            <Thumb HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNESW"
+                   Tag="BottomLeft"/>
 
-        <Thumb HorizontalAlignment="Right"
-               VerticalAlignment="Bottom"
-               Style="{StaticResource CornerThumb}"
-               Cursor="SizeNWSE"
-               Tag="BottomRight"/>
+            <Thumb HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNWSE"
+                   Tag="BottomRight"/>
+        </Grid>
 
         <Grid Grid.Row="1"
               Grid.Column="0"
