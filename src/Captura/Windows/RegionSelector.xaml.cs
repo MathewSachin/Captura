@@ -20,7 +20,7 @@ namespace Captura
 
         bool _widthBoxChanging, _heightBoxChanging, _resizing;
 
-        public RegionSelector(IVideoSourcePicker VideoSourcePicker, LanguageManager Loc)
+        public RegionSelector(IVideoSourcePicker VideoSourcePicker)
         {
             _videoSourcePicker = VideoSourcePicker;
 

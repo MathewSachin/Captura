@@ -289,7 +289,8 @@
                 Grid.RowSpan="2"
                 BorderBrush="{DynamicResource Accent}"
                 BorderThickness="1"
-                VerticalAlignment="Top">
+                VerticalAlignment="Top"
+                Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
             <DockPanel Background="{DynamicResource WindowBackground}"
                        LastChildFill="False">
                 <ListBox Name="ModesBox"

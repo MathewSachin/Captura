@@ -78,6 +78,21 @@
                 </ListView.ItemContainerStyle>
             </ListView>
 
+            <CheckBox Margin="0,5"
+                      Content="Drawing Tools"
+                      IsChecked="{Binding Settings.UI.RegionSelectorDrawingTools, Mode=TwoWay}">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
             <DockPanel Margin="0,5">
                 <Label Content="Audio Format"
                        Margin="0,0,5,0"/>
