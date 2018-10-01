@@ -15,7 +15,8 @@
         Topmost="True"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
-        Name="This">
+        Name="This"
+        ShowInTaskbar="False">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Thumb">

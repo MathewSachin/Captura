@@ -10,7 +10,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
     <Window.InputBindings>
         <KeyBinding Command="Close"
                     Key="Escape"/>

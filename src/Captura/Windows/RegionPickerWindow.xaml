@@ -13,7 +13,8 @@
         Background="Transparent"
         Topmost="True"
         ResizeMode="NoResize"
-        Cursor="Cross">
+        Cursor="Cross"
+        ShowInTaskbar="False">
     <Window.InputBindings>
         <KeyBinding Command="Close"
                     Key="Escape"/>
