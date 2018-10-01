@@ -80,40 +80,7 @@
                                             IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
             </StackPanel>
 
-            <ListView Margin="0,5"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                      ItemsSource="{Binding VideoViewModel.VideoSources}"
-                      SelectedValuePath="Provider"
-                      SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
-                      BorderThickness="0.4"
-                      SelectionMode="Single">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="1"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Background="#01000000">
-                            <Grid.ToolTip>
-                                <StackPanel MinWidth="200">
-                                    <TextBlock Text="{Binding Name.Display, Mode=OneWay}"
-                                               FontWeight="Bold"/>
-
-                                    <TextBlock Text="{Binding Description, Mode=OneWay}"/>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <Path Data="{Binding IconResourceKey, Converter={StaticResource StaticResourceConverter}}"
-                                  Style="{StaticResource VideoSourceIcon}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnVideoSourceReSelect"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+            <captura:VideoSourceKindList/>
         </DockPanel>
     </DockPanel>
 </UserControl>

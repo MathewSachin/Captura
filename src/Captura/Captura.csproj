@@ -56,6 +56,9 @@
     <Compile Include="Controls\OutputFolderControl.xaml.cs">
       <DependentUpon>OutputFolderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\VideoSourceKindList.xaml.cs">
+      <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -251,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\OutputFolderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\VideoSourceKindList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
