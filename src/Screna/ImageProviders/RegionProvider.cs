@@ -8,15 +8,20 @@ namespace Screna
     public class RegionProvider : IImageProvider
     {
         Rectangle _region;
+        readonly Func<Point> _locationFunc;
         readonly bool _includeCursor;
         readonly Func<Point, Point> _transform;
 
         readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
 
         public RegionProvider(Rectangle Region, bool IncludeCursor)
+            : this(Region, IncludeCursor, () => Region.Location) { }
+
+        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc)
         {
             _region = Region;
             _includeCursor = IncludeCursor;
+            _locationFunc = LocationFunc;
 
             // Width and Height must be even.
             // Use these for Bitmap size, but capture as per region size
@@ -38,14 +43,6 @@ namespace Screna
             Gdi32.SelectObject(_hdcDest, _hBitmap);
         }
 
-        public void UpdateLocation(Point P)
-        {
-            if (_region.Location == P)
-                return;
-
-            _region.Location = P;
-        }
-
         public void Dispose()
         {
             Gdi32.DeleteDC(_hdcDest);
@@ -55,6 +52,9 @@ namespace Screna
 
         public IBitmapFrame Capture()
         {
+            // Update Location
+            _region.Location = _locationFunc();
+
             Gdi32.BitBlt(_hdcDest, 0, 0, _region.Width, _region.Height,
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);

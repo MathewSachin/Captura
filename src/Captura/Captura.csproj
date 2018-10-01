@@ -226,7 +226,6 @@
     <Compile Include="Controls\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\StaticRegionProvider.cs" />
     <Compile Include="Windows\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
