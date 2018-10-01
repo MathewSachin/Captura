@@ -71,14 +71,14 @@
                        Name="InkCanvas"/>
         </Border>
 
+        <Thumb VerticalAlignment="Top"
+               Height="2"
+               Cursor="SizeAll"
+               Tag="Top"/>
+
         <Grid Grid.Row="0"
               Grid.Column="0"
               IsEnabled="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}">
-            <Thumb VerticalAlignment="Top"
-                   Height="2"
-                   Cursor="SizeAll"
-                   Tag="Top"/>
-
             <Thumb VerticalAlignment="Bottom"
                    Height="2"
                    Cursor="SizeNS"
