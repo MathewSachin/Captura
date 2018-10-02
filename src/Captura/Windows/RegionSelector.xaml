@@ -100,6 +100,7 @@
             </Border.Style>
 
             <InkCanvas Background="Transparent"
+                       Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                        Name="InkCanvas"/>
         </Border>
 
