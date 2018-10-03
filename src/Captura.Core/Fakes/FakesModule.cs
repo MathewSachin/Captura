@@ -15,6 +15,7 @@ namespace Captura
             Binder.Bind<IMainWindow, FakeWindowProvider>();
             Binder.Bind<IPreviewWindow, FakePreviewWindow>();
             Binder.Bind<IVideoSourcePicker, FakeVideoSourcePicker>();
+            Binder.Bind<IAudioPlayer, FakeAudioPlayer>();
         }
     }
 }
