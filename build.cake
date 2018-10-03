@@ -427,6 +427,7 @@ var testTask = Task("Test")
 var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
 
 var installInnoTask = Task("Install-Inno")
+    .WithCriteria(configuration == Release)
     .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
     {
         ArgumentCustomization = Args => Args.Append("--no-progress")
