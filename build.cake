@@ -138,7 +138,7 @@ void HandleVersion()
         // Dev build
         if (version == "0.0.0" && !string.IsNullOrWhiteSpace(buildNo))
         {
-            version += $".{buildNo}";
+            version = $"0.0.{buildNo}";
 
             DoUpdate();
         }
