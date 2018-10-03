@@ -13,6 +13,8 @@ var tag = Argument<string>("apptag", null);
 var chocoVersion = tag?.Substring(1) ?? "";
 var prerelease = false;
 
+var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
+
 // Deploy on Release Tag builds
 var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 
@@ -118,12 +120,7 @@ void HandleVersion()
     var uiAssemblyInfo = sourceFolder + Directory("Captura") + assemblyInfoFile;
     var consoleAssemblyInfo = sourceFolder + Directory("Captura.Console") + assemblyInfoFile;
 
-    if (string.IsNullOrWhiteSpace(version))
-    {
-        // Read from AssemblyInfo
-        version = ParseAssemblyInfo(uiAssemblyInfo).AssemblyVersion;
-    }
-    else
+    void DoUpdate()
     {
         // Update AssemblyInfo files
         CreateBackup(uiAssemblyInfo, tempFolder + File("AssemblyInfo.cs"));
@@ -132,6 +129,21 @@ void HandleVersion()
         UpdateVersion(uiAssemblyInfo);
         UpdateVersion(consoleAssemblyInfo);
     }
+
+    if (string.IsNullOrWhiteSpace(version))
+    {
+        // Read from AssemblyInfo
+        version = ParseAssemblyInfo(uiAssemblyInfo).AssemblyVersion;
+
+        // Dev build
+        if (version == "0.0.0" && !string.IsNullOrWhiteSpace(buildNo))
+        {
+            version = $"0.0.{buildNo}";
+
+            DoUpdate();
+        }
+    }
+    else DoUpdate();
 }
 
 void EmbedApiKeys()
@@ -415,6 +427,7 @@ var testTask = Task("Test")
 var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
 
 var installInnoTask = Task("Install-Inno")
+    .WithCriteria(configuration == Release)
     .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
     {
         ArgumentCustomization = Args => Args.Append("--no-progress")
@@ -452,7 +465,10 @@ Task("CI")
     .IsDependentOn(deployChocoTask)
     .Does(() =>
 {
-    AppVeyor.UpdateBuildVersion($"{version}.{EnvironmentVariable("APPVEYOR_BUILD_NUMBER")}");
+    if (deploy)
+    {
+        AppVeyor.UpdateBuildVersion($"{version}.{buildNo}");
+    }
 
     foreach (var artifact in artifacts)
     {
