@@ -195,13 +195,6 @@
         <Expander Padding="5,0,0,0"
                   Grid.Row="0"
                   IsExpanded="{Binding Settings.UI.Expanded}">
-            <Expander.HeaderTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}">
-                        <ContentPresenter Content="{Binding}"/>
-                    </Grid>
-                </DataTemplate>
-            </Expander.HeaderTemplate>
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
@@ -301,7 +294,7 @@
         </Expander>
         
         <Grid Grid.Row="1"
-              Margin="0,0,0,5"
+              Margin="2,0,0,5"
               Visibility="{Binding Settings.UI.Expanded, Converter={StaticResource NegatingConverter}}">
             <local:CollapsedBar/>
         </Grid>

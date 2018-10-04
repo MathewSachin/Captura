@@ -19,7 +19,7 @@
                                     IconData="{StaticResource IconFolder}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        Margin="5,0,0,0">
+                        Margin="10,0,0,0">
                 <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
                                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource IconCursor}"
