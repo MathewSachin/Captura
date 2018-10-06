@@ -1,4 +1,4 @@
-static List<Backup> Backups { get; } = new List<Backup>();
+readonly var Backups = new List<Backup>();
 
 class Backup
 {

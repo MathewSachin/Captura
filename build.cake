@@ -1,6 +1,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
 #l "tools/scripts/backup.cake"
+#l "tools/scripts/paths.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
@@ -12,24 +13,15 @@ var configuration = Argument("configuration", Release);
 var version = Argument<string>("appversion", null);
 var tag = Argument<string>("apptag", null);
 var chocoVersion = tag?.Substring(1) ?? "";
+
+readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
+
 var prerelease = false;
 
 var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
 
 // Deploy on Release Tag builds
 var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
-
-readonly var sourceFolder = Directory("src");
-readonly var tempFolder = Directory("temp");
-readonly var distFolder = Directory("dist");
-readonly var licensesFolder = Directory("licenses");
-readonly var chocoFolder = Directory("choco");
-
-readonly var slnPath = sourceFolder + File("Captura.sln");
-
-readonly var PortablePath = tempFolder + File("Captura-Portable.zip");
-readonly var SetupPath = tempFolder + File("Captura-Setup.exe");
-readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
 #endregion
 
 #region Functions
@@ -214,7 +206,7 @@ void PopulateOutput()
     CopyFiles(consoleBinFolder.Path + "/*.exe*", distFolder);
     CopyFiles(uiBinFolder.Path + "/*.exe*", distFolder);
 
-    // Copy Keymap file
+    // Copy Keymap files
     CopyDirectory(uiBinFolder + Directory("keymaps"), distFolder + Directory("keymaps"));
 
     // For Debug builds
