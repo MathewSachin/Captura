@@ -7,7 +7,6 @@
 #l "tools/scripts/apikeys.cake"
 #l "tools/scripts/version.cake"
 using System.Collections.Generic;
-using static System.Text.RegularExpressions.Regex;
 
 #region Fields
 readonly var target = Argument("target", "Default");

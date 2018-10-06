@@ -1,4 +1,6 @@
 #l "constants.cake"
+#l "backup.cake"
+using static System.Text.RegularExpressions.Regex;
 
 var prerelease = false;
 readonly var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
