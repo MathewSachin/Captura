@@ -3,6 +3,7 @@
 #l "tools/scripts/backup.cake"
 #l "tools/scripts/constants.cake"
 #l "tools/scripts/bass.cake"
+#l "tools/scripts/choco.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
@@ -192,27 +193,6 @@ void PopulateOutput()
         CopyDirectory(uiBinFolder + Directory("lib"), distFolder + Directory("lib"));
     }
 }
-
-void PackChoco(string Tag, string Version)
-{
-    var checksum = CalculateFileHash(PortablePath).ToHex();
-
-    var chocoInstallScript = chocoFolder + File("tools/chocolateyinstall.ps1");
-
-    var originalContent = FileRead(chocoInstallScript);
-
-    var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
-
-    CreateBackup(chocoInstallScript, tempFolder + File("cinst.ps1"));
-
-    FileWrite(chocoInstallScript, newContent);
-
-    ChocolateyPack(chocoFolder + File("captura.nuspec"), new ChocolateyPackSettings
-    {
-        Version = Version,
-        ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
-    });
-}
 #endregion
 
 #region Setup / Teardown
@@ -331,13 +311,7 @@ var deployChocoTask = Task("Deploy-Choco")
     .WithCriteria(deploy)
     .IsDependentOn(packChocoTask)
     .IsDependentOn(deployGitHubTask)
-    .Does(() =>
-{
-    ChocolateyPush(ChocoPkgPath, new ChocolateyPushSettings
-    {
-        ApiKey = EnvironmentVariable("choco_key")
-    });
-});
+    .Does(() => PushChoco(ChocoPkgPath));
 
 var testTask = Task("Test")
     .IsDependentOn(buildTask)
