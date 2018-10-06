@@ -13,7 +13,7 @@ class Artifact
     public string Path { get; }
 }
 
-var artifacts = new []
+readonly var artifacts = new []
 {
     new Artifact("Portable", PortablePath),
     new Artifact("Setup", SetupPath),

@@ -5,89 +5,19 @@
 #l "tools/scripts/bass.cake"
 #l "tools/scripts/choco.cake"
 #l "tools/scripts/apikeys.cake"
-#l "tools/scripts/args.cake"
+#l "tools/scripts/version.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
 #region Fields
-var prerelease = false;
-var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
+readonly var target = Argument("target", "Default");
+readonly var configuration = Argument("configuration", Release);
 
 // Deploy on Release Tag builds
 var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 #endregion
 
 #region Functions
-void HandleTag()
-{
-    // Not a Tag Build
-    if (string.IsNullOrWhiteSpace(tag))
-        return;
-
-    const string StableVersionRegex = @"^v\d+\.\d+\.\d+$";
-    const string PrereleaseVersionRegex = @"^v\d+\.\d+\.\d+-[^\s]+$";
-
-    // Stable Release
-    if (IsMatch(tag, StableVersionRegex))
-    {
-        version = tag.Substring(1);
-    }
-    // Prerelease
-    else if (IsMatch(tag, PrereleaseVersionRegex))
-    {
-        prerelease = true;
-
-        version = tag.Split('-')[0].Substring(1);
-
-        Information("Update version");
-    }
-    else throw new ArgumentException("Invalid Tag Format", "Tag");
-}
-
-void UpdateVersion(string AssemblyInfoPath)
-{
-    var content = FileRead(AssemblyInfoPath);
-
-    var start = content.IndexOf("AssemblyVersion");
-    var end = content.IndexOf(")", start);
-
-    var replace = content.Replace(content.Substring(start, end - start + 1), $"AssemblyVersion(\"{version}\")");
-
-    FileWrite(AssemblyInfoPath, replace);
-}
-
-void HandleVersion()
-{
-    var assemblyInfoFile = File("Properties/AssemblyInfo.cs");
-    var uiAssemblyInfo = sourceFolder + Directory("Captura") + assemblyInfoFile;
-    var consoleAssemblyInfo = sourceFolder + Directory("Captura.Console") + assemblyInfoFile;
-
-    void DoUpdate()
-    {
-        // Update AssemblyInfo files
-        CreateBackup(uiAssemblyInfo, tempFolder + File("AssemblyInfo.cs"));
-        CreateBackup(consoleAssemblyInfo, tempFolder + File("console.cs"));
-
-        UpdateVersion(uiAssemblyInfo);
-        UpdateVersion(consoleAssemblyInfo);
-    }
-
-    if (string.IsNullOrWhiteSpace(version))
-    {
-        // Read from AssemblyInfo
-        version = ParseAssemblyInfo(uiAssemblyInfo).AssemblyVersion;
-
-        // Dev build
-        if (version == "0.0.0" && !string.IsNullOrWhiteSpace(buildNo))
-        {
-            version = $"0.0.{buildNo}";
-
-            DoUpdate();
-        }
-    }
-    else DoUpdate();
-}
-
 IEnumerable<ConvertableDirectoryPath> EnumerateOutputFolders()
 {
     var outputProjectNames = new[] { "Captura.Console", "Captura", "Tests" };

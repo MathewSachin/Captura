@@ -1,6 +1,6 @@
 #l "constants.cake"
 #l "backup.cake"
-#l "args.cake"
+#l "version.cake"
 
 readonly var chocoVersion = tag?.Substring(1) ?? "";
 
