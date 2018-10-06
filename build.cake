@@ -5,20 +5,12 @@
 #l "tools/scripts/bass.cake"
 #l "tools/scripts/choco.cake"
 #l "tools/scripts/apikeys.cake"
+#l "tools/scripts/args.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
 #region Fields
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", Release);
-var version = Argument<string>("appversion", null);
-var tag = Argument<string>("apptag", null);
-var chocoVersion = tag?.Substring(1) ?? "";
-
-readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
-
 var prerelease = false;
-
 var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
 
 // Deploy on Release Tag builds
@@ -289,13 +281,13 @@ var packChocoTask = Task("Pack-Choco")
     .WithCriteria(deploy)
     .IsDependentOn(packPortableTask)
     .IsDependentOn(deployGitHubTask)
-    .Does(() => PackChoco(tag, chocoVersion));
+    .Does(() => PackChoco());
 
 var deployChocoTask = Task("Deploy-Choco")
     .WithCriteria(deploy)
     .IsDependentOn(packChocoTask)
     .IsDependentOn(deployGitHubTask)
-    .Does(() => PushChoco(ChocoPkgPath));
+    .Does(() => PushChoco());
 
 var testTask = Task("Test")
     .IsDependentOn(buildTask)

@@ -1,7 +1,12 @@
 #l "constants.cake"
 #l "backup.cake"
+#l "args.cake"
 
-void PackChoco(string Tag, string Version)
+readonly var chocoVersion = tag?.Substring(1) ?? "";
+
+readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
+
+void PackChoco()
 {
     var checksum = CalculateFileHash(PortablePath).ToHex();
 
@@ -9,7 +14,7 @@ void PackChoco(string Tag, string Version)
 
     var originalContent = FileRead(chocoInstallScript);
 
-    var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
+    var newContent = $"$tag = '{tag}'; $checksum = '{checksum}'; {originalContent}";
 
     CreateBackup(chocoInstallScript, tempFolder + File("cinst.ps1"));
 
@@ -17,14 +22,14 @@ void PackChoco(string Tag, string Version)
 
     ChocolateyPack(chocoFolder + File("captura.nuspec"), new ChocolateyPackSettings
     {
-        Version = Version,
+        Version = chocoVersion,
         ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
     });
 }
 
-void PushChoco(string PackagePath)
+void PushChoco()
 {
-    ChocolateyPush(PackagePath, new ChocolateyPushSettings
+    ChocolateyPush(ChocoPkgPath, new ChocolateyPushSettings
     {
         ApiKey = EnvironmentVariable("choco_key")
     });
