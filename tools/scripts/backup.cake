@@ -28,3 +28,7 @@ void RestoreBackups()
         MoveFile(M.BackupPath, M.OriginalPath);
     });
 }
+
+string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
+
+void FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);

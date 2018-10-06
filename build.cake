@@ -62,10 +62,6 @@ void UpdateVersion(string AssemblyInfoPath)
     FileWrite(AssemblyInfoPath, replace);
 }
 
-string FileRead(string FileName) => System.IO.File.ReadAllText(FileName);
-
-void FileWrite(string FileName, string Content) => System.IO.File.WriteAllText(FileName, Content);
-
 void HandleVersion()
 {
     var assemblyInfoFile = File("Properties/AssemblyInfo.cs");
