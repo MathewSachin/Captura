@@ -1,7 +1,7 @@
 #l "constants.cake"
 
 var prerelease = false;
-var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
+readonly var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
 var version = Argument<string>("appversion", null);
 readonly var tag = Argument<string>("apptag", null);
 
