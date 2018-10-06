@@ -17,5 +17,7 @@ TestResults/
 # Cake
 /tools/*
 !tools/packages.config
+!tools/scripts
+
 /temp/
 /dist/

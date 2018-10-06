@@ -1,5 +1,6 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
+#l "tools/scripts/backup.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
@@ -29,46 +30,6 @@ readonly var slnPath = sourceFolder + File("Captura.sln");
 readonly var PortablePath = tempFolder + File("Captura-Portable.zip");
 readonly var SetupPath = tempFolder + File("Captura-Setup.exe");
 readonly var ChocoPkgPath = tempFolder + File($"captura.{chocoVersion}.nupkg");
-#endregion
-
-#region Backup
-public class Backup : IDisposable
-{
-    readonly ICakeContext _context;
-
-    public static List<Backup> Backups { get; } = new List<Backup>();
-
-    public Backup(ICakeContext Context, string OriginalPath, string BackupPath)
-    {
-        _context = Context;
-
-        this.OriginalPath = OriginalPath;
-        this.BackupPath = BackupPath;
-
-        _context.CopyFile(OriginalPath, BackupPath);
-    }
-
-    public string OriginalPath { get; }
-
-    public string BackupPath { get; }
-
-    public void Restore()
-    {
-        _context.DeleteFile(OriginalPath);
-        _context.MoveFile(BackupPath, OriginalPath);
-    }
-
-    public void Dispose()
-    {
-        Restore();
-    }
-}
-
-void CreateBackup(string OriginalPath, string BackupPath)
-{
-    var backup = new Backup(Context, OriginalPath, BackupPath);
-    Backup.Backups.Add(backup);
-}
 #endregion
 
 #region Functions
@@ -283,16 +244,15 @@ void PackChoco(string Tag, string Version)
 
     var newContent = $"$tag = '{Tag}'; $checksum = '{checksum}'; {originalContent}";
 
-    using (var backup = new Backup(Context, chocoInstallScript, tempFolder + File("cinst.ps1")))
-    {
-        FileWrite(chocoInstallScript, newContent);
+    CreateBackup(chocoInstallScript, tempFolder + File("cinst.ps1"));
 
-        ChocolateyPack(chocoFolder + File("captura.nuspec"), new ChocolateyPackSettings
-        {
-            Version = Version,
-            ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
-        });
-    }
+    FileWrite(chocoInstallScript, newContent);
+
+    ChocolateyPack(chocoFolder + File("captura.nuspec"), new ChocolateyPackSettings
+    {
+        Version = Version,
+        ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
+    });
 }
 #endregion
 
@@ -311,7 +271,7 @@ Setup(context =>
 
 Teardown(context =>
 {
-    Backup.Backups.ForEach(M => M.Restore());
+    RestoreBackups();
 });
 #endregion
 
