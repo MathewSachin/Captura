@@ -4,6 +4,7 @@
 #l "tools/scripts/constants.cake"
 #l "tools/scripts/bass.cake"
 #l "tools/scripts/choco.cake"
+#l "tools/scripts/apikeys.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
@@ -93,26 +94,6 @@ void HandleVersion()
         }
     }
     else DoUpdate();
-}
-
-void EmbedApiKeys()
-{
-    var apiKeysPath = sourceFolder + File("Captura.Core/ApiKeys.cs");
-    const string imgurEnv = "imgur_client_id";
-
-    // Embed Api Keys in Release builds
-    if (configuration == Release && HasEnvironmentVariable(imgurEnv))
-    {
-        Information("Embedding Api Keys from Environment Variables ...");
-
-        CreateBackup(apiKeysPath, tempFolder + File("ApiKeys.cs"));
-
-        var apiKeysOriginalContent = FileRead(apiKeysPath);
-
-        var newContent = apiKeysOriginalContent.Replace($"Get(\"{imgurEnv}\")", $"\"{EnvironmentVariable(imgurEnv)}\"");
-
-        FileWrite(apiKeysPath, newContent);
-    }
 }
 
 IEnumerable<ConvertableDirectoryPath> EnumerateOutputFolders()
@@ -205,7 +186,10 @@ Setup(context =>
 
     HandleVersion();
 
-    EmbedApiKeys();
+    if (configuration == Release)
+    {
+        EmbedApiKeys();
+    }
 });
 
 Teardown(context =>
