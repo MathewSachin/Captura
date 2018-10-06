@@ -1,13 +1,11 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
 #l "tools/scripts/backup.cake"
-#l "tools/scripts/paths.cake"
+#l "tools/scripts/constants.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
 #region Fields
-const string Release = "Release";
-
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", Release);
 var version = Argument<string>("appversion", null);
