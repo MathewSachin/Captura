@@ -304,24 +304,7 @@ var installInnoTask = Task("Install-Inno")
 #endregion
 
 #region AppVeyor
-class Artifact
-{
-    public Artifact(string Name, string Path)
-    {
-        this.Name = Name;
-        this.Path = Path;
-    }
-
-    public string Name { get; }
-    public string Path { get; }
-}
-
-var artifacts = new []
-{
-    new Artifact("Portable", PortablePath),
-    new Artifact("Setup", SetupPath),
-    new Artifact("Chocolatey", ChocoPkgPath)
-};
+#l "tools/scripts/appveyor.cake"
 
 Task("CI")
     .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
@@ -339,16 +322,7 @@ Task("CI")
         AppVeyor.UpdateBuildVersion($"{version}.{buildNo}");
     }
 
-    foreach (var artifact in artifacts)
-    {
-        if (FileExists(artifact.Path))
-        {
-            AppVeyor.UploadArtifact(artifact.Path, new AppVeyorUploadArtifactsSettings
-            {
-                DeploymentName = artifact.Name
-            });
-        }
-    }
+    UploadArtifacts();
 });
 #endregion
 
