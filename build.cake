@@ -2,6 +2,7 @@
 #tool "nuget:?package=gitreleasemanager"
 #l "tools/scripts/backup.cake"
 #l "tools/scripts/constants.cake"
+#l "tools/scripts/bass.cake"
 using System.Collections.Generic;
 using static System.Text.RegularExpressions.Regex;
 
@@ -130,38 +131,10 @@ IEnumerable<ConvertableDirectoryPath> EnumerateOutputFolders()
 // Restores native dlls
 void NativeRestore()
 {
-    var bass = tempFolder + File("bass/bass.dll");
-    var bassmix = tempFolder + File("bassmix/bassmix.dll");
-
     Information("Restoring Native libraries...");
 
-    if (!FileExists(bass))
-    {
-        Information("Downloading BASS...");
-
-        var bassZipPath =  tempFolder + File("bass.zip");
-        const string bassUrl = "http://www.un4seen.com/files/bass24.zip";
-
-        DownloadFile(bassUrl, bassZipPath);
-
-        Information("Extracting BASS ...");
-
-        Unzip(bassZipPath, tempFolder + Directory("bass"));
-    }
-
-    if (!FileExists(bassmix))
-    {
-        Information("Downloading BASSmix...");
-
-        var bassMixZipPath =  tempFolder + File("bassmix.zip");
-        const string bassMixUrl = "http://www.un4seen.com/files/bassmix24.zip";
-
-        DownloadFile(bassMixUrl, bassMixZipPath);
-
-        Information("Extracting BASSmix...");
-
-        Unzip(bassMixZipPath, tempFolder + Directory("bassmix"));
-    }
+    var bass = RestoreBass();
+    var bassmix = RestoreBassMix();
 
     foreach (var output in EnumerateOutputFolders())
     {
