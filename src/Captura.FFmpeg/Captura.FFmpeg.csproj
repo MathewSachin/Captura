@@ -41,6 +41,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgsBuilder\FFmpegArgs.cs" />
+    <Compile Include="ArgsBuilder\FFmpegArgsBuilder.cs" />
+    <Compile Include="ArgsBuilder\FFmpegInputArgs.cs" />
+    <Compile Include="ArgsBuilder\FFmpegOutputArgs.cs" />
     <Compile Include="CustomFFMpegCodec.cs" />
     <Compile Include="Audio\FFmpegAudioArgsProvider.cs" />
     <Compile Include="Audio\FFmpegAudioItem.cs" />
