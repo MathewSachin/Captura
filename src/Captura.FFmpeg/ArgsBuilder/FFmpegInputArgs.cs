@@ -23,7 +23,7 @@
 
         public FFmpegInputArgs SetVideoSize(int Width, int Height)
         {
-            return AddArg($"-s {Width}x{Height}");
+            return AddArg($"-video_size {Width}x{Height}");
         }
 
         public FFmpegInputArgs SetFrameRate(int FrameRate)

@@ -7,6 +7,8 @@ namespace Captura.Models
         readonly List<FFmpegInputArgs> _inputs = new List<FFmpegInputArgs>();
         readonly List<FFmpegOutputArgs> _outputs = new List<FFmpegOutputArgs>();
 
+        const string PipePrefix = @"\\.\pipe\";
+
         public FFmpegInputArgs AddInputFile(string FileName)
         {
             var input = new FFmpegInputArgs($"\"{FileName}\"");
@@ -16,9 +18,18 @@ namespace Captura.Models
             return input;
         }
 
-        public FFmpegInputArgs AddInputPipe(string PipeName = "-")
+        public FFmpegInputArgs AddStdIn()
         {
-            var input = new FFmpegInputArgs(PipeName);
+            var input = new FFmpegInputArgs("-");
+
+            _inputs.Add(input);
+
+            return input;
+        }
+
+        public FFmpegInputArgs AddInputPipe(string NamedPipe)
+        {
+            var input = new FFmpegInputArgs($"{PipePrefix}{NamedPipe}");
 
             _inputs.Add(input);
 
@@ -34,9 +45,18 @@ namespace Captura.Models
             return output;
         }
 
-        public FFmpegOutputArgs AddOutputPipe(string PipeName = "-")
+        public FFmpegOutputArgs AddStdOut()
         {
-            var output = new FFmpegOutputArgs(PipeName);
+            var output = new FFmpegOutputArgs("-");
+
+            _outputs.Add(output);
+
+            return output;
+        }
+
+        public FFmpegOutputArgs AddOutputPipe(string NamedPipe)
+        {
+            var output = new FFmpegOutputArgs($"{PipePrefix}{NamedPipe}");
 
             _outputs.Add(output);
 

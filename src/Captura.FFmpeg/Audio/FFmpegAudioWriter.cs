@@ -14,7 +14,7 @@ namespace Captura.Models
         {
             var argsBuilder  = new FFmpegArgsBuilder();
 
-            argsBuilder.AddInputPipe()
+            argsBuilder.AddStdIn()
                 .SetFormat("s16le")
                 .SetAudioCodec("pcm_s16le")
                 .SetAudioFrequency(Frequency)

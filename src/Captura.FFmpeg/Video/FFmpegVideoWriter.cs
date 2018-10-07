@@ -16,8 +16,6 @@ namespace Captura.Models
         readonly NamedPipeServerStream _ffmpegIn;
         readonly byte[] _videoBuffer;
 
-        const string PipePrefix = @"\\.\pipe\";
-
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
         /// <summary>
@@ -31,12 +29,21 @@ namespace Captura.Models
 
             Console.WriteLine($"Video Buffer Allocated: {_videoBuffer.Length}");
 
-            var audioPipeName = GetPipeName();
             var videoPipeName = GetPipeName();
 
-            var videoInArgs = $"-thread_queue_size 512 -framerate {Args.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {Args.ImageProvider.Width}x{Args.ImageProvider.Height} -i {PipePrefix}{videoPipeName}";
-            var videoOutArgs = $"{Args.VideoArgsProvider(Args.VideoQuality)} -r {Args.FrameRate}";
+            var argsBuilder = new FFmpegArgsBuilder();
 
+            argsBuilder.AddInputPipe(videoPipeName)
+                .AddArg("-thread_queue_size 512")
+                .AddArg($"-framerate {Args.FrameRate}")
+                .SetFormat("rawvideo")
+                .AddArg("-pix_fmt rgb32")
+                .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
+
+            var output = argsBuilder.AddOutputFile(Args.FileName)
+                .AddArg(Args.VideoArgsProvider(Args.VideoQuality))
+                .SetFrameRate(Args.FrameRate);
+            
             if (settings.Resize)
             {
                 var width = settings.ResizeWidth;
@@ -48,15 +55,21 @@ namespace Captura.Models
                 if (height % 2 == 1)
                     ++height;
 
-                videoOutArgs += $" -vf scale={width}:{height}";
+                output.AddArg($"-vf scale={width}:{height}");
             }
 
-            string audioInArgs = "", audioOutArgs = "";
-            
             if (Args.AudioProvider != null)
             {
-                audioInArgs = $"-thread_queue_size 512 -f s16le -acodec pcm_s16le -ar {Args.Frequency} -ac {Args.Channels} -i {PipePrefix}{audioPipeName}";
-                audioOutArgs = Args.AudioArgsProvider(Args.AudioQuality);
+                var audioPipeName = GetPipeName();
+
+                argsBuilder.AddInputPipe(audioPipeName)
+                    .AddArg("-thread_queue_size 512")
+                    .SetFormat("s16le")
+                    .SetAudioCodec("pcm_s16le")
+                    .SetAudioFrequency(Args.Frequency)
+                    .SetAudioChannels(Args.Channels);
+
+                output.AddArg(Args.AudioArgsProvider(Args.AudioQuality));
 
                 // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
                 var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);
@@ -66,7 +79,9 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
 
-            _ffmpegProcess = FFmpegService.StartFFmpeg($"{videoInArgs} {audioInArgs} {videoOutArgs} {audioOutArgs} {Args.OutputArgs} \"{Args.FileName}\"", Args.FileName);
+            output.AddArg(Args.OutputArgs);
+
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName);
         }
 
         /// <summary>
