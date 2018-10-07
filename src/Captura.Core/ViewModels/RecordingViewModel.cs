@@ -34,6 +34,7 @@ namespace Captura.ViewModels
         readonly IMainWindow _mainWindow;
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
+        readonly IAudioPlayer _audioPlayer;
 
         readonly KeymapViewModel _keymap;
 
@@ -63,7 +64,8 @@ namespace Captura.ViewModels
             AudioSource AudioSource,
             RecentViewModel RecentViewModel,
             IWebCamProvider WebCamProvider,
-            KeymapViewModel Keymap) : base(Settings, LanguageManager)
+            KeymapViewModel Keymap,
+            IAudioPlayer AudioPlayer) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
@@ -78,6 +80,7 @@ namespace Captura.ViewModels
             _recentViewModel = RecentViewModel;
             _webCamProvider = WebCamProvider;
             _keymap = Keymap;
+            _audioPlayer = AudioPlayer;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -148,6 +151,8 @@ namespace Captura.ViewModels
 
         async void OnRecordExecute()
         {
+            _audioPlayer.PlayNormal();
+
             if (RecorderState == RecorderState.NotRecording)
                 StartRecording();
             else await StopRecording();
@@ -170,6 +175,8 @@ namespace Captura.ViewModels
 
         void OnPauseExecute()
         {
+            _audioPlayer.PlayNormal();
+
             // Resume
             if (RecorderState == RecorderState.Paused)
             {
