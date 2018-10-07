@@ -30,17 +30,22 @@ namespace Captura.Models
         {
             _ffMpegWriter.Dispose();
 
-            var videoInArgs = $"-i \"{_tempFileName}\"";
-            var videoOutArgs = $"{_args.VideoArgsProvider(_args.VideoQuality)} -r {_args.FrameRate}";
+            var argsBuilder = new FFmpegArgsBuilder();
 
-            var audioOutArgs = "";
+            argsBuilder.AddInputFile(_tempFileName);
+
+            var output = argsBuilder.AddOutputFile(_args.FileName)
+                .AddArg(_args.VideoArgsProvider(_args.VideoQuality))
+                .SetFrameRate(_args.FrameRate);
 
             if (_args.AudioProvider != null)
             {
-                audioOutArgs = _args.AudioArgsProvider(_args.AudioQuality);
+                output.AddArg(_args.AudioArgsProvider(_args.AudioQuality));
             }
 
-            var process = FFmpegService.StartFFmpeg($"{videoInArgs} {videoOutArgs} {audioOutArgs} {_args.OutputArgs} \"{_args.FileName}\"", _args.FileName);
+            output.AddArg(_args.OutputArgs);
+
+            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName);
 
             process.WaitForExit();
 
