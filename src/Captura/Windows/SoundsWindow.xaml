@@ -7,10 +7,11 @@
         Background="{DynamicResource WindowBackground}"
         ResizeMode="NoResize"
         DataContext="{Binding SoundsViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid Margin="10">
+    <Grid Margin="5,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,41 +21,93 @@
         </Grid.RowDefinitions>
 
         <Label Content="Normal: "
-               Margin="0,5,5,5"/>
+               Margin="5"/>
 
         <TextBox Grid.Column="1"
                  Grid.Row="0"
-                 Text="{Binding Settings.Normal, Mode=TwoWay}"
+                 Text="{Binding Settings.Normal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="0,5"/>
+
+        <Button Grid.Row="0"
+                Grid.Column="2"
+                Margin="5"
+                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                Command="{Binding ResetNormalCommand}"
+                IsEnabled="{Binding Settings.Normal, Converter={StaticResource NotNullConverter}}"
+                VerticalContentAlignment="Center">
+            <Path Stretch="UniformToFill"
+                  Height="10"
+                  Width="9"
+                  Data="{StaticResource IconClose}"/>
+        </Button>
 
         <Label Content="Shot: "
                Grid.Row="1"
                Grid.Column="0"
-               Margin="0,5,5,5"/>
+               Margin="5"/>
 
         <TextBox Grid.Column="1"
                  Grid.Row="1"
-                 Text="{Binding Settings.Shot, Mode=TwoWay}"
+                 Text="{Binding Settings.Shot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="0,5"/>
+
+        <Button Grid.Row="1"
+                Grid.Column="2"
+                Margin="5"
+                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                Command="{Binding ResetShotCommand}"
+                IsEnabled="{Binding Settings.Shot, Converter={StaticResource NotNullConverter}}"
+                VerticalContentAlignment="Center">
+            <Path Stretch="UniformToFill"
+                  Height="10"
+                  Width="9"
+                  Data="{StaticResource IconClose}"/>
+        </Button>
 
         <Label Content="Error: "
                Grid.Row="2"
                Grid.Column="0"
-               Margin="0,5,5,5"/>
+               Margin="5"/>
 
         <TextBox Grid.Column="1"
                  Grid.Row="2"
-                 Text="{Binding Settings.Error, Mode=TwoWay}"
+                 Text="{Binding Settings.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="0,5"/>
+
+        <Button Grid.Row="2"
+                Grid.Column="2"
+                Margin="5"
+                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                Command="{Binding ResetErrorCommand}"
+                IsEnabled="{Binding Settings.Error, Converter={StaticResource NotNullConverter}}"
+                VerticalContentAlignment="Center">
+            <Path Stretch="UniformToFill"
+                  Height="10"
+                  Width="9"
+                  Data="{StaticResource IconClose}"/>
+        </Button>
 
         <Label Content="Notification: "
                Grid.Row="3"
                Grid.Column="0"
-               Margin="0,5,5,5"/>
+               Margin="5"/>
 
         <TextBox Grid.Column="1"
                  Grid.Row="3"
-                 Text="{Binding Settings.Notification, Mode=TwoWay}"
+                 Text="{Binding Settings.Notification, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Margin="0,5"/>
+
+        <Button Grid.Row="3"
+                Grid.Column="2"
+                Margin="5"
+                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                Command="{Binding ResetNotificationCommand}"
+                IsEnabled="{Binding Settings.Notification, Converter={StaticResource NotNullConverter}}"
+                VerticalContentAlignment="Center">
+            <Path Stretch="UniformToFill"
+                  Height="10"
+                  Width="9"
+                  Data="{StaticResource IconClose}"/>
+        </Button>
     </Grid>
 </Window>
