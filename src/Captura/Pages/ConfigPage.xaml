@@ -107,6 +107,11 @@
                         Click="OpenFileNameFormatter"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
+                <Button Margin="0,2"
+                        Content="Configure Sounds ..."
+                        Click="OpenSounds"
+                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

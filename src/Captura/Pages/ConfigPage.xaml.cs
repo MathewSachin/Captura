@@ -19,5 +19,10 @@ namespace Captura
         {
             new FileNameFormatWindow().ShowDialog();
         }
+
+        void OpenSounds(object Sender, RoutedEventArgs E)
+        {
+            new SoundsWindow().ShowDialog();
+        }
     }
 }

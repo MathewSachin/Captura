@@ -1,0 +1,49 @@
+﻿<Window x:Class="Captura.SoundsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sounds"
+        Height="200"
+        Width="400"
+        Background="{DynamicResource WindowBackground}"
+        ResizeMode="NoResize"
+        DataContext="{Binding AboutViewModel.Settings.Sounds, Source={StaticResource ServiceLocator}}">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Normal: "
+               Margin="0,5,5,5"/>
+
+        <TextBox Grid.Column="1"
+                 Grid.Row="0"
+                 Text="{Binding Normal, Mode=TwoWay}"
+                 Margin="0,5"/>
+
+        <Label Content="Shot: "
+               Grid.Row="1"
+               Grid.Column="0"
+               Margin="0,5,5,5"/>
+
+        <TextBox Grid.Column="1"
+                 Grid.Row="1"
+                 Text="{Binding Shot, Mode=TwoWay}"
+                 Margin="0,5"/>
+
+        <Label Content="Error: "
+               Grid.Row="2"
+               Grid.Column="0"
+               Margin="0,5,5,5"/>
+
+        <TextBox Grid.Column="1"
+                 Grid.Row="2"
+                 Text="{Binding Error, Mode=TwoWay}"
+                 Margin="0,5"/>
+    </Grid>
+</Window>

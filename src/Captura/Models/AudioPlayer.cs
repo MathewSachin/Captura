@@ -8,22 +8,18 @@ namespace Captura.Models
     public class AudioPlayer : IAudioPlayer
     {
         readonly SoundSettings _settings;
-        MediaPlayer _mediaPlayer;
+        readonly MediaPlayer _mediaPlayer;
 
         public AudioPlayer(SoundSettings Settings)
         {
             _settings = Settings;
+            _mediaPlayer = new MediaPlayer();
         }
 
         void PlaySound(string Path)
         {
             if (!File.Exists(Path))
                 return;
-
-            if (_mediaPlayer == null)
-            {
-                _mediaPlayer = new MediaPlayer();
-            }
 
             _mediaPlayer.Open(new Uri(Path));
             _mediaPlayer.Play();
