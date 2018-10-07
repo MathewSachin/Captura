@@ -2,11 +2,7 @@
 {
     public interface IAudioPlayer
     {
-        void PlayBegin();
-
-        void PlayEnd();
-
-        void PlayPause();
+        void PlayNormal();
 
         void PlayShot();
 

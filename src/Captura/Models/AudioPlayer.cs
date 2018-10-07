@@ -2,19 +2,10 @@
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class AudioPlayer : IAudioPlayer
     {
-        public void PlayBegin()
-        {
-            SystemSounds.Beep.Play();
-        }
-
-        public void PlayEnd()
-        {
-            SystemSounds.Beep.Play();
-        }
-
-        public void PlayPause()
+        public void PlayNormal()
         {
             SystemSounds.Beep.Play();
         }
@@ -26,7 +17,7 @@ namespace Captura.Models
 
         public void PlayError()
         {
-            SystemSounds.Asterisk.Play();
+            SystemSounds.Beep.Play();
         }
     }
 }

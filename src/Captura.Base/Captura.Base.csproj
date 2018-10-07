@@ -30,7 +30,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Services\IAudioPlayer.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Modifiers.cs" />
     <Compile Include="Services\IClipboardService.cs" />

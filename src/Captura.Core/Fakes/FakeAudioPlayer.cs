@@ -1,12 +1,9 @@
 ﻿namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class FakeAudioPlayer : IAudioPlayer
     {
-        public void PlayBegin() { }
-
-        public void PlayEnd() { }
-
-        public void PlayPause() { }
+        public void PlayNormal() { }
 
         public void PlayShot() { }
 
