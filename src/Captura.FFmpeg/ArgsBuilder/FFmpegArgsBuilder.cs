@@ -1,24 +1,42 @@
 ﻿using System.Collections.Generic;
 
-namespace Captura.FFmpeg
+namespace Captura.Models
 {
     public class FFmpegArgsBuilder
     {
         readonly List<FFmpegInputArgs> _inputs = new List<FFmpegInputArgs>();
         readonly List<FFmpegOutputArgs> _outputs = new List<FFmpegOutputArgs>();
 
-        public FFmpegInputArgs AddInput(string Input)
+        public FFmpegInputArgs AddInputFile(string FileName)
         {
-            var input = new FFmpegInputArgs(Input);
+            var input = new FFmpegInputArgs($"\"{FileName}\"");
 
             _inputs.Add(input);
 
             return input;
         }
 
-        public FFmpegOutputArgs AddOutputArgs(string Output)
+        public FFmpegInputArgs AddInputPipe(string PipeName = "-")
         {
-            var output = new FFmpegOutputArgs(Output);
+            var input = new FFmpegInputArgs(PipeName);
+
+            _inputs.Add(input);
+
+            return input;
+        }
+
+        public FFmpegOutputArgs AddOutputFile(string FileName)
+        {
+            var output = new FFmpegOutputArgs($"\"{FileName}\"");
+
+            _outputs.Add(output);
+
+            return output;
+        }
+
+        public FFmpegOutputArgs AddOutputPipe(string PipeName = "-")
+        {
+            var output = new FFmpegOutputArgs(PipeName);
 
             _outputs.Add(output);
 

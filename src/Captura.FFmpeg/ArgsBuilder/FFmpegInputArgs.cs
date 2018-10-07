@@ -1,4 +1,4 @@
-﻿namespace Captura.FFmpeg
+﻿namespace Captura.Models
 {
     public class FFmpegInputArgs : FFmpegArgs
     {
@@ -14,11 +14,46 @@
             return base.GetArgs() + $" -i {_input}";
         }
 
-        public FFmpegInputArgs SetVideoSize(int Width, int Height)
+        public FFmpegInputArgs AddArg(string Arg)
         {
-            Args.Add($"-s {Width}x{Height}");
+            Args.Add(Arg);
 
             return this;
+        }
+
+        public FFmpegInputArgs SetVideoSize(int Width, int Height)
+        {
+            return AddArg($"-s {Width}x{Height}");
+        }
+
+        public FFmpegInputArgs SetFrameRate(int FrameRate)
+        {
+            return AddArg($"-r {FrameRate}");
+        }
+
+        public FFmpegInputArgs SetFormat(string Format)
+        {
+            return AddArg($"-f {Format}");
+        }
+
+        public FFmpegInputArgs SetAudioCodec(string Codec)
+        {
+            return AddArg($"-acodec {Codec}");
+        }
+
+        public FFmpegInputArgs SetAudioFrequency(int Frequency)
+        {
+            return AddArg($"-ar {Frequency}");
+        }
+
+        public FFmpegInputArgs SetAudioChannels(int Channels)
+        {
+            return AddArg($"-ac {Channels}");
+        }
+
+        public FFmpegInputArgs DisableVideo()
+        {
+            return AddArg("-vn");
         }
     }
 }

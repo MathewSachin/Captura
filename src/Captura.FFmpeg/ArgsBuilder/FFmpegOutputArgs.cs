@@ -1,4 +1,4 @@
-﻿namespace Captura.FFmpeg
+﻿namespace Captura.Models
 {
     public class FFmpegOutputArgs : FFmpegArgs
     {
@@ -14,11 +14,21 @@
             return base.GetArgs() + $" {_output}";
         }
 
-        public FFmpegOutputArgs SetVideoSize(int Width, int Height)
+        public FFmpegOutputArgs AddArg(string Arg)
         {
-            Args.Add($"-s {Width}x{Height}");
+            Args.Add(Arg);
 
             return this;
+        }
+
+        public FFmpegOutputArgs SetVideoSize(int Width, int Height)
+        {
+            return AddArg($"-s {Width}x{Height}");
+        }
+
+        public FFmpegOutputArgs SetFrameRate(int FrameRate)
+        {
+            return AddArg($"-r {FrameRate}");
         }
     }
 }
