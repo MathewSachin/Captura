@@ -20,6 +20,6 @@ namespace Captura.Models
             Console.WriteLine($"{_loc.ScreenShotSaved}: {FilePath}");
         }
 
-        public INotification ShowNotification() => new FakeNotification();
+        public INotification ShowNotification(bool Progress) => new FakeNotification();
     }
 }

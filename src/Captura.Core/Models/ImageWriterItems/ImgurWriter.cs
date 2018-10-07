@@ -118,7 +118,7 @@ namespace Captura.Models
         // Returns ImgurUploadResponse on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
-            var progressItem = _systemTray.ShowNotification();
+            var progressItem = _systemTray.ShowNotification(true);
             progressItem.PrimaryText = _loc.ImgurUploading;
             
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })

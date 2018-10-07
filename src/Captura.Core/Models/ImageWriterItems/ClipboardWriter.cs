@@ -24,7 +24,7 @@ namespace Captura.Models
         {
             Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 
-            _systemTray.ShowNotification().PrimaryText = _loc.ImgSavedClipboard;
+            _systemTray.ShowNotification(false).PrimaryText = _loc.ImgSavedClipboard;
 
             return Task.CompletedTask;
         }

@@ -6,6 +6,6 @@
 
         void HideNotification();
 
-        INotification ShowNotification();
+        INotification ShowNotification(bool Progress);
     }
 }

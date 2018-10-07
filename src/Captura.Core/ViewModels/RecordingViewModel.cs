@@ -191,7 +191,7 @@ namespace Captura.ViewModels
 
                 RecorderState = RecorderState.Paused;
 
-                _pauseNotification = _systemTray.ShowNotification();
+                _pauseNotification = _systemTray.ShowNotification(false);
                 _pauseNotification.PrimaryText = Loc.Paused;
                 _pauseNotification.Click += OnPauseExecute;
             }
@@ -694,7 +694,7 @@ namespace Captura.ViewModels
                 if (Settings.CopyOutPathToClipboard)
                     savingRecentItem.FilePath.WriteToClipboard();
 
-                var notification = _systemTray.ShowNotification();
+                var notification = _systemTray.ShowNotification(false);
                 notification.PrimaryText = savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
                 notification.SecondaryText = Path.GetFileName(savingRecentItem.FilePath);
                 notification.Click += () =>
