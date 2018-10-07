@@ -7,5 +7,7 @@
         void PlayShot();
 
         void PlayError();
+
+        void PlayNotification();
     }
 }

@@ -8,5 +8,7 @@
         public void PlayShot() { }
 
         public void PlayError() { }
+
+        public void PlayNotification() { }
     }
 }

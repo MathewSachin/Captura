@@ -39,5 +39,10 @@ namespace Captura.Models
         {
             PlaySound(_settings.Error);
         }
+
+        public void PlayNotification()
+        {
+            PlaySound(_settings.Notification);
+        }
     }
 }

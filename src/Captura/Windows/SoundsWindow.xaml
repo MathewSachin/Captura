@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Content="Normal: "
@@ -44,6 +45,16 @@
         <TextBox Grid.Column="1"
                  Grid.Row="2"
                  Text="{Binding Error, Mode=TwoWay}"
+                 Margin="0,5"/>
+
+        <Label Content="Notification: "
+               Grid.Row="3"
+               Grid.Column="0"
+               Margin="0,5,5,5"/>
+
+        <TextBox Grid.Column="1"
+                 Grid.Row="3"
+                 Text="{Binding Notification, Mode=TwoWay}"
                  Margin="0,5"/>
     </Grid>
 </Window>

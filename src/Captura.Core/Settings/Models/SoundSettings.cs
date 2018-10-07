@@ -19,5 +19,11 @@
             get => Get<string>();
             set => Set(value);
         }
+
+        public string Notification
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
     }
 }
