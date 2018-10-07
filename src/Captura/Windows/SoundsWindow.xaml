@@ -6,7 +6,7 @@
         Width="400"
         Background="{DynamicResource WindowBackground}"
         ResizeMode="NoResize"
-        DataContext="{Binding AboutViewModel.Settings.Sounds, Source={StaticResource ServiceLocator}}">
+        DataContext="{Binding SoundsViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,7 +24,7 @@
 
         <TextBox Grid.Column="1"
                  Grid.Row="0"
-                 Text="{Binding Normal, Mode=TwoWay}"
+                 Text="{Binding Settings.Normal, Mode=TwoWay}"
                  Margin="0,5"/>
 
         <Label Content="Shot: "
@@ -34,7 +34,7 @@
 
         <TextBox Grid.Column="1"
                  Grid.Row="1"
-                 Text="{Binding Shot, Mode=TwoWay}"
+                 Text="{Binding Settings.Shot, Mode=TwoWay}"
                  Margin="0,5"/>
 
         <Label Content="Error: "
@@ -44,7 +44,7 @@
 
         <TextBox Grid.Column="1"
                  Grid.Row="2"
-                 Text="{Binding Error, Mode=TwoWay}"
+                 Text="{Binding Settings.Error, Mode=TwoWay}"
                  Margin="0,5"/>
 
         <Label Content="Notification: "
@@ -54,7 +54,7 @@
 
         <TextBox Grid.Column="1"
                  Grid.Row="3"
-                 Text="{Binding Notification, Mode=TwoWay}"
+                 Text="{Binding Settings.Notification, Mode=TwoWay}"
                  Margin="0,5"/>
     </Grid>
 </Window>
