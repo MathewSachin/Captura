@@ -12,7 +12,19 @@ namespace Captura.Models
         
         public FFmpegAudioWriter(string FileName, int AudioQuality, FFmpegAudioArgsProvider AudioArgsProvider, int Frequency = 44100, int Channels = 2)
         {
-            _ffmpegProcess = FFmpegService.StartFFmpeg($"-f s16le -acodec pcm_s16le -ar {Frequency} -ac {Channels} -i - -vn {AudioArgsProvider(AudioQuality)} \"{FileName}\"", FileName);
+            var argsBuilder  = new FFmpegArgsBuilder();
+
+            argsBuilder.AddStdIn()
+                .SetFormat("s16le")
+                .SetAudioCodec("pcm_s16le")
+                .SetAudioFrequency(Frequency)
+                .SetAudioChannels(Channels)
+                .DisableVideo();
+
+            argsBuilder.AddOutputFile(FileName)
+                .AddArg(AudioArgsProvider(AudioQuality));
+
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName);
             
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
         }

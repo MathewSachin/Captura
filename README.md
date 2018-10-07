@@ -85,7 +85,7 @@ Dev builds can be unstable and should be used for testing purposes only.
 
 ## Build Notes
 
-- [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
+- [Visual Studio 2017](https://visualstudio.com) or greater is recommended.
 - .Net Framework v4.6.1 is required.
 - For detailed information, see [Building](https://mathewsachin.github.io/Captura/build).
 
