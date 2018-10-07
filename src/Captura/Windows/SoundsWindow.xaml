@@ -12,6 +12,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -41,6 +42,16 @@
                   Data="{StaticResource IconClose}"/>
         </Button>
 
+        <Button Grid.Row="0"
+                Grid.Column="3"
+                Margin="0,5,5,5"
+                Command="{Binding SetNormalCommand}">
+            <Path Stretch="UniformToFill"
+                  Height="4"
+                  Width="16"
+                  Data="{StaticResource IconMore}"/>
+        </Button>
+
         <Label Content="Shot: "
                Grid.Row="1"
                Grid.Column="0"
@@ -62,6 +73,16 @@
                   Height="10"
                   Width="9"
                   Data="{StaticResource IconClose}"/>
+        </Button>
+
+        <Button Grid.Row="1"
+                Grid.Column="3"
+                Margin="0,5,5,5"
+                Command="{Binding SetShotCommand}">
+            <Path Stretch="UniformToFill"
+                  Height="4"
+                  Width="16"
+                  Data="{StaticResource IconMore}"/>
         </Button>
 
         <Label Content="Error: "
@@ -87,6 +108,16 @@
                   Data="{StaticResource IconClose}"/>
         </Button>
 
+        <Button Grid.Row="2"
+                Grid.Column="3"
+                Margin="0,5,5,5"
+                Command="{Binding SetErrorCommand}">
+            <Path Stretch="UniformToFill"
+                  Height="4"
+                  Width="16"
+                  Data="{StaticResource IconMore}"/>
+        </Button>
+
         <Label Content="Notification: "
                Grid.Row="3"
                Grid.Column="0"
@@ -108,6 +139,16 @@
                   Height="10"
                   Width="9"
                   Data="{StaticResource IconClose}"/>
+        </Button>
+
+        <Button Grid.Row="3"
+                Grid.Column="3"
+                Margin="0,5,5,5"
+                Command="{Binding SetNotificationCommand}">
+            <Path Stretch="UniformToFill"
+                  Height="4"
+                  Width="16"
+                  Data="{StaticResource IconMore}"/>
         </Button>
     </Grid>
 </Window>
