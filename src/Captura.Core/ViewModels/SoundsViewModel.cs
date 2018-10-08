@@ -13,7 +13,9 @@ namespace Captura.ViewModels
         {
             Items = new[]
             {
-                SoundKind.Normal,
+                SoundKind.Start,
+                SoundKind.Stop,
+                SoundKind.Pause,
                 SoundKind.Shot,
                 SoundKind.Error,
                 SoundKind.Notification

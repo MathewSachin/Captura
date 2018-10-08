@@ -1,7 +1,10 @@
-﻿namespace Captura.Models {
+﻿namespace Captura.Models
+{
     public enum SoundKind
     {
-        Normal,
+        Start,
+        Stop,
+        Pause,
         Shot,
         Error,
         Notification

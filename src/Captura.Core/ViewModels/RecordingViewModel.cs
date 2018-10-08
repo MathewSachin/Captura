@@ -151,11 +151,18 @@ namespace Captura.ViewModels
 
         async void OnRecordExecute()
         {
-            _audioPlayer.Play(SoundKind.Normal);
-
             if (RecorderState == RecorderState.NotRecording)
+            {
+                _audioPlayer.Play(SoundKind.Start);
+
                 StartRecording();
-            else await StopRecording();
+            }
+            else
+            {
+                _audioPlayer.Play(SoundKind.Stop);
+
+                await StopRecording();
+            }
         }
 
         void SystemEvents_PowerModeChanged(object Sender, PowerModeChangedEventArgs E)
@@ -175,7 +182,7 @@ namespace Captura.ViewModels
 
         void OnPauseExecute()
         {
-            _audioPlayer.Play(SoundKind.Normal);
+            _audioPlayer.Play(SoundKind.Pause);
 
             // Resume
             if (RecorderState == RecorderState.Paused)

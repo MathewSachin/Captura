@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Sounds"
-        Height="200"
         Width="500"
+        SizeToContent="Height"
         Background="{DynamicResource WindowBackground}"
         ResizeMode="NoResize"
         DataContext="{Binding SoundsViewModel, Source={StaticResource ServiceLocator}}">
