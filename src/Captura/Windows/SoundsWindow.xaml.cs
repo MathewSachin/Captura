@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using Captura.ViewModels;
 
 namespace Captura
@@ -10,35 +11,11 @@ namespace Captura
             InitializeComponent();
         }
 
-        void SetNormalFile(object Sender, MouseButtonEventArgs E)
+        void SetFile(object Sender, MouseButtonEventArgs E)
         {
-            if (DataContext is SoundsViewModel vm)
+            if (Sender is FrameworkElement element && element.DataContext is SoundsViewModelItem vm)
             {
-                vm.SetNormalCommand.ExecuteIfCan();
-            }
-        }
-
-        void SetShotFile(object Sender, MouseButtonEventArgs E)
-        {
-            if (DataContext is SoundsViewModel vm)
-            {
-                vm.SetShotCommand.ExecuteIfCan();
-            }
-        }
-
-        void SetErrorFile(object Sender, MouseButtonEventArgs E)
-        {
-            if (DataContext is SoundsViewModel vm)
-            {
-                vm.SetErrorCommand.ExecuteIfCan();
-            }
-        }
-
-        void SetNotificationFile(object Sender, MouseButtonEventArgs E)
-        {
-            if (DataContext is SoundsViewModel vm)
-            {
-                vm.SetNotificationCommand.ExecuteIfCan();
+                vm.SetCommand.ExecuteIfCan();
             }
         }
     }

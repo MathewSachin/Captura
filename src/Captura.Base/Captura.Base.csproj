@@ -51,6 +51,7 @@
     <Compile Include="Images\IImageProvider.cs" />
     <Compile Include="IOverlay.cs" />
     <Compile Include="IRecorder.cs" />
+    <Compile Include="Audio\SoundKind.cs" />
     <Compile Include="Video\IVideoFileWriter.cs" />
     <Compile Include="Services\IBinder.cs" />
     <Compile Include="Services\IModule.cs" />

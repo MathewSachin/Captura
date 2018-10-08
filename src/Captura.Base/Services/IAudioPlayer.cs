@@ -2,12 +2,6 @@
 {
     public interface IAudioPlayer
     {
-        void PlayNormal();
-
-        void PlayShot();
-
-        void PlayError();
-
-        void PlayNotification();
+        void Play(SoundKind SoundKind);
     }
 }

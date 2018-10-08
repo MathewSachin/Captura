@@ -3,12 +3,6 @@
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FakeAudioPlayer : IAudioPlayer
     {
-        public void PlayNormal() { }
-
-        public void PlayShot() { }
-
-        public void PlayError() { }
-
-        public void PlayNotification() { }
+        public void Play(SoundKind SoundKind) { }
     }
 }

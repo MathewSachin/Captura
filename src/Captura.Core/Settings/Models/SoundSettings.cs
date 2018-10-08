@@ -1,29 +1,9 @@
-﻿namespace Captura.Models
+﻿using System.Collections.Generic;
+
+namespace Captura.Models
 {
     public class SoundSettings : PropertyStore
     {
-        public string Normal
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public string Shot
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public string Error
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        public string Notification
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
+        public Dictionary<SoundKind, string> Items { get; } = new Dictionary<SoundKind, string>();
     }
 }

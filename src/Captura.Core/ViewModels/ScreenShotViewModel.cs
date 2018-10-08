@@ -119,7 +119,7 @@ namespace Captura.ViewModels
 
         public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
         {
-            _audioPlayer.PlayShot();
+            _audioPlayer.Play(SoundKind.Shot);
 
             if (Bmp != null)
             {

@@ -55,7 +55,7 @@ namespace Captura.Models
                     Height = 10
                 };
 
-                _audioPlayer.PlayError();
+                _audioPlayer.Play(SoundKind.Error);
 
                 dialog.ShowDialog();
             });
@@ -83,7 +83,7 @@ namespace Captura.Models
 
                 dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton, dialog.CancelButton };
 
-                _audioPlayer.PlayError();
+                _audioPlayer.Play(SoundKind.Error);
 
                 dialog.ShowDialog();
             });
@@ -95,7 +95,7 @@ namespace Captura.Models
             {
                 var win = new ExceptionWindow(Exception, Message);
 
-                _audioPlayer.PlayError();
+                _audioPlayer.Play(SoundKind.Error);
 
                 if (Blocking)
                 {

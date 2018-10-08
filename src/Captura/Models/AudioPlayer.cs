@@ -25,24 +25,10 @@ namespace Captura.Models
             _mediaPlayer.Play();
         }
 
-        public void PlayNormal()
+        public void Play(SoundKind SoundKind)
         {
-            PlaySound(_settings.Normal);
-        }
-
-        public void PlayShot()
-        {
-            PlaySound(_settings.Shot);
-        }
-
-        public void PlayError()
-        {
-            PlaySound(_settings.Error);
-        }
-
-        public void PlayNotification()
-        {
-            PlaySound(_settings.Notification);
+            if (_settings.Items.TryGetValue(SoundKind, out var value))
+                PlaySound(value);
         }
     }
 }

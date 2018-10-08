@@ -43,7 +43,7 @@ namespace Captura.Models
                 _first = false;
             }
 
-            _audioPlayer.PlayNotification();
+            _audioPlayer.Play(SoundKind.Notification);
 
             _notificationStack.Show();
         }

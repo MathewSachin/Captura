@@ -9,175 +9,56 @@
         ResizeMode="NoResize"
         DataContext="{Binding SoundsViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5,10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <ItemsControl Grid.IsSharedSizeScope="True"
+                      ItemsSource="{Binding Items}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Reset"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Browse"/>
+                        </Grid.ColumnDefinitions>
 
-        <Label Content="Normal: "
-               Margin="5"/>
+                        <Label Content="{Binding SoundKind}"
+                               ContentStringFormat="{}{0}: "
+                               Margin="5"/>
 
-        <Border ToolTip="{Binding Settings.Normal}"
-                MouseUp="SetNormalFile"
-                Cursor="Hand"
-                Grid.Column="1"
-                Grid.Row="0"
-                Margin="0,5">
-            <xctk:WatermarkTextBox IsReadOnly="True"
-                                   IsEnabled="False"
-                                   Text="{Binding Settings.Normal}"
-                                   Watermark="No Sound"/>
-        </Border>
+                        <Border ToolTip="{Binding FileName}"
+                                MouseUp="SetFile"
+                                Cursor="Hand"
+                                Grid.Column="1"
+                                Margin="0,5">
+                            <xctk:WatermarkTextBox IsReadOnly="True"
+                                                   IsEnabled="False"
+                                                   Text="{Binding FileName}"
+                                                   Watermark="No Sound"/>
+                        </Border>
 
-        <Button Grid.Row="0"
-                Grid.Column="2"
-                Margin="5"
-                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
-                Command="{Binding ResetNormalCommand}"
-                IsEnabled="{Binding Settings.Normal, Converter={StaticResource NotNullConverter}}"
-                VerticalContentAlignment="Center">
-            <Path Stretch="UniformToFill"
-                  Height="10"
-                  Width="9"
-                  Data="{StaticResource IconClose}"/>
-        </Button>
+                        <Button Grid.Column="2"
+                                Margin="5"
+                                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                                Command="{Binding ResetCommand}"
+                                IsEnabled="{Binding FileName, Converter={StaticResource NotNullConverter}}"
+                                VerticalContentAlignment="Center">
+                            <Path Stretch="UniformToFill"
+                                  Height="10"
+                                  Width="9"
+                                  Data="{StaticResource IconClose}"/>
+                        </Button>
 
-        <Button Grid.Row="0"
-                Grid.Column="3"
-                Margin="0,5,5,5"
-                Command="{Binding SetNormalCommand}">
-            <Path Stretch="UniformToFill"
-                  Height="4"
-                  Width="16"
-                  Data="{StaticResource IconMore}"/>
-        </Button>
-
-        <Label Content="Shot: "
-               Grid.Row="1"
-               Grid.Column="0"
-               Margin="5"/>
-
-        <Border ToolTip="{Binding Settings.Shot}"
-                MouseUp="SetShotFile"
-                Cursor="Hand"
-                Grid.Column="1"
-                Grid.Row="1"
-                Margin="0,5">
-            <xctk:WatermarkTextBox IsReadOnly="True"
-                                   IsEnabled="False"
-                                   Text="{Binding Settings.Shot}"
-                                   Watermark="No Sound"/>
-        </Border>
-
-        <Button Grid.Row="1"
-                Grid.Column="2"
-                Margin="5"
-                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
-                Command="{Binding ResetShotCommand}"
-                IsEnabled="{Binding Settings.Shot, Converter={StaticResource NotNullConverter}}"
-                VerticalContentAlignment="Center">
-            <Path Stretch="UniformToFill"
-                  Height="10"
-                  Width="9"
-                  Data="{StaticResource IconClose}"/>
-        </Button>
-
-        <Button Grid.Row="1"
-                Grid.Column="3"
-                Margin="0,5,5,5"
-                Command="{Binding SetShotCommand}">
-            <Path Stretch="UniformToFill"
-                  Height="4"
-                  Width="16"
-                  Data="{StaticResource IconMore}"/>
-        </Button>
-
-        <Label Content="Error: "
-               Grid.Row="2"
-               Grid.Column="0"
-               Margin="5"/>
-
-        <Border ToolTip="{Binding Settings.Error}"
-                MouseUp="SetErrorFile"
-                Cursor="Hand"
-                Grid.Column="1"
-                Grid.Row="2"
-                Margin="0,5">
-            <xctk:WatermarkTextBox IsReadOnly="True"
-                                   IsEnabled="False"
-                                   Text="{Binding Settings.Error}"
-                                   Watermark="No Sound"/>
-        </Border>
-
-        <Button Grid.Row="2"
-                Grid.Column="2"
-                Margin="5"
-                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
-                Command="{Binding ResetErrorCommand}"
-                IsEnabled="{Binding Settings.Error, Converter={StaticResource NotNullConverter}}"
-                VerticalContentAlignment="Center">
-            <Path Stretch="UniformToFill"
-                  Height="10"
-                  Width="9"
-                  Data="{StaticResource IconClose}"/>
-        </Button>
-
-        <Button Grid.Row="2"
-                Grid.Column="3"
-                Margin="0,5,5,5"
-                Command="{Binding SetErrorCommand}">
-            <Path Stretch="UniformToFill"
-                  Height="4"
-                  Width="16"
-                  Data="{StaticResource IconMore}"/>
-        </Button>
-
-        <Label Content="Notification: "
-               Grid.Row="3"
-               Grid.Column="0"
-               Margin="5"/>
-
-        <Border ToolTip="{Binding Settings.Notification}"
-                MouseUp="SetNotificationFile"
-                Cursor="Hand"
-                Grid.Column="1"
-                Grid.Row="3"
-                Margin="0,5">
-            <xctk:WatermarkTextBox IsReadOnly="True"
-                                   IsEnabled="False"
-                                   Text="{Binding Settings.Notification}"
-                                   Watermark="No Sound"/>
-        </Border>
-
-        <Button Grid.Row="3"
-                Grid.Column="2"
-                Margin="5"
-                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
-                Command="{Binding ResetNotificationCommand}"
-                IsEnabled="{Binding Settings.Notification, Converter={StaticResource NotNullConverter}}"
-                VerticalContentAlignment="Center">
-            <Path Stretch="UniformToFill"
-                  Height="10"
-                  Width="9"
-                  Data="{StaticResource IconClose}"/>
-        </Button>
-
-        <Button Grid.Row="3"
-                Grid.Column="3"
-                Margin="0,5,5,5"
-                Command="{Binding SetNotificationCommand}">
-            <Path Stretch="UniformToFill"
-                  Height="4"
-                  Width="16"
-                  Data="{StaticResource IconMore}"/>
-        </Button>
+                        <Button Grid.Column="3"
+                                Margin="0,5,5,5"
+                                Command="{Binding SetCommand}">
+                            <Path Stretch="UniformToFill"
+                                  Height="4"
+                                  Width="16"
+                                  Data="{StaticResource IconMore}"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

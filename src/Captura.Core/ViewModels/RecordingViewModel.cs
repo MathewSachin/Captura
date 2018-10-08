@@ -151,7 +151,7 @@ namespace Captura.ViewModels
 
         async void OnRecordExecute()
         {
-            _audioPlayer.PlayNormal();
+            _audioPlayer.Play(SoundKind.Normal);
 
             if (RecorderState == RecorderState.NotRecording)
                 StartRecording();
@@ -175,7 +175,7 @@ namespace Captura.ViewModels
 
         void OnPauseExecute()
         {
-            _audioPlayer.PlayNormal();
+            _audioPlayer.Play(SoundKind.Normal);
 
             // Resume
             if (RecorderState == RecorderState.Paused)
