@@ -13,9 +13,9 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
-            Transform = P => P;
-
-            return new RegionProvider(WindowProvider.DesktopRectangle, IncludeCursor);
-        }
+			Rectangle region = WindowProvider.DesktopRectangle;
+			Transform = P => new Point(P.X - region.X, P.Y - region.Y);
+			return new RegionProvider(region, IncludeCursor);
+		}
     }
 }
