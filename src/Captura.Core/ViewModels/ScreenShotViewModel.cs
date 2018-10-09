@@ -18,6 +18,7 @@ namespace Captura.ViewModels
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
         readonly IVideoSourcePicker _sourcePicker;
+        readonly IAudioPlayer _audioPlayer;
 
         public DiskWriter DiskWriter { get; }
         public ClipboardWriter ClipboardWriter { get; }
@@ -43,7 +44,8 @@ namespace Captura.ViewModels
             DiskWriter DiskWriter,
             ClipboardWriter ClipboardWriter,
             ImgurWriter ImgurWriter,
-            IVideoSourcePicker SourcePicker) : base(Settings, Loc)
+            IVideoSourcePicker SourcePicker,
+            IAudioPlayer AudioPlayer) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
             _recentViewModel = RecentViewModel;
@@ -51,6 +53,7 @@ namespace Captura.ViewModels
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
             _sourcePicker = SourcePicker;
+            _audioPlayer = AudioPlayer;
             this.DiskWriter = DiskWriter;
             this.ClipboardWriter = ClipboardWriter;
             this.ImgurWriter = ImgurWriter;
@@ -116,6 +119,8 @@ namespace Captura.ViewModels
 
         public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
         {
+            _audioPlayer.Play(SoundKind.Shot);
+
             if (Bmp != null)
             {
                 var allTasks = _videoViewModel.AvailableImageWriters

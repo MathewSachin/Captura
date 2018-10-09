@@ -104,6 +104,8 @@ namespace Captura
 
         public ObservableCollection<CustomImageOverlaySettings> ImageOverlays { get; } = new ObservableCollection<CustomImageOverlaySettings>();
 
+        public SoundSettings Sounds { get; } = new SoundSettings();
+
         public int PreStartCountdown
         {
             get => Get(0);

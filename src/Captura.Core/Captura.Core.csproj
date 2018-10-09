@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="Fakes\FakeAudioPlayer.cs" />
     <Compile Include="Fakes\FakeMessageProvider.cs" />
     <Compile Include="Fakes\FakeNotification.cs" />
     <Compile Include="Fakes\FakePreviewWindow.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
     <Compile Include="Models\Overlays\TextOverlay.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
+    <Compile Include="Settings\Models\SoundSettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="Settings\Settings.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="Models\FileNameFormatGroup.cs" />
     <Compile Include="Models\FileNameFormatItem.cs" />
     <Compile Include="ViewModels\FileNameFormatViewModel.cs" />
+    <Compile Include="ViewModels\SoundsViewModel.cs" />
+    <Compile Include="ViewModels\SoundsViewModelItem.cs" />
     <Compile Include="ViewModels\VideoSourceModel.cs" />
     <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
     <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />

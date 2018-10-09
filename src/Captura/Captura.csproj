@@ -59,6 +59,7 @@
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -107,6 +108,9 @@
     </Compile>
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SoundsWindow.xaml.cs">
+      <DependentUpon>SoundsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
@@ -298,6 +302,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ScreenShotsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SoundsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -30,6 +30,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\IAudioPlayer.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Modifiers.cs" />
     <Compile Include="Services\IClipboardService.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Images\IImageProvider.cs" />
     <Compile Include="IOverlay.cs" />
     <Compile Include="IRecorder.cs" />
+    <Compile Include="Audio\SoundKind.cs" />
     <Compile Include="Video\IVideoFileWriter.cs" />
     <Compile Include="Services\IBinder.cs" />
     <Compile Include="Services\IModule.cs" />

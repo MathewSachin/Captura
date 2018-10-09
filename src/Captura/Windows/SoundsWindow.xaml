@@ -1,0 +1,64 @@
+﻿<Window x:Class="Captura.SoundsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Sounds"
+        Width="500"
+        SizeToContent="Height"
+        Background="{DynamicResource WindowBackground}"
+        ResizeMode="NoResize"
+        DataContext="{Binding SoundsViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid Margin="5,10">
+        <ItemsControl Grid.IsSharedSizeScope="True"
+                      ItemsSource="{Binding Items}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Reset"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Browse"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="{Binding SoundKind}"
+                               ContentStringFormat="{}{0}: "
+                               Margin="5"/>
+
+                        <Border ToolTip="{Binding FileName}"
+                                MouseUp="SetFile"
+                                Cursor="Hand"
+                                Grid.Column="1"
+                                Margin="0,5">
+                            <xctk:WatermarkTextBox IsReadOnly="True"
+                                                   IsEnabled="False"
+                                                   Text="{Binding FileName}"
+                                                   Watermark="No Sound"/>
+                        </Border>
+
+                        <Button Grid.Column="2"
+                                Margin="5"
+                                ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
+                                Command="{Binding ResetCommand}"
+                                IsEnabled="{Binding FileName, Converter={StaticResource NotNullConverter}}"
+                                VerticalContentAlignment="Center">
+                            <Path Stretch="UniformToFill"
+                                  Height="10"
+                                  Width="9"
+                                  Data="{StaticResource IconClose}"/>
+                        </Button>
+
+                        <Button Grid.Column="3"
+                                Margin="0,5,5,5"
+                                Command="{Binding SetCommand}">
+                            <Path Stretch="UniformToFill"
+                                  Height="4"
+                                  Width="16"
+                                  Data="{StaticResource IconMore}"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

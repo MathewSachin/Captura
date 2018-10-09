@@ -28,6 +28,8 @@ namespace Captura
 
         public FileNameFormatViewModel FileNameFormatViewModel => ServiceProvider.Get<FileNameFormatViewModel>();
 
+        public SoundsViewModel SoundsViewModel => ServiceProvider.Get<SoundsViewModel>();
+
         public KeymapViewModel Keymap => ServiceProvider.Get<KeymapViewModel>();
 
         public EditorWriter EditorWriter => ServiceProvider.Get<EditorWriter>();
