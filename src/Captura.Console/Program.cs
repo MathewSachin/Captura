@@ -275,7 +275,7 @@ namespace Captura
 
                     screenSourceProvider.Set(index);
 
-                    video.SelectedVideoSourceKind = screenSourceProvider;
+                    video.RestoreSourceKind(screenSourceProvider);
                 }
             }
 
@@ -288,7 +288,7 @@ namespace Captura
 
                 winProvider.Set(handle);
 
-                video.SelectedVideoSourceKind = winProvider;
+                video.RestoreSourceKind(winProvider);
             }
 
             // Start command only
@@ -305,7 +305,7 @@ namespace Captura
 
                         deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
 
-                        video.SelectedVideoSourceKind = deskDuplSourceProvider;
+                        video.RestoreSourceKind(deskDuplSourceProvider);
                     }
                 }
 
