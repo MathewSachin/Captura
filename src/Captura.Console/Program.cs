@@ -283,6 +283,7 @@ namespace Captura
             else if (Regex.IsMatch(CommonOptions.Source, @"^win:\d+$"))
             {
                 var handle = new IntPtr(int.Parse(CommonOptions.Source.Substring(4)));
+                FakeRegionProvider.Instance.WindowsHandle = handle;
 
                 var winProvider = ServiceProvider.Get<WindowSourceProvider>();
 

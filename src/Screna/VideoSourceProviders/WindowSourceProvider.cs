@@ -17,27 +17,12 @@ namespace Captura.Models
 
         public bool PickWindow()
         {
-            if (Source != null)
-            {
-                var winItem = (WindowItem)Source;
-                if (winItem != null)
-                {
-                    _source = new WindowItem(new Window(winItem.Window.Handle));
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                var window = _videoSourcePicker.PickWindow(new[] { _regionProvider.Handle });
+            var window = _videoSourcePicker.PickWindow(new[] { _regionProvider.Handle });
 
-                if (window == null)
-                    return false;
+            if (window == null)
+                return false;
 
-                _source = new WindowItem(new Window(window.Handle));
-            }
+            _source = new WindowItem(new Window(window.Handle));
 
             RaisePropertyChanged(nameof(Source));
             return true;
