@@ -5,8 +5,6 @@ namespace Captura.Models
 {
     public class FakeRegionProvider : IRegionProvider
     {
-        FakeRegionProvider() { }
-
         public static FakeRegionProvider Instance { get; } = new FakeRegionProvider();
 
         public bool SelectorVisible
@@ -14,6 +12,7 @@ namespace Captura.Models
             get => false;
             set { }
         }
+
         
         public Rectangle SelectedRegion { get; set; }
 
@@ -27,6 +26,8 @@ namespace Captura.Models
 
         public void Release() { }
 
-        public IntPtr Handle => IntPtr.Zero;
+        public IntPtr WindowsHandle { get; set; } = IntPtr.Zero;
+
+        public IntPtr Handle => WindowsHandle;
     }
 }
