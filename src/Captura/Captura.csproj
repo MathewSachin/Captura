@@ -191,7 +191,6 @@
     <Compile Include="Controls\HotkeySelector.cs" />
     <Compile Include="Controls\ModernToggleButton.cs" />
     <Compile Include="Controls\ModernButton.cs" />
-    <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Controls\PositionSettingsControl.xaml.cs">
       <DependentUpon>PositionSettingsControl.xaml</DependentUpon>
     </Compile>

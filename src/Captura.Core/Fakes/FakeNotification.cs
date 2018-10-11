@@ -20,7 +20,10 @@ namespace Captura.Models
 
         public bool Finished { get; set; }
         public bool Success { get; set; }
+
+#pragma warning disable CS0067
         public event Action Click;
+#pragma warning restore CS0067
 
         public void Remove() { }
     }

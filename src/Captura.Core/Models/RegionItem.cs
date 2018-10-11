@@ -1,11 +1,10 @@
-﻿using Captura.Models;
-using System;
+﻿using System;
 using System.Drawing;
 using Screna;
 
-namespace Captura
+namespace Captura.Models
 {
-    class RegionItem : NotifyPropertyChanged, IVideoItem
+    public class RegionItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IRegionProvider _selector;
 
