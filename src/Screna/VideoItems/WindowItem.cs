@@ -22,7 +22,7 @@ namespace Captura.Models
         {
             if (!Window.IsAlive)
             {
-                throw new ObjectDisposedException(nameof(Window));
+                throw new WindowClosedException();
             }
 
             return new WindowProvider(Window, IncludeCursor, out Transform);

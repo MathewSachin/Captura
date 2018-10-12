@@ -63,7 +63,7 @@ namespace Screna
         {
             if (!_window.IsAlive)
             {
-                throw new OperationCanceledException();
+                throw new WindowClosedException();
             }
 
             var rect = _window.Rectangle.Even();
@@ -115,7 +115,7 @@ namespace Screna
 
                 return img;
             }
-            catch (Exception e) when (!(e is OperationCanceledException))
+            catch (Exception e) when (!(e is WindowClosedException))
             {
                 return RepeatFrame.Instance;
             }

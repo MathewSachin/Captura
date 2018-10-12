@@ -69,6 +69,7 @@
     <Compile Include="VideoSourceProviders\VideoSourceProviderBase.cs" />
     <Compile Include="VideoSourceProviders\WindowSourceProvider.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="WindowClosedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -307,7 +307,7 @@ namespace Captura.ViewModels
 
                 return false;
             }
-            catch (ObjectDisposedException) when (_videoViewModel.SelectedVideoSourceKind is WindowSourceProvider)
+            catch (WindowClosedException)
             {
                 ServiceProvider.MessageProvider.ShowError("Selected Window has been Closed.", "Window Closed");
 
@@ -541,12 +541,17 @@ namespace Captura.ViewModels
 
         void OnErrorOccurred(Exception E)
         {
-            var cancelled = E is OperationCanceledException;
+            var cancelled = E is WindowClosedException;
 
             AfterRecording();
 
             if (!cancelled)
                 ServiceProvider.MessageProvider.ShowException(E, E.Message);
+
+            if (cancelled)
+            {
+                _videoViewModel.SetDefaultSource();
+            }
         }
 
         void AfterRecording()

@@ -200,9 +200,12 @@ namespace Screna
                         }
                     }
 
-                    task = Task.Factory
-                        .StartNew(() => _imageProvider.Capture())
-                        .ContinueWith(T => AddFrame(T.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
+                    task = Task.Factory.StartNew(() =>
+                    {
+                        var frame = _imageProvider.Capture();
+
+                        return AddFrame(frame);
+                    });
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 
