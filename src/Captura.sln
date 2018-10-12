@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Loc", "Captura.Loc\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Hotkeys", "Captura.Hotkeys\Captura.Hotkeys.csproj", "{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Fakes", "Captura.Fakes\Captura.Fakes.csproj", "{0BB58B16-1A6C-4256-AEC2-3EA64541B663}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,8 +104,15 @@ Global
 		{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7740D998-67E7-4F55-8FB1-72606E480904}
 	EndGlobalSection
 EndGlobal

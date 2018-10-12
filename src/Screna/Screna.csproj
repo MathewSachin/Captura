@@ -49,6 +49,7 @@
     <Compile Include="MouseCursor.cs" />
     <Compile Include="MultiRecorder.cs" />
     <Compile Include="Recorder\Recorder.cs" />
+    <Compile Include="RegionItem.cs" />
     <Compile Include="ScreenWrapper.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\DialogService.cs" />

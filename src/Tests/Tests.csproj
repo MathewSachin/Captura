@@ -55,6 +55,10 @@
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Fakes\Captura.Fakes.csproj">
+      <Project>{0BB58B16-1A6C-4256-AEC2-3EA64541B663}</Project>
+      <Name>Captura.Fakes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
       <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
       <Name>Captura.Loc</Name>

@@ -34,15 +34,6 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
-    <Compile Include="Fakes\FakeAudioPlayer.cs" />
-    <Compile Include="Fakes\FakeMessageProvider.cs" />
-    <Compile Include="Fakes\FakeNotification.cs" />
-    <Compile Include="Fakes\FakePreviewWindow.cs" />
-    <Compile Include="Fakes\FakeRegionProvider.cs" />
-    <Compile Include="Fakes\FakesModule.cs" />
-    <Compile Include="Fakes\FakeSystemTray.cs" />
-    <Compile Include="Fakes\FakeVideoSourcePicker.cs" />
-    <Compile Include="Fakes\FakeWindowProvider.cs" />
     <Compile Include="Models\NoVideoSourceProvider.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
@@ -51,7 +42,6 @@
     <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
     <Compile Include="Models\Overlays\CensorOverlay.cs" />
-    <Compile Include="Models\RegionItem.cs" />
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Models\NoAudioSource.cs" />
