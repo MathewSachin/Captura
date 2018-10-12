@@ -60,6 +60,7 @@
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\AudioPlayer.cs" />
+    <Compile Include="Models\HotkeyListener.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>

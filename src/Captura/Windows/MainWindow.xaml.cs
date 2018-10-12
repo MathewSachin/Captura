@@ -6,7 +6,6 @@ using Captura.Views;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Interop;
 
 namespace Captura
 {
@@ -37,18 +36,9 @@ namespace Captura
             {
                 vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
 
-                // Register for Windows Messages
-                ComponentDispatcher.ThreadPreprocessMessage += (ref MSG Message, ref bool Handled) =>
-                {
-                    const int wmHotkey = 786;
+                var listener = new HotkeyListener();
 
-                    if (Message.message == wmHotkey)
-                    {
-                        var id = Message.wParam.ToInt32();
-
-                        vm.HotKeyManager.ProcessHotkey(id);
-                    }
-                };
+                listener.HotkeyReceived += Id => vm.HotKeyManager.ProcessHotkey(Id);
 
                 Loaded += (Sender, Args) =>
                 {
