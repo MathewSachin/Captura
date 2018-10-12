@@ -8,14 +8,7 @@ namespace Captura.Models
 
         public virtual string GetArgs()
         {
-            var args = "";
-
-            foreach (var arg in Args)
-            {
-                args += arg + " ";
-            }
-
-            return args;
+            return string.Join(" ", Args);
         }
     }
 }

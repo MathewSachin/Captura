@@ -425,45 +425,13 @@ namespace Captura.ViewModels
             // Separate file for webcam
             if (_isVideo && _webCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
             {
-                var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
-
-                var webcamFileName = Path.ChangeExtension(_currentFileName, $".webcam{Path.GetExtension(_currentFileName)}");
-
-                var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
-
-                var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate);
-
-                _recorder = new MultiRecorder(_recorder, webcamRecorder);
+                SeparateFileForWebcam();
             }
 
             // Separate file for every audio source
             if (_isVideo && Settings.Audio.Enabled && Settings.Audio.SeparateFilePerSource)
             {
-                var audioWriter = WaveItem.Instance;
-                
-                IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
-                {
-                    return new Recorder(
-                        audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
-                            Settings.Audio.Quality), AudioProvider);
-                }
-
-                string GetAudioFileName(int Index)
-                {
-                    return Path.ChangeExtension(_currentFileName, $".{Index}.wav");
-                }
-
-                var audioProviders = _audioSource.GetMultipleAudioProviders();
-
-                if (audioProviders.Length > 0)
-                {
-                    var recorders = audioProviders
-                        .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
-                        .Concat(new[] {_recorder})
-                        .ToArray();
-
-                    _recorder = new MultiRecorder(recorders);
-                }
+                SeparateFileForEveryAudioSource();
             }
 
             if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
@@ -505,6 +473,48 @@ namespace Captura.ViewModels
             _timer?.Start();
 
             return true;
+        }
+
+        void SeparateFileForWebcam()
+        {
+            var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
+
+            var webcamFileName = Path.ChangeExtension(_currentFileName, $".webcam{Path.GetExtension(_currentFileName)}");
+
+            var webcamVideoWriter = GetVideoFileWriter(webcamImgProvider, null, webcamFileName);
+
+            var webcamRecorder = new Recorder(webcamVideoWriter, webcamImgProvider, Settings.Video.FrameRate);
+
+            _recorder = new MultiRecorder(_recorder, webcamRecorder);
+        }
+
+        void SeparateFileForEveryAudioSource()
+        {
+            var audioWriter = WaveItem.Instance;
+
+            IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
+            {
+                return new Recorder(
+                    audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
+                        Settings.Audio.Quality), AudioProvider);
+            }
+
+            string GetAudioFileName(int Index)
+            {
+                return Path.ChangeExtension(_currentFileName, $".{Index}.wav");
+            }
+
+            var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+            if (audioProviders.Length > 0)
+            {
+                var recorders = audioProviders
+                    .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
+                    .Concat(new[] {_recorder})
+                    .ToArray();
+
+                _recorder = new MultiRecorder(recorders);
+            }
         }
 
         void InternalStartRecording()

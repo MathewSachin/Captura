@@ -65,19 +65,19 @@ namespace Captura.Models
 
         public string GetArgs()
         {
-            var args = "";
+            var args = new List<string>();
 
             foreach (var input in _inputs)
             {
-                args += input.GetArgs() + " ";
+                args.Add(input.GetArgs());
             }
 
             foreach (var output in _outputs)
             {
-                args += output.GetArgs() + " ";
+                args.Add(output.GetArgs());
             }
 
-            return args;
+            return string.Join(" ", args);
         }
     }
 }
