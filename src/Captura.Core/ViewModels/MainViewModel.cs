@@ -28,7 +28,6 @@ namespace Captura.ViewModels
         public HotKeyManager HotKeyManager { get; }
 
         public IWebCamProvider WebCamProvider { get; }
-        public FFmpegLog FFmpegLog { get; }
         #endregion
 
         #region Commands
@@ -53,7 +52,6 @@ namespace Captura.ViewModels
             LanguageManager LanguageManager,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
-            FFmpegLog FFmpegLog,
             IDialogService DialogService,
             RememberByName RememberByName,
             ScreenShotViewModel ScreenShotViewModel,
@@ -69,7 +67,6 @@ namespace Captura.ViewModels
             _rememberByName = RememberByName;
             this.ScreenShotViewModel = ScreenShotViewModel;
             this.RecordingViewModel = RecordingViewModel;
-            this.FFmpegLog = FFmpegLog;
 
             ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
 

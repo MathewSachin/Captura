@@ -5,7 +5,7 @@
         Title="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"
         Height="600"
         Width="600"
-        DataContext="{Binding MainViewModel.FFmpegLog, Source={StaticResource ServiceLocator}}"
+        DataContext="{Binding FFmpegLog, Source={StaticResource ServiceLocator}}"
         Background="{DynamicResource WindowBackground}">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="1"
