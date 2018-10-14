@@ -263,14 +263,6 @@ namespace Captura.ViewModels
             ScreenShotViewModel.ScreenShotCommand.RaiseCanExecuteChanged(videoAvailable);
         }
 
-        public IEnumerable<KeyValuePair<RotateBy, string>> Rotations { get; } = new[]
-        {
-            new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise")
-        };
-
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),

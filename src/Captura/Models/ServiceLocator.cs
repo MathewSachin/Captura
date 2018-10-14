@@ -15,6 +15,8 @@ namespace Captura
         
         public MainViewModel MainViewModel => ServiceProvider.Get<MainViewModel>();
 
+        public ScreenShotViewModel ScreenShotViewModel => ServiceProvider.Get<ScreenShotViewModel>();
+
         public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
 
         public FFmpegDownloadViewModel FFmpegDownloadViewModel => ServiceProvider.Get<FFmpegDownloadViewModel>();

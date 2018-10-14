@@ -254,7 +254,7 @@ namespace Captura.ViewModels
             get => _screenShotImageFormat;
             set
             {
-                if (_screenShotImageFormat == value)
+                if (Equals(_screenShotImageFormat, value))
                     return;
 
                 _screenShotImageFormat = value;
@@ -262,5 +262,13 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public IEnumerable<KeyValuePair<RotateBy, string>> Rotations { get; } = new[]
+        {
+            new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
+            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise")
+        };
     }
 }

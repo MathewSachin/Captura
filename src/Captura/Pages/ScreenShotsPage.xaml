@@ -4,7 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       Title="ScreenShots">
     <Grid>
-        <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
+        <StackPanel DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
             <Label Margin="0,0,0,5"
                    Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
@@ -23,8 +23,8 @@
                        Margin="0,0,5,0"/>
 
                 <ComboBox VerticalAlignment="Center"
-                          ItemsSource="{Binding ScreenShotViewModel.ScreenShotImageFormats}"
-                          SelectedItem="{Binding ScreenShotViewModel.SelectedScreenShotImageFormat, Mode=TwoWay}"/>
+                          ItemsSource="{Binding ScreenShotImageFormats}"
+                          SelectedItem="{Binding SelectedScreenShotImageFormat, Mode=TwoWay}"/>
             </DockPanel>
 
             <Label Content="{Binding SaveLocation, Source={StaticResource Loc}, Mode=OneWay}"
@@ -50,13 +50,13 @@
                 
                 <Button ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
                         Padding="10,0"
-                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
-                        CommandParameter="{Binding ScreenShotViewModel.DiskWriter}">
+                        Command="{Binding SourceToggleCommand}"
+                        CommandParameter="{Binding DiskWriter}">
                     <Path Data="{StaticResource IconNewFile}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ScreenShotViewModel.DiskWriter.Active}" Value="True">
+                                    <DataTrigger Binding="{Binding DiskWriter.Active}" Value="True">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -69,13 +69,13 @@
                         Grid.Column="1"
                         Margin="5,0"
                         Padding="10,0"
-                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
-                        CommandParameter="{Binding ScreenShotViewModel.ClipboardWriter}">
+                        Command="{Binding SourceToggleCommand}"
+                        CommandParameter="{Binding ClipboardWriter}">
                     <Path Data="{StaticResource IconClipboard}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ScreenShotViewModel.ClipboardWriter.Active}" Value="True">
+                                    <DataTrigger Binding="{Binding ClipboardWriter.Active}" Value="True">
                                         <Setter Property="Fill" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -88,12 +88,12 @@
                         Content="{Binding Imgur, Source={StaticResource Loc}, Mode=OneWay}"
                         Grid.Column="2"
                         Padding="10,0"
-                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
-                        CommandParameter="{Binding ScreenShotViewModel.ImgurWriter}">
+                        Command="{Binding SourceToggleCommand}"
+                        CommandParameter="{Binding ImgurWriter}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ScreenShotViewModel.ImgurWriter.Active}" Value="True">
+                                <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
                                     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -105,7 +105,7 @@
                         Grid.Column="3"
                         Margin="5,0,0,0"
                         Padding="10,0"
-                        Command="{Binding ScreenShotViewModel.SourceToggleCommand}"
+                        Command="{Binding SourceToggleCommand}"
                         CommandParameter="{Binding EditorWriter, Source={StaticResource ServiceLocator}}">
                     <Path Data="{StaticResource IconPencil}">
                         <Path.Style>
