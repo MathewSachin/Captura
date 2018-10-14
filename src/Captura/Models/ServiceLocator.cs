@@ -39,5 +39,7 @@ namespace Captura
         public KeymapViewModel Keymap => ServiceProvider.Get<KeymapViewModel>();
 
         public EditorWriter EditorWriter => ServiceProvider.Get<EditorWriter>();
+
+        public HotKeyManager HotKeyManager => ServiceProvider.Get<HotKeyManager>();
     }
 }
