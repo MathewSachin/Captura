@@ -7,6 +7,8 @@ namespace Captura
     {
         public void OnLoad(IBinder Binder)
         {
+            Binder.BindSingleton<HotkeyActionRegisterer>();
+
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
             Binder.BindSingleton<VideoViewModel>();

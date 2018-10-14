@@ -68,6 +68,7 @@
     <Compile Include="Models\FileNameFormatGroup.cs" />
     <Compile Include="Models\FileNameFormatItem.cs" />
     <Compile Include="ViewModels\FileNameFormatViewModel.cs" />
+    <Compile Include="Models\HotkeyActionRegisterer.cs" />
     <Compile Include="ViewModels\SoundsViewModel.cs" />
     <Compile Include="ViewModels\SoundsViewModelItem.cs" />
     <Compile Include="ViewModels\VideoSourceModel.cs" />

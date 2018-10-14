@@ -57,7 +57,8 @@ namespace Captura.ViewModels
             IDialogService DialogService,
             RememberByName RememberByName,
             ScreenShotViewModel ScreenShotViewModel,
-            RecordingViewModel RecordingViewModel) : base(Settings, LanguageManager)
+            RecordingViewModel RecordingViewModel,
+            HotkeyActionRegisterer HotkeyActionRegisterer) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
@@ -126,51 +127,7 @@ namespace Captura.ViewModels
             Settings.EnsureOutPath();
 
             // Handle Hoykeys
-            HotKeyManager.HotkeyPressed += Service =>
-            {
-                switch (Service)
-                {
-                    case ServiceName.Recording:
-                        RecordingViewModel.RecordCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.Pause:
-                        RecordingViewModel.PauseCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.ScreenShot:
-                        ScreenShotViewModel.ScreenShotCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.ActiveScreenShot:
-                        ScreenShotViewModel.ScreenShotActiveCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.DesktopScreenShot:
-                        ScreenShotViewModel.ScreenShotDesktopCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.ToggleMouseClicks:
-                        Settings.Clicks.Display = !Settings.Clicks.Display;
-                        break;
-
-                    case ServiceName.ToggleKeystrokes:
-                        Settings.Keystrokes.Display = !Settings.Keystrokes.Display;
-                        break;
-
-                    case ServiceName.ScreenShotRegion:
-                        ScreenShotViewModel.ScreenshotRegionCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.ScreenShotScreen:
-                        ScreenShotViewModel.ScreenshotScreenCommand.ExecuteIfCan();
-                        break;
-
-                    case ServiceName.ScreenShotWindow:
-                        ScreenShotViewModel.ScreenshotWindowCommand.ExecuteIfCan();
-                        break;
-                }
-            };
+            HotkeyActionRegisterer.Register();
         }
 
         void OnRefresh()
