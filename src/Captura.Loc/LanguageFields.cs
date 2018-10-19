@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Captura
 {
@@ -480,12 +481,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Print
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Proxy
         {
             get => Get();
@@ -504,19 +499,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Ready
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Recent
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Recording
         {
             get => Get();
             set => Set(value);
@@ -529,12 +512,6 @@ namespace Captura
         }
 
         public string Refresh
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Refreshed
         {
             get => Get();
             set => Set(value);
@@ -553,12 +530,6 @@ namespace Captura
         }
 
         public string RemoveFromList
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Repeat
         {
             get => Get();
             set => Set(value);
@@ -601,12 +572,6 @@ namespace Captura
         }
 
         public string Screen
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string ScreenPicker
         {
             get => Get();
             set => Set(value);
@@ -660,25 +625,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Source
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string StartDelay
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string StartStopRecording
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Stopped
         {
             get => Get();
             set => Set(value);
@@ -703,12 +650,6 @@ namespace Captura
         }
 
         public string Top
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Transforms
         {
             get => Get();
             set => Set(value);
@@ -762,12 +703,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Waiting
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string WantToTranslate
         {
             get => Get();
@@ -787,12 +722,6 @@ namespace Captura
         }
 
         public string Window
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string WindowPicker
         {
             get => Get();
             set => Set(value);
