@@ -1,0 +1,3 @@
+files:
+  - source: /src/Captura.Loc/Languages/en.json
+    translation: /src/Captura.Loc/Languages/%two_letters_code%.json
