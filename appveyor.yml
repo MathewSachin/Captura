@@ -1,5 +1,10 @@
 version: 0.0.{build}
 
+branches:
+  except:
+    - l10n_master # Crowdin
+    - gh-pages # Website
+
 image: Visual Studio 2017
 
 configuration:
