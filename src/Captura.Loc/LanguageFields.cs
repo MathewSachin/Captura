@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 // ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
 
 namespace Captura
 {
@@ -163,12 +162,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string DesktopDuplication
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Disk
         {
             get => Get();
@@ -235,18 +228,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Gif
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Help
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string HideOnFullScreenShot
         {
             get => Get();
@@ -290,12 +271,6 @@ namespace Captura
         }
 
         public string ImgSavedDisk
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Imgur
         {
             get => Get();
             set => Set(value);

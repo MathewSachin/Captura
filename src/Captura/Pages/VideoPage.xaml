@@ -168,7 +168,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="FPS"
+                    <Label Content="{Binding FrameRate, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}:"/>
                     <Label Content="{Binding Settings.Video.FrameRate}"
                            Margin="5,0"

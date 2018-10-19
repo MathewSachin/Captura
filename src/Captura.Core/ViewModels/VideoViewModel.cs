@@ -76,7 +76,7 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
             if (Windows8OrAbove)
             {
-                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, nameof(Loc.DesktopDuplication), DeskDuplDescription, "IconGame"));
+                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, "Desktop Duplication", DeskDuplDescription, "IconGame"));
             }
 
             VideoWriterProviders.Add(FFmpegWriterProvider);

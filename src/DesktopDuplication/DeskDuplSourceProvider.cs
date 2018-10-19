@@ -86,7 +86,7 @@ namespace Captura.Models
             }
         }
 
-        public string Name => _loc.DesktopDuplication;
+        public string Name => "Desktop Duplication";
 
         public override string ToString() => Name;
     }
