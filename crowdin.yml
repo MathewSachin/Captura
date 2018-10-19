@@ -1,3 +1,7 @@
 files:
   - source: /src/Captura.Loc/Languages/en.json
     translation: /src/Captura.Loc/Languages/%two_letters_code%.json
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh-CN
+        zh-TW: zh-TW
