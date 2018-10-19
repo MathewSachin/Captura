@@ -130,7 +130,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="Hotkeys"/>
+                            <TextBlock Text="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
 

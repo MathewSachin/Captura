@@ -390,12 +390,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string NoAudio
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string None
         {
             get => Get();
@@ -438,25 +432,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Options
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string OutFolder
         {
             get => Get();
             set => Set(value);
         }
 
-        public string PaddingX
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string PaddingY
+        public string Padding
         {
             get => Get();
             set => Set(value);

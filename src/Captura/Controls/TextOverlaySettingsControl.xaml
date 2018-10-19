@@ -85,8 +85,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Padding (X, Y)"
-                   ContentStringFormat="{}{0}: "
+            <Label Content="{Binding Padding, Source={StaticResource Loc}, Mode=OneWay}"
+                   ContentStringFormat="{}{0} (X, Y): "
                    Margin="0,5"/>
 
             <xctk:IntegerUpDown Value="{Binding HorizontalPadding, Mode=TwoWay}"
