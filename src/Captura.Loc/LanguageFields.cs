@@ -439,6 +439,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Overlays
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Padding
         {
             get => Get();
@@ -470,6 +476,12 @@ namespace Captura
         }
 
         public string Port
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string PreStartCountdown
         {
             get => Get();
             set => Set(value);
