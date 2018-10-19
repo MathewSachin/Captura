@@ -265,6 +265,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ImageEditor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ImgEmpty
         {
             get => Get();

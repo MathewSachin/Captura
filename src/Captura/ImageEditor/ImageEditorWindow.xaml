@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Captura"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Image Editor"
+        Title="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
         Height="600"
         Width="800"
         Closing="ImageEditorWindow_OnClosing">
