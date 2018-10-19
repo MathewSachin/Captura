@@ -270,12 +270,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ImgSavedDisk
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string ImgurFailed
         {
             get => Get();
@@ -331,12 +325,6 @@ namespace Captura
         }
 
         public string LoopbackSource
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Main
         {
             get => Get();
             set => Set(value);

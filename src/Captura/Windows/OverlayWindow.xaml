@@ -25,7 +25,7 @@
                     <mui:TransitioningContentControl Content="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
-            <TabItem Header="Keystrokes">
+            <TabItem Header="{Binding Keystrokes, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="../Pages/KeystrokesPage.xaml"/>
             </TabItem>
             <TabItem Header="Mouse">
