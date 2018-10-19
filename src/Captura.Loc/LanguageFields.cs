@@ -157,6 +157,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Crop
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Delete
         {
             get => Get();
@@ -170,6 +176,12 @@ namespace Captura
         }
 
         public string Donate
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Edit
         {
             get => Get();
             set => Set(value);
@@ -392,6 +404,12 @@ namespace Captura
         }
 
         public string None
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Notifications
         {
             get => Get();
             set => Set(value);
@@ -662,6 +680,18 @@ namespace Captura
         }
 
         public string Top
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Trim
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string UploadToImgur
         {
             get => Get();
             set => Set(value);
