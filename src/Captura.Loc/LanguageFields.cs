@@ -169,6 +169,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string DiscardChanges
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Disk
         {
             get => Get();

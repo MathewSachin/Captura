@@ -204,8 +204,8 @@
                 </MenuItem>
                 
                 <Separator/>
-                
-                <MenuItem Header="Discard Changes"
+
+                <MenuItem Header="{Binding DiscardChanges, Source={StaticResource Loc}, Mode=OneWay}"
                           Command="{Binding DiscardChangesCommand}"/>
                 
                 <Separator/>
@@ -252,7 +252,7 @@
             </MenuItem>
 
             <MenuItem Header="Filters">
-                <MenuItem Header="None"
+                <MenuItem Header="{Binding None, Source={StaticResource Loc}, Mode=OneWay}"
                           CommandParameter="{x:Static local:ImageEffect.None}"
                           Command="{Binding SetEffectCommand}"/>
                 
@@ -450,8 +450,8 @@
                               Stretch="Uniform"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
-                        
-                        <Label Content="New Blank"/>
+
+                        <Label Content="{Binding FileMenuNew, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
                 
@@ -466,7 +466,8 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <Label Content="Open Image from File ..."/>
+                        <Label Content="{Binding FileMenuOpen, Source={StaticResource Loc}, Mode=OneWay}"
+                               ContentStringFormat="{}{0} ..."/>
                     </DockPanel>
                 </Button>
 
@@ -481,7 +482,8 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <Label Content="Open Image from Clipboard"/>
+                        <Label Content="{Binding OpenFromClipboard, Source={StaticResource Loc}, Mode=OneWay}"
+                               ContentStringFormat="{}{0} ..."/>
                     </DockPanel>
                 </Button>
             </StackPanel>
