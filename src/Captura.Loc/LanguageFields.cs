@@ -217,6 +217,30 @@ namespace Captura
             set => Set(value);
         }
 
+        public string FileMenu
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuNew
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuOpen
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuSave
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Flip
         {
             get => Get();
@@ -403,6 +427,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string NewWindow
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string No
         {
             get => Get();
@@ -446,6 +476,12 @@ namespace Captura
         }
 
         public string Opacity
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string OpenFromClipboard
         {
             get => Get();
             set => Set(value);
@@ -547,6 +583,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Redo
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Refresh
         {
             get => Get();
@@ -602,6 +644,12 @@ namespace Captura
         }
 
         public string SaveLocation
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string SaveToClipboard
         {
             get => Get();
             set => Set(value);
@@ -692,6 +740,12 @@ namespace Captura
         }
 
         public string Trim
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Undo
         {
             get => Get();
             set => Set(value);
