@@ -10,7 +10,7 @@
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"
                                       IconData="{StaticResource IconAdd}"/>
-                <Label Content="Add More"/>
+                <Label Content="{Binding Add, Source={StaticResource Loc}, Mode=OneWay}"/>
             </DockPanel>
 
             <ListView Margin="5"

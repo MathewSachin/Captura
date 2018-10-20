@@ -2,13 +2,12 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      Title="{Binding Extras, Source={StaticResource Loc}, Mode=OneWay}"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel>
             <CheckBox IsChecked="{Binding Settings.UI.DarkTheme}"
                       Click="DarkThemeClick"
-                      Content="Dark Theme"
+                      Content="{Binding DarkTheme, Source={StaticResource Loc}, Mode=OneWay}"
                       Margin="0,5"/>
 
             <Grid Margin="0,5">
@@ -17,7 +16,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Accent"
+                <Label Content="{Binding AccentColor, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}: "
                        Margin="0,5,5,5"/>
                 <xctk:ColorPicker SelectedColor="{DynamicResource AccentColor}"

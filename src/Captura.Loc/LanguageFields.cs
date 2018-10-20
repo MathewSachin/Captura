@@ -31,6 +31,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string AccentColor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Add
         {
             get => Get();
@@ -127,6 +133,18 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ConfigFileNaming
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ConfigSounds
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Configure
         {
             get => Get();
@@ -158,6 +176,12 @@ namespace Captura
         }
 
         public string Crop
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string DarkTheme
         {
             get => Get();
             set => Set(value);
@@ -200,12 +224,6 @@ namespace Captura
         }
 
         public string Exit
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Extras
         {
             get => Get();
             set => Set(value);

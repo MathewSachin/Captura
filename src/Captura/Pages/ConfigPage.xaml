@@ -103,12 +103,14 @@
                           Margin="0,2"/>
                 
                 <Button Margin="0,2"
-                        Content="Configure File Naming ..."
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigFileNaming, Source={StaticResource Loc}, Mode=OneWay}"
                         Click="OpenFileNameFormatter"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
                 <Button Margin="0,2"
-                        Content="Configure Sounds ..."
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigSounds, Source={StaticResource Loc}, Mode=OneWay}"
                         Click="OpenSounds"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
