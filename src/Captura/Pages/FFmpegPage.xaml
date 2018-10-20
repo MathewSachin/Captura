@@ -21,7 +21,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    <TextBlock Text="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay, StringFormat='{}{0} ...'}"/>
                 </DockPanel>
             </Button>
 
@@ -37,7 +37,7 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Download FFmpeg"/>
+                    <TextBlock Text="{Binding DownloadFFmpeg, Source={StaticResource Loc}, Mode=OneWay, StringFormat='{}{0} ...'}"/>
                 </DockPanel>
             </Button>
 
@@ -84,7 +84,7 @@
             </DockPanel>
 
             <Label Margin="0,10,0,3"
-                   Content="Custom Size"
+                   Content="{Binding CustomSize, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"/>
 
             <Grid Margin="0,5">
@@ -125,12 +125,12 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Configure Codecs"/>
+                    <TextBlock Text="{Binding ConfigCodecs, Source={StaticResource Loc}, Mode=OneWay, StringFormat='{}{0} ...'}"/>
                 </DockPanel>
             </Button>
 
             <Label Margin="0,10,0,0"
-                   Content="Streaming Keys"
+                   Content="{Binding StreamingKeys, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    FontSize="15"/>
 
@@ -153,7 +153,7 @@
                       Stretch="Uniform"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
-                <Label Content="Twitch Key"
+                <Label Content="Twitch"
                        ContentStringFormat="{}{0}: "
                        Grid.Column="1"/>
                 <TextBox Grid.Column="2"
@@ -168,7 +168,7 @@
                       Stretch="Uniform"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
-                <Label Content="YouTube Live Key"
+                <Label Content="YouTube Live"
                        Grid.Row="1"
                        Grid.Column="1"
                        ContentStringFormat="{}{0}: "/>
@@ -185,7 +185,7 @@
                       Stretch="Uniform"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
-                <Label Content="Custom Url"
+                <Label Content="{Binding CustomSize, Source={StaticResource Loc}, Mode=OneWay}"
                        Grid.Column="1"
                        Grid.Row="2"
                        ContentStringFormat="{}{0}:"/>

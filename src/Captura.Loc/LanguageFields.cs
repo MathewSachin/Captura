@@ -133,6 +133,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ConfigCodecs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ConfigFileNaming
         {
             get => Get();
@@ -181,6 +187,18 @@ namespace Captura
             set => Set(value);
         }
 
+        public string CustomSize
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string CustomUrl
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string DarkTheme
         {
             get => Get();
@@ -206,6 +224,12 @@ namespace Captura
         }
 
         public string Donate
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string DownloadFFmpeg
         {
             get => Get();
             set => Set(value);
@@ -746,6 +770,12 @@ namespace Captura
         }
 
         public string StartStopRecording
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string StreamingKeys
         {
             get => Get();
             set => Set(value);
