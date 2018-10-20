@@ -541,6 +541,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string PlayRecAudio
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Port
         {
             get => Get();
@@ -709,6 +715,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string SeparateAudioFiles
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ShowSysNotify
         {
             get => Get();
@@ -734,6 +746,12 @@ namespace Captura
         }
 
         public string ToggleKeystrokes
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Tools
         {
             get => Get();
             set => Set(value);
@@ -811,6 +829,24 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ViewCrashLogs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ViewLicenses
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ViewOnGitHub
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string WantToTranslate
         {
             get => Get();
@@ -824,6 +860,12 @@ namespace Captura
         }
 
         public string WebCamView
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Website
         {
             get => Get();
             set => Set(value);

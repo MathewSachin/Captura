@@ -23,7 +23,7 @@
                                       IconWidth="25"
                                       EllipseDiameter="35"
                                       EllipseStrokeThickness="0"
-                                      ToolTip="View on GitHub"/>
+                                      ToolTip="{Binding ViewOnGitHub, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                     <TextBlock TextWrapping="Wrap"
                                LineHeight="30"
@@ -61,7 +61,7 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <TextBlock Text="Website"/>
+                        <TextBlock Text="{Binding Website, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
 
@@ -82,7 +82,7 @@
                 </Button>
 
                 <Button Click="ViewLicenses"
-                        Content="View Licenses"
+                        Content="{Binding ViewLicenses, Source={StaticResource Loc}, Mode=OneWay}"
                         Margin="3"/>
 
                 <Button Command="{Binding HyperlinkCommand}"
@@ -112,16 +112,16 @@
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
 
-                        <TextBlock Text="View Crash Logs"/>
+                        <TextBlock Text="{Binding ViewCrashLogs, Source={StaticResource Loc}, Mode=OneWay}"/>
                     </DockPanel>
                 </Button>
 
                 <Label Margin="0,15,0,5">
-                    <TextBlock Text="Tools"/>
+                    <TextBlock Text="{Binding Tools, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </Label>
                 
                 <WrapPanel Margin="3">
-                    <Button ToolTip="Image Editor"
+                    <Button ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
                             Padding="5"
                             Margin="0,0,10,10"
                             Click="OpenImageEditor">
@@ -133,7 +133,7 @@
                               VerticalAlignment="Center"/>
                     </Button>
 
-                    <Button ToolTip="Audio/Video Trimmer"
+                    <Button ToolTip="{Binding Trim, Source={StaticResource Loc}, Mode=OneWay}"
                             Padding="5"
                             Margin="0,0,10,10"
                             Click="OpenAudioVideoTrimmer">
@@ -145,7 +145,7 @@
                               VerticalAlignment="Center"/>
                     </Button>
 
-                    <Button ToolTip="Image Cropper"
+                    <Button ToolTip="{Binding Crop, Source={StaticResource Loc}, Mode=OneWay}"
                             Padding="5"
                             Margin="0,0,10,10"
                             Click="OpenImageCropper">
@@ -157,7 +157,7 @@
                               VerticalAlignment="Center"/>
                     </Button>
 
-                    <Button ToolTip="Upload to Imgur"
+                    <Button ToolTip="{Binding UploadToImgur, Source={StaticResource Loc}, Mode=OneWay}"
                             Padding="5"
                             Margin="0,0,10,10"
                             Click="UploadToImgur">
