@@ -241,6 +241,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Elapsed
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ErrorOccurred
         {
             get => Get();
@@ -494,6 +500,24 @@ namespace Captura
         }
 
         public string MouseClicks
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MouseMiddleClickColor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MousePointer
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MouseRightClickColor
         {
             get => Get();
             set => Set(value);
