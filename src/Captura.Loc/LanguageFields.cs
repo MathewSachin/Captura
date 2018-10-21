@@ -793,6 +793,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string SnapToWindow
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string StartStopRecording
         {
             get => Get();

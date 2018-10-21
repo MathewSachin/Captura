@@ -233,7 +233,7 @@
                                         x:Name="Snapper"
                                         Click="Snapper_OnClick"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="Snap to Window"/>
+                                        ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                     <local:ModernButton x:Name="CloseButton"
                                         Click="CloseButton_Click"

@@ -127,6 +127,7 @@
   "SelectOutFolder": "Select Output Folder",
   "SeparateAudioFiles": "Separate files for every audio source",
   "ShowSysNotify": "Show System Tray Notifications",
+  "SnapToWindow": "Snap to Window",
   "StartStopRecording": "Start/Stop Recording",
   "StreamingKeys": "Streaming Keys",
   "Timeout": "Timeout",
