@@ -4,8 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
-      xmlns:captura="clr-namespace:Captura"
-      Title="Video">
+      xmlns:captura="clr-namespace:Captura">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
