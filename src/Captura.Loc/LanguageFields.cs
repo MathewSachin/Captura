@@ -55,6 +55,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string AudioFormat
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string AudioSaved
         {
             get => Get();
@@ -956,6 +962,12 @@ namespace Captura
         }
 
         public string WebCam
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string WebCamSeparateFile
         {
             get => Get();
             set => Set(value);
