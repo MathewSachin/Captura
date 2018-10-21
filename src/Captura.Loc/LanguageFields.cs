@@ -397,7 +397,31 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Keymap
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Keystrokes
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesHistoryCount
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesHistorySpacing
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesSeparateFile
         {
             get => Get();
             set => Set(value);
