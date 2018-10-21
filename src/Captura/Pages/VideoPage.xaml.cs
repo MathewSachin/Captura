@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Windows.Input;
-using Captura.Models;
+﻿using Captura.ViewModels;
 
 namespace Captura
 {
@@ -9,28 +7,15 @@ namespace Captura
         public VideoPage()
         {
             InitializeComponent();
-        }
 
-        void OnVideoSourceReSelect(object Sender, MouseButtonEventArgs E)
-        {
-            if (Sender is ListViewItem item
-                && item.IsSelected
-                && item.DataContext is VideoSourceModel model)
+            if (DataContext is MainViewModel vm)
             {
-                switch (model.Provider)
+                vm.Refreshed += () =>
                 {
-                    case WindowSourceProvider windowSourceProvider:
-                        windowSourceProvider.PickWindow();
-                        break;
+                    AudioDropdown.Shake();
 
-                    case ScreenSourceProvider screenSourceProvider when (ScreenWrapper.Count > 1):
-                        screenSourceProvider.PickScreen();
-                        break;
-
-                    case DeskDuplSourceProvider deskDuplSourceProvider when (ScreenWrapper.Count > 1):
-                        deskDuplSourceProvider.PickScreen();
-                        break;
-                }
+                    VideoWriterComboBox.Shake();
+                };
             }
         }
     }
