@@ -5,7 +5,7 @@
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       xmlns:captura="clr-namespace:Captura"
-      Title="Video">
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
@@ -18,8 +18,7 @@
                 <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"/>
             </Style>
         </Grid.Resources>
-        <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
-                    Margin="5,0,0,0">
+        <StackPanel Margin="5,0,0,0">
             <DockPanel Margin="0,0,0,5">
                 <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
                         DockPanel.Dock="Right"
@@ -120,7 +119,8 @@
                           Margin="0,5"
                           ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
                           SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                          Name="VideoWriterComboBox">
                     <ComboBox.Style>
                         <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                             <Style.Triggers>
@@ -301,7 +301,8 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
 
                     <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                                          Padding="5"
-                                         HorizontalAlignment="Left">
+                                         HorizontalAlignment="Left"
+                                         Name="AudioDropdown">
                         <Path Data="{StaticResource IconMic}">
                             <Path.Style>
                                 <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">

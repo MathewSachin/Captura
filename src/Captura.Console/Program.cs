@@ -257,7 +257,9 @@ namespace Captura
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
-                if (MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
+                var rectConverter = new RectangleConverter();
+
+                if (rectConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
                 {
                     FakeRegionProvider.Instance.SelectedRegion = rect.Even();
                     video.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
