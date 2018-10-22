@@ -28,7 +28,8 @@
                 <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                           SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
                           IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
-                          DisplayMemberPath="Name"/>
+                          DisplayMemberPath="Name"
+                          Name="WebcamComboBox"/>
             </DockPanel>
 
             <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
