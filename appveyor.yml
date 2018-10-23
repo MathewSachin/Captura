@@ -31,6 +31,6 @@ install:
 
 # Build using Cake
 build_script:
-  - ps: dotnet-cake --target=CI --configuration=$env:CONFIGURATION --tag=$env:APPVEYOR_REPO_TAG_NAME
+  - ps: dotnet-cake --target="CI" --configuration="$env:CONFIGURATION" --tag="$env:APPVEYOR_REPO_TAG_NAME"
 
 test: off
