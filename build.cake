@@ -1,11 +1,11 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
-#l "tools/scripts/backup.cake"
-#l "tools/scripts/constants.cake"
-#l "tools/scripts/bass.cake"
-#l "tools/scripts/choco.cake"
-#l "tools/scripts/apikeys.cake"
-#l "tools/scripts/version.cake"
+#l "scripts/backup.cake"
+#l "scripts/constants.cake"
+#l "scripts/bass.cake"
+#l "scripts/choco.cake"
+#l "scripts/apikeys.cake"
+#l "scripts/version.cake"
 using System.Collections.Generic;
 
 #region Fields
@@ -233,7 +233,7 @@ var installInnoTask = Task("Install-Inno")
 #endregion
 
 #region AppVeyor
-#l "tools/scripts/appveyor.cake"
+#l "scripts/appveyor.cake"
 
 Task("CI")
     .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
