@@ -2,7 +2,7 @@
 
 namespace Screna
 {
-    public class ReusableEditor : EditorBase
+    class ReusableEditor : EditorBase
     {
         public ReusableEditor(Graphics Graphics) : base(Graphics) { }
 

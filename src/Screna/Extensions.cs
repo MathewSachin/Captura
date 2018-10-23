@@ -1,8 +1,10 @@
-﻿using Screna.Native;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Captura;
+using Captura.Native;
 
 namespace Screna
 {
@@ -22,24 +24,36 @@ namespace Screna
             return Rect;
         }
 
+        public static void WriteToClipboard(this string S)
+        {
+            if (S == null)
+                return;
+
+            try { Clipboard.SetText(S); }
+            catch (ExternalException)
+            {
+                ServiceProvider.MessageProvider?.ShowError($"Copy to Clipboard failed:\n\n{S}");
+            }
+        }
+
         /// <summary>
         /// Writes a Bitmap to Clipboard while taking care of Transparency
         /// </summary>
-        public static void WriteToClipboard(this Bitmap BMP, bool PreserveTransparency = true)
+        public static void WriteToClipboard(this Image Bmp, bool PreserveTransparency = true)
         {
             if (PreserveTransparency)
             {
                 using (var pngStream = new MemoryStream())
                 {
-                    BMP.Save(pngStream, ImageFormat.Png);
+                    Bmp.Save(pngStream, ImageFormat.Png);
                     var pngClipboardData = new DataObject("PNG", pngStream);
 
-                    using (var whiteS = new Bitmap(BMP.Width, BMP.Height, PixelFormat.Format24bppRgb))
+                    using (var whiteS = new Bitmap(Bmp.Width, Bmp.Height, PixelFormat.Format24bppRgb))
                     {
                         using (var graphics = Graphics.FromImage(whiteS))
                         {
                             graphics.Clear(Color.White);
-                            graphics.DrawImage(BMP, 0, 0, BMP.Width, BMP.Height);
+                            graphics.DrawImage(Bmp, 0, 0, Bmp.Width, Bmp.Height);
                         }
 
                         // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
@@ -50,7 +64,7 @@ namespace Screna
                     }
                 }
             }
-            else Clipboard.SetImage(BMP);
+            else Clipboard.SetImage(Bmp);
         }
 
         /// <summary>
@@ -72,12 +86,19 @@ namespace Screna
                 {
                     var pixel = b[x, y];
 
+                    bool Condition()
+                    {
+                        return TrimColor.A == 0
+                               && pixel->Alpha != 0
+                               ||
+                               TrimColor.R != pixel->Red
+                               && TrimColor.G != pixel->Green
+                               && TrimColor.B != pixel->Blue;
+                    }
+
                     if (r.Left == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Left = x;
 
@@ -99,10 +120,7 @@ namespace Screna
 
                     if (r.Top == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Top = y;
 
@@ -124,10 +142,7 @@ namespace Screna
 
                     if (r.Right == -1)
                     {
-                        if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                            (TrimColor.R != pixel->Red &&
-                             TrimColor.G != pixel->Green &&
-                             TrimColor.B != pixel->Blue))
+                        if (Condition())
                         {
                             r.Right = x + 1;
 
@@ -150,10 +165,7 @@ namespace Screna
                     if (r.Bottom != -1)
                         continue;
 
-                    if ((TrimColor.A == 0 && pixel->Alpha != 0) ||
-                        (TrimColor.R != pixel->Red &&
-                         TrimColor.G != pixel->Green &&
-                         TrimColor.B != pixel->Blue))
+                    if (Condition())
                     {
                         r.Bottom = y + 1;
                         break;
@@ -178,7 +190,7 @@ namespace Screna
             return final;
         }
         
-        internal static Rectangle ToRectangle(this RECT r) => new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top);
+        internal static Rectangle ToRectangle(this RECT R) => new Rectangle(R.Left, R.Top, R.Right - R.Left, R.Bottom - R.Top);
 
         /// <summary>
         /// Creates a Transparent Bitmap from a combination of a Bitmap on a White Background and another on a Black Background
@@ -199,7 +211,7 @@ namespace Screna
             using (var b = new UnsafeBitmap(BlackBitmap))
             using (var f = new UnsafeBitmap(final))
             {
-                byte ToByte(int i) => (byte)(i > 255 ? 255 : (i < 0 ? 0 : i));
+                byte ToByte(int I) => (byte)(I > 255 ? 255 : (I < 0 ? 0 : I));
 
                 for (var y = 0; y < sizeY; ++y)
                 for (var x = 0; x < sizeX; ++x)

@@ -1,10 +1,20 @@
 ﻿namespace Captura
 {
+    public enum VideoSourceKindEnum
+    {
+        NoVideo,
+        Window,
+        Screen,
+        FullScreen,
+        Region,
+        DeskDupl
+    }
+
     public class VideoSettings : PropertyStore
     {
         public string WriterKind
         {
-            get => Get("FFMpeg");
+            get => Get("FFmpeg");
             set => Set(value);
         }
         
@@ -14,9 +24,9 @@
             set => Set(value);
         }
         
-        public string SourceKind
+        public VideoSourceKindEnum SourceKind
         {
-            get => Get("Screen");
+            get => Get(VideoSourceKindEnum.FullScreen);
             set => Set(value);
         }
 
@@ -42,6 +52,20 @@
         {
             get => Get(10);
             set => Set(value);
+        }
+
+        public bool FpsLimit
+        {
+            get => Get(true);
+            set
+            {
+                Set(value);
+
+                if (value && FrameRate > 30)
+                {
+                    FrameRate = 30;
+                }
+            }
         }
     }
 }

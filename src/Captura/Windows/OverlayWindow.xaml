@@ -1,0 +1,97 @@
+﻿<Window x:Class="Captura.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Captura"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        mc:Ignorable="d"
+        Title="Overlays"
+        Height="500"
+        Width="800"
+        SizeChanged="OverlayWindow_OnSizeChanged">
+    <Grid Background="{DynamicResource WindowBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" MinWidth="280"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <TabControl Background="Transparent"
+                    BorderThickness="0">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <mui:TransitioningContentControl Content="{Binding}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <TabItem Header="Keystrokes">
+                <Frame Source="../Pages/KeystrokesPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Mouse">
+                <Frame Source="../Pages/MouseOverlayPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Webcam"
+                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <StackPanel Margin="5"
+                            DataContext="{Binding Settings.WebcamOverlay}">
+                    <local:ImageOverlaySettingsControl/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Elapsed"
+                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <local:TextOverlaySettingsControl Margin="5"
+                                                  DataContext="{Binding Settings.Elapsed}"
+                                                  DockPanel.Dock="Bottom"/>
+            </TabItem>
+            <TabItem Header="Censor">
+                <Frame Source="../Pages/CensorOverlaysPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Text">
+                <Frame Source="../Pages/TextOverlaysPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Images">
+                <Frame Source="../Pages/ImageOverlaysPage.xaml"/>
+            </TabItem>
+        </TabControl>
+
+        <GridSplitter Width="3"
+                      Grid.Column="1"
+                      Opacity="0.3"
+                      Background="{StaticResource ItemText}"/>
+        
+        <DockPanel Grid.Column="2">
+            <Label DockPanel.Dock="Top"
+                   Content="Preview (Font Size - Not to Scale)"
+                   Padding="5"/>
+
+            <Grid Background="Transparent"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  MouseDown="UIElement_OnMouseDown"
+                  MouseUp="UIElement_OnMouseUp"
+                  MouseMove="UIElement_OnMouseMove"
+                  MouseLeave="UIElement_OnMouseLeave">
+                <Image Name="Img"
+                       Stretch="Uniform"
+                       Loaded="Img_OnLoaded"/>
+                
+                <Grid Name="Grid">
+                    <Grid.LayoutTransform>
+                        <ScaleTransform x:Name="Scale"/>
+                    </Grid.LayoutTransform>
+                    
+                    <Ellipse Name="MousePointer"
+                             Visibility="Collapsed"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+
+                    <Ellipse Name="MouseClick"
+                             Opacity="0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

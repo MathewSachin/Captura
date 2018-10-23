@@ -1,184 +1,134 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
-using Captura.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Screna;
+using Xunit;
 
 namespace Captura.Tests
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class ImageProviderTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        readonly MoqFixture _moq;
+
+        public ImageProviderTests(MoqFixture Moq)
+        {
+            _moq = Moq;
+        }
+
+        [Fact]
         public void OverlayImageProviderNull()
         {
-            var overlay = MoqFactory.GetOverlayMock().Object;
+            var overlay = _moq.GetOverlayMock().Object;
 
-            using (new OverlayedImageProvider(null, P => P, overlay))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                
-            }
+                using (new OverlayedImageProvider(null, P => P, overlay)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void OverlaysNull()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
 
-            using (new OverlayedImageProvider(imageProvider, P => P, null))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new OverlayedImageProvider(imageProvider, P => P, null)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void OverlaysTransformNull()
         {
-            var imageProvider = MoqFactory.GetImageProviderMock().Object;
-            var overlay = MoqFactory.GetOverlayMock().Object;
+            var imageProvider = _moq.GetImageProviderMock().Object;
+            var overlay = _moq.GetOverlayMock().Object;
 
-            using (new OverlayedImageProvider(imageProvider, null, overlay))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new OverlayedImageProvider(imageProvider, null, overlay)) { }
+            });
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void WindowProviderNull()
         {
-            using (new WindowProvider(null, false, out var _))
+            Assert.Throws<ArgumentNullException>(() =>
             {
-
-            }
+                using (new WindowProvider(null, false, out var _)) { }
+            });
         }
 
-        [TestMethod]
-        public void ScreenImageSize()
-        {
-            var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
-            if (screenSourceProvider.FirstOrDefault() is ScreenItem screen)
-            {
-                using (var imgProvider = screen.GetImageProvider(false, out var _))
-                {
-                    Assert.AreEqual(imgProvider.Width, screen.Screen.Bounds.Width);
-                    Assert.AreEqual(imgProvider.Height, screen.Screen.Bounds.Height);
-
-                    using (var img = imgProvider.Capture())
-                    {
-                        if (img.Bitmap != null)
-                        {
-                            Assert.AreEqual(img.Bitmap.Width, screen.Screen.Bounds.Width);
-                            Assert.AreEqual(img.Bitmap.Height, screen.Screen.Bounds.Height);
-                        }
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ScreenCount()
-        {
-            var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
-            // There should be atleast two screen sources including Full screen
-            Assert.IsTrue(screenSourceProvider.Count() >= 2);
-        }
-
-        [TestMethod]
-        public void DeskDuplCount()
-        {
-            var deskDuplProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
-            
-            // Atleast one screen
-            Assert.IsTrue(deskDuplProvider.Any());
-        }
-
-        [TestMethod]
+        [Fact]
         public void RegionImageSize()
         {
             var rect = new Rectangle(0, 0, 100, 100);
 
             using (var imgProvider = new RegionProvider(rect, false))
             {
-                Assert.AreEqual(imgProvider.Width, rect.Width);
-                Assert.AreEqual(imgProvider.Height, rect.Height);
+                Assert.Equal(imgProvider.Width, rect.Width);
+                Assert.Equal(imgProvider.Height, rect.Height);
 
                 using (var img = imgProvider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(img.Bitmap.Width, rect.Width);
-                        Assert.AreEqual(img.Bitmap.Height, rect.Height);
-                    }
+                    Assert.Equal(img.Width, rect.Width);
+                    Assert.Equal(img.Height, rect.Height);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void RegionImageSizeOdd()
         {
             var rect = new Rectangle(0, 0, 101, 53);
 
             using (var imgProvider = new RegionProvider(rect, false))
             {
-                Assert.IsTrue(imgProvider.Width % 2 == 0);
-                Assert.IsTrue(imgProvider.Height % 2 == 0);
+                Assert.True(imgProvider.Width % 2 == 0);
+                Assert.True(imgProvider.Height % 2 == 0);
 
                 using (var img = imgProvider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(img.Bitmap.Width, imgProvider.Width);
-                        Assert.AreEqual(img.Bitmap.Height, imgProvider.Height);
+                    Assert.Equal(img.Width, imgProvider.Width);
+                    Assert.Equal(img.Height, imgProvider.Height);
 
-                        Assert.IsTrue(img.Bitmap.Width % 2 == 0);
-                        Assert.IsTrue(img.Bitmap.Height % 2 == 0);
-                    }
+                    Assert.True(img.Width % 2 == 0);
+                    Assert.True(img.Height % 2 == 0);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void OverlayedSize()
         {
-            var imgProvider = MoqFactory.GetImageProviderMock().Object;
-            var overlay = MoqFactory.GetOverlayMock().Object;
+            var imgProvider = _moq.GetImageProviderMock().Object;
+            var overlay = _moq.GetOverlayMock().Object;
 
             using (var provider = new OverlayedImageProvider(imgProvider, P => P, overlay))
             {
-                Assert.AreEqual(provider.Width, imgProvider.Width);
-                Assert.AreEqual(provider.Height, imgProvider.Height);
+                Assert.Equal(provider.Width, imgProvider.Width);
+                Assert.Equal(provider.Height, imgProvider.Height);
 
                 using (var img = provider.Capture())
                 {
-                    if (img.Bitmap != null)
-                    {
-                        Assert.AreEqual(provider.Width, img.Bitmap.Width);
-                        Assert.AreEqual(provider.Height, img.Bitmap.Height);
-                    }
+                    Assert.Equal(provider.Width, img.Width);
+                    Assert.Equal(provider.Height, img.Height);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CaptureOverlayedImage()
         {
-            var imgProviderMock = MoqFactory.GetImageProviderMock();
-            var overlayMock = MoqFactory.GetOverlayMock();
+            var imgProviderMock = _moq.GetImageProviderMock();
+            var overlayMock = _moq.GetOverlayMock();
 
             using (var provider = new OverlayedImageProvider(imgProviderMock.Object, P => P, overlayMock.Object))
             {
                 using (provider.Capture())
                 {
                     imgProviderMock.Verify(M => M.Capture(), Times.Once);
-                    overlayMock.Verify(M => M.Draw(It.IsAny<Graphics>(), It.IsAny<Func<Point, Point>>()), Times.Once);
+                    overlayMock.Verify(M => M.Draw(It.IsAny<IBitmapEditor>(), It.IsAny<Func<Point, Point>>()), Times.Once);
                 }
             }
 

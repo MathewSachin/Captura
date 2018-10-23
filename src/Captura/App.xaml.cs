@@ -1,9 +1,11 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Threading;
+using Captura.Models;
+using Captura.Views;
 using CommandLine;
 
 namespace Captura
@@ -22,10 +24,7 @@ namespace Captura
 
             Args.Handled = true;
 
-            MessageBox.Show($"Unexpected error occured. Captura might still continue functioning.\n\n{Args.Exception}",
-                "Unexpected error occured",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            new ExceptionWindow(Args.Exception).ShowDialog();
         }
 
         void Application_Startup(object Sender, StartupEventArgs Args)
@@ -38,13 +37,15 @@ namespace Captura
 
                 File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
 
-                MessageBox.Show($"Unexpected error occured. Captura will exit.\n\n{E.ExceptionObject}",
-                    "App Crash",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                if (E.ExceptionObject is Exception e)
+                {
+                    Current.Dispatcher.Invoke(() => new ExceptionWindow(e).ShowDialog());
+                }
 
                 Shutdown();
             };
+
+            ServiceProvider.LoadModule(new CoreModule());
 
             Parser.Default.ParseArguments<CmdOptions>(Args.Args)
                 .WithParsed(M => CmdOptions = M);
@@ -70,13 +71,30 @@ namespace Captura
 
             if (!string.IsNullOrEmpty(accent))
             {
-                if (ColorConverter.ConvertFromString(accent) is Color accentColor)
-                    AppearanceManager.Current.AccentColor = accentColor;
+                AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
             }
 
-            // A quick fix for WpfToolkit not being copied to build output of console project
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Xceed.Wpf.Toolkit.ColorSortingMode.Alphabetical.ToString();
+            if (!string.IsNullOrWhiteSpace(settings.UI.Language))
+            {
+                var matchedCulture = LanguageManager.Instance.AvailableCultures.FirstOrDefault(M => M.Name == settings.UI.Language);
+
+                if (matchedCulture != null)
+                    LanguageManager.Instance.CurrentCulture = matchedCulture;
+            }
+
+            LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
+
+            var keymap = ServiceProvider.Get<KeymapViewModel>();
+
+            if (!string.IsNullOrWhiteSpace(settings.Keystrokes.KeymapName))
+            {
+                var matched = keymap.AvailableKeymaps.FirstOrDefault(M => M.Name == settings.Keystrokes.KeymapName);
+
+                if (matched != null)
+                    keymap.SelectedKeymap = matched;
+            }
+
+            keymap.PropertyChanged += (S, E) => settings.Keystrokes.KeymapName = keymap.SelectedKeymap.Name;
         }
     }
 }

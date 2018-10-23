@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+// ReSharper disable InconsistentNaming
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Captura.Webcam
 {
@@ -223,6 +225,7 @@ namespace Captura.Webcam
                     hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out o);
 
                     if (hr != 0)
+                        // ReSharper disable once RedundantAssignment
                         o = null;
                 }
 
@@ -527,6 +530,11 @@ namespace Captura.Webcam
             var bufferSize = 0;
             _sampGrabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
 
+            if (bufferSize <= 0)
+            {
+                return null;
+            }
+
             if (_savedArray == null || _savedArray.Length < bufferSize)
                 _savedArray = new byte[bufferSize + 64000];
             
@@ -536,20 +544,26 @@ namespace Captura.Webcam
             //Gets the addres of the pinned object.
             var address = handleObj.AddrOfPinnedObject();
 
-            //Puts the buffer inside the byte array.
-            _sampGrabber.GetCurrentBuffer(ref bufferSize, address);
+            try
+            {
+                //Puts the buffer inside the byte array.
+                _sampGrabber.GetCurrentBuffer(ref bufferSize, address);
 
-            //Image size.
-            var width = _videoInfoHeader.BmiHeader.Width;
-            var height = _videoInfoHeader.BmiHeader.Height;
+                //Image size.
+                var width = _videoInfoHeader.BmiHeader.Width;
+                var height = _videoInfoHeader.BmiHeader.Height;
 
-            var stride = width * 4;
-            address += height * stride;
+                var stride = width * 4;
+                address += height * stride;
 
-            var bitmap = new Bitmap(width, height, -stride, System.Drawing.Imaging.PixelFormat.Format32bppRgb, address);
-            handleObj.Free();
-
-            return bitmap;
+                return new Bitmap(width, height, -stride,
+                    System.Drawing.Imaging.PixelFormat.Format32bppRgb,
+                    address);
+            }
+            finally
+            {
+                handleObj.Free();
+            }
         }
         #endregion
 

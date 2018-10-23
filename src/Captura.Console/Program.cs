@@ -4,11 +4,12 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Captura.Native;
 using CommandLine;
 using Screna;
 using static System.Console;
@@ -22,18 +23,26 @@ namespace Captura
         {
             if (Args.Length == 0)
             {
-                Process.Start(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "Captura.UI.exe"));
+                var uiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "captura.exe");
 
-                return;
+                if (File.Exists(uiPath))
+                {
+                    Process.Start(uiPath);
+
+                    return;
+                }
             }
+
+            User32.SetProcessDPIAware();
+
+            ServiceProvider.LoadModule(new CoreModule());
+            ServiceProvider.LoadModule(new FakesModule());
 
             // Hide on Full Screen Screenshot doesn't work on Console
             ServiceProvider.Get<Settings>().UI.HideOnFullScreenShot = false;
-            
-            ServiceProvider.LoadModule(new FakesModule());
 
-            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFMpegCmdOptions, ListCmdOptions>(Args)
+            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions>(Args)
                 .WithParsed<ListCmdOptions>(Options => List())
                 .WithParsed<StartCmdOptions>(Options =>
                 {
@@ -43,8 +52,33 @@ namespace Captura
                     {
                         vm.Init(false, false, false, false);
 
-                        // Remove Custom overlays
-                        vm.CustomOverlays.Reset();
+                        // Load settings dummy
+                        var dummySettings = new Settings();
+                        dummySettings.Load();
+
+                        vm.Settings.WebcamOverlay = dummySettings.WebcamOverlay;
+                        vm.Settings.MousePointerOverlay = dummySettings.MousePointerOverlay;
+                        vm.Settings.Clicks = dummySettings.Clicks;
+                        vm.Settings.Keystrokes = dummySettings.Keystrokes;
+                        vm.Settings.Elapsed = dummySettings.Elapsed;
+
+                        // FFmpeg Path
+                        vm.Settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
+
+                        foreach (var overlay in dummySettings.Censored)
+                        {
+                            vm.Settings.Censored.Add(overlay);
+                        }
+
+                        foreach (var overlay in dummySettings.TextOverlays)
+                        {
+                            vm.Settings.TextOverlays.Add(overlay);
+                        }
+
+                        foreach (var overlay in dummySettings.ImageOverlays)
+                        {
+                            vm.Settings.ImageOverlays.Add(overlay);
+                        }
 
                         Start(vm, Options);
                     }
@@ -60,11 +94,11 @@ namespace Captura
                         Shot(vm, Options);
                     }
                 })
-                .WithParsed<FFMpegCmdOptions>(Options =>
+                .WithParsed<FFmpegCmdOptions>(Options =>
                 {
                     Banner();
 
-                    FFMpeg(Options);
+                    FFmpeg(Options);
                 });
         }
 
@@ -75,7 +109,7 @@ namespace Captura
             var underline = $"\n{new string('-', 30)}";
 
             #region FFmpeg
-            var ffmpegExists = FFMpegService.FFMpegExists;
+            var ffmpegExists = FFmpegService.FFmpegExists;
 
             WriteLine($"FFmpeg Available: {(ffmpegExists ? "YES" : "NO")}");
 
@@ -85,7 +119,7 @@ namespace Captura
             {
                 WriteLine("FFmpeg ENCODERS" + underline);
 
-                var writerProvider = ServiceProvider.Get<FFMpegWriterProvider>();
+                var writerProvider = ServiceProvider.Get<FFmpegWriterProvider>();
 
                 var i = 0;
 
@@ -127,11 +161,10 @@ namespace Captura
             #region Windows
             WriteLine("AVAILABLE WINDOWS" + underline);
 
-            var winProvider = ServiceProvider.Get<WindowSourceProvider>();
-
-            foreach (var source in winProvider.OfType<WindowItem>())
+            // Window Picker is skipped automatically
+            foreach (var source in Window.EnumerateVisible())
             {
-                WriteLine($"{source.Window.Handle.ToString().PadRight(10)}: {source}");
+                WriteLine($"{source.Handle.ToString().PadRight(10)}: {source.Title}");
             }
 
             WriteLine();
@@ -140,23 +173,15 @@ namespace Captura
             #region Screens
             WriteLine("AVAILABLE SCREENS" + underline);
 
-            var scrProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
             var j = 0;
 
-            // First is Full Screen
-            foreach (var screen in scrProvider.Skip(1))
+            // First is Full Screen, Second is Screen Picker
+            foreach (var screen in ScreenItem.Enumerate())
             {
-                WriteLine($"{j.ToString().PadRight(2)}: {screen}");
+                WriteLine($"{j.ToString().PadRight(2)}: {screen.Name}");
 
                 ++j;
             }
-
-            WriteLine();
-            #endregion
-
-            #region MouseKeyHook
-            WriteLine($"MouseKeyHook Available: {(ServiceProvider.Get<MainViewModel>().MouseKeyHookAvailable ? "YES" : "NO")}");
 
             WriteLine();
             #endregion
@@ -168,13 +193,13 @@ namespace Captura
             WriteLine();
 
             #region Microphones
-            if (audio.AvailableRecordingSources.Count > 1)
+            if (audio.AvailableRecordingSources.Count > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + underline);
 
-                for (var i = 1; i < audio.AvailableRecordingSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableRecordingSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableRecordingSources[i]}");
                 }
 
                 WriteLine();
@@ -182,13 +207,29 @@ namespace Captura
             #endregion
 
             #region Speaker
-            if (audio.AvailableLoopbackSources.Count > 1)
+            if (audio.AvailableLoopbackSources.Count > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + underline);
 
-                for (var i = 1; i < audio.AvailableLoopbackSources.Count; ++i)
+                for (var i = 0; i < audio.AvailableLoopbackSources.Count; ++i)
                 {
-                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {audio.AvailableLoopbackSources[i]}");
+                }
+
+                WriteLine();
+            }
+            #endregion
+
+            #region Webcams
+            var webcam = ServiceProvider.Get<IWebCamProvider>();
+
+            if (webcam.AvailableCams.Count > 1)
+            {
+                WriteLine("AVAILABLE WEBCAMS" + underline);
+
+                for (var i = 1; i < webcam.AvailableCams.Count; ++i)
+                {
+                    WriteLine($"{(i - 1).ToString().PadRight(2)}: {webcam.AvailableCams[i]}");
                 }
 
                 WriteLine();
@@ -201,7 +242,7 @@ namespace Captura
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
             WriteLine($@"Captura v{version}
-(c) 2018 Mathew Sachin
+(c) {DateTime.Now.Year} Mathew Sachin
 ");
         }
 
@@ -216,7 +257,9 @@ namespace Captura
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
             {
-                if (MainViewModel.RectangleConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
+                var rectConverter = new RectangleConverter();
+
+                if (rectConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
                 {
                     FakeRegionProvider.Instance.SelectedRegion = rect.Even();
                     video.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
@@ -230,45 +273,66 @@ namespace Captura
 
                 if (index < ScreenItem.Count)
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<ScreenSourceProvider>();
+                    var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
 
-                    // First item is Full Screen
-                    video.SelectedVideoSource = video.AvailableVideoSources[index + 1];
+                    screenSourceProvider.Set(index);
+
+                    video.RestoreSourceKind(screenSourceProvider);
                 }
             }
 
-            // Desktop Duplication
-            else if (CommonOptions is StartCmdOptions && Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
+            // Window
+            else if (Regex.IsMatch(CommonOptions.Source, @"^win:\d+$"))
             {
-                var index = int.Parse(CommonOptions.Source.Substring(9));
+                var handle = new IntPtr(int.Parse(CommonOptions.Source.Substring(4)));
 
-                if (index < ScreenItem.Count)
+                var winProvider = ServiceProvider.Get<WindowSourceProvider>();
+
+                winProvider.Set(handle);
+
+                video.RestoreSourceKind(winProvider);
+            }
+
+            // Start command only
+            else if (CommonOptions is StartCmdOptions)
+            {
+                // Desktop Duplication
+                if (Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<DeskDuplSourceProvider>();
+                    var index = int.Parse(CommonOptions.Source.Substring(9));
 
-                    video.SelectedVideoSource = video.AvailableVideoSources[index];
+                    if (index < ScreenItem.Count)
+                    {
+                        var deskDuplSourceProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
+
+                        deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
+
+                        video.RestoreSourceKind(deskDuplSourceProvider);
+                    }
+                }
+
+                // No Video for Start
+                else if (CommonOptions.Source == "none")
+                {
+                    video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
                 }
             }
-
-            // No Video for Start
-            else if (CommonOptions is StartCmdOptions && CommonOptions.Source == "none")
-            {
-                video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
-            }            
         }
 
         static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
             var source = ViewModel.AudioSource;
 
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count - 1)
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count)
             {
-                source.SelectedRecordingSource = source.AvailableRecordingSources[StartOptions.Microphone + 1];
+                ViewModel.Settings.Audio.Enabled = true;
+                source.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count - 1)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count)
             {
-                source.SelectedLoopbackSource = source.AvailableLoopbackSources[StartOptions.Speaker + 1];
+                ViewModel.Settings.Audio.Enabled = true;
+                source.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }
 
@@ -279,14 +343,14 @@ namespace Captura
 
             var video = ViewModel.VideoViewModel;
 
-            // FFMpeg
-            if (FFMpegService.FFMpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
+            // FFmpeg
+            if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                video.SelectedVideoWriterKind = ServiceProvider.Get<FFMpegWriterProvider>();
+                video.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
@@ -297,7 +361,7 @@ namespace Captura
 
                 video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < video.AvailableVideoSources.Count)
+                if (index < video.AvailableVideoWriters.Count)
                     video.SelectedVideoWriter = video.AvailableVideoWriters[index];
             }
 
@@ -308,11 +372,24 @@ namespace Captura
             }
         }
 
-        static async void FFMpeg(FFMpegCmdOptions FFMpegOptions)
+        static void HandleWebcam(StartCmdOptions StartOptions)
         {
-            if (FFMpegOptions.Install != null)
+            var webcam = ServiceProvider.Get<IWebCamProvider>();
+
+            if (StartOptions.Webcam != -1 && StartOptions.Webcam < webcam.AvailableCams.Count - 1)
             {
-                var downloadFolder = FFMpegOptions.Install;
+                webcam.SelectedCam = webcam.AvailableCams[StartOptions.Webcam + 1];
+
+                // Sleep to prevent AccessViolationException
+                Thread.Sleep(500);
+            }
+        }
+
+        static async void FFmpeg(FFmpegCmdOptions FFmpegOptions)
+        {
+            if (FFmpegOptions.Install != null)
+            {
+                var downloadFolder = FFmpegOptions.Install;
 
                 if (!Directory.Exists(downloadFolder))
                 {
@@ -320,9 +397,9 @@ namespace Captura
                     return;
                 }
 
-                var ffMpegDownload = ServiceProvider.Get<FFMpegDownloadViewModel>();
+                var ffMpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
 
-                ffMpegDownload.TargetFolder = FFMpegOptions.Install;
+                ffMpegDownload.TargetFolder = FFmpegOptions.Install;
 
                 await ffMpegDownload.Start();
                 
@@ -332,8 +409,7 @@ namespace Captura
 
         static void Shot(MainViewModel ViewModel, ShotCmdOptions ShotOptions)
         {
-            if (ShotOptions.Cursor)
-                ViewModel.Settings.IncludeCursor = true;
+            ViewModel.Settings.IncludeCursor = ShotOptions.Cursor;
 
             // Screenshot Window with Transparency
             if (ShotOptions.Source != null && Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
@@ -342,9 +418,9 @@ namespace Captura
 
                 try
                 {
-                    var bmp = ViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
+                    var bmp = ViewModel.ScreenShotViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    ViewModel.SaveScreenShot(bmp, ShotOptions.FileName);
+                    ViewModel.ScreenShotViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {
@@ -355,26 +431,28 @@ namespace Captura
             {
                 HandleVideoSource(ViewModel, ShotOptions);
 
-                ViewModel.CaptureScreenShot(ShotOptions.FileName);
+                ViewModel.ScreenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
         }
 
         static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
-            if (StartOptions.Cursor)
-                ViewModel.Settings.IncludeCursor = true;
+            ViewModel.Settings.IncludeCursor = StartOptions.Cursor;
 
-            if (StartOptions.Clicks)
-                ViewModel.Settings.Clicks.Display = true;
+            ViewModel.Settings.Clicks.Display = StartOptions.Clicks;
 
-            if (StartOptions.Keys)
-                ViewModel.Settings.Keystrokes.Display = true;
+            ViewModel.Settings.Keystrokes.Display = StartOptions.Keys;
 
             if (File.Exists(StartOptions.FileName))
             {
-                WriteLine("Output File Already Exists");
+                if (!StartOptions.Overwrite)
+                {
+                    if (!ServiceProvider.MessageProvider
+                        .ShowYesNo("Output File Already Exists, Do you want to overwrite?", ""))
+                        return;
+                }
 
-                return;
+                File.Delete(StartOptions.FileName);
             }
 
             HandleVideoSource(ViewModel, StartOptions);
@@ -383,12 +461,14 @@ namespace Captura
 
             HandleAudioSource(ViewModel, StartOptions);
 
+            HandleWebcam(StartOptions);
+
             ViewModel.Settings.Video.FrameRate = StartOptions.FrameRate;
 
             ViewModel.Settings.Audio.Quality = StartOptions.AudioQuality;
             ViewModel.Settings.Video.Quality = StartOptions.VideoQuality;
 
-            if (!ViewModel.RecordCommand.CanExecute(null))
+            if (!ViewModel.RecordingViewModel.RecordCommand.CanExecute(null))
             {
                 WriteLine("Nothing to Record");
 
@@ -398,9 +478,24 @@ namespace Captura
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            if (!ViewModel.StartRecording(StartOptions.FileName))
+            if (!ViewModel.RecordingViewModel.StartRecording(StartOptions.FileName))
                 return;
 
+            Task.Factory.StartNew(() =>
+            {
+                Loop(ViewModel, StartOptions);
+
+                ViewModel.RecordingViewModel.StopRecording().Wait();
+
+                Application.Exit();
+            });
+
+            // MouseKeyHook requires a Window Handle to register
+            Application.Run(new ApplicationContext());
+        }
+
+        static void Loop(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        {
             if (StartOptions.Length > 0)
             {
                 var elapsed = 0;
@@ -444,17 +539,15 @@ namespace Captura
 
                     if (c != 'p')
                         continue;
-                    
-                    ViewModel.PauseCommand.ExecuteIfCan();
 
-                    if (ViewModel.RecorderState != RecorderState.Paused)
+                    ViewModel.RecordingViewModel.PauseCommand.ExecuteIfCan();
+
+                    if (ViewModel.RecordingViewModel.RecorderState != RecorderState.Paused)
                     {
                         WriteLine("Resumed");
                     }
                 } while (c != 'q');
             }
-
-            Task.Run(async () => await ViewModel.StopRecording()).Wait();
         }
     }
 }

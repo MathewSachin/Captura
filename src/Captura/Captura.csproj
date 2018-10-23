@@ -8,22 +8,19 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Captura</RootNamespace>
-    <AssemblyName>Captura.UI</AssemblyName>
+    <AssemblyName>captura</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <ProjectGuid>{0B496E01-F328-4969-832C-C75977B4F4E6}</ProjectGuid>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -32,163 +29,383 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Captura.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Captura.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
-    <Reference Include="FirstFloor.ModernUI, Version=1.0.9.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
-      <HintPath>..\packages\ModernUI.WPF.1.0.9\lib\net45\FirstFloor.ModernUI.dll</HintPath>
-    </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
-    </Reference>
-    <Reference Include="ModernUI.Xceed.Toolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SamOatesGames.ModernUI.Xceed.Toolkit.1.0.0\lib\net452\ModernUI.Xceed.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Views\FFMpegCodecWindow.xaml.cs">
-      <DependentUpon>FFMpegCodecWindow.xaml</DependentUpon>
+    <Compile Include="Controls\CollapsedBar.xaml.cs">
+      <DependentUpon>CollapsedBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OutputFolderControl.xaml.cs">
+      <DependentUpon>OutputFolderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VideoSourceKindList.xaml.cs">
+      <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AudioPlayer.cs" />
+    <Compile Include="Models\HotkeyListener.cs" />
+    <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
+      <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ImageOverlaysPage.xaml.cs">
+      <DependentUpon>ImageOverlaysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\KeystrokesPage.xaml.cs">
+      <DependentUpon>KeystrokesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MouseOverlayPage.xaml.cs">
+      <DependentUpon>MouseOverlayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TextOverlaysPage.xaml.cs">
+      <DependentUpon>TextOverlaysPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\WebcamPage.xaml.cs">
+      <DependentUpon>WebcamPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AudioPage.xaml.cs">
+      <DependentUpon>AudioPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageEditor\DynamicRenderers\EllipseDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\Strokes\LineStroke.cs" />
+    <Compile Include="ImageEditor\DynamicRenderers\RectangleDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\Strokes\EllipseStroke.cs" />
+    <Compile Include="ImageEditor\Strokes\RectangleStroke.cs" />
+    <Compile Include="ImageEditor\ExtendedInkTool.cs" />
+    <Compile Include="ImageEditor\DynamicRenderers\LineDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\EditorWriter.cs" />
+    <Compile Include="ImageEditor\ExtendedInkCanvas.cs" />
+    <Compile Include="ImageEditor\HistoryItem.cs" />
+    <Compile Include="ImageEditor\HistoryState.cs" />
+    <Compile Include="ImageEditor\ImageEditorViewModel.cs" />
+    <Compile Include="ImageEditor\ImageEditorWindow.xaml.cs">
+      <DependentUpon>ImageEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageEditor\ImageEffect.cs" />
+    <Compile Include="ImageEditor\ImageFromClipboard.cs" />
+    <Compile Include="ImageEditor\ModifyPixel.cs" />
+    <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
+    <Compile Include="ImageEditor\SelectHistory.cs" />
+    <Compile Include="ImageEditor\StrokeHistory.cs" />
+    <Compile Include="Models\IRemoveRequester.cs" />
+    <Compile Include="Pages\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ScreenShotsPage.xaml.cs">
+      <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SoundsWindow.xaml.cs">
+      <DependentUpon>SoundsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\IsLessThanConverter.cs" />
+    <Compile Include="ValueConverters\StaticResourceConverter.cs" />
+    <Compile Include="Windows\FileNameFormatWindow.xaml.cs">
+      <DependentUpon>FileNameFormatWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\SecondsToTimeSpanConverter.cs" />
+    <Compile Include="Windows\RegionPickerWindow.xaml.cs">
+      <DependentUpon>RegionPickerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
+      <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotificationStack.xaml.cs">
+      <DependentUpon>NotificationStack.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotificationBalloon.xaml.cs">
+      <DependentUpon>NotificationBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\CroppingAdorner.cs" />
+    <Compile Include="Presentation\PuncturedRect.cs" />
+    <Compile Include="ValueConverters\GetTypeConverter.cs" />
+    <Compile Include="ValueConverters\IsPlayingToButtonStyleConverter.cs" />
+    <Compile Include="ValueConverters\IntegralTimeSpanConverter.cs" />
+    <Compile Include="ViewModels\TrimmerViewModel.cs" />
+    <Compile Include="ViewModels\ExceptionViewModel.cs" />
+    <Compile Include="Windows\ExceptionWindow.xaml.cs">
+      <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CrashLogsWindow.xaml.cs">
+      <DependentUpon>CrashLogsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TranslationWindow.xaml.cs">
+      <DependentUpon>TranslationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TrimmerWindow.xaml.cs">
+      <DependentUpon>TrimmerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CropWindow.xaml.cs">
+      <DependentUpon>CropWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HitType.cs" />
+    <Compile Include="Controls\LayerFrame.xaml.cs">
+      <DependentUpon>LayerFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PreviewWindowService.cs" />
+    <Compile Include="Models\VideoSourcePicker.cs" />
+    <Compile Include="Presentation\OverlayPositionAdorner.cs" />
+    <Compile Include="Windows\HotkeysWindow.xaml.cs">
+      <DependentUpon>HotkeysWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OverlayWindow.xaml.cs">
+      <DependentUpon>OverlayWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LicensesWindow.xaml.cs">
+      <DependentUpon>LicensesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PreviewWindow.xaml.cs">
+      <DependentUpon>PreviewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageOverlaySettingsControl.xaml.cs">
+      <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FFmpegCodecWindow.xaml.cs">
+      <DependentUpon>FFmpegCodecWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MainModule.cs" />
     <Compile Include="Models\CmdOptions.cs" />
     <Compile Include="Models\Dpi.cs" />
     <Compile Include="Models\MainWindowProvider.cs" />
     <Compile Include="Models\MessageProvider.cs" />
-    <Compile Include="Models\NinjectServiceLocator.cs" />
+    <Compile Include="Models\ServiceLocator.cs" />
     <Compile Include="Models\SystemTray.cs" />
-    <Compile Include="Models\WebcamItem.cs" />
     <Compile Include="Models\WebCamProvider.cs" />
-    <Compile Include="Presentation\Controls\TextBalloon.xaml.cs">
-      <DependentUpon>TextBalloon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Controls\ScreenShotBalloon.xaml.cs">
+    <Compile Include="Controls\ScreenShotBalloon.xaml.cs">
       <DependentUpon>ScreenShotBalloon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\HotkeySelector.cs" />
-    <Compile Include="Presentation\Controls\ModernToggleButton.cs" />
-    <Compile Include="Presentation\Controls\ModernButton.cs" />
-    <Compile Include="Models\RegionItem.cs" />
-    <Compile Include="Presentation\Controls\PositionSettingsControl.xaml.cs">
+    <Compile Include="Controls\HotkeySelector.cs" />
+    <Compile Include="Controls\ModernToggleButton.cs" />
+    <Compile Include="Controls\ModernButton.cs" />
+    <Compile Include="Controls\PositionSettingsControl.xaml.cs">
       <DependentUpon>PositionSettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\TextOverlaySettingsControl.xaml.cs">
+    <Compile Include="Controls\TextOverlaySettingsControl.xaml.cs">
       <DependentUpon>TextOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\WebcamControl.xaml.cs">
+    <Compile Include="Controls\WebcamControl.xaml.cs">
       <DependentUpon>WebcamControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\WindowBorderToggler.cs" />
-    <Compile Include="Presentation\ValueConverters\InkToolToIconConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\NotNullConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\OneWayConverter.cs" />
-    <Compile Include="Views\CanvasWindow.xaml.cs">
-      <DependentUpon>CanvasWindow.xaml</DependentUpon>
+    <Compile Include="ValueConverters\InkToolToIconConverter.cs" />
+    <Compile Include="ValueConverters\NotNullConverter.cs" />
+    <Compile Include="ValueConverters\OneWayConverter.cs" />
+    <Compile Include="Windows\FFmpegDownloaderWindow.xaml.cs">
+      <DependentUpon>FFmpegDownloaderWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegDownloader.xaml.cs">
-      <DependentUpon>FFMpegDownloader.xaml</DependentUpon>
+    <Compile Include="Pages\ConfigPage.xaml.cs">
+      <DependentUpon>ConfigPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConfigView.xaml.cs">
-      <DependentUpon>ConfigView.xaml</DependentUpon>
+    <Compile Include="Pages\FFmpegPage.xaml.cs">
+      <DependentUpon>FFmpegPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegView.xaml.cs">
-      <DependentUpon>FFMpegView.xaml</DependentUpon>
+    <Compile Include="Windows\FFmpegLogWindow.xaml.cs">
+      <DependentUpon>FFmpegLogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FFMpegLogView.xaml.cs">
-      <DependentUpon>FFMpegLogView.xaml</DependentUpon>
+    <Compile Include="Pages\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Loc.cs" />
-    <Compile Include="Presentation\ValueConverters\DrawingToWpfColorConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\NegatingConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\NotRecordingConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\StateToPauseButtonAngleConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\StateToTrayIconSourceConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\StateToRecordButtonGeometryConverter.cs" />
-    <Compile Include="Presentation\ValueConverters\StateToTaskbarOverlayConverter.cs" />
+    <Compile Include="ValueConverters\DrawingToWpfColorConverter.cs" />
+    <Compile Include="ValueConverters\NegatingConverter.cs" />
+    <Compile Include="ValueConverters\NotRecordingConverter.cs" />
+    <Compile Include="ValueConverters\StateToTrayIconSourceConverter.cs" />
+    <Compile Include="ValueConverters\StateToRecordButtonGeometryConverter.cs" />
+    <Compile Include="ValueConverters\StateToTaskbarOverlayConverter.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Controls\RecentItem.xaml.cs">
+    <Compile Include="Controls\RecentItem.xaml.cs">
       <DependentUpon>RecentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\StaticRegionProvider.cs" />
-    <Compile Include="Presentation\Controls\RegionSelector.xaml.cs">
+    <Compile Include="Windows\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OverlaysView.xaml.cs">
-      <DependentUpon>OverlaysView.xaml</DependentUpon>
+    <Compile Include="Pages\ExtrasPage.xaml.cs">
+      <DependentUpon>ExtrasPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExtrasView.xaml.cs">
-      <DependentUpon>ExtrasView.xaml</DependentUpon>
+    <Compile Include="Pages\ProxyPage.xaml.cs">
+      <DependentUpon>ProxyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProxyView.xaml.cs">
-      <DependentUpon>ProxyView.xaml</DependentUpon>
+    <Compile Include="ValueConverters\TimeSpanToSecondsConverter.cs" />
+    <Compile Include="Pages\RecentPage.xaml.cs">
+      <DependentUpon>RecentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\ValueConverters\TimeSpanToSecondsConverter.cs" />
-    <Compile Include="Views\WebCamWindow.xaml.cs">
+    <Compile Include="Windows\WebCamWindow.xaml.cs">
       <DependentUpon>WebCamWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HotkeyView.xaml.cs">
-      <DependentUpon>HotkeyView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AboutView.xaml.cs">
-      <DependentUpon>AboutView.xaml</DependentUpon>
+    <Compile Include="Pages\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
-    <Page Include="Views\FFMpegCodecWindow.xaml">
+    <Page Include="Controls\CollapsedBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Controls\TextBalloon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Presentation\Controls\ScreenShotBalloon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Presentation\Controls\PositionSettingsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Presentation\Controls\TextOverlaySettingsControl.xaml">
+    <Page Include="Controls\OutputFolderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Controls\WebcamControl.xaml">
+    <Page Include="Controls\VideoSourceKindList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CensorOverlaysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ImageOverlaysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\KeystrokesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MouseOverlayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TextOverlaysPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\WebcamPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\AudioPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageEditor\ImageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\VideoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ScreenShotsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Themes\VirtualizingItemsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SoundsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Themes\Expander.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FileNameFormatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Themes\RegionPickerMagnifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\RegionPickerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\VideoSourcePickerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NotificationStack.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NotificationBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Presentation\Themes\RoundSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CrashLogsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\TranslationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TrimmerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CropWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LayerFrame.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\HotkeysWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OverlayWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\LicensesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ImageOverlaySettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\FFmpegCodecWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenShotBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PositionSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TextOverlaySettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WebcamControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -208,63 +425,51 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Controls\RecentItem.xaml">
+    <Page Include="Controls\RecentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\ValueConverters\ValueConverters.xaml">
+    <Page Include="ValueConverters\ValueConverters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CanvasWindow.xaml">
+    <Page Include="Windows\FFmpegDownloaderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FFMpegDownloader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FFMpegView.xaml">
+    <Page Include="Pages\FFmpegPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\FFMpegLogView.xaml">
+    <Page Include="Windows\FFmpegLogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\HotkeyView.xaml">
+    <Page Include="Pages\AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AboutView.xaml">
+    <Page Include="Pages\ConfigPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ConfigView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\OverlaysView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ExtrasView.xaml">
+    <Page Include="Pages\ExtrasPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProxyView.xaml">
+    <Page Include="Pages\ProxyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RecentView.xaml">
+    <Page Include="Pages\RecentPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -272,11 +477,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Presentation\Controls\RegionSelector.xaml">
+    <Page Include="Windows\RegionSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\WebCamWindow.xaml">
+    <Page Include="Windows\WebCamWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -285,25 +490,50 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Captura.ico" />
+    <Resource Include="Images\Captura.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Logo.png" />
+    <SplashScreen Include="Images\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
+      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
+      <Name>Captura.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj">
       <Project>{f8568b22-8ac6-49c5-92df-e1c359ff1fab}</Project>
       <Name>Captura.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
+      <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
+      <Name>Captura.FFmpeg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj">
+      <Project>{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}</Project>
+      <Name>Captura.Hotkeys</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
+      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
+      <Name>Captura.Loc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
+      <Project>{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}</Project>
+      <Name>Captura.MouseKeyHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
+      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
+      <Name>Captura.SharpAvi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
+      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
+      <Name>DesktopDuplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
@@ -311,10 +541,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="record.ico" />
+    <Resource Include="Images\record.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="pause.ico" />
+    <Resource Include="Images\pause.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser">
+      <Version>2.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Extended.Wpf.Toolkit">
+      <Version>3.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
+      <Version>1.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="ModernUI.WPF">
+      <Version>1.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="SamOatesGames.ModernUI.Xceed.Toolkit">
+      <Version>1.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF NOT $(Configuration)==Debug (
+ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " *.dll /MOV &gt; NUL
+IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
+echo Moved Libraries to lib folder
+cd "$(TargetDir)"
+del *.dll
+del *.pdb
+del *.xml
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

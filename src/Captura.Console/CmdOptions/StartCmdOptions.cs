@@ -28,6 +28,9 @@ namespace Captura
 
         [Option('t', "length", HelpText = "Length of Recording in seconds.")]
         public int Length { get; set; }
+
+        [Option('y', HelpText = "Overwrite existing file")]
+        public bool Overwrite { get; set; }
         
         [Option("keys", HelpText = "Include Keystrokes in Recording (default = false).")]
         public bool Keys { get; set; }
@@ -53,6 +56,8 @@ namespace Captura
         [Option("aq", HelpText = "Audio Quality")]
         public int AudioQuality { get; set; }
 
+        [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
+        public int Webcam { get; set; }
 
         [Usage]
         public static IEnumerable<Example> Examples

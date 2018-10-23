@@ -44,6 +44,18 @@
             set => Set(value);
         }
 
+        public bool MinToTrayOnStartup
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
+        public bool MinToTrayOnClose
+        {
+            get => Get(false);
+            set => Set(value);
+        }
+
         public bool HideOnFullScreenShot
         {
             get => Get(true);
@@ -56,21 +68,9 @@
             set => Set(value);
         }
 
-        public int RegionBorderThickness
+        public bool RegionSelectorDrawingTools
         {
-            get => Get(3);
-            set => Set(value);
-        }
-
-        public int ScreenShotNotifyTimeout
-        {
-            get => Get(5000);
-            set => Set(value);
-        }
-
-        public bool HideRegionSelectorWhenRecording
-        {
-            get => Get(false);
+            get => Get(true);
             set => Set(value);
         }
 

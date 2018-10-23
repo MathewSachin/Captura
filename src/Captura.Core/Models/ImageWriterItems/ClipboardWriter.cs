@@ -2,22 +2,47 @@
 using Screna;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ClipboardWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        readonly ISystemTray _systemTray;
+        readonly LanguageManager _loc;
+
+        public ClipboardWriter(ISystemTray SystemTray, LanguageManager Loc)
         {
-            using (Image)
-                Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
+            _systemTray = SystemTray;
+            _loc = Loc;
 
-            Status.LocalizationKey = nameof(LanguageManager.ImgSavedClipboard);
-
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public string Display => LanguageManager.Instance.Clipboard;
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        {
+            Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
+
+            _systemTray.ShowNotification(false).PrimaryText = _loc.ImgSavedClipboard;
+
+            return Task.CompletedTask;
+        }
+
+        public string Display => _loc.Clipboard;
+
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+                
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Display;
     }

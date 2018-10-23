@@ -1,0 +1,118 @@
+﻿<Window x:Class="Captura.Views.TrimmerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:captura="clr-namespace:Captura"
+        mc:Ignorable="d"
+        Title="Trim"
+        Height="600"
+        Width="600">
+    <Window.DataContext>
+        <captura:TrimmerViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenCommand}"
+                    Key="O"
+                    Modifiers="Control"/>
+    </Window.InputBindings>
+    <DockPanel Background="{DynamicResource WindowBackground}">
+        <DockPanel LastChildFill="False"
+                   DockPanel.Dock="Bottom"
+                   Margin="5">
+            <Label Content="{Binding From, Converter={StaticResource IntegralTimeSpanConverter}}"/>
+            <Label DockPanel.Dock="Right"
+                   Content="{Binding To, Converter={StaticResource IntegralTimeSpanConverter}}"/>
+        </DockPanel>
+
+        <xctk:RangeSlider Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                          LowerValue="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                          HigherValue="{Binding To, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                          Background="LightGray"
+                          LowerRangeBackground="LightGray"
+                          HigherRangeBackground="LightGray"
+                          RangeBackground="#77FFC7"
+                          DockPanel.Dock="Bottom"
+                          Margin="10,20"/>
+
+        <DockPanel DockPanel.Dock="Bottom"
+                   Margin="10,20">
+            <captura:ModernButton Margin="5,0"
+                                  Command="{Binding PlayCommand}"
+                                  Style="{Binding IsPlaying, Converter={StaticResource IsPlayingToButtonStyleConverter}}"/>
+
+            <Label Content="{Binding PlaybackPosition, Converter={StaticResource IntegralTimeSpanConverter}}"
+                   Margin="5,0"
+                   DockPanel.Dock="Right"/>
+
+            <Slider Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Value="{Binding PlaybackPosition, Converter={StaticResource TimeSpanToSecondsConverter}, Mode=OneWay}"
+                    SelectionEnd="{Binding To, Converter={StaticResource TimeSpanToSecondsConverter}, Mode=OneWay}"
+                    Maximum="{Binding End, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    SelectionStart="{Binding From, Converter={StaticResource TimeSpanToSecondsConverter}}"
+                    IsSelectionRangeEnabled="True"
+                    Style="{StaticResource RoundSlider}"
+                    IsMoveToPointEnabled="True"
+                    IsManipulationEnabled="True" 
+                    IsTabStop="False"
+                    PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp" 
+                    PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
+                    MouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
+        </DockPanel>
+
+        <Label DockPanel.Dock="Top"
+               Margin="5">
+            <TextBlock Text="{Binding FileName, TargetNullValue='No File Loaded'}"
+                       Style="{StaticResource Title}"/>
+        </Label>
+
+        <Label DockPanel.Dock="Top"
+               Margin="5"
+               Content="{Binding End, Converter={StaticResource IntegralTimeSpanConverter}}"/>
+
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Margin="5"
+                    Command="{Binding OpenCommand}">
+                <DockPanel>
+                    <Path Data="{StaticResource IconOpenFile}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Open File ..."/>
+                </DockPanel>
+            </Button>
+
+            <Button Margin="5"
+                    Grid.Column="1"
+                    Command="{Binding TrimCommand}">
+                <DockPanel>
+                    <Path Data="{StaticResource IconTrim}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Trim ..."/>
+                </DockPanel>
+            </Button>
+        </Grid>
+
+        <MediaElement Name="MediaElement"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual"
+                      ScrubbingEnabled="True"
+                      Margin="0,10,0,0"/>
+    </DockPanel>
+</Window>

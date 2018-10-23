@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class RecentViewModel : ViewModelBase, IDisposable
     {
         readonly ObservableCollection<RecentItemViewModel> _recentList = new ObservableCollection<RecentItemViewModel>();
@@ -47,7 +48,8 @@ namespace Captura.ViewModels
 
                 foreach (var model in list)
                 {
-                    Add(model.FilePath, model.ItemType, false);
+                    var item = Add(model.FilePath, model.ItemType, false);
+                    item.DeleteHash = model.DeleteHash;
                 }
             }
             catch
@@ -72,12 +74,15 @@ namespace Captura.ViewModels
         {
             // Persist only if File exists or is a link.
             var items = RecentList.Where(M => M.ItemType == RecentItemType.Link && !M.IsSaving || File.Exists(M.FilePath))
-                .Select(M => new RecentItemModel(M.FilePath, M.ItemType))
+                .Select(M => new RecentItemModel(M.FilePath, M.ItemType, M.DeleteHash))
                 .Take(_settings.RecentMax);
 
             try
             {
-                var json = JsonConvert.SerializeObject(items);
+                var json = JsonConvert.SerializeObject(items, Formatting.Indented, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
 
                 File.WriteAllText(GetFilePath(), json);
             }

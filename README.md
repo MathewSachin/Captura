@@ -2,9 +2,9 @@
 
 [![Master Build Status](https://img.shields.io/appveyor/ci/MathewSachin/Captura/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/Captura)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
-[![Chat](https://img.shields.io/badge/chat-on_gitter-yellow.svg?style=flat-square)](https://gitter.im/MathewSachin/Screna)
-[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://github.com/MathewSachin/Captura/releases)
-[![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square)](https://www.paypal.me/MathewSachin)
+[![Chat](https://img.shields.io/badge/chat-on_gitter-yellow.svg?style=flat-square)](https://gitter.im/MathewSachin/Captura)
+[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://mathewsachin.github.io/Captura/download)
+[![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square)](https://mathewsachin.github.io/Captura/donate)
 
 &copy; [Copyright 2018](LICENSE.md) Mathew Sachin
 
@@ -12,7 +12,7 @@
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="docs/ScreenShots.md"><img src="http://i.imgur.com/syPGnSd.png" align="right"></a>
+<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="http://i.imgur.com/syPGnSd.png" align="right"></a>
 
 ## Features
 
@@ -23,9 +23,9 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - Capture Mouse Clicks or Keystrokes
 - Mix Audio recorded from Microphone and Speaker Output
 - Capture from WebCam.
-- Can be used from [Command-line](docs/CmdLine.md) (*BETA*).
-- Available in [multiple languages](docs/Translation.md)
-- Configurable [Hotkeys](docs/Hotkeys.md)
+- Can be used from [Command-line](https://mathewsachin.github.io/Captura/cmdline) (*BETA*).
+- Available in [multiple languages](https://mathewsachin.github.io/Captura/translation)
+- Configurable [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
 
 ## Table of Contents
 
@@ -36,17 +36,17 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
   - [Dev Builds](#dev-builds)
 - [Build Notes](#build-notes)
 - [System Requirements](#system-requirements)
-- [FFMpeg](#ffmpeg)
+- [FFmpeg](#ffmpeg)
 - Other Links
-  - [Changelog](docs/Changelog.md)
-  - [Continuous Integration](docs/CI.md)
-  - [Contributing](CONTRIBUTING.md)
-    - [Translation](docs/Translation.md)
-  - [Code of Conduct](CODE_OF_CONDUCT.md)
-  - [Command-line](docs/CmdLine.md)
-  - [FAQ](docs/FAQ.md)
-  - [Hotkeys](docs/Hotkeys.md)
-  - [ScreenShots](docs/ScreenShots.md)
+  - [Changelog](https://mathewsachin.github.io/Captura/changelog)
+  - [Continuous Integration](https://mathewsachin.github.io/Captura/ci)
+  - [Contributing](https://mathewsachin.github.io/Captura/contributing)
+    - [Translation](https://mathewsachin.github.io/Captura/translation)
+  - [Code of Conduct](https://mathewsachin.github.io/Captura/code_of_conduct)
+  - [Command-line](https://mathewsachin.github.io/Captura/cmdline)
+  - [FAQ](https://mathewsachin.github.io/Captura/faq)
+  - [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
+  - [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
 - [License](#license)
 
 ## Installation
@@ -85,36 +85,37 @@ Dev builds can be unstable and should be used for testing purposes only.
 
 ## Build Notes
 
-- [Visual Studio 2017](https://visualstudio.com) or greater is recommended. Can also be built using Visual Studio 2015 using [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers) nuget package to support compilation of C# 7.
+- [Visual Studio 2017](https://visualstudio.com) or greater is recommended.
 - .Net Framework v4.6.1 is required.
-- For detailed information, see [Building](docs/Building.md).
+- For detailed information, see [Building](https://mathewsachin.github.io/Captura/build).
 
 ## System Requirements
 
-- Verified on **Windows 10**. Might work on earlier versions also.
+- Verified on **Windows 10**. Atleast Windows Vista is required.
+- If you are on Windows 7 or earlier, make sure Aero is enabled.
+- **Desktop Duplication API** is only available on **Windows 8** and above.
 - 2 GHz CPU (Recommended).
 - 4 GB RAM (Recommended).
 - **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
-- Using the **FFMpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
-- **Desktop Duplication API** is only available on **Windows 8** and above.
+- Using the **FFmpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
 - For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
 
-## FFMpeg
+## FFmpeg
 
-[FFMpeg](http://ffmpeg.org/) is an open-source cross-platform solution to record, convert and stream audio and video.
+[FFmpeg](http://ffmpeg.org/) is an open-source cross-platform solution to record, convert and stream audio and video.
 It adds support for more output formats like **H.264** for Video and **Mp3**, **AAC** etc. when capturing **Only Audio**.
 
-FFMpeg is configured on the **FFMpeg** section in the **Configure** tab.
+FFmpeg is configured on the **FFmpeg** section in the **Configure** tab.
 
 Due to its large size (approx. 30MB), it is not included in the downloads.
-If you already have FFMpeg on your system, you can just set the path to the folder containing it.
+If you already have FFmpeg on your system, you can just set the path to the folder containing it.
 If it is installed globally (available in PATH), you don't have to do anything.
-If you don't have FFMpeg or want to update, use the inbuilt **FFMpeg Downloader**.
-FFMpeg needs to be downloaded only once.
+If you don't have FFmpeg or want to update, use the inbuilt **FFmpeg Downloader**.
+FFmpeg needs to be downloaded only once.
 
-In cases where the **FFMpeg Downloader** fails, please download manually from <https://ffmpeg.zeranoe.com/builds/> and set FFMpeg folder in `Configure | FFMpeg`.
+In cases where the **FFmpeg Downloader** fails, please download manually from <https://ffmpeg.zeranoe.com/builds/> and set FFmpeg folder in `Configure | FFmpeg`.
 
-If you don't want to use FFMpeg, you can switch to `SharpAvi`.
+If you don't want to use FFmpeg, you can switch to `SharpAvi`.
 
 ## License
 

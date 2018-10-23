@@ -4,23 +4,48 @@ using System.Windows.Controls.Primitives;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     class SystemTray : ISystemTray
     {
+        bool _first = true;
+
         /// <summary>
         /// Using a Function ensures that the <see cref="TaskbarIcon"/> object is used only after it is initialised.
         /// </summary>
         readonly Func<TaskbarIcon> _trayIcon;
         readonly Settings _settings;
+        readonly IAudioPlayer _audioPlayer;
 
-        public SystemTray(Func<TaskbarIcon> TaskbarIcon, Settings Settings)
+        readonly NotificationStack _notificationStack = new NotificationStack();
+
+        public SystemTray(Func<TaskbarIcon> TaskbarIcon, Settings Settings, IAudioPlayer AudioPlayer)
         {
             _trayIcon = TaskbarIcon;
             _settings = Settings;
+            _audioPlayer = AudioPlayer;
+
+            _notificationStack.Opacity = 0;
         }
 
         public void HideNotification()
         {
-            _trayIcon.Invoke()?.CloseBalloon();
+            _notificationStack.Hide();
+        }
+
+        void Show()
+        {
+            var trayIcon = _trayIcon.Invoke();
+
+            if (trayIcon != null && _first)
+            {
+                trayIcon.ShowCustomBalloon(_notificationStack, PopupAnimation.None, null);
+
+                _first = false;
+            }
+
+            _audioPlayer.Play(SoundKind.Notification);
+
+            _notificationStack.Show();
         }
 
         public void ShowScreenShotNotification(string FilePath)
@@ -28,19 +53,26 @@ namespace Captura.Models
             if (!_settings.UI.TrayNotify)
                 return;
 
-            var popup = new ScreenShotBalloon(FilePath);
-            
-            _trayIcon.Invoke()?.ShowCustomBalloon(popup, PopupAnimation.Scroll, _settings.UI.ScreenShotNotifyTimeout);
+            _notificationStack.Add(new ScreenShotBalloon(FilePath));
+
+            Show();
         }
 
-        public void ShowTextNotification(string Text, int Duration, Action OnClick)
+        public INotification ShowNotification(bool Progress)
         {
+            var vm = new NotificationViewModel();
+
+            if (!Progress)
+                vm.Finished = true;
+
             if (!_settings.UI.TrayNotify)
-                return;
+                return vm;
 
-            var balloon = new TextBalloon(Text, OnClick);
+            _notificationStack.Add(new NotificationBalloon(vm));
 
-            _trayIcon.Invoke()?.ShowCustomBalloon(balloon, PopupAnimation.Scroll, Duration);
+            Show();
+
+            return vm;
         }
     }
 }

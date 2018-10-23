@@ -1,0 +1,40 @@
+<Page x:Class="Captura.Views.RecentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:local="clr-namespace:Captura"
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid>
+        <DockPanel Margin="10">
+            <DockPanel DockPanel.Dock="Top"
+                       Margin="0,0,0,10">
+                <Button Content="{Binding Clear, Source={StaticResource Loc}, Mode=OneWay}"
+                        ToolTip="{Binding ClearRecentList, Source={StaticResource Loc}, Mode=OneWay}"
+                        DockPanel.Dock="Right"
+                        Command="{Binding RecentViewModel.ClearCommand}"/>
+
+                <Label Content="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       FontSize="15"/>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Top"
+                       Margin="0,0,0,10">
+                <Label Content="{Binding MaxRecent, Source={StaticResource Loc}, Mode=OneWay}"
+                       ContentStringFormat="{}{0}:"/>
+                <xctk:IntegerUpDown Margin="5,0,0,0"
+                                    Value="{Binding Settings.RecentMax}"/>
+            </DockPanel>
+
+            <ItemsControl Margin="0,10,0,0"
+                          ItemsSource="{Binding RecentViewModel.RecentList}"
+                          Style="{StaticResource VirtualizingItemsControl}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:RecentItem/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DockPanel>
+    </Grid>
+</Page>

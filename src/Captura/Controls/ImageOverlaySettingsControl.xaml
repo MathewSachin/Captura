@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Captura.ImageOverlaySettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Captura"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance captura:ImageOverlaySettings}">
+    <StackPanel>
+        <local:PositionSettingsControl/>
+
+        <Grid Margin="0,15,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Content="{Binding Resize, Source={StaticResource Loc}, Mode=OneWay}"
+                      IsChecked="{Binding Resize, Mode=TwoWay}"
+                      Margin="0,0,5,0"/>
+
+            <xctk:IntegerUpDown Value="{Binding ResizeWidth, Mode=TwoWay}"
+                                Grid.Column="1"
+                                Minimum="1"
+                                IsEnabled="{Binding Resize}"/>
+
+            <Label Content="x"
+                   Grid.Column="2"
+                   Margin="5,0"/>
+
+            <xctk:IntegerUpDown Value="{Binding ResizeHeight, Mode=TwoWay}"
+                                Grid.Column="3"
+                                Minimum="1"
+                                IsEnabled="{Binding Resize}"/>
+        </Grid>
+
+        <Grid Margin="0,15,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Path Data="{StaticResource IconOpacity}"
+                  Width="15"
+                  Height="15"
+                  Margin="0,0,10,0"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+
+            <Label Content="{Binding Opacity, Source={StaticResource Loc}, Mode=OneWay}"
+                   ContentStringFormat="{}{0}: "
+                   Grid.Column="1"
+                   Margin="0,3"/>
+
+            <xctk:IntegerUpDown Value="{Binding Opacity, Mode=TwoWay}"
+                                Grid.Column="2"
+                                Minimum="1"
+                                Maximum="100"/>
+        </Grid>
+    </StackPanel>
+</UserControl>

@@ -1,9 +1,10 @@
-﻿using Screna.Audio;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Captura;
+using Captura.Audio;
 
 namespace Screna
 {
@@ -19,7 +20,8 @@ namespace Screna
         readonly IAudioFileWriter _audioWriter;
         readonly IImageProvider _imageProvider;
 
-        readonly int _frameRate;
+        readonly int _frameRate, _maxFrameCount, _congestionFrameCount;
+        bool _congestion;
 
         readonly BlockingCollection<IBitmapFrame> _frames;
         readonly Stopwatch _sw;
@@ -27,6 +29,8 @@ namespace Screna
         readonly ManualResetEvent _continueCapturing;
 
         readonly Task _writeTask, _recordTask;
+
+        readonly object _syncLock = new object();
         #endregion
 
         /// <summary>
@@ -46,6 +50,8 @@ namespace Screna
                 throw new ArgumentException("Frame Rate must be possitive", nameof(FrameRate));
 
             _frameRate = FrameRate;
+            _congestionFrameCount = _frameRate * 2; // 2 seconds
+            _maxFrameCount = _frameRate * 4; // 4 seconds
 
             _continueCapturing = new ManualResetEvent(false);
 
@@ -83,15 +89,35 @@ namespace Screna
 
                     if (img != null)
                     {
+                        // Avoid writing Repeat frames during congestion
+                        if (img is RepeatFrame && _congestion)
+                        {
+                            continue;
+                        }
+
+                        // Dispose all frames and Stop Writing
+                        // using lock here will cause a deadlock
+                        if (_disposed)
+                        {
+                            img.Dispose();
+                            continue;
+                        }
+
                         _videoWriter.WriteFrame(img);
                     }
                 }
             }
             catch (Exception e)
             {
-                ErrorOccured?.Invoke(e);
+                lock (_syncLock)
+                {
+                    if (!_disposed)
+                    {
+                        ErrorOccurred?.Invoke(e);
 
-                Dispose(true, false);
+                        Dispose(true, false);
+                    }
+                }
             }
         }
 
@@ -102,7 +128,7 @@ namespace Screna
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
 
-                Task<IBitmapFrame> task = null;
+                Task<bool> task = null;
 
                 // Returns false when stopped
                 bool AddFrame(IBitmapFrame Frame)
@@ -135,26 +161,51 @@ namespace Screna
 
                 while (CanContinue() && !_frames.IsAddingCompleted)
                 {
+                    if (!_congestion && _frames.Count > _congestionFrameCount)
+                    {
+                        _congestion = true;
+
+                        Console.WriteLine("Congestion: ON");
+                    }
+                    else if (_congestion && _frames.Count < _congestionFrameCount / 2)
+                    {
+                        _congestion = false;
+
+                        Console.WriteLine("Congestion: OFF");
+                    }
+
+                    if (_frames.Count > _maxFrameCount)
+                    {
+                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a smaller region, lower Frame Rate or another Codec.");
+                    }
+
                     var timestamp = DateTime.Now;
 
                     if (task != null)
                     {
-                        var frame = await task;
-
-                        if (!AddFrame(frame))
+                        // If false, stop recording
+                        if (!await task)
                             return;
 
-                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                        var diff = requiredFrames - frameCount;
-
-                        for (var i = 0; i < diff; ++i)
+                        if (!_congestion)
                         {
-                            if (!AddFrame(RepeatFrame.Instance))
-                                return;
+                            var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+                            var diff = requiredFrames - frameCount;
+
+                            for (var i = 0; i < diff; ++i)
+                            {
+                                if (!AddFrame(RepeatFrame.Instance))
+                                    return;
+                            }
                         }
                     }
 
-                    task = Task.Factory.StartNew(() => _imageProvider.Capture());
+                    task = Task.Factory.StartNew(() =>
+                    {
+                        var frame = _imageProvider.Capture();
+
+                        return AddFrame(frame);
+                    });
 
                     var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
 
@@ -164,21 +215,54 @@ namespace Screna
             }
             catch (Exception e)
             {
-                ErrorOccured?.Invoke(e);
+                lock (_syncLock)
+                {
+                    if (!_disposed)
+                    {
+                        ErrorOccurred?.Invoke(e);
 
-                Dispose(false, true);
+                        Dispose(false, true);
+                    }
+                }
             }
         }
 
         void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
         {
-            _videoWriter.WriteAudio(E.Buffer, E.Length);            
+            try
+            {
+                lock (_syncLock)
+                {
+                    if (_disposed)
+                        return;
+                }
+
+                _videoWriter.WriteAudio(E.Buffer, E.Length);
+            }
+            catch (Exception e)
+            {
+                if (_imageProvider == null)
+                {
+                    lock (_syncLock)
+                    {
+                        if (!_disposed)
+                        {
+                            ErrorOccurred?.Invoke(e);
+
+                            Dispose(true, true);
+                        }
+                    }
+                }
+            }
         }
 
         #region Dispose
         void Dispose(bool TerminateRecord, bool TerminateWrite)
         {
-            ThrowIfDisposed();
+            if (_disposed)
+                return;
+
+            _disposed = true;
 
             _audioProvider?.Stop();
             _audioProvider?.Dispose();
@@ -203,8 +287,6 @@ namespace Screna
             else _audioWriter.Dispose();
 
             _imageProvider?.Dispose();
-
-            _disposed = true;
         }
 
         /// <summary>
@@ -212,7 +294,10 @@ namespace Screna
         /// </summary>
         public void Dispose()
         {
-            Dispose(true, true);
+            lock (_syncLock)
+            {
+                Dispose(true, true);
+            }
         }
 
         bool _disposed;
@@ -220,12 +305,15 @@ namespace Screna
         /// <summary>
         /// Fired when an error occurs
         /// </summary>
-        public event Action<Exception> ErrorOccured;
+        public event Action<Exception> ErrorOccurred;
 
         void ThrowIfDisposed()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("this");
+            lock (_syncLock)
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException("this");
+            }
         }
         #endregion
 

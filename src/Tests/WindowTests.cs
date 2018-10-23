@@ -1,25 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Screna;
+using Xunit;
 
 namespace Captura.Tests
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class WindowTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ZeroPointerWindow()
         {
-            var win = new Window(IntPtr.Zero);
-
-            Assert.AreNotEqual(win.Handle, IntPtr.Zero);
+            Assert.Throws<ArgumentException>(() => new Window(IntPtr.Zero));
         }
 
-        [TestMethod]
+        [Fact]
         public void DesktopWindowNotZero()
         {
-            Assert.AreNotEqual(Window.DesktopWindow, IntPtr.Zero);
+            Assert.NotEqual(IntPtr.Zero, Window.DesktopWindow.Handle);
         }
     }
 }

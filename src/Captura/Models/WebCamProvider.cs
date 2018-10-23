@@ -5,6 +5,7 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class WebCamProvider : NotifyPropertyChanged, IWebCamProvider
     {
         public WebCamProvider()
@@ -52,7 +53,7 @@ namespace Captura.Models
                     }
                     catch (Exception e)
                     {
-                        ServiceProvider.MessageProvider.ShowError($"Could not Start Webcam.\n\n\n{e}");
+                        ServiceProvider.MessageProvider.ShowException(e, "Could not Start Webcam");
                     }
                 }
 
@@ -79,9 +80,13 @@ namespace Captura.Models
         {
             try
             {
-                return _camControl.Dispatcher.Invoke(() => _camControl.Capture.GetFrame());
+                return _camControl.Dispatcher.Invoke(() => _camControl.Capture?.GetFrame());
             }
             catch { return null; }
         }
+
+        public int Width => _camControl.Dispatcher.Invoke(() => _camControl.Capture.Size.Width);
+
+        public int Height => _camControl.Dispatcher.Invoke(() => _camControl.Capture.Size.Height);
     }
 }

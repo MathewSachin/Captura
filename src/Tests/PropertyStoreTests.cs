@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace Captura.Tests
 {
-    [TestClass]
+    [Collection(nameof(Tests))]
     public class PropertyStoreTests
     {
-        [TestMethod]
+        [Fact]
         public void TestPropertyChanged()
         {
             var obj = new FakePropertyStore();
@@ -18,16 +18,16 @@ namespace Captura.Tests
 
             obj.Property = newValue;
 
-            Assert.AreEqual(obj.Property, newValue);
-            Assert.AreEqual(propertyName, nameof(obj.Property));
+            Assert.Equal(obj.Property, newValue);
+            Assert.Equal(nameof(obj.Property), propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDefaultValue()
         {
             var obj = new FakePropertyStore();
             
-            Assert.AreEqual(obj.Property, FakePropertyStore.DefaultPropertyValue);
+            Assert.Equal(obj.Property, FakePropertyStore.DefaultPropertyValue);
         }
     }
 }

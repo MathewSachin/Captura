@@ -15,6 +15,9 @@ TestResults/
 *.user
 
 # Cake
-/tools/
+/tools/*
+!tools/packages.config
+!tools/scripts
+
 /temp/
-/Output/
+/dist/

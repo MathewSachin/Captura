@@ -1,0 +1,409 @@
+﻿<Window x:Class="Captura.RegionSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Captura"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
+        xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
+        mc:Ignorable="d"
+        Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="True"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Name="This"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Thumb">
+                <Setter Property="Opacity" Value="0.01"/>
+                <EventSetter Event="DragDelta" Handler="Thumb_OnDragDelta"/>
+            </Style>
+            <Style x:Key="CornerThumb" TargetType="Thumb" BasedOn="{StaticResource {x:Type Thumb}}">
+                <Setter Property="Height" Value="5"/>
+                <Setter Property="Width" Value="5"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderThickness="2"
+                Name="Region"
+                Height="500"
+                Width="400"
+                MinHeight="200"
+                MinWidth="300">
+            <Border.BorderBrush>
+                <DrawingBrush TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <GeometryDrawing>
+                                <GeometryDrawing.Brush>
+                                    <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+                                </GeometryDrawing.Brush>
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="0,0,10,10" />
+                                        <RectangleGeometry Rect="10,10,10,10" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+
+                            <GeometryDrawing>
+                                <GeometryDrawing.Brush>
+                                    <SolidColorBrush Color="{DynamicResource AccentColor}"/>
+                                </GeometryDrawing.Brush>
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="10,0,10,10" />
+                                        <RectangleGeometry Rect="0,10,10,10" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Border.BorderBrush>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn}" Value="{x:Static models:RecorderState.Recording}">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard Name="RedStoryboard">
+                                    <Storyboard>
+                                        <ColorAnimation To="#ef5350"
+                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
+                                                        Duration="00:00:00.5"/>
+
+                                        <ColorAnimation To="White"
+                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
+                                                        Duration="00:00:00.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="RedStoryboard"/>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <InkCanvas Background="Transparent"
+                       Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                       Name="InkCanvas"/>
+        </Border>
+
+        <Thumb VerticalAlignment="Top"
+               Height="2"
+               Cursor="SizeAll"
+               Tag="Top"/>
+
+        <Grid Grid.Row="0"
+              Grid.Column="0"
+              IsEnabled="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}">
+            <Thumb VerticalAlignment="Bottom"
+                   Height="2"
+                   Cursor="SizeNS"
+                   Tag="Bottom"/>
+
+            <Thumb HorizontalAlignment="Left"
+                   Width="2"
+                   Cursor="SizeWE"
+                   Tag="Left"/>
+            
+            <Thumb HorizontalAlignment="Right"
+                   Width="2"
+                   Cursor="SizeWE"
+                   Tag="Right"/>
+
+            <Thumb HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNWSE"
+                   Tag="TopLeft"/>
+
+            <Thumb HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNESW"
+                   Tag="TopRight"/>
+
+            <Thumb HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNESW"
+                   Tag="BottomLeft"/>
+
+            <Thumb HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource CornerThumb}"
+                   Cursor="SizeNWSE"
+                   Tag="BottomRight"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Margin="0,10,0,0">
+            <Border BorderThickness="1"
+                    Name="SizeBorder"
+                    BorderBrush="{DynamicResource Accent}">
+                <DockPanel HorizontalAlignment="Right"
+                           Background="{DynamicResource WindowBackground}">
+                    <xctk:IntegerUpDown Width="60"
+                                        DockPanel.Dock="Right"
+                                        Margin="3"
+                                        Name="HeightBox"/>
+
+                    <Label Content="x"
+                           DockPanel.Dock="Right"
+                           Margin="7,3"/>
+
+                    <xctk:IntegerUpDown Width="60"
+                                        DockPanel.Dock="Right"
+                                        Margin="3"
+                                        Name="WidthBox"/>
+                </DockPanel>
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Width, ElementName=This, Converter={StaticResource IsLessThanConverter}, ConverterParameter=500}" Value="True">
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="Margin" Value="0,40,0,0"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, ElementName=SizeBorder}" Value="False"/>
+                                    <Condition Binding="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                             To="0.2"
+                                                             Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                             To="1"
+                                                             Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.ExitActions>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+
+            <Border BorderThickness="1"
+                    BorderBrush="{DynamicResource Accent}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+                <DockPanel Name="MainControls"
+                           Background="{DynamicResource WindowBackground}"
+                           d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
+                    <DockPanel.Resources>
+                        <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DockPanel.Resources>
+
+                    <local:ModernButton IconData="{StaticResource IconSnapToWindow}"
+                                        x:Name="Snapper"
+                                        Click="Snapper_OnClick"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="Snap to Window"/>
+
+                    <local:ModernButton x:Name="CloseButton"
+                                        Click="CloseButton_Click"
+                                        Background="{DynamicResource WindowBackground}"
+                                        Foreground="#77ef5350"
+                                        IconData="{StaticResource IconClose}"
+                                        DockPanel.Dock="Right"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
+                                        IconData="{StaticResource IconCamera}"
+                                        DockPanel.Dock="Right"
+                                        Opacity="0.9"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                    <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand}"
+                                        Foreground="#b71c1c"
+                                        x:Name="RecordBtn"
+                                        IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
+
+                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand}"
+                                        IconData="{StaticResource IconPause}"
+                                        Opacity="0.9"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
+                                        RenderTransformOrigin="0.5,0.5">
+                        <local:ModernButton.RenderTransform>
+                            <RotateTransform/>
+                        </local:ModernButton.RenderTransform>
+                        <local:ModernButton.Style>
+                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="90"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                                     To="0"
+                                                                     Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ModernButton.Style>
+                    </local:ModernButton>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10,-1"
+                                PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
+                                Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                Name="DurationLabel">
+                        <Label Content="{Binding RecordingViewModel.TimeSpan}"/>
+
+                        <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
+                               ContentStringFormat="{} / {0}"
+                               Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
+                    </StackPanel>
+
+                    <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                           Content="{Binding RecordingViewModel.Countdown}"
+                           Margin="10,-1"
+                           PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
+                           Style="{StaticResource CountdownLabel}"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="0"
+                Margin="10,0,0,0"
+                Grid.Column="1"
+                Grid.RowSpan="2"
+                BorderBrush="{DynamicResource Accent}"
+                BorderThickness="1"
+                VerticalAlignment="Top"
+                Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+            <DockPanel Background="{DynamicResource WindowBackground}"
+                       LastChildFill="False">
+                <ListBox Name="ModesBox"
+                         SelectedValuePath="Key"
+                         DockPanel.Dock="Top"
+                         Margin="0,0,0,10"
+                         HorizontalContentAlignment="Center"
+                         SelectionChanged="ModesBox_OnSelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                                  Width="12"
+                                  Height="12"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{Binding Value}"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
+                                  Margin="5"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <xctk:ColorPicker Margin="0,2"
+                                  BorderThickness="2"
+                                  Width="35"
+                                  DockPanel.Dock="Bottom"
+                                  Name="ColorPicker"
+                                  SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
+                                  VerticalContentAlignment="Stretch"
+                                  ColorMode="ColorCanvas"
+                                  ShowAdvancedButton="True"
+                                  AdvancedButtonHeader="Color Canvas"
+                                  StandardButtonHeader="Pallette"
+                                  ShowRecentColors="True">
+                    <xctk:ColorPicker.LayoutTransform>
+                        <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
+                    </xctk:ColorPicker.LayoutTransform>
+                </xctk:ColorPicker>
+
+                <xctk:IntegerUpDown Name="SizeBox"
+                                    Minimum="1"
+                                    Maximum="99"
+                                    DockPanel.Dock="Bottom"
+                                    ValueChanged="SizeBox_OnValueChanged"
+                                    Margin="0,2"
+                                    Width="40">
+                    <xctk:IntegerUpDown.LayoutTransform>
+                        <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
+                    </xctk:IntegerUpDown.LayoutTransform>
+                </xctk:IntegerUpDown>
+            </DockPanel>
+
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Opacity" Value="0.2"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="0.2"
+                                                         Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,73 @@
+﻿<Page x:Class="Captura.CensorOverlaysPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:captura="clr-namespace:Captura"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      Title="Censor Overlays">
+    <Grid>
+        <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CensorOverlays, Source={StaticResource ServiceLocator}}">
+            <DockPanel DockPanel.Dock="Top">
+                <captura:ModernButton ToolTip="Add"
+                                      Command="{Binding AddCommand}"
+                                      IconData="{StaticResource IconAdd}"/>
+                <Label Content="Add More"/>
+            </DockPanel>
+
+            <ListView Margin="5"
+                      ItemsSource="{Binding Collection}"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="Censor"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <GridSplitter Width="1"/>
+
+            <DockPanel Visibility="{Binding SelectedItem, Converter={StaticResource NotNullConverter}}"
+                       Margin="10"
+                       VerticalAlignment="Top">
+                <Grid Margin="0,15,0,5"
+                      DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Size"
+                           Margin="0,0,5,0"/>
+
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.Width, Mode=TwoWay}"
+                                        Grid.Column="1"
+                                        Minimum="1"/>
+
+                    <Label Content="x"
+                           Grid.Column="2"
+                           Margin="5,0"/>
+
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.Height, Mode=TwoWay}"
+                                        Grid.Column="3"
+                                        Minimum="1"/>
+                </Grid>
+
+                <captura:PositionSettingsControl Margin="0,5"
+                                                 DataContext="{Binding SelectedItem}"
+                                                 DockPanel.Dock="Bottom"/>
+
+                <DockPanel DockPanel.Dock="Top">
+                    <captura:ModernButton ToolTip="Remove"
+                                          Command="{Binding RemoveCommand}"
+                                          CommandParameter="{Binding SelectedItem}"
+                                          IconData="{StaticResource IconClose}"
+                                          DockPanel.Dock="Right"/>
+
+                    <CheckBox IsChecked="{Binding SelectedItem.Display, Mode=TwoWay}"
+                              Content="Display"/>
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Page>

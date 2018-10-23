@@ -3,57 +3,73 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
+using Screna;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class DiskWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
+        readonly LanguageManager _loc;
 
-        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings)
+        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings, LanguageManager Loc)
         {
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
+            _loc = Loc;
 
-            LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public void Save(Bitmap Image, ImageFormat Format, string FileName, TextLocalizer Status, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
         {
             try
             {
-
                 _settings.EnsureOutPath();
 
                 var extension = Format.Equals(ImageFormat.Icon) ? "ico"
                     : Format.Equals(ImageFormat.Jpeg) ? "jpg"
                     : Format.ToString().ToLower();
 
-                var fileName = FileName ?? Path.Combine(_settings.OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.{extension}");
+                var fileName = _settings.GetFileName(extension, FileName);
 
-                using (Image)
-                    Image.Save(fileName, Format);
-
-                Status.LocalizationKey = nameof(LanguageManager.ImgSavedDisk);
+                Image.Save(fileName, Format);
+                
                 Recents.Add(fileName, RecentItemType.Image, false);
 
-                if (_settings.CopyOutPathToClipboard)
+                // Copy path to clipboard only when clipboard writer is off
+                if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                     fileName.WriteToClipboard();
 
                 _systemTray.ShowScreenShotNotification(fileName);
             }
             catch (Exception e)
             {
-                _messageProvider.ShowError($"{nameof(LanguageManager.NotSaved)}\n\n{e}");
-
-                Status.LocalizationKey = nameof(LanguageManager.NotSaved);
+                _messageProvider.ShowException(e, _loc.NotSaved);
             }
+
+            return Task.CompletedTask;
         }
 
-        public string Display => LanguageManager.Instance.Disk;
+        public string Display => _loc.Disk;
+
+        bool _active;
+
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                _active = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public override string ToString() => Display;
     }
