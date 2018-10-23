@@ -21,14 +21,16 @@ environment:
     secure: uhvhrrZd7L8MK4CrDGkM1A==
 
 cache:
-  - tools -> tools\packages.config
   - temp\bass
   - temp\bass.zip
   - temp\bassmix
   - temp\bassmix.zip
 
+install:
+  - dotnet tool install -g Cake.Tool --version 0.30.0
+
 # Build using Cake
 build_script:
-  - ps: ./build.ps1 -target CI -configuration $env:CONFIGURATION -tag $env:APPVEYOR_REPO_TAG_NAME
+  - ps: dotnet-cake -target CI -configuration $env:CONFIGURATION -tag $env:APPVEYOR_REPO_TAG_NAME
 
 test: off

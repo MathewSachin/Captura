@@ -4,8 +4,11 @@ using static System.Text.RegularExpressions.Regex;
 
 var prerelease = false;
 readonly var buildNo = EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
+
+// version parameter is already used by cake.exe
 var version = Argument<string>("appversion", null);
-readonly var tag = Argument<string>("apptag", null);
+
+readonly var tag = Argument<string>("tag", null);
 
 void UpdateVersion(string AssemblyInfoPath)
 {
