@@ -130,7 +130,15 @@ var cleanTask = Task("Clean").Does(() =>
     });
 });
 
-var nugetRestoreTask = Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
+var nugetRestoreTask = Task("Nuget-Restore").Does(() =>
+{
+    MSBuild(slnPath, settings =>
+    {
+        settings.SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Minimal)
+            .WithTarget("Restore");
+    });
+});
 
 var buildTask = Task("Build")
     .IsDependentOn(nugetRestoreTask)
