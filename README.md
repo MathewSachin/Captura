@@ -12,7 +12,7 @@
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="http://i.imgur.com/syPGnSd.png" align="right"></a>
+<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" align="right"></a>
 
 ## Features
 
