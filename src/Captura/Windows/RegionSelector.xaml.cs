@@ -297,6 +297,7 @@ namespace Captura
                 void DoTop()
                 {
                     var oldTop = Top;
+                    var oldBottom = Top + Region.Height;
                     var top = Top + E.VerticalChange;
 
                     if (top > 0)
@@ -304,6 +305,7 @@ namespace Captura
                     else
                     {
                         Top = 0;
+                        Region.Width = oldBottom;
                         return;
                     }
 
@@ -317,6 +319,7 @@ namespace Captura
                 void DoLeft()
                 {
                     var oldLeft = Left;
+                    var oldRight = Left + Region.Width;
                     var left = Left + E.HorizontalChange;
 
                     if (left > 0)
@@ -324,6 +327,7 @@ namespace Captura
                     else
                     {
                         Left = 0;
+                        Region.Width = oldRight;
                         return;
                     }
 
