@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Captura.Models
 {
@@ -20,6 +21,13 @@ namespace Captura.Models
 
         public bool Finished { get; set; }
         public bool Success { get; set; }
+
+        public IReadOnlyCollection<NotificationAction> Actions { get; } = new NotificationAction[0];
+
+        public NotificationAction AddAction()
+        {
+            return new NotificationAction();
+        }
 
 #pragma warning disable CS0067
         public event Action Click;

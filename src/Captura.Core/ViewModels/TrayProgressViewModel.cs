@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace Captura
 {
@@ -10,6 +13,25 @@ namespace Captura
         public void Remove() => RemoveRequested?.Invoke();
 
         public void RaiseClick() => Click?.Invoke();
+
+        readonly ObservableCollection<NotificationAction> _actions = new ObservableCollection<NotificationAction>();
+
+        public IReadOnlyCollection<NotificationAction> Actions => _actions;
+
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+
+        public NotificationAction AddAction()
+        {
+            var action = new NotificationAction();
+
+            if (_syncContext != null)
+            {
+                _syncContext.Post(S => _actions.Add(action), null);
+            }
+            else _actions.Add(action);
+
+            return action;
+        }
 
         int _progress;
 
