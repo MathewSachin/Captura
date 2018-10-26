@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -77,11 +78,20 @@ namespace Captura
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => OnClose();
 
+        /// <summary>
+        /// Slides out element while decreasing opacity, then decreases height, then removes.
+        /// </summary>
         void Remove(FrameworkElement Element)
         {
-            var anim = new DoubleAnimation(Element.ActualHeight, 0, new Duration(TimeSpan.FromMilliseconds(200)));
+            var transform = new TranslateTransform();
+            Element.RenderTransform = transform;
 
-            anim.Completed += (S, E) =>
+            var translateAnim = new DoubleAnimation(500, new Duration(TimeSpan.FromMilliseconds(200)));
+            var opactityAnim = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(200)));
+
+            var heightAnim = new DoubleAnimation(Element.ActualHeight, 0, new Duration(TimeSpan.FromMilliseconds(200)));
+
+            heightAnim.Completed += (S, E) =>
             {
                 ItemsControl.Items.Remove(Element);
 
@@ -91,7 +101,10 @@ namespace Captura
                 }
             };
 
-            Element.BeginAnimation(HeightProperty, anim);
+            opactityAnim.Completed += (S, E) => Element.BeginAnimation(HeightProperty, heightAnim);
+
+            transform.BeginAnimation(TranslateTransform.XProperty, translateAnim);
+            Element.BeginAnimation(OpacityProperty, opactityAnim);
         }
 
         const int MaxItems = 5;
