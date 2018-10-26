@@ -34,12 +34,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LanguageField.cs" />
     <Compile Include="LanguageFields.cs" />
     <Compile Include="LanguageManager.cs" />
     <Compile Include="ObjectLocalizer.cs" />
     <Compile Include="TextLocalizer.cs" />
-    <Compile Include="TranslationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">

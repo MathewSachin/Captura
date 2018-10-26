@@ -17,7 +17,7 @@ namespace Captura.Models
             _loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
         
-        public string Name => _loc.Gif;
+        public string Name => "Gif";
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {

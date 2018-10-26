@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Captura"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         mc:Ignorable="d"
-        Title="Overlays"
+        Title="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"
         Height="500"
         Width="800"
         SizeChanged="OverlayWindow_OnSizeChanged">
@@ -25,13 +24,13 @@
                     <mui:TransitioningContentControl Content="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
-            <TabItem Header="Keystrokes">
+            <TabItem Header="{Binding Keystrokes, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="../Pages/KeystrokesPage.xaml"/>
             </TabItem>
             <TabItem Header="Mouse">
                 <Frame Source="../Pages/MouseOverlayPage.xaml"/>
             </TabItem>
-            <TabItem Header="Webcam"
+            <TabItem Header="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
                      DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.WebcamOverlay}">

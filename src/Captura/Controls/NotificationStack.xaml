@@ -23,7 +23,7 @@
                                 DockPanel.Dock="Right"/>
 
             <Label>
-                <TextBlock Text="Notifications"
+                <TextBlock Text="{Binding Notifications, Source={StaticResource Loc}, Mode=OneWay}"
                            VerticalAlignment="Center"
                            Style="{StaticResource Title}"
                            Padding="5"/>

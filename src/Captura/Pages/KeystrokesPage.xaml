@@ -2,19 +2,18 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:captura="clr-namespace:Captura"
-      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      Title="Keystrokes">
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Grid>
         <ScrollViewer DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.Keystrokes}">
-                <CheckBox Content="Save to separate Text file"
+                <CheckBox Content="{Binding KeystrokesSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding SeparateTextFile, Mode=TwoWay}"
                           Margin="0,3"
                           IsEnabled="{Binding MainViewModel.RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}"/>
 
                 <DockPanel Margin="0,3">
-                    <Label Content="Keymap"
+                    <Label Content="{Binding Keymap, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,0,5,0"/>
 
@@ -60,7 +59,7 @@
                                         Grid.Column="1"
                                         Margin="0,5"/>
 
-                    <Label Content="History Count"
+                    <Label Content="{Binding KeystrokesHistoryCount, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="2"/>
@@ -70,7 +69,7 @@
                                         Minimum="1"
                                         Margin="0,5"/>
 
-                    <Label Content="History Spacing"
+                    <Label Content="{Binding KeystrokesHistorySpacing, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,5,5,5"
                            Grid.Row="3"/>
