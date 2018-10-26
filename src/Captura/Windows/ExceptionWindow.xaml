@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:captura="clr-namespace:Captura"
         mc:Ignorable="d"
-        Title="Exception Occurred"
+        Title="{Binding ErrorOccurred, Source={StaticResource Loc}, Mode=OneWay}"
         Height="500"
         Width="700">
     <Window.DataContext>
@@ -63,10 +63,10 @@
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Copy to Clipboard"/>
+                    <TextBlock Text="{Binding CopyToClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </DockPanel>
             </Button>
-            <Button Content="Close"
+            <Button Content="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                     Margin="5"
                     Click="Close_OnClick"/>
         </StackPanel>

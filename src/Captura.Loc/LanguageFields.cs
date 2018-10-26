@@ -187,6 +187,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string CrashLogs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Crop
         {
             get => Get();
