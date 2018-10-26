@@ -717,20 +717,38 @@ namespace Captura.ViewModels
 
             if (savingRecentItem != null)
             {
-                // After Save
-                savingRecentItem.Saved();
-
-                if (Settings.CopyOutPathToClipboard)
-                    savingRecentItem.FilePath.WriteToClipboard();
-
-                var notification = _systemTray.ShowNotification(false);
-                notification.PrimaryText = savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
-                notification.SecondaryText = Path.GetFileName(savingRecentItem.FilePath);
-                notification.Click += () =>
-                {
-                    ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
-                };
+                AfterSave(savingRecentItem);
             }
+        }
+
+        void AfterSave(RecentItemViewModel SavingRecentItem)
+        {
+            // After Save
+            SavingRecentItem.Saved();
+        
+            if (Settings.CopyOutPathToClipboard)
+                SavingRecentItem.FilePath.WriteToClipboard();
+
+            var notification = _systemTray.ShowNotification(false);
+            notification.PrimaryText = SavingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
+            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FilePath);
+
+            var deleteAction = notification.AddAction();
+
+            deleteAction.Icon = "IconDelete";
+            deleteAction.Name = Loc.Delete;
+
+            deleteAction.Click += () =>
+            {
+                File.Delete(SavingRecentItem.FilePath);
+
+                notification.Remove();
+            };
+
+            notification.Click += () =>
+            {
+                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FilePath));
+            };
         }
     }
 }
