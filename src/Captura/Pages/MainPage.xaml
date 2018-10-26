@@ -46,10 +46,18 @@
                         </StackPanel>
                     </local:ModernToggleButton.ToolTip>
                 </local:ModernToggleButton>
-                <local:ModernToggleButton ToolTip="Elapsed"
-                                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                <local:ModernToggleButton IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                                           IconData="{StaticResource IconTimer}"
-                                          IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}"/>
+                                          IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
+                    <local:ModernToggleButton.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Elapsed, Source={StaticResource Loc}, Mode=OneWay}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
+                                       FontSize="10"/>
+                        </StackPanel>
+                    </local:ModernToggleButton.ToolTip>
+                </local:ModernToggleButton>
             </StackPanel>
         </DockPanel>
 

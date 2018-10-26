@@ -83,7 +83,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Trim"/>
+                                <TextBlock Text="{Binding Trim, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -100,7 +100,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Copy Image to Clipboard"/>
+                                <TextBlock Text="{Binding CopyToClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -117,7 +117,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Upload to Imgur"/>
+                                <TextBlock Text="{Binding UploadToImgur, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -134,7 +134,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Crop"/>
+                                <TextBlock Text="{Binding Crop, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -151,7 +151,7 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Edit"/>
+                                <TextBlock Text="{Binding Edit, Source={StaticResource Loc}, Mode=OneWay}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>

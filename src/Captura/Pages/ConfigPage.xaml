@@ -48,7 +48,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Label Content="Pre Start Countdown (seconds)"
+                    <Label Content="{Binding PreStartCountdown, Source={StaticResource Loc}, Mode=OneWay}"
                            ContentStringFormat="{}{0}: "
                            Margin="0,2,10,2"/>
 
@@ -103,12 +103,14 @@
                           Margin="0,2"/>
                 
                 <Button Margin="0,2"
-                        Content="Configure File Naming ..."
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigFileNaming, Source={StaticResource Loc}, Mode=OneWay}"
                         Click="OpenFileNameFormatter"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
                 <Button Margin="0,2"
-                        Content="Configure Sounds ..."
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigSounds, Source={StaticResource Loc}, Mode=OneWay}"
                         Click="OpenSounds"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
@@ -130,7 +132,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="Hotkeys"/>
+                            <TextBlock Text="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
 
@@ -146,7 +148,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
 
-                            <TextBlock Text="Overlays"/>
+                            <TextBlock Text="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"/>
                         </DockPanel>
                     </Button>
                 </Grid>

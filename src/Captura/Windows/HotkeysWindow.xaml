@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Captura"
         xmlns:hotkeys="clr-namespace:Captura;assembly=Captura.Hotkeys"
         mc:Ignorable="d"
-        Title="Hotkeys"
+        Title="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"
         Height="600"
         Width="550"
         Background="{DynamicResource WindowBackground}"

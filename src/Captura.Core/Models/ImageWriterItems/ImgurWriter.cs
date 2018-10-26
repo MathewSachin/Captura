@@ -224,7 +224,7 @@ namespace Captura.Models
             }
         }
 
-        public string Display => _loc.Imgur;
+        public string Display => "Imgur";
 
         bool _active;
 

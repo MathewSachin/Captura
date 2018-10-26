@@ -31,6 +31,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string AccentColor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Add
         {
             get => Get();
@@ -44,6 +50,12 @@ namespace Captura
         }
 
         public string Audio
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string AudioFormat
         {
             get => Get();
             set => Set(value);
@@ -127,6 +139,24 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ConfigCodecs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ConfigFileNaming
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ConfigSounds
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Configure
         {
             get => Get();
@@ -157,13 +187,43 @@ namespace Captura
             set => Set(value);
         }
 
+        public string CrashLogs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Crop
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string CustomSize
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string CustomUrl
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string DarkTheme
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Delete
         {
             get => Get();
             set => Set(value);
         }
 
-        public string DesktopDuplication
+        public string DiscardChanges
         {
             get => Get();
             set => Set(value);
@@ -181,6 +241,24 @@ namespace Captura
             set => Set(value);
         }
 
+        public string DownloadFFmpeg
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Edit
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Elapsed
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ErrorOccurred
         {
             get => Get();
@@ -193,12 +271,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Extras
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string FFmpegFolder
         {
             get => Get();
@@ -206,6 +278,30 @@ namespace Captura
         }
 
         public string FFmpegLog
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenu
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuNew
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuOpen
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileMenuSave
         {
             get => Get();
             set => Set(value);
@@ -235,18 +331,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Gif
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Help
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string HideOnFullScreenShot
         {
             get => Get();
@@ -271,6 +355,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ImageEditor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ImgEmpty
         {
             get => Get();
@@ -284,18 +374,6 @@ namespace Captura
         }
 
         public string ImgSavedClipboard
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string ImgSavedDisk
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Imgur
         {
             get => Get();
             set => Set(value);
@@ -337,7 +415,31 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Keymap
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Keystrokes
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesHistoryCount
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesHistorySpacing
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string KeystrokesSeparateFile
         {
             get => Get();
             set => Set(value);
@@ -356,12 +458,6 @@ namespace Captura
         }
 
         public string LoopbackSource
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Main
         {
             get => Get();
             set => Set(value);
@@ -421,19 +517,43 @@ namespace Captura
             set => Set(value);
         }
 
+        public string MouseMiddleClickColor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MousePointer
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string MouseRightClickColor
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string NewWindow
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string No
         {
             get => Get();
             set => Set(value);
         }
 
-        public string NoAudio
+        public string None
         {
             get => Get();
             set => Set(value);
         }
 
-        public string None
+        public string Notifications
         {
             get => Get();
             set => Set(value);
@@ -469,13 +589,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string OpenOutFolder
+        public string OpenFromClipboard
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Options
+        public string OpenOutFolder
         {
             get => Get();
             set => Set(value);
@@ -487,13 +607,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string PaddingX
+        public string Overlays
         {
             get => Get();
             set => Set(value);
         }
 
-        public string PaddingY
+        public string Padding
         {
             get => Get();
             set => Set(value);
@@ -523,19 +643,25 @@ namespace Captura
             set => Set(value);
         }
 
+        public string PlayRecAudio
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Port
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Preview
+        public string PreStartCountdown
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Print
+        public string Preview
         {
             get => Get();
             set => Set(value);
@@ -559,19 +685,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Ready
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Recent
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Recording
         {
             get => Get();
             set => Set(value);
@@ -583,13 +697,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Refresh
+        public string Redo
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Refreshed
+        public string Refresh
         {
             get => Get();
             set => Set(value);
@@ -608,12 +722,6 @@ namespace Captura
         }
 
         public string RemoveFromList
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Repeat
         {
             get => Get();
             set => Set(value);
@@ -655,13 +763,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Screen
+        public string SaveToClipboard
         {
             get => Get();
             set => Set(value);
         }
 
-        public string ScreenPicker
+        public string Screen
         {
             get => Get();
             set => Set(value);
@@ -709,19 +817,19 @@ namespace Captura
             set => Set(value);
         }
 
+        public string SeparateAudioFiles
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string ShowSysNotify
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Source
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string StartDelay
+        public string SnapToWindow
         {
             get => Get();
             set => Set(value);
@@ -733,7 +841,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Stopped
+        public string StreamingKeys
         {
             get => Get();
             set => Set(value);
@@ -757,13 +865,31 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Tools
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Top
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Transforms
+        public string Trim
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Undo
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string UploadToImgur
         {
             get => Get();
             set => Set(value);
@@ -817,7 +943,19 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Waiting
+        public string ViewCrashLogs
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ViewLicenses
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string ViewOnGitHub
         {
             get => Get();
             set => Set(value);
@@ -835,19 +973,25 @@ namespace Captura
             set => Set(value);
         }
 
+        public string WebCamSeparateFile
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string WebCamView
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Window
+        public string Website
         {
             get => Get();
             set => Set(value);
         }
 
-        public string WindowPicker
+        public string Window
         {
             get => Get();
             set => Set(value);

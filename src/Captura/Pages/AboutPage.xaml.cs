@@ -16,11 +16,6 @@ namespace Captura
             LicensesWindow.ShowInstance();
         }
 
-        void Translate(object Sender, RoutedEventArgs E)
-        {
-            TranslationWindow.ShowInstance();
-        }
-
         void ViewCrashLogs(object Sender, RoutedEventArgs E)
         {
             CrashLogsWindow.ShowInstance();

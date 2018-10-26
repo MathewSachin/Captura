@@ -144,9 +144,6 @@
     <Compile Include="Windows\CrashLogsWindow.xaml.cs">
       <DependentUpon>CrashLogsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TranslationWindow.xaml.cs">
-      <DependentUpon>TranslationWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\TrimmerWindow.xaml.cs">
       <DependentUpon>TrimmerWindow.xaml</DependentUpon>
     </Compile>
@@ -352,10 +349,6 @@
     <Page Include="Windows\CrashLogsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\TranslationWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\TrimmerWindow.xaml">
       <SubType>Designer</SubType>

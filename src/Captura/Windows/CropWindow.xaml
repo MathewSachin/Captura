@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Captura.CropWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Crop"
+        Title="{Binding Crop, Source={StaticResource Loc}, Mode=OneWay}"
         Height="600"
         Width="800">
     <DockPanel Background="{DynamicResource WindowBackground}">

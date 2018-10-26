@@ -5,7 +5,6 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
              xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance base:TextOverlaySettings}">
@@ -24,7 +23,6 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ToolTip="Font"/>
-
 
             <xctk:IntegerUpDown Minimum="1"
                                 Value="{Binding FontSize, Mode=TwoWay}"
@@ -85,8 +83,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Padding (X, Y)"
-                   ContentStringFormat="{}{0}: "
+            <Label Content="{Binding Padding, Source={StaticResource Loc}, Mode=OneWay}"
+                   ContentStringFormat="{}{0} (X, Y): "
                    Margin="0,5"/>
 
             <xctk:IntegerUpDown Value="{Binding HorizontalPadding, Mode=TwoWay}"

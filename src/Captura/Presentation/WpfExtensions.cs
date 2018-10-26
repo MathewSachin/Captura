@@ -26,10 +26,8 @@ namespace Captura
         {
             Element.Dispatcher.Invoke(() =>
             {
-                if (Element.RenderTransform == Transform.Identity)
-                {
-                    Element.RenderTransform = new TranslateTransform();
-                }
+                var transform = new TranslateTransform();
+                Element.RenderTransform = transform;
 
                 const int delta = 5;
 
@@ -48,14 +46,7 @@ namespace Captura
                     }
                 };
 
-                var storyboard = new Storyboard
-                {
-                    Children = { animation }
-                };
-
-                Storyboard.SetTargetProperty(animation, new PropertyPath("RenderTransform.X"));
-
-                storyboard.Begin(Element);
+                transform.BeginAnimation(TranslateTransform.XProperty, animation);
             });
         }
     }
