@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -14,8 +13,6 @@ namespace Captura.ViewModels
     {
         #region Fields
         bool _persist, _hotkeys, _remembered;
-
-        public static readonly RectangleConverter RectangleConverter = new RectangleConverter();
 
         readonly IDialogService _dialogService;
         readonly RememberByName _rememberByName;
@@ -178,6 +175,8 @@ namespace Captura.ViewModels
                 WebCamProvider.SelectedCam = matchingWebcam;
             }
             #endregion
+
+            Refreshed?.Invoke();
         }
 
         public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)
@@ -288,5 +287,7 @@ namespace Captura.ViewModels
             if (folder != null)
                 Settings.OutPath = folder;
         }
+
+        public event Action Refreshed;
     }
 }

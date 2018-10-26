@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Presentation/Themes/ModernToggleButton.xaml" />
                 <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RoundSlider.xaml"/>
+                <ResourceDictionary Source="Presentation/Themes/VirtualizingItemsControl.xaml"/>
                 <ResourceDictionary Source="Presentation/MaterialDesignIcons.xaml"/>
                 <ResourceDictionary Source="ValueConverters/ValueConverters.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RegionPickerMagnifier.xaml"/>

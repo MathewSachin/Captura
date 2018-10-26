@@ -1,11 +1,11 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=gitreleasemanager"
-#l "tools/scripts/backup.cake"
-#l "tools/scripts/constants.cake"
-#l "tools/scripts/bass.cake"
-#l "tools/scripts/choco.cake"
-#l "tools/scripts/apikeys.cake"
-#l "tools/scripts/version.cake"
+#l "scripts/backup.cake"
+#l "scripts/constants.cake"
+#l "scripts/bass.cake"
+#l "scripts/choco.cake"
+#l "scripts/apikeys.cake"
+#l "scripts/version.cake"
 using System.Collections.Generic;
 
 #region Fields
@@ -130,7 +130,15 @@ var cleanTask = Task("Clean").Does(() =>
     });
 });
 
-var nugetRestoreTask = Task("Nuget-Restore").Does(() => NuGetRestore(slnPath));
+var nugetRestoreTask = Task("Nuget-Restore").Does(() =>
+{
+    MSBuild(slnPath, settings =>
+    {
+        settings.SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Minimal)
+            .WithTarget("Restore");
+    });
+});
 
 var buildTask = Task("Build")
     .IsDependentOn(nugetRestoreTask)
@@ -233,7 +241,7 @@ var installInnoTask = Task("Install-Inno")
 #endregion
 
 #region AppVeyor
-#l "tools/scripts/appveyor.cake"
+#l "scripts/appveyor.cake"
 
 Task("CI")
     .WithCriteria(AppVeyor.IsRunningOnAppVeyor)

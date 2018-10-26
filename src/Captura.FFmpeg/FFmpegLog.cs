@@ -28,7 +28,16 @@ namespace Captura.Models
 
             item.RemoveRequested += () => _logItems.Remove(item);
 
-            _syncContext.Post(S => _logItems.Insert(0, item), null);
+            void Insert()
+            {
+                _logItems.Insert(0, item);
+            }
+
+            if (_syncContext != null)
+            {
+                _syncContext.Post(S => Insert(), null);
+            }
+            else Insert();
 
             SelectedLogItem = item;
 
