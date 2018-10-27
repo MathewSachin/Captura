@@ -110,6 +110,9 @@
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TrayConfigWindow.xaml.cs">
+      <DependentUpon>TrayConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SoundsWindow.xaml.cs">
       <DependentUpon>SoundsWindow.xaml</DependentUpon>
     </Compile>
@@ -305,6 +308,10 @@
     <Page Include="Presentation\Themes\VirtualizingItemsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\TrayConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SoundsWindow.xaml">
       <SubType>Designer</SubType>

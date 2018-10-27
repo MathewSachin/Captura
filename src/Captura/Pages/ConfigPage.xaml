@@ -101,7 +101,13 @@
                 <CheckBox Content="{Binding AlwaysOnTop, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
-                
+
+                <Button Margin="0,2"
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigTrayIcon, Source={StaticResource Loc}, Mode=OneWay}"
+                        Click="OpenTrayIconConfig"
+                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+
                 <Button Margin="0,2"
                         ContentStringFormat="{}{0} ..."
                         Content="{Binding ConfigFileNaming, Source={StaticResource Loc}, Mode=OneWay}"

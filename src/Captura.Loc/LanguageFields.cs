@@ -157,6 +157,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string ConfigTrayIcon
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Configure
         {
             get => Get();
