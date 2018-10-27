@@ -3,8 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{Binding ConfigTrayIcon, Source={StaticResource Loc}, Mode=OneWay}"
         Height="450"
-        Width="600">
-    <Grid>
-        
+        Width="600"
+        DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid Margin="10">
+        <StackPanel>
+            <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnStartup}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{Binding MinTrayStartup, Source={StaticResource Loc}, Mode=OneWay}"/>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnClose}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{Binding MinTrayClose, Source={StaticResource Loc}, Mode=OneWay}"/>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{Binding ShowSysNotify, Source={StaticResource Loc}, Mode=OneWay}"/>
+            </CheckBox>
+        </StackPanel>
     </Grid>
 </Window>
