@@ -13,6 +13,7 @@ namespace Captura
         bool _editing;
 
         static readonly SolidColorBrush RedBrush = new SolidColorBrush(WpfExtensions.ParseColor("#ef5350"));
+        static readonly SolidColorBrush GreenBrush = new SolidColorBrush(WpfExtensions.ParseColor("#43a047"));
 
         static readonly SolidColorBrush WhiteBrush = new SolidColorBrush(Colors.White);
 
@@ -50,9 +51,9 @@ namespace Captura
 
         void TextColor()
         {
-            if (HotkeyModel.IsActive && !HotkeyModel.IsRegistered)
+            if (HotkeyModel.IsActive)
             {
-                Background = RedBrush;
+                Background = HotkeyModel.IsRegistered ? GreenBrush : RedBrush;
 
                 Foreground = WhiteBrush;
             }
