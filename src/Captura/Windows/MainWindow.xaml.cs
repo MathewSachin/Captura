@@ -40,6 +40,16 @@ namespace Captura
 
                 listener.HotkeyReceived += Id => vm.HotKeyManager.ProcessHotkey(Id);
 
+                ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
+                {
+                    switch (Service)
+                    {
+                        case ServiceName.OpenImageEditor:
+                            new ImageEditorWindow().ShowAndFocus();
+                            break;
+                    }
+                };
+
                 Loaded += (Sender, Args) =>
                 {
                     RepositionWindowIfOutside();
