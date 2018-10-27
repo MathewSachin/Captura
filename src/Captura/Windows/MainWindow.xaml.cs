@@ -47,6 +47,10 @@ namespace Captura
                         case ServiceName.OpenImageEditor:
                             new ImageEditorWindow().ShowAndFocus();
                             break;
+
+                        case ServiceName.ShowMainWindow:
+                            this.ShowAndFocus();
+                            break;
                     }
                 };
 
