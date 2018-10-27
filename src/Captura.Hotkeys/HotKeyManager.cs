@@ -142,6 +142,11 @@ namespace Captura
                 HotkeyPressed?.Invoke(hotkey.Service.ServiceName);
         }
 
+        public void FakeHotkey(ServiceName Service)
+        {
+            HotkeyPressed?.Invoke(Service);
+        }
+
         public event Action<ServiceName> HotkeyPressed;
         
         public void Dispose()

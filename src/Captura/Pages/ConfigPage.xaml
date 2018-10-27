@@ -74,24 +74,6 @@
                                Text="{Binding MinCapture, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </CheckBox>
 
-                <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnStartup}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="{Binding MinTrayStartup, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </CheckBox>
-
-                <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnClose}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="{Binding MinTrayClose, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </CheckBox>
-
-                <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="{Binding ShowSysNotify, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </CheckBox>
-
                 <CheckBox IsChecked="{Binding Settings.CopyOutPathToClipboard}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"
@@ -101,7 +83,13 @@
                 <CheckBox Content="{Binding AlwaysOnTop, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
-                
+
+                <Button Margin="0,2"
+                        ContentStringFormat="{}{0} ..."
+                        Content="{Binding ConfigTrayIcon, Source={StaticResource Loc}, Mode=OneWay}"
+                        Click="OpenTrayIconConfig"
+                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+
                 <Button Margin="0,2"
                         ContentStringFormat="{}{0} ..."
                         Content="{Binding ConfigFileNaming, Source={StaticResource Loc}, Mode=OneWay}"
