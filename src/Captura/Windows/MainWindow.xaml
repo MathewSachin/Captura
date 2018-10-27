@@ -45,8 +45,13 @@
         <tb:TaskbarIcon x:Name="SystemTray"
                         IconSource="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
                         ToolTipText="Captura"
-                        MenuActivation="LeftOrRightClick"
+                        MenuActivation="RightClick"
+                        LeftClickCommand="Favorites"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
+            <tb:TaskbarIcon.CommandBindings>
+                <CommandBinding Command="Favorites"
+                                Executed="TrayLeftClick"/>
+            </tb:TaskbarIcon.CommandBindings>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{Binding StartStopRecording, Source={StaticResource Loc}, Mode=OneWay}"
@@ -171,6 +176,23 @@
                     </MenuItem>
 
                     <Separator/>
+
+                    <MenuItem Header="Show Main Window"
+                              Click="ShowMainWindow">
+                        <MenuItem.Icon>
+                            <Image Width="13"
+                                   Margin="5">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <GeometryDrawing Geometry="{StaticResource IconWindow}"
+                                                             Brush="{DynamicResource ItemText}"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                     <MenuItem Header="{Binding Exit, Source={StaticResource Loc}, Mode=OneWay}"
                               Click="MenuExit_Click">

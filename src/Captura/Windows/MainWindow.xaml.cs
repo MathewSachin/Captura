@@ -149,5 +149,15 @@ namespace Captura
         void MenuExit_Click(object Sender, RoutedEventArgs Args) => Close();
 
         void HideButton_Click(object Sender, RoutedEventArgs Args) => Hide();
+
+        void ShowMainWindow(object Sender, RoutedEventArgs E)
+        {
+            this.ShowAndFocus();
+        }
+
+        void TrayLeftClick(object Sender, ExecutedRoutedEventArgs E)
+        {
+            this.ShowAndFocus();
+        }
     }
 }
