@@ -46,12 +46,8 @@
                         IconSource="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
                         ToolTipText="Captura"
                         MenuActivation="RightClick"
-                        LeftClickCommand="Favorites"
+                        LeftClickCommand="{Binding TrayLeftClickCommand}"
                         TrayMouseDoubleClick="SystemTray_TrayMouseDoubleClick">
-            <tb:TaskbarIcon.CommandBindings>
-                <CommandBinding Command="Favorites"
-                                Executed="TrayLeftClick"/>
-            </tb:TaskbarIcon.CommandBindings>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{Binding StartStopRecording, Source={StaticResource Loc}, Mode=OneWay}"

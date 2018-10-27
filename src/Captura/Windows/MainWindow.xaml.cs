@@ -154,10 +154,5 @@ namespace Captura
         {
             this.ShowAndFocus();
         }
-
-        void TrayLeftClick(object Sender, ExecutedRoutedEventArgs E)
-        {
-            this.ShowAndFocus();
-        }
     }
 }

@@ -79,5 +79,11 @@
             get => Get("en");
             set => Set(value);
         }
+
+        public ServiceName TrayLeftClickAction
+        {
+            get => Get(ServiceName.ShowMainWindow);
+            set => Set(value);
+        }
     }
 }
