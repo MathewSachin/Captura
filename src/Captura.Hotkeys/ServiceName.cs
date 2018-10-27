@@ -55,6 +55,8 @@
         ScreenShotWindow,
 
         OpenImageEditor,
+
+        ShowMainWindow,
         
         ServiceCount
     }
