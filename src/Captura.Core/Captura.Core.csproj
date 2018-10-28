@@ -61,6 +61,7 @@
     <Compile Include="Models\Overlays\TextOverlay.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
     <Compile Include="Settings\Models\SoundSettings.cs" />
+    <Compile Include="Settings\Models\TraySettings.cs" />
     <Compile Include="Settings\Models\VideoSettings.cs" />
     <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
     <Compile Include="Settings\Settings.cs" />

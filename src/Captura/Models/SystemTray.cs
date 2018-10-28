@@ -50,7 +50,7 @@ namespace Captura.Models
 
         public void ShowScreenShotNotification(string FilePath)
         {
-            if (!_settings.UI.TrayNotify)
+            if (!_settings.Tray.ShowNotifications)
                 return;
 
             _notificationStack.Add(new ScreenShotBalloon(FilePath));
@@ -65,7 +65,7 @@ namespace Captura.Models
             if (!Progress)
                 vm.Finished = true;
 
-            if (!_settings.UI.TrayNotify)
+            if (!_settings.Tray.ShowNotifications)
                 return vm;
 
             _notificationStack.Add(new NotificationBalloon(vm));

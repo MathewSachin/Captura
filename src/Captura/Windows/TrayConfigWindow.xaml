@@ -9,19 +9,19 @@
         DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="10">
         <StackPanel>
-            <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnStartup}"
+            <CheckBox IsChecked="{Binding Settings.Tray.MinToTrayOnStartup}"
                       Margin="0,2">
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding MinTrayStartup, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
-            <CheckBox IsChecked="{Binding Settings.UI.MinToTrayOnClose}"
+            <CheckBox IsChecked="{Binding Settings.Tray.MinToTrayOnClose}"
                       Margin="0,2">
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding MinTrayClose, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
-            <CheckBox IsChecked="{Binding Settings.UI.TrayNotify}"
+            <CheckBox IsChecked="{Binding Settings.Tray.ShowNotifications}"
                       Margin="0,2">
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding ShowSysNotify, Source={StaticResource Loc}, Mode=OneWay}"/>
@@ -31,7 +31,7 @@
                 <Label Content="Left Click Action"
                        Margin="0,0,10,0"/>
 
-                <ComboBox SelectedValue="{Binding Settings.UI.TrayLeftClickAction, Mode=TwoWay}"
+                <ComboBox SelectedValue="{Binding Settings.Tray.LeftClickAction, Mode=TwoWay}"
                           SelectedValuePath="ServiceName"
                           DisplayMemberPath="Description.Display"
                           ItemsSource="{x:Static hotkeys:HotKeyManager.AllServices}"/>

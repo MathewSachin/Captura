@@ -62,7 +62,7 @@ namespace Captura
                 };
             }
 
-            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().UI.MinToTrayOnStartup)
+            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
                 Hide();
 
             Closing += (Sender, Args) =>
@@ -98,7 +98,7 @@ namespace Captura
 
         void CloseButton_Click(object Sender, RoutedEventArgs Args)
         {
-            if (ServiceProvider.Get<Settings>().UI.MinToTrayOnClose)
+            if (ServiceProvider.Get<Settings>().Tray.MinToTrayOnClose)
             {
                 Hide();
             }

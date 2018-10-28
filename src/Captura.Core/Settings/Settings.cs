@@ -108,6 +108,8 @@ namespace Captura
 
         public ImageEditorSettings ImageEditor { get; } = new ImageEditorSettings();
 
+        public TraySettings Tray { get; } = new TraySettings();
+
         public int PreStartCountdown
         {
             get => Get(0);

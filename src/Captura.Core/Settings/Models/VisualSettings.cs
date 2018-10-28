@@ -44,25 +44,7 @@
             set => Set(value);
         }
 
-        public bool MinToTrayOnStartup
-        {
-            get => Get(false);
-            set => Set(value);
-        }
-
-        public bool MinToTrayOnClose
-        {
-            get => Get(false);
-            set => Set(value);
-        }
-
         public bool HideOnFullScreenShot
-        {
-            get => Get(true);
-            set => Set(value);
-        }
-
-        public bool TrayNotify
         {
             get => Get(true);
             set => Set(value);
@@ -77,12 +59,6 @@
         public string Language
         {
             get => Get("en");
-            set => Set(value);
-        }
-
-        public ServiceName TrayLeftClickAction
-        {
-            get => Get(ServiceName.ShowMainWindow);
             set => Set(value);
         }
     }

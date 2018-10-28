@@ -78,7 +78,7 @@ namespace Captura.ViewModels
 
             ResetFFmpegFolderCommand = new DelegateCommand(() => Settings.FFmpeg.FolderPath = "");
 
-            TrayLeftClickCommand = new DelegateCommand(() => HotKeyManager.FakeHotkey(Settings.UI.TrayLeftClickAction));
+            TrayLeftClickCommand = new DelegateCommand(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
             #endregion
 
             Settings.Audio.PropertyChanged += (Sender, Args) =>
