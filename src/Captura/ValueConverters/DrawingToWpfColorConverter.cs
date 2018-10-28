@@ -11,7 +11,7 @@ namespace Captura
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             if (Value is Color c)
-                return WpfColor.FromArgb(c.A, c.R, c.G, c.B);
+                return c.ToWpfColor();
 
             return Binding.DoNothing;
         }
@@ -24,7 +24,7 @@ namespace Captura
                     return ColorTranslator.FromHtml(s);
 
                 case WpfColor c:
-                    return Color.FromArgb(c.A, c.R, c.G, c.B);
+                    return c.ToString();
 
                 default:
                     return Binding.DoNothing;

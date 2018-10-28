@@ -11,6 +11,8 @@ namespace Captura
 {
     public partial class ImageEditorWindow
     {
+        readonly ImageEditorSettings _settings;
+
         public ImageEditorWindow()
         {
             InitializeComponent();
@@ -53,9 +55,12 @@ namespace Captura
 
             Image.SizeChanged += (S, E) => UpdateInkCanvas();
 
-            ColorPicker.SelectedColor = Color.FromRgb(27, 27, 27);
             ModesBox.SelectedIndex = 0;
-            SizeBox.Value = 2;
+
+            _settings = ServiceProvider.Get<Settings>().ImageEditor;
+
+            ColorPicker.SelectedColor = _settings.BrushColor.ToWpfColor();
+            SizeBox.Value = _settings.BrushSize;
 
             InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
@@ -84,7 +89,11 @@ namespace Captura
         void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
         {
             if (InkCanvas != null && E.NewValue is int i)
+            {
                 InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
+
+                _settings.BrushSize = i;
+            }
         }
 
         void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
@@ -98,7 +107,13 @@ namespace Captura
         void ColorPicker_OnSelectedColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
         {
             if (E.NewValue != null && InkCanvas != null)
-                InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
+            {
+                var color = E.NewValue.Value;
+
+                InkCanvas.DefaultDrawingAttributes.Color = color;
+
+                _settings.BrushColor = color.ToDrawingColor();
+            }
         }
 
         void UpdateInkCanvas()

@@ -43,6 +43,7 @@
     <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
     <Compile Include="Models\Overlays\CensorOverlay.cs" />
     <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
+    <Compile Include="Settings\Models\ImageEditorSettings.cs" />
     <Compile Include="Settings\Models\ImgurSettings.cs" />
     <Compile Include="Models\NoAudioSource.cs" />
     <Compile Include="Models\Overlays\CustomImageOverlay.cs" />

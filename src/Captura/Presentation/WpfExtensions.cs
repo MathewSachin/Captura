@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using DColor = System.Drawing.Color;
 
 namespace Captura
 {
@@ -12,6 +13,16 @@ namespace Captura
             W.Show();
 
             W.Activate();
+        }
+
+        public static DColor ToDrawingColor(this Color C)
+        {
+            return DColor.FromArgb(C.A, C.R, C.G, C.B);
+        }
+
+        public static Color ToWpfColor(this DColor C)
+        {
+            return Color.FromArgb(C.A, C.R, C.G, C.B);
         }
 
         public static Color ParseColor(string S)
