@@ -740,6 +740,9 @@ namespace Captura.ViewModels
 
             deleteAction.Click += () =>
             {
+                if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {SavingRecentItem.FilePath}?", "Confirm Deletion"))
+                    return;
+
                 File.Delete(SavingRecentItem.FilePath);
 
                 notification.Remove();
