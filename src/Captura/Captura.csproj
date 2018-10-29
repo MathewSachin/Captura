@@ -59,6 +59,8 @@
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
     <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\HotkeyListener.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">

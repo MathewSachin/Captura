@@ -34,6 +34,7 @@ namespace Captura
         public const string Line = nameof(Line);
         public const string Rectangle = nameof(Rectangle);
         public const string Ellipse = nameof(Ellipse);
+        public const string Arrow = nameof(Arrow);
 
         public static IEnumerable<ExtendedInkTool> Tools { get; } = new[]
         {
@@ -43,7 +44,8 @@ namespace Captura
             new ExtendedInkTool(Select, InkCanvasEditingMode.Select),
             new ExtendedInkTool(Line, InkCanvasEditingMode.Ink, () => new LineDynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Rectangle, InkCanvasEditingMode.Ink, () => new RectangleDynamicRenderer(), Cursors.Pen),
-            new ExtendedInkTool(Ellipse, InkCanvasEditingMode.Ink, () => new EllipseDynamicRenderer(), Cursors.Pen)
+            new ExtendedInkTool(Ellipse, InkCanvasEditingMode.Ink, () => new EllipseDynamicRenderer(), Cursors.Pen),
+            new ExtendedInkTool(Arrow, InkCanvasEditingMode.Ink, () => new ArrowDynamicRenderer(), Cursors.Pen), 
         };
     }
 }

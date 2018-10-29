@@ -57,6 +57,10 @@ namespace Captura
                     AddCustomStroke(new EllipseStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
                     break;
 
+                case ArrowDynamicRenderer _:
+                    AddCustomStroke(new ArrowStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
+                    break;
+
                 default:
                     base.OnStrokeCollected(E);
                     break;
