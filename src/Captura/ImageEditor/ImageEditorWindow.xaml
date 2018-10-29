@@ -133,6 +133,22 @@
                     </MenuItem.Header>
                 </MenuItem>
 
+                <MenuItem Command="{Binding UploadToImgurCommand}">
+                    <MenuItem.Header>
+                        <DockPanel>
+                            <Path Data="{StaticResource IconUpload}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <TextBlock Text="{Binding UploadToImgur, Source={StaticResource Loc}, Mode=OneWay}"/>
+                        </DockPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+
                 <Separator/>
 
                 <MenuItem Click="NewWindow">
