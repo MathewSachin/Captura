@@ -723,7 +723,6 @@ namespace Captura.ViewModels
 
         void AfterSave(RecentItemViewModel SavingRecentItem)
         {
-            // After Save
             SavingRecentItem.Saved();
         
             if (Settings.CopyOutPathToClipboard)
@@ -737,12 +736,15 @@ namespace Captura.ViewModels
 
             deleteAction.Icon = "IconDelete";
             deleteAction.Name = Loc.Delete;
+            deleteAction.Color = "LightPink";
 
             deleteAction.Click += () =>
             {
                 File.Delete(SavingRecentItem.FilePath);
 
                 notification.Remove();
+
+                SavingRecentItem.RemoveCommand.ExecuteIfCan();
             };
 
             notification.Click += () =>
