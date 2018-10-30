@@ -467,63 +467,70 @@
         <Grid Margin="10">
             <Image Source="{Binding TransformedBitmap}"
                    Name="Image"/>
-            
-            <local:ExtendedInkCanvas  Background="Transparent"
-                       x:Name="InkCanvas"
-                       IsEnabled="False"
-                       MouseUp="InkCanvas_OnMouseUp"/>
-            
-            <StackPanel Orientation="Horizontal"
-                        Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                <Button Command="New"
+
+            <Border BorderThickness="0.6"
+                    BorderBrush="{DynamicResource Accent}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <local:ExtendedInkCanvas Background="Transparent"
+                                         x:Name="InkCanvas"
+                                         IsEnabled="False"
+                                         MouseUp="InkCanvas_OnMouseUp"/>
+            </Border>
+
+            <Grid Background="{DynamicResource WindowBackground}"
+                  Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}, ConverterParameter='true'}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Button Command="New"
+                            Margin="5">
+                        <DockPanel>
+                            <Path Data="{StaticResource IconNewFile}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+
+                            <Label Content="{Binding FileMenuNew, Source={StaticResource Loc}, Mode=OneWay}"/>
+                        </DockPanel>
+                    </Button>
+
+                    <Button Command="Open"
                         Margin="5">
-                    <DockPanel>
-                        <Path Data="{StaticResource IconNewFile}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                        <DockPanel>
+                            <Path Data="{StaticResource IconOpenFile}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
 
-                        <Label Content="{Binding FileMenuNew, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
-                
-                <Button Command="Open"
-                        Margin="5">
-                    <DockPanel>
-                        <Path Data="{StaticResource IconOpenFile}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                            <Label Content="{Binding FileMenuOpen, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0} ..."/>
+                        </DockPanel>
+                    </Button>
 
-                        <Label Content="{Binding FileMenuOpen, Source={StaticResource Loc}, Mode=OneWay}"
-                               ContentStringFormat="{}{0} ..."/>
-                    </DockPanel>
-                </Button>
+                    <Button Click="OpenFromClipboard"
+                            Margin="5">
+                        <DockPanel>
+                            <Path Data="{StaticResource IconClipboard}"
+                                  Width="15"
+                                  Height="15"
+                                  Margin="0,0,10,0"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
 
-                <Button Click="OpenFromClipboard"
-                        Margin="5">
-                    <DockPanel>
-                        <Path Data="{StaticResource IconClipboard}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-
-                        <Label Content="{Binding OpenFromClipboard, Source={StaticResource Loc}, Mode=OneWay}"
-                               ContentStringFormat="{}{0} ..."/>
-                    </DockPanel>
-                </Button>
-            </StackPanel>
+                            <Label Content="{Binding OpenFromClipboard, Source={StaticResource Loc}, Mode=OneWay}"
+                                   ContentStringFormat="{}{0} ..."/>
+                        </DockPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>
