@@ -7,7 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Captura.Models;
@@ -21,7 +23,8 @@ namespace Captura
     {
         int _stride;
         byte[] _data;
-        public Window Window { get; set; }
+
+        public ImageEditorWindow Window { get; set; }
 
         public bool UnsavedChanges { get; private set; }
 
@@ -40,6 +43,8 @@ namespace Captura
         public DelegateCommand SaveToClipboardCommand { get; }
         public DelegateCommand UploadToImgurCommand { get; }
 
+        public DelegateCommand CropCommand { get; }
+
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
         public DelegateCommand SetContrastCommand { get; }
@@ -56,6 +61,8 @@ namespace Captura
             SaveCommand = new DelegateCommand(() => SaveToFile(), false);
             SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
             UploadToImgurCommand = new DelegateCommand(UploadToImgur, false);
+
+            CropCommand = new DelegateCommand(OnCrop, false);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
             {
@@ -154,6 +161,34 @@ namespace Captura
 
                 await Update();
             }, false);
+        }
+
+        void OnCrop()
+        {
+            var rcInterior = new Rect(
+                InkCanvas.ActualWidth * 0.2,
+                InkCanvas.ActualHeight * 0.2,
+                InkCanvas.ActualWidth * 0.6,
+                InkCanvas.ActualHeight * 0.6);
+
+            var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
+
+            var croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior);
+
+            layer.Add(croppingAdorner);
+
+            // TODO: Handle Window Resize
+            // TODO: Handle Esc key
+            void RemoveAdorner()
+            {
+                layer.Remove(croppingAdorner);
+            }
+
+            croppingAdorner.Checked += RemoveAdorner;
+
+            var clr = Colors.Black;
+            clr.A = 110;
+            croppingAdorner.Fill = new SolidColorBrush(clr);
         }
 
         async void UploadToImgur()
@@ -447,6 +482,8 @@ namespace Captura
             SaveToClipboardCommand.RaiseCanExecuteChanged(true);
             UploadToImgurCommand.RaiseCanExecuteChanged(true);
             DiscardChangesCommand.RaiseCanExecuteChanged(true);
+
+            CropCommand.RaiseCanExecuteChanged(true);
 
             SetEffectCommand.RaiseCanExecuteChanged(true);
             SetBrightnessCommand.RaiseCanExecuteChanged(true);
