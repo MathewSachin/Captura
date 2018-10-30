@@ -44,6 +44,7 @@ namespace Captura
         public DelegateCommand UploadToImgurCommand { get; }
 
         public DelegateCommand CropCommand { get; }
+        public DelegateCommand CancelCropCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -63,6 +64,7 @@ namespace Captura
             UploadToImgurCommand = new DelegateCommand(UploadToImgur, false);
 
             CropCommand = new DelegateCommand(OnCrop, false);
+            CancelCropCommand = new DelegateCommand(RemoveCrop);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
             {
@@ -163,8 +165,25 @@ namespace Captura
             }, false);
         }
 
+        CroppingAdorner _croppingAdorner;
+
+        void RemoveCrop()
+        {
+            if (_croppingAdorner == null)
+                return;
+
+            var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
+
+            layer.Remove(_croppingAdorner);
+
+            _croppingAdorner = null;
+        }
+
         void OnCrop()
         {
+            if (_croppingAdorner != null)
+                return;
+
             var rcInterior = new Rect(
                 InkCanvas.ActualWidth * 0.2,
                 InkCanvas.ActualHeight * 0.2,
@@ -173,22 +192,16 @@ namespace Captura
 
             var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
 
-            var croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior);
+            _croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior);
 
-            layer.Add(croppingAdorner);
+            layer.Add(_croppingAdorner);
 
-            // TODO: Handle Window Resize
-            // TODO: Handle Esc key
-            void RemoveAdorner()
+            _croppingAdorner.Checked += RemoveCrop;
+
+            _croppingAdorner.Fill = new SolidColorBrush(Colors.Black)
             {
-                layer.Remove(croppingAdorner);
-            }
-
-            croppingAdorner.Checked += RemoveAdorner;
-
-            var clr = Colors.Black;
-            clr.A = 110;
-            croppingAdorner.Fill = new SolidColorBrush(clr);
+                Opacity = 0.431
+            };
         }
 
         async void UploadToImgur()

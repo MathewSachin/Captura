@@ -43,6 +43,9 @@
         <KeyBinding Command="{Binding RedoCommand}"
                     Key="Y"
                     Modifiers="Control"/>
+
+        <KeyBinding Command="{Binding CancelCropCommand}"
+                    Key="Escape"/>
     </Window.InputBindings>
     <DockPanel Background="{DynamicResource WindowBackground}">
         <Menu DockPanel.Dock="Top"
