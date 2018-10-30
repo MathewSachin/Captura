@@ -1,6 +1,6 @@
 ﻿namespace Captura
 {
-    public class HistoryState : HistoryItem
+    public class HistoryState : IHistoryItem
     {
         public ImageEffect Effect { get; set; }
 

@@ -60,6 +60,7 @@
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\History\CropHistory.cs" />
     <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
     <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\HotkeyListener.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="ImageEditor\DynamicRenderers\LineDynamicRenderer.cs" />
     <Compile Include="ImageEditor\EditorWriter.cs" />
     <Compile Include="ImageEditor\Controls\ExtendedInkCanvas.cs" />
-    <Compile Include="ImageEditor\History\HistoryItem.cs" />
+    <Compile Include="ImageEditor\History\IHistoryItem.cs" />
     <Compile Include="ImageEditor\History\HistoryState.cs" />
     <Compile Include="ImageEditor\ImageEditorViewModel.cs" />
     <Compile Include="ImageEditor\ImageEditorWindow.xaml.cs">

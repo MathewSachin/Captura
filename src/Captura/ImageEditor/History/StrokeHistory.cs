@@ -4,7 +4,7 @@ using System.Windows.Ink;
 
 namespace Captura
 {
-    public class StrokeHistory : HistoryItem
+    public class StrokeHistory : IHistoryItem
     {
         public int EditingOperationCount { get; set; }
 
