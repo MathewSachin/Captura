@@ -122,15 +122,15 @@ namespace Captura
             {
                 InkCanvas.IsEnabled = true;
 
-                InkCanvas.Width = vm.OriginalBitmap.PixelWidth;
-                InkCanvas.Height = vm.OriginalBitmap.PixelHeight;
+                var pWidth = vm.CroppedBitmap.PixelWidth;
+                var pHeight = vm.CroppedBitmap.PixelHeight;
+
+                InkCanvas.Width = pWidth;
+                InkCanvas.Height = pHeight;
 
                 // TODO: fix clipping
-                InkCanvas.Clip = vm.CroppedRegion is Rect r
-                    ? new RectangleGeometry(r)
-                    : null;
 
-                var rotate = new RotateTransform(vm.Rotation, vm.OriginalBitmap.PixelWidth / 2.0, vm.OriginalBitmap.PixelHeight / 2.0);
+                var rotate = new RotateTransform(vm.Rotation, pWidth / 2.0, pHeight / 2.0);
 
                 var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
                 
