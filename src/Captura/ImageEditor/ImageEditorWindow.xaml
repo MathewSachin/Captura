@@ -410,8 +410,8 @@
             <TextBlock>
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0} x {1}">
-                        <Binding Path="TransformedBitmap.PixelWidth"/>
-                        <Binding Path="TransformedBitmap.PixelHeight"/>
+                        <Binding Path="CroppedBitmap.PixelWidth"/>
+                        <Binding Path="CroppedBitmap.PixelHeight"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -465,7 +465,7 @@
         </Border>
         
         <Grid Margin="10">
-            <Image Source="{Binding TransformedBitmap}"
+            <Image Source="{Binding CroppedBitmap}"
                    Name="Image"/>
 
             <Border BorderThickness="0.6"

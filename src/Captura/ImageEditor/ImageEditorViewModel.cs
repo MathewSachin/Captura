@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Captura.Models;
@@ -166,6 +165,7 @@ namespace Captura
         }
 
         CroppingAdorner _croppingAdorner;
+        public Rect? CroppedRegion { get; private set; }
 
         void RemoveCrop()
         {
@@ -177,6 +177,11 @@ namespace Captura
             layer.Remove(_croppingAdorner);
 
             _croppingAdorner = null;
+
+            if (CroppedRegion is Rect r)
+            {
+                UpdateCroppedBitmap();
+            }
         }
 
         void OnCrop()
@@ -184,7 +189,9 @@ namespace Captura
             if (_croppingAdorner != null)
                 return;
 
-            var rcInterior = new Rect(
+            CroppedBitmap = TransformedBitmap;
+
+            var rcInterior = CroppedRegion ?? new Rect(
                 InkCanvas.ActualWidth * 0.2,
                 InkCanvas.ActualHeight * 0.2,
                 InkCanvas.ActualWidth * 0.6,
@@ -192,15 +199,21 @@ namespace Captura
 
             var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
 
-            _croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior);
+            _croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior)
+            {
+                Fill = new SolidColorBrush(Colors.Black)
+                {
+                    Opacity = 0.4
+                }
+            };
 
             layer.Add(_croppingAdorner);
 
-            _croppingAdorner.Checked += RemoveCrop;
-
-            _croppingAdorner.Fill = new SolidColorBrush(Colors.Black)
+            _croppingAdorner.Checked += () =>
             {
-                Opacity = 0.431
+                CroppedRegion = _croppingAdorner.SelectedRegion;
+
+                RemoveCrop();
             };
         }
 
@@ -270,6 +283,19 @@ namespace Captura
             {
                 _transformedBmp = value;
                 
+                OnPropertyChanged();
+            }
+        }
+
+        BitmapSource _croppedBitmap;
+
+        public BitmapSource CroppedBitmap
+        {
+            get => _croppedBitmap;
+            set
+            {
+                _croppedBitmap = value;
+
                 OnPropertyChanged();
             }
         }
@@ -399,6 +425,15 @@ namespace Captura
                     scale
                 }
             });
+
+            UpdateCroppedBitmap();
+        }
+
+        void UpdateCroppedBitmap()
+        {
+            CroppedBitmap = CroppedRegion is Rect r
+                ? new CroppedBitmap(TransformedBitmap, new Int32Rect((int)r.X, (int)r.Y, (int)r.Width, (int)r.Height))
+                : (BitmapSource)TransformedBitmap;
         }
 
         void Reset()
@@ -825,7 +860,11 @@ namespace Captura
 
                 var transformedRendered = new TransformedBitmap(bitmap, transform);
 
-                return transformedRendered;
+                var cropped = CroppedRegion is Rect r
+                    ? new CroppedBitmap(transformedRendered, new Int32Rect((int)r.X, (int)r.Y, (int)r.Width, (int)r.Height))
+                    : (BitmapSource)transformedRendered;
+
+                return cropped;
             }
         }
 

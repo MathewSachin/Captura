@@ -21,7 +21,7 @@ namespace Captura
             {
                 vm.PropertyChanged += (S, E) =>
                 {
-                    if (E.PropertyName == nameof(vm.TransformedBitmap))
+                    if (E.PropertyName == nameof(vm.CroppedBitmap))
                         UpdateInkCanvas();
                 };
 
@@ -124,6 +124,11 @@ namespace Captura
 
                 InkCanvas.Width = vm.OriginalBitmap.PixelWidth;
                 InkCanvas.Height = vm.OriginalBitmap.PixelHeight;
+
+                // TODO: fix clipping
+                InkCanvas.Clip = vm.CroppedRegion is Rect r
+                    ? new RectangleGeometry(r)
+                    : null;
 
                 var rotate = new RotateTransform(vm.Rotation, vm.OriginalBitmap.PixelWidth / 2.0, vm.OriginalBitmap.PixelHeight / 2.0);
 
