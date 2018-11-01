@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Captura.Models;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
-using static Screna.Extensions;
 
 namespace Captura
 {
@@ -169,20 +166,7 @@ namespace Captura
 
                 using (var bitmap = new Bitmap(ms))
                 {
-                    var imgur = ServiceProvider.Get<ImgurWriter>();
-
-                    var response = await imgur.Save(bitmap, ImageFormat.Png);
-
-                    switch (response)
-                    {
-                        case Exception ex:
-                            ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
-                            break;
-
-                        case ImgurUploadResponse uploadResponse:
-                            uploadResponse.Data.Link.WriteToClipboard();
-                            break;
-                    }
+                    await bitmap.UploadToImgur();
                 }
             }
         }
