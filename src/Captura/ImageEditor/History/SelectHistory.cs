@@ -3,7 +3,7 @@ using System.Windows.Ink;
 
 namespace Captura
 {
-    public class SelectHistory : HistoryItem
+    public class SelectHistory : IHistoryItem
     {
         public int EditingOperationCount { get; set; }
 

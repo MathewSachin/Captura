@@ -89,22 +89,22 @@
     <Compile Include="ImageEditor\DynamicRenderers\RectangleDynamicRenderer.cs" />
     <Compile Include="ImageEditor\Strokes\EllipseStroke.cs" />
     <Compile Include="ImageEditor\Strokes\RectangleStroke.cs" />
-    <Compile Include="ImageEditor\ExtendedInkTool.cs" />
+    <Compile Include="ImageEditor\Controls\ExtendedInkTool.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\LineDynamicRenderer.cs" />
     <Compile Include="ImageEditor\EditorWriter.cs" />
-    <Compile Include="ImageEditor\ExtendedInkCanvas.cs" />
-    <Compile Include="ImageEditor\HistoryItem.cs" />
-    <Compile Include="ImageEditor\HistoryState.cs" />
+    <Compile Include="ImageEditor\Controls\ExtendedInkCanvas.cs" />
+    <Compile Include="ImageEditor\History\IHistoryItem.cs" />
+    <Compile Include="ImageEditor\History\HistoryState.cs" />
     <Compile Include="ImageEditor\ImageEditorViewModel.cs" />
     <Compile Include="ImageEditor\ImageEditorWindow.xaml.cs">
       <DependentUpon>ImageEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageEditor\ImageEffect.cs" />
+    <Compile Include="ImageEditor\Effects\ImageEffect.cs" />
     <Compile Include="ImageEditor\ImageFromClipboard.cs" />
-    <Compile Include="ImageEditor\ModifyPixel.cs" />
-    <Compile Include="ImageEditor\PixelFunctionFactory.cs" />
-    <Compile Include="ImageEditor\SelectHistory.cs" />
-    <Compile Include="ImageEditor\StrokeHistory.cs" />
+    <Compile Include="ImageEditor\Effects\ModifyPixel.cs" />
+    <Compile Include="ImageEditor\Effects\PixelFunctionFactory.cs" />
+    <Compile Include="ImageEditor\History\SelectHistory.cs" />
+    <Compile Include="ImageEditor\History\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
     <Compile Include="Pages\VideoPage.xaml.cs">
       <DependentUpon>VideoPage.xaml</DependentUpon>
@@ -565,6 +565,7 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT $(Configuration)==Debug (

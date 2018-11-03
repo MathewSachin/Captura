@@ -24,8 +24,8 @@ namespace Captura
 
         int _editingOperationCount;
 
-        readonly Stack<HistoryItem> _undoStack = new Stack<HistoryItem>();
-        readonly Stack<HistoryItem> _redoStack = new Stack<HistoryItem>();
+        readonly Stack<IHistoryItem> _undoStack = new Stack<IHistoryItem>();
+        readonly Stack<IHistoryItem> _redoStack = new Stack<IHistoryItem>();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
