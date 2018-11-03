@@ -1,11 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing;
 using System.Windows;
-using Captura.Models;
 using Captura.Views;
 using Microsoft.Win32;
-using Screna;
 
 namespace Captura
 {
@@ -59,20 +55,7 @@ namespace Captura
             {
                 var img = (Bitmap)Image.FromFile(ofd.FileName);
 
-                var imgur = ServiceProvider.Get<ImgurWriter>();
-
-                var response = await imgur.Save(img, ImageFormat.Png);
-
-                switch (response)
-                {
-                    case Exception ex:
-                        ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
-                        break;
-
-                    case ImgurUploadResponse uploadResponse:
-                        uploadResponse.Data.Link.WriteToClipboard();
-                        break;
-                }
+                await img.UploadToImgur();
             }
         }
     }

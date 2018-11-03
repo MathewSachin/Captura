@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Captura.Models;
+using Captura.ViewModels;
+using Screna;
 
 namespace Captura
 {
@@ -73,6 +78,28 @@ namespace Captura
             #endregion
 
             return Image;
+        }
+
+        public static async Task UploadToImgur(this Bitmap Bitmap)
+        {
+            var imgur = ServiceProvider.Get<ImgurWriter>();
+
+            var response = await imgur.Save(Bitmap, ImageFormat.Png);
+
+            switch (response)
+            {
+                case Exception ex:
+                    ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
+                    break;
+
+                case ImgurUploadResponse uploadResponse:
+                    var recents = ServiceProvider.Get<RecentViewModel>();
+                    var recentItem = recents.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
+                    recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
+
+                    uploadResponse.Data.Link.WriteToClipboard();
+                    break;
+            }
         }
     }
 }

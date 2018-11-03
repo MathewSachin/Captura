@@ -102,6 +102,8 @@ Dev builds can be unstable and should be used for testing purposes only.
 
 ## FFmpeg
 
+> It is recommended to always download the latest version of FFmpeg using FFmpeg Downloader. Older versions of FFmpeg can cause unexpected behaviour.
+
 [FFmpeg](http://ffmpeg.org/) is an open-source cross-platform solution to record, convert and stream audio and video.
 It adds support for more output formats like **H.264** for Video and **Mp3**, **AAC** etc. when capturing **Only Audio**.
 
