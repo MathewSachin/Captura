@@ -16,11 +16,17 @@
                 </DataTemplate>
             </Expander.HeaderTemplate>
             <Expander.Header>
-                <DockPanel DockPanel.Dock="Top">
+                <DockPanel>
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="LightPink"
                                         IconData="{StaticResource IconClose}"
+                                        DockPanel.Dock="Right"/>
+
+                    <local:ModernButton ToolTip="{Binding Edit, Source={StaticResource Loc}, Mode=OneWay}"
+                                        Click="EditButton_OnClick"
+                                        Foreground="{DynamicResource ItemText}"
+                                        IconData="{StaticResource IconPencil}"
                                         DockPanel.Dock="Right"/>
 
                     <Label>
