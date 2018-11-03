@@ -122,8 +122,10 @@ namespace Captura
             {
                 InkCanvas.IsEnabled = true;
 
-                var pWidth = vm.CroppedBitmap.PixelWidth;
-                var pHeight = vm.CroppedBitmap.PixelHeight;
+                var pWidth = vm.OriginalBitmap.PixelWidth;
+                var pHeight = vm.OriginalBitmap.PixelHeight;
+
+                InkCanvas.Clip = vm.CroppedRegion is Rect r ? new RectangleGeometry(r) : null;
 
                 InkCanvas.Width = pWidth;
                 InkCanvas.Height = pHeight;
@@ -133,7 +135,7 @@ namespace Captura
                 var rotate = new RotateTransform(vm.Rotation, pWidth / 2.0, pHeight / 2.0);
 
                 var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
-                
+
                 var scale = new ScaleTransform(
                     ((tilted ? Image.ActualHeight : Image.ActualWidth) / InkCanvas.Width) * (vm.FlipX ? -1 : 1),
                     ((tilted ? Image.ActualWidth : Image.ActualHeight) / InkCanvas.Height) * (vm.FlipY ? -1 : 1)
