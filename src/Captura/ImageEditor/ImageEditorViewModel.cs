@@ -187,15 +187,17 @@ namespace Captura
 
             CroppedBitmap = TransformedBitmap;
 
+            var obj = Window.CanvasBorder;
+
             var rcInterior = CroppedRegion ?? new Rect(
-                                 InkCanvas.ActualWidth * 0.2,
-                                 InkCanvas.ActualHeight * 0.2,
-                                 InkCanvas.ActualWidth * 0.6,
-                                 InkCanvas.ActualHeight * 0.6);
+                                 obj.ActualWidth * 0.2,
+                                 obj.ActualHeight * 0.2,
+                                 obj.ActualWidth * 0.6,
+                                 obj.ActualHeight * 0.6);
 
-            var layer = AdornerLayer.GetAdornerLayer(Window.CanvasBorder);
+            var layer = AdornerLayer.GetAdornerLayer(obj);
 
-            _croppingAdorner = new CroppingAdorner(Window.CanvasBorder, rcInterior)
+            _croppingAdorner = new CroppingAdorner(obj, rcInterior)
             {
                 Fill = new SolidColorBrush(Colors.Black)
                 {
