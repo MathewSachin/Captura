@@ -164,21 +164,20 @@ namespace Captura
         CroppingAdorner _croppingAdorner;
         public Rect? CroppedRegion { get; private set; }
 
+        public bool IsCropping => _croppingAdorner != null;
+
         void RemoveCrop()
         {
             if (_croppingAdorner == null)
                 return;
 
-            var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
+            var layer = AdornerLayer.GetAdornerLayer(Window.CanvasBorder);
 
             layer.Remove(_croppingAdorner);
 
             _croppingAdorner = null;
 
-            if (CroppedRegion is Rect r)
-            {
-                UpdateCroppedBitmap();
-            }
+            UpdateCroppedBitmap();
         }
 
         void OnCrop()
@@ -189,14 +188,14 @@ namespace Captura
             CroppedBitmap = TransformedBitmap;
 
             var rcInterior = CroppedRegion ?? new Rect(
-                InkCanvas.ActualWidth * 0.2,
-                InkCanvas.ActualHeight * 0.2,
-                InkCanvas.ActualWidth * 0.6,
-                InkCanvas.ActualHeight * 0.6);
+                                 InkCanvas.ActualWidth * 0.2,
+                                 InkCanvas.ActualHeight * 0.2,
+                                 InkCanvas.ActualWidth * 0.6,
+                                 InkCanvas.ActualHeight * 0.6);
 
-            var layer = AdornerLayer.GetAdornerLayer(InkCanvas);
+            var layer = AdornerLayer.GetAdornerLayer(Window.CanvasBorder);
 
-            _croppingAdorner = new CroppingAdorner(InkCanvas, rcInterior)
+            _croppingAdorner = new CroppingAdorner(Window.CanvasBorder, rcInterior)
             {
                 Fill = new SolidColorBrush(Colors.Black)
                 {

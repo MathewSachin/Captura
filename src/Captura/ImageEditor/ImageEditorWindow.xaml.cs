@@ -118,19 +118,19 @@ namespace Captura
 
         void UpdateInkCanvas()
         {
-            if (DataContext is ImageEditorViewModel vm && vm.TransformedBitmap != null && Image.ActualWidth > 0)
+            if (DataContext is ImageEditorViewModel vm && vm.CroppedBitmap != null && Image.ActualWidth > 0)
             {
                 InkCanvas.IsEnabled = true;
 
                 var pWidth = vm.CroppedBitmap.PixelWidth;
                 var pHeight = vm.CroppedBitmap.PixelHeight;
 
-                InkCanvas.Clip = vm.CroppedRegion is Rect r ? new RectangleGeometry(r) : null;
+                InkCanvas.Clip = !vm.IsCropping && vm.CroppedRegion is Rect r ? new RectangleGeometry(r) : null;
 
                 CanvasBorder.Width = pWidth;
                 CanvasBorder.Height = pHeight;
 
-                InkCanvas.Margin = vm.CroppedRegion is Rect rect
+                InkCanvas.Margin = !vm.IsCropping && vm.CroppedRegion is Rect rect
                     ? new Thickness(-rect.Left, -rect.Top, 0, 0)
                     : new Thickness();
 
