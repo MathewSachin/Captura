@@ -471,7 +471,9 @@
             <Border BorderThickness="0.6"
                     BorderBrush="{DynamicResource Accent}"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center"
+                    Name="CanvasBorder"
+                    ClipToBounds="True">
                 <local:ExtendedInkCanvas Background="Transparent"
                                          x:Name="InkCanvas"
                                          IsEnabled="False"
