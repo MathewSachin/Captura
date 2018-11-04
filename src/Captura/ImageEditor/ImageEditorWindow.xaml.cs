@@ -127,8 +127,10 @@ namespace Captura
 
                 InkCanvas.Clip = !vm.IsCropping && vm.CroppedRegion is Rect r ? new RectangleGeometry(r) : null;
 
-                CanvasBorder.Width = pWidth;
-                CanvasBorder.Height = pHeight;
+                var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
+
+                CanvasBorder.Width = tilted ? pHeight : pWidth;
+                CanvasBorder.Height = tilted ? pWidth : pHeight;
 
                 InkCanvas.Margin = !vm.IsCropping && vm.CroppedRegion is Rect rect
                     ? new Thickness(-rect.Left, -rect.Top, 0, 0)
@@ -136,9 +138,7 @@ namespace Captura
 
                 // TODO: fix clipping
 
-                var rotate = new RotateTransform(vm.Rotation, pWidth / 2.0, pHeight / 2.0);
-
-                var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
+                var rotate = new RotateTransform(vm.Rotation, CanvasBorder.Width / 2.0, CanvasBorder.Height / 2.0);
 
                 var scale = new ScaleTransform(
                     ((tilted ? Image.ActualHeight : Image.ActualWidth) / CanvasBorder.Width) * (vm.FlipX ? -1 : 1),
