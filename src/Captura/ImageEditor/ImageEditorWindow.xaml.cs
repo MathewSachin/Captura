@@ -133,7 +133,7 @@ namespace Captura
                 CanvasBorder.Height = tilted ? pWidth : pHeight;
 
                 InkCanvas.Margin = !vm.IsCropping && vm.CroppedRegion is Rect rect
-                    ? new Thickness(-rect.Left, -rect.Top, 0, 0)
+                    ? new Thickness(-(tilted ? rect.Top : rect.Left), -(tilted ? rect.Left : rect.Top), 0, 0)
                     : new Thickness();
 
                 // TODO: fix clipping
