@@ -53,6 +53,10 @@
         /// ScreenShot using Window Picker.
         /// </summary>
         ScreenShotWindow,
+
+        OpenImageEditor,
+
+        ShowMainWindow,
         
         ServiceCount
     }

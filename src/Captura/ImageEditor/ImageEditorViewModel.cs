@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +24,8 @@ namespace Captura
 
         int _editingOperationCount;
 
-        readonly Stack<HistoryItem> _undoStack = new Stack<HistoryItem>();
-        readonly Stack<HistoryItem> _redoStack = new Stack<HistoryItem>();
+        readonly Stack<IHistoryItem> _undoStack = new Stack<IHistoryItem>();
+        readonly Stack<IHistoryItem> _redoStack = new Stack<IHistoryItem>();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
@@ -34,6 +35,7 @@ namespace Captura
         public DelegateCommand RedoCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand SaveToClipboardCommand { get; }
+        public DelegateCommand UploadToImgurCommand { get; }
 
         public DelegateCommand SetEffectCommand { get; }
         public DelegateCommand SetBrightnessCommand { get; }
@@ -50,6 +52,7 @@ namespace Captura
             RedoCommand = new DelegateCommand(Redo, false);
             SaveCommand = new DelegateCommand(() => SaveToFile(), false);
             SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
+            UploadToImgurCommand = new DelegateCommand(UploadToImgur, false);
 
             DiscardChangesCommand = new DelegateCommand(async () =>
             {
@@ -148,6 +151,24 @@ namespace Captura
 
                 await Update();
             }, false);
+        }
+
+        async void UploadToImgur()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bmp = GetBmp();
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+                encoder.Save(ms);
+
+                using (var bitmap = new Bitmap(ms))
+                {
+                    await bitmap.UploadToImgur();
+                }
+            }
         }
 
         BitmapSource _originalBmp;
@@ -408,6 +429,7 @@ namespace Captura
 
             SaveCommand.RaiseCanExecuteChanged(true);
             SaveToClipboardCommand.RaiseCanExecuteChanged(true);
+            UploadToImgurCommand.RaiseCanExecuteChanged(true);
             DiscardChangesCommand.RaiseCanExecuteChanged(true);
 
             SetEffectCommand.RaiseCanExecuteChanged(true);

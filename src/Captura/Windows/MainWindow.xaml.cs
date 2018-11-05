@@ -40,6 +40,20 @@ namespace Captura
 
                 listener.HotkeyReceived += Id => vm.HotKeyManager.ProcessHotkey(Id);
 
+                ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
+                {
+                    switch (Service)
+                    {
+                        case ServiceName.OpenImageEditor:
+                            new ImageEditorWindow().ShowAndFocus();
+                            break;
+
+                        case ServiceName.ShowMainWindow:
+                            this.ShowAndFocus();
+                            break;
+                    }
+                };
+
                 Loaded += (Sender, Args) =>
                 {
                     RepositionWindowIfOutside();
@@ -48,7 +62,7 @@ namespace Captura
                 };
             }
 
-            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().UI.MinToTrayOnStartup)
+            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
                 Hide();
 
             Closing += (Sender, Args) =>
@@ -84,7 +98,7 @@ namespace Captura
 
         void CloseButton_Click(object Sender, RoutedEventArgs Args)
         {
-            if (ServiceProvider.Get<Settings>().UI.MinToTrayOnClose)
+            if (ServiceProvider.Get<Settings>().Tray.MinToTrayOnClose)
             {
                 Hide();
             }
@@ -135,5 +149,10 @@ namespace Captura
         void MenuExit_Click(object Sender, RoutedEventArgs Args) => Close();
 
         void HideButton_Click(object Sender, RoutedEventArgs Args) => Hide();
+
+        void ShowMainWindow(object Sender, RoutedEventArgs E)
+        {
+            this.ShowAndFocus();
+        }
     }
 }
