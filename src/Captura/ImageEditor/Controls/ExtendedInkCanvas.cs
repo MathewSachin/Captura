@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Ink;
-using Captura.ImageEditor;
 
 namespace Captura
 {
@@ -43,28 +42,11 @@ namespace Captura
                 base.OnStrokeCollected(args);
             }
 
-            switch (DynamicRenderer)
+            if (DynamicRenderer is IDynamicRenderer renderer)
             {
-                case LineDynamicRenderer _:
-                    AddCustomStroke(new LineStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
-                    break;
-
-                case RectangleDynamicRenderer _:
-                    AddCustomStroke(new RectangleStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
-                    break;
-
-                case EllipseDynamicRenderer _:
-                    AddCustomStroke(new EllipseStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
-                    break;
-
-                case ArrowDynamicRenderer _:
-                    AddCustomStroke(new ArrowStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
-                    break;
-
-                default:
-                    base.OnStrokeCollected(E);
-                    break;
+                AddCustomStroke(renderer.GetStroke(E.Stroke.StylusPoints, E.Stroke.DrawingAttributes));
             }
+            else base.OnStrokeCollected(E);
         }
     }
 }
