@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Captura.Audio;
 using Captura.Models;
+using Captura.Native;
 using Captura.Webcam;
 using Microsoft.Win32;
 using Screna;
@@ -740,10 +741,8 @@ namespace Captura.ViewModels
 
             deleteAction.Click += () =>
             {
-                if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {SavingRecentItem.FilePath}?", "Confirm Deletion"))
+                if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
                     return;
-
-                File.Delete(SavingRecentItem.FilePath);
 
                 notification.Remove();
 

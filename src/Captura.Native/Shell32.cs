@@ -10,7 +10,7 @@ namespace Captura.Native
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         public static extern int SHFileOperation(ref ShFileOpStruct FileOp);
 
-        public static bool FileOperation(string Path, FileOperationType OperationType, FileOperationFlags Flags)
+        public static int FileOperation(string Path, FileOperationType OperationType, FileOperationFlags Flags)
         {
             try
             {
@@ -21,13 +21,11 @@ namespace Captura.Native
                     Flags = Flags
                 };
 
-                SHFileOperation(ref fs);
-
-                return true;
+                return SHFileOperation(ref fs);
             }
             catch (Exception)
             {
-                return false;
+                return -1;
             }
         }
     }
