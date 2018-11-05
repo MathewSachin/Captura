@@ -31,6 +31,10 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\FileOperationType.cs" />
+    <Compile Include="Enums\FileOperationFlags.cs" />
+    <Compile Include="Shell32.cs" />
+    <Compile Include="Structs\ShFileOpStruct.cs" />
     <Compile Include="Structs\CursorInfo.cs" />
     <Compile Include="DwmApi.cs" />
     <Compile Include="Enums\GetWindowEnum.cs" />
