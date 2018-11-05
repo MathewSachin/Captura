@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Input.StylusPlugIns;
 using System.Windows.Media;
+using Captura.ImageEditor;
 
 namespace Captura
 {
-    public class EllipseDynamicRenderer : DynamicRenderer
+    public class EllipseDynamicRenderer : DynamicRenderer, IDynamicRenderer
     {
         bool _isManipulating;
 
@@ -54,6 +56,11 @@ namespace Captura
         {
             _firstPoint = new Point(double.NegativeInfinity, double.NegativeInfinity);
             base.OnStylusUp(RawStylusInput);
+        }
+
+        public Stroke GetStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttribs)
+        {
+            return new EllipseStroke(StylusPoints, DrawingAttribs);
         }
     }
 }

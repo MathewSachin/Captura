@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Input.StylusPlugIns;
 using System.Windows.Media;
 
 namespace Captura
 {
-    public class LineDynamicRenderer : DynamicRenderer
+    public class LineDynamicRenderer : DynamicRenderer, IDynamicRenderer
     {
         bool _isManipulating;
 
@@ -78,6 +79,11 @@ namespace Captura
         {
             _firstPoint = new Point(double.NegativeInfinity, double.NegativeInfinity);
             base.OnStylusUp(RawStylusInput);
+        }
+
+        public Stroke GetStroke(StylusPointCollection StylusPoints, DrawingAttributes DrawingAttribs)
+        {
+            return new LineStroke(StylusPoints, DrawingAttribs);
         }
     }
 }
