@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Captura.Views;
 
 namespace Captura
 {
@@ -8,11 +7,6 @@ namespace Captura
         void OpenOverlayManager(object Sender, RoutedEventArgs E)
         {
             OverlayWindow.ShowInstance();
-        }
-
-        void OpenFileNameFormatter(object Sender, RoutedEventArgs E)
-        {
-            new FileNameFormatWindow().ShowDialog();
         }
     }
 }

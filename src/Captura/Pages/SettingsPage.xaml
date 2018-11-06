@@ -34,6 +34,9 @@
             <TabItem Header="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="TrayIconPage.xaml"/>
             </TabItem>
+            <TabItem Header="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="FileNameFormatPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

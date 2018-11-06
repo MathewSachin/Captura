@@ -127,8 +127,8 @@
     </Compile>
     <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
-    <Compile Include="Windows\FileNameFormatWindow.xaml.cs">
-      <DependentUpon>FileNameFormatWindow.xaml</DependentUpon>
+    <Compile Include="Pages\FileNameFormatPage.xaml.cs">
+      <DependentUpon>FileNameFormatPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\SecondsToTimeSpanConverter.cs" />
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
@@ -338,7 +338,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\FileNameFormatWindow.xaml">
+    <Page Include="Pages\FileNameFormatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

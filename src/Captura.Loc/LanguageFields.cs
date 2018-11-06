@@ -145,12 +145,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ConfigFileNaming
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Configure
         {
             get => Get();
@@ -296,6 +290,12 @@ namespace Captura
         }
 
         public string FileMenuSave
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileNaming
         {
             get => Get();
             set => Set(value);
