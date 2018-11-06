@@ -19,6 +19,7 @@
                                     IconData="{StaticResource IconFolder}"/>
                 <local:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
                                     Click="OpenSettings"
+                                    Foreground="{DynamicResource Accent}"
                                     IconData="{StaticResource IconSettings}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"

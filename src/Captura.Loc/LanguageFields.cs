@@ -151,12 +151,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ConfigSounds
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string ConfigTrayIcon
         {
             get => Get();
@@ -830,6 +824,12 @@ namespace Captura
         }
 
         public string ShowSysNotify
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string Sounds
         {
             get => Get();
             set => Set(value);

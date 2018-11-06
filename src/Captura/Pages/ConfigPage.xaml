@@ -96,44 +96,21 @@
                         Click="OpenFileNameFormatter"
                         IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
 
-                <Grid Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                <Button Click="OpenOverlayManager"
+                        VerticalAlignment="Top"
+                        Margin="0,10">
+                    <DockPanel>
+                        <Path Data="{StaticResource IconSettings}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                    <Button Click="OpenHotkeyManager"
-                            VerticalAlignment="Top"
-                            Margin="0,0,5,0">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconSettings}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-
-                            <TextBlock Text="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-
-                    <Button Click="OpenOverlayManager"
-                            VerticalAlignment="Top"
-                            Grid.Column="1">
-                        <DockPanel>
-                            <Path Data="{StaticResource IconSettings}"
-                                  Width="15"
-                                  Height="15"
-                                  Margin="0,0,10,0"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-
-                            <TextBlock Text="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </DockPanel>
+                </Button>
 
                 <Frame Source="ExtrasPage.xaml"/>
             </StackPanel>

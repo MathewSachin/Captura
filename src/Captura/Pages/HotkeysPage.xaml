@@ -1,16 +1,9 @@
-﻿<Window x:Class="Captura.Views.HotkeysWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Captura"
-        xmlns:hotkeys="clr-namespace:Captura;assembly=Captura.Hotkeys"
-        mc:Ignorable="d"
-        Title="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"
-        Height="600"
-        Width="550"
-        Background="{DynamicResource WindowBackground}"
-        DataContext="{Binding HotKeyManager, Source={StaticResource ServiceLocator}}">
+﻿<Page x:Class="Captura.Views.HotkeysPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Captura"
+      xmlns:hotkeys="clr-namespace:Captura;assembly=Captura.Hotkeys"
+      DataContext="{Binding HotKeyManager, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="5">
             <Grid DockPanel.Dock="Top">
@@ -94,4 +87,4 @@
             </ScrollViewer>
         </DockPanel>
     </Grid>
-</Window>
+</Page>

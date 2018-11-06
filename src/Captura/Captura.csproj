@@ -169,8 +169,8 @@
     <Compile Include="Models\PreviewWindowService.cs" />
     <Compile Include="Models\VideoSourcePicker.cs" />
     <Compile Include="Presentation\OverlayPositionAdorner.cs" />
-    <Compile Include="Windows\HotkeysWindow.xaml.cs">
-      <DependentUpon>HotkeysWindow.xaml</DependentUpon>
+    <Compile Include="Pages\HotkeysPage.xaml.cs">
+      <DependentUpon>HotkeysPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
@@ -386,7 +386,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\HotkeysWindow.xaml">
+    <Page Include="Pages\HotkeysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

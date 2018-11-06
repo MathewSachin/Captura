@@ -10,11 +10,6 @@ namespace Captura
             OverlayWindow.ShowInstance();
         }
 
-        void OpenHotkeyManager(object Sender, RoutedEventArgs E)
-        {
-            HotkeysWindow.ShowInstance();
-        }
-
         void OpenFileNameFormatter(object Sender, RoutedEventArgs E)
         {
             new FileNameFormatWindow().ShowDialog();

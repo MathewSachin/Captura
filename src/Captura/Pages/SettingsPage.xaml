@@ -28,6 +28,9 @@
             <TabItem Header="Sounds">
                 <Frame Source="SoundsPage.xaml"/>
             </TabItem>
+            <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="HotkeysPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>
