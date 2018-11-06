@@ -119,8 +119,8 @@
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TrayConfigWindow.xaml.cs">
-      <DependentUpon>TrayConfigWindow.xaml</DependentUpon>
+    <Compile Include="Pages\TrayIconPage.xaml.cs">
+      <DependentUpon>TrayIconPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SoundsPage.xaml.cs">
       <DependentUpon>SoundsPage.xaml</DependentUpon>
@@ -326,7 +326,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\TrayConfigWindow.xaml">
+    <Page Include="Pages\TrayIconPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

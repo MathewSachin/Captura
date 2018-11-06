@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
         Height="600"
-        Width="700">
+        Width="650">
     <Grid>
         <Frame Source="../Pages/SettingsPage.xaml"/>
     </Grid>

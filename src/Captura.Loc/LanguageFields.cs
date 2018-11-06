@@ -151,12 +151,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ConfigTrayIcon
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Configure
         {
             get => Get();
@@ -878,6 +872,12 @@ namespace Captura
         }
 
         public string Top
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string TrayIcon
         {
             get => Get();
             set => Set(value);

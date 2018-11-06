@@ -31,6 +31,9 @@
             <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="HotkeysPage.xaml"/>
             </TabItem>
+            <TabItem Header="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="TrayIconPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

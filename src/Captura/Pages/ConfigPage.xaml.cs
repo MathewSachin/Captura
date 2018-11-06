@@ -14,10 +14,5 @@ namespace Captura
         {
             new FileNameFormatWindow().ShowDialog();
         }
-
-        void OpenTrayIconConfig(object Sender, RoutedEventArgs E)
-        {
-            new TrayConfigWindow().ShowDialog();
-        }
     }
 }
