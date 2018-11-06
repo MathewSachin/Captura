@@ -751,12 +751,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string SaveLocation
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string SaveToClipboard
         {
             get => Get();
