@@ -57,29 +57,9 @@ namespace Captura.ViewModels
                 return;
             }
 
-            try
-            {
-                var img = (Bitmap) Image.FromFile(FilePath);
+            var img = (Bitmap) Image.FromFile(FilePath);
 
-                var imgur = ServiceProvider.Get<ImgurWriter>();
-
-                var response = await imgur.Save(img, ImageFormat.Png);
-
-                switch (response)
-                {
-                    case Exception ex:
-                        ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
-                        break;
-
-                    case ImgurUploadResponse uploadResponse:
-                        uploadResponse.Data.Link.WriteToClipboard();
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                ServiceProvider.MessageProvider.ShowException(e, "Upload to Imgur failed");
-            }
+            await img.UploadToImgur();
         }
 
         void OnCopyToClipboardExecute()

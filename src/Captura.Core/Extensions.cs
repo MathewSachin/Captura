@@ -84,7 +84,9 @@ namespace Captura
         {
             var imgur = ServiceProvider.Get<ImgurWriter>();
 
-            var response = await imgur.Save(Bitmap, ImageFormat.Png);
+            var shotVm = ServiceProvider.Get<ScreenShotViewModel>();
+
+            var response = await imgur.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
 
             switch (response)
             {
