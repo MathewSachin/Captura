@@ -5,11 +5,6 @@
     <Grid>
         <StackPanel DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
-            <Label Margin="0,0,0,5"
-                   Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"
-                   FontSize="15"/>
-
             <CheckBox IsChecked="{Binding Settings.UI.HideOnFullScreenShot}"
                       Margin="0,5">
                 <TextBlock TextWrapping="Wrap"

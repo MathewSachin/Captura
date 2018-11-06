@@ -37,6 +37,9 @@
             <TabItem Header="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="FileNameFormatPage.xaml"/>
             </TabItem>
+            <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="ScreenShotsPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>
