@@ -8,5 +8,10 @@ namespace Captura
         {
             OverlayWindow.ShowInstance();
         }
+
+        void OpenSettings(object Sender, RoutedEventArgs E)
+        {
+            new SettingsWindow().ShowDialog();
+        }
     }
 }
