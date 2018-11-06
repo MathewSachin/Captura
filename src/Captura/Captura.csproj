@@ -122,8 +122,8 @@
     <Compile Include="Windows\TrayConfigWindow.xaml.cs">
       <DependentUpon>TrayConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SoundsWindow.xaml.cs">
-      <DependentUpon>SoundsWindow.xaml</DependentUpon>
+    <Compile Include="Pages\SoundsPage.xaml.cs">
+      <DependentUpon>SoundsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
@@ -330,7 +330,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\SoundsWindow.xaml">
+    <Page Include="Pages\SoundsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

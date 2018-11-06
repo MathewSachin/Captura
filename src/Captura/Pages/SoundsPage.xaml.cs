@@ -4,9 +4,9 @@ using Captura.ViewModels;
 
 namespace Captura
 {
-    public partial class SoundsWindow
+    public partial class SoundsPage
     {
-        public SoundsWindow()
+        public SoundsPage()
         {
             InitializeComponent();
         }

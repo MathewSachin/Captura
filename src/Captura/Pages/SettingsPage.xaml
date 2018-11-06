@@ -25,6 +25,9 @@
             <TabItem Header="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="ProxyPage.xaml"/>
             </TabItem>
+            <TabItem Header="Sounds">
+                <Frame Source="SoundsPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>
