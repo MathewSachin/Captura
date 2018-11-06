@@ -17,6 +17,9 @@
                 <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{StaticResource IconFolder}"/>
+                <local:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
+                                    Click="OpenSettings"
+                                    IconData="{StaticResource IconSettings}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="10,0,0,0">
@@ -114,15 +117,6 @@
                 </TabItem.Header>
 
                 <Frame Source="RecentPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Path Data="{StaticResource IconWeb}"
-                          Style="{StaticResource TabIcon}"
-                          ToolTip="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </TabItem.Header>
-
-                <Frame Source="ProxyPage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
