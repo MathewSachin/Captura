@@ -51,5 +51,11 @@ namespace Captura
             get => Get(new []{ "Disk" });
             set => Set(value);
         }
+
+        public bool WindowShotTransparent
+        {
+            get => Get(true);
+            set => Set(value);
+        }
     }
 }

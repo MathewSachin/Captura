@@ -16,6 +16,12 @@
                            Text="{Binding HideOnFullScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
+            <CheckBox IsChecked="{Binding Settings.ScreenShots.WindowShotTransparent}"
+                      Margin="0,5">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{Binding WindowScreenShotTransparency, Source={StaticResource Loc}, Mode=OneWay}"/>
+            </CheckBox>
+
             <DockPanel Margin="0,5">
                 <Label Content="{Binding ImgFormat, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}: "

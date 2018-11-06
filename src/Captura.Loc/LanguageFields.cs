@@ -1003,6 +1003,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string WindowScreenShotTransparency
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string Yes
         {
             get => Get();
