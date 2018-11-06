@@ -40,6 +40,9 @@
             <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="ScreenShotsPage.xaml"/>
             </TabItem>
+            <TabItem Header="FFmpeg">
+                <Frame Source="FFmpegPage.xaml"/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

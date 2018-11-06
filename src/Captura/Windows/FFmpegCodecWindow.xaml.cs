@@ -18,7 +18,7 @@
                 _instance.Closed += (S, E) => _instance = null;
             }
 
-            _instance.ShowAndFocus();
+            _instance.ShowDialog();
         }
     }
 }

@@ -112,17 +112,6 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Label Content="FF"
-                           Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
-                           FontWeight="Bold"
-                           Padding="0,4"
-                           ToolTip="FFmpeg"/>
-                </TabItem.Header>
-                
-                <Frame Source="FFmpegPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
                     <Path Data="{StaticResource IconSettings}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"/>
