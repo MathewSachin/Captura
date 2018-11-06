@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Captura
 {
@@ -13,6 +14,10 @@ namespace Captura
         bool Finished { get; set; }
 
         bool Success { get; set; }
+
+        IReadOnlyCollection<NotificationAction> Actions { get; }
+
+        NotificationAction AddAction();
 
         event Action Click;
 

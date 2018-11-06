@@ -177,6 +177,11 @@ namespace Captura.Models
                 progressItem.PrimaryText = _loc.ImgurSuccess;
                 progressItem.SecondaryText = link;
 
+                var copyLinkAction = progressItem.AddAction();
+                copyLinkAction.Name = _loc.CopyToClipboard;
+                copyLinkAction.Icon = "IconLink";
+                copyLinkAction.Click += () => link.WriteToClipboard();
+
                 progressItem.Click += () => Process.Start(link);
 
                 return uploadResponse;

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Captura.Audio;
 using Captura.Models;
+using Captura.Native;
 using Captura.Webcam;
 using Microsoft.Win32;
 using Screna;
@@ -717,20 +718,41 @@ namespace Captura.ViewModels
 
             if (savingRecentItem != null)
             {
-                // After Save
-                savingRecentItem.Saved();
-
-                if (Settings.CopyOutPathToClipboard)
-                    savingRecentItem.FilePath.WriteToClipboard();
-
-                var notification = _systemTray.ShowNotification(false);
-                notification.PrimaryText = savingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
-                notification.SecondaryText = Path.GetFileName(savingRecentItem.FilePath);
-                notification.Click += () =>
-                {
-                    ServiceProvider.LaunchFile(new ProcessStartInfo(savingRecentItem.FilePath));
-                };
+                AfterSave(savingRecentItem);
             }
+        }
+
+        void AfterSave(RecentItemViewModel SavingRecentItem)
+        {
+            SavingRecentItem.Saved();
+        
+            if (Settings.CopyOutPathToClipboard)
+                SavingRecentItem.FilePath.WriteToClipboard();
+
+            var notification = _systemTray.ShowNotification(false);
+            notification.PrimaryText = SavingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
+            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FilePath);
+
+            var deleteAction = notification.AddAction();
+
+            deleteAction.Icon = "IconDelete";
+            deleteAction.Name = Loc.Delete;
+            deleteAction.Color = "LightPink";
+
+            deleteAction.Click += () =>
+            {
+                if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
+                    return;
+
+                notification.Remove();
+
+                SavingRecentItem.RemoveCommand.ExecuteIfCan();
+            };
+
+            notification.Click += () =>
+            {
+                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FilePath));
+            };
         }
     }
 }

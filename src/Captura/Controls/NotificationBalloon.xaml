@@ -19,6 +19,24 @@
                             IconData="{StaticResource IconClose}"
                             DockPanel.Dock="Right"/>
 
+        <ItemsControl DockPanel.Dock="Right"
+                      ItemsSource="{Binding Actions}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:ModernButton ToolTip="{Binding Name}"
+                                        Command="{Binding ClickCommand}"
+                                        Foreground="{Binding Color, TargetNullValue=White}"
+                                        IconData="{Binding Icon, Converter={StaticResource StaticResourceConverter}}"
+                                        DockPanel.Dock="Right"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
         <Label DockPanel.Dock="Bottom"
                Visibility="{Binding SecondaryText, Converter={StaticResource NotNullConverter}}"
                MouseUp="TextBlock_MouseUp"
