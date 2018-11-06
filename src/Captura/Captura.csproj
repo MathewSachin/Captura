@@ -184,8 +184,8 @@
     <Compile Include="Controls\ImageOverlaySettingsControl.xaml.cs">
       <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\FFmpegCodecWindow.xaml.cs">
-      <DependentUpon>FFmpegCodecWindow.xaml</DependentUpon>
+    <Compile Include="Pages\FFmpegCodecsPage.xaml.cs">
+      <DependentUpon>FFmpegCodecsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MainModule.cs" />
     <Compile Include="Models\CmdOptions.cs" />
@@ -406,7 +406,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\FFmpegCodecWindow.xaml">
+    <Page Include="Pages\FFmpegCodecsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

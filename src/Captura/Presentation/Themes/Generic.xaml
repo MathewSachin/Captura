@@ -44,7 +44,6 @@
                     <Grid Name="Panel"
                           Background="Transparent">
                         <ContentPresenter Content="{TemplateBinding Header}"
-                                          Name="HeaderLabel"
                                           Margin="10,2"/>
                     </Grid>
                     <ControlTemplate.Triggers>

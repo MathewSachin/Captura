@@ -1,19 +1,21 @@
-﻿<Window x:Class="Captura.FFmpegCodecWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
-        xmlns:local="clr-namespace:Captura"
-        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-        xmlns:ffmpeg="clr-namespace:Captura;assembly=Captura.FFmpeg"
-        Title="FFmpeg Codecs"
-        Height="500"
-        Width="500">
-    <Grid Background="{DynamicResource WindowBackground}">
+﻿<Page x:Class="Captura.FFmpegCodecsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Captura"
+      xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+      xmlns:ffmpeg="clr-namespace:Captura;assembly=Captura.FFmpeg">
+    <Grid>
         <TabControl Background="Transparent"
                     BorderThickness="0">
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <mui:TransitioningContentControl Content="{Binding}"/>
+                    <DockPanel>
+                        <GridSplitter Height="1"
+                                      Margin="0,2"
+                                      IsEnabled="False"
+                                      DockPanel.Dock="Top"/>
+                        <mui:TransitioningContentControl Content="{Binding}"/>
+                    </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>
             <TabItem Header="x264">
@@ -74,7 +76,7 @@
                                VerticalAlignment="Center"/>
                     </DockPanel>
                     
-                    <ScrollViewer>
+                    <Grid>
                         <ItemsControl ItemsSource="{Binding Settings.CustomCodecs}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -136,9 +138,9 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </ScrollViewer>
+                    </Grid>
                 </DockPanel>
             </TabItem>
         </TabControl>
     </Grid>
-</Window>
+</Page>
