@@ -107,8 +107,8 @@
     <Compile Include="ImageEditor\History\SelectHistory.cs" />
     <Compile Include="ImageEditor\History\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
-    <Compile Include="Pages\VideoPage.xaml.cs">
-      <DependentUpon>VideoPage.xaml</DependentUpon>
+    <Compile Include="Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
@@ -306,7 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\VideoPage.xaml">
+    <Page Include="Pages\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

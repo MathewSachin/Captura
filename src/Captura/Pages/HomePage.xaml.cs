@@ -2,9 +2,9 @@
 
 namespace Captura
 {
-    public partial class VideoPage
+    public partial class HomePage
     {
-        public VideoPage()
+        public HomePage()
         {
             InitializeComponent();
 

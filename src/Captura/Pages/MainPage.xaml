@@ -99,7 +99,7 @@
                           ToolTip="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
-                <Frame Source="VideoPage.xaml"/>
+                <Frame Source="HomePage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
