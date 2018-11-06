@@ -11,7 +11,7 @@ namespace Captura
 
         void OpenSettings(object Sender, RoutedEventArgs E)
         {
-            new SettingsWindow().ShowDialog();
+            SettingsWindow.ShowInstance();
         }
     }
 }

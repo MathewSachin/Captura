@@ -10,6 +10,11 @@ namespace Captura
     {
         public static void ShowAndFocus(this Window W)
         {
+            if (W.IsVisible && W.WindowState == WindowState.Minimized)
+            {
+                W.WindowState = WindowState.Normal;
+            }
+
             W.Show();
 
             W.Activate();
