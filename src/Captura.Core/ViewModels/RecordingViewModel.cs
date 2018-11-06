@@ -741,8 +741,11 @@ namespace Captura.ViewModels
 
             deleteAction.Click += () =>
             {
-                if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
-                    return;
+                if (File.Exists(SavingRecentItem.FilePath))
+                {
+                    if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
+                        return;
+                }
 
                 notification.Remove();
 
