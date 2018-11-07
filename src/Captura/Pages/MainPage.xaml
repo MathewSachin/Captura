@@ -17,6 +17,10 @@
                 <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{StaticResource IconFolder}"/>
+                <local:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
+                                    Click="OpenSettings"
+                                    Foreground="{DynamicResource Accent}"
+                                    IconData="{StaticResource IconSettings}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="10,0,0,0">
@@ -95,16 +99,7 @@
                           ToolTip="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
 
-                <Frame Source="VideoPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Path Data="{StaticResource IconCamera}"
-                          Style="{StaticResource TabIcon}"
-                          ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </TabItem.Header>
-
-                <Frame Source="ScreenShotsPage.xaml"/>
+                <Frame Source="HomePage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
@@ -114,26 +109,6 @@
                 </TabItem.Header>
 
                 <Frame Source="RecentPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Path Data="{StaticResource IconWeb}"
-                          Style="{StaticResource TabIcon}"
-                          ToolTip="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </TabItem.Header>
-
-                <Frame Source="ProxyPage.xaml"/>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="FF"
-                           Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
-                           FontWeight="Bold"
-                           Padding="0,4"
-                           ToolTip="FFmpeg"/>
-                </TabItem.Header>
-                
-                <Frame Source="FFmpegPage.xaml"/>
             </TabItem>
             <TabItem>
                 <TabItem.Header>

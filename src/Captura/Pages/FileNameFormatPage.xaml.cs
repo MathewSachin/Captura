@@ -1,8 +1,8 @@
 ﻿namespace Captura
 {
-    public partial class TrayConfigWindow
+    public partial class FileNameFormatPage
     {
-        public TrayConfigWindow()
+        public FileNameFormatPage()
         {
             InitializeComponent();
         }

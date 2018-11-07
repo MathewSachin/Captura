@@ -3,13 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid>
-        <StackPanel Margin="10">
-            <Label Margin="0,0,0,5"
-                   Content="FFmpeg"
-                   FontWeight="Bold"
-                   FontSize="15"/>
-            
+    <ScrollViewer Margin="5">
+        <StackPanel Margin="5">
             <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>
@@ -114,21 +109,6 @@
                                     IsEnabled="{Binding Settings.FFmpeg.Resize}"/>
             </Grid>
 
-            <Button Margin="0,10"
-                    Click="ConfigCodecs">
-                <DockPanel>
-                    <Path Data="{StaticResource IconSettings}"
-                          Width="15"
-                          Height="15"
-                          Margin="0,0,10,0"
-                          Stretch="Uniform"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"/>
-
-                    <TextBlock Text="{Binding ConfigCodecs, Source={StaticResource Loc}, Mode=OneWay, StringFormat='{}{0} ...'}"/>
-                </DockPanel>
-            </Button>
-
             <Label Margin="0,10,0,0"
                    Content="{Binding StreamingKeys, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
@@ -194,6 +174,13 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.CustomStreamingUrl}"/>
             </Grid>
+
+            <Label Margin="0,10"
+                   Content="{Binding ConfigCodecs, Source={StaticResource Loc}, Mode=OneWay}"
+                   FontWeight="Bold"
+                   FontSize="15"/>
+
+            <Frame Source="FFmpegCodecsPage.xaml"/>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>

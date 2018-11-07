@@ -16,11 +16,6 @@ namespace Captura
             FFmpegService.FFmpegDownloader?.Invoke();
         }
 
-        void ConfigCodecs(object Sender, RoutedEventArgs E)
-        {
-            FFmpegCodecWindow.ShowInstance();
-        }
-
         void SelectFFmpegFolder(object Sender, MouseButtonEventArgs E)
         {
             if (DataContext is MainViewModel vm)

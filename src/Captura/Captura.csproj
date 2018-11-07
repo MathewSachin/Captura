@@ -107,22 +107,28 @@
     <Compile Include="ImageEditor\History\SelectHistory.cs" />
     <Compile Include="ImageEditor\History\StrokeHistory.cs" />
     <Compile Include="Models\IRemoveRequester.cs" />
-    <Compile Include="Pages\VideoPage.xaml.cs">
-      <DependentUpon>VideoPage.xaml</DependentUpon>
+    <Compile Include="Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScreenShotsPage.xaml.cs">
       <DependentUpon>ScreenShotsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TrayConfigWindow.xaml.cs">
-      <DependentUpon>TrayConfigWindow.xaml</DependentUpon>
+    <Compile Include="Pages\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SoundsWindow.xaml.cs">
-      <DependentUpon>SoundsWindow.xaml</DependentUpon>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TrayIconPage.xaml.cs">
+      <DependentUpon>TrayIconPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SoundsPage.xaml.cs">
+      <DependentUpon>SoundsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\IsLessThanConverter.cs" />
     <Compile Include="ValueConverters\StaticResourceConverter.cs" />
-    <Compile Include="Windows\FileNameFormatWindow.xaml.cs">
-      <DependentUpon>FileNameFormatWindow.xaml</DependentUpon>
+    <Compile Include="Pages\FileNameFormatPage.xaml.cs">
+      <DependentUpon>FileNameFormatPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\SecondsToTimeSpanConverter.cs" />
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
@@ -163,8 +169,8 @@
     <Compile Include="Models\PreviewWindowService.cs" />
     <Compile Include="Models\VideoSourcePicker.cs" />
     <Compile Include="Presentation\OverlayPositionAdorner.cs" />
-    <Compile Include="Windows\HotkeysWindow.xaml.cs">
-      <DependentUpon>HotkeysWindow.xaml</DependentUpon>
+    <Compile Include="Pages\HotkeysPage.xaml.cs">
+      <DependentUpon>HotkeysPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
@@ -178,8 +184,8 @@
     <Compile Include="Controls\ImageOverlaySettingsControl.xaml.cs">
       <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\FFmpegCodecWindow.xaml.cs">
-      <DependentUpon>FFmpegCodecWindow.xaml</DependentUpon>
+    <Compile Include="Pages\FFmpegCodecsPage.xaml.cs">
+      <DependentUpon>FFmpegCodecsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MainModule.cs" />
     <Compile Include="Models\CmdOptions.cs" />
@@ -300,7 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\VideoPage.xaml">
+    <Page Include="Pages\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -312,11 +318,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\TrayConfigWindow.xaml">
+    <Page Include="Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\SoundsWindow.xaml">
+    <Page Include="Windows\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TrayIconPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SoundsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -324,7 +338,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\FileNameFormatWindow.xaml">
+    <Page Include="Pages\FileNameFormatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -372,7 +386,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\HotkeysWindow.xaml">
+    <Page Include="Pages\HotkeysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -392,7 +406,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\FFmpegCodecWindow.xaml">
+    <Page Include="Pages\FFmpegCodecsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
