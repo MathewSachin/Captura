@@ -5,6 +5,7 @@
       xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       xmlns:captura="clr-namespace:Captura"
+      xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <Grid.Resources>
@@ -344,97 +345,55 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                 <Label Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"/>
 
-                <Grid Margin="0,5"
-                      DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}">
-                    <Grid.Resources>
-                        <Style TargetType="Path" x:Key="SsLocIcon" BasedOn="{StaticResource {x:Type Path}}">
-                            <Setter Property="Width" Value="15"/>
-                            <Setter Property="Height" Value="15"/>
-                            <Setter Property="Margin" Value="5"/>
-                            <Setter Property="Stretch" Value="Uniform"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,5"
+                            DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
+                            Orientation="Horizontal">
+                    <captura:ModernToggleButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{StaticResource IconNewFile}"
+                                                IsChecked="{Binding DiskWriter.Active}"/>
 
-                    <Button ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
-                            Padding="10,0"
-                            Command="{Binding SourceToggleCommand}"
-                            CommandParameter="{Binding DiskWriter}">
-                        <Path Data="{StaticResource IconNewFile}">
-                            <Path.Style>
-                                <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
+                    <captura:ModernToggleButton ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{StaticResource IconClipboard}"
+                                                IsChecked="{Binding ClipboardWriter.Active}"/>
+
+                    <Border VerticalAlignment="Center"
+                            CornerRadius="12"
+                            BorderThickness="1"
+                            Margin="5,0">
+                        <Button ToolTip="Imgur"
+                                Content="Imgur"
+                                Command="{Binding SourceToggleCommand}"
+                                CommandParameter="{Binding ImgurWriter}"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Cursor="Hand">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DiskWriter.Active}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource Accent}"/>
+                                        <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Path.Style>
-                        </Path>
-                    </Button>
+                            </Button.Style>
+                        </Button>
 
-                    <Button ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
-                            Grid.Column="1"
-                            Margin="5,0"
-                            Padding="10,0"
-                            Command="{Binding SourceToggleCommand}"
-                            CommandParameter="{Binding ClipboardWriter}">
-                        <Path Data="{StaticResource IconClipboard}">
-                            <Path.Style>
-                                <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ClipboardWriter.Active}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                    </Button>
-
-                    <Button ToolTip="Imgur"
-                            Content="Imgur"
-                            Grid.Column="2"
-                            Padding="10,0"
-                            Command="{Binding SourceToggleCommand}"
-                            CommandParameter="{Binding ImgurWriter}">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="{DynamicResource ItemBorder}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
-                                        <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Button.Style>
-                    </Button>
+                        </Border.Style>
+                    </Border>
 
-                    <Button ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
-                            Grid.Column="3"
-                            Margin="5,0,0,0"
-                            Padding="10,0"
-                            Command="{Binding SourceToggleCommand}"
-                            CommandParameter="{Binding EditorWriter, Source={StaticResource ServiceLocator}}">
-                        <Path Data="{StaticResource IconPencil}">
-                            <Path.Style>
-                                <Style TargetType="Path" BasedOn="{StaticResource SsLocIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                    </Button>
-                </Grid>
+                    <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{StaticResource IconPencil}"
+                                                IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>
