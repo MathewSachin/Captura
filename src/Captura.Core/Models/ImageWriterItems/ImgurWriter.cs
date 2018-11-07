@@ -1,5 +1,4 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
@@ -37,7 +36,7 @@ namespace Captura.Models
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
         {
             var response = await Save(Image, Format);
 

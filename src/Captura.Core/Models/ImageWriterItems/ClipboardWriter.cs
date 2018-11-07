@@ -1,5 +1,4 @@
-﻿using Captura.ViewModels;
-using Screna;
+﻿using Screna;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
@@ -20,7 +19,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
         {
             Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 

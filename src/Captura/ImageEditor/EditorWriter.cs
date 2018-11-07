@@ -1,5 +1,4 @@
-﻿using Captura.ViewModels;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,12 +9,7 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        public EditorWriter()
-        {
-            // LanguageManager.Instance.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
-        }
-
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
         {
             using (var stream = new MemoryStream())
             {

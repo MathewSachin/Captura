@@ -1,8 +1,6 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Threading.Tasks;
 using Screna;
 
@@ -26,7 +24,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
         {
             try
             {

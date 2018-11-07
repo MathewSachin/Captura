@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="Models\IRecentItem.cs" />
     <Compile Include="Models\NoVideoSourceProvider.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />

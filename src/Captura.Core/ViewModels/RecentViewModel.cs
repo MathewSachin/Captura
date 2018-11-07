@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ using Newtonsoft.Json;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class RecentViewModel : ViewModelBase, IDisposable
+    public class RecentViewModel : ViewModelBase, IRecentList
     {
         readonly ObservableCollection<RecentItemViewModel> _recentList = new ObservableCollection<RecentItemViewModel>();
 
@@ -32,7 +33,7 @@ namespace Captura.ViewModels
 
             Load();
 
-            ClearCommand = new DelegateCommand(() => _recentList.Clear());
+            ClearCommand = new DelegateCommand(Clear);
         }
 
         void Load()
@@ -68,6 +69,13 @@ namespace Captura.ViewModels
             item.OnRemove += () => _recentList.Remove(item);
 
             return item;
+        }
+
+        IEnumerable<RecentItemViewModel> IRecentList.Items => RecentList;
+
+        public void Clear()
+        {
+            _recentList.Clear();
         }
 
         public void Dispose()
