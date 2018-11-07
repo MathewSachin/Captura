@@ -125,7 +125,7 @@ namespace Captura.ViewModels
             {
                 var allTasks = _videoViewModel.AvailableImageWriters
                     .Where(M => M.Active)
-                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName, _recentViewModel));
+                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName));
 
                 await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }

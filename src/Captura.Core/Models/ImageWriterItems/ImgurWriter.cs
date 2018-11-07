@@ -20,30 +20,33 @@ namespace Captura.Models
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
         readonly LanguageManager _loc;
+        readonly IRecentList _recentList;
 
         public ImgurWriter(DiskWriter DiskWriter,
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager LanguageManager)
+            LanguageManager LanguageManager,
+            IRecentList RecentList)
         {
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
             _loc = LanguageManager;
+            _recentList = RecentList;
 
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
             var response = await Save(Image, Format);
 
             switch (response)
             {
                 case ImgurUploadResponse uploadResponse:
-                    var recentItem = Recents.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
+                    var recentItem = _recentList.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
                     recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
 
                     // Copy path to clipboard only when clipboard writer is off
@@ -60,7 +63,7 @@ namespace Captura.Models
                             $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
 
                         if (yes)
-                            await _diskWriter.Save(Image, Format, FileName, Recents);
+                            await _diskWriter.Save(Image, Format, FileName);
                     }
                     break;
             }

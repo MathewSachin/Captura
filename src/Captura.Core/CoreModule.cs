@@ -21,6 +21,8 @@ namespace Captura
             Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<FileNameFormatViewModel>();
 
+            Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
+
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
             Binder.BindSingleton<CensorOverlaysViewModel>();

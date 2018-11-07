@@ -13,18 +13,24 @@ namespace Captura.Models
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
         readonly LanguageManager _loc;
+        readonly IRecentList _recentList;
 
-        public DiskWriter(ISystemTray SystemTray, IMessageProvider MessageProvider, Settings Settings, LanguageManager Loc)
+        public DiskWriter(ISystemTray SystemTray,
+            IMessageProvider MessageProvider,
+            Settings Settings,
+            LanguageManager Loc,
+            IRecentList RecentList)
         {
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
             _loc = Loc;
+            _recentList = RecentList;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
             try
             {
@@ -38,7 +44,7 @@ namespace Captura.Models
 
                 Image.Save(fileName, Format);
                 
-                Recents.Add(fileName, RecentItemType.Image, false);
+                _recentList.Add(fileName, RecentItemType.Image, false);
 
                 // Copy path to clipboard only when clipboard writer is off
                 if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)

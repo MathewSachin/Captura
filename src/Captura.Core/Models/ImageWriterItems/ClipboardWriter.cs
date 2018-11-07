@@ -19,7 +19,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
             Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
 

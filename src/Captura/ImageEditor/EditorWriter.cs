@@ -9,7 +9,7 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName, IRecentList Recents)
+        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
             using (var stream = new MemoryStream())
             {
