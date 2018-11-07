@@ -18,15 +18,15 @@
                        FontSize="15"/>
             </DockPanel>
 
-            <DockPanel DockPanel.Dock="Top"
-                       Margin="0,0,0,10">
+            <DockPanel DockPanel.Dock="Bottom"
+                       Margin="0,10,0,0">
                 <Label Content="{Binding MaxRecent, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>
                 <xctk:IntegerUpDown Margin="5,0,0,0"
                                     Value="{Binding Settings.RecentMax}"/>
             </DockPanel>
 
-            <ItemsControl Margin="0,10,0,0"
+            <ItemsControl Margin="0,0,0,10"
                           ItemsSource="{Binding RecentViewModel.RecentList}"
                           Style="{StaticResource VirtualizingItemsControl}">
                 <ItemsControl.ItemTemplate>
