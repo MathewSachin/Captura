@@ -68,6 +68,8 @@ namespace Captura
 
         void ToggleFullscreen()
         {
+            var icons = ServiceProvider.Get<IIconSet>();
+
             if (_fullScreen)
             {
                 ConfigPanel.Visibility = Visibility.Visible;
@@ -78,10 +80,7 @@ namespace Captura
 
                 ResizeMode = ResizeMode.CanResize;
 
-                if (FindResource("IconExpand") is Geometry icon)
-                {
-                    ToggleButton.IconData = icon;
-                }
+                ToggleButton.IconData = Geometry.Parse(icons.Expand);
             }
             else
             {
@@ -95,10 +94,7 @@ namespace Captura
 
                 ResizeMode = ResizeMode.NoResize;
 
-                if (FindResource("IconCollapse") is Geometry icon)
-                {
-                    ToggleButton.IconData = icon;
-                }
+                ToggleButton.IconData = Geometry.Parse(icons.Collapse);
             }
 
             _fullScreen = !_fullScreen;
