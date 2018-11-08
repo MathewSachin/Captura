@@ -1,6 +1,6 @@
 ﻿namespace Captura.Models
 {
-    public enum RecentItemType
+    public enum RecentFileType
     {
         Image,
         Video,

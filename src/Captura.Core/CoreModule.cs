@@ -81,6 +81,7 @@ namespace Captura
             Binder.BindSingleton<FFmpegLog>();
 
             // Recent Serializers
+            Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
             Binder.Bind<IRecentItemSerializer, ImgurRecentSerializer>();
 
             // Check if Bass is available

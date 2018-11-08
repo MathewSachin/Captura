@@ -664,7 +664,7 @@ namespace Captura.ViewModels
 
         public async Task StopRecording()
         {
-            RecentItemViewModel savingRecentItem = null;
+            FileRecentItem savingRecentItem = null;
 
             // Reference current file name
             var fileName = _currentFileName;
@@ -672,7 +672,8 @@ namespace Captura.ViewModels
             // Assume saving to file only when extension is present
             if (!_waiting && !string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
             {
-                savingRecentItem = _recentViewModel.Add(_currentFileName, _isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
+                savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
+                _recentViewModel.Add(savingRecentItem);
             }
 
             // Reference Recorder as it will be set to null
@@ -725,16 +726,16 @@ namespace Captura.ViewModels
             }
         }
 
-        void AfterSave(RecentItemViewModel SavingRecentItem)
+        void AfterSave(FileRecentItem SavingRecentItem)
         {
             SavingRecentItem.Saved();
         
             if (Settings.CopyOutPathToClipboard)
-                SavingRecentItem.FilePath.WriteToClipboard();
+                SavingRecentItem.FileName.WriteToClipboard();
 
             var notification = _systemTray.ShowNotification(false);
-            notification.PrimaryText = SavingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
-            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FilePath);
+            notification.PrimaryText = SavingRecentItem.FileType == RecentFileType.Video ? Loc.VideoSaved : Loc.AudioSaved;
+            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FileName);
 
             var deleteAction = notification.AddAction();
 
@@ -744,9 +745,9 @@ namespace Captura.ViewModels
 
             deleteAction.Click += () =>
             {
-                if (File.Exists(SavingRecentItem.FilePath))
+                if (File.Exists(SavingRecentItem.FileName))
                 {
-                    if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
+                    if (Shell32.FileOperation(SavingRecentItem.FileName, FileOperationType.Delete, 0) != 0)
                         return;
                 }
 
@@ -757,7 +758,7 @@ namespace Captura.ViewModels
 
             notification.Click += () =>
             {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FilePath));
+                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FileName));
             };
         }
     }
