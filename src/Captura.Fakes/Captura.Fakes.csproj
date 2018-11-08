@@ -17,7 +17,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>    
+    <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -32,7 +32,6 @@
   <ItemGroup>
     <Compile Include="FakeAudioPlayer.cs" />
     <Compile Include="FakeMessageProvider.cs" />
-    <Compile Include="FakeNotification.cs" />
     <Compile Include="FakePreviewWindow.cs" />
     <Compile Include="FakeRegionProvider.cs" />
     <Compile Include="FakesModule.cs" />

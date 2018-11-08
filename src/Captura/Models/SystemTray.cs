@@ -58,21 +58,14 @@ namespace Captura.Models
             Show();
         }
 
-        public INotification ShowNotification(bool Progress)
+        public void ShowNotification(INotification Notification)
         {
-            var vm = new NotificationViewModel();
-
-            if (!Progress)
-                vm.Finished = true;
-
             if (!_settings.Tray.ShowNotifications)
-                return vm;
+                return;
 
-            _notificationStack.Add(new NotificationBalloon(vm));
+            _notificationStack.Add(new NotificationBalloon(Notification));
 
             Show();
-
-            return vm;
         }
     }
 }

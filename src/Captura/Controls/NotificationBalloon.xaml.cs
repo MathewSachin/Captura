@@ -6,13 +6,13 @@ namespace Captura
 {
     public partial class NotificationBalloon : IRemoveRequester
     {
-        public NotificationViewModel ViewModel { get; }
+        public INotification Notification { get; }
 
-        public NotificationBalloon(NotificationViewModel ViewModel)
+        public NotificationBalloon(INotification Notification)
         {
-            this.ViewModel = ViewModel;
+            this.Notification = Notification;
 
-            ViewModel.RemoveRequested += OnClose;
+            Notification.RemoveRequested += OnClose;
 
             InitializeComponent();
         }
@@ -28,7 +28,7 @@ namespace Captura
         
         void TextBlock_MouseUp(object Sender, MouseButtonEventArgs E)
         {
-            ViewModel.RaiseClick();
+            Notification.RaiseClick();
 
             OnClose();
         }
