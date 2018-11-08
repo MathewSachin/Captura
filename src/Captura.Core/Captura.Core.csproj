@@ -35,7 +35,11 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="MaterialDesignIcons.cs" />
-    <Compile Include="Models\IRecentItem.cs" />
+    <Compile Include="Models\Recents\FileRecentItem.cs" />
+    <Compile Include="Models\Recents\ImgurRecentItem.cs" />
+    <Compile Include="Models\Recents\FileRecentSerializer.cs" />
+    <Compile Include="Models\Recents\ImgurRecentSerializer.cs" />
+    <Compile Include="Models\Recents\IRecentItemSerializer.cs" />
     <Compile Include="Models\NoVideoSourceProvider.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
@@ -59,7 +63,6 @@
     <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />
     <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
     <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
-    <Compile Include="Models\ImageWriterItems\IImageWriterItem.cs" />
     <Compile Include="Models\Overlays\TextOverlay.cs" />
     <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
     <Compile Include="Settings\Models\SoundSettings.cs" />
@@ -84,8 +87,7 @@
     <Compile Include="ViewModels\OverlayListViewModel.cs" />
     <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
     <Compile Include="Models\Overlays\WebcamOverlay.cs" />
-    <Compile Include="Models\RecentItemModel.cs" />
-    <Compile Include="Models\RecentItemType.cs" />
+    <Compile Include="Models\Recents\RecentFileType.cs" />
     <Compile Include="Models\RecorderState.cs" />
     <Compile Include="Models\RotateBy.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
@@ -94,7 +96,6 @@
     <Compile Include="ViewModels\LicensesViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
-    <Compile Include="ViewModels\RecentItemViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
     <Compile Include="ViewModels\TrayProgressViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />

@@ -49,12 +49,14 @@ namespace Captura.Models
             switch (response)
             {
                 case ImgurUploadResponse uploadResponse:
-                    var recentItem = _recentList.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
-                    recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
+                    var link = uploadResponse.Data.Link;
+                    var deleteHash = uploadResponse.Data.DeleteHash;
+
+                    _recentList.Add(new ImgurRecentItem(link, deleteHash));
 
                     // Copy path to clipboard only when clipboard writer is off
                     if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
-                        uploadResponse.Data.Link.WriteToClipboard();
+                        link.WriteToClipboard();
                     break;
 
                 case Exception e:

@@ -3,39 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:RecentItemViewModel}">
+             d:DataContext="{d:DesignInstance models:FileRecentItem}">
     <DockPanel IsEnabled="{Binding IsSaving, Converter={StaticResource NegatingConverter}}"
                Margin="0,2">
         <Path Stretch="Uniform"
               Height="15"
               Width="15"
-              Margin="0,0,5,0">
-            <Path.Style>
-                <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Image}">
-                            <Setter Property="Data" Value="{Binding Icons.Image, Source={StaticResource ServiceLocator}}"/>
-                            <Setter Property="Fill" Value="YellowGreen"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Video}">
-                            <Setter Property="Data" Value="{Binding Icons.Video, Source={StaticResource ServiceLocator}}"/>
-                            <Setter Property="Fill" Value="OrangeRed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Audio}">
-                            <Setter Property="Data" Value="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"/>
-                            <Setter Property="Fill" Value="DodgerBlue"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Link}">
-                            <Setter Property="Data" Value="{Binding Icons.Link, Source={StaticResource ServiceLocator}}"/>
-                            <Setter Property="Fill" Value="MediumPurple"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Path.Style>
-        </Path>
+              Margin="0,0,5,0"
+              Data="{Binding Icon}"
+              Fill="{Binding IconColor}"/>
+
         <Button DockPanel.Dock="Right"
                 ToolTip="{Binding RemoveFromList, Source={StaticResource Loc}, Mode=OneWay}"
                 BorderBrush="Transparent"
@@ -47,130 +26,36 @@
                   Width="10"
                   Data="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"/>
         </Button>
+
         <Button Content="{Binding Display}"
                 BorderThickness="0"
                 HorizontalContentAlignment="Left"
                 OverridesDefaultStyle="False"
-                Command="{Binding OpenCommand}">
+                Command="{Binding ClickCommand}">
             <Button.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{Binding CopyPathCommand}"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                <ContextMenu ItemsSource="{Binding Actions}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="MenuItem.HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <Path Data="{Binding Icon}"
+                                                  Width="15"
+                                                  Height="15"
+                                                  Margin="0,0,10,0"
+                                                  Stretch="Uniform"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
 
-                                <TextBlock Text="{Binding CopyPath, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Visibility="{Binding IsTrimmable, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Click="TrimClick"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Trim, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding Trim, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Command="{Binding CopyToClipboardCommand}"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding CopyToClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Command="{Binding UploadToImgurCommand}"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Upload, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding UploadToImgur, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Click="CropClick"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding Crop, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Click="EditClick"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding Edit, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Command="{Binding DeleteCommand}"
-                              Margin="0,2">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <Path Data="{Binding Icons.Delete, Source={StaticResource ServiceLocator}}"
-                                      Width="15"
-                                      Height="15"
-                                      Margin="0,0,10,0"
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding Delete, Source={StaticResource Loc}, Mode=OneWay}"/>
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="MenuItem.Command" Value="{Binding ClickCommand}"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </Button.ContextMenu>
         </Button>

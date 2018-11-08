@@ -44,7 +44,7 @@ namespace Captura.Models
 
                 Image.Save(fileName, Format);
                 
-                _recentList.Add(fileName, RecentItemType.Image, false);
+                _recentList.Add(new FileRecentItem(fileName, RecentFileType.Image));
 
                 // Copy path to clipboard only when clipboard writer is off
                 if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
