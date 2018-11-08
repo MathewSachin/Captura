@@ -30,6 +30,10 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Images\IImageWriterItem.cs" />
+    <Compile Include="Recent\IRecentItem.cs" />
+    <Compile Include="Recent\IRecentList.cs" />
+    <Compile Include="Recent\RecentAction.cs" />
     <Compile Include="Services\IAudioPlayer.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Modifiers.cs" />
