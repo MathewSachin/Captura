@@ -8,6 +8,7 @@ namespace Captura
         public void OnLoad(IBinder Binder)
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
+            Binder.Bind<IIconSet, MaterialDesignIcons>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
