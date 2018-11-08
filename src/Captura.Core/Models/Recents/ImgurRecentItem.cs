@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Input;
 using Screna;
 
 namespace Captura.Models
@@ -9,20 +11,24 @@ namespace Captura.Models
         public string DeleteHash { get; }
         public string Link { get; }
 
-        public ImgurRecentItem(string Link,
-            string DeleteHash,
-            IIconSet Icons,
-            LanguageManager Loc)
+        public ImgurRecentItem(string Link, string DeleteHash)
         {
             this.DeleteHash = DeleteHash;
 
+            ClickCommand = new DelegateCommand(() => ServiceProvider.LaunchFile(new ProcessStartInfo(Link)));
+
+            RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
+
+            var icons = ServiceProvider.Get<IIconSet>();
+            var loc = ServiceProvider.Get<LanguageManager>();
+
             Display = this.Link = Link;
-            Icon = Icons.Link;
+            Icon = icons.Link;
 
             Actions = new[]
             {
-                new RecentAction(Loc.CopyPath, Icons.Clipboard, () => this.Link.WriteToClipboard()),
-                new RecentAction(Loc.Delete, Icons.Delete, OnDelete),
+                new RecentAction(loc.CopyPath, icons.Clipboard, () => this.Link.WriteToClipboard()),
+                new RecentAction(loc.Delete, icons.Delete, OnDelete),
             };
         }
 
@@ -49,7 +55,13 @@ namespace Captura.Models
 
         public string Icon { get; }
 
+        public string IconColor => "MediumPurple";
+
         bool IRecentItem.IsSaving => false;
+
+        public ICommand ClickCommand { get; }
+
+        public ICommand RemoveCommand { get; }
 
         public IEnumerable<RecentAction> Actions { get; }
 

@@ -35,6 +35,7 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="MaterialDesignIcons.cs" />
+    <Compile Include="Models\Recents\FileRecentItem.cs" />
     <Compile Include="Models\Recents\ImgurRecentItem.cs" />
     <Compile Include="Models\Recents\ImgurRecentSerializer.cs" />
     <Compile Include="Models\Recents\IRecentItem.cs" />

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Captura.ViewModels;
 
 namespace Captura.Models
 {
     public interface IRecentList : IDisposable
     {
-        RecentItemViewModel Add(string FilePath, RecentItemType ItemType, bool IsSaving);
+        void Add(IRecentItem RecentItem);
 
-        IEnumerable<RecentItemViewModel> Items { get; }
+        IEnumerable<IRecentItem> Items { get; }
 
         void Clear();
     }

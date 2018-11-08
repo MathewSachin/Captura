@@ -4,15 +4,6 @@ namespace Captura.Models
 {
     public class ImgurRecentSerializer : IRecentItemSerializer
     {
-        readonly IIconSet _icons;
-        readonly LanguageManager _loc;
-
-        public ImgurRecentSerializer(IIconSet Icons, LanguageManager Loc)
-        {
-            _icons = Icons;
-            _loc = Loc;
-        }
-
         public bool CanSerialize(IRecentItem Item) => Item is ImgurRecentItem;
 
         public bool CanDeserialize(JObject Item)
@@ -52,7 +43,7 @@ namespace Captura.Models
             {
                 var model = Item.ToObject<ImgurRecentModel>();
 
-                return new ImgurRecentItem(model.Link, model.DeleteHash, _icons, _loc);
+                return new ImgurRecentItem(model.Link, model.DeleteHash);
             }
             catch
             {
