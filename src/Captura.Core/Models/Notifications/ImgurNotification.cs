@@ -1,26 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
+using Screna;
 
 namespace Captura
 {
-    public class NotificationViewModel : NotifyPropertyChanged, INotification
+    public class ImgurNotification : NotifyPropertyChanged, INotification
     {
-        public event Action Click;
+        readonly LanguageManager _loc;
+
+        public ImgurNotification()
+        {
+            _loc = ServiceProvider.Get<LanguageManager>();
+
+            PrimaryText = _loc.ImgurUploading;
+        }
+
         public event Action RemoveRequested;
 
         public void Remove() => RemoveRequested?.Invoke();
 
-        public void RaiseClick() => Click?.Invoke();
+        public void RaiseClick()
+        {
+            if (_link != null)
+            {
+                Process.Start(_link);
+            }
+        }
+
+        public void RaiseFailed()
+        {
+            Finished = true;
+
+            PrimaryText = _loc.ImgurFailed;
+        }
+
+        string _link;
+
+        public void RaiseFinished(string Link)
+        {
+            _link = Link;
+
+            Finished = true;
+            PrimaryText = _loc.ImgurSuccess;
+            SecondaryText = Link;
+
+            var icons = ServiceProvider.Get<IIconSet>();
+
+            var copyLinkAction = AddAction();
+            copyLinkAction.Name = _loc.CopyToClipboard;
+            copyLinkAction.Icon = icons.Link;
+            copyLinkAction.Click += Link.WriteToClipboard;
+        }
 
         readonly ObservableCollection<NotificationAction> _actions = new ObservableCollection<NotificationAction>();
 
-        public IReadOnlyCollection<NotificationAction> Actions => _actions;
+        public IEnumerable<NotificationAction> Actions => _actions;
 
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
-        public NotificationAction AddAction()
+        NotificationAction AddAction()
         {
             var action = new NotificationAction();
 
@@ -41,7 +82,7 @@ namespace Captura
             set
             {
                 _progress = value;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -51,10 +92,10 @@ namespace Captura
         public string PrimaryText
         {
             get => _primaryText;
-            set
+            private set
             {
                 _primaryText = value;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -62,15 +103,15 @@ namespace Captura
         public string SecondaryText
         {
             get => _secondaryText;
-            set
+            private set
             {
                 _secondaryText = value;
-                
+
                 OnPropertyChanged();
             }
         }
 
-        bool _finished, _success;
+        bool _finished;
 
         public bool Finished
         {
@@ -78,18 +119,7 @@ namespace Captura
             set
             {
                 _finished = value;
-                
-                OnPropertyChanged();
-            }
-        }
 
-        public bool Success
-        {
-            get => _success;
-            set
-            {
-                _success = value;
-                
                 OnPropertyChanged();
             }
         }

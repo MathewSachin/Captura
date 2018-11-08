@@ -4,7 +4,7 @@ using Captura.Models;
 
 namespace Captura.ViewModels
 {
-    public class SoundsViewModelItem : NotificationViewModel
+    public class SoundsViewModelItem : NotifyPropertyChanged
     {
         readonly SoundSettings _settings;
 

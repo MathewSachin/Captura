@@ -209,9 +209,8 @@ namespace Captura.ViewModels
 
                 RecorderState = RecorderState.Paused;
 
-                _pauseNotification = _systemTray.ShowNotification(false);
-                _pauseNotification.PrimaryText = Loc.Paused;
-                _pauseNotification.Click += OnPauseExecute;
+                _pauseNotification = new TextNotification(Loc.Paused, OnPauseExecute);
+                _systemTray.ShowNotification(_pauseNotification);
             }
         }
 
@@ -733,33 +732,12 @@ namespace Captura.ViewModels
             if (Settings.CopyOutPathToClipboard)
                 SavingRecentItem.FileName.WriteToClipboard();
 
-            var notification = _systemTray.ShowNotification(false);
-            notification.PrimaryText = SavingRecentItem.FileType == RecentFileType.Video ? Loc.VideoSaved : Loc.AudioSaved;
-            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FileName);
+            var notification = new FileSavedNotification(SavingRecentItem.FileName,
+                SavingRecentItem.FileType == RecentFileType.Video ? Loc.VideoSaved : Loc.AudioSaved);
 
-            var deleteAction = notification.AddAction();
+            notification.OnDelete += () => SavingRecentItem.RemoveCommand.ExecuteIfCan();
 
-            deleteAction.Icon = _icons.Delete;
-            deleteAction.Name = Loc.Delete;
-            deleteAction.Color = "LightPink";
-
-            deleteAction.Click += () =>
-            {
-                if (File.Exists(SavingRecentItem.FileName))
-                {
-                    if (Shell32.FileOperation(SavingRecentItem.FileName, FileOperationType.Delete, 0) != 0)
-                        return;
-                }
-
-                notification.Remove();
-
-                SavingRecentItem.RemoveCommand.ExecuteIfCan();
-            };
-
-            notification.Click += () =>
-            {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FileName));
-            };
+            _systemTray.ShowNotification(notification);
         }
     }
 }

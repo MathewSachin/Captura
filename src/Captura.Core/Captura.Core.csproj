@@ -35,6 +35,8 @@
     <Compile Include="ApiKeys.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="MaterialDesignIcons.cs" />
+    <Compile Include="Models\Notifications\ImgurNotification.cs" />
+    <Compile Include="Models\Notifications\TextNotification.cs" />
     <Compile Include="Models\Recents\FileRecentItem.cs" />
     <Compile Include="Models\Recents\ImgurRecentItem.cs" />
     <Compile Include="Models\Recents\FileRecentSerializer.cs" />
@@ -97,7 +99,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
     <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="ViewModels\TrayProgressViewModel.cs" />
+    <Compile Include="Models\Notifications\FileSavedNotification.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="WithPreviewWriter.cs" />

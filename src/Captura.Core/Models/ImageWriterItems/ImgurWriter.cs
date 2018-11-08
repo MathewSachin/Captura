@@ -125,8 +125,8 @@ namespace Captura.Models
         // Returns ImgurUploadResponse on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
-            var progressItem = _systemTray.ShowNotification(true);
-            progressItem.PrimaryText = _loc.ImgurUploading;
+            var progressItem = new ImgurNotification();
+            _systemTray.ShowNotification(progressItem);
             
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
@@ -169,27 +169,14 @@ namespace Captura.Models
                 }
                 catch (Exception e)
                 {
-                    progressItem.Finished = true;
-                    progressItem.Success = false;
-
-                    progressItem.PrimaryText = _loc.ImgurFailed;
+                    progressItem.RaiseFailed();
 
                     return e;
                 }
 
                 var link = uploadResponse.Data.Link;
 
-                progressItem.Finished = true;
-                progressItem.Success = true;
-                progressItem.PrimaryText = _loc.ImgurSuccess;
-                progressItem.SecondaryText = link;
-
-                var copyLinkAction = progressItem.AddAction();
-                copyLinkAction.Name = _loc.CopyToClipboard;
-                copyLinkAction.Icon = _icons.Link;
-                copyLinkAction.Click += () => link.WriteToClipboard();
-
-                progressItem.Click += () => Process.Start(link);
+                progressItem.RaiseFinished(link);
 
                 return uploadResponse;
             }

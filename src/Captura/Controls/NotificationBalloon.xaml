@@ -5,9 +5,9 @@
              BorderThickness="0,1,0,0"
              Padding="5,0,0,0"
              BorderBrush="{DynamicResource Accent}"
-             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+             DataContext="{Binding Notification, RelativeSource={RelativeSource Self}}">
     <DockPanel>
-        <ProgressBar Value="{Binding Progress}"
+        <ProgressBar Value="{Binding Progress, Mode=OneWay}"
                      Height="5"
                      Margin="-5,0,0,0"
                      DockPanel.Dock="Bottom"
