@@ -26,7 +26,7 @@
                     <local:ModernButton ToolTip="{Binding Name}"
                                         Command="{Binding ClickCommand}"
                                         Foreground="{Binding Color, TargetNullValue=White}"
-                                        IconData="{Binding Icon, Converter={StaticResource StaticResourceConverter}}"
+                                        IconData="{Binding Icon}"
                                         DockPanel.Dock="Right"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -21,13 +21,15 @@ namespace Captura.Models
         readonly Settings _settings;
         readonly LanguageManager _loc;
         readonly IRecentList _recentList;
+        readonly IIconSet _icons;
 
         public ImgurWriter(DiskWriter DiskWriter,
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
             LanguageManager LanguageManager,
-            IRecentList RecentList)
+            IRecentList RecentList,
+            IIconSet Icons)
         {
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
@@ -35,6 +37,7 @@ namespace Captura.Models
             _settings = Settings;
             _loc = LanguageManager;
             _recentList = RecentList;
+            _icons = Icons;
 
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
@@ -181,7 +184,7 @@ namespace Captura.Models
 
                 var copyLinkAction = progressItem.AddAction();
                 copyLinkAction.Name = _loc.CopyToClipboard;
-                copyLinkAction.Icon = "IconLink";
+                copyLinkAction.Icon = _icons.Link;
                 copyLinkAction.Click += () => link.WriteToClipboard();
 
                 progressItem.Click += () => Process.Start(link);
