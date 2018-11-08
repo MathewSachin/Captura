@@ -22,7 +22,7 @@
                                 <CheckBox Margin="0,5"
                                           IsChecked="{Binding Active, Mode=TwoWay}">
                                     <DockPanel>
-                                        <Path Data="{StaticResource IconMic}"
+                                        <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
                                               Width="15"
                                               Height="15"
                                               Margin="5,0"
@@ -44,7 +44,7 @@
                                 <CheckBox Margin="0,5,0,5"
                                           IsChecked="{Binding Active, Mode=TwoWay}">
                                     <DockPanel>
-                                        <Path Data="{StaticResource IconSpeaker}"
+                                        <Path Data="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
                                               Width="15"
                                               Height="15"
                                               Margin="5,0"

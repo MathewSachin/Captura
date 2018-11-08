@@ -30,7 +30,7 @@
             <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                                  DockPanel.Dock="Right"
                                  Margin="0,5,5,5">
-                <Path Data="{StaticResource IconMic}">
+                <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}">
                     <Path.Style>
                         <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                             <Style.Triggers>
@@ -53,7 +53,7 @@
                                  DockPanel.Dock="Right"
                                  Margin="0,5,5,5">
                 <Path Style="{StaticResource VideoSourceIcon}"
-                      Data="{StaticResource IconWebcam}"/>
+                      Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"/>
 
                 <xctk:DropDownButton.DropDownContent>
                     <Frame Source="../Pages/WebcamPage.xaml"
@@ -64,19 +64,19 @@
 
             <captura:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                   Command="{Binding OpenOutputFolderCommand}"
-                                  IconData="{StaticResource IconFolder}"
+                                  IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"
                                   DockPanel.Dock="Right"/>
 
             <StackPanel Orientation="Horizontal">
                 <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
                                             IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                            IconData="{StaticResource IconCursor}"
+                                            IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
                                             IsChecked="{Binding Settings.IncludeCursor}"/>
                 <captura:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IconData="{StaticResource IconHand}"
+                                            IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
                                             IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
                 <captura:ModernToggleButton ToolTip="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IconData="{StaticResource IconKeyboard}"
+                                            IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
                                             IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
             </StackPanel>
 

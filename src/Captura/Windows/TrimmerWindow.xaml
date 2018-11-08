@@ -80,7 +80,7 @@
             <Button Margin="5"
                     Command="{Binding OpenCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource IconOpenFile}"
+                    <Path Data="{Binding Icons.OpenFile, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -96,7 +96,7 @@
                     Grid.Column="1"
                     Command="{Binding TrimCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource IconTrim}"
+                    <Path Data="{Binding Icons.Trim, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"

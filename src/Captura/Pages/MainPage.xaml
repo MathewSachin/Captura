@@ -10,25 +10,25 @@
                                 DockPanel.Dock="Right">
                 <local:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding RefreshCommand}"
-                                    IconData="{StaticResource IconRefresh}"/>
+                                    IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"/>
                 <local:ModernButton ToolTip="Open Canvas"
                                     Click="OpenCanvas"
-                                    IconData="{StaticResource IconBrush}"/>
+                                    IconData="{Binding Icons.Brush, Source={StaticResource ServiceLocator}}"/>
                 <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
-                                    IconData="{StaticResource IconFolder}"/>
+                                    IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"/>
                 <local:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
                                     Click="OpenSettings"
                                     Foreground="{DynamicResource Accent}"
-                                    IconData="{StaticResource IconSettings}"/>
+                                    IconData="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="10,0,0,0">
                 <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
                                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                          IconData="{StaticResource IconCursor}"
+                                          IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
-                <local:ModernToggleButton IconData="{StaticResource IconHand}"
+                <local:ModernToggleButton IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}">
                     <local:ModernToggleButton.ToolTip>
                         <StackPanel>
@@ -39,7 +39,7 @@
                         </StackPanel>
                     </local:ModernToggleButton.ToolTip>
                 </local:ModernToggleButton>
-                <local:ModernToggleButton IconData="{StaticResource IconKeyboard}"
+                <local:ModernToggleButton IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}">
                     <local:ModernToggleButton.ToolTip>
                         <StackPanel>
@@ -51,7 +51,7 @@
                     </local:ModernToggleButton.ToolTip>
                 </local:ModernToggleButton>
                 <local:ModernToggleButton IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                                          IconData="{StaticResource IconTimer}"
+                                          IconData="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
                     <local:ModernToggleButton.ToolTip>
                         <StackPanel>
@@ -94,7 +94,7 @@
             </TabControl.ContentTemplate>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconHome}"
+                    <Path Data="{Binding Icons.Home, Source={StaticResource ServiceLocator}}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
@@ -103,7 +103,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconHistory}"
+                    <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
@@ -112,7 +112,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconSettings}"
+                    <Path Data="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>
@@ -121,7 +121,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Path Data="{StaticResource IconHelp}"
+                    <Path Data="{Binding Icons.Help, Source={StaticResource ServiceLocator}}"
                           Style="{StaticResource TabIcon}"
                           ToolTip="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </TabItem.Header>

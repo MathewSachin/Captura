@@ -37,7 +37,7 @@
             </DrawingImage>
             <DrawingImage x:Key="ScreenShotImageSource">
                 <DrawingImage.Drawing>
-                    <GeometryDrawing Geometry="{StaticResource IconCamera}"
+                    <GeometryDrawing Geometry="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                      Brush="{DynamicResource ItemText}"/>
                 </DrawingImage.Drawing>
             </DrawingImage>

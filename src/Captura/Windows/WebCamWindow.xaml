@@ -18,12 +18,12 @@
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                 Click="CloseButton_Click"
-                                IconData="{StaticResource IconClose}"
+                                IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
             <local:ModernButton ToolTip="Capture Image"
                                 Click="CaptureImage_OnClick"
-                                IconData="{StaticResource IconCamera}"
+                                IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
             <Label Content="{Binding WebCamView, Source={StaticResource Loc}, Mode=OneWay}"

@@ -16,7 +16,7 @@
         <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                             Click="CloseButton_Click"
                             Foreground="LightPink"
-                            IconData="{StaticResource IconClose}"
+                            IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                             DockPanel.Dock="Right"/>
 
         <ItemsControl DockPanel.Dock="Right"

@@ -13,7 +13,7 @@
                        FontSize="15"/>
                 
                 <DockPanel Margin="5,5,0,5">
-                    <Path Data="{StaticResource IconTranslate}"
+                    <Path Data="{Binding Icons.Translate, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -93,7 +93,7 @@
                         VerticalAlignment="Top"
                         Margin="0,3,0,10">
                     <DockPanel>
-                        <Path Data="{StaticResource IconSettings}"
+                        <Path Data="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"

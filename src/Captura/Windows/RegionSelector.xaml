@@ -229,7 +229,7 @@
                         </Style>
                     </DockPanel.Resources>
 
-                    <local:ModernButton IconData="{StaticResource IconSnapToWindow}"
+                    <local:ModernButton IconData="{Binding Icons.SnapToWindow, Source={StaticResource ServiceLocator}}"
                                         x:Name="Snapper"
                                         Click="Snapper_OnClick"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
@@ -239,13 +239,13 @@
                                         Click="CloseButton_Click"
                                         Background="{DynamicResource WindowBackground}"
                                         Foreground="#77ef5350"
-                                        IconData="{StaticResource IconClose}"
+                                        IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                     <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
-                                        IconData="{StaticResource IconCamera}"
+                                        IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
@@ -259,7 +259,7 @@
                                         ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                     <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand}"
-                                        IconData="{StaticResource IconPause}"
+                                        IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"

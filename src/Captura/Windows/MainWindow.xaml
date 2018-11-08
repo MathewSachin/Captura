@@ -67,7 +67,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconPause}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -128,7 +128,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconCrop}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -145,7 +145,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconScreen}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Screen, Source={StaticResource ServiceLocator}}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -162,7 +162,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconWindow}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Window, Source={StaticResource ServiceLocator}}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -181,7 +181,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconWindow}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Window, Source={StaticResource ServiceLocator}}"
                                                              Brush="{DynamicResource ItemText}"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -198,7 +198,7 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <GeometryDrawing Geometry="{StaticResource IconClose}"
+                                            <GeometryDrawing Geometry="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                                              Brush="#b71c1c"/>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
@@ -217,7 +217,7 @@
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
-                                        IconData="{StaticResource IconCamera}"
+                                        IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordingViewModel.RecordCommand}"
@@ -225,7 +225,7 @@
                                         IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
                                         Command="{Binding RecordingViewModel.PauseCommand}"
-                                        IconData="{StaticResource IconPause}"
+                                        IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"
                                         RenderTransformOrigin="0.5,0.5">
                         <local:ModernButton.RenderTransform>
@@ -261,16 +261,16 @@
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"
-                                        IconData="{StaticResource IconClose}"
+                                        IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{Binding MinTray, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="HideButton_Click"
-                                        IconData="{StaticResource IconDoubleDown}"
+                                        IconData="{Binding Icons.DoubleDown, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
                     <local:ModernButton ToolTip="{Binding Minimize, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="MinButton_Click"
-                                        IconData="{StaticResource IconMinimize}"
+                                        IconData="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.7"
                                         DockPanel.Dock="Right"/>
                     <Grid Margin="0,-2"

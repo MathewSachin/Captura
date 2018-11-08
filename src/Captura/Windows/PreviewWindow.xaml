@@ -42,7 +42,7 @@
                     Margin="20"
                     Opacity="0.8"
                     Name="Toggler">
-                <captura:ModernButton IconData="{StaticResource IconExpand}"
+                <captura:ModernButton IconData="{Binding Icons.Expand, Source={StaticResource ServiceLocator}}"
                                       Foreground="White"
                                       x:Name="ToggleButton"
                                       Click="Fullscreen_OnClick"/>

@@ -19,7 +19,7 @@
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                 Click="CloseButton_Click"
-                                IconData="{StaticResource IconClearNotifications}"
+                                IconData="{Binding Icons.ClearNotifications, Source={StaticResource ServiceLocator}}"
                                 DockPanel.Dock="Right"/>
 
             <Label>

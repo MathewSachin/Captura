@@ -52,7 +52,7 @@
                           InputGestureText="Ctrl + N">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconNewFile}"
+                            <Path Data="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -69,7 +69,7 @@
                           InputGestureText="Ctrl + O">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconOpenFile}"
+                            <Path Data="{Binding Icons.OpenFile, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -85,7 +85,7 @@
                 <MenuItem Click="OpenFromClipboard">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconClipboard}"
+                            <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -104,7 +104,7 @@
                           InputGestureText="Ctrl + S">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconSave}"
+                            <Path Data="{Binding Icons.Save, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -120,7 +120,7 @@
                 <MenuItem Command="{Binding SaveToClipboardCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconClipboard}"
+                            <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -136,7 +136,7 @@
                 <MenuItem Command="{Binding UploadToImgurCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconUpload}"
+                            <Path Data="{Binding Icons.Upload, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -154,7 +154,7 @@
                 <MenuItem Click="NewWindow">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconAdd}"
+                            <Path Data="{Binding Icons.Add, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -170,7 +170,7 @@
                 <MenuItem Command="Close">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconClose}"
+                            <Path Data="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -189,7 +189,7 @@
                           InputGestureText="Ctrl + Z">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconUndo}"
+                            <Path Data="{Binding Icons.Undo, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -206,7 +206,7 @@
                           InputGestureText="Ctrl + Y">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconRedo}"
+                            <Path Data="{Binding Icons.Redo, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -229,7 +229,7 @@
                 <MenuItem Command="{Binding RotateLeftCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconRotateLeft}"
+                            <Path Data="{Binding Icons.RotateLeft, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -245,7 +245,7 @@
                 <MenuItem Command="{Binding RotateRightCommand}">
                     <MenuItem.Header>
                         <DockPanel>
-                            <Path Data="{StaticResource IconRotateRight}"
+                            <Path Data="{Binding Icons.RotateRight, Source={StaticResource ServiceLocator}}"
                                   Width="15"
                                   Height="15"
                                   Margin="0,0,10,0"
@@ -304,7 +304,7 @@
                 <Button DockPanel.Dock="Right"
                         CommandParameter="1"
                         Command="{Binding SetBrightnessCommand}">
-                    <Path Data="{StaticResource IconPlus}"
+                    <Path Data="{Binding Icons.Plus, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -315,7 +315,7 @@
                 <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
                         Command="{Binding SetBrightnessCommand}">
-                    <Path Data="{StaticResource IconMinus}"
+                    <Path Data="{Binding Icons.Minus, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -328,7 +328,7 @@
                         ToolTip="Reset Brightness"
                         Command="{Binding SetBrightnessCommand}">
                     <DockPanel>
-                        <Path Data="{StaticResource IconBrightness}"
+                        <Path Data="{Binding Icons.Brightness, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -346,7 +346,7 @@
                 <Button DockPanel.Dock="Right"
                         CommandParameter="1"
                         Command="{Binding SetContrastCommand}">
-                    <Path Data="{StaticResource IconPlus}"
+                    <Path Data="{Binding Icons.Plus, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -357,7 +357,7 @@
                 <Button CommandParameter="-1"
                         DockPanel.Dock="Right"
                         Command="{Binding SetContrastCommand}">
-                    <Path Data="{StaticResource IconMinus}"
+                    <Path Data="{Binding Icons.Minus, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Stretch="Uniform"
@@ -370,7 +370,7 @@
                         ToolTip="Reset Contrast"
                         Command="{Binding SetContrastCommand}">
                     <DockPanel>
-                        <Path Data="{StaticResource IconContrast}"
+                        <Path Data="{Binding Icons.Contrast, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -459,7 +459,7 @@
                 <Button Command="New"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconNewFile}"
+                        <Path Data="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -474,7 +474,7 @@
                 <Button Command="Open"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconOpenFile}"
+                        <Path Data="{Binding Icons.OpenFile, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -490,7 +490,7 @@
                 <Button Click="OpenFromClipboard"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconClipboard}"
+                        <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"

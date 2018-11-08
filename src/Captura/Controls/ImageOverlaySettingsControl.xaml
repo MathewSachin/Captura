@@ -45,7 +45,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Path Data="{StaticResource IconOpacity}"
+            <Path Data="{Binding Icons.Opacity, Source={StaticResource ServiceLocator}}"
                   Width="15"
                   Height="15"
                   Margin="0,0,10,0"

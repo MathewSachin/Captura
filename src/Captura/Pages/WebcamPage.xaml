@@ -9,7 +9,7 @@
                    FontWeight="Bold"/>
 
             <DockPanel Margin="0,5">
-                <Path Data="{StaticResource IconWebcam}"
+                <Path Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"
                       Width="15"
                       Height="15"
                       Margin="0,0,7,0"

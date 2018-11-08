@@ -70,7 +70,7 @@
                     <DockPanel DockPanel.Dock="Top">
                         <local:ModernButton ToolTip="Add"
                                             Command="{Binding AddCustomCodecCommand}"
-                                            IconData="{StaticResource IconAdd}"/>
+                                            IconData="{Binding Icons.Add, Source={StaticResource ServiceLocator}}"/>
                         
                         <Label Content="Add Codec"
                                VerticalAlignment="Center"/>
@@ -101,7 +101,7 @@
                                                                 Grid.Column="2"
                                                                 CommandParameter="{Binding}"
                                                                 Command="{Binding DataContext.RemoveCustomCodecCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                                                                IconData="{StaticResource IconClose}"/>
+                                                                IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"/>
                                     
                                             <Label Content="Name"/>
                                             
