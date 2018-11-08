@@ -14,5 +14,11 @@
             get => false;
             set { }
         }
+
+        public void EditImage(string FileName) { }
+
+        public void CropImage(string FileName) { }
+
+        public void TrimMedia(string FileName) { }
     }
 }
