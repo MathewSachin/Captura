@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Captura.Models
 {
     public class FileRecentSerializer : IRecentItemSerializer
     {
-        public bool CanSerialize(IRecentItem Item) => Item is ImgurRecentItem;
+        public bool CanSerialize(IRecentItem Item) => Item is FileRecentItem;
 
         public bool CanDeserialize(JObject Item)
         {
@@ -25,7 +26,8 @@ namespace Captura.Models
 
         public JObject Serialize(IRecentItem Item)
         {
-            if (Item is FileRecentItem item)
+            // Persist only if File exists or is a link.
+            if (Item is FileRecentItem item && File.Exists(item.FileName))
             {
                 return JObject.FromObject(new FileRecentModel
                 {
@@ -43,7 +45,10 @@ namespace Captura.Models
             {
                 var model = Item.ToObject<FileRecentModel>();
 
-                return new FileRecentItem(model.FileName, model.FileType);
+                // Restore only if file exists
+                return File.Exists(model.FileName)
+                    ? new FileRecentItem(model.FileName, model.FileType)
+                    : null;
             }
             catch
             {

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Captura.ViewModels
 {
@@ -16,7 +16,8 @@ namespace Captura.ViewModels
         public ReadOnlyObservableCollection<IRecentItem> RecentList { get; }
         
         public ICommand ClearCommand { get; }
-        
+
+        readonly IEnumerable<IRecentItemSerializer> _recentItemSerializers;
         readonly Settings _settings;
 
         static string GetFilePath()
@@ -24,11 +25,15 @@ namespace Captura.ViewModels
             return Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
         }
 
-        public RecentViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
+        public RecentViewModel(Settings Settings,
+            LanguageManager LanguageManager,
+            IEnumerable<IRecentItemSerializer> RecentItemSerializers)
+            : base(Settings, LanguageManager)
         {
             RecentList = new ReadOnlyObservableCollection<IRecentItem>(_recentList);
 
             _settings = Settings;
+            _recentItemSerializers = RecentItemSerializers;
 
             Load();
 
@@ -39,18 +44,33 @@ namespace Captura.ViewModels
         {
             try
             {
-                //var json = File.ReadAllText(GetFilePath());
+                var json = File.ReadAllText(GetFilePath());
 
-                //var list = JsonConvert.DeserializeObject<RecentItemModel[]>(json)
-                //    .Reverse() // Reversion required to maintain order
-                //    .Where(M => M.ItemType == RecentItemType.Link ||
-                //                File.Exists(M.FilePath)); // Restore only if file exists
+                var jarray = JArray.Parse(json);
 
-                //foreach (var model in list)
-                //{
-                //    var item = Add(model.FilePath, model.ItemType, false);
-                //    item.DeleteHash = model.DeleteHash;
-                //}
+                var items = new List<IRecentItem>();
+
+                foreach (var jItem in jarray)
+                {
+                    var jObj = (JObject) jItem;
+
+                    var serializer = _recentItemSerializers.FirstOrDefault(M => M.CanDeserialize(jObj));
+
+                    var item = serializer?.Deserialize(jObj);
+
+                    if (item != null)
+                    {
+                        items.Add(item);
+                    }
+                }
+
+                // Reversion required to maintain order
+                items.Reverse();
+
+                foreach (var model in items)
+                {
+                    Add(model);
+                }
             }
             catch
             {
@@ -75,24 +95,30 @@ namespace Captura.ViewModels
 
         public void Dispose()
         {
-            // Persist only if File exists or is a link.
-            //var items = RecentList.Where(M => M.ItemType == RecentItemType.Link && !M.IsSaving || File.Exists(M.FilePath))
-            //    .Select(M => new RecentItemModel(M.FilePath, M.ItemType, M.DeleteHash))
-            //    .Take(_settings.RecentMax);
+            try
+            {
+                var items = new JArray();
 
-            //try
-            //{
-            //    var json = JsonConvert.SerializeObject(items, Formatting.Indented, new JsonSerializerSettings
-            //    {
-            //        NullValueHandling = NullValueHandling.Ignore
-            //    });
+                foreach (var item in RecentList)
+                {
+                    var serializer = _recentItemSerializers.FirstOrDefault(M => M.CanSerialize(item));
 
-            //    File.WriteAllText(GetFilePath(), json);
-            //}
-            //catch
-            //{
-            //    // Ignore Errors
-            //}
+                    var jItem = serializer?.Serialize(item);
+
+                    if (jItem != null)
+                    {
+                        items.Add(jItem);
+                    }
+                }
+
+                var json = items.ToString();
+
+                File.WriteAllText(GetFilePath(), json);
+            }
+            catch
+            {
+                // Ignore Errors
+            }
         }
     }
 }

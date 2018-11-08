@@ -17,6 +17,7 @@ namespace Captura
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
                 Converters = new JsonConverter[]
                 {
                     new StringEnumConverter
