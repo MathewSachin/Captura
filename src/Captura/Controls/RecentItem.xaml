@@ -36,19 +36,21 @@
                 <ContextMenu ItemsSource="{Binding Actions}">
                     <ContextMenu.ItemContainerStyle>
                         <Style>
-                            <Setter Property="MenuItem.Header">
+                            <Setter Property="MenuItem.HeaderTemplate">
                                 <Setter.Value>
-                                    <DockPanel>
-                                        <Path Data="{Binding Icon}"
-                                              Width="15"
-                                              Height="15"
-                                              Margin="0,0,10,0"
-                                              Stretch="Uniform"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <Path Data="{Binding Icon}"
+                                                  Width="15"
+                                                  Height="15"
+                                                  Margin="0,0,10,0"
+                                                  Stretch="Uniform"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
 
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DockPanel>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="MenuItem.Command" Value="{Binding ClickCommand}"/>
