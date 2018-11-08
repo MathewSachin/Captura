@@ -20,13 +20,13 @@
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="LightPink"
-                                        IconData="{StaticResource IconClose}"
+                                        IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"/>
 
                     <local:ModernButton ToolTip="{Binding Edit, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="EditButton_OnClick"
                                         Foreground="{DynamicResource ItemText}"
-                                        IconData="{StaticResource IconPencil}"
+                                        IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"/>
 
                     <Label>

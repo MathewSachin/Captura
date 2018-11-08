@@ -2,47 +2,54 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Captura
 {
     public class InkToolToIconConverter : OneWayConverter
     {
-        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        string GetPath(object Value)
         {
-            var app = Application.Current;
+            var icons = ServiceProvider.Get<IIconSet>();
 
             switch (Value)
             {
                 case InkCanvasEditingMode.Ink:
                 case ExtendedInkTool.Pen:
-                    return app.FindResource("IconPencil");
+                    return icons.Pencil;
 
                 case InkCanvasEditingMode.EraseByPoint:
                 case ExtendedInkTool.Eraser:
-                    return app.FindResource("IconEraser");
+                    return icons.Eraser;
 
                 case InkCanvasEditingMode.EraseByStroke:
                 case ExtendedInkTool.StrokeEraser:
-                    return app.FindResource("IconStrokeEraser");
+                    return icons.StrokeEraser;
 
                 case InkCanvasEditingMode.Select:
                 case ExtendedInkTool.Select:
-                    return app.FindResource("IconSelect");
+                    return icons.Select;
 
                 case ExtendedInkTool.Line:
-                    return app.FindResource("IconLine");
+                    return icons.Line;
 
                 case ExtendedInkTool.Rectangle:
-                    return app.FindResource("IconRectangle");
+                    return icons.Rectangle;
 
                 case ExtendedInkTool.Ellipse:
-                    return app.FindResource("IconEllipse");
+                    return icons.Ellipse;
 
                 case ExtendedInkTool.Arrow:
-                    return app.FindResource("IconArrow");
+                    return icons.Arrow;
             }
 
-            return app.FindResource("IconCursor");
+            return icons.Cursor;
+        }
+
+
+        public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        {
+            return Geometry.Parse(GetPath(Value));
         }
     }
 }

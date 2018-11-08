@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Captura
 {
@@ -10,12 +11,14 @@ namespace Captura
     {
         public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            var app = Application.Current;
+            var icons = ServiceProvider.Get<IIconSet>();
 
             if (Value is RecorderState state)
-                return state == RecorderState.NotRecording
-                    ? app.Resources["IconRecord"]
-                    : app.Resources["IconStop"];
+            {
+                return Geometry.Parse(state == RecorderState.NotRecording
+                    ? icons.Record
+                    : icons.Stop);
+            }
 
             return Binding.DoNothing;
         }

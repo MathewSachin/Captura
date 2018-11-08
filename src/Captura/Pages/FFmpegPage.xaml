@@ -8,7 +8,7 @@
             <Button Click="OpenFFmpegLog"
                     Margin="0,5">
                 <DockPanel>
-                    <Path Data="{StaticResource IconHistory}"
+                    <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -24,7 +24,7 @@
                     Click="FFmpegDownload"
                     Margin="0,5">
                 <DockPanel>
-                    <Path Data="{StaticResource IconDownload}"
+                    <Path Data="{Binding Icons.Download, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -48,7 +48,7 @@
                     <Path Stretch="UniformToFill"
                           Height="4"
                           Width="16"
-                          Data="{StaticResource IconMore}"/>
+                          Data="{Binding Icons.More, Source={StaticResource ServiceLocator}}"/>
                 </Button>
                 <Button DockPanel.Dock="Right"
                         ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
@@ -58,10 +58,10 @@
                     <Path Stretch="UniformToFill"
                           Height="10"
                           Width="9"
-                          Data="{StaticResource IconClose}"/>
+                          Data="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"/>
                 </Button>
 
-                <Path Data="{StaticResource IconFolder}"
+                <Path Data="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"
                       Width="15"
                       Height="15"
                       Margin="0,0,10,0"
@@ -126,7 +126,7 @@
                     <ColumnDefinition Width="*" MinWidth="200"/>
                 </Grid.ColumnDefinitions>
 
-                <Path Data="{StaticResource IconTwitch}"
+                <Path Data="{Binding Icons.Twitch, Source={StaticResource ServiceLocator}}"
                       Width="15"
                       Height="15"
                       Margin="0,0,10,0"
@@ -140,7 +140,7 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.TwitchKey}"/>
 
-                <Path Data="{StaticResource IconYouTube}"
+                <Path Data="{Binding Icons.YouTube, Source={StaticResource ServiceLocator}}"
                       Grid.Row="1"
                       Width="15"
                       Height="15"
@@ -157,7 +157,7 @@
                          Margin="2"
                          Text="{Binding Settings.FFmpeg.YouTubeLiveKey}"/>
 
-                <Path Data="{StaticResource IconWeb}"
+                <Path Data="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"
                       Grid.Row="2"
                       Width="15"
                       Height="15"

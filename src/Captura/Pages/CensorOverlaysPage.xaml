@@ -9,7 +9,7 @@
             <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"
-                                      IconData="{StaticResource IconAdd}"/>
+                                      IconData="{Binding Icons.Add, Source={StaticResource ServiceLocator}}"/>
                 <Label Content="{Binding Add, Source={StaticResource Loc}, Mode=OneWay}"/>
             </DockPanel>
 
@@ -61,7 +61,7 @@
                     <captura:ModernButton ToolTip="Remove"
                                           Command="{Binding RemoveCommand}"
                                           CommandParameter="{Binding SelectedItem}"
-                                          IconData="{StaticResource IconClose}"
+                                          IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                           DockPanel.Dock="Right"/>
 
                     <CheckBox IsChecked="{Binding SelectedItem.Display, Mode=TwoWay}"

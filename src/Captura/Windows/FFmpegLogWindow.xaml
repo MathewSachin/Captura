@@ -17,7 +17,7 @@
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                 Click="CloseButton_Click"
-                                IconData="{StaticResource IconClose}"
+                                IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
             <Label Content="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"
@@ -45,7 +45,7 @@
                             Command="{Binding CopyToClipboardCommand}"/>
             </DockPanel.InputBindings>
             <DockPanel DockPanel.Dock="Top">
-                <local:ModernButton IconData="{StaticResource IconDelete}"
+                <local:ModernButton IconData="{Binding Icons.Delete, Source={StaticResource ServiceLocator}}"
                                     DockPanel.Dock="Right"
                                     Command="{Binding RemoveCommand}"
                                     Foreground="#b71c1c"/>
@@ -53,7 +53,7 @@
                 <Button Command="{Binding CopyToClipboardCommand}"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconClipboard}"
+                        <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"

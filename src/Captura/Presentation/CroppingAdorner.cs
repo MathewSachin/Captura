@@ -128,7 +128,7 @@ namespace Captura
 
             var btn = new ModernButton
             {
-                IconData = (Geometry) Application.Current.Resources["IconCheck"],
+                IconData = Geometry.Parse(ServiceProvider.Get<IIconSet>().Check),
                 Cursor = Cursors.Hand,
                 Foreground = new SolidColorBrush(Colors.White)
             };

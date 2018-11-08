@@ -304,7 +304,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                                          Padding="5"
                                          HorizontalAlignment="Left"
                                          Name="AudioDropdown">
-                        <Path Data="{StaticResource IconMic}">
+                        <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}">
                             <Path.Style>
                                 <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
                                     <Style.Triggers>
@@ -349,11 +349,11 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                             DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
                             Orientation="Horizontal">
                     <captura:ModernToggleButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{StaticResource IconNewFile}"
+                                                IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
                                                 IsChecked="{Binding DiskWriter.Active}"/>
 
                     <captura:ModernToggleButton ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{StaticResource IconClipboard}"
+                                                IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                                 IsChecked="{Binding ClipboardWriter.Active}"/>
 
                     <Border VerticalAlignment="Center"
@@ -391,7 +391,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                     </Border>
 
                     <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{StaticResource IconPencil}"
+                                                IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
                                                 IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"/>
                 </StackPanel>
             </StackPanel>

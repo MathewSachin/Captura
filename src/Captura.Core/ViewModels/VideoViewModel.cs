@@ -45,6 +45,7 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             Settings Settings,
             LanguageManager LanguageManager,
             FullScreenSourceProvider FullScreenProvider,
+            IIconSet Icons,
             // ReSharper disable SuggestBaseTypeForParameter
             ScreenSourceProvider ScreenSourceProvider,
             WindowSourceProvider WindowSourceProvider,
@@ -68,15 +69,15 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            VideoSources.Add(new VideoSourceModel(NoVideoSourceProvider, nameof(Loc.OnlyAudio), NoVideoDescription, "IconNoVideo"));
-            VideoSources.Add(new VideoSourceModel(FullScreenProvider, nameof(Loc.FullScreen), FullScreenDescription, "IconMultipleMonitor"));
-            VideoSources.Add(new VideoSourceModel(ScreenSourceProvider, nameof(Loc.Screen), ScreenDescription, "IconScreen"));
-            VideoSources.Add(new VideoSourceModel(WindowSourceProvider, nameof(Loc.Window), WindowDescription, "IconWindow"));
-            VideoSources.Add(new VideoSourceModel(RegionSourceProvider, nameof(Loc.Region), RegionDescription, "IconRegion"));
+            VideoSources.Add(new VideoSourceModel(NoVideoSourceProvider, nameof(Loc.OnlyAudio), NoVideoDescription, Icons.Video));
+            VideoSources.Add(new VideoSourceModel(FullScreenProvider, nameof(Loc.FullScreen), FullScreenDescription, Icons.MultipleMonitor));
+            VideoSources.Add(new VideoSourceModel(ScreenSourceProvider, nameof(Loc.Screen), ScreenDescription, Icons.Screen));
+            VideoSources.Add(new VideoSourceModel(WindowSourceProvider, nameof(Loc.Window), WindowDescription, Icons.Window));
+            VideoSources.Add(new VideoSourceModel(RegionSourceProvider, nameof(Loc.Region), RegionDescription, Icons.Region));
 
             if (Windows8OrAbove)
             {
-                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, "Desktop Duplication", DeskDuplDescription, "IconGame"));
+                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, "Desktop Duplication", DeskDuplDescription, Icons.Game));
             }
 
             VideoWriterProviders.Add(FFmpegWriterProvider);

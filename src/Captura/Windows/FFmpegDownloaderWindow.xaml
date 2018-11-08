@@ -22,7 +22,7 @@
         <DockPanel DockPanel.Dock="Top">
             <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                 Click="CloseButton_Click"
-                                IconData="{StaticResource IconClose}"
+                                IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                 DockPanel.Dock="Right"
                                 WindowChrome.IsHitTestVisibleInChrome="True"/>
             <Label Content="FFmpeg Downloader"
@@ -57,7 +57,7 @@
                    Margin="0,5">
             <Button Command="{Binding OpenFolderCommand}">
                 <DockPanel>
-                    <Path Data="{StaticResource IconFolder}"
+                    <Path Data="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"
                           Width="15"
                           Height="15"
                           Margin="0,0,10,0"
@@ -74,7 +74,7 @@
                 <Path Stretch="UniformToFill"
                       Height="4"
                       Width="16"
-                      Data="{StaticResource IconMore}"/>
+                      Data="{Binding Icons.More, Source={StaticResource ServiceLocator}}"/>
             </Button>
             <Border ToolTip="{Binding TargetFolder, Mode=OneWay}"
                     MouseUp="SelectTargetFolder">

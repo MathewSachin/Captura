@@ -36,6 +36,7 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
         readonly IAudioPlayer _audioPlayer;
+        readonly IIconSet _icons;
 
         readonly KeymapViewModel _keymap;
 
@@ -66,7 +67,8 @@ namespace Captura.ViewModels
             RecentViewModel RecentViewModel,
             IWebCamProvider WebCamProvider,
             KeymapViewModel Keymap,
-            IAudioPlayer AudioPlayer) : base(Settings, LanguageManager)
+            IAudioPlayer AudioPlayer,
+            IIconSet Icons) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
@@ -82,6 +84,7 @@ namespace Captura.ViewModels
             _webCamProvider = WebCamProvider;
             _keymap = Keymap;
             _audioPlayer = AudioPlayer;
+            _icons = Icons;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -735,7 +738,7 @@ namespace Captura.ViewModels
 
             var deleteAction = notification.AddAction();
 
-            deleteAction.Icon = "IconDelete";
+            deleteAction.Icon = _icons.Delete;
             deleteAction.Name = Loc.Delete;
             deleteAction.Color = "LightPink";
 

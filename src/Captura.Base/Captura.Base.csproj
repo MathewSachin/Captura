@@ -35,6 +35,7 @@
     <Compile Include="Modifiers.cs" />
     <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="NotificationAction.cs" />
+    <Compile Include="Services\IIconSet.cs" />
     <Compile Include="Settings\ProxySettings.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="NoVideoItem.cs" />

@@ -15,7 +15,7 @@
                 <Button Command="{Binding AddCommand}"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconPlus}"
+                        <Path Data="{Binding Icons.Plus, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -31,7 +31,7 @@
                         Command="{Binding ResetCommand}"
                         Margin="5">
                     <DockPanel>
-                        <Path Data="{StaticResource IconRestore}"
+                        <Path Data="{Binding Icons.Restore, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Margin="0,0,10,0"
@@ -60,7 +60,7 @@
                                 
                                 <local:ModernButton DockPanel.Dock="Right"
                                                     CommandParameter="{Binding}"
-                                                    IconData="{StaticResource IconClose}"
+                                                    IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                                     Command="{Binding HotKeyManager.RemoveCommand, Source={StaticResource ServiceLocator}}">
                                     <local:ModernButton.LayoutTransform>
                                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>

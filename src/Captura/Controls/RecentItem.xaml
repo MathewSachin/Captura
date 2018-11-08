@@ -17,19 +17,19 @@
                 <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Image}">
-                            <Setter Property="Data" Value="{StaticResource IconImage}"/>
+                            <Setter Property="Data" Value="{Binding Icons.Image, Source={StaticResource ServiceLocator}}"/>
                             <Setter Property="Fill" Value="YellowGreen"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Video}">
-                            <Setter Property="Data" Value="{StaticResource IconVideo}"/>
+                            <Setter Property="Data" Value="{Binding Icons.Video, Source={StaticResource ServiceLocator}}"/>
                             <Setter Property="Fill" Value="OrangeRed"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Audio}">
-                            <Setter Property="Data" Value="{StaticResource IconMusic}"/>
+                            <Setter Property="Data" Value="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"/>
                             <Setter Property="Fill" Value="DodgerBlue"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ItemType}" Value="{x:Static models:RecentItemType.Link}">
-                            <Setter Property="Data" Value="{StaticResource IconLink}"/>
+                            <Setter Property="Data" Value="{Binding Icons.Link, Source={StaticResource ServiceLocator}}"/>
                             <Setter Property="Fill" Value="MediumPurple"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -45,7 +45,7 @@
             <Path Stretch="UniformToFill"
                   Height="10"
                   Width="10"
-                  Data="{StaticResource IconClose}"/>
+                  Data="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"/>
         </Button>
         <Button Content="{Binding Display}"
                 BorderThickness="0"
@@ -58,7 +58,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconClipboard}"
+                                <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -75,7 +75,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconTrim}"
+                                <Path Data="{Binding Icons.Trim, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -92,7 +92,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconClipboard}"
+                                <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -109,7 +109,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconUpload}"
+                                <Path Data="{Binding Icons.Upload, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -126,7 +126,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconCrop}"
+                                <Path Data="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -143,7 +143,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconPencil}"
+                                <Path Data="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
@@ -159,7 +159,7 @@
                               Margin="0,2">
                         <MenuItem.Header>
                             <DockPanel>
-                                <Path Data="{StaticResource IconDelete}"
+                                <Path Data="{Binding Icons.Delete, Source={StaticResource ServiceLocator}}"
                                       Width="15"
                                       Height="15"
                                       Margin="0,0,10,0"
