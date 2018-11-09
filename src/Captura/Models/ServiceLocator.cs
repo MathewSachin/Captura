@@ -41,5 +41,7 @@ namespace Captura
         public EditorWriter EditorWriter => ServiceProvider.Get<EditorWriter>();
 
         public HotKeyManager HotKeyManager => ServiceProvider.Get<HotKeyManager>();
+
+        public IIconSet Icons => ServiceProvider.Get<IIconSet>();
     }
 }

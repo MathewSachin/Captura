@@ -145,24 +145,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ConfigFileNaming
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string ConfigSounds
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string ConfigTrayIcon
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Configure
         {
             get => Get();
@@ -308,6 +290,12 @@ namespace Captura
         }
 
         public string FileMenuSave
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string FileNaming
         {
             get => Get();
             set => Set(value);
@@ -745,12 +733,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string SaveLocation
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string SaveToClipboard
         {
             get => Get();
@@ -811,6 +793,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public string Sounds
+        {
+            get => Get();
+            set => Set(value);
+        }
+
         public string SnapToWindow
         {
             get => Get();
@@ -854,6 +842,12 @@ namespace Captura
         }
 
         public string Top
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string TrayIcon
         {
             get => Get();
             set => Set(value);

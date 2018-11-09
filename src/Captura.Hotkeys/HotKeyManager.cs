@@ -128,9 +128,7 @@ namespace Captura
                 new HotkeyModel(ServiceName.Pause, Keys.F9, Modifiers.Shift, true),
                 new HotkeyModel(ServiceName.ScreenShot, Keys.PrintScreen, 0, true),
                 new HotkeyModel(ServiceName.ActiveScreenShot, Keys.PrintScreen, Modifiers.Alt, true),
-                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true),
-                new HotkeyModel(ServiceName.ToggleMouseClicks, Keys.F10, Modifiers.Alt, false),
-                new HotkeyModel(ServiceName.ToggleKeystrokes, Keys.F11, Modifiers.Alt, false)
+                new HotkeyModel(ServiceName.DesktopScreenShot, Keys.PrintScreen, Modifiers.Shift, true)
             };
         }
         

@@ -1,19 +1,19 @@
 ﻿namespace Captura
 {
-    public partial class FFmpegCodecWindow
+    public partial class SettingsWindow
     {
-        FFmpegCodecWindow()
+        SettingsWindow()
         {
             InitializeComponent();
         }
 
-        static FFmpegCodecWindow _instance;
+        static SettingsWindow _instance;
 
         public static void ShowInstance()
         {
             if (_instance == null)
             {
-                _instance = new FFmpegCodecWindow();
+                _instance = new SettingsWindow();
 
                 _instance.Closed += (S, E) => _instance = null;
             }

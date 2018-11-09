@@ -18,7 +18,6 @@
                 <ResourceDictionary Source="Presentation/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RoundSlider.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/VirtualizingItemsControl.xaml"/>
-                <ResourceDictionary Source="Presentation/MaterialDesignIcons.xaml"/>
                 <ResourceDictionary Source="ValueConverters/ValueConverters.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RegionPickerMagnifier.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/Expander.xaml"/>
@@ -37,7 +36,7 @@
             </DrawingImage>
             <DrawingImage x:Key="ScreenShotImageSource">
                 <DrawingImage.Drawing>
-                    <GeometryDrawing Geometry="{StaticResource IconCamera}"
+                    <GeometryDrawing Geometry="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                      Brush="{DynamicResource ItemText}"/>
                 </DrawingImage.Drawing>
             </DrawingImage>

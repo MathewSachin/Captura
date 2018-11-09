@@ -1,5 +1,4 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
@@ -21,35 +20,43 @@ namespace Captura.Models
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
         readonly LanguageManager _loc;
+        readonly IRecentList _recentList;
+        readonly IIconSet _icons;
 
         public ImgurWriter(DiskWriter DiskWriter,
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager LanguageManager)
+            LanguageManager LanguageManager,
+            IRecentList RecentList,
+            IIconSet Icons)
         {
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
             _loc = LanguageManager;
+            _recentList = RecentList;
+            _icons = Icons;
 
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName, RecentViewModel Recents)
+        public async Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
             var response = await Save(Image, Format);
 
             switch (response)
             {
                 case ImgurUploadResponse uploadResponse:
-                    var recentItem = Recents.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
-                    recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
+                    var link = uploadResponse.Data.Link;
+                    var deleteHash = uploadResponse.Data.DeleteHash;
+
+                    _recentList.Add(new ImgurRecentItem(link, deleteHash));
 
                     // Copy path to clipboard only when clipboard writer is off
                     if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
-                        uploadResponse.Data.Link.WriteToClipboard();
+                        link.WriteToClipboard();
                     break;
 
                 case Exception e:
@@ -61,7 +68,7 @@ namespace Captura.Models
                             $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
 
                         if (yes)
-                            await _diskWriter.Save(Image, Format, FileName, Recents);
+                            await _diskWriter.Save(Image, Format, FileName);
                     }
                     break;
             }
@@ -118,8 +125,8 @@ namespace Captura.Models
         // Returns ImgurUploadResponse on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
-            var progressItem = _systemTray.ShowNotification(true);
-            progressItem.PrimaryText = _loc.ImgurUploading;
+            var progressItem = new ImgurNotification();
+            _systemTray.ShowNotification(progressItem);
             
             using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
             {
@@ -162,27 +169,14 @@ namespace Captura.Models
                 }
                 catch (Exception e)
                 {
-                    progressItem.Finished = true;
-                    progressItem.Success = false;
-
-                    progressItem.PrimaryText = _loc.ImgurFailed;
+                    progressItem.RaiseFailed();
 
                     return e;
                 }
 
                 var link = uploadResponse.Data.Link;
 
-                progressItem.Finished = true;
-                progressItem.Success = true;
-                progressItem.PrimaryText = _loc.ImgurSuccess;
-                progressItem.SecondaryText = link;
-
-                var copyLinkAction = progressItem.AddAction();
-                copyLinkAction.Name = _loc.CopyToClipboard;
-                copyLinkAction.Icon = "IconLink";
-                copyLinkAction.Click += () => link.WriteToClipboard();
-
-                progressItem.Click += () => Process.Start(link);
+                progressItem.RaiseFinished(link);
 
                 return uploadResponse;
             }

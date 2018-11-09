@@ -8,6 +8,7 @@ namespace Captura
         public void OnLoad(IBinder Binder)
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
+            Binder.Bind<IIconSet, MaterialDesignIcons>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
@@ -20,6 +21,8 @@ namespace Captura
             Binder.BindSingleton<RecentViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<FileNameFormatViewModel>();
+
+            Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
@@ -76,6 +79,10 @@ namespace Captura
 
             // FFmpeg Log
             Binder.BindSingleton<FFmpegLog>();
+
+            // Recent Serializers
+            Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
+            Binder.Bind<IRecentItemSerializer, ImgurRecentSerializer>();
 
             // Check if Bass is available
             if (BassAudioSource.Available)

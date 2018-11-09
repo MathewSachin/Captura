@@ -1,8 +1,8 @@
 ﻿namespace Captura
 {
-    public partial class FileNameFormatWindow
+    public partial class SettingsPage
     {
-        public FileNameFormatWindow()
+        public SettingsPage()
         {
             InitializeComponent();
         }

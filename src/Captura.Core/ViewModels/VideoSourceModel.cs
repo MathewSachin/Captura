@@ -2,12 +2,12 @@
 {
     public class VideoSourceModel
     {
-        public VideoSourceModel(IVideoSourceProvider Provider, string Name, string Description, string IconResourceKey)
+        public VideoSourceModel(IVideoSourceProvider Provider, string Name, string Description, string IconResource)
         {
             this.Provider = Provider;
             this.Name = new TextLocalizer(Name);
             this.Description = Description;
-            this.IconResourceKey = IconResourceKey;
+            this.IconResource = IconResource;
         }
 
         public IVideoSourceProvider Provider { get; }
@@ -16,6 +16,6 @@
 
         public string Description { get; }
 
-        public string IconResourceKey { get; }
+        public string IconResource { get; }
     }
 }

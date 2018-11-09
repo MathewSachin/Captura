@@ -36,6 +36,7 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
         readonly IAudioPlayer _audioPlayer;
+        readonly IIconSet _icons;
 
         readonly KeymapViewModel _keymap;
 
@@ -66,7 +67,8 @@ namespace Captura.ViewModels
             RecentViewModel RecentViewModel,
             IWebCamProvider WebCamProvider,
             KeymapViewModel Keymap,
-            IAudioPlayer AudioPlayer) : base(Settings, LanguageManager)
+            IAudioPlayer AudioPlayer,
+            IIconSet Icons) : base(Settings, LanguageManager)
         {
             this.CustomOverlays = CustomOverlays;
             this.CustomImageOverlays = CustomImageOverlays;
@@ -82,6 +84,7 @@ namespace Captura.ViewModels
             _webCamProvider = WebCamProvider;
             _keymap = Keymap;
             _audioPlayer = AudioPlayer;
+            _icons = Icons;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -206,9 +209,8 @@ namespace Captura.ViewModels
 
                 RecorderState = RecorderState.Paused;
 
-                _pauseNotification = _systemTray.ShowNotification(false);
-                _pauseNotification.PrimaryText = Loc.Paused;
-                _pauseNotification.Click += OnPauseExecute;
+                _pauseNotification = new TextNotification(Loc.Paused, OnPauseExecute);
+                _systemTray.ShowNotification(_pauseNotification);
             }
         }
 
@@ -661,7 +663,7 @@ namespace Captura.ViewModels
 
         public async Task StopRecording()
         {
-            RecentItemViewModel savingRecentItem = null;
+            FileRecentItem savingRecentItem = null;
 
             // Reference current file name
             var fileName = _currentFileName;
@@ -669,7 +671,8 @@ namespace Captura.ViewModels
             // Assume saving to file only when extension is present
             if (!_waiting && !string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
             {
-                savingRecentItem = _recentViewModel.Add(_currentFileName, _isVideo ? RecentItemType.Video : RecentItemType.Audio, true);
+                savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
+                _recentViewModel.Add(savingRecentItem);
             }
 
             // Reference Recorder as it will be set to null
@@ -722,40 +725,19 @@ namespace Captura.ViewModels
             }
         }
 
-        void AfterSave(RecentItemViewModel SavingRecentItem)
+        void AfterSave(FileRecentItem SavingRecentItem)
         {
             SavingRecentItem.Saved();
         
             if (Settings.CopyOutPathToClipboard)
-                SavingRecentItem.FilePath.WriteToClipboard();
+                SavingRecentItem.FileName.WriteToClipboard();
 
-            var notification = _systemTray.ShowNotification(false);
-            notification.PrimaryText = SavingRecentItem.ItemType == RecentItemType.Video ? Loc.VideoSaved : Loc.AudioSaved;
-            notification.SecondaryText = Path.GetFileName(SavingRecentItem.FilePath);
+            var notification = new FileSavedNotification(SavingRecentItem.FileName,
+                SavingRecentItem.FileType == RecentFileType.Video ? Loc.VideoSaved : Loc.AudioSaved);
 
-            var deleteAction = notification.AddAction();
+            notification.OnDelete += () => SavingRecentItem.RemoveCommand.ExecuteIfCan();
 
-            deleteAction.Icon = "IconDelete";
-            deleteAction.Name = Loc.Delete;
-            deleteAction.Color = "LightPink";
-
-            deleteAction.Click += () =>
-            {
-                if (File.Exists(SavingRecentItem.FilePath))
-                {
-                    if (Shell32.FileOperation(SavingRecentItem.FilePath, FileOperationType.Delete, 0) != 0)
-                        return;
-                }
-
-                notification.Remove();
-
-                SavingRecentItem.RemoveCommand.ExecuteIfCan();
-            };
-
-            notification.Click += () =>
-            {
-                ServiceProvider.LaunchFile(new ProcessStartInfo(SavingRecentItem.FilePath));
-            };
+            _systemTray.ShowNotification(notification);
         }
     }
 }

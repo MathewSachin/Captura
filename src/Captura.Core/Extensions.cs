@@ -57,7 +57,9 @@ namespace Captura
         {
             var imgur = ServiceProvider.Get<ImgurWriter>();
 
-            var response = await imgur.Save(Bitmap, ImageFormat.Png);
+            var shotVm = ServiceProvider.Get<ScreenShotViewModel>();
+
+            var response = await imgur.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
 
             switch (response)
             {
@@ -66,11 +68,14 @@ namespace Captura
                     break;
 
                 case ImgurUploadResponse uploadResponse:
-                    var recents = ServiceProvider.Get<RecentViewModel>();
-                    var recentItem = recents.Add(uploadResponse.Data.Link, RecentItemType.Link, false);
-                    recentItem.DeleteHash = uploadResponse.Data.DeleteHash;
+                    var recents = ServiceProvider.Get<IRecentList>();
 
-                    uploadResponse.Data.Link.WriteToClipboard();
+                    var link = uploadResponse.Data.Link;
+                    var deleteHash = uploadResponse.Data.DeleteHash;
+
+                    recents.Add(new ImgurRecentItem(link, deleteHash));
+
+                    link.WriteToClipboard();
                     break;
             }
         }

@@ -36,7 +36,7 @@ namespace Captura
             {
                 var unfinished = ItemsControl.Items
                     .OfType<NotificationBalloon>()
-                    .Any(M => !M.ViewModel.Finished);
+                    .Any(M => !M.Notification.Finished);
 
                 if (!unfinished)
                 {
@@ -138,7 +138,7 @@ namespace Captura
 
                 foreach (var frameworkElement in itemsToRemove)
                 {
-                    if (frameworkElement is NotificationBalloon progressBalloon && !progressBalloon.ViewModel.Finished)
+                    if (frameworkElement is NotificationBalloon progressBalloon && !progressBalloon.Notification.Finished)
                         continue;
 
                     Remove(frameworkElement);

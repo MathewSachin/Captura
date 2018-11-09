@@ -8,5 +8,10 @@ namespace Captura
         {
             new ImageEditorWindow().ShowAndFocus();
         }
+
+        void OpenSettings(object Sender, RoutedEventArgs E)
+        {
+            SettingsWindow.ShowInstance();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Captura.Views;
 
 namespace Captura.Models
 {
@@ -27,6 +28,29 @@ namespace Captura.Models
         {
             get => _window.Invoke().WindowState == WindowState.Minimized;
             set => _window.Invoke().WindowState = value ? WindowState.Minimized : WindowState.Normal;
+        }
+
+        public void EditImage(string FileName)
+        {
+            var win = new ImageEditorWindow();
+
+            win.Open(FileName);
+
+            win.ShowAndFocus();
+        }
+
+        public void CropImage(string FileName)
+        {
+            new CropWindow(FileName).ShowAndFocus();
+        }
+
+        public void TrimMedia(string FileName)
+        {
+            var win = new TrimmerWindow();
+
+            win.Open(FileName);
+
+            win.ShowAndFocus();
         }
     }
 }
