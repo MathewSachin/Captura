@@ -53,33 +53,6 @@ namespace Captura
             return resized;
         }
 
-        public static Bitmap Transform(this Bitmap Image, ScreenShotSettings TransformSettings, bool SkipResize = false)
-        {
-            if (TransformSettings.Resize && !SkipResize)
-            {
-                Image = Image.Resize(new Size(TransformSettings.ResizeWidth, TransformSettings.ResizeHeight), true);
-            }
-
-            #region Rotate Flip
-            var flip = "Flip";
-
-            if (!TransformSettings.FlipHorizontal && !TransformSettings.FlipVertical)
-                flip += "None";
-
-            if (TransformSettings.FlipHorizontal)
-                flip += "X";
-
-            if (TransformSettings.FlipVertical)
-                flip += "Y";
-
-            var rotateFlip = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), TransformSettings.RotateBy + flip);
-
-            Image.RotateFlip(rotateFlip);
-            #endregion
-
-            return Image;
-        }
-
         public static async Task UploadToImgur(this Bitmap Bitmap)
         {
             var imgur = ServiceProvider.Get<ImgurWriter>();

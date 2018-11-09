@@ -120,7 +120,7 @@
                                           Grid.Column="1"
                                           Margin="0,5"/>
 
-                        <Label Content="{Binding MouseRightClickColor, Source={StaticResource Loc}, Mode=OneWay}"
+                        <Label Content="{Binding MouseMiddleClickColor, Source={StaticResource Loc}, Mode=OneWay}"
                                ContentStringFormat="{}{0}: "
                                Margin="0,5,5,5"
                                Grid.Row="3"/>
