@@ -56,7 +56,7 @@ namespace Screna
 
             backdrop.ShowWhite();
 
-            var r = Window.Rectangle;
+            var r = backdrop.Rectangle;
 
             // Capture screenshot with white background
             using (var whiteShot = Capture(r))

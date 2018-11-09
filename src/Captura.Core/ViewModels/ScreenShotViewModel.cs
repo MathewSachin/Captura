@@ -141,22 +141,22 @@ namespace Captura.ViewModels
                 return ScreenShot.Capture(Settings.IncludeCursor);
             }
 
-            var bmp = ScreenShot.CaptureTransparent(Window, Settings.IncludeCursor);
-
-            // Capture without Transparency
-            if (bmp == null)
+            try
             {
-                try
-                {
-                    return ScreenShot.Capture(Window, Settings.IncludeCursor);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
+                Bitmap bmp = null;
 
-            return bmp;
+                if (Settings.ScreenShots.WindowShotTransparent)
+                {
+                    bmp = ScreenShot.CaptureTransparent(Window, Settings.IncludeCursor);
+                }
+
+                // Capture without Transparency
+                return bmp ?? ScreenShot.Capture(Window, Settings.IncludeCursor);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async void CaptureScreenShot(string FileName = null)

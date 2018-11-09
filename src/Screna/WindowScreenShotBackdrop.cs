@@ -13,6 +13,8 @@ namespace Screna
 
         bool _shown;
 
+        public Rectangle Rectangle { get; }
+
         public WindowScreenShotBackdrop(IWindow Window)
         {
             _window = Window;
@@ -27,6 +29,16 @@ namespace Screna
                 FormBorderStyle = FormBorderStyle.None,
                 ShowInTaskbar = false
             };
+
+            var r = Window.Rectangle;
+
+            // Add a margin for window shadows. Excess transparency is trimmed out later
+            r.Inflate(20, 20);
+
+            // Check if the window is outside of the visible screen
+            r.Intersect(WindowProvider.DesktopRectangle);
+
+            Rectangle = r;
         }
 
         void Show()
@@ -38,17 +50,9 @@ namespace Screna
 
             _form.Show();
 
-            var r = _window.Rectangle;
-
-            // Add a margin for window shadows. Excess transparency is trimmed out later
-            r.Inflate(20, 20);
-
-            // This check handles if the window is outside of the visible screen
-            r.Intersect(WindowProvider.DesktopRectangle);
-
             User32.SetWindowPos(_form.Handle, _window.Handle,
-                r.Left, r.Top,
-                r.Width, r.Height,
+                Rectangle.Left, Rectangle.Top,
+                Rectangle.Width, Rectangle.Height,
                 SetWindowPositionFlags.NoActivate);
         }
 
