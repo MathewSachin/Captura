@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioFileWriter.cs" />
+    <Compile Include="WindowScreenShotBackdrop.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Frames\EditorBase.cs" />
     <Compile Include="Frames\MultiDisposeFrame.cs" />

@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Captura.Models;
-using Captura.Native;
 
 namespace Screna
 {
@@ -53,34 +52,16 @@ namespace Screna
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
 
-            var backdrop = new Form
-            {
-                AllowTransparency = true,
-                BackColor = Color.White,
-                FormBorderStyle = FormBorderStyle.None,
-                ShowInTaskbar = false
-            };
+            var backdrop = new WindowScreenShotBackdrop(Window);
+
+            backdrop.ShowWhite();
 
             var r = Window.Rectangle;
-
-            // Add a margin for window shadows. Excess transparency is trimmed out later
-            r.Inflate(20, 20);
-
-            // This check handles if the window is outside of the visible screen
-            r.Intersect(WindowProvider.DesktopRectangle);
-
-            User32.ShowWindow(backdrop.Handle, 4);
-            User32.SetWindowPos(backdrop.Handle, Window.Handle,
-                r.Left, r.Top,
-                r.Width, r.Height,
-                SetWindowPositionFlags.NoActivate);
-            Application.DoEvents();
 
             // Capture screenshot with white background
             using (var whiteShot = Capture(r))
             {
-                backdrop.BackColor = Color.Black;
-                Application.DoEvents();
+                backdrop.ShowBlack();
 
                 // Capture screenshot with black background
                 using (var blackShot = Capture(r))
