@@ -102,6 +102,7 @@
     <Compile Include="Models\Notifications\FileSavedNotification.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\YouTubeUploaderViewModel.cs" />
     <Compile Include="WithPreviewWriter.cs" />
     <Compile Include="YouTubeUploader.cs" />
   </ItemGroup>

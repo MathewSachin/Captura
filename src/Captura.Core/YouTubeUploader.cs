@@ -10,9 +10,25 @@ using Google.Apis.YouTube.v3.Data;
 
 namespace Captura
 {
+    public enum YouTubePrivacyStatus
+    {
+        Public,
+        Unlinsted,
+        Private
+    }
+
     public class YouTubeUploader
     {
-        public async Task Upload(string FileName, string Title, string Description, string[] Tags = null)
+        static string GetPrivacyStatus(YouTubePrivacyStatus PrivacyStatus)
+        {
+            return PrivacyStatus.ToString().ToLower();
+        }
+
+        public async Task Upload(string FileName,
+            string Title,
+            string Description,
+            string[] Tags = null,
+            YouTubePrivacyStatus PrivacyStatus = YouTubePrivacyStatus.Unlinsted)
         {
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync
             (
@@ -43,9 +59,7 @@ namespace Captura
                     Tags = Tags ?? new string[0],
                     CategoryId = "22"
                 },
-                Status = new VideoStatus { PrivacyStatus = "unlisted" }
-                // See https://developers.google.com/youtube/v3/docs/videoCategories/list
-                // or "private" or "public"
+                Status = new VideoStatus { PrivacyStatus = GetPrivacyStatus(PrivacyStatus) }
             };
 
             using (var fileStream = new FileStream(FileName, FileMode.Open))
@@ -63,18 +77,24 @@ namespace Captura
             switch (Progress.Status)
             {
                 case UploadStatus.Uploading:
-                    Console.WriteLine("{0} bytes sent.", Progress.BytesSent);
+                    BytesSent?.Invoke(Progress.BytesSent);
                     break;
 
                 case UploadStatus.Failed:
-                    Console.WriteLine("An error prevented the upload from completing.\n{0}", Progress.Exception);
+                    ErrorOccured?.Invoke(Progress.Exception);
                     break;
             }
         }
 
         void VideosInsertRequest_ResponseReceived(Video Video)
         {
-            Console.WriteLine("Video id '{0}' was successfully uploaded.", Video.Id);
+            Uploaded?.Invoke(Video.Id);
         }
+
+        public event Action<long> BytesSent;
+
+        public event Action<Exception> ErrorOccured;
+
+        public event Action<string> Uploaded;
     }
 }
