@@ -1,0 +1,51 @@
+﻿<Window x:Class="Captura.Windows.YouTubeUploaderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="YouTube Uploader"
+        Height="400"
+        Width="400">
+    <Grid>
+        <DockPanel Margin="5">
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Bottom"
+                        HorizontalAlignment="Right"
+                        Margin="0,5">
+                <Button Content="Upload"
+                        Margin="0,0,5,0"/>
+                <Button Content="Cancel"/>
+            </StackPanel>
+
+            <Label ContentStringFormat="{}File: {0}"
+                   FontWeight="DemiBold"
+                   Margin="0,0,0,2"
+                   DockPanel.Dock="Top"/>
+
+            <Label Content="Title"
+                   Margin="0,0,0,2"
+                   DockPanel.Dock="Top"/>
+
+            <TextBox DockPanel.Dock="Top"/>
+
+            <Label Content="Description"
+                   Margin="0,7,0,2"
+                   DockPanel.Dock="Top"/>
+
+            <StackPanel DockPanel.Dock="Bottom"
+                        Margin="0,5">
+                <RadioButton Content="Public"
+                             GroupName="Access"/>
+
+                <RadioButton Content="Unlisted"
+                             GroupName="Access"
+                             Margin="0,2"/>
+                
+                <RadioButton Content="Private"
+                             GroupName="Access"/>
+            </StackPanel>
+
+            <TextBox Text="Uploaded using Captura"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"/>
+        </DockPanel>
+    </Grid>
+</Window>
