@@ -88,7 +88,7 @@ namespace Captura
 
         void VideosInsertRequest_ResponseReceived(Video Video)
         {
-            Uploaded?.Invoke(Video.Id);
+            Uploaded?.Invoke($"https://youtube.com/watch?v={Video.Id}");
         }
 
         public event Action<long> BytesSent;

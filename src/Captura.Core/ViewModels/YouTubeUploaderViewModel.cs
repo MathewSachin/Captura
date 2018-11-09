@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using Screna;
 
 namespace Captura.ViewModels
 {
@@ -8,6 +10,10 @@ namespace Captura.ViewModels
         public YouTubeUploaderViewModel()
         {
             UploadCommand = new DelegateCommand(OnUpload, false);
+
+            OpenVideoCommand = new DelegateCommand(() => Process.Start(Link), false);
+
+            CopyLinkCommand = new DelegateCommand(() => Link.WriteToClipboard(), false);
         }
 
         string _fileName;
@@ -31,6 +37,11 @@ namespace Captura.ViewModels
             private set
             {
                 _link = value;
+
+                var canExecute = !string.IsNullOrWhiteSpace(value);
+
+                OpenVideoCommand.RaiseCanExecuteChanged(canExecute);
+                CopyLinkCommand.RaiseCanExecuteChanged(canExecute);
 
                 OnPropertyChanged();
             }
@@ -117,5 +128,9 @@ namespace Captura.ViewModels
         }
 
         public DelegateCommand UploadCommand { get; }
+
+        public DelegateCommand OpenVideoCommand { get; }
+
+        public DelegateCommand CopyLinkCommand { get; }
     }
 }
