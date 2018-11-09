@@ -58,12 +58,17 @@ namespace Screna
         {
             get
             {
-                if (User32.GetWindowRect(Handle, out var rect))
+                var r = new RECT();
+
+                const int extendedFrameBounds = 9;
+
+                if (DwmApi.DwmGetWindowAttribute(Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
                 {
-                    return new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+                    if (!User32.GetWindowRect(Handle, out r))
+                        return Rectangle.Empty;
                 }
 
-                return Rectangle.Empty;
+                return r.ToRectangle();
             }
         }
 
