@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Captura.Models;
@@ -96,7 +95,8 @@ namespace Screna
                     if (transparentImage == null)
                         return null;
 
-                    if (IncludeCursor)
+                    // Include Cursor only if within window
+                    if (IncludeCursor && r.Contains(MouseCursor.CursorPosition))
                     {
                         using (var g = Graphics.FromImage(transparentImage))
                             MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
@@ -151,26 +151,30 @@ namespace Screna
 
                 User32.SetForegroundWindow(Window.Handle);
 
-                var r = new RECT();
+                var r = Window.Rectangle;
+
+                void SetSize(int Width, int Height)
+                {
+                    User32.SetWindowPos(Window.Handle,
+                        IntPtr.Zero,
+                        r.Left, r.Top,
+                        Width, Height,
+                        SetWindowPositionFlags.ShowWindow);
+                }
 
                 if (canResize)
                 {
-                    User32.GetWindowRect(Window.Handle, out r);
-
-                    User32.SetWindowPos(Window.Handle, IntPtr.Zero, r.Left, r.Top, ResizeWidth, ResizeHeight, SetWindowPositionFlags.ShowWindow);
+                    SetSize(ResizeWidth, ResizeHeight);
 
                     Thread.Sleep(100);
                 }
 
                 var s = CaptureTransparent(Window, IncludeCursor);
 
-                var R = r.ToRectangle();
-
                 if (canResize)
-                    User32.SetWindowPos(Window.Handle, IntPtr.Zero,
-                        R.Left, R.Top,
-                        R.Width, R.Height,
-                        SetWindowPositionFlags.ShowWindow);
+                {
+                    SetSize(r.Width, r.Height);
+                }
 
                 return s;
             }
