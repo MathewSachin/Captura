@@ -165,7 +165,7 @@
                       Stretch="Uniform"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
-                <Label Content="{Binding CustomSize, Source={StaticResource Loc}, Mode=OneWay}"
+                <Label Content="{Binding CustomUrl, Source={StaticResource Loc}, Mode=OneWay}"
                        Grid.Column="1"
                        Grid.Row="2"
                        ContentStringFormat="{}{0}:"/>

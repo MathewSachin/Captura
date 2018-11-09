@@ -132,35 +132,31 @@ namespace Captura.ViewModels
             else _systemTray.ShowNotification(new TextNotification(Loc.ImgEmpty));
         }
 
-        public Bitmap ScreenShotWindow(IWindow hWnd)
+        public Bitmap ScreenShotWindow(IWindow Window)
         {
             _systemTray.HideNotification();
 
-            if (hWnd.Handle == Window.DesktopWindow.Handle)
+            if (Window.Handle == Screna.Window.DesktopWindow.Handle)
             {
-                return ScreenShot.Capture(Settings.IncludeCursor).Transform(Settings.ScreenShots);
+                return ScreenShot.Capture(Settings.IncludeCursor);
             }
 
-            var bmp = ScreenShot.CaptureTransparent(hWnd,
-                Settings.IncludeCursor,
-                Settings.ScreenShots.Resize,
-                Settings.ScreenShots.ResizeWidth,
-                Settings.ScreenShots.ResizeHeight);
-
-            // Capture without Transparency
-            if (bmp == null)
+            try
             {
-                try
-                {
-                    return ScreenShot.Capture(hWnd, Settings.IncludeCursor)?.Transform(Settings.ScreenShots);
-                }
-                catch
-                {
-                    return null;
-                }
-            }
+                Bitmap bmp = null;
 
-            return bmp.Transform(Settings.ScreenShots, true);
+                if (Settings.ScreenShots.WindowShotTransparent)
+                {
+                    bmp = ScreenShot.CaptureTransparent(Window, Settings.IncludeCursor);
+                }
+
+                // Capture without Transparency
+                return bmp ?? ScreenShot.Capture(Window, Settings.IncludeCursor);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async void CaptureScreenShot(string FileName = null)
@@ -221,13 +217,10 @@ namespace Captura.ViewModels
                 case ScreenSourceProvider _:
                     if (selectedVideoSource is ScreenItem screen)
                         bmp = screen.Capture(includeCursor);
-
-                    bmp = bmp?.Transform(Settings.ScreenShots);
                     break;
 
                 case RegionSourceProvider _:
                     bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
-                    bmp = bmp.Transform(Settings.ScreenShots);
                     break;
             }
 
@@ -262,13 +255,5 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public IEnumerable<KeyValuePair<RotateBy, string>> Rotations { get; } = new[]
-        {
-            new KeyValuePair<RotateBy, string>(RotateBy.RotateNone, "No Rotation"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate90, "90° Clockwise"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate180, "180° Clockwise"),
-            new KeyValuePair<RotateBy, string>(RotateBy.Rotate270, "90° Anticlockwise")
-        };
     }
 }

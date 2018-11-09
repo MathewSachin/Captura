@@ -301,12 +301,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Flip
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string FontSize
         {
             get => Get();
@@ -326,12 +320,6 @@ namespace Captura
         }
 
         public string HideOnFullScreenShot
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string Horizontal
         {
             get => Get();
             set => Set(value);
@@ -745,12 +733,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Rotate
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string SaveToClipboard
         {
             get => Get();
@@ -782,12 +764,6 @@ namespace Captura
         }
 
         public string ScreenShotSaved
-        {
-            get => Get();
-            set => Set(value);
-        }
-
-        public string ScreenShotTransforms
         {
             get => Get();
             set => Set(value);
@@ -913,12 +889,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string Vertical
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Video
         {
             get => Get();
@@ -992,6 +962,12 @@ namespace Captura
         }
 
         public string Window
+        {
+            get => Get();
+            set => Set(value);
+        }
+
+        public string WindowScreenShotTransparency
         {
             get => Get();
             set => Set(value);

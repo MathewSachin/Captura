@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 using Captura.Models;
-using Captura.Native;
 
 namespace Screna
 {
@@ -55,47 +52,19 @@ namespace Screna
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
 
-            var backdrop = new Form
-            {
-                AllowTransparency = true,
-                BackColor = Color.White,
-                FormBorderStyle = FormBorderStyle.None,
-                ShowInTaskbar = false,
-                Opacity = 0
-            };
+            var backdrop = new WindowScreenShotBackdrop(Window);
 
-            var r = new RECT();
+            backdrop.ShowWhite();
 
-            const int extendedFrameBounds = 0;
-
-            if (DwmApi.DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
-                // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
-                User32.GetWindowRect(Window.Handle, out r);
-
-            var R = r.ToRectangle();
-
-            // Add a 100px margin for window shadows. Excess transparency is trimmed out later
-            R.Inflate(100, 100);
-
-            // This check handles if the window is outside of the visible screen
-            R.Intersect(WindowProvider.DesktopRectangle);
-
-            User32.ShowWindow(backdrop.Handle, 4);
-            User32.SetWindowPos(backdrop.Handle, Window.Handle,
-                R.Left, R.Top,
-                R.Width, R.Height,
-                SetWindowPositionFlags.NoActivate);
-            backdrop.Opacity = 1;
-            Application.DoEvents();
+            var r = backdrop.Rectangle;
 
             // Capture screenshot with white background
-            using (var whiteShot = Capture(R))
+            using (var whiteShot = Capture(r))
             {
-                backdrop.BackColor = Color.Black;
-                Application.DoEvents();
+                backdrop.ShowBlack();
 
                 // Capture screenshot with black background
-                using (var blackShot = Capture(R))
+                using (var blackShot = Capture(r))
                 {
                     backdrop.Dispose();
 
@@ -104,90 +73,14 @@ namespace Screna
                     if (transparentImage == null)
                         return null;
 
-                    if (IncludeCursor)
+                    // Include Cursor only if within window
+                    if (IncludeCursor && r.Contains(MouseCursor.CursorPosition))
                     {
                         using (var g = Graphics.FromImage(transparentImage))
-                            MouseCursor.Draw(g, P => new Point(P.X - R.X, P.Y - R.Y));
+                            MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
                     }
 
                     return transparentImage.CropEmptyEdges();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Capture transparent Screenshot of a Window.
-        /// </summary>
-        /// <param name="Window">The <see cref="Window"/> to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        /// <param name="DoResize">
-        /// Whether to Capture at another size.
-        /// The Window is sized to the specified Resize Dimensions, Captured and resized back to original size.
-        /// </param>
-        /// <param name="ResizeWidth">Capture Width.</param>
-        /// <param name="ResizeHeight">Capture Height.</param>
-        public static Bitmap CaptureTransparent(IWindow Window, bool IncludeCursor, bool DoResize, int ResizeWidth, int ResizeHeight)
-        {
-            if (Window == null)
-                throw new ArgumentNullException(nameof(Window));
-
-            var startButtonHandle = User32.FindWindow("Button", "Start");
-            var taskbarHandle = User32.FindWindow("Shell_TrayWnd", null);
-
-            var canResize = DoResize && User32.GetWindowLong(Window.Handle, GetWindowLongValue.Style).HasFlag(WindowStyles.SizeBox);
-
-            try
-            {
-                // Hide the taskbar, just incase it gets in the way
-                if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
-                {
-                    User32.ShowWindow(startButtonHandle, 0);
-                    User32.ShowWindow(taskbarHandle, 0);
-                    Application.DoEvents();
-                }
-
-                if (User32.IsIconic(Window.Handle))
-                {
-                    User32.ShowWindow(Window.Handle, 1);
-                    Thread.Sleep(300); // Wait for window to be restored
-                }
-                else
-                {
-                    User32.ShowWindow(Window.Handle, 5);
-                    Thread.Sleep(100);
-                }
-
-                User32.SetForegroundWindow(Window.Handle);
-
-                var r = new RECT();
-
-                if (canResize)
-                {
-                    User32.GetWindowRect(Window.Handle, out r);
-
-                    User32.SetWindowPos(Window.Handle, IntPtr.Zero, r.Left, r.Top, ResizeWidth, ResizeHeight, SetWindowPositionFlags.ShowWindow);
-
-                    Thread.Sleep(100);
-                }
-
-                var s = CaptureTransparent(Window, IncludeCursor);
-
-                var R = r.ToRectangle();
-
-                if (canResize)
-                    User32.SetWindowPos(Window.Handle, IntPtr.Zero,
-                        R.Left, R.Top,
-                        R.Width, R.Height,
-                        SetWindowPositionFlags.ShowWindow);
-
-                return s;
-            }
-            finally
-            {
-                if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
-                {
-                    User32.ShowWindow(startButtonHandle, 1);
-                    User32.ShowWindow(taskbarHandle, 1);
                 }
             }
         }
