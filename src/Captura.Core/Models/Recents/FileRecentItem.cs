@@ -37,6 +37,11 @@ namespace Captura.Models
                 new RecentAction(loc.CopyPath, icons.Clipboard, () => this.FileName.WriteToClipboard())
             };
 
+            void AddTrimMedia()
+            {
+                list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(FileName)));
+            }
+
             switch (FileType)
             {
                 case RecentFileType.Image:
@@ -47,8 +52,15 @@ namespace Captura.Models
                     break;
 
                 case RecentFileType.Audio:
+                    AddTrimMedia();
+                    break;
+
                 case RecentFileType.Video:
-                    list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(FileName)));
+                    AddTrimMedia();
+                    list.Add(new RecentAction("Upload to YouTube", icons.YouTube, async () =>
+                    {
+                        await new YouTubeUploader().Upload(FileName, "Trying", "tryin to upload");
+                    }));
                     break;
             }
 

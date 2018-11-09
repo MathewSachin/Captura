@@ -14,5 +14,9 @@ namespace Captura
         public static string ImgurClientId => Get("imgur_client_id");
 
         public static string ImgurSecret => Get("imgur_secret");
+
+        public static string YouTubeClientId => Get("yt_client_id");
+
+        public static string YouTubeClientSecret => Get("yt_client_secret");
     }
 }
