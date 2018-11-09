@@ -1,32 +1,51 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Captura.Models;
 
 namespace Captura.ViewModels
 {
     public class YouTubeUploaderViewModel : NotifyPropertyChanged
     {
-        readonly IMessageProvider _messageProvider;
-
-        public YouTubeUploaderViewModel(IMessageProvider MessageProvider)
+        public YouTubeUploaderViewModel()
         {
-            _messageProvider = MessageProvider;
-
             UploadCommand = new DelegateCommand(OnUpload, false);
         }
 
-        public string FileName { get; set; }
+        string _fileName;
 
-        public string Link { get; private set; }
+        public string FileName
+        {
+            get => _fileName;
+            set
+            {
+                _fileName = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        string _link;
+
+        public string Link
+        {
+            get => _link;
+            private set
+            {
+                _link = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         async void OnUpload()
         {
+            UploadCommand.RaiseCanExecuteChanged(false);
+
             var uploader = new YouTubeUploader();
 
             var fileSize = new FileInfo(FileName).Length;
 
             uploader.Uploaded += L => Link = L;
-            uploader.ErrorOccured += E => _messageProvider.ShowException(E, "Error Occured while Uploading");
+            uploader.ErrorOccured += E => ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
 
             uploader.BytesSent += B => Progress = (int)(B * 100 / fileSize);
 
@@ -51,7 +70,7 @@ namespace Captura.ViewModels
             }
         }
 
-        string _description;
+        string _description = "\n\n\n\n--------------------------------------------------\n\nUploaded using Captura";
 
         public string Description
         {
@@ -80,7 +99,7 @@ namespace Captura.ViewModels
         public IEnumerable<YouTubePrivacyStatus> PrivacyStatuses { get; } = new[]
         {
             YouTubePrivacyStatus.Public,
-            YouTubePrivacyStatus.Unlinsted,
+            YouTubePrivacyStatus.Unlisted,
             YouTubePrivacyStatus.Private
         };
 

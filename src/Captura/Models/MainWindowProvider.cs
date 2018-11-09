@@ -52,5 +52,14 @@ namespace Captura.Models
 
             win.ShowAndFocus();
         }
+
+        public void UploadToYouTube(string FileName)
+        {
+            var win = new YouTubeUploaderWindow();
+
+            win.Open(FileName);
+
+            win.ShowAndFocus();
+        }
     }
 }

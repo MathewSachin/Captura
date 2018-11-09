@@ -1,49 +1,81 @@
 ﻿<Window x:Class="Captura.YouTubeUploaderWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         Title="YouTube Uploader"
         Height="400"
-        Width="400">
+        Width="400"
+        Background="{DynamicResource WindowBackground}">
+    <Window.DataContext>
+        <viewModels:YouTubeUploaderViewModel/>
+    </Window.DataContext>
     <Grid>
-        <DockPanel Margin="5">
+        <DockPanel Margin="10">
             <StackPanel Orientation="Horizontal"
                         DockPanel.Dock="Bottom"
                         HorizontalAlignment="Right"
                         Margin="0,5">
                 <Button Content="Upload"
-                        Margin="0,0,5,0"/>
-                <Button Content="Cancel"/>
+                        Margin="0,0,5,0"
+                        Command="{Binding UploadCommand}"/>
+
+                <Button Content="Cancel"
+                        Click="Cancel_Click"/>
             </StackPanel>
 
             <Label ContentStringFormat="{}File: {0}"
+                   Content="{Binding FileName}"
                    FontWeight="DemiBold"
-                   Margin="0,0,0,2"
+                   Margin="0,0,0,5"
                    DockPanel.Dock="Top"/>
 
             <Label Content="Title"
                    Margin="0,0,0,2"
                    DockPanel.Dock="Top"/>
 
-            <TextBox DockPanel.Dock="Top"/>
+            <TextBox DockPanel.Dock="Top"
+                     Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Content="Description"
                    Margin="0,7,0,2"
                    DockPanel.Dock="Top"/>
 
-            <StackPanel DockPanel.Dock="Bottom"
-                        Margin="0,5">
-                <RadioButton Content="Public"
-                             GroupName="Access"/>
+            <DockPanel Visibility="{Binding Link, Converter={StaticResource NotNullConverter}}"
+                       DockPanel.Dock="Bottom">
+                <Path Data="{Binding Icons.Link, Source={StaticResource ServiceLocator}}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,7,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Link, Mode=OneWay}"
+                           Foreground="LimeGreen"/>
+            </DockPanel>
 
-                <RadioButton Content="Unlisted"
-                             GroupName="Access"
-                             Margin="0,2"/>
-                
-                <RadioButton Content="Private"
-                             GroupName="Access"/>
-            </StackPanel>
+            <ListView ItemsSource="{Binding PrivacyStatuses}"
+                      SelectedValue="{Binding PrivacyStatus}"
+                      Margin="0,10"
+                      SelectionMode="Single"
+                      BorderThickness="0.4"
+                      HorizontalContentAlignment="Center"
+                      DockPanel.Dock="Bottom">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#01000000">
+                            <TextBlock Text="{Binding}"
+                                       HorizontalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-            <TextBox Text="Uploaded using Captura"
+            <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"/>
         </DockPanel>

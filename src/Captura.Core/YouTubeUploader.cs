@@ -13,7 +13,7 @@ namespace Captura
     public enum YouTubePrivacyStatus
     {
         Public,
-        Unlinsted,
+        Unlisted,
         Private
     }
 
@@ -28,7 +28,7 @@ namespace Captura
             string Title,
             string Description,
             string[] Tags = null,
-            YouTubePrivacyStatus PrivacyStatus = YouTubePrivacyStatus.Unlinsted)
+            YouTubePrivacyStatus PrivacyStatus = YouTubePrivacyStatus.Unlisted)
         {
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync
             (
