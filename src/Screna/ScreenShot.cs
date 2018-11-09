@@ -65,8 +65,8 @@ namespace Screna
 
             var r = Window.Rectangle;
 
-            // Add a 100px margin for window shadows. Excess transparency is trimmed out later
-            r.Inflate(100, 100);
+            // Add a 20px margin for window shadows. Excess transparency is trimmed out later
+            r.Inflate(20, 20);
 
             // This check handles if the window is outside of the visible screen
             r.Intersect(WindowProvider.DesktopRectangle);
@@ -138,16 +138,8 @@ namespace Screna
                     Application.DoEvents();
                 }
 
-                if (User32.IsIconic(Window.Handle))
-                {
-                    User32.ShowWindow(Window.Handle, 1);
-                    Thread.Sleep(300); // Wait for window to be restored
-                }
-                else
-                {
-                    User32.ShowWindow(Window.Handle, 5);
-                    Thread.Sleep(100);
-                }
+                User32.ShowWindow(Window.Handle, 5);
+                Thread.Sleep(100);
 
                 User32.SetForegroundWindow(Window.Handle);
 
