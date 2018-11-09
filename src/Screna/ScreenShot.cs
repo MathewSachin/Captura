@@ -64,38 +64,30 @@ namespace Screna
                 Opacity = 0
             };
 
-            var r = new RECT();
-
-            const int extendedFrameBounds = 0;
-
-            if (DwmApi.DwmGetWindowAttribute(Window.Handle, extendedFrameBounds, ref r, Marshal.SizeOf<RECT>()) != 0)
-                // DwmGetWindowAttribute() failed, usually means Aero is disabled so we fall back to GetWindowRect()
-                User32.GetWindowRect(Window.Handle, out r);
-
-            var R = r.ToRectangle();
+            var r = Window.Rectangle;
 
             // Add a 100px margin for window shadows. Excess transparency is trimmed out later
-            R.Inflate(100, 100);
+            r.Inflate(100, 100);
 
             // This check handles if the window is outside of the visible screen
-            R.Intersect(WindowProvider.DesktopRectangle);
+            r.Intersect(WindowProvider.DesktopRectangle);
 
             User32.ShowWindow(backdrop.Handle, 4);
             User32.SetWindowPos(backdrop.Handle, Window.Handle,
-                R.Left, R.Top,
-                R.Width, R.Height,
+                r.Left, r.Top,
+                r.Width, r.Height,
                 SetWindowPositionFlags.NoActivate);
             backdrop.Opacity = 1;
             Application.DoEvents();
 
             // Capture screenshot with white background
-            using (var whiteShot = Capture(R))
+            using (var whiteShot = Capture(r))
             {
                 backdrop.BackColor = Color.Black;
                 Application.DoEvents();
 
                 // Capture screenshot with black background
-                using (var blackShot = Capture(R))
+                using (var blackShot = Capture(r))
                 {
                     backdrop.Dispose();
 
@@ -107,7 +99,7 @@ namespace Screna
                     if (IncludeCursor)
                     {
                         using (var g = Graphics.FromImage(transparentImage))
-                            MouseCursor.Draw(g, P => new Point(P.X - R.X, P.Y - R.Y));
+                            MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
                     }
 
                     return transparentImage.CropEmptyEdges();
