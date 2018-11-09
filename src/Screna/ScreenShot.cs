@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using Captura.Models;
 using Captura.Native;
@@ -59,13 +58,12 @@ namespace Screna
                 AllowTransparency = true,
                 BackColor = Color.White,
                 FormBorderStyle = FormBorderStyle.None,
-                ShowInTaskbar = false,
-                Opacity = 0
+                ShowInTaskbar = false
             };
 
             var r = Window.Rectangle;
 
-            // Add a 20px margin for window shadows. Excess transparency is trimmed out later
+            // Add a margin for window shadows. Excess transparency is trimmed out later
             r.Inflate(20, 20);
 
             // This check handles if the window is outside of the visible screen
@@ -76,7 +74,6 @@ namespace Screna
                 r.Left, r.Top,
                 r.Width, r.Height,
                 SetWindowPositionFlags.NoActivate);
-            backdrop.Opacity = 1;
             Application.DoEvents();
 
             // Capture screenshot with white background
@@ -103,79 +100,6 @@ namespace Screna
                     }
 
                     return transparentImage.CropEmptyEdges();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Capture transparent Screenshot of a Window.
-        /// </summary>
-        /// <param name="Window">The <see cref="Window"/> to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        /// <param name="DoResize">
-        /// Whether to Capture at another size.
-        /// The Window is sized to the specified Resize Dimensions, Captured and resized back to original size.
-        /// </param>
-        /// <param name="ResizeWidth">Capture Width.</param>
-        /// <param name="ResizeHeight">Capture Height.</param>
-        public static Bitmap CaptureTransparent(IWindow Window, bool IncludeCursor, bool DoResize, int ResizeWidth, int ResizeHeight)
-        {
-            if (Window == null)
-                throw new ArgumentNullException(nameof(Window));
-
-            var startButtonHandle = User32.FindWindow("Button", "Start");
-            var taskbarHandle = User32.FindWindow("Shell_TrayWnd", null);
-
-            var canResize = DoResize && User32.GetWindowLong(Window.Handle, GetWindowLongValue.Style).HasFlag(WindowStyles.SizeBox);
-
-            try
-            {
-                // Hide the taskbar, just incase it gets in the way
-                if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
-                {
-                    User32.ShowWindow(startButtonHandle, 0);
-                    User32.ShowWindow(taskbarHandle, 0);
-                    Application.DoEvents();
-                }
-
-                User32.ShowWindow(Window.Handle, 5);
-                Thread.Sleep(100);
-
-                User32.SetForegroundWindow(Window.Handle);
-
-                var r = Window.Rectangle;
-
-                void SetSize(int Width, int Height)
-                {
-                    User32.SetWindowPos(Window.Handle,
-                        IntPtr.Zero,
-                        r.Left, r.Top,
-                        Width, Height,
-                        SetWindowPositionFlags.ShowWindow);
-                }
-
-                if (canResize)
-                {
-                    SetSize(ResizeWidth, ResizeHeight);
-
-                    Thread.Sleep(100);
-                }
-
-                var s = CaptureTransparent(Window, IncludeCursor);
-
-                if (canResize)
-                {
-                    SetSize(r.Width, r.Height);
-                }
-
-                return s;
-            }
-            finally
-            {
-                if (Window.Handle != startButtonHandle && Window.Handle != taskbarHandle)
-                {
-                    User32.ShowWindow(startButtonHandle, 1);
-                    User32.ShowWindow(taskbarHandle, 1);
                 }
             }
         }
