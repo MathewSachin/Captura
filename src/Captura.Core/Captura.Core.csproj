@@ -91,7 +91,6 @@
     <Compile Include="Models\Overlays\WebcamOverlay.cs" />
     <Compile Include="Models\Recents\RecentFileType.cs" />
     <Compile Include="Models\RecorderState.cs" />
-    <Compile Include="Models\RotateBy.cs" />
     <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
     <Compile Include="Models\FileContentItem.cs" />
     <Compile Include="ViewModels\CrashLogsViewModel.cs" />
