@@ -105,7 +105,7 @@ namespace Captura.Webcam
         /// </summary>
         static IMoniker GetAnyMoniker()
         {
-            var category = Uuid.FilterCategory.VideoCompressorCategory;
+            var category = FilterCategory.VideoCompressorCategory;
             object comObj = null;
             IEnumMoniker enumMon = null;
             var mon = new IMoniker[1];

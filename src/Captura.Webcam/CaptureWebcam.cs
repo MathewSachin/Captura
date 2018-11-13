@@ -192,9 +192,9 @@ namespace Captura.Webcam
                     hr = _graphBuilder.AddFilter(_videoDeviceFilter, "Video Capture Device");
                     if (hr < 0) Marshal.ThrowExceptionForHR(hr);
 
-                    media.majorType = Uuid.MediaType.Video;
-                    media.subType = Uuid.MediaSubType.Rgb32;//RGB24;
-                    media.formatType = Uuid.FormatType.VideoInfo;
+                    media.majorType = MediaType.Video;
+                    media.subType = MediaSubType.RGB32;//RGB24;
+                    media.formatType = FormatType.VideoInfo;
                     media.temporalCompression = true; //New
 
                     hr = _sampGrabber.SetMediaType(media);
@@ -212,15 +212,15 @@ namespace Captura.Webcam
                 // upstream filters to function).
 
                 // Try looking for an interleaved media type
-                var cat = Uuid.PinCategory.Capture;
-                var med = Uuid.MediaType.Interleaved;
+                var cat = PinCategory.Capture;
+                var med = MediaType.Interleaved;
                 var iid = typeof(IAMStreamConfig).GUID;
                 hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out var o);
 
                 if (hr != 0)
                 {
                     // If not found, try looking for a video media type
-                    med = Uuid.MediaType.Video;
+                    med = MediaType.Video;
                     hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out o);
 
                     if (hr != 0)
@@ -384,8 +384,8 @@ namespace Captura.Webcam
             if (_wantPreviewRendered && !_isPreviewRendered)
             {
                 // Render preview (video -> renderer)
-                var cat = Uuid.PinCategory.Preview;
-                var med = Uuid.MediaType.Video;
+                var cat = PinCategory.Preview;
+                var med = MediaType.Video;
                 var hr = _captureGraphBuilder.RenderStream(cat, med, _videoDeviceFilter, _baseGrabFlt, null);
                 if (hr < 0) Marshal.ThrowExceptionForHR(hr);
 
@@ -419,7 +419,7 @@ namespace Captura.Webcam
                 if (hr < 0)
                     Marshal.ThrowExceptionForHR(hr);
 
-                if (media.formatType != Uuid.FormatType.VideoInfo || media.formatPtr == IntPtr.Zero)
+                if (media.formatType != FormatType.VideoInfo || media.formatPtr == IntPtr.Zero)
                     throw new NotSupportedException("Unknown Grabber Media Format");
 
                 _videoInfoHeader = (VideoInfoHeader)Marshal.PtrToStructure(media.formatPtr, typeof(VideoInfoHeader));
@@ -582,7 +582,7 @@ namespace Captura.Webcam
                     comObj = Activator.CreateInstance(srvType);
                     var enumDev = (ICreateDevEnum)comObj;
 
-                    var category = Uuid.FilterCategory.VideoInputDevice;
+                    var category = FilterCategory.VideoInputDevice;
 
                     // Create an enumerator to find filters in category
                     var hr = enumDev.CreateClassEnumerator(category, out enumMon, 0);
