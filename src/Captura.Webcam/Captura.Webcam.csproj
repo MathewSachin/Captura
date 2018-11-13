@@ -39,10 +39,8 @@
     <Compile Include="Structures\BitmapInfoHeader.cs" />
     <Compile Include="Structures\RECT.cs" />
     <Compile Include="Structures\VideoInfoHeader.cs" />
-    <Compile Include="Uuid.cs" />
     <Compile Include="WebcamImageProvider.cs" />
     <Compile Include="WebcamItem.cs" />
-    <Compile Include="WorkAround.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

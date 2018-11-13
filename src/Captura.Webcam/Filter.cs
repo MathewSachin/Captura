@@ -113,10 +113,7 @@ namespace Captura.Webcam
             try
             {
                 // Get the system device enumerator
-                var srvType = Type.GetTypeFromCLSID(Uuid.Clsid.SystemDeviceEnum);
-                if (srvType == null)
-                    throw new NotImplementedException("System Device Enumerator");
-                comObj = Activator.CreateInstance(srvType);
+                comObj = new CreateDevEnum();
                 var enumDev = (ICreateDevEnum)comObj;
 
                 //Create an enumerator to find filters in category

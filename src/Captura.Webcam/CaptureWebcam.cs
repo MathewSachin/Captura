@@ -164,21 +164,16 @@ namespace Captura.Webcam
             if ((int)_actualGraphState < (int)GraphState.Created)
             {
                 // Make a new filter graph
-                _graphBuilder = (IGraphBuilder)Activator.CreateInstance(Type.GetTypeFromCLSID(Uuid.Clsid.FilterGraph, true));
+                _graphBuilder = (IGraphBuilder)new FilterGraph();
 
                 // Get the Capture Graph Builder
-                var clsid = Uuid.Clsid.CaptureGraphBuilder2;
-                var riid = typeof(ICaptureGraphBuilder2).GUID;
-                _captureGraphBuilder = (ICaptureGraphBuilder2)Workaround.CreateDsInstance(ref clsid, ref riid);
+                _captureGraphBuilder = (ICaptureGraphBuilder2)new CaptureGraphBuilder2();
 
                 // Link the CaptureGraphBuilder to the filter graph
                 var hr = _captureGraphBuilder.SetFiltergraph(_graphBuilder);
                 if (hr < 0) Marshal.ThrowExceptionForHR(hr);
 
-                var comType = Type.GetTypeFromCLSID(Uuid.Clsid.SampleGrabber);
-                if (comType == null)
-                    throw new NotImplementedException(@"DirectShow SampleGrabber not installed/registered!");
-                var comObj = Activator.CreateInstance(comType);
+                var comObj = new SampleGrabber();
                 _sampGrabber = (ISampleGrabber)comObj;
 
                 _baseGrabFlt = (IBaseFilter)_sampGrabber;
@@ -576,10 +571,7 @@ namespace Captura.Webcam
                 try
                 {
                     // Get the system device enumerator
-                    var srvType = Type.GetTypeFromCLSID(Uuid.Clsid.SystemDeviceEnum);
-                    if (srvType == null)
-                        throw new NotImplementedException("System Device Enumerator");
-                    comObj = Activator.CreateInstance(srvType);
+                    comObj = new CreateDevEnum();
                     var enumDev = (ICreateDevEnum)comObj;
 
                     var category = FilterCategory.VideoInputDevice;
