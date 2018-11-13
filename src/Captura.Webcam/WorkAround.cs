@@ -23,7 +23,7 @@ namespace Captura.Webcam
                 Marshal.ThrowExceptionForHR(hr);
 
             var iu = new Guid("00000000-0000-0000-C000-000000000046");
-            Marshal.QueryInterface(ptrIf, ref iu, out IntPtr _);
+            Marshal.QueryInterface(ptrIf, ref iu, out _);
 
             var ooo = System.Runtime.Remoting.Services.EnterpriseServicesHelper.WrapIUnknownWithComObject(ptrIf);
             Marshal.Release(ptrIf);

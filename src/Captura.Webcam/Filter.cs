@@ -79,7 +79,7 @@ namespace Captura.Webcam
             try
             {
                 parser = GetAnyMoniker();
-                parser.ParseDisplayName(null, null, MonikerString, out int _, out moniker);
+                parser.ParseDisplayName(null, null, MonikerString, out _, out moniker);
                 return GetName(parser);
             }
             finally

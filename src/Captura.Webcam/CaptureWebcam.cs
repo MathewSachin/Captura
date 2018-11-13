@@ -70,9 +70,9 @@ namespace Captura.Webcam
         /// </summary>
         IBaseFilter _videoDeviceFilter;
 
-        /// <summary>
-        /// DShow Filter: configure frame rate, size.
-        /// </summary>
+        ///// <summary>
+        ///// DShow Filter: configure frame rate, size.
+        ///// </summary>
         //IAMStreamConfig VideoStreamConfig;
 
         /// <summary>
@@ -275,18 +275,18 @@ namespace Captura.Webcam
                 _videoWindow = null;
             }
 
-            if ((int)_actualGraphState >= (int)GraphState.Rendered)
-            {
-                // Update the state
-                _actualGraphState = GraphState.Created;
-                _isPreviewRendered = false;
+            if ((int) _actualGraphState < (int) GraphState.Rendered)
+                return;
 
-                // Disconnect all filters downstream of the 
-                // video and audio devices. If we have a compressor
-                // then disconnect it, but don't remove it
-                if (_videoDeviceFilter != null)
-                    RemoveDownstream(_videoDeviceFilter);
-            }
+            // Update the state
+            _actualGraphState = GraphState.Created;
+            _isPreviewRendered = false;
+
+            // Disconnect all filters downstream of the 
+            // video and audio devices. If we have a compressor
+            // then disconnect it, but don't remove it
+            if (_videoDeviceFilter != null)
+                RemoveDownstream(_videoDeviceFilter);
         }
 
         /// <summary>
@@ -306,50 +306,52 @@ namespace Captura.Webcam
 
             pinEnum.Reset();
 
-            if (hr == 0)
+            if (hr != 0)
+                return;
+
+            // Loop through each pin
+            var pins = new IPin[1];
+
+            do
             {
-                // Loop through each pin
-                var pins = new IPin[1];
-                do
+                // Get the next pin
+                hr = pinEnum.Next(1, pins, IntPtr.Zero);
+
+                if (hr != 0 || pins[0] == null)
+                    continue;
+
+                // Get the pin it is connected to
+                pins[0].ConnectedTo(out var pinTo);
+
+                if (pinTo != null)
                 {
-                    // Get the next pin
-                    hr = pinEnum.Next(1, pins, IntPtr.Zero);
+                    // Is this an input pin?
+                    hr = pinTo.QueryPinInfo(out var info);
 
-                    if (hr == 0 && pins[0] != null)
+                    if (hr == 0 && info.dir == PinDirection.Input)
                     {
-                        // Get the pin it is connected to
-                        pins[0].ConnectedTo(out var pinTo);
+                        // Recurse down this branch
+                        RemoveDownstream(info.filter);
 
-                        if (pinTo != null)
-                        {
-                            // Is this an input pin?
-                            hr = pinTo.QueryPinInfo(out var info);
+                        // Disconnect 
+                        _graphBuilder.Disconnect(pinTo);
+                        _graphBuilder.Disconnect(pins[0]);
 
-                            if (hr == 0 && info.dir == PinDirection.Input)
-                            {
-                                // Recurse down this branch
-                                RemoveDownstream(info.filter);
-
-                                // Disconnect 
-                                _graphBuilder.Disconnect(pinTo);
-                                _graphBuilder.Disconnect(pins[0]);
-
-                                // Remove this filter
-                                // but don't remove the video or audio compressors
-                                if (info.filter != _videoCompressorFilter)
-                                    _graphBuilder.RemoveFilter(info.filter);
-                            }
-
-                            Marshal.ReleaseComObject(info.filter);
-                            Marshal.ReleaseComObject(pinTo);
-                        }
-
-                        Marshal.ReleaseComObject(pins[0]);
+                        // Remove this filter
+                        // but don't remove the video or audio compressors
+                        if (info.filter != _videoCompressorFilter)
+                            _graphBuilder.RemoveFilter(info.filter);
                     }
-                } while (hr == 0);
 
-                Marshal.ReleaseComObject(pinEnum);
+                    Marshal.ReleaseComObject(info.filter);
+                    Marshal.ReleaseComObject(pinTo);
+                }
+
+                Marshal.ReleaseComObject(pins[0]);
             }
+            while (hr == 0);
+
+            Marshal.ReleaseComObject(pinEnum);
         }
 
         /// <summary>
