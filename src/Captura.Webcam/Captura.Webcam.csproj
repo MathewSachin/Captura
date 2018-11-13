@@ -36,7 +36,6 @@
     <Compile Include="CoreWebCamProvider.cs" />
     <Compile Include="GraphState.cs" />
     <Compile Include="Filter.cs" />
-    <Compile Include="Structures\VideoInfoHeader.cs" />
     <Compile Include="WebcamImageProvider.cs" />
     <Compile Include="WebcamItem.cs" />
   </ItemGroup>
