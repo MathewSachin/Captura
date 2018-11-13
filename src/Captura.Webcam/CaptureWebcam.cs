@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using DirectShowLib;
 
-// ReSharper disable InconsistentNaming
 // ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Captura.Webcam
