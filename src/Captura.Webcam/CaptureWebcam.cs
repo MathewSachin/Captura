@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using DirectShowLib;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable SuspiciousTypeConversion.Global
 
@@ -98,9 +100,6 @@ namespace Captura.Webcam
         ISampleGrabber _sampGrabber;
         VideoInfoHeader _videoInfoHeader;
         #endregion
-
-        const int OATRUE = -1;
-        const int OAFALSE = 0;
 
         /// <summary>
         /// Default constructor of the Capture class.
@@ -216,13 +215,13 @@ namespace Captura.Webcam
                 var cat = Uuid.PinCategory.Capture;
                 var med = Uuid.MediaType.Interleaved;
                 var iid = typeof(IAMStreamConfig).GUID;
-                hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out var o);
+                hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out var o);
 
                 if (hr != 0)
                 {
                     // If not found, try looking for a video media type
                     med = Uuid.MediaType.Video;
-                    hr = _captureGraphBuilder.FindInterface(ref cat, ref med, _videoDeviceFilter, ref iid, out o);
+                    hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out o);
 
                     if (hr != 0)
                         // ReSharper disable once RedundantAssignment
@@ -271,7 +270,7 @@ namespace Captura.Webcam
             // Free the preview window (ignore errors)
             if (_videoWindow != null)
             {
-                _videoWindow.put_Visible(OAFALSE);
+                _videoWindow.put_Visible(OABool.False);
                 _videoWindow.put_Owner(IntPtr.Zero);
                 _videoWindow = null;
             }
@@ -314,7 +313,7 @@ namespace Captura.Webcam
                 do
                 {
                     // Get the next pin
-                    hr = pinEnum.Next(1, pins, out int _);
+                    hr = pinEnum.Next(1, pins, IntPtr.Zero);
 
                     if (hr == 0 && pins[0] != null)
                     {
@@ -362,9 +361,6 @@ namespace Captura.Webcam
         void RenderGraph()
         {
             var didSomething = false;
-            const int WS_CHILD = 0x40000000;
-            const int WS_CLIPCHILDREN = 0x02000000;
-            const int WS_CLIPSIBLINGS = 0x04000000;
 
             // Stop the graph
             _mediaControl?.Stop();
@@ -388,7 +384,7 @@ namespace Captura.Webcam
                 // Render preview (video -> renderer)
                 var cat = Uuid.PinCategory.Preview;
                 var med = Uuid.MediaType.Video;
-                var hr = _captureGraphBuilder.RenderStream(ref cat, ref med, _videoDeviceFilter, _baseGrabFlt, null);
+                var hr = _captureGraphBuilder.RenderStream(cat, med, _videoDeviceFilter, _baseGrabFlt, null);
                 if (hr < 0) Marshal.ThrowExceptionForHR(hr);
 
                 // Get the IVideoWindow interface
@@ -401,13 +397,13 @@ namespace Captura.Webcam
                     Marshal.ThrowExceptionForHR(hr);
 
                 // Set video window style
-                hr = _videoWindow.put_WindowStyle(WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+                hr = _videoWindow.put_WindowStyle(WindowStyle.Child | WindowStyle.ClipChildren | WindowStyle.ClipSiblings);
 
                 if (hr < 0)
                     Marshal.ThrowExceptionForHR(hr);
 
                 // Make the video window visible, now that it is properly positioned
-                hr = _videoWindow.put_Visible(OATRUE);
+                hr = _videoWindow.put_Visible(OABool.True);
 
                 if (hr < 0)
                     Marshal.ThrowExceptionForHR(hr);
@@ -587,7 +583,7 @@ namespace Captura.Webcam
                     var category = Uuid.FilterCategory.VideoInputDevice;
 
                     // Create an enumerator to find filters in category
-                    var hr = enumDev.CreateClassEnumerator(ref category, out enumMon, 0);
+                    var hr = enumDev.CreateClassEnumerator(category, out enumMon, 0);
                     if (hr != 0)
                         yield break;
 

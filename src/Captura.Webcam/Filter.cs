@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using DirectShowLib;
 
 namespace Captura.Webcam
 {
@@ -47,8 +48,7 @@ namespace Captura.Webcam
                 var bagId = typeof(IPropertyBag).GUID;
                 Moniker.BindToStorage(null, null, ref bagId, out bagObj);
                 var bag = (IPropertyBag)bagObj;
-                object val = "";
-                var hr = bag.Read("FriendlyName", ref val, IntPtr.Zero);
+                var hr = bag.Read("FriendlyName", out var val, null);
 
                 if (hr != 0)
                     Marshal.ThrowExceptionForHR(hr);
@@ -120,7 +120,7 @@ namespace Captura.Webcam
                 var enumDev = (ICreateDevEnum)comObj;
 
                 //Create an enumerator to find filters in category
-                var hr = enumDev.CreateClassEnumerator(ref category, out enumMon, 0);
+                var hr = enumDev.CreateClassEnumerator(category, out enumMon, 0);
                 if (hr != 0)
                     throw new NotSupportedException("No devices of the category");
 

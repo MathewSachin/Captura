@@ -1,4 +1,6 @@
 ﻿using System.Runtime.InteropServices;
+using DirectShowLib;
+
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable MemberCanBePrivate.Global
 
