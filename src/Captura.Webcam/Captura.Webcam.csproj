@@ -34,12 +34,9 @@
   <ItemGroup>
     <Compile Include="CaptureWebcam.cs" />
     <Compile Include="CoreWebCamProvider.cs" />
-    <Compile Include="Enumerations\GraphState.cs" />
+    <Compile Include="GraphState.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Structures\BitmapInfoHeader.cs" />
-    <Compile Include="Structures\FilterInfo.cs" />
-    <Compile Include="Structures\OptInt64.cs" />
-    <Compile Include="Structures\PinInfo.cs" />
     <Compile Include="Structures\RECT.cs" />
     <Compile Include="Structures\VideoInfoHeader.cs" />
     <Compile Include="Uuid.cs" />
