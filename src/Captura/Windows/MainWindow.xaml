@@ -9,8 +9,8 @@
         SizeToContent="Height"
         MaxWidth="450"
         Title="Captura"
-        Left="{Binding Settings.UI.MainWindowLeft}"
-        Top="{Binding Settings.UI.MainWindowTop}"
+        Left="{Binding Settings.UI.MainWindowLeft, Mode=TwoWay}"
+        Top="{Binding Settings.UI.MainWindowTop, Mode=TwoWay}"
         BorderThickness="1"
         BorderBrush="{DynamicResource Accent}"
         Topmost="{Binding Settings.UI.MainWindowTopmost}">
