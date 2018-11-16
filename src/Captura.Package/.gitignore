@@ -1,0 +1,5 @@
+AppPackages/
+BundleArtifacts/
+_pkginfo.txt
+
+*.pfx
