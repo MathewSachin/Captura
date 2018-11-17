@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Captura.Audio;
 using Captura.Models;
 using NAudio.CoreAudioApi;
@@ -34,7 +35,7 @@ namespace Captura.NAudio
 
         public override IAudioProvider GetMixedAudioProvider()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override IAudioProvider[] GetMultipleAudioProviders()

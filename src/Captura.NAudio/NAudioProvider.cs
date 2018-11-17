@@ -5,7 +5,7 @@ using WaveFormat = Captura.Audio.WaveFormat;
 
 namespace Captura.NAudio
 {
-    public abstract class NAudioProvider : IAudioProvider
+    abstract class NAudioProvider : IAudioProvider
     {
         readonly IWaveIn _waveIn;
 
@@ -24,7 +24,7 @@ namespace Captura.NAudio
             _waveIn.Dispose();
         }
 
-        public WaveFormat WaveFormat { get; }
+        public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
         public virtual void Start()
         {

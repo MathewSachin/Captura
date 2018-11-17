@@ -4,7 +4,7 @@ using Wf = NAudio.Wave.WaveFormat;
 
 namespace Captura.NAudio
 {
-    public class WasapiLoopbackCaptureProvider : NAudioProvider
+    class WasapiLoopbackCaptureProvider : NAudioProvider
     {
         readonly IWavePlayer _wasapiOut;
 
