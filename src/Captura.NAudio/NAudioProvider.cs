@@ -19,19 +19,19 @@ namespace Captura.NAudio
             };
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _waveIn.Dispose();
         }
 
         public WaveFormat WaveFormat { get; }
 
-        public void Start()
+        public virtual void Start()
         {
             _waveIn.StartRecording();
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             _waveIn.StopRecording();
         }

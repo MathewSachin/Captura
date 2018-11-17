@@ -5,6 +5,7 @@ using NAudio.CoreAudioApi;
 
 namespace Captura.NAudio
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class NAudioSource : AudioSource
     {
         public NAudioSource()
