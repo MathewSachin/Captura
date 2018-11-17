@@ -35,7 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NAudioItem.cs" />
+    <Compile Include="NAudioProvider.cs" />
     <Compile Include="NAudioSource.cs" />
+    <Compile Include="WasapiCaptureProvider.cs" />
+    <Compile Include="WasapiLoopbackCaptureProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
