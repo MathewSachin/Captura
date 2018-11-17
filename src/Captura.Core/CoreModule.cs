@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.NAudio;
 using Captura.ViewModels;
 
 namespace Captura
@@ -85,11 +86,12 @@ namespace Captura
             Binder.Bind<IRecentItemSerializer, ImgurRecentSerializer>();
 
             // Check if Bass is available
-            if (BassAudioSource.Available)
-            {
-                Binder.Bind<AudioSource, BassAudioSource>();
-            }
-            else Binder.Bind<AudioSource, NoAudioSource>();
+            //if (BassAudioSource.Available)
+            //{
+            //    Binder.Bind<AudioSource, BassAudioSource>();
+            //}
+            //else Binder.Bind<AudioSource, NoAudioSource>();
+            Binder.Bind<AudioSource, NAudioSource>();
         }
     }
 }

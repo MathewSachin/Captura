@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Hotkeys", "Captura.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Fakes", "Captura.Fakes\Captura.Fakes.csproj", "{0BB58B16-1A6C-4256-AEC2-3EA64541B663}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.NAudio", "Captura.NAudio\Captura.NAudio.csproj", "{76BC6324-E205-41DB-B60A-128D9FD66624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB58B16-1A6C-4256-AEC2-3EA64541B663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76BC6324-E205-41DB-B60A-128D9FD66624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76BC6324-E205-41DB-B60A-128D9FD66624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76BC6324-E205-41DB-B60A-128D9FD66624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76BC6324-E205-41DB-B60A-128D9FD66624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
