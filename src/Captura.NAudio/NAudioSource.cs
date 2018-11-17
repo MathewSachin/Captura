@@ -1,4 +1,5 @@
-﻿using Captura.Audio;
+﻿using System.Linq;
+using Captura.Audio;
 using Captura.Models;
 using NAudio.CoreAudioApi;
 
@@ -37,7 +38,17 @@ namespace Captura.NAudio
 
         public override IAudioProvider[] GetMultipleAudioProviders()
         {
-            throw new System.NotImplementedException();
+            var rec = AvailableRecordingSources.Where(M => M.Active)
+                .Cast<NAudioItem>()
+                .Select(M => new WasapiCaptureProvider(M.Device))
+                .Cast<IAudioProvider>();
+
+            var loop = AvailableLoopbackSources.Where(M => M.Active)
+                .Cast<NAudioItem>()
+                .Select(M => new WasapiLoopbackCaptureProvider(M.Device))
+                .Cast<IAudioProvider>();
+
+            return rec.Concat(loop).ToArray();
         }
     }
 }
