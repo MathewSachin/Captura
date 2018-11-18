@@ -33,5 +33,7 @@ namespace Captura.Models
         public abstract IAudioProvider GetMixedAudioProvider();
 
         public abstract IAudioProvider[] GetMultipleAudioProviders();
+
+        public abstract string Name { get; }
     }
 }

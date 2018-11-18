@@ -83,5 +83,7 @@ namespace Captura.Models
                 }
             }
         }
+
+        public override string Name { get; } = "BASS";
     }
 }

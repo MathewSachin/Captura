@@ -61,5 +61,7 @@ namespace Captura.NAudio
 
             return rec.Concat(loop).ToArray();
         }
+
+        public override string Name { get; } = "NAudio";
     }
 }
