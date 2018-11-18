@@ -38,9 +38,7 @@ namespace Captura.Models
         {
             return new MixedAudioProvider(AvailableRecordingSources
                 .Concat(AvailableLoopbackSources)
-                .Cast<BassItem>(),
-                !_settings.PlaybackRecordingRealTime
-                );
+                .Cast<BassItem>());
         }
 
         public override IAudioProvider[] GetMultipleAudioProviders()

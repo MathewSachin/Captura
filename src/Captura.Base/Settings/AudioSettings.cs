@@ -31,11 +31,5 @@
             get => Get(50);
             set => Set(value);
         }
-
-        public bool PlaybackRecordingRealTime
-        {
-            get => Get(false);
-            set => Set(value);
-        }
     }
 }
