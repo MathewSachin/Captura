@@ -10,7 +10,6 @@ using Wf = NAudio.Wave.WaveFormat;
 
 namespace Captura.NAudio
 {
-    // TODO: Implement changing audio device active state
     class MixedAudioProvider : IAudioProvider
     {
         readonly Dictionary<NAudioProvider, ISampleProvider> _audioProviders = new Dictionary<NAudioProvider, ISampleProvider>();
