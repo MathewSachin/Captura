@@ -35,5 +35,7 @@ namespace Captura.Models
         public abstract IAudioProvider[] GetMultipleAudioProviders();
 
         public abstract string Name { get; }
+
+        public virtual bool CanChangeSourcesDuringRecording => false;
     }
 }
