@@ -30,7 +30,7 @@ install:
   - dotnet tool install -g Cake.Tool --version 0.30.0
 
   # Fake Store Key
-  - ps: Copy-Item 'src/Captura.Package/Captura.Package_TemporaryKey' 'src/Captura.Package/Captura.Package_StoreKey'
+  - ps: Copy-Item 'src/Captura.Package/Captura.Package_TemporaryKey.pfx' 'src/Captura.Package/Captura.Package_StoreKey.pfx'
 
 # Build using Cake
 build_script:
