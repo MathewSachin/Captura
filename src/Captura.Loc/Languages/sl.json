@@ -124,7 +124,7 @@
   "ScreenShotSaved": "Posnetek zaslona je shranjen",
   "SelectFFmpegFolder": "Izberi mapo kjer se nahaja FFmpeg",
   "SelectOutFolder": "Izberite mapo za shranjevanje",
-  "SeparateAudioFiles": "",
+  "SeparateAudioFiles": "Ločene datoteke za vsak zvočni vir",
   "ShowSysNotify": "Prikaži opozorila v opravilni vrstici",
   "SnapToWindow": "Pripni na okno",
   "Sounds": "Zvoki",
