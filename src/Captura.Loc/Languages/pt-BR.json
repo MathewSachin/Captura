@@ -124,7 +124,7 @@
   "ScreenShotSaved": "Captura Salva",
   "SelectFFmpegFolder": "Selecione a Pasta do FFmpeg",
   "SelectOutFolder": "Selecione a Pasta de Saída",
-  "SeparateAudioFiles": "",
+  "SeparateAudioFiles": "Separar Arquivos de cada Fonte de Áudio",
   "ShowSysNotify": "Exibir Mensagens na Área de Notificação",
   "SnapToWindow": "Encaixar na Janela",
   "Sounds": "Sons",
