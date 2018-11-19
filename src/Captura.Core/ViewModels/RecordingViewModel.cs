@@ -116,7 +116,7 @@ namespace Captura.ViewModels
         public bool CanChangeWebcam
         {
             get => _canChangeWebcam;
-            set
+            private set
             {
                 _canChangeWebcam = value;
 
@@ -127,7 +127,7 @@ namespace Captura.ViewModels
         public bool CanChangeAudioSources
         {
             get => _canChangeAudioSources;
-            set
+            private set
             {
                 _canChangeAudioSources = value;
                 
@@ -448,7 +448,8 @@ namespace Captura.ViewModels
             RecorderState = RecorderState.Recording;
 
             CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
-            CanChangeAudioSources = !Settings.Audio.SeparateFilePerSource;
+
+            CanChangeAudioSources = !Settings.Audio.SeparateFilePerSource && _audioSource.CanChangeSourcesDuringRecording;
 
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
