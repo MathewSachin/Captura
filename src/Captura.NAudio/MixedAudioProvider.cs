@@ -6,7 +6,6 @@ using Captura.Audio;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using WaveFormat = Captura.Audio.WaveFormat;
-using Wf = NAudio.Wave.WaveFormat;
 
 namespace Captura.NAudio
 {
@@ -26,7 +25,7 @@ namespace Captura.NAudio
         {
             foreach (var provider in AudioProviders)
             {
-                var bufferedProvider = new BufferedWaveProvider(Wf.CreateIeeeFloatWaveFormat(44100, 2));
+                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat);
 
                 provider.DataAvailable += (S, E) =>
                 {
@@ -35,14 +34,35 @@ namespace Captura.NAudio
 
                 var sampleProvider = bufferedProvider.ToSampleProvider();
 
+                var providerWf = provider.WaveFormat;
+
+                // Mono to Stereo
+                if (providerWf.Channels == 1)
+                    sampleProvider = sampleProvider.ToStereo();
+
+                // Resample
+                if (providerWf.SampleRate != WaveFormat.SampleRate)
+                {
+                    sampleProvider = new WdlResamplingSampleProvider(sampleProvider, WaveFormat.SampleRate);
+                }
+
                 _audioProviders.Add(provider, sampleProvider);
             }
 
             var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
 
+            // Screna expects 44.1 kHz 16-bit Stereo
             _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
 
-            _buffer = new byte[(int)(ReadInterval / 1000.0 * 44100 * 2 * 2)]; // s * freq * chans * 16-bit
+            var bufferSize = (int)
+            (
+                (ReadInterval / 1000.0)
+                * WaveFormat.SampleRate
+                * WaveFormat.Channels
+                * (WaveFormat.BitsPerSample / 8.0)
+            );
+
+            _buffer = new byte[bufferSize];
 
             Task.Factory.StartNew(Loop, TaskCreationOptions.LongRunning);
         }

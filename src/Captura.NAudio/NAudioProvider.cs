@@ -2,6 +2,7 @@
 using Captura.Audio;
 using NAudio.Wave;
 using WaveFormat = Captura.Audio.WaveFormat;
+using Wf = NAudio.Wave.WaveFormat;
 using WaveFormatEncoding = NAudio.Wave.WaveFormatEncoding;
 
 namespace Captura.NAudio
@@ -20,6 +21,7 @@ namespace Captura.NAudio
             };
 
             var wf = WaveIn.WaveFormat;
+            NAudioWaveFormat = wf;
 
             WaveFormat = wf.Encoding == WaveFormatEncoding.IeeeFloat
                 ? WaveFormat.CreateIeeeFloatWaveFormat(wf.SampleRate, wf.Channels)
@@ -32,6 +34,8 @@ namespace Captura.NAudio
         }
 
         public WaveFormat WaveFormat { get; }
+
+        public Wf NAudioWaveFormat { get; }
 
         public virtual void Start()
         {
