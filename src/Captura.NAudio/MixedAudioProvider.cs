@@ -39,9 +39,10 @@ namespace Captura.NAudio
             }
 
             var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
-            _mixingWaveProvider = mixingSampleProvider.ToWaveProvider();
 
-            _buffer = new byte[(int)(ReadInterval / 1000.0 * 44100 * 2 * 4)]; // s * freq * chans * float
+            _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
+
+            _buffer = new byte[(int)(ReadInterval / 1000.0 * 44100 * 2 * 2)]; // s * freq * chans * 16-bit
 
             Task.Factory.StartNew(Loop, TaskCreationOptions.LongRunning);
         }
@@ -57,7 +58,7 @@ namespace Captura.NAudio
             }
         }
 
-        public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+        public WaveFormat WaveFormat { get; } = new WaveFormat();
 
         public void Start()
         {
