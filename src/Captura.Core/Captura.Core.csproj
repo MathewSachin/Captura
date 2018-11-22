@@ -76,6 +76,7 @@
     <Compile Include="Settings\Models\ScreenShotSettings.cs" />
     <Compile Include="Models\FileNameFormatGroup.cs" />
     <Compile Include="Models\FileNameFormatItem.cs" />
+    <Compile Include="ViewModels\UpdateCheckerViewModel.cs" />
     <Compile Include="ViewModels\FileNameFormatViewModel.cs" />
     <Compile Include="Models\HotkeyActionRegisterer.cs" />
     <Compile Include="ViewModels\SoundsViewModel.cs" />
