@@ -300,10 +300,9 @@
             </Expander.Header>
             <DockPanel Margin="-5,0,0,0"
                        Height="550">
-                <Label Margin="5"
-                       Content="© Mathew Sachin"
-                       Opacity="0.9"
-                       DockPanel.Dock="Bottom"/>
+                <local:StatusBar DockPanel.Dock="Bottom"
+                                 Margin="7,3"
+                                 Opacity="0.9"/>
 
                 <local:OutputFolderControl DockPanel.Dock="Bottom"/>
 

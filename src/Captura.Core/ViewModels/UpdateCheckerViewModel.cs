@@ -2,12 +2,13 @@
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 
 namespace Captura.ViewModels
 {
-    // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class UpdateCheckerViewModel : NotifyPropertyChanged
     {
         readonly Settings _settings;
@@ -27,43 +28,53 @@ namespace Captura.ViewModels
             });
         }
 
-        async void Check()
+        const string LatestReleaseUrl = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
+
+        void Check()
         {
             if (Checking)
                 return;
 
             Checking = true;
             UpdateAvailable = false;
+            CheckFailed = false;
 
-            try
+            Task.Run(async () =>
             {
-                using (var w = new WebClient {Proxy = _settings.Proxy.GetWebProxy()})
+                try
                 {
-                    const string latestReleaseUrl = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
-
-                    var result = await w.DownloadStringTaskAsync(latestReleaseUrl);
-
-                    var jObj = JObject.Parse(result);
-
-                    // tag_name = v0.0.0 for stable releases
-                    var version = Version.Parse(jObj["tag_name"].ToString().Substring(1));
-
-                    var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-                    if (version > currentVersion)
+                    using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
                     {
-                        UpdateAvailable = true;
+                        // User Agent header required by GitHub api
+                        w.Headers.Add("user-agent", nameof(Captura));
+
+                        var result = await w.DownloadStringTaskAsync(LatestReleaseUrl);
+
+                        var jObj = JObject.Parse(result);
+
+                        // tag_name = v0.0.0 for stable releases
+                        NewVersion = jObj["tag_name"].ToString();
+                        var version = Version.Parse(NewVersion.Substring(1));
+
+                        var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+
+                        if (version > currentVersion)
+                        {
+                            UpdateAvailable = true;
+                        }
                     }
                 }
-            }
-            catch
-            {
-                CheckFailed = true;
-            }
-            finally
-            {
-                Checking = false;
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+
+                    CheckFailed = true;
+                }
+                finally
+                {
+                    Checking = false;
+                }
+            });
         }
 
         bool _checking, _available, _checkFailed;
@@ -71,7 +82,7 @@ namespace Captura.ViewModels
         public bool Checking
         {
             get => _checking;
-            set
+            private set
             {
                 _checking = value;
 
@@ -82,7 +93,7 @@ namespace Captura.ViewModels
         public bool UpdateAvailable
         {
             get => _available;
-            set
+            private set
             {
                 _available = value;
 
@@ -93,10 +104,22 @@ namespace Captura.ViewModels
         public bool CheckFailed
         {
             get => _checkFailed;
-            set
+            private set
             {
                 _checkFailed = value;
 
+                OnPropertyChanged();
+            }
+        }
+
+        string _newVersion;
+
+        public string NewVersion
+        {
+            get => _newVersion;
+            private set
+            {
+                _newVersion = value;
                 OnPropertyChanged();
             }
         }
