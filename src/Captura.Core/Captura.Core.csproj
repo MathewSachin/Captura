@@ -132,6 +132,10 @@
       <Project>{81F2E68E-4708-4D52-8419-51888F22D05E}</Project>
       <Name>Captura.Native</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.NAudio\Captura.NAudio.csproj">
+      <Project>{76bc6324-e205-41db-b60a-128d9fd66624}</Project>
+      <Name>Captura.NAudio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
       <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
       <Name>Captura.SharpAvi</Name>

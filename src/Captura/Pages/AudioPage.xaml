@@ -5,12 +5,19 @@
     <Grid>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
-            <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                      FontWeight="Bold"
-                      Margin="0,0,0,5"
-                      FontSize="15"/>
+            <DockPanel Margin="0,0,0,5">
+                <TextBlock Text="{Binding AudioSource.Name}"
+                           FontSize="10"
+                           DockPanel.Dock="Right"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource Accent}"/>
+
+                <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                          IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
+                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                          FontWeight="Bold"
+                          FontSize="15"/>
+            </DockPanel>
 
             <ScrollViewer IsEnabled="{Binding Settings.Audio.Enabled}"
                           MaxHeight="130">
@@ -81,11 +88,6 @@
 
             <StackPanel IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                         Margin="0,20,0,0">
-                <CheckBox IsChecked="{Binding Settings.Audio.PlaybackRecordingRealTime}"
-                          Content="{Binding PlayRecAudio, Source={StaticResource Loc}, Mode=OneWay}"
-                          IsEnabled="{Binding Settings.Audio.SeparateFilePerSource, Converter={StaticResource NegatingConverter}}"
-                          Margin="0,5"/>
-
                 <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
                           Content="{Binding SeparateAudioFiles, Source={StaticResource Loc}, Mode=OneWay}"
                           Margin="0,5"/>

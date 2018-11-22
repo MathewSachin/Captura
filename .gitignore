@@ -19,3 +19,4 @@ TestResults/
 
 /temp/
 /dist/
+*.pfx

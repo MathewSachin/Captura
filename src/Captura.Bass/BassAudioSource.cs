@@ -11,12 +11,8 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class BassAudioSource : AudioSource
     {
-        readonly AudioSettings _settings;
-
-        public BassAudioSource(AudioSettings Settings)
+        public BassAudioSource()
         {
-            _settings = Settings;
-
             // Initialises Default Playback Device.
             Bass.Init();
 
@@ -38,9 +34,7 @@ namespace Captura.Models
         {
             return new MixedAudioProvider(AvailableRecordingSources
                 .Concat(AvailableLoopbackSources)
-                .Cast<BassItem>(),
-                !_settings.PlaybackRecordingRealTime
-                );
+                .Cast<BassItem>());
         }
 
         public override IAudioProvider[] GetMultipleAudioProviders()
@@ -85,5 +79,9 @@ namespace Captura.Models
                 }
             }
         }
+
+        public override string Name { get; } = "BASS";
+
+        public override bool CanChangeSourcesDuringRecording => true;
     }
 }
