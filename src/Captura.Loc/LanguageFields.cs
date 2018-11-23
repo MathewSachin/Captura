@@ -625,12 +625,6 @@ namespace Captura
             set => Set(value);
         }
 
-        public string PlayRecAudio
-        {
-            get => Get();
-            set => Set(value);
-        }
-
         public string Port
         {
             get => Get();

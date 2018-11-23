@@ -1,53 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProjectGuid>{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Captura.SharpAvi</RootNamespace>
     <AssemblyName>Captura.SharpAvi</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
+    <TargetFramework>net4.6.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
-      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
-      <Name>Captura.Base</Name>
-    </ProjectReference>
+    <PackageReference Include="SharpAvi" Version="2.1.1"/>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AviCodec.cs" />
-    <Compile Include="AviWriter.cs" />
-    <Compile Include="IAudioProviderAdapter.cs" />
-    <Compile Include="SharpAviItem.cs" />
-    <Compile Include="SharpAviWriterProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SharpAvi">
-      <Version>2.1.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

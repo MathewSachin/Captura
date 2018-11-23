@@ -12,5 +12,7 @@ namespace Captura.Models
         public override IAudioProvider[] GetMultipleAudioProviders() => new IAudioProvider[0];
 
         protected override void OnRefresh() { }
+
+        public override string Name { get; } = "No Audio";
     }
 }

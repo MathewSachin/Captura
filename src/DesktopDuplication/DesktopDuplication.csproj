@@ -1,61 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <SharpDXDirectXVersion>DirectX11_2</SharpDXDirectXVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProjectGuid>{222C215B-663F-4BD6-9B3E-8FA99C867B22}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>DesktopDuplication</RootNamespace>
     <AssemblyName>DesktopDuplication</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
+    <TargetFramework>net4.6.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeskDuplImageProvider.cs" />
-    <Compile Include="DeskDuplItem.cs" />
-    <Compile Include="DeskDuplSourceProvider.cs" />
-    <Compile Include="DesktopDuplicator.cs" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
+    <ProjectReference Include="..\Screna\Screna.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
-      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
-      <Name>Captura.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
-      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
-      <Name>Captura.Loc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Screna\Screna.csproj">
-      <Project>{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}</Project>
-      <Name>Screna</Name>
-    </ProjectReference>
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0"/>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SharpDX.Direct3D11">
-      <Version>4.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

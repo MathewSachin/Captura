@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Captura.FFmpeg</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Captura.NAudio</AssemblyName>
+    <TargetFramework>net4.6.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="1.8.5"/>
   </ItemGroup>
 </Project>

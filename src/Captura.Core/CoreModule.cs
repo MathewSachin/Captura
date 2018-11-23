@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.NAudio;
 using Captura.ViewModels;
 
 namespace Captura
@@ -89,7 +90,7 @@ namespace Captura
             {
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
-            else Binder.Bind<AudioSource, NoAudioSource>();
+            else Binder.Bind<AudioSource, NAudioSource>();
         }
     }
 }
