@@ -1,64 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProjectGuid>{0BB58B16-1A6C-4256-AEC2-3EA64541B663}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <AssemblyName>Captura.Fakes</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
+    <TargetFramework>net4.6.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FakeAudioPlayer.cs" />
-    <Compile Include="FakeMessageProvider.cs" />
-    <Compile Include="FakePreviewWindow.cs" />
-    <Compile Include="FakeRegionProvider.cs" />
-    <Compile Include="FakesModule.cs" />
-    <Compile Include="FakeSystemTray.cs" />
-    <Compile Include="FakeVideoSourcePicker.cs" />
-    <Compile Include="FakeWindowProvider.cs" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj"/>
+    <ProjectReference Include="..\Screna\Screna.csproj"/>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
-      <Project>{388D8B28-E629-4684-8537-8D78719B69E5}</Project>
-      <Name>Captura.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
-      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
-      <Name>Captura.Loc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
-      <Project>{8CE140BC-61D1-4A4A-A313-A966D961282C}</Project>
-      <Name>Captura.Webcam</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Screna\Screna.csproj">
-      <Project>{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}</Project>
-      <Name>Screna</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
