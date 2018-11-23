@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura", "Captura\Captura.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screna", "Screna\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screna", "Screna\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Core", "Captura.Core\Captura.Core.csproj", "{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Core", "Captura.Core\Captura.Core.csproj", "{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{222C215B-663F-4BD6-9B3E-8FA99C867B22} = {222C215B-663F-4BD6-9B3E-8FA99C867B22}
 	EndProjectSection
@@ -16,29 +16,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Webcam", "Captura.Webcam\Captura.Webcam.csproj", "{8CE140BC-61D1-4A4A-A313-A966D961282C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Webcam", "Captura.Webcam\Captura.Webcam.csproj", "{8CE140BC-61D1-4A4A-A313-A966D961282C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Base", "Captura.Base\Captura.Base.csproj", "{388D8B28-E629-4684-8537-8D78719B69E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Base", "Captura.Base\Captura.Base.csproj", "{388D8B28-E629-4684-8537-8D78719B69E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Native", "Captura.Native\Captura.Native.csproj", "{81F2E68E-4708-4D52-8419-51888F22D05E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Native", "Captura.Native\Captura.Native.csproj", "{81F2E68E-4708-4D52-8419-51888F22D05E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.SharpAvi", "Captura.SharpAvi\Captura.SharpAvi.csproj", "{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.SharpAvi", "Captura.SharpAvi\Captura.SharpAvi.csproj", "{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Bass", "Captura.Bass\Captura.Bass.csproj", "{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Bass", "Captura.Bass\Captura.Bass.csproj", "{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.MouseKeyHook", "Captura.MouseKeyHook\Captura.MouseKeyHook.csproj", "{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.MouseKeyHook", "Captura.MouseKeyHook\Captura.MouseKeyHook.csproj", "{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.FFmpeg", "Captura.FFmpeg\Captura.FFmpeg.csproj", "{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.FFmpeg", "Captura.FFmpeg\Captura.FFmpeg.csproj", "{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Loc", "Captura.Loc\Captura.Loc.csproj", "{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Loc", "Captura.Loc\Captura.Loc.csproj", "{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Hotkeys", "Captura.Hotkeys\Captura.Hotkeys.csproj", "{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Hotkeys", "Captura.Hotkeys\Captura.Hotkeys.csproj", "{A9BAFF4D-03E1-4E6A-9075-C50874C04CC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Fakes", "Captura.Fakes\Captura.Fakes.csproj", "{0BB58B16-1A6C-4256-AEC2-3EA64541B663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Fakes", "Captura.Fakes\Captura.Fakes.csproj", "{0BB58B16-1A6C-4256-AEC2-3EA64541B663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.NAudio", "Captura.NAudio\Captura.NAudio.csproj", "{76BC6324-E205-41DB-B60A-128D9FD66624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.NAudio", "Captura.NAudio\Captura.NAudio.csproj", "{76BC6324-E205-41DB-B60A-128D9FD66624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Imgur", "Captura.Imgur\Captura.Imgur.csproj", "{885A212B-2642-40F8-B4CF-12F791D79D25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +116,10 @@ Global
 		{76BC6324-E205-41DB-B60A-128D9FD66624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76BC6324-E205-41DB-B60A-128D9FD66624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76BC6324-E205-41DB-B60A-128D9FD66624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{885A212B-2642-40F8-B4CF-12F791D79D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{885A212B-2642-40F8-B4CF-12F791D79D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{885A212B-2642-40F8-B4CF-12F791D79D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{885A212B-2642-40F8-B4CF-12F791D79D25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

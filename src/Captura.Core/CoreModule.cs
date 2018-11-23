@@ -10,6 +10,7 @@ namespace Captura
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
+            Binder.Bind<IApiKeys, ApiKeys>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
@@ -36,6 +37,7 @@ namespace Captura
             Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Imgur);
 
             // Keymap
             Binder.BindSingleton<KeymapViewModel>();

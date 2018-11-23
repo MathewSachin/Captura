@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Screna;
 
 namespace Captura.Models
@@ -21,7 +15,8 @@ namespace Captura.Models
         readonly Settings _settings;
         readonly LanguageManager _loc;
         readonly IRecentList _recentList;
-        readonly IIconSet _icons;
+
+        readonly IImageUploader _imgurUploader;
 
         public ImgurWriter(DiskWriter DiskWriter,
             ISystemTray SystemTray,
@@ -29,15 +24,16 @@ namespace Captura.Models
             Settings Settings,
             LanguageManager LanguageManager,
             IRecentList RecentList,
-            IIconSet Icons)
+            ImgurUploader ImgurUploader)
         {
+            _imgurUploader = ImgurUploader;
+
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
             _loc = LanguageManager;
             _recentList = RecentList;
-            _icons = Icons;
 
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
@@ -48,11 +44,10 @@ namespace Captura.Models
 
             switch (response)
             {
-                case ImgurUploadResponse uploadResponse:
-                    var link = uploadResponse.Data.Link;
-                    var deleteHash = uploadResponse.Data.DeleteHash;
+                case UploadResult uploadResult:
+                    var link = uploadResult.Url;
 
-                    _recentList.Add(new ImgurRecentItem(link, deleteHash));
+                    _recentList.Add(new ImgurRecentItem(link, uploadResult.DeleteLink));
 
                     // Copy path to clipboard only when clipboard writer is off
                     if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
@@ -76,150 +71,29 @@ namespace Captura.Models
 
         public async Task DeleteUploadedFile(string DeleteHash)
         {
-            var request = WebRequest.Create($"https://api.imgur.com/3/image/{DeleteHash}");
-
-            request.Proxy = _settings.Proxy.GetWebProxy();
-            request.Headers.Add("Authorization", await GetAuthorizationHeader());
-            request.Method = "DELETE";
-
-            var stream = (await request.GetResponseAsync()).GetResponseStream();
-
-            if (stream != null)
-            {
-                var reader = new StreamReader(stream);
-
-                var text = await reader.ReadToEndAsync();
-
-                var res = JsonConvert.DeserializeObject<ImgurResponse>(text);
-
-                if (res.Success)
-                    return;
-            }
-
-            throw new Exception();
+            // DeleteHash is now complete Url
+            await _imgurUploader.DeleteUploadedFile(DeleteHash);
         }
 
-        async Task<string> GetAuthorizationHeader()
-        {
-            if (_settings.Imgur.Anonymous)
-            {
-                return $"Client-ID {ApiKeys.ImgurClientId}";
-            }
-
-            if (string.IsNullOrWhiteSpace(_settings.Imgur.AccessToken))
-            {
-                throw new Exception("Not logged in to Imgur");
-            }
-
-            if (_settings.Imgur.IsExpired())
-            {
-                if (!await RefreshToken())
-                {
-                    throw new Exception("Failed to Refresh Imgur token");
-                }
-            }
-
-            return $"Bearer {_settings.Imgur.AccessToken}";
-        }
-
-        // Returns ImgurUploadResponse on success, Exception on failure
+        // Returns UploadResult on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
             var progressItem = new ImgurNotification();
             _systemTray.ShowNotification(progressItem);
-            
-            using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
+
+            try
             {
-                w.UploadProgressChanged += (S, E) =>
-                {
-                    progressItem.Progress = E.ProgressPercentage;
-                };
+                var uploadResult = await _imgurUploader.Upload(Image, Format, M => progressItem.Progress = M);
 
-                try
-                {
-                    w.Headers.Add("Authorization", await GetAuthorizationHeader());
-                }
-                catch (Exception e)
-                {
-                    return e;
-                }
+                progressItem.RaiseFinished(uploadResult.Url);
 
-                NameValueCollection values;
-
-                using (var ms = new MemoryStream())
-                {
-                    Image.Save(ms, Format);
-
-                    values = new NameValueCollection
-                    {
-                        { "image", Convert.ToBase64String(ms.ToArray()) }
-                    };
-                }
-
-                ImgurUploadResponse uploadResponse;
-
-                try
-                {
-                    uploadResponse = await UploadValuesAsync<ImgurUploadResponse>(w, "https://api.imgur.com/3/upload.json", values);
-                    
-                    if (!uploadResponse.Success)
-                    {
-                        throw new Exception("Response indicates Failure");
-                    }
-                }
-                catch (Exception e)
-                {
-                    progressItem.RaiseFailed();
-
-                    return e;
-                }
-
-                var link = uploadResponse.Data.Link;
-
-                progressItem.RaiseFinished(link);
-
-                return uploadResponse;
+                return uploadResult;
             }
-        }
-
-        static async Task<T> UploadValuesAsync<T>(WebClient WebClient, string Url, NameValueCollection Values)
-        {
-            // Task.Run done to prevent UI thread from freezing when upload fails.
-            var response = await Task.Run(async () => await WebClient.UploadValuesTaskAsync(Url, Values));
-
-            return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(response));
-        }
-
-        public void Authorize()
-        {
-            // response_type should be token, other types have been deprecated.
-            // access_token and refresh_token will be available in query string parameters attached to redirect URL entered during registration.
-            // eg: http://example.com#access_token=ACCESS_TOKEN&token_type=Bearer&expires_in=3600
-            // currently unable to retrieve them.
-            Process.Start($"https://api.imgur.com/oauth2/authorize?response_type=token&client_id={ApiKeys.ImgurClientId}");
-        }
-        
-        public async Task<bool> RefreshToken()
-        {
-            var args = new NameValueCollection
+            catch (Exception e)
             {
-                { "refresh_token", _settings.Imgur.RefreshToken },
-                { "client_id", ApiKeys.ImgurClientId },
-                { "client_secret", ApiKeys.ImgurSecret },
-                { "grant_type", "refresh_token" }
-            };
+                progressItem.RaiseFailed();
 
-            using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
-            {
-                var token = await UploadValuesAsync<ImgurRefreshTokenResponse>(w, "https://api.imgur.com/oauth2/token.json", args);
-
-                if (string.IsNullOrEmpty(token?.AccessToken))
-                    return false;
-
-                _settings.Imgur.AccessToken = token.AccessToken;
-                _settings.Imgur.RefreshToken = token.RefreshToken;
-                _settings.Imgur.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(token.ExpiresIn);
-                return true;
+                return e;
             }
         }
 

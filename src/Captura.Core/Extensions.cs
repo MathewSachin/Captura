@@ -67,13 +67,12 @@ namespace Captura
                     ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
                     break;
 
-                case ImgurUploadResponse uploadResponse:
+                case UploadResult uploadResult:
                     var recents = ServiceProvider.Get<IRecentList>();
 
-                    var link = uploadResponse.Data.Link;
-                    var deleteHash = uploadResponse.Data.DeleteHash;
+                    var link = uploadResult.Url;
 
-                    recents.Add(new ImgurRecentItem(link, deleteHash));
+                    recents.Add(new ImgurRecentItem(link, uploadResult.DeleteLink));
 
                     link.WriteToClipboard();
                     break;

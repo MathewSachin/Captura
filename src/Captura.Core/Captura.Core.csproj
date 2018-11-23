@@ -8,20 +8,21 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
-    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj"/>
-    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj"/>
-    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj"/>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
-    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj"/>
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj"/>
-    <ProjectReference Include="..\Captura.NAudio\Captura.NAudio.csproj"/>
-    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj"/>
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj"/>
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj"/>
-    <ProjectReference Include="..\Screna\Screna.csproj"/>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj" />
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj" />
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj" />
+    <ProjectReference Include="..\Captura.Imgur\Captura.Imgur.csproj" />
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj" />
+    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj" />
+    <ProjectReference Include="..\Captura.NAudio\Captura.NAudio.csproj" />
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj" />
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj" />
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />
+    <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 </Project>
