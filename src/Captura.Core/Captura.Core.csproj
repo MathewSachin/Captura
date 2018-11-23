@@ -1,166 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProjectGuid>{F8568B22-8AC6-49C5-92DF-E1C359FF1FAB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Captura</RootNamespace>
     <AssemblyName>Captura.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
+    <TargetFramework>net4.6.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiKeys.cs" />
-    <Compile Include="CoreModule.cs" />
-    <Compile Include="MaterialDesignIcons.cs" />
-    <Compile Include="Models\Notifications\ImgurNotification.cs" />
-    <Compile Include="Models\Notifications\TextNotification.cs" />
-    <Compile Include="Models\Recents\FileRecentItem.cs" />
-    <Compile Include="Models\Recents\ImgurRecentItem.cs" />
-    <Compile Include="Models\Recents\FileRecentSerializer.cs" />
-    <Compile Include="Models\Recents\ImgurRecentSerializer.cs" />
-    <Compile Include="Models\Recents\IRecentItemSerializer.cs" />
-    <Compile Include="Models\NoVideoSourceProvider.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Models\Overlays\ElapsedOverlay.cs" />
-    <Compile Include="Models\ImageWriterItems\ImgurData.cs" />
-    <Compile Include="Models\ImageWriterItems\ImgurRefreshTokenResponse.cs" />
-    <Compile Include="Models\ImageWriterItems\ImgurResponse.cs" />
-    <Compile Include="Models\ImageWriterItems\ImgurUploadResponse.cs" />
-    <Compile Include="Models\Overlays\CensorOverlay.cs" />
-    <Compile Include="Settings\Models\CensorOverlaySettings.cs" />
-    <Compile Include="Settings\Models\ImageEditorSettings.cs" />
-    <Compile Include="Settings\Models\ImgurSettings.cs" />
-    <Compile Include="Models\NoAudioSource.cs" />
-    <Compile Include="Models\Overlays\CustomImageOverlay.cs" />
-    <Compile Include="Models\Discard\DiscardWriter.cs" />
-    <Compile Include="Models\Discard\DiscardWriterItem.cs" />
-    <Compile Include="Models\Discard\DiscardWriterProvider.cs" />
-    <Compile Include="Models\Overlays\ImageOverlay.cs" />
-    <Compile Include="Models\Overlays\MousePointerOverlay.cs" />
-    <Compile Include="Settings\Models\CustomImageOverlaySettings.cs" />
-    <Compile Include="Models\Overlays\CustomOverlay.cs" />
-    <Compile Include="Models\ImageWriterItems\ImgurWriter.cs" />
-    <Compile Include="Models\ImageWriterItems\ClipboardWriter.cs" />
-    <Compile Include="Models\ImageWriterItems\DiskWriter.cs" />
-    <Compile Include="Models\Overlays\TextOverlay.cs" />
-    <Compile Include="Settings\Models\ImageOverlaySettings.cs" />
-    <Compile Include="Settings\Models\SoundSettings.cs" />
-    <Compile Include="Settings\Models\TraySettings.cs" />
-    <Compile Include="Settings\Models\VideoSettings.cs" />
-    <Compile Include="Settings\Models\CustomOverlaySettings.cs" />
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Settings\Models\VisualSettings.cs" />
-    <Compile Include="Settings\Models\ScreenShotSettings.cs" />
-    <Compile Include="Models\FileNameFormatGroup.cs" />
-    <Compile Include="Models\FileNameFormatItem.cs" />
-    <Compile Include="ViewModels\UpdateCheckerViewModel.cs" />
-    <Compile Include="ViewModels\FileNameFormatViewModel.cs" />
-    <Compile Include="Models\HotkeyActionRegisterer.cs" />
-    <Compile Include="ViewModels\SoundsViewModel.cs" />
-    <Compile Include="ViewModels\SoundsViewModelItem.cs" />
-    <Compile Include="ViewModels\VideoSourceModel.cs" />
-    <Compile Include="ViewModels\CustomImageOverlaysViewModel.cs" />
-    <Compile Include="ViewModels\CensorOverlaysViewModel.cs" />
-    <Compile Include="Models\RememberByName.cs" />
-    <Compile Include="ViewModels\RecordingViewModel.cs" />
-    <Compile Include="ViewModels\ScreenShotViewModel.cs" />
-    <Compile Include="ViewModels\OverlayListViewModel.cs" />
-    <Compile Include="ViewModels\CustomOverlaysViewModel.cs" />
-    <Compile Include="Models\Overlays\WebcamOverlay.cs" />
-    <Compile Include="Models\Recents\RecentFileType.cs" />
-    <Compile Include="Models\RecorderState.cs" />
-    <Compile Include="Settings\Models\WebcamOverlaySettings.cs" />
-    <Compile Include="Models\FileContentItem.cs" />
-    <Compile Include="ViewModels\CrashLogsViewModel.cs" />
-    <Compile Include="ViewModels\LicensesViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ProxySettingsViewModel.cs" />
-    <Compile Include="ViewModels\RecentViewModel.cs" />
-    <Compile Include="Models\Notifications\FileSavedNotification.cs" />
-    <Compile Include="ViewModels\VideoViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="WithPreviewWriter.cs" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
+    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj"/>
+    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj"/>
+    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj"/>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
+    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj"/>
+    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj"/>
+    <ProjectReference Include="..\Captura.NAudio\Captura.NAudio.csproj"/>
+    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj"/>
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj"/>
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj"/>
+    <ProjectReference Include="..\Screna\Screna.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
-      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
-      <Name>Captura.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj">
-      <Project>{27b996f1-b0f4-431a-b57c-b4b656ede7bc}</Project>
-      <Name>Captura.Bass</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj">
-      <Project>{4e1e8f5b-6a19-48ce-9c1f-b46a0622b32c}</Project>
-      <Name>Captura.FFmpeg</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Hotkeys\Captura.Hotkeys.csproj">
-      <Project>{a9baff4d-03e1-4e6a-9075-c50874c04cc7}</Project>
-      <Name>Captura.Hotkeys</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
-      <Project>{1e4be8d4-a84f-4389-acd9-277f1cb5f097}</Project>
-      <Name>Captura.Loc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj">
-      <Project>{6cc6e9c8-9a94-4fb0-8396-47e2ecbd8300}</Project>
-      <Name>Captura.MouseKeyHook</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj">
-      <Project>{81F2E68E-4708-4D52-8419-51888F22D05E}</Project>
-      <Name>Captura.Native</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.NAudio\Captura.NAudio.csproj">
-      <Project>{76bc6324-e205-41db-b60a-128d9fd66624}</Project>
-      <Name>Captura.NAudio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj">
-      <Project>{bb8ff9f8-ec60-4a4a-a3f0-d9fbfb585d86}</Project>
-      <Name>Captura.SharpAvi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
-      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
-      <Name>Captura.Webcam</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
-      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
-      <Name>DesktopDuplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Screna\Screna.csproj">
-      <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
-      <Name>Screna</Name>
-    </ProjectReference>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
