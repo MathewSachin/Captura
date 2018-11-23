@@ -43,5 +43,7 @@ namespace Captura
         public HotKeyManager HotKeyManager => ServiceProvider.Get<HotKeyManager>();
 
         public IIconSet Icons => ServiceProvider.Get<IIconSet>();
+
+        public UpdateCheckerViewModel UpdateCheckerViewModel => ServiceProvider.Get<UpdateCheckerViewModel>();
     }
 }

@@ -1,74 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProjectGuid>{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Captura.FFmpeg</RootNamespace>
     <AssemblyName>Captura.FFmpeg</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj">
-      <Project>{388d8b28-e629-4684-8537-8d78719b69e5}</Project>
-      <Name>Captura.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj">
-      <Project>{1E4BE8D4-A84F-4389-ACD9-277F1CB5F097}</Project>
-      <Name>Captura.Loc</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ArgsBuilder\FFmpegArgs.cs" />
-    <Compile Include="ArgsBuilder\FFmpegArgsBuilder.cs" />
-    <Compile Include="ArgsBuilder\FFmpegInputArgs.cs" />
-    <Compile Include="ArgsBuilder\FFmpegOutputArgs.cs" />
-    <Compile Include="CustomFFMpegCodec.cs" />
-    <Compile Include="Audio\FFmpegAudioArgsProvider.cs" />
-    <Compile Include="Audio\FFmpegAudioItem.cs" />
-    <Compile Include="Audio\FFmpegAudioWriter.cs" />
-    <Compile Include="DownloadFFmpeg.cs" />
-    <Compile Include="FFmpegCodecsViewModel.cs" />
-    <Compile Include="FFmpgDownloadViewModel.cs" />
-    <Compile Include="Video\FFmpegItem.cs" />
-    <Compile Include="FFmpegLog.cs" />
-    <Compile Include="FFMpegLogItem.cs" />
-    <Compile Include="Video\FFmpegPostProcessingItem.cs" />
-    <Compile Include="Video\FFMpegPostProcessingWriter.cs" />
-    <Compile Include="FFmpegService.cs" />
-    <Compile Include="Settings\FFMpegSettings.cs" />
-    <Compile Include="Video\FFmpegVideoArgsProvider.cs" />
-    <Compile Include="Video\FFmpegVideoWriter.cs" />
-    <Compile Include="Video\FFmpegVideoWriterArgs.cs" />
-    <Compile Include="Video\FFmpegWriterProvider.cs" />
-    <Compile Include="Video\StreamingItem.cs" />
-    <Compile Include="Video\StreamingWriterProvider.cs" />
-    <Compile Include="Settings\X264Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

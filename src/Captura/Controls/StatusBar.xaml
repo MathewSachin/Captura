@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="Captura.StatusBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             DataContext="{Binding UpdateCheckerViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="5,2"/>
+            </Style>
+            <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                <Setter Property="Margin" Value="0,0,7,0"/>
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
+        <Button Visibility="{Binding Checking, Converter={StaticResource BoolToVisibilityConverter}}">
+            <DockPanel>
+                <Path Data="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"
+                      Width="15"
+                      Height="15"
+                      RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <RotateTransform x:Name="CheckingRotater"/>
+                    </Path.RenderTransform>
+                    <Path.Triggers>
+                        <EventTrigger RoutedEvent="Path.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="CheckingRotater"
+                                                     Storyboard.TargetProperty="Angle"
+                                                     From="0"
+                                                     To="360"
+                                                     RepeatBehavior="Forever"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Path.Triggers>
+                </Path>
+
+                <TextBlock Text="Checking for updates ..."/>
+            </DockPanel>
+        </Button>
+
+        <Button Command="{Binding CheckCommand}"
+                ToolTip="Check Again"
+                Visibility="{Binding CheckFailed, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Button.Content>
+                <DockPanel>
+                    <Path Data="{Binding Icons.Error, Source={StaticResource ServiceLocator}}"
+                          Width="12"
+                          Height="12"
+                          Fill="#b71c1c"/>
+
+                    <TextBlock Text="Update Check Failed"/>
+                </DockPanel>
+            </Button.Content>
+        </Button>
+
+        <Button Command="{Binding GoToDownload}">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Checking}" Value="False"/>
+                                <Condition Binding="{Binding CheckFailed}" Value="False"/>
+                                <Condition Binding="{Binding UpdateAvailable}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Button.Content>
+                <DockPanel>
+                    <Path Data="{Binding Icons.Download, Source={StaticResource ServiceLocator}}"
+                          Width="12"
+                          Height="12"/>
+
+                    <TextBlock>
+                        Update Available (<Run Text="{Binding NewVersion, Mode=OneWay}"/>)
+                    </TextBlock>
+                </DockPanel>
+            </Button.Content>
+        </Button>
+
+        <Button Command="{Binding CheckCommand}"
+                ToolTip="Check Again">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Checking}" Value="False"/>
+                                <Condition Binding="{Binding CheckFailed}" Value="False"/>
+                                <Condition Binding="{Binding UpdateAvailable}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Button.Content>
+                <DockPanel>
+                    <Path Data="{Binding Icons.Check, Source={StaticResource ServiceLocator}}"
+                          Width="10"
+                          Height="12"
+                          Fill="LimeGreen"/>
+
+                    <TextBlock Text="Up to date"/>
+                </DockPanel>
+            </Button.Content>
+        </Button>
+    </Grid>
+</UserControl>
