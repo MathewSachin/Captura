@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    public class ImgurRefreshTokenResponse
+    class ImgurRefreshTokenResponse
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }

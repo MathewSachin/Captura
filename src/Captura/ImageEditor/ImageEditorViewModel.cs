@@ -166,7 +166,7 @@ namespace Captura
 
                 using (var bitmap = new Bitmap(ms))
                 {
-                    await bitmap.UploadToImgur();
+                    await bitmap.UploadImage();
                 }
             }
         }

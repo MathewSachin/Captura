@@ -10,6 +10,7 @@ namespace Captura
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
+            Binder.Bind<IImagurApiKeys, ApiKeys>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
@@ -36,6 +37,7 @@ namespace Captura
             Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Imgur);
 
             // Keymap
             Binder.BindSingleton<KeymapViewModel>();
@@ -49,11 +51,13 @@ namespace Captura
             // Image Writers
             Binder.BindSingleton<DiskWriter>();
             Binder.BindSingleton<ClipboardWriter>();
-            Binder.BindSingleton<ImgurWriter>();
+            Binder.BindSingleton<ImageUploadWriter>();
+
+            Binder.Bind<IImageUploader, ImgurUploader>();
 
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<DiskWriter>);
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ClipboardWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImgurWriter>);
+            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImageUploadWriter>);
 
             // Video Writer Providers
             Binder.BindSingleton<FFmpegWriterProvider>();
@@ -83,7 +87,7 @@ namespace Captura
 
             // Recent Serializers
             Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
-            Binder.Bind<IRecentItemSerializer, ImgurRecentSerializer>();
+            Binder.Bind<IRecentItemSerializer, UploadRecentSerializer>();
 
             // Check if Bass is available
             if (BassAudioSource.Available)
