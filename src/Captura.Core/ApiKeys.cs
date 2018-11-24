@@ -7,7 +7,8 @@ namespace Captura
     /// On Development builds, Api Keys are retrieved from User Environment variables.
     /// On Production builds, AppVeyor embeds Api Keys into the app.
     /// </summary>
-    class ApiKeys : IApiKeys
+    // ReSharper disable once ClassNeverInstantiated.Global
+    class ApiKeys : IImagurApiKeys
     {
         static string Get(string Key) => Environment.GetEnvironmentVariable(Key, EnvironmentVariableTarget.User) ?? "";
 

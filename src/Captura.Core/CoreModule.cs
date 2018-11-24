@@ -10,7 +10,7 @@ namespace Captura
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
-            Binder.Bind<IApiKeys, ApiKeys>();
+            Binder.Bind<IImagurApiKeys, ApiKeys>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();

@@ -1,6 +1,6 @@
 ﻿namespace Captura
 {
-    public interface IApiKeys
+    public interface IImagurApiKeys
     {
         string ImgurClientId { get; }
 

@@ -10,15 +10,16 @@ using Newtonsoft.Json;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ImgurUploader : IImageUploader
     {
         readonly ImgurSettings _settings;
         readonly ProxySettings _proxySettings;
-        readonly IApiKeys _apiKeys;
+        readonly IImagurApiKeys _apiKeys;
 
         public ImgurUploader(ImgurSettings Settings,
             ProxySettings ProxySettings,
-            IApiKeys ApiKeys)
+            IImagurApiKeys ApiKeys)
         {
             _settings = Settings;
             _proxySettings = ProxySettings;
