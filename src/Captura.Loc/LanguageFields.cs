@@ -361,19 +361,19 @@ namespace Captura
             set => Set(value);
         }
 
-        public string ImgurFailed
+        public string ImageUploadFailed
         {
             get => Get();
             set => Set(value);
         }
 
-        public string ImgurSuccess
+        public string ImageUploadSuccess
         {
             get => Get();
             set => Set(value);
         }
 
-        public string ImgurUploading
+        public string ImageUploading
         {
             get => Get();
             set => Set(value);

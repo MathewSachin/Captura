@@ -6,14 +6,16 @@ using Screna;
 
 namespace Captura.Models
 {
-    public class ImgurRecentItem : IRecentItem
+    public class UploadRecentItem : IRecentItem
     {
         public string DeleteHash { get; }
         public string Link { get; }
+        public IImageUploader UploaderService { get; }
 
-        public ImgurRecentItem(string Link, string DeleteHash)
+        public UploadRecentItem(string Link, string DeleteHash, IImageUploader UploaderService)
         {
             this.DeleteHash = DeleteHash;
+            this.UploaderService = UploaderService;
 
             ClickCommand = new DelegateCommand(() => ServiceProvider.LaunchFile(new ProcessStartInfo(Link)));
 
@@ -39,7 +41,7 @@ namespace Captura.Models
 
             try
             {
-                await ServiceProvider.Get<ImgurWriter>().DeleteUploadedFile(DeleteHash);
+                await UploaderService.DeleteUploadedFile(DeleteHash);
             }
             catch (Exception e)
             {
