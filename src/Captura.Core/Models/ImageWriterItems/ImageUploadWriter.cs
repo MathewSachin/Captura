@@ -7,7 +7,7 @@ using Screna;
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ImgurWriter : NotifyPropertyChanged, IImageWriterItem
+    public class ImageUploadWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly DiskWriter _diskWriter;
         readonly ISystemTray _systemTray;
@@ -16,17 +16,17 @@ namespace Captura.Models
         readonly LanguageManager _loc;
         readonly IRecentList _recentList;
 
-        readonly IImageUploader _imgurUploader;
+        readonly IImageUploader _imgUploader;
 
-        public ImgurWriter(DiskWriter DiskWriter,
+        public ImageUploadWriter(DiskWriter DiskWriter,
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
             LanguageManager LanguageManager,
             IRecentList RecentList,
-            ImgurUploader ImgurUploader)
+            IImageUploader ImgUploader)
         {
-            _imgurUploader = ImgurUploader;
+            _imgUploader = ImgUploader;
 
             _diskWriter = DiskWriter;
             _systemTray = SystemTray;
@@ -47,8 +47,6 @@ namespace Captura.Models
                 case UploadResult uploadResult:
                     var link = uploadResult.Url;
 
-                    _recentList.Add(new ImgurRecentItem(link, uploadResult.DeleteLink));
-
                     // Copy path to clipboard only when clipboard writer is off
                     if (_settings.CopyOutPathToClipboard && !ServiceProvider.Get<ClipboardWriter>().Active)
                         link.WriteToClipboard();
@@ -59,8 +57,10 @@ namespace Captura.Models
                     {
                         ServiceProvider.Get<IMainWindow>().IsVisible = true;
 
+                        const string imgUploadFailed = "Image Upload Failed";
+
                         var yes = _messageProvider.ShowYesNo(
-                            $"{_loc.ImgurFailed}\n{e.Message}\n\nDo you want to Save to Disk?", "Imgur Upload Failed");
+                            $"{imgUploadFailed}\n{e.Message}\n\nDo you want to Save to Disk?", imgUploadFailed);
 
                         if (yes)
                             await _diskWriter.Save(Image, Format, FileName);
@@ -69,23 +69,21 @@ namespace Captura.Models
             }
         }
 
-        public async Task DeleteUploadedFile(string DeleteHash)
-        {
-            // DeleteHash is now complete Url
-            await _imgurUploader.DeleteUploadedFile(DeleteHash);
-        }
-
         // Returns UploadResult on success, Exception on failure
         public async Task<object> Save(Bitmap Image, ImageFormat Format)
         {
-            var progressItem = new ImgurNotification();
+            var progressItem = new ImageUploadNotification();
             _systemTray.ShowNotification(progressItem);
 
             try
             {
-                var uploadResult = await _imgurUploader.Upload(Image, Format, M => progressItem.Progress = M);
+                var uploadResult = await _imgUploader.Upload(Image, Format, M => progressItem.Progress = M);
 
-                progressItem.RaiseFinished(uploadResult.Url);
+                var link = uploadResult.Url;
+
+                _recentList.Add(new UploadRecentItem(link, uploadResult.DeleteLink, _imgUploader));
+
+                progressItem.RaiseFinished(link);
 
                 return uploadResult;
             }
@@ -97,7 +95,7 @@ namespace Captura.Models
             }
         }
 
-        public string Display => "Imgur";
+        public string Display => "Upload";
 
         bool _active;
 

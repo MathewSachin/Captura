@@ -7,11 +7,11 @@ using Screna;
 
 namespace Captura
 {
-    public class ImgurNotification : NotifyPropertyChanged, INotification
+    public class ImageUploadNotification : NotifyPropertyChanged, INotification
     {
         readonly LanguageManager _loc;
 
-        public ImgurNotification()
+        public ImageUploadNotification()
         {
             _loc = ServiceProvider.Get<LanguageManager>();
 

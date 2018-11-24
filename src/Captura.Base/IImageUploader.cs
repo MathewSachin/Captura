@@ -10,5 +10,7 @@ namespace Captura.Models
         Task<UploadResult> Upload(Bitmap Image, ImageFormat Format, Action<int> Progress);
 
         Task DeleteUploadedFile(string DeleteHash);
+
+        string UploadServiceName { get; }
     }
 }

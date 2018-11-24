@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
@@ -53,28 +52,22 @@ namespace Captura
             return resized;
         }
 
-        public static async Task UploadToImgur(this Bitmap Bitmap)
+        public static async Task UploadImage(this Bitmap Bitmap)
         {
-            var imgur = ServiceProvider.Get<ImgurWriter>();
+            var uploadWriter = ServiceProvider.Get<ImageUploadWriter>();
 
             var shotVm = ServiceProvider.Get<ScreenShotViewModel>();
 
-            var response = await imgur.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
+            var response = await uploadWriter.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
 
             switch (response)
             {
                 case Exception ex:
-                    ServiceProvider.MessageProvider.ShowException(ex, "Upload to Imgur failed");
+                    ServiceProvider.MessageProvider.ShowException(ex, "Image Upload failed");
                     break;
 
                 case UploadResult uploadResult:
-                    var recents = ServiceProvider.Get<IRecentList>();
-
-                    var link = uploadResult.Url;
-
-                    recents.Add(new ImgurRecentItem(link, uploadResult.DeleteLink));
-
-                    link.WriteToClipboard();
+                    uploadResult.Url.WriteToClipboard();
                     break;
             }
         }

@@ -144,5 +144,7 @@ namespace Captura.Models
 
             throw new Exception();
         }
+
+        public string UploadServiceName { get; } = "Imgur";
     }
 }
