@@ -57,10 +57,8 @@ namespace Captura.Models
                     {
                         ServiceProvider.Get<IMainWindow>().IsVisible = true;
 
-                        const string imgUploadFailed = "Image Upload Failed";
-
                         var yes = _messageProvider.ShowYesNo(
-                            $"{imgUploadFailed}\n{e.Message}\n\nDo you want to Save to Disk?", imgUploadFailed);
+                            $"{e.Message}\n\nDo you want to Save to Disk?", _loc.ImageUploadFailed);
 
                         if (yes)
                             await _diskWriter.Save(Image, Format, FileName);

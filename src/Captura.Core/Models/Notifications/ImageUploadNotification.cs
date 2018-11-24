@@ -15,7 +15,7 @@ namespace Captura
         {
             _loc = ServiceProvider.Get<LanguageManager>();
 
-            PrimaryText = _loc.ImgurUploading;
+            PrimaryText = _loc.ImageUploading;
         }
 
         public event Action RemoveRequested;
@@ -34,7 +34,7 @@ namespace Captura
         {
             Finished = true;
 
-            PrimaryText = _loc.ImgurFailed;
+            PrimaryText = _loc.ImageUploadFailed;
         }
 
         string _link;
@@ -44,7 +44,7 @@ namespace Captura
             _link = Link;
 
             Finished = true;
-            PrimaryText = _loc.ImgurSuccess;
+            PrimaryText = _loc.ImageUploadSuccess;
             SecondaryText = Link;
 
             var icons = ServiceProvider.Get<IIconSet>();
