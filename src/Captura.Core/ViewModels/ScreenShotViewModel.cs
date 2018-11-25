@@ -22,7 +22,7 @@ namespace Captura.ViewModels
 
         public DiskWriter DiskWriter { get; }
         public ClipboardWriter ClipboardWriter { get; }
-        public ImgurWriter ImgurWriter { get; }
+        public ImageUploadWriter ImgurWriter { get; }
 
         public ICommand SourceToggleCommand { get; } = new DelegateCommand(OnSourceToggleExecute);
 
@@ -43,7 +43,7 @@ namespace Captura.ViewModels
             IMainWindow MainWindow,
             DiskWriter DiskWriter,
             ClipboardWriter ClipboardWriter,
-            ImgurWriter ImgurWriter,
+            ImageUploadWriter ImgurWriter,
             IVideoSourcePicker SourcePicker,
             IAudioPlayer AudioPlayer) : base(Settings, Loc)
         {

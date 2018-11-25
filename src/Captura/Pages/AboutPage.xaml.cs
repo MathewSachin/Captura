@@ -55,7 +55,7 @@ namespace Captura
             {
                 var img = (Bitmap)Image.FromFile(ofd.FileName);
 
-                await img.UploadToImgur();
+                await img.UploadImage();
             }
         }
     }

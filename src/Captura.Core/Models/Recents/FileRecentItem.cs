@@ -68,7 +68,7 @@ namespace Captura.Models
 
             var img = (Bitmap)Image.FromFile(FileName);
 
-            await img.UploadToImgur();
+            await img.UploadImage();
         }
 
         void OnCopyToClipboardExecute()
