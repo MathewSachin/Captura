@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RootDir>$(MSBuildThisFileDirectory)/..</RootDir>
+  </PropertyGroup>
+
+  <!-- Copy BASS -->
+  <Target Name="CopyBass" AfterTargets="Build">
+    <PropertyGroup>
+      <BassPath>$(RootDir)/temp/bass/bass.dll</BassPath>
+      <BassMixPath>$(RootDir)/temp/bassmix/bassmix.dll</BassMixPath>
+    </PropertyGroup>
+
+    <Message Text="Copying BASS Libraries" Importance="High" />
+
+    <Copy SourceFiles="$(BassPath)" 
+          DestinationFolder="$(OutputPath)"
+          Condition="Exists('$(BassPath)')" />
+
+    <Copy SourceFiles="$(BassMixPath)" 
+          DestinationFolder="$(OutputPath)"
+          Condition="Exists('$(BassMixPath)')" />
+  </Target>
+
+  <!-- Copy Licenses -->
+  <Target Name="CopyLicenses" AfterTargets="Build">
+    <ItemGroup>
+      <LicenseFiles Include="$(RootDir)/licenses/*.txt" />
+    </ItemGroup>
+
+    <Message Text="Copying License files" Importance="High" />
+
+    <Copy SourceFiles="@(LicenseFiles)" 
+          DestinationFolder="$(OutputPath)\licenses" />
+  </Target>
+
+  <!-- Move Libraries to lib folder -->
+  <Target Name="MoveLibs" AfterTargets="CopyBass" Condition="$(Configuration) != 'Debug'">
+    <PropertyGroup>
+      <CopyDestionationPath>$(OutputPath)\lib</CopyDestionationPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <LibFiles Include="$(OutputPath)*.dll" />
+      <PdbFiles Include="$(OutputPath)*.pdb" />
+      <XmlDocFiles Include="$(OutputPath)*.xml" />
+    </ItemGroup>
+
+    <Message Text="Moving Libraries to lib folder" Importance="High" />
+
+    <Move SourceFiles="@(LibFiles)" 
+          DestinationFolder="$(CopyDestionationPath)\%(RecursiveDir)" />
+
+    <Delete Files="@(PdbFiles)" />
+    <Delete Files="@(XmlDocFiles)" />
+  </Target>
+</Project>

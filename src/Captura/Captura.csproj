@@ -586,5 +586,5 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="../MoveLibs.targets" />
+  <Import Project="../PostBuild.targets" />
 </Project>
