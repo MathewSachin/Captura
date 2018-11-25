@@ -4,7 +4,7 @@
       xmlns:captura="clr-namespace:Captura"
       Title="Image Overlays">
     <Grid>
-        <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CustomImageOverlays, Source={StaticResource ServiceLocator}}">
+        <DockPanel DataContext="{Binding CustomImageOverlays, Source={StaticResource ServiceLocator}}">
             <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"
