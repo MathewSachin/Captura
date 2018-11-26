@@ -15,20 +15,12 @@ namespace Captura
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
             Binder.BindSingleton<VideoViewModel>();
-            Binder.BindSingleton<ProxySettingsViewModel>();
-            Binder.BindSingleton<LicensesViewModel>();
-            Binder.BindSingleton<CrashLogsViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<ScreenShotViewModel>();
             Binder.BindSingleton<RecentViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
-            Binder.BindSingleton<FileNameFormatViewModel>();
 
             Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
-
-            Binder.BindSingleton<CustomOverlaysViewModel>();
-            Binder.BindSingleton<CustomImageOverlaysViewModel>();
-            Binder.BindSingleton<CensorOverlaysViewModel>();
 
             // Settings
             Binder.BindSingleton<Settings>();

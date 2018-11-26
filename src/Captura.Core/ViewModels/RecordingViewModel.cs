@@ -46,17 +46,10 @@ namespace Captura.ViewModels
 
         public DelegateCommand RecordCommand { get; }
         public DelegateCommand PauseCommand { get; }
-
-        public CustomOverlaysViewModel CustomOverlays { get; }
-        public CustomImageOverlaysViewModel CustomImageOverlays { get; }
-        public CensorOverlaysViewModel CensorOverlays { get; }
         #endregion
 
         public RecordingViewModel(Settings Settings,
             LanguageManager LanguageManager,
-            CustomOverlaysViewModel CustomOverlays,
-            CustomImageOverlaysViewModel CustomImageOverlays,
-            CensorOverlaysViewModel CensorOverlays,
             ISystemTray SystemTray,
             IRegionProvider RegionProvider,
             WebcamOverlay WebcamOverlay,
@@ -70,9 +63,6 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IIconSet Icons) : base(Settings, LanguageManager)
         {
-            this.CustomOverlays = CustomOverlays;
-            this.CustomImageOverlays = CustomImageOverlays;
-            this.CensorOverlays = CensorOverlays;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _webcamOverlay = WebcamOverlay;
@@ -629,11 +619,11 @@ namespace Captura.ViewModels
             overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes, _keymap, _currentFileName, () => TimeSpan));
             overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
 
-            // Custom Overlays
-            overlays.AddRange(CustomOverlays.Collection.Select(M => new CustomOverlay(M)));
+            // Text Overlays
+            overlays.AddRange(Settings.TextOverlays.Select(M => new CustomOverlay(M)));
 
-            // Custom Image Overlays
-            foreach (var overlay in CustomImageOverlays.Collection.Where(M => M.Display))
+            // Image Overlays
+            foreach (var overlay in Settings.ImageOverlays.Where(M => M.Display))
             {
                 try
                 {
