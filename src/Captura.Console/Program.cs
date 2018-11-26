@@ -251,7 +251,7 @@ namespace Captura
 ");
         }
 
-        static void HandleVideoSource(VideoViewModel VideoViewModel, CommonCmdOptions CommonOptions)
+        static void HandleVideoSource(VideoSourcesViewModel VideoSourcesViewModel, CommonCmdOptions CommonOptions)
         {
             // Desktop
             if (CommonOptions.Source == null || CommonOptions.Source == "desktop")
@@ -265,7 +265,7 @@ namespace Captura
                 if (rectConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
                 {
                     FakeRegionProvider.Instance.SelectedRegion = rect.Even();
-                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
+                    VideoSourcesViewModel.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
                 }
             }
 
@@ -280,7 +280,7 @@ namespace Captura
 
                     screenSourceProvider.Set(index);
 
-                    VideoViewModel.RestoreSourceKind(screenSourceProvider);
+                    VideoSourcesViewModel.RestoreSourceKind(screenSourceProvider);
                 }
             }
 
@@ -293,7 +293,7 @@ namespace Captura
 
                 winProvider.Set(handle);
 
-                VideoViewModel.RestoreSourceKind(winProvider);
+                VideoSourcesViewModel.RestoreSourceKind(winProvider);
             }
 
             // Start command only
@@ -310,14 +310,14 @@ namespace Captura
 
                         deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
 
-                        VideoViewModel.RestoreSourceKind(deskDuplSourceProvider);
+                        VideoSourcesViewModel.RestoreSourceKind(deskDuplSourceProvider);
                     }
                 }
 
                 // No Video for Start
                 else if (CommonOptions.Source == "none")
                 {
-                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
+                    VideoSourcesViewModel.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
                 }
             }
         }
@@ -337,7 +337,7 @@ namespace Captura
             }
         }
 
-        static void HandleVideoEncoder(VideoViewModel VideoViewModel, StartCmdOptions StartOptions)
+        static void HandleVideoEncoder(VideoWritersViewModel VideoWritersViewModel, StartCmdOptions StartOptions)
         {
             if (StartOptions.Encoder == null)
                 return;
@@ -347,10 +347,10 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < VideoViewModel.AvailableVideoWriters.Count)
-                    VideoViewModel.SelectedVideoWriter = VideoViewModel.AvailableVideoWriters[index];
+                if (index < VideoWritersViewModel.AvailableVideoWriters.Count)
+                    VideoWritersViewModel.SelectedVideoWriter = VideoWritersViewModel.AvailableVideoWriters[index];
             }
 
             // SharpAvi
@@ -358,16 +358,16 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
-                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
+                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < VideoViewModel.AvailableVideoWriters.Count)
-                    VideoViewModel.SelectedVideoWriter = VideoViewModel.AvailableVideoWriters[index];
+                if (index < VideoWritersViewModel.AvailableVideoWriters.Count)
+                    VideoWritersViewModel.SelectedVideoWriter = VideoWritersViewModel.AvailableVideoWriters[index];
             }
 
             // Gif
             else if (StartOptions.Encoder == "gif")
             {
-                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
+                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
             }
         }
 
@@ -428,7 +428,7 @@ namespace Captura
             }
             else
             {
-                HandleVideoSource(ViewModel.VideoViewModel, ShotOptions);
+                HandleVideoSource(ViewModel.VideoSourcesViewModel, ShotOptions);
 
                 ViewModel.ScreenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
@@ -454,9 +454,9 @@ namespace Captura
                 File.Delete(StartOptions.FileName);
             }
 
-            HandleVideoSource(ViewModel.VideoViewModel, StartOptions);
+            HandleVideoSource(ViewModel.VideoSourcesViewModel, StartOptions);
 
-            HandleVideoEncoder(ViewModel.VideoViewModel, StartOptions);
+            HandleVideoEncoder(ViewModel.VideoWritersViewModel, StartOptions);
 
             HandleAudioSource(ViewModel.AudioSource, ViewModel.Settings.Audio, StartOptions);
 
