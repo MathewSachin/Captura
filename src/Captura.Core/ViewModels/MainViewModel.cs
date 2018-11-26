@@ -130,42 +130,9 @@ namespace Captura.ViewModels
 
         void OnRefresh()
         {
-            #region Video Codec
-            var lastVideoCodecName = VideoViewModel.SelectedVideoWriter?.ToString();
-
             VideoViewModel.RefreshCodecs();
 
-            var matchingVideoCodec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(M => M.ToString() == lastVideoCodecName);
-
-            if (matchingVideoCodec != null)
-            {
-                VideoViewModel.SelectedVideoWriter = matchingVideoCodec;
-            }
-            #endregion
-
-            #region Audio
-            var lastMicNames = AudioSource.AvailableRecordingSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-
-            var lastSpeakerNames = AudioSource.AvailableLoopbackSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-
             AudioSource.Refresh();
-
-            foreach (var source in AudioSource.AvailableRecordingSources)
-            {
-                source.Active = lastMicNames.Contains(source.Name);
-            }
-
-            foreach (var source in AudioSource.AvailableLoopbackSources)
-            {
-                source.Active = lastSpeakerNames.Contains(source.Name);
-            }
-            #endregion
 
             #region Webcam
             var lastWebcamName = WebCamProvider.SelectedCam?.Name;

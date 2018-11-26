@@ -28,8 +28,8 @@ namespace Captura.ViewModels
             FullScreenSourceProvider FullScreenProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
             IEnumerable<IVideoSourceProvider> SourceProviders,
-            IEnumerable<IVideoWriterProvider> WriterProviders
-            ) : base(Settings, LanguageManager)
+            IEnumerable<IVideoWriterProvider> WriterProviders)
+            : base(Settings, LanguageManager)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
 
@@ -123,7 +123,9 @@ namespace Captura.ViewModels
 
         public void RefreshCodecs()
         {
-            // Available Codecs
+            // Remember selected codec
+            var lastVideoCodecName = SelectedVideoWriter?.ToString();
+
             _videoWriters.Clear();
 
             foreach (var writerItem in SelectedVideoWriterKind)
@@ -131,8 +133,16 @@ namespace Captura.ViewModels
                 _videoWriters.Add(writerItem);
             }
 
+            // Set First
             if (_videoWriters.Count > 0)
                 SelectedVideoWriter = _videoWriters[0];
+
+            var matchingVideoCodec = AvailableVideoWriters.FirstOrDefault(M => M.ToString() == lastVideoCodecName);
+
+            if (matchingVideoCodec != null)
+            {
+                SelectedVideoWriter = matchingVideoCodec;
+            }
         }
 
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();

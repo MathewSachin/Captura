@@ -1,6 +1,7 @@
 ﻿using Captura.Audio;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Captura.Models
 {
@@ -22,10 +23,31 @@ namespace Captura.Models
 
         public void Refresh()
         {
+            // Retain previously active sources
+            var lastMicNames = RecordingSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
+
+            var lastSpeakerNames = LoopbackSources
+                .Where(M => M.Active)
+                .Select(M => M.Name)
+                .ToArray();
+
             RecordingSources.Clear();
             LoopbackSources.Clear();
 
             OnRefresh();
+
+            foreach (var source in RecordingSources)
+            {
+                source.Active = lastMicNames.Contains(source.Name);
+            }
+
+            foreach (var source in LoopbackSources)
+            {
+                source.Active = lastSpeakerNames.Contains(source.Name);
+            }
         }
 
         protected abstract void OnRefresh();
