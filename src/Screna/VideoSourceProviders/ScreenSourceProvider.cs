@@ -7,9 +7,13 @@ namespace Captura.Models
     {
         readonly IVideoSourcePicker _videoSourcePicker;
         
-        public ScreenSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker) : base(Loc)
+        public ScreenSourceProvider(LanguageManager Loc,
+            IVideoSourcePicker VideoSourcePicker,
+            IIconSet Icons) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
+
+            Icon = Icons.Screen;
         }
 
         public bool PickScreen()
@@ -40,5 +44,9 @@ namespace Captura.Models
         public override IVideoItem Source => _source;
 
         public override string Name => Loc.Screen;
+
+        public override string Description { get; } = "Record a specific screen.";
+
+        public override string Icon { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System;
+using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
 
@@ -67,12 +68,17 @@ namespace Captura
             Binder.BindSingleton<FullScreenItem>();
 
             // Video Source Providers
-            Binder.BindSingleton<ScreenSourceProvider>();
-            Binder.BindSingleton<FullScreenSourceProvider>();
-            Binder.BindSingleton<RegionSourceProvider>();
-            Binder.BindSingleton<WindowSourceProvider>();
-            Binder.BindSingleton<DeskDuplSourceProvider>();
-            Binder.BindSingleton<NoVideoSourceProvider>();
+            BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>(Binder);
+
+            if (Windows8OrAbove)
+            {
+                BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>(Binder);
+            }
+
 
             // Folder Browser Dialog
             Binder.Bind<IDialogService, DialogService>();
@@ -93,6 +99,18 @@ namespace Captura
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
             else Binder.Bind<AudioSource, NAudioSource>();
+        }
+
+        bool Windows8OrAbove
+        {
+            get
+            {
+                // All versions above Windows 8 give the same version number
+                var version = new Version(6, 2, 9200, 0);
+
+                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                       Environment.OSVersion.Version >= version;
+            }
         }
     }
 }

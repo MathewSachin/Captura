@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
@@ -18,41 +17,17 @@ namespace Captura.ViewModels
 
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
-        public ObservableCollection<VideoSourceModel> VideoSources { get; } = new ObservableCollection<VideoSourceModel>();
+        public ObservableCollection<IVideoSourceProvider> VideoSources { get; } = new ObservableCollection<IVideoSourceProvider>();
 
         public ObservableCollection<IVideoWriterProvider> VideoWriterProviders { get; } = new ObservableCollection<IVideoWriterProvider>();
-
-        const string NoVideoDescription = @"No Video recorded.
-Can be used for audio-only recording.
-Make sure Audio sources are enabled.";
-
-        const string FullScreenDescription = "Record Fullscreen.";
-
-        const string ScreenDescription = "Record a specific screen.";
-
-        const string WindowDescription = @"Record a specific window.
-The video is of the initial size of the window.";
-
-        const string RegionDescription = "Record region selected using Region Selector.";
-
-        const string DeskDuplDescription = @"Faster API for recording screen as well as fullscreen DirectX games.
-Not all games are recordable.
-Requires Windows 8 or above.
-If it does not work, try running Captura on the Integrated Graphics card.";
 
         public VideoViewModel(IRegionProvider RegionProvider,
             IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
             LanguageManager LanguageManager,
             FullScreenSourceProvider FullScreenProvider,
-            IIconSet Icons,
-            // ReSharper disable SuggestBaseTypeForParameter
-            ScreenSourceProvider ScreenSourceProvider,
-            WindowSourceProvider WindowSourceProvider,
-            RegionSourceProvider RegionSourceProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
-            DeskDuplSourceProvider DeskDuplSourceProvider,
-            // ReSharper restore SuggestBaseTypeForParameter
+            IEnumerable<IVideoSourceProvider> SourceProviders,
             IEnumerable<IVideoWriterProvider> WriterProviders
             ) : base(Settings, LanguageManager)
         {
@@ -65,15 +40,9 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            VideoSources.Add(new VideoSourceModel(NoVideoSourceProvider, nameof(Loc.OnlyAudio), NoVideoDescription, Icons.Video));
-            VideoSources.Add(new VideoSourceModel(FullScreenProvider, nameof(Loc.FullScreen), FullScreenDescription, Icons.MultipleMonitor));
-            VideoSources.Add(new VideoSourceModel(ScreenSourceProvider, nameof(Loc.Screen), ScreenDescription, Icons.Screen));
-            VideoSources.Add(new VideoSourceModel(WindowSourceProvider, nameof(Loc.Window), WindowDescription, Icons.Window));
-            VideoSources.Add(new VideoSourceModel(RegionSourceProvider, nameof(Loc.Region), RegionDescription, Icons.Region));
-
-            if (Windows8OrAbove)
+            foreach (var sourceProvider in SourceProviders)
             {
-                VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, "Desktop Duplication", DeskDuplDescription, Icons.Game));
+                VideoSources.Add(sourceProvider);
             }
 
             foreach (var writerProvider in WriterProviders)
@@ -93,18 +62,6 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
             if (VideoWriterProviders.Count > 0)
                 SelectedVideoWriterKind = VideoWriterProviders[0];
-        }
-
-        public bool Windows8OrAbove
-        {
-            get
-            {
-                // All versions above Windows 8 give the same version number
-                var version = new Version(6, 2, 9200, 0);
-
-                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
-                       Environment.OSVersion.Version >= version;
-            }
         }
 
         void SetDeskDuplSource(DeskDuplSourceProvider DeskDuplSourceProvider)

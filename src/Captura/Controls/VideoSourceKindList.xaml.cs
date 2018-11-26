@@ -13,11 +13,9 @@ namespace Captura
 
         void OnVideoSourceReSelect(object Sender, MouseButtonEventArgs E)
         {
-            if (Sender is ListViewItem item
-                && item.IsSelected
-                && item.DataContext is VideoSourceModel model)
+            if (Sender is ListViewItem item && item.IsSelected)
             {
-                switch (model.Provider)
+                switch (item.DataContext)
                 {
                     case WindowSourceProvider windowSourceProvider:
                         windowSourceProvider.PickWindow();
