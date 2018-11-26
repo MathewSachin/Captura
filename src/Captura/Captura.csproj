@@ -68,6 +68,9 @@
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\VideoEncoderPage.xaml.cs">
+      <DependentUpon>VideoEncoderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ImageOverlaysPage.xaml.cs">
       <DependentUpon>ImageOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -281,6 +284,10 @@
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\VideoEncoderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\ImageOverlaysPage.xaml">
       <SubType>Designer</SubType>
