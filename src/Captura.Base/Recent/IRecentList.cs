@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Captura.Models
 {
@@ -7,7 +7,7 @@ namespace Captura.Models
     {
         void Add(IRecentItem RecentItem);
 
-        IEnumerable<IRecentItem> Items { get; }
+        ReadOnlyObservableCollection<IRecentItem> Items { get; }
 
         void Clear();
     }

@@ -9,10 +9,15 @@ namespace Captura.Models
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IRegionProvider _regionProvider;
 
-        public WindowSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker, IRegionProvider RegionProvider) : base(Loc)
+        public WindowSourceProvider(LanguageManager Loc,
+            IVideoSourcePicker VideoSourcePicker,
+            IRegionProvider RegionProvider,
+            IIconSet Icons) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
             _regionProvider = RegionProvider;
+
+            Icon = Icons.Window;
         }
 
         public bool PickWindow()
@@ -39,5 +44,10 @@ namespace Captura.Models
         public override IVideoItem Source => _source;
 
         public override string Name => Loc.Window;
+
+        public override string Description { get; } = @"Record a specific window.
+The video is of the initial size of the window.";
+
+        public override string Icon { get; }
     }
 }

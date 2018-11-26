@@ -6,13 +6,14 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DeskDuplSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
-        readonly LanguageManager _loc;
         readonly IVideoSourcePicker _videoSourcePicker;
 
-        public DeskDuplSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker)
+        public DeskDuplSourceProvider(LanguageManager Loc,
+            IVideoSourcePicker VideoSourcePicker,
+            IIconSet Icons)
         {
-            _loc = Loc;
             _videoSourcePicker = VideoSourcePicker;
+            Icon = Icons.Game;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
@@ -87,6 +88,13 @@ namespace Captura.Models
         }
 
         public string Name => "Desktop Duplication";
+
+        public string Description { get; } = @"Faster API for recording screen as well as fullscreen DirectX games.
+Not all games are recordable.
+Requires Windows 8 or above.
+If it does not work, try running Captura on the Integrated Graphics card.";
+
+        public string Icon { get; }
 
         public override string ToString() => Name;
     }

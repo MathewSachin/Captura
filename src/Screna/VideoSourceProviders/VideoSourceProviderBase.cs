@@ -14,5 +14,9 @@ namespace Captura.Models
         public abstract IVideoItem Source { get; }
 
         public abstract string Name { get; }
+
+        public abstract string Description { get; }
+
+        public abstract string Icon { get; }
     }
 }

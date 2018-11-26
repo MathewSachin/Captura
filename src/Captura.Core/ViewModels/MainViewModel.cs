@@ -16,12 +16,12 @@ namespace Captura.ViewModels
 
         readonly IDialogService _dialogService;
         readonly RememberByName _rememberByName;
+        readonly IRecentList _recentList;
 
         public ScreenShotViewModel ScreenShotViewModel { get; }
         public RecordingViewModel RecordingViewModel { get; }
         public VideoViewModel VideoViewModel { get; }
         public AudioSource AudioSource { get; }
-        public RecentViewModel RecentViewModel { get; }
         public HotKeyManager HotKeyManager { get; }
 
         public IWebCamProvider WebCamProvider { get; }
@@ -47,7 +47,6 @@ namespace Captura.ViewModels
             VideoViewModel VideoViewModel,
             IWebCamProvider WebCamProvider,
             Settings Settings,
-            RecentViewModel RecentViewModel,
             LanguageManager LanguageManager,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
@@ -55,17 +54,18 @@ namespace Captura.ViewModels
             RememberByName RememberByName,
             ScreenShotViewModel ScreenShotViewModel,
             RecordingViewModel RecordingViewModel,
-            HotkeyActionRegisterer HotkeyActionRegisterer) : base(Settings, LanguageManager)
+            HotkeyActionRegisterer HotkeyActionRegisterer,
+            IRecentList RecentList) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
             this.VideoViewModel = VideoViewModel;
             this.WebCamProvider = WebCamProvider;
-            this.RecentViewModel = RecentViewModel;
             this.HotKeyManager = HotKeyManager;
             _dialogService = DialogService;
             _rememberByName = RememberByName;
             this.ScreenShotViewModel = ScreenShotViewModel;
             this.RecordingViewModel = RecordingViewModel;
+            _recentList = RecentList;
 
             ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
 
@@ -130,42 +130,9 @@ namespace Captura.ViewModels
 
         void OnRefresh()
         {
-            #region Video Codec
-            var lastVideoCodecName = VideoViewModel.SelectedVideoWriter?.ToString();
-
             VideoViewModel.RefreshCodecs();
 
-            var matchingVideoCodec = VideoViewModel.AvailableVideoWriters.FirstOrDefault(M => M.ToString() == lastVideoCodecName);
-
-            if (matchingVideoCodec != null)
-            {
-                VideoViewModel.SelectedVideoWriter = matchingVideoCodec;
-            }
-            #endregion
-
-            #region Audio
-            var lastMicNames = AudioSource.AvailableRecordingSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-
-            var lastSpeakerNames = AudioSource.AvailableLoopbackSources
-                .Where(M => M.Active)
-                .Select(M => M.Name)
-                .ToArray();
-
             AudioSource.Refresh();
-
-            foreach (var source in AudioSource.AvailableRecordingSources)
-            {
-                source.Active = lastMicNames.Contains(source.Name);
-            }
-
-            foreach (var source in AudioSource.AvailableLoopbackSources)
-            {
-                source.Active = lastSpeakerNames.Contains(source.Name);
-            }
-            #endregion
 
             #region Webcam
             var lastWebcamName = WebCamProvider.SelectedCam?.Name;
@@ -235,7 +202,7 @@ namespace Captura.ViewModels
 
             AudioSource.Dispose();
 
-            RecentViewModel.Dispose();
+            _recentList.Dispose();
             
             // Remember things if not console.
             if (_persist)

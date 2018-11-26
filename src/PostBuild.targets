@@ -4,6 +4,12 @@
     <RootDir>$(MSBuildThisFileDirectory)/..</RootDir>
     <BassPath>$(RootDir)/temp/bass/bass.dll</BassPath>
     <BassMixPath>$(RootDir)/temp/bassmix/bassmix.dll</BassMixPath>
+    <DoMoveLibs>False</DoMoveLibs>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) != 'Debug'">
+    <DoMoveLibs>True</DoMoveLibs>
+    <LibFolderName>lib/</LibFolderName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +17,7 @@
     <Content Include="$(BassPath)"
              Condition="Exists('$(BassPath)')">
       <Visible>False</Visible>
-      <Link>bass.dll</Link>
+      <Link>$(LibFolderName)bass.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
@@ -19,7 +25,7 @@
     <Content Include="$(BassMixPath)"
              Condition="Exists('$(BassMixPath)')">
       <Visible>False</Visible>
-      <Link>bassmix.dll</Link>
+      <Link>$(LibFolderName)bassmix.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
@@ -32,9 +38,9 @@
   </ItemGroup>
 
   <!-- Move Libraries to lib folder -->
-  <Target Name="MoveLibs" AfterTargets="Build" Condition="$(Configuration) != 'Debug'">
+  <Target Name="MoveLibs" AfterTargets="Build" Condition="$(DoMoveLibs)">
     <PropertyGroup>
-      <CopyDestionationPath>$(OutputPath)\lib</CopyDestionationPath>
+      <CopyDestionationPath>$(OutputPath)/$(LibFolderName)</CopyDestionationPath>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,34 +1,26 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Newtonsoft.Json.Linq;
+using Captura.Models;
 
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
+
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class UpdateCheckerViewModel : NotifyPropertyChanged
     {
-        readonly Settings _settings;
+        readonly UpdateChecker _updateChecker;
 
-        public UpdateCheckerViewModel(Settings Settings)
+        public UpdateCheckerViewModel(UpdateChecker UpdateChecker)
         {
-            _settings = Settings;
+            _updateChecker = UpdateChecker;
             Check();
 
             CheckCommand = new DelegateCommand(Check);
 
-            GoToDownload = new DelegateCommand(() =>
-            {
-                const string downloadsUrl = "https://mathewsachin.github.io/Captura/download";
-
-                Process.Start(downloadsUrl);
-            });
+            GoToDownload = new DelegateCommand(UpdateChecker.GoToDownloadsPage);
         }
-
-        const string LatestReleaseUrl = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
 
         void Check()
         {
@@ -43,25 +35,13 @@ namespace Captura.ViewModels
             {
                 try
                 {
-                    using (var w = new WebClient { Proxy = _settings.Proxy.GetWebProxy() })
+                    var newVersion = await _updateChecker.Check();
+
+                    if (newVersion != null)
                     {
-                        // User Agent header required by GitHub api
-                        w.Headers.Add("user-agent", nameof(Captura));
+                        UpdateAvailable = true;
 
-                        var result = await w.DownloadStringTaskAsync(LatestReleaseUrl);
-
-                        var jObj = JObject.Parse(result);
-
-                        // tag_name = v0.0.0 for stable releases
-                        NewVersion = jObj["tag_name"].ToString();
-                        var version = Version.Parse(NewVersion.Substring(1));
-
-                        var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-                        if (version > currentVersion)
-                        {
-                            UpdateAvailable = true;
-                        }
+                        NewVersion = "v" + newVersion;
                     }
                 }
                 catch (Exception e)

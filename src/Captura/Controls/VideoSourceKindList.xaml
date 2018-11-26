@@ -5,7 +5,6 @@
     <ListView Margin="0,5"
               IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
               ItemsSource="{Binding VideoViewModel.VideoSources}"
-              SelectedValuePath="Provider"
               SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
               BorderThickness="0.4"
               SelectionMode="Single">
@@ -19,13 +18,13 @@
                 <Grid Background="#01000000">
                     <Grid.ToolTip>
                         <StackPanel MinWidth="200">
-                            <TextBlock Text="{Binding Name.Display, Mode=OneWay}"
+                            <TextBlock Text="{Binding Name, Mode=OneWay}"
                                        FontWeight="Bold"/>
 
                             <TextBlock Text="{Binding Description, Mode=OneWay}"/>
                         </StackPanel>
                     </Grid.ToolTip>
-                    <Path Data="{Binding IconResource}"
+                    <Path Data="{Binding Icon}"
                           Style="{DynamicResource VideoSourceIcon}"/>
                 </Grid>
             </DataTemplate>

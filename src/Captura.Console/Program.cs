@@ -43,8 +43,8 @@ namespace Captura
             ServiceProvider.Get<Settings>().UI.HideOnFullScreenShot = false;
 
             Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions>(Args)
-                .WithParsed<ListCmdOptions>(Options => List())
-                .WithParsed<StartCmdOptions>(Options =>
+                .WithParsed((Action<ListCmdOptions>)(Options => List()))
+                .WithParsed((Action<StartCmdOptions>)(Options =>
                 {
                     Banner();
 
@@ -52,38 +52,12 @@ namespace Captura
                     {
                         vm.Init(false, false, false, false);
 
-                        // Load settings dummy
-                        var dummySettings = new Settings();
-                        dummySettings.Load();
-
-                        vm.Settings.WebcamOverlay = dummySettings.WebcamOverlay;
-                        vm.Settings.MousePointerOverlay = dummySettings.MousePointerOverlay;
-                        vm.Settings.Clicks = dummySettings.Clicks;
-                        vm.Settings.Keystrokes = dummySettings.Keystrokes;
-                        vm.Settings.Elapsed = dummySettings.Elapsed;
-
-                        // FFmpeg Path
-                        vm.Settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
-
-                        foreach (var overlay in dummySettings.Censored)
-                        {
-                            vm.Settings.Censored.Add(overlay);
-                        }
-
-                        foreach (var overlay in dummySettings.TextOverlays)
-                        {
-                            vm.Settings.TextOverlays.Add(overlay);
-                        }
-
-                        foreach (var overlay in dummySettings.ImageOverlays)
-                        {
-                            vm.Settings.ImageOverlays.Add(overlay);
-                        }
+                        CopySettings(vm.Settings);
 
                         Start(vm, Options);
                     }
-                })
-                .WithParsed<ShotCmdOptions>(Options =>
+                }))
+                .WithParsed((Action<ShotCmdOptions>)(Options =>
                 {
                     Banner();
 
@@ -93,13 +67,44 @@ namespace Captura
 
                         Shot(vm, Options);
                     }
-                })
-                .WithParsed<FFmpegCmdOptions>(Options =>
+                }))
+                .WithParsed((Action<FFmpegCmdOptions>)(Options =>
                 {
                     Banner();
 
                     FFmpeg(Options);
-                });
+                }));
+        }
+
+        static void CopySettings(Settings Settings)
+        {
+            // Load settings dummy
+            var dummySettings = new Settings();
+            dummySettings.Load();
+
+            Settings.WebcamOverlay = dummySettings.WebcamOverlay;
+            Settings.MousePointerOverlay = dummySettings.MousePointerOverlay;
+            Settings.Clicks = dummySettings.Clicks;
+            Settings.Keystrokes = dummySettings.Keystrokes;
+            Settings.Elapsed = dummySettings.Elapsed;
+
+            // FFmpeg Path
+            Settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
+
+            foreach (var overlay in dummySettings.Censored)
+            {
+                Settings.Censored.Add(overlay);
+            }
+
+            foreach (var overlay in dummySettings.TextOverlays)
+            {
+                Settings.TextOverlays.Add(overlay);
+            }
+
+            foreach (var overlay in dummySettings.ImageOverlays)
+            {
+                Settings.ImageOverlays.Add(overlay);
+            }
         }
 
         static void List()

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:local="clr-namespace:Captura"
-      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+      DataContext="{Binding RecentViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="10">
             <DockPanel DockPanel.Dock="Top"
@@ -11,7 +11,7 @@
                 <Button Content="{Binding Clear, Source={StaticResource Loc}, Mode=OneWay}"
                         ToolTip="{Binding ClearRecentList, Source={StaticResource Loc}, Mode=OneWay}"
                         DockPanel.Dock="Right"
-                        Command="{Binding RecentViewModel.ClearCommand}"/>
+                        Command="{Binding ClearCommand}"/>
 
                 <Label Content="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"
@@ -27,7 +27,7 @@
             </DockPanel>
 
             <ItemsControl Margin="0,0,0,10"
-                          ItemsSource="{Binding RecentViewModel.RecentList}"
+                          ItemsSource="{Binding Items}"
                           Style="{StaticResource VirtualizingItemsControl}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

@@ -5,11 +5,14 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NoVideoSourceProvider : VideoSourceProviderBase
     {
-        public NoVideoSourceProvider(LanguageManager Loc) : base(Loc)
+        public NoVideoSourceProvider(LanguageManager Loc,
+            IIconSet Icons) : base(Loc)
         {
             Sources = new IVideoItem[] {WaveItem.Instance}
                 .Concat(FFmpegAudioItem.Items)
                 .ToArray();
+
+            Icon = Icons.NoVideo;
         }
 
         public IVideoItem[] Sources { get; }
@@ -32,5 +35,11 @@ namespace Captura.Models
         public override IVideoItem Source => _selectedSource;
 
         public override string Name => Loc.OnlyAudio;
+
+        public override string Description { get; } = @"No Video recorded.
+Can be used for audio-only recording.
+Make sure Audio sources are enabled.";
+
+        public override string Icon { get; }
     }
 }
