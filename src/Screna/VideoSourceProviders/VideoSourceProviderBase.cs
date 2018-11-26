@@ -38,5 +38,7 @@ namespace Captura.Models
         }
 
         public abstract bool Deserialize(string Serialized);
+
+        public abstract bool ParseCli(string Arg);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -253,72 +255,16 @@ namespace Captura
 
         static void HandleVideoSource(VideoSourcesViewModel VideoSourcesViewModel, CommonCmdOptions CommonOptions)
         {
-            // Desktop
-            if (CommonOptions.Source == null || CommonOptions.Source == "desktop")
+            if (CommonOptions.Source == null)
                 return;
 
-            // Region
-            if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
+            var providers = ServiceProvider.Get<IEnumerable<IVideoSourceProvider>>();
+
+            var provider = providers.FirstOrDefault(M => M.ParseCli(CommonOptions.Source));
+
+            if (provider != null)
             {
-                var rectConverter = new RectangleConverter();
-
-                if (rectConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
-                {
-                    FakeRegionProvider.Instance.SelectedRegion = rect.Even();
-                    VideoSourcesViewModel.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
-                }
-            }
-
-            // Screen
-            else if (Regex.IsMatch(CommonOptions.Source, @"^screen:\d+$"))
-            {
-                var index = int.Parse(CommonOptions.Source.Substring(7));
-
-                if (index < ScreenItem.Count)
-                {
-                    var screenSourceProvider = ServiceProvider.Get<ScreenSourceProvider>();
-
-                    screenSourceProvider.Set(index);
-
-                    VideoSourcesViewModel.RestoreSourceKind(screenSourceProvider);
-                }
-            }
-
-            // Window
-            else if (Regex.IsMatch(CommonOptions.Source, @"^win:\d+$"))
-            {
-                var handle = new IntPtr(int.Parse(CommonOptions.Source.Substring(4)));
-
-                var winProvider = ServiceProvider.Get<WindowSourceProvider>();
-
-                winProvider.Set(handle);
-
-                VideoSourcesViewModel.RestoreSourceKind(winProvider);
-            }
-
-            // Start command only
-            else if (CommonOptions is StartCmdOptions)
-            {
-                // Desktop Duplication
-                if (Regex.IsMatch(CommonOptions.Source, @"^deskdupl:\d+$"))
-                {
-                    var index = int.Parse(CommonOptions.Source.Substring(9));
-
-                    if (index < ScreenItem.Count)
-                    {
-                        var deskDuplSourceProvider = ServiceProvider.Get<DeskDuplSourceProvider>();
-
-                        deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
-
-                        VideoSourcesViewModel.RestoreSourceKind(deskDuplSourceProvider);
-                    }
-                }
-
-                // No Video for Start
-                else if (CommonOptions.Source == "none")
-                {
-                    VideoSourcesViewModel.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
-                }
+                VideoSourcesViewModel.RestoreSourceKind(provider);
             }
         }
 

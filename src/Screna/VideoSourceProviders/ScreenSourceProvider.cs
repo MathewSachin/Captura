@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Captura.Models
@@ -72,6 +73,21 @@ namespace Captura.Models
                 return false;
 
             Set(screen);
+
+            return true;
+        }
+
+        public override bool ParseCli(string Arg)
+        {
+            if (!Regex.IsMatch(Arg, @"^screen:\d+$"))
+                return false;
+
+            var index = int.Parse(Arg.Substring(7));
+
+            if (index >= ScreenItem.Count)
+                return false;
+
+            Set(index);
 
             return true;
         }

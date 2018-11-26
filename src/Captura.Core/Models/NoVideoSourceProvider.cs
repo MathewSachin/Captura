@@ -53,5 +53,10 @@ Make sure Audio sources are enabled.";
 
             return true;
         }
+
+        public override bool ParseCli(string Arg)
+        {
+            return Arg == "none";
+        }
     }
 }

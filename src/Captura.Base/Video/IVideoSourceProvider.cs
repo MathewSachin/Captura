@@ -21,5 +21,7 @@ namespace Captura.Models
         string Serialize();
 
         bool Deserialize(string Serialized);
+
+        bool ParseCli(string Arg);
     }
 }

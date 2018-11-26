@@ -18,5 +18,7 @@ namespace Captura
         public Rectangle Rectangle => _screen.Bounds;
 
         public string DeviceName => _screen.DeviceName;
+
+        public static ScreenWrapper Get(int Index) => new ScreenWrapper(Screen.AllScreens[Index]);
     }
 }

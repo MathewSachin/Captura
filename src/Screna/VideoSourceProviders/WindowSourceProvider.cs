@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Screna;
 
 namespace Captura.Models
@@ -65,6 +66,18 @@ The video is of the initial size of the window.";
                 return false;
 
             Set(window.Handle);
+
+            return true;
+        }
+
+        public override bool ParseCli(string Arg)
+        {
+            if (!Regex.IsMatch(Arg, @"^win:\d+$"))
+                return false;
+
+            var handle = new IntPtr(int.Parse(Arg.Substring(4)));
+
+            Set(handle);
 
             return true;
         }

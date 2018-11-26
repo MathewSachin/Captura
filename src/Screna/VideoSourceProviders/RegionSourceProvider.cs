@@ -1,4 +1,6 @@
 using System.Drawing;
+using System.Text.RegularExpressions;
+using Screna;
 
 namespace Captura.Models
 {
@@ -54,6 +56,21 @@ namespace Captura.Models
             _regionProvider.SelectedRegion = rect;
 
             OnSelect();
+
+            return true;
+        }
+
+        public override bool ParseCli(string Arg)
+        {
+            if (!Regex.IsMatch(Arg, @"^\d+,\d+,\d+,\d+$"))
+                return false;
+
+            var rectConverter = new RectangleConverter();
+
+            if (!(rectConverter.ConvertFromInvariantString(Arg) is Rectangle rect))
+                return false;
+
+            _regionProvider.SelectedRegion = rect.Even();
 
             return true;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using SharpDX.DXGI;
 
 namespace Captura.Models
@@ -112,7 +113,9 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
         public void OnUnselect() { }
 
+#pragma warning disable CS0067
         public event Action UnselectRequested;
+#pragma warning restore CS0067
 
         public string Serialize()
         {
@@ -129,6 +132,21 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                 return false;
 
             Set(screen);
+
+            return true;
+        }
+
+        public bool ParseCli(string Arg)
+        {
+            if (!Regex.IsMatch(Arg, @"^deskdupl:\d+$"))
+                return false;
+
+            var index = int.Parse(Arg.Substring(9));
+
+            if (index >= ScreenItem.Count)
+                return false;
+
+            Set(ScreenWrapper.Get(index));
 
             return true;
         }

@@ -23,5 +23,10 @@ namespace Captura.Models
         public override string Serialize() => "";
 
         public override bool Deserialize(string Serialized) => true;
+
+        public override bool ParseCli(string Arg)
+        {
+            return Arg == "desktop";
+        }
     }
 }
