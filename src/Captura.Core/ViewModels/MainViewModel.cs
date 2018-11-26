@@ -164,7 +164,7 @@ namespace Captura.ViewModels
             if (_hotkeys)
                 HotKeyManager.RegisterAll();
 
-            VideoViewModel.Init();
+            VideoViewModel.RefreshCodecs();
 
             if (Remembered)
             {

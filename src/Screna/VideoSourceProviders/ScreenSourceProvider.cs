@@ -48,5 +48,17 @@ namespace Captura.Models
         public override string Description { get; } = "Record a specific screen.";
 
         public override string Icon { get; }
+
+        public override bool OnSelect()
+        {
+            // Select first screen if there is only one
+            if (ScreenItem.Count == 1)
+            {
+                Set(0);
+                return true;
+            }
+
+            return PickScreen();
+        }
     }
 }

@@ -251,13 +251,11 @@ namespace Captura
 ");
         }
 
-        static void HandleVideoSource(MainViewModel ViewModel, CommonCmdOptions CommonOptions)
+        static void HandleVideoSource(VideoViewModel VideoViewModel, CommonCmdOptions CommonOptions)
         {
             // Desktop
             if (CommonOptions.Source == null || CommonOptions.Source == "desktop")
                 return;
-
-            var video = ViewModel.VideoViewModel;
 
             // Region
             if (Regex.IsMatch(CommonOptions.Source, @"^\d+,\d+,\d+,\d+$"))
@@ -267,7 +265,7 @@ namespace Captura
                 if (rectConverter.ConvertFromInvariantString(CommonOptions.Source) is Rectangle rect)
                 {
                     FakeRegionProvider.Instance.SelectedRegion = rect.Even();
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
+                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<RegionSourceProvider>();
                 }
             }
 
@@ -282,7 +280,7 @@ namespace Captura
 
                     screenSourceProvider.Set(index);
 
-                    video.RestoreSourceKind(screenSourceProvider);
+                    VideoViewModel.RestoreSourceKind(screenSourceProvider);
                 }
             }
 
@@ -295,7 +293,7 @@ namespace Captura
 
                 winProvider.Set(handle);
 
-                video.RestoreSourceKind(winProvider);
+                VideoViewModel.RestoreSourceKind(winProvider);
             }
 
             // Start command only
@@ -312,51 +310,47 @@ namespace Captura
 
                         deskDuplSourceProvider.Set(new ScreenWrapper(Screen.AllScreens[index]));
 
-                        video.RestoreSourceKind(deskDuplSourceProvider);
+                        VideoViewModel.RestoreSourceKind(deskDuplSourceProvider);
                     }
                 }
 
                 // No Video for Start
                 else if (CommonOptions.Source == "none")
                 {
-                    video.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
+                    VideoViewModel.SelectedVideoSourceKind = ServiceProvider.Get<NoVideoSourceProvider>();
                 }
             }
         }
 
-        static void HandleAudioSource(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        static void HandleAudioSource(AudioSource AudioSource, AudioSettings Settings, StartCmdOptions StartOptions)
         {
-            var source = ViewModel.AudioSource;
-
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < source.AvailableRecordingSources.Count)
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < AudioSource.AvailableRecordingSources.Count)
             {
-                ViewModel.Settings.Audio.Enabled = true;
-                source.AvailableRecordingSources[StartOptions.Microphone].Active = true;
+                Settings.Enabled = true;
+                AudioSource.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < source.AvailableLoopbackSources.Count)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < AudioSource.AvailableLoopbackSources.Count)
             {
-                ViewModel.Settings.Audio.Enabled = true;
-                source.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
+                Settings.Enabled = true;
+                AudioSource.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }
 
-        static void HandleVideoEncoder(MainViewModel ViewModel, StartCmdOptions StartOptions)
+        static void HandleVideoEncoder(VideoViewModel VideoViewModel, StartCmdOptions StartOptions)
         {
             if (StartOptions.Encoder == null)
                 return;
-
-            var video = ViewModel.VideoViewModel;
 
             // FFmpeg
             if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                video.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < video.AvailableVideoWriters.Count)
-                    video.SelectedVideoWriter = video.AvailableVideoWriters[index];
+                if (index < VideoViewModel.AvailableVideoWriters.Count)
+                    VideoViewModel.SelectedVideoWriter = VideoViewModel.AvailableVideoWriters[index];
             }
 
             // SharpAvi
@@ -364,16 +358,16 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
-                video.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
+                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < video.AvailableVideoWriters.Count)
-                    video.SelectedVideoWriter = video.AvailableVideoWriters[index];
+                if (index < VideoViewModel.AvailableVideoWriters.Count)
+                    VideoViewModel.SelectedVideoWriter = VideoViewModel.AvailableVideoWriters[index];
             }
 
             // Gif
             else if (StartOptions.Encoder == "gif")
             {
-                video.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
+                VideoViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
             }
         }
 
@@ -434,7 +428,7 @@ namespace Captura
             }
             else
             {
-                HandleVideoSource(ViewModel, ShotOptions);
+                HandleVideoSource(ViewModel.VideoViewModel, ShotOptions);
 
                 ViewModel.ScreenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
             }
@@ -460,11 +454,11 @@ namespace Captura
                 File.Delete(StartOptions.FileName);
             }
 
-            HandleVideoSource(ViewModel, StartOptions);
+            HandleVideoSource(ViewModel.VideoViewModel, StartOptions);
 
-            HandleVideoEncoder(ViewModel, StartOptions);
+            HandleVideoEncoder(ViewModel.VideoViewModel, StartOptions);
 
-            HandleAudioSource(ViewModel, StartOptions);
+            HandleAudioSource(ViewModel.AudioSource, ViewModel.Settings.Audio, StartOptions);
 
             HandleWebcam(StartOptions);
 

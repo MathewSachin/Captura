@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using Captura.Audio;
 using Captura.Models;
-using Captura.Native;
 using Captura.Webcam;
 using Microsoft.Win32;
 using Screna;

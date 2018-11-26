@@ -15,19 +15,9 @@ namespace Captura
         {
             if (Sender is ListViewItem item && item.IsSelected)
             {
-                switch (item.DataContext)
+                if (item.DataContext is IVideoSourceProvider provider)
                 {
-                    case WindowSourceProvider windowSourceProvider:
-                        windowSourceProvider.PickWindow();
-                        break;
-
-                    case ScreenSourceProvider screenSourceProvider:
-                        screenSourceProvider.PickScreen();
-                        break;
-
-                    case DeskDuplSourceProvider deskDuplSourceProvider:
-                        deskDuplSourceProvider.PickScreen();
-                        break;
+                    provider.OnSelect();
                 }
             }
         }

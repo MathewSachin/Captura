@@ -49,5 +49,10 @@ namespace Captura.Models
 The video is of the initial size of the window.";
 
         public override string Icon { get; }
+
+        public override bool OnSelect()
+        {
+            return PickWindow();
+        }
     }
 }

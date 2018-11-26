@@ -9,7 +9,6 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class VideoViewModel : ViewModelBase
     {
-        readonly IRegionProvider _regionProvider;
         readonly FullScreenSourceProvider _fullScreenProvider;
 
         // To prevent deselection or cancelling selection
@@ -21,8 +20,7 @@ namespace Captura.ViewModels
 
         public ObservableCollection<IVideoWriterProvider> VideoWriterProviders { get; } = new ObservableCollection<IVideoWriterProvider>();
 
-        public VideoViewModel(IRegionProvider RegionProvider,
-            IEnumerable<IImageWriterItem> ImageWriters,
+        public VideoViewModel(IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
             LanguageManager LanguageManager,
             FullScreenSourceProvider FullScreenProvider,
@@ -37,7 +35,6 @@ namespace Captura.ViewModels
 
             AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
 
-            _regionProvider = RegionProvider;
             _fullScreenProvider = FullScreenProvider;
 
             foreach (var sourceProvider in SourceProviders)
@@ -64,61 +61,49 @@ namespace Captura.ViewModels
                 SelectedVideoWriterKind = VideoWriterProviders[0];
         }
 
-        void SetDeskDuplSource(DeskDuplSourceProvider DeskDuplSourceProvider)
-        {
-            // Select first screen if there is only one
-            if (ScreenItem.Count == 1 && DeskDuplSourceProvider.SelectFirst())
-            {
-                _videoSourceKind = DeskDuplSourceProvider;
-            }
-            else
-            {
-                if (DeskDuplSourceProvider.PickScreen())
-                {
-                    _videoSourceKind = DeskDuplSourceProvider;
-                }
-            }
-        }
-
-        void SetScreenSource(ScreenSourceProvider ScreenSourceProvider)
-        {
-            // Select first screen if there is only one
-            if (ScreenItem.Count == 1)
-            {
-                ScreenSourceProvider.Set(0);
-                _videoSourceKind = ScreenSourceProvider;
-            }
-            else
-            {
-                if (ScreenSourceProvider.PickScreen())
-                {
-                    _videoSourceKind = ScreenSourceProvider;
-                }
-            }
-        }
-
         public void SetDefaultSource()
         {
             SelectedVideoSourceKind = _fullScreenProvider;
         }
 
-        public void Init()
-        {                                               
-            RefreshCodecs();
-
-            RefreshVideoSources();
-            
-            _regionProvider.SelectorHidden += () =>
-            {
-                if (SelectedVideoSourceKind is RegionSourceProvider)
-                    SetDefaultSource();
-            };
-        }
-
-        void RefreshVideoSources()
+        void ChangeSource(IVideoSourceProvider NewSourceProvider, bool CallOnSelect)
         {
-            // RegionSelector should only be shown on Region Capture.
-            _regionProvider.SelectorVisible = SelectedVideoSourceKind is RegionSourceProvider;
+            try
+            {
+                if (NewSourceProvider == null || _videoSourceKind == NewSourceProvider)
+                    return;
+
+                if (CallOnSelect && !NewSourceProvider.OnSelect())
+                {
+                    return;
+                }
+
+                if (_videoSourceKind != null)
+                {
+                    _videoSourceKind.OnUnselect();
+
+                    _videoSourceKind.UnselectRequested -= SetDefaultSource;
+                }
+
+                _videoSourceKind = NewSourceProvider;
+
+                _videoSourceKind.UnselectRequested += SetDefaultSource;
+            }
+            finally
+            {
+                // Important to send PropertyChanged event over SynchronizationContext for consistency in UI
+
+                void PropChange()
+                {
+                    RaisePropertyChanged(nameof(SelectedVideoSourceKind));
+                }
+
+                if (_syncContext != null)
+                {
+                    _syncContext.Post(S => PropChange(), null);
+                }
+                else PropChange();
+            }
         }
 
         public void RefreshCodecs()
@@ -175,47 +160,12 @@ namespace Captura.ViewModels
         public IVideoSourceProvider SelectedVideoSourceKind
         {
             get => _videoSourceKind;
-            set
-            {
-                if (_videoSourceKind == value)
-                    return;
-
-                switch (value)
-                {
-                    case ScreenSourceProvider screenSourceProvider:
-                        SetScreenSource(screenSourceProvider);
-                        break;
-
-                    case DeskDuplSourceProvider deskDuplSourceProvider:
-                        SetDeskDuplSource(deskDuplSourceProvider);
-                        break;
-
-                    case WindowSourceProvider windowSourceProvider:
-                        if (windowSourceProvider.PickWindow())
-                        {
-                            _videoSourceKind = windowSourceProvider;
-                        }
-                        break;
-
-                    default:
-                        if (value != null)
-                            _videoSourceKind = value;
-                        break;
-                }
-
-                RefreshVideoSources();
-
-                if (_syncContext != null)
-                {
-                    _syncContext.Post(S => RaisePropertyChanged(nameof(SelectedVideoSourceKind)), null);
-                }
-                else OnPropertyChanged();
-            }
+            set => ChangeSource(value, true);
         }
 
         public void RestoreSourceKind(IVideoSourceProvider SourceProvider)
         {
-            _videoSourceKind = SourceProvider;
+            ChangeSource(SourceProvider, false);
         }
 
         IVideoWriterItem _writer;

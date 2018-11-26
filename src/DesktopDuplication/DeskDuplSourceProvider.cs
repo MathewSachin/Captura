@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using SharpDX.DXGI;
 
@@ -97,5 +98,20 @@ If it does not work, try running Captura on the Integrated Graphics card.";
         public string Icon { get; }
 
         public override string ToString() => Name;
+
+        public bool OnSelect()
+        {
+            // Select first screen if there is only one
+            if (ScreenItem.Count == 1 && SelectFirst())
+            {
+                return true;
+            }
+
+            return PickScreen();
+        }
+
+        public void OnUnselect() { }
+
+        public event Action UnselectRequested;
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Captura.Models
 {
     public abstract class VideoSourceProviderBase : NotifyPropertyChanged, IVideoSourceProvider
@@ -18,5 +20,16 @@ namespace Captura.Models
         public abstract string Description { get; }
 
         public abstract string Icon { get; }
+
+        public virtual bool OnSelect() => true;
+
+        public virtual void OnUnselect() { }
+
+        public event Action UnselectRequested;
+
+        protected void RequestUnselect()
+        {
+            UnselectRequested?.Invoke();
+        }
     }
 }
