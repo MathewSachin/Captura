@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Captura.Models;
 using Screna;
 
@@ -22,16 +21,6 @@ namespace Captura.ViewModels
         public DiskWriter DiskWriter { get; }
         public ClipboardWriter ClipboardWriter { get; }
         public ImageUploadWriter ImgurWriter { get; }
-
-        public ICommand SourceToggleCommand { get; } = new DelegateCommand(OnSourceToggleExecute);
-
-        static void OnSourceToggleExecute(object M)
-        {
-            if (M is IImageWriterItem imageWriter)
-            {
-                imageWriter.Active = !imageWriter.Active;
-            }
-        }
 
         public ScreenShotViewModel(VideoViewModel VideoViewModel,
             ISystemTray SystemTray,

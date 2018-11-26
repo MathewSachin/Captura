@@ -10,15 +10,16 @@ namespace Captura.ViewModels
     public class VideoViewModel : ViewModelBase
     {
         readonly FullScreenSourceProvider _fullScreenProvider;
-
-        // To prevent deselection or cancelling selection
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
-
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
-        public ObservableCollection<IVideoSourceProvider> VideoSources { get; } = new ObservableCollection<IVideoSourceProvider>();
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
-        public ObservableCollection<IVideoWriterProvider> VideoWriterProviders { get; } = new ObservableCollection<IVideoWriterProvider>();
+        public IEnumerable<IVideoSourceProvider> VideoSources { get; }
+        public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
+
+        public IReadOnlyList<IVideoWriterProvider> VideoWriterProviders { get; }
+        readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
+        public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
 
         public VideoViewModel(IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
@@ -30,27 +31,13 @@ namespace Captura.ViewModels
             : base(Settings, LanguageManager)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
-
-            AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
-
-            AvailableImageWriters = new ReadOnlyObservableCollection<IImageWriterItem>(_imageWriters);
-
             _fullScreenProvider = FullScreenProvider;
 
-            foreach (var sourceProvider in SourceProviders)
-            {
-                VideoSources.Add(sourceProvider);
-            }
+            AvailableImageWriters = ImageWriters.ToList();
+            VideoWriterProviders = WriterProviders.ToList();
+            VideoSources = SourceProviders;
 
-            foreach (var writerProvider in WriterProviders)
-            {
-                VideoWriterProviders.Add(writerProvider);
-            }
-
-            foreach (var imageWriter in ImageWriters)
-            {
-                _imageWriters.Add(imageWriter);
-            }
+            AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
             SetDefaultSource();
 
@@ -129,10 +116,6 @@ namespace Captura.ViewModels
                 SelectedVideoWriter = matchingVideoCodec;
             }
         }
-
-        readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
-
-        public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
         
         IVideoWriterProvider _writerKind;
 
@@ -180,9 +163,5 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        readonly ObservableCollection<IImageWriterItem> _imageWriters = new ObservableCollection<IImageWriterItem>();
-
-        public ReadOnlyObservableCollection<IImageWriterItem> AvailableImageWriters { get; }
     }
 }

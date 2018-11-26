@@ -360,23 +360,22 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                             CornerRadius="12"
                             BorderThickness="1"
                             Margin="5,0">
-                        <Button ToolTip="Imgur"
-                                Content="Imgur"
-                                Command="{Binding SourceToggleCommand}"
-                                CommandParameter="{Binding ImgurWriter}"
-                                BorderThickness="0"
-                                Background="Transparent"
-                                Cursor="Hand">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <ToggleButton ToolTip="Imgur"
+                                      Content="Imgur"
+                                      IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
+                                      BorderThickness="0"
+                                      Background="Transparent"
+                                      Cursor="Hand">
+                            <ToggleButton.Style>
+                                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
                                             <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Button.Style>
-                        </Button>
+                            </ToggleButton.Style>
+                        </ToggleButton>
 
                         <Border.Style>
                             <Style TargetType="Border">
