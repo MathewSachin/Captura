@@ -52,12 +52,8 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             RegionSourceProvider RegionSourceProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
             DeskDuplSourceProvider DeskDuplSourceProvider,
-            FFmpegWriterProvider FFmpegWriterProvider,
-            SharpAviWriterProvider SharpAviWriterProvider,
-            GifWriterProvider GifWriterProvider,
-            StreamingWriterProvider StreamingWriterProvider,
-            DiscardWriterProvider DiscardWriterProvider
             // ReSharper restore SuggestBaseTypeForParameter
+            IEnumerable<IVideoWriterProvider> WriterProviders
             ) : base(Settings, LanguageManager)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
@@ -80,11 +76,10 @@ If it does not work, try running Captura on the Integrated Graphics card.";
                 VideoSources.Add(new VideoSourceModel(DeskDuplSourceProvider, "Desktop Duplication", DeskDuplDescription, Icons.Game));
             }
 
-            VideoWriterProviders.Add(FFmpegWriterProvider);
-            VideoWriterProviders.Add(GifWriterProvider);
-            VideoWriterProviders.Add(SharpAviWriterProvider);
-            VideoWriterProviders.Add(StreamingWriterProvider);
-            VideoWriterProviders.Add(DiscardWriterProvider);
+            foreach (var writerProvider in WriterProviders)
+            {
+                VideoWriterProviders.Add(writerProvider);
+            }
 
             foreach (var imageWriter in ImageWriters)
             {
@@ -96,7 +91,8 @@ If it does not work, try running Captura on the Integrated Graphics card.";
             if (!AvailableImageWriters.Any(M => M.Active))
                 AvailableImageWriters[0].Active = true;
 
-            SelectedVideoWriterKind = FFmpegWriterProvider;
+            if (VideoWriterProviders.Count > 0)
+                SelectedVideoWriterKind = VideoWriterProviders[0];
         }
 
         public bool Windows8OrAbove

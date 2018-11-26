@@ -6,6 +6,17 @@ namespace Captura
 {
     public class CoreModule : IModule
     {
+        /// <summary>
+        /// Binds both as Inteface as Class
+        /// </summary>
+        static void BindAsInterfaceAndClass<TInterface, TClass>(IBinder Binder) where  TClass : TInterface
+        {
+            Binder.BindSingleton<TClass>();
+
+            // ReSharper disable once ConvertClosureToMethodGroup
+            Binder.Bind<TInterface>(() => ServiceProvider.Get<TClass>());
+        }
+
         public void OnLoad(IBinder Binder)
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
@@ -40,22 +51,18 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             // Image Writers
-            Binder.BindSingleton<DiskWriter>();
-            Binder.BindSingleton<ClipboardWriter>();
-            Binder.BindSingleton<ImageUploadWriter>();
+            BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ClipboardWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ImageUploadWriter>(Binder);
 
             Binder.Bind<IImageUploader, ImgurUploader>();
 
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<DiskWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ClipboardWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImageUploadWriter>);
-
             // Video Writer Providers
-            Binder.BindSingleton<FFmpegWriterProvider>();
-            Binder.BindSingleton<GifWriterProvider>();
-            Binder.BindSingleton<StreamingWriterProvider>();
-            Binder.BindSingleton<DiscardWriterProvider>();
-            Binder.BindSingleton<SharpAviWriterProvider>();
+            BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
 
             Binder.BindSingleton<FullScreenItem>();
 
