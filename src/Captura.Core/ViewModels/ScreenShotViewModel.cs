@@ -22,6 +22,8 @@ namespace Captura.ViewModels
         public ClipboardWriter ClipboardWriter { get; }
         public ImageUploadWriter ImgurWriter { get; }
 
+        public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
+
         public ScreenShotViewModel(VideoViewModel VideoViewModel,
             ISystemTray SystemTray,
             LanguageManager Loc,
@@ -32,7 +34,8 @@ namespace Captura.ViewModels
             ClipboardWriter ClipboardWriter,
             ImageUploadWriter ImgurWriter,
             IVideoSourcePicker SourcePicker,
-            IAudioPlayer AudioPlayer) : base(Settings, Loc)
+            IAudioPlayer AudioPlayer,
+            IEnumerable<IImageWriterItem> ImageWriters) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
             _systemTray = SystemTray;
@@ -44,29 +47,24 @@ namespace Captura.ViewModels
             this.ClipboardWriter = ClipboardWriter;
             this.ImgurWriter = ImgurWriter;
 
+            AvailableImageWriters = ImageWriters.ToList();
+
+            if (!AvailableImageWriters.Any(M => M.Active))
+                AvailableImageWriters[0].Active = true;
+
             ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
-
             ScreenShotActiveCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
-
             ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
-
             ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenshotRegion());
-
             ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenshotWindow());
-
             ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenshotScreen());
         }
 
         public DelegateCommand ScreenShotCommand { get; }
-
         public DelegateCommand ScreenShotActiveCommand { get; }
-
         public DelegateCommand ScreenShotDesktopCommand { get; }
-
         public DelegateCommand ScreenshotRegionCommand { get; }
-
         public DelegateCommand ScreenshotWindowCommand { get; }
-
         public DelegateCommand ScreenshotScreenCommand { get; }
 
         async Task ScreenshotRegion()
@@ -109,7 +107,7 @@ namespace Captura.ViewModels
 
             if (Bmp != null)
             {
-                var allTasks = _videoViewModel.AvailableImageWriters
+                var allTasks = AvailableImageWriters
                     .Where(M => M.Active)
                     .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName));
 

@@ -15,14 +15,12 @@ namespace Captura.ViewModels
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
         public IEnumerable<IVideoSourceProvider> VideoSources { get; }
-        public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
         public IReadOnlyList<IVideoWriterProvider> VideoWriterProviders { get; }
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
         public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
 
-        public VideoViewModel(IEnumerable<IImageWriterItem> ImageWriters,
-            Settings Settings,
+        public VideoViewModel(Settings Settings,
             LanguageManager LanguageManager,
             FullScreenSourceProvider FullScreenProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
@@ -33,16 +31,12 @@ namespace Captura.ViewModels
             this.NoVideoSourceProvider = NoVideoSourceProvider;
             _fullScreenProvider = FullScreenProvider;
 
-            AvailableImageWriters = ImageWriters.ToList();
             VideoWriterProviders = WriterProviders.ToList();
             VideoSources = SourceProviders;
 
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
 
             SetDefaultSource();
-
-            if (!AvailableImageWriters.Any(M => M.Active))
-                AvailableImageWriters[0].Active = true;
 
             if (VideoWriterProviders.Count > 0)
                 SelectedVideoWriterKind = VideoWriterProviders[0];

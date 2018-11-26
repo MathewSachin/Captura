@@ -74,7 +74,7 @@ namespace Captura.Models
             _settings.ScreenShots.ImageFormat = _screenShotViewModel.SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
-            _settings.ScreenShots.SaveTargets = _videoViewModel.AvailableImageWriters
+            _settings.ScreenShots.SaveTargets = _screenShotViewModel.AvailableImageWriters
                 .Where(M => M.Active)
                 .Select(M => M.Display)
                 .ToArray();
@@ -243,15 +243,15 @@ namespace Captura.Models
             // Restore ScreenShot Target
             if (_settings.ScreenShots.SaveTargets != null)
             {
-                foreach (var imageWriter in _videoViewModel.AvailableImageWriters)
+                foreach (var imageWriter in _screenShotViewModel.AvailableImageWriters)
                 {
                     imageWriter.Active = _settings.ScreenShots.SaveTargets.Contains(imageWriter.Display);
                 }
 
                 // Activate First if none
-                if (!_videoViewModel.AvailableImageWriters.Any(M => M.Active))
+                if (!_screenShotViewModel.AvailableImageWriters.Any(M => M.Active))
                 {
-                    _videoViewModel.AvailableImageWriters[0].Active = true;
+                    _screenShotViewModel.AvailableImageWriters[0].Active = true;
                 }
             }
         }
