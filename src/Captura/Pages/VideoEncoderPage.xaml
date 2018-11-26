@@ -12,8 +12,8 @@
                    Margin="0,5"/>
 
             <ListView Margin="0,5"
-                      ItemsSource="{Binding VideoViewModel.VideoWriterProviders}"
-                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                      ItemsSource="{Binding VideoWritersViewModel.VideoWriterProviders}"
+                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       BorderThickness="0.4"
                       SelectionMode="Single">
@@ -43,14 +43,14 @@
 
             <ComboBox VerticalAlignment="Center"
                       Margin="0,5"
-                      ItemsSource="{Binding VideoViewModel.AvailableVideoWriters}" 
-                      SelectedValue="{Binding VideoViewModel.SelectedVideoWriter, Mode=TwoWay}"
+                      ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters}" 
+                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay}"
                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       Name="VideoWriterComboBox">
                 <ComboBox.Style>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.AvailableVideoWriters.Count}" Value="1">
+                            <DataTrigger Binding="{Binding VideoWritersViewModel.AvailableVideoWriters.Count}" Value="1">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -58,14 +58,14 @@
                 </ComboBox.Style>
                 <ComboBox.ToolTip>
                     <StackPanel MinWidth="200">
-                        <Label Content="{Binding VideoViewModel.SelectedVideoWriter, Mode=OneWay}"
+                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay}"
                                FontWeight="Bold"/>
 
-                        <Label Content="{Binding VideoViewModel.SelectedVideoWriter.Extension, Mode=OneWay}"
+                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter.Extension, Mode=OneWay}"
                                ContentStringFormat="{}File extension: {0}"/>
 
-                        <TextBlock Text="{Binding VideoViewModel.SelectedVideoWriter.Description, Mode=OneWay}"
-                                   Visibility="{Binding VideoViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}}"/>
+                        <TextBlock Text="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Mode=OneWay}"
+                                   Visibility="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}}"/>
                     </StackPanel>
                 </ComboBox.ToolTip>
             </ComboBox>
@@ -77,7 +77,7 @@
                     <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -138,7 +138,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                         <Style.Triggers>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
+                                    <Condition Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
                                     <Condition Binding="{Binding Settings.Gif.VariableFrameRate}" Value="True"/>
                                 </MultiDataTrigger.Conditions>
 
@@ -168,10 +168,10 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
+                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
+                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -182,7 +182,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                        <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>

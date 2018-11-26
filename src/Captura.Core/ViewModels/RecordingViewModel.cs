@@ -37,7 +37,8 @@ namespace Captura.ViewModels
 
         readonly KeymapViewModel _keymap;
 
-        readonly VideoViewModel _videoViewModel;
+        readonly VideoSourcesViewModel _videoSourcesViewModel;
+        readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
         readonly IRecentList _recentList;
 
@@ -52,7 +53,8 @@ namespace Captura.ViewModels
             WebcamOverlay WebcamOverlay,
             IMainWindow MainWindow,
             IPreviewWindow PreviewWindow,
-            VideoViewModel VideoViewModel,
+            VideoSourcesViewModel VideoSourcesViewModel,
+            VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             IWebCamProvider WebCamProvider,
             KeymapViewModel Keymap,
@@ -64,7 +66,8 @@ namespace Captura.ViewModels
             _webcamOverlay = WebcamOverlay;
             _mainWindow = MainWindow;
             _previewWindow = PreviewWindow;
-            _videoViewModel = VideoViewModel;
+            _videoSourcesViewModel = VideoSourcesViewModel;
+            _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
             _webCamProvider = WebCamProvider;
             _keymap = Keymap;
@@ -247,18 +250,18 @@ namespace Captura.ViewModels
         {
             Settings.EnsureOutPath();
 
-            _isVideo = !(_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
+            _isVideo = !(_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
 
-            var extension = _videoViewModel.SelectedVideoWriter.Extension;
+            var extension = _videoWritersViewModel.SelectedVideoWriter.Extension;
 
-            if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
+            if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
                 extension = x.Extension;
 
             _currentFileName = Settings.GetFileName(extension, FileName);
 
-            if (_videoViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
-                _videoViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
-                (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
+            if (_videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
+                _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
+                (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
                 && noVideoSourceProvider.Source is FFmpegAudioItem))
             {
                 if (!FFmpegService.FFmpegExists)
@@ -269,7 +272,7 @@ namespace Captura.ViewModels
                 }
             }
 
-            if (_videoViewModel.SelectedVideoWriterKind is GifWriterProvider)
+            if (_videoWritersViewModel.SelectedVideoWriterKind is GifWriterProvider)
             {
                 if (Settings.Audio.Enabled)
                 {
@@ -286,12 +289,12 @@ namespace Captura.ViewModels
             {
                 imgProvider = GetImageProvider();
             }
-            catch (NotSupportedException e) when (_videoViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
+            catch (NotSupportedException e) when (_videoSourcesViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
                 var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
 
                 if (yes)
-                    _videoViewModel.SetDefaultSource();
+                    _videoSourcesViewModel.SetDefaultSource();
 
                 return false;
             }
@@ -308,7 +311,7 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            if (_videoViewModel.SelectedVideoWriterKind is GifWriterProvider
+            if (_videoWritersViewModel.SelectedVideoWriterKind is GifWriterProvider
                 && Settings.Gif.VariableFrameRate
                 && imgProvider is DeskDuplImageProvider deskDuplImageProvider)
             {
@@ -365,7 +368,7 @@ namespace Captura.ViewModels
                     {
                         _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
                     }
-                    else if (_videoViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
+                    else if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
                     {
                         IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
                         {
@@ -422,7 +425,7 @@ namespace Captura.ViewModels
                 SeparateFileForEveryAudioSource();
             }
 
-            if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
+            if (_videoSourcesViewModel.SelectedVideoSourceKind is RegionSourceProvider)
                 _regionProvider.Lock();
 
             _systemTray.HideNotification();
@@ -539,7 +542,7 @@ namespace Captura.ViewModels
 
             if (cancelled)
             {
-                _videoViewModel.SetDefaultSource();
+                _videoSourcesViewModel.SetDefaultSource();
             }
         }
 
@@ -561,13 +564,13 @@ namespace Captura.ViewModels
             if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
 
-            if (_videoViewModel.SelectedVideoSourceKind is RegionSourceProvider)
+            if (_videoSourcesViewModel.SelectedVideoSourceKind is RegionSourceProvider)
                 _regionProvider.Release();
         }
 
         IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
-            if (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
+            if (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
             _previewWindow.Init(ImgProvider.Width, ImgProvider.Height);
@@ -577,10 +580,10 @@ namespace Captura.ViewModels
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider, string FileName = null)
         {
-            if (_videoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
+            if (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
                 return null;
 
-            return _videoViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            return _videoWritersViewModel.SelectedVideoWriter.GetVideoFileWriter(new VideoWriterArgs
             {
                 FileName = FileName ?? _currentFileName,
                 FrameRate = Settings.Video.FrameRate,
@@ -595,7 +598,7 @@ namespace Captura.ViewModels
         {
             Func<Point, Point> transform = P => P;
 
-            var imageProvider = _videoViewModel.SelectedVideoSourceKind?.Source?.GetImageProvider(Settings.IncludeCursor, out transform);
+            var imageProvider = _videoSourcesViewModel.SelectedVideoSourceKind?.Source?.GetImageProvider(Settings.IncludeCursor, out transform);
 
             if (imageProvider == null)
                 return null;
@@ -655,7 +658,7 @@ namespace Captura.ViewModels
             var fileName = _currentFileName;
 
             // Assume saving to file only when extension is present
-            if (!_waiting && !string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
+            if (!_waiting && !string.IsNullOrWhiteSpace(_videoWritersViewModel.SelectedVideoWriter.Extension))
             {
                 savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
                 _recentList.Add(savingRecentItem);

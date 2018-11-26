@@ -26,7 +26,8 @@ namespace Captura
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
-            Binder.BindSingleton<VideoViewModel>();
+            Binder.BindSingleton<VideoSourcesViewModel>();
+            Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<ScreenShotViewModel>();
             Binder.BindSingleton<RecordingViewModel>();

@@ -11,7 +11,7 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScreenShotViewModel : ViewModelBase
     {
-        readonly VideoViewModel _videoViewModel;
+        readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
@@ -24,7 +24,7 @@ namespace Captura.ViewModels
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
-        public ScreenShotViewModel(VideoViewModel VideoViewModel,
+        public ScreenShotViewModel(VideoSourcesViewModel VideoSourcesViewModel,
             ISystemTray SystemTray,
             LanguageManager Loc,
             Settings Settings,
@@ -37,7 +37,7 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IEnumerable<IImageWriterItem> ImageWriters) : base(Settings, Loc)
         {
-            _videoViewModel = VideoViewModel;
+            _videoSourcesViewModel = VideoSourcesViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
@@ -156,10 +156,10 @@ namespace Captura.ViewModels
         {
             Bitmap bmp = null;
 
-            var selectedVideoSource = _videoViewModel.SelectedVideoSourceKind?.Source;
+            var selectedVideoSource = _videoSourcesViewModel.SelectedVideoSourceKind?.Source;
             var includeCursor = Settings.IncludeCursor;
 
-            switch (_videoViewModel.SelectedVideoSourceKind)
+            switch (_videoSourcesViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
                     IWindow hWnd = Window.DesktopWindow;

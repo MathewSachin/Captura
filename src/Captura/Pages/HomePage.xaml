@@ -34,12 +34,12 @@
                     Padding="5,2"
                     Margin="0,2">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Name}"/>
+                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name}"/>
                     <Label Content="-"
-                           Visibility="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"
+                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"
                            Margin="5,0"/>
-                    <Label Content="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
-                           Visibility="{Binding VideoViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"/>
+                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
+                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"/>
                 </StackPanel>
             </Border>
 
@@ -52,7 +52,7 @@
                     <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
+                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -64,15 +64,15 @@
                 <Label Content="{Binding AudioFormat, Source={StaticResource Loc}, Mode=OneWay}"
                        Margin="0,0,5,0"/>
 
-                <ComboBox ItemsSource="{Binding VideoViewModel.NoVideoSourceProvider.Sources}"
-                          SelectedValue="{Binding VideoViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
+                <ComboBox ItemsSource="{Binding VideoSourcesViewModel.NoVideoSourceProvider.Sources}"
+                          SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
                 
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -88,7 +88,7 @@
                     <Style TargetType="Frame">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -100,7 +100,7 @@
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -148,7 +148,7 @@
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
+                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>

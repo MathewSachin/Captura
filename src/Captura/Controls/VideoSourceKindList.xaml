@@ -4,8 +4,8 @@
              DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <ListView Margin="0,5"
               IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-              ItemsSource="{Binding VideoViewModel.VideoSources}"
-              SelectedValue="{Binding VideoViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
+              ItemsSource="{Binding VideoSourcesViewModel.VideoSources}"
+              SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
               BorderThickness="0.4"
               SelectionMode="Single">
         <ListView.ItemsPanel>

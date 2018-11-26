@@ -20,7 +20,8 @@ namespace Captura.ViewModels
 
         public ScreenShotViewModel ScreenShotViewModel { get; }
         public RecordingViewModel RecordingViewModel { get; }
-        public VideoViewModel VideoViewModel { get; }
+        public VideoSourcesViewModel VideoSourcesViewModel { get; }
+        public VideoWritersViewModel VideoWritersViewModel { get; }
         public AudioSource AudioSource { get; }
         public HotKeyManager HotKeyManager { get; }
 
@@ -44,7 +45,8 @@ namespace Captura.ViewModels
         #endregion
 
         public MainViewModel(AudioSource AudioSource,
-            VideoViewModel VideoViewModel,
+            VideoSourcesViewModel VideoSourcesViewModel,
+            VideoWritersViewModel VideoWritersViewModel,
             IWebCamProvider WebCamProvider,
             Settings Settings,
             LanguageManager LanguageManager,
@@ -58,7 +60,8 @@ namespace Captura.ViewModels
             IRecentList RecentList) : base(Settings, LanguageManager)
         {
             this.AudioSource = AudioSource;
-            this.VideoViewModel = VideoViewModel;
+            this.VideoSourcesViewModel = VideoSourcesViewModel;
+            this.VideoWritersViewModel = VideoWritersViewModel;
             this.WebCamProvider = WebCamProvider;
             this.HotKeyManager = HotKeyManager;
             _dialogService = DialogService;
@@ -93,11 +96,11 @@ namespace Captura.ViewModels
                 }
             };
 
-            VideoViewModel.PropertyChanged += (Sender, Args) =>
+            VideoSourcesViewModel.PropertyChanged += (Sender, Args) =>
             {
                 switch (Args.PropertyName)
                 {
-                    case nameof(VideoViewModel.SelectedVideoSourceKind):
+                    case nameof(VideoSourcesViewModel.SelectedVideoSourceKind):
                     case null:
                     case "":
                         CheckFunctionalityAvailability();
@@ -130,7 +133,7 @@ namespace Captura.ViewModels
 
         void OnRefresh()
         {
-            VideoViewModel.RefreshCodecs();
+            VideoWritersViewModel.RefreshCodecs();
 
             AudioSource.Refresh();
 
@@ -164,7 +167,7 @@ namespace Captura.ViewModels
             if (_hotkeys)
                 HotKeyManager.RegisterAll();
 
-            VideoViewModel.RefreshCodecs();
+            VideoWritersViewModel.RefreshCodecs();
 
             if (Remembered)
             {
@@ -217,7 +220,7 @@ namespace Captura.ViewModels
         {
             var audioAvailable = Settings.Audio.Enabled;
 
-            var videoAvailable = !(VideoViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
+            var videoAvailable = !(VideoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
             
             RecordingViewModel.RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
 

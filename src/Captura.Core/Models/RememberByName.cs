@@ -9,7 +9,8 @@ namespace Captura.Models
     public class RememberByName
     {
         readonly Settings _settings;
-        readonly VideoViewModel _videoViewModel;
+        readonly VideoSourcesViewModel _videoSourcesViewModel;
+        readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
         readonly IRegionProvider _regionProvider;
         readonly IWebCamProvider _webCamProvider;
@@ -24,7 +25,8 @@ namespace Captura.Models
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
 
         public RememberByName(Settings Settings,
-            VideoViewModel VideoViewModel,
+            VideoSourcesViewModel VideoSourcesViewModel,
+            VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             IRegionProvider RegionProvider,
             IWebCamProvider WebCamProvider,
@@ -39,7 +41,8 @@ namespace Captura.Models
             )
         {
             _settings = Settings;
-            _videoViewModel = VideoViewModel;
+            _videoSourcesViewModel = VideoSourcesViewModel;
+            _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
             _regionProvider = RegionProvider;
             _webCamProvider = WebCamProvider;
@@ -56,8 +59,8 @@ namespace Captura.Models
             RememberVideoSource();
 
             // Remember Video Codec
-            _settings.Video.WriterKind = _videoViewModel.SelectedVideoWriterKind.Name;
-            _settings.Video.Writer = _videoViewModel.SelectedVideoWriter.ToString();
+            _settings.Video.WriterKind = _videoWritersViewModel.SelectedVideoWriterKind.Name;
+            _settings.Video.Writer = _videoWritersViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
             _settings.Audio.Microphones = _audioSource.AvailableRecordingSources
@@ -87,10 +90,10 @@ namespace Captura.Models
         {
             void SaveSourceName()
             {
-                _settings.Video.Source = _videoViewModel.SelectedVideoSourceKind.Source.ToString();
+                _settings.Video.Source = _videoSourcesViewModel.SelectedVideoSourceKind.Source.ToString();
             }
 
-            switch (_videoViewModel.SelectedVideoSourceKind)
+            switch (_videoSourcesViewModel.SelectedVideoSourceKind)
             {
                 case NoVideoSourceProvider _:
                     _settings.Video.SourceKind = VideoSourceKindEnum.NoVideo;
@@ -141,7 +144,7 @@ namespace Captura.Models
                     {
                         _regionProvider.SelectedRegion = rect;
 
-                        _videoViewModel.SelectedVideoSourceKind = _regionSourceProvider;
+                        _videoSourcesViewModel.SelectedVideoSourceKind = _regionSourceProvider;
                     }
                     break;
 
@@ -151,7 +154,7 @@ namespace Captura.Models
                     if (source != null)
                     {
                         _noVideoSourceProvider.SelectedSource = source;
-                        _videoViewModel.SelectedVideoSourceKind = _noVideoSourceProvider;
+                        _videoSourcesViewModel.SelectedVideoSourceKind = _noVideoSourceProvider;
                     }
                     break;
 
@@ -161,7 +164,7 @@ namespace Captura.Models
                     if (window != null)
                     {
                         _windowSourceProvider.Set(window.Handle);
-                        _videoViewModel.RestoreSourceKind(_windowSourceProvider);
+                        _videoSourcesViewModel.RestoreSourceKind(_windowSourceProvider);
                     }
                     break;
 
@@ -172,7 +175,7 @@ namespace Captura.Models
                     if (screen != null)
                     {
                         _screenSourceProvider.Set(screen);
-                        _videoViewModel.RestoreSourceKind(_screenSourceProvider);
+                        _videoSourcesViewModel.RestoreSourceKind(_screenSourceProvider);
                     }
 
                     break;
@@ -185,7 +188,7 @@ namespace Captura.Models
                     if (screen != null)
                     {
                         _deskDuplSourceProvider.Set(screen);
-                        _videoViewModel.RestoreSourceKind(_deskDuplSourceProvider);
+                        _videoSourcesViewModel.RestoreSourceKind(_deskDuplSourceProvider);
                     }
 
                     break;
@@ -200,16 +203,16 @@ namespace Captura.Models
             // Restore Video Codec
             if (!string.IsNullOrEmpty(_settings.Video.WriterKind))
             {
-                var kind = _videoViewModel.VideoWriterProviders.FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
+                var kind = _videoWritersViewModel.VideoWriterProviders.FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
 
                 if (kind != null)
                 {
-                    _videoViewModel.SelectedVideoWriterKind = kind;
+                    _videoWritersViewModel.SelectedVideoWriterKind = kind;
 
-                    var codec = _videoViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
+                    var codec = _videoWritersViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
 
                     if (codec != null)
-                        _videoViewModel.SelectedVideoWriter = codec;
+                        _videoWritersViewModel.SelectedVideoWriter = codec;
                 }
             }
 
