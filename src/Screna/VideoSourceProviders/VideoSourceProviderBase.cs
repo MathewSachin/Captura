@@ -31,5 +31,12 @@ namespace Captura.Models
         {
             UnselectRequested?.Invoke();
         }
+
+        public virtual string Serialize()
+        {
+            return Source.ToString();
+        }
+
+        public abstract bool Deserialize(string Serialized);
     }
 }

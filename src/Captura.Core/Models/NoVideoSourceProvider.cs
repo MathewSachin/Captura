@@ -41,5 +41,17 @@ Can be used for audio-only recording.
 Make sure Audio sources are enabled.";
 
         public override string Icon { get; }
+
+        public override bool Deserialize(string Serialized)
+        {
+            var source = Sources.FirstOrDefault(M => M.Name == Serialized);
+
+            if (source == null)
+                return false;
+
+            SelectedSource = source;
+
+            return true;
+        }
     }
 }

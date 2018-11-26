@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Screna;
 
 namespace Captura.Models
@@ -53,6 +54,19 @@ The video is of the initial size of the window.";
         public override bool OnSelect()
         {
             return PickWindow();
+        }
+
+        public override bool Deserialize(string Serialized)
+        {
+            var window = Window.EnumerateVisible()
+                .FirstOrDefault(M => M.Title == Serialized);
+
+            if (window == null)
+                return false;
+
+            Set(window.Handle);
+
+            return true;
         }
     }
 }

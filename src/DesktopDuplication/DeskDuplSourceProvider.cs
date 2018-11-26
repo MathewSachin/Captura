@@ -113,5 +113,24 @@ If it does not work, try running Captura on the Integrated Graphics card.";
         public void OnUnselect() { }
 
         public event Action UnselectRequested;
+
+        public string Serialize()
+        {
+            return Source.ToString();
+        }
+
+        public bool Deserialize(string Serialized)
+        {
+            var screen = ScreenItem.Enumerate()
+                .Select(M => M.Screen)
+                .FirstOrDefault(M => M.DeviceName == Serialized);
+
+            if (screen == null)
+                return false;
+
+            Set(screen);
+
+            return true;
+        }
     }
 }

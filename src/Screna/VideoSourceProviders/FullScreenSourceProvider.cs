@@ -19,5 +19,9 @@ namespace Captura.Models
         public override string Description { get; } = "Record Fullscreen.";
 
         public override string Icon { get; }
+
+        public override string Serialize() => "";
+
+        public override bool Deserialize(string Serialized) => true;
     }
 }

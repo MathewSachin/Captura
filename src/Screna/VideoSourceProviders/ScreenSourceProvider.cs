@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Captura.Models
@@ -59,6 +60,20 @@ namespace Captura.Models
             }
 
             return PickScreen();
+        }
+
+        public override bool Deserialize(string Serialized)
+        {
+            var screen = ScreenItem.Enumerate()
+                .Select(M => M.Screen)
+                .FirstOrDefault(M => M.DeviceName == Serialized);
+
+            if (screen == null)
+                return false;
+
+            Set(screen);
+
+            return true;
         }
     }
 }
