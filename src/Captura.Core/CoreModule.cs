@@ -17,10 +17,9 @@ namespace Captura
             Binder.BindSingleton<VideoViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<ScreenShotViewModel>();
-            Binder.BindSingleton<RecentViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
 
-            Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
+            Binder.Bind<IRecentList, RecentListRepository>();
 
             // Settings
             Binder.BindSingleton<Settings>();

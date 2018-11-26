@@ -13,7 +13,6 @@ namespace Captura.ViewModels
     public class ScreenShotViewModel : ViewModelBase
     {
         readonly VideoViewModel _videoViewModel;
-        readonly RecentViewModel _recentViewModel;
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
@@ -35,7 +34,6 @@ namespace Captura.ViewModels
         }
 
         public ScreenShotViewModel(VideoViewModel VideoViewModel,
-            RecentViewModel RecentViewModel,
             ISystemTray SystemTray,
             LanguageManager Loc,
             Settings Settings,
@@ -48,7 +46,6 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer) : base(Settings, Loc)
         {
             _videoViewModel = VideoViewModel;
-            _recentViewModel = RecentViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;

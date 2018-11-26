@@ -9,6 +9,7 @@
             Binder.BindSingleton<LicensesViewModel>();
             Binder.BindSingleton<ProxySettingsViewModel>();
             Binder.BindSingleton<SoundsViewModel>();
+            Binder.BindSingleton<RecentViewModel>();
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();

@@ -36,13 +36,12 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
         readonly IAudioPlayer _audioPlayer;
-        readonly IIconSet _icons;
 
         readonly KeymapViewModel _keymap;
 
         readonly VideoViewModel _videoViewModel;
         readonly AudioSource _audioSource;
-        readonly RecentViewModel _recentViewModel;
+        readonly IRecentList _recentList;
 
         public DelegateCommand RecordCommand { get; }
         public DelegateCommand PauseCommand { get; }
@@ -57,11 +56,10 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             VideoViewModel VideoViewModel,
             AudioSource AudioSource,
-            RecentViewModel RecentViewModel,
             IWebCamProvider WebCamProvider,
             KeymapViewModel Keymap,
             IAudioPlayer AudioPlayer,
-            IIconSet Icons) : base(Settings, LanguageManager)
+            IRecentList RecentList) : base(Settings, LanguageManager)
         {
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
@@ -70,11 +68,10 @@ namespace Captura.ViewModels
             _previewWindow = PreviewWindow;
             _videoViewModel = VideoViewModel;
             _audioSource = AudioSource;
-            _recentViewModel = RecentViewModel;
             _webCamProvider = WebCamProvider;
             _keymap = Keymap;
             _audioPlayer = AudioPlayer;
-            _icons = Icons;
+            _recentList = RecentList;
 
             RecordCommand = new DelegateCommand(OnRecordExecute);
 
@@ -663,7 +660,7 @@ namespace Captura.ViewModels
             if (!_waiting && !string.IsNullOrWhiteSpace(_videoViewModel.SelectedVideoWriter.Extension))
             {
                 savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
-                _recentViewModel.Add(savingRecentItem);
+                _recentList.Add(savingRecentItem);
             }
 
             // Reference Recorder as it will be set to null

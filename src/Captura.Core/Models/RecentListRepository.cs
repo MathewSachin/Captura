@@ -1,43 +1,32 @@
-﻿using Captura.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 
-namespace Captura.ViewModels
+namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class RecentViewModel : ViewModelBase, IRecentList
+    public class RecentListRepository : IRecentList
     {
         readonly ObservableCollection<IRecentItem> _recentList = new ObservableCollection<IRecentItem>();
 
-        public ReadOnlyObservableCollection<IRecentItem> RecentList { get; }
-        
-        public ICommand ClearCommand { get; }
+        public ReadOnlyObservableCollection<IRecentItem> Items { get; }
 
         readonly IEnumerable<IRecentItemSerializer> _recentItemSerializers;
-        readonly Settings _settings;
 
         static string GetFilePath()
         {
             return Path.Combine(ServiceProvider.SettingsDir, "RecentItems.json");
         }
 
-        public RecentViewModel(Settings Settings,
-            LanguageManager LanguageManager,
-            IEnumerable<IRecentItemSerializer> RecentItemSerializers)
-            : base(Settings, LanguageManager)
+        public RecentListRepository(IEnumerable<IRecentItemSerializer> RecentItemSerializers)
         {
-            RecentList = new ReadOnlyObservableCollection<IRecentItem>(_recentList);
+            Items = new ReadOnlyObservableCollection<IRecentItem>(_recentList);
 
-            _settings = Settings;
             _recentItemSerializers = RecentItemSerializers;
 
             Load();
-
-            ClearCommand = new DelegateCommand(Clear);
         }
 
         void Load()
@@ -52,7 +41,7 @@ namespace Captura.ViewModels
 
                 foreach (var jItem in jarray)
                 {
-                    var jObj = (JObject) jItem;
+                    var jObj = (JObject)jItem;
 
                     var serializer = _recentItemSerializers.FirstOrDefault(M => M.CanDeserialize(jObj));
 
@@ -86,8 +75,6 @@ namespace Captura.ViewModels
             RecentItem.RemoveRequested += () => _recentList.Remove(RecentItem);
         }
 
-        IEnumerable<IRecentItem> IRecentList.Items => RecentList;
-
         public void Clear()
         {
             _recentList.Clear();
@@ -99,7 +86,7 @@ namespace Captura.ViewModels
             {
                 var items = new JArray();
 
-                foreach (var item in RecentList)
+                foreach (var item in Items)
                 {
                     var serializer = _recentItemSerializers.FirstOrDefault(M => M.CanSerialize(item));
 
