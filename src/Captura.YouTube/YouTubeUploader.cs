@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
@@ -10,13 +11,17 @@ using Google.Apis.YouTube.v3.Data;
 
 namespace Captura
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class YouTubeUploader
     {
         readonly IYouTubeApiKeys _apiKeys;
+        readonly ProxySettings _proxySettings;
 
-        public YouTubeUploader(IYouTubeApiKeys ApiKeys)
+        public YouTubeUploader(IYouTubeApiKeys ApiKeys,
+            ProxySettings ProxySettings)
         {
             _apiKeys = ApiKeys;
+            _proxySettings = ProxySettings;
         }
 
         static string GetPrivacyStatus(YouTubePrivacyStatus PrivacyStatus)
@@ -30,6 +35,8 @@ namespace Captura
             string[] Tags = null,
             YouTubePrivacyStatus PrivacyStatus = YouTubePrivacyStatus.Unlisted)
         {
+            WebRequest.DefaultWebProxy = _proxySettings.GetWebProxy();
+
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync
             (
                 new ClientSecrets

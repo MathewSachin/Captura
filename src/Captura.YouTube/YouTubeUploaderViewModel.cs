@@ -5,6 +5,7 @@ using Screna;
 
 namespace Captura.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class YouTubeUploaderViewModel : NotifyPropertyChanged
     {
         readonly YouTubeUploader _uploader;
