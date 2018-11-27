@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System;
+using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
 
@@ -6,6 +7,17 @@ namespace Captura
 {
     public class CoreModule : IModule
     {
+        /// <summary>
+        /// Binds both as Inteface as Class
+        /// </summary>
+        static void BindAsInterfaceAndClass<TInterface, TClass>(IBinder Binder) where  TClass : TInterface
+        {
+            Binder.BindSingleton<TClass>();
+
+            // ReSharper disable once ConvertClosureToMethodGroup
+            Binder.Bind<TInterface>(() => ServiceProvider.Get<TClass>());
+        }
+
         public void OnLoad(IBinder Binder)
         {
             Binder.BindSingleton<HotkeyActionRegisterer>();
@@ -14,21 +26,13 @@ namespace Captura
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
-            Binder.BindSingleton<VideoViewModel>();
-            Binder.BindSingleton<ProxySettingsViewModel>();
-            Binder.BindSingleton<LicensesViewModel>();
-            Binder.BindSingleton<CrashLogsViewModel>();
+            Binder.BindSingleton<VideoSourcesViewModel>();
+            Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<ScreenShotViewModel>();
-            Binder.BindSingleton<RecentViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
-            Binder.BindSingleton<FileNameFormatViewModel>();
 
-            Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
-
-            Binder.BindSingleton<CustomOverlaysViewModel>();
-            Binder.BindSingleton<CustomImageOverlaysViewModel>();
-            Binder.BindSingleton<CensorOverlaysViewModel>();
+            Binder.Bind<IRecentList, RecentListRepository>();
 
             // Settings
             Binder.BindSingleton<Settings>();
@@ -49,32 +53,33 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             // Image Writers
-            Binder.BindSingleton<DiskWriter>();
-            Binder.BindSingleton<ClipboardWriter>();
-            Binder.BindSingleton<ImageUploadWriter>();
+            BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ClipboardWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ImageUploadWriter>(Binder);
 
             Binder.Bind<IImageUploader, ImgurUploader>();
 
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<DiskWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ClipboardWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImageUploadWriter>);
-
             // Video Writer Providers
-            Binder.BindSingleton<FFmpegWriterProvider>();
-            Binder.BindSingleton<GifWriterProvider>();
-            Binder.BindSingleton<StreamingWriterProvider>();
-            Binder.BindSingleton<DiscardWriterProvider>();
-            Binder.BindSingleton<SharpAviWriterProvider>();
+            BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
 
             Binder.BindSingleton<FullScreenItem>();
 
             // Video Source Providers
-            Binder.BindSingleton<ScreenSourceProvider>();
-            Binder.BindSingleton<FullScreenSourceProvider>();
-            Binder.BindSingleton<RegionSourceProvider>();
-            Binder.BindSingleton<WindowSourceProvider>();
-            Binder.BindSingleton<DeskDuplSourceProvider>();
-            Binder.BindSingleton<NoVideoSourceProvider>();
+            BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>(Binder);
+
+            if (Windows8OrAbove)
+            {
+                BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>(Binder);
+            }
+
 
             // Folder Browser Dialog
             Binder.Bind<IDialogService, DialogService>();
@@ -95,6 +100,18 @@ namespace Captura
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
             else Binder.Bind<AudioSource, NAudioSource>();
+        }
+
+        bool Windows8OrAbove
+        {
+            get
+            {
+                // All versions above Windows 8 give the same version number
+                var version = new Version(6, 2, 9200, 0);
+
+                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                       Environment.OSVersion.Version >= version;
+            }
         }
     }
 }

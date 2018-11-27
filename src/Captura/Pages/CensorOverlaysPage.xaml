@@ -5,7 +5,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       Title="Censor Overlays">
     <Grid>
-        <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CensorOverlays, Source={StaticResource ServiceLocator}}">
+        <DockPanel DataContext="{Binding CensorOverlays, Source={StaticResource ServiceLocator}}">
             <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"

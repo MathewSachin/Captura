@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:captura="clr-namespace:Captura">
     <Grid>
-        <DockPanel DataContext="{Binding MainViewModel.RecordingViewModel.CustomOverlays, Source={StaticResource ServiceLocator}}">
+        <DockPanel DataContext="{Binding CustomOverlays, Source={StaticResource ServiceLocator}}">
             <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"

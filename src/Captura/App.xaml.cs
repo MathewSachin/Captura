@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using Captura.Models;
+using Captura.ViewModels;
 using Captura.Views;
 using CommandLine;
 
@@ -46,6 +47,7 @@ namespace Captura
             };
 
             ServiceProvider.LoadModule(new CoreModule());
+            ServiceProvider.LoadModule(new ViewCoreModule());
 
             Parser.Default.ParseArguments<CmdOptions>(Args.Args)
                 .WithParsed(M => CmdOptions = M);

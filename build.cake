@@ -17,50 +17,6 @@ var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 #endregion
 
 #region Functions
-IEnumerable<ConvertableDirectoryPath> EnumerateOutputFolders()
-{
-    var outputProjectNames = new[] { "Captura.Console", "Captura", "Tests" };
-
-    foreach (var output in outputProjectNames)
-    {
-        yield return sourceFolder + Directory(output) + Directory("bin") + Directory(configuration);
-    }
-}
-
-// Restores native dlls
-void NativeRestore()
-{
-    Information("Restoring Native libraries...");
-
-    var bass = RestoreBass();
-    var bassmix = RestoreBassMix();
-
-    foreach (var output in EnumerateOutputFolders())
-    {
-        var path = output;
-
-        if (configuration == Release)
-        {
-            path += Directory("lib");
-        }
-
-        EnsureDirectoryExists(path);
-
-        CopyFileToDirectory(bass, path);
-        CopyFileToDirectory(bassmix, path);
-    }
-}
-
-void CopyLicenses()
-{
-    foreach (var output in EnumerateOutputFolders())
-    {
-        var path = output + Directory("licenses");
-
-        CopyDirectory(licensesFolder, path);
-    }
-}
-
 void PopulateOutput()
 {
     // Copy License files
@@ -140,8 +96,16 @@ var nugetRestoreTask = Task("Nuget-Restore").Does(() =>
     });
 });
 
+// Restores native dlls
+var nativeRestoreTask = Task("Native-Restore").Does(() => 
+{
+    RestoreBass();
+    RestoreBassMix();
+});
+
 var buildTask = Task("Build")
     .IsDependentOn(nugetRestoreTask)
+    .IsDependentOn(nativeRestoreTask)
     .Does(() =>
 {
     MSBuild(slnPath, settings =>
@@ -150,10 +114,6 @@ var buildTask = Task("Build")
             .SetVerbosity(Verbosity.Minimal)
             .WithTarget("Rebuild");
     });
-
-    NativeRestore();
-
-    CopyLicenses();
 });
 
 var cleanOutputTask = Task("Clean-Output").Does(() => CleanDirectory(distFolder));

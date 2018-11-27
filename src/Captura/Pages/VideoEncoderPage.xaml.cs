@@ -2,15 +2,15 @@
 
 namespace Captura
 {
-    public partial class HomePage
+    public partial class VideoEncoderPage
     {
-        public HomePage()
+        public VideoEncoderPage()
         {
             InitializeComponent();
 
             if (DataContext is MainViewModel vm)
             {
-                vm.Refreshed += () => AudioDropdown.Shake();
+                vm.Refreshed += () => VideoWriterComboBox.Shake();
             }
         }
     }
