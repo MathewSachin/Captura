@@ -52,7 +52,7 @@
                                       Command="{Binding CopyLinkCommand}"
                                       DockPanel.Dock="Right"/>
 
-                <TextBlock>
+                <TextBlock VerticalAlignment="Center">
                     <Hyperlink Command="{Binding OpenVideoCommand}"
                                NavigateUri="{Binding Link, Mode=OneWay}"
                                Foreground="LimeGreen">
@@ -60,6 +60,11 @@
                     </Hyperlink>
                 </TextBlock>
             </DockPanel>
+
+            <ProgressBar DockPanel.Dock="Bottom"
+                         Value="{Binding Progress}"
+                         Margin="0,2"
+                         Height="1"/>
 
             <ListView ItemsSource="{Binding PrivacyStatuses}"
                       SelectedValue="{Binding PrivacyStatus}"

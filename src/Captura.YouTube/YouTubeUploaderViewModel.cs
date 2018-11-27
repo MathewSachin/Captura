@@ -57,7 +57,13 @@ namespace Captura.ViewModels
 
             var fileSize = new FileInfo(FileName).Length;
 
-            _uploader.Uploaded += L => Link = L;
+            _uploader.Uploaded += L =>
+            {
+                Progress = 100;
+
+                Link = L;
+            };
+
             _uploader.ErrorOccured += E => ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
 
             _uploader.BytesSent += B => Progress = (int)(B * 100 / fileSize);
