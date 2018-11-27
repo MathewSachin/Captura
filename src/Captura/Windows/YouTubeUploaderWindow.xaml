@@ -1,15 +1,12 @@
 ﻿<Window x:Class="Captura.YouTubeUploaderWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         xmlns:captura="clr-namespace:Captura"
         Title="YouTube Uploader"
         Height="400"
-        Width="400"
-        Background="{DynamicResource WindowBackground}">
-    <Window.DataContext>
-        <viewModels:YouTubeUploaderViewModel/>
-    </Window.DataContext>
+        Width="450"
+        Background="{DynamicResource WindowBackground}"
+        DataContext="{Binding YouTubeUploaderViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <DockPanel Margin="10">
             <StackPanel Orientation="Horizontal"

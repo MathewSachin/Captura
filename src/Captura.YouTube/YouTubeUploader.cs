@@ -10,15 +10,15 @@ using Google.Apis.YouTube.v3.Data;
 
 namespace Captura
 {
-    public enum YouTubePrivacyStatus
-    {
-        Public,
-        Unlisted,
-        Private
-    }
-
     public class YouTubeUploader
     {
+        readonly IYouTubeApiKeys _apiKeys;
+
+        public YouTubeUploader(IYouTubeApiKeys ApiKeys)
+        {
+            _apiKeys = ApiKeys;
+        }
+
         static string GetPrivacyStatus(YouTubePrivacyStatus PrivacyStatus)
         {
             return PrivacyStatus.ToString().ToLower();
@@ -34,8 +34,8 @@ namespace Captura
             (
                 new ClientSecrets
                 {
-                    ClientId = ApiKeys.YouTubeClientId,
-                    ClientSecret = ApiKeys.YouTubeClientSecret
+                    ClientId = _apiKeys.YouTubeClientId,
+                    ClientSecret = _apiKeys.YouTubeClientSecret
                 },
                 // This OAuth 2.0 access scope allows an application to upload files to the
                 // authenticated user's YouTube channel, but doesn't allow other types of access.

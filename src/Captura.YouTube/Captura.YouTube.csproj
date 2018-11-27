@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.36.1.1226" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <ProjectReference Include="..\Screna\Screna.csproj" />
+  </ItemGroup>
+</Project>

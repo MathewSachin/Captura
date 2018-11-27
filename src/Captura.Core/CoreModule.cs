@@ -23,6 +23,7 @@ namespace Captura
             Binder.BindSingleton<HotkeyActionRegisterer>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
             Binder.Bind<IImagurApiKeys, ApiKeys>();
+            Binder.Bind<IYouTubeApiKeys, ApiKeys>();
 
             // Singleton View Models
             Binder.BindSingleton<MainViewModel>();
