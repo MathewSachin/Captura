@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              DataContext="{Binding UpdateCheckerViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <Grid.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="Background" Value="Transparent"/>
@@ -18,7 +22,14 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
         </Grid.Resources>
-        <Button Visibility="{Binding Checking, Converter={StaticResource BoolToVisibilityConverter}}">
+
+        <TextBlock Foreground="{DynamicResource Accent}"
+                   Text="{Binding BuildName}"
+                   VerticalAlignment="Center"
+                   Grid.Column="1"/>
+
+        <Button Grid.Column="0"
+                Visibility="{Binding Checking, Converter={StaticResource BoolToVisibilityConverter}}">
             <DockPanel>
                 <Path Data="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"
                       Width="15"
@@ -46,7 +57,8 @@
             </DockPanel>
         </Button>
 
-        <Button Command="{Binding CheckCommand}"
+        <Button Grid.Column="0"
+                Command="{Binding CheckCommand}"
                 ToolTip="Check Again"
                 Visibility="{Binding CheckFailed, Converter={StaticResource BoolToVisibilityConverter}}">
             <Button.Content>
@@ -61,7 +73,8 @@
             </Button.Content>
         </Button>
 
-        <Button Command="{Binding GoToDownload}">
+        <Button Grid.Column="0"
+                Command="{Binding GoToDownload}">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -91,7 +104,8 @@
             </Button.Content>
         </Button>
 
-        <Button Command="{Binding CheckCommand}"
+        <Button Grid.Column="0"
+                Command="{Binding CheckCommand}"
                 ToolTip="Check Again">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">

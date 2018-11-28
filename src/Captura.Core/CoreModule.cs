@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
@@ -100,6 +101,15 @@ namespace Captura
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
             else Binder.Bind<AudioSource, NAudioSource>();
+
+            // Update Checker
+            var version = Assembly.GetEntryAssembly().GetName().Version;
+
+            if (version.Major == 0)
+            {
+                Binder.Bind<IUpdateChecker, DevUpdateChecker>();
+            }
+            else Binder.Bind<IUpdateChecker, UpdateChecker>();
         }
 
         bool Windows8OrAbove
