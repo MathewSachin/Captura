@@ -103,16 +103,16 @@ namespace Captura
             else Binder.Bind<AudioSource, NAudioSource>();
 
             // Update Checker
-            var version = Assembly.GetEntryAssembly().GetName().Version;
+            var version = Assembly.GetEntryAssembly()?.GetName().Version;
 
-            if (version.Major == 0)
+            if (version?.Major == 0)
             {
                 Binder.Bind<IUpdateChecker, DevUpdateChecker>();
             }
             else Binder.Bind<IUpdateChecker, UpdateChecker>();
         }
 
-        bool Windows8OrAbove
+        static bool Windows8OrAbove
         {
             get
             {
