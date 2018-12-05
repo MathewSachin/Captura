@@ -1,12 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Captura.Base</AssemblyName>
-    <RootNamespace>Captura</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0"/>
-    <PackageReference Include="Ninject" Version="3.3.4"/>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
   </ItemGroup>
 </Project>
