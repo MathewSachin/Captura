@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FFmpeg.AutoGen" Version="4.1.0.1" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />

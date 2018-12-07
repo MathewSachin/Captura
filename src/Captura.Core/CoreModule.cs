@@ -66,6 +66,7 @@ namespace Captura
             BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
             BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
             BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegInteropWriterProvider>(Binder);
 
             Binder.BindSingleton<FullScreenItem>();
 
