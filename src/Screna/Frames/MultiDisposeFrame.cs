@@ -52,6 +52,11 @@ namespace Screna
             _frame.CopyTo(Buffer, Length);
         }
 
+        public void CopyTo(IntPtr Buffer)
+        {
+            _frame.CopyTo(Buffer);
+        }
+
         public IBitmapEditor GetEditor() => _frame.GetEditor();
     }
 }

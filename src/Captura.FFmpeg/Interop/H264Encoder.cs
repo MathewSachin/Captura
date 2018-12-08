@@ -5,18 +5,13 @@ using Captura;
 
 namespace FFmpeg.AutoGen.Example
 {
-    public sealed unsafe class H264VideoStreamEncoder : IDisposable, IVideoFileWriter
+    public sealed unsafe class H264VideoStreamEncoder : IVideoFileWriter
     {
         readonly int _fps;
         readonly Size _frameSize;
-        readonly int _linesizeU;
-        readonly int _linesizeV;
-        readonly int _linesizeY;
         readonly AVCodec* _pCodec;
         readonly AVCodecContext* _pCodecContext;
         readonly Stream _stream;
-        readonly int _uSize;
-        readonly int _ySize;
 
         readonly VideoFrameConverter _vfc;
 
@@ -66,13 +61,6 @@ namespace FFmpeg.AutoGen.Example
 
             ffmpeg.avcodec_open2(_pCodecContext, _pCodec, null).ThrowExceptionIfError();
 
-            _linesizeY = FrameSize.Width;
-            _linesizeU = FrameSize.Width / 2;
-            _linesizeV = FrameSize.Width / 2;
-
-            _ySize = _linesizeY * FrameSize.Height;
-            _uSize = _linesizeU * FrameSize.Height / 2;
-
             const AVPixelFormat sourcePixelFormat = AVPixelFormat.AV_PIX_FMT_BGRA;
             const AVPixelFormat destinationPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
@@ -94,37 +82,8 @@ namespace FFmpeg.AutoGen.Example
             ffmpeg.av_free(_pCodec);
         }
 
-        void CheckFrame(AVFrame Frame)
-        {
-            if (Frame.format != (int)_pCodecContext->pix_fmt)
-                throw new ArgumentException("Invalid pixel format.", nameof(Frame));
-
-            if (Frame.width != _frameSize.Width)
-                throw new ArgumentException("Invalid width.", nameof(Frame));
-
-            if (Frame.height != _frameSize.Height)
-                throw new ArgumentException("Invalid height.", nameof(Frame));
-
-            if (Frame.linesize[0] != _linesizeY)
-                throw new ArgumentException("Invalid Y linesize.", nameof(Frame));
-
-            if (Frame.linesize[1] != _linesizeU)
-                throw new ArgumentException("Invalid U linesize.", nameof(Frame));
-
-            if (Frame.linesize[2] != _linesizeV)
-                throw new ArgumentException("Invalid V linesize.", nameof(Frame));
-
-            if (Frame.data[1] - Frame.data[0] != _ySize)
-                throw new ArgumentException("Invalid Y data size.", nameof(Frame));
-
-            if (Frame.data[2] - Frame.data[1] != _uSize)
-                throw new ArgumentException("Invalid U data size.", nameof(Frame));
-        }
-
         void Encode(AVFrame Frame)
         {
-            CheckFrame(Frame);
-
             var pPacket = ffmpeg.av_packet_alloc();
             try
             {

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Captura.FFmpeg.Interop;
 using FFmpeg.AutoGen.Example;
 
 namespace Captura.Models
@@ -6,10 +7,6 @@ namespace Captura.Models
     public class FFmpegInteropItem : IVideoWriterItem
     {
         public string Description => "Interop H.264";
-        
-        public FFmpegInteropItem()
-        {
-        }
 
         public string Extension => ".mp4";
 
@@ -20,7 +17,7 @@ namespace Captura.Models
         {
             var size = new Size(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
-            return new H264VideoStreamEncoder(Args.FileName, Args.FrameRate, size);
+            return new FFmux(Args.FileName, size, Args.FrameRate);
         }
     }
 }

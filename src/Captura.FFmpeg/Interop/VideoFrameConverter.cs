@@ -12,25 +12,30 @@ namespace FFmpeg.AutoGen.Example
         readonly int_array4 _dstLinesize;
         readonly SwsContext* _pConvertContext;
 
-        public VideoFrameConverter(Size sourceSize,
-            AVPixelFormat sourcePixelFormat,
-            Size destinationSize,
-            AVPixelFormat destinationPixelFormat)
+        public VideoFrameConverter(Size SourceSize,
+            AVPixelFormat SourcePixelFormat,
+            Size DestinationSize,
+            AVPixelFormat DestinationPixelFormat)
         {
-            _destinationSize = destinationSize;
+            _destinationSize = DestinationSize;
 
-            _pConvertContext = ffmpeg.sws_getContext(sourceSize.Width, sourceSize.Height, sourcePixelFormat,
-            destinationSize.Width,
-            destinationSize.Height, destinationPixelFormat,
-            ffmpeg.SWS_FAST_BILINEAR, null, null, null);
-            if (_pConvertContext == null) throw new ApplicationException("Could not initialize the conversion context.");
+            _pConvertContext = ffmpeg.sws_getContext(SourceSize.Width,
+                SourceSize.Height,
+                SourcePixelFormat,
+                DestinationSize.Width,
+                DestinationSize.Height,
+                DestinationPixelFormat,
+                ffmpeg.SWS_FAST_BILINEAR, null, null, null);
 
-            var convertedFrameBufferSize = ffmpeg.av_image_get_buffer_size(destinationPixelFormat, destinationSize.Width, destinationSize.Height, 1);
+            if (_pConvertContext == null)
+                throw new ApplicationException("Could not initialize the conversion context.");
+
+            var convertedFrameBufferSize = ffmpeg.av_image_get_buffer_size(DestinationPixelFormat, DestinationSize.Width, DestinationSize.Height, 1);
             _convertedFrameBufferPtr = Marshal.AllocHGlobal(convertedFrameBufferSize);
             _dstData = new byte_ptrArray4();
             _dstLinesize = new int_array4();
 
-            ffmpeg.av_image_fill_arrays(ref _dstData, ref _dstLinesize, (byte*)_convertedFrameBufferPtr, destinationPixelFormat, destinationSize.Width, destinationSize.Height, 1);
+            ffmpeg.av_image_fill_arrays(ref _dstData, ref _dstLinesize, (byte*)_convertedFrameBufferPtr, DestinationPixelFormat, DestinationSize.Width, DestinationSize.Height, 1);
         }
 
         public void Dispose()

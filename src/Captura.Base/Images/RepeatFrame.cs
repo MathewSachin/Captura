@@ -24,6 +24,11 @@ namespace Captura
             throw new NotImplementedException();
         }
 
+        public void CopyTo(IntPtr Buffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public IBitmapEditor GetEditor() => throw new NotImplementedException();
     }
 }

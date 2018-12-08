@@ -1,35 +1,51 @@
 ﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using FFmpeg.AutoGen;
 using FFmpeg.AutoGen.Example;
 
 namespace Captura.FFmpeg.Interop
 {
-    public unsafe class FFmux : IDisposable
+    public unsafe class FFmux : IVideoFileWriter
     {
-        AVFrame* frame;
-        AVFormatContext** oc;
+        int frame_count;
+        readonly AVFormatContext* oc;
+        readonly Size _frameSize;
+        readonly int _fps;
 
-        public FFmux(string FileName)
+        AVCodecContext* videoCodecContext, audioCodecContext;
+        AVCodec* videoCodec, audioCodec;
+
+        readonly VideoFrameConverter _vfc;
+
+        public FFmux(string FileName, Size FrameSize, int Fps)
         {
-            ffmpeg.avformat_alloc_output_context2(oc, null, null, FileName);
+            this._frameSize = FrameSize;
+            _fps = Fps;
 
-            if (oc == null)
+            AVFormatContext* formatContext;
+
+            ffmpeg.avformat_alloc_output_context2(&formatContext, null, null, FileName);
+
+            if (formatContext == null)
             {
-                ffmpeg.avformat_alloc_output_context2(oc, null, "mpeg", FileName);
+                ffmpeg.avformat_alloc_output_context2(&formatContext, null, "mpeg", FileName);
             }
 
-            if (oc == null)
+            if (formatContext == null)
             {
                 throw new Exception("");
             }
 
-            var fmt = (*oc)->oformat;
+            oc = formatContext;
+
+            var fmt = oc->oformat;
 
             AVStream* audio_st = null, video_st = null;
 
             if (fmt->video_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
-                video_st = AddStream(out var video_codec, fmt->video_codec);
+                video_st = AddStream(fmt->video_codec);
             }
 
             if (fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
@@ -45,33 +61,39 @@ namespace Captura.FFmpeg.Interop
             {
             }
 
-            ffmpeg.av_dump_format(*oc, 0, FileName, 1);
-
-            ffmpeg.avformat_write_header(*oc, null).ThrowExceptionIfError();
-
-            if (frame != null)
+            ffmpeg.av_dump_format(oc, 0, FileName, 1);
+            
+            // Open the output file, if needed
+            if ((fmt->flags & ffmpeg.AVFMT_NOFILE) == 0)
             {
-                frame->pts = 0;
+                ffmpeg.avio_open(&oc->pb, FileName, ffmpeg.AVIO_FLAG_WRITE).ThrowExceptionIfError();
             }
+
+            ffmpeg.avformat_write_header(oc, null).ThrowExceptionIfError();
+
+            const AVPixelFormat sourcePixelFormat = AVPixelFormat.AV_PIX_FMT_BGRA;
+            const AVPixelFormat destinationPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
+
+            _vfc = new VideoFrameConverter(FrameSize, sourcePixelFormat, FrameSize, destinationPixelFormat);
         }
 
-        AVStream* AddStream(out AVCodec* codec, AVCodecID codec_id)
+        AVStream* AddStream(AVCodecID codec_id)
         {
-            codec = ffmpeg.avcodec_find_encoder(codec_id);
+            var codec = ffmpeg.avcodec_find_encoder(codec_id);
 
             if (codec == null)
             {
                 throw new Exception("Could not find codec");
             }
 
-            var st = ffmpeg.avformat_new_stream(*oc, codec);
+            var st = ffmpeg.avformat_new_stream(oc, codec);
 
             if (st == null)
             {
                 throw new Exception("Could not allocate stream");
             }
 
-            st->id = (int)((*oc)->nb_streams - 1);
+            st->id = (int)(oc->nb_streams - 1);
             var c = st->codec;
 
             switch (codec->type)
@@ -81,20 +103,34 @@ namespace Captura.FFmpeg.Interop
                     c->bit_rate = 64_000;
                     c->sample_rate = 44_100;
                     c->channels = 2;
+
+                    audioCodec = codec;
+                    audioCodecContext = c;
                     break;
 
                 case AVMediaType.AVMEDIA_TYPE_VIDEO:
                     c->codec_id = codec_id;
-                    c->bit_rate = 4_00_000;
-                    c->width = 1920;
-                    c->height = 1080;
+                    c->bit_rate = 8_00_000;
+                    c->width = _frameSize.Width;
+                    c->height = _frameSize.Height;
                     c->time_base.num = 1;
+                    c->time_base.den = _fps;
                     c->gop_size = 12;
                     c->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
+
+                    if (codec_id == AVCodecID.AV_CODEC_ID_H264)
+                    {
+                        ffmpeg.av_opt_set(c->priv_data, "preset", "ultrafast", 0);
+                    }
+
+                    ffmpeg.avcodec_open2(c, codec, null).ThrowExceptionIfError();
+
+                    videoCodec = codec;
+                    videoCodecContext = c;
                     break;
             }
 
-            if (((*oc)->oformat->flags & ffmpeg.AVFMT_GLOBALHEADER) != 0)
+            if ((oc->oformat->flags & ffmpeg.AVFMT_GLOBALHEADER) != 0)
             {
                 c->flags = ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
             }
@@ -104,9 +140,88 @@ namespace Captura.FFmpeg.Interop
 
         public void Dispose()
         {
-            ffmpeg.av_write_trailer(*oc);
+            ffmpeg.av_write_trailer(oc);
 
-            ffmpeg.avformat_free_context(*oc);
+            ffmpeg.avcodec_close(videoCodecContext);
+
+            //ffmpeg.avcodec_close(audioCodecContext);
+
+            if ((oc->oformat->flags & ffmpeg.AVFMT_NOFILE) == 0)
+            {
+                ffmpeg.avio_close(oc->pb);
+            }
+
+            ffmpeg.avformat_free_context(oc);
+
+            _vfc.Dispose();
         }
+
+        void Write()
+        {
+            var dataLength = _frameSize.Height * _frameSize.Width * 4;
+
+            var data = new byte_ptrArray8 { [0] = _buffer };
+            var linesize = new int_array8 { [0] = dataLength / _frameSize.Height };
+
+            var frame = new AVFrame
+            {
+                data = data,
+                linesize = linesize,
+                format = (int)AVPixelFormat.AV_PIX_FMT_YUV420P,
+                height = _frameSize.Height
+            };
+
+            var convertedFrame = _vfc.Convert(frame);
+            convertedFrame.pts = frame_count++ * _fps;
+            Encode(convertedFrame);
+        }
+
+        void Encode(AVFrame Frame)
+        {
+            var pPacket = ffmpeg.av_packet_alloc();
+            try
+            {
+                int error;
+                do
+                {
+                    ffmpeg.avcodec_send_frame(videoCodecContext, &Frame).ThrowExceptionIfError();
+
+                    error = ffmpeg.avcodec_receive_packet(videoCodecContext, pPacket);
+                } while (error == ffmpeg.AVERROR(ffmpeg.EAGAIN));
+
+                error.ThrowExceptionIfError();
+
+                ffmpeg.av_write_frame(oc, pPacket);
+            }
+            finally
+            {
+                ffmpeg.av_packet_free(&pPacket);
+            }
+        }
+
+        byte* _buffer;
+
+        public void WriteFrame(IBitmapFrame Image)
+        {
+            if (Image is RepeatFrame)
+            {
+                ++frame_count;
+                return;
+            }
+
+            if (_buffer == null)
+            {
+                _buffer = (byte*)Marshal.AllocHGlobal(_frameSize.Width * _frameSize.Height * 4);
+            }
+
+            using (Image)
+                Image.CopyTo((IntPtr) _buffer);
+
+            Write();
+        }
+
+        public bool SupportsAudio { get; }
+
+        public void WriteAudio(byte[] Buffer, int Length) { }
     }
 }
