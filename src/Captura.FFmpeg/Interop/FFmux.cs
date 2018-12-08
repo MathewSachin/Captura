@@ -16,6 +16,8 @@ namespace Captura.FFmpeg.Interop
         AVCodecContext* videoCodecContext, audioCodecContext;
         AVCodec* videoCodec, audioCodec;
 
+        readonly AVStream* video_st;
+
         readonly VideoFrameConverter _vfc;
 
         public FFmux(string FileName, Size FrameSize, int Fps)
@@ -41,7 +43,7 @@ namespace Captura.FFmpeg.Interop
 
             var fmt = oc->oformat;
 
-            AVStream* audio_st = null, video_st = null;
+            AVStream* audio_st = null;
 
             if (fmt->video_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
@@ -75,6 +77,8 @@ namespace Captura.FFmpeg.Interop
             const AVPixelFormat destinationPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
             _vfc = new VideoFrameConverter(FrameSize, sourcePixelFormat, FrameSize, destinationPixelFormat);
+
+            InitFrame();
         }
 
         AVStream* AddStream(AVCodecID codec_id)
@@ -110,13 +114,14 @@ namespace Captura.FFmpeg.Interop
 
                 case AVMediaType.AVMEDIA_TYPE_VIDEO:
                     c->codec_id = codec_id;
-                    c->bit_rate = 8_00_000;
+                    c->bit_rate = 4_000_000;
                     c->width = _frameSize.Width;
                     c->height = _frameSize.Height;
                     c->time_base.num = 1;
                     c->time_base.den = _fps;
                     c->gop_size = 12;
                     c->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
+                    c->max_b_frames = 1;
 
                     if (codec_id == AVCodecID.AV_CODEC_ID_H264)
                     {
@@ -156,23 +161,31 @@ namespace Captura.FFmpeg.Interop
             _vfc.Dispose();
         }
 
-        void Write()
+        AVFrame frame;
+
+        void InitFrame()
         {
+            _buffer = (byte*)Marshal.AllocHGlobal(_frameSize.Width * _frameSize.Height * 4);
+
             var dataLength = _frameSize.Height * _frameSize.Width * 4;
 
             var data = new byte_ptrArray8 { [0] = _buffer };
             var linesize = new int_array8 { [0] = dataLength / _frameSize.Height };
 
-            var frame = new AVFrame
+            frame = new AVFrame
             {
                 data = data,
                 linesize = linesize,
                 format = (int)AVPixelFormat.AV_PIX_FMT_YUV420P,
                 height = _frameSize.Height
             };
+        }
 
+        void Write()
+        {
             var convertedFrame = _vfc.Convert(frame);
-            convertedFrame.pts = frame_count++ * _fps;
+            convertedFrame.pts = frame_count++ * _fps * 100;
+
             Encode(convertedFrame);
         }
 
@@ -191,6 +204,9 @@ namespace Captura.FFmpeg.Interop
 
                 error.ThrowExceptionIfError();
 
+                pPacket->stream_index = video_st->index;
+                pPacket->pts = Frame.pts;
+
                 ffmpeg.av_write_frame(oc, pPacket);
             }
             finally
@@ -207,11 +223,6 @@ namespace Captura.FFmpeg.Interop
             {
                 ++frame_count;
                 return;
-            }
-
-            if (_buffer == null)
-            {
-                _buffer = (byte*)Marshal.AllocHGlobal(_frameSize.Width * _frameSize.Height * 4);
             }
 
             using (Image)
