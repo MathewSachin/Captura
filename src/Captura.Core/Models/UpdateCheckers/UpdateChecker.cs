@@ -8,22 +8,24 @@ using Newtonsoft.Json.Linq;
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class UpdateChecker
+    public class UpdateChecker : IUpdateChecker
     {
         readonly ProxySettings _proxySettings;
+        readonly Version _currentVersion;
 
         public UpdateChecker(ProxySettings ProxySettings)
         {
             _proxySettings = ProxySettings;
+
+            _currentVersion = Assembly.GetEntryAssembly().GetName().Version;
         }
 
         public void GoToDownloadsPage()
         {
-            const string downloadsUrl = "https://mathewsachin.github.io/Captura/download";
-
-            Process.Start(downloadsUrl);
+            Process.Start(DownloadsUrl);
         }
 
+        const string DownloadsUrl = "https://mathewsachin.github.io/Captura/download";
         const string LatestReleaseUrl = "https://api.github.com/repos/MathewSachin/Captura/releases/latest";
 
         public async Task<Version> Check()
@@ -38,12 +40,9 @@ namespace Captura.Models
                 var jObj = JObject.Parse(result);
 
                 // tag_name = v0.0.0 for stable releases
-                var newVersion = jObj["tag_name"].ToString();
-                var version = Version.Parse(newVersion.Substring(1));
+                var version = Version.Parse(jObj["tag_name"].ToString().Substring(1));
 
-                var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-
-                if (version > currentVersion)
+                if (version > _currentVersion)
                 {
                     return version;
                 }
@@ -51,5 +50,7 @@ namespace Captura.Models
 
             return null;
         }
+
+        public string BuildName => "STABLE";
     }
 }

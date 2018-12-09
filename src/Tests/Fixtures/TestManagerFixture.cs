@@ -26,7 +26,7 @@ namespace Captura.Tests
             const string config = "Release";
 #endif
 
-            for (var i = 0; i < 4; ++i)
+            for (var i = 0; i < 5; ++i)
                 path = Path.GetDirectoryName(path);
 
             return Path.Combine(path, $"{FolderName}/bin/{config}/{FileName}");

@@ -1,13 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Captura.SharpAvi</AssemblyName>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SharpAvi" Version="2.1.1"/>
+    <PackageReference Include="SharpAvi" Version="2.1.1" />
   </ItemGroup>
 </Project>

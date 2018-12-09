@@ -6,21 +6,23 @@ using Captura.Models;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class UpdateCheckerViewModel : NotifyPropertyChanged
     {
-        readonly UpdateChecker _updateChecker;
+        readonly IUpdateChecker _updateChecker;
 
-        public UpdateCheckerViewModel(UpdateChecker UpdateChecker)
+        public UpdateCheckerViewModel(IUpdateChecker UpdateChecker)
         {
             _updateChecker = UpdateChecker;
+            BuildName = UpdateChecker.BuildName;
+
             Check();
 
             CheckCommand = new DelegateCommand(Check);
 
             GoToDownload = new DelegateCommand(UpdateChecker.GoToDownloadsPage);
         }
+
+        public string BuildName { get; }
 
         void Check()
         {
@@ -46,7 +48,7 @@ namespace Captura.ViewModels
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.ToString());
 
                     CheckFailed = true;
                 }

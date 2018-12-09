@@ -1,16 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Captura.Fakes</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj"/>
-    <ProjectReference Include="..\Screna\Screna.csproj"/>
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
+    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj" />
+    <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
 </Project>

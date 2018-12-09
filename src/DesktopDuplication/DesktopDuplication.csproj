@@ -1,18 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>DesktopDuplication</AssemblyName>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Drawing" />
+    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
+    <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj"/>
-    <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj"/>
-    <ProjectReference Include="..\Screna\Screna.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0"/>
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0" />
   </ItemGroup>
 </Project>
