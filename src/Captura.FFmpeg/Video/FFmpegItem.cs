@@ -20,6 +20,41 @@ namespace Captura.Models
             return $"-vcodec libx264 -crf {crf} -pix_fmt {settings.PixelFormat} -preset {settings.Preset}";
         }, FFmpegAudioItem.Aac);
 
+        // MP4 (h264_NVenc, AAC)
+        public static FFmpegItem x264_NVenc { get; } = new FFmpegItem("Mp4 (x264_NVenc | AAC)", () => ".mp4", VideoQuality =>
+        {
+            var settings = ServiceProvider.Get<FFmpegSettings>().X264NVenc;
+
+            /*
+             * TODO:
+             * quality: discrete values from 0 to 51. Will be emplemented later.
+             * -level<int>        E..V.....Set the encoding level restriction(from 0 to 51)(default auto)
+             * auto
+             * 1
+             * 1.0
+             * 1b 
+             * 1.0b 
+             * 1.1  
+             * 1.2  
+             * 1.3  
+             * 2 
+             * 2.0 
+             * 2.1
+             * 2.2 
+             * 3 
+             * 3.0 
+             * 3.1 
+             * 3.2 
+             * 4 
+             * 4.1 
+             * 4.2 
+             * 5 
+             * 5.0 
+             * 5.1    
+             /**/
+            return $"-vcodec h264_nvenc -pix_fmt {settings.PixelFormat} -preset {settings.Preset}";
+        }, FFmpegAudioItem.Aac);
+
         // Avi (Xvid, Mp3)
         public static FFmpegItem Avi { get; } = new FFmpegItem("Avi (Xvid | Mp3)", () => ".avi", VideoQuality =>
         {

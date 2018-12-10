@@ -49,5 +49,7 @@ namespace Captura
         }
 
         public X264Settings X264 { get; } = new X264Settings();
+
+        public X264NVencSettings X264NVenc { get; } = new X264NVencSettings();
     }
 }
