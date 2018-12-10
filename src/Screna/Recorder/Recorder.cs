@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
@@ -8,6 +8,12 @@ using Captura.Audio;
 
 namespace Screna
 {
+    public class LowFrameRateException : Exception
+    {
+        public LowFrameRateException(string msg) : base(msg) { }
+    }
+
+
     /// <summary>
     /// Default implementation of <see cref="IRecorder"/> interface.
     /// Can output to <see cref="IVideoFileWriter"/> or <see cref="IAudioFileWriter"/>.
@@ -176,7 +182,7 @@ namespace Screna
 
                     if (_frames.Count > _maxFrameCount)
                     {
-                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a smaller region, lower Frame Rate or another Codec.");
+                        throw new LowFrameRateException(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a smaller region, lower Frame Rate or another Codec.");
                     }
 
                     var timestamp = DateTime.Now;
