@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Captura;
 using Captura.Audio;
+
+// ReSharper disable MethodSupportsCancellation
 
 namespace Screna
 {
@@ -20,15 +21,15 @@ namespace Screna
         readonly IAudioFileWriter _audioWriter;
         readonly IImageProvider _imageProvider;
 
-        readonly int _frameRate, _maxFrameCount, _congestionFrameCount;
-        bool _congestion;
+        readonly int _frameRate;
 
-        readonly BlockingCollection<IBitmapFrame> _frames;
         readonly Stopwatch _sw;
 
         readonly ManualResetEvent _continueCapturing;
+        readonly CancellationTokenSource _cancellationTokenSource;
+        readonly CancellationToken _cancellationToken;
 
-        readonly Task _writeTask, _recordTask;
+        readonly Task _recordTask;
 
         readonly object _syncLock = new object();
         #endregion
@@ -46,12 +47,13 @@ namespace Screna
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
             _audioProvider = AudioProvider;
 
+            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationToken = _cancellationTokenSource.Token;
+
             if (FrameRate <= 0)
                 throw new ArgumentException("Frame Rate must be possitive", nameof(FrameRate));
 
             _frameRate = FrameRate;
-            _congestionFrameCount = _frameRate * 2; // 2 seconds
-            _maxFrameCount = _frameRate * 4; // 4 seconds
 
             _continueCapturing = new ManualResetEvent(false);
 
@@ -60,10 +62,8 @@ namespace Screna
             else _audioProvider = null;
 
             _sw = new Stopwatch();
-            _frames = new BlockingCollection<IBitmapFrame>();
 
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
-            _writeTask = Task.Factory.StartNew(DoWrite, TaskCreationOptions.LongRunning);
         }
 
         /// <summary>
@@ -77,48 +77,6 @@ namespace Screna
             _audioProvider = AudioProvider ?? throw new ArgumentNullException(nameof(AudioProvider));
 
             _audioProvider.DataAvailable += (S, E) => _audioWriter.Write(E.Buffer, 0, E.Length);
-        }
-
-        void DoWrite()
-        {
-            try
-            {
-                while (!_frames.IsCompleted)
-                {
-                    _frames.TryTake(out var img, -1);
-
-                    if (img != null)
-                    {
-                        // Avoid writing Repeat frames during congestion
-                        if (img is RepeatFrame && _congestion)
-                        {
-                            continue;
-                        }
-
-                        // Dispose all frames and Stop Writing
-                        // using lock here will cause a deadlock
-                        if (_disposed)
-                        {
-                            img.Dispose();
-                            continue;
-                        }
-
-                        _videoWriter.WriteFrame(img);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                lock (_syncLock)
-                {
-                    if (!_disposed)
-                    {
-                        ErrorOccurred?.Invoke(e);
-
-                        Dispose(true, false);
-                    }
-                }
-            }
         }
 
         async Task DoRecord()
@@ -135,7 +93,7 @@ namespace Screna
                 {
                     try
                     {
-                        _frames.Add(Frame);
+                        _videoWriter.WriteFrame(Frame);
 
                         ++frameCount;
 
@@ -159,26 +117,8 @@ namespace Screna
                     }
                 }
 
-                while (CanContinue() && !_frames.IsAddingCompleted)
+                while (CanContinue() && !_cancellationToken.IsCancellationRequested)
                 {
-                    if (!_congestion && _frames.Count > _congestionFrameCount)
-                    {
-                        _congestion = true;
-
-                        Console.WriteLine("Congestion: ON");
-                    }
-                    else if (_congestion && _frames.Count < _congestionFrameCount / 2)
-                    {
-                        _congestion = false;
-
-                        Console.WriteLine("Congestion: OFF");
-                    }
-
-                    if (_frames.Count > _maxFrameCount)
-                    {
-                        throw new Exception(@"System can't keep up with the Recording. Frames are not being written. Retry again or try with a smaller region, lower Frame Rate or another Codec.");
-                    }
-
                     var timestamp = DateTime.Now;
 
                     if (task != null)
@@ -187,7 +127,6 @@ namespace Screna
                         if (!await task)
                             return;
 
-                        if (!_congestion)
                         {
                             var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
                             var diff = requiredFrames - frameCount;
@@ -269,18 +208,14 @@ namespace Screna
 
             if (_videoWriter != null)
             {
-                _frames.CompleteAdding();
+                _cancellationTokenSource.Cancel();
 
                 _continueCapturing.Set();
 
                 if (TerminateRecord)
                     _recordTask.Wait();
 
-                if (TerminateWrite)
-                    _writeTask.Wait();
-
                 _videoWriter.Dispose();
-                _frames.Dispose();
 
                 _continueCapturing.Dispose();
             }

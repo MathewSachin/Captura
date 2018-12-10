@@ -251,7 +251,7 @@ namespace Captura.Models
 
                 var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
 
-                var height = Editor.Graphics.MeasureString("A", keystrokeFont).Height;
+                var height = Editor.MeasureString("A", keystrokeFont).Height;
 
                 offsetY += height + _keystrokesSettings.HistorySpacing;
 
@@ -269,7 +269,7 @@ namespace Captura.Models
         {
             var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
 
-            var size = Editor.Graphics.MeasureString(Text, keystrokeFont);
+            var size = Editor.MeasureString(Text, keystrokeFont);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
@@ -278,11 +278,11 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
             
-            Editor.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
+            Editor.FillRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
                 rect,
                 KeystrokesSettings.CornerRadius);
             
-            Editor.Graphics.DrawString(Text,
+            Editor.DrawString(Text,
                 keystrokeFont,
                 new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.FontColor)),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
@@ -293,7 +293,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.Graphics.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
+                Editor.DrawRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
