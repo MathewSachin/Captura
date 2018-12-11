@@ -188,7 +188,7 @@ var deployChocoTask = Task("Deploy-Choco")
 
 var testTask = Task("Test")
     .IsDependentOn(buildTask)
-    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/Captura.Tests.dll")));
+    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/net461/Captura.Tests.dll")));
 
 var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
 
