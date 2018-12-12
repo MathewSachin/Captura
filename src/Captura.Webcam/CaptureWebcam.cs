@@ -100,13 +100,20 @@ namespace Captura.Webcam
         VideoInfoHeader _videoInfoHeader;
         #endregion
 
+        readonly DummyForm _form;
+
         /// <summary>
         /// Default constructor of the Capture class.
         /// </summary>
         /// <param name="VideoDevice">The video device to be the source.</param>
         /// <exception cref="ArgumentException">If no video device is provided.</exception>
-        public CaptureWebcam(Filter VideoDevice)
+        public CaptureWebcam(Filter VideoDevice, Action OnClick)
         {
+            _form = new DummyForm();
+            _form.Show();
+
+            _form.Click += (S, E) => OnClick?.Invoke();
+
             this.VideoDevice = VideoDevice ?? throw new ArgumentException("The videoDevice parameter must be set to a valid Filter.\n");
 
             CreateGraph();
@@ -148,6 +155,8 @@ namespace Captura.Webcam
 
             try { DestroyGraph(); }
             catch { }
+
+            _form.Dispose();
         }
         #endregion
 
@@ -388,6 +397,8 @@ namespace Captura.Webcam
 
                 // Set the video window to be a child of the main window
                 hr = _videoWindow.put_Owner(PreviewWindow);
+
+                _videoWindow.put_MessageDrain(_form.Handle);
 
                 if (hr < 0)
                     Marshal.ThrowExceptionForHR(hr);

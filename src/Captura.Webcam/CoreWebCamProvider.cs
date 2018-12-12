@@ -50,7 +50,7 @@ namespace Captura.Models
                 {
                     try
                     {
-                        _captureWebcam = new CaptureWebcam(model.Cam)
+                        _captureWebcam = new CaptureWebcam(model.Cam, null)
                         {
                             PreviewWindow = _previewForm.Handle
                         };
