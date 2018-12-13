@@ -15,11 +15,11 @@ namespace Captura.Models
     {
         readonly ImgurSettings _settings;
         readonly ProxySettings _proxySettings;
-        readonly IImagurApiKeys _apiKeys;
+        readonly IImgurApiKeys _apiKeys;
 
         public ImgurUploader(ImgurSettings Settings,
             ProxySettings ProxySettings,
-            IImagurApiKeys ApiKeys)
+            IImgurApiKeys ApiKeys)
         {
             _settings = Settings;
             _proxySettings = ProxySettings;
