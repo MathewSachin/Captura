@@ -37,7 +37,7 @@ namespace Screna
             {
                 var absStride = Math.Abs(bits.Stride);
 
-                Marshal.Copy(bits.Scan0 + (Y * bits.Stride), Buffer, Y * absStride, absStride);
+                Marshal.Copy(bits.Scan0 + Y * bits.Stride, Buffer, Y * absStride, absStride);
             });
 
             Bitmap.UnlockBits(bits);

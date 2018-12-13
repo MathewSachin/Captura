@@ -299,10 +299,10 @@ namespace Captura.Webcam
         ///  "removeFirstFilter" is used to keep a compressor (that should
         ///  be immediately downstream of the device) if one is begin used.
         /// </summary>
-        void RemoveDownstream(IBaseFilter filter)
+        void RemoveDownstream(IBaseFilter Filter)
         {
             // Get a pin enumerator off the filter
-            var hr = filter.EnumPins(out var pinEnum);
+            var hr = Filter.EnumPins(out var pinEnum);
 
             if (pinEnum == null)
                 return;
@@ -516,9 +516,9 @@ namespace Captura.Webcam
         #endregion
 
         #region SampleGrabber
-        int ISampleGrabberCB.SampleCB(double sampleTime, IMediaSample pSample) => 0;
+        int ISampleGrabberCB.SampleCB(double SampleTime, IMediaSample Sample) => 0;
 
-        public int BufferCB(double sampleTime, IntPtr pBuffer, int bufferLen) => 1;
+        public int BufferCB(double SampleTime, IntPtr Buffer, int BufferLen) => 1;
         
         /// <summary>
         /// Gets the current frame from the buffer.

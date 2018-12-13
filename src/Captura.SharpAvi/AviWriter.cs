@@ -1,5 +1,4 @@
 ﻿using Captura.Audio;
-using System.Collections.Generic;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;

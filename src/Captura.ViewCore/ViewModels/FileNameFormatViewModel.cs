@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Captura.Models;
 
 namespace Captura.ViewModels
@@ -9,7 +10,7 @@ namespace Captura.ViewModels
         public FileNameFormatViewModel(Settings Settings, LanguageManager LanguageManager)
             : base(Settings, LanguageManager) { }
 
-        public FileNameFormatGroup[] FormatGroups { get; } =
+        public IEnumerable<FileNameFormatGroup> FormatGroups { get; } = new []
         {
             new FileNameFormatGroup("Year", new []
             {

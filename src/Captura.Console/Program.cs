@@ -3,7 +3,6 @@ using Captura.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -382,11 +381,11 @@ namespace Captura
 
         static void Start(MainViewModel ViewModel, StartCmdOptions StartOptions)
         {
-            ViewModel.Settings.IncludeCursor = StartOptions.Cursor;
+            var settings = ViewModel.Settings;
 
-            ViewModel.Settings.Clicks.Display = StartOptions.Clicks;
-
-            ViewModel.Settings.Keystrokes.Display = StartOptions.Keys;
+            settings.IncludeCursor = StartOptions.Cursor;
+            settings.Clicks.Display = StartOptions.Clicks;
+            settings.Keystrokes.Display = StartOptions.Keys;
 
             if (File.Exists(StartOptions.FileName))
             {
@@ -404,14 +403,18 @@ namespace Captura
 
             HandleVideoEncoder(ViewModel.VideoWritersViewModel, StartOptions);
 
-            HandleAudioSource(ViewModel.AudioSource, ViewModel.Settings.Audio, StartOptions);
+            HandleAudioSource(ViewModel.AudioSource, settings.Audio, StartOptions);
 
             HandleWebcam(StartOptions);
 
-            ViewModel.Settings.Video.FrameRate = StartOptions.FrameRate;
+            if (StartOptions.FrameRate is int frameRate)
+                settings.Video.FrameRate = frameRate;
 
-            ViewModel.Settings.Audio.Quality = StartOptions.AudioQuality;
-            ViewModel.Settings.Video.Quality = StartOptions.VideoQuality;
+            if (StartOptions.AudioQuality is int aq)
+                settings.Audio.Quality = aq;
+
+            if (StartOptions.VideoQuality is int vq)
+                settings.Video.Quality = vq;
 
             if (!ViewModel.RecordingViewModel.RecordCommand.CanExecute(null))
             {

@@ -12,17 +12,6 @@ namespace Captura
     [Verb("start", HelpText = "Start Recording")]
     class StartCmdOptions : CommonCmdOptions
     {
-        public StartCmdOptions()
-        {
-            var settings = ServiceProvider.Get<Settings>();
-
-            settings.Keystrokes.Display = settings.Clicks.Display = false;
-
-            FrameRate = settings.Video.FrameRate;
-            VideoQuality = settings.Video.Quality;
-            AudioQuality = settings.Audio.Quality;
-        }
-
         [Option("delay", HelpText = "Milliseconds to wait before starting recording.")]
         public int Delay { get; set; }
 
@@ -45,16 +34,16 @@ namespace Captura
         public int Speaker { get; set; }
 
         [Option('r', "framerate", HelpText = "Recording frame rate.")]
-        public int FrameRate { get; set; }
+        public int? FrameRate { get; set; }
 
         [Option("encoder", HelpText = "Video encoder to use.")]
         public string Encoder { get; set; }
 
         [Option("vq", HelpText = "Video Quality")]
-        public int VideoQuality { get; set; }
+        public int? VideoQuality { get; set; }
 
         [Option("aq", HelpText = "Audio Quality")]
-        public int AudioQuality { get; set; }
+        public int? AudioQuality { get; set; }
 
         [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
         public int Webcam { get; set; }
