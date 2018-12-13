@@ -10,12 +10,7 @@ namespace Captura
 
             if (DataContext is MainViewModel vm)
             {
-                vm.Refreshed += () =>
-                {
-                    AudioDropdown.Shake();
-
-                    VideoWriterComboBox.Shake();
-                };
+                vm.Refreshed += () => AudioDropdown.Shake();
             }
         }
     }

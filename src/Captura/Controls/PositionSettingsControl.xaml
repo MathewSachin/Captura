@@ -5,7 +5,6 @@
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:captura="clr-namespace:Captura;assembly=Captura.Core"
              xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance base:PositionedOverlaySettings}">

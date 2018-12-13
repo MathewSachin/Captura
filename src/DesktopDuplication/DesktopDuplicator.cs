@@ -23,7 +23,7 @@ namespace DesktopDuplication
         readonly Texture2D _desktopImageTexture;
         OutputDuplicateFrameInformation _frameInfo;
 
-        Rectangle _rect;
+        readonly Rectangle _rect;
 
         readonly bool _includeCursor;
         #endregion

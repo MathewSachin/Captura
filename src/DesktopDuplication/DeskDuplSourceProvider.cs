@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using SharpDX.DXGI;
 
 namespace Captura.Models
@@ -6,13 +8,14 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DeskDuplSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
-        readonly LanguageManager _loc;
         readonly IVideoSourcePicker _videoSourcePicker;
 
-        public DeskDuplSourceProvider(LanguageManager Loc, IVideoSourcePicker VideoSourcePicker)
+        public DeskDuplSourceProvider(LanguageManager Loc,
+            IVideoSourcePicker VideoSourcePicker,
+            IIconSet Icons)
         {
-            _loc = Loc;
             _videoSourcePicker = VideoSourcePicker;
+            Icon = Icons.Game;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
@@ -88,6 +91,64 @@ namespace Captura.Models
 
         public string Name => "Desktop Duplication";
 
+        public string Description { get; } = @"Faster API for recording screen as well as fullscreen DirectX games.
+Not all games are recordable.
+Requires Windows 8 or above.
+If it does not work, try running Captura on the Integrated Graphics card.";
+
+        public string Icon { get; }
+
         public override string ToString() => Name;
+
+        public bool OnSelect()
+        {
+            // Select first screen if there is only one
+            if (ScreenItem.Count == 1 && SelectFirst())
+            {
+                return true;
+            }
+
+            return PickScreen();
+        }
+
+        public void OnUnselect() { }
+
+#pragma warning disable CS0067
+        public event Action UnselectRequested;
+#pragma warning restore CS0067
+
+        public string Serialize()
+        {
+            return Source.ToString();
+        }
+
+        public bool Deserialize(string Serialized)
+        {
+            var screen = ScreenItem.Enumerate()
+                .Select(M => M.Screen)
+                .FirstOrDefault(M => M.DeviceName == Serialized);
+
+            if (screen == null)
+                return false;
+
+            Set(screen);
+
+            return true;
+        }
+
+        public bool ParseCli(string Arg)
+        {
+            if (!Regex.IsMatch(Arg, @"^deskdupl:\d+$"))
+                return false;
+
+            var index = int.Parse(Arg.Substring(9));
+
+            if (index >= ScreenItem.Count)
+                return false;
+
+            Set(ScreenWrapper.Get(index));
+
+            return true;
+        }
     }
 }

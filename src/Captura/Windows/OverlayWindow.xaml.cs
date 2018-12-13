@@ -408,7 +408,7 @@ namespace Captura
 
             Bitmap bmp;
 
-            switch (vm.VideoViewModel.SelectedVideoSourceKind?.Source)
+            switch (vm.VideoSourcesViewModel.SelectedVideoSourceKind?.Source)
             {
                 case FullScreenItem _:
                 case NoVideoItem _:

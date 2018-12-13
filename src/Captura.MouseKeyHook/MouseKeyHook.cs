@@ -23,10 +23,8 @@ namespace Captura.Models
         readonly KeyRecords _records;
 
         readonly KeymapViewModel _keymap;
-        readonly Func<TimeSpan> _elapsed;
 
-        FileStream _keystrokeFileStream;
-        TextWriter _textWriter;
+        readonly TextWriter _textWriter;
         #endregion
         
         /// <summary>
@@ -55,29 +53,7 @@ namespace Captura.Models
 
             if (KeystrokesSettings.SeparateTextFile)
             {
-                _elapsed = Elapsed;
-
-                var dir = Path.GetDirectoryName(FileName);
-                var fileNameWoExt = Path.GetFileNameWithoutExtension(FileName);
-
-                var targetName = $"{fileNameWoExt}.keys.txt";
-
-                var path = dir == null ? targetName : Path.Combine(dir, targetName);
-
-                _keystrokeFileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-                _textWriter = new StreamWriter(_keystrokeFileStream);
-
-                _hook.KeyDown += (S, E) =>
-                {
-                    if (!_keystrokesSettings.Display)
-                    {
-                        return;
-                    }
-
-                    var record = new KeyRecord(E, _keymap);
-
-                    _textWriter.WriteLine($"{_elapsed.Invoke()}: {record.Display}");
-                };
+                _textWriter = InitKeysToTextFile(FileName, Elapsed);
             }
             else
             {
@@ -86,6 +62,33 @@ namespace Captura.Models
                 _hook.KeyDown += OnKeyDown;
                 _hook.KeyUp += OnKeyUp;
             }
+        }
+
+        TextWriter InitKeysToTextFile(string FileName, Func<TimeSpan> Elapsed)
+        {
+            var dir = Path.GetDirectoryName(FileName);
+            var fileNameWoExt = Path.GetFileNameWithoutExtension(FileName);
+
+            var targetName = $"{fileNameWoExt}.keys.txt";
+
+            var path = dir == null ? targetName : Path.Combine(dir, targetName);
+
+            var keystrokeFileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+            var textWriter = new StreamWriter(keystrokeFileStream);
+
+            _hook.KeyDown += (S, E) =>
+            {
+                if (!_keystrokesSettings.Display)
+                {
+                    return;
+                }
+
+                var record = new KeyRecord(E, _keymap);
+
+                _textWriter.WriteLine($"{Elapsed.Invoke()}: {record.Display}");
+            };
+
+            return textWriter;
         }
 
         void OnKeyUp(object Sender, KeyEventArgs Args)
@@ -251,7 +254,7 @@ namespace Captura.Models
 
                 var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
 
-                var height = Editor.Graphics.MeasureString("A", keystrokeFont).Height;
+                var height = Editor.MeasureString("A", keystrokeFont).Height;
 
                 offsetY += height + _keystrokesSettings.HistorySpacing;
 
@@ -269,7 +272,7 @@ namespace Captura.Models
         {
             var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
 
-            var size = Editor.Graphics.MeasureString(Text, keystrokeFont);
+            var size = Editor.MeasureString(Text, keystrokeFont);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
@@ -278,11 +281,11 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
             
-            Editor.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
+            Editor.FillRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
                 rect,
                 KeystrokesSettings.CornerRadius);
             
-            Editor.Graphics.DrawString(Text,
+            Editor.DrawString(Text,
                 keystrokeFont,
                 new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.FontColor)),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
@@ -293,7 +296,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.Graphics.DrawRoundedRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
+                Editor.DrawRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
@@ -397,7 +400,6 @@ namespace Captura.Models
             _hook?.Dispose();
 
             _textWriter?.Dispose();
-            _keystrokeFileStream?.Dispose();
         }
     }
 }

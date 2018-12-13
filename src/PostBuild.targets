@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RootDir>$(MSBuildThisFileDirectory)/..</RootDir>
+    <BassPath>$(RootDir)/temp/bass/bass.dll</BassPath>
+    <BassMixPath>$(RootDir)/temp/bassmix/bassmix.dll</BassMixPath>
+    <DoMoveLibs>False</DoMoveLibs>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) != 'Debug'">
+    <DoMoveLibs>True</DoMoveLibs>
+    <LibFolderName>lib/</LibFolderName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Copy BASS -->
+    <Content Include="$(BassPath)"
+             Condition="Exists('$(BassPath)')">
+      <Visible>False</Visible>
+      <Link>$(LibFolderName)bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <!-- Copy BASSmix -->
+    <Content Include="$(BassMixPath)"
+             Condition="Exists('$(BassMixPath)')">
+      <Visible>False</Visible>
+      <Link>$(LibFolderName)bassmix.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <!-- Copy License files -->
+    <Content Include="$(RootDir)/licenses/*.txt">
+      <Visible>False</Visible>
+      <Link>licenses/%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Move Libraries to lib folder -->
+  <Target Name="MoveLibs" AfterTargets="Build" Condition="$(DoMoveLibs)">
+    <PropertyGroup>
+      <CopyDestionationPath>$(OutputPath)/$(LibFolderName)</CopyDestionationPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <LibFiles Include="$(OutputPath)*.dll" />
+      <PdbFiles Include="$(OutputPath)*.pdb" />
+      <XmlDocFiles Include="$(OutputPath)*.xml" />
+    </ItemGroup>
+
+    <Message Text="Moving Libraries to lib folder" Importance="High" />
+
+    <Move SourceFiles="@(LibFiles)" 
+          DestinationFolder="$(CopyDestionationPath)" />
+
+    <Delete Files="@(PdbFiles)" />
+    <Delete Files="@(XmlDocFiles)" />
+  </Target>
+</Project>

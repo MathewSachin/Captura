@@ -16,6 +16,8 @@ namespace Captura
         
         public MainViewModel MainViewModel => ServiceProvider.Get<MainViewModel>();
 
+        public RecentViewModel RecentViewModel => ServiceProvider.Get<RecentViewModel>();
+
         public ScreenShotViewModel ScreenShotViewModel => ServiceProvider.Get<ScreenShotViewModel>();
 
         public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
@@ -45,5 +47,11 @@ namespace Captura
         public IIconSet Icons => ServiceProvider.Get<IIconSet>();
 
         public UpdateCheckerViewModel UpdateCheckerViewModel => ServiceProvider.Get<UpdateCheckerViewModel>();
+
+        public CustomImageOverlaysViewModel CustomImageOverlays => ServiceProvider.Get<CustomImageOverlaysViewModel>();
+
+        public CustomOverlaysViewModel CustomOverlays => ServiceProvider.Get<CustomOverlaysViewModel>();
+
+        public CensorOverlaysViewModel CensorOverlays => ServiceProvider.Get<CensorOverlaysViewModel>();
     }
 }

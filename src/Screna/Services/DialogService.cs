@@ -32,12 +32,7 @@ namespace Captura.Models
                 Title = Description
             };
 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName;
-            }
-
-            return null;
+            return ofd.ShowDialog() == DialogResult.OK ? ofd.FileName : null;
         }
     }
 }

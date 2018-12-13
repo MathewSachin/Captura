@@ -1,4 +1,6 @@
-﻿using Captura.Models;
+﻿using System;
+using System.Reflection;
+using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
 
@@ -6,91 +8,128 @@ namespace Captura
 {
     public class CoreModule : IModule
     {
+        /// <summary>
+        /// Binds both as Inteface as Class
+        /// </summary>
+        static void BindAsInterfaceAndClass<TInterface, TClass>(IBinder Binder) where  TClass : TInterface
+        {
+            Binder.BindSingleton<TClass>();
+
+            // ReSharper disable once ConvertClosureToMethodGroup
+            Binder.Bind<TInterface>(() => ServiceProvider.Get<TClass>());
+        }
+
         public void OnLoad(IBinder Binder)
         {
-            Binder.BindSingleton<HotkeyActionRegisterer>();
+            BindViewModels(Binder);
+            BindSettings(Binder);
+            BindImageWriters(Binder);
+            BindVideoWriterProviders(Binder);
+            BindVideoSourceProviders(Binder);
+            BindAudioSource(Binder);
+            BindUpdateChecker(Binder);
+
+            // Recent
+            Binder.Bind<IRecentList, RecentListRepository>();
+            Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
+            Binder.Bind<IRecentItemSerializer, UploadRecentSerializer>();
+
+            Binder.Bind<IDialogService, DialogService>();
+            Binder.Bind<IClipboardService, ClipboardService>();
+            Binder.Bind<IImageUploader, ImgurUploader>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
-
-            // Singleton View Models
-            Binder.BindSingleton<MainViewModel>();
-            Binder.BindSingleton<VideoViewModel>();
-            Binder.BindSingleton<ProxySettingsViewModel>();
-            Binder.BindSingleton<LicensesViewModel>();
-            Binder.BindSingleton<CrashLogsViewModel>();
-            Binder.BindSingleton<FFmpegCodecsViewModel>();
-            Binder.BindSingleton<ScreenShotViewModel>();
-            Binder.BindSingleton<RecentViewModel>();
-            Binder.BindSingleton<RecordingViewModel>();
-            Binder.BindSingleton<FileNameFormatViewModel>();
-
-            Binder.Bind<IRecentList>(ServiceProvider.Get<RecentViewModel>);
-
-            Binder.BindSingleton<CustomOverlaysViewModel>();
-            Binder.BindSingleton<CustomImageOverlaysViewModel>();
-            Binder.BindSingleton<CensorOverlaysViewModel>();
-
-            // Settings
-            Binder.BindSingleton<Settings>();
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
-
-            // Keymap
-            Binder.BindSingleton<KeymapViewModel>();
-
-            // Localization
-            Binder.Bind(() => LanguageManager.Instance);
-
-            // Hotkeys
-            Binder.BindSingleton<HotKeyManager>();
-
-            // Image Writers
-            Binder.BindSingleton<DiskWriter>();
-            Binder.BindSingleton<ClipboardWriter>();
-            Binder.BindSingleton<ImgurWriter>();
-
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<DiskWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ClipboardWriter>);
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<ImgurWriter>);
-
-            // Video Writer Providers
-            Binder.BindSingleton<FFmpegWriterProvider>();
-            Binder.BindSingleton<GifWriterProvider>();
-            Binder.BindSingleton<StreamingWriterProvider>();
-            Binder.BindSingleton<DiscardWriterProvider>();
-            Binder.BindSingleton<SharpAviWriterProvider>();
+            Binder.Bind<IImgurApiKeys, ApiKeys>();
 
             Binder.BindSingleton<FullScreenItem>();
-
-            // Video Source Providers
-            Binder.BindSingleton<ScreenSourceProvider>();
-            Binder.BindSingleton<FullScreenSourceProvider>();
-            Binder.BindSingleton<RegionSourceProvider>();
-            Binder.BindSingleton<WindowSourceProvider>();
-            Binder.BindSingleton<DeskDuplSourceProvider>();
-            Binder.BindSingleton<NoVideoSourceProvider>();
-
-            // Folder Browser Dialog
-            Binder.Bind<IDialogService, DialogService>();
-
-            // Clipboard
-            Binder.Bind<IClipboardService, ClipboardService>();
-
-            // FFmpeg Log
             Binder.BindSingleton<FFmpegLog>();
+            Binder.BindSingleton<HotKeyManager>();
+            Binder.BindSingleton<HotkeyActionRegisterer>();
+            Binder.Bind(() => LanguageManager.Instance);
+        }
 
-            // Recent Serializers
-            Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
-            Binder.Bind<IRecentItemSerializer, ImgurRecentSerializer>();
+        static void BindImageWriters(IBinder Binder)
+        {
+            BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ClipboardWriter>(Binder);
+            BindAsInterfaceAndClass<IImageWriterItem, ImageUploadWriter>(Binder);
+        }
 
+        static void BindViewModels(IBinder Binder)
+        {
+            Binder.BindSingleton<MainViewModel>();
+            Binder.BindSingleton<VideoSourcesViewModel>();
+            Binder.BindSingleton<VideoWritersViewModel>();
+            Binder.BindSingleton<FFmpegCodecsViewModel>();
+            Binder.BindSingleton<ScreenShotViewModel>();
+            Binder.BindSingleton<RecordingViewModel>();
+            Binder.BindSingleton<KeymapViewModel>();
+        }
+
+        static void BindUpdateChecker(IBinder Binder)
+        {
+            var version = Assembly.GetEntryAssembly()?.GetName().Version;
+
+            if (version?.Major == 0)
+            {
+                Binder.Bind<IUpdateChecker, DevUpdateChecker>();
+            }
+            else Binder.Bind<IUpdateChecker, UpdateChecker>();
+        }
+
+        static void BindAudioSource(IBinder Binder)
+        {
             // Check if Bass is available
             if (BassAudioSource.Available)
             {
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
             else Binder.Bind<AudioSource, NAudioSource>();
+        }
+
+        static void BindVideoSourceProviders(IBinder Binder)
+        {
+            BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>(Binder);
+
+            if (Windows8OrAbove)
+            {
+                BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>(Binder);
+            }
+        }
+
+        static void BindVideoWriterProviders(IBinder Binder)
+        {
+            BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
+            BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
+        }
+
+        static void BindSettings(IBinder Binder)
+        {
+            Binder.BindSingleton<Settings>();
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
+            Binder.Bind(() => ServiceProvider.Get<Settings>().Imgur);
+        }
+
+        static bool Windows8OrAbove
+        {
+            get
+            {
+                // All versions above Windows 8 give the same version number
+                var version = new Version(6, 2, 9200, 0);
+
+                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                       Environment.OSVersion.Version >= version;
+            }
         }
     }
 }

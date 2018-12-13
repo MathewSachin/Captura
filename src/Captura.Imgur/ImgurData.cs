@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    public class ImgurData
+    class ImgurData
     {
         [JsonProperty("id")]
         public string Id { get; set; }

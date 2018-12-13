@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
+    <ProjectReference Include="..\Screna\Screna.csproj" />
+  </ItemGroup>
+</Project>
