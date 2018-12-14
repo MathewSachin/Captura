@@ -6,7 +6,7 @@
       xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
-        <StackPanel>
+        <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>
@@ -46,16 +46,8 @@
                       ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters}" 
                       SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay}"
                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-                      Name="VideoWriterComboBox">
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoWritersViewModel.AvailableVideoWriters.Count}" Value="1">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Style>
+                      Name="VideoWriterComboBox"
+                      Visibility="{Binding ViewConditions.MultipleVideoWriters.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ComboBox.ToolTip>
                     <StackPanel MinWidth="200">
                         <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay}"
@@ -72,21 +64,12 @@
 
             <CheckBox Margin="0,5"
                       Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}">
-                <CheckBox.Style>
-                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </CheckBox.Style>
-            </CheckBox>
+                      IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}"
+                      Visibility="{Binding ViewConditions.IsGifMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <Grid Margin="0,5"
-                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                  IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                  Visibility="{Binding ViewConditions.CanSelectFrameRate.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -131,26 +114,11 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                         </TextBlock>
                     </CheckBox.ToolTip>
                 </CheckBox>
-
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}"/>
-                                    <Condition Binding="{Binding Settings.Gif.VariableFrameRate}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
             </Grid>
 
             <DockPanel Margin="0,5"
-                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                       Visibility="{Binding ViewConditions.IsVideoQuality.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>
                 <Label Content="{Binding Settings.Video.Quality}"
@@ -164,30 +132,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                         SelectionEnd="80"
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Video.Quality}"/>
-
-                <DockPanel.Style>
-                    <Style TargetType="DockPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:GifWriterProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:DiscardWriterProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DockPanel.Style>
             </DockPanel>
-
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
         </StackPanel>
     </Grid>
 </Page>

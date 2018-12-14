@@ -53,5 +53,7 @@ namespace Captura
         public CustomOverlaysViewModel CustomOverlays => ServiceProvider.Get<CustomOverlaysViewModel>();
 
         public CensorOverlaysViewModel CensorOverlays => ServiceProvider.Get<CensorOverlaysViewModel>();
+
+        public ViewConditionsModel ViewConditions => ServiceProvider.Get<ViewConditionsModel>();
     }
 }

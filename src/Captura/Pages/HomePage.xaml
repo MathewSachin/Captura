@@ -2,8 +2,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
-      xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
@@ -47,66 +45,26 @@
 
             <CheckBox Margin="0,5"
                       Content="Drawing Tools"
-                      IsChecked="{Binding Settings.UI.RegionSelectorDrawingTools, Mode=TwoWay}">
-                <CheckBox.Style>
-                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type screna:RegionSourceProvider}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </CheckBox.Style>
-            </CheckBox>
+                      IsChecked="{Binding Settings.UI.RegionSelectorDrawingTools, Mode=TwoWay}"
+                      Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-            <DockPanel Margin="0,5">
+            <DockPanel Margin="0,5"
+                       Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Label Content="{Binding AudioFormat, Source={StaticResource Loc}, Mode=OneWay}"
                        Margin="0,0,5,0"/>
 
                 <ComboBox ItemsSource="{Binding VideoSourcesViewModel.NoVideoSourceProvider.Sources}"
                           SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
                           IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
-                
-                <DockPanel.Style>
-                    <Style TargetType="DockPanel">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DockPanel.Style>
             </DockPanel>
 
             <Frame Source="VideoEncoderPage.xaml"/>
 
             <Frame Source="AudioPage.xaml"
-                   Margin="0,10,0,0">
-                <Frame.Style>
-                    <Style TargetType="Frame">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Frame.Style>
-            </Frame>
+                   Margin="0,10,0,0"
+                   Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-            <DockPanel>
-                <DockPanel.Style>
-                    <Style TargetType="DockPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DockPanel.Style>
-
+            <DockPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
                 <GridSplitter IsEnabled="False"
                               DockPanel.Dock="Top"
                               Height="1"
@@ -144,17 +102,7 @@
                        Margin="15,0,0,0"/>
             </DockPanel>
 
-            <StackPanel>
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Converter={StaticResource GetTypeConverter}}" Value="{x:Type models:NoVideoSourceProvider}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
+            <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
                 <GridSplitter IsEnabled="False"
                               Height="1"
                               Margin="0,10"/>
