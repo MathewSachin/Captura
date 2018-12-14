@@ -25,12 +25,6 @@ namespace Captura
 
         public ICommand RemoveCommand { get; }
 
-        static HotKeyManager()
-        {
-            for (var i = ServiceName.None; i < ServiceName.ServiceCount; ++i)
-                AllServices.Add(new Service(i));
-        }
-
         public HotKeyManager()
         {
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
@@ -59,7 +53,10 @@ namespace Captura
             _hotkeys.Add(hotkey);
         }
 
-        public static List<Service> AllServices { get; } = new List<Service>();
+        public static IEnumerable<Service> AllServices { get; } = Enum
+            .GetValues(typeof(ServiceName))
+            .Cast<ServiceName>()
+            .Select(M => new Service(M));
 
         public void RegisterAll()
         {

@@ -56,8 +56,6 @@
 
         OpenImageEditor,
 
-        ShowMainWindow,
-        
-        ServiceCount
+        ShowMainWindow
     }
 }
