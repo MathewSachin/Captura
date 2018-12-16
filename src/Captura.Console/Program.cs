@@ -51,8 +51,6 @@ namespace Captura
 
                     using (var vm = ServiceProvider.Get<MainViewModel>())
                     {
-                        vm.Init(false, false, false, false);
-
                         CopySettings(vm.Settings);
 
                         Start(vm, Options);
@@ -64,8 +62,6 @@ namespace Captura
 
                     using (var vm = ServiceProvider.Get<MainViewModel>())
                     {
-                        vm.Init(false, false, false, false);
-
                         Shot(vm, Options);
                     }
                 }))
@@ -267,23 +263,27 @@ namespace Captura
             }
         }
 
-        static void HandleAudioSource(AudioSource AudioSource, AudioSettings Settings, StartCmdOptions StartOptions)
+        static void HandleAudioSource(AudioSettings Settings, StartCmdOptions StartOptions)
         {
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < AudioSource.AvailableRecordingSources.Count)
+            var audioSource = ServiceProvider.Get<AudioSource>();
+
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < audioSource.AvailableRecordingSources.Count)
             {
                 Settings.Enabled = true;
-                AudioSource.AvailableRecordingSources[StartOptions.Microphone].Active = true;
+                audioSource.AvailableRecordingSources[StartOptions.Microphone].Active = true;
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < AudioSource.AvailableLoopbackSources.Count)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < audioSource.AvailableLoopbackSources.Count)
             {
                 Settings.Enabled = true;
-                AudioSource.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
+                audioSource.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
             }
         }
 
-        static void HandleVideoEncoder(VideoWritersViewModel VideoWritersViewModel, StartCmdOptions StartOptions)
+        static void HandleVideoEncoder(StartCmdOptions StartOptions)
         {
+            var videoWritersViewModel = ServiceProvider.Get<VideoWritersViewModel>();
+
             if (StartOptions.Encoder == null)
                 return;
 
@@ -292,10 +292,10 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+                videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                if (index < VideoWritersViewModel.AvailableVideoWriters.Count)
-                    VideoWritersViewModel.SelectedVideoWriter = VideoWritersViewModel.AvailableVideoWriters[index];
+                if (index < videoWritersViewModel.AvailableVideoWriters.Count)
+                    videoWritersViewModel.SelectedVideoWriter = videoWritersViewModel.AvailableVideoWriters[index];
             }
 
             // SharpAvi
@@ -303,16 +303,16 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
-                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
+                videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
 
-                if (index < VideoWritersViewModel.AvailableVideoWriters.Count)
-                    VideoWritersViewModel.SelectedVideoWriter = VideoWritersViewModel.AvailableVideoWriters[index];
+                if (index < videoWritersViewModel.AvailableVideoWriters.Count)
+                    videoWritersViewModel.SelectedVideoWriter = videoWritersViewModel.AvailableVideoWriters[index];
             }
 
             // Gif
             else if (StartOptions.Encoder == "gif")
             {
-                VideoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
+                videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
             }
         }
 
@@ -401,9 +401,9 @@ namespace Captura
 
             HandleVideoSource(ViewModel.VideoSourcesViewModel, StartOptions);
 
-            HandleVideoEncoder(ViewModel.VideoWritersViewModel, StartOptions);
+            HandleVideoEncoder(StartOptions);
 
-            HandleAudioSource(ViewModel.AudioSource, settings.Audio, StartOptions);
+            HandleAudioSource(settings.Audio, StartOptions);
 
             HandleWebcam(StartOptions);
 

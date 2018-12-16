@@ -58,7 +58,7 @@ namespace Captura
                         new EasingDoubleKeyFrame(delta, KeyTime.FromPercent(0.25)),
                         new EasingDoubleKeyFrame(0, KeyTime.FromPercent(0.5)),
                         new EasingDoubleKeyFrame(-delta, KeyTime.FromPercent(0.75)),
-                        new EasingDoubleKeyFrame(0, KeyTime.FromPercent(1)),
+                        new EasingDoubleKeyFrame(0, KeyTime.FromPercent(1))
                     }
                 };
 

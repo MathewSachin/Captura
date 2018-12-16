@@ -160,7 +160,7 @@ namespace Screna
                     {
                         ErrorOccurred?.Invoke(e);
 
-                        Dispose(false, true);
+                        Dispose(false);
                     }
                 }
             }
@@ -188,7 +188,7 @@ namespace Screna
                         {
                             ErrorOccurred?.Invoke(e);
 
-                            Dispose(true, true);
+                            Dispose(true);
                         }
                     }
                 }
@@ -196,7 +196,7 @@ namespace Screna
         }
 
         #region Dispose
-        void Dispose(bool TerminateRecord, bool TerminateWrite)
+        void Dispose(bool TerminateRecord)
         {
             if (_disposed)
                 return;
@@ -231,7 +231,7 @@ namespace Screna
         {
             lock (_syncLock)
             {
-                Dispose(true, true);
+                Dispose(true);
             }
         }
 

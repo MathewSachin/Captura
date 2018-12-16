@@ -277,11 +277,11 @@
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown"
                           Background="#01000000">
                         <StackPanel Margin="10,-1"
-                                    Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                    Visibility="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
                                     Name="DurationLabel"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            <Label Content="{Binding RecordingViewModel.TimeSpan}"/>
+                            <Label Content="{Binding TimerModel.TimeSpan, Source={StaticResource ServiceLocator}}"/>
 
                             <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
                                    ContentStringFormat="{}{0}"
@@ -294,7 +294,7 @@
                                Margin="0,-1"
                                Style="{StaticResource CountdownLabel}"
                                HorizontalAlignment="Center"
-                               Content="{Binding RecordingViewModel.Countdown}"/>
+                               Content="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}}"/>
                     </Grid>
                 </DockPanel>
             </Expander.Header>

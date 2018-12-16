@@ -6,7 +6,7 @@
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
             <DockPanel Margin="0,0,0,5">
-                <TextBlock Text="{Binding AudioSource.Name}"
+                <TextBlock Text="{Binding AudioSource.Name, Source={StaticResource ServiceLocator}}"
                            FontSize="10"
                            DockPanel.Dock="Right"
                            VerticalAlignment="Center"
@@ -23,7 +23,7 @@
                           MaxHeight="130">
                 <StackPanel IsEnabled="{Binding ViewConditions.CanChangeAudioSources.Value, Source={StaticResource ServiceLocator}}"
                             Name="AudioSourcesPanel">
-                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources}">
+                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources, Source={StaticResource ServiceLocator}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Margin="0,5"
@@ -45,7 +45,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableLoopbackSources}">
+                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableLoopbackSources, Source={StaticResource ServiceLocator}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Margin="0,5,0,5"

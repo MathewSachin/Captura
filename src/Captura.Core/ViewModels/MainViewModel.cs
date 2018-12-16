@@ -8,24 +8,138 @@ using System.Windows.Input;
 
 namespace Captura.ViewModels
 {
+    public class MainModel : NotifyPropertyChanged, IDisposable
+    {
+        readonly Settings _settings;
+        bool _persist, _hotkeys, _remembered;
+
+        readonly RememberByName _rememberByName;
+        readonly IRecentList _recentList;
+
+        readonly IWebCamProvider _webCamProvider;
+        readonly VideoWritersViewModel _videoWritersViewModel;
+        readonly RecordingViewModel _recordingViewModel;
+        readonly AudioSource _audioSource;
+        readonly HotKeyManager _hotKeyManager;
+
+        public MainModel(Settings Settings,
+            HotkeyActionRegisterer HotkeyActionRegisterer,
+            IWebCamProvider WebCamProvider,
+            VideoWritersViewModel VideoWritersViewModel,
+            AudioSource AudioSource,
+            HotKeyManager HotKeyManager,
+            RememberByName RememberByName,
+            IRecentList RecentList,
+            RecordingViewModel RecordingViewModel)
+        {
+            _settings = Settings;
+            _webCamProvider = WebCamProvider;
+            _videoWritersViewModel = VideoWritersViewModel;
+            _audioSource = AudioSource;
+            _hotKeyManager = HotKeyManager;
+            _rememberByName = RememberByName;
+            _recentList = RecentList;
+            _recordingViewModel = RecordingViewModel;
+
+            // If Output Dircetory is not set. Set it to Documents\Captura\
+            if (string.IsNullOrWhiteSpace(Settings.OutPath))
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura");
+
+            // Create the Output Directory if it does not exist
+            Settings.EnsureOutPath();
+
+            // Handle Hoykeys
+            HotkeyActionRegisterer.Register();
+        }
+
+        public void Refresh()
+        {
+            _videoWritersViewModel.RefreshCodecs();
+
+            _audioSource.Refresh();
+
+            #region Webcam
+            var lastWebcamName = _webCamProvider.SelectedCam?.Name;
+
+            _webCamProvider.Refresh();
+
+            var matchingWebcam = _webCamProvider.AvailableCams.FirstOrDefault(M => M.Name == lastWebcamName);
+
+            if (matchingWebcam != null)
+            {
+                _webCamProvider.SelectedCam = matchingWebcam;
+            }
+            #endregion
+        }
+
+        public void Init(bool Persist, bool Remembered, bool Hotkeys)
+        {
+            _persist = Persist;
+            _hotkeys = Hotkeys;
+
+            // Register Hotkeys if not console
+            if (_hotkeys)
+                _hotKeyManager.RegisterAll();
+
+            if (Remembered)
+            {
+                _remembered = true;
+
+                _rememberByName.RestoreRemembered();
+            }
+        }
+
+        public void ViewLoaded()
+        {
+            if (_remembered)
+            {
+                // Restore Webcam
+                if (!string.IsNullOrEmpty(_settings.Video.Webcam))
+                {
+                    var webcam = _webCamProvider.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
+
+                    if (webcam != null)
+                    {
+                        _webCamProvider.SelectedCam = webcam;
+                    }
+                }
+            }
+
+            _hotKeyManager.ShowNotRegisteredOnStartup();
+        }
+
+        public void Dispose()
+        {
+            _recordingViewModel.Dispose();
+
+            if (_hotkeys)
+                _hotKeyManager.Dispose();
+
+            _audioSource.Dispose();
+
+            _recentList.Dispose();
+
+            // Remember things if not console.
+            if (_persist)
+            {
+                _rememberByName.Remember();
+
+                _settings.Save();
+            }
+        }
+    }
+
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainViewModel : ViewModelBase, IDisposable
     {
-        #region Fields
-        bool _persist, _hotkeys, _remembered;
+        readonly MainModel _mainModel;
 
+        #region Fields
         readonly IDialogService _dialogService;
-        readonly RememberByName _rememberByName;
-        readonly IRecentList _recentList;
 
         public ScreenShotViewModel ScreenShotViewModel { get; }
         public RecordingViewModel RecordingViewModel { get; }
         public VideoSourcesViewModel VideoSourcesViewModel { get; }
-        public VideoWritersViewModel VideoWritersViewModel { get; }
-        public AudioSource AudioSource { get; }
-        public HotKeyManager HotKeyManager { get; }
-
-        public IWebCamProvider WebCamProvider { get; }
         #endregion
 
         #region Commands
@@ -44,36 +158,31 @@ namespace Captura.ViewModels
         public DelegateCommand TrayLeftClickCommand { get; }
         #endregion
 
-        public MainViewModel(AudioSource AudioSource,
-            VideoSourcesViewModel VideoSourcesViewModel,
-            VideoWritersViewModel VideoWritersViewModel,
-            IWebCamProvider WebCamProvider,
+        public MainViewModel(VideoSourcesViewModel VideoSourcesViewModel,
             Settings Settings,
             LanguageManager LanguageManager,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
-            RememberByName RememberByName,
             ScreenShotViewModel ScreenShotViewModel,
             RecordingViewModel RecordingViewModel,
-            HotkeyActionRegisterer HotkeyActionRegisterer,
-            IRecentList RecentList) : base(Settings, LanguageManager)
+            MainModel MainModel) : base(Settings, LanguageManager)
         {
-            this.AudioSource = AudioSource;
             this.VideoSourcesViewModel = VideoSourcesViewModel;
-            this.VideoWritersViewModel = VideoWritersViewModel;
-            this.WebCamProvider = WebCamProvider;
-            this.HotKeyManager = HotKeyManager;
             _dialogService = DialogService;
-            _rememberByName = RememberByName;
             this.ScreenShotViewModel = ScreenShotViewModel;
             this.RecordingViewModel = RecordingViewModel;
-            _recentList = RecentList;
+            _mainModel = MainModel;
 
             ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
 
             #region Commands
-            RefreshCommand = new DelegateCommand(OnRefresh);
+            RefreshCommand = new DelegateCommand(() =>
+            {
+                MainModel.Refresh();
+
+                Refreshed?.Invoke();
+            });
 
             OpenOutputFolderCommand = new DelegateCommand(OpenOutputFolder);
 
@@ -119,101 +228,21 @@ namespace Captura.ViewModels
                         break;
                 }
             };
-
-            // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(Settings.OutPath))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura");
-
-            // Create the Output Directory if it does not exist
-            Settings.EnsureOutPath();
-
-            // Handle Hoykeys
-            HotkeyActionRegisterer.Register();
         }
 
-        void OnRefresh()
+        public void Init(bool Persist, bool Remembered, bool Hotkeys)
         {
-            VideoWritersViewModel.RefreshCodecs();
-
-            AudioSource.Refresh();
-
-            #region Webcam
-            var lastWebcamName = WebCamProvider.SelectedCam?.Name;
-
-            WebCamProvider.Refresh();
-
-            var matchingWebcam = WebCamProvider.AvailableCams.FirstOrDefault(M => M.Name == lastWebcamName);
-
-            if (matchingWebcam != null)
-            {
-                WebCamProvider.SelectedCam = matchingWebcam;
-            }
-            #endregion
-
-            Refreshed?.Invoke();
-        }
-
-        public void Init(bool Persist, bool Timer, bool Remembered, bool Hotkeys)
-        {
-            _persist = Persist;
-            _hotkeys = Hotkeys;
-
-            if (Timer)
-            {
-                RecordingViewModel.InitTimer();
-            }
-
-            // Register Hotkeys if not console
-            if (_hotkeys)
-                HotKeyManager.RegisterAll();
-
-            VideoWritersViewModel.RefreshCodecs();
-
-            if (Remembered)
-            {
-                _remembered = true;
-
-                _rememberByName.RestoreRemembered();
-            }
+            _mainModel.Init(Persist, Remembered, Hotkeys);
         }
 
         public void ViewLoaded()
         {
-            if (_remembered)
-            {
-                // Restore Webcam
-                if (!string.IsNullOrEmpty(Settings.Video.Webcam))
-                {
-                    var webcam = WebCamProvider.AvailableCams.FirstOrDefault(C => C.Name == Settings.Video.Webcam);
-
-                    if (webcam != null)
-                    {
-                        WebCamProvider.SelectedCam = webcam;
-                    }
-                }
-            }
-
-            HotKeyManager.ShowNotRegisteredOnStartup();
+            _mainModel.ViewLoaded();
         }
         
         public void Dispose()
         {
-            RecordingViewModel.Dispose();
-
-            if (_hotkeys)
-                HotKeyManager.Dispose();
-
-            AudioSource.Dispose();
-
-            _recentList.Dispose();
-            
-            // Remember things if not console.
-            if (_persist)
-            {
-                _rememberByName.Remember();
-
-                Settings.Save();
-            }
+            _mainModel.Dispose();
         }
         
         void CheckFunctionalityAvailability()

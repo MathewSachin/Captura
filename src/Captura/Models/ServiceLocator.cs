@@ -55,5 +55,13 @@ namespace Captura
         public CensorOverlaysViewModel CensorOverlays => ServiceProvider.Get<CensorOverlaysViewModel>();
 
         public ViewConditionsModel ViewConditions => ServiceProvider.Get<ViewConditionsModel>();
+
+        public TimerModel TimerModel => ServiceProvider.Get<TimerModel>();
+
+        public AudioSource AudioSource => ServiceProvider.Get<AudioSource>();
+
+        public IWebCamProvider WebCamProvider => ServiceProvider.Get<WebCamProvider>();
+
+        public VideoWritersViewModel VideoWritersViewModel => ServiceProvider.Get<VideoWritersViewModel>();
     }
 }

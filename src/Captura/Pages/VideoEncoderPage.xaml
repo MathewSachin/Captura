@@ -2,8 +2,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
-      xmlns:screna="clr-namespace:Captura.Models;assembly=Screna"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
@@ -12,8 +10,8 @@
                    Margin="0,5"/>
 
             <ListView Margin="0,5"
-                      ItemsSource="{Binding VideoWritersViewModel.VideoWriterProviders}"
-                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Mode=TwoWay}"
+                      ItemsSource="{Binding VideoWritersViewModel.VideoWriterProviders, Source={StaticResource ServiceLocator}}"
+                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       BorderThickness="0.4"
                       SelectionMode="Single">
@@ -43,21 +41,21 @@
 
             <ComboBox VerticalAlignment="Center"
                       Margin="0,5"
-                      ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters}" 
-                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay}"
+                      ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters, Source={StaticResource ServiceLocator}}" 
+                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
                       Name="VideoWriterComboBox"
                       Visibility="{Binding ViewConditions.MultipleVideoWriters.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ComboBox.ToolTip>
                     <StackPanel MinWidth="200">
-                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay}"
+                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay, Source={StaticResource ServiceLocator}}"
                                FontWeight="Bold"/>
 
-                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter.Extension, Mode=OneWay}"
+                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter.Extension, Mode=OneWay, Source={StaticResource ServiceLocator}}"
                                ContentStringFormat="{}File extension: {0}"/>
 
-                        <TextBlock Text="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Mode=OneWay}"
-                                   Visibility="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}}"/>
+                        <TextBlock Text="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Mode=OneWay, Source={StaticResource ServiceLocator}}"
+                                   Visibility="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}, Source={StaticResource ServiceLocator}}"/>
                     </StackPanel>
                 </ComboBox.ToolTip>
             </ComboBox>

@@ -34,11 +34,14 @@ namespace Captura
 
             if (DataContext is MainViewModel vm)
             {
-                vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                vm.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                ServiceProvider.Get<TimerModel>().Init();
 
                 var listener = new HotkeyListener();
 
-                listener.HotkeyReceived += Id => vm.HotKeyManager.ProcessHotkey(Id);
+                var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
+
+                listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
 
                 ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
                 {

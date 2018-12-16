@@ -298,9 +298,9 @@
                     <StackPanel Orientation="Horizontal"
                                 Margin="10,-1"
                                 PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
-                                Visibility="{Binding RecordingViewModel.Countdown, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                Visibility="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
                                 Name="DurationLabel">
-                        <Label Content="{Binding RecordingViewModel.TimeSpan}"/>
+                        <Label Content="{Binding TimerModel.TimeSpan, Source={StaticResource ServiceLocator}}"/>
 
                         <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
                                ContentStringFormat="{} / {0}"
@@ -308,7 +308,7 @@
                     </StackPanel>
 
                     <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
-                           Content="{Binding RecordingViewModel.Countdown}"
+                           Content="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}}"
                            Margin="10,-1"
                            PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
                            Style="{StaticResource CountdownLabel}"/>
