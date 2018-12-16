@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -11,7 +10,9 @@ namespace Captura.ViewModels
     {
         public ViewConditionsModel(VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
-            Settings Settings)
+            Settings Settings,
+            RecordingViewModel RecordingViewModel,
+            AudioSource AudioSource)
         {
             IsRegionMode = VideoSourcesViewModel
                 .ObserveProperty(M => M.SelectedVideoSourceKind)
@@ -49,6 +50,30 @@ namespace Captura.ViewModels
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
                 .Select(M => !(M is GifWriterProvider || M is DiscardWriterProvider))
                 .ToReadOnlyReactivePropertySlim();
+
+            CanChangeWebcam = new[]
+                {
+                    RecordingViewModel
+                        .ObserveProperty(M => M.RecorderState)
+                        .Select(M => M == RecorderState.NotRecording),
+                    Settings.WebcamOverlay
+                        .ObserveProperty(M => M.SeparateFile)
+                }
+                .CombineLatest(M => !M[1] || M[0]) // Not SeparateFile or NotRecording
+                .ToReadOnlyReactivePropertySlim();
+
+            CanChangeAudioSources = new[]
+                {
+                    RecordingViewModel
+                        .ObserveProperty(M => M.RecorderState)
+                        .Select(M => M == RecorderState.NotRecording),
+                    Settings.Audio
+                        .ObserveProperty(M => M.SeparateFilePerSource)
+                }
+                .CombineLatest(M =>
+                    AudioSource.CanChangeSourcesDuringRecording ||
+                    !M[1] || M[0]) // Not SeparateFilePerSource or NotRecording
+                .ToReadOnlyReactivePropertySlim();
         }
 
         public IReadOnlyReactiveProperty<bool> IsRegionMode { get; }
@@ -62,5 +87,9 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> CanSelectFrameRate { get; }
 
         public IReadOnlyReactiveProperty<bool> IsVideoQuality { get; }
+
+        public IReadOnlyReactiveProperty<bool> CanChangeWebcam { get; }
+
+        public IReadOnlyReactiveProperty<bool> CanChangeAudioSources { get; }
     }
 }

@@ -99,30 +99,6 @@ namespace Captura.ViewModels
             }
         }
 
-        bool _canChangeWebcam = true, _canChangeAudioSources = true;
-
-        public bool CanChangeWebcam
-        {
-            get => _canChangeWebcam;
-            private set
-            {
-                _canChangeWebcam = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool CanChangeAudioSources
-        {
-            get => _canChangeAudioSources;
-            private set
-            {
-                _canChangeAudioSources = value;
-                
-                OnPropertyChanged();
-            }
-        }
-
         #region Time
         TimeSpan _ts;
 
@@ -435,10 +411,6 @@ namespace Captura.ViewModels
 
             RecorderState = RecorderState.Recording;
 
-            CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
-
-            CanChangeAudioSources = !Settings.Audio.SeparateFilePerSource && _audioSource.CanChangeSourcesDuringRecording;
-
             _timer?.Stop();
             TimeSpan = TimeSpan.Zero;
             
@@ -551,8 +523,6 @@ namespace Captura.ViewModels
             _pauseNotification?.Remove();
 
             RecorderState = RecorderState.NotRecording;
-
-            CanChangeWebcam = CanChangeAudioSources = true;
 
             _recorder = null;
 

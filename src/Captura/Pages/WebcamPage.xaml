@@ -26,7 +26,7 @@
 
                 <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams}"
                           SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.CanChangeWebcam}"
+                          IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
                           DisplayMemberPath="Name"
                           Name="WebcamComboBox"/>
             </DockPanel>
