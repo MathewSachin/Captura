@@ -129,20 +129,10 @@ namespace Captura
 
         bool TryExit()
         {
-            var recordingVm = ServiceProvider.Get<RecordingViewModel>();
+            var recordingModel = ServiceProvider.Get<RecordingModel>();
 
-            if (recordingVm.RecorderState == RecorderState.Recording)
-            {
-                if (!ServiceProvider.MessageProvider.ShowYesNo(
-                    "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
-                    return false;
-            }
-            else if (recordingVm.RunningStopRecordingCount > 0)
-            {
-                if (!ServiceProvider.MessageProvider.ShowYesNo(
-                    "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
-                    return false;
-            }
+            if (!recordingModel.CanExit())
+                return false;
 
             var mainModel = ServiceProvider.Get<MainModel>();
             mainModel.Dispose();

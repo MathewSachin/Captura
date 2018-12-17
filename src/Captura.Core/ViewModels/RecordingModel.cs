@@ -14,7 +14,7 @@ using Screna;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class RecordingViewModel : ViewModelBase, IDisposable
+    public class RecordingModel : ViewModelBase, IDisposable
     {
         #region Fields
         IRecorder _recorder;
@@ -38,12 +38,9 @@ namespace Captura.ViewModels
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
         readonly IRecentList _recentList;
-
-        public DelegateCommand RecordCommand { get; }
-        public DelegateCommand PauseCommand { get; }
         #endregion
 
-        public RecordingViewModel(Settings Settings,
+        public RecordingModel(Settings Settings,
             LanguageManager LanguageManager,
             ISystemTray SystemTray,
             IRegionProvider RegionProvider,
@@ -73,10 +70,6 @@ namespace Captura.ViewModels
             _recentList = RecentList;
             _timerModel = TimerModel;
 
-            RecordCommand = new DelegateCommand(OnRecordExecute);
-
-            PauseCommand = new DelegateCommand(OnPauseExecute, false);
-
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
             TimerModel.CountdownElapsed += InternalStartRecording;
@@ -100,13 +93,11 @@ namespace Captura.ViewModels
 
                 _recorderState = value;
 
-                PauseCommand.RaiseCanExecuteChanged(value != RecorderState.NotRecording);
-
                 OnPropertyChanged();
             }
         }
 
-        async void OnRecordExecute()
+        public async void OnRecordExecute()
         {
             if (RecorderState == RecorderState.NotRecording)
             {
@@ -137,7 +128,7 @@ namespace Captura.ViewModels
 
         INotification _pauseNotification;
 
-        void OnPauseExecute()
+        public void OnPauseExecute()
         {
             _audioPlayer.Play(SoundKind.Pause);
 
@@ -181,7 +172,7 @@ namespace Captura.ViewModels
             if (_videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
                 (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
-                && noVideoSourceProvider.Source is FFmpegAudioItem))
+                 && noVideoSourceProvider.Source is FFmpegAudioItem))
             {
                 if (!FFmpegService.FFmpegExists)
                 {
@@ -236,7 +227,6 @@ namespace Captura.ViewModels
             {
                 deskDuplImageProvider.Timeout = 5000;
             }
-
 
             IAudioProvider audioProvider = null;
 
@@ -361,11 +351,10 @@ namespace Captura.ViewModels
                 else OnErrorOccurred(E);
             };
 
-            if (Settings.PreStartCountdown > 0)
+            if (Settings.PreStartCountdown == 0)
             {
-                PauseCommand.RaiseCanExecuteChanged(false);
+                InternalStartRecording();
             }
-            else InternalStartRecording();
 
             _timerModel.Start();
 
@@ -417,10 +406,6 @@ namespace Captura.ViewModels
         void InternalStartRecording()
         {
             _recorder.Start();
-
-            if (_syncContext != null)
-                _syncContext.Post(S => PauseCommand.RaiseCanExecuteChanged(true), null);
-            else PauseCommand.RaiseCanExecuteChanged(true);
         }
 
         void OnErrorOccurred(Exception E)
@@ -630,6 +615,24 @@ namespace Captura.ViewModels
             notification.OnDelete += () => SavingRecentItem.RemoveCommand.ExecuteIfCan();
 
             _systemTray.ShowNotification(notification);
+        }
+
+        public bool CanExit()
+        {
+            if (RecorderState == RecorderState.Recording)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+            else if (RunningStopRecordingCount > 0)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

@@ -58,10 +58,10 @@ namespace Captura
             Binder.BindSingleton<TimerModel>();
             Binder.BindSingleton<MainModel>();
             Binder.BindSingleton<ScreenShotModel>();
+            Binder.BindSingleton<RecordingModel>();
             Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
-            Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
         }
 

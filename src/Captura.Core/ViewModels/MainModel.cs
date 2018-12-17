@@ -16,7 +16,7 @@ namespace Captura.ViewModels
 
         readonly IWebCamProvider _webCamProvider;
         readonly VideoWritersViewModel _videoWritersViewModel;
-        readonly RecordingViewModel _recordingViewModel;
+        readonly RecordingModel _recordingModel;
         readonly AudioSource _audioSource;
         readonly HotKeyManager _hotKeyManager;
 
@@ -27,7 +27,7 @@ namespace Captura.ViewModels
             HotKeyManager HotKeyManager,
             RememberByName RememberByName,
             IRecentList RecentList,
-            RecordingViewModel RecordingViewModel)
+            RecordingModel RecordingModel)
         {
             _settings = Settings;
             _webCamProvider = WebCamProvider;
@@ -36,7 +36,7 @@ namespace Captura.ViewModels
             _hotKeyManager = HotKeyManager;
             _rememberByName = RememberByName;
             _recentList = RecentList;
-            _recordingViewModel = RecordingViewModel;
+            _recordingModel = RecordingModel;
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(Settings.OutPath))
@@ -104,7 +104,7 @@ namespace Captura.ViewModels
 
         public void Dispose()
         {
-            _recordingViewModel.Dispose();
+            _recordingModel.Dispose();
 
             if (_hotkeys)
                 _hotKeyManager.Dispose();

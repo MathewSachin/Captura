@@ -13,8 +13,6 @@ namespace Captura.ViewModels
     public class MainViewModel : ViewModelBase
     {
         readonly IDialogService _dialogService;
-        readonly RecordingViewModel _recordingViewModel;
-        readonly VideoSourcesViewModel _videoSourcesViewModel;
 
         public ICommand ShowPreviewCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -24,23 +22,20 @@ namespace Captura.ViewModels
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
-        public MainViewModel(VideoSourcesViewModel VideoSourcesViewModel,
-            Settings Settings,
+        public MainViewModel(Settings Settings,
             LanguageManager LanguageManager,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
-            RecordingViewModel RecordingViewModel,
+            RecordingModel RecordingModel,
             MainModel MainModel) : base(Settings, LanguageManager)
         {
-            _videoSourcesViewModel = VideoSourcesViewModel;
             _dialogService = DialogService;
-            _recordingViewModel = RecordingViewModel;
 
             ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
 
             #region Commands
-            RefreshCommand = RecordingViewModel
+            RefreshCommand = RecordingModel
                 .ObserveProperty(M => M.RecorderState)
                 .Select(M => M == RecorderState.NotRecording)
                 .ToReactiveCommand()
@@ -59,39 +54,6 @@ namespace Captura.ViewModels
 
             TrayLeftClickCommand = new DelegateCommand(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
             #endregion
-
-            Settings.Audio.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(Settings.Audio.Enabled):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }
-            };
-
-            VideoSourcesViewModel.PropertyChanged += (Sender, Args) =>
-            {
-                switch (Args.PropertyName)
-                {
-                    case nameof(VideoSourcesViewModel.SelectedVideoSourceKind):
-                    case null:
-                    case "":
-                        CheckFunctionalityAvailability();
-                        break;
-                }
-            };
-        }
-        
-        void CheckFunctionalityAvailability()
-        {
-            var audioAvailable = Settings.Audio.Enabled;
-
-            var videoAvailable = !(_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
-            
-            _recordingViewModel.RecordCommand.RaiseCanExecuteChanged(audioAvailable || videoAvailable);
         }
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]

@@ -18,7 +18,7 @@ namespace Captura
     {
         readonly Settings _settings;
         readonly MainModel _mainModel;
-        readonly RecordingViewModel _recordingViewModel;
+        readonly RecordingModel _recordingModel;
         readonly ScreenShotModel _screenShotModel;
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
@@ -26,7 +26,7 @@ namespace Captura
         readonly VideoWritersViewModel _videoWritersViewModel;
 
         public ConsoleManager(Settings Settings,
-            RecordingViewModel RecordingViewModel,
+            RecordingModel RecordingModel,
             MainModel MainModel,
             ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
@@ -34,7 +34,7 @@ namespace Captura
             IWebCamProvider WebCamProvider, VideoWritersViewModel VideoWritersViewModel)
         {
             _settings = Settings;
-            _recordingViewModel = RecordingViewModel;
+            _recordingModel = RecordingModel;
             _mainModel = MainModel;
             _screenShotModel = ScreenShotModel;
             _videoSourcesViewModel = VideoSourcesViewModel;
@@ -117,24 +117,17 @@ namespace Captura
             if (StartOptions.VideoQuality is int vq)
                 _settings.Video.Quality = vq;
 
-            if (!_recordingViewModel.RecordCommand.CanExecute(null))
-            {
-                WriteLine("Nothing to Record");
-
-                return;
-            }
-
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            if (!_recordingViewModel.StartRecording(StartOptions.FileName))
+            if (!_recordingModel.StartRecording(StartOptions.FileName))
                 return;
 
             Task.Factory.StartNew(() =>
             {
                 Loop(StartOptions);
 
-                _recordingViewModel.StopRecording().Wait();
+                _recordingModel.StopRecording().Wait();
 
                 Application.Exit();
             });
@@ -292,9 +285,9 @@ namespace Captura
                     if (c != 'p')
                         continue;
 
-                    _recordingViewModel.PauseCommand.ExecuteIfCan();
+                    _recordingModel.OnPauseExecute();
 
-                    if (_recordingViewModel.RecorderState != RecorderState.Paused)
+                    if (_recordingModel.RecorderState != RecorderState.Paused)
                     {
                         WriteLine("Resumed");
                     }

@@ -11,7 +11,7 @@ namespace Captura.ViewModels
         public ViewConditionsModel(VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
             Settings Settings,
-            RecordingViewModel RecordingViewModel,
+            RecordingModel RecordingModel,
             AudioSource AudioSource)
         {
             IsRegionMode = VideoSourcesViewModel
@@ -53,7 +53,7 @@ namespace Captura.ViewModels
 
             CanChangeWebcam = new[]
                 {
-                    RecordingViewModel
+                    RecordingModel
                         .ObserveProperty(M => M.RecorderState)
                         .Select(M => M == RecorderState.NotRecording),
                     Settings.WebcamOverlay
@@ -64,7 +64,7 @@ namespace Captura.ViewModels
 
             CanChangeAudioSources = new[]
                 {
-                    RecordingViewModel
+                    RecordingModel
                         .ObserveProperty(M => M.RecorderState)
                         .Select(M => M == RecorderState.NotRecording),
                     Settings.Audio
@@ -75,7 +75,7 @@ namespace Captura.ViewModels
                     !M[1] || M[0]) // Not SeparateFilePerSource or NotRecording
                 .ToReadOnlyReactivePropertySlim();
 
-            IsEnabled = RecordingViewModel
+            IsEnabled = RecordingModel
                 .ObserveProperty(M => M.RecorderState)
                 .Select(M => M == RecorderState.NotRecording)
                 .ToReadOnlyReactivePropertySlim();
