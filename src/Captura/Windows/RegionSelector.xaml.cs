@@ -8,15 +8,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using Captura.ViewModels;
 using Color = System.Windows.Media.Color;
 
 namespace Captura
 {
-    public partial class RegionSelector : IRegionProvider
+    public partial class RegionSelector
     {
         readonly IVideoSourcePicker _videoSourcePicker;
-        readonly RegionItem _regionItem;
 
         bool _widthBoxChanging, _heightBoxChanging, _resizing;
 
@@ -26,15 +24,10 @@ namespace Captura
 
             InitializeComponent();
 
-            _regionItem = new RegionItem(this);
-
             // Prevent Closing by User
             Closing += (S, E) => E.Cancel = true;
 
             InitDimensionBoxes();
-
-            // Setting MainViewModel as DataContext from XAML causes crash.
-            Loaded += (S, E) => MainControls.DataContext = ServiceProvider.Get<MainViewModel>();
 
             ModesBox.ItemsSource = new[]
             {
@@ -150,6 +143,8 @@ namespace Captura
 
             SelectorHidden?.Invoke();
         }
+
+        public event Action SelectorHidden;
         
         protected override void OnLocationChanged(EventArgs E)
         {
@@ -176,20 +171,6 @@ namespace Captura
             base.OnRenderSizeChanged(SizeInfo);
         }
 
-        #region IRegionProvider
-        public event Action SelectorHidden;
-
-        public bool SelectorVisible
-        {
-            get => Visibility == Visibility.Visible;
-            set
-            {
-                if (value)
-                    Show();
-                else Hide();
-            }
-        }
-        
         void UpdateRegion()
         {
             _region = Dispatcher.Invoke(() =>
@@ -198,10 +179,12 @@ namespace Captura
                     (int)((Region.ActualWidth - 2 * LeftOffset) * Dpi.X),
                     (int)((Region.ActualHeight - 2 * TopOffset) * Dpi.Y)));
 
-            _regionItem.Name = _region.ToString().Replace("{", "")
+            UpdateRegionName?.Invoke(_region.ToString().Replace("{", "")
                 .Replace("}", "")
-                .Replace(",", ", ");
+                .Replace(",", ", "));
         }
+
+        public event Action<string> UpdateRegionName;
 
         // Ignoring Borders and Header
         public Rectangle SelectedRegion
@@ -253,10 +236,7 @@ namespace Captura
             });
         }
 
-        public IVideoItem VideoSource => _regionItem;
-
         public IntPtr Handle => new WindowInteropHelper(this).Handle;
-        #endregion
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
         {

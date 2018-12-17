@@ -19,7 +19,7 @@ namespace Captura
         readonly Settings _settings;
         readonly MainModel _mainModel;
         readonly RecordingViewModel _recordingViewModel;
-        readonly ScreenShotViewModel _screenShotViewModel;
+        readonly ScreenShotModel _screenShotModel;
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
         readonly IWebCamProvider _webCamProvider;
@@ -28,7 +28,7 @@ namespace Captura
         public ConsoleManager(Settings Settings,
             RecordingViewModel RecordingViewModel,
             MainModel MainModel,
-            ScreenShotViewModel ScreenShotViewModel,
+            ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             IWebCamProvider WebCamProvider, VideoWritersViewModel VideoWritersViewModel)
@@ -36,7 +36,7 @@ namespace Captura
             _settings = Settings;
             _recordingViewModel = RecordingViewModel;
             _mainModel = MainModel;
-            _screenShotViewModel = ScreenShotViewModel;
+            _screenShotModel = ScreenShotModel;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoSourceProviders = VideoSourceProviders;
             _webCamProvider = WebCamProvider;
@@ -154,9 +154,9 @@ namespace Captura
 
                 try
                 {
-                    var bmp = _screenShotViewModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
+                    var bmp = _screenShotModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
 
-                    _screenShotViewModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
+                    _screenShotModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
                 catch
                 {
@@ -167,7 +167,7 @@ namespace Captura
             {
                 HandleVideoSource(ShotOptions);
 
-                _screenShotViewModel.CaptureScreenShot(ShotOptions.FileName);
+                _screenShotModel.CaptureScreenShot(ShotOptions.FileName);
             }
         }
 

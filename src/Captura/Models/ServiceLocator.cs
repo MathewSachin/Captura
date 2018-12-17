@@ -63,5 +63,9 @@ namespace Captura
         public IWebCamProvider WebCamProvider => ServiceProvider.Get<WebCamProvider>();
 
         public VideoWritersViewModel VideoWritersViewModel => ServiceProvider.Get<VideoWritersViewModel>();
+
+        public VideoSourcesViewModel VideoSourcesViewModel => ServiceProvider.Get<VideoSourcesViewModel>();
+
+        public RecordingViewModel RecordingViewModel => ServiceProvider.Get<RecordingViewModel>();
     }
 }

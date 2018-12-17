@@ -2,10 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
+             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.ViewCore"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance base:PositionedOverlaySettings}">
     <StackPanel>

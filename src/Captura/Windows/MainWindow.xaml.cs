@@ -34,7 +34,10 @@ namespace Captura
 
             if (DataContext is MainViewModel vm)
             {
-                vm.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                var mainModel = ServiceProvider.Get<MainModel>();
+
+                mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                ServiceProvider.Get<HotkeyActionRegisterer>().Register();
                 ServiceProvider.Get<TimerModel>().Init();
 
                 var listener = new HotkeyListener();
@@ -61,7 +64,7 @@ namespace Captura
                 {
                     RepositionWindowIfOutside();
 
-                    vm.ViewLoaded();
+                    mainModel.ViewLoaded();
                 };
             }
 
@@ -126,23 +129,23 @@ namespace Captura
 
         bool TryExit()
         {
-            if (DataContext is MainViewModel vm)
-            {
-                if (vm.RecordingViewModel.RecorderState == RecorderState.Recording)
-                {
-                    if (!ServiceProvider.MessageProvider.ShowYesNo(
-                        "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
-                        return false;
-                }
-                else if (vm.RecordingViewModel.RunningStopRecordingCount > 0)
-                {
-                    if (!ServiceProvider.MessageProvider.ShowYesNo(
-                        "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
-                        return false;
-                }
+            var recordingVm = ServiceProvider.Get<RecordingViewModel>();
 
-                vm.Dispose();
+            if (recordingVm.RecorderState == RecorderState.Recording)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
             }
+            else if (recordingVm.RunningStopRecordingCount > 0)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+
+            var mainModel = ServiceProvider.Get<MainModel>();
+            mainModel.Dispose();
 
             SystemTray.Dispose();
 

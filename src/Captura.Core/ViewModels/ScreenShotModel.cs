@@ -9,7 +9,7 @@ using Screna;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ScreenShotViewModel : ViewModelBase
+    public class ScreenShotModel : NotifyPropertyChanged
     {
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly ISystemTray _systemTray;
@@ -17,25 +17,20 @@ namespace Captura.ViewModels
         readonly IMainWindow _mainWindow;
         readonly IVideoSourcePicker _sourcePicker;
         readonly IAudioPlayer _audioPlayer;
-
-        public DiskWriter DiskWriter { get; }
-        public ClipboardWriter ClipboardWriter { get; }
-        public ImageUploadWriter ImgurWriter { get; }
+        readonly Settings _settings;
+        readonly LanguageManager _loc;
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
-        public ScreenShotViewModel(VideoSourcesViewModel VideoSourcesViewModel,
+        public ScreenShotModel(VideoSourcesViewModel VideoSourcesViewModel,
             ISystemTray SystemTray,
-            LanguageManager Loc,
-            Settings Settings,
             IRegionProvider RegionProvider,
             IMainWindow MainWindow,
-            DiskWriter DiskWriter,
-            ClipboardWriter ClipboardWriter,
-            ImageUploadWriter ImgurWriter,
             IVideoSourcePicker SourcePicker,
             IAudioPlayer AudioPlayer,
-            IEnumerable<IImageWriterItem> ImageWriters) : base(Settings, Loc)
+            IEnumerable<IImageWriterItem> ImageWriters,
+            Settings Settings,
+            LanguageManager Loc)
         {
             _videoSourcesViewModel = VideoSourcesViewModel;
             _systemTray = SystemTray;
@@ -43,31 +38,16 @@ namespace Captura.ViewModels
             _mainWindow = MainWindow;
             _sourcePicker = SourcePicker;
             _audioPlayer = AudioPlayer;
-            this.DiskWriter = DiskWriter;
-            this.ClipboardWriter = ClipboardWriter;
-            this.ImgurWriter = ImgurWriter;
+            _settings = Settings;
+            _loc = Loc;
 
             AvailableImageWriters = ImageWriters.ToList();
 
             if (!AvailableImageWriters.Any(M => M.Active))
                 AvailableImageWriters[0].Active = true;
-
-            ScreenShotCommand = new DelegateCommand(() => CaptureScreenShot());
-            ScreenShotActiveCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.ForegroundWindow)));
-            ScreenShotDesktopCommand = new DelegateCommand(async () => await SaveScreenShot(ScreenShotWindow(Window.DesktopWindow)));
-            ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenshotRegion());
-            ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenshotWindow());
-            ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenshotScreen());
         }
 
-        public DelegateCommand ScreenShotCommand { get; }
-        public DelegateCommand ScreenShotActiveCommand { get; }
-        public DelegateCommand ScreenShotDesktopCommand { get; }
-        public DelegateCommand ScreenshotRegionCommand { get; }
-        public DelegateCommand ScreenshotWindowCommand { get; }
-        public DelegateCommand ScreenshotScreenCommand { get; }
-
-        async Task ScreenshotRegion()
+        public async Task ScreenshotRegion()
         {
             var region = _sourcePicker.PickRegion();
 
@@ -77,7 +57,7 @@ namespace Captura.ViewModels
             await SaveScreenShot(ScreenShot.Capture(region.Value));
         }
 
-        async Task ScreenshotWindow()
+        public async Task ScreenshotWindow()
         {
             var window = _sourcePicker.PickWindow();
 
@@ -89,7 +69,7 @@ namespace Captura.ViewModels
             }
         }
 
-        async Task ScreenshotScreen()
+        public async Task ScreenshotScreen()
         {
             var screen = _sourcePicker.PickScreen();
 
@@ -113,7 +93,7 @@ namespace Captura.ViewModels
 
                 await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
-            else _systemTray.ShowNotification(new TextNotification(Loc.ImgEmpty));
+            else _systemTray.ShowNotification(new TextNotification(_loc.ImgEmpty));
         }
 
         public Bitmap ScreenShotWindow(IWindow Window)
@@ -122,20 +102,20 @@ namespace Captura.ViewModels
 
             if (Window.Handle == Screna.Window.DesktopWindow.Handle)
             {
-                return ScreenShot.Capture(Settings.IncludeCursor);
+                return ScreenShot.Capture(_settings.IncludeCursor);
             }
 
             try
             {
                 Bitmap bmp = null;
 
-                if (Settings.ScreenShots.WindowShotTransparent)
+                if (_settings.ScreenShots.WindowShotTransparent)
                 {
-                    bmp = ScreenShot.CaptureTransparent(Window, Settings.IncludeCursor);
+                    bmp = ScreenShot.CaptureTransparent(Window, _settings.IncludeCursor);
                 }
 
                 // Capture without Transparency
-                return bmp ?? ScreenShot.Capture(Window, Settings.IncludeCursor);
+                return bmp ?? ScreenShot.Capture(Window, _settings.IncludeCursor);
             }
             catch
             {
@@ -157,7 +137,7 @@ namespace Captura.ViewModels
             Bitmap bmp = null;
 
             var selectedVideoSource = _videoSourcesViewModel.SelectedVideoSourceKind?.Source;
-            var includeCursor = Settings.IncludeCursor;
+            var includeCursor = _settings.IncludeCursor;
 
             switch (_videoSourcesViewModel.SelectedVideoSourceKind)
             {
@@ -182,7 +162,7 @@ namespace Captura.ViewModels
                     break;
 
                 case FullScreenSourceProvider _:
-                    var hide = _mainWindow.IsVisible && Settings.UI.HideOnFullScreenShot;
+                    var hide = _mainWindow.IsVisible && _settings.UI.HideOnFullScreenShot;
 
                     if (hide)
                     {

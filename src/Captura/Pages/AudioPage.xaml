@@ -14,7 +14,7 @@
 
                 <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
                           FontWeight="Bold"
                           FontSize="15"/>
             </DockPanel>
@@ -70,7 +70,7 @@
             </ScrollViewer>
 
             <DockPanel Margin="0,5"
-                       IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                       IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}">
                 <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>
                 <Label Content="{Binding Settings.Audio.Quality}"
@@ -86,7 +86,7 @@
                         Value="{Binding Settings.Audio.Quality}"/>
             </DockPanel>
 
-            <StackPanel IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+            <StackPanel IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
                         Margin="0,20,0,0">
                 <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
                           Content="{Binding SeparateAudioFiles, Source={StaticResource Loc}, Mode=OneWay}"

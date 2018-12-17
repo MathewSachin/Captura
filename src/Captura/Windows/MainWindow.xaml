@@ -21,14 +21,14 @@
                       CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Overlay="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTaskbarOverlayConverter}}"
+        <TaskbarItemInfo Overlay="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTaskbarOverlayConverter}}"
                          Description="Captura">
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
+                <ThumbButtonInfo Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
                                  Description="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource ScreenShotImageSource}"/>
-                <ThumbButtonInfo Command="{Binding RecordingViewModel.RecordCommand}"
+                <ThumbButtonInfo Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                  Description="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                  DismissWhenClicked="True"
                                  ImageSource="{StaticResource RecordStopImageSource}"/>
@@ -43,7 +43,7 @@
 
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
-                        IconSource="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToTrayIconSourceConverter}}"
+                        IconSource="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTrayIconSourceConverter}}"
                         ToolTipText="Captura"
                         MenuActivation="RightClick"
                         LeftClickCommand="{Binding TrayLeftClickCommand}"
@@ -51,7 +51,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{Binding StartStopRecording, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding RecordingViewModel.RecordCommand}">
+                              Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource RecordStopImageSource}"
                                    Width="13"
@@ -60,7 +60,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding PauseResumeRecording, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding RecordingViewModel.PauseCommand}">
+                              Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Width="10"
                                    Margin="5">
@@ -75,7 +75,7 @@
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                            <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
                                                 <Setter Property="LayoutTransform">
                                                     <Setter.Value>
                                                         <RotateTransform Angle="90"/>
@@ -92,7 +92,7 @@
                     <Separator/>
 
                     <MenuItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotViewModel.ScreenShotCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -101,7 +101,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotActiveWindow, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotViewModel.ScreenShotActiveCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotActiveCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -110,7 +110,7 @@
                     </MenuItem>
 
                     <MenuItem Header="{Binding ScreenShotDesktop, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotViewModel.ScreenShotDesktopCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenShotDesktopCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Source="{StaticResource ScreenShotImageSource}"
                                    Width="13"
@@ -121,7 +121,7 @@
                     <Separator/>
 
                     <MenuItem Header="ScreenShot (Region)"
-                              Command="{Binding ScreenShotViewModel.ScreenshotRegionCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenshotRegionCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Width="13"
                                    Margin="5">
@@ -138,7 +138,7 @@
                     </MenuItem>
                       
                     <MenuItem Header="ScreenShot (Screen)"
-                              Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenshotScreenCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Width="13"
                                    Margin="5">
@@ -155,7 +155,7 @@
                     </MenuItem>
 
                     <MenuItem Header="ScreenShot (Window)"
-                              Command="{Binding ScreenShotViewModel.ScreenshotWindowCommand}">
+                              Command="{Binding ScreenShotViewModel.ScreenshotWindowCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
                             <Image Width="13"
                                    Margin="5">
@@ -216,15 +216,15 @@
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
                     <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
+                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
                                         IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding RecordingViewModel.RecordCommand}"
+                                        Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                                        IconData="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
-                                        Command="{Binding RecordingViewModel.PauseCommand}"
+                                        Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
                                         IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"
                                         RenderTransformOrigin="0.5,0.5">
@@ -234,7 +234,7 @@
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>

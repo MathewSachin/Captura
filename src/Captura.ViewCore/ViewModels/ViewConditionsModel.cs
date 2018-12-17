@@ -74,6 +74,11 @@ namespace Captura.ViewModels
                     AudioSource.CanChangeSourcesDuringRecording ||
                     !M[1] || M[0]) // Not SeparateFilePerSource or NotRecording
                 .ToReadOnlyReactivePropertySlim();
+
+            IsEnabled = RecordingViewModel
+                .ObserveProperty(M => M.RecorderState)
+                .Select(M => M == RecorderState.NotRecording)
+                .ToReadOnlyReactivePropertySlim();
         }
 
         public IReadOnlyReactiveProperty<bool> IsRegionMode { get; }
@@ -91,5 +96,7 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> CanChangeWebcam { get; }
 
         public IReadOnlyReactiveProperty<bool> CanChangeAudioSources { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsEnabled { get; }
     }
 }

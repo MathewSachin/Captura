@@ -20,7 +20,7 @@
                 </DockPanel>
             </Button>
 
-            <Button IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+            <Button IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
                     Click="FFmpegDownload"
                     Margin="0,5">
                 <DockPanel>
@@ -44,7 +44,7 @@
                 <Button DockPanel.Dock="Right"
                         ToolTip="{Binding SelectFFmpegFolder, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding SelectFFmpegFolderCommand}"
-                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                        IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}">
                     <Path Stretch="UniformToFill"
                           Height="4"
                           Width="16"
@@ -53,7 +53,7 @@
                 <Button DockPanel.Dock="Right"
                         ToolTip="{Binding Reset, Source={StaticResource Loc}, Mode=OneWay}"
                         Command="{Binding ResetFFmpegFolderCommand}"
-                        IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                        IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
                         VerticalContentAlignment="Center">
                     <Path Stretch="UniformToFill"
                           Height="10"

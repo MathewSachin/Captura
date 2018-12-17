@@ -43,7 +43,6 @@ namespace Captura
             Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<FFmpegLog>();
             Binder.BindSingleton<HotKeyManager>();
-            Binder.BindSingleton<HotkeyActionRegisterer>();
             Binder.Bind(() => LanguageManager.Instance);
         }
 
@@ -58,11 +57,10 @@ namespace Captura
         {
             Binder.BindSingleton<TimerModel>();
             Binder.BindSingleton<MainModel>();
-            Binder.BindSingleton<MainViewModel>();
+            Binder.BindSingleton<ScreenShotModel>();
             Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
-            Binder.BindSingleton<ScreenShotViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
         }

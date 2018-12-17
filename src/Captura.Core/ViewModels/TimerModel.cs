@@ -41,7 +41,18 @@ namespace Captura.ViewModels
             }
         }
 
-        public bool Waiting { get; set; }
+        bool _waiting;
+
+        public bool Waiting
+        {
+            get => _waiting;
+            set
+            {
+                _waiting = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public TimerModel(Settings Settings)
         {

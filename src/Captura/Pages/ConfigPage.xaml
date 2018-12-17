@@ -38,7 +38,7 @@
                 </DockPanel>
 
                 <Grid Margin="0,0,0,5"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}">
+                      IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>

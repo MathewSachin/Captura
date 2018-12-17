@@ -10,7 +10,7 @@ namespace Captura
         {
             // Use singleton to ensure the same instance is used every time.
             Binder.Bind<IMessageProvider, MessageProvider>();
-            Binder.Bind<IRegionProvider, RegionSelector>();
+            Binder.Bind<IRegionProvider, RegionSelectorProvider>();
             Binder.Bind<ISystemTray, SystemTray>();
             Binder.Bind<IPreviewWindow, PreviewWindowService>();
             Binder.Bind<IVideoSourcePicker, VideoSourcePicker>();

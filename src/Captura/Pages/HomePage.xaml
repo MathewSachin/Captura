@@ -32,12 +32,12 @@
                     Padding="5,2"
                     Margin="0,2">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name}"/>
+                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name, Source={StaticResource ServiceLocator}}"/>
                     <Label Content="-"
-                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"
+                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"
                            Margin="5,0"/>
-                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
-                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Converter={StaticResource NotNullConverter}}"/>
+                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
+                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"/>
                 </StackPanel>
             </Border>
 
@@ -53,9 +53,9 @@
                 <Label Content="{Binding AudioFormat, Source={StaticResource Loc}, Mode=OneWay}"
                        Margin="0,0,5,0"/>
 
-                <ComboBox ItemsSource="{Binding VideoSourcesViewModel.NoVideoSourceProvider.Sources}"
-                          SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay}"
-                          IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"/>
+                <ComboBox ItemsSource="{Binding VideoSourcesViewModel.NoVideoSourceProvider.Sources, Source={StaticResource ServiceLocator}}"
+                          SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"/>
             </DockPanel>
 
             <Frame Source="VideoEncoderPage.xaml"/>

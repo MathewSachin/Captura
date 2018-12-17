@@ -5,8 +5,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.Core"
         xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
+        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.ViewCore"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Background="Transparent"
@@ -77,7 +77,7 @@
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn}" Value="{x:Static models:RecorderState.Recording}">
+                        <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard Name="RedStoryboard">
                                     <Storyboard>
@@ -111,7 +111,7 @@
 
         <Grid Grid.Row="0"
               Grid.Column="0"
-              IsEnabled="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}">
+              IsEnabled="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}">
             <Thumb VerticalAlignment="Bottom"
                    Height="2"
                    Cursor="SizeNS"
@@ -186,7 +186,7 @@
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding IsMouseOver, ElementName=SizeBorder}" Value="False"/>
-                                    <Condition Binding="{Binding DataContext.RecordingViewModel.RecorderState, ElementName=RecordBtn, Converter={StaticResource NotRecordingConverter}}" Value="False"/>
+                                    <Condition Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
                                 <MultiDataTrigger.EnterActions>
                                     <BeginStoryboard>
@@ -216,9 +216,7 @@
                     BorderBrush="{DynamicResource Accent}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
-                <DockPanel Name="MainControls"
-                           Background="{DynamicResource WindowBackground}"
-                           d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
+                <DockPanel Background="{DynamicResource WindowBackground}">
                     <DockPanel.Resources>
                         <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                             <Setter Property="LayoutTransform">
@@ -244,21 +242,20 @@
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand}"
+                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
                                         IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand}"
+                    <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
-                                        x:Name="RecordBtn"
-                                        IconData="{Binding RecordingViewModel.RecorderState, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                        IconData="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand}"
+                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
                                         IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
                                         Opacity="0.9"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
@@ -270,7 +267,7 @@
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState}" Value="Paused">
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>

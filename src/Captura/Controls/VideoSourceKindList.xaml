@@ -1,11 +1,10 @@
 ﻿<UserControl x:Class="Captura.VideoSourceKindList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ListView Margin="0,5"
-              IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
-              ItemsSource="{Binding VideoSourcesViewModel.VideoSources}"
-              SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay}"
+              IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+              ItemsSource="{Binding VideoSourcesViewModel.VideoSources, Source={StaticResource ServiceLocator}}"
+              SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
               BorderThickness="0.4"
               SelectionMode="Single">
         <ListView.ItemsPanel>

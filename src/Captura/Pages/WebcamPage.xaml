@@ -33,7 +33,7 @@
 
             <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
                       Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsEnabled="{Binding RecordingViewModel.RecorderState, Converter={StaticResource NotRecordingConverter}}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
                       Margin="0,5"/>
         </StackPanel>
     </Grid>
