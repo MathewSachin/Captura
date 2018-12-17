@@ -56,7 +56,8 @@ namespace Captura
         public static IEnumerable<Service> AllServices { get; } = Enum
             .GetValues(typeof(ServiceName))
             .Cast<ServiceName>()
-            .Select(M => new Service(M));
+            .Select(M => new Service(M))
+            .ToArray(); // Prevent multiple enumerations
 
         public void RegisterAll()
         {
