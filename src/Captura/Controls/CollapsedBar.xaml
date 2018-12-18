@@ -69,7 +69,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                                            IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                             IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
                                             IsChecked="{Binding Settings.IncludeCursor}"/>
                 <captura:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"

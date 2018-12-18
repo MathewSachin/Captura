@@ -55,7 +55,7 @@
 
                 <ComboBox ItemsSource="{Binding VideoSourcesViewModel.NoVideoSourceProvider.Sources, Source={StaticResource ServiceLocator}}"
                           SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                          IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"/>
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </DockPanel>
 
             <Frame Source="VideoEncoderPage.xaml"/>

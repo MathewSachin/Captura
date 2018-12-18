@@ -25,7 +25,7 @@
             <StackPanel Orientation="Horizontal"
                         Margin="10,0,0,0">
                 <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                          IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                           IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.IncludeCursor}"/>
                 <local:ModernToggleButton IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
@@ -50,7 +50,7 @@
                         </StackPanel>
                     </local:ModernToggleButton.ToolTip>
                 </local:ModernToggleButton>
-                <local:ModernToggleButton IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                <local:ModernToggleButton IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                           IconData="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
                     <local:ModernToggleButton.ToolTip>

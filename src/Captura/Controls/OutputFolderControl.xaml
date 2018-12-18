@@ -24,7 +24,7 @@
         <Button DockPanel.Dock="Right"
                 ToolTip="{Binding SelectOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                 Command="{Binding SelectOutputFolderCommand}"
-                IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}">
+                IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
             <Path Stretch="UniformToFill"
                   Height="4"
                   Width="16"

@@ -12,7 +12,7 @@
             <ListView Margin="0,5"
                       ItemsSource="{Binding VideoWritersViewModel.VideoWriterProviders, Source={StaticResource ServiceLocator}}"
                       SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriterKind, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                      IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                       BorderThickness="0.4"
                       SelectionMode="Single">
                 <ListView.ItemsPanel>
@@ -43,7 +43,7 @@
                       Margin="0,5"
                       ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters, Source={StaticResource ServiceLocator}}" 
                       SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                      IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                       Name="VideoWriterComboBox"
                       Visibility="{Binding ViewConditions.MultipleVideoWriters.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ComboBox.ToolTip>
@@ -66,7 +66,7 @@
                       Visibility="{Binding ViewConditions.IsGifMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <Grid Margin="0,5"
-                  IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                  IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                   Visibility="{Binding ViewConditions.CanSelectFrameRate.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -115,7 +115,7 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
             </Grid>
 
             <DockPanel Margin="0,5"
-                       IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"
+                       IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                        Visibility="{Binding ViewConditions.IsVideoQuality.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>

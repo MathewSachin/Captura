@@ -10,7 +10,7 @@
                 <CheckBox Content="{Binding KeystrokesSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding SeparateTextFile, Mode=TwoWay}"
                           Margin="0,3"
-                          IsEnabled="{Binding ViewConditions.IsEnabled, Source={StaticResource ServiceLocator}}"/>
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
 
                 <DockPanel Margin="0,3">
                     <Label Content="{Binding Keymap, Source={StaticResource Loc}, Mode=OneWay}"

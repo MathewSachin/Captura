@@ -60,7 +60,7 @@ namespace Captura
 
         public AudioSource AudioSource => ServiceProvider.Get<AudioSource>();
 
-        public IWebCamProvider WebCamProvider => ServiceProvider.Get<WebCamProvider>();
+        public IWebCamProvider WebCamProvider => ServiceProvider.Get<IWebCamProvider>();
 
         public VideoWritersViewModel VideoWritersViewModel => ServiceProvider.Get<VideoWritersViewModel>();
 
