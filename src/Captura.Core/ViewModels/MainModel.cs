@@ -104,15 +104,6 @@ namespace Captura.ViewModels
 
         public void Dispose()
         {
-            _recordingModel.Dispose();
-
-            if (_hotkeys)
-                _hotKeyManager.Dispose();
-
-            _audioSource.Dispose();
-
-            _recentList.Dispose();
-
             // Remember things if not console.
             if (_persist)
             {

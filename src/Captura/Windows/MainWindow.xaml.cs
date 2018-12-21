@@ -134,8 +134,7 @@ namespace Captura
             if (!recordingModel.CanExit())
                 return false;
 
-            var mainModel = ServiceProvider.Get<MainModel>();
-            mainModel.Dispose();
+            ServiceProvider.Dispose();
 
             SystemTray.Dispose();
 

@@ -46,6 +46,8 @@ namespace Captura
             Binder.Bind(() => LanguageManager.Instance);
         }
 
+        public void Dispose() { }
+
         static void BindImageWriters(IBinder Binder)
         {
             BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>(Binder);

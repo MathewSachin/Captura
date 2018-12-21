@@ -27,5 +27,7 @@ namespace Captura
             Binder.Bind<Func<TaskbarIcon>>(() => () => MainWindow.Instance.SystemTray);
             Binder.Bind<IMainWindow>(() => new MainWindowProvider(() => MainWindow.Instance));
         }
+
+        public void Dispose() { }
     }
 }

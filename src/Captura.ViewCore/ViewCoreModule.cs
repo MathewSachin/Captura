@@ -21,5 +21,7 @@
             Binder.BindSingleton<CensorOverlaysViewModel>();
             Binder.BindSingleton<HotkeyActionRegisterer>();
         }
+
+        public void Dispose() { }
     }
 }
