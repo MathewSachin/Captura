@@ -25,7 +25,7 @@ namespace Captura.Models
 
         public int Width { get; }
         
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             return _dupl.Capture();
         }

@@ -16,7 +16,7 @@ namespace Captura.Models
             _settings = Settings;
         }
 
-        public void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
+        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
             var img = GetImage();
 

@@ -49,7 +49,7 @@ namespace DesktopDuplication
             _desktopImageTexture = new Texture2D(_device, textureDesc);
         }
         
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             OutputDuplicateFrameInformation? frameInfo;
 
@@ -77,7 +77,7 @@ namespace DesktopDuplication
             {
                 var bmp = ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, frameInfo.Value);
 
-                return new OneTimeFrame(bmp);
+                return new GraphicsEditor(bmp);
             }
             finally
             {

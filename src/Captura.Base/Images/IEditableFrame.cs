@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Captura
 {
-    public interface IBitmapEditor : IDisposable
+    public interface IEditableFrame : IDisposable
     {
         float Width { get; }
         float Height { get; }
@@ -25,5 +25,7 @@ namespace Captura
         SizeF MeasureString(string Text, Font Font);
 
         void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle);
+
+        IBitmapFrame GenerateFrame();
     }
 }

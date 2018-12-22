@@ -11,7 +11,7 @@ namespace Captura
         /// <summary>
         /// Capture an image.
         /// </summary>
-        IBitmapFrame Capture();
+        IEditableFrame Capture();
 
         /// <summary>
         /// Height of Captured image.

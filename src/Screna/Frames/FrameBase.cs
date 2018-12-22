@@ -42,7 +42,5 @@ namespace Screna
 
             Bitmap.UnlockBits(bits);
         }
-
-        public abstract IBitmapEditor GetEditor();
     }
 }

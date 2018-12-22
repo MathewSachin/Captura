@@ -49,7 +49,7 @@ namespace Screna
             catch (ArgumentException) { }
         }
 
-        public static void Draw(IBitmapEditor G, Func<Point, Point> Transform = null)
+        public static void Draw(IEditableFrame G, Func<Point, Point> Transform = null)
         {
             GetIcon(Transform, out var icon, out var location);
 

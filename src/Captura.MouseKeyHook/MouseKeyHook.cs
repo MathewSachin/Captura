@@ -223,7 +223,7 @@ namespace Captura.Models
         /// <summary>
         /// Draws overlay.
         /// </summary>
-        public void Draw(IBitmapEditor Editor, Func<Point, Point> Transform = null)
+        public void Draw(IEditableFrame Editor, Func<Point, Point> Transform = null)
         {
             if (_mouseClickSettings.Display)
                 DrawClicks(Editor, Transform);
@@ -232,7 +232,7 @@ namespace Captura.Models
                 DrawKeys(Editor);
         }
 
-        void DrawKeys(IBitmapEditor Editor)
+        void DrawKeys(IEditableFrame Editor)
         {
             if (_records?.Last == null)
                 return;
@@ -268,7 +268,7 @@ namespace Captura.Models
             }
         }
 
-        static void DrawKeys(KeystrokesSettings KeystrokesSettings, IBitmapEditor Editor, string Text, int FontSize, byte Opacity, float OffsetY)
+        static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, int FontSize, byte Opacity, float OffsetY)
         {
             var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
 
@@ -334,7 +334,7 @@ namespace Captura.Models
             return (byte) Value;
         }
 
-        void DrawClicks(IBitmapEditor Editor, Func<Point, Point> Transform)
+        void DrawClicks(IEditableFrame Editor, Func<Point, Point> Transform)
         {
             if (_mouseClicked && _currentMouseRatio < MouseRatioMax)
             {

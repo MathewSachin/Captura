@@ -141,7 +141,7 @@ namespace Screna
 
                     task = Task.Factory.StartNew(() =>
                     {
-                        var frame = _imageProvider.Capture();
+                        var frame = _imageProvider.Capture().GenerateFrame();
 
                         return AddFrame(frame);
                     });

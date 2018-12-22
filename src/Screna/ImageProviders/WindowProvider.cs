@@ -101,17 +101,15 @@ namespace Screna
                 (int) CopyPixelOperation.SourceCopy);
         }
 
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             try
             {
                 OnCapture();
 
-                var img = new OneTimeFrame(Image.FromHbitmap(_hBitmap));
+                var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
-                if (_includeCursor)
-                    using (var editor = img.GetEditor())
-                        MouseCursor.Draw(editor, _transform);
+                MouseCursor.Draw(img, _transform);
 
                 return img;
             }

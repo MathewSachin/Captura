@@ -5,9 +5,24 @@ using Captura.Models;
 
 namespace Screna
 {
-    abstract class EditorBase : IBitmapEditor
+    public class GraphicsEditor : IEditableFrame
     {
-        protected readonly Graphics Graphics;
+        readonly Bitmap _image;
+        readonly Graphics _graphics;
+
+        public GraphicsEditor(Bitmap Image)
+        {
+            _image = Image;
+
+            _graphics = Graphics.FromImage(Image);
+        }
+
+        public IBitmapFrame GenerateFrame()
+        {
+            Dispose();
+
+            return new OneTimeFrame(_image);
+        }
 
         public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
         {
@@ -26,60 +41,58 @@ namespace Screna
                 var imgAttribute = new ImageAttributes();
                 imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                Graphics.DrawImage(img, region, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+                _graphics.DrawImage(img, region, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
             }
-            else Graphics.DrawImage(img, region);
+            else _graphics.DrawImage(img, region);
         }
 
         public void FillRectangle(Color Color, RectangleF Rectangle)
         {
-            Graphics.FillRectangle(new SolidBrush(Color), Rectangle);
+            _graphics.FillRectangle(new SolidBrush(Color), Rectangle);
         }
 
         public void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius)
         {
-            Graphics.FillRoundedRectangle(new SolidBrush(Color), Rectangle, CornerRadius);
+            _graphics.FillRoundedRectangle(new SolidBrush(Color), Rectangle, CornerRadius);
         }
 
         public void FillEllipse(Color Color, RectangleF Rectangle)
         {
-            Graphics.FillEllipse(new SolidBrush(Color), Rectangle);
+            _graphics.FillEllipse(new SolidBrush(Color), Rectangle);
         }
 
         public void DrawEllipse(Pen Pen, RectangleF Rectangle)
         {
-            Graphics.DrawEllipse(Pen, Rectangle);
+            _graphics.DrawEllipse(Pen, Rectangle);
         }
 
         public void DrawRectangle(Pen Pen, RectangleF Rectangle)
         {
-            Graphics.DrawRectangle(Pen, Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            _graphics.DrawRectangle(Pen, Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         }
 
         public void DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
         {
-            Graphics.DrawRoundedRectangle(Pen, Rectangle, CornerRadius);
+            _graphics.DrawRoundedRectangle(Pen, Rectangle, CornerRadius);
         }
 
         public SizeF MeasureString(string Text, Font Font)
         {
-            return Graphics.MeasureString(Text, Font);
+            return _graphics.MeasureString(Text, Font);
         }
 
         public void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
         {
-            Graphics.DrawString(Text, Font, new SolidBrush(Color), LayoutRectangle);
+            _graphics.DrawString(Text, Font, new SolidBrush(Color), LayoutRectangle);
         }
 
-        protected EditorBase(Graphics Graphics)
+        public float Width => _graphics.VisibleClipBounds.Width;
+
+        public float Height => _graphics.VisibleClipBounds.Height;
+
+        public void Dispose()
         {
-            this.Graphics = Graphics;
+            _graphics.Dispose();
         }
-
-        public float Width => Graphics.VisibleClipBounds.Width;
-
-        public float Height => Graphics.VisibleClipBounds.Height;
-
-        public abstract void Dispose();
     }
 }

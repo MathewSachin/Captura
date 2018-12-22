@@ -50,7 +50,7 @@ namespace Screna
             Gdi32.DeleteObject(_hBitmap);
         }
 
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             // Update Location
             _region.Location = _locationFunc();
@@ -59,11 +59,9 @@ namespace Screna
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);
 
-            var img = new OneTimeFrame(Image.FromHbitmap(_hBitmap));
+            var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
-            if (_includeCursor)
-                using (var editor = img.GetEditor())
-                    MouseCursor.Draw(editor, _transform);
+            MouseCursor.Draw(img, _transform);
 
             return img;
         }

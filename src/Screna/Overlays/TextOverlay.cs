@@ -56,7 +56,7 @@ namespace Captura.Models
 
         protected abstract string GetText();
         
-        public virtual void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
+        public virtual void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
             if (!_overlaySettings.Display)
                 return;

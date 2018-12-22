@@ -11,6 +11,6 @@ namespace Captura
         /// <summary>
         /// Draws the Overlay.
         /// </summary>
-        void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null);
+        void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null);
     }
 }

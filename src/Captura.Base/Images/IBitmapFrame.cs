@@ -12,7 +12,5 @@ namespace Captura
         int Height { get; }
 
         void CopyTo(byte[] Buffer, int Length);
-
-        IBitmapEditor GetEditor();
     }
 }

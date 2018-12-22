@@ -128,7 +128,7 @@ namespace Captura.Tests
                 using (provider.Capture())
                 {
                     imgProviderMock.Verify(M => M.Capture(), Times.Once);
-                    overlayMock.Verify(M => M.Draw(It.IsAny<IBitmapEditor>(), It.IsAny<Func<Point, Point>>()), Times.Once);
+                    overlayMock.Verify(M => M.Draw(It.IsAny<IEditableFrame>(), It.IsAny<Func<Point, Point>>()), Times.Once);
                 }
             }
 

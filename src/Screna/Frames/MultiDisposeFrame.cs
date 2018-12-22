@@ -53,7 +53,5 @@ namespace Screna
         {
             Frame.CopyTo(Buffer, Length);
         }
-
-        public IBitmapEditor GetEditor() => Frame.GetEditor();
     }
 }
