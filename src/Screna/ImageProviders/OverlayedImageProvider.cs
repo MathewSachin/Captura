@@ -30,7 +30,7 @@ namespace Screna
         }
 
         /// <inheritdoc />
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             var bmp = _imageProvider.Capture();
             
@@ -40,12 +40,9 @@ namespace Screna
                 return bmp;
             }
             
-            using (var editor = bmp.GetEditor())
-            {
-                foreach (var overlay in _overlays)
-                    overlay?.Draw(editor, _transform);
-            }
-
+            foreach (var overlay in _overlays)
+                overlay?.Draw(bmp, _transform);
+            
             return bmp;
         }
         

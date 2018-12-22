@@ -19,7 +19,7 @@ namespace Captura.Tests
 
             mock.Setup(M => M.Height).Returns(Height);
 
-            mock.Setup(M => M.Capture()).Returns(new OneTimeFrame(new Bitmap(Width, Height)));
+            mock.Setup(M => M.Capture()).Returns(new GraphicsEditor(new Bitmap(Width, Height)));
 
             return mock;
         }

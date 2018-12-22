@@ -404,11 +404,11 @@ namespace Captura
 
         async void UpdateBackground()
         {
-            var vm = ServiceProvider.Get<MainViewModel>();
+            var vm = ServiceProvider.Get<VideoSourcesViewModel>();
 
             Bitmap bmp;
 
-            switch (vm.VideoSourcesViewModel.SelectedVideoSourceKind?.Source)
+            switch (vm.SelectedVideoSourceKind?.Source)
             {
                 case FullScreenItem _:
                 case NoVideoItem _:
@@ -416,7 +416,8 @@ namespace Captura
                     break;
 
                 default:
-                    bmp = await vm.ScreenShotViewModel.GetScreenShot();
+                    var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
+                    bmp = await screenShotModel.GetScreenShot();
                     break;
             }
 

@@ -14,7 +14,7 @@ namespace Captura.Models
 
         readonly Process _ffmpegProcess;
         readonly NamedPipeServerStream _ffmpegIn;
-        readonly byte[] _videoBuffer;
+        byte[] _videoBuffer;
 
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
@@ -94,6 +94,8 @@ namespace Captura.Models
             _audioPipe?.Dispose();
 
             _ffmpegProcess.WaitForExit();
+
+            _videoBuffer = null;
         }
 
         /// <summary>

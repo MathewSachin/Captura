@@ -5,22 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Captura.Audio;
 using Captura.Models;
 using Captura.Webcam;
 using Microsoft.Win32;
 using Screna;
-using Timer = System.Timers.Timer;
 
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class RecordingViewModel : ViewModelBase, IDisposable
+    public class RecordingModel : ViewModelBase, IDisposable
     {
         #region Fields
-        Timer _timer;
-        readonly Timing _timing = new Timing();
         IRecorder _recorder;
         string _currentFileName;
         bool _isVideo;
@@ -34,6 +30,7 @@ namespace Captura.ViewModels
         readonly IPreviewWindow _previewWindow;
         readonly IWebCamProvider _webCamProvider;
         readonly IAudioPlayer _audioPlayer;
+        readonly TimerModel _timerModel;
 
         readonly KeymapViewModel _keymap;
 
@@ -41,12 +38,9 @@ namespace Captura.ViewModels
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
         readonly IRecentList _recentList;
-
-        public DelegateCommand RecordCommand { get; }
-        public DelegateCommand PauseCommand { get; }
         #endregion
 
-        public RecordingViewModel(Settings Settings,
+        public RecordingModel(Settings Settings,
             LanguageManager LanguageManager,
             ISystemTray SystemTray,
             IRegionProvider RegionProvider,
@@ -59,7 +53,8 @@ namespace Captura.ViewModels
             IWebCamProvider WebCamProvider,
             KeymapViewModel Keymap,
             IAudioPlayer AudioPlayer,
-            IRecentList RecentList) : base(Settings, LanguageManager)
+            IRecentList RecentList,
+            TimerModel TimerModel) : base(Settings, LanguageManager)
         {
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
@@ -73,12 +68,17 @@ namespace Captura.ViewModels
             _keymap = Keymap;
             _audioPlayer = AudioPlayer;
             _recentList = RecentList;
-
-            RecordCommand = new DelegateCommand(OnRecordExecute);
-
-            PauseCommand = new DelegateCommand(OnPauseExecute, false);
+            _timerModel = TimerModel;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+
+            TimerModel.CountdownElapsed += InternalStartRecording;
+            TimerModel.DurationElapsed += async () =>
+            {
+                if (_syncContext != null)
+                    _syncContext.Post(async State => await StopRecording(), null);
+                else await StopRecording();
+            };
         }
 
         RecorderState _recorderState = RecorderState.NotRecording;
@@ -93,55 +93,11 @@ namespace Captura.ViewModels
 
                 _recorderState = value;
 
-                PauseCommand.RaiseCanExecuteChanged(value != RecorderState.NotRecording);
-
                 OnPropertyChanged();
             }
         }
 
-        bool _canChangeWebcam = true, _canChangeAudioSources = true;
-
-        public bool CanChangeWebcam
-        {
-            get => _canChangeWebcam;
-            private set
-            {
-                _canChangeWebcam = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool CanChangeAudioSources
-        {
-            get => _canChangeAudioSources;
-            private set
-            {
-                _canChangeAudioSources = value;
-                
-                OnPropertyChanged();
-            }
-        }
-
-        #region Time
-        TimeSpan _ts;
-
-        public TimeSpan TimeSpan
-        {
-            get => _ts;
-            set
-            {
-                if (_ts == value)
-                    return;
-
-                _ts = value;
-
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        async void OnRecordExecute()
+        public async void OnRecordExecute()
         {
             if (RecorderState == RecorderState.NotRecording)
             {
@@ -172,7 +128,7 @@ namespace Captura.ViewModels
 
         INotification _pauseNotification;
 
-        void OnPauseExecute()
+        public void OnPauseExecute()
         {
             _audioPlayer.Play(SoundKind.Pause);
 
@@ -182,8 +138,7 @@ namespace Captura.ViewModels
                 _systemTray.HideNotification();
 
                 _recorder.Start();
-                _timing?.Start();
-                _timer?.Start();
+                _timerModel.Resume();
 
                 RecorderState = RecorderState.Recording;
 
@@ -192,57 +147,12 @@ namespace Captura.ViewModels
             else // Pause
             {
                 _recorder.Stop();
-                _timer?.Stop();
-                _timing?.Pause();
+                _timerModel.Pause();
 
                 RecorderState = RecorderState.Paused;
 
                 _pauseNotification = new TextNotification(Loc.Paused, OnPauseExecute);
                 _systemTray.ShowNotification(_pauseNotification);
-            }
-        }
-
-        public void InitTimer()
-        {
-            _timer = new Timer(250);
-            _timer.Elapsed += TimerOnElapsed;
-        }
-
-        bool _waiting;
-
-        async void TimerOnElapsed(object Sender, ElapsedEventArgs Args)
-        {
-            if (Countdown > 0)
-            {
-                if (_timing.Elapsed.TotalSeconds > 1)
-                {
-                    _timing.Stop();
-
-                    --Countdown;
-
-                    _timing.Start();
-                }
-
-                return;
-            }
-
-            if (_waiting)
-            {
-                _waiting = false;
-
-                InternalStartRecording();
-            }
-
-            TimeSpan = TimeSpan.FromSeconds((int)_timing.Elapsed.TotalSeconds);
-
-            var duration = Settings.Duration;
-
-            // If Capture Duration is set and reached
-            if (duration > 0 && TimeSpan.TotalSeconds >= duration)
-            {
-                if (_syncContext != null)
-                    _syncContext.Post(async State => await StopRecording(), null);
-                else await StopRecording();
             }
         }
 
@@ -262,7 +172,7 @@ namespace Captura.ViewModels
             if (_videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                 _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
                 (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
-                && noVideoSourceProvider.Source is FFmpegAudioItem))
+                 && noVideoSourceProvider.Source is FFmpegAudioItem))
             {
                 if (!FFmpegService.FFmpegExists)
                 {
@@ -317,7 +227,6 @@ namespace Captura.ViewModels
             {
                 deskDuplImageProvider.Timeout = 5000;
             }
-
 
             IAudioProvider audioProvider = null;
 
@@ -434,13 +343,6 @@ namespace Captura.ViewModels
                 _mainWindow.IsMinimized = true;
 
             RecorderState = RecorderState.Recording;
-
-            CanChangeWebcam = !Settings.WebcamOverlay.SeparateFile;
-
-            CanChangeAudioSources = !Settings.Audio.SeparateFilePerSource && _audioSource.CanChangeSourcesDuringRecording;
-
-            _timer?.Stop();
-            TimeSpan = TimeSpan.Zero;
             
             _recorder.ErrorOccurred += E =>
             {
@@ -449,20 +351,12 @@ namespace Captura.ViewModels
                 else OnErrorOccurred(E);
             };
 
-            _waiting = false;
-
-            if (Settings.PreStartCountdown > 0)
+            if (Settings.PreStartCountdown == 0)
             {
-                PauseCommand.RaiseCanExecuteChanged(false);
-
-                Countdown = Settings.PreStartCountdown;
-
-                _waiting = true;
+                InternalStartRecording();
             }
-            else InternalStartRecording();
 
-            _timing?.Start();
-            _timer?.Start();
+            _timerModel.Start();
 
             return true;
         }
@@ -512,23 +406,6 @@ namespace Captura.ViewModels
         void InternalStartRecording()
         {
             _recorder.Start();
-
-            if (_syncContext != null)
-                _syncContext.Post(S => PauseCommand.RaiseCanExecuteChanged(true), null);
-            else PauseCommand.RaiseCanExecuteChanged(true);
-        }
-
-        int _countdown;
-
-        public int Countdown
-        {
-            get => _countdown;
-            set
-            {
-                _countdown = value;
-
-                OnPropertyChanged();
-            }
         }
 
         void OnErrorOccurred(Exception E)
@@ -552,14 +429,9 @@ namespace Captura.ViewModels
 
             RecorderState = RecorderState.NotRecording;
 
-            CanChangeWebcam = CanChangeAudioSources = true;
-
             _recorder = null;
 
-            _timer?.Stop();
-            _timing.Stop();
-
-            Countdown = 0;
+            _timerModel.Stop();
 
             if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
@@ -594,46 +466,62 @@ namespace Captura.ViewModels
             });
         }
 
-        IImageProvider GetImageProvider()
+        IEnumerable<IOverlay> GetOverlays()
         {
-            Func<Point, Point> transform = P => P;
-
-            var imageProvider = _videoSourcesViewModel.SelectedVideoSourceKind?.Source?.GetImageProvider(Settings.IncludeCursor, out transform);
-
-            if (imageProvider == null)
-                return null;
-
-            var overlays = new List<IOverlay>
-            {
-                new CensorOverlay(Settings.Censored)
-            };
+            yield return new CensorOverlay(Settings.Censored);
 
             if (!Settings.WebcamOverlay.SeparateFile)
             {
-                overlays.Add(_webcamOverlay);
+                yield return _webcamOverlay;
             }
 
-            overlays.Add(new MousePointerOverlay(Settings.MousePointerOverlay));
-            overlays.Add(new MouseKeyHook(Settings.Clicks, Settings.Keystrokes, _keymap, _currentFileName, () => TimeSpan));
-            overlays.Add(new ElapsedOverlay(Settings.Elapsed, () => TimeSpan));
+            yield return new MousePointerOverlay(Settings.MousePointerOverlay);
+
+            yield return new MouseKeyHook(Settings.Clicks,
+                Settings.Keystrokes,
+                _keymap,
+                _currentFileName,
+                () => _timerModel.TimeSpan);
+
+            yield return new ElapsedOverlay(Settings.Elapsed, () => _timerModel.TimeSpan);
 
             // Text Overlays
-            overlays.AddRange(Settings.TextOverlays.Select(M => new CustomOverlay(M)));
+            foreach (var overlay in Settings.TextOverlays)
+            {
+                yield return new CustomOverlay(overlay);
+            }
 
             // Image Overlays
             foreach (var overlay in Settings.ImageOverlays.Where(M => M.Display))
             {
+                IOverlay imgOverlay = null;
+
                 try
                 {
-                    overlays.Add(new CustomImageOverlay(overlay));
+                    imgOverlay = new CustomImageOverlay(overlay);
                 }
                 catch
                 {
                     // Ignore Errors like Image not found, Invalid Image
                 }
-            }
 
-            return new OverlayedImageProvider(imageProvider, transform, overlays.ToArray());
+                if (imgOverlay != null)
+                    yield return imgOverlay;
+            }
+        }
+
+        IImageProvider GetImageProvider()
+        {
+            Func<Point, Point> transform = P => P;
+
+            var imageProvider = _videoSourcesViewModel
+                .SelectedVideoSourceKind
+                ?.Source
+                ?.GetImageProvider(Settings.IncludeCursor, out transform);
+
+            return imageProvider == null
+                ? null
+                : new OverlayedImageProvider(imageProvider, transform, GetOverlays().ToArray());
         }
 
         readonly object _stopRecTaskLock = new object();
@@ -658,7 +546,7 @@ namespace Captura.ViewModels
             var fileName = _currentFileName;
 
             // Assume saving to file only when extension is present
-            if (!_waiting && !string.IsNullOrWhiteSpace(_videoWritersViewModel.SelectedVideoWriter.Extension))
+            if (!_timerModel.Waiting && !string.IsNullOrWhiteSpace(_videoWritersViewModel.SelectedVideoWriter.Extension))
             {
                 savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
                 _recentList.Add(savingRecentItem);
@@ -676,8 +564,8 @@ namespace Captura.ViewModels
 
             AfterRecording();
 
-            var wasWaiting = _waiting;
-            _waiting = false;
+            var wasWaiting = _timerModel.Waiting;
+            _timerModel.Waiting = false;
 
             try
             {
@@ -727,6 +615,24 @@ namespace Captura.ViewModels
             notification.OnDelete += () => SavingRecentItem.RemoveCommand.ExecuteIfCan();
 
             _systemTray.ShowNotification(notification);
+        }
+
+        public bool CanExit()
+        {
+            if (RecorderState == RecorderState.Recording)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+            else if (RunningStopRecordingCount > 0)
+            {
+                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                    "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

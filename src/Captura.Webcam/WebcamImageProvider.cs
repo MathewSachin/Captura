@@ -14,7 +14,7 @@ namespace Captura.Webcam
 
         public void Dispose() { }
 
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             try
             {
@@ -23,7 +23,7 @@ namespace Captura.Webcam
                 if (img == null)
                     return RepeatFrame.Instance;
 
-                return new OneTimeFrame(img);
+                return new GraphicsEditor(img);
             }
             catch
             {

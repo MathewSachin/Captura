@@ -45,7 +45,7 @@ namespace Captura
             new ExtendedInkTool(Line, InkCanvasEditingMode.Ink, () => new LineDynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Rectangle, InkCanvasEditingMode.Ink, () => new RectangleDynamicRenderer(), Cursors.Pen),
             new ExtendedInkTool(Ellipse, InkCanvasEditingMode.Ink, () => new EllipseDynamicRenderer(), Cursors.Pen),
-            new ExtendedInkTool(Arrow, InkCanvasEditingMode.Ink, () => new ArrowDynamicRenderer(), Cursors.Pen), 
+            new ExtendedInkTool(Arrow, InkCanvasEditingMode.Ink, () => new ArrowDynamicRenderer(), Cursors.Pen) 
         };
     }
 }

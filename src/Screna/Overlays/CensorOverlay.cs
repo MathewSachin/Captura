@@ -55,14 +55,14 @@ namespace Captura
             }
         }
 
-        public void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
+        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
             foreach (var overlaySetting in _overlaySettings)
             {
                 if (!overlaySetting.Display)
                     continue;
 
-                Editor.FillRectangle(new SolidBrush(Color.Black),
+                Editor.FillRectangle(Color.Black,
                     new RectangleF(
                         GetLeft(overlaySetting, Editor.Width),
                         GetTop(overlaySetting, Editor.Height),

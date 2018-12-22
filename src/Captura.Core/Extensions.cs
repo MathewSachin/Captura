@@ -20,7 +20,7 @@ namespace Captura
         {
             var uploadWriter = ServiceProvider.Get<ImageUploadWriter>();
 
-            var shotVm = ServiceProvider.Get<ScreenShotViewModel>();
+            var shotVm = ServiceProvider.Get<ScreenShotModel>();
 
             var response = await uploadWriter.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
 

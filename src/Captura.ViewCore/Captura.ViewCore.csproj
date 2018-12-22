@@ -6,4 +6,7 @@
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
     <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ReactiveProperty" Version="5.3.0" />
+  </ItemGroup>
 </Project>

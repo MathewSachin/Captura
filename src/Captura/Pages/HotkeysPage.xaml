@@ -76,7 +76,7 @@
                                 <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}"/>
 
                                 <ComboBox SelectedValue="{Binding Service, Mode=TwoWay}"
-                                          DisplayMemberPath="Description.Display"
+                                          DisplayMemberPath="Description"
                                           ItemsSource="{x:Static hotkeys:HotKeyManager.AllServices}"
                                           Margin="10,0"
                                           IsEnabled="{Binding IsActive}"/>

@@ -1,5 +1,6 @@
 using Captura.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -35,9 +36,24 @@ namespace Captura
 
         static IKernel Kernel { get; } = new StandardKernel();
 
+        static readonly List<IModule> LoadedModules = new List<IModule>();
+
         public static void LoadModule(IModule Module)
         {
             Kernel.Load(new Binder(Module));
+
+            LoadedModules.Add(Module);
+        }
+
+        /// <summary>
+        /// To be called on App Exit
+        /// </summary>
+        public static void Dispose()
+        {
+            LoadedModules.ForEach(M => M.Dispose());
+
+            // Singleton objects will be disposed by Kernel
+            Kernel.Dispose();
         }
 
         public static T Get<T>() => Kernel.Get<T>();

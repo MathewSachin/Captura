@@ -17,5 +17,7 @@ namespace Captura
             Binder.Bind<IVideoSourcePicker>(() => FakeVideoSourcePicker.Instance);
             Binder.Bind<IAudioPlayer, FakeAudioPlayer>();
         }
+
+        public void Dispose() { }
     }
 }

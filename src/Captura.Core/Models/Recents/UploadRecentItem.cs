@@ -30,7 +30,7 @@ namespace Captura.Models
             Actions = new[]
             {
                 new RecentAction(loc.CopyPath, icons.Clipboard, () => this.Link.WriteToClipboard()),
-                new RecentAction(loc.Delete, icons.Delete, OnDelete),
+                new RecentAction(loc.Delete, icons.Delete, OnDelete)
             };
         }
 
