@@ -33,21 +33,7 @@ namespace Captura.Models
                 var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
                 var destRect = new Rectangle(point, targetSize);
 
-                var g = Editor.Graphics;
-
-                if (_settings.Opacity < 100)
-                {
-                    var colormatrix = new ColorMatrix
-                    {
-                        Matrix33 = _settings.Opacity / 100.0f
-                    };
-
-                    var imgAttribute = new ImageAttributes();
-                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-                    g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
-                }
-                else g.DrawImage(img, destRect);
+                Editor.DrawImage(img, destRect, _settings.Opacity);
             }
             catch { }
             finally

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Captura;
 using Captura.Native;
 
 namespace Screna
@@ -36,9 +37,40 @@ namespace Screna
         /// <param name="Transform">Point Transform Function.</param>
         public static void Draw(Graphics G, Func<Point, Point> Transform = null)
         {
+            GetIcon(Transform, out var icon, out var location);
+
+            if (icon == null)
+                return;
+
+            try
+            {
+                G.DrawImage(icon, new Rectangle(location, icon.Size));
+            }
+            catch (ArgumentException) { }
+        }
+
+        public static void Draw(IBitmapEditor G, Func<Point, Point> Transform = null)
+        {
+            GetIcon(Transform, out var icon, out var location);
+
+            if (icon == null)
+                return;
+
+            try
+            {
+                G.DrawImage(icon, new Rectangle(location, icon.Size));
+            }
+            catch (ArgumentException) { }
+        }
+
+        static void GetIcon(Func<Point, Point> Transform, out Bitmap Icon, out Point Location)
+        {
+            Icon = null;
+            Location = Point.Empty;
+
             // ReSharper disable once RedundantAssignment
             // ReSharper disable once InlineOutVariableDeclaration
-            var cursorInfo = new CursorInfo { cbSize = Marshal.SizeOf<CursorInfo>() };
+            var cursorInfo = new CursorInfo {cbSize = Marshal.SizeOf<CursorInfo>()};
 
             if (!User32.GetCursorInfo(out cursorInfo))
                 return;
@@ -46,14 +78,13 @@ namespace Screna
             if (cursorInfo.flags != CursorShowing)
                 return;
 
-            Bitmap icon;
             Point hotspot;
 
             if (Cursors.ContainsKey(cursorInfo.hCursor))
             {
                 var tuple = Cursors[cursorInfo.hCursor];
 
-                icon = tuple.Item1;
+                Icon = tuple.Item1;
                 hotspot = tuple.Item2;
             }
             else
@@ -66,10 +97,10 @@ namespace Screna
                 if (!User32.GetIconInfo(hIcon, out var icInfo))
                     return;
 
-                icon = Icon.FromHandle(hIcon).ToBitmap();
+                Icon = System.Drawing.Icon.FromHandle(hIcon).ToBitmap();
                 hotspot = new Point(icInfo.xHotspot, icInfo.yHotspot);
 
-                Cursors.Add(cursorInfo.hCursor, Tuple.Create(icon, hotspot));
+                Cursors.Add(cursorInfo.hCursor, Tuple.Create(Icon, hotspot));
 
                 User32.DestroyIcon(hIcon);
 
@@ -77,17 +108,11 @@ namespace Screna
                 Gdi32.DeleteObject(icInfo.hbmMask);
             }
 
-            var location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,
+            Location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,
                 cursorInfo.ptScreenPos.Y - hotspot.Y);
 
             if (Transform != null)
-                location = Transform(location);
-
-            try
-            {
-                G.DrawImage(icon, new Rectangle(location, icon.Size));
-            }
-            catch (ArgumentException) { }
+                Location = Transform(Location);
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Screna
 
                 if (_includeCursor)
                     using (var editor = img.GetEditor())
-                        MouseCursor.Draw(editor.Graphics, _transform);
+                        MouseCursor.Draw(editor, _transform);
 
                 return img;
             }

@@ -62,7 +62,7 @@ namespace Captura
                 if (!overlaySetting.Display)
                     continue;
 
-                Editor.FillRectangle(new SolidBrush(Color.Black),
+                Editor.FillRectangle(Color.Black,
                     new RectangleF(
                         GetLeft(overlaySetting, Editor.Width),
                         GetTop(overlaySetting, Editor.Height),

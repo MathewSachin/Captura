@@ -79,13 +79,13 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
 
-            Editor.FillRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
+            Editor.FillRectangle(_overlaySettings.BackgroundColor,
                 rect,
                 _overlaySettings.CornerRadius);
 
             Editor.DrawString(text,
                 font,
-                new SolidBrush(_overlaySettings.FontColor),
+                _overlaySettings.FontColor,
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
             var border = _overlaySettings.BorderThickness;

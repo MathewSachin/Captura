@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
 using Captura;
 using Captura.Models;
 
@@ -6,21 +7,43 @@ namespace Screna
 {
     abstract class EditorBase : IBitmapEditor
     {
-        public Graphics Graphics { get; }
+        protected readonly Graphics Graphics;
 
-        public void FillRectangle(Brush Brush, RectangleF Rectangle)
+        public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
         {
-            Graphics.FillRectangle(Brush, Rectangle);
+            if (!(Image is Image img))
+                return;
+
+            var region = Region ?? new Rectangle(Point.Empty, img.Size);
+
+            if (Opacity < 100)
+            {
+                var colormatrix = new ColorMatrix
+                {
+                    Matrix33 = Opacity / 100.0f
+                };
+
+                var imgAttribute = new ImageAttributes();
+                imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                Graphics.DrawImage(img, region, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
+            }
+            else Graphics.DrawImage(img, region);
         }
 
-        public void FillRectangle(Brush Brush, RectangleF Rectangle, int CornerRadius)
+        public void FillRectangle(Color Color, RectangleF Rectangle)
         {
-            Graphics.FillRoundedRectangle(Brush, Rectangle, CornerRadius);
+            Graphics.FillRectangle(new SolidBrush(Color), Rectangle);
         }
 
-        public void FillEllipse(Brush Brush, RectangleF Rectangle)
+        public void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius)
         {
-            Graphics.FillEllipse(Brush, Rectangle);
+            Graphics.FillRoundedRectangle(new SolidBrush(Color), Rectangle, CornerRadius);
+        }
+
+        public void FillEllipse(Color Color, RectangleF Rectangle)
+        {
+            Graphics.FillEllipse(new SolidBrush(Color), Rectangle);
         }
 
         public void DrawEllipse(Pen Pen, RectangleF Rectangle)
@@ -43,9 +66,9 @@ namespace Screna
             return Graphics.MeasureString(Text, Font);
         }
 
-        public void DrawString(string Text, Font Font, Brush Brush, RectangleF LayoutRectangle)
+        public void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
         {
-            Graphics.DrawString(Text, Font, Brush, LayoutRectangle);
+            Graphics.DrawString(Text, Font, new SolidBrush(Color), LayoutRectangle);
         }
 
         protected EditorBase(Graphics Graphics)

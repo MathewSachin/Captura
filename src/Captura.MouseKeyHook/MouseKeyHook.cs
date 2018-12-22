@@ -281,13 +281,13 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
             
-            Editor.FillRectangle(new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor)),
+            Editor.FillRectangle(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor),
                 rect,
                 KeystrokesSettings.CornerRadius);
             
             Editor.DrawString(Text,
                 keystrokeFont,
-                new SolidBrush(Color.FromArgb(Opacity, KeystrokesSettings.FontColor)),
+                Color.FromArgb(Opacity, KeystrokesSettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
             var border = KeystrokesSettings.BorderThickness;
@@ -373,7 +373,7 @@ namespace Captura.Models
 
                 color = Color.FromArgb(ToByte(color.A * _currentMouseRatio), color);
 
-                Editor.FillEllipse(new SolidBrush(color), new RectangleF(x, y, d, d));
+                Editor.FillEllipse(color, new RectangleF(x, y, d, d));
 
                 var border = _mouseClickSettings.BorderThickness * _currentMouseRatio;
 
