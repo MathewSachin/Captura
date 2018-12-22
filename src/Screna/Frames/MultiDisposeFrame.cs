@@ -7,12 +7,14 @@ namespace Screna
     public class MultiDisposeFrame : IBitmapFrame
     {
         int _count;
-        readonly IBitmapFrame _frame;
+
+        public IBitmapFrame Frame { get; }
+
         readonly object _syncLock = new object();
 
         public MultiDisposeFrame(IBitmapFrame Frame, int Count)
         {
-            if (_frame is RepeatFrame)
+            if (this.Frame is RepeatFrame)
             {
                 throw new NotSupportedException();
             }
@@ -22,7 +24,7 @@ namespace Screna
                 throw new ArgumentException("Count should be atleast 2", nameof(Count));
             }
 
-            _frame = Frame ?? throw new ArgumentNullException(nameof(Frame));
+            this.Frame = Frame ?? throw new ArgumentNullException(nameof(Frame));
             _count = Count;
         }
 
@@ -34,24 +36,24 @@ namespace Screna
 
                 if (_count == 0)
                 {
-                    _frame.Dispose();
+                    Frame.Dispose();
                 }
             }
         }
 
         public void SaveGif(Stream Stream)
         {
-            _frame.SaveGif(Stream);
+            Frame.SaveGif(Stream);
         }
 
-        public int Width => _frame.Width;
-        public int Height => _frame.Height;
+        public int Width => Frame.Width;
+        public int Height => Frame.Height;
 
         public void CopyTo(byte[] Buffer, int Length)
         {
-            _frame.CopyTo(Buffer, Length);
+            Frame.CopyTo(Buffer, Length);
         }
 
-        public IBitmapEditor GetEditor() => _frame.GetEditor();
+        public IBitmapEditor GetEditor() => Frame.GetEditor();
     }
 }

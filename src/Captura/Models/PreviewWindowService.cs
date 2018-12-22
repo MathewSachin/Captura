@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using Screna;
 
 namespace Captura.Models
 {
@@ -9,8 +6,6 @@ namespace Captura.Models
     public class PreviewWindowService : IPreviewWindow
     {
         readonly PreviewWindow _previewWindow = new PreviewWindow();
-
-        bool _visible;
 
         public PreviewWindowService()
         {
@@ -21,59 +16,50 @@ namespace Captura.Models
 
                 _previewWindow.Hide();
             };
-
-            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
         }
 
-        WriteableBitmap _writeableBitmap;
-        byte[] _buffer;
+        public void Init(int Width, int Height) { }
 
-        DateTime _timestamp;
-        readonly TimeSpan _minInterval = TimeSpan.FromMilliseconds(200);
-
-        public void Init(int Width, int Height)
-        {
-            _previewWindow.Dispatcher.Invoke(() =>
-            {
-                if (_writeableBitmap != null
-                    && _writeableBitmap.PixelWidth == Width
-                    && _writeableBitmap.PixelHeight == Height)
-                    return;
-
-                _writeableBitmap = new WriteableBitmap(Width, Height, 96, 96, PixelFormats.Bgra32, null);
-
-                _buffer = new byte[Width * Height * 4];
-
-                Console.WriteLine($"Preview Bitmap Allocated: {_buffer.Length}");
-
-                _previewWindow.DisplayImage.Source = _writeableBitmap;
-            });
-        }
+        IBitmapFrame _lastFrame;
 
         public void Display(IBitmapFrame Frame)
         {
             if (Frame is RepeatFrame)
                 return;
 
-            if (!_visible || DateTime.Now - _timestamp < _minInterval)
-            {
-                Frame.Dispose();
-
-                return;
-            }
-
-            _timestamp = DateTime.Now;
-
-            using (Frame)
-                Frame.CopyTo(_buffer, _buffer.Length);
-
             _previewWindow.Dispatcher.Invoke(() =>
             {
-                _writeableBitmap.WritePixels(new Int32Rect(0, 0, Frame.Width, Frame.Height), _buffer, Frame.Width * 4, 0);
+                _previewWindow.DisplayImage.Image = null;
+
+                _lastFrame?.Dispose();
+
+                _lastFrame = Frame;
+
+                if (!_previewWindow.IsVisible)
+                    return;
+
+                if (Frame is FrameBase frame)
+                {
+                    _previewWindow.DisplayImage.Image = frame.Bitmap;
+                }
+                else if (Frame is MultiDisposeFrame multiDisposeFrame
+                         && multiDisposeFrame.Frame is FrameBase frameBase)
+                {
+                    _previewWindow.DisplayImage.Image = frameBase.Bitmap;
+                }
             });
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _previewWindow.Dispatcher.Invoke(() =>
+            {
+                _previewWindow.DisplayImage.Image = null;
+
+                _lastFrame?.Dispose();
+                _lastFrame = null;
+            });
+        }
 
         public void Show()
         {
