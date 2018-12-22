@@ -102,6 +102,8 @@ namespace Captura.Models
 
                 if (_silenceHandle != 0)
                     Bass.StreamFree(_silenceHandle);
+
+                _buffer = null;
             }
         }
 

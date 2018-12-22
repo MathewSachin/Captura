@@ -211,6 +211,8 @@ namespace Captura.Models
                 }
 
                 _running = false;
+
+                _buffers.Clear();
             }
         }
 

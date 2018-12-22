@@ -157,6 +157,8 @@ namespace Captura.Webcam
             catch { }
 
             _form.Dispose();
+
+            _savedArray = null;
         }
         #endregion
 

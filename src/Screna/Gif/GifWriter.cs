@@ -48,7 +48,7 @@ namespace Screna
         /// </summary>
         public void WriteAudio(byte[] Buffer, int Count) { }
 
-        readonly MemoryStream _gifStream = new MemoryStream();
+        MemoryStream _gifStream = new MemoryStream();
 
         int _width, _height;
 
@@ -147,10 +147,10 @@ namespace Screna
             Writer.Write((byte)0); // Terminator
         }
 
-        static byte[] _buffer;
+        byte[] _buffer;
         static readonly byte[] Header = new byte[11];
 
-        static void WriteImageBlock(Stream SourceGif, BinaryWriter Writer, bool IncludeColorTable, int X, int Y, int Width, int Height)
+        void WriteImageBlock(Stream SourceGif, BinaryWriter Writer, bool IncludeColorTable, int X, int Y, int Width, int Height)
         {
             SourceGif.Position = SourceImageBlockPosition; // Locating the image block
             
@@ -205,6 +205,9 @@ namespace Screna
             _writer.Dispose();
 
             _gifStream.Dispose();
+
+            _gifStream = null;
+            _buffer = null;
         }
     }
 }
