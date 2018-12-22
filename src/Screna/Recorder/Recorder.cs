@@ -143,6 +143,9 @@ namespace Screna
                     {
                         var frame = _imageProvider.Capture().GenerateFrame();
 
+                        if (_cancellationToken.IsCancellationRequested)
+                            return false;
+
                         return AddFrame(frame);
                     });
 
@@ -151,6 +154,9 @@ namespace Screna
                     if (timeTillNextFrame > TimeSpan.Zero)
                         Thread.Sleep(timeTillNextFrame);
                 }
+
+                if (task != null && !task.IsCompleted)
+                    await task;
             }
             catch (Exception e)
             {

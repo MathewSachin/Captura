@@ -77,7 +77,14 @@ namespace DesktopDuplication
             {
                 var bmp = ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, frameInfo.Value);
 
-                return new GraphicsEditor(bmp);
+                var editor = new GraphicsEditor(bmp);
+
+                if (_includeCursor && (frameInfo.Value.LastMouseUpdateTime == 0 || frameInfo.Value.PointerPosition.Visible))
+                {
+                    MouseCursor.Draw(editor, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
+                }
+
+                return editor;
             }
             finally
             {
@@ -101,12 +108,6 @@ namespace DesktopDuplication
 
             // Release source and dest locks
             frame.UnlockBits(mapDest);
-
-            if (_includeCursor && (FrameInfo.LastMouseUpdateTime == 0 || FrameInfo.PointerPosition.Visible))
-            {
-                using (var g = Graphics.FromImage(frame))
-                    MouseCursor.Draw(g, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
-            }
 
             return frame;
         }

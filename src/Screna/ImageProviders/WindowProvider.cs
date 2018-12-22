@@ -109,7 +109,8 @@ namespace Screna
 
                 var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
-                MouseCursor.Draw(img, _transform);
+                if (_includeCursor)
+                    MouseCursor.Draw(img, _transform);
 
                 return img;
             }
