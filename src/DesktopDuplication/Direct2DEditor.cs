@@ -1,50 +1,28 @@
 ﻿using System.Drawing;
 using Captura;
 using SharpDX.Direct2D1;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
+using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
-using Device = SharpDX.Direct3D11.Device;
-using Factory = SharpDX.Direct2D1.Factory1;
 
 namespace DesktopDuplication
 {
     public class Direct2DEditor : IEditableFrame
     {
-        readonly Texture2D _texture;
-        readonly Device _device;
-        readonly Texture2D _stagingTexture;
-        readonly Surface _surface;
-        readonly Factory _factory;
-        readonly RenderTarget _renderTarget;
+        readonly Direct2DEditorSession _editorSession;
 
-        public Direct2DEditor(Texture2D Texture, Device Device, Texture2D StagingTexture)
+        public Direct2DEditor(Direct2DEditorSession EditorSession)
         {
-            _texture = Texture;
-            _device = Device;
-            _stagingTexture = StagingTexture;
-            Width = Texture.Description.Width;
-            Height = Texture.Description.Height;
+            _editorSession = EditorSession;
 
-            _surface = Texture.QueryInterface<Surface>();
+            Width = EditorSession.StagingTexture.Description.Width;
+            Height = EditorSession.StagingTexture.Description.Height;
 
-            _factory = new Factory(FactoryType.SingleThreaded);
-
-            _renderTarget = new RenderTarget(_factory, _surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Ignore)));
-
-            _renderTarget.BeginDraw();
+            EditorSession.BeginDraw();
         }
 
         public void Dispose()
         {
-            _renderTarget.EndDraw();
-
-            _renderTarget.Dispose();
-            _factory.Dispose();
-            _surface.Dispose();
-
-            _device.ImmediateContext.CopyResource(_texture, _stagingTexture);
+            _editorSession.EndDraw();
         }
 
         public float Width { get; }
@@ -59,7 +37,7 @@ namespace DesktopDuplication
         {
             var color = new RawColor4(Color.R / 255f, Color.G / 255f, Color.B / 255f, Color.A / 255f);
 
-            return new SolidColorBrush(_renderTarget, color);
+            return _editorSession.GetSolidColorBrush(color);
         }
 
         RawRectangleF Convert(RectangleF Rectangle)
@@ -92,49 +70,70 @@ namespace DesktopDuplication
 
         public void FillRectangle(Color Color, RectangleF Rectangle)
         {
-            _renderTarget.FillRectangle(Convert(Rectangle), Convert(Color));
+            _editorSession.RenderTarget.FillRectangle(Convert(Rectangle), Convert(Color));
         }
 
         public void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius)
         {
-            _renderTarget.FillRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color));
+            _editorSession.RenderTarget.FillRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color));
         }
 
         public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _renderTarget.DrawRectangle(Convert(Rectangle), Convert(Color), StrokeWidth);
+            _editorSession.RenderTarget.DrawRectangle(Convert(Rectangle), Convert(Color), StrokeWidth);
         }
 
         public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
         {
-            _renderTarget.DrawRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color), StrokeWidth);
+            _editorSession.RenderTarget.DrawRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color), StrokeWidth);
         }
 
         public void FillEllipse(Color Color, RectangleF Rectangle)
         {
-            _renderTarget.FillEllipse(ToEllipse(Rectangle), Convert(Color));
+            _editorSession.RenderTarget.FillEllipse(ToEllipse(Rectangle), Convert(Color));
         }
 
         public void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _renderTarget.DrawEllipse(ToEllipse(Rectangle), Convert(Color), StrokeWidth);
+            _editorSession.RenderTarget.DrawEllipse(ToEllipse(Rectangle), Convert(Color), StrokeWidth);
         }
 
-        public SizeF MeasureString(string Text, Font Font)
+        TextFormat GetTextFormat(int FontSize)
         {
-            return SizeF.Empty;
+            return new TextFormat(_editorSession.WriteFactory, "Arial", FontSize);
         }
 
-        public void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
+        TextLayout GetTextLayout(string Text, TextFormat Format)
         {
-            
+            return new TextLayout(_editorSession.WriteFactory, Text, Format, Width, Height);
+        }
+
+        public SizeF MeasureString(string Text, int FontSize)
+        {
+            using (var format = GetTextFormat(FontSize))
+            using (var layout = GetTextLayout(Text, format))
+            {
+                return new SizeF(layout.Metrics.Width, layout.Metrics.Height);
+            }
+        }
+
+        public void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
+        {
+            using (var format = GetTextFormat(FontSize))
+            using (var layout = GetTextLayout(Text, format))
+            {
+                _editorSession.RenderTarget.DrawTextLayout(
+                    new RawVector2(LayoutRectangle.X, LayoutRectangle.Y),
+                    layout,
+                    Convert(Color));
+            }
         }
 
         public IBitmapFrame GenerateFrame()
         {
             Dispose();
 
-            return new Texture2DFrame(_stagingTexture, _device);
+            return new Texture2DFrame(_editorSession.StagingTexture, _editorSession.Device);
         }
     }
 }

@@ -76,14 +76,18 @@ namespace Screna
             _graphics.DrawRoundedRectangle(new Pen(Color, StrokeWidth), Rectangle, CornerRadius);
         }
 
-        public SizeF MeasureString(string Text, Font Font)
+        public SizeF MeasureString(string Text, int FontSize)
         {
-            return _graphics.MeasureString(Text, Font);
+            var font = new Font(FontFamily.GenericMonospace, FontSize);
+
+            return _graphics.MeasureString(Text, font);
         }
 
-        public void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
+        public void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
         {
-            _graphics.DrawString(Text, Font, new SolidBrush(Color), LayoutRectangle);
+            var font = new Font(FontFamily.GenericMonospace, FontSize);
+
+            _graphics.DrawString(Text, font, new SolidBrush(Color), LayoutRectangle);
         }
 
         public float Width => _graphics.VisibleClipBounds.Width;

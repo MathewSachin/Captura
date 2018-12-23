@@ -252,9 +252,7 @@ namespace Captura.Models
                 
                 DrawKeys(_keystrokesSettings, Editor, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
 
-                var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
-
-                var height = Editor.MeasureString("A", keystrokeFont).Height;
+                var height = Editor.MeasureString("A", fontSize).Height;
 
                 offsetY += height + _keystrokesSettings.HistorySpacing;
 
@@ -270,9 +268,7 @@ namespace Captura.Models
 
         static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, int FontSize, byte Opacity, float OffsetY)
         {
-            var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
-
-            var size = Editor.MeasureString(Text, keystrokeFont);
+            var size = Editor.MeasureString(Text, FontSize);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
@@ -286,7 +282,7 @@ namespace Captura.Models
                 KeystrokesSettings.CornerRadius);
             
             Editor.DrawString(Text,
-                keystrokeFont,
+                FontSize,
                 Color.FromArgb(Opacity, KeystrokesSettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
