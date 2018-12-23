@@ -14,13 +14,13 @@ namespace Captura
 
         void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius);
 
-        void DrawRectangle(Pen Pen, RectangleF Rectangle);
+        void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle);
 
-        void DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius);
+        void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius);
 
         void FillEllipse(Color Color, RectangleF Rectangle);
 
-        void DrawEllipse(Pen Pen, RectangleF Rectangle);
+        void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle);
 
         SizeF MeasureString(string Text, Font Font);
 

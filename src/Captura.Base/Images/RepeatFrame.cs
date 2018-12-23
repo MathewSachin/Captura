@@ -10,7 +10,7 @@ namespace Captura
 
         public static RepeatFrame Instance { get; } = new RepeatFrame();
 
-        IBitmapFrame IEditableFrame.GenerateFrame() => RepeatFrame.Instance;
+        IBitmapFrame IEditableFrame.GenerateFrame() => Instance;
 
         int IBitmapFrame.Width { get; } = -1;
 
@@ -42,12 +42,12 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawRectangle(Pen Pen, RectangleF Rectangle)
+        void IEditableFrame.DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
+        void IEditableFrame.DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
         {
             throw new NotImplementedException();
         }
@@ -57,7 +57,7 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawEllipse(Pen Pen, RectangleF Rectangle)
+        void IEditableFrame.DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
             throw new NotImplementedException();
         }

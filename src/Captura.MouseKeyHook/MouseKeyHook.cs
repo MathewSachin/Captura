@@ -296,7 +296,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.DrawRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
+                Editor.DrawRectangle(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border,
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
@@ -387,7 +387,7 @@ namespace Captura.Models
 
                     borderColor = Color.FromArgb(ToByte(borderColor.A * _currentMouseRatio), borderColor);
 
-                    Editor.DrawEllipse(new Pen(borderColor, border), new RectangleF(x, y, d, d));
+                    Editor.DrawEllipse(borderColor, border, new RectangleF(x, y, d, d));
                 }
             }
         }

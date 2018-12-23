@@ -61,19 +61,19 @@ namespace Screna
             _graphics.FillEllipse(new SolidBrush(Color), Rectangle);
         }
 
-        public void DrawEllipse(Pen Pen, RectangleF Rectangle)
+        public void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _graphics.DrawEllipse(Pen, Rectangle);
+            _graphics.DrawEllipse(new Pen(Color, StrokeWidth), Rectangle);
         }
 
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle)
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _graphics.DrawRectangle(Pen, Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            _graphics.DrawRectangle(new Pen(Color, StrokeWidth), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         }
 
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
         {
-            _graphics.DrawRoundedRectangle(Pen, Rectangle, CornerRadius);
+            _graphics.DrawRoundedRectangle(new Pen(Color, StrokeWidth), Rectangle, CornerRadius);
         }
 
         public SizeF MeasureString(string Text, Font Font)

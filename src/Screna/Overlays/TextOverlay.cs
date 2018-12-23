@@ -94,7 +94,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.DrawRectangle(new Pen(_overlaySettings.BorderColor, border),
+                Editor.DrawRectangle(_overlaySettings.BorderColor, border,
                     rect,
                     _overlaySettings.CornerRadius);
             }

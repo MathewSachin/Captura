@@ -55,70 +55,69 @@ namespace DesktopDuplication
             
         }
 
-        public void FillRectangle(Color Color, RectangleF Rectangle)
+        SolidColorBrush Convert(Color Color)
         {
-            var rect = new RawRectangleF(Rectangle.Left,
-                Rectangle.Top,
-                Rectangle.Right,
-                Rectangle.Bottom);
-
             var color = new RawColor4(Color.R / 255f, Color.G / 255f, Color.B / 255f, Color.A / 255f);
 
-            var brush = new SolidColorBrush(_renderTarget, color);
-
-            _renderTarget.FillRectangle(rect, brush);
+            return new SolidColorBrush(_renderTarget, color);
         }
 
-        public void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius)
+        RawRectangleF Convert(RectangleF Rectangle)
         {
-            var rect = new RawRectangleF(Rectangle.Left,
+            return new RawRectangleF(Rectangle.Left,
                 Rectangle.Top,
                 Rectangle.Right,
                 Rectangle.Bottom);
+        }
 
-            var color = new RawColor4(Color.R / 255f, Color.G / 255f, Color.B / 255f, Color.A / 255f);
-
-            var brush = new SolidColorBrush(_renderTarget, color);
-
-            var roundedRect = new RoundedRectangle
+        RoundedRectangle Convert(RectangleF Rectangle, int CornerRadius)
+        {
+            return new RoundedRectangle
             {
-                Rect = rect,
+                Rect = Convert(Rectangle),
                 RadiusX = CornerRadius,
                 RadiusY = CornerRadius
             };
-
-            _renderTarget.FillRoundedRectangle(roundedRect, brush);
         }
 
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle)
-        {
-            
-        }
-
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
-        {
-            
-        }
-
-        public void FillEllipse(Color Color, RectangleF Rectangle)
+        Ellipse ToEllipse(RectangleF Rectangle)
         {
             var center = new RawVector2(Rectangle.Left + Rectangle.Width / 2f,
                 Rectangle.Top + Rectangle.Height / 2f);
 
-            var ellipse = new Ellipse(center,
+            return new Ellipse(center,
                 Rectangle.Width / 2f,
                 Rectangle.Height / 2f);
-
-            var color = new RawColor4(Color.R / 255f, Color.G / 255f, Color.B / 255f, Color.A / 255f);
-
-            var brush = new SolidColorBrush(_renderTarget, color);
-
-            _renderTarget.FillEllipse(ellipse, brush);
         }
 
-        public void DrawEllipse(Pen Pen, RectangleF Rectangle)
+        public void FillRectangle(Color Color, RectangleF Rectangle)
         {
-            
+            _renderTarget.FillRectangle(Convert(Rectangle), Convert(Color));
+        }
+
+        public void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius)
+        {
+            _renderTarget.FillRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color));
+        }
+
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
+        {
+            _renderTarget.DrawRectangle(Convert(Rectangle), Convert(Color), StrokeWidth);
+        }
+
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
+        {
+            _renderTarget.DrawRoundedRectangle(Convert(Rectangle, CornerRadius), Convert(Color), StrokeWidth);
+        }
+
+        public void FillEllipse(Color Color, RectangleF Rectangle)
+        {
+            _renderTarget.FillEllipse(ToEllipse(Rectangle), Convert(Color));
+        }
+
+        public void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
+        {
+            _renderTarget.DrawEllipse(ToEllipse(Rectangle), Convert(Color), StrokeWidth);
         }
 
         public SizeF MeasureString(string Text, Font Font)
