@@ -17,6 +17,7 @@ namespace DesktopDuplication
     public class DesktopDuplicator : IDisposable
     {
         readonly Texture2D _desktopImageTexture;
+        readonly Texture2D _stagingTexture;
         readonly Rectangle _rect;
         readonly bool _includeCursor;
         readonly DuplCapture _duplCapture;
@@ -26,13 +27,13 @@ namespace DesktopDuplication
 
         public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter Adapter, Output1 Output)
         {
-            _device = new Device(Adapter);
+            _device = new Device(Adapter, DeviceCreationFlags.BgraSupport);
 
             _duplCapture = new DuplCapture(_device, Output);
             _rect = Rect;
             _includeCursor = IncludeCursor;
 
-            var textureDesc = new Texture2DDescription
+            _stagingTexture = new Texture2D(_device, new Texture2DDescription
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
@@ -44,9 +45,21 @@ namespace DesktopDuplication
                 ArraySize = 1,
                 SampleDescription = { Count = 1, Quality = 0 },
                 Usage = ResourceUsage.Staging
-            };
+            });
 
-            _desktopImageTexture = new Texture2D(_device, textureDesc);
+            _desktopImageTexture = new Texture2D(_device, new Texture2DDescription
+            {
+                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = Rect.Width,
+                Height = Rect.Height,
+                OptionFlags = ResourceOptionFlags.None,
+                MipLevels = 1,
+                ArraySize = 1,
+                SampleDescription = { Count = 1, Quality = 0 },
+                Usage = ResourceUsage.Default
+            });
         }
         
         public IEditableFrame Capture()
@@ -70,6 +83,8 @@ namespace DesktopDuplication
 
             if (frameInfo is null)
                 return RepeatFrame.Instance;
+
+            return new Direct2DEditor(_desktopImageTexture, _device, _stagingTexture);
 
             var mapSource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
