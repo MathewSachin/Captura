@@ -23,6 +23,8 @@ namespace DesktopDuplication
         public void Dispose()
         {
             _editorSession.EndDraw();
+
+            _editorSession.Device.ImmediateContext.CopyResource(_editorSession.StagingTexture, _editorSession.PreviewTexture);
         }
 
         public float Width { get; }
@@ -133,7 +135,7 @@ namespace DesktopDuplication
         {
             Dispose();
 
-            return new Texture2DFrame(_editorSession.StagingTexture, _editorSession.Device);
+            return new Texture2DFrame(_editorSession.StagingTexture, _editorSession.Device, _editorSession.PreviewTexture);
         }
     }
 }

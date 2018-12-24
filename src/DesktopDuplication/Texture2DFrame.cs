@@ -7,13 +7,16 @@ namespace DesktopDuplication
 {
     public class Texture2DFrame : IBitmapFrame
     {
-        readonly Texture2D _texture;
-        readonly Device _device;
+        public Texture2D Texture { get; }
+        public Texture2D PreviewTexture { get; }
 
-        public Texture2DFrame(Texture2D Texture, Device Device)
+        public Device Device { get; }
+
+        public Texture2DFrame(Texture2D Texture, Device Device, Texture2D PreviewTexture)
         {
-            _texture = Texture;
-            _device = Device;
+            this.Texture = Texture;
+            this.Device = Device;
+            this.PreviewTexture = PreviewTexture;
 
             Width = Texture.Description.Width;
             Height = Texture.Description.Height;
@@ -31,7 +34,7 @@ namespace DesktopDuplication
 
         public void CopyTo(byte[] Buffer, int Length)
         {
-            var mapSource = _device.ImmediateContext.MapSubresource(_texture, 0, MapMode.Read, MapFlags.None);
+            var mapSource = Device.ImmediateContext.MapSubresource(Texture, 0, MapMode.Read, MapFlags.None);
 
             try
             {
@@ -39,7 +42,7 @@ namespace DesktopDuplication
             }
             finally
             {
-                _device.ImmediateContext.UnmapSubresource(_texture, 0);
+                Device.ImmediateContext.UnmapSubresource(Texture, 0);
             }
         }
     }

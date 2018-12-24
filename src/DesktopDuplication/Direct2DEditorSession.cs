@@ -19,6 +19,7 @@ namespace DesktopDuplication
         public Texture2D StagingTexture { get; }
         public Factory1 Factory { get; }
         public RenderTarget RenderTarget { get; }
+        public Texture2D PreviewTexture { get; }
 
         SolidColorBrush _solidColorBrush;
         Factory _writeFactory;
@@ -38,9 +39,23 @@ namespace DesktopDuplication
 
         public Direct2DEditorSession(Texture2D Texture, Device Device, Texture2D StagingTexture)
         {
-            this._texture = Texture;
+            _texture = Texture;
             this.Device = Device;
             this.StagingTexture = StagingTexture;
+
+            PreviewTexture = new Texture2D(Device, new Texture2DDescription
+            {
+                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = Texture.Description.Width,
+                Height = Texture.Description.Height,
+                OptionFlags = ResourceOptionFlags.Shared,
+                MipLevels = 1,
+                ArraySize = 1,
+                SampleDescription = { Count = 1, Quality = 0 },
+                Usage = ResourceUsage.Default
+            });
 
             _surface = Texture.QueryInterface<Surface>();
 
@@ -69,6 +84,8 @@ namespace DesktopDuplication
             _surface.Dispose();
 
             _writeFactory?.Dispose();
+
+            PreviewTexture.Dispose();
         }
     }
 }
