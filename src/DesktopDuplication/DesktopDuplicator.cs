@@ -14,7 +14,7 @@ namespace DesktopDuplication
         readonly Texture2D _desktopImageTexture;
         readonly Texture2D _stagingTexture;
         readonly Direct2DEditorSession _editorSession;
-        readonly bool _includeCursor;
+        readonly DxMousePointer _mousePointer;
         readonly DuplCapture _duplCapture;
         readonly Device _device;
 
@@ -25,7 +25,6 @@ namespace DesktopDuplication
             _device = new Device(Adapter, DeviceCreationFlags.BgraSupport);
 
             _duplCapture = new DuplCapture(_device, Output);
-            _includeCursor = IncludeCursor;
 
             _stagingTexture = new Texture2D(_device, new Texture2DDescription
             {
@@ -56,6 +55,9 @@ namespace DesktopDuplication
             });
 
             _editorSession = new Direct2DEditorSession(_desktopImageTexture, _device, _stagingTexture);
+
+            if (IncludeCursor)
+                _mousePointer = new DxMousePointer(_editorSession);
         }
         
         public IEditableFrame Capture()
@@ -64,7 +66,7 @@ namespace DesktopDuplication
 
             try
             {
-                frameInfo = _duplCapture.Get(_desktopImageTexture, Timeout);
+                frameInfo = _duplCapture.Get(_desktopImageTexture, Timeout, _mousePointer);
             }
             catch
             {
@@ -80,11 +82,18 @@ namespace DesktopDuplication
             if (frameInfo is null)
                 return RepeatFrame.Instance;
 
-            return new Direct2DEditor(_editorSession);
+            var editor = new Direct2DEditor(_editorSession);
+
+            _mousePointer?.Draw(editor);
+
+            return editor;
         }
 
         public void Dispose()
         {
+            try { _mousePointer?.Dispose(); }
+            catch { }
+
             try { _editorSession.Dispose(); }
             catch { }
 
