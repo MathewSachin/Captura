@@ -8,6 +8,8 @@ namespace Captura
         float Width { get; }
         float Height { get; }
 
+        IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride);
+
         IDisposable LoadBitmap(string FileName, out Size Size);
 
         void DrawImage(object Image, Rectangle? Region, int Opacity = 100);

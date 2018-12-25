@@ -25,6 +25,11 @@ namespace Screna
             return new OneTimeFrame(_image);
         }
 
+        public IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride)
+        {
+            return new Bitmap(Size.Width, Size.Height, Stride, PixelFormat.Format32bppArgb, MemoryData);
+        }
+
         public IDisposable LoadBitmap(string FileName, out Size Size)
         {
             var bmp = new Bitmap(FileName);

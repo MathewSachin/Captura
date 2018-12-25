@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
+using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
+using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using SharpDX.WIC;
+using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 using BitmapInterpolationMode = SharpDX.Direct2D1.BitmapInterpolationMode;
+using Color = System.Drawing.Color;
 using PixelFormat = SharpDX.WIC.PixelFormat;
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace DesktopDuplication
 {
@@ -34,6 +40,15 @@ namespace DesktopDuplication
 
         public float Width { get; }
         public float Height { get; }
+
+        public IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride)
+        {
+            return new Bitmap(_editorSession.RenderTarget,
+                new Size2(Size.Width, Size.Height),
+                new DataPointer(MemoryData, Size.Height * Stride),
+                Stride,
+                new BitmapProperties(new SharpDX.Direct2D1.PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore)));
+        }
 
         public IDisposable LoadBitmap(string FileName, out Size Size)
         {
