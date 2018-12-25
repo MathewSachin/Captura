@@ -3,6 +3,7 @@ using System.Reflection;
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -44,9 +45,14 @@ namespace Captura
             Binder.BindSingleton<FFmpegLog>();
             Binder.BindSingleton<HotKeyManager>();
             Binder.Bind(() => LanguageManager.Instance);
+
+            MfManager.Startup();
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            MfManager.Shutdown();
+        }
 
         static void BindImageWriters(IBinder Binder)
         {

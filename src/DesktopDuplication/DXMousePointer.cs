@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -7,6 +6,7 @@ using SharpDX.DXGI;
 using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 using PixelFormat = SharpDX.Direct2D1.PixelFormat;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace DesktopDuplication
 {

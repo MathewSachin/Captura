@@ -4,6 +4,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
 using System.Drawing;
+using System.Linq;
 using Captura;
 using Device = SharpDX.Direct3D11.Device;
 
@@ -17,6 +18,7 @@ namespace DesktopDuplication
         readonly DxMousePointer _mousePointer;
         readonly DuplCapture _duplCapture;
         readonly Device _device;
+        readonly MfCapture _mfCapture;
 
         public int Timeout { get; set; }
 
@@ -58,6 +60,8 @@ namespace DesktopDuplication
 
             if (IncludeCursor)
                 _mousePointer = new DxMousePointer(_editorSession);
+
+            _mfCapture = new MfCapture(MfCaptureDevice.Enumerate().First());
         }
         
         public IEditableFrame Capture()
@@ -86,6 +90,11 @@ namespace DesktopDuplication
 
             _mousePointer?.Draw(editor);
 
+            using (var webBmp = _mfCapture.Read(_editorSession))
+            {
+                editor.DrawImage(webBmp, null);
+            }
+
             return editor;
         }
 
@@ -108,6 +117,8 @@ namespace DesktopDuplication
 
             try { _device?.Dispose(); }
             catch { }
+
+            _mfCapture.Dispose();
         }
     }
 }
