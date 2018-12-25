@@ -92,8 +92,8 @@ namespace Captura.Models
             catch { return null; }
         }
 
-        public int Width => _captureWebcam.Size.Width;
+        public int Width => _captureWebcam?.Size.Width ?? 0;
 
-        public int Height => _captureWebcam.Size.Height;
+        public int Height => _captureWebcam?.Size.Height ?? 0;
     }
 }

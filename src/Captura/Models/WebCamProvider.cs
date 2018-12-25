@@ -85,8 +85,8 @@ namespace Captura.Models
             catch { return null; }
         }
 
-        public int Width => _camControl.Dispatcher.Invoke(() => _camControl.Capture.Size.Width);
+        public int Width => _camControl.Dispatcher.Invoke(() => _camControl.Capture?.Size.Width ?? 0);
 
-        public int Height => _camControl.Dispatcher.Invoke(() => _camControl.Capture.Size.Height);
+        public int Height => _camControl.Dispatcher.Invoke(() => _camControl.Capture?.Size.Height ?? 0);
     }
 }

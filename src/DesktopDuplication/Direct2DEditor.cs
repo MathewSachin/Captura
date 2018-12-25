@@ -1,8 +1,13 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Captura;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
+using SharpDX.WIC;
+using Bitmap = SharpDX.Direct2D1.Bitmap;
+using BitmapInterpolationMode = SharpDX.Direct2D1.BitmapInterpolationMode;
+using PixelFormat = SharpDX.WIC.PixelFormat;
 
 namespace DesktopDuplication
 {
@@ -30,9 +35,32 @@ namespace DesktopDuplication
         public float Width { get; }
         public float Height { get; }
 
+        public IDisposable LoadBitmap(string FileName, out Size Size)
+        {
+            using (var decoder = new BitmapDecoder(_editorSession.ImagingFactory, FileName, 0))
+            using (var bmpSource = decoder.GetFrame(0))
+            using (var convertedBmp = new FormatConverter(_editorSession.ImagingFactory))
+            {
+                convertedBmp.Initialize(bmpSource, PixelFormat.Format32bppPBGRA);
+
+                Size = new Size(bmpSource.Size.Width, bmpSource.Size.Height);
+
+                return Bitmap.FromWicBitmap(_editorSession.RenderTarget, convertedBmp);
+            }
+        }
+
         public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
         {
-            
+            if (Image is Bitmap bmp)
+            {
+                var rect = Region ?? new RectangleF(0, 0, bmp.Size.Width, bmp.Size.Height);
+                var rawRect = new RawRectangleF(rect.Left,
+                    rect.Top,
+                    rect.Right,
+                    rect.Bottom);
+
+                _editorSession.RenderTarget.DrawBitmap(bmp, rawRect, Opacity, BitmapInterpolationMode.Linear);
+            }
         }
 
         SolidColorBrush Convert(Color Color)

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using Captura;
 using Captura.Models;
@@ -22,6 +23,15 @@ namespace Screna
             Dispose();
 
             return new OneTimeFrame(_image);
+        }
+
+        public IDisposable LoadBitmap(string FileName, out Size Size)
+        {
+            var bmp = new Bitmap(FileName);
+
+            Size = bmp.Size;
+
+            return bmp;
         }
 
         public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)

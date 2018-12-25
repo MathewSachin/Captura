@@ -3,10 +3,12 @@ using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
+using SharpDX.WIC;
 using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Device = SharpDX.Direct3D11.Device;
 using Factory = SharpDX.DirectWrite.Factory;
 using Factory1 = SharpDX.Direct2D1.Factory1;
+using PixelFormat = SharpDX.Direct2D1.PixelFormat;
 
 namespace DesktopDuplication
 {
@@ -23,8 +25,11 @@ namespace DesktopDuplication
 
         SolidColorBrush _solidColorBrush;
         Factory _writeFactory;
+        ImagingFactory _imagingFactory;
 
         public Factory WriteFactory => _writeFactory ?? (_writeFactory = new Factory());
+
+        public ImagingFactory ImagingFactory => _imagingFactory ?? (_imagingFactory = new ImagingFactory());
 
         public SolidColorBrush GetSolidColorBrush(RawColor4 Color)
         {
@@ -84,6 +89,7 @@ namespace DesktopDuplication
             _surface.Dispose();
 
             _writeFactory?.Dispose();
+            _imagingFactory?.Dispose();
 
             PreviewTexture.Dispose();
         }

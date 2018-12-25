@@ -16,6 +16,11 @@ namespace Captura
 
         float IEditableFrame.Height { get; } = -1;
 
+        IDisposable IEditableFrame.LoadBitmap(string FileName, out Size Size)
+        {
+            throw new NotImplementedException();
+        }
+
         float IEditableFrame.Width { get; } = -1;
 
         int IBitmapFrame.Height { get; } = -1;
