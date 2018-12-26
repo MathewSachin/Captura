@@ -105,7 +105,7 @@ namespace Captura
         static void BindVideoWriterProviders(IBinder Binder)
         {
             BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
+            // BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
             BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
             BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
             BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
