@@ -45,14 +45,9 @@ namespace Captura
             Binder.BindSingleton<FFmpegLog>();
             Binder.BindSingleton<HotKeyManager>();
             Binder.Bind(() => LanguageManager.Instance);
-
-            MfManager.Startup();
         }
 
-        public void Dispose()
-        {
-            MfManager.Shutdown();
-        }
+        public void Dispose() { }
 
         static void BindImageWriters(IBinder Binder)
         {
