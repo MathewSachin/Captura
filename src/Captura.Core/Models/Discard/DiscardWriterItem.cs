@@ -9,7 +9,7 @@
             return new DiscardWriter();
         }
 
-        public override string ToString() => "Discard";
+        public override string ToString() => "Preview";
 
         public string Description => "For testing purposes.";
     }

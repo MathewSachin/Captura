@@ -16,7 +16,7 @@ namespace Captura.Models
             return GetEnumerator();
         }
 
-        public string Name { get; } = "Discard";
+        public string Name { get; } = "Preview Only";
 
         public string Description => "For testing purposes.";
 
