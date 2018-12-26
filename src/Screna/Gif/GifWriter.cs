@@ -68,10 +68,10 @@ namespace Screna
                 _height = Frame.Height;
             }
 
-            if (!(Frame is RepeatFrame))
+            if (Frame is DrawingFrameBase frameBase)
             {
                 using (Frame)
-                    Frame.SaveGif(_gifStream);
+                    frameBase.SaveGif(_gifStream);
             }
 
             // Steal the global color table info

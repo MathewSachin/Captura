@@ -41,11 +41,6 @@ namespace Screna
             }
         }
 
-        public void SaveGif(Stream Stream)
-        {
-            Frame.SaveGif(Stream);
-        }
-
         public int Width => Frame.Width;
         public int Height => Frame.Height;
 

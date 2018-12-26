@@ -8,11 +8,11 @@ using Captura;
 
 namespace Screna
 {
-    public abstract class FrameBase : IBitmapFrame
+    public abstract class DrawingFrameBase : IBitmapFrame
     {
         public Bitmap Bitmap { get; }
 
-        protected FrameBase(Bitmap Bitmap)
+        protected DrawingFrameBase(Bitmap Bitmap)
         {
             this.Bitmap = Bitmap;
             Width = Bitmap.Width;

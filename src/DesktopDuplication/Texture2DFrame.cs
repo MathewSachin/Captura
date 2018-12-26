@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Captura;
 using SharpDX.Direct3D11;
 
@@ -23,11 +22,6 @@ namespace DesktopDuplication
         }
 
         public void Dispose() { }
-
-        public void SaveGif(Stream Stream)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public int Width { get; }
         public int Height { get; }

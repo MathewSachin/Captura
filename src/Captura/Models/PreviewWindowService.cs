@@ -50,7 +50,7 @@ namespace Captura.Models
                 {
                     switch (frameWrapper.Frame)
                     {
-                        case FrameBase drawingFrame:
+                        case DrawingFrameBase drawingFrame:
                             _previewWindow.WinFormsHost.Visibility = Visibility.Visible;
                             _previewWindow.DisplayImage.Image = drawingFrame.Bitmap;
                             break;

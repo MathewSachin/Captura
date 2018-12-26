@@ -32,11 +32,6 @@ namespace Captura
 
         void IDisposable.Dispose() { }
 
-        void IBitmapFrame.SaveGif(Stream Stream)
-        {
-            throw new NotImplementedException();
-        }
-
         void IEditableFrame.DrawImage(object Image, Rectangle? Region, int Opacity)
         {
             throw new NotImplementedException();
