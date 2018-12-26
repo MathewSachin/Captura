@@ -22,6 +22,8 @@ namespace Captura.Models
                 yield return codec;
             }
 
+            yield return FFmpegGifItem.Instance;
+
             foreach (var codec in FFmpegPostProcessingItem.Items)
             {
                 yield return codec;
