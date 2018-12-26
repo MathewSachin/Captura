@@ -141,7 +141,12 @@ namespace Screna
 
                     task = Task.Factory.StartNew(() =>
                     {
-                        var frame = _imageProvider.Capture().GenerateFrame();
+                        var editableFrame = _imageProvider.Capture();
+
+                        if (_cancellationToken.IsCancellationRequested)
+                            return false;
+
+                        var frame = editableFrame.GenerateFrame();
 
                         if (_cancellationToken.IsCancellationRequested)
                             return false;
