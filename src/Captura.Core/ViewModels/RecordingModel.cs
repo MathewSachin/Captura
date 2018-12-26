@@ -541,6 +541,7 @@ namespace Captura.ViewModels
         public async Task StopRecording()
         {
             FileRecentItem savingRecentItem = null;
+            FileSaveNotification notification = null;
 
             // Reference current file name
             var fileName = _currentFileName;
@@ -550,6 +551,12 @@ namespace Captura.ViewModels
             {
                 savingRecentItem = new FileRecentItem(_currentFileName, _isVideo ? RecentFileType.Video : RecentFileType.Audio, true);
                 _recentList.Add(savingRecentItem);
+
+                notification = new FileSaveNotification(savingRecentItem);
+
+                notification.OnDelete += () => savingRecentItem.RemoveCommand.ExecuteIfCan();
+
+                _systemTray.ShowNotification(notification);
             }
 
             // Reference Recorder as it will be set to null
@@ -598,23 +605,18 @@ namespace Captura.ViewModels
 
             if (savingRecentItem != null)
             {
-                AfterSave(savingRecentItem);
+                AfterSave(savingRecentItem, notification);
             }
         }
 
-        void AfterSave(FileRecentItem SavingRecentItem)
+        void AfterSave(FileRecentItem SavingRecentItem, FileSaveNotification Notification)
         {
             SavingRecentItem.Saved();
         
             if (Settings.CopyOutPathToClipboard)
                 SavingRecentItem.FileName.WriteToClipboard();
 
-            var notification = new FileSavedNotification(SavingRecentItem.FileName,
-                SavingRecentItem.FileType == RecentFileType.Video ? Loc.VideoSaved : Loc.AudioSaved);
-
-            notification.OnDelete += () => SavingRecentItem.RemoveCommand.ExecuteIfCan();
-
-            _systemTray.ShowNotification(notification);
+            Notification.Saved();
         }
 
         public bool CanExit()
