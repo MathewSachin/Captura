@@ -10,22 +10,27 @@ namespace Captura
 
         public static RepeatFrame Instance { get; } = new RepeatFrame();
 
-        IBitmapFrame IEditableFrame.GenerateFrame() => RepeatFrame.Instance;
+        IBitmapFrame IEditableFrame.GenerateFrame() => Instance;
 
         int IBitmapFrame.Width { get; } = -1;
 
         float IEditableFrame.Height { get; } = -1;
+
+        IDisposable IBitmapLoader.CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDisposable IBitmapLoader.LoadBitmap(string FileName, out Size Size)
+        {
+            throw new NotImplementedException();
+        }
 
         float IEditableFrame.Width { get; } = -1;
 
         int IBitmapFrame.Height { get; } = -1;
 
         void IDisposable.Dispose() { }
-
-        void IBitmapFrame.SaveGif(Stream Stream)
-        {
-            throw new NotImplementedException();
-        }
 
         void IEditableFrame.DrawImage(object Image, Rectangle? Region, int Opacity)
         {
@@ -42,12 +47,12 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawRectangle(Pen Pen, RectangleF Rectangle)
+        void IEditableFrame.DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
+        void IEditableFrame.DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
         {
             throw new NotImplementedException();
         }
@@ -57,17 +62,17 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawEllipse(Pen Pen, RectangleF Rectangle)
+        void IEditableFrame.DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
             throw new NotImplementedException();
         }
 
-        SizeF IEditableFrame.MeasureString(string Text, Font Font)
+        SizeF IEditableFrame.MeasureString(string Text, int FontSize)
         {
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
+        void IEditableFrame.DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
         {
             throw new NotImplementedException();
         }

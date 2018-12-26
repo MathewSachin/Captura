@@ -3,6 +3,7 @@ using System.Reflection;
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {

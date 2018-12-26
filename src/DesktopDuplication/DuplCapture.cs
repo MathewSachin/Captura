@@ -43,7 +43,7 @@ namespace DesktopDuplication
             }
         }
 
-        public OutputDuplicateFrameInformation? Get(Texture2D Texture, int Timeout)
+        public OutputDuplicateFrameInformation? Get(Texture2D Texture, int Timeout, DxMousePointer DxMousePointer)
         {
             SharpDX.DXGI.Resource desktopResource;
             OutputDuplicateFrameInformation frameInfo;
@@ -68,6 +68,8 @@ namespace DesktopDuplication
                     _device.ImmediateContext.CopyResource(tempTexture, Texture);
                 }
             }
+
+            DxMousePointer?.Update(frameInfo, _deskDupl);
 
             ReleaseFrame();
 

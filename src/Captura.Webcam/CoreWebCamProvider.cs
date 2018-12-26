@@ -83,17 +83,17 @@ namespace Captura.Models
             SelectedCam = WebcamItem.NoWebcam;
         }
 
-        public Bitmap Capture()
+        public IDisposable Capture(IBitmapLoader BitmapLoader)
         {
             try
             {
-                return _captureWebcam?.GetFrame();
+                return _captureWebcam?.GetFrame(BitmapLoader);
             }
             catch { return null; }
         }
 
-        public int Width => _captureWebcam.Size.Width;
+        public int Width => _captureWebcam?.Size.Width ?? 0;
 
-        public int Height => _captureWebcam.Size.Height;
+        public int Height => _captureWebcam?.Size.Height ?? 0;
     }
 }

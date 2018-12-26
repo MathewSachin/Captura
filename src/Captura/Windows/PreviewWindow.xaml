@@ -2,15 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore"
         Title="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
         Height="400"
         Width="600">
     <DockPanel Background="{DynamicResource WindowBackground}">
         <Grid>
-            <WindowsFormsHost>
+            <WindowsFormsHost Name="WinFormsHost">
                 <wf:PictureBox x:Name="DisplayImage"
                                SizeMode="Zoom"/>
             </WindowsFormsHost>
+            <Image>
+                <Image.Source>
+                    <interop:D3DImage x:Name="D3DImage"/>
+                </Image.Source>
+            </Image>
         </Grid>
     </DockPanel>
 </Window>
