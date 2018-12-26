@@ -41,7 +41,7 @@ namespace DesktopDuplication
         public float Width { get; }
         public float Height { get; }
 
-        public IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride)
+        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
             return new Bitmap(_editorSession.RenderTarget,
                 new Size2(Size.Width, Size.Height),

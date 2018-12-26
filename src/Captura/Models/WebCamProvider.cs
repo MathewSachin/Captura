@@ -76,11 +76,11 @@ namespace Captura.Models
             SelectedCam = WebcamItem.NoWebcam;
         }
 
-        public Bitmap Capture()
+        public IDisposable Capture(IBitmapLoader BitmapLoader)
         {
             try
             {
-                return _camControl.Dispatcher.Invoke(() => _camControl.Capture?.GetFrame());
+                return _camControl.Dispatcher.Invoke(() => _camControl.Capture?.GetFrame(BitmapLoader));
             }
             catch { return null; }
         }

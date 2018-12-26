@@ -1,16 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Captura
 {
-    public interface IEditableFrame : IDisposable
+    public interface IEditableFrame : IBitmapLoader
     {
         float Width { get; }
         float Height { get; }
-
-        IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride);
-
-        IDisposable LoadBitmap(string FileName, out Size Size);
 
         void DrawImage(object Image, Rectangle? Region, int Opacity = 100);
 

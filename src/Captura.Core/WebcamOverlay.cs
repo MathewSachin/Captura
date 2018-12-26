@@ -21,7 +21,7 @@ namespace Captura.Models
             if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])
                 return null;
 
-            return _webCamProvider.Capture();
+            return _webCamProvider.Capture(Editor);
         }
     }
 }

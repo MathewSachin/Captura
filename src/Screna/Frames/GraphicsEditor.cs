@@ -25,18 +25,14 @@ namespace Screna
             return new OneTimeFrame(_image);
         }
 
-        public IDisposable CreateBitmapRgba32(Size Size, IntPtr MemoryData, int Stride)
+        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
-            return new Bitmap(Size.Width, Size.Height, Stride, PixelFormat.Format32bppArgb, MemoryData);
+            return GraphicsBitmapLoader.Instance.CreateBitmapBgr32(Size, MemoryData, Stride);
         }
 
         public IDisposable LoadBitmap(string FileName, out Size Size)
         {
-            var bmp = new Bitmap(FileName);
-
-            Size = bmp.Size;
-
-            return bmp;
+            return GraphicsBitmapLoader.Instance.LoadBitmap(FileName, out Size);
         }
 
         public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
