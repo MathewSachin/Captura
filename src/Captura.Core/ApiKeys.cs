@@ -13,7 +13,7 @@ namespace Captura
         static string Get(string Key) => Environment.GetEnvironmentVariable(Key, EnvironmentVariableTarget.User) ?? "";
 
         public string ImgurClientId => Get("imgur_client_id");
-        
+
         public string ImgurSecret => Get("imgur_secret");
 
         public string YouTubeClientId => Get("yt_client_id");
