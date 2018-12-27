@@ -4,8 +4,8 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
 using System.Drawing;
-using System.Linq;
 using Captura;
+using SharpDX.Direct3D;
 using Device = SharpDX.Direct3D11.Device;
 
 namespace DesktopDuplication
@@ -21,9 +21,11 @@ namespace DesktopDuplication
 
         public int Timeout { get; set; }
 
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter Adapter, Output1 Output)
+        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Output1 Output)
         {
-            _device = new Device(Adapter, DeviceCreationFlags.BgraSupport);
+            _device = new Device(DriverType.Hardware,
+                DeviceCreationFlags.BgraSupport,
+                FeatureLevel.Level_11_1);
 
             _duplCapture = new DuplCapture(_device, Output);
 

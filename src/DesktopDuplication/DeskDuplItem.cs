@@ -6,12 +6,10 @@ namespace Captura.Models
 {
     public class DeskDuplItem : NotifyPropertyChanged, IVideoItem
     {
-        readonly Adapter1 _adapter;
         readonly Output1 _output;
 
-        public DeskDuplItem(Adapter1 Adapter, Output1 Output)
+        public DeskDuplItem(Output1 Output)
         {
-            _adapter = Adapter;
             _output = Output;
         }
 
@@ -36,7 +34,7 @@ namespace Captura.Models
 
             Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
 
-            return new DeskDuplImageProvider(_adapter, _output, rect, IncludeCursor);
+            return new DeskDuplImageProvider(_output, rect, IncludeCursor);
         }
     }
 }

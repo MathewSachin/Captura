@@ -10,12 +10,12 @@ namespace Captura.Models
 
         public int Timeout { get; set; }
 
-        internal DeskDuplImageProvider(Adapter Adapter, Output1 Output, Rectangle Rectangle, bool IncludeCursor)
+        internal DeskDuplImageProvider(Output1 Output, Rectangle Rectangle, bool IncludeCursor)
         {
             Width = Rectangle.Width;
             Height = Rectangle.Height;
 
-            _dupl = new DesktopDuplicator(Rectangle, IncludeCursor, Adapter, Output)
+            _dupl = new DesktopDuplicator(Rectangle, IncludeCursor, Output)
             {
                 Timeout = Timeout
             };
