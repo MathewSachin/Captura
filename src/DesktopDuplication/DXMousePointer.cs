@@ -38,16 +38,14 @@ namespace DesktopDuplication
 
             if (FrameInfo.PointerShapeBufferSize > _ptrShapeBufferSize)
             {
-                if (_ptrShapeBuffer != IntPtr.Zero)
-                {
-                    Marshal.FreeCoTaskMem(_ptrShapeBuffer);
-                }
-
                 _ptrShapeBufferSize = FrameInfo.PointerShapeBufferSize;
-                _ptrShapeBuffer = Marshal.AllocCoTaskMem(_ptrShapeBufferSize);
 
-                _bmp?.Dispose();
+                _ptrShapeBuffer = _ptrShapeBuffer != IntPtr.Zero
+                    ? Marshal.ReAllocCoTaskMem(_ptrShapeBuffer, _ptrShapeBufferSize)
+                    : Marshal.AllocCoTaskMem(_ptrShapeBufferSize);
             }
+
+            _bmp?.Dispose();
 
             DeskDupl.GetFramePointerShape(_ptrShapeBufferSize,
                 _ptrShapeBuffer,
@@ -66,10 +64,12 @@ namespace DesktopDuplication
             if (_bmp == null || !_pointerPosition.Visible)
                 return;
 
-            Editor.DrawImage(_bmp, new Rectangle(_pointerPosition.Position.X,
+            var rect = new Rectangle(_pointerPosition.Position.X,
                 _pointerPosition.Position.Y,
                 _ptrShapeInfo.Width,
-                _ptrShapeInfo.Height));
+                _ptrShapeInfo.Height);
+
+            Editor.DrawImage(_bmp, rect);
         }
 
         public void Dispose()

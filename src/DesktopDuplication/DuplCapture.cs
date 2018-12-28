@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
-using Resource = SharpDX.DXGI.Resource;
 using ResultCode = SharpDX.DXGI.ResultCode;
 
 namespace DesktopDuplication
@@ -13,6 +13,8 @@ namespace DesktopDuplication
         readonly Output1 _output;
         readonly Device _device;
         OutputDuplication _deskDupl;
+
+        readonly object _syncLock = new object();
 
         public DuplCapture(Device Device, Output1 Output)
         {
@@ -24,73 +26,104 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
+            try { _acquireTask?.Wait(); }
+            catch { }
+
             _deskDupl?.Dispose();
         }
 
         public void Init()
         {
-            _acquireResult = null;
-            _deskDupl?.Dispose();
+            lock (_syncLock)
+            {
+                try
+                {
+                    _acquireTask?.Wait();
+                }
+                catch { }
 
-            try
-            {
-                _deskDupl = _output.DuplicateOutput(_device);
-            }
-            catch (SharpDXException e) when (e.Descriptor == ResultCode.NotCurrentlyAvailable)
-            {
-                throw new Exception("There is already the maximum number of applications using the Desktop Duplication API running, please close one of the applications and try again.", e);
-            }
-            catch (SharpDXException e) when (e.Descriptor == ResultCode.Unsupported)
-            {
-                throw new NotSupportedException("Desktop Duplication is not supported on this system.\nIf you have multiple graphic cards, try running Captura on integrated graphics.", e);
+                _acquireTask = null;
+                _deskDupl?.Dispose();
+
+                try
+                {
+                    _deskDupl = _output.DuplicateOutput(_device);
+                }
+                catch (SharpDXException e) when (e.Descriptor == ResultCode.NotCurrentlyAvailable)
+                {
+                    throw new Exception(
+                        "There is already the maximum number of applications using the Desktop Duplication API running, please close one of the applications and try again.",
+                        e);
+                }
+                catch (SharpDXException e) when (e.Descriptor == ResultCode.Unsupported)
+                {
+                    throw new NotSupportedException(
+                        "Desktop Duplication is not supported on this system.\nIf you have multiple graphic cards, try running Captura on integrated graphics.",
+                        e);
+                }
             }
         }
 
-        Result? _acquireResult;
-        OutputDuplicateFrameInformation _frameInfo;
-        Resource _desktopResource;
+        Task<AcquireResult> _acquireTask;
 
-        void AcquireFrame()
+        void BeginAcquireFrame()
         {
             const int timeout = 5000;
 
-            _acquireResult = _deskDupl.TryAcquireNextFrame(timeout, out _frameInfo, out _desktopResource);
+            _acquireTask = Task.Run(() =>
+            {
+                try
+                {
+                    var result = _deskDupl.TryAcquireNextFrame(timeout, out var frameInfo, out var desktopResource);
+
+                    return new AcquireResult(result, frameInfo, desktopResource);
+                }
+                catch
+                {
+                    return new AcquireResult(Result.Fail);
+                }
+            });
         }
 
-        public OutputDuplicateFrameInformation? Get(Texture2D Texture, int Timeout, DxMousePointer DxMousePointer)
+        public bool Get(Texture2D Texture, DxMousePointer DxMousePointer)
         {
-            if (_acquireResult == null)
+            lock (_syncLock)
             {
-                AcquireFrame();
-
-                return null;
-            }
-
-            if (_acquireResult == ResultCode.WaitTimeout)
-            {
-                return null;
-            }
-
-            if (_acquireResult.Value.Failure)
-            {
-                throw new Exception($"Failed to acquire next frame: {_acquireResult.Value.Code}");
-            }
-
-            using (_desktopResource)
-            {
-                using (var tempTexture = _desktopResource.QueryInterface<Texture2D>())
+                if (_acquireTask == null)
                 {
-                    _device.ImmediateContext.CopyResource(tempTexture, Texture);
+                    BeginAcquireFrame();
+
+                    return false;
                 }
+
+                var acquireResult = _acquireTask.Result;
+
+                if (acquireResult.Result == ResultCode.WaitTimeout)
+                {
+                    return false;
+                }
+
+                if (acquireResult.Result.Failure)
+                {
+                    throw new Exception($"Failed to acquire next frame: {acquireResult.Result.Code}");
+                }
+
+                DxMousePointer?.Update(acquireResult.FrameInfo, _deskDupl);
+
+                using (acquireResult.DesktopResource)
+                {
+                    using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
+                    {
+                        _device.ImmediateContext.CopyResource(tempTexture, Texture);
+                    }
+                }
+
+                ReleaseFrame();
+
+                BeginAcquireFrame();
+
+                return true;
             }
-
-            DxMousePointer?.Update(_frameInfo, _deskDupl);
-
-            ReleaseFrame();
-
-            AcquireFrame();
-
-            return _frameInfo;
         }
 
         void ReleaseFrame()

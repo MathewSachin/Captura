@@ -64,9 +64,15 @@ namespace DesktopDuplication
 
             _surface = Texture.QueryInterface<Surface>();
 
-            Factory = new Factory1(FactoryType.SingleThreaded);
+            Factory = new Factory1(FactoryType.MultiThreaded);
 
-            RenderTarget = new RenderTarget(Factory, _surface, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Ignore)));
+            var renderTargetProps = new RenderTargetProperties(
+                new PixelFormat(Format.Unknown, AlphaMode.Ignore))
+            {
+                Type = RenderTargetType.Hardware
+            };
+
+            RenderTarget = new RenderTarget(Factory, _surface, renderTargetProps);
         }
 
         public void BeginDraw()

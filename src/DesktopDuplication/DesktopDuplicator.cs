@@ -18,6 +18,7 @@ namespace DesktopDuplication
         readonly DxMousePointer _mousePointer;
         readonly DuplCapture _duplCapture;
         readonly Device _device;
+        readonly Device _deviceForDeskDupl;
 
         public int Timeout { get; set; }
 
@@ -27,7 +28,10 @@ namespace DesktopDuplication
                 DeviceCreationFlags.BgraSupport,
                 FeatureLevel.Level_11_1);
 
-            _duplCapture = new DuplCapture(_device, Output);
+            // Don't know why but creating a separate device solves AccessViolationExceptions happening otherwise
+            _deviceForDeskDupl = new Device(Output.GetParent<Adapter>());
+
+            _duplCapture = new DuplCapture(_deviceForDeskDupl, Output);
 
             _stagingTexture = new Texture2D(_device, new Texture2DDescription
             {
@@ -65,11 +69,10 @@ namespace DesktopDuplication
         
         public IEditableFrame Capture()
         {
-            OutputDuplicateFrameInformation? frameInfo;
-
             try
             {
-                frameInfo = _duplCapture.Get(_desktopImageTexture, Timeout, _mousePointer);
+                if (!_duplCapture.Get(_desktopImageTexture, _mousePointer))
+                    return RepeatFrame.Instance;
             }
             catch
             {
@@ -81,9 +84,6 @@ namespace DesktopDuplication
 
                 return RepeatFrame.Instance;
             }
-
-            if (frameInfo is null)
-                return RepeatFrame.Instance;
 
             var editor = new Direct2DEditor(_editorSession);
 
@@ -110,6 +110,9 @@ namespace DesktopDuplication
             catch { }
 
             try { _device?.Dispose(); }
+            catch { }
+
+            try { _deviceForDeskDupl?.Dispose(); }
             catch { }
         }
     }

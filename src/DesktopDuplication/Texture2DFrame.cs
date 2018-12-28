@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using Captura;
 using SharpDX.Direct3D11;
+using Device = SharpDX.Direct3D11.Device;
+using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
