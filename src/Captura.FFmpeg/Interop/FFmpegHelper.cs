@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace FFmpeg.AutoGen.Example
+namespace FFmpeg.AutoGen
 {
     static class FFmpegHelper
     {

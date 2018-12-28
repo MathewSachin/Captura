@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace FFmpeg.AutoGen.Example
+namespace FFmpeg.AutoGen
 {
     public sealed unsafe class VideoFrameConverter : IDisposable
     {
