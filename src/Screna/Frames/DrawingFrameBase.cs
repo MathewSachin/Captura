@@ -5,15 +5,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Captura;
-using Captura.Native;
 
 namespace Screna
 {
-    public abstract class FrameBase : IBitmapFrame
+    public abstract class DrawingFrameBase : IBitmapFrame
     {
         public Bitmap Bitmap { get; }
 
-        protected FrameBase(Bitmap Bitmap)
+        protected DrawingFrameBase(Bitmap Bitmap)
         {
             this.Bitmap = Bitmap;
             Width = Bitmap.Width;
@@ -38,26 +37,10 @@ namespace Screna
             {
                 var absStride = Math.Abs(bits.Stride);
 
-                Marshal.Copy(bits.Scan0 + (Y * bits.Stride), Buffer, Y * absStride, absStride);
+                Marshal.Copy(bits.Scan0 + Y * bits.Stride, Buffer, Y * absStride, absStride);
             });
 
             Bitmap.UnlockBits(bits);
         }
-
-        public void CopyTo(IntPtr Buffer)
-        {
-            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-
-            Parallel.For(0, Height, Y =>
-            {
-                var absStride = Math.Abs(bits.Stride);
-
-                Kernel32.CopyMemory(Buffer + Y * absStride, bits.Scan0 + (Y * bits.Stride), (uint) absStride);
-            });
-
-            Bitmap.UnlockBits(bits);
-        }
-
-        public abstract IBitmapEditor GetEditor();
     }
 }

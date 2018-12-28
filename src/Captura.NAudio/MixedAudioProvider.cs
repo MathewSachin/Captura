@@ -18,7 +18,7 @@ namespace Captura.NAudio
         readonly ManualResetEvent _continueEvent = new ManualResetEvent(false),
             _stopEvent = new ManualResetEvent(false);
 
-        readonly byte[] _buffer;
+        byte[] _buffer;
         const int ReadInterval = 200;
 
         public MixedAudioProvider(IEnumerable<NAudioProvider> AudioProviders)
@@ -76,6 +76,8 @@ namespace Captura.NAudio
             {
                 provider.Dispose();
             }
+
+            _buffer = null;
         }
 
         public WaveFormat WaveFormat { get; } = new WaveFormat();

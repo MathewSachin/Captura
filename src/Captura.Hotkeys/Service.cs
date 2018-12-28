@@ -4,9 +4,14 @@ namespace Captura.Models
 {
     public class Service : NotifyPropertyChanged
     {
+        readonly LanguageManager _loc;
+
         public Service(ServiceName ServiceName)
         {
             this.ServiceName = ServiceName;
+            _loc = LanguageManager.Instance;
+
+            _loc.LanguageChanged += L => RaisePropertyChanged(nameof(Description));
         }
 
         ServiceName _serviceName;
@@ -18,52 +23,41 @@ namespace Captura.Models
             {
                 _serviceName = value;
 
-                Description = new TextLocalizer(GetDescriptionKey(value));
-
                 OnPropertyChanged();
+
+                RaisePropertyChanged(nameof(Description));
             }
         }
 
-        TextLocalizer _description;
+        public string Description => GetDescription();
 
-        public TextLocalizer Description
-        {
-            get => _description;
-            set
-            {
-                _description = value;
-                
-                OnPropertyChanged();
-            }
-        }
-
-        static string GetDescriptionKey(ServiceName ServiceName)
+        string GetDescription()
         {
             switch (ServiceName)
             {
                 case ServiceName.None:
-                    return nameof(LanguageManager.None);
+                    return _loc.None;
 
                 case ServiceName.Recording:
-                    return nameof(LanguageManager.StartStopRecording);
+                    return _loc.StartStopRecording;
 
                 case ServiceName.Pause:
-                    return nameof(LanguageManager.PauseResumeRecording);
+                    return _loc.PauseResumeRecording;
 
                 case ServiceName.ScreenShot:
-                    return nameof(LanguageManager.ScreenShot);
+                    return _loc.ScreenShot;
 
                 case ServiceName.ActiveScreenShot:
-                    return nameof(LanguageManager.ScreenShotActiveWindow);
+                    return _loc.ScreenShotActiveWindow;
 
                 case ServiceName.DesktopScreenShot:
-                    return nameof(LanguageManager.ScreenShotDesktop);
+                    return _loc.ScreenShotDesktop;
 
                 case ServiceName.ToggleMouseClicks:
-                    return nameof(LanguageManager.ToggleMouseClicks);
+                    return _loc.ToggleMouseClicks;
 
                 case ServiceName.ToggleKeystrokes:
-                    return nameof(LanguageManager.ToggleKeystrokes);
+                    return _loc.ToggleKeystrokes;
 
                 case ServiceName.ScreenShotRegion:
                     return "Screenshot (Region)";

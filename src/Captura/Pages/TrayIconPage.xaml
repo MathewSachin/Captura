@@ -30,7 +30,7 @@
 
                 <ComboBox SelectedValue="{Binding Settings.Tray.LeftClickAction, Mode=TwoWay}"
                           SelectedValuePath="ServiceName"
-                          DisplayMemberPath="Description.Display"
+                          DisplayMemberPath="Description"
                           ItemsSource="{x:Static hotkeys:HotKeyManager.AllServices}"/>
             </DockPanel>
         </StackPanel>

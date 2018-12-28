@@ -12,7 +12,7 @@ namespace Captura.Models
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
         readonly IWebCamProvider _webCamProvider;
-        readonly ScreenShotViewModel _screenShotViewModel;
+        readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
 
         public RememberByName(Settings Settings,
@@ -20,7 +20,7 @@ namespace Captura.Models
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             IWebCamProvider WebCamProvider,
-            ScreenShotViewModel ScreenShotViewModel,
+            ScreenShotModel ScreenShotModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders)
         {
             _settings = Settings;
@@ -28,7 +28,7 @@ namespace Captura.Models
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
             _webCamProvider = WebCamProvider;
-            _screenShotViewModel = ScreenShotViewModel;
+            _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
         }
 
@@ -54,10 +54,10 @@ namespace Captura.Models
                 .ToArray();
 
             // Remember ScreenShot Format
-            _settings.ScreenShots.ImageFormat = _screenShotViewModel.SelectedScreenShotImageFormat.ToString();
+            _settings.ScreenShots.ImageFormat = _screenShotModel.SelectedScreenShotImageFormat.ToString();
 
             // Remember ScreenShot Target
-            _settings.ScreenShots.SaveTargets = _screenShotViewModel.AvailableImageWriters
+            _settings.ScreenShots.SaveTargets = _screenShotModel.AvailableImageWriters
                 .Where(M => M.Active)
                 .Select(M => M.Display)
                 .ToArray();
@@ -127,24 +127,24 @@ namespace Captura.Models
             // Restore ScreenShot Format
             if (!string.IsNullOrEmpty(_settings.ScreenShots.ImageFormat))
             {
-                var format = _screenShotViewModel.ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == _settings.ScreenShots.ImageFormat);
+                var format = _screenShotModel.ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == _settings.ScreenShots.ImageFormat);
 
                 if (format != null)
-                    _screenShotViewModel.SelectedScreenShotImageFormat = format;
+                    _screenShotModel.SelectedScreenShotImageFormat = format;
             }
 
             // Restore ScreenShot Target
             if (_settings.ScreenShots.SaveTargets != null)
             {
-                foreach (var imageWriter in _screenShotViewModel.AvailableImageWriters)
+                foreach (var imageWriter in _screenShotModel.AvailableImageWriters)
                 {
                     imageWriter.Active = _settings.ScreenShots.SaveTargets.Contains(imageWriter.Display);
                 }
 
                 // Activate First if none
-                if (!_screenShotViewModel.AvailableImageWriters.Any(M => M.Active))
+                if (!_screenShotModel.AvailableImageWriters.Any(M => M.Active))
                 {
-                    _screenShotViewModel.AvailableImageWriters[0].Active = true;
+                    _screenShotModel.AvailableImageWriters[0].Active = true;
                 }
             }
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Interop;
+using DesktopDuplication;
+using Screna;
+using SharpDX.Direct3D9;
 
 namespace Captura.Models
 {
@@ -10,7 +12,9 @@ namespace Captura.Models
     {
         readonly PreviewWindow _previewWindow = new PreviewWindow();
 
-        bool _visible;
+        D3D9PreviewAssister _d3D9PreviewAssister;
+        IntPtr _backBufferPtr;
+        Texture _texture;
 
         public PreviewWindowService()
         {
@@ -21,59 +25,88 @@ namespace Captura.Models
 
                 _previewWindow.Hide();
             };
-
-            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
         }
 
-        WriteableBitmap _writeableBitmap;
-        byte[] _buffer;
+        public void Init(int Width, int Height) { }
 
-        DateTime _timestamp;
-        readonly TimeSpan _minInterval = TimeSpan.FromMilliseconds(200);
-
-        public void Init(int Width, int Height)
-        {
-            _previewWindow.Dispatcher.Invoke(() =>
-            {
-                if (_writeableBitmap != null
-                    && _writeableBitmap.PixelWidth == Width
-                    && _writeableBitmap.PixelHeight == Height)
-                    return;
-
-                _writeableBitmap = new WriteableBitmap(Width, Height, 96, 96, PixelFormats.Bgra32, null);
-
-                _buffer = new byte[Width * Height * 4];
-
-                Console.WriteLine($"Preview Bitmap Allocated: {_buffer.Length}");
-
-                _previewWindow.DisplayImage.Source = _writeableBitmap;
-            });
-        }
+        IBitmapFrame _lastFrame;
 
         public void Display(IBitmapFrame Frame)
         {
             if (Frame is RepeatFrame)
                 return;
 
-            if (!_visible || DateTime.Now - _timestamp < _minInterval)
-            {
-                Frame.Dispose();
-
-                return;
-            }
-
-            _timestamp = DateTime.Now;
-
-            using (Frame)
-                Frame.CopyTo(_buffer, _buffer.Length);
-
             _previewWindow.Dispatcher.Invoke(() =>
             {
-                _writeableBitmap.WritePixels(new Int32Rect(0, 0, Frame.Width, Frame.Height), _buffer, Frame.Width * 4, 0);
+                _previewWindow.DisplayImage.Image = null;
+
+                _lastFrame?.Dispose();
+                _lastFrame = Frame;
+
+                if (!_previewWindow.IsVisible)
+                    return;
+
+                if (Frame is MultiDisposeFrame frameWrapper)
+                {
+                    switch (frameWrapper.Frame)
+                    {
+                        case DrawingFrameBase drawingFrame:
+                            _previewWindow.WinFormsHost.Visibility = Visibility.Visible;
+                            _previewWindow.DisplayImage.Image = drawingFrame.Bitmap;
+                            break;
+
+                        case Texture2DFrame texture2DFrame:
+                            _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
+                            if (_d3D9PreviewAssister == null)
+                            {
+                                _d3D9PreviewAssister = new D3D9PreviewAssister();
+                                _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
+
+                                using (var surface = _texture.GetSurfaceLevel(0))
+                                {
+                                    _backBufferPtr = surface.NativePointer;
+                                }
+                            }
+
+                            Invalidate(_backBufferPtr, texture2DFrame.Width, texture2DFrame.Height);
+                            break;
+                    }
+                }
             });
         }
 
-        public void Dispose() { }
+        void Invalidate(IntPtr BackBufferPtr, int Width, int Height)
+        {
+            _previewWindow.D3DImage.Lock();
+            _previewWindow.D3DImage.SetBackBuffer(D3DResourceType.IDirect3DSurface9, BackBufferPtr);
+
+            if (BackBufferPtr != IntPtr.Zero)
+                _previewWindow.D3DImage.AddDirtyRect(new Int32Rect(0, 0, Width, Height));
+            
+            _previewWindow.D3DImage.Unlock();
+        }
+
+        public void Dispose()
+        {
+            _previewWindow.Dispatcher.Invoke(() =>
+            {
+                _previewWindow.DisplayImage.Image = null;
+
+                _lastFrame?.Dispose();
+                _lastFrame = null;
+
+                if (_d3D9PreviewAssister != null)
+                {
+                    Invalidate(IntPtr.Zero, 0, 0);
+
+                    _texture.Dispose();
+
+                    _d3D9PreviewAssister.Dispose();
+
+                    _d3D9PreviewAssister = null;
+                }
+            });
+        }
 
         public void Show()
         {

@@ -56,7 +56,7 @@ namespace Captura.Models
 
         protected abstract string GetText();
         
-        public virtual void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
+        public virtual void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
             if (!_overlaySettings.Display)
                 return;
@@ -68,9 +68,7 @@ namespace Captura.Models
 
             var fontSize = _overlaySettings.FontSize;
 
-            var font = new Font(FontFamily.GenericMonospace, fontSize);
-
-            var size = Editor.MeasureString(text, font);
+            var size = Editor.MeasureString(text, fontSize);
 
             int paddingX = _overlaySettings.HorizontalPadding, paddingY = _overlaySettings.VerticalPadding;
 
@@ -79,13 +77,13 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
 
-            Editor.FillRectangle(new SolidBrush(_overlaySettings.BackgroundColor),
+            Editor.FillRectangle(_overlaySettings.BackgroundColor,
                 rect,
                 _overlaySettings.CornerRadius);
 
             Editor.DrawString(text,
-                font,
-                new SolidBrush(_overlaySettings.FontColor),
+                fontSize,
+                _overlaySettings.FontColor,
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
             var border = _overlaySettings.BorderThickness;
@@ -94,7 +92,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.DrawRectangle(new Pen(_overlaySettings.BorderColor, border),
+                Editor.DrawRectangle(_overlaySettings.BorderColor, border,
                     rect,
                     _overlaySettings.CornerRadius);
             }

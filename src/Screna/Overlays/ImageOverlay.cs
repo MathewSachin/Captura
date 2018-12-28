@@ -1,53 +1,36 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace Captura.Models
 {
     public abstract class ImageOverlay<T> : IOverlay where T : ImageOverlaySettings
     {
-        readonly T _settings;
+        protected readonly T Settings;
         readonly bool _disposeImages;
 
         protected ImageOverlay(T Settings, bool DisposeImages)
         {
             _disposeImages = DisposeImages;
 
-            _settings = Settings;
+            this.Settings = Settings;
         }
 
-        public void Draw(IBitmapEditor Editor, Func<Point, Point> PointTransform = null)
+        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
-            var img = GetImage();
+            var img = GetImage(Editor, out var targetSize);
 
             if (img == null)
                 return;
 
             try
             {
-                var targetSize = img.Size;
-
-                if (_settings.Resize)
-                    targetSize = new Size(_settings.ResizeWidth, _settings.ResizeHeight);
+                if (Settings.Resize)
+                    targetSize = new Size(Settings.ResizeWidth, Settings.ResizeHeight);
 
                 var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
                 var destRect = new Rectangle(point, targetSize);
 
-                var g = Editor.Graphics;
-
-                if (_settings.Opacity < 100)
-                {
-                    var colormatrix = new ColorMatrix
-                    {
-                        Matrix33 = _settings.Opacity / 100.0f
-                    };
-
-                    var imgAttribute = new ImageAttributes();
-                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-                    g.DrawImage(img, destRect, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel, imgAttribute);
-                }
-                else g.DrawImage(img, destRect);
+                Editor.DrawImage(img, destRect, Settings.Opacity);
             }
             catch { }
             finally
@@ -57,13 +40,13 @@ namespace Captura.Models
             }
         }
 
-        protected abstract Bitmap GetImage();
+        protected abstract IDisposable GetImage(IEditableFrame Editor, out Size Size);
 
         Point GetPosition(Size Bounds, Size ImageSize)
         {
-            var point = new Point(_settings.X, _settings.Y);
+            var point = new Point(Settings.X, Settings.Y);
 
-            switch (_settings.HorizontalAlignment)
+            switch (Settings.HorizontalAlignment)
             {
                 case Alignment.Center:
                     point.X = Bounds.Width / 2 - ImageSize.Width / 2 + point.X;
@@ -74,7 +57,7 @@ namespace Captura.Models
                     break;
             }
 
-            switch (_settings.VerticalAlignment)
+            switch (Settings.VerticalAlignment)
             {
                 case Alignment.Center:
                     point.Y = Bounds.Height / 2 - ImageSize.Height / 2 + point.Y;

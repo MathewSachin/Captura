@@ -9,7 +9,7 @@
             Image.Dispose();
         }
 
-        public bool SupportsAudio { get; }
+        public bool SupportsAudio => false;
 
         public void WriteAudio(byte[] Buffer, int Length) { }
     }

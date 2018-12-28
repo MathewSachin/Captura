@@ -141,7 +141,15 @@ namespace Screna
 
                     task = Task.Factory.StartNew(() =>
                     {
-                        var frame = _imageProvider.Capture();
+                        var editableFrame = _imageProvider.Capture();
+
+                        if (_cancellationToken.IsCancellationRequested)
+                            return false;
+
+                        var frame = editableFrame.GenerateFrame();
+
+                        if (_cancellationToken.IsCancellationRequested)
+                            return false;
 
                         return AddFrame(frame);
                     });
@@ -151,6 +159,9 @@ namespace Screna
                     if (timeTillNextFrame > TimeSpan.Zero)
                         Thread.Sleep(timeTillNextFrame);
                 }
+
+                if (task != null && !task.IsCompleted)
+                    await task;
             }
             catch (Exception e)
             {
@@ -160,7 +171,7 @@ namespace Screna
                     {
                         ErrorOccurred?.Invoke(e);
 
-                        Dispose(false, true);
+                        Dispose(false);
                     }
                 }
             }
@@ -188,7 +199,7 @@ namespace Screna
                         {
                             ErrorOccurred?.Invoke(e);
 
-                            Dispose(true, true);
+                            Dispose(true);
                         }
                     }
                 }
@@ -196,7 +207,7 @@ namespace Screna
         }
 
         #region Dispose
-        void Dispose(bool TerminateRecord, bool TerminateWrite)
+        void Dispose(bool TerminateRecord)
         {
             if (_disposed)
                 return;
@@ -231,7 +242,7 @@ namespace Screna
         {
             lock (_syncLock)
             {
-                Dispose(true, true);
+                Dispose(true);
             }
         }
 

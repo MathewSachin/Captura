@@ -17,7 +17,14 @@ namespace Captura.Models
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            foreach (var codec in FFmpegItem.Items)
+            foreach (var codec in FFmpegItem.Encoders)
+            {
+                yield return codec;
+            }
+
+            yield return FFmpegGifItem.Instance;
+
+            foreach (var codec in FFmpegItem.HardwareEncoders)
             {
                 yield return codec;
             }

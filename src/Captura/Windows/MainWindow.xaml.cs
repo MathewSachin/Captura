@@ -34,11 +34,17 @@ namespace Captura
 
             if (DataContext is MainViewModel vm)
             {
-                vm.Init(!App.CmdOptions.NoPersist, true, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                var mainModel = ServiceProvider.Get<MainModel>();
+
+                mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+                ServiceProvider.Get<HotkeyActionRegisterer>().Register();
+                ServiceProvider.Get<TimerModel>().Init();
 
                 var listener = new HotkeyListener();
 
-                listener.HotkeyReceived += Id => vm.HotKeyManager.ProcessHotkey(Id);
+                var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
+
+                listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
 
                 ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
                 {
@@ -58,7 +64,7 @@ namespace Captura
                 {
                     RepositionWindowIfOutside();
 
-                    vm.ViewLoaded();
+                    mainModel.ViewLoaded();
                 };
             }
 
@@ -123,23 +129,12 @@ namespace Captura
 
         bool TryExit()
         {
-            if (DataContext is MainViewModel vm)
-            {
-                if (vm.RecordingViewModel.RecorderState == RecorderState.Recording)
-                {
-                    if (!ServiceProvider.MessageProvider.ShowYesNo(
-                        "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
-                        return false;
-                }
-                else if (vm.RecordingViewModel.RunningStopRecordingCount > 0)
-                {
-                    if (!ServiceProvider.MessageProvider.ShowYesNo(
-                        "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
-                        return false;
-                }
+            var recordingModel = ServiceProvider.Get<RecordingModel>();
 
-                vm.Dispose();
-            }
+            if (!recordingModel.CanExit())
+                return false;
+
+            ServiceProvider.Dispose();
 
             SystemTray.Dispose();
 

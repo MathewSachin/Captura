@@ -28,7 +28,7 @@ namespace Captura
             //Create capture object.
             if (VideoDevice != null && PresentationSource.FromVisual(this) is HwndSource source)
             {
-                Capture = new CaptureWebcam(VideoDevice)
+                Capture = new CaptureWebcam(VideoDevice, OpenPreview)
                 {
                     PreviewWindow = source.Handle,
                     Scale = Dpi.X
@@ -55,7 +55,7 @@ namespace Captura
             //Create capture object.
             if (VideoDevice != null && PresentationSource.FromVisual(MainWindow) is HwndSource source)
             {
-                Capture = new CaptureWebcam(VideoDevice)
+                Capture = new CaptureWebcam(VideoDevice, OpenPreview)
                 {
                     PreviewWindow = source.Handle,
                     Scale = Dpi.X
@@ -82,6 +82,11 @@ namespace Captura
             {
                 ShowOnMainWindow(MainWindow.Instance);
             }
+        }
+
+        void OpenPreview()
+        {
+            WebCamWindow.Instance.ShowAndFocus();
         }
     }
 }

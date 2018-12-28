@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Windows.Forms;
 using Captura.Webcam;
 
@@ -50,7 +49,7 @@ namespace Captura.Models
                 {
                     try
                     {
-                        _captureWebcam = new CaptureWebcam(model.Cam)
+                        _captureWebcam = new CaptureWebcam(model.Cam, null)
                         {
                             PreviewWindow = _previewForm.Handle
                         };
@@ -83,17 +82,17 @@ namespace Captura.Models
             SelectedCam = WebcamItem.NoWebcam;
         }
 
-        public Bitmap Capture()
+        public IDisposable Capture(IBitmapLoader BitmapLoader)
         {
             try
             {
-                return _captureWebcam?.GetFrame();
+                return _captureWebcam?.GetFrame(BitmapLoader);
             }
             catch { return null; }
         }
 
-        public int Width => _captureWebcam.Size.Width;
+        public int Width => _captureWebcam?.Size.Width ?? 0;
 
-        public int Height => _captureWebcam.Size.Height;
+        public int Height => _captureWebcam?.Size.Height ?? 0;
     }
 }

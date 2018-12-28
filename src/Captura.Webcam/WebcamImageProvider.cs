@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System.Drawing;
+using Captura.Models;
 using Screna;
 
 namespace Captura.Webcam
@@ -14,16 +15,16 @@ namespace Captura.Webcam
 
         public void Dispose() { }
 
-        public IBitmapFrame Capture()
+        public IEditableFrame Capture()
         {
             try
             {
-                var img = _webCamProvider.Capture();
+                var img = _webCamProvider.Capture(GraphicsBitmapLoader.Instance);
 
-                if (img == null)
-                    return RepeatFrame.Instance;
+                if (img is Bitmap bmp)
+                    return new GraphicsEditor(bmp);
 
-                return new OneTimeFrame(img);
+                return RepeatFrame.Instance;
             }
             catch
             {

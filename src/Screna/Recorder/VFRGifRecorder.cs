@@ -107,7 +107,7 @@ namespace Screna
                         _videoEncoder.WriteFrame(lastFrame, delay);
                     }
 
-                    lastFrame = frame;
+                    lastFrame = frame.GenerateFrame();
                 }
             }
             catch (Exception e)

@@ -159,17 +159,21 @@ namespace Captura.FFmpeg.Interop
             ffmpeg.avformat_free_context(oc);
 
             _vfc.Dispose();
+
+            _gcPin.Free();
+            _buffer = null;
         }
 
         AVFrame frame;
 
         void InitFrame()
         {
-            _buffer = (byte*)Marshal.AllocHGlobal(_frameSize.Width * _frameSize.Height * 4);
-
             var dataLength = _frameSize.Height * _frameSize.Width * 4;
 
-            var data = new byte_ptrArray8 { [0] = _buffer };
+            _buffer = new byte[dataLength];
+            _gcPin = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
+
+            var data = new byte_ptrArray8 { [0] = (byte*) _gcPin.AddrOfPinnedObject() };
             var linesize = new int_array8 { [0] = dataLength / _frameSize.Height };
 
             frame = new AVFrame
@@ -215,7 +219,8 @@ namespace Captura.FFmpeg.Interop
             }
         }
 
-        byte* _buffer;
+        byte[] _buffer;
+        GCHandle _gcPin;
 
         public void WriteFrame(IBitmapFrame Image)
         {
@@ -226,7 +231,7 @@ namespace Captura.FFmpeg.Interop
             }
 
             using (Image)
-                Image.CopyTo((IntPtr) _buffer);
+                Image.CopyTo(_buffer, _buffer.Length);
 
             Write();
         }

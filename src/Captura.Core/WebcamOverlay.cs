@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -12,13 +13,15 @@ namespace Captura.Models
             _webCamProvider = WebCamProvider;
         }
 
-        protected override Bitmap GetImage()
+        protected override IDisposable GetImage(IEditableFrame Editor, out Size Size)
         {
+            Size = new Size(_webCamProvider.Width, _webCamProvider.Height);
+
             // No Webcam
             if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])
                 return null;
 
-            return _webCamProvider.Capture();
+            return _webCamProvider.Capture(Editor);
         }
     }
 }
