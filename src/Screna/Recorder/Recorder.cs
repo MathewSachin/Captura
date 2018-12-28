@@ -79,14 +79,14 @@ namespace Screna
             _audioProvider.DataAvailable += (S, E) => _audioWriter.Write(E.Buffer, 0, E.Length);
         }
 
+        Task<bool> _task;
+
         async Task DoRecord()
         {
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
                 var frameCount = 0;
-
-                Task<bool> task = null;
 
                 // Returns false when stopped
                 bool AddFrame(IBitmapFrame Frame)
@@ -121,10 +121,10 @@ namespace Screna
                 {
                     var timestamp = DateTime.Now;
 
-                    if (task != null)
+                    if (_task != null)
                     {
                         // If false, stop recording
-                        if (!await task)
+                        if (!await _task)
                             return;
 
                         {
@@ -139,7 +139,7 @@ namespace Screna
                         }
                     }
 
-                    task = Task.Factory.StartNew(() =>
+                    _task = Task.Factory.StartNew(() =>
                     {
                         var editableFrame = _imageProvider.Capture();
 
@@ -159,9 +159,6 @@ namespace Screna
                     if (timeTillNextFrame > TimeSpan.Zero)
                         Thread.Sleep(timeTillNextFrame);
                 }
-
-                if (task != null && !task.IsCompleted)
-                    await task;
             }
             catch (Exception e)
             {
@@ -213,6 +210,13 @@ namespace Screna
                 return;
 
             _disposed = true;
+
+            try
+            {
+                if (_task != null && !_task.IsCompleted)
+                    _task.GetAwaiter().GetResult();
+            }
+            catch { }
 
             _audioProvider?.Stop();
             _audioProvider?.Dispose();
