@@ -100,6 +100,8 @@ namespace DesktopDuplication
 
                 if (acquireResult.Result == ResultCode.WaitTimeout)
                 {
+                    BeginAcquireFrame();
+
                     return false;
                 }
 
