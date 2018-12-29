@@ -3,7 +3,6 @@
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
-using System.Drawing;
 using Captura;
 using SharpDX.Direct3D;
 using Device = SharpDX.Direct3D11.Device;
@@ -20,9 +19,7 @@ namespace DesktopDuplication
         readonly Device _device;
         readonly Device _deviceForDeskDupl;
 
-        public int Timeout { get; set; }
-
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Output1 Output)
+        public DesktopDuplicator(bool IncludeCursor, Output1 Output)
         {
             _device = new Device(DriverType.Hardware,
                 DeviceCreationFlags.BgraSupport,
@@ -33,13 +30,17 @@ namespace DesktopDuplication
 
             _duplCapture = new DuplCapture(_deviceForDeskDupl, Output);
 
+            var bounds = Output.Description.DesktopBounds;
+            var width = bounds.Right - bounds.Left;
+            var height = bounds.Bottom - bounds.Top;
+
             _stagingTexture = new Texture2D(_device, new Texture2DDescription
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = Rect.Width,
-                Height = Rect.Height,
+                Width = width,
+                Height = height,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
@@ -52,8 +53,8 @@ namespace DesktopDuplication
                 CpuAccessFlags = CpuAccessFlags.None,
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = Rect.Width,
-                Height = Rect.Height,
+                Width = width,
+                Height = height,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,

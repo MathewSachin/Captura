@@ -221,13 +221,6 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            if (_videoWritersViewModel.SelectedVideoWriterKind is GifWriterProvider
-                && Settings.Gif.VariableFrameRate
-                && imgProvider is DeskDuplImageProvider deskDuplImageProvider)
-            {
-                deskDuplImageProvider.Timeout = 5000;
-            }
-
             IAudioProvider audioProvider = null;
 
             try

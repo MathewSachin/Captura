@@ -30,11 +30,10 @@ namespace Captura.Models
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
         {
             var rect = Rectangle;
-            rect.Location = Point.Empty;
 
             Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
 
-            return new DeskDuplImageProvider(_output, rect, IncludeCursor);
+            return new DeskDuplImageProvider(_output, IncludeCursor);
         }
     }
 }
