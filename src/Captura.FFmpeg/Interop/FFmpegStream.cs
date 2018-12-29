@@ -42,7 +42,7 @@ namespace Captura.FFmpeg.Interop
             ffmpeg.avcodec_open2(CodecContext, Codec, null).ThrowExceptionIfError();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             ffmpeg.avcodec_close(CodecContext);
         }
