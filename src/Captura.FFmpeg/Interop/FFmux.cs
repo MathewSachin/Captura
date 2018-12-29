@@ -8,6 +8,7 @@ namespace Captura.FFmpeg.Interop
         readonly FFmpegFormatContext _formatContext;
 
         readonly FFmpegVideoStream _videoStream;
+        readonly FFmpegAudioStream _audioStream;
 
         public FFmux(string FileName, Size FrameSize, int Fps)
         {
@@ -28,7 +29,13 @@ namespace Captura.FFmpeg.Interop
 
             if (fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
-                //audio_st = AddStream(oc, out var audio_codec, fmt->audio_codec);
+                var codecInfo = new FFmpegCodecInfo(fmt->audio_codec);
+
+                _audioStream = new FFmpegAudioStream(_formatContext.FormatContext, codecInfo);
+
+                SetAudioCodecOptions(_audioStream.CodecContext, codecInfo.Id);
+
+                SupportsAudio = true;
             }
 
             _formatContext.BeginWriting();
@@ -48,10 +55,7 @@ namespace Captura.FFmpeg.Interop
 
         void SetAudioCodecOptions(AVCodecContext* CodecContext, AVCodecID CodecId)
         {
-            CodecContext->sample_fmt = AVSampleFormat.AV_SAMPLE_FMT_FLTP;
             CodecContext->bit_rate = 64_000;
-            CodecContext->sample_rate = 44_100;
-            CodecContext->channels = 2;
         }
 
         public void Dispose()
@@ -59,6 +63,7 @@ namespace Captura.FFmpeg.Interop
             _formatContext.WriteTrailer();
 
             _videoStream.Dispose();
+            _audioStream?.Dispose();
 
             _formatContext.Dispose();
         }
@@ -77,8 +82,11 @@ namespace Captura.FFmpeg.Interop
             _videoStream.WriteFrame();
         }
 
-        public bool SupportsAudio => false;
+        public bool SupportsAudio { get; }
 
-        public void WriteAudio(byte[] Buffer, int Length) { }
+        public void WriteAudio(byte[] Buffer, int Length)
+        {
+            _audioStream.Write(Buffer, Length);
+        }
     }
 }

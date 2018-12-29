@@ -9,7 +9,7 @@ namespace FFmpeg.AutoGen
         {
             const int bufferSize = 1024;
             var buffer = stackalloc byte[bufferSize];
-            ffmpeg.av_strerror(Error, buffer, (ulong)bufferSize);
+            ffmpeg.av_strerror(Error, buffer, bufferSize);
             var message = Marshal.PtrToStringAnsi((IntPtr)buffer);
             return message;
         }

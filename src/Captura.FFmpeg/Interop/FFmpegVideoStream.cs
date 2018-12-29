@@ -28,7 +28,7 @@ namespace Captura.FFmpeg.Interop
 
             _vfc = new VideoFrameConverter(FrameSize, sourcePixelFormat, FrameSize, CodecInfo.PixelFormat);
 
-            InitFrame();
+            InitFrame(CodecInfo.PixelFormat);
 
             CodecContext->codec_id = CodecInfo.Id;
             CodecContext->width = FrameSize.Width;
@@ -38,7 +38,7 @@ namespace Captura.FFmpeg.Interop
             CodecContext->time_base.den = Fps;
         }
 
-        void InitFrame()
+        void InitFrame(AVPixelFormat PixelFormat)
         {
             var dataLength = _frameSize.Height * _frameSize.Width * 4;
 
@@ -52,7 +52,7 @@ namespace Captura.FFmpeg.Interop
             {
                 data = data,
                 linesize = linesize,
-                format = (int)AVPixelFormat.AV_PIX_FMT_YUV420P,
+                format = (int) PixelFormat,
                 height = _frameSize.Height
             };
         }

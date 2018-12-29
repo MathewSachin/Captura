@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using Captura.FFmpeg.Interop;
-using FFmpeg.AutoGen.Example;
 
 namespace Captura.Models
 {
