@@ -8,7 +8,7 @@ namespace Captura.FFmpeg.Interop
     {
         readonly AVFormatContext* _formatContext;
         readonly Size _frameSize;
-        readonly VideoFrameConverter _vfc;
+        readonly FFmpegVideoScaler _vfc;
 
         AVFrame _frame;
         long _pts;
@@ -24,11 +24,19 @@ namespace Captura.FFmpeg.Interop
             _formatContext = FormatContext;
             _frameSize = FrameSize;
 
-            const AVPixelFormat sourcePixelFormat = AVPixelFormat.AV_PIX_FMT_BGRA;
+            _vfc = new FFmpegVideoScaler(
+                new ScalerParams
+                {
+                    Size = FrameSize,
+                    PixelFormat = AVPixelFormat.AV_PIX_FMT_BGRA
+                },
+                new ScalerParams
+                {
+                    Size = FrameSize,
+                    PixelFormat = CodecInfo.PixelFormat
+                });
 
-            _vfc = new VideoFrameConverter(FrameSize, sourcePixelFormat, FrameSize, CodecInfo.PixelFormat);
-
-            InitFrame(CodecInfo.PixelFormat);
+            InitFrame();
 
             CodecContext->codec_id = CodecInfo.Id;
             CodecContext->width = FrameSize.Width;
@@ -38,7 +46,7 @@ namespace Captura.FFmpeg.Interop
             CodecContext->time_base.den = Fps;
         }
 
-        void InitFrame(AVPixelFormat PixelFormat)
+        void InitFrame()
         {
             var dataLength = _frameSize.Height * _frameSize.Width * 4;
 
@@ -52,7 +60,6 @@ namespace Captura.FFmpeg.Interop
             {
                 data = data,
                 linesize = linesize,
-                format = (int) PixelFormat,
                 height = _frameSize.Height
             };
         }
