@@ -3,16 +3,18 @@
 [![Master Build Status](https://img.shields.io/appveyor/ci/MathewSachin/Captura/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/Captura)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
 [![Chat](https://img.shields.io/badge/chat-on_gitter-yellow.svg?style=flat-square)](https://gitter.im/MathewSachin/Captura)
+
 [![Downloads](https://img.shields.io/github/downloads/MathewSachin/Captura/total.svg?style=flat-square)](https://mathewsachin.github.io/Captura/download)
 [![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square)](https://mathewsachin.github.io/Captura/donate)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/captura/localized.svg)](https://crowdin.com/project/captura)
 
-&copy; [Copyright 2018](LICENSE.md) Mathew Sachin
+&copy; [Copyright 2019](LICENSE.md) Mathew Sachin
 
 :link: <https://mathewsachin.github.io/Captura/>
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" align="right"></a>
+<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" align="right" style="max-width: 350px"></a>
 
 ## Features
 
@@ -30,8 +32,6 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 ## Table of Contents
 
 - [Installation](#installation)
-  - [Setup](#setup)
-  - [Portable](#portable)
   - [Chocolatey](#chocolatey)
   - [Dev Builds](#dev-builds)
 - [Build Notes](#build-notes)
@@ -51,19 +51,11 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
 ## Installation
 
-There are a few different options for installing.
-
 [latest]: https://github.com/MathewSachin/Captura/releases/latest
 
-### Setup
+Portable and Setup builds for the latest release can be downloaded from [here][latest].
 
-Download and run `Captura-Setup.exe` for the latest release from [here][latest].
-
-### Portable
-
-Download and unzip `Captura-Portable.zip` for the latest release from [here][latest].
-
-The settings are stored in `%APPDATA%/Captura` folder by default. You might want to customize this for the portable build using the `--settings` command-line argument.
+>The settings are stored in `%APPDATA%/Captura` folder by default. You might want to customize this for the portable build using the `--settings` command-line argument.
 
 ### Chocolatey
 
@@ -75,7 +67,7 @@ choco install captura -y
 
 Dev builds can be unstable and should be used for testing purposes only.
 
-1. Go to [AppVeyor project](https://ci.appveyor.com/project/MathewSachin/Captura) page.
+1. Go to [AppVeyor project](https://ci.appveyor.com/project/MathewSachin/Captura/branch/master) page.
 
 2. Select Build Configuration: **Debug** or **Release**.
 
@@ -85,13 +77,13 @@ Dev builds can be unstable and should be used for testing purposes only.
 
 ## Build Notes
 
-- [Visual Studio 2017](https://visualstudio.com) or greater is recommended.
+- [Visual Studio 2017](https://visualstudio.com) or greater is required.
 - .Net Framework v4.6.1 is required.
 - For detailed information, see [Building](https://mathewsachin.github.io/Captura/build).
 
 ## System Requirements
 
-- Verified on **Windows 10**. Atleast Windows Vista is required.
+- Verified on **Windows 10**. Atleast Windows 7 is required.
 - If you are on Windows 7 or earlier, make sure Aero is enabled.
 - **Desktop Duplication API** is only available on **Windows 8** and above.
 - 2 GHz CPU (Recommended).

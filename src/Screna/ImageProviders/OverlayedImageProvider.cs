@@ -9,8 +9,8 @@ namespace Screna
     /// </summary>
     public class OverlayedImageProvider : IImageProvider
     {
-        readonly IOverlay[] _overlays;
-        readonly IImageProvider _imageProvider;
+        IOverlay[] _overlays;
+        IImageProvider _imageProvider;
         readonly Func<Point, Point> _transform;
         
         /// <summary>
@@ -59,6 +59,9 @@ namespace Screna
 
             foreach (var overlay in _overlays)
                 overlay?.Dispose();
+
+            _imageProvider = null;
+            _overlays = null;
         }
     }
 }

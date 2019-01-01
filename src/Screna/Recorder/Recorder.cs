@@ -16,10 +16,10 @@ namespace Screna
     public class Recorder : IRecorder
     {
         #region Fields
-        readonly IAudioProvider _audioProvider;
-        readonly IVideoFileWriter _videoWriter;
-        readonly IAudioFileWriter _audioWriter;
-        readonly IImageProvider _imageProvider;
+        IAudioProvider _audioProvider;
+        IVideoFileWriter _videoWriter;
+        IAudioFileWriter _audioWriter;
+        IImageProvider _imageProvider;
 
         readonly int _frameRate;
 
@@ -76,7 +76,7 @@ namespace Screna
             _audioWriter = AudioWriter ?? throw new ArgumentNullException(nameof(AudioWriter));
             _audioProvider = AudioProvider ?? throw new ArgumentNullException(nameof(AudioProvider));
 
-            _audioProvider.DataAvailable += (S, E) => _audioWriter.Write(E.Buffer, 0, E.Length);
+            _audioProvider.DataAvailable += AudioProvider_DataAvailable;
         }
 
         Task<bool> _task;
@@ -127,15 +127,13 @@ namespace Screna
                         if (!await _task)
                             return;
 
-                        {
-                            var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                            var diff = requiredFrames - frameCount;
+                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+                        var diff = requiredFrames - frameCount;
 
-                            for (var i = 0; i < diff; ++i)
-                            {
-                                if (!AddFrame(RepeatFrame.Instance))
-                                    return;
-                            }
+                        for (var i = 0; i < diff; ++i)
+                        {
+                            if (!AddFrame(RepeatFrame.Instance))
+                                return;
                         }
                     }
 
@@ -176,6 +174,12 @@ namespace Screna
 
         void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
         {
+            if (_videoWriter == null)
+            {
+                _audioWriter.Write(E.Buffer, 0, E.Length);
+                return;
+            }
+
             try
             {
                 lock (_syncLock)
@@ -211,32 +215,44 @@ namespace Screna
 
             _disposed = true;
 
-            try
+            if (_audioProvider != null)
             {
-                if (_task != null && !_task.IsCompleted)
-                    _task.GetAwaiter().GetResult();
+                _audioProvider.DataAvailable -= AudioProvider_DataAvailable;
+                _audioProvider.Stop();
+                _audioProvider.Dispose();
+                _audioProvider = null;
             }
-            catch { }
-
-            _audioProvider?.Stop();
-            _audioProvider?.Dispose();
 
             if (_videoWriter != null)
             {
                 _cancellationTokenSource.Cancel();
 
+                // Resume record loop if paused so it can exit
                 _continueCapturing.Set();
 
                 if (TerminateRecord)
                     _recordTask.Wait();
 
+                try
+                {
+                    if (_task != null && !_task.IsCompleted)
+                        _task.GetAwaiter().GetResult();
+                }
+                catch { }
+
                 _videoWriter.Dispose();
+                _videoWriter = null;
 
                 _continueCapturing.Dispose();
             }
-            else _audioWriter.Dispose();
+            else
+            {
+                _audioWriter.Dispose();
+                _audioWriter = null;
+            }
 
             _imageProvider?.Dispose();
+            _imageProvider = null;
         }
 
         /// <summary>
