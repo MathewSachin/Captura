@@ -60,11 +60,13 @@ namespace Captura.FFmpeg.Interop
 
             if (fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
-                var codecInfo = new FFmpegCodecInfo(fmt->audio_codec);
+                var codecInfo = new FFmpegAudioCodecInfo(fmt->audio_codec, AVSampleFormat.AV_SAMPLE_FMT_FLTP);
 
                 _audioStream = new FFmpegAudioStream(_formatContext.FormatContext, codecInfo);
 
                 SetAudioCodecOptions(_audioStream.CodecContext, codecInfo.Id);
+
+                _audioStream.OpenCodec();
 
                 SupportsAudio = true;
             }

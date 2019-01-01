@@ -18,21 +18,20 @@ namespace Captura.FFmpeg.Interop
         const int SrcBitsPerSample = 16;
 
         public FFmpegAudioStream(AVFormatContext* FormatContext,
-            FFmpegCodecInfo CodecInfo) : base(FormatContext, CodecInfo)
+            FFmpegAudioCodecInfo CodecInfo) : base(FormatContext, CodecInfo)
         {
             _formatContext = FormatContext;
 
-            CodecContext->sample_fmt = _sourceParams.SampleFormat;
+            CodecContext->sample_fmt = CodecInfo.SampleFormat;
             CodecContext->sample_rate = _sourceParams.SampleRate;
-
-            CodecContext->channels = SrcChannelCount;
+            CodecContext->channel_layout = ffmpeg.AV_CH_LAYOUT_STEREO;
 
             _audioResampler = new FFmpegAudioResampler(_sourceParams,
                 new ResamplerParams
                 {
                     ChannelLayout = _sourceParams.ChannelLayout,
                     SampleRate = _sourceParams.SampleRate,
-                    SampleFormat = AVSampleFormat.AV_SAMPLE_FMT_FLTP
+                    SampleFormat = CodecInfo.SampleFormat
                 });
         }
 
