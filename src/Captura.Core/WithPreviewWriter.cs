@@ -6,7 +6,7 @@ namespace Captura.Models
     public class WithPreviewWriter : IVideoFileWriter
     {
         readonly IPreviewWindow _preview;
-        public IVideoFileWriter OriginalWriter { get; }
+        public IVideoFileWriter OriginalWriter { get; private set; }
 
         public WithPreviewWriter(IVideoFileWriter Writer, IPreviewWindow Preview)
         {
@@ -17,6 +17,7 @@ namespace Captura.Models
         public void Dispose()
         {
             OriginalWriter.Dispose();
+            OriginalWriter = null;
             _preview.Dispose();
         }
 

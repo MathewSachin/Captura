@@ -1,4 +1,5 @@
-﻿using Captura.Audio;
+﻿using System;
+using Captura.Audio;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
@@ -11,11 +12,12 @@ namespace Captura.Models
     class AviWriter : IVideoFileWriter
     {
         #region Fields
-        readonly AviInternalWriter _writer;
+        AviInternalWriter _writer;
         IAviVideoStream _videoStream;
         IAviAudioStream _audioStream;
         byte[] _videoBuffer;
         readonly AviCodec _codec;
+        readonly object _syncLock = new object();
         
         /// <summary>
         /// Gets whether Audio is recorded.
@@ -62,7 +64,7 @@ namespace Captura.Models
                 }
             }
 
-            lock (_writer)
+            lock (_syncLock)
                 _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
         }
 
@@ -72,7 +74,14 @@ namespace Captura.Models
             if (_codec == AviCodec.Uncompressed)
                 _videoStream = _writer.AddUncompressedVideoStream(Width, Height);
             else if (_codec == AviCodec.MotionJpeg)
-                _videoStream = _writer.AddMotionJpegVideoStream(Width, Height, _codec.Quality);
+            {
+                // MotionJpegVideoStream implementation allocates multiple WriteableBitmap for every thread
+                // Use SingleThreadWrapper to reduce allocation
+                var encoderFactory = new Func<IVideoEncoder>(() => new MotionJpegVideoEncoderWpf(Width, Height, _codec.Quality));
+                var encoder = new SingleThreadedVideoEncoderWrapper(encoderFactory);
+
+                _videoStream = _writer.AddEncodingVideoStream(encoder, true, Width, Height);
+            }
             else
             {
                 _videoStream = _writer.AddMpeg4VideoStream(Width, Height,
@@ -87,14 +96,14 @@ namespace Captura.Models
                     true);
             }
 
-            _videoStream.Name = "ScrenaVideo";
+            _videoStream.Name = "Video";
         }
 
         void CreateAudioStream(IAudioProvider AudioProvider)
         {
             _audioStream = _writer.AddEncodingAudioStream(new IAudioProviderAdapter(AudioProvider));
 
-            _audioStream.Name = "ScrenaAudio";
+            _audioStream.Name = "Audio";
         }
 
         /// <summary>
@@ -104,7 +113,7 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
-            lock (_writer)
+            lock (_syncLock)
                 _audioStream?.WriteBlock(Buffer, 0, Length);
         }
 
@@ -113,7 +122,14 @@ namespace Captura.Models
         /// </summary>
         public void Dispose()
         {
-            _writer?.Close();
+            lock (_syncLock)
+            {
+                _writer.Close();
+                _writer = null;
+
+                _videoStream = null;
+                _audioStream = null;
+            }
 
             _videoBuffer = null;
         }

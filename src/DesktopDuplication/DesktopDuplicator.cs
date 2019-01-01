@@ -11,13 +11,13 @@ namespace DesktopDuplication
 {
     public class DesktopDuplicator : IDisposable
     {
-        readonly Texture2D _desktopImageTexture;
-        readonly Texture2D _stagingTexture;
-        readonly Direct2DEditorSession _editorSession;
-        readonly DxMousePointer _mousePointer;
-        readonly DuplCapture _duplCapture;
-        readonly Device _device;
-        readonly Device _deviceForDeskDupl;
+        Texture2D _desktopImageTexture;
+        Texture2D _stagingTexture;
+        Direct2DEditorSession _editorSession;
+        DxMousePointer _mousePointer;
+        DuplCapture _duplCapture;
+        Device _device;
+        Device _deviceForDeskDupl;
 
         public DesktopDuplicator(bool IncludeCursor, Output1 Output)
         {
@@ -97,24 +97,31 @@ namespace DesktopDuplication
         {
             try { _mousePointer?.Dispose(); }
             catch { }
+            finally { _mousePointer = null; }
 
             try { _editorSession.Dispose(); }
             catch { }
+            finally { _editorSession = null; }
 
             try { _duplCapture.Dispose(); }
             catch { }
+            finally { _duplCapture = null; }
 
-            try { _desktopImageTexture?.Dispose(); }
+            try { _desktopImageTexture.Dispose(); }
             catch { }
+            finally { _desktopImageTexture = null; }
 
-            try { _stagingTexture?.Dispose(); }
+            try { _stagingTexture.Dispose(); }
             catch { }
+            finally { _stagingTexture = null; }
 
-            try { _device?.Dispose(); }
+            try { _device.Dispose(); }
             catch { }
+            finally { _device = null; }
 
-            try { _deviceForDeskDupl?.Dispose(); }
+            try { _deviceForDeskDupl.Dispose(); }
             catch { }
+            finally { _deviceForDeskDupl = null; }
         }
     }
 }

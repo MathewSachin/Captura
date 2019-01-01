@@ -113,33 +113,16 @@ namespace DesktopDuplication
                 DxMousePointer?.Update(acquireResult.FrameInfo, _deskDupl);
 
                 using (acquireResult.DesktopResource)
+                using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
                 {
-                    using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
-                    {
-                        _device.ImmediateContext.CopyResource(tempTexture, Texture);
-                    }
+                    _device.ImmediateContext.CopyResource(tempTexture, Texture);
                 }
 
-                ReleaseFrame();
+                _deskDupl.ReleaseFrame();
 
                 BeginAcquireFrame();
 
                 return true;
-            }
-        }
-
-        void ReleaseFrame()
-        {
-            try
-            {
-                _deskDupl.ReleaseFrame();
-            }
-            catch (SharpDXException e)
-            {
-                if (e.ResultCode.Failure)
-                {
-                    throw new Exception("Failed to release frame.", e);
-                }
             }
         }
     }

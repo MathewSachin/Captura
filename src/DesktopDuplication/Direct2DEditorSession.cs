@@ -14,16 +14,16 @@ namespace DesktopDuplication
 {
     public class Direct2DEditorSession : IDisposable
     {
-        readonly Surface _surface;
-        readonly Texture2D _texture;
+        Surface _surface;
+        Texture2D _texture;
 
-        public Device Device { get; }
-        public Texture2D StagingTexture { get; }
-        public Factory1 Factory { get; }
-        public RenderTarget RenderTarget { get; }
-        public Texture2D PreviewTexture { get; }
+        public Device Device { get; private set; }
+        public Texture2D StagingTexture { get; private set; }
+        public RenderTarget RenderTarget { get; private set; }
+        public Texture2D PreviewTexture { get; private set; }
 
         SolidColorBrush _solidColorBrush;
+        Factory1 _factory;
         Factory _writeFactory;
         ImagingFactory _imagingFactory;
 
@@ -64,7 +64,7 @@ namespace DesktopDuplication
 
             _surface = Texture.QueryInterface<Surface>();
 
-            Factory = new Factory1(FactoryType.MultiThreaded);
+            _factory = new Factory1(FactoryType.MultiThreaded);
 
             var renderTargetProps = new RenderTargetProperties(
                 new PixelFormat(Format.Unknown, AlphaMode.Ignore))
@@ -72,7 +72,7 @@ namespace DesktopDuplication
                 Type = RenderTargetType.Hardware
             };
 
-            RenderTarget = new RenderTarget(Factory, _surface, renderTargetProps);
+            RenderTarget = new RenderTarget(_factory, _surface, renderTargetProps);
         }
 
         public void BeginDraw()
@@ -88,16 +88,30 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
+            _texture = null;
+            Device = null;
+            StagingTexture = null;
+
             _solidColorBrush?.Dispose();
+            _solidColorBrush = null;
 
             RenderTarget.Dispose();
-            Factory.Dispose();
+            RenderTarget = null;
+
+            _factory.Dispose();
+            _factory = null;
+
             _surface.Dispose();
+            _surface = null;
 
             _writeFactory?.Dispose();
+            _writeFactory = null;
+
             _imagingFactory?.Dispose();
+            _imagingFactory = null;
 
             PreviewTexture.Dispose();
+            PreviewTexture = null;
         }
     }
 }

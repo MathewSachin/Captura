@@ -336,13 +336,8 @@ namespace Captura.ViewModels
                 _mainWindow.IsMinimized = true;
 
             RecorderState = RecorderState.Recording;
-            
-            _recorder.ErrorOccurred += E =>
-            {
-                if (_syncContext != null)
-                    _syncContext.Post(S => OnErrorOccurred(E), null);
-                else OnErrorOccurred(E);
-            };
+
+            _recorder.ErrorOccurred += OnErrorOccured;
 
             if (Settings.PreStartCountdown == 0)
             {
@@ -401,19 +396,26 @@ namespace Captura.ViewModels
             _recorder.Start();
         }
 
-        void OnErrorOccurred(Exception E)
+        void OnErrorOccured(Exception E)
         {
-            var cancelled = E is WindowClosedException;
-
-            AfterRecording();
-
-            if (!cancelled)
-                ServiceProvider.MessageProvider.ShowException(E, E.Message);
-
-            if (cancelled)
+            void Do()
             {
-                _videoSourcesViewModel.SetDefaultSource();
+                var cancelled = E is WindowClosedException;
+
+                AfterRecording();
+
+                if (!cancelled)
+                    ServiceProvider.MessageProvider.ShowException(E, E.Message);
+
+                if (cancelled)
+                {
+                    _videoSourcesViewModel.SetDefaultSource();
+                }
             }
+
+            if (_syncContext != null)
+                _syncContext.Post(S => Do(), null);
+            else Do();
         }
 
         void AfterRecording()
@@ -422,6 +424,7 @@ namespace Captura.ViewModels
 
             RecorderState = RecorderState.NotRecording;
 
+            _recorder.ErrorOccurred -= OnErrorOccured;
             _recorder = null;
 
             _timerModel.Stop();
