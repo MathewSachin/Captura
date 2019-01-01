@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using FFmpeg.AutoGen;
 
 namespace Captura.FFmpeg.Interop
@@ -9,6 +11,35 @@ namespace Captura.FFmpeg.Interop
 
         readonly FFmpegVideoStream _videoStream;
         readonly FFmpegAudioStream _audioStream;
+
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        static readonly av_log_set_callback_callback LogCallback;
+
+        static FFmux()
+        {
+            ffmpeg.av_log_set_level(ffmpeg.AV_LOG_VERBOSE);
+
+            LogCallback = (p0, Level, Format, vl) =>
+            {
+                if (Level > ffmpeg.av_log_get_level())
+                    return;
+
+                const int lineSize = 1024;
+
+                var lineBuffer = stackalloc byte[lineSize];
+                var printPrefix = 1;
+
+                ffmpeg.av_log_format_line(p0, Level, Format, vl, lineBuffer, lineSize, &printPrefix);
+
+                var line = Marshal.PtrToStringAnsi((IntPtr)lineBuffer);
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(line);
+                Console.ResetColor();
+            };
+
+            ffmpeg.av_log_set_callback(LogCallback);
+        }
 
         public FFmux(string FileName, Size FrameSize, int Fps)
         {
@@ -56,6 +87,7 @@ namespace Captura.FFmpeg.Interop
         void SetAudioCodecOptions(AVCodecContext* CodecContext, AVCodecID CodecId)
         {
             CodecContext->bit_rate = 64_000;
+            CodecContext->strict_std_compliance = -2;
         }
 
         public void Dispose()

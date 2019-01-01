@@ -5,16 +5,21 @@ namespace Captura.FFmpeg.Interop
 {
     public unsafe class FFmpegAudioResampler : IDisposable
     {
+        readonly ResamplerParams _sourceParams, _destParams;
         readonly SwrContext* _swrContext;
-        readonly byte** _srcData, _destData;
-        int _srcLinesize, _destLinesize;
-        readonly AVSampleFormat _destSampleFormat;
+        byte** _buffer;
+        int _bufferSampleSize;
+        readonly int _destChannels;
 
         public FFmpegAudioResampler(ResamplerParams Source, ResamplerParams Destination)
         {
-            _destSampleFormat = Destination.SampleFormat;
+            _sourceParams = Source;
+            _destParams = Destination;
 
-            _swrContext = ffmpeg.swr_alloc_set_opts(_swrContext,
+            _destChannels = ffmpeg.av_get_channel_layout_nb_channels((ulong)Destination.ChannelLayout);
+
+            _swrContext = ffmpeg.swr_alloc_set_opts(
+                _swrContext,
                 Destination.ChannelLayout,
                 Destination.SampleFormat,
                 Destination.SampleRate,
@@ -25,84 +30,81 @@ namespace Captura.FFmpeg.Interop
                 null);
 
             ffmpeg.swr_init(_swrContext).ThrowExceptionIfError();
+        }
 
-            var srcChannels = ffmpeg.av_get_channel_layout_nb_channels((ulong) Source.ChannelLayout);
+        public void Convert(byte** Src, int SrcSampleCount, out byte** Dest, out int DestSampleCount)
+        {
+            var outSampleCount = (int) ffmpeg.av_rescale_rnd(
+                ffmpeg.swr_get_delay(_swrContext, _sourceParams.SampleRate) + SrcSampleCount,
+                _destParams.SampleRate,
+                _sourceParams.SampleRate,
+                AVRounding.AV_ROUND_UP);
 
-            byte** data = null;
-            var linesize = 0;
+            if (outSampleCount > _bufferSampleSize)
+            {
+                if (_buffer != null)
+                    ffmpeg.av_freep(_buffer);
 
-            var srcSampleCount = 1024;
+                var buffer = _buffer;
 
-            ffmpeg.av_samples_alloc_array_and_samples(
-                    &data,
-                    &linesize,
-                    srcChannels,
-                    srcSampleCount,
-                    Source.SampleFormat,
-                    0)
-                .ThrowExceptionIfError();
+                ffmpeg.av_samples_alloc_array_and_samples(
+                        &buffer,
+                        null,
+                        _destChannels,
+                        outSampleCount,
+                        _destParams.SampleFormat,
+                        0)
+                    .ThrowExceptionIfError();
 
-            _srcData = data;
-            _srcLinesize = linesize;
+                _buffer = buffer;
+                _bufferSampleSize = outSampleCount;
+            }
 
-            long maxDestSampleCount, destSampleCount;
+            ffmpeg.swr_convert(
+                _swrContext,
+                _buffer,
+                outSampleCount,
+                Src,
+                SrcSampleCount);
 
-            maxDestSampleCount = destSampleCount = ffmpeg.av_rescale_rnd(srcSampleCount, Destination.SampleRate,
-                Source.SampleRate, AVRounding.AV_ROUND_UP);
-
-            var destChannels = ffmpeg.av_get_channel_layout_nb_channels((ulong) Destination.ChannelLayout);
-
-            ffmpeg.av_samples_alloc_array_and_samples(
-                    &data,
-                    &linesize,
-                    destChannels,
-                    (int) destSampleCount,
-                    Destination.SampleFormat,
-                    0)
-                .ThrowExceptionIfError();
-
-            _destData = data;
-            _destLinesize = linesize;
+            Dest = _buffer;
+            DestSampleCount = outSampleCount;
         }
 
         public AVFrame Convert(AVFrame Frame)
         {
-            _srcData[0] = Frame.data[0];
-            _srcLinesize = Frame.linesize[0];
-
-            ffmpeg.swr_convert(_swrContext,
-                _destData,
-                _destLinesize,
-                _srcData,
-                _srcLinesize);
-
-            return new AVFrame
+            fixed (byte** src = Frame.data.ToArray())
             {
-                data = new byte_ptrArray8 { [0] = _destData[0] },
-                linesize = new int_array8 { [0] = _destLinesize },
-                format = (int) _destSampleFormat
-            };
+                var srcSampleCount = Frame.nb_samples;//Frame.linesize[0];
+
+                Convert(src, srcSampleCount, out var dest, out var destSampleCount);
+
+                var destData = new byte_ptrArray8();
+
+                for (var i = 0; i < _destChannels; ++i)
+                    destData[(uint) i] = dest[i];
+
+                return new AVFrame
+                {
+                    data = destData,
+                    //linesize = new int_array8 { [0] = destSampleCount },
+                    nb_samples = destSampleCount,
+                    format = (int) _destParams.SampleFormat
+                };
+            }
         }
 
         public void Dispose()
         {
-            var ptr = _srcData;
-
-            if (ptr != null)
+            if (_buffer != null)
             {
-                ffmpeg.av_free(&ptr[0]);
+                var buffer = _buffer;
+
+                ffmpeg.av_freep(&_buffer[0]);
+                ffmpeg.av_freep(&buffer);
+
+                _buffer = null;
             }
-
-            ffmpeg.av_free(ptr);
-
-            ptr = _destData;
-
-            if (ptr != null)
-            {
-                ffmpeg.av_free(&ptr[0]);
-            }
-
-            ffmpeg.av_free(ptr);
 
             var swrContext = _swrContext;
             ffmpeg.swr_free(&swrContext);
