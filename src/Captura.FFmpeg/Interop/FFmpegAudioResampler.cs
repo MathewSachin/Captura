@@ -14,15 +14,15 @@ namespace Captura.FFmpeg.Interop
         {
             _destSampleFormat = Destination.SampleFormat;
 
-            _swrContext = ffmpeg.swr_alloc();
-
-            ffmpeg.av_opt_set_int(_swrContext, "in_channel_layout", Source.ChannelLayout, 0);
-            ffmpeg.av_opt_set_int(_swrContext, "in_sample_rate", Source.SampleRate, 0);
-            ffmpeg.av_opt_set_sample_fmt(_swrContext, "in_sample_fmt", Source.SampleFormat, 0);
-
-            ffmpeg.av_opt_set_int(_swrContext, "out_channel_layout", Destination.ChannelLayout, 0);
-            ffmpeg.av_opt_set_int(_swrContext, "out_sample_rate", Destination.SampleRate, 0);
-            ffmpeg.av_opt_set_sample_fmt(_swrContext, "out_sample_fmt", Destination.SampleFormat, 0);
+            _swrContext = ffmpeg.swr_alloc_set_opts(_swrContext,
+                Destination.ChannelLayout,
+                Destination.SampleFormat,
+                Destination.SampleRate,
+                Source.ChannelLayout,
+                Source.SampleFormat,
+                Source.SampleRate,
+                0,
+                null);
 
             ffmpeg.swr_init(_swrContext).ThrowExceptionIfError();
 
