@@ -15,7 +15,7 @@ namespace Captura.FFmpeg.Interop
         };
 
         const int SrcChannelCount = 2;
-        const int SrcBitsPerSample = 16;
+        const int SrcBytesPerSample = 2;
 
         public FFmpegAudioStream(AVFormatContext* FormatContext,
             FFmpegAudioCodecInfo CodecInfo) : base(FormatContext, CodecInfo)
@@ -41,7 +41,7 @@ namespace Captura.FFmpeg.Interop
             {
                 var data = new byte_ptrArray8 { [0] = buffer };
 
-                var sampleCount = Length / SrcChannelCount / SrcBitsPerSample;
+                var sampleCount = Length / SrcChannelCount / SrcBytesPerSample;
 
                 var frame = new AVFrame
                 {
