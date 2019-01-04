@@ -140,13 +140,13 @@ namespace DesktopDuplication
                 var xorMaskBuffer = new byte[width * height / 8];
                 Marshal.Copy(_ptrShapeBuffer + andMaskBuffer.Length, xorMaskBuffer, 0, xorMaskBuffer.Length);
 
-                for (var j = 0; j < height; ++j)
+                for (var row = 0; row < height; ++row)
                 {
                     byte bit = 0x80;
 
-                    for (var i = 0; i < width; ++i)
+                    for (var col = 0; col < width; ++col)
                     {
-                        var maskIndex = j * width / 8 + i / 8;
+                        var maskIndex = row * width / 8 + col / 8;
 
                         var andMask = andMaskBuffer[maskIndex] & bit;
                         var xorMask = xorMaskBuffer[maskIndex] & bit;
@@ -154,20 +154,20 @@ namespace DesktopDuplication
                         var andMask32 = andMask != 0 ? new byte[] {0xFF, 0xFF, 0xFF, 0xFF} : new byte[] {0xFF, 0, 0, 0};
                         var xorMask32 = xorMask != 0 ? new byte[] {0, 0xFF, 0xFF, 0xFF} : new byte[4];
 
-                        var index = j * width * 4 + i * 4;
+                        var index = row * width * 4 + col * 4;
 
                         for (var k = 0; k < 4; ++k)
                         {
                             shapeBuffer[index + 3 - k] = (byte)((desktopBuffer[index + 3 - k] & andMask32[k]) ^ xorMask32[k]);
                         }
 
-                        if (0x01 == bit)
+                        if (bit == 0x01)
                         {
                             bit = 0x80;
                         }
                         else bit = (byte)(bit >> 1);
-                    } /* cols */
-                } /* rows */
+                    }
+                }
             }
 
             var gcPin = GCHandle.Alloc(shapeBuffer, GCHandleType.Pinned);
@@ -195,8 +195,8 @@ namespace DesktopDuplication
 
             var rect = new Rectangle(_pointerPosition.Position.X,
                 _pointerPosition.Position.Y,
-                _ptrShapeInfo.Width,
-                _ptrShapeInfo.Height);
+                (int) _bmp.Size.Width,
+                (int) _bmp.Size.Height);
 
             Editor.DrawImage(_bmp, rect);
         }
