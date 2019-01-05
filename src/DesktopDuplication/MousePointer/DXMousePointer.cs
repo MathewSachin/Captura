@@ -60,6 +60,11 @@ namespace DesktopDuplication
                         break;
 
                     case PtrShapeMaskedColor:
+                        _pointerShape = new MaskedColorPointerShape(_ptrShapeBuffer,
+                            _ptrShapeInfo,
+                            _editorSession);
+                        break;
+
                     case PtrShapeColor:
                         _pointerShape = new ColorPointerShape(_ptrShapeBuffer,
                             _ptrShapeInfo,
