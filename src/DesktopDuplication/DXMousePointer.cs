@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
-using Bitmap = SharpDX.Direct2D1.Bitmap;
-using MapFlags = SharpDX.Direct3D11.MapFlags;
-using PixelFormat = SharpDX.Direct2D1.PixelFormat;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace DesktopDuplication
@@ -19,8 +13,8 @@ namespace DesktopDuplication
         IntPtr _ptrShapeBuffer;
         int _ptrShapeBufferSize;
         OutputDuplicatePointerShapeInformation _ptrShapeInfo;
-        Bitmap _bmp;
         OutputDuplicatePointerPosition _pointerPosition;
+        IPointerShape _pointerShape;
 
         const int PtrShapeMonochrome = 1;
         const int PtrShapeColor = 2;
@@ -31,7 +25,7 @@ namespace DesktopDuplication
             _editorSession = EditorSession;
         }
 
-        public void Update(OutputDuplicateFrameInformation FrameInfo, OutputDuplication DeskDupl)
+        public void Update(Texture2D DesktopTexture, OutputDuplicateFrameInformation FrameInfo, OutputDuplication DeskDupl)
         {
             // No update
             if (FrameInfo.LastMouseUpdateTime == 0)
@@ -39,166 +33,60 @@ namespace DesktopDuplication
 
             _pointerPosition = FrameInfo.PointerPosition;
 
-            if (FrameInfo.PointerShapeBufferSize == 0)
-                return;
-
-            if (FrameInfo.PointerShapeBufferSize > _ptrShapeBufferSize)
+            if (FrameInfo.PointerShapeBufferSize != 0)
             {
-                _ptrShapeBufferSize = FrameInfo.PointerShapeBufferSize;
-
-                _ptrShapeBuffer = _ptrShapeBuffer != IntPtr.Zero
-                    ? Marshal.ReAllocCoTaskMem(_ptrShapeBuffer, _ptrShapeBufferSize)
-                    : Marshal.AllocCoTaskMem(_ptrShapeBufferSize);
-            }
-
-            _bmp?.Dispose();
-
-            DeskDupl.GetFramePointerShape(_ptrShapeBufferSize,
-                _ptrShapeBuffer,
-                out _,
-                out _ptrShapeInfo);
-
-            switch (_ptrShapeInfo.Type)
-            {
-                case PtrShapeMonochrome:
-                    ProcessMask(true);
-                    break;
-
-                case PtrShapeMaskedColor:
-                case PtrShapeColor:
-                    _bmp = new Bitmap(_editorSession.RenderTarget,
-                        new Size2(_ptrShapeInfo.Width, _ptrShapeInfo.Height),
-                        new DataPointer(_ptrShapeBuffer, _ptrShapeInfo.Height * _ptrShapeInfo.Pitch),
-                        _ptrShapeInfo.Pitch,
-                        new BitmapProperties(new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Premultiplied)));
-                    break;
-            }
-        }
-
-        void ProcessMask(bool Mono)
-        {
-            var width = _ptrShapeInfo.Width;
-            var height = _ptrShapeInfo.Height / 2;
-
-            var copyTexDesc = new Texture2DDescription
-            {
-                Width = width,
-                Height = height,
-                MipLevels = 1,
-                ArraySize = 1,
-                Format = Format.B8G8R8A8_UNorm,
-                SampleDescription =
+                if (FrameInfo.PointerShapeBufferSize > _ptrShapeBufferSize)
                 {
-                    Count = 1,
-                    Quality = 0
-                },
-                Usage = ResourceUsage.Staging,
-                BindFlags = 0,
-                CpuAccessFlags = CpuAccessFlags.Read
-            };
+                    _ptrShapeBufferSize = FrameInfo.PointerShapeBufferSize;
 
-            var shapeBuffer = new byte[width * height * 4];
-            var desktopBuffer = new byte[width * height * 4];
-
-            using (var copyTex = new Texture2D(_editorSession.Device, copyTexDesc))
-            {
-                var region = new ResourceRegion(_pointerPosition.Position.X,
-                    _pointerPosition.Position.Y,
-                    0,
-                    _pointerPosition.Position.X + width,
-                    _pointerPosition.Position.Y + height,
-                    0);
-
-                _editorSession.Device.ImmediateContext.CopySubresourceRegion(
-                    _editorSession.StagingTexture,
-                    0,
-                    region,
-                    copyTex,
-                    0);
-
-                var desktopMap = _editorSession.Device.ImmediateContext.MapSubresource(
-                    copyTex,
-                    0,
-                    MapMode.Read,
-                    MapFlags.None);
-
-                try
-                {
-                    Marshal.Copy(desktopMap.DataPointer, desktopBuffer, 0, desktopBuffer.Length);
+                    _ptrShapeBuffer = _ptrShapeBuffer != IntPtr.Zero
+                        ? Marshal.ReAllocCoTaskMem(_ptrShapeBuffer, _ptrShapeBufferSize)
+                        : Marshal.AllocCoTaskMem(_ptrShapeBufferSize);
                 }
-                finally
+
+                DeskDupl.GetFramePointerShape(_ptrShapeBufferSize,
+                    _ptrShapeBuffer,
+                    out _,
+                    out _ptrShapeInfo);
+
+                _pointerShape?.Dispose();
+
+                switch (_ptrShapeInfo.Type)
                 {
-                    _editorSession.Device.ImmediateContext.UnmapSubresource(copyTex, 0);
+                    case PtrShapeMonochrome:
+                        _pointerShape = new MonochromePointerShape(_ptrShapeBuffer,
+                            _ptrShapeInfo,
+                            _editorSession);
+                        break;
+
+                    case PtrShapeMaskedColor:
+                    case PtrShapeColor:
+                        _pointerShape = new ColorPointerShape(_ptrShapeBuffer,
+                            _ptrShapeInfo,
+                            _editorSession.RenderTarget);
+                        break;
                 }
             }
 
-            if (Mono)
-            {
-                var andMaskBuffer = new byte[width * height / 8];
-                Marshal.Copy(_ptrShapeBuffer, andMaskBuffer, 0, andMaskBuffer.Length);
-
-                var xorMaskBuffer = new byte[width * height / 8];
-                Marshal.Copy(_ptrShapeBuffer + andMaskBuffer.Length, xorMaskBuffer, 0, xorMaskBuffer.Length);
-
-                for (var row = 0; row < height; ++row)
-                {
-                    byte bit = 0x80;
-
-                    for (var col = 0; col < width; ++col)
-                    {
-                        var maskIndex = row * width / 8 + col / 8;
-
-                        var andMask = andMaskBuffer[maskIndex] & bit;
-                        var xorMask = xorMaskBuffer[maskIndex] & bit;
-
-                        var andMask32 = andMask != 0 ? new byte[] {0xFF, 0xFF, 0xFF, 0xFF} : new byte[] {0xFF, 0, 0, 0};
-                        var xorMask32 = xorMask != 0 ? new byte[] {0, 0xFF, 0xFF, 0xFF} : new byte[4];
-
-                        var index = row * width * 4 + col * 4;
-
-                        for (var k = 0; k < 4; ++k)
-                        {
-                            shapeBuffer[index + 3 - k] = (byte)((desktopBuffer[index + 3 - k] & andMask32[k]) ^ xorMask32[k]);
-                        }
-
-                        if (bit == 0x01)
-                        {
-                            bit = 0x80;
-                        }
-                        else bit = (byte)(bit >> 1);
-                    }
-                }
-            }
-
-            var gcPin = GCHandle.Alloc(shapeBuffer, GCHandleType.Pinned);
-
-            try
-            {
-                var pitch = width * 4;
-
-                _bmp = new Bitmap(_editorSession.RenderTarget,
-                    new Size2(width, height),
-                    new DataPointer(gcPin.AddrOfPinnedObject(), height * pitch),
-                    pitch,
-                    new BitmapProperties(new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Premultiplied)));
-            }
-            finally
-            {
-                gcPin.Free();
-            }
+            _pointerShape?.Update(DesktopTexture, _pointerPosition);
         }
 
         public void Draw(Direct2DEditor Editor)
         {
-            if (_bmp == null || !_pointerPosition.Visible)
+            if (!_pointerPosition.Visible)
+                return;
+
+            var bmp = _pointerShape?.GetBitmap();
+
+            if (bmp == null)
                 return;
 
             var rect = new Rectangle(_pointerPosition.Position.X,
                 _pointerPosition.Position.Y,
-                (int) _bmp.Size.Width,
-                (int) _bmp.Size.Height);
+                (int) bmp.Size.Width,
+                (int) bmp.Size.Height);
 
-            Editor.DrawImage(_bmp, rect);
+            Editor.DrawImage(bmp, rect);
         }
 
         public void Dispose()
@@ -206,7 +94,7 @@ namespace DesktopDuplication
             if (_ptrShapeBuffer == IntPtr.Zero)
                 return;
 
-            _bmp.Dispose();
+            _pointerShape?.Dispose();
             Marshal.FreeCoTaskMem(_ptrShapeBuffer);
         }
     }

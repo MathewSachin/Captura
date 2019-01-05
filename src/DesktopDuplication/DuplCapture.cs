@@ -110,11 +110,11 @@ namespace DesktopDuplication
                     throw new Exception($"Failed to acquire next frame: {acquireResult.Result.Code}");
                 }
 
-                DxMousePointer?.Update(acquireResult.FrameInfo, _deskDupl);
-
                 using (acquireResult.DesktopResource)
                 using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
                 {
+                    DxMousePointer?.Update(tempTexture, acquireResult.FrameInfo, _deskDupl);
+
                     _device.ImmediateContext.CopyResource(tempTexture, Texture);
                 }
 
