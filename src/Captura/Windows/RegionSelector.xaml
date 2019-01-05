@@ -6,7 +6,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
-        xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.ViewCore"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Background="Transparent"

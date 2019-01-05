@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.Direct2D1;
-using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
-using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
