@@ -110,7 +110,7 @@ namespace Captura.Models
 
         public void Show()
         {
-            _previewWindow.Dispatcher.Invoke(() => _previewWindow.Show());
+            _previewWindow.Dispatcher.Invoke(() => _previewWindow.ShowAndFocus());
         }
     }
 }
