@@ -16,8 +16,6 @@ namespace Captura.Models
 
             _ffMpegWriter = FFmpegItem.x264.GetVideoFileWriter(new VideoWriterArgs
             {
-                AudioProvider = Args.AudioProvider,
-                AudioQuality = Args.AudioQuality,
                 FileName = _tempFileName,
                 FrameRate = Args.FrameRate,
                 ImageProvider = Args.ImageProvider,

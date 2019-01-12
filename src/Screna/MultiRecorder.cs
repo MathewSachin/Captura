@@ -5,7 +5,7 @@ namespace Screna
 {
     public class MultiRecorder : IRecorder
     {
-        readonly IRecorder[] _recorders;
+        IRecorder[] _recorders;
 
         public MultiRecorder(params IRecorder[] Recorders)
         {
@@ -18,16 +18,21 @@ namespace Screna
 
             foreach (var recorder in Recorders)
             {
-                recorder.ErrorOccurred += E => ErrorOccurred?.Invoke(E);
+                recorder.ErrorOccurred += RaiseError;
             }
         }
+
+        void RaiseError(Exception E) => ErrorOccurred?.Invoke(E);
 
         public void Dispose()
         {
             foreach (var recorder in _recorders)
             {
                 recorder.Dispose();
+                recorder.ErrorOccurred -= RaiseError;
             }
+
+            _recorders = null;
         }
 
         public void Start()

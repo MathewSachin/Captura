@@ -252,9 +252,7 @@ namespace Captura.Models
                 
                 DrawKeys(_keystrokesSettings, Editor, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
 
-                var keystrokeFont = new Font(FontFamily.GenericMonospace, fontSize);
-
-                var height = Editor.MeasureString("A", keystrokeFont).Height;
+                var height = Editor.MeasureString("A", fontSize).Height;
 
                 offsetY += height + _keystrokesSettings.HistorySpacing;
 
@@ -270,9 +268,7 @@ namespace Captura.Models
 
         static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, int FontSize, byte Opacity, float OffsetY)
         {
-            var keystrokeFont = new Font(FontFamily.GenericMonospace, FontSize);
-
-            var size = Editor.MeasureString(Text, keystrokeFont);
+            var size = Editor.MeasureString(Text, FontSize);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
@@ -286,7 +282,7 @@ namespace Captura.Models
                 KeystrokesSettings.CornerRadius);
             
             Editor.DrawString(Text,
-                keystrokeFont,
+                FontSize,
                 Color.FromArgb(Opacity, KeystrokesSettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
@@ -296,7 +292,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.DrawRectangle(new Pen(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border),
+                Editor.DrawRectangle(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border,
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
@@ -387,7 +383,7 @@ namespace Captura.Models
 
                     borderColor = Color.FromArgb(ToByte(borderColor.A * _currentMouseRatio), borderColor);
 
-                    Editor.DrawEllipse(new Pen(borderColor, border), new RectangleF(x, y, d, d));
+                    Editor.DrawEllipse(borderColor, border, new RectangleF(x, y, d, d));
                 }
             }
         }

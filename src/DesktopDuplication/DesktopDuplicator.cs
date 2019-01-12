@@ -1,61 +1,79 @@
 ﻿// Adapted from https://github.com/jasonpang/desktop-duplication-net
 
-using Screna;
-using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
 using Captura;
+using SharpDX.Direct3D;
 using Device = SharpDX.Direct3D11.Device;
-using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
     public class DesktopDuplicator : IDisposable
     {
-        readonly Texture2D _desktopImageTexture;
-        readonly Rectangle _rect;
-        readonly bool _includeCursor;
-        readonly DuplCapture _duplCapture;
-        readonly Device _device;
+        Texture2D _desktopImageTexture;
+        Texture2D _stagingTexture;
+        Direct2DEditorSession _editorSession;
+        DxMousePointer _mousePointer;
+        DuplCapture _duplCapture;
+        Device _device;
+        Device _deviceForDeskDupl;
 
-        public int Timeout { get; set; }
-
-        public DesktopDuplicator(Rectangle Rect, bool IncludeCursor, Adapter Adapter, Output1 Output)
+        public DesktopDuplicator(bool IncludeCursor, Output1 Output)
         {
-            _device = new Device(Adapter);
+            _device = new Device(DriverType.Hardware,
+                DeviceCreationFlags.BgraSupport,
+                FeatureLevel.Level_11_1);
 
-            _duplCapture = new DuplCapture(_device, Output);
-            _rect = Rect;
-            _includeCursor = IncludeCursor;
+            // Don't know why but creating a separate device solves AccessViolationExceptions happening otherwise
+            _deviceForDeskDupl = new Device(Output.GetParent<Adapter>());
 
-            var textureDesc = new Texture2DDescription
+            _duplCapture = new DuplCapture(_deviceForDeskDupl, Output);
+
+            var bounds = Output.Description.DesktopBounds;
+            var width = bounds.Right - bounds.Left;
+            var height = bounds.Bottom - bounds.Top;
+
+            _stagingTexture = new Texture2D(_device, new Texture2DDescription
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = Rect.Width,
-                Height = Rect.Height,
+                Width = width,
+                Height = height,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
                 SampleDescription = { Count = 1, Quality = 0 },
                 Usage = ResourceUsage.Staging
-            };
+            });
 
-            _desktopImageTexture = new Texture2D(_device, textureDesc);
+            _desktopImageTexture = new Texture2D(_device, new Texture2DDescription
+            {
+                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = width,
+                Height = height,
+                OptionFlags = ResourceOptionFlags.None,
+                MipLevels = 1,
+                ArraySize = 1,
+                SampleDescription = { Count = 1, Quality = 0 },
+                Usage = ResourceUsage.Default
+            });
+
+            _editorSession = new Direct2DEditorSession(_desktopImageTexture, _device, _stagingTexture);
+
+            if (IncludeCursor)
+                _mousePointer = new DxMousePointer(_editorSession);
         }
         
         public IEditableFrame Capture()
         {
-            OutputDuplicateFrameInformation? frameInfo;
-
             try
             {
-                frameInfo = _duplCapture.Get(_desktopImageTexture, Timeout);
+                if (!_duplCapture.Get(_desktopImageTexture, _mousePointer))
+                    return RepeatFrame.Instance;
             }
             catch
             {
@@ -68,59 +86,42 @@ namespace DesktopDuplication
                 return RepeatFrame.Instance;
             }
 
-            if (frameInfo is null)
-                return RepeatFrame.Instance;
+            var editor = new Direct2DEditor(_editorSession);
 
-            var mapSource = _device.ImmediateContext.MapSubresource(_desktopImageTexture, 0, MapMode.Read, MapFlags.None);
+            _mousePointer?.Draw(editor);
 
-            try
-            {
-                var bmp = ProcessFrame(mapSource.DataPointer, mapSource.RowPitch, frameInfo.Value);
-
-                var editor = new GraphicsEditor(bmp);
-
-                if (_includeCursor && (frameInfo.Value.LastMouseUpdateTime == 0 || frameInfo.Value.PointerPosition.Visible))
-                {
-                    MouseCursor.Draw(editor, P => new Point(P.X - _rect.X, P.Y - _rect.Y));
-                }
-
-                return editor;
-            }
-            finally
-            {
-                _device.ImmediateContext.UnmapSubresource(_desktopImageTexture, 0);
-            }
-        }
-
-        Bitmap ProcessFrame(IntPtr SourcePtr, int SourceRowPitch, OutputDuplicateFrameInformation FrameInfo)
-        {
-            var frame = new Bitmap(_rect.Width, _rect.Height, PixelFormat.Format32bppRgb);
-
-            // Copy pixels from screen capture Texture to GDI bitmap
-            var mapDest = frame.LockBits(new Rectangle(0, 0, _rect.Width, _rect.Height), ImageLockMode.WriteOnly, frame.PixelFormat);
-
-            Parallel.For(0, _rect.Height, Y =>
-            {
-                Utilities.CopyMemory(mapDest.Scan0 + Y * mapDest.Stride,
-                    SourcePtr + Y * SourceRowPitch,
-                    _rect.Width * 4);
-            });
-
-            // Release source and dest locks
-            frame.UnlockBits(mapDest);
-
-            return frame;
+            return editor;
         }
 
         public void Dispose()
         {
-            try
-            {
-                _duplCapture?.Dispose();
-                _desktopImageTexture?.Dispose();
-                _device?.Dispose();
-            }
+            try { _mousePointer?.Dispose(); }
             catch { }
+            finally { _mousePointer = null; }
+
+            try { _editorSession.Dispose(); }
+            catch { }
+            finally { _editorSession = null; }
+
+            try { _duplCapture.Dispose(); }
+            catch { }
+            finally { _duplCapture = null; }
+
+            try { _desktopImageTexture.Dispose(); }
+            catch { }
+            finally { _desktopImageTexture = null; }
+
+            try { _stagingTexture.Dispose(); }
+            catch { }
+            finally { _stagingTexture = null; }
+
+            try { _device.Dispose(); }
+            catch { }
+            finally { _device = null; }
+
+            try { _deviceForDeskDupl.Dispose(); }
+            catch { }
+            finally { _deviceForDeskDupl = null; }
         }
     }
 }

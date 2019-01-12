@@ -8,11 +8,11 @@ using Captura;
 
 namespace Screna
 {
-    public abstract class FrameBase : IBitmapFrame
+    public abstract class DrawingFrameBase : IBitmapFrame
     {
         public Bitmap Bitmap { get; }
 
-        protected FrameBase(Bitmap Bitmap)
+        protected DrawingFrameBase(Bitmap Bitmap)
         {
             this.Bitmap = Bitmap;
             Width = Bitmap.Width;
@@ -33,12 +33,7 @@ namespace Screna
         {
             var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
-            Parallel.For(0, Height, Y =>
-            {
-                var absStride = Math.Abs(bits.Stride);
-
-                Marshal.Copy(bits.Scan0 + Y * bits.Stride, Buffer, Y * absStride, absStride);
-            });
+            Marshal.Copy(bits.Scan0, Buffer, 0, Length);
 
             Bitmap.UnlockBits(bits);
         }

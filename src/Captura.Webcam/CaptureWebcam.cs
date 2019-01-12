@@ -526,7 +526,7 @@ namespace Captura.Webcam
         /// Gets the current frame from the buffer.
         /// </summary>
         /// <returns>The Bitmap of the frame.</returns>
-        public Bitmap GetFrame()
+        public IDisposable GetFrame(IBitmapLoader BitmapLoader)
         {
             if (_actualGraphState != GraphState.Rendered)
                 return null;
@@ -561,9 +561,7 @@ namespace Captura.Webcam
                 var stride = width * 4;
                 address += height * stride;
 
-                return new Bitmap(width, height, -stride,
-                    System.Drawing.Imaging.PixelFormat.Format32bppRgb,
-                    address);
+                return BitmapLoader.CreateBitmapBgr32(new Size(width, height), address, -stride);
             }
             finally
             {

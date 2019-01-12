@@ -6,9 +6,16 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DiscardWriterProvider : IVideoWriterProvider
     {
+        readonly IPreviewWindow _previewWindow;
+
+        public DiscardWriterProvider(IPreviewWindow PreviewWindow)
+        {
+            _previewWindow = PreviewWindow;
+        }
+
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            yield return new DiscardWriterItem();
+            yield return new DiscardWriterItem(_previewWindow);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -16,7 +23,7 @@ namespace Captura.Models
             return GetEnumerator();
         }
 
-        public string Name { get; } = "Discard";
+        public string Name { get; } = "Preview Only";
 
         public string Description => "For testing purposes.";
 

@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using Captura.Models;
 using Captura.ViewModels;
+using Screna;
 
 namespace Captura
 {
@@ -28,10 +30,10 @@ namespace Captura
         {
             try
             {
-                var img = ServiceProvider.Get<IWebCamProvider>().Capture();
+                var img = ServiceProvider.Get<IWebCamProvider>().Capture(GraphicsBitmapLoader.Instance);
                 
-                if (img != null)
-                    await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(img);
+                if (img is Bitmap bmp)
+                    await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(bmp);
             }
             catch { }
         }

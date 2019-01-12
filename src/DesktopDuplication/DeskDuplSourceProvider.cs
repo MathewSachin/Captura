@@ -32,16 +32,13 @@ namespace Captura.Models
             var output = new Factory1()
                 .Adapters1
                 .SelectMany(M => M.Outputs
-                    .Select(N => new
-                    {
-                        Adapter = M,
-                        Output = N.QueryInterface<Output1>()
-                    })).FirstOrDefault();
+                    .Select(N => N.QueryInterface<Output1>()))
+                    .FirstOrDefault();
 
             if (output == null)
                 return false;
 
-            Source = new DeskDuplItem(output.Adapter, output.Output);
+            Source = new DeskDuplItem(output);
 
             return true;
         }
@@ -51,15 +48,11 @@ namespace Captura.Models
             var outputs = new Factory1()
                             .Adapters1
                             .SelectMany(M => M.Outputs
-                                .Select(N => new
-                                {
-                                    Adapter = M,
-                                    Output = N.QueryInterface<Output1>()
-                                }));
+                                .Select(N => N.QueryInterface<Output1>()));
 
             var match = outputs.FirstOrDefault(M =>
             {
-                var r1 = M.Output.Description.DesktopBounds;
+                var r1 = M.Description.DesktopBounds;
                 var r2 = Screen.Rectangle;
 
                 return r1.Left == r2.Left
@@ -71,7 +64,7 @@ namespace Captura.Models
             if (match == null)
                 return false;
 
-            Source = new DeskDuplItem(match.Adapter, match.Output);
+            Source = new DeskDuplItem(match);
 
             return true;
         }

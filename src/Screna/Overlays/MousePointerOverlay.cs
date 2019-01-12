@@ -43,7 +43,7 @@ namespace Captura.Models
                 y -= border / 2;
                 d += border;
 
-                Editor.DrawEllipse(new Pen(_settings.BorderColor, border), new RectangleF(x, y, d, d));
+                Editor.DrawEllipse(_settings.BorderColor, border, new RectangleF(x, y, d, d));
             }
         }
 

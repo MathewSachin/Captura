@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using Captura;
 using Captura.Models;
@@ -22,6 +23,16 @@ namespace Screna
             Dispose();
 
             return new OneTimeFrame(_image);
+        }
+
+        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        {
+            return GraphicsBitmapLoader.Instance.CreateBitmapBgr32(Size, MemoryData, Stride);
+        }
+
+        public IDisposable LoadBitmap(string FileName, out Size Size)
+        {
+            return GraphicsBitmapLoader.Instance.LoadBitmap(FileName, out Size);
         }
 
         public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
@@ -61,29 +72,33 @@ namespace Screna
             _graphics.FillEllipse(new SolidBrush(Color), Rectangle);
         }
 
-        public void DrawEllipse(Pen Pen, RectangleF Rectangle)
+        public void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _graphics.DrawEllipse(Pen, Rectangle);
+            _graphics.DrawEllipse(new Pen(Color, StrokeWidth), Rectangle);
         }
 
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle)
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle)
         {
-            _graphics.DrawRectangle(Pen, Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+            _graphics.DrawRectangle(new Pen(Color, StrokeWidth), Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
         }
 
-        public void DrawRectangle(Pen Pen, RectangleF Rectangle, int CornerRadius)
+        public void DrawRectangle(Color Color, float StrokeWidth, RectangleF Rectangle, int CornerRadius)
         {
-            _graphics.DrawRoundedRectangle(Pen, Rectangle, CornerRadius);
+            _graphics.DrawRoundedRectangle(new Pen(Color, StrokeWidth), Rectangle, CornerRadius);
         }
 
-        public SizeF MeasureString(string Text, Font Font)
+        public SizeF MeasureString(string Text, int FontSize)
         {
-            return _graphics.MeasureString(Text, Font);
+            var font = new Font(FontFamily.GenericMonospace, FontSize);
+
+            return _graphics.MeasureString(Text, font);
         }
 
-        public void DrawString(string Text, Font Font, Color Color, RectangleF LayoutRectangle)
+        public void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
         {
-            _graphics.DrawString(Text, Font, new SolidBrush(Color), LayoutRectangle);
+            var font = new Font(FontFamily.GenericMonospace, FontSize);
+
+            _graphics.DrawString(Text, font, new SolidBrush(Color), LayoutRectangle);
         }
 
         public float Width => _graphics.VisibleClipBounds.Width;

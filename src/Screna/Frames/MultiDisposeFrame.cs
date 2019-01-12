@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Captura;
 
 namespace Screna
@@ -39,11 +38,6 @@ namespace Screna
                     Frame.Dispose();
                 }
             }
-        }
-
-        public void SaveGif(Stream Stream)
-        {
-            Frame.SaveGif(Stream);
         }
 
         public int Width => Frame.Width;

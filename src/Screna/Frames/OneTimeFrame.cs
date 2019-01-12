@@ -2,7 +2,7 @@
 
 namespace Screna
 {
-    public class OneTimeFrame : FrameBase
+    public class OneTimeFrame : DrawingFrameBase
     {
         public OneTimeFrame(Bitmap Bitmap) : base(Bitmap) { }
 
