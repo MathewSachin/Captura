@@ -26,16 +26,7 @@ namespace Captura
 
         void VideosInsertRequest_ProgressChanged(IUploadProgress Progress)
         {
-            switch (Progress.Status)
-            {
-                case UploadStatus.Uploading:
-                    BytesSent?.Invoke(Progress.BytesSent);
-                    break;
-
-                case UploadStatus.Failed:
-                    ErrorOccured?.Invoke(Progress.Exception);
-                    break;
-            }
+            BytesSent?.Invoke(Progress.BytesSent);
         }
 
         void VideosInsertRequest_ResponseReceived(Video Video)
@@ -43,14 +34,12 @@ namespace Captura
             Uploaded?.Invoke($"https://youtube.com/watch?v={Video.Id}");
         }
 
-        public async Task Upload(CancellationToken CancellationToken)
+        public async Task<IUploadProgress> Upload(CancellationToken CancellationToken)
         {
-            await _videoInsertRequest.UploadAsync(CancellationToken);
+            return await _videoInsertRequest.UploadAsync(CancellationToken);
         }
 
         public event Action<long> BytesSent;
-
-        public event Action<Exception> ErrorOccured;
 
         public event Action<string> Uploaded;
 

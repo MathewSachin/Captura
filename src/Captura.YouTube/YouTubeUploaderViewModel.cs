@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
+using Google.Apis.Upload;
 using Screna;
 
 namespace Captura.ViewModels
@@ -10,11 +12,15 @@ namespace Captura.ViewModels
     public class YouTubeUploaderViewModel : NotifyPropertyChanged
     {
         readonly YouTubeUploader _uploader;
+        readonly CancellationTokenSource _cancellationTokenSource;
+        Task _uploadTask;
 
         public YouTubeUploaderViewModel(YouTubeUploader Uploader)
         {
             _uploader = Uploader;
-            UploadCommand = new DelegateCommand(OnUpload, false);
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            UploadCommand = new DelegateCommand(() => _uploadTask = OnUpload(), false);
 
             OpenVideoCommand = new DelegateCommand(() => Process.Start(Link), false);
 
@@ -52,7 +58,7 @@ namespace Captura.ViewModels
             }
         }
 
-        async void OnUpload()
+        async Task OnUpload()
         {
             UploadCommand.RaiseCanExecuteChanged(false);
 
@@ -63,27 +69,20 @@ namespace Captura.ViewModels
                 Description,
                 PrivacyStatus: PrivacyStatus);
 
-            uploadRequest.Uploaded += L =>
-            {
-                Uploading = false;
-
-                Progress = 100;
-
-                Link = L;
-            };
-
-            uploadRequest.ErrorOccured += E =>
-            {
-                Uploading = false;
-
-                ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
-            };
+            uploadRequest.Uploaded += L => Link = L;
 
             uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
 
             Uploading = true;
 
-            await uploadRequest.Upload(CancellationToken.None);
+            var result = await uploadRequest.Upload(_cancellationTokenSource.Token);
+
+            if (result.Status == UploadStatus.Failed)
+            {
+                ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
+            }
+
+            Uploading = false;
         }
 
         string _title;
@@ -133,6 +132,15 @@ namespace Captura.ViewModels
             YouTubePrivacyStatus.Unlisted,
             YouTubePrivacyStatus.Private
         };
+
+        public void Cancel()
+        {
+            _cancellationTokenSource.Cancel();
+
+            _uploadTask?.Wait();
+
+            _cancellationTokenSource.Dispose();
+        }
 
         int _progress;
 
