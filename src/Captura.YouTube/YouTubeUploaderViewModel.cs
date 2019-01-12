@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Captura.Models;
 using Google.Apis.Upload;
 using Screna;
 
@@ -13,11 +14,14 @@ namespace Captura.ViewModels
     {
         readonly YouTubeUploader _uploader;
         readonly CancellationTokenSource _cancellationTokenSource;
+        readonly IMessageProvider _messageProvider;
         Task _uploadTask;
 
-        public YouTubeUploaderViewModel(YouTubeUploader Uploader)
+        public YouTubeUploaderViewModel(YouTubeUploader Uploader,
+            IMessageProvider MessageProvider)
         {
             _uploader = Uploader;
+            _messageProvider = MessageProvider;
             _cancellationTokenSource = new CancellationTokenSource();
 
             UploadCommand = new DelegateCommand(() => _uploadTask = OnUpload(), false);
@@ -73,7 +77,7 @@ namespace Captura.ViewModels
 
             uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
 
-            Uploading = true;
+            BeganUploading = true;
 
             var result = await uploadRequest.Upload(_cancellationTokenSource.Token);
 
@@ -81,8 +85,6 @@ namespace Captura.ViewModels
             {
                 ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
             }
-
-            Uploading = false;
         }
 
         string _title;
@@ -133,13 +135,21 @@ namespace Captura.ViewModels
             YouTubePrivacyStatus.Private
         };
 
-        public void Cancel()
+        public bool Cancel()
         {
+            if (_uploadTask != null)
+            {
+                if (!_messageProvider.ShowYesNo("Are you sure you want to cancel upload?", "Cancel Upload"))
+                    return false;
+            }
+
             _cancellationTokenSource.Cancel();
 
             _uploadTask?.Wait();
 
             _cancellationTokenSource.Dispose();
+
+            return true;
         }
 
         int _progress;
@@ -161,14 +171,14 @@ namespace Captura.ViewModels
 
         public DelegateCommand CopyLinkCommand { get; }
 
-        bool _uploading;
+        bool _beganUploading;
 
-        public bool Uploading
+        public bool BeganUploading
         {
-            get => _uploading;
-            set
+            get => _beganUploading;
+            private set
             {
-                _uploading = value;
+                _beganUploading = value;
 
                 OnPropertyChanged();
             }
