@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using Captura.ViewModels;
 
 namespace Captura
@@ -11,13 +10,11 @@ namespace Captura
             InitializeComponent();
         }
 
-        public void Open(string FileName)
+        public async void Open(string FileName)
         {
             if (DataContext is YouTubeUploaderViewModel vm)
             {
-                vm.FileName = FileName;
-
-                vm.Title = Path.GetFileName(FileName);
+                await vm.Init(FileName);
             }
         }
 

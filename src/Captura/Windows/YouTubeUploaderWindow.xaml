@@ -73,7 +73,8 @@
                       SelectionMode="Single"
                       BorderThickness="0.4"
                       HorizontalContentAlignment="Center"
-                      DockPanel.Dock="Bottom">
+                      DockPanel.Dock="Bottom"
+                      IsEnabled="{Binding BeganUploading, Converter={StaticResource NegatingConverter}}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="1"/>

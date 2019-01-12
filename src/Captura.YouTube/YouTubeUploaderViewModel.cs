@@ -16,6 +16,12 @@ namespace Captura.ViewModels
         readonly CancellationTokenSource _cancellationTokenSource;
         readonly IMessageProvider _messageProvider;
         Task _uploadTask;
+        string _fileName, _link, _title;
+        string _description = "\n\n\n\n--------------------------------------------------\n\nUploaded using Captura (https://mathewsachin.github.io/Captura/)";
+        YouTubePrivacyStatus _privacyStatus;
+        int _progress;
+        bool _beganUploading;
+        YouTubeUploadRequest _uploadRequest;
 
         public YouTubeUploaderViewModel(YouTubeUploader Uploader,
             IMessageProvider MessageProvider)
@@ -31,20 +37,16 @@ namespace Captura.ViewModels
             CopyLinkCommand = new DelegateCommand(() => Link.WriteToClipboard(), false);
         }
 
-        string _fileName;
-
         public string FileName
         {
             get => _fileName;
-            set
+            private set
             {
                 _fileName = value;
 
                 OnPropertyChanged();
             }
         }
-
-        string _link;
 
         public string Link
         {
@@ -62,32 +64,36 @@ namespace Captura.ViewModels
             }
         }
 
-        async Task OnUpload()
+        public async Task Init(string FilePath)
         {
-            UploadCommand.RaiseCanExecuteChanged(false);
+            FileName = FilePath;
+            Title = Path.GetFileName(FileName);
 
             var fileSize = new FileInfo(FileName).Length;
 
-            var uploadRequest = await _uploader.CreateUploadRequest(FileName,
+            _uploadRequest = await _uploader.CreateUploadRequest(FileName,
                 Title,
                 Description,
                 PrivacyStatus: PrivacyStatus);
 
-            uploadRequest.Uploaded += L => Link = L;
+            _uploadRequest.Uploaded += L => Link = L;
 
-            uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
+            _uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
+        }
+
+        async Task OnUpload()
+        {
+            UploadCommand.RaiseCanExecuteChanged(false);
 
             BeganUploading = true;
 
-            var result = await uploadRequest.Upload(_cancellationTokenSource.Token);
+            var result = await _uploadRequest.Upload(_cancellationTokenSource.Token);
 
             if (result.Status == UploadStatus.Failed)
             {
                 ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
             }
         }
-
-        string _title;
 
         public string Title
         {
@@ -102,8 +108,6 @@ namespace Captura.ViewModels
             }
         }
 
-        string _description = "\n\n\n\n--------------------------------------------------\n\nUploaded using Captura (https://mathewsachin.github.io/Captura/)";
-
         public string Description
         {
             get => _description;
@@ -114,8 +118,6 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        YouTubePrivacyStatus _privacyStatus;
 
         public YouTubePrivacyStatus PrivacyStatus
         {
@@ -152,8 +154,6 @@ namespace Captura.ViewModels
             return true;
         }
 
-        int _progress;
-
         public int Progress
         {
             get => _progress;
@@ -165,14 +165,6 @@ namespace Captura.ViewModels
             }
         }
 
-        public DelegateCommand UploadCommand { get; }
-
-        public DelegateCommand OpenVideoCommand { get; }
-
-        public DelegateCommand CopyLinkCommand { get; }
-
-        bool _beganUploading;
-
         public bool BeganUploading
         {
             get => _beganUploading;
@@ -183,5 +175,11 @@ namespace Captura.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public DelegateCommand UploadCommand { get; }
+
+        public DelegateCommand OpenVideoCommand { get; }
+
+        public DelegateCommand CopyLinkCommand { get; }
     }
 }
