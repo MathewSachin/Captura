@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using Screna;
 
 namespace Captura.ViewModels
@@ -57,7 +58,12 @@ namespace Captura.ViewModels
 
             var fileSize = new FileInfo(FileName).Length;
 
-            _uploader.Uploaded += L =>
+            var uploadRequest = await _uploader.CreateUploadRequest(FileName,
+                Title,
+                Description,
+                PrivacyStatus: PrivacyStatus);
+
+            uploadRequest.Uploaded += L =>
             {
                 Uploading = false;
 
@@ -66,21 +72,18 @@ namespace Captura.ViewModels
                 Link = L;
             };
 
-            _uploader.ErrorOccured += E =>
+            uploadRequest.ErrorOccured += E =>
             {
                 Uploading = false;
 
                 ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
             };
 
-            _uploader.BytesSent += B => Progress = (int)(B * 100 / fileSize);
+            uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
 
             Uploading = true;
 
-            await _uploader.Upload(FileName,
-                Title,
-                Description,
-                PrivacyStatus: PrivacyStatus);
+            await uploadRequest.Upload(CancellationToken.None);
         }
 
         string _title;
