@@ -39,6 +39,11 @@ namespace Captura
             return await _videoInsertRequest.UploadAsync(CancellationToken);
         }
 
+        public async Task<IUploadProgress> Resume(CancellationToken CancellationToken)
+        {
+            return await _videoInsertRequest.ResumeAsync(CancellationToken);
+        }
+
         public event Action<long> BytesSent;
 
         public event Action<string> Uploaded;

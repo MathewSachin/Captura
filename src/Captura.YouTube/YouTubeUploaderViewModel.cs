@@ -85,13 +85,21 @@ namespace Captura.ViewModels
         {
             UploadCommand.RaiseCanExecuteChanged(false);
 
+            var token = _cancellationTokenSource.Token;
+
+            var task = BeganUploading
+                ? _uploadRequest.Resume(token)
+                : _uploadRequest.Upload(token);
+
             BeganUploading = true;
 
-            var result = await _uploadRequest.Upload(_cancellationTokenSource.Token);
+            var result = await task;
 
             if (result.Status == UploadStatus.Failed)
             {
                 ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
+
+                UploadCommand.RaiseCanExecuteChanged(true);
             }
         }
 
