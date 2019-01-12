@@ -8,6 +8,17 @@ namespace Captura
         public YouTubeUploaderWindow()
         {
             InitializeComponent();
+
+            Closing += async (S, E) =>
+            {
+                if (DataContext is YouTubeUploaderViewModel vm)
+                {
+                    if (!await vm.Cancel())
+                    {
+                        E.Cancel = true;
+                    }
+                }
+            };
         }
 
         public async void Open(string FileName)

@@ -93,13 +93,20 @@ namespace Captura.ViewModels
 
             BeganUploading = true;
 
-            var result = await task;
-
-            if (result.Status == UploadStatus.Failed)
+            try
             {
-                ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
+                var result = await task;
 
-                UploadCommand.RaiseCanExecuteChanged(true);
+                if (result.Status == UploadStatus.Failed)
+                {
+                    ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
+
+                    UploadCommand.RaiseCanExecuteChanged(true);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Cancelled by user
             }
         }
 
@@ -145,19 +152,22 @@ namespace Captura.ViewModels
             YouTubePrivacyStatus.Private
         };
 
-        public bool Cancel()
+        public async Task<bool> Cancel()
         {
-            if (_uploadTask != null)
+            // Began Uploading but not finished
+            if (BeganUploading && Link == null)
             {
                 if (!_messageProvider.ShowYesNo("Are you sure you want to cancel upload?", "Cancel Upload"))
                     return false;
             }
 
-            _cancellationTokenSource.Cancel();
+            using (_cancellationTokenSource)
+            using (_uploadRequest)
+            {
+                _cancellationTokenSource.Cancel();
 
-            _uploadTask?.Wait();
-
-            _cancellationTokenSource.Dispose();
+                await _uploadTask;
+            }
 
             return true;
         }
