@@ -59,14 +59,23 @@ namespace Captura.ViewModels
 
             _uploader.Uploaded += L =>
             {
+                Uploading = false;
+
                 Progress = 100;
 
                 Link = L;
             };
 
-            _uploader.ErrorOccured += E => ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
+            _uploader.ErrorOccured += E =>
+            {
+                Uploading = false;
+
+                ServiceProvider.MessageProvider.ShowException(E, "Error Occured while Uploading");
+            };
 
             _uploader.BytesSent += B => Progress = (int)(B * 100 / fileSize);
+
+            Uploading = true;
 
             await _uploader.Upload(FileName,
                 Title,
@@ -140,5 +149,18 @@ namespace Captura.ViewModels
         public DelegateCommand OpenVideoCommand { get; }
 
         public DelegateCommand CopyLinkCommand { get; }
+
+        bool _uploading;
+
+        public bool Uploading
+        {
+            get => _uploading;
+            set
+            {
+                _uploading = value;
+
+                OnPropertyChanged();
+            }
+        }
     }
 }

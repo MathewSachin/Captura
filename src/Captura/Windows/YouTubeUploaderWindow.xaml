@@ -32,7 +32,8 @@
                    DockPanel.Dock="Top"/>
 
             <TextBox DockPanel.Dock="Top"
-                     Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     IsReadOnly="{Binding Uploading}"/>
 
             <Label Content="Description"
                    Margin="0,7,0,2"
@@ -90,7 +91,8 @@
 
             <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto"/>
+                     VerticalScrollBarVisibility="Auto"
+                     IsReadOnly="{Binding Uploading}"/>
         </DockPanel>
     </Grid>
 </Window>
