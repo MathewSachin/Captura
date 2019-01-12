@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using Captura.ViewModels;
 
 namespace Captura
@@ -15,6 +16,8 @@ namespace Captura
             if (DataContext is YouTubeUploaderViewModel vm)
             {
                 vm.FileName = FileName;
+
+                vm.Title = Path.GetFileName(FileName);
             }
         }
 
