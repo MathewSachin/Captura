@@ -82,9 +82,11 @@ namespace Captura.Models
 
             try
             {
+                var clipboard = ServiceProvider.Get<IClipboardService>();
+
                 var img = (Bitmap)Image.FromFile(FileName);
 
-                img.WriteToClipboard();
+                clipboard.SetImage(img);
             }
             catch (Exception e)
             {

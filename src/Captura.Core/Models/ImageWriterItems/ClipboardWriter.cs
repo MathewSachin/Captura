@@ -9,19 +9,23 @@ namespace Captura.Models
     public class ClipboardWriter : NotifyPropertyChanged, IImageWriterItem
     {
         readonly ISystemTray _systemTray;
+        readonly IClipboardService _clipboard;
         readonly LanguageManager _loc;
 
-        public ClipboardWriter(ISystemTray SystemTray, LanguageManager Loc)
+        public ClipboardWriter(ISystemTray SystemTray,
+            LanguageManager Loc,
+            IClipboardService Clipboard)
         {
             _systemTray = SystemTray;
             _loc = Loc;
+            _clipboard = Clipboard;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public Task Save(Bitmap Image, ImageFormat Format, string FileName)
         {
-            Image.WriteToClipboard(Format.Equals(ImageFormat.Png));
+            _clipboard.SetImage(Image);
 
             _systemTray.ShowNotification(new TextNotification(_loc.ImgSavedClipboard));
 

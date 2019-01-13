@@ -7,8 +7,6 @@ namespace Captura.Models
     {
         static GraphicsPath RoundedRect(RectangleF Bounds, int Radius)
         {
-            var diameter = Radius * 2;
-            var arc = new RectangleF(Bounds.Location, new Size(diameter, diameter));
             var path = new GraphicsPath();
 
             if (Radius == 0)
@@ -16,6 +14,9 @@ namespace Captura.Models
                 path.AddRectangle(Bounds);
                 return path;
             }
+
+            var diameter = Radius * 2;
+            var arc = new RectangleF(Bounds.Location, new Size(diameter, diameter));
 
             // top left arc  
             path.AddArc(arc, 180, 90);
