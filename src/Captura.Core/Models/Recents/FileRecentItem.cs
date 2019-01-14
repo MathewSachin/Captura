@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Input;
+using Captura.Native;
 using Screna;
 
 namespace Captura.Models
@@ -96,18 +97,10 @@ namespace Captura.Models
 
         void OnDelete()
         {
-            if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
-                return;
-
-            try
+            if (File.Exists(FileName))
             {
-                File.Delete(FileName);
-            }
-            catch (Exception e)
-            {
-                ServiceProvider.MessageProvider.ShowException(e, $"Could not Delete: {FileName}");
-
-                return;
+                if (Shell32.FileOperation(FileName, FileOperationType.Delete, 0) != 0)
+                    return;
             }
 
             // Remove from List
