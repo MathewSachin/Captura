@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using DirectShowLib;
@@ -73,6 +74,60 @@ namespace Captura.Webcam
             var f = (Filter)Obj;
 
             return string.Compare(Name, f.Name, StringComparison.Ordinal);
+        }
+
+        public static IEnumerable<Filter> VideoInputDevices
+        {
+            get
+            {
+                object comObj = null;
+                IEnumMoniker enumMon = null;
+                var mon = new IMoniker[1];
+
+                try
+                {
+                    // Get the system device enumerator
+                    comObj = new CreateDevEnum();
+                    var enumDev = (ICreateDevEnum)comObj;
+
+                    var category = FilterCategory.VideoInputDevice;
+
+                    // Create an enumerator to find filters in category
+                    var hr = enumDev.CreateClassEnumerator(category, out enumMon, 0);
+                    if (hr != 0)
+                        yield break;
+
+                    // Loop through the enumerator
+                    do
+                    {
+                        // Next filter
+                        hr = enumMon.Next(1, mon, IntPtr.Zero);
+
+                        if (hr != 0 || mon[0] == null)
+                            break;
+
+                        // Add the filter
+                        yield return new Filter(mon[0]);
+
+                        // Release resources
+                        Marshal.ReleaseComObject(mon[0]);
+                        mon[0] = null;
+                    } while (true);
+                }
+                finally
+                {
+                    if (mon[0] != null)
+                        Marshal.ReleaseComObject(mon[0]);
+
+                    mon[0] = null;
+
+                    if (enumMon != null)
+                        Marshal.ReleaseComObject(enumMon);
+
+                    if (comObj != null)
+                        Marshal.ReleaseComObject(comObj);
+                }
+            }
         }
     }
 }

@@ -101,9 +101,8 @@ namespace Captura.Tests
             var videoWriterMock = _moq.GetVideoFileWriterMock();
             var audioProviderMock = _moq.GetAudioProviderMock();
 
-            using (new Recorder(videoWriterMock.Object, imgProviderMock.Object, 10, audioProviderMock.Object))
+            using (new Recorder(videoWriterMock.Object, imgProviderMock.Object, 10, audioProviderMock.Object)) 
             {
-                
             }
 
             imgProviderMock.Verify(M => M.Dispose(), Times.Once);
@@ -119,7 +118,6 @@ namespace Captura.Tests
 
             using (new Recorder(audioWriterMock.Object, audioProviderMock.Object))
             {
-
             }
             
             audioWriterMock.Verify(M => M.Dispose(), Times.Once);

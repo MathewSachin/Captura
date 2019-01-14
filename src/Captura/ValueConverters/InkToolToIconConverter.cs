@@ -45,7 +45,6 @@ namespace Captura
             return icons.Cursor;
         }
 
-
         public override object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
         {
             return Geometry.Parse(GetPath(Value));

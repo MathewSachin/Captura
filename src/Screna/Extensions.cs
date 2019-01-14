@@ -1,7 +1,5 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Captura;
 using Captura.Native;
 
@@ -48,7 +46,7 @@ namespace Screna
 
             using (var b = new UnsafeBitmap(Image))
             {
-                for (int x = 0, y = 0; ; )
+                for (int x = 0, y = 0; ;)
                 {
                     var pixel = b[x, y];
 

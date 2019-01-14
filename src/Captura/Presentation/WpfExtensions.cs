@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 using DColor = System.Drawing.Color;
 
 namespace Captura
@@ -64,6 +67,63 @@ namespace Captura
 
                 transform.BeginAnimation(TranslateTransform.XProperty, animation);
             });
+        }
+
+        public static bool SaveToPickedFile(this BitmapSource Bitmap, string DefaultFileName = null)
+        {
+            var sfd = new SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = ".png",
+                Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg|Bitmap Image|*.bmp|TIFF Image|*.tiff"
+            };
+
+            if (DefaultFileName != null)
+            {
+                sfd.FileName = Path.GetFileNameWithoutExtension(DefaultFileName);
+
+                var dir = Path.GetDirectoryName(DefaultFileName);
+
+                if (dir != null)
+                {
+                    sfd.InitialDirectory = dir;
+                }
+            }
+            else sfd.FileName = "Untitled";
+
+            if (!sfd.ShowDialog().GetValueOrDefault())
+                return false;
+
+            BitmapEncoder encoder;
+
+            // Filter Index starts from 1
+            switch (sfd.FilterIndex)
+            {
+                case 2:
+                    encoder = new JpegBitmapEncoder();
+                    break;
+
+                case 3:
+                    encoder = new BmpBitmapEncoder();
+                    break;
+
+                case 4:
+                    encoder = new TiffBitmapEncoder();
+                    break;
+
+                default:
+                    encoder = new PngBitmapEncoder();
+                    break;
+            }
+
+            encoder.Frames.Add(BitmapFrame.Create(Bitmap));
+
+            using (var stream = sfd.OpenFile())
+            {
+                encoder.Save(stream);
+            }
+
+            return true;
         }
     }
 }

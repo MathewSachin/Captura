@@ -39,10 +39,13 @@ namespace Captura.Models
                 _active = value;
 
                 if (value && !IsRegistered)
+                {
                     Register();
-
+                }
                 else if (!value && IsRegistered)
+                {
                     Unregister();
+                }
 
                 OnPropertyChanged();
             }

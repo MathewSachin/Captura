@@ -672,59 +672,12 @@ namespace Captura
         {
             var bmp = GetBmp();
 
-            var sfd = new SaveFileDialog
-            {
-                Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg|Bitmap Image|*.bmp|TIFF Image|*.tiff",
-                DefaultExt = ".png",
-                AddExtension = true
-            };
-            
-            if (_fileName != null)
-            {
-                var dir = Path.GetDirectoryName(_fileName);
+            if (!bmp.SaveToPickedFile(_fileName))
+                return false;
 
-                if (dir != null)
-                    sfd.InitialDirectory = dir;
-                
-                sfd.FileName = Path.GetFileNameWithoutExtension(_fileName);
-            }
-            else sfd.FileName = "Untitled";
-            
-            if (sfd.ShowDialog().GetValueOrDefault())
-            {
-                BitmapEncoder encoder;
+            UnsavedChanges = false;
 
-                // Filter Index starts from 1
-                switch (sfd.FilterIndex)
-                {
-                    case 2:
-                        encoder = new JpegBitmapEncoder();
-                        break;
-
-                    case 3:
-                        encoder = new BmpBitmapEncoder();
-                        break;
-
-                    case 4:
-                        encoder = new TiffBitmapEncoder();
-                        break;
-
-                    default:
-                        encoder = new PngBitmapEncoder();
-                        break;
-                }
-
-                encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-                using (var stream = sfd.OpenFile())
-                    encoder.Save(stream);
-
-                UnsavedChanges = false;
-
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         void SaveToClipboard()
