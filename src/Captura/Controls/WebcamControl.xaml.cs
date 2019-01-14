@@ -18,19 +18,18 @@ namespace Captura
 
         public void Refresh()
         {
-            //To change the video device, a dispose is needed.
+            // To change the video device, a dispose is needed.
             if (Capture != null)
             {
                 Capture.Dispose();
                 Capture = null;
             }
 
-            //Create capture object.
+            // Create capture object.
             if (VideoDevice != null && PresentationSource.FromVisual(this) is HwndSource source)
             {
-                Capture = new CaptureWebcam(VideoDevice, OpenPreview)
+                Capture = new CaptureWebcam(VideoDevice, OpenPreview, source.Handle)
                 {
-                    PreviewWindow = source.Handle,
                     Scale = Dpi.X
                 };
                 
@@ -45,19 +44,18 @@ namespace Captura
 
         public void ShowOnMainWindow(Window MainWindow)
         {
-            //To change the video device, a dispose is needed.
+            // To change the video device, a dispose is needed.
             if (Capture != null)
             {
                 Capture.Dispose();
                 Capture = null;
             }
 
-            //Create capture object.
+            // Create capture object.
             if (VideoDevice != null && PresentationSource.FromVisual(MainWindow) is HwndSource source)
             {
-                Capture = new CaptureWebcam(VideoDevice, OpenPreview)
+                Capture = new CaptureWebcam(VideoDevice, OpenPreview, source.Handle)
                 {
-                    PreviewWindow = source.Handle,
                     Scale = Dpi.X
                 };
                 
@@ -78,10 +76,7 @@ namespace Captura
             {
                 Refresh();
             }
-            else
-            {
-                ShowOnMainWindow(MainWindow.Instance);
-            }
+            else ShowOnMainWindow(MainWindow.Instance);
         }
 
         void OpenPreview()

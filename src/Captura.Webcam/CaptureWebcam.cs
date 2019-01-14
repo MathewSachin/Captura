@@ -12,18 +12,18 @@ namespace Captura.Webcam
     /// </summary>
     public class CaptureWebcam : ISampleGrabberCB, IDisposable
     {
-        #region Properties
+        #region Fields
         /// <summary> 
         ///  The video capture device filter. Read-only. To use a different 
         ///  device, dispose of the current Capture instance and create a new 
         ///  instance with the desired device. 
         /// </summary>
-        public Filter VideoDevice { get; }
+        readonly Filter _videoDevice;
 
         /// <summary>
         ///  The control that will host the preview window. 
         /// </summary>
-        public IntPtr PreviewWindow { get; set; }
+        readonly IntPtr _previewWindow;
 
         /// <summary>
         /// The Width and Height of the video feed.
@@ -34,9 +34,7 @@ namespace Captura.Webcam
         /// The Scale of the video feed.
         /// </summary>
         public double Scale { get; set; } = 1;
-        #endregion
-        
-        #region Variables
+
         /// <summary>
         /// When graphState==Rendered, have we rendered the preview stream?
         /// </summary>
@@ -67,11 +65,6 @@ namespace Captura.Webcam
         /// </summary>
         IBaseFilter _videoDeviceFilter;
 
-        ///// <summary>
-        ///// DShow Filter: configure frame rate, size.
-        ///// </summary>
-        //IAMStreamConfig VideoStreamConfig;
-
         /// <summary>
         /// DShow Filter: Start/Stop the filter graph -> copy of graphBuilder.
         /// </summary>
@@ -100,19 +93,16 @@ namespace Captura.Webcam
 
         readonly DummyForm _form;
 
-        /// <summary>
-        /// Default constructor of the Capture class.
-        /// </summary>
-        /// <param name="VideoDevice">The video device to be the source.</param>
-        /// <exception cref="ArgumentException">If no video device is provided.</exception>
-        public CaptureWebcam(Filter VideoDevice, Action OnClick)
+        public CaptureWebcam(Filter VideoDevice, Action OnClick, IntPtr PreviewWindow)
         {
+            _previewWindow = PreviewWindow;
+
             _form = new DummyForm();
             _form.Show();
 
             _form.Click += (S, E) => OnClick?.Invoke();
 
-            this.VideoDevice = VideoDevice ?? throw new ArgumentException("The videoDevice parameter must be set to a valid Filter.\n");
+            _videoDevice = VideoDevice ?? throw new ArgumentException("The videoDevice parameter must be set to a valid Filter.\n");
 
             CreateGraph();
         }
@@ -125,7 +115,7 @@ namespace Captura.Webcam
         {
             DerenderGraph();
 
-            _wantPreviewRendered = PreviewWindow != IntPtr.Zero && VideoDevice != null;
+            _wantPreviewRendered = _previewWindow != IntPtr.Zero && _videoDevice != null;
 
             RenderGraph();
             StartPreviewIfNeeded();
@@ -225,8 +215,8 @@ namespace Captura.Webcam
         /// </summary>
         void CreateGraph()
         {
-            //Skip if already created
-            if ((int)_actualGraphState < (int)GraphState.Created)
+            // Skip if already created
+            if (_actualGraphState < GraphState.Created)
             {
                 // Make a new filter graph
                 _graphBuilder = (IGraphBuilder)new FilterGraph();
@@ -236,26 +226,30 @@ namespace Captura.Webcam
 
                 // Link the CaptureGraphBuilder to the filter graph
                 var hr = _captureGraphBuilder.SetFiltergraph(_graphBuilder);
-                if (hr < 0) Marshal.ThrowExceptionForHR(hr);
 
-                var comObj = new SampleGrabber();
-                _sampGrabber = (ISampleGrabber)comObj;
+                if (hr < 0)
+                    Marshal.ThrowExceptionForHR(hr);
+
+                _sampGrabber = (ISampleGrabber)new SampleGrabber();
 
                 _baseGrabFlt = (IBaseFilter)_sampGrabber;
 
                 var media = new AMMediaType();
+
                 // Get the video device and add it to the filter graph
-                if (VideoDevice != null)
+                if (_videoDevice != null)
                 {
-                    _videoDeviceFilter = (IBaseFilter)Marshal.BindToMoniker(VideoDevice.MonikerString);
+                    _videoDeviceFilter = (IBaseFilter)Marshal.BindToMoniker(_videoDevice.MonikerString);
 
                     hr = _graphBuilder.AddFilter(_videoDeviceFilter, "Video Capture Device");
-                    if (hr < 0) Marshal.ThrowExceptionForHR(hr);
+
+                    if (hr < 0)
+                        Marshal.ThrowExceptionForHR(hr);
 
                     media.majorType = MediaType.Video;
                     media.subType = MediaSubType.RGB32;
                     media.formatType = FormatType.VideoInfo;
-                    media.temporalCompression = true; //New
+                    media.temporalCompression = true;
 
                     hr = _sampGrabber.SetMediaType(media);
 
@@ -263,38 +257,31 @@ namespace Captura.Webcam
                         Marshal.ThrowExceptionForHR(hr);
 
                     hr = _graphBuilder.AddFilter(_baseGrabFlt, "Grabber");
-                    if (hr < 0) Marshal.ThrowExceptionForHR(hr);
+
+                    if (hr < 0)
+                        Marshal.ThrowExceptionForHR(hr);
                 }
 
                 // Retrieve the stream control interface for the video device
                 // FindInterface will also add any required filters
-                // (WDM devices in particular may need additional
-                // upstream filters to function).
+                // (WDM devices in particular may need additional upstream filters to function).
 
                 // Try looking for an interleaved media type
                 var cat = PinCategory.Capture;
                 var med = MediaType.Interleaved;
                 var iid = typeof(IAMStreamConfig).GUID;
-                hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out var o);
+
+                hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out _);
 
                 if (hr != 0)
                 {
                     // If not found, try looking for a video media type
                     med = MediaType.Video;
-                    hr = _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out o);
-
-                    if (hr != 0)
-                        // ReSharper disable once RedundantAssignment
-                        o = null;
+                    _captureGraphBuilder.FindInterface(cat, med, _videoDeviceFilter, iid, out _);
                 }
-
-                //VideoStreamConfig = o as IAMStreamConfig;
                 
                 // Retreive the media control interface (for starting/stopping graph)
                 _mediaControl = (IMediaControl)_graphBuilder;
-
-                // Reload any video crossbars
-                //if (videoSources != null) videoSources.Dispose(); videoSources = null;
 
                 _videoInfoHeader = Marshal.PtrToStructure<VideoInfoHeader>(media.formatPtr);
                 Marshal.FreeCoTaskMem(media.formatPtr);
@@ -454,7 +441,7 @@ namespace Captura.Webcam
                 _videoWindow = (IVideoWindow)_graphBuilder;
 
                 // Set the video window to be a child of the main window
-                hr = _videoWindow.put_Owner(PreviewWindow);
+                hr = _videoWindow.put_Owner(_previewWindow);
 
                 _videoWindow.put_MessageDrain(_form.Handle);
 
