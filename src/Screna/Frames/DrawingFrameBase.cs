@@ -29,11 +29,16 @@ namespace Screna
 
         public void CopyTo(byte[] Buffer, int Length)
         {
-            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-            Marshal.Copy(bits.Scan0, Buffer, 0, Length);
-
-            Bitmap.UnlockBits(bits);
+            try
+            {
+                Marshal.Copy(bits.Scan0, Buffer, 0, Length);
+            }
+            finally
+            {
+                Bitmap.UnlockBits(bits);
+            }
         }
     }
 }
