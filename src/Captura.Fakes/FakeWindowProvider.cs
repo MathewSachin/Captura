@@ -20,5 +20,7 @@
         public void CropImage(string FileName) { }
 
         public void TrimMedia(string FileName) { }
+
+        public void UploadToYouTube(string FileName) { }
     }
 }

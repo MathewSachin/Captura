@@ -36,6 +36,8 @@ namespace Captura
 
         public FileNameFormatViewModel FileNameFormatViewModel => ServiceProvider.Get<FileNameFormatViewModel>();
 
+        public YouTubeUploaderViewModel YouTubeUploaderViewModel => ServiceProvider.Get<YouTubeUploaderViewModel>();
+
         public SoundsViewModel SoundsViewModel => ServiceProvider.Get<SoundsViewModel>();
 
         public KeymapViewModel Keymap => ServiceProvider.Get<KeymapViewModel>();

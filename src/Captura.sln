@@ -42,7 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.NAudio", "Captura.N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Imgur", "Captura.Imgur\Captura.Imgur.csproj", "{885A212B-2642-40F8-B4CF-12F791D79D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.ViewCore", "Captura.ViewCore\Captura.ViewCore.csproj", "{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.ViewCore", "Captura.ViewCore\Captura.ViewCore.csproj", "{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.YouTube", "Captura.YouTube\Captura.YouTube.csproj", "{224E699E-2B95-4194-BE79-4931815D8F21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +128,10 @@ Global
 		{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{224E699E-2B95-4194-BE79-4931815D8F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{224E699E-2B95-4194-BE79-4931815D8F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{224E699E-2B95-4194-BE79-4931815D8F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{224E699E-2B95-4194-BE79-4931815D8F21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
