@@ -15,6 +15,10 @@ configuration:
 environment:
   imgur_client_id:
     secure: Y/2WUSisk7oLSQNY1YzUxw==
+  yt_client_id:
+    secure: CPwUWOhTyZ2IiE+lvVilTKQz1h8sbn7FmkTJvtTlY6mJf2pDlfDhFmhDk1i47M9OPnD4y8a8BlB6yfkpVt/0U/PODAXPzFR0QuOWIfJvltc=
+  yt_client_secret:
+    secure: fsl/BRldjlmEJCroWa0iqw5tAxbGx84BbHT3BpzaeX4=
   choco_key:
     secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
   git_key:
