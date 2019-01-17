@@ -76,7 +76,12 @@ namespace Captura.ViewModels
                 Description,
                 PrivacyStatus: PrivacyStatus);
 
-            _uploadRequest.Uploaded += L => Link = L;
+            _uploadRequest.Uploaded += L =>
+            {
+                Link = L;
+
+                CancelBtnText = "Finish";
+            };
 
             _uploadRequest.BytesSent += B => Progress = (int)(B * 100 / fileSize);
         }
@@ -99,9 +104,11 @@ namespace Captura.ViewModels
 
                 if (result.Status == UploadStatus.Failed)
                 {
-                    ServiceProvider.MessageProvider.ShowException(result.Exception, "Error Occured while Uploading");
+                    _messageProvider.ShowException(result.Exception, "Error Occured while Uploading");
 
                     UploadCommand.RaiseCanExecuteChanged(true);
+
+                    UploadBtnText = "Retry";
                 }
             }
             catch (TaskCanceledException)
@@ -166,7 +173,8 @@ namespace Captura.ViewModels
             {
                 _cancellationTokenSource.Cancel();
 
-                await _uploadTask;
+                if (_uploadTask != null)
+                    await _uploadTask;
             }
 
             return true;
@@ -175,7 +183,7 @@ namespace Captura.ViewModels
         public int Progress
         {
             get => _progress;
-            set
+            private set
             {
                 _progress = value;
 
@@ -199,5 +207,29 @@ namespace Captura.ViewModels
         public DelegateCommand OpenVideoCommand { get; }
 
         public DelegateCommand CopyLinkCommand { get; }
+
+        string _uploadBtnText = "Upload", _cancelBtnText = "Cancel";
+
+        public string UploadBtnText
+        {
+            get => _uploadBtnText;
+            private set
+            {
+                _uploadBtnText = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string CancelBtnText
+        {
+            get => _cancelBtnText;
+            private set
+            {
+                _cancelBtnText = value;
+
+                OnPropertyChanged();
+            }
+        }
     }
 }

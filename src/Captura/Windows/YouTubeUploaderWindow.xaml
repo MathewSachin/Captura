@@ -13,11 +13,11 @@
                         DockPanel.Dock="Bottom"
                         HorizontalAlignment="Right"
                         Margin="0,5">
-                <Button Content="Upload"
+                <Button Content="{Binding UploadBtnText}"
                         Margin="0,0,5,0"
                         Command="{Binding UploadCommand}"/>
 
-                <Button Content="Cancel"
+                <Button Content="{Binding CancelBtnText}"
                         Click="Cancel_Click"/>
             </StackPanel>
 
@@ -63,7 +63,7 @@
             </DockPanel>
 
             <ProgressBar DockPanel.Dock="Bottom"
-                         Value="{Binding Progress}"
+                         Value="{Binding Progress, Mode=OneWay}"
                          Margin="0,2"
                          Height="1"/>
 
