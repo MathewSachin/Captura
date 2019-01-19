@@ -13,7 +13,7 @@
 
             using (Image)
             {
-                // This fixes Preview showing multiple mouse pointers
+                // HACK: Don't know why, this fixes Preview showing multiple mouse pointers
                 Image.CopyTo(_dummyBuffer, _dummyBuffer.Length);
             }
         }

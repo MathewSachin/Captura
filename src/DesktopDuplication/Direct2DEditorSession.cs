@@ -14,7 +14,6 @@ namespace DesktopDuplication
 {
     public class Direct2DEditorSession : IDisposable
     {
-        Surface _surface;
         Texture2D _texture;
 
         public Device Device { get; private set; }
@@ -48,31 +47,24 @@ namespace DesktopDuplication
             this.Device = Device;
             this.StagingTexture = StagingTexture;
 
-            PreviewTexture = new Texture2D(Device, new Texture2DDescription
-            {
-                CpuAccessFlags = CpuAccessFlags.None,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
-                Width = Texture.Description.Width,
-                Height = Texture.Description.Height,
-                OptionFlags = ResourceOptionFlags.Shared,
-                MipLevels = 1,
-                ArraySize = 1,
-                SampleDescription = { Count = 1, Quality = 0 },
-                Usage = ResourceUsage.Default
-            });
+            var desc = Texture.Description;
+            desc.OptionFlags = ResourceOptionFlags.Shared;
 
-            _surface = Texture.QueryInterface<Surface>();
+            PreviewTexture = new Texture2D(Device, desc);
 
             _factory = new Factory1(FactoryType.MultiThreaded);
 
-            var renderTargetProps = new RenderTargetProperties(
-                new PixelFormat(Format.Unknown, AlphaMode.Ignore))
+            var pixelFormat = new PixelFormat(Format.Unknown, AlphaMode.Ignore);
+
+            var renderTargetProps = new RenderTargetProperties(pixelFormat)
             {
                 Type = RenderTargetType.Hardware
             };
 
-            RenderTarget = new RenderTarget(_factory, _surface, renderTargetProps);
+            using (var surface = Texture.QueryInterface<Surface>())
+            {
+                RenderTarget = new RenderTarget(_factory, surface, renderTargetProps);
+            }
         }
 
         public void BeginDraw()
@@ -84,6 +76,7 @@ namespace DesktopDuplication
         {
             RenderTarget.EndDraw();
             Device.ImmediateContext.CopyResource(_texture, StagingTexture);
+            Device.ImmediateContext.CopyResource(StagingTexture, PreviewTexture);
         }
 
         public void Dispose()
@@ -100,9 +93,6 @@ namespace DesktopDuplication
 
             _factory.Dispose();
             _factory = null;
-
-            _surface.Dispose();
-            _surface = null;
 
             _writeFactory?.Dispose();
             _writeFactory = null;

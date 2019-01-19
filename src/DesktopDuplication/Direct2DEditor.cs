@@ -25,18 +25,15 @@ namespace DesktopDuplication
         {
             _editorSession = EditorSession;
 
-            Width = EditorSession.StagingTexture.Description.Width;
-            Height = EditorSession.StagingTexture.Description.Height;
+            var desc = EditorSession.StagingTexture.Description;
+
+            Width = desc.Width;
+            Height = desc.Height;
 
             EditorSession.BeginDraw();
         }
 
-        public void Dispose()
-        {
-            _editorSession.EndDraw();
-
-            _editorSession.Device.ImmediateContext.CopyResource(_editorSession.StagingTexture, _editorSession.PreviewTexture);
-        }
+        public void Dispose() { }
 
         public float Width { get; }
         public float Height { get; }
@@ -176,7 +173,7 @@ namespace DesktopDuplication
 
         public IBitmapFrame GenerateFrame()
         {
-            Dispose();
+            _editorSession.EndDraw();
 
             return new Texture2DFrame(_editorSession.StagingTexture, _editorSession.Device, _editorSession.PreviewTexture);
         }
