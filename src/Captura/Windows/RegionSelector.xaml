@@ -36,45 +36,48 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Border BorderThickness="2"
-                Name="Region"
-                Height="500"
-                Width="400"
-                MinHeight="200"
-                MinWidth="300">
-            <Border.BorderBrush>
-                <DrawingBrush TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing>
-                                <GeometryDrawing.Brush>
-                                    <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-                                </GeometryDrawing.Brush>
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,10,10" />
-                                        <RectangleGeometry Rect="10,10,10,10" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-
-                            <GeometryDrawing>
-                                <GeometryDrawing.Brush>
-                                    <SolidColorBrush Color="{DynamicResource AccentColor}"/>
-                                </GeometryDrawing.Brush>
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="10,0,10,10" />
-                                        <RectangleGeometry Rect="0,10,10,10" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.BorderBrush>
-            <Border.Style>
+        <DockPanel Height="500"
+                   Width="400"
+                   MinHeight="200"
+                   MinWidth="300"
+                   Name="Region">
+            <DockPanel.Resources>
                 <Style TargetType="Border">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <DrawingBrush TileMode="Tile"
+                                          Viewport="0,0,20,20"
+                                          ViewportUnits="Absolute">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Brush>
+                                                <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+                                            </GeometryDrawing.Brush>
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <RectangleGeometry Rect="0,0,10,10" />
+                                                    <RectangleGeometry Rect="10,10,10,10" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Brush>
+                                                <SolidColorBrush Color="{DynamicResource AccentColor}"/>
+                                            </GeometryDrawing.Brush>
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <RectangleGeometry Rect="10,0,10,10" />
+                                                    <RectangleGeometry Rect="0,10,10,10" />
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Setter.Value>
+                    </Setter>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
                             <DataTrigger.EnterActions>
@@ -96,12 +99,23 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
+            </DockPanel.Resources>
+
+            <Border BorderThickness="1,0"/>
+
+            <Border BorderThickness="1,0"
+                    DockPanel.Dock="Right"/>
+
+            <Border BorderThickness="0,1"
+                    DockPanel.Dock="Bottom"/>
+
+            <Border BorderThickness="0,1"
+                    DockPanel.Dock="Top"/>
 
             <InkCanvas Background="Transparent"
                        Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                        Name="InkCanvas"/>
-        </Border>
+        </DockPanel>
 
         <Thumb VerticalAlignment="Top"
                Height="2"
