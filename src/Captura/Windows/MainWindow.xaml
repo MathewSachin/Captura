@@ -7,7 +7,7 @@
         ResizeMode="CanMinimize"
         Icon="../Images/Captura.ico"
         SizeToContent="Height"
-        MaxWidth="450"
+        MaxWidth="440"
         Title="Captura"
         Left="{Binding Settings.UI.MainWindowLeft, Mode=TwoWay}"
         Top="{Binding Settings.UI.MainWindowTop, Mode=TwoWay}"
@@ -304,7 +304,8 @@
                                  Margin="7,3"
                                  Opacity="0.9"/>
 
-                <local:OutputFolderControl DockPanel.Dock="Bottom"/>
+                <local:OutputFolderControl DockPanel.Dock="Bottom"
+                                           Margin="5,0,0,0"/>
 
                 <Frame Source="../Pages/MainPage.xaml"/>
             </DockPanel>

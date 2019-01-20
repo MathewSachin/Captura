@@ -128,12 +128,6 @@ namespace Captura
             get => Get<bool>();
             set => Set(value);
         }
-        
-        public int RecentMax
-        {
-            get => Get(30);
-            set => Set(value);
-        }
 
         public string OutPath
         {
