@@ -16,8 +16,14 @@ namespace Captura.Models
         IntPtr _backBufferPtr;
         Texture _texture;
 
+        bool _visible;
+
         public PreviewWindowService()
         {
+            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
+
+            _visible = _previewWindow.IsVisible;
+
             // Prevent Closing by User
             _previewWindow.Closing += (S, E) =>
             {
@@ -36,15 +42,18 @@ namespace Captura.Models
             if (Frame is RepeatFrame)
                 return;
 
+            if (!_visible)
+            {
+                Frame.Dispose();
+                return;
+            }
+
             _previewWindow.Dispatcher.Invoke(() =>
             {
                 _previewWindow.DisplayImage.Image = null;
 
                 _lastFrame?.Dispose();
                 _lastFrame = Frame;
-
-                if (!_previewWindow.IsVisible)
-                    return;
 
                 if (Frame is MultiDisposeFrame frameWrapper)
                 {
@@ -82,7 +91,7 @@ namespace Captura.Models
 
             if (BackBufferPtr != IntPtr.Zero)
                 _previewWindow.D3DImage.AddDirtyRect(new Int32Rect(0, 0, Width, Height));
-            
+
             _previewWindow.D3DImage.Unlock();
         }
 
