@@ -6,6 +6,5 @@ namespace Captura
     // ReSharper disable once ClassNeverInstantiated.Global
     class ListCmdOptions
     {
-        
     }
 }

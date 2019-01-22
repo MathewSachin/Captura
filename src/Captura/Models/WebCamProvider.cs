@@ -69,7 +69,7 @@ namespace Captura.Models
             if (_camControl == null)
                 return;
 
-            foreach (var cam in CaptureWebcam.VideoInputDevices)
+            foreach (var cam in Filter.VideoInputDevices)
                 _cams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;

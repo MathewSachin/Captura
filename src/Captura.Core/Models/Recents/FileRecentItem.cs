@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Input;
+using Captura.Native;
 using Screna;
 
 namespace Captura.Models
@@ -37,6 +38,11 @@ namespace Captura.Models
                 new RecentAction(loc.CopyPath, icons.Clipboard, () => this.FileName.WriteToClipboard())
             };
 
+            void AddTrimMedia()
+            {
+                list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(FileName)));
+            }
+
             switch (FileType)
             {
                 case RecentFileType.Image:
@@ -47,8 +53,12 @@ namespace Captura.Models
                     break;
 
                 case RecentFileType.Audio:
+                    AddTrimMedia();
+                    break;
+
                 case RecentFileType.Video:
-                    list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(FileName)));
+                    AddTrimMedia();
+                    list.Add(new RecentAction("Upload to YouTube", icons.YouTube, () => windowService.UploadToYouTube(FileName)));
                     break;
             }
 
@@ -82,9 +92,11 @@ namespace Captura.Models
 
             try
             {
+                var clipboard = ServiceProvider.Get<IClipboardService>();
+
                 var img = (Bitmap)Image.FromFile(FileName);
 
-                img.WriteToClipboard();
+                clipboard.SetImage(img);
             }
             catch (Exception e)
             {
@@ -94,18 +106,10 @@ namespace Captura.Models
 
         void OnDelete()
         {
-            if (!ServiceProvider.MessageProvider.ShowYesNo($"Are you sure you want to Delete: {FileName}?", "Confirm Deletion"))
-                return;
-
-            try
+            if (File.Exists(FileName))
             {
-                File.Delete(FileName);
-            }
-            catch (Exception e)
-            {
-                ServiceProvider.MessageProvider.ShowException(e, $"Could not Delete: {FileName}");
-
-                return;
+                if (Shell32.FileOperation(FileName, FileOperationType.Delete, 0) != 0)
+                    return;
             }
 
             // Remove from List

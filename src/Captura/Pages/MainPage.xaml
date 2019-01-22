@@ -4,7 +4,7 @@
       xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
       x:Class="Captura.MainPage">
-    <DockPanel Margin="-5,0,0,0">
+    <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
@@ -68,7 +68,7 @@
         <TabControl Background="Transparent"
                     TabStripPlacement="Left"
                     BorderThickness="0"
-                    Margin="10,5">
+                    Margin="5">
             <TabControl.Resources>
                 <Style x:Key="TabIcon"
                        TargetType="Path"

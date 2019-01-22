@@ -1,0 +1,99 @@
+﻿<Window x:Class="Captura.YouTubeUploaderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:captura="clr-namespace:Captura"
+        Title="YouTube Uploader"
+        Height="400"
+        Width="450"
+        Background="{DynamicResource WindowBackground}"
+        DataContext="{Binding YouTubeUploaderViewModel, Source={StaticResource ServiceLocator}}">
+    <Grid>
+        <DockPanel Margin="10">
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Bottom"
+                        HorizontalAlignment="Right"
+                        Margin="0,5">
+                <Button Content="{Binding UploadBtnText}"
+                        Margin="0,0,5,0"
+                        Command="{Binding UploadCommand}"/>
+
+                <Button Content="{Binding CancelBtnText}"
+                        Click="Cancel_Click"/>
+            </StackPanel>
+
+            <Label ContentStringFormat="{}File: {0}"
+                   Content="{Binding FileName}"
+                   FontWeight="DemiBold"
+                   Margin="0,0,0,5"
+                   DockPanel.Dock="Top"/>
+
+            <Label Content="Title"
+                   Margin="0,0,0,2"
+                   DockPanel.Dock="Top"/>
+
+            <TextBox DockPanel.Dock="Top"
+                     Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     IsReadOnly="{Binding BeganUploading}"/>
+
+            <Label Content="Description"
+                   Margin="0,7,0,2"
+                   DockPanel.Dock="Top"/>
+
+            <DockPanel Visibility="{Binding Link, Converter={StaticResource NotNullConverter}}"
+                       DockPanel.Dock="Bottom">
+                <Path Data="{Binding Icons.Link, Source={StaticResource ServiceLocator}}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,7,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+
+                <captura:ModernButton IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
+                                      Command="{Binding CopyLinkCommand}"
+                                      DockPanel.Dock="Right"/>
+
+                <TextBlock VerticalAlignment="Center">
+                    <Hyperlink Command="{Binding OpenVideoCommand}"
+                               NavigateUri="{Binding Link, Mode=OneWay}"
+                               Foreground="LimeGreen">
+                        <Run Text="{Binding Link, Mode=OneWay}"/>
+                    </Hyperlink>
+                </TextBlock>
+            </DockPanel>
+
+            <ProgressBar DockPanel.Dock="Bottom"
+                         Value="{Binding Progress, Mode=OneWay}"
+                         Margin="0,2"
+                         Height="1"/>
+
+            <ListView ItemsSource="{Binding PrivacyStatuses}"
+                      SelectedValue="{Binding PrivacyStatus}"
+                      Margin="0,10"
+                      SelectionMode="Single"
+                      BorderThickness="0.4"
+                      HorizontalContentAlignment="Center"
+                      DockPanel.Dock="Bottom"
+                      IsEnabled="{Binding BeganUploading, Converter={StaticResource NegatingConverter}}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#01000000">
+                            <TextBlock Text="{Binding}"
+                                       HorizontalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"
+                     IsReadOnly="{Binding BeganUploading}"/>
+        </DockPanel>
+    </Grid>
+</Window>

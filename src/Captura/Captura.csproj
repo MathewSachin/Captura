@@ -271,6 +271,9 @@
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\WpfExtensions.cs" />
+    <Compile Include="Windows\YouTubeUploaderWindow.xaml.cs">
+      <DependentUpon>YouTubeUploaderWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\CollapsedBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -515,6 +518,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\YouTubeUploaderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <AppDesigner Include="Properties\" />
@@ -564,6 +571,10 @@
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Captura.YouTube\Captura.YouTube.csproj">
+      <Project>{224e699e-2b95-4194-be79-4931815d8f21}</Project>
+      <Name>Captura.YouTube</Name>
     </ProjectReference>
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
       <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>

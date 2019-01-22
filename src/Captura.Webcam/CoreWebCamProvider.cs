@@ -49,10 +49,7 @@ namespace Captura.Models
                 {
                     try
                     {
-                        _captureWebcam = new CaptureWebcam(model.Cam, null)
-                        {
-                            PreviewWindow = _previewForm.Handle
-                        };
+                        _captureWebcam = new CaptureWebcam(model.Cam, null, _previewForm.Handle);
 
                         _captureWebcam.StartPreview();
 
@@ -76,7 +73,7 @@ namespace Captura.Models
 
             _cams.Add(WebcamItem.NoWebcam);
 
-            foreach (var cam in CaptureWebcam.VideoInputDevices)
+            foreach (var cam in Filter.VideoInputDevices)
                 _cams.Add(new WebcamItem(cam));
 
             SelectedCam = WebcamItem.NoWebcam;

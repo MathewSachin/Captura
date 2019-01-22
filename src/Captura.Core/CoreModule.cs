@@ -39,6 +39,7 @@ namespace Captura
             Binder.Bind<IImageUploader, ImgurUploader>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
             Binder.Bind<IImgurApiKeys, ApiKeys>();
+            Binder.Bind<IYouTubeApiKeys, ApiKeys>();
 
             Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<FFmpegLog>();

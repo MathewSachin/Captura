@@ -19,8 +19,10 @@ namespace DesktopDuplication
             this.Device = Device;
             this.PreviewTexture = PreviewTexture;
 
-            Width = Texture.Description.Width;
-            Height = Texture.Description.Height;
+            var desc = Texture.Description;
+
+            Width = desc.Width;
+            Height = desc.Height;
         }
 
         public void Dispose() { }

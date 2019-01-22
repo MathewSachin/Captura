@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 
 namespace Captura
 {
@@ -65,46 +64,8 @@ namespace Captura
             if (_croppedImage == null)
                 return;
 
-            var sfd = new SaveFileDialog
+            if (_croppedImage.SaveToPickedFile(_fileName))
             {
-                AddExtension = true,
-                DefaultExt = ".png",
-                Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg|Bitmap Image|*.bmp|TIFF Image|*.tiff",
-                InitialDirectory = Path.GetDirectoryName(_fileName),
-                FileName = Path.GetFileNameWithoutExtension(_fileName)
-            };
-
-            if (sfd.ShowDialog().GetValueOrDefault())
-            {
-                BitmapEncoder encoder;
-
-                // Filter Index starts from 1
-                switch (sfd.FilterIndex)
-                {
-                    case 2:
-                        encoder = new JpegBitmapEncoder();
-                        break;
-
-                    case 3:
-                        encoder = new BmpBitmapEncoder();
-                        break;
-
-                    case 4:
-                        encoder = new TiffBitmapEncoder();
-                        break;
-
-                    default:
-                        encoder = new PngBitmapEncoder();
-                        break;
-                }
-
-                encoder.Frames.Add(BitmapFrame.Create(_croppedImage));
-
-                using (var stream = sfd.OpenFile())
-                {
-                    encoder.Save(stream);
-                }
-
                 Close();
             }
         }
