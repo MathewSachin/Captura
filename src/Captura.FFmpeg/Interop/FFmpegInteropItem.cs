@@ -16,7 +16,7 @@ namespace Captura.Models
         {
             var size = new Size(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
-            return new FFmux(Args.FileName, size, Args.FrameRate);
+            return new FFmux(Args.FileName, size, Args.FrameRate, Args.AudioProvider);
         }
     }
 }

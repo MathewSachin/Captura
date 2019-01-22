@@ -9,6 +9,11 @@ namespace Captura.FFmpeg.Interop
             this.PixelFormat = PixelFormat;
         }
 
+        public FFmpegVideoCodecInfo(string Name, AVPixelFormat PixelFormat) : base(Name)
+        {
+            this.PixelFormat = PixelFormat;
+        }
+
         public AVPixelFormat PixelFormat { get; }
     }
 }

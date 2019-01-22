@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Captura.Audio;
 using FFmpeg.AutoGen;
 
 namespace Captura.FFmpeg.Interop
@@ -41,7 +42,7 @@ namespace Captura.FFmpeg.Interop
             ffmpeg.av_log_set_callback(LogCallback);
         }
 
-        public FFmux(string FileName, Size FrameSize, int Fps)
+        public FFmux(string FileName, Size FrameSize, int Fps, IAudioProvider AudioProvider)
         {
             _formatContext = new FFmpegFormatContext(FileName, null);
 
@@ -53,18 +54,18 @@ namespace Captura.FFmpeg.Interop
 
                 _videoStream = new FFmpegVideoStream(_formatContext.FormatContext, codecInfo, Fps, FrameSize);
 
-                SetVideoCodecOptions(_videoStream.CodecContext, codecInfo.Id);
+                SetVideoCodecOptions(_videoStream.CodecContext);
 
                 _videoStream.OpenCodec();
             }
 
-            if (fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
+            if (AudioProvider != null && fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
                 var codecInfo = new FFmpegAudioCodecInfo(fmt->audio_codec, AVSampleFormat.AV_SAMPLE_FMT_FLTP);
 
                 _audioStream = new FFmpegAudioStream(_formatContext.FormatContext, codecInfo);
 
-                SetAudioCodecOptions(_audioStream.CodecContext, codecInfo.Id);
+                SetAudioCodecOptions(_audioStream.CodecContext);
 
                 _audioStream.OpenCodec();
 
@@ -74,19 +75,19 @@ namespace Captura.FFmpeg.Interop
             _formatContext.BeginWriting();
         }
 
-        void SetVideoCodecOptions(AVCodecContext* CodecContext, AVCodecID CodecId)
+        void SetVideoCodecOptions(AVCodecContext* CodecContext)
         {
             CodecContext->bit_rate = 4_000_000;
             CodecContext->gop_size = 12;
             CodecContext->max_b_frames = 1;
 
-            if (CodecId == AVCodecID.AV_CODEC_ID_H264)
+            if (CodecContext->codec->id == AVCodecID.AV_CODEC_ID_H264)
             {
                 ffmpeg.av_opt_set(CodecContext->priv_data, "preset", "ultrafast", 0);
             }
         }
 
-        void SetAudioCodecOptions(AVCodecContext* CodecContext, AVCodecID CodecId)
+        void SetAudioCodecOptions(AVCodecContext* CodecContext)
         {
             CodecContext->bit_rate = 64_000;
             CodecContext->strict_std_compliance = -2;

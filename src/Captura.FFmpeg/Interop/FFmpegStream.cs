@@ -13,7 +13,7 @@ namespace Captura.FFmpeg.Interop
 
         public FFmpegStream(AVFormatContext* FormatContext, FFmpegCodecInfo CodecInfo)
         {
-            Codec = ffmpeg.avcodec_find_encoder(CodecInfo.Id);
+            Codec = CodecInfo.Codec;
 
             if (Codec == null)
             {

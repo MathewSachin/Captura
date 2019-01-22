@@ -9,6 +9,11 @@ namespace Captura.FFmpeg.Interop
             this.SampleFormat = SampleFormat;
         }
 
+        public FFmpegAudioCodecInfo(string Name, AVSampleFormat SampleFormat) : base(Name)
+        {
+            this.SampleFormat = SampleFormat;
+        }
+
         public AVSampleFormat SampleFormat { get; }
     }
 }

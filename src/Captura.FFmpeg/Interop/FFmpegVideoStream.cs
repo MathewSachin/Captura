@@ -38,7 +38,7 @@ namespace Captura.FFmpeg.Interop
 
             InitFrame();
 
-            CodecContext->codec_id = CodecInfo.Id;
+            CodecContext->codec_id = CodecInfo.Codec->id;
             CodecContext->width = FrameSize.Width;
             CodecContext->height = FrameSize.Height;
             CodecContext->pix_fmt = CodecInfo.PixelFormat;

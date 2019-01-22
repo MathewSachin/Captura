@@ -2,13 +2,18 @@
 
 namespace Captura.FFmpeg.Interop
 {
-    public class FFmpegCodecInfo
+    public abstract unsafe class FFmpegCodecInfo
     {
-        public FFmpegCodecInfo(AVCodecID Id)
+        protected FFmpegCodecInfo(AVCodecID Id)
         {
-            this.Id = Id;
+            Codec = ffmpeg.avcodec_find_encoder(Id);
         }
 
-        public AVCodecID Id { get; }
+        protected FFmpegCodecInfo(string Name)
+        {
+            Codec = ffmpeg.avcodec_find_encoder_by_name(Name);
+        }
+
+        public AVCodec* Codec { get; }
     }
 }
