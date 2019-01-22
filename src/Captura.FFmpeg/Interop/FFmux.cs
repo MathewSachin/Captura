@@ -18,7 +18,7 @@ namespace Captura.FFmpeg.Interop
 
         static FFmux()
         {
-            ffmpeg.av_log_set_level(ffmpeg.AV_LOG_VERBOSE);
+            ffmpeg.av_log_set_level(ffmpeg.AV_LOG_DEBUG);
 
             LogCallback = (p0, Level, Format, vl) =>
             {
@@ -34,9 +34,7 @@ namespace Captura.FFmpeg.Interop
 
                 var line = Marshal.PtrToStringAnsi((IntPtr)lineBuffer);
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(line);
-                Console.ResetColor();
             };
 
             ffmpeg.av_log_set_callback(LogCallback);
@@ -50,6 +48,7 @@ namespace Captura.FFmpeg.Interop
 
             if (fmt->video_codec != AVCodecID.AV_CODEC_ID_NONE)
             {
+                // Worked!: var codecInfo = new FFmpegVideoCodecInfo("h264_qsv", AVPixelFormat.AV_PIX_FMT_NV12);
                 var codecInfo = new FFmpegVideoCodecInfo(fmt->video_codec, AVPixelFormat.AV_PIX_FMT_YUV420P);
 
                 _videoStream = new FFmpegVideoStream(_formatContext.FormatContext, codecInfo, Fps, FrameSize);
