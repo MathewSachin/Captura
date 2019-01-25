@@ -75,6 +75,9 @@ namespace Captura.Native
         public static extern bool IsIconic(IntPtr hWnd);
 
         [DllImport(DllName)]
+        public static extern bool IsZoomed(IntPtr hWnd);
+
+        [DllImport(DllName)]
         public static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport(DllName)]

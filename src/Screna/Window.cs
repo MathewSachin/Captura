@@ -33,6 +33,8 @@ namespace Screna
         /// </summary>
         public bool IsVisible => User32.IsWindowVisible(Handle);
 
+        public bool IsMaximized => User32.IsZoomed(Handle);
+
         /// <summary>
         /// Gets the Window Handle.
         /// </summary>

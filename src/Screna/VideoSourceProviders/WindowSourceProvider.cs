@@ -24,7 +24,7 @@ namespace Captura.Models
 
         public bool PickWindow()
         {
-            var window = _videoSourcePicker.PickWindow(new [] { _regionProvider.Handle });
+            var window = _videoSourcePicker.PickWindow(M => M.Handle != _regionProvider.Handle);
 
             if (window == null)
                 return false;

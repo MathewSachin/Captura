@@ -31,7 +31,7 @@ namespace Captura
 
         readonly VideoPickerMode _mode;
 
-        List<IntPtr> SkipWindows { get; } = new List<IntPtr>();
+        Predicate<IWindow> Predicate { get; set; }
 
         VideoSourcePickerWindow(VideoPickerMode Mode)
         {
@@ -188,7 +188,7 @@ namespace Captura
 
                 case VideoPickerMode.Window:
                     SelectedWindow = _windows
-                        .Where(M => !SkipWindows.Contains(M.Handle))
+                        .Where(M => Predicate?.Invoke(M) ?? true)
                         .FirstOrDefault(M => M.Rectangle.Contains(point));
                     
                     UpdateBorderAndCursor(SelectedWindow?.Rectangle);
@@ -216,20 +216,16 @@ namespace Captura
             return picker.SelectedScreen == null ? null : new ScreenWrapper(picker.SelectedScreen);
         }
 
-        public static IWindow PickWindow(IEnumerable<IntPtr> SkipWindows)
+        public static IWindow PickWindow(Predicate<IWindow> Filter)
         {
             var picker = new VideoSourcePickerWindow(VideoPickerMode.Window)
             {
                 Border =
                 {
                     BorderThickness = new Thickness(5)
-                }
+                },
+                Predicate = Filter
             };
-
-            if (SkipWindows != null)
-            {
-                picker.SkipWindows.AddRange(SkipWindows);
-            }
 
             picker.ShowDialog();
 

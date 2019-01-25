@@ -125,7 +125,7 @@ namespace Captura
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)
         {
-            var win = _videoSourcePicker.PickWindow(new [] { Handle });
+            var win = _videoSourcePicker.PickWindow(M => M.Handle != Handle && !M.IsMaximized);
 
             if (win == null)
                 return;
