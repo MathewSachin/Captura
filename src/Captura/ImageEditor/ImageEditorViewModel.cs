@@ -698,12 +698,19 @@ namespace Captura
             {
                 drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
 
-                InkCanvas.Strokes.Draw(drawingContext);
+                var strokesCopy = InkCanvas.Strokes.Clone();
+
+                var matrix = Matrix.Identity;
+                matrix.Scale(96 / copy.DpiX, 96 / copy.DpiY);
+
+                strokesCopy.Transform(matrix, true);
+
+                strokesCopy.Draw(drawingContext);
 
                 drawingContext.Close();
 
-                var bitmap = new RenderTargetBitmap((int)copy.Width,
-                    (int)copy.Height,
+                var bitmap = new RenderTargetBitmap(copy.PixelWidth,
+                    copy.PixelHeight,
                     copy.DpiX,
                     copy.DpiY,
                     PixelFormats.Pbgra32);
