@@ -10,20 +10,23 @@ namespace Captura
     {
         readonly Lazy<RegionSelector> _regionSelector;
         readonly RegionItem _regionItem;
+        readonly RegionSelectorViewModel _viewModel;
 
-        public RegionSelectorProvider(IVideoSourcePicker VideoSourcePicker)
+        public RegionSelectorProvider(IVideoSourcePicker VideoSourcePicker, RegionSelectorViewModel ViewModel)
         {
+            _viewModel = ViewModel;
+
             _regionSelector = new Lazy<RegionSelector>(() =>
             {
-                var reg = new RegionSelector(VideoSourcePicker);
+                var reg = new RegionSelector(VideoSourcePicker, ViewModel);
 
                 reg.SelectorHidden += () => SelectorHidden?.Invoke();
-                reg.UpdateRegionName += M => _regionItem.Name = M;
 
                 return reg;
             });
 
             _regionItem = new RegionItem(this);
+            ViewModel.UpdateRegionName += M => _regionItem.Name = M;
         }
 
         public bool SelectorVisible
@@ -39,8 +42,8 @@ namespace Captura
 
         public Rectangle SelectedRegion
         {
-            get => _regionSelector.Value.SelectedRegion;
-            set => _regionSelector.Value.SelectedRegion = value;
+            get => _viewModel.SelectedRegion;
+            set => _viewModel.SelectedRegion = value;
         }
 
         public IVideoItem VideoSource => _regionItem;

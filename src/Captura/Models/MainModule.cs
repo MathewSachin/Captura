@@ -22,6 +22,7 @@ namespace Captura
             Binder.Bind<IWebCamProvider, WebCamProvider>();
             
             Binder.BindSingleton<AboutViewModel>();
+            Binder.BindSingleton<RegionSelectorViewModel>();
 
             // Bind as a Function to ensure the UI objects are referenced only after they have been created.
             Binder.Bind<Func<TaskbarIcon>>(() => () => MainWindow.Instance.SystemTray);

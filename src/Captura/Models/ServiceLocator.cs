@@ -22,6 +22,8 @@ namespace Captura
 
         public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
 
+        public RegionSelectorViewModel RegionSelectorViewModel => ServiceProvider.Get<RegionSelectorViewModel>();
+
         public FFmpegDownloadViewModel FFmpegDownloadViewModel => ServiceProvider.Get<FFmpegDownloadViewModel>();
 
         public FFmpegLog FFmpegLog => ServiceProvider.Get<FFmpegLog>();

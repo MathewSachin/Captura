@@ -1,7 +1,6 @@
 ﻿using Captura.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -15,19 +14,17 @@ namespace Captura
     public partial class RegionSelector
     {
         readonly IVideoSourcePicker _videoSourcePicker;
+        readonly RegionSelectorViewModel _viewModel;
 
-        bool _widthBoxChanging, _heightBoxChanging, _resizing;
-
-        public RegionSelector(IVideoSourcePicker VideoSourcePicker)
+        public RegionSelector(IVideoSourcePicker VideoSourcePicker, RegionSelectorViewModel ViewModel)
         {
             _videoSourcePicker = VideoSourcePicker;
+            _viewModel = ViewModel;
 
             InitializeComponent();
 
             // Prevent Closing by User
             Closing += (S, E) => E.Cancel = true;
-
-            InitDimensionBoxes();
 
             ModesBox.ItemsSource = new[]
             {
@@ -75,68 +72,6 @@ namespace Captura
                 InkCanvas.DefaultDrawingAttributes.Color = E.NewValue.Value;
         }
 
-        const int LeftOffset = 3,
-            TopOffset = 3;
-
-        Rectangle? _region;
-        
-        void InitDimensionBoxes()
-        {
-            WidthBox.Minimum = (int)((Region.MinWidth - LeftOffset * 2) * Dpi.X);
-            HeightBox.Minimum = (int)((Region.MinHeight - TopOffset * 2) * Dpi.Y);
-
-            void SizeChange()
-            {
-                if (_widthBoxChanging || _heightBoxChanging)
-                    return;
-
-                _resizing = true;
-
-                var selectedRegion = SelectedRegion;
-
-                WidthBox.Value = selectedRegion.Width;
-                HeightBox.Value = selectedRegion.Height;
-
-                _resizing = false;
-            }
-
-            SizeChanged += (S, E) => SizeChange();
-
-            SizeChange();
-
-            WidthBox.ValueChanged += (S, E) =>
-            {
-                if (!_resizing && E.NewValue is int width)
-                {
-                    _widthBoxChanging = true;
-
-                    var selectedRegion = SelectedRegion;
-
-                    selectedRegion.Width = width;
-
-                    SelectedRegion = selectedRegion;
-
-                    _widthBoxChanging = false;
-                }
-            };
-
-            HeightBox.ValueChanged += (S, E) =>
-            {
-                if (!_resizing && E.NewValue is int height)
-                {
-                    _heightBoxChanging = true;
-
-                    var selectedRegion = SelectedRegion;
-
-                    selectedRegion.Height = height;
-
-                    SelectedRegion = selectedRegion;
-
-                    _heightBoxChanging = false;
-                }
-            };
-        }
-
         void CloseButton_Click(object Sender, RoutedEventArgs E)
         {
             Hide();
@@ -145,13 +80,6 @@ namespace Captura
         }
 
         public event Action SelectorHidden;
-        
-        protected override void OnLocationChanged(EventArgs E)
-        {
-            base.OnLocationChanged(E);
-
-            UpdateRegion();
-        }
 
         // Prevent Maximizing
         protected override void OnStateChanged(EventArgs E)
@@ -164,52 +92,9 @@ namespace Captura
 
         protected override void OnRenderSizeChanged(SizeChangedInfo SizeInfo)
         {
-            UpdateRegion();
-
             InkCanvas.Strokes.Clear();
 
             base.OnRenderSizeChanged(SizeInfo);
-        }
-
-        void UpdateRegion()
-        {
-            _region = Dispatcher.Invoke(() =>
-                new Rectangle((int)((Left + LeftOffset) * Dpi.X),
-                    (int)((Top + TopOffset) * Dpi.Y),
-                    (int)((Region.ActualWidth - 2 * LeftOffset) * Dpi.X),
-                    (int)((Region.ActualHeight - 2 * TopOffset) * Dpi.Y)));
-
-            UpdateRegionName?.Invoke(_region.ToString().Replace("{", "")
-                .Replace("}", "")
-                .Replace(",", ", "));
-        }
-
-        public event Action<string> UpdateRegionName;
-
-        // Ignoring Borders and Header
-        public Rectangle SelectedRegion
-        {
-            get
-            {
-                if (_region == null)
-                    UpdateRegion();
-
-                return _region.Value;
-            }
-            set
-            {
-                if (value == Rectangle.Empty)
-                    return;
-                
-                Dispatcher.Invoke(() =>
-                {
-                    Region.Width = value.Width / Dpi.X + 2 * LeftOffset;
-                    Region.Height = value.Height / Dpi.Y + 2 * TopOffset;
-
-                    Left = value.Left / Dpi.X - LeftOffset;
-                    Top = value.Top / Dpi.Y - TopOffset;
-                });
-            }
         }
 
         public void Lock()
@@ -245,7 +130,7 @@ namespace Captura
             if (win == null)
                 return;
 
-            SelectedRegion = win.Rectangle;
+            _viewModel.SelectedRegion = win.Rectangle;
 
             // Prevent going outside
             if (Left < 0)
@@ -272,80 +157,30 @@ namespace Captura
 
         void Thumb_OnDragDelta(object Sender, DragDeltaEventArgs E)
         {
+            void DoTop() => _viewModel.ResizeFromTop(E.VerticalChange);
+
+            void DoLeft() => _viewModel.ResizeFromLeft(E.HorizontalChange);
+
+            void DoBottom()
+            {
+                var height = Region.Height + E.VerticalChange;
+
+                if (height > 0)
+                    Region.Height = height;
+            }
+
+            void DoRight()
+            {
+                var width = Region.Width + E.HorizontalChange;
+
+                if (width > 0)
+                    Region.Width = width;
+            }
+
             if (Sender is FrameworkElement element)
             {
-                void DoTop()
-                {
-                    var oldTop = Top;
-                    var oldBottom = Top + Region.Height;
-                    var top = Top + E.VerticalChange;
-
-                    if (top > 0)
-                        Top = top;
-                    else
-                    {
-                        Top = 0;
-                        Region.Width = oldBottom;
-                        return;
-                    }
-
-                    var height = Region.Height - E.VerticalChange;
-
-                    if (height > Region.MinHeight)
-                        Region.Height = height;
-                    else Top = oldTop;
-                }
-
-                void DoLeft()
-                {
-                    var oldLeft = Left;
-                    var oldRight = Left + Region.Width;
-                    var left = Left + E.HorizontalChange;
-
-                    if (left > 0)
-                        Left = left;
-                    else
-                    {
-                        Left = 0;
-                        Region.Width = oldRight;
-                        return;
-                    }
-
-                    var width = Region.Width - E.HorizontalChange;
-
-                    if (width > Region.MinWidth)
-                        Region.Width = width;
-                    else Left = oldLeft;
-                }
-
-                void DoBottom()
-                {
-                    var height = Region.Height + E.VerticalChange;
-
-                    if (height > 0)
-                        Region.Height = height;
-                }
-
-                void DoRight()
-                {
-                    var width = Region.Width + E.HorizontalChange;
-
-                    if (width > 0)
-                        Region.Width = width;
-                }
-
-                void DoMove()
-                {
-                    Left += E.HorizontalChange;
-                    Top += E.VerticalChange;
-                }
-
                 switch (element.Tag)
                 {
-                    case "Top":
-                        DoMove();
-                        break;
-
                     case "Bottom":
                         DoBottom();
                         break;

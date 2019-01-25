@@ -15,6 +15,8 @@
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
         Name="This"
+        Left="{Binding RegionSelectorViewModel.LeftDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+        Top="{Binding RegionSelectorViewModel.TopDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
         ShowInTaskbar="False">
     <Grid>
         <Grid.Resources>
@@ -36,10 +38,8 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <DockPanel Height="500"
-                   Width="400"
-                   MinHeight="200"
-                   MinWidth="300"
+        <DockPanel Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                   Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                    Name="Region">
             <DockPanel.Resources>
                 <Style TargetType="Border">
@@ -120,7 +120,7 @@
         <Thumb VerticalAlignment="Top"
                Height="2"
                Cursor="SizeAll"
-               Tag="Top"/>
+               PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"/>
 
         <Grid Grid.Row="0"
               Grid.Column="0"
@@ -176,7 +176,8 @@
                     <xctk:IntegerUpDown Width="60"
                                         DockPanel.Dock="Right"
                                         Margin="3"
-                                        Name="HeightBox"/>
+                                        x:Name="HeightBox"
+                                        Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
 
                     <Label Content="x"
                            DockPanel.Dock="Right"
@@ -185,7 +186,8 @@
                     <xctk:IntegerUpDown Width="60"
                                         DockPanel.Dock="Right"
                                         Margin="3"
-                                        Name="WidthBox"/>
+                                        x:Name="WidthBox"
+                                        Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
                 </DockPanel>
 
                 <Border.Style>
