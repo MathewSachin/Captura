@@ -26,9 +26,10 @@
                 <Label Content="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"
                        FontWeight="Bold"/>
             </DockPanel>
-            
+
             <Border BorderThickness="0.5"
                     BorderBrush="{DynamicResource ModernButtonBorder}"
+                    Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"
                     Padding="5,2"
                     Margin="0,2">
                 <StackPanel Orientation="Horizontal">
@@ -42,6 +43,44 @@
             </Border>
 
             <captura:VideoSourceKindList/>
+
+            <Grid Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="X:"
+                       Margin="0,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="1"
+                                    Minimum="{x:Null}"
+                                    Value="{Binding RegionSelectorViewModel.Left, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="Y:"
+                       Grid.Column="2"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="3"
+                                    Minimum="{x:Null}"
+                                    Value="{Binding RegionSelectorViewModel.Top, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="W:"
+                       Grid.Column="4"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="5"
+                                    Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="H:"
+                       Grid.Column="6"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="7"
+                                    Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+            </Grid>
 
             <CheckBox Margin="0,5"
                       Content="Drawing Tools"

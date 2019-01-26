@@ -26,7 +26,6 @@ namespace Captura
             });
 
             _regionItem = new RegionItem(this);
-            ViewModel.UpdateRegionName += M => _regionItem.Name = M;
         }
 
         public bool SelectorVisible
