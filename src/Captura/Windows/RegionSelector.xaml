@@ -14,7 +14,6 @@
         Topmost="True"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
-        Name="This"
         Left="{Binding RegionSelectorViewModel.LeftDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
         Top="{Binding RegionSelectorViewModel.TopDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
         ShowInTaskbar="False">
@@ -170,31 +169,41 @@
               Margin="0,10,0,0">
             <Border BorderThickness="1"
                     Name="SizeBorder"
-                    BorderBrush="{DynamicResource Accent}">
-                <DockPanel HorizontalAlignment="Right"
-                           Background="{DynamicResource WindowBackground}">
-                    <xctk:IntegerUpDown Width="60"
-                                        DockPanel.Dock="Right"
-                                        Margin="3"
-                                        x:Name="HeightBox"
-                                        Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
-
-                    <Label Content="x"
-                           DockPanel.Dock="Right"
-                           Margin="7,3"/>
+                    BorderBrush="{DynamicResource Accent}"
+                    VerticalAlignment="Top">
+                <Grid HorizontalAlignment="Right"
+                      Background="{DynamicResource WindowBackground}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
                     <xctk:IntegerUpDown Width="60"
-                                        DockPanel.Dock="Right"
                                         Margin="3"
                                         x:Name="WidthBox"
                                         Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
-                </DockPanel>
+
+                    <Label Content="x"
+                           Margin="7,3"
+                           Grid.Column="1"/>
+
+                    <xctk:IntegerUpDown Width="60"
+                                        Margin="3"
+                                        x:Name="HeightBox"
+                                        Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                        Grid.Column="2"/>
+
+                    <Grid.LayoutTransform>
+                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                    </Grid.LayoutTransform>
+                </Grid>
 
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Width, ElementName=This, Converter={StaticResource IsLessThanConverter}, ConverterParameter=500}" Value="True">
+                            <DataTrigger Binding="{Binding Width, ElementName=Region, Converter={StaticResource IsLessThanConverter}, ConverterParameter=400}" Value="True">
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                                 <Setter Property="Margin" Value="0,40,0,0"/>
                             </DataTrigger>

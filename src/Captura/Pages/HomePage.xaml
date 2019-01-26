@@ -73,13 +73,15 @@
                        Grid.Column="4"
                        Margin="5,0,3,0"/>
                 <xctk:IntegerUpDown Grid.Column="5"
-                                    Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+                                    Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
 
                 <Label Content="H:"
                        Grid.Column="6"
                        Margin="5,0,3,0"/>
                 <xctk:IntegerUpDown Grid.Column="7"
-                                    Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+                                    Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 
             <CheckBox Margin="0,5"
