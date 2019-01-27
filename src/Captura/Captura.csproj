@@ -66,6 +66,9 @@
     <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
     <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\HotkeyListener.cs" />
+    <Compile Include="Controls\ModernPasswordBox.xaml.cs">
+      <DependentUpon>ModernPasswordBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -284,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\VideoSourceKindList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ModernPasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
