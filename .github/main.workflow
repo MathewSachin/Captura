@@ -6,4 +6,7 @@ workflow "Test" {
 action "Run Cake task" {
   uses = "gep13/cake-actions/task@master"
   args = "Test"
+  env = {
+    CAKE_SCRIPT = "./build.cake"
+  }
 }
