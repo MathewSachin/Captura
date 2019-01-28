@@ -29,6 +29,11 @@ namespace Captura.ViewModels
                 .Select(M => M > 1)
                 .ToReadOnlyReactivePropertySlim();
 
+            IsFFmpeg = VideoWritersViewModel
+                .ObserveProperty(M => M.SelectedVideoWriterKind)
+                .Select(M => M is FFmpegWriterProvider || M is StreamingWriterProvider)
+                .ToReadOnlyReactivePropertySlim();
+
             IsGifMode = VideoWritersViewModel
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
                 .Select(M => M is GifWriterProvider)
@@ -88,6 +93,8 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> MultipleVideoWriters { get; }
 
         public IReadOnlyReactiveProperty<bool> IsGifMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsFFmpeg { get; }
 
         public IReadOnlyReactiveProperty<bool> CanSelectFrameRate { get; }
 

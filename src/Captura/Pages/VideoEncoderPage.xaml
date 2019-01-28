@@ -39,26 +39,34 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ComboBox VerticalAlignment="Center"
-                      Margin="0,5"
-                      ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters, Source={StaticResource ServiceLocator}}" 
-                      SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                      Name="VideoWriterComboBox"
-                      Visibility="{Binding ViewConditions.MultipleVideoWriters.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
-                <ComboBox.ToolTip>
-                    <StackPanel MinWidth="200">
-                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay, Source={StaticResource ServiceLocator}}"
-                               FontWeight="Bold"/>
+            <DockPanel VerticalAlignment="Center"
+                       Margin="0,5"
+                       Visibility="{Binding ViewConditions.MultipleVideoWriters.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Button DockPanel.Dock="Right"
+                        Margin="5,0,0,0"
+                        Visibility="{Binding ViewConditions.IsFFmpeg.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Content="{Binding FFmpegLog, Source={StaticResource Loc}}"
+                        Click="OpenFFmpegLog"
+                        Padding="10,0"/>
 
-                        <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter.Extension, Mode=OneWay, Source={StaticResource ServiceLocator}}"
-                               ContentStringFormat="{}File extension: {0}"/>
+                <ComboBox ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters, Source={StaticResource ServiceLocator}}" 
+                          SelectedValue="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                          Name="VideoWriterComboBox">
+                    <ComboBox.ToolTip>
+                        <StackPanel MinWidth="200">
+                            <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter, Mode=OneWay, Source={StaticResource ServiceLocator}}"
+                                   FontWeight="Bold"/>
 
-                        <TextBlock Text="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Mode=OneWay, Source={StaticResource ServiceLocator}}"
-                                   Visibility="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}, Source={StaticResource ServiceLocator}}"/>
-                    </StackPanel>
-                </ComboBox.ToolTip>
-            </ComboBox>
+                            <Label Content="{Binding VideoWritersViewModel.SelectedVideoWriter.Extension, Mode=OneWay, Source={StaticResource ServiceLocator}}"
+                                   ContentStringFormat="{}File extension: {0}"/>
+
+                            <TextBlock Text="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Mode=OneWay, Source={StaticResource ServiceLocator}}"
+                                       Visibility="{Binding VideoWritersViewModel.SelectedVideoWriter.Description, Converter={StaticResource NotNullConverter}, Source={StaticResource ServiceLocator}}"/>
+                        </StackPanel>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+            </DockPanel>
 
             <CheckBox Margin="0,5"
                       Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
