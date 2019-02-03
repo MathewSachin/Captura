@@ -1,6 +1,6 @@
-﻿namespace Captura.Native
+﻿namespace Captura
 {
-    public enum WindowStyles : long
+    enum WindowStyles : long
     {
         Child = 0x40000000,
         ToolWindow = 0x00000080,

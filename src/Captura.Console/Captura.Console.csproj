@@ -14,7 +14,6 @@
     <ApplicationIcon>..\Captura\Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>

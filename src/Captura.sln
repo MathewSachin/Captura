@@ -12,9 +12,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Core", "Captura.Cor
 		{222C215B-663F-4BD6-9B3E-8FA99C867B22} = {222C215B-663F-4BD6-9B3E-8FA99C867B22}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Console", "Captura.Console\Captura.Console.csproj", "{CC710D4D-DFE8-4B31-BD7E-59AD80737E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{AF998FD2-10BB-4CB2-802C-B44879776544}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
 EndProject
@@ -44,7 +44,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Imgur", "Captura.Im
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.ViewCore", "Captura.ViewCore\Captura.ViewCore.csproj", "{AD000798-A5C9-4195-A0C7-55DC80EE8C5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.YouTube", "Captura.YouTube\Captura.YouTube.csproj", "{224E699E-2B95-4194-BE79-4931815D8F21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.YouTube", "Captura.YouTube\Captura.YouTube.csproj", "{224E699E-2B95-4194-BE79-4931815D8F21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Windows", "Captura.Windows\Captura.Windows.csproj", "{5B10DDF4-246B-47D0-82BF-95BF3256946E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +134,10 @@ Global
 		{224E699E-2B95-4194-BE79-4931815D8F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224E699E-2B95-4194-BE79-4931815D8F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{224E699E-2B95-4194-BE79-4931815D8F21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Screna;
 
 namespace Captura.ViewModels
 {
@@ -22,7 +22,8 @@ namespace Captura.ViewModels
             ClipboardWriter ClipboardWriter,
             ImageUploadWriter ImgurWriter,
             ScreenShotModel ScreenShotModel,
-            VideoSourcesViewModel VideoSourcesViewModel) : base(Settings, Loc)
+            VideoSourcesViewModel VideoSourcesViewModel,
+            IPlatformServices PlatformServices) : base(Settings, Loc)
         {
             this.DiskWriter = DiskWriter;
             this.ClipboardWriter = ClipboardWriter;
@@ -34,8 +35,15 @@ namespace Captura.ViewModels
                 .ToReactiveCommand()
                 .WithSubscribe(() => ScreenShotModel.CaptureScreenShot());
 
-            ScreenShotActiveCommand = new DelegateCommand(async () => await ScreenShotModel.SaveScreenShot(ScreenShotModel.ScreenShotWindow(Window.ForegroundWindow)));
-            ScreenShotDesktopCommand = new DelegateCommand(async () => await ScreenShotModel.SaveScreenShot(ScreenShotModel.ScreenShotWindow(Window.DesktopWindow)));
+            async Task ScreenShotWindow(IWindow Window)
+            {
+                var img = ScreenShotModel.ScreenShotWindow(Window);
+
+                await ScreenShotModel.SaveScreenShot(img);
+            }
+
+            ScreenShotActiveCommand = new DelegateCommand(async () => await ScreenShotWindow(PlatformServices.ForegroundWindow));
+            ScreenShotDesktopCommand = new DelegateCommand(async () => await ScreenShotWindow(PlatformServices.DesktopWindow));
             ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotRegion());
             ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotWindow());
             ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotScreen());

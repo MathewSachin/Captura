@@ -3,10 +3,10 @@ using System.Runtime.InteropServices;
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Captura.Native
+namespace Captura
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct ShFileOpStruct
+    struct ShFileOpStruct
     {
         public IntPtr hwnd;
 

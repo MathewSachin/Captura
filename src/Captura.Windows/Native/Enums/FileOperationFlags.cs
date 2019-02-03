@@ -1,10 +1,10 @@
 ﻿using System;
 // ReSharper disable UnusedMember.Global
 
-namespace Captura.Native
+namespace Captura
 {
     [Flags]
-    public enum FileOperationFlags
+    enum FileOperationFlags
     {
         MultiDestFiles = 0x1,
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Captura.Native
+namespace Captura
 {
-    public static class Shell32
+    static class Shell32
     {
         const string DllName = "shell32.dll";
 

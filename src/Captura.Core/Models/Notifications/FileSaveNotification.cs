@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using Captura.Models;
-using Captura.Native;
 
 namespace Captura
 {
@@ -38,7 +37,9 @@ namespace Captura
             {
                 if (File.Exists(_recentItem.FileName))
                 {
-                    if (Shell32.FileOperation(_recentItem.FileName, FileOperationType.Delete, 0) != 0)
+                    var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                    if (!platformServices.DeleteFile(_recentItem.FileName))
                         return;
                 }
 

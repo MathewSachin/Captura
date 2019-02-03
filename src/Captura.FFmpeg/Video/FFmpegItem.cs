@@ -60,7 +60,7 @@ namespace Captura.Models
         public static FFmpegItem H264_NVENC { get; } = new FFmpegItem(
             "NVenc: Mp4 (H.264, AAC)",
             () => ".mp4",
-            VideoQuality => "-c:v h264_nvenc -profile:v high444p -pixel_format yuv444p -preset fast",
+            VideoQuality => "-c:v h264_nvenc -pixel_format yuv444p -preset fast",
             FFmpegAudioItem.Aac,
             NVencSupport);
 
@@ -68,7 +68,7 @@ namespace Captura.Models
         public static FFmpegItem HEVC_NVENC { get; } = new FFmpegItem(
             "NVenc: Mp4 (HEVC, AAC)",
             () => ".mp4",
-            VideoQuality => "-c:v hevc_nvenc -profile:v high444p -pixel_format yuv444p -preset slow",
+            VideoQuality => "-c:v hevc_nvenc -pixel_format yuv444p -preset fast",
             FFmpegAudioItem.Aac,
             NVencSupport);
 

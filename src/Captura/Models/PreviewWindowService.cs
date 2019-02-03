@@ -68,7 +68,7 @@ namespace Captura.Models
                             _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
                             if (_d3D9PreviewAssister == null)
                             {
-                                _d3D9PreviewAssister = new D3D9PreviewAssister();
+                                _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
                                 _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
 
                                 using (var surface = _texture.GetSurfaceLevel(0))

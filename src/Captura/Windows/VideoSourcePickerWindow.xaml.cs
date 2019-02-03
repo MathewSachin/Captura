@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -17,7 +15,6 @@ using Color = System.Windows.Media.Color;
 using Cursors = System.Windows.Input.Cursors;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using Window = Screna.Window;
 
 namespace Captura
 {
@@ -45,19 +42,21 @@ namespace Captura
 
             UpdateBackground();
 
-            _screens = Screen.AllScreens;
-            _windows = Window.EnumerateVisible().ToArray();
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            _screens = platformServices.EnumerateScreens().ToArray();
+            _windows = platformServices.EnumerateWindows().ToArray();
 
             ShowCancelText();
         }
 
-        readonly Screen[] _screens;
+        readonly IScreen[] _screens;
 
-        readonly Window[] _windows;
+        readonly IWindow[] _windows;
 
-        public Screen SelectedScreen { get; private set; }
+        public IScreen SelectedScreen { get; private set; }
 
-        public Window SelectedWindow { get; private set; }
+        public IWindow SelectedWindow { get; private set; }
 
         void UpdateBackground()
         {
@@ -88,10 +87,12 @@ namespace Captura
         {
             foreach (var screen in _screens)
             {
-                var left = -Left + screen.Bounds.Left / Dpi.X;
-                var top = -Top + screen.Bounds.Top / Dpi.Y;
-                var width = screen.Bounds.Width / Dpi.X;
-                var height = screen.Bounds.Height / Dpi.Y;
+                var bounds = screen.Rectangle;
+
+                var left = -Left + bounds.Left / Dpi.X;
+                var top = -Top + bounds.Top / Dpi.Y;
+                var width = bounds.Width / Dpi.X;
+                var height = bounds.Height / Dpi.Y;
 
                 var container = new ContentControl
                 {
@@ -181,9 +182,9 @@ namespace Captura
             switch (_mode)
             {
                 case VideoPickerMode.Screen:
-                    SelectedScreen = _screens.FirstOrDefault(M => M.Bounds.Contains(point));
+                    SelectedScreen = _screens.FirstOrDefault(M => M.Rectangle.Contains(point));
 
-                    UpdateBorderAndCursor(SelectedScreen?.Bounds);
+                    UpdateBorderAndCursor(SelectedScreen?.Rectangle);
                     break;
 
                 case VideoPickerMode.Window:
@@ -213,7 +214,7 @@ namespace Captura
 
             picker.ShowDialog();
 
-            return picker.SelectedScreen == null ? null : new ScreenWrapper(picker.SelectedScreen);
+            return picker.SelectedScreen;
         }
 
         public static IWindow PickWindow(Predicate<IWindow> Filter)

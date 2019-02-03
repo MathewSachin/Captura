@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Screna;
 
 namespace Captura.Models
 {
@@ -10,34 +9,37 @@ namespace Captura.Models
     {
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IRegionProvider _regionProvider;
+        readonly IPlatformServices _platformServices;
 
         public WindowSourceProvider(LanguageManager Loc,
             IVideoSourcePicker VideoSourcePicker,
             IRegionProvider RegionProvider,
-            IIconSet Icons) : base(Loc)
+            IIconSet Icons,
+            IPlatformServices PlatformServices) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
             _regionProvider = RegionProvider;
+            _platformServices = PlatformServices;
 
             Icon = Icons.Window;
         }
 
-        public bool PickWindow()
+        bool PickWindow()
         {
             var window = _videoSourcePicker.PickWindow(M => M.Handle != _regionProvider.Handle);
 
             if (window == null)
                 return false;
 
-            _source = new WindowItem(new Window(window.Handle));
+            _source = new WindowItem(window);
 
             RaisePropertyChanged(nameof(Source));
             return true;
         }
 
-        public void Set(IntPtr Handle)
+        void Set(IWindow Window)
         {
-            _source = new WindowItem(new Window(Handle));
+            _source = new WindowItem(Window);
             RaisePropertyChanged(nameof(Source));
         }
 
@@ -59,13 +61,13 @@ The video is of the initial size of the window.";
 
         public override bool Deserialize(string Serialized)
         {
-            var window = Window.EnumerateVisible()
+            var window = _platformServices.EnumerateWindows()
                 .FirstOrDefault(M => M.Title == Serialized);
 
             if (window == null)
                 return false;
 
-            Set(window.Handle);
+            Set(window);
 
             return true;
         }
@@ -77,7 +79,7 @@ The video is of the initial size of the window.";
 
             var handle = new IntPtr(int.Parse(Arg.Substring(4)));
 
-            Set(handle);
+            Set(_platformServices.GetWindow(handle));
 
             return true;
         }

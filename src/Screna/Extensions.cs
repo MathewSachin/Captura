@@ -153,8 +153,6 @@ namespace Screna
 
             return final;
         }
-        
-        internal static Rectangle ToRectangle(this RECT R) => Rectangle.FromLTRB(R.Left, R.Top, R.Right, R.Bottom);
 
         /// <summary>
         /// Creates a Transparent Bitmap from a combination of a Bitmap on a White Background and another on a Black Background

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using Screna;
 using System;
-using System.Linq;
-using Monitor = System.Windows.Forms.Screen;
 
 namespace Captura.Models
 {
@@ -16,16 +13,9 @@ namespace Captura.Models
             this.Screen = Screen;
         }
 
-        public static int Count => Monitor.AllScreens.Length;
-
         public Bitmap Capture(bool Cursor)
         {
             return ScreenShot.Capture(Screen, Cursor);
-        }
-
-        public static IEnumerable<ScreenItem> Enumerate()
-        {
-            return Monitor.AllScreens.Select(M => new ScreenItem(new ScreenWrapper(M)));
         }
 
         public string Name => Screen.DeviceName;

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Input;
-using Captura.Native;
 using Screna;
 
 namespace Captura.Models
@@ -108,7 +107,9 @@ namespace Captura.Models
         {
             if (File.Exists(FileName))
             {
-                if (Shell32.FileOperation(FileName, FileOperationType.Delete, 0) != 0)
+                var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                if (!platformServices.DeleteFile(FileName))
                     return;
             }
 

@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace Captura.Models
 {
@@ -8,17 +7,20 @@ namespace Captura.Models
     public class ScreenSourceProvider : VideoSourceProviderBase
     {
         readonly IVideoSourcePicker _videoSourcePicker;
+        readonly IPlatformServices _platformServices;
         
         public ScreenSourceProvider(LanguageManager Loc,
             IVideoSourcePicker VideoSourcePicker,
-            IIconSet Icons) : base(Loc)
+            IIconSet Icons,
+            IPlatformServices PlatformServices) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
+            _platformServices = PlatformServices;
 
             Icon = Icons.Screen;
         }
 
-        public bool PickScreen()
+        bool PickScreen()
         {
             var screen = _videoSourcePicker.PickScreen();
 
@@ -30,12 +32,7 @@ namespace Captura.Models
             return true;
         }
 
-        public void Set(int Index)
-        {
-            Set(new ScreenWrapper(Screen.AllScreens[Index]));
-        }
-
-        public void Set(IScreen Screen)
+        void Set(IScreen Screen)
         {
             _source = new ScreenItem(Screen);
             RaisePropertyChanged(nameof(Source));
@@ -53,10 +50,12 @@ namespace Captura.Models
 
         public override bool OnSelect()
         {
+            var screens = _platformServices.EnumerateScreens().ToArray();
+
             // Select first screen if there is only one
-            if (ScreenItem.Count == 1)
+            if (screens.Length == 1)
             {
-                Set(0);
+                Set(screens[0]);
                 return true;
             }
 
@@ -65,8 +64,7 @@ namespace Captura.Models
 
         public override bool Deserialize(string Serialized)
         {
-            var screen = ScreenItem.Enumerate()
-                .Select(M => M.Screen)
+            var screen = _platformServices.EnumerateScreens()
                 .FirstOrDefault(M => M.DeviceName == Serialized);
 
             if (screen == null)
@@ -84,10 +82,12 @@ namespace Captura.Models
 
             var index = int.Parse(Arg.Substring(7));
 
-            if (index >= ScreenItem.Count)
+            var screens = _platformServices.EnumerateScreens().ToArray();
+
+            if (index >= screens.Length)
                 return false;
 
-            Set(index);
+            Set(screens[index]);
 
             return true;
         }

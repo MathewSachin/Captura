@@ -40,6 +40,7 @@ namespace Captura
             Binder.Bind<IIconSet, MaterialDesignIcons>();
             Binder.Bind<IImgurApiKeys, ApiKeys>();
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
+            Binder.Bind<IPlatformServices, WindowsPlatformServices>();
 
             Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<FFmpegLog>();

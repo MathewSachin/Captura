@@ -9,25 +9,28 @@ namespace Captura.Models
     public class DeskDuplSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
         readonly IVideoSourcePicker _videoSourcePicker;
+        readonly IPlatformServices _platformServices;
 
         public DeskDuplSourceProvider(LanguageManager Loc,
             IVideoSourcePicker VideoSourcePicker,
-            IIconSet Icons)
+            IIconSet Icons,
+            IPlatformServices PlatformServices)
         {
             _videoSourcePicker = VideoSourcePicker;
+            _platformServices = PlatformServices;
             Icon = Icons.Game;
 
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
-        public bool PickScreen()
+        bool PickScreen()
         {
             var screen = _videoSourcePicker.PickScreen();
 
             return screen != null && Set(screen);
         }
 
-        public bool SelectFirst()
+        bool SelectFirst()
         {
             var output = new Factory1()
                 .Adapters1
@@ -43,7 +46,7 @@ namespace Captura.Models
             return true;
         }
 
-        public bool Set(IScreen Screen)
+        bool Set(IScreen Screen)
         {
             var outputs = new Factory1()
                             .Adapters1
@@ -96,7 +99,7 @@ If it does not work, try running Captura on the Integrated Graphics card.";
         public bool OnSelect()
         {
             // Select first screen if there is only one
-            if (ScreenItem.Count == 1 && SelectFirst())
+            if (_platformServices.EnumerateScreens().Count() == 1 && SelectFirst())
             {
                 return true;
             }
@@ -117,8 +120,7 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
         public bool Deserialize(string Serialized)
         {
-            var screen = ScreenItem.Enumerate()
-                .Select(M => M.Screen)
+            var screen = _platformServices.EnumerateScreens()
                 .FirstOrDefault(M => M.DeviceName == Serialized);
 
             if (screen == null)
@@ -136,10 +138,12 @@ If it does not work, try running Captura on the Integrated Graphics card.";
 
             var index = int.Parse(Arg.Substring(9));
 
-            if (index >= ScreenItem.Count)
+            var screens = _platformServices.EnumerateScreens().ToArray();
+
+            if (index >= screens.Length)
                 return false;
 
-            Set(ScreenWrapper.Get(index));
+            Set(screens[index]);
 
             return true;
         }

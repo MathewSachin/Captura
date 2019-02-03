@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Captura.Native;
 
-namespace Captura.Native
+namespace Captura
 {
-    public static class DwmApi
+    static class DwmApi
     {
         const string DllName = "dwmapi.dll";
 

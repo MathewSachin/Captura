@@ -4,15 +4,17 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Captura;
 using Captura.Models;
 using Captura.Native;
+using User32 = Captura.User32;
 
 namespace Screna
 {
     /// <summary>
     /// Minimal representation of a Window.
     /// </summary>
-    public class Window : IWindow
+    class Window : IWindow
     {
         /// <summary>
         /// Creates a new instance of <see cref="Window"/>.
@@ -83,11 +85,6 @@ namespace Screna
         /// Gets the Foreground Window.
         /// </summary>
         public static Window ForegroundWindow => new Window(User32.GetForegroundWindow());
-        
-        /// <summary>
-        /// Gets the Taskbar Window - Shell_TrayWnd.
-        /// </summary>
-        public static Window Taskbar { get; } = new Window(User32.FindWindow("Shell_TrayWnd", null));
 
         /// <summary>
         /// Enumerates all Windows.

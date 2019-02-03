@@ -19,6 +19,7 @@ namespace Captura.ViewModels
         readonly IAudioPlayer _audioPlayer;
         readonly Settings _settings;
         readonly LanguageManager _loc;
+        readonly IPlatformServices _platformServices;
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
@@ -30,7 +31,8 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
-            LanguageManager Loc)
+            LanguageManager Loc,
+            IPlatformServices PlatformServices)
         {
             _videoSourcesViewModel = VideoSourcesViewModel;
             _systemTray = SystemTray;
@@ -40,6 +42,7 @@ namespace Captura.ViewModels
             _audioPlayer = AudioPlayer;
             _settings = Settings;
             _loc = Loc;
+            _platformServices = PlatformServices;
 
             AvailableImageWriters = ImageWriters.ToList();
 
@@ -100,7 +103,7 @@ namespace Captura.ViewModels
         {
             _systemTray.HideNotification();
 
-            if (Window.Handle == Screna.Window.DesktopWindow.Handle)
+            if (Window.Handle == _platformServices.DesktopWindow.Handle)
             {
                 return ScreenShot.Capture(_settings.IncludeCursor);
             }
@@ -142,7 +145,7 @@ namespace Captura.ViewModels
             switch (_videoSourcesViewModel.SelectedVideoSourceKind)
             {
                 case WindowSourceProvider _:
-                    IWindow hWnd = Window.DesktopWindow;
+                    var hWnd = _platformServices.DesktopWindow;
 
                     switch (selectedVideoSource)
                     {

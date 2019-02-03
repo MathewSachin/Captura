@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Screna;
 using static System.Console;
 
 namespace Captura
@@ -11,12 +10,15 @@ namespace Captura
 
         readonly IWebCamProvider _webcam;
         readonly AudioSource _audioSource;
+        readonly IPlatformServices _platformServices;
 
         public ConsoleLister(IWebCamProvider Webcam,
-            AudioSource AudioSource)
+            AudioSource AudioSource,
+            IPlatformServices PlatformServices)
         {
             _webcam = Webcam;
             _audioSource = AudioSource;
+            _platformServices = PlatformServices;
         }
 
         public void List()
@@ -88,16 +90,16 @@ namespace Captura
             #endregion
         }
 
-        static void Screens()
+        void Screens()
         {
             WriteLine("AVAILABLE SCREENS" + Underline);
 
             var j = 0;
 
             // First is Full Screen, Second is Screen Picker
-            foreach (var screen in ScreenItem.Enumerate())
+            foreach (var screen in _platformServices.EnumerateScreens())
             {
-                WriteLine($"{j.ToString().PadRight(2)}: {screen.Name}");
+                WriteLine($"{j.ToString().PadRight(2)}: {screen.DeviceName}");
 
                 ++j;
             }
@@ -105,12 +107,12 @@ namespace Captura
             WriteLine();
         }
 
-        static void Windows()
+        void Windows()
         {
             WriteLine("AVAILABLE WINDOWS" + Underline);
 
             // Window Picker is skipped automatically
-            foreach (var source in Window.EnumerateVisible())
+            foreach (var source in _platformServices.EnumerateWindows())
             {
                 WriteLine($"{source.Handle.ToString().PadRight(10)}: {source.Title}");
             }

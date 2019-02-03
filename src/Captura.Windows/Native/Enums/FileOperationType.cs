@@ -1,7 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
-namespace Captura.Native
+namespace Captura
 {
-    public enum FileOperationType
+    enum FileOperationType
     {
         Move = 0x1,
         Copy = 0x2,

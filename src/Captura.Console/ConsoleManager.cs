@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Captura.Models;
 using Captura.ViewModels;
-using Screna;
 using static System.Console;
 
 namespace Captura
@@ -24,6 +23,7 @@ namespace Captura
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
         readonly IWebCamProvider _webCamProvider;
         readonly VideoWritersViewModel _videoWritersViewModel;
+        readonly IPlatformServices _platformServices;
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
@@ -31,7 +31,9 @@ namespace Captura
             ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
-            IWebCamProvider WebCamProvider, VideoWritersViewModel VideoWritersViewModel)
+            IWebCamProvider WebCamProvider,
+            VideoWritersViewModel VideoWritersViewModel,
+            IPlatformServices PlatformServices)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -41,6 +43,7 @@ namespace Captura
             _videoSourceProviders = VideoSourceProviders;
             _webCamProvider = WebCamProvider;
             _videoWritersViewModel = VideoWritersViewModel;
+            _platformServices = PlatformServices;
 
             // Hide on Full Screen Screenshot doesn't work on Console
             Settings.UI.HideOnFullScreenShot = false;
@@ -147,7 +150,8 @@ namespace Captura
 
                 try
                 {
-                    var bmp = _screenShotModel.ScreenShotWindow(new Window(new IntPtr(ptr)));
+                    var win = _platformServices.GetWindow(new IntPtr(ptr));
+                    var bmp = _screenShotModel.ScreenShotWindow(win);
 
                     _screenShotModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
                 }
