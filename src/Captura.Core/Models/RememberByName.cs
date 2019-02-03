@@ -53,9 +53,6 @@ namespace Captura.Models
                 .Select(M => M.Name)
                 .ToArray();
 
-            // Remember ScreenShot Format
-            _settings.ScreenShots.ImageFormat = _screenShotModel.SelectedScreenShotImageFormat.ToString();
-
             // Remember ScreenShot Target
             _settings.ScreenShots.SaveTargets = _screenShotModel.AvailableImageWriters
                 .Where(M => M.Active)
@@ -122,15 +119,6 @@ namespace Captura.Models
                 {
                     source.Active = _settings.Audio.Speakers.Contains(source.Name);
                 }
-            }
-
-            // Restore ScreenShot Format
-            if (!string.IsNullOrEmpty(_settings.ScreenShots.ImageFormat))
-            {
-                var format = _screenShotModel.ScreenShotImageFormats.FirstOrDefault(F => F.ToString() == _settings.ScreenShots.ImageFormat);
-
-                if (format != null)
-                    _screenShotModel.SelectedScreenShotImageFormat = format;
             }
 
             // Restore ScreenShot Target

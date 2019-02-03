@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace Captura.Models
 {
@@ -50,6 +51,27 @@ namespace Captura.Models
             using (var path = RoundedRect(Bounds, CornerRadius))
             {
                 Graphics.FillPath(Brush, path);
+            }
+        }
+
+        public static ImageFormat ToDrawingImageFormat(this ImageFormats Format)
+        {
+            switch (Format)
+            {
+                case ImageFormats.Jpg:
+                    return ImageFormat.Jpeg;
+
+                case ImageFormats.Png:
+                    return ImageFormat.Png;
+
+                case ImageFormats.Gif:
+                    return ImageFormat.Gif;
+
+                case ImageFormats.Bmp:
+                    return ImageFormat.Bmp;
+
+                default:
+                    return ImageFormat.Png;
             }
         }
     }

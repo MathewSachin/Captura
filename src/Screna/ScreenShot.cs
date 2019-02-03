@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
+using Captura;
 using Captura.Models;
 
 namespace Screna
@@ -11,33 +11,11 @@ namespace Screna
     public static class ScreenShot
     {
         /// <summary>
-        /// Captures a Specific <see cref="Screen"/>.
-        /// </summary>
-        /// <param name="Screen">The <see cref="IScreen"/> to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(IScreen Screen, bool IncludeCursor = false)
-        {
-            if (Screen == null)
-                throw new ArgumentNullException(nameof(Screen));
-
-            return Capture(Screen.Rectangle, IncludeCursor);
-        }
-
-        public static Bitmap Capture(IWindow Window, bool IncludeCursor = false)
-        {
-            if (Window == null)
-                throw new ArgumentNullException(nameof(Window));
-
-            return Capture(Window.Rectangle, IncludeCursor);
-        }
-
-        /// <summary>
         /// Captures the entire Desktop.
         /// </summary>
         /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
         /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(bool IncludeCursor = false)
+        public static IBitmapImage Capture(bool IncludeCursor = false)
         {
             return Capture(WindowProvider.DesktopRectangle, IncludeCursor);
         }
@@ -47,7 +25,7 @@ namespace Screna
         /// </summary>
         /// <param name="Window">The <see cref="IWindow"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        public static Bitmap CaptureTransparent(IWindow Window, bool IncludeCursor = false)
+        public static IBitmapImage CaptureTransparent(IWindow Window, bool IncludeCursor = false)
         {
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
@@ -59,12 +37,12 @@ namespace Screna
             var r = backdrop.Rectangle;
 
             // Capture screenshot with white background
-            using (var whiteShot = Capture(r))
+            using (var whiteShot = CaptureInternal(r))
             {
                 backdrop.ShowBlack();
 
                 // Capture screenshot with black background
-                using (var blackShot = Capture(r))
+                using (var blackShot = CaptureInternal(r))
                 {
                     backdrop.Dispose();
 
@@ -80,18 +58,12 @@ namespace Screna
                             MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
                     }
 
-                    return transparentImage.CropEmptyEdges();
+                    return new DrawingImage(transparentImage.CropEmptyEdges());
                 }
             }
         }
 
-        /// <summary>
-        /// Captures a Specific Region.
-        /// </summary>
-        /// <param name="Region">A <see cref="Rectangle"/> specifying the Region to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
-        /// <returns>The Captured Image.</returns>
-        public static Bitmap Capture(Rectangle Region, bool IncludeCursor = false)
+        static Bitmap CaptureInternal(Rectangle Region, bool IncludeCursor = false)
         {
             var bmp = new Bitmap(Region.Width, Region.Height);
 
@@ -106,6 +78,17 @@ namespace Screna
             }
 
             return bmp;
+        }
+
+        /// <summary>
+        /// Captures a Specific Region.
+        /// </summary>
+        /// <param name="Region">A <see cref="Rectangle"/> specifying the Region to Capture.</param>
+        /// <param name="IncludeCursor">Whether to include the Mouse Cursor.</param>
+        /// <returns>The Captured Image.</returns>
+        public static IBitmapImage Capture(Rectangle Region, bool IncludeCursor = false)
+        {
+            return new DrawingImage(CaptureInternal(Region, IncludeCursor));
         }
     }
 }

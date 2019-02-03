@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Screna;
 
@@ -38,7 +36,7 @@ namespace Captura.Models
             LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public async Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             var response = await Save(Image, Format);
 
@@ -68,7 +66,7 @@ namespace Captura.Models
         }
 
         // Returns UploadResult on success, Exception on failure
-        public async Task<object> Save(Bitmap Image, ImageFormat Format)
+        public async Task<object> Save(IBitmapImage Image, ImageFormats Format)
         {
             var progressItem = new ImageUploadNotification();
             _systemTray.ShowNotification(progressItem);

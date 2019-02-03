@@ -182,9 +182,9 @@ namespace Screna
                         pixelB = b[x, y],
                         pixelF = f[x, y];
                     
-                    pixelF->Alpha = ToByte((pixelB->Red - pixelA->Red + 255 + pixelB->Green -
-                                            pixelA->Green + 255 + pixelB->Blue - pixelA->Blue +
-                                            255) / 3);
+                    pixelF->Alpha = ToByte((pixelB->Red - pixelA->Red + 255
+                                            + pixelB->Green - pixelA->Green + 255
+                                            + pixelB->Blue - pixelA->Blue + 255) / 3);
 
                     if (pixelF->Alpha > 0)
                     {

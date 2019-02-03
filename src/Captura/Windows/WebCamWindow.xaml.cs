@@ -32,8 +32,9 @@ namespace Captura
             {
                 var img = ServiceProvider.Get<IWebCamProvider>().Capture(GraphicsBitmapLoader.Instance);
                 
+                // HACK: Change IWebCamProvider to return IBitmapImage
                 if (img is Bitmap bmp)
-                    await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(bmp);
+                    await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(new DrawingImage(bmp));
             }
             catch { }
         }

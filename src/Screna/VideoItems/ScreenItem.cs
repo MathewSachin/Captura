@@ -13,11 +13,6 @@ namespace Captura.Models
             this.Screen = Screen;
         }
 
-        public Bitmap Capture(bool Cursor)
-        {
-            return ScreenShot.Capture(Screen, Cursor);
-        }
-
         public string Name => Screen.DeviceName;
 
         public override string ToString() => Name;

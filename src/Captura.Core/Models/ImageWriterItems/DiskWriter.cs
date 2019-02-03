@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Screna;
 
@@ -30,15 +28,13 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             try
             {
                 _settings.EnsureOutPath();
 
-                var extension = Format.Equals(ImageFormat.Icon) ? "ico"
-                    : Format.Equals(ImageFormat.Jpeg) ? "jpg"
-                    : Format.ToString().ToLower();
+                var extension = Format.ToString().ToLower();
 
                 var fileName = _settings.GetFileName(extension, FileName);
 

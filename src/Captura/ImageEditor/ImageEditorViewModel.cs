@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,7 +163,9 @@ namespace Captura
 
                 encoder.Save(ms);
 
-                using (var bitmap = new Bitmap(ms))
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
+
+                using (var bitmap = imgSystem.LoadBitmap(ms))
                 {
                     await bitmap.UploadImage();
                 }

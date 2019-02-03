@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Screna;
 
 namespace Captura.Models
 {
@@ -25,19 +26,25 @@ namespace Captura.Models
 
         public bool HasText => Clipboard.ContainsText();
 
-        public void SetImage(Image Bmp)
+        public void SetImage(IBitmapImage Bmp)
         {
             using (var pngStream = new MemoryStream())
             {
-                Bmp.Save(pngStream, ImageFormat.Png);
+                Bmp.Save(pngStream, ImageFormats.Png);
                 var pngClipboardData = new DataObject("PNG", pngStream);
 
                 using (var whiteS = new Bitmap(Bmp.Width, Bmp.Height, PixelFormat.Format24bppRgb))
                 {
+                    Image drawingImg;
+
+                    if (Bmp is DrawingImage drawingImage)
+                        drawingImg = drawingImage.Image;
+                    else drawingImg = Image.FromStream(pngStream);
+
                     using (var graphics = Graphics.FromImage(whiteS))
                     {
                         graphics.Clear(Color.White);
-                        graphics.DrawImage(Bmp, 0, 0, Bmp.Width, Bmp.Height);
+                        graphics.DrawImage(drawingImg, 0, 0, Bmp.Width, Bmp.Height);
                     }
 
                     // Add fallback for applications that don't support PNG from clipboard (eg. Photoshop or Paint)
@@ -49,7 +56,7 @@ namespace Captura.Models
             }
         }
 
-        public Image GetImage() => Clipboard.GetImage();
+        public IBitmapImage GetImage() => new DrawingImage(Clipboard.GetImage());
 
         public bool HasImage => Clipboard.ContainsImage();
     }

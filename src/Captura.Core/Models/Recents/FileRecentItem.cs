@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Input;
 using Screna;
@@ -75,9 +74,12 @@ namespace Captura.Models
                 return;
             }
 
-            var img = (Bitmap)Image.FromFile(FileName);
+            var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-            await img.UploadImage();
+            using (var img = imgSystem.LoadBitmap(FileName))
+            {
+                await img.UploadImage();
+            }
         }
 
         void OnCopyToClipboardExecute()
@@ -93,9 +95,12 @@ namespace Captura.Models
             {
                 var clipboard = ServiceProvider.Get<IClipboardService>();
 
-                var img = (Bitmap)Image.FromFile(FileName);
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                clipboard.SetImage(img);
+                using (var img = imgSystem.LoadBitmap(FileName))
+                {
+                    clipboard.SetImage(img);
+                }
             }
             catch (Exception e)
             {

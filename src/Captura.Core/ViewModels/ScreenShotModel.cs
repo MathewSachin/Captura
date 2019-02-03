@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 using Captura.Models;
@@ -66,7 +64,7 @@ namespace Captura.ViewModels
 
             if (window != null)
             {
-                var img = ScreenShot.Capture(window);
+                var img = ScreenShot.Capture(window.Rectangle);
 
                 await SaveScreenShot(img);
             }
@@ -78,13 +76,13 @@ namespace Captura.ViewModels
 
             if (screen != null)
             {
-                var img = ScreenShot.Capture(screen);
+                var img = ScreenShot.Capture(screen.Rectangle);
 
                 await SaveScreenShot(img);
             }
         }
 
-        public async Task SaveScreenShot(Bitmap Bmp, string FileName = null)
+        public async Task SaveScreenShot(IBitmapImage Bmp, string FileName = null)
         {
             _audioPlayer.Play(SoundKind.Shot);
 
@@ -92,14 +90,14 @@ namespace Captura.ViewModels
             {
                 var allTasks = AvailableImageWriters
                     .Where(M => M.Active)
-                    .Select(M => M.Save(Bmp, SelectedScreenShotImageFormat, FileName));
+                    .Select(M => M.Save(Bmp, _settings.ScreenShots.ImageFormat, FileName));
 
                 await Task.WhenAll(allTasks).ContinueWith(T => Bmp.Dispose());
             }
             else _systemTray.ShowNotification(new TextNotification(_loc.ImgEmpty));
         }
 
-        public Bitmap ScreenShotWindow(IWindow Window)
+        public IBitmapImage ScreenShotWindow(IWindow Window)
         {
             _systemTray.HideNotification();
 
@@ -110,7 +108,7 @@ namespace Captura.ViewModels
 
             try
             {
-                Bitmap bmp = null;
+                IBitmapImage bmp = null;
 
                 if (_settings.ScreenShots.WindowShotTransparent)
                 {
@@ -118,7 +116,7 @@ namespace Captura.ViewModels
                 }
 
                 // Capture without Transparency
-                return bmp ?? ScreenShot.Capture(Window, _settings.IncludeCursor);
+                return bmp ?? ScreenShot.Capture(Window.Rectangle, _settings.IncludeCursor);
             }
             catch
             {
@@ -135,9 +133,9 @@ namespace Captura.ViewModels
             await SaveScreenShot(bmp, FileName);
         }
 
-        public async Task<Bitmap> GetScreenShot()
+        public async Task<IBitmapImage> GetScreenShot()
         {
-            Bitmap bmp = null;
+            IBitmapImage bmp = null;
 
             var selectedVideoSource = _videoSourcesViewModel.SelectedVideoSourceKind?.Source;
             var includeCursor = _settings.IncludeCursor;
@@ -183,7 +181,7 @@ namespace Captura.ViewModels
 
                 case ScreenSourceProvider _:
                     if (selectedVideoSource is ScreenItem screen)
-                        bmp = screen.Capture(includeCursor);
+                        bmp = ScreenShot.Capture(screen.Screen.Rectangle, includeCursor);
                     break;
 
                 case RegionSourceProvider _:
@@ -192,35 +190,6 @@ namespace Captura.ViewModels
             }
 
             return bmp;
-        }
-
-        public IEnumerable<ImageFormat> ScreenShotImageFormats { get; } = new[]
-        {
-            ImageFormat.Png,
-            ImageFormat.Jpeg,
-            ImageFormat.Bmp,
-            ImageFormat.Tiff,
-            ImageFormat.Wmf,
-            ImageFormat.Exif,
-            ImageFormat.Gif,
-            ImageFormat.Icon,
-            ImageFormat.Emf
-        };
-
-        ImageFormat _screenShotImageFormat = ImageFormat.Png;
-
-        public ImageFormat SelectedScreenShotImageFormat
-        {
-            get => _screenShotImageFormat;
-            set
-            {
-                if (Equals(_screenShotImageFormat, value))
-                    return;
-
-                _screenShotImageFormat = value;
-
-                OnPropertyChanged();
-            }
         }
     }
 }

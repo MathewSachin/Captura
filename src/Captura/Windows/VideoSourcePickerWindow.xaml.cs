@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -63,7 +62,7 @@ namespace Captura
             using (var bmp = ScreenShot.Capture())
             {
                 var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormat.Png);
+                bmp.Save(stream, ImageFormats.Png);
 
                 stream.Seek(0, SeekOrigin.Begin);
 

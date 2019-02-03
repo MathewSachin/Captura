@@ -25,7 +25,7 @@ namespace DesktopDuplication
                 DeviceCreationFlags.BgraSupport,
                 FeatureLevel.Level_11_1);
 
-            // HACK: Don't know why but creating a separate device solves AccessViolationExceptions happening otherwise
+            // Separate Device required otherwise AccessViolationException happens
             using (var adapter = Output.GetParent<Adapter>())
                 _deviceForDeskDupl = new Device(adapter);
 

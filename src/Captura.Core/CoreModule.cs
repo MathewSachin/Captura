@@ -3,6 +3,7 @@ using System.Reflection;
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using Screna;
 
 namespace Captura
 {
@@ -41,6 +42,7 @@ namespace Captura
             Binder.Bind<IImgurApiKeys, ApiKeys>();
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
             Binder.Bind<IPlatformServices, WindowsPlatformServices>();
+            Binder.Bind<IImagingSystem, DrawingImagingSystem>();
 
             Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<FFmpegLog>();

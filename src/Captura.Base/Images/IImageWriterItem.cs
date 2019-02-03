@@ -1,12 +1,10 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Captura.Models
 {
     public interface IImageWriterItem
     {
-        Task Save(Bitmap Image, ImageFormat Format, string FileName);
+        Task Save(IBitmapImage Image, ImageFormats Format, string FileName);
 
         string Display { get; }
 

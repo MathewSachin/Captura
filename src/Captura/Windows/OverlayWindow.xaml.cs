@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -406,7 +404,7 @@ namespace Captura
         {
             var vm = ServiceProvider.Get<VideoSourcesViewModel>();
 
-            Bitmap bmp;
+            IBitmapImage bmp;
 
             switch (vm.SelectedVideoSourceKind?.Source)
             {
@@ -424,7 +422,7 @@ namespace Captura
             using (bmp)
             {
                 var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormat.Png);
+                bmp.Save(stream, ImageFormats.Png);
 
                 stream.Seek(0, SeekOrigin.Begin);
 

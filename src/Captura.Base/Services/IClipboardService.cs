@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Captura
+﻿namespace Captura
 {
     public interface IClipboardService
     {
@@ -10,9 +8,9 @@ namespace Captura
 
         bool HasText { get; }
 
-        void SetImage(Image Image);
+        void SetImage(IBitmapImage Image);
 
-        Image GetImage();
+        IBitmapImage GetImage();
 
         bool HasImage { get; }
     }

@@ -23,7 +23,7 @@
 
                 <ComboBox VerticalAlignment="Center"
                           ItemsSource="{Binding ScreenShotImageFormats}"
-                          SelectedItem="{Binding SelectedScreenShotImageFormat.Value, Mode=TwoWay}"/>
+                          SelectedItem="{Binding Settings.ScreenShots.ImageFormat, Mode=TwoWay}"/>
             </DockPanel>
         </StackPanel>
     </Grid>

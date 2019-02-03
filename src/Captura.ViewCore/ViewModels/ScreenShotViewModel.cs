@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -47,11 +48,6 @@ namespace Captura.ViewModels
             ScreenshotRegionCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotRegion());
             ScreenshotWindowCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotWindow());
             ScreenshotScreenCommand = new DelegateCommand(async () => await ScreenShotModel.ScreenshotScreen());
-
-            ScreenShotImageFormats = ScreenShotModel.ScreenShotImageFormats;
-
-            SelectedScreenShotImageFormat = ScreenShotModel
-                .ToReactivePropertyAsSynchronized(M => M.SelectedScreenShotImageFormat);
         }
 
         public ICommand ScreenShotCommand { get; }
@@ -61,8 +57,8 @@ namespace Captura.ViewModels
         public ICommand ScreenshotWindowCommand { get; }
         public ICommand ScreenshotScreenCommand { get; }
 
-        public IEnumerable<ImageFormat> ScreenShotImageFormats { get; }
-
-        public IReactiveProperty<ImageFormat> SelectedScreenShotImageFormat { get; }
+        public IEnumerable<ImageFormats> ScreenShotImageFormats { get; } = Enum
+            .GetValues(typeof(ImageFormats))
+            .Cast<ImageFormats>();
     }
 }

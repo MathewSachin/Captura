@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Captura.Models
 {
@@ -22,7 +20,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             _clipboard.SetImage(Image);
 

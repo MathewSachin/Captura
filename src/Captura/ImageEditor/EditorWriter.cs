@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -9,11 +7,11 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorWriter : NotifyPropertyChanged, IImageWriterItem
     {
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             using (var stream = new MemoryStream())
             {
-                Image.Save(stream, ImageFormat.Png);
+                Image.Save(stream, ImageFormats.Png);
 
                 var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
