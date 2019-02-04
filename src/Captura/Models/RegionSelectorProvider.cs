@@ -47,10 +47,6 @@ namespace Captura
 
         public IVideoItem VideoSource => _regionItem;
 
-        public void Lock() => _regionSelector.Value.Lock();
-
-        public void Release() => _regionSelector.Value.Release();
-
         public event Action SelectorHidden;
 
         public IntPtr Handle => _regionSelector.Value.Handle;

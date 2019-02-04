@@ -97,30 +97,6 @@ namespace Captura
             base.OnRenderSizeChanged(SizeInfo);
         }
 
-        public void Lock()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                ResizeMode = ResizeMode.NoResize;
-                Snapper.IsEnabled = CloseButton.IsEnabled = false;
-
-                WidthBox.IsEnabled = HeightBox.IsEnabled = false;
-            });
-        }
-        
-        public void Release()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                ResizeMode = ResizeMode.CanResize;
-                Snapper.IsEnabled = CloseButton.IsEnabled = true;
-
-                WidthBox.IsEnabled = HeightBox.IsEnabled = true;
-
-                Show();
-            });
-        }
-
         public IntPtr Handle => new WindowInteropHelper(this).Handle;
 
         void Snapper_OnClick(object Sender, RoutedEventArgs E)

@@ -12,11 +12,20 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
         Left="{Binding RegionSelectorViewModel.LeftDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
         Top="{Binding RegionSelectorViewModel.TopDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
         ShowInTaskbar="False">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="ResizeMode" Value="CanResize"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}" Value="False">
+                    <Setter Property="ResizeMode" Value="NoResize"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Grid>
         <Grid.Resources>
             <Style TargetType="Thumb">
@@ -168,7 +177,7 @@
               Grid.Column="0"
               Margin="0,10,0,0">
             <Border BorderThickness="1"
-                    Name="SizeBorder"
+                    Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                     BorderBrush="{DynamicResource Accent}"
                     VerticalAlignment="Top">
                 <Grid HorizontalAlignment="Right"
@@ -181,7 +190,7 @@
 
                     <xctk:IntegerUpDown Width="60"
                                         Margin="3"
-                                        x:Name="WidthBox"
+                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                         Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
 
                     <Label Content="x"
@@ -190,7 +199,7 @@
 
                     <xctk:IntegerUpDown Width="60"
                                         Margin="3"
-                                        x:Name="HeightBox"
+                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                         Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                                         Grid.Column="2"/>
 
@@ -207,30 +216,6 @@
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                                 <Setter Property="Margin" Value="0,40,0,0"/>
                             </DataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsMouseOver, ElementName=SizeBorder}" Value="False"/>
-                                    <Condition Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                             To="0.2"
-                                                             Duration="0:0:0.3" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiDataTrigger.EnterActions>
-                                <MultiDataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                             To="1"
-                                                             Duration="0:0:0.3" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiDataTrigger.ExitActions>
-                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
@@ -239,8 +224,11 @@
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource Accent}"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                <DockPanel Background="{DynamicResource WindowBackground}">
+                    VerticalAlignment="Top"
+                    CornerRadius="15"
+                    Padding="5,0"
+                    Background="{DynamicResource WindowBackground}">
+                <DockPanel>
                     <DockPanel.Resources>
                         <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                             <Setter Property="LayoutTransform">
@@ -252,14 +240,13 @@
                     </DockPanel.Resources>
 
                     <local:ModernButton IconData="{Binding Icons.SnapToWindow, Source={StaticResource ServiceLocator}}"
-                                        x:Name="Snapper"
+                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Click="Snapper_OnClick"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton x:Name="CloseButton"
-                                        Click="CloseButton_Click"
-                                        Background="{DynamicResource WindowBackground}"
+                    <local:ModernButton Click="CloseButton_Click"
+                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Foreground="#77ef5350"
                                         IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"

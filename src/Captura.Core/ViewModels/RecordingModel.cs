@@ -327,9 +327,6 @@ namespace Captura.ViewModels
                 SeparateFileForEveryAudioSource();
             }
 
-            if (_videoSourcesViewModel.SelectedVideoSourceKind is RegionSourceProvider)
-                _regionProvider.Lock();
-
             _systemTray.HideNotification();
 
             if (Settings.UI.MinimizeOnStart)
@@ -431,9 +428,6 @@ namespace Captura.ViewModels
 
             if (Settings.UI.MinimizeOnStart)
                 _mainWindow.IsMinimized = false;
-
-            if (_videoSourcesViewModel.SelectedVideoSourceKind is RegionSourceProvider)
-                _regionProvider.Release();
         }
 
         IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)

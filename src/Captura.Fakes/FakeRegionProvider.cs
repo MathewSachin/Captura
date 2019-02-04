@@ -23,10 +23,6 @@ namespace Captura.Models
         public event Action SelectorHidden;
 #pragma warning restore CS0067
 
-        public void Lock() { }
-
-        public void Release() { }
-
         public IntPtr Handle => IntPtr.Zero;
     }
 }

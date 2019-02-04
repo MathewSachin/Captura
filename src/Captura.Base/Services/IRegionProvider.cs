@@ -10,10 +10,6 @@ namespace Captura.Models
         Rectangle SelectedRegion { get; set; }
 
         IVideoItem VideoSource { get; }
-        
-        void Lock();
-
-        void Release();
 
         event Action SelectorHidden;
 
