@@ -77,6 +77,9 @@ namespace DesktopDuplication
             RenderTarget.EndDraw();
             Device.ImmediateContext.CopyResource(_texture, StagingTexture);
             Device.ImmediateContext.CopyResource(StagingTexture, PreviewTexture);
+
+            // Actual CopyResource happens here
+            Device.ImmediateContext.Flush();
         }
 
         public void Dispose()
