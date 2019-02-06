@@ -230,6 +230,17 @@ namespace Captura
             {
                 _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
             }
+
+            // Stream
+            else if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
+            {
+                var url = StartOptions.Encoder.Substring(7);
+                _settings.FFmpeg.CustomStreamingUrl = url;
+
+                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
+
+                _videoWritersViewModel.SelectedVideoWriter = StreamingItem.CustomUrl;
+            }
         }
 
         void HandleWebcam(StartCmdOptions StartOptions)

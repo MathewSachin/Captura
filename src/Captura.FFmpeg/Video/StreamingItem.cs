@@ -20,7 +20,14 @@ namespace Captura.Models
 
             return _baseItem.GetVideoFileWriter(Args, "-g 20 -r 10 -f flv");
         }
-        
+
+        public static StreamingItem CustomUrl { get; } = new StreamingItem("Custom", () =>
+        {
+            var settings = ServiceProvider.Get<FFmpegSettings>();
+
+            return settings.CustomStreamingUrl;
+        }, x264, "Stream to custom service");
+
         public static IEnumerable<StreamingItem> StreamingItems { get; } = new[]
         {
             new StreamingItem("Twitch", () =>
@@ -35,12 +42,7 @@ namespace Captura.Models
 
                 return $"rtmp://a.rtmp.youtube.com/live2/{settings.YouTubeLiveKey}";
             }, x264, "Stream to YouTube Live (Not Tested)"),
-            new StreamingItem("Custom", () =>
-            {
-                var settings = ServiceProvider.Get<FFmpegSettings>();
-
-                return settings.CustomStreamingUrl;
-            }, x264, "Stream to custom service")
+            CustomUrl
         };
     }
 }
