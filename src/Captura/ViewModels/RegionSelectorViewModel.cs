@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Input;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Captura
@@ -14,7 +16,21 @@ namespace Captura
 
         const int MinWidth = 300,
             MinHeight = 300,
-            BorderSize = 3;
+            BorderSize = 3,
+            KeyMoveDelta = 10;
+
+        public RegionSelectorViewModel()
+        {
+            MoveLeftCommand = new DelegateCommand(() => Left -= KeyMoveDelta);
+            MoveRightCommand = new DelegateCommand(() => Left += KeyMoveDelta);
+            MoveUpCommand = new DelegateCommand(() => Top -= KeyMoveDelta);
+            MoveDownCommand = new DelegateCommand(() => Top += KeyMoveDelta);
+
+            IncreaseWidthCommand = new DelegateCommand(() => Width += KeyMoveDelta);
+            DecreaseWidthCommand = new DelegateCommand(() => Width -= KeyMoveDelta);
+            IncreaseHeightCommand = new DelegateCommand(() => Height += KeyMoveDelta);
+            DecreaseHeightCommand = new DelegateCommand(() => Height -= KeyMoveDelta);
+        }
 
         public int Left
         {
@@ -155,5 +171,15 @@ namespace Captura
                 Left = oldRight - MinWidth;
             }
         }
+
+        public ICommand MoveLeftCommand { get; }
+        public ICommand MoveRightCommand { get; }
+        public ICommand MoveUpCommand { get; }
+        public ICommand MoveDownCommand { get; }
+
+        public ICommand IncreaseWidthCommand { get; }
+        public ICommand DecreaseWidthCommand { get; }
+        public ICommand IncreaseHeightCommand { get; }
+        public ICommand DecreaseHeightCommand { get; }
     }
 }

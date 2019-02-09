@@ -26,6 +26,29 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
+    <Window.InputBindings>
+        <KeyBinding Key="Left"
+                    Command="{Binding RegionSelectorViewModel.MoveLeftCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Right"
+                    Command="{Binding RegionSelectorViewModel.MoveRightCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Up"
+                    Command="{Binding RegionSelectorViewModel.MoveUpCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Down"
+                    Command="{Binding RegionSelectorViewModel.MoveDownCommand, Source={StaticResource ServiceLocator}}"/>
+
+        <KeyBinding Key="Left"
+                    Modifiers="Shift"
+                    Command="{Binding RegionSelectorViewModel.DecreaseWidthCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Right"
+                    Modifiers="Shift"
+                    Command="{Binding RegionSelectorViewModel.IncreaseWidthCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Up"
+                    Modifiers="Shift"
+                    Command="{Binding RegionSelectorViewModel.DecreaseHeightCommand, Source={StaticResource ServiceLocator}}"/>
+        <KeyBinding Key="Down"
+                    Modifiers="Shift"
+                    Command="{Binding RegionSelectorViewModel.IncreaseHeightCommand, Source={StaticResource ServiceLocator}}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.Resources>
             <Style TargetType="Thumb">
