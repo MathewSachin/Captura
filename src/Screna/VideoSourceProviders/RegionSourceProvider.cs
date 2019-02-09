@@ -34,6 +34,15 @@ namespace Captura.Models
         {
             _regionProvider.SelectorVisible = true;
 
+            var selectedRegion = _regionProvider.SelectedRegion;
+            var fullScreen = WindowProvider.DesktopRectangle;
+
+            // Fully outside all screens, reset location
+            if (Rectangle.Intersect(selectedRegion, fullScreen) == Rectangle.Empty)
+            {
+                _regionProvider.SelectedRegion = new Rectangle(50, 50, 500, 500);
+            }
+
             return true;
         }
 
