@@ -16,13 +16,13 @@ namespace Captura.Models
         IntPtr _backBufferPtr;
         Texture _texture;
 
-        bool _visible;
+        public bool IsVisible { get; private set; }
 
         public PreviewWindowService()
         {
-            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
+            _previewWindow.IsVisibleChanged += (S, E) => IsVisible = _previewWindow.IsVisible;
 
-            _visible = _previewWindow.IsVisible;
+            IsVisible = _previewWindow.IsVisible;
 
             // Prevent Closing by User
             _previewWindow.Closing += (S, E) =>
@@ -33,8 +33,6 @@ namespace Captura.Models
             };
         }
 
-        public void Init(int Width, int Height) { }
-
         IBitmapFrame _lastFrame;
 
         public void Display(IBitmapFrame Frame)
@@ -42,7 +40,7 @@ namespace Captura.Models
             if (Frame is RepeatFrame)
                 return;
 
-            if (!_visible)
+            if (!IsVisible)
             {
                 Frame.Dispose();
                 return;

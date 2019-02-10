@@ -33,7 +33,7 @@ namespace Captura.Models
 
             Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
 
-            return new DeskDuplImageProvider(_output, IncludeCursor);
+            return new DeskDuplImageProvider(_output, IncludeCursor, ServiceProvider.Get<IPreviewWindow>());
         }
     }
 }

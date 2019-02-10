@@ -432,12 +432,9 @@ namespace Captura.ViewModels
 
         IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)
         {
-            if (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider)
-                return null;
-
-            _previewWindow.Init(ImgProvider.Width, ImgProvider.Height);
-
-            return new WithPreviewWriter(GetVideoFileWriter(ImgProvider, AudioProvider), _previewWindow);
+            return _videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider
+                ? null
+                : new WithPreviewWriter(GetVideoFileWriter(ImgProvider, AudioProvider), _previewWindow);
         }
 
         IVideoFileWriter GetVideoFileWriter(IImageProvider ImgProvider, IAudioProvider AudioProvider, string FileName = null)

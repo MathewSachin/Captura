@@ -11,14 +11,17 @@ namespace DesktopDuplication
     public class DuplCapture : IDisposable
     {
         readonly Output1 _output;
-        readonly Device _device;
+        Device _device;
         OutputDuplication _deskDupl;
 
         readonly object _syncLock = new object();
 
-        public DuplCapture(Device Device, Output1 Output)
+        public DuplCapture(Output1 Output)
         {
-            _device = Device;
+            // Separate Device required otherwise AccessViolationException happens
+            using (var adapter = Output.GetParent<Adapter>())
+                _device = new Device(adapter);
+
             _output = Output;
 
             Init();
@@ -30,6 +33,9 @@ namespace DesktopDuplication
             catch { }
 
             _deskDupl?.Dispose();
+
+            _device.Dispose();
+            _device = null;
         }
 
         public void Init()
