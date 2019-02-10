@@ -29,5 +29,21 @@ namespace Captura
             get => (string) GetValue(PasswordProperty);
             set => SetValue(PasswordProperty, value);
         }
+
+        public static readonly DependencyProperty PasswordVisibleProperty = DependencyProperty.Register(
+            nameof(PasswordVisible),
+            typeof(bool),
+            typeof(ModernPasswordBox));
+
+        public bool PasswordVisible
+        {
+            get => (bool)GetValue(PasswordVisibleProperty);
+            set => SetValue(PasswordVisibleProperty, value);
+        }
+
+        void ToggleVisibility(object Sender, RoutedEventArgs E)
+        {
+            PasswordVisible = !PasswordVisible;
+        }
     }
 }

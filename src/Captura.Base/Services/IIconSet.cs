@@ -157,6 +157,8 @@ namespace Captura
 
         string Visibility { get; }
 
+        string VisibilityHide { get; }
+
         string Web { get; }
 
         string Webcam { get; }

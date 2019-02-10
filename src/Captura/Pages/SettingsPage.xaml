@@ -22,14 +22,17 @@
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>
+            <TabItem Header="FFmpeg">
+                <Frame Source="FFmpegPage.xaml"/>
+            </TabItem>
+            <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="HotkeysPage.xaml"/>
+            </TabItem>
             <TabItem Header="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="ProxyPage.xaml"/>
             </TabItem>
             <TabItem Header="Sounds">
                 <Frame Source="SoundsPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="HotkeysPage.xaml"/>
             </TabItem>
             <TabItem Header="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="TrayIconPage.xaml"/>
@@ -39,9 +42,6 @@
             </TabItem>
             <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="ScreenShotsPage.xaml"/>
-            </TabItem>
-            <TabItem Header="FFmpeg">
-                <Frame Source="FFmpegPage.xaml"/>
             </TabItem>
         </TabControl>
     </Grid>
