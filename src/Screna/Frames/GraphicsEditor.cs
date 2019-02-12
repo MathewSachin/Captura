@@ -25,20 +25,22 @@ namespace Screna
             return new OneTimeFrame(_image);
         }
 
-        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        public IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
             return GraphicsBitmapLoader.Instance.CreateBitmapBgr32(Size, MemoryData, Stride);
         }
 
-        public IDisposable LoadBitmap(string FileName, out Size Size)
+        public IBitmapImage LoadBitmap(string FileName)
         {
-            return GraphicsBitmapLoader.Instance.LoadBitmap(FileName, out Size);
+            return GraphicsBitmapLoader.Instance.LoadBitmap(FileName);
         }
 
-        public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
+        public void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100)
         {
-            if (!(Image is Image img))
+            if (!(Image is DrawingImage drawingImage))
                 return;
+
+            var img = drawingImage.Image;
 
             var region = Region ?? new Rectangle(Point.Empty, img.Size);
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamOverlay : ImageOverlay<WebcamOverlaySettings>
@@ -13,10 +10,8 @@ namespace Captura.Models
             _webCamProvider = WebCamProvider;
         }
 
-        protected override IDisposable GetImage(IEditableFrame Editor, out Size Size)
+        protected override IBitmapImage GetImage(IEditableFrame Editor)
         {
-            Size = new Size(_webCamProvider.Width, _webCamProvider.Height);
-
             // No Webcam
             if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])
                 return null;

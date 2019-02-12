@@ -148,7 +148,7 @@ namespace Captura.Webcam
         /// Gets the current frame from the buffer.
         /// </summary>
         /// <returns>The Bitmap of the frame.</returns>
-        public IDisposable GetFrame(IBitmapLoader BitmapLoader)
+        public IBitmapImage GetFrame(IBitmapLoader BitmapLoader)
         {
             if (_actualGraphState != GraphState.Rendered)
                 return null;

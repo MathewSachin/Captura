@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Captura.Models
@@ -12,7 +11,7 @@ namespace Captura.Models
 
         void Refresh();
 
-        IDisposable Capture(IBitmapLoader BitmapLoader);
+        IBitmapImage Capture(IBitmapLoader BitmapLoader);
 
         int Width { get; }
 

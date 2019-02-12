@@ -21,7 +21,7 @@ namespace Captura.Webcam
             {
                 var img = _webCamProvider.Capture(GraphicsBitmapLoader.Instance);
 
-                if (img is Bitmap bmp)
+                if (img is DrawingImage drawingImage && drawingImage.Image is Bitmap bmp)
                     return new GraphicsEditor(bmp);
 
                 return RepeatFrame.Instance;

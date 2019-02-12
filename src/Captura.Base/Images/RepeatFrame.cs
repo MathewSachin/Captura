@@ -15,12 +15,12 @@ namespace Captura
 
         float IEditableFrame.Height { get; } = -1;
 
-        IDisposable IBitmapLoader.CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        IBitmapImage IBitmapLoader.CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
             throw new NotImplementedException();
         }
 
-        IDisposable IBitmapLoader.LoadBitmap(string FileName, out Size Size)
+        IBitmapImage IBitmapLoader.LoadBitmap(string FileName)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace Captura
 
         void IDisposable.Dispose() { }
 
-        void IEditableFrame.DrawImage(object Image, Rectangle? Region, int Opacity)
+        void IEditableFrame.DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity)
         {
             throw new NotImplementedException();
         }

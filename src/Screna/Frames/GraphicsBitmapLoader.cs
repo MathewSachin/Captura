@@ -11,18 +11,18 @@ namespace Screna
 
         public static GraphicsBitmapLoader Instance { get; } = new GraphicsBitmapLoader();
 
-        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        public IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
-            return new Bitmap(Size.Width, Size.Height, Stride, PixelFormat.Format32bppRgb, MemoryData);
+            var bmp = new Bitmap(Size.Width, Size.Height, Stride, PixelFormat.Format32bppRgb, MemoryData);
+
+            return new DrawingImage(bmp);
         }
 
-        public IDisposable LoadBitmap(string FileName, out Size Size)
+        public IBitmapImage LoadBitmap(string FileName)
         {
             var bmp = new Bitmap(FileName);
 
-            Size = bmp.Size;
-
-            return bmp;
+            return new DrawingImage(bmp);
         }
 
         public void Dispose() { }

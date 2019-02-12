@@ -45,7 +45,7 @@ namespace Screna
 
             try
             {
-                G.DrawImage(icon, new Rectangle(location, icon.Size));
+                G.DrawImage(new DrawingImage(icon), new Rectangle(location, icon.Size));
             }
             catch (ArgumentException) { }
         }

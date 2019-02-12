@@ -38,16 +38,18 @@ namespace DesktopDuplication
         public float Width { get; }
         public float Height { get; }
 
-        public IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
+        public IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)
         {
-            return new Bitmap(_editorSession.RenderTarget,
+            var bmp = new Bitmap(_editorSession.RenderTarget,
                 new Size2(Size.Width, Size.Height),
                 new DataPointer(MemoryData, Size.Height * Stride),
                 Stride,
                 new BitmapProperties(new SharpDX.Direct2D1.PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore)));
+
+            return new Direct2DImage(bmp);
         }
 
-        public IDisposable LoadBitmap(string FileName, out Size Size)
+        public IBitmapImage LoadBitmap(string FileName)
         {
             using (var decoder = new BitmapDecoder(_editorSession.ImagingFactory, FileName, 0))
             using (var bmpSource = decoder.GetFrame(0))
@@ -55,16 +57,18 @@ namespace DesktopDuplication
             {
                 convertedBmp.Initialize(bmpSource, PixelFormat.Format32bppPBGRA);
 
-                Size = new Size(bmpSource.Size.Width, bmpSource.Size.Height);
+                var bmp = Bitmap.FromWicBitmap(_editorSession.RenderTarget, convertedBmp);
 
-                return Bitmap.FromWicBitmap(_editorSession.RenderTarget, convertedBmp);
+                return new Direct2DImage(bmp);
             }
         }
 
-        public void DrawImage(object Image, Rectangle? Region, int Opacity = 100)
+        public void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100)
         {
-            if (Image is Bitmap bmp)
+            if (Image is Direct2DImage direct2DImage)
             {
+                var bmp = direct2DImage.Bitmap;
+
                 var rect = Region ?? new RectangleF(0, 0, bmp.Size.Width, bmp.Size.Height);
                 var rawRect = new RawRectangleF(rect.Left,
                     rect.Top,

@@ -79,7 +79,7 @@ namespace Captura.Models
             SelectedCam = WebcamItem.NoWebcam;
         }
 
-        public IDisposable Capture(IBitmapLoader BitmapLoader)
+        public IBitmapImage Capture(IBitmapLoader BitmapLoader)
         {
             try
             {
