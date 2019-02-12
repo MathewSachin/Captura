@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using Captura.Native;
+
+// ReSharper disable InconsistentNaming
 
 namespace Captura
 {
     static class User32
     {
         const string DllName = "user32.dll";
+
+        [DllImport(DllName)]
+        public static extern bool GetCursorPos(ref Point lpPoint);
 
         [DllImport(DllName)]
         public static extern WindowStyles GetWindowLong(IntPtr hWnd, GetWindowLongValue nIndex);

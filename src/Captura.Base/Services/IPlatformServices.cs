@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Captura.Models;
 
 namespace Captura
@@ -17,5 +18,7 @@ namespace Captura
         IWindow ForegroundWindow { get; }
 
         bool DeleteFile(string FilePath);
+
+        Point CursorPosition { get; }
     }
 }

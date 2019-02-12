@@ -1,5 +1,4 @@
-﻿using Screna;
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace Captura.Models
@@ -23,7 +22,9 @@ namespace Captura.Models
 
             var clickRadius = _settings.Radius;
 
-            var curPos = MouseCursor.CursorPosition;
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            var curPos = platformServices.CursorPosition;
 
             if (Transform != null)
                 curPos = Transform(curPos);

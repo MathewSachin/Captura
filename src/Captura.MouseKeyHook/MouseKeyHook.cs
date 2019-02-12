@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Screna;
 
 namespace Captura.Models
 {
@@ -355,7 +354,9 @@ namespace Captura.Models
             {
                 var clickRadius = _mouseClickSettings.Radius * _currentMouseRatio;
 
-                var curPos = MouseCursor.CursorPosition;
+                var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                var curPos = platformServices.CursorPosition;
 
                 if (Transform != null)
                     curPos = Transform(curPos);

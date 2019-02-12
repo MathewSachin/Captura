@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming
@@ -20,9 +19,6 @@ namespace Captura.Native
 
         [DllImport(DllName)]
         public static extern bool GetIconInfo(IntPtr hIcon, out IconInfo piconinfo);
-
-        [DllImport(DllName)]
-        public static extern bool GetCursorPos(ref Point lpPoint);
 
         [DllImport(DllName)]
         public static extern bool UnregisterHotKey(IntPtr Hwnd, int Id);

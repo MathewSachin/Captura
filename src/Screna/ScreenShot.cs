@@ -51,8 +51,10 @@ namespace Screna
                     if (transparentImage == null)
                         return null;
 
+                    var platformServices = ServiceProvider.Get<IPlatformServices>();
+
                     // Include Cursor only if within window
-                    if (IncludeCursor && r.Contains(MouseCursor.CursorPosition))
+                    if (IncludeCursor && r.Contains(platformServices.CursorPosition))
                     {
                         using (var g = Graphics.FromImage(transparentImage))
                             MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));

@@ -13,19 +13,6 @@ namespace Screna
     public static class MouseCursor
     {
         const int CursorShowing = 1;
-                
-        /// <summary>
-        /// Gets the Current Mouse Cursor Position.
-        /// </summary>
-        public static Point CursorPosition
-        {
-            get
-            {
-                var p = new Point();
-                User32.GetCursorPos(ref p);
-                return p;
-            }
-        }
 
         // hCursor -> (Icon, Hotspot)
         static readonly Dictionary<IntPtr, Tuple<Bitmap, Point>> Cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();

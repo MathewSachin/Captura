@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Captura.Models;
 using Screna;
 
@@ -29,6 +30,16 @@ namespace Captura
         public bool DeleteFile(string FilePath)
         {
             return Shell32.FileOperation(FilePath, FileOperationType.Delete, 0) == 0;
+        }
+
+        public Point CursorPosition
+        {
+            get
+            {
+                var p = new Point();
+                User32.GetCursorPos(ref p);
+                return p;
+            }
         }
     }
 }
