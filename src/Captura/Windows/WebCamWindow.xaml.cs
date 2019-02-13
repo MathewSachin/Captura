@@ -29,8 +29,8 @@ namespace Captura
         {
             try
             {
-                var img = ServiceProvider.Get<IWebCamProvider>().Capture(GraphicsBitmapLoader.Instance);
-                
+                var img = ServiceProvider.Get<WebcamModel>().WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
+
                 await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(img);
             }
             catch { }

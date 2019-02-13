@@ -3,31 +3,22 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
-    public class WebcamItem : NotifyPropertyChanged, IWebcamItem
+    public class WebcamItem : IWebcamItem
     {
-        WebcamItem()
-        {
-            Name = LanguageManager.Instance.NoWebcam;
-
-            LanguageManager.Instance.LanguageChanged += L =>
-            {
-                Name = LanguageManager.Instance.NoWebcam;
-
-                RaisePropertyChanged(nameof(Name));
-            };
-        }
-
         public WebcamItem(Filter Cam)
         {
             this.Cam = Cam ?? throw new ArgumentNullException(nameof(Cam));
             Name = Cam.Name;
         }
 
-        public static WebcamItem NoWebcam { get; } = new WebcamItem();
-
         public Filter Cam { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
+
+        public IWebcamCapture BeginCapture()
+        {
+            return new WebcamCapture(Cam);
+        }
 
         public override string ToString() => Name;
     }

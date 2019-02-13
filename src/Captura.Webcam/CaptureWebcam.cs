@@ -31,11 +31,6 @@ namespace Captura.Webcam
         public Size Size => _videoInfoHeader != null ? new Size(_videoInfoHeader.BmiHeader.Width, _videoInfoHeader.BmiHeader.Height) : Size.Empty;
 
         /// <summary>
-        /// The Scale of the video feed.
-        /// </summary>
-        public double Scale { get; set; } = 1;
-
-        /// <summary>
         /// When graphState==Rendered, have we rendered the preview stream?
         /// </summary>
         bool _isPreviewRendered;
@@ -95,14 +90,14 @@ namespace Captura.Webcam
 
         public CaptureWebcam(Filter VideoDevice, Action OnClick, IntPtr PreviewWindow)
         {
-            _previewWindow = PreviewWindow;
+            _videoDevice = VideoDevice ?? throw new ArgumentException("The videoDevice parameter must be set to a valid Filter.\n");
 
             _form = new DummyForm();
             _form.Show();
 
             _form.Click += (S, E) => OnClick?.Invoke();
 
-            _videoDevice = VideoDevice ?? throw new ArgumentException("The videoDevice parameter must be set to a valid Filter.\n");
+            _previewWindow = PreviewWindow != IntPtr.Zero ? PreviewWindow : _form.Handle;
 
             CreateGraph();
         }
@@ -135,13 +130,10 @@ namespace Captura.Webcam
         }
 
         /// <summary> Resize the preview when the PreviewWindow is resized </summary>
-        public void OnPreviewWindowResize(double Width, double Height, Point Offset)
+        public void OnPreviewWindowResize(int X, int Y, int Width, int Height)
         {
             // Position video window in client rect of owner window.
-            _videoWindow?.SetWindowPosition((int)(Offset.X * Scale),
-                (int)(Offset.Y * Scale),
-                (int)(Width * Scale),
-                (int)(Height * Scale));
+            _videoWindow?.SetWindowPosition(X, Y, Width, Height);
         }
 
         /// <summary>

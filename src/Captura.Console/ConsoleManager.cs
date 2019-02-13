@@ -21,7 +21,7 @@ namespace Captura
         readonly ScreenShotModel _screenShotModel;
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
-        readonly IWebCamProvider _webCamProvider;
+        readonly WebcamModel _webcamModel;
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly IPlatformServices _platformServices;
 
@@ -31,9 +31,9 @@ namespace Captura
             ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
-            IWebCamProvider WebCamProvider,
             VideoWritersViewModel VideoWritersViewModel,
-            IPlatformServices PlatformServices)
+            IPlatformServices PlatformServices,
+            WebcamModel WebcamModel)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -41,9 +41,9 @@ namespace Captura
             _screenShotModel = ScreenShotModel;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoSourceProviders = VideoSourceProviders;
-            _webCamProvider = WebCamProvider;
             _videoWritersViewModel = VideoWritersViewModel;
             _platformServices = PlatformServices;
+            _webcamModel = WebcamModel;
 
             // Hide on Full Screen Screenshot doesn't work on Console
             Settings.UI.HideOnFullScreenShot = false;
@@ -245,11 +245,11 @@ namespace Captura
 
         void HandleWebcam(StartCmdOptions StartOptions)
         {
-            if (StartOptions.Webcam != -1 && StartOptions.Webcam < _webCamProvider.AvailableCams.Count - 1)
+            if (StartOptions.Webcam != -1 && StartOptions.Webcam < _webcamModel.AvailableCams.Count - 1)
             {
-                _webCamProvider.SelectedCam = _webCamProvider.AvailableCams[StartOptions.Webcam + 1];
+                _webcamModel.SelectedCam = _webcamModel.AvailableCams[StartOptions.Webcam + 1];
 
-                // Sleep to prevent AccessViolationException
+                // HACK: Sleep to prevent AccessViolationException
                 Thread.Sleep(500);
             }
         }

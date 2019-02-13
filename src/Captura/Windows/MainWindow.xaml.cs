@@ -6,6 +6,7 @@ using Captura.Views;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Captura
 {
@@ -62,6 +63,8 @@ namespace Captura
             {
                 RepositionWindowIfOutside();
 
+                SetupWebcamPreview();
+
                 mainModel.ViewLoaded();
             };
 
@@ -75,13 +78,86 @@ namespace Captura
             };
         }
 
+        void SetupWebcamPreview()
+        {
+            var webcamModel = ServiceProvider.Get<WebcamModel>();
+            var camControl = WebCamWindow.Instance.GetWebCamControl();
+
+            camControl.IsVisibleChanged += (S, E) => SwitchWebcamPreview();
+
+            void OnSizeChange()
+            {
+                var rect = GetPreviewWindowRect();
+
+                webcamModel.WebcamCapture?.UpdatePreview(null, rect);
+            }
+
+            camControl.SizeChanged += (S, E) => OnSizeChange();
+
+            webcamModel.PropertyChanged += (S, E) =>
+            {
+                if (E.PropertyName == nameof(WebcamModel.SelectedCam) && webcamModel.WebcamCapture != null)
+                {
+                    SwitchWebcamPreview();
+                }
+            };
+        }
+
+        Rectangle GetPreviewWindowRect()
+        {
+            var camControl = WebCamWindow.Instance.GetWebCamControl();
+
+            var rect = new RectangleF(5, 40, (float)camControl.ActualWidth, (float)camControl.ActualHeight);
+
+            return ApplyDpi(rect);
+        }
+
+        void SwitchWebcamPreview()
+        {
+            var webcamModel = ServiceProvider.Get<WebcamModel>();
+            var camControl = WebCamWindow.Instance.GetWebCamControl();
+
+            if (webcamModel.WebcamCapture == null)
+                return;
+
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            if (camControl.IsVisible)
+            {
+                if (PresentationSource.FromVisual(camControl) is HwndSource source)
+                {
+                    var win = platformServices.GetWindow(source.Handle);
+
+                    var rect = GetPreviewWindowRect();
+
+                    webcamModel.WebcamCapture.UpdatePreview(win, rect);
+                }
+            }
+            else if (PresentationSource.FromVisual(this) is HwndSource source)
+            {
+                var win = platformServices.GetWindow(source.Handle);
+
+                var rect = ApplyDpi(new Rectangle(280, 1, 50, 40));
+
+                webcamModel.WebcamCapture.UpdatePreview(win, rect);
+            }
+        }
+
+        Rectangle ApplyDpi(RectangleF Rectangle)
+        {
+            return new Rectangle((int)(Rectangle.Left * Dpi.X),
+                (int)(Rectangle.Top * Dpi.Y),
+                (int)(Rectangle.Width * Dpi.X),
+                (int)(Rectangle.Height * Dpi.Y));
+        }
+
         void RepositionWindowIfOutside()
         {
             // Window dimensions taking care of DPI
-            var rect = new Rectangle((int)(Left * Dpi.X),
-                (int)(Top * Dpi.Y),
-                (int)(ActualWidth * Dpi.X),
-                (int)(ActualHeight * Dpi.Y));
+            var rect = ApplyDpi(new RectangleF((float) Left,
+                (float) Top,
+                (float) ActualWidth,
+                (float) ActualHeight));
             
             if (!Screen.AllScreens.Any(M => M.Bounds.Contains(rect)))
             {

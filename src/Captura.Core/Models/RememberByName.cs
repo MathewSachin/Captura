@@ -11,7 +11,7 @@ namespace Captura.Models
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly AudioSource _audioSource;
-        readonly IWebCamProvider _webCamProvider;
+        readonly WebcamModel _webcamModel;
         readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
 
@@ -19,17 +19,17 @@ namespace Captura.Models
             VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
-            IWebCamProvider WebCamProvider,
             ScreenShotModel ScreenShotModel,
-            IEnumerable<IVideoSourceProvider> VideoSourceProviders)
+            IEnumerable<IVideoSourceProvider> VideoSourceProviders,
+            WebcamModel WebcamModel)
         {
             _settings = Settings;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
-            _webCamProvider = WebCamProvider;
             _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
+            _webcamModel = WebcamModel;
         }
 
         public void Remember()
@@ -60,7 +60,7 @@ namespace Captura.Models
                 .ToArray();
 
             // Remember Webcam
-            _settings.Video.Webcam = _webCamProvider.SelectedCam.Name;
+            _settings.Video.Webcam = _webcamModel.SelectedCam.Name;
         }
 
         void RestoreVideoSource()

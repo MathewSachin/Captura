@@ -1,4 +1,5 @@
 ﻿using Captura.Models;
+using Captura.ViewModels;
 using static System.Console;
 
 namespace Captura
@@ -8,11 +9,11 @@ namespace Captura
     {
         static readonly string Underline = $"\n{new string('-', 30)}";
 
-        readonly IWebCamProvider _webcam;
+        readonly WebcamModel _webcam;
         readonly AudioSource _audioSource;
         readonly IPlatformServices _platformServices;
 
-        public ConsoleLister(IWebCamProvider Webcam,
+        public ConsoleLister(WebcamModel Webcam,
             AudioSource AudioSource,
             IPlatformServices PlatformServices)
         {

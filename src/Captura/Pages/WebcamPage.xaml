@@ -24,8 +24,8 @@
                         Padding="10,0"
                         Margin="3,0"/>
 
-                <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams, Source={StaticResource ServiceLocator}}"
-                          SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                <ComboBox ItemsSource="{Binding WebcamModel.AvailableCams, Source={StaticResource ServiceLocator}}"
+                          SelectedItem="{Binding WebcamModel.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                           IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
                           DisplayMemberPath="Name"
                           Name="WebcamComboBox"/>

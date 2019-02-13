@@ -18,8 +18,6 @@ namespace Captura
 
             Binder.BindSingleton<EditorWriter>();
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<EditorWriter>);
-
-            Binder.Bind<IWebCamProvider, WebCamProvider>();
             
             Binder.BindSingleton<AboutViewModel>();
             Binder.BindSingleton<RegionSelectorViewModel>();

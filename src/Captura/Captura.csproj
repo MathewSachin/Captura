@@ -207,7 +207,6 @@
     <Compile Include="Models\MessageProvider.cs" />
     <Compile Include="Models\ServiceLocator.cs" />
     <Compile Include="Models\SystemTray.cs" />
-    <Compile Include="Models\WebCamProvider.cs" />
     <Compile Include="Controls\ScreenShotBalloon.xaml.cs">
       <DependentUpon>ScreenShotBalloon.xaml</DependentUpon>
     </Compile>

@@ -6,9 +6,6 @@ namespace Captura
     {
         public void OnLoad(IBinder Binder)
         {
-            // Webcam Provider
-            Binder.Bind<IWebCamProvider, CoreWebCamProvider>();
-
             Binder.Bind<IMessageProvider, FakeMessageProvider>();
             Binder.Bind<IRegionProvider>(() => FakeRegionProvider.Instance);
             Binder.Bind<ISystemTray, FakeSystemTray>();

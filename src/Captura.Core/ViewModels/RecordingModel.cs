@@ -24,11 +24,10 @@ namespace Captura.ViewModels
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
         readonly ISystemTray _systemTray;
-        readonly IRegionProvider _regionProvider;
         readonly WebcamOverlay _webcamOverlay;
         readonly IMainWindow _mainWindow;
         readonly IPreviewWindow _previewWindow;
-        readonly IWebCamProvider _webCamProvider;
+        readonly WebcamModel _webcamModel;
         readonly IAudioPlayer _audioPlayer;
         readonly TimerModel _timerModel;
 
@@ -43,28 +42,26 @@ namespace Captura.ViewModels
         public RecordingModel(Settings Settings,
             LanguageManager LanguageManager,
             ISystemTray SystemTray,
-            IRegionProvider RegionProvider,
             WebcamOverlay WebcamOverlay,
             IMainWindow MainWindow,
             IPreviewWindow PreviewWindow,
             VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
-            IWebCamProvider WebCamProvider,
+            WebcamModel WebcamModel,
             KeymapViewModel Keymap,
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
             TimerModel TimerModel) : base(Settings, LanguageManager)
         {
             _systemTray = SystemTray;
-            _regionProvider = RegionProvider;
             _webcamOverlay = WebcamOverlay;
             _mainWindow = MainWindow;
             _previewWindow = PreviewWindow;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
-            _webCamProvider = WebCamProvider;
+            _webcamModel = WebcamModel;
             _keymap = Keymap;
             _audioPlayer = AudioPlayer;
             _recentList = RecentList;
@@ -316,7 +313,7 @@ namespace Captura.ViewModels
             }
 
             // Separate file for webcam
-            if (_isVideo && _webCamProvider.SelectedCam != WebcamItem.NoWebcam && Settings.WebcamOverlay.SeparateFile)
+            if (_isVideo && !(_webcamModel.SelectedCam is NoWebcamItem) && Settings.WebcamOverlay.SeparateFile)
             {
                 SeparateFileForWebcam();
             }
@@ -348,7 +345,7 @@ namespace Captura.ViewModels
 
         void SeparateFileForWebcam()
         {
-            var webcamImgProvider = new WebcamImageProvider(_webCamProvider);
+            var webcamImgProvider = new WebcamImageProvider(_webcamModel);
 
             var webcamFileName = Path.ChangeExtension(_currentFileName, $".webcam{Path.GetExtension(_currentFileName)}");
 

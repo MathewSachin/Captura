@@ -1,16 +1,16 @@
 ﻿using System.Drawing;
-using Captura.Models;
+using Captura.ViewModels;
 using Screna;
 
 namespace Captura.Webcam
 {
     public class WebcamImageProvider : IImageProvider
     {
-        readonly IWebCamProvider _webCamProvider;
+        readonly WebcamModel _webcamModel;
 
-        public WebcamImageProvider(IWebCamProvider WebCamProvider)
+        public WebcamImageProvider(WebcamModel WebcamModel)
         {
-            _webCamProvider = WebCamProvider;
+            _webcamModel = WebcamModel;
         }
 
         public void Dispose() { }
@@ -19,7 +19,7 @@ namespace Captura.Webcam
         {
             try
             {
-                var img = _webCamProvider.Capture(GraphicsBitmapLoader.Instance);
+                var img = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
 
                 if (img is DrawingImage drawingImage && drawingImage.Image is Bitmap bmp)
                     return new GraphicsEditor(bmp);
@@ -32,8 +32,8 @@ namespace Captura.Webcam
             }
         }
 
-        public int Height => _webCamProvider.Height;
+        public int Height => _webcamModel.WebcamCapture?.Height ?? 0;
 
-        public int Width => _webCamProvider.Width;
+        public int Width => _webcamModel.WebcamCapture?.Width ?? 0;
     }
 }

@@ -13,8 +13,8 @@ namespace Captura.ViewModels
 
         readonly RememberByName _rememberByName;
 
-        readonly IWebCamProvider _webCamProvider;
         readonly VideoWritersViewModel _videoWritersViewModel;
+        readonly WebcamModel _webcamModel;
         readonly AudioSource _audioSource;
         readonly HotKeyManager _hotKeyManager;
 
@@ -23,14 +23,15 @@ namespace Captura.ViewModels
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             HotKeyManager HotKeyManager,
-            RememberByName RememberByName)
+            RememberByName RememberByName,
+            WebcamModel WebcamModel)
         {
             _settings = Settings;
-            _webCamProvider = WebCamProvider;
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
             _hotKeyManager = HotKeyManager;
             _rememberByName = RememberByName;
+            _webcamModel = WebcamModel;
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
             if (string.IsNullOrWhiteSpace(Settings.OutPath))
@@ -46,18 +47,7 @@ namespace Captura.ViewModels
 
             _audioSource.Refresh();
 
-            #region Webcam
-            var lastWebcamName = _webCamProvider.SelectedCam?.Name;
-
-            _webCamProvider.Refresh();
-
-            var matchingWebcam = _webCamProvider.AvailableCams.FirstOrDefault(M => M.Name == lastWebcamName);
-
-            if (matchingWebcam != null)
-            {
-                _webCamProvider.SelectedCam = matchingWebcam;
-            }
-            #endregion
+            _webcamModel.Refresh();
         }
 
         public void Init(bool Persist, bool Remembered, bool Hotkeys)
@@ -84,11 +74,11 @@ namespace Captura.ViewModels
                 // Restore Webcam
                 if (!string.IsNullOrEmpty(_settings.Video.Webcam))
                 {
-                    var webcam = _webCamProvider.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
+                    var webcam = _webcamModel.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
 
                     if (webcam != null)
                     {
-                        _webCamProvider.SelectedCam = webcam;
+                        _webcamModel.SelectedCam = webcam;
                     }
                 }
             }
