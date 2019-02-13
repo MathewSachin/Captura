@@ -46,9 +46,9 @@ namespace Captura.Tests.Console
         }
         
         [Fact]
-        public void StartGif()
+        public void StartSharpAvi()
         {
-            var process = Start("start --encoder gif");
+            var process = Start("start --encoder sharpavi:0");
 
             Thread.Sleep(1000);
 
@@ -60,9 +60,9 @@ namespace Captura.Tests.Console
         }
 
         [Fact]
-        public void StartGifFixedDuration()
+        public void StartSharpAviFixedDuration()
         {
-            var process = Start("start --encoder gif --length 1");
+            var process = Start("start --encoder sharpavi:0 --length 1");
 
             process.WaitForExit();
 

@@ -6,11 +6,14 @@ namespace Captura.Models
 {
     public class WindowItem : NotifyPropertyChanged, IVideoItem
     {
+        readonly IPlatformServices _platformServices;
+
         public IWindow Window { get; }
 
-        public WindowItem(IWindow Window)
+        public WindowItem(IWindow Window, IPlatformServices PlatformServices)
         {
             this.Window = Window;
+            _platformServices = PlatformServices;
             Name = Window.Title;
         }
 
@@ -25,7 +28,7 @@ namespace Captura.Models
                 throw new WindowClosedException();
             }
 
-            return new WindowProvider(Window, IncludeCursor, out Transform);
+            return _platformServices.GetWindowProvider(Window, IncludeCursor, out Transform);
         }
     }
 }

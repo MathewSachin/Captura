@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Captura;
 using Captura.Models;
 using Captura.Native;
+using User32 = Captura.Native.User32;
 
 namespace Screna
 {
-    public class WindowScreenShotBackdrop : IDisposable
+    class WindowScreenShotBackdrop : IDisposable
     {
         readonly IWindow _window;
         readonly Form _form;
@@ -36,7 +38,9 @@ namespace Screna
             r.Inflate(20, 20);
 
             // Check if the window is outside of the visible screen
-            r.Intersect(WindowProvider.DesktopRectangle);
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            r.Intersect(platformServices.DesktopRectangle);
 
             Rectangle = r;
         }

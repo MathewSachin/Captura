@@ -257,13 +257,13 @@ namespace Captura.ViewModels
 
             switch (videoEncoder)
             {
-                case GifWriter gif when Settings.Gif.VariableFrameRate:
-                    _recorder = new VFRGifRecorder(gif, imgProvider);
-                    break;
+                //case GifWriter gif when Settings.Gif.VariableFrameRate:
+                //    _recorder = new VFRGifRecorder(gif, imgProvider);
+                //    break;
 
-                case WithPreviewWriter previewWriter when previewWriter.OriginalWriter is GifWriter gif && Settings.Gif.VariableFrameRate:
-                    _recorder = new VFRGifRecorder(gif, imgProvider);
-                    break;
+                //case WithPreviewWriter previewWriter when previewWriter.OriginalWriter is GifWriter gif && Settings.Gif.VariableFrameRate:
+                //    _recorder = new VFRGifRecorder(gif, imgProvider);
+                //    break;
 
                 default:
                     if (_isVideo)

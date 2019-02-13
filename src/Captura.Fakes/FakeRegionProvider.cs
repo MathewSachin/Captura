@@ -17,7 +17,7 @@ namespace Captura.Models
         
         public Rectangle SelectedRegion { get; set; }
 
-        public IVideoItem VideoSource => new RegionItem(this);
+        public IVideoItem VideoSource => new RegionItem(this, ServiceProvider.Get<IPlatformServices>());
 
 #pragma warning disable CS0067
         public event Action SelectorHidden;

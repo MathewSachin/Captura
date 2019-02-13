@@ -55,7 +55,9 @@ namespace Captura.Tests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                using (new WindowProvider(null, false, out var _)) { }
+                var platformServices = _moq.GetService<IPlatformServices>();
+
+                using (platformServices.GetWindowProvider(null, false, out _)) { }
             });
         }
 
@@ -64,7 +66,9 @@ namespace Captura.Tests
         {
             var rect = new Rectangle(0, 0, 100, 100);
 
-            using (var imgProvider = new RegionProvider(rect, false))
+            var platformServices = _moq.GetService<IPlatformServices>();
+
+            using (var imgProvider = platformServices.GetRegionProvider(rect, false))
             {
                 Assert.Equal(imgProvider.Width, rect.Width);
                 Assert.Equal(imgProvider.Height, rect.Height);
@@ -82,7 +86,9 @@ namespace Captura.Tests
         {
             var rect = new Rectangle(0, 0, 101, 53);
 
-            using (var imgProvider = new RegionProvider(rect, false))
+            var platformServices = _moq.GetService<IPlatformServices>();
+
+            using (var imgProvider = platformServices.GetRegionProvider(rect, false))
             {
                 Assert.True(imgProvider.Width % 2 == 0);
                 Assert.True(imgProvider.Height % 2 == 0);

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
-using Captura.Native;
 
 namespace Screna
 {
-    public class RegionProvider : IImageProvider
+    class RegionProvider : IImageProvider
     {
         Rectangle _region;
         readonly Func<Point> _locationFunc;
@@ -14,14 +13,11 @@ namespace Screna
 
         readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
 
-        public RegionProvider(Rectangle Region, bool IncludeCursor)
-            : this(Region, IncludeCursor, () => Region.Location) { }
-
-        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc)
+        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc = null)
         {
             _region = Region;
             _includeCursor = IncludeCursor;
-            _locationFunc = LocationFunc;
+            _locationFunc = LocationFunc ?? (() => Region.Location);
 
             // Width and Height must be even.
             // Use these for Bitmap size, but capture as per region size

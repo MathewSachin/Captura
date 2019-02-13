@@ -4,7 +4,7 @@ using Captura;
 
 namespace Screna
 {
-    public class DrawingImagingSystem : IImagingSystem
+    class DrawingImagingSystem : IImagingSystem
     {
         public IBitmapImage CreateBitmap(int Width, int Height)
         {

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Drawing;
-using Screna;
 
 namespace Captura.Models
 {
     public class RegionItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IRegionProvider _selector;
+        readonly IPlatformServices _platformServices;
 
-        public RegionItem(IRegionProvider RegionSelector)
+        public RegionItem(IRegionProvider RegionSelector, IPlatformServices PlatformServices)
         {
             _selector = RegionSelector;
+            _platformServices = PlatformServices;
         }
 
         public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
@@ -22,7 +23,8 @@ namespace Captura.Models
                 return new Point(P.X - region.X, P.Y - region.Y);
             };
 
-            return new RegionProvider(_selector.SelectedRegion, IncludeCursor,
+            return _platformServices.GetRegionProvider(_selector.SelectedRegion,
+                IncludeCursor,
                 () => _selector.SelectedRegion.Location);
         }
 

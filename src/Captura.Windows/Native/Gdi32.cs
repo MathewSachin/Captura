@@ -2,9 +2,9 @@
 using System.Runtime.InteropServices;
 // ReSharper disable InconsistentNaming
 
-namespace Captura.Native
+namespace Captura
 {
-    public static class Gdi32
+    static class Gdi32
     {
         const string DllName = "gdi32.dll";
 

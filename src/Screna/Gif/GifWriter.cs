@@ -7,7 +7,7 @@ namespace Screna
     /// <summary>
     /// Creates a GIF using .Net GIF encoding and additional animation headers.
     /// </summary>
-    public class GifWriter : IVideoFileWriter
+    class GifWriter : IVideoFileWriter
     {
         #region Fields
         const long SourceGlobalColorInfoPosition = 10,
@@ -68,11 +68,13 @@ namespace Screna
                 _height = Frame.Height;
             }
 
-            if (Frame is DrawingFrameBase frameBase)
-            {
-                using (Frame)
-                    frameBase.SaveGif(_gifStream);
-            }
+            throw new NotImplementedException();
+
+            //if (Frame is DrawingFrameBase frameBase)
+            //{
+            //    using (Frame)
+            //        frameBase.SaveGif(_gifStream);
+            //}
 
             // Steal the global color table info
             if (_firstFrame)

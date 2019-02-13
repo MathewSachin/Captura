@@ -27,14 +27,14 @@ namespace Captura.Models
             if (screen == null)
                 return false;
 
-            _source = new ScreenItem(screen);
+            _source = new ScreenItem(screen, _platformServices);
             RaisePropertyChanged(nameof(Source));
             return true;
         }
 
         void Set(IScreen Screen)
         {
-            _source = new ScreenItem(Screen);
+            _source = new ScreenItem(Screen, _platformServices);
             RaisePropertyChanged(nameof(Source));
         }
 

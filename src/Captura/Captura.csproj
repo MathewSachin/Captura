@@ -580,6 +580,10 @@
       <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
       <Name>Captura.Webcam</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Captura.Windows\Captura.Windows.csproj">
+      <Project>{5B10DDF4-246B-47D0-82BF-95BF3256946E}</Project>
+      <Name>Captura.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Captura.YouTube\Captura.YouTube.csproj">
       <Project>{224e699e-2b95-4194-be79-4931815d8f21}</Project>
       <Name>Captura.YouTube</Name>

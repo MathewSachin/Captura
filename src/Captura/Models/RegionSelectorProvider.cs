@@ -12,7 +12,9 @@ namespace Captura
         readonly RegionItem _regionItem;
         readonly RegionSelectorViewModel _viewModel;
 
-        public RegionSelectorProvider(IVideoSourcePicker VideoSourcePicker, RegionSelectorViewModel ViewModel)
+        public RegionSelectorProvider(IVideoSourcePicker VideoSourcePicker,
+            RegionSelectorViewModel ViewModel,
+            IPlatformServices PlatformServices)
         {
             _viewModel = ViewModel;
 
@@ -25,7 +27,7 @@ namespace Captura
                 return reg;
             });
 
-            _regionItem = new RegionItem(this);
+            _regionItem = new RegionItem(this, PlatformServices);
         }
 
         public bool SelectorVisible

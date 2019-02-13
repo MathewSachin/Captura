@@ -8,7 +8,7 @@ using Screna;
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ClipboardService : IClipboardService
+    class ClipboardService : IClipboardService
     {
         public void SetText(string Text)
         {

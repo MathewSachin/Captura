@@ -31,7 +31,7 @@ namespace Captura.Models
             if (window == null)
                 return false;
 
-            _source = new WindowItem(window);
+            _source = new WindowItem(window, _platformServices);
 
             RaisePropertyChanged(nameof(Source));
             return true;
@@ -39,7 +39,7 @@ namespace Captura.Models
 
         void Set(IWindow Window)
         {
-            _source = new WindowItem(Window);
+            _source = new WindowItem(Window, _platformServices);
             RaisePropertyChanged(nameof(Source));
         }
 

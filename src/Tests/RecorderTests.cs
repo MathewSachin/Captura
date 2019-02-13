@@ -60,17 +60,6 @@ namespace Captura.Tests
         }
 
         [Fact]
-        public void NullGifWriter()
-        {
-            var imageProvider = _moq.GetImageProviderMock().Object;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                using (new VFRGifRecorder(null, imageProvider)) { }
-            });
-        }
-
-        [Fact]
         public void NegativeFrameRate()
         {
             var imageProvider = _moq.GetImageProviderMock().Object;

@@ -8,13 +8,16 @@ namespace Captura.Models
     public class RegionSourceProvider : VideoSourceProviderBase
     {
         readonly IRegionProvider _regionProvider;
+        readonly IPlatformServices _platformServices;
         static readonly RectangleConverter RectangleConverter = new RectangleConverter();
 
         public RegionSourceProvider(LanguageManager Loc,
             IRegionProvider RegionProvider,
-            IIconSet Icons) : base(Loc)
+            IIconSet Icons,
+            IPlatformServices PlatformServices) : base(Loc)
         {
             _regionProvider = RegionProvider;
+            _platformServices = PlatformServices;
 
             Source = RegionProvider.VideoSource;
             Icon = Icons.Region;
@@ -35,7 +38,7 @@ namespace Captura.Models
             _regionProvider.SelectorVisible = true;
 
             var selectedRegion = _regionProvider.SelectedRegion;
-            var fullScreen = WindowProvider.DesktopRectangle;
+            var fullScreen = _platformServices.DesktopRectangle;
 
             // Fully outside all screens, reset location
             if (Rectangle.Intersect(selectedRegion, fullScreen) == Rectangle.Empty)

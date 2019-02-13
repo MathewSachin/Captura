@@ -6,11 +6,14 @@ namespace Captura.Models
 {
     public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {
+        readonly IPlatformServices _platformServices;
+
         public IScreen Screen { get; }
 
-        public ScreenItem(IScreen Screen)
+        public ScreenItem(IScreen Screen, IPlatformServices PlatformServices)
         {
             this.Screen = Screen;
+            _platformServices = PlatformServices;
         }
 
         public string Name => Screen.DeviceName;
@@ -21,7 +24,7 @@ namespace Captura.Models
         {
             Transform = P => new Point(P.X - Screen.Rectangle.X, P.Y - Screen.Rectangle.Y);
 
-            return new RegionProvider(Screen.Rectangle, IncludeCursor);
+            return _platformServices.GetRegionProvider(Screen.Rectangle, IncludeCursor);
         }
     }
 }

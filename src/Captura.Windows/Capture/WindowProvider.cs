@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Captura;
 using Captura.Models;
-using Captura.Native;
+using RECT = Captura.Native.RECT;
 
 namespace Screna
 {
     /// <summary>
     /// Captures the specified window.
     /// </summary>
-    public class WindowProvider : IImageProvider
+    class WindowProvider : IImageProvider
     {
-        /// <summary>
-        /// A <see cref="Rectangle"/> representing the entire Desktop.
-        /// </summary>
-        public static Rectangle DesktopRectangle => SystemInformation.VirtualScreen;
-
         readonly IWindow _window;
         readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;

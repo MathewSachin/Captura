@@ -35,19 +35,17 @@ namespace Captura
             Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
             Binder.Bind<IRecentItemSerializer, UploadRecentSerializer>();
 
-            Binder.Bind<IDialogService, DialogService>();
-            Binder.Bind<IClipboardService, ClipboardService>();
             Binder.Bind<IImageUploader, ImgurUploader>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
             Binder.Bind<IImgurApiKeys, ApiKeys>();
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
-            Binder.Bind<IPlatformServices, WindowsPlatformServices>();
-            Binder.Bind<IImagingSystem, DrawingImagingSystem>();
 
             Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<FFmpegLog>();
             Binder.BindSingleton<HotKeyManager>();
             Binder.Bind(() => LanguageManager.Instance);
+
+            WindowsModule.Load(Binder);
         }
 
         public void Dispose() { }

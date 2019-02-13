@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Captura;
-using Captura.Native;
 
 namespace Screna
 {
     /// <summary>
     /// Draws the MouseCursor on an Image
     /// </summary>
-    public static class MouseCursor
+    static class MouseCursor
     {
         const int CursorShowing = 1;
 

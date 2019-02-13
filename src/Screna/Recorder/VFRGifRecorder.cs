@@ -8,7 +8,7 @@ namespace Screna
     /// <summary>
     /// An <see cref="IRecorder"/> which records to a Gif using Delay for each frame instead of Frame Rate.
     /// </summary>
-    public class VFRGifRecorder : IRecorder
+    class VFRGifRecorder : IRecorder
     {
         #region Fields
         readonly GifWriter _videoEncoder;
