@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Captura;
 using Captura.Models;
-using Captura.Native;
-using User32 = Captura.Native.User32;
 
 namespace Screna
 {

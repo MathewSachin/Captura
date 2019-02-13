@@ -77,14 +77,14 @@ namespace Screna
             //}
 
             // Steal the global color table info
-            if (_firstFrame)
-                InitHeader(_gifStream, _writer, _width, _height);
+            //if (_firstFrame)
+            //    InitHeader(_gifStream, _writer, _width, _height);
 
-            WriteGraphicControlBlock(_gifStream, _writer, Delay);
-            WriteImageBlock(_gifStream, _writer, !_firstFrame, 0, 0, _width, _height);
+            //WriteGraphicControlBlock(_gifStream, _writer, Delay);
+            //WriteImageBlock(_gifStream, _writer, !_firstFrame, 0, 0, _width, _height);
             
-            if (_firstFrame)
-                _firstFrame = false;
+            //if (_firstFrame)
+            //    _firstFrame = false;
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
-using Captura.Native;
 
 // ReSharper disable InconsistentNaming
 
@@ -74,5 +73,11 @@ namespace Captura
 
         [DllImport(DllName)]
         public static extern bool FillRect(IntPtr hDC, ref RECT Rect, IntPtr Brush);
+
+        [DllImport(DllName)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPositionFlags wFlags);
+
+        [DllImport(DllName)]
+        public static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 }

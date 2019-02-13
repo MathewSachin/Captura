@@ -32,41 +32,38 @@ namespace Captura
             
             InitializeComponent();
 
-            if (DataContext is MainViewModel vm)
+            var mainModel = ServiceProvider.Get<MainModel>();
+
+            mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
+            ServiceProvider.Get<HotkeyActionRegisterer>().Register();
+            ServiceProvider.Get<TimerModel>().Init();
+
+            var listener = new HotkeyListener();
+
+            var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
+
+            listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
+
+            ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
             {
-                var mainModel = ServiceProvider.Get<MainModel>();
-
-                mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
-                ServiceProvider.Get<HotkeyActionRegisterer>().Register();
-                ServiceProvider.Get<TimerModel>().Init();
-
-                var listener = new HotkeyListener();
-
-                var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
-
-                listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
-
-                ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
+                switch (Service)
                 {
-                    switch (Service)
-                    {
-                        case ServiceName.OpenImageEditor:
-                            new ImageEditorWindow().ShowAndFocus();
-                            break;
+                    case ServiceName.OpenImageEditor:
+                        new ImageEditorWindow().ShowAndFocus();
+                        break;
 
-                        case ServiceName.ShowMainWindow:
-                            this.ShowAndFocus();
-                            break;
-                    }
-                };
+                    case ServiceName.ShowMainWindow:
+                        this.ShowAndFocus();
+                        break;
+                }
+            };
 
-                Loaded += (Sender, Args) =>
-                {
-                    RepositionWindowIfOutside();
+            Loaded += (Sender, Args) =>
+            {
+                RepositionWindowIfOutside();
 
-                    mainModel.ViewLoaded();
-                };
-            }
+                mainModel.ViewLoaded();
+            };
 
             if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
                 Hide();

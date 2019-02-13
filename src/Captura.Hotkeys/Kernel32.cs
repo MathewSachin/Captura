@@ -2,7 +2,7 @@
 
 namespace Captura.Native
 {
-    public static class Kernel32
+    static class Kernel32
     {
         const string DllName = "kernel32";
 

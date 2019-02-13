@@ -27,7 +27,6 @@
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj" />
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj" />
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj" />
     <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj" />
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />

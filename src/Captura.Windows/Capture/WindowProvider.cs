@@ -2,7 +2,6 @@
 using System.Drawing;
 using Captura;
 using Captura.Models;
-using RECT = Captura.Native.RECT;
 
 namespace Screna
 {

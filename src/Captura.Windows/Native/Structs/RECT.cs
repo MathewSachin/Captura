@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Captura.Native
+namespace Captura
 {
     [Serializable, StructLayout(LayoutKind.Sequential)]
     // ReSharper disable once InconsistentNaming
-    public struct RECT
+    struct RECT
     {
         public int Left;
         public int Top;
