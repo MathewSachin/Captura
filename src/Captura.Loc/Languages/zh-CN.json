@@ -1,6 +1,6 @@
 {
   "About": "关于",
-  "AccentColor": "强调色",
+  "AccentColor": "色调",
   "Add": "添加",
   "AlwaysOnTop": "窗口置顶",
   "Audio": "音频",
@@ -9,7 +9,7 @@
   "BackColor": "背景色",
   "BorderColor": "边框颜色",
   "BorderThickness": "边框宽度",
-  "Bottom": "下",
+  "Bottom": "底部",
   "CaptureDuration": "录制持续时间 (秒)",
   "Center": "中",
   "Changelog": "更新日志",
