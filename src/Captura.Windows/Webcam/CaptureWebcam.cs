@@ -10,7 +10,7 @@ namespace Captura.Webcam
     /// <summary>
     /// Gets the video output of a webcam or other video device.
     /// </summary>
-    public class CaptureWebcam : ISampleGrabberCB, IDisposable
+    class CaptureWebcam : ISampleGrabberCB, IDisposable
     {
         #region Fields
         /// <summary> 

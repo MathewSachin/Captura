@@ -5,7 +5,7 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
-    public class WebcamCapture : IWebcamCapture
+    class WebcamCapture : IWebcamCapture
     {
         readonly Filter _filter;
         readonly Action _onClick;

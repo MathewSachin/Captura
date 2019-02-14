@@ -9,7 +9,7 @@ namespace Captura.Webcam
     /// <summary>
     ///  Represents a DirectShow filter (e.g. video capture device, compression codec).
     /// </summary>
-    public class Filter : IComparable
+    class Filter : IComparable
     {
         /// <summary> Human-readable name of the filter </summary>
         public string Name { get; }

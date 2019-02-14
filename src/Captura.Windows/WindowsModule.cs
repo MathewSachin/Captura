@@ -11,6 +11,7 @@ namespace Captura
             Binder.Bind<IDialogService, DialogService>();
             Binder.Bind<IClipboardService, ClipboardService>();
             Binder.Bind<IImagingSystem, DrawingImagingSystem>();
+            Binder.Bind<IWebCamProvider, WebcamProvider>();
         }
     }
 }

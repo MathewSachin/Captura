@@ -3,7 +3,7 @@ using Captura.Webcam;
 
 namespace Captura.Models
 {
-    public class WebcamItem : IWebcamItem
+    class WebcamItem : IWebcamItem
     {
         public WebcamItem(Filter Cam)
         {

@@ -29,8 +29,6 @@ namespace Captura
             BindAudioSource(Binder);
             BindUpdateChecker(Binder);
 
-            Binder.Bind<IWebCamProvider, WebcamProvider>();
-
             // Recent
             Binder.Bind<IRecentList, RecentListRepository>();
             Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();

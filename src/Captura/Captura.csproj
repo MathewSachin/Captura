@@ -575,10 +575,6 @@
       <Project>{ad000798-a5c9-4195-a0c7-55dc80ee8c5f}</Project>
       <Name>Captura.ViewCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj">
-      <Project>{8ce140bc-61d1-4a4a-a313-a966d961282c}</Project>
-      <Name>Captura.Webcam</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Captura.Windows\Captura.Windows.csproj">
       <Project>{5B10DDF4-246B-47D0-82BF-95BF3256946E}</Project>
       <Name>Captura.Windows</Name>

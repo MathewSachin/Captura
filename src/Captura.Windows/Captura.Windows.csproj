@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Ookii.Dialogs.WindowsForms" Version="1.0.0" />
+    <PackageReference Include="DirectShowLib" Version="1.0.0" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj" />
     <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
 </Project>

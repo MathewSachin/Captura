@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Webcam", "Captura.Webcam\Captura.Webcam.csproj", "{8CE140BC-61D1-4A4A-A313-A966D961282C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Base", "Captura.Base\Captura.Base.csproj", "{388D8B28-E629-4684-8537-8D78719B69E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.SharpAvi", "Captura.SharpAvi\Captura.SharpAvi.csproj", "{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}"
@@ -76,10 +74,6 @@ Global
 		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{222C215B-663F-4BD6-9B3E-8FA99C867B22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CE140BC-61D1-4A4A-A313-A966D961282C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{388D8B28-E629-4684-8537-8D78719B69E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{388D8B28-E629-4684-8537-8D78719B69E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{388D8B28-E629-4684-8537-8D78719B69E5}.Release|Any CPU.ActiveCfg = Release|Any CPU

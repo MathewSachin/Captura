@@ -9,8 +9,8 @@
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
     <ProjectReference Include="..\Captura.Fakes\Captura.Fakes.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />
     <ProjectReference Include="..\Screna\Screna.csproj" />
+    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.8.3" />
