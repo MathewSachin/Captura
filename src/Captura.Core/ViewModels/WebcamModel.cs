@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Captura.Models;
 
@@ -52,11 +53,13 @@ namespace Captura.ViewModels
 
                 _selectedCam = value;
 
-                WebcamCapture = _selectedCam.BeginCapture();
+                WebcamCapture = _selectedCam.BeginCapture(() => PreviewClicked?.Invoke());
 
                 OnPropertyChanged();
             }
         }
+
+        public event Action PreviewClicked;
 
         public IWebcamCapture WebcamCapture { get; private set; }
     }

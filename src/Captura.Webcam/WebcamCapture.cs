@@ -8,13 +8,15 @@ namespace Captura.Models
     public class WebcamCapture : IWebcamCapture
     {
         readonly Filter _filter;
+        readonly Action _onClick;
         CaptureWebcam _captureWebcam;
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
-        public WebcamCapture(Filter Filter)
+        public WebcamCapture(Filter Filter, Action OnClick)
         {
             _filter = Filter;
-            _captureWebcam = new CaptureWebcam(Filter, null, IntPtr.Zero);
+            _onClick = OnClick;
+            _captureWebcam = new CaptureWebcam(Filter, OnClick, IntPtr.Zero);
 
             _captureWebcam.StartPreview();
         }
@@ -48,7 +50,7 @@ namespace Captura.Models
             {
                 Dispose();
 
-                _captureWebcam = new CaptureWebcam(_filter, null, Window.Handle);
+                _captureWebcam = new CaptureWebcam(_filter, _onClick, Window.Handle);
 
                 _captureWebcam.StartPreview();
             }

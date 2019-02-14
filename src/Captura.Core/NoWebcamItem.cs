@@ -1,3 +1,5 @@
+using System;
+
 namespace Captura.Models
 {
     public class NoWebcamItem : NotifyPropertyChanged, IWebcamItem
@@ -16,7 +18,7 @@ namespace Captura.Models
 
         public string Name { get; private set; }
 
-        public IWebcamCapture BeginCapture() => null;
+        public IWebcamCapture BeginCapture(Action OnClick) => null;
 
         public static IWebcamItem Instance { get; } = new NoWebcamItem();
     }

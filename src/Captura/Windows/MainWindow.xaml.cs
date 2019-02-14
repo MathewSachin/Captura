@@ -83,6 +83,9 @@ namespace Captura
             var webcamModel = ServiceProvider.Get<WebcamModel>();
             var camControl = WebCamWindow.Instance.GetWebCamControl();
 
+            // Open Preview Window
+            webcamModel.PreviewClicked += () => WebCamWindow.Instance.ShowAndFocus();
+
             camControl.IsVisibleChanged += (S, E) => SwitchWebcamPreview();
 
             void OnSizeChange()

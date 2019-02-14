@@ -15,9 +15,9 @@ namespace Captura.Models
 
         public string Name { get; }
 
-        public IWebcamCapture BeginCapture()
+        public IWebcamCapture BeginCapture(Action OnClick)
         {
-            return new WebcamCapture(Cam);
+            return new WebcamCapture(Cam, OnClick);
         }
 
         public override string ToString() => Name;

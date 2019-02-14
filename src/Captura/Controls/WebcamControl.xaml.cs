@@ -6,10 +6,5 @@
         {
             InitializeComponent();
         }
-
-        void OpenPreview()
-        {
-            WebCamWindow.Instance.ShowAndFocus();
-        }
     }
 }
