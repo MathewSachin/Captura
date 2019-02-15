@@ -1,6 +1,6 @@
 ﻿namespace Captura.Models
 {
-    public class FFmpegOutputArgs : FFmpegArgs
+    class FFmpegOutputArgs : FFmpegArgs
     {
         readonly string _output;
 

@@ -8,7 +8,7 @@ namespace Captura.Models
     /// <summary>
     /// Encode Video using FFmpeg.exe
     /// </summary>
-    public class FFmpegWriter : IVideoFileWriter
+    class FFmpegWriter : IVideoFileWriter
     {
         readonly NamedPipeServerStream _audioPipe;
 

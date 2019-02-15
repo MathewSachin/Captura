@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    public abstract class FFmpegArgs
+    abstract class FFmpegArgs
     {
         protected readonly List<string> Args = new List<string>();
 

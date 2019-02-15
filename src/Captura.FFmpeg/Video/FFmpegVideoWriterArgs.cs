@@ -1,6 +1,6 @@
 ﻿namespace Captura.Models
 {
-    public class FFmpegVideoWriterArgs : VideoWriterArgs
+    class FFmpegVideoWriterArgs : VideoWriterArgs
     {
         public static FFmpegVideoWriterArgs FromVideoWriterArgs(VideoWriterArgs Args, FFmpegVideoArgsProvider VideoArgsProvider, FFmpegAudioArgsProvider AudioArgsProvider)
         {

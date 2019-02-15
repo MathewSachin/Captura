@@ -3,7 +3,7 @@
 namespace Captura.Models
 {
     // ReSharper disable once InconsistentNaming
-    public class FFmpegPostProcessingWriter : IVideoFileWriter
+    class FFmpegPostProcessingWriter : IVideoFileWriter
     {
         readonly IVideoFileWriter _ffMpegWriter;
         readonly string _tempFileName;

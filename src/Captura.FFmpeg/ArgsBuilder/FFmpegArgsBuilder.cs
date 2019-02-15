@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    public class FFmpegArgsBuilder
+    class FFmpegArgsBuilder
     {
         readonly List<FFmpegInputArgs> _inputs = new List<FFmpegInputArgs>();
         readonly List<FFmpegOutputArgs> _outputs = new List<FFmpegOutputArgs>();
