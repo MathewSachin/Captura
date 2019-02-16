@@ -71,7 +71,7 @@ namespace Captura
 
         static void Banner()
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            var version = ServiceProvider.AppVersion.ToString(3);
 
             WriteLine($@"Captura v{version}
 (c) {DateTime.Now.Year} Mathew Sachin

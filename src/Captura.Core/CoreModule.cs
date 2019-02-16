@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
@@ -62,7 +61,7 @@ namespace Captura
 
         static void BindUpdateChecker(IBinder Binder)
         {
-            var version = Assembly.GetEntryAssembly()?.GetName().Version;
+            var version = ServiceProvider.AppVersion;
 
             if (version?.Major == 0)
             {

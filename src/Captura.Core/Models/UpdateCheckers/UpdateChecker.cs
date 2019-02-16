@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -17,7 +16,7 @@ namespace Captura.Models
         {
             _proxySettings = ProxySettings;
 
-            _currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+            _currentVersion = ServiceProvider.AppVersion;
         }
 
         public void GoToDownloadsPage()

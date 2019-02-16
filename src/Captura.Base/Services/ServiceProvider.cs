@@ -72,6 +72,8 @@ namespace Captura
         }
 
         public static IMessageProvider MessageProvider => Get<IMessageProvider>();
+
+        public static Version AppVersion => Assembly.GetEntryAssembly()?.GetName().Version;
         
         public static bool FileExists(string FileName)
         {

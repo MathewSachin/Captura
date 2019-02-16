@@ -1,7 +1,6 @@
 ﻿using Captura.ViewModels;
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Windows.Input;
 
 namespace Captura
@@ -17,7 +16,7 @@ namespace Captura
 
         static AboutViewModel()
         {
-            Version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version = ServiceProvider.AppVersion;
         }
 
         public AboutViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
