@@ -3,7 +3,7 @@ using Captura.Audio;
 
 namespace Captura.Models
 {
-    public class FFmpegAudioItem : NoVideoItem
+    public class FFmpegAudioItem : IAudioWriterItem
     {
         public FFmpegAudioArgsProvider AudioArgsProvider { get; }
 
@@ -11,12 +11,20 @@ namespace Captura.Models
 
         // The (FFmpeg) appended to the name is expected in Custom Codecs
         FFmpegAudioItem(string Name, string Extension, FFmpegAudioArgsProvider AudioArgsProvider)
-            : base($"{Name} (FFmpeg)", Extension)
         {
+            this.Name = $"{Name} (FFmpeg)";
+            this.Extension = Extension;
+
             this.AudioArgsProvider = AudioArgsProvider;
         }
 
-        public override IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
+        public string Name { get; }
+
+        public string Extension { get; }
+
+        public override string ToString() => Name;
+
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
         {
             return new FFmpegAudioWriter(FileName, AudioQuality, AudioArgsProvider, Wf.SampleRate, Wf.Channels);
         }

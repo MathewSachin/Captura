@@ -271,9 +271,12 @@ namespace Captura.ViewModels
                     {
                         IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
                         {
-                            return new Recorder(
-                                audioWriter.GetAudioFileWriter(AudioFileName ?? _currentFileName, AudioProvider?.WaveFormat,
-                                    Settings.Audio.Quality), AudioProvider);
+                            var audioFileWriter = audioWriter.AudioWriterItem.GetAudioFileWriter(
+                                AudioFileName ?? _currentFileName,
+                                AudioProvider?.WaveFormat,
+                                Settings.Audio.Quality);
+
+                            return new Recorder(audioFileWriter, AudioProvider);
                         }
 
                         if (!Settings.Audio.SeparateFilePerSource)

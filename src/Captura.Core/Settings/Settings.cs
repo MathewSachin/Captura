@@ -28,6 +28,11 @@ namespace Captura
             };
         }
 
+        public Settings(FFmpegSettings FFmpeg)
+        {
+            this.FFmpeg = FFmpeg;
+        }
+
         static string GetPath() => Path.Combine(ServiceProvider.SettingsDir, "Captura.json");
 
         public bool Load()
@@ -97,7 +102,7 @@ namespace Captura
 
         public AudioSettings Audio { get; } = new AudioSettings();
 
-        public FFmpegSettings FFmpeg { get; } = new FFmpegSettings();
+        public FFmpegSettings FFmpeg { get; }
 
         public GifSettings Gif { get; } = new GifSettings();
 

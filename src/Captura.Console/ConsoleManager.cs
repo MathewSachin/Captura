@@ -57,7 +57,7 @@ namespace Captura
         public void CopySettings()
         {
             // Load settings dummy
-            var dummySettings = new Settings();
+            var dummySettings = new Settings(new FFmpegSettings());
             dummySettings.Load();
 
             _settings.WebcamOverlay = dummySettings.WebcamOverlay;

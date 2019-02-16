@@ -3,13 +3,17 @@ using Screna.Audio;
 
 namespace Captura.Models
 {
-    public class WaveItem : NoVideoItem
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class WaveItem : IAudioWriterItem
     {
-        public static WaveItem Instance { get; } = new WaveItem();
+        WaveItem() { }
 
-        WaveItem() : base("Wave", ".wav") { }
+        public static IAudioWriterItem Instance { get; } = new WaveItem();
 
-        public override IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
+        public string Name { get; } = "Wave";
+        public string Extension { get; } = ".wav";
+
+        public IAudioFileWriter GetAudioFileWriter(string FileName, WaveFormat Wf, int AudioQuality)
         {
             return new AudioFileWriter(FileName, Wf);
         }

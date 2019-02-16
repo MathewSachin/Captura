@@ -77,5 +77,16 @@ namespace Captura
         {
             return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
         }
+
+        /// <summary>
+        /// Binds both as Inteface as Class
+        /// </summary>
+        public static void BindAsInterfaceAndClass<TInterface, TClass>(this IBinder Binder) where TClass : TInterface
+        {
+            Binder.BindSingleton<TClass>();
+
+            // ReSharper disable once ConvertClosureToMethodGroup
+            Binder.Bind<TInterface>(() => ServiceProvider.Get<TClass>());
+        }
     }
 }

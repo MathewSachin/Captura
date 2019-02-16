@@ -8,19 +8,12 @@ namespace Captura
 {
     public class CoreModule : IModule
     {
-        /// <summary>
-        /// Binds both as Inteface as Class
-        /// </summary>
-        static void BindAsInterfaceAndClass<TInterface, TClass>(IBinder Binder) where  TClass : TInterface
-        {
-            Binder.BindSingleton<TClass>();
-
-            // ReSharper disable once ConvertClosureToMethodGroup
-            Binder.Bind<TInterface>(() => ServiceProvider.Get<TClass>());
-        }
-
         public void OnLoad(IBinder Binder)
         {
+            Binder.Bind(() => WaveItem.Instance);
+
+            FFmpegModule.Load(Binder);
+
             BindViewModels(Binder);
             BindSettings(Binder);
             BindImageWriters(Binder);
@@ -40,7 +33,6 @@ namespace Captura
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
 
             Binder.BindSingleton<FullScreenItem>();
-            Binder.BindSingleton<FFmpegLog>();
             Binder.BindSingleton<HotKeyManager>();
             Binder.Bind(() => LanguageManager.Instance);
 
@@ -51,9 +43,9 @@ namespace Captura
 
         static void BindImageWriters(IBinder Binder)
         {
-            BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>(Binder);
-            BindAsInterfaceAndClass<IImageWriterItem, ClipboardWriter>(Binder);
-            BindAsInterfaceAndClass<IImageWriterItem, ImageUploadWriter>(Binder);
+            Binder.BindAsInterfaceAndClass<IImageWriterItem, DiskWriter>();
+            Binder.BindAsInterfaceAndClass<IImageWriterItem, ClipboardWriter>();
+            Binder.BindAsInterfaceAndClass<IImageWriterItem, ImageUploadWriter>();
         }
 
         static void BindViewModels(IBinder Binder)
@@ -65,7 +57,6 @@ namespace Captura
             Binder.BindSingleton<WebcamModel>();
             Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
-            Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
         }
 
@@ -92,32 +83,28 @@ namespace Captura
 
         static void BindVideoSourceProviders(IBinder Binder)
         {
-            BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>(Binder);
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>();
 
             if (Windows8OrAbove)
             {
-                BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>(Binder);
+                Binder.BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>();
             }
         }
 
         static void BindVideoWriterProviders(IBinder Binder)
         {
-            BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>(Binder);
-            // BindAsInterfaceAndClass<IVideoWriterProvider, GifWriterProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>(Binder);
-            BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>(Binder);
+            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>();
         }
 
         static void BindSettings(IBinder Binder)
         {
             Binder.BindSingleton<Settings>();
             Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().FFmpeg);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
