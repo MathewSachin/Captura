@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Ninject;
 
@@ -74,10 +75,24 @@ namespace Captura
         public static IMessageProvider MessageProvider => Get<IMessageProvider>();
 
         public static Version AppVersion => Assembly.GetEntryAssembly()?.GetName().Version;
-        
+
+        public static string AppDir
+        {
+            get
+            {
+                var location = Assembly.GetEntryAssembly()?.Location;
+
+                return location == null ? "" : Path.GetDirectoryName(location);
+            }
+        }
+
+        public static string LibDir => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static bool FileExists(string FileName)
         {
-            return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
+            return new[] { LibDir, AppDir }
+                       .Where(M => M != null)
+                       .Any(M => File.Exists(Path.Combine(M, FileName))) || File.Exists(FileName);
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Captura.Native;
 using CommandLine;
 using static System.Console;
@@ -16,8 +15,7 @@ namespace Captura
         {
             if (Args.Length == 0)
             {
-                var uiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "captura.exe");
+                var uiPath = Path.Combine(ServiceProvider.AppDir, "captura.exe");
 
                 if (File.Exists(uiPath))
                 {

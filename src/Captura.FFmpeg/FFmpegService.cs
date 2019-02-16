@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
 using System.Reflection;
 
 namespace Captura
@@ -28,14 +29,7 @@ namespace Captura
                         return true;
                 }
 
-                // application directory
-                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
-
-                if (File.Exists(cpath))
-                    return true;
-
-                // Current working directory
-                if (File.Exists(FFmpegExeName))
+                if (ServiceProvider.FileExists(FFmpegExeName))
                     return true;
 
                 // PATH
@@ -70,10 +64,10 @@ namespace Captura
                         return path;
                 }
 
-                // application directory
-                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
-
-                return File.Exists(cpath) ? cpath : FFmpegExeName;
+                return new[] { ServiceProvider.AppDir, ServiceProvider.LibDir }
+                           .Where(M => M != null)
+                           .FirstOrDefault(M => File.Exists(Path.Combine(M, FFmpegExeName)))
+                       ?? FFmpegExeName;
             }
         }
 

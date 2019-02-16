@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,7 +29,7 @@ namespace Captura.Models
 
         public KeymapViewModel()
         {
-            var keymapDir = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "keymaps");
+            var keymapDir = Path.Combine(ServiceProvider.AppDir, "keymaps");
 
             if (Directory.Exists(keymapDir))
             {
