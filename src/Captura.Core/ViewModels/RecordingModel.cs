@@ -153,6 +153,29 @@ namespace Captura.ViewModels
             }
         }
 
+        public bool CheckFFmpeg()
+        {
+            var isFFmpegVideoItem = _videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
+                                    _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider;
+
+            var isFFmpegAudioItem =
+                _videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
+                && noVideoSourceProvider.Source is NoVideoItem noVideoItem
+                && noVideoItem.AudioWriterItem is FFmpegAudioItem;
+
+            if (isFFmpegVideoItem || isFFmpegAudioItem)
+            {
+                if (!FFmpegService.FFmpegExists)
+                {
+                    ServiceProvider.MessageProvider.ShowFFmpegUnavailable();
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool StartRecording(string FileName = null)
         {
             Settings.EnsureOutPath();
@@ -166,29 +189,8 @@ namespace Captura.ViewModels
 
             _currentFileName = Settings.GetFileName(extension, FileName);
 
-            if (_videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
-                _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider ||
-                (_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
-                 && noVideoSourceProvider.Source is FFmpegAudioItem))
-            {
-                if (!FFmpegService.FFmpegExists)
-                {
-                    ServiceProvider.MessageProvider.ShowFFmpegUnavailable();
-
-                    return false;
-                }
-            }
-
-            if (_videoWritersViewModel.SelectedVideoWriterKind is GifWriterProvider)
-            {
-                if (Settings.Audio.Enabled)
-                {
-                    if (!ServiceProvider.MessageProvider.ShowYesNo("Audio won't be included in the recording.\nDo you want to record?", "Gif does not support Audio"))
-                    {
-                        return false;
-                    }
-                }
-            }
+            if (!CheckFFmpeg())
+                return false;
 
             IImageProvider imgProvider;
 
@@ -252,67 +254,14 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            switch (videoEncoder)
+            if (_isVideo)
             {
-                //case GifWriter gif when Settings.Gif.VariableFrameRate:
-                //    _recorder = new VFRGifRecorder(gif, imgProvider);
-                //    break;
-
-                //case WithPreviewWriter previewWriter when previewWriter.OriginalWriter is GifWriter gif && Settings.Gif.VariableFrameRate:
-                //    _recorder = new VFRGifRecorder(gif, imgProvider);
-                //    break;
-
-                default:
-                    if (_isVideo)
-                    {
-                        _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
-                    }
-                    else if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
-                    {
-                        IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
-                        {
-                            var audioFileWriter = audioWriter.AudioWriterItem.GetAudioFileWriter(
-                                AudioFileName ?? _currentFileName,
-                                AudioProvider?.WaveFormat,
-                                Settings.Audio.Quality);
-
-                            return new Recorder(audioFileWriter, AudioProvider);
-                        }
-
-                        if (!Settings.Audio.SeparateFilePerSource)
-                        {
-                            _recorder = GetAudioRecorder(audioProvider);
-                        }
-                        else
-                        {
-                            string GetAudioFileName(int Index)
-                            {
-                                return Path.ChangeExtension(_currentFileName,
-                                    $".{Index}{Path.GetExtension(_currentFileName)}");
-                            }
-
-                            var audioProviders = _audioSource.GetMultipleAudioProviders();
-
-                            if (audioProviders.Length > 0)
-                            {
-                                var recorders = audioProviders
-                                    .Select((M, Index) => GetAudioRecorder(M, GetAudioFileName(Index)))
-                                    .ToArray();
-
-                                _recorder = new MultiRecorder(recorders);
-
-                                // Set to first file
-                                _currentFileName = GetAudioFileName(0);
-                            }
-                            else
-                            {
-                                ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
-
-                                return false;
-                            }
-                        }
-                    }
-                    break;
+                _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
+            }
+            else if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
+            {
+                if (!InitAudioRecorder(audioWriter, audioProvider))
+                    return false;
             }
 
             // Separate file for webcam
@@ -342,6 +291,54 @@ namespace Captura.ViewModels
             }
 
             _timerModel.Start();
+
+            return true;
+        }
+
+        IRecorder GetAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider, string AudioFileName = null)
+        {
+            var audioFileWriter = AudioWriter.AudioWriterItem.GetAudioFileWriter(
+                AudioFileName ?? _currentFileName,
+                AudioProvider?.WaveFormat,
+                Settings.Audio.Quality);
+
+            return new Recorder(audioFileWriter, AudioProvider);
+        }
+
+        string GetAudioFileName(int Index)
+        {
+            return Path.ChangeExtension(_currentFileName,
+                $".{Index}{Path.GetExtension(_currentFileName)}");
+        }
+
+        bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider)
+        {
+            if (!Settings.Audio.SeparateFilePerSource)
+            {
+                _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
+            }
+            else
+            {
+                var audioProviders = _audioSource.GetMultipleAudioProviders();
+
+                if (audioProviders.Length > 0)
+                {
+                    var recorders = audioProviders
+                        .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
+                        .ToArray();
+
+                    _recorder = new MultiRecorder(recorders);
+
+                    // Set to first file
+                    _currentFileName = GetAudioFileName(0);
+                }
+                else
+                {
+                    ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
+
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -514,7 +511,7 @@ namespace Captura.ViewModels
         readonly object _stopRecTaskLock = new object();
         readonly List<Task> _stopRecTasks = new List<Task>();
 
-        public int RunningStopRecordingCount
+        int RunningStopRecordingCount
         {
             get
             {
