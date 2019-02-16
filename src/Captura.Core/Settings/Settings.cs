@@ -104,8 +104,6 @@ namespace Captura
 
         public FFmpegSettings FFmpeg { get; }
 
-        public GifSettings Gif { get; } = new GifSettings();
-
         public ObservableCollection<CustomOverlaySettings> TextOverlays { get; } = new ObservableCollection<CustomOverlaySettings>();
 
         public ObservableCollection<CustomImageOverlaySettings> ImageOverlays { get; } = new ObservableCollection<CustomImageOverlaySettings>();

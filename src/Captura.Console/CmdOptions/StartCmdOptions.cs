@@ -66,10 +66,10 @@ namespace Captura
                     Source = "100,100,300,400"
                 });
 
-                yield return new Example("Record as Gif to out.gif", new StartCmdOptions
+                yield return new Example("Record as Avi to out.avi", new StartCmdOptions
                 {
-                    Encoder = "gif",
-                    FileName = "out.gif"
+                    Encoder = "sharpavi:0",
+                    FileName = "out.avi"
                 });
             }
         }

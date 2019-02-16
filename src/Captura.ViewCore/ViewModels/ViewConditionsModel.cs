@@ -34,26 +34,9 @@ namespace Captura.ViewModels
                 .Select(M => M is FFmpegWriterProvider || M is StreamingWriterProvider)
                 .ToReadOnlyReactivePropertySlim();
 
-            IsGifMode = VideoWritersViewModel
-                .ObserveProperty(M => M.SelectedVideoWriterKind)
-                .Select(M => M is GifWriterProvider)
-                .ToReadOnlyReactivePropertySlim();
-
-            CanSelectFrameRate = new[]
-                {
-                    VideoWritersViewModel
-                        .ObserveProperty(M => M.SelectedVideoWriterKind)
-                        .Select(M => M is GifWriterProvider),
-                    Settings.Gif
-                        .ObserveProperty(M => M.VariableFrameRate)
-                }
-                .CombineLatestValuesAreAllTrue()
-                .Select(M => !M)
-                .ToReadOnlyReactivePropertySlim();
-
             IsVideoQuality = VideoWritersViewModel
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
-                .Select(M => !(M is GifWriterProvider || M is DiscardWriterProvider))
+                .Select(M => !(M is DiscardWriterProvider))
                 .ToReadOnlyReactivePropertySlim();
 
             CanChangeWebcam = new[]
@@ -92,11 +75,7 @@ namespace Captura.ViewModels
 
         public IReadOnlyReactiveProperty<bool> MultipleVideoWriters { get; }
 
-        public IReadOnlyReactiveProperty<bool> IsGifMode { get; }
-
         public IReadOnlyReactiveProperty<bool> IsFFmpeg { get; }
-
-        public IReadOnlyReactiveProperty<bool> CanSelectFrameRate { get; }
 
         public IReadOnlyReactiveProperty<bool> IsVideoQuality { get; }
 

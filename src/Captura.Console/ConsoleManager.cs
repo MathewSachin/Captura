@@ -225,12 +225,6 @@ namespace Captura
                     _videoWritersViewModel.SelectedVideoWriter = _videoWritersViewModel.AvailableVideoWriters[index];
             }
 
-            // Gif
-            else if (StartOptions.Encoder == "gif")
-            {
-                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<GifWriterProvider>();
-            }
-
             // Stream
             else if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
             {

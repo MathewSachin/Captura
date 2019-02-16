@@ -19,11 +19,6 @@ namespace Screna
 
         public abstract void Dispose();
 
-        public void SaveGif(Stream Stream)
-        {
-            Bitmap.Save(Stream, ImageFormat.Gif);
-        }
-
         public int Width { get; }
         public int Height { get; }
 

@@ -68,14 +68,8 @@
                 </ComboBox>
             </DockPanel>
 
-            <CheckBox Margin="0,5"
-                      Content="{Binding VarFrameRate, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Settings.Gif.VariableFrameRate, Mode=TwoWay}"
-                      Visibility="{Binding ViewConditions.IsGifMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
             <Grid Margin="0,5"
-                  IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                  Visibility="{Binding ViewConditions.CanSelectFrameRate.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                  IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>

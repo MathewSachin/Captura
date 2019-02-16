@@ -105,7 +105,6 @@ namespace Captura
         {
             Binder.BindSingleton<Settings>();
             Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Gif);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
             Binder.Bind(() => ServiceProvider.Get<Settings>().Imgur);

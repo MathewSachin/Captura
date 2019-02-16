@@ -12,14 +12,20 @@ namespace Captura
         readonly WebcamModel _webcam;
         readonly AudioSource _audioSource;
         readonly IPlatformServices _platformServices;
+        readonly FFmpegWriterProvider _ffmpegWriterProvider;
+        readonly SharpAviWriterProvider _sharpAviWriterProvider;
 
         public ConsoleLister(WebcamModel Webcam,
             AudioSource AudioSource,
-            IPlatformServices PlatformServices)
+            IPlatformServices PlatformServices,
+            FFmpegWriterProvider FfmpegWriterProvider,
+            SharpAviWriterProvider SharpAviWriterProvider)
         {
             _webcam = Webcam;
             _audioSource = AudioSource;
             _platformServices = PlatformServices;
+            _ffmpegWriterProvider = FfmpegWriterProvider;
+            _sharpAviWriterProvider = SharpAviWriterProvider;
         }
 
         public void List()
@@ -58,8 +64,7 @@ namespace Captura
 
             WriteLine();
 
-            #region Microphones
-
+            // Microphones
             if (_audioSource.AvailableRecordingSources.Count > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + Underline);
@@ -72,10 +77,7 @@ namespace Captura
                 WriteLine();
             }
 
-            #endregion
-
-            #region Speaker
-
+            // Speakers
             if (_audioSource.AvailableLoopbackSources.Count > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + Underline);
@@ -87,8 +89,6 @@ namespace Captura
 
                 WriteLine();
             }
-
-            #endregion
         }
 
         void Screens()
@@ -121,7 +121,7 @@ namespace Captura
             WriteLine();
         }
 
-        static void SharpAvi()
+        void SharpAvi()
         {
             var sharpAviExists = ServiceProvider.FileExists("SharpAvi.dll");
 
@@ -129,25 +129,23 @@ namespace Captura
 
             WriteLine();
 
-            if (sharpAviExists)
+            if (!sharpAviExists)
+                return;
+
+            WriteLine("SharpAvi ENCODERS" + Underline);
+
+            var i = 0;
+
+            foreach (var codec in _sharpAviWriterProvider)
             {
-                WriteLine("SharpAvi ENCODERS" + Underline);
-
-                var writerProvider = ServiceProvider.Get<SharpAviWriterProvider>();
-
-                var i = 0;
-
-                foreach (var codec in writerProvider)
-                {
-                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
-                    ++i;
-                }
-
-                WriteLine();
+                WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                ++i;
             }
+
+            WriteLine();
         }
 
-        static void FFmpeg()
+        void FFmpeg()
         {
             var ffmpegExists = FFmpegService.FFmpegExists;
 
@@ -155,22 +153,20 @@ namespace Captura
 
             WriteLine();
 
-            if (ffmpegExists)
+            if (!ffmpegExists)
+                return;
+
+            WriteLine("FFmpeg ENCODERS" + Underline);
+
+            var i = 0;
+
+            foreach (var codec in _ffmpegWriterProvider)
             {
-                WriteLine("FFmpeg ENCODERS" + Underline);
-
-                var writerProvider = ServiceProvider.Get<FFmpegWriterProvider>();
-
-                var i = 0;
-
-                foreach (var codec in writerProvider)
-                {
-                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
-                    ++i;
-                }
-
-                WriteLine();
+                WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                ++i;
             }
+
+            WriteLine();
         }
     }
 }
