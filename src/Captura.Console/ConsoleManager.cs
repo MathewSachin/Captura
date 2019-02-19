@@ -24,6 +24,7 @@ namespace Captura
         readonly WebcamModel _webcamModel;
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly IPlatformServices _platformServices;
+        readonly IMessageProvider _messageProvider;
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
@@ -33,7 +34,8 @@ namespace Captura
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             VideoWritersViewModel VideoWritersViewModel,
             IPlatformServices PlatformServices,
-            WebcamModel WebcamModel)
+            WebcamModel WebcamModel,
+            IMessageProvider MessageProvider)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -44,6 +46,7 @@ namespace Captura
             _videoWritersViewModel = VideoWritersViewModel;
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
+            _messageProvider = MessageProvider;
 
             // Hide on Full Screen Screenshot doesn't work on Console
             Settings.UI.HideOnFullScreenShot = false;
@@ -95,7 +98,7 @@ namespace Captura
             {
                 if (!StartOptions.Overwrite)
                 {
-                    if (!ServiceProvider.MessageProvider
+                    if (!_messageProvider
                         .ShowYesNo("Output File Already Exists, Do you want to overwrite?", ""))
                         return;
                 }

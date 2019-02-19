@@ -408,14 +408,13 @@ namespace Captura
 
             switch (vm.SelectedVideoSourceKind?.Source)
             {
-                case FullScreenItem _:
                 case NoVideoItem _:
                     bmp = ScreenShot.Capture();
                     break;
 
                 default:
                     var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
-                    bmp = await screenShotModel.GetScreenShot();
+                    bmp = await screenShotModel.GetScreenShot(true);
                     break;
             }
 

@@ -6,11 +6,13 @@ namespace Captura.Models
     {
         NoWebcamItem()
         {
-            Name = LanguageManager.Instance.NoWebcam;
+            var loc = LanguageManager.Instance;
 
-            LanguageManager.Instance.LanguageChanged += L =>
+            Name = loc.NoWebcam;
+
+            loc.LanguageChanged += L =>
             {
-                Name = LanguageManager.Instance.NoWebcam;
+                Name = loc.NoWebcam;
 
                 RaisePropertyChanged(nameof(Name));
             };

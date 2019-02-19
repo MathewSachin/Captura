@@ -76,15 +76,17 @@ namespace Captura
                 AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
             }
 
+            var loc = LanguageManager.Instance;
+
             if (!string.IsNullOrWhiteSpace(settings.UI.Language))
             {
-                var matchedCulture = LanguageManager.Instance.AvailableCultures.FirstOrDefault(M => M.Name == settings.UI.Language);
+                var matchedCulture = loc.AvailableCultures.FirstOrDefault(M => M.Name == settings.UI.Language);
 
                 if (matchedCulture != null)
-                    LanguageManager.Instance.CurrentCulture = matchedCulture;
+                    loc.CurrentCulture = matchedCulture;
             }
 
-            LanguageManager.Instance.LanguageChanged += L => settings.UI.Language = L.Name;
+            loc.LanguageChanged += L => settings.UI.Language = L.Name;
 
             var keymap = ServiceProvider.Get<KeymapViewModel>();
 

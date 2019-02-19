@@ -13,6 +13,7 @@ namespace Captura
     // ReSharper disable once ClassNeverInstantiated.Global
     public class HotKeyManager : IDisposable
     {
+        readonly IMessageProvider _messageProvider;
         readonly ObservableCollection<Hotkey> _hotkeys = new ObservableCollection<Hotkey>();
 
         public ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
@@ -25,8 +26,10 @@ namespace Captura
 
         public ICommand RemoveCommand { get; }
 
-        public HotKeyManager()
+        public HotKeyManager(IMessageProvider MessageProvider)
         {
+            _messageProvider = MessageProvider;
+
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
 
             ResetCommand = new DelegateCommand(Reset);
@@ -112,7 +115,7 @@ namespace Captura
                     message += $"{hotkey.Service.Description} - {hotkey}\n\n";
                 }
 
-                ServiceProvider.MessageProvider.ShowError(message, "Failed to Register Hotkeys");
+                _messageProvider.ShowError(message, "Failed to Register Hotkeys");
 
                 _notRegisteredOnStartup.Clear();
             }

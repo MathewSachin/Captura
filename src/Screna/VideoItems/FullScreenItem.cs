@@ -4,7 +4,7 @@ using System.Drawing;
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class FullScreenItem : NotifyPropertyChanged, IVideoItem
+    class FullScreenItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IPlatformServices _platformServices;
 

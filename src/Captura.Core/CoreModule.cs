@@ -31,7 +31,6 @@ namespace Captura
             Binder.Bind<IImgurApiKeys, ApiKeys>();
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
 
-            Binder.BindSingleton<FullScreenItem>();
             Binder.BindSingleton<HotKeyManager>();
             Binder.Bind(() => LanguageManager.Instance);
 

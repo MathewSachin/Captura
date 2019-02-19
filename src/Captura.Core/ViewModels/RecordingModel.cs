@@ -30,6 +30,7 @@ namespace Captura.ViewModels
         readonly WebcamModel _webcamModel;
         readonly IAudioPlayer _audioPlayer;
         readonly TimerModel _timerModel;
+        readonly IMessageProvider _messageProvider;
 
         readonly KeymapViewModel _keymap;
 
@@ -52,7 +53,8 @@ namespace Captura.ViewModels
             KeymapViewModel Keymap,
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
-            TimerModel TimerModel) : base(Settings, LanguageManager)
+            TimerModel TimerModel,
+            IMessageProvider MessageProvider) : base(Settings, LanguageManager)
         {
             _systemTray = SystemTray;
             _webcamOverlay = WebcamOverlay;
@@ -66,6 +68,7 @@ namespace Captura.ViewModels
             _audioPlayer = AudioPlayer;
             _recentList = RecentList;
             _timerModel = TimerModel;
+            _messageProvider = MessageProvider;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -167,7 +170,7 @@ namespace Captura.ViewModels
             {
                 if (!FFmpegService.FFmpegExists)
                 {
-                    ServiceProvider.MessageProvider.ShowFFmpegUnavailable();
+                    _messageProvider.ShowFFmpegUnavailable();
 
                     return false;
                 }
@@ -200,7 +203,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (_videoSourcesViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
-                var yes = ServiceProvider.MessageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
+                var yes = _messageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
 
                 if (yes)
                     _videoSourcesViewModel.SetDefaultSource();
@@ -209,13 +212,13 @@ namespace Captura.ViewModels
             }
             catch (WindowClosedException)
             {
-                ServiceProvider.MessageProvider.ShowError("Selected Window has been Closed.", "Window Closed");
+                _messageProvider.ShowError("Selected Window has been Closed.", "Window Closed");
 
                 return false;
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowException(e, e.Message);
+                _messageProvider.ShowException(e, e.Message);
 
                 return false;
             }
@@ -231,7 +234,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowException(e, e.Message);
+                _messageProvider.ShowException(e, e.Message);
 
                 imgProvider?.Dispose();
 
@@ -246,7 +249,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowException(e, e.Message);
+                _messageProvider.ShowException(e, e.Message);
 
                 imgProvider?.Dispose();
                 audioProvider?.Dispose();
@@ -334,7 +337,7 @@ namespace Captura.ViewModels
                 }
                 else
                 {
-                    ServiceProvider.MessageProvider.ShowError("No Audio Sources selected");
+                    _messageProvider.ShowError("No Audio Sources selected");
 
                     return false;
                 }
@@ -399,7 +402,7 @@ namespace Captura.ViewModels
                 AfterRecording();
 
                 if (!cancelled)
-                    ServiceProvider.MessageProvider.ShowException(E, E.Message);
+                    _messageProvider.ShowException(E, E.Message);
 
                 if (cancelled)
                 {
@@ -570,7 +573,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                ServiceProvider.MessageProvider.ShowException(e, "Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.");
+                _messageProvider.ShowException(e, "Error occurred when stopping recording.\nThis might sometimes occur if you stop recording just as soon as you start it.");
 
                 return;
             }
@@ -607,13 +610,13 @@ namespace Captura.ViewModels
         {
             if (RecorderState == RecorderState.Recording)
             {
-                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                if (!_messageProvider.ShowYesNo(
                     "A Recording is in progress. Are you sure you want to exit?", "Confirm Exit"))
                     return false;
             }
             else if (RunningStopRecordingCount > 0)
             {
-                if (!ServiceProvider.MessageProvider.ShowYesNo(
+                if (!_messageProvider.ShowYesNo(
                     "Some Recordings have not finished writing to disk. Are you sure you want to exit?", "Confirm Exit"))
                     return false;
             }

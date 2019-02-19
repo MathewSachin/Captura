@@ -5,10 +5,9 @@ namespace Captura.Models
     {
         public FullScreenSourceProvider(LanguageManager Loc,
             IIconSet Icons,
-            // ReSharper disable once SuggestBaseTypeForParameter
-            FullScreenItem FullScreenItem) : base(Loc)
+            IPlatformServices PlatformServices) : base(Loc)
         {
-            Source = FullScreenItem;
+            Source = new FullScreenItem(PlatformServices);
             Icon = Icons.MultipleMonitor;
         }
 

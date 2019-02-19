@@ -133,7 +133,7 @@ namespace Captura.ViewModels
             await SaveScreenShot(bmp, FileName);
         }
 
-        public async Task<IBitmapImage> GetScreenShot()
+        public async Task<IBitmapImage> GetScreenShot(bool SuppressHide = false)
         {
             IBitmapImage bmp = null;
 
@@ -163,7 +163,7 @@ namespace Captura.ViewModels
                     break;
 
                 case FullScreenSourceProvider _:
-                    var hide = _mainWindow.IsVisible && _settings.UI.HideOnFullScreenShot;
+                    var hide = !SuppressHide && _mainWindow.IsVisible && _settings.UI.HideOnFullScreenShot;
 
                     if (hide)
                     {
