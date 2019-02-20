@@ -74,12 +74,12 @@ namespace Captura.ViewModels
         {
             Settings.EnsureOutPath();
 
-            Process.Start(Settings.OutPath);
+            Process.Start(Settings.GetOutputPath());
         }
 
         void SelectOutputFolder()
         {
-            var folder = _dialogService.PickFolder(Settings.OutPath, Loc.SelectOutFolder);
+            var folder = _dialogService.PickFolder(Settings.GetOutputPath(), Loc.SelectOutFolder);
 
             if (folder != null)
                 Settings.OutPath = folder;
