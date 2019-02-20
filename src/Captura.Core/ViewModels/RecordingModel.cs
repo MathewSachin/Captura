@@ -455,16 +455,26 @@ namespace Captura.ViewModels
 
         IEnumerable<IOverlay> GetOverlays()
         {
+            // No mouse and webcam overlays in webcam mode
+            var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
+
             yield return new CensorOverlay(Settings.Censored);
 
-            if (!Settings.WebcamOverlay.SeparateFile)
+            if (!webcamMode && !Settings.WebcamOverlay.SeparateFile)
             {
                 yield return _webcamOverlay;
             }
 
-            yield return new MousePointerOverlay(Settings.MousePointerOverlay);
+            if (!webcamMode)
+            {
+                yield return new MousePointerOverlay(Settings.MousePointerOverlay);
+            }
 
-            yield return new MouseKeyHook(Settings.Clicks,
+            var clickSettings = webcamMode
+                ? new MouseClickSettings { Display = false }
+                : Settings.Clicks;
+
+            yield return new MouseKeyHook(clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 _currentFileName,
