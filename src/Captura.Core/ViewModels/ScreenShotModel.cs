@@ -18,6 +18,7 @@ namespace Captura.ViewModels
         readonly Settings _settings;
         readonly LanguageManager _loc;
         readonly IPlatformServices _platformServices;
+        readonly WebcamModel _webcamModel;
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
@@ -30,7 +31,8 @@ namespace Captura.ViewModels
             IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
             LanguageManager Loc,
-            IPlatformServices PlatformServices)
+            IPlatformServices PlatformServices,
+            WebcamModel WebcamModel)
         {
             _videoSourcesViewModel = VideoSourcesViewModel;
             _systemTray = SystemTray;
@@ -41,6 +43,7 @@ namespace Captura.ViewModels
             _settings = Settings;
             _loc = Loc;
             _platformServices = PlatformServices;
+            _webcamModel = WebcamModel;
 
             AvailableImageWriters = ImageWriters.ToList();
 
@@ -186,6 +189,10 @@ namespace Captura.ViewModels
 
                 case RegionSourceProvider _:
                     bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
+                    break;
+
+                case WebcamSourceProvider _:
+                    bmp = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
                     break;
             }
 
