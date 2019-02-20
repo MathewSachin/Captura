@@ -12,6 +12,8 @@ namespace Captura
 {
     public static class ServiceProvider
     {
+        public const string CapturaPathConstant = "%CAPTURA_PATH%";
+
         static string _settingsDir;
 
         public static string SettingsDir
@@ -19,7 +21,7 @@ namespace Captura
             get
             {
                 if (_settingsDir == null)
-                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Captura");
+                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Captura));
 
                 if (!Directory.Exists(_settingsDir))
                     Directory.CreateDirectory(_settingsDir);
@@ -28,6 +30,11 @@ namespace Captura
             }
             set
             {
+                if (string.IsNullOrWhiteSpace(value))
+                    return;
+
+                value = value.Replace(CapturaPathConstant, AppDir);
+
                 _settingsDir = value;
 
                 if (!Directory.Exists(_settingsDir))

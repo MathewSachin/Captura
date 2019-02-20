@@ -144,11 +144,9 @@ namespace Captura
         {
             var path = OutPath;
 
-            const string capturaPathConstant = "%CAPTURA_PATH%";
-
             if (!string.IsNullOrWhiteSpace(path))
             {
-                path = path.Replace(capturaPathConstant, ServiceProvider.AppDir);
+                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
             }
 
             return path;
