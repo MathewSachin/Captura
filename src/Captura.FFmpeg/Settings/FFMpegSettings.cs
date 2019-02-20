@@ -10,6 +10,18 @@ namespace Captura
             set => Set(value);
         }
 
+        public string GetFolderPath()
+        {
+            var path = FolderPath;
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+            }
+
+            return path;
+        }
+
         public string TwitchKey
         {
             get => Get("");

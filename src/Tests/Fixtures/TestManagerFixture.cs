@@ -39,7 +39,7 @@ namespace Captura.Tests
 
         public static string GetUiPath()
         {
-            return GetPath("Captura", "captura.exe");
+            return GetPath(nameof(Captura), "captura.exe");
         }
     }
 }

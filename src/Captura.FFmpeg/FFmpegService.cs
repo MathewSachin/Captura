@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Reflection;
 
 namespace Captura
 {
@@ -18,12 +17,12 @@ namespace Captura
         {
             get
             {
-                var settings = GetSettings();
+                var folderPath = GetSettings().GetFolderPath();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
+                if (!string.IsNullOrWhiteSpace(folderPath))
                 {
-                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(folderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return true;
@@ -53,12 +52,12 @@ namespace Captura
         {
             get
             {
-                var settings = GetSettings();
+                var folderPath = GetSettings().GetFolderPath();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
+                if (!string.IsNullOrWhiteSpace(folderPath))
                 {
-                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(folderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return path;
@@ -77,7 +76,7 @@ namespace Captura
 
             var dialogService = ServiceProvider.Get<IDialogService>();
 
-            var folder = dialogService.PickFolder(settings.FolderPath, LanguageManager.Instance.SelectFFmpegFolder);
+            var folder = dialogService.PickFolder(settings.GetFolderPath(), LanguageManager.Instance.SelectFFmpegFolder);
             
             if (!string.IsNullOrWhiteSpace(folder))
                 settings.FolderPath = folder;

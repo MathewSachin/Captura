@@ -64,13 +64,13 @@ namespace Captura.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(_ffmpegSettings.FolderPath))
             {
-                _targetFolder = _ffmpegSettings.FolderPath;
+                _targetFolder = _ffmpegSettings.GetFolderPath();
             }
             else
             {
                 var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-                _targetFolder = Path.Combine(localAppDataPath, "Captura");
+                _targetFolder = Path.Combine(localAppDataPath, nameof(Captura));
             }
 
             if (!Directory.Exists(_targetFolder))
