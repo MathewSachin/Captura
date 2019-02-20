@@ -267,16 +267,24 @@ namespace Captura.ViewModels
                     return false;
             }
 
-            // Separate file for webcam
-            if (_isVideo && !(_webcamModel.SelectedCam is NoWebcamItem) && Settings.WebcamOverlay.SeparateFile)
+            if (_isVideo)
             {
-                SeparateFileForWebcam();
-            }
+                var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
 
-            // Separate file for every audio source
-            if (_isVideo && Settings.Audio.Enabled && Settings.Audio.SeparateFilePerSource)
-            {
-                SeparateFileForEveryAudioSource();
+                // Separate file for webcam
+                if (!webcamMode
+                    && !(_webcamModel.SelectedCam is NoWebcamItem)
+                    && Settings.WebcamOverlay.SeparateFile)
+                {
+                    SeparateFileForWebcam();
+                }
+
+                // Separate file for every audio source
+                if (Settings.Audio.Enabled
+                    && Settings.Audio.SeparateFilePerSource)
+                {
+                    SeparateFileForEveryAudioSource();
+                }
             }
 
             _systemTray.HideNotification();
