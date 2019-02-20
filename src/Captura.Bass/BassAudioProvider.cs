@@ -43,6 +43,8 @@ namespace Captura.Models
             var info = Bass.RecordingInfo;
 
             _recordingHandle = Bass.RecordStart(info.Frequency, info.Channels, BassFlags.RecordPause, RecordProcedure);
+
+            WaveFormat = new Wf(info.Frequency, 16, info.Channels);
         }
 
         bool RecordProcedure(int Handle, IntPtr Ptr, int Length, IntPtr User)
@@ -84,7 +86,7 @@ namespace Captura.Models
         /// <summary>
         /// Gets the WaveFormat of this <see cref="IAudioProvider"/>.
         /// </summary>
-        public Wf WaveFormat => new Wf(44100, 16, 2);
+        public Wf WaveFormat { get; }
 
         /// <summary>
         /// Indicates recorded data is available.
