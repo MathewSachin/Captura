@@ -24,17 +24,38 @@ namespace Captura.ViewModels
             ImageUploadWriter ImgurWriter,
             ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
+            WebcamModel WebcamModel,
             IPlatformServices PlatformServices) : base(Settings, Loc)
         {
             this.DiskWriter = DiskWriter;
             this.ClipboardWriter = ClipboardWriter;
             this.ImgurWriter = ImgurWriter;
 
-            ScreenShotCommand = VideoSourcesViewModel
-                .ObserveProperty(M => M.SelectedVideoSourceKind)
-                .Select(M => !(M is NoVideoSourceProvider))
+            ScreenShotCommand = new[]
+                {
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is NoVideoSourceProvider),
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is WebcamSourceProvider),
+                    WebcamModel
+                        .ObserveProperty(M => M.SelectedCam)
+                        .Select(M => M is NoWebcamItem)
+                }
+                .CombineLatest(M =>
+                {
+                    var noVideo = M[0];
+                    var webcamMode = M[1];
+                    var noWebcam = M[2];
+
+                    if (webcamMode)
+                        return !noWebcam;
+
+                    return !noVideo;
+                })
                 .ToReactiveCommand()
-                .WithSubscribe(() => ScreenShotModel.CaptureScreenShot());
+                .WithSubscribe(M => ScreenShotModel.CaptureScreenShot());
 
             async Task ScreenShotWindow(IWindow Window)
             {
