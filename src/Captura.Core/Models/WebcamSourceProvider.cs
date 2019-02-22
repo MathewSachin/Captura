@@ -37,6 +37,6 @@ namespace Captura.Models
 
         public bool Deserialize(string Serialized) => true;
 
-        public bool ParseCli(string Arg) => false;
+        public bool ParseCli(string Arg) => Arg == "webcam";
     }
 }
