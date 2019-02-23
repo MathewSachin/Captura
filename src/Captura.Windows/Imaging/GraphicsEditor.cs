@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Captura;
 using Captura.Models;
@@ -16,6 +17,8 @@ namespace Screna
             _image = Image;
 
             _graphics = Graphics.FromImage(Image);
+
+            _graphics.SmoothingMode = SmoothingMode.AntiAlias;
         }
 
         public IBitmapFrame GenerateFrame()
