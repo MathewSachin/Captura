@@ -267,16 +267,24 @@ namespace Captura.ViewModels
                     return false;
             }
 
-            // Separate file for webcam
-            if (_isVideo && !(_webcamModel.SelectedCam is NoWebcamItem) && Settings.WebcamOverlay.SeparateFile)
+            if (_isVideo)
             {
-                SeparateFileForWebcam();
-            }
+                var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
 
-            // Separate file for every audio source
-            if (_isVideo && Settings.Audio.Enabled && Settings.Audio.SeparateFilePerSource)
-            {
-                SeparateFileForEveryAudioSource();
+                // Separate file for webcam
+                if (!webcamMode
+                    && !(_webcamModel.SelectedCam is NoWebcamItem)
+                    && Settings.WebcamOverlay.SeparateFile)
+                {
+                    SeparateFileForWebcam();
+                }
+
+                // Separate file for every audio source
+                if (Settings.Audio.Enabled
+                    && Settings.Audio.SeparateFilePerSource)
+                {
+                    SeparateFileForEveryAudioSource();
+                }
             }
 
             _systemTray.HideNotification();
@@ -455,16 +463,26 @@ namespace Captura.ViewModels
 
         IEnumerable<IOverlay> GetOverlays()
         {
+            // No mouse and webcam overlays in webcam mode
+            var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
+
             yield return new CensorOverlay(Settings.Censored);
 
-            if (!Settings.WebcamOverlay.SeparateFile)
+            if (!webcamMode && !Settings.WebcamOverlay.SeparateFile)
             {
                 yield return _webcamOverlay;
             }
 
-            yield return new MousePointerOverlay(Settings.MousePointerOverlay);
+            if (!webcamMode)
+            {
+                yield return new MousePointerOverlay(Settings.MousePointerOverlay);
+            }
 
-            yield return new MouseKeyHook(Settings.Clicks,
+            var clickSettings = webcamMode
+                ? new MouseClickSettings { Display = false }
+                : Settings.Clicks;
+
+            yield return new MouseKeyHook(clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 _currentFileName,

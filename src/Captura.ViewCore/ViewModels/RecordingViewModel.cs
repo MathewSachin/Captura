@@ -17,6 +17,7 @@ namespace Captura.ViewModels
         public RecordingViewModel(RecordingModel RecordingModel,
             Settings Settings,
             TimerModel TimerModel,
+            WebcamModel WebcamModel,
             VideoSourcesViewModel VideoSourcesViewModel)
         {
             _recordingModel = RecordingModel;
@@ -27,9 +28,29 @@ namespace Captura.ViewModels
                         .ObserveProperty(M => M.Enabled),
                     VideoSourcesViewModel
                         .ObserveProperty(M => M.SelectedVideoSourceKind)
-                        .Select(M => !(M is NoVideoSourceProvider))
+                        .Select(M => M is NoVideoSourceProvider),
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is WebcamSourceProvider),
+                    WebcamModel
+                        .ObserveProperty(M => M.SelectedCam)
+                        .Select(M => M is NoWebcamItem)
                 }
-                .CombineLatest(M => M[0] || M[1])
+                .CombineLatest(M =>
+                {
+                    var audioEnabled = M[0];
+                    var audioOnlyMode = M[1];
+                    var webcamMode = M[2];
+                    var noWebcam = M[3];
+
+                    if (audioOnlyMode)
+                        return audioEnabled;
+
+                    if (webcamMode)
+                        return !noWebcam;
+
+                    return true;
+                })
                 .ToReactiveCommand()
                 .WithSubscribe(RecordingModel.OnRecordExecute);
 
