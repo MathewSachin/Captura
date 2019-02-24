@@ -21,7 +21,20 @@ namespace Captura
             get
             {
                 if (_settingsDir == null)
-                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Captura));
+                {
+                    var localSettings = Path.Combine(AppDir, "Settings");
+
+                    if (Directory.Exists(localSettings))
+                    {
+                        _settingsDir = localSettings;
+                    }
+                    else
+                    {
+                        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+                        _settingsDir = Path.Combine(appDataPath, nameof(Captura));
+                    }
+                }
 
                 if (!Directory.Exists(_settingsDir))
                     Directory.CreateDirectory(_settingsDir);

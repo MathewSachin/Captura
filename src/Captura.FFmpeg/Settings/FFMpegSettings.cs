@@ -18,7 +18,15 @@ namespace Captura
 
             if (!string.IsNullOrWhiteSpace(path))
             {
-                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+                return path.Replace(ServiceProvider.CapturaPathConstant,
+                    ServiceProvider.AppDir);
+            }
+
+            var localCodecs = Path.Combine(ServiceProvider.AppDir, "Codecs");
+
+            if (Directory.Exists(localCodecs))
+            {
+                path = localCodecs;
             }
             else
             {
