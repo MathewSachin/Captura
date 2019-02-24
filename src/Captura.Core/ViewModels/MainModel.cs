@@ -19,7 +19,6 @@ namespace Captura.ViewModels
         readonly HotKeyManager _hotKeyManager;
 
         public MainModel(Settings Settings,
-            IWebCamProvider WebCamProvider,
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             HotKeyManager HotKeyManager,
@@ -34,8 +33,8 @@ namespace Captura.ViewModels
             _webcamModel = WebcamModel;
 
             // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(Settings.OutPath))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Captura");
+            if (string.IsNullOrWhiteSpace(Settings.GetOutputPath()))
+                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura));
 
             // Create the Output Directory if it does not exist
             Settings.EnsureOutPath();

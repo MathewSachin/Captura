@@ -35,47 +35,44 @@ namespace Captura.ViewModels
 
         readonly IDialogService _dialogService;
         readonly ProxySettings _proxySettings;
-        readonly FFmpegSettings _ffmpegSettings;
+        public FFmpegSettings FFmpegSettings { get; }
         readonly LanguageManager _loc;
 
-        public FFmpegDownloadViewModel(IDialogService DialogService, ProxySettings ProxySettings, LanguageManager Loc, FFmpegSettings FFmpegSettings)
+        public FFmpegDownloadViewModel(IDialogService DialogService,
+            ProxySettings ProxySettings,
+            LanguageManager Loc,
+            FFmpegSettings FFmpegSettings)
         {
             _dialogService = DialogService;
             _proxySettings = ProxySettings;
             _loc = Loc;
-            _ffmpegSettings = FFmpegSettings;
+
+            this.FFmpegSettings = FFmpegSettings;
 
             StartCommand = new DelegateCommand(OnStartExecute);
-
-            SetDefaultTargetFolderToLocalAppData();
 
             SelectFolderCommand = new DelegateCommand(OnSelectFolderExecute);
 
             OpenFolderCommand = new DelegateCommand(() =>
             {
-                if (Directory.Exists(_targetFolder))
+                var path = FFmpegSettings.GetFolderPath();
+
+                if (Directory.Exists(path))
                 {
-                    Process.Start(_targetFolder);
+                    Process.Start(path);
                 }
             });
+
+            EnsureDir();
         }
 
-        void SetDefaultTargetFolderToLocalAppData()
+        void EnsureDir()
         {
-            if (!string.IsNullOrWhiteSpace(_ffmpegSettings.FolderPath))
-            {
-                _targetFolder = _ffmpegSettings.FolderPath;
-            }
-            else
-            {
-                var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var path = FFmpegSettings.GetFolderPath();
 
-                _targetFolder = Path.Combine(localAppDataPath, "Captura");
-            }
-
-            if (!Directory.Exists(_targetFolder))
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(_targetFolder);
+                Directory.CreateDirectory(path);
             }
         }
 
@@ -97,10 +94,10 @@ namespace Captura.ViewModels
 
         void OnSelectFolderExecute()
         {
-            var folder = _dialogService.PickFolder(TargetFolder, _loc.SelectFFmpegFolder);
+            var folder = _dialogService.PickFolder(FFmpegSettings.GetFolderPath(), _loc.SelectFFmpegFolder);
 
             if (!string.IsNullOrWhiteSpace(folder))
-                TargetFolder = folder;
+                FFmpegSettings.FolderPath = folder;
         }
 
         const string CancelDownload = "Cancel Download";
@@ -165,7 +162,7 @@ namespace Captura.ViewModels
 
             try
             {
-                await DownloadFFmpeg.ExtractTo(TargetFolder);
+                await DownloadFFmpeg.ExtractTo(FFmpegSettings.GetFolderPath());
             }
             catch (UnauthorizedAccessException)
             {
@@ -177,9 +174,6 @@ namespace Captura.ViewModels
                 Status = "Extraction failed";
                 return false;
             }
-            
-            // Update FFmpeg folder setting
-            _ffmpegSettings.FolderPath = TargetFolder;
             
             Status = "Done";
             ActionDescription = Finish;
@@ -197,19 +191,6 @@ namespace Captura.ViewModels
             private set
             {
                 _actionDescription = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        string _targetFolder;
-
-        public string TargetFolder
-        {
-            get => _targetFolder;
-            set
-            {
-                _targetFolder = value;
 
                 OnPropertyChanged();
             }

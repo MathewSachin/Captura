@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Captura
 {
@@ -8,6 +10,24 @@ namespace Captura
         {
             get => Get<string>();
             set => Set(value);
+        }
+
+        public string GetFolderPath()
+        {
+            var path = FolderPath;
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+            }
+            else
+            {
+                var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+                path = Path.Combine(localAppDataPath, nameof(Captura));
+            }
+
+            return path;
         }
 
         public string TwitchKey

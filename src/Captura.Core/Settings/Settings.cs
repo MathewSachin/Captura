@@ -71,8 +71,10 @@ namespace Captura
 
         public void EnsureOutPath()
         {
-            if (!Directory.Exists(OutPath))
-                Directory.CreateDirectory(OutPath);
+            var outPath = GetOutputPath();
+
+            if (!Directory.Exists(outPath))
+                Directory.CreateDirectory(outPath);
         }
 
         public ProxySettings Proxy { get; } = new ProxySettings();
@@ -138,6 +140,18 @@ namespace Captura
             set => Set(value);
         }
 
+        public string GetOutputPath()
+        {
+            var path = OutPath;
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+            }
+
+            return path;
+        }
+
         public string FilenameFormat
         {
             get => Get("%yyyy%-%MM%-%dd%-%HH%-%mm%-%ss%");
@@ -152,8 +166,10 @@ namespace Captura
             if (!Extension.StartsWith("."))
                 Extension = $".{Extension}";
 
+            var outPath = GetOutputPath();
+
             if (string.IsNullOrWhiteSpace(FilenameFormat))
-                return Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
+                return Path.Combine(outPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
 
             var now = DateTime.Now;
 
@@ -177,7 +193,7 @@ namespace Captura
                 .Replace("%tt%", now.ToString("tt"))
                 .Replace("%zzz%", now.ToString("zzz"));
             
-            var path = Path.Combine(OutPath, $"{filename}{Extension}");
+            var path = Path.Combine(outPath, $"{filename}{Extension}");
 
             if (!File.Exists(path))
                 return path;
@@ -186,7 +202,7 @@ namespace Captura
 
             do
             {
-                path = Path.Combine(OutPath, $"{filename} ({i++}){Extension}");
+                path = Path.Combine(outPath, $"{filename} ({i++}){Extension}");
             }
             while (File.Exists(path));
 

@@ -88,13 +88,13 @@ namespace Captura
                     return;
                 }
 
-                var ffMpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
+                var ffmpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
 
-                ffMpegDownload.TargetFolder = FFmpegOptions.Install;
+                ServiceProvider.Get<FFmpegSettings>().FolderPath = downloadFolder;
 
-                await ffMpegDownload.Start();
+                await ffmpegDownload.Start();
                 
-                WriteLine(ffMpegDownload.Status);
+                WriteLine(ffmpegDownload.Status);
             }
         }
     }

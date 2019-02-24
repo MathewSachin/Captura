@@ -76,11 +76,11 @@
                       Width="16"
                       Data="{Binding Icons.More, Source={StaticResource ServiceLocator}}"/>
             </Button>
-            <Border ToolTip="{Binding TargetFolder, Mode=OneWay}"
+            <Border ToolTip="{Binding FFmpegSettings.FolderPath, Mode=OneWay}"
                     MouseUp="SelectTargetFolder">
                 <TextBox IsReadOnly="True"
                          IsEnabled="False"
-                         Text="{Binding TargetFolder, Mode=OneWay}"/>
+                         Text="{Binding FFmpegSettings.FolderPath, Mode=OneWay}"/>
             </Border>
         </DockPanel>
         
