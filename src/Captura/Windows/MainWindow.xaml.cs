@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Captura.Models;
 using Captura.ViewModels;
 using Captura.Views;
 using System.Windows;
@@ -34,35 +33,20 @@ namespace Captura
 
             var mainModel = ServiceProvider.Get<MainModel>();
 
-            mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
-            ServiceProvider.Get<HotkeyActionRegisterer>().Register();
+            mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
+
+            var hotkeySetup = ServiceProvider.Get<HotkeySetup>();
+            hotkeySetup.Setup();
+
             ServiceProvider.Get<TimerModel>().Init();
-
-            var listener = new HotkeyListener();
-
-            var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
-
-            listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
-
-            ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
-            {
-                switch (Service)
-                {
-                    case ServiceName.OpenImageEditor:
-                        new ImageEditorWindow().ShowAndFocus();
-                        break;
-
-                    case ServiceName.ShowMainWindow:
-                        this.ShowAndFocus();
-                        break;
-                }
-            };
 
             Loaded += (Sender, Args) =>
             {
                 RepositionWindowIfOutside();
 
                 WebCamWindow.Instance.SetupWebcamPreview();
+
+                hotkeySetup.ShowUnregistered();
 
                 mainModel.ViewLoaded();
             };
@@ -116,14 +100,7 @@ namespace Captura
             {
                 Hide();
             }
-            else
-            {
-                Show();
-
-                WindowState = WindowState.Normal;
-
-                Activate();
-            }
+            else this.ShowAndFocus();
         }
 
         bool TryExit()
@@ -134,8 +111,6 @@ namespace Captura
                 return false;
 
             ServiceProvider.Dispose();
-
-            SystemTray.Dispose();
 
             return true;
         }

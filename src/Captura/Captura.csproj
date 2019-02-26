@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Models\RegionSelectorProvider.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />
+    <Compile Include="Models\HotkeySetup.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>

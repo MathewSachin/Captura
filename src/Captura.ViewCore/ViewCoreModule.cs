@@ -19,7 +19,6 @@
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
             Binder.BindSingleton<CensorOverlaysViewModel>();
-            Binder.BindSingleton<HotkeyActionRegisterer>();
         }
 
         public void Dispose() { }

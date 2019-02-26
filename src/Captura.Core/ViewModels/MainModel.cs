@@ -9,26 +9,23 @@ namespace Captura.ViewModels
     public class MainModel : NotifyPropertyChanged, IDisposable
     {
         readonly Settings _settings;
-        bool _persist, _hotkeys, _remembered;
+        bool _persist, _remembered;
 
         readonly RememberByName _rememberByName;
 
         readonly VideoWritersViewModel _videoWritersViewModel;
         readonly WebcamModel _webcamModel;
         readonly AudioSource _audioSource;
-        readonly HotKeyManager _hotKeyManager;
 
         public MainModel(Settings Settings,
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
-            HotKeyManager HotKeyManager,
             RememberByName RememberByName,
             WebcamModel WebcamModel)
         {
             _settings = Settings;
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
-            _hotKeyManager = HotKeyManager;
             _rememberByName = RememberByName;
             _webcamModel = WebcamModel;
 
@@ -49,14 +46,9 @@ namespace Captura.ViewModels
             _webcamModel.Refresh();
         }
 
-        public void Init(bool Persist, bool Remembered, bool Hotkeys)
+        public void Init(bool Persist, bool Remembered)
         {
             _persist = Persist;
-            _hotkeys = Hotkeys;
-
-            // Register Hotkeys if not console
-            if (_hotkeys)
-                _hotKeyManager.RegisterAll();
 
             if (Remembered)
             {
@@ -81,8 +73,6 @@ namespace Captura.ViewModels
                     }
                 }
             }
-
-            _hotKeyManager.ShowNotRegisteredOnStartup();
         }
 
         public void Dispose()

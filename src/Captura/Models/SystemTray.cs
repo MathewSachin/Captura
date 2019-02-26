@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    class SystemTray : ISystemTray
+    class SystemTray : ISystemTray, IDisposable
     {
         bool _first = true;
 
@@ -66,6 +66,11 @@ namespace Captura.Models
             _notificationStack.Add(new NotificationBalloon(Notification));
 
             Show();
+        }
+
+        public void Dispose()
+        {
+            _trayIcon.Invoke()?.Dispose();
         }
     }
 }
