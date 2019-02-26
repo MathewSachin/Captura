@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO.Pipes;
 using System.Threading.Tasks;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
@@ -146,7 +147,7 @@ namespace Captura.Models
             if (_ffmpegProcess.HasExited)
             {
                 Frame.Dispose();
-                throw new Exception($"An Error Occurred with FFmpeg, Exit Code: {_ffmpegProcess.ExitCode}");
+                throw new FFmpegException(_ffmpegProcess.ExitCode);
             }
             
             if (_firstFrame)
@@ -169,7 +170,14 @@ namespace Captura.Models
                 }
             }
 
-            _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+            try
+            {
+                _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+            }
+            catch (Exception e) when (_ffmpegProcess.HasExited)
+            {
+                throw new FFmpegException(_ffmpegProcess.ExitCode, e);
+            }
         }
     }
 }
