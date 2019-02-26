@@ -463,13 +463,13 @@ namespace Captura
             set => Set(value);
         }
 
-        public string MinCapture
+        public string Minimize
         {
             get => Get();
             set => Set(value);
         }
 
-        public string Minimize
+        public string MinToTrayOnCaptureStart
         {
             get => Get();
             set => Set(value);

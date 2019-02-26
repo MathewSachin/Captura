@@ -289,8 +289,8 @@ namespace Captura.ViewModels
 
             _systemTray.HideNotification();
 
-            if (Settings.UI.MinimizeOnStart)
-                _mainWindow.IsMinimized = true;
+            if (Settings.Tray.MinToTrayOnCaptureStart)
+                _mainWindow.IsVisible = false;
 
             RecorderState = RecorderState.Recording;
 
@@ -433,9 +433,6 @@ namespace Captura.ViewModels
             _recorder = null;
 
             _timerModel.Stop();
-
-            if (Settings.UI.MinimizeOnStart)
-                _mainWindow.IsMinimized = false;
         }
 
         IVideoFileWriter GetVideoFileWriterWithPreview(IImageProvider ImgProvider, IAudioProvider AudioProvider)
