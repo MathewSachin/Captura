@@ -73,7 +73,7 @@
   "MaxTextLength": "Največja dovoljena dolžina teksta",
   "MicSource": "Zvočni vhod",
   "Minimize": "Pomanjšaj",
-  "MinToTrayOnCaptureStart": "",
+  "MinToTrayOnCaptureStart": "Ob pričetku snemanja pomanjšaj v opravilno vrstico",
   "MinTray": "Pomanjšaj v opravilno vrstico",
   "MinTrayStartup": "Minimiziraj v opravilno vrstico ob zagonu",
   "MinTrayClose": "Minimiziraj v opravilno vrstico ob zaprtju",
