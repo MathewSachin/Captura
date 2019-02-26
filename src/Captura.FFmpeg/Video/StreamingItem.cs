@@ -18,7 +18,7 @@ namespace Captura.Models
         {
             Args.FileName = _linkFunction();
 
-            return _baseItem.GetVideoFileWriter(Args, "-g 20 -r 10 -f flv");
+            return _baseItem.GetVideoFileWriter(Args, $"-g {Args.FrameRate * 2} -r {Args.FrameRate} -f flv");
         }
 
         public static StreamingItem CustomUrl { get; } = new StreamingItem("Custom", () =>
