@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Captura.Models;
 using Google.Apis.Upload;
-using Screna;
 
 namespace Captura.ViewModels
 {
@@ -24,7 +23,8 @@ namespace Captura.ViewModels
         YouTubeUploadRequest _uploadRequest;
 
         public YouTubeUploaderViewModel(YouTubeUploader Uploader,
-            IMessageProvider MessageProvider)
+            IMessageProvider MessageProvider,
+            IClipboardService ClipboardService)
         {
             _uploader = Uploader;
             _messageProvider = MessageProvider;
@@ -34,7 +34,7 @@ namespace Captura.ViewModels
 
             OpenVideoCommand = new DelegateCommand(() => Process.Start(Link), false);
 
-            CopyLinkCommand = new DelegateCommand(() => Link.WriteToClipboard(), false);
+            CopyLinkCommand = new DelegateCommand(() => ClipboardService.SetText(Link), false);
         }
 
         public string FileName

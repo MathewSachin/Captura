@@ -9,6 +9,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
-    <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
 </Project>

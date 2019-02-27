@@ -7,7 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
-    <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="keymaps\*.json" Exclude="keymaps\schema.json">
