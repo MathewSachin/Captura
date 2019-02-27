@@ -73,7 +73,7 @@
   "MaxTextLength": "テキストの最大長",
   "MicSource": "マイクの入力元",
   "Minimize": "最小化",
-  "MinToTrayOnCaptureStart": "",
+  "MinToTrayOnCaptureStart": "キャプチャ開始にトレイへ最小化",
   "MinTray": "タスクバーに格納",
   "MinTrayStartup": "起動時に最小化する",
   "MinTrayClose": "閉じたらトレイも最小化する",
