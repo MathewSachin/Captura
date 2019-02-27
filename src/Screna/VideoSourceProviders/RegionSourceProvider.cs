@@ -9,7 +9,6 @@ namespace Captura.Models
     {
         readonly IRegionProvider _regionProvider;
         readonly IPlatformServices _platformServices;
-        static readonly RectangleConverter RectangleConverter = new RectangleConverter();
 
         public RegionSourceProvider(LanguageManager Loc,
             IRegionProvider RegionProvider,
@@ -57,12 +56,12 @@ namespace Captura.Models
         public override string Serialize()
         {
             var rect = _regionProvider.SelectedRegion;
-            return RectangleConverter.ConvertToInvariantString(rect);
+            return rect.ConvertToString();
         }
 
         public override bool Deserialize(string Serialized)
         {
-            if (!(RectangleConverter.ConvertFromInvariantString(Serialized) is Rectangle rect))
+            if (!(Serialized.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect;
@@ -77,9 +76,7 @@ namespace Captura.Models
             if (!Regex.IsMatch(Arg, @"^\d+,\d+,\d+,\d+$"))
                 return false;
 
-            var rectConverter = new RectangleConverter();
-
-            if (!(rectConverter.ConvertFromInvariantString(Arg) is Rectangle rect))
+            if (!(Arg.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect.Even();

@@ -3,6 +3,7 @@ using Captura.ViewModels;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
         readonly LanguageManager _loc;

@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.36.1.1226" />

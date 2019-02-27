@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Captura;
 
 namespace Screna
@@ -17,6 +19,27 @@ namespace Screna
                 --Rect.Height;
 
             return Rect;
+        }
+
+        public static Rectangle? ConvertToRectangle(this string Value)
+        {
+            if (Regex.IsMatch(Value, @"\d+,\d+,\d+,\d+"))
+            {
+                var x = Value.Split(',')
+                    .Select(int.Parse)
+                    .ToArray();
+
+                return new Rectangle(x[0], x[1], x[2], x[3]);
+            }
+
+            return null;
+        }
+
+        public static string ConvertToString(this Rectangle Rect)
+        {
+            var x = new[] { Rect.X, Rect.Y, Rect.Width, Rect.Height };
+
+            return string.Join(",", x.Select(M => M.ToString()));
         }
 
         public static void WriteToClipboard(this string S)
