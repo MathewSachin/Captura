@@ -73,7 +73,7 @@
   "MaxTextLength": "最大文本长度",
   "MicSource": "麦克风源",
   "Minimize": "最小化",
-  "MinToTrayOnCaptureStart": "",
+  "MinToTrayOnCaptureStart": "在录制开始时最小化到托盘",
   "MinTray": "最小化到任务栏",
   "MinTrayStartup": "在启动时最小化到任务栏",
   "MinTrayClose": "关闭时最小化到任务栏",
