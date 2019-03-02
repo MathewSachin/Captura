@@ -73,7 +73,7 @@
   "MaxTextLength": "Comprimento Máximo do Texto",
   "MicSource": "Fonte do Microfone",
   "Minimize": "Minimizar",
-  "MinToTrayOnCaptureStart": "",
+  "MinToTrayOnCaptureStart": "Minimizar ao Iniciar a Captura",
   "MinTray": "Minimizar para a Área de Notificação",
   "MinTrayStartup": "Minimizar para a Área de Notificação quando Iniciar",
   "MinTrayClose": "Minimizar para a Área de Notificação quando Fechar",
