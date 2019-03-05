@@ -5,8 +5,8 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ProxySettingsViewModel : ViewModelBase
     {
-        public ProxySettingsViewModel(Settings Settings, LanguageManager LanguageManager)
-            : base(Settings, LanguageManager)
+        public ProxySettingsViewModel(Settings Settings, ILocalizationProvider Loc)
+            : base(Settings, Loc)
         {
             Settings.Proxy.PropertyChanged += (S, E) => RaiseAllChanged();
         }

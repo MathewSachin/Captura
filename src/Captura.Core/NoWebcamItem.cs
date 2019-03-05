@@ -6,7 +6,7 @@ namespace Captura.Models
     {
         NoWebcamItem()
         {
-            var loc = LanguageManager.Instance;
+            var loc = ServiceProvider.Get<ILocalizationProvider>();
 
             Name = loc.NoWebcam;
 

@@ -17,7 +17,7 @@ namespace Captura.ViewModels
         public ClipboardWriter ClipboardWriter { get; }
         public ImageUploadWriter ImgurWriter { get; }
 
-        public ScreenShotViewModel(LanguageManager Loc,
+        public ScreenShotViewModel(ILocalizationProvider Loc,
             Settings Settings,
             DiskWriter DiskWriter,
             ClipboardWriter ClipboardWriter,

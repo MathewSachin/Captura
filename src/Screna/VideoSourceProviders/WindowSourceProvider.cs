@@ -11,7 +11,7 @@ namespace Captura.Models
         readonly IRegionProvider _regionProvider;
         readonly IPlatformServices _platformServices;
 
-        public WindowSourceProvider(LanguageManager Loc,
+        public WindowSourceProvider(ILocalizationProvider Loc,
             IVideoSourcePicker VideoSourcePicker,
             IRegionProvider RegionProvider,
             IIconSet Icons,

@@ -10,13 +10,13 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IRecentList _recentList;
 
         public DiskWriter(ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             IRecentList RecentList)
         {
             _systemTray = SystemTray;

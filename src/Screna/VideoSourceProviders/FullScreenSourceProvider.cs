@@ -3,7 +3,7 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FullScreenSourceProvider : VideoSourceProviderBase
     {
-        public FullScreenSourceProvider(LanguageManager Loc,
+        public FullScreenSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
             IPlatformServices PlatformServices) : base(Loc)
         {

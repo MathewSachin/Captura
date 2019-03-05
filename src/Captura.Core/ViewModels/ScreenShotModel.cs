@@ -16,7 +16,7 @@ namespace Captura.ViewModels
         readonly IVideoSourcePicker _sourcePicker;
         readonly IAudioPlayer _audioPlayer;
         readonly Settings _settings;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IPlatformServices _platformServices;
         readonly WebcamModel _webcamModel;
 
@@ -30,7 +30,7 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel)
         {

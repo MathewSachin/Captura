@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using Newtonsoft.Json.Linq;
 
 namespace Captura
@@ -72,7 +71,7 @@ namespace Captura
             {
                 _currentCulture = value;
 
-                Thread.CurrentThread.CurrentUICulture = value;
+                CultureInfo.CurrentUICulture = value;
 
                 _currentLanguage = LoadLang(value.Name);
 
@@ -82,7 +81,7 @@ namespace Captura
             }
         }
 
-        public event Action<CultureInfo> LanguageChanged;
+        public override event Action<CultureInfo> LanguageChanged;
 
         JObject LoadLang(string LanguageId)
         {

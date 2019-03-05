@@ -36,11 +36,11 @@ namespace Captura.ViewModels
         readonly IDialogService _dialogService;
         readonly ProxySettings _proxySettings;
         public FFmpegSettings FFmpegSettings { get; }
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
         public FFmpegDownloadViewModel(IDialogService DialogService,
             ProxySettings ProxySettings,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             FFmpegSettings FFmpegSettings)
         {
             _dialogService = DialogService;

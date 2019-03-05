@@ -9,7 +9,7 @@ namespace Captura.Models
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IPlatformServices _platformServices;
         
-        public ScreenSourceProvider(LanguageManager Loc,
+        public ScreenSourceProvider(ILocalizationProvider Loc,
             IVideoSourcePicker VideoSourcePicker,
             IIconSet Icons,
             IPlatformServices PlatformServices) : base(Loc)

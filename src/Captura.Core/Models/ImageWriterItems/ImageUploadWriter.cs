@@ -11,7 +11,7 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IRecentList _recentList;
 
         readonly IImageUploader _imgUploader;
@@ -20,7 +20,7 @@ namespace Captura.Models
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager LanguageManager,
+            ILocalizationProvider Loc,
             IRecentList RecentList,
             IImageUploader ImgUploader)
         {
@@ -30,10 +30,10 @@ namespace Captura.Models
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
-            _loc = LanguageManager;
+            _loc = Loc;
             _recentList = RecentList;
 
-            LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
         public async Task Save(IBitmapImage Image, ImageFormats Format, string FileName)

@@ -6,9 +6,9 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
-        public WebcamSourceProvider(LanguageManager Loc,
+        public WebcamSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
             WebcamModel WebcamModel)
         {

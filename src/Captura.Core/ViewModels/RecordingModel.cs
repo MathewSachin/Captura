@@ -41,7 +41,7 @@ namespace Captura.ViewModels
         #endregion
 
         public RecordingModel(Settings Settings,
-            LanguageManager LanguageManager,
+            ILocalizationProvider Loc,
             ISystemTray SystemTray,
             WebcamOverlay WebcamOverlay,
             IMainWindow MainWindow,
@@ -54,7 +54,7 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
             TimerModel TimerModel,
-            IMessageProvider MessageProvider) : base(Settings, LanguageManager)
+            IMessageProvider MessageProvider) : base(Settings, Loc)
         {
             _systemTray = SystemTray;
             _webcamOverlay = WebcamOverlay;

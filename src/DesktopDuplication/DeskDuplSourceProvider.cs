@@ -11,16 +11,13 @@ namespace Captura.Models
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IPlatformServices _platformServices;
 
-        public DeskDuplSourceProvider(LanguageManager Loc,
-            IVideoSourcePicker VideoSourcePicker,
+        public DeskDuplSourceProvider(IVideoSourcePicker VideoSourcePicker,
             IIconSet Icons,
             IPlatformServices PlatformServices)
         {
             _videoSourcePicker = VideoSourcePicker;
             _platformServices = PlatformServices;
             Icon = Icons.Game;
-
-            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
         bool PickScreen()

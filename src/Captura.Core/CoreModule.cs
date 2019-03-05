@@ -32,7 +32,9 @@ namespace Captura
             Binder.Bind<IYouTubeApiKeys, ApiKeys>();
 
             Binder.BindSingleton<HotKeyManager>();
+
             Binder.Bind(() => LanguageManager.Instance);
+            Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
 
             WindowsModule.Load(Binder);
         }

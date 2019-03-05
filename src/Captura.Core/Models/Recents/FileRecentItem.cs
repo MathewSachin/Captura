@@ -25,7 +25,7 @@ namespace Captura.Models
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
 
             var icons = ServiceProvider.Get<IIconSet>();
-            var loc = ServiceProvider.Get<LanguageManager>();
+            var loc = ServiceProvider.Get<ILocalizationProvider>();
             var windowService = ServiceProvider.Get<IMainWindow>();
 
             Icon = GetIcon(FileType, icons);

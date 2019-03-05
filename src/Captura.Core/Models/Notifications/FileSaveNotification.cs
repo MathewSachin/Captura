@@ -10,14 +10,14 @@ namespace Captura
     public class FileSaveNotification : NotifyPropertyChanged, INotification
     {
         readonly FileRecentItem _recentItem;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IIconSet _icons;
 
         public FileSaveNotification(FileRecentItem RecentItem)
         {
             _recentItem = RecentItem;
 
-            _loc = ServiceProvider.Get<LanguageManager>();
+            _loc = ServiceProvider.Get<ILocalizationProvider>();
             _icons = ServiceProvider.Get<IIconSet>();
 
             PrimaryText = $"Saving {_recentItem.FileType} ...";

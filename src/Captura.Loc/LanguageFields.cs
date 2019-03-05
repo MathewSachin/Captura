@@ -1,10 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
 namespace Captura
 {
-    public class LanguageFields : NotifyPropertyChanged
+    public class LanguageFields : NotifyPropertyChanged, ILocalizationProvider
     {
         protected virtual string GetValue(string Key) => "";
 
@@ -24,6 +26,8 @@ namespace Captura
 
             RaisePropertyChanged(PropertyName);
         }
+
+        public virtual event Action<CultureInfo> LanguageChanged;
 
         public string About
         {

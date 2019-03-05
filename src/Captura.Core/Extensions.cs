@@ -25,7 +25,7 @@ namespace Captura
             switch (response)
             {
                 case Exception ex:
-                    var loc = ServiceProvider.Get<LanguageManager>();
+                    var loc = ServiceProvider.Get<ILocalizationProvider>();
                     ServiceProvider.MessageProvider.ShowException(ex, loc.ImageUploadFailed);
                     break;
 

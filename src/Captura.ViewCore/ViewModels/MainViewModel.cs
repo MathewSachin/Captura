@@ -23,12 +23,12 @@ namespace Captura.ViewModels
         public ICommand TrayLeftClickCommand { get; }
 
         public MainViewModel(Settings Settings,
-            LanguageManager LanguageManager,
+            ILocalizationProvider Loc,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
             RecordingModel RecordingModel,
-            MainModel MainModel) : base(Settings, LanguageManager)
+            MainModel MainModel) : base(Settings, Loc)
         {
             _dialogService = DialogService;
 
@@ -58,16 +58,16 @@ namespace Captura.ViewModels
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Right))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Left)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Right))
         };
 
         public static IEnumerable<ObjectLocalizer<Alignment>> YAlignments { get; } = new[]
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Top)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Bottom))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Top)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Bottom))
         };
 
         void OpenOutputFolder()

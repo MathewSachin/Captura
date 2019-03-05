@@ -75,8 +75,9 @@ namespace Captura
             var settings = GetSettings();
 
             var dialogService = ServiceProvider.Get<IDialogService>();
+            var loc = ServiceProvider.Get<ILocalizationProvider>();
 
-            var folder = dialogService.PickFolder(settings.GetFolderPath(), LanguageManager.Instance.SelectFFmpegFolder);
+            var folder = dialogService.PickFolder(settings.GetFolderPath(), loc.SelectFFmpegFolder);
             
             if (!string.IsNullOrWhiteSpace(folder))
                 settings.FolderPath = folder;

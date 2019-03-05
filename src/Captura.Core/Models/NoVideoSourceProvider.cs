@@ -6,7 +6,7 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NoVideoSourceProvider : VideoSourceProviderBase
     {
-        public NoVideoSourceProvider(LanguageManager Loc,
+        public NoVideoSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
             IEnumerable<IAudioWriterItem> AudioWriterItems) : base(Loc)
         {

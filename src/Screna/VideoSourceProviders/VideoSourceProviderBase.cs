@@ -4,9 +4,9 @@ namespace Captura.Models
 {
     public abstract class VideoSourceProviderBase : NotifyPropertyChanged, IVideoSourceProvider
     {
-        protected readonly LanguageManager Loc;
+        protected readonly ILocalizationProvider Loc;
 
-        protected VideoSourceProviderBase(LanguageManager Loc)
+        protected VideoSourceProviderBase(ILocalizationProvider Loc)
         {
             this.Loc = Loc;
 

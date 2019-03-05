@@ -11,9 +11,9 @@ namespace Captura.Models
     public class MessageProvider : IMessageProvider
     {
         readonly IAudioPlayer _audioPlayer;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
-        public MessageProvider(IAudioPlayer AudioPlayer, LanguageManager Loc)
+        public MessageProvider(IAudioPlayer AudioPlayer, ILocalizationProvider Loc)
         {
             _audioPlayer = AudioPlayer;
             _loc = Loc;

@@ -7,10 +7,10 @@ namespace Captura.Models
     {
         readonly ISystemTray _systemTray;
         readonly IClipboardService _clipboard;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
         public ClipboardWriter(ISystemTray SystemTray,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             IClipboardService Clipboard)
         {
             _systemTray = SystemTray;

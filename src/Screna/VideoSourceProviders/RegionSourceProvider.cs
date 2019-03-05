@@ -10,7 +10,7 @@ namespace Captura.Models
         readonly IRegionProvider _regionProvider;
         readonly IPlatformServices _platformServices;
 
-        public RegionSourceProvider(LanguageManager Loc,
+        public RegionSourceProvider(ILocalizationProvider Loc,
             IRegionProvider RegionProvider,
             IIconSet Icons,
             IPlatformServices PlatformServices) : base(Loc)

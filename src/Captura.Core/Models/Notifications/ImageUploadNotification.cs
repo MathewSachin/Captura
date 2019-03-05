@@ -9,11 +9,11 @@ namespace Captura
 {
     public class ImageUploadNotification : NotifyPropertyChanged, INotification
     {
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
         public ImageUploadNotification()
         {
-            _loc = ServiceProvider.Get<LanguageManager>();
+            _loc = ServiceProvider.Get<ILocalizationProvider>();
 
             PrimaryText = _loc.ImageUploading;
         }
