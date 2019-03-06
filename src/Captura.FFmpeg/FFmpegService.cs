@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -69,21 +68,6 @@ namespace Captura
                        ?? FFmpegExeName;
             }
         }
-
-        public static void SelectFFmpegFolder()
-        {
-            var settings = GetSettings();
-
-            var dialogService = ServiceProvider.Get<IDialogService>();
-            var loc = ServiceProvider.Get<ILocalizationProvider>();
-
-            var folder = dialogService.PickFolder(settings.GetFolderPath(), loc.SelectFFmpegFolder);
-            
-            if (!string.IsNullOrWhiteSpace(folder))
-                settings.FolderPath = folder;
-        }
-
-        public static Action FFmpegDownloader { get; set; }
 
         public static Process StartFFmpeg(string Arguments, string LogEntryName)
         {

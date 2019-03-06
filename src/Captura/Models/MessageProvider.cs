@@ -63,34 +63,6 @@ namespace Captura.Models
             });
         }
 
-        public void ShowFFmpegUnavailable()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var dialog = new ModernDialog
-                {
-                    Title = "FFmpeg Unavailable",
-                    Content = "FFmpeg was not found on your system.\n\nSelect FFmpeg Folder if you alrady have FFmpeg on your system, else Download FFmpeg."
-                };
-
-                // Yes -> Select FFmpeg Folder
-                dialog.YesButton.Content = _loc.SelectFFmpegFolder;
-                dialog.YesButton.Click += (S, E) => FFmpegService.SelectFFmpegFolder();
-
-                // No -> Download FFmpeg
-                dialog.NoButton.Content = _loc.DownloadFFmpeg;
-                dialog.NoButton.Click += (S, E) => FFmpegService.FFmpegDownloader?.Invoke();
-
-                dialog.CancelButton.Content = "Cancel";
-
-                dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton, dialog.CancelButton };
-
-                _audioPlayer.Play(SoundKind.Error);
-
-                dialog.ShowDialog();
-            });
-        }
-
         public void ShowException(Exception Exception, string Message, bool Blocking = false)
         {
             Application.Current.Dispatcher.Invoke(() =>

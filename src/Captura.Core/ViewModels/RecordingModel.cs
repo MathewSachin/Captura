@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Captura.Audio;
+using Captura.FFmpeg;
 using Captura.Models;
 using Captura.Webcam;
 using Microsoft.Win32;
@@ -31,6 +32,7 @@ namespace Captura.ViewModels
         readonly IAudioPlayer _audioPlayer;
         readonly TimerModel _timerModel;
         readonly IMessageProvider _messageProvider;
+        readonly IFFmpegViewsProvider _ffmpegViewsProvider;
 
         readonly KeymapViewModel _keymap;
 
@@ -54,7 +56,8 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
             TimerModel TimerModel,
-            IMessageProvider MessageProvider) : base(Settings, Loc)
+            IMessageProvider MessageProvider,
+            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
         {
             _systemTray = SystemTray;
             _webcamOverlay = WebcamOverlay;
@@ -69,6 +72,7 @@ namespace Captura.ViewModels
             _recentList = RecentList;
             _timerModel = TimerModel;
             _messageProvider = MessageProvider;
+            _ffmpegViewsProvider = FFmpegViewsProvider;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -156,7 +160,7 @@ namespace Captura.ViewModels
             }
         }
 
-        public bool CheckFFmpeg()
+        bool CheckFFmpeg()
         {
             var isFFmpegVideoItem = _videoWritersViewModel.SelectedVideoWriterKind is FFmpegWriterProvider ||
                                     _videoWritersViewModel.SelectedVideoWriterKind is StreamingWriterProvider;
@@ -170,7 +174,7 @@ namespace Captura.ViewModels
             {
                 if (!FFmpegService.FFmpegExists)
                 {
-                    _messageProvider.ShowFFmpegUnavailable();
+                    _ffmpegViewsProvider.ShowUnavailable();
 
                     return false;
                 }

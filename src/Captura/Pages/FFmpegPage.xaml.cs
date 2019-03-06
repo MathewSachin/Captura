@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Captura.ViewModels;
+using Captura.Views;
 
 namespace Captura
 {
@@ -13,7 +14,7 @@ namespace Captura
         
         void FFmpegDownload(object Sender, RoutedEventArgs E)
         {
-            FFmpegService.FFmpegDownloader?.Invoke();
+            FFmpegDownloaderWindow.ShowInstance();
         }
 
         void SelectFFmpegFolder(object Sender, MouseButtonEventArgs E)

@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
 using Captura.ViewModels;
-using Captura.Views;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -12,22 +11,9 @@ namespace Captura
     {
         public static MainWindow Instance { get; private set; }
 
-        FFmpegDownloaderWindow _downloader;
-
         public MainWindow()
         {
             Instance = this;
-            
-            FFmpegService.FFmpegDownloader += () =>
-            {
-                if (_downloader == null)
-                {
-                    _downloader = new FFmpegDownloaderWindow();
-                    _downloader.Closed += (Sender, Args) => _downloader = null;
-                }
-
-                _downloader.ShowAndFocus();
-            };
             
             InitializeComponent();
 

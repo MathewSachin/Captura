@@ -8,8 +8,6 @@ namespace Captura.Models
 
         bool ShowYesNo(string Message, string Title);
 
-        void ShowFFmpegUnavailable();
-
         void ShowException(Exception Exception, string Message, bool Blocking = false);
     }
 }

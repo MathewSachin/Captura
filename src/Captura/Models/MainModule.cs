@@ -1,4 +1,5 @@
 ﻿using System;
+using Captura.FFmpeg;
 using Captura.Models;
 using Hardcodet.Wpf.TaskbarNotification;
 
@@ -15,6 +16,7 @@ namespace Captura
             Binder.Bind<IPreviewWindow, PreviewWindowService>();
             Binder.Bind<IVideoSourcePicker, VideoSourcePicker>();
             Binder.Bind<IAudioPlayer, AudioPlayer>();
+            Binder.Bind<IFFmpegViewsProvider, FFmpegViewsProvider>();
 
             Binder.BindSingleton<EditorWriter>();
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<EditorWriter>);

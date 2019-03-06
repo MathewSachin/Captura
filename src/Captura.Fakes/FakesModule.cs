@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using Captura.FFmpeg;
+using Captura.Models;
 
 namespace Captura
 {
@@ -13,6 +14,7 @@ namespace Captura
             Binder.Bind<IPreviewWindow, FakePreviewWindow>();
             Binder.Bind<IVideoSourcePicker>(() => FakeVideoSourcePicker.Instance);
             Binder.Bind<IAudioPlayer, FakeAudioPlayer>();
+            Binder.Bind<IFFmpegViewsProvider, FakeFFmpegViewsProvider>();
         }
 
         public void Dispose() { }

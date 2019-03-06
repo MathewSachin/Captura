@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Captura.FFmpeg;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -18,7 +19,7 @@ namespace Captura.ViewModels
         public ICommand RefreshCommand { get; }
         public ICommand OpenOutputFolderCommand { get; }
         public ICommand SelectOutputFolderCommand { get; }
-        public ICommand SelectFFmpegFolderCommand { get; } = new DelegateCommand(FFmpegService.SelectFFmpegFolder);
+        public ICommand SelectFFmpegFolderCommand { get; }
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
@@ -28,11 +29,13 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
             RecordingModel RecordingModel,
-            MainModel MainModel) : base(Settings, Loc)
+            MainModel MainModel,
+            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
         {
             _dialogService = DialogService;
 
             ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
+            SelectFFmpegFolderCommand = new DelegateCommand(FFmpegViewsProvider.PickFolder);
 
             #region Commands
             RefreshCommand = RecordingModel
