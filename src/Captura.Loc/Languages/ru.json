@@ -1,8 +1,8 @@
 {
   "About": "О программе",
-  "AccentColor": "",
+  "AccentColor": "Цвет элементов",
   "Add": "Добавить",
-  "AlwaysOnTop": "Всегда на переднем плане",
+  "AlwaysOnTop": "Поверх всех окон",
   "Audio": "Звук",
   "AudioFormat": "",
   "AudioSaved": "Звук сохранен",
