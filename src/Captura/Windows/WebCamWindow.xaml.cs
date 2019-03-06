@@ -8,8 +8,18 @@ namespace Captura
 {
     public partial class WebCamWindow
     {
-        WebCamWindow()
+        readonly WebcamModel _webcamModel;
+        readonly ScreenShotModel _screenShotModel;
+        readonly IPlatformServices _platformServices;
+
+        public WebCamWindow(WebcamModel WebcamModel,
+            ScreenShotModel ScreenShotModel,
+            IPlatformServices PlatformServices)
         {
+            _webcamModel = WebcamModel;
+            _screenShotModel = ScreenShotModel;
+            _platformServices = PlatformServices;
+
             InitializeComponent();
             
             Closing += (S, E) =>
@@ -20,9 +30,7 @@ namespace Captura
             };
         }
 
-        public static WebCamWindow Instance { get; } = new WebCamWindow();
-
-        WebcamControl GetWebCamControl() => WebCameraControl;
+        public static WebCamWindow Instance { get; } = ServiceProvider.Get<WebCamWindow>();
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
         
@@ -30,35 +38,32 @@ namespace Captura
         {
             try
             {
-                var img = ServiceProvider.Get<WebcamModel>().WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
+                var img = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
 
-                await ServiceProvider.Get<ScreenShotModel>().SaveScreenShot(img);
+                await _screenShotModel.SaveScreenShot(img);
             }
             catch { }
         }
 
         public void SetupWebcamPreview()
         {
-            var webcamModel = ServiceProvider.Get<WebcamModel>();
-            var camControl = GetWebCamControl();
-
             // Open Preview Window
-            webcamModel.PreviewClicked += this.ShowAndFocus;
+            _webcamModel.PreviewClicked += this.ShowAndFocus;
 
-            camControl.IsVisibleChanged += (S, E) => SwitchWebcamPreview();
+            WebCameraControl.IsVisibleChanged += (S, E) => SwitchWebcamPreview();
 
             void OnSizeChange()
             {
                 var rect = GetPreviewWindowRect();
 
-                webcamModel.WebcamCapture?.UpdatePreview(null, rect);
+                _webcamModel.WebcamCapture?.UpdatePreview(null, rect);
             }
 
-            camControl.SizeChanged += (S, E) => OnSizeChange();
+            WebCameraControl.SizeChanged += (S, E) => OnSizeChange();
 
-            webcamModel.PropertyChanged += (S, E) =>
+            _webcamModel.PropertyChanged += (S, E) =>
             {
-                if (E.PropertyName == nameof(WebcamModel.SelectedCam) && webcamModel.WebcamCapture != null)
+                if (E.PropertyName == nameof(WebcamModel.SelectedCam) && _webcamModel.WebcamCapture != null)
                 {
                     SwitchWebcamPreview();
                 }
@@ -67,42 +72,34 @@ namespace Captura
 
         Rectangle GetPreviewWindowRect()
         {
-            var camControl = GetWebCamControl();
-
-            var rect = new RectangleF(5, 40, (float)camControl.ActualWidth, (float)camControl.ActualHeight);
+            var rect = new RectangleF(5, 40, (float)WebCameraControl.ActualWidth, (float)WebCameraControl.ActualHeight);
 
             return rect.ApplyDpi();
         }
 
         void SwitchWebcamPreview()
         {
-            var webcamModel = ServiceProvider.Get<WebcamModel>();
-            var camControl = GetWebCamControl();
-            var mainWindow = MainWindow.Instance;
-
-            if (webcamModel.WebcamCapture == null)
+            if (_webcamModel.WebcamCapture == null)
                 return;
 
-            var platformServices = ServiceProvider.Get<IPlatformServices>();
-
-            if (camControl.IsVisible)
+            if (WebCameraControl.IsVisible)
             {
-                if (PresentationSource.FromVisual(camControl) is HwndSource source)
+                if (PresentationSource.FromVisual(WebCameraControl) is HwndSource source)
                 {
-                    var win = platformServices.GetWindow(source.Handle);
+                    var win = _platformServices.GetWindow(source.Handle);
 
                     var rect = GetPreviewWindowRect();
 
-                    webcamModel.WebcamCapture.UpdatePreview(win, rect);
+                    _webcamModel.WebcamCapture.UpdatePreview(win, rect);
                 }
             }
-            else if (PresentationSource.FromVisual(mainWindow) is HwndSource source)
+            else if (PresentationSource.FromVisual(MainWindow.Instance) is HwndSource source)
             {
-                var win = platformServices.GetWindow(source.Handle);
+                var win = _platformServices.GetWindow(source.Handle);
 
                 var rect = new RectangleF(280, 1, 50, 40).ApplyDpi();
 
-                webcamModel.WebcamCapture.UpdatePreview(win, rect);
+                _webcamModel.WebcamCapture.UpdatePreview(win, rect);
             }
         }
     }

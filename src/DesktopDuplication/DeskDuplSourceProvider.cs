@@ -10,13 +10,16 @@ namespace Captura.Models
     {
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IPlatformServices _platformServices;
+        readonly IPreviewWindow _previewWindow;
 
         public DeskDuplSourceProvider(IVideoSourcePicker VideoSourcePicker,
             IIconSet Icons,
-            IPlatformServices PlatformServices)
+            IPlatformServices PlatformServices,
+            IPreviewWindow PreviewWindow)
         {
             _videoSourcePicker = VideoSourcePicker;
             _platformServices = PlatformServices;
+            _previewWindow = PreviewWindow;
             Icon = Icons.Game;
         }
 
@@ -38,7 +41,7 @@ namespace Captura.Models
             if (output == null)
                 return false;
 
-            Source = new DeskDuplItem(output);
+            Source = new DeskDuplItem(output, _previewWindow);
 
             return true;
         }
@@ -64,7 +67,7 @@ namespace Captura.Models
             if (match == null)
                 return false;
 
-            Source = new DeskDuplItem(match);
+            Source = new DeskDuplItem(match, _previewWindow);
 
             return true;
         }

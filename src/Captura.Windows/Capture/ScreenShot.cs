@@ -15,12 +15,12 @@ namespace Screna
         /// </summary>
         /// <param name="Window">The <see cref="IWindow"/> to Capture.</param>
         /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
-        public static IBitmapImage CaptureTransparent(IWindow Window, bool IncludeCursor = false)
+        public static IBitmapImage CaptureTransparent(IWindow Window, bool IncludeCursor, IPlatformServices PlatformServices)
         {
             if (Window == null)
                 throw new ArgumentNullException(nameof(Window));
 
-            var backdrop = new WindowScreenShotBackdrop(Window);
+            var backdrop = new WindowScreenShotBackdrop(Window, PlatformServices);
 
             backdrop.ShowWhite();
 
@@ -41,10 +41,8 @@ namespace Screna
                     if (transparentImage == null)
                         return null;
 
-                    var platformServices = ServiceProvider.Get<IPlatformServices>();
-
                     // Include Cursor only if within window
-                    if (IncludeCursor && r.Contains(platformServices.CursorPosition))
+                    if (IncludeCursor && r.Contains(PlatformServices.CursorPosition))
                     {
                         using (var g = Graphics.FromImage(transparentImage))
                             MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));

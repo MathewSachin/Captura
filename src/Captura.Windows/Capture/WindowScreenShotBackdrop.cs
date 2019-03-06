@@ -15,7 +15,7 @@ namespace Screna
 
         public Rectangle Rectangle { get; }
 
-        public WindowScreenShotBackdrop(IWindow Window)
+        public WindowScreenShotBackdrop(IWindow Window, IPlatformServices PlatformServices)
         {
             _window = Window;
 
@@ -36,9 +36,7 @@ namespace Screna
             r.Inflate(20, 20);
 
             // Check if the window is outside of the visible screen
-            var platformServices = ServiceProvider.Get<IPlatformServices>();
-
-            r.Intersect(platformServices.DesktopRectangle);
+            r.Intersect(PlatformServices.DesktopRectangle);
 
             Rectangle = r;
         }

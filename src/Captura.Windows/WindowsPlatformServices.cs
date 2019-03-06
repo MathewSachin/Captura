@@ -47,7 +47,7 @@ namespace Captura
 
         public IBitmapImage CaptureTransparent(IWindow Window, bool IncludeCursor = false)
         {
-            return ScreenShot.CaptureTransparent(Window, IncludeCursor);
+            return ScreenShot.CaptureTransparent(Window, IncludeCursor, this);
         }
 
         public IBitmapImage Capture(Rectangle Region, bool IncludeCursor = false)

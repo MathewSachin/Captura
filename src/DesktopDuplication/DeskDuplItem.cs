@@ -7,10 +7,12 @@ namespace Captura.Models
     public class DeskDuplItem : NotifyPropertyChanged, IVideoItem
     {
         readonly Output1 _output;
+        readonly IPreviewWindow _previewWindow;
 
-        public DeskDuplItem(Output1 Output)
+        public DeskDuplItem(Output1 Output, IPreviewWindow PreviewWindow)
         {
             _output = Output;
+            _previewWindow = PreviewWindow;
         }
 
         public string Name => _output.Description.DeviceName;
@@ -33,7 +35,7 @@ namespace Captura.Models
 
             Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
 
-            return new DeskDuplImageProvider(_output, IncludeCursor, ServiceProvider.Get<IPreviewWindow>());
+            return new DeskDuplImageProvider(_output, IncludeCursor, _previewWindow);
         }
     }
 }
