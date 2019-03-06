@@ -95,7 +95,7 @@ namespace Captura.Models
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var win = new ExceptionWindow(Exception, Message);
+                var win = new ErrorWindow(Exception, Message);
 
                 _audioPlayer.Play(SoundKind.Error);
 
