@@ -46,7 +46,7 @@
   "FileMenuSave": "Сохранить",
   "FileNaming": "Имя файла",
   "FontSize": "Размер шрифта",
-  "FrameRate": "",
+  "FrameRate": "Кадров в секунду, FPS",
   "FullScreen": "Весь экран",
   "HideOnFullScreenShot": "Скрывать в полноэкранном режиме",
   "Host": "Хост",
