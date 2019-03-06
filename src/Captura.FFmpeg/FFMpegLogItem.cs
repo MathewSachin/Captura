@@ -8,9 +8,21 @@ namespace Captura.Models
     {
         public string Name { get; }
 
-        public FFmpegLogItem(string Name, IClipboardService ClipboardService)
+        public string Args { get; }
+
+        public FFmpegLogItem(string Name,
+            string Args,
+            IClipboardService ClipboardService)
         {
             this.Name = Name;
+            this.Args = Args;
+
+            _complete.AppendLine("ARGS:");
+            _complete.AppendLine("-------------");
+            _complete.AppendLine(Args);
+            _complete.AppendLine();
+            _complete.AppendLine("OUTPUT:");
+            _complete.AppendLine("-------------");
 
             CopyToClipboardCommand = new DelegateCommand(() =>
             {

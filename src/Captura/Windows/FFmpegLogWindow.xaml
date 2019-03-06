@@ -69,6 +69,19 @@
             <Label Content="{Binding Frame}"
                    DockPanel.Dock="Bottom"/>
 
+            <StackPanel DockPanel.Dock="Top">
+                <Label Content="Args"
+                       FontWeight="Bold"/>
+                <ScrollViewer Margin="0,0,0,10"
+                              HorizontalScrollBarVisibility="Auto">
+                    <Label Content="{Binding Args}"
+                           Margin="0,0,0,10"/>
+                </ScrollViewer>
+
+                <Label Content="Output"
+                       FontWeight="Bold"/>
+            </StackPanel>
+
             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <TextBlock Text="{Binding Content, Mode=OneWay}"
                            Style="{StaticResource TextColor}"/>

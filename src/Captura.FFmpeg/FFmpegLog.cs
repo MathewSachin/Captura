@@ -22,9 +22,9 @@ namespace Captura.Models
 
         public ReadOnlyObservableCollection<FFmpegLogItem> LogItems { get; }
 
-        public FFmpegLogItem CreateNew(string Name)
+        public FFmpegLogItem CreateNew(string Name, string Args)
         {
-            var item = new FFmpegLogItem(Name, _clipboardService);
+            var item = new FFmpegLogItem(Name, Args, _clipboardService);
 
             item.RemoveRequested += () => _logItems.Remove(item);
 

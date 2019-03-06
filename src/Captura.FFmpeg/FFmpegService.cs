@@ -69,7 +69,7 @@ namespace Captura
             }
         }
 
-        public static Process StartFFmpeg(string Arguments, string LogEntryName)
+        public static Process StartFFmpeg(string Arguments, string FileName)
         {
             var process = new Process
             {
@@ -85,7 +85,9 @@ namespace Captura
                 EnableRaisingEvents = true
             };
 
-            var logItem = ServiceProvider.Get<FFmpegLog>().CreateNew(Path.GetFileName(LogEntryName));
+            var log = ServiceProvider.Get<FFmpegLog>();
+
+            var logItem = log.CreateNew(Path.GetFileName(FileName), Arguments);
                         
             process.ErrorDataReceived += (S, E) => logItem.Write(E.Data);
 
