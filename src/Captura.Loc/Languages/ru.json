@@ -122,7 +122,7 @@
   "ScreenShotActiveWindow": "Снимок активного окна",
   "ScreenShotDesktop": "Снимок рабочего стола",
   "ScreenShotSaved": "Снимок сохранен",
-  "SelectFFmpegFolder": "Указать папку",
+  "SelectFFmpegFolder": "Указать расположение FFmpeg",
   "SelectOutFolder": "Выберете папку сохранения",
   "SeparateAudioFiles": "",
   "ShowSysNotify": "Показывать уведомления в трее",
