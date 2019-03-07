@@ -103,7 +103,7 @@
   "Preview": "Предпросмотр",
   "PreStartCountdown": "Отсчет времени до старта (в секундах)",
   "Proxy": "Прокси",
-  "Quality": "Качество",
+  "Quality": "Качество видео",
   "Radius": "Радиус",
   "Recent": "Последнее",
   "RecordStop": "Начать запись | Остановить запись",
@@ -155,6 +155,6 @@
   "WebCamView": "Вид веб-камеры",
   "Website": "Сайт программы",
   "Window": "Окно",
-  "WindowScreenShotTransparency": "Прозрачность окна Снимок экрана",
+  "WindowScreenShotTransparency": "Прозрачность окна \"Снимок экрана\"",
   "Yes": "Да"
 }
