@@ -13,19 +13,13 @@ namespace Captura.ViewModels
 
         readonly RememberByName _rememberByName;
 
-        readonly VideoWritersViewModel _videoWritersViewModel;
         readonly WebcamModel _webcamModel;
-        readonly AudioSource _audioSource;
 
         public MainModel(Settings Settings,
-            VideoWritersViewModel VideoWritersViewModel,
-            AudioSource AudioSource,
             RememberByName RememberByName,
             WebcamModel WebcamModel)
         {
             _settings = Settings;
-            _videoWritersViewModel = VideoWritersViewModel;
-            _audioSource = AudioSource;
             _rememberByName = RememberByName;
             _webcamModel = WebcamModel;
 
@@ -35,15 +29,6 @@ namespace Captura.ViewModels
 
             // Create the Output Directory if it does not exist
             Settings.EnsureOutPath();
-        }
-
-        public void Refresh()
-        {
-            _videoWritersViewModel.RefreshCodecs();
-
-            _audioSource.Refresh();
-
-            _webcamModel.Refresh();
         }
 
         public void Init(bool Persist, bool Remembered)

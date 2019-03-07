@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Captura.Models
 {
-    public abstract class AudioSource : NotifyPropertyChanged, IDisposable
+    public abstract class AudioSource : NotifyPropertyChanged, IDisposable, IRefreshable
     {
         protected readonly ObservableCollection<IAudioItem> RecordingSources = new ObservableCollection<IAudioItem>();
         protected readonly ObservableCollection<IAudioItem> LoopbackSources = new ObservableCollection<IAudioItem>();

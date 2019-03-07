@@ -6,7 +6,7 @@ using System.Linq;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class VideoWritersViewModel : NotifyPropertyChanged
+    public class VideoWritersViewModel : NotifyPropertyChanged, IRefreshable
     {
         public IReadOnlyList<IVideoWriterProvider> VideoWriterProviders { get; }
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
@@ -45,6 +45,8 @@ namespace Captura.ViewModels
                 SelectedVideoWriter = matchingVideoCodec;
             }
         }
+
+        void IRefreshable.Refresh() => RefreshCodecs();
 
         IVideoWriterProvider _writerKind;
 

@@ -29,7 +29,7 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
             RecordingModel RecordingModel,
-            MainModel MainModel,
+            IEnumerable<IRefreshable> Refreshables,
             IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
         {
             _dialogService = DialogService;
@@ -44,7 +44,10 @@ namespace Captura.ViewModels
                 .ToReactiveCommand()
                 .WithSubscribe(() =>
                 {
-                    MainModel.Refresh();
+                    foreach (var refreshable in Refreshables)
+                    {
+                        refreshable.Refresh();
+                    }
 
                     Refreshed?.Invoke();
                 });

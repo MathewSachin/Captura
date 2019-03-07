@@ -6,7 +6,7 @@ using Captura.Models;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class WebcamModel : NotifyPropertyChanged
+    public class WebcamModel : NotifyPropertyChanged, IRefreshable
     {
         readonly IWebCamProvider _webcamProvider;
 
@@ -53,7 +53,7 @@ namespace Captura.ViewModels
 
                 _selectedCam = value;
 
-                WebcamCapture = _selectedCam.BeginCapture(() => PreviewClicked?.Invoke());
+                WebcamCapture = _selectedCam?.BeginCapture(() => PreviewClicked?.Invoke());
 
                 OnPropertyChanged();
             }

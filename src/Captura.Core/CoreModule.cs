@@ -58,6 +58,9 @@ namespace Captura
             Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
+
+            Binder.Bind<IRefreshable>(Binder.Get<WebcamModel>);
+            Binder.Bind<IRefreshable>(Binder.Get<VideoWritersViewModel>);
         }
 
         static void BindUpdateChecker(IBinder Binder)
@@ -79,6 +82,8 @@ namespace Captura
                 Binder.Bind<AudioSource, BassAudioSource>();
             }
             else Binder.Bind<AudioSource, NAudioSource>();
+
+            Binder.Bind<IRefreshable>(Binder.Get<AudioSource>);
         }
 
         static void BindVideoSourceProviders(IBinder Binder)
@@ -105,10 +110,10 @@ namespace Captura
         static void BindSettings(IBinder Binder)
         {
             Binder.BindSingleton<Settings>();
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Audio);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Proxy);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Sounds);
-            Binder.Bind(() => ServiceProvider.Get<Settings>().Imgur);
+            Binder.Bind(() => Binder.Get<Settings>().Audio);
+            Binder.Bind(() => Binder.Get<Settings>().Proxy);
+            Binder.Bind(() => Binder.Get<Settings>().Sounds);
+            Binder.Bind(() => Binder.Get<Settings>().Imgur);
         }
 
         static bool Windows8OrAbove
