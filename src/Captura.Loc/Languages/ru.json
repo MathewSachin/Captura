@@ -126,7 +126,7 @@
   "SelectOutFolder": "Выбрать папку сохранения",
   "SeparateAudioFiles": "Записывать отдельный файл для каждого источника звука",
   "ShowSysNotify": "Показывать уведомления в трее",
-  "SnapToWindow": "",
+  "SnapToWindow": "Указать привязку к окну",
   "Sounds": "Звуки",
   "StartStopRecording": "Старт/стоп записи",
   "StreamingKeys": "",
