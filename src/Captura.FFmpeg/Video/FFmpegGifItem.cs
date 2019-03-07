@@ -3,10 +3,6 @@
     // ReSharper disable once InconsistentNaming
     class FFmpegGifItem : IVideoWriterItem
     {
-        FFmpegGifItem() { }
-
-        public static FFmpegGifItem Instance { get; } = new FFmpegGifItem();
-
         public string Extension { get; } = "gif";
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)

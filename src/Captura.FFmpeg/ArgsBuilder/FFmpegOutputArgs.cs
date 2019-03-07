@@ -2,9 +2,14 @@
 {
     class FFmpegOutputArgs : FFmpegArgs
     {
-        readonly string _output;
+        string _output;
 
         public FFmpegOutputArgs(string Output)
+        {
+            _output = Output;
+        }
+
+        public void UpdateOutput(string Output)
         {
             _output = Output;
         }

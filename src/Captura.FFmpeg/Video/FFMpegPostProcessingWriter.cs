@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
@@ -14,7 +15,7 @@ namespace Captura.Models
             _args = Args;
             _tempFileName = Path.GetTempFileName();
 
-            _ffMpegWriter = FFmpegItem.x264.GetVideoFileWriter(new VideoWriterArgs
+            _ffMpegWriter = new TempFileVideoCodec().GetVideoFileWriter(new VideoWriterArgs
             {
                 AudioProvider = Args.AudioProvider,
                 AudioQuality = Args.AudioQuality,
@@ -22,7 +23,7 @@ namespace Captura.Models
                 FrameRate = Args.FrameRate,
                 ImageProvider = Args.ImageProvider,
                 VideoQuality = Args.VideoQuality
-            }, "-f mp4 -y");
+            });
         }
 
         /// <inheritdoc />
@@ -35,15 +36,14 @@ namespace Captura.Models
             argsBuilder.AddInputFile(_tempFileName);
 
             var output = argsBuilder.AddOutputFile(_args.FileName)
-                .AddArg(_args.VideoArgsProvider(_args.VideoQuality))
                 .SetFrameRate(_args.FrameRate);
+
+            _args.VideoCodec.Apply(ServiceProvider.Get<FFmpegSettings>(), _args, output);
 
             if (_args.AudioProvider != null)
             {
                 output.AddArg(_args.AudioArgsProvider(_args.AudioQuality));
             }
-
-            output.AddArg(_args.OutputArgs);
 
             var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName);
 

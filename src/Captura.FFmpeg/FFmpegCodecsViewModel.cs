@@ -29,6 +29,6 @@ namespace Captura.ViewModels
 
         public ICommand RemoveCustomCodecCommand { get; }
 
-        public IEnumerable<string> AudioCodecNames => FFmpegAudioItem.Items.Select(M => M.Name.Split(' ')[0]);
+        public IEnumerable<string> AudioCodecNames => FFmpegAudioItem.Items.Select(M => M.Name);
     }
 }

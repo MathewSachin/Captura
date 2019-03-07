@@ -42,8 +42,9 @@ namespace Captura.Models
                 .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
-                .AddArg(Args.VideoArgsProvider(Args.VideoQuality))
                 .SetFrameRate(Args.FrameRate);
+
+            Args.VideoCodec.Apply(settings, Args, output);
             
             if (settings.Resize)
             {
@@ -79,8 +80,6 @@ namespace Captura.Models
             }
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
-
-            output.AddArg(Args.OutputArgs);
 
             _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName);
         }

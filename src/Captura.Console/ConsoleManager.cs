@@ -16,7 +16,6 @@ namespace Captura
     class ConsoleManager : IDisposable
     {
         readonly Settings _settings;
-        readonly MainModel _mainModel;
         readonly RecordingModel _recordingModel;
         readonly ScreenShotModel _screenShotModel;
         readonly VideoSourcesViewModel _videoSourcesViewModel;
@@ -39,7 +38,6 @@ namespace Captura
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
-            _mainModel = MainModel;
             _screenShotModel = ScreenShotModel;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoSourceProviders = VideoSourceProviders;
@@ -54,7 +52,7 @@ namespace Captura
 
         public void Dispose()
         {
-            _mainModel.Dispose();
+            ServiceProvider.Dispose();
         }
 
         public void CopySettings()
@@ -236,7 +234,7 @@ namespace Captura
 
                 _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
 
-                _videoWritersViewModel.SelectedVideoWriter = StreamingItem.CustomUrl;
+                _videoWritersViewModel.SelectedVideoWriter = StreamingWriterProvider.GetCustomStreamingCodec();
             }
         }
 

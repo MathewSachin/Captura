@@ -12,13 +12,15 @@ namespace Captura.Models
         // The (FFmpeg) appended to the name is expected in Custom Codecs
         FFmpegAudioItem(string Name, string Extension, FFmpegAudioArgsProvider AudioArgsProvider)
         {
-            this.Name = $"{Name} (FFmpeg)";
+            this.Name = Name;
             this.Extension = Extension;
 
             this.AudioArgsProvider = AudioArgsProvider;
         }
 
         public string Name { get; }
+
+        string IAudioWriterItem.Name => $"{Name} (FFmpeg)";
 
         public string Extension { get; }
 
