@@ -151,10 +151,10 @@
   "ViewOnGitHub": "Показать на GitHub",
   "WantToTranslate": "Хотите перевести?",
   "WebCam": "Веб-камера",
-  "WebCamSeparateFile": "",
+  "WebCamSeparateFile": "Запись с веб-камеры в отдельный файл",
   "WebCamView": "Вид веб-камеры",
-  "Website": "Сайт",
+  "Website": "Сайт программы",
   "Window": "Окно",
-  "WindowScreenShotTransparency": "",
+  "WindowScreenShotTransparency": "Прозрачность окна Снимок экрана",
   "Yes": "Да"
 }
