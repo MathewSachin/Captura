@@ -168,7 +168,8 @@ namespace Captura.ViewModels
             var isFFmpegAudioItem =
                 _videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
                 && noVideoSourceProvider.Source is NoVideoItem noVideoItem
-                && noVideoItem.AudioWriterItem is FFmpegAudioItem;
+                // HACK: Assuming non Wave writer is FFmpeg
+                && !(noVideoItem.AudioWriterItem is WaveItem);
 
             if (isFFmpegVideoItem || isFFmpegAudioItem)
             {
@@ -207,7 +208,7 @@ namespace Captura.ViewModels
             }
             catch (NotSupportedException e) when (_videoSourcesViewModel.SelectedVideoSourceKind is DeskDuplSourceProvider)
             {
-                var yes = _messageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication.", Loc.ErrorOccurred);
+                var yes = _messageProvider.ShowYesNo($"{e.Message}\n\nDo you want to turn off Desktop Duplication?", Loc.ErrorOccurred);
 
                 if (yes)
                     _videoSourcesViewModel.SetDefaultSource();

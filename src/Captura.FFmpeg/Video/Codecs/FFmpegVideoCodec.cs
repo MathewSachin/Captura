@@ -23,7 +23,7 @@ namespace Captura.FFmpeg
 
         public virtual IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new FFmpegWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, this, AudioArgsProvider));
+            return new FFmpegWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, this));
         }
 
         public override string ToString() => Name;

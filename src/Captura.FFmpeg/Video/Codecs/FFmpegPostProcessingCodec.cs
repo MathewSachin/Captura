@@ -10,7 +10,7 @@ namespace Captura.Models
 
         public override IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new FFmpegPostProcessingWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, this, AudioArgsProvider));
+            return new FFmpegPostProcessingWriter(FFmpegVideoWriterArgs.FromVideoWriterArgs(Args, this));
         }
 
         const string AfterEnc = "Encoding is done after recording has been finished.";

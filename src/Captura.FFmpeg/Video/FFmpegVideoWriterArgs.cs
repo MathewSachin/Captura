@@ -4,7 +4,7 @@ namespace Captura.Models
 {
     class FFmpegVideoWriterArgs : VideoWriterArgs
     {
-        public static FFmpegVideoWriterArgs FromVideoWriterArgs(VideoWriterArgs Args, FFmpegVideoCodec VideoCodec, FFmpegAudioArgsProvider AudioArgsProvider)
+        public static FFmpegVideoWriterArgs FromVideoWriterArgs(VideoWriterArgs Args, FFmpegVideoCodec VideoCodec)
         {
             return new FFmpegVideoWriterArgs
             {
@@ -14,13 +14,11 @@ namespace Captura.Models
                 VideoQuality = Args.VideoQuality,
                 VideoCodec = VideoCodec,
                 AudioQuality = Args.AudioQuality,
-                AudioArgsProvider = AudioArgsProvider,
                 AudioProvider = Args.AudioProvider
             };
         }
 
         public FFmpegVideoCodec VideoCodec { get; set; }
-        public FFmpegAudioArgsProvider AudioArgsProvider { get; set; }
         public int Frequency { get; set; } = 44100;
         public int Channels { get; set; } = 2;
     }

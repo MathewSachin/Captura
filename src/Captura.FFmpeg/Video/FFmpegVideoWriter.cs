@@ -71,7 +71,7 @@ namespace Captura.Models
                     .SetAudioFrequency(Args.Frequency)
                     .SetAudioChannels(Args.Channels);
 
-                output.AddArg(Args.AudioArgsProvider(Args.AudioQuality));
+                Args.VideoCodec.AudioArgsProvider(Args.AudioQuality, output);
 
                 // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
                 var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);

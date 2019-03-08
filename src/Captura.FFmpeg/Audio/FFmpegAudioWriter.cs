@@ -21,8 +21,9 @@ namespace Captura.Models
                 .SetAudioChannels(Channels)
                 .DisableVideo();
 
-            argsBuilder.AddOutputFile(FileName)
-                .AddArg(AudioArgsProvider(AudioQuality));
+            var output = argsBuilder.AddOutputFile(FileName);
+
+            AudioArgsProvider(AudioQuality, output);
 
             _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName);
             

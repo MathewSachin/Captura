@@ -42,7 +42,7 @@ namespace Captura.Models
 
             if (_args.AudioProvider != null)
             {
-                output.AddArg(_args.AudioArgsProvider(_args.AudioQuality));
+                _args.VideoCodec.AudioArgsProvider(_args.AudioQuality, output);
             }
 
             var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName);
