@@ -184,22 +184,8 @@ namespace Captura.ViewModels
             return true;
         }
 
-        public bool StartRecording(string FileName = null)
+        bool SetupVideoRecorder(IAudioProvider AudioProvider)
         {
-            Settings.EnsureOutPath();
-
-            _isVideo = !(_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
-
-            var extension = _videoWritersViewModel.SelectedVideoWriter.Extension;
-
-            if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
-                extension = x.Extension;
-
-            _currentFileName = Settings.GetFileName(extension, FileName);
-
-            if (!CheckFFmpeg())
-                return false;
-
             IImageProvider imgProvider;
 
             try
@@ -228,67 +214,99 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            IAudioProvider audioProvider = null;
+            IVideoFileWriter videoEncoder;
+
+            try
+            {
+                videoEncoder = GetVideoFileWriterWithPreview(imgProvider, AudioProvider);
+            }
+            catch (Exception e)
+            {
+                _messageProvider.ShowException(e, e.Message);
+
+                imgProvider?.Dispose();
+
+                return false;
+            }
+
+            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
+
+            var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
+
+            // Separate file for webcam
+            if (!webcamMode
+                && !(_webcamModel.SelectedCam is NoWebcamItem)
+                && Settings.WebcamOverlay.SeparateFile)
+            {
+                SeparateFileForWebcam();
+            }
+
+            // Separate file for every audio source
+            if (Settings.Audio.Enabled
+                && Settings.Audio.SeparateFilePerSource)
+            {
+                SeparateFileForEveryAudioSource();
+            }
+
+            return true;
+        }
+
+        bool SetupAudioProvider(out IAudioProvider AudioProvider)
+        {
+            AudioProvider = null;
 
             try
             {
                 if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
                 {
-                    audioProvider = _audioSource.GetMixedAudioProvider();
+                    AudioProvider = _audioSource.GetMixedAudioProvider();
                 }
             }
             catch (Exception e)
             {
                 _messageProvider.ShowException(e, e.Message);
 
-                imgProvider?.Dispose();
-
                 return false;
             }
 
-            IVideoFileWriter videoEncoder;
+            return true;
+        }
 
-            try
-            {
-                videoEncoder = GetVideoFileWriterWithPreview(imgProvider, audioProvider);
-            }
-            catch (Exception e)
-            {
-                _messageProvider.ShowException(e, e.Message);
+        public bool StartRecording(string FileName = null)
+        {
+            Settings.EnsureOutPath();
 
-                imgProvider?.Dispose();
-                audioProvider?.Dispose();
+            _isVideo = !(_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
 
+            var extension = _videoWritersViewModel.SelectedVideoWriter.Extension;
+
+            if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem x)
+                extension = x.Extension;
+
+            _currentFileName = Settings.GetFileName(extension, FileName);
+
+            if (!CheckFFmpeg())
                 return false;
-            }
+
+            if (!SetupAudioProvider(out var audioProvider))
+                return false;
 
             if (_isVideo)
             {
-                _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, audioProvider);
+                if (!SetupVideoRecorder(audioProvider))
+                {
+                    audioProvider?.Dispose();
+
+                    return false;
+                }
             }
             else if (_videoSourcesViewModel.SelectedVideoSourceKind?.Source is NoVideoItem audioWriter)
             {
                 if (!InitAudioRecorder(audioWriter, audioProvider))
+                {
+                    audioProvider?.Dispose();
+
                     return false;
-            }
-
-            if (_isVideo)
-            {
-                var webcamMode = _videoSourcesViewModel.SelectedVideoSourceKind is WebcamSourceProvider;
-
-                // Separate file for webcam
-                if (!webcamMode
-                    && !(_webcamModel.SelectedCam is NoWebcamItem)
-                    && Settings.WebcamOverlay.SeparateFile)
-                {
-                    SeparateFileForWebcam();
-                }
-
-                // Separate file for every audio source
-                if (Settings.Audio.Enabled
-                    && Settings.Audio.SeparateFilePerSource)
-                {
-                    SeparateFileForEveryAudioSource();
                 }
             }
 
