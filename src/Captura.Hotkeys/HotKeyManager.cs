@@ -20,36 +20,21 @@ namespace Captura
 
         static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
 
-        public ICommand ResetCommand { get; }
-
-        public ICommand AddCommand { get; }
-
-        public ICommand RemoveCommand { get; }
-
         public HotKeyManager(IMessageProvider MessageProvider)
         {
             _messageProvider = MessageProvider;
 
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
-
-            ResetCommand = new DelegateCommand(Reset);
-
-            AddCommand = new DelegateCommand(Add);
-
-            RemoveCommand = new DelegateCommand(Remove);
         }
 
-        void Remove(object O)
+        public void Remove(Hotkey Hotkey)
         {
-            if (O is Hotkey hotkey)
-            {
-                hotkey.Unregister();
+            Hotkey.Unregister();
 
-                _hotkeys.Remove(hotkey);
-            }
+            _hotkeys.Remove(Hotkey);
         }
 
-        void Add()
+        public void Add()
         {
             var hotkey = new Hotkey(new HotkeyModel(ServiceName.None, Keys.None, Modifiers.None, false));
 

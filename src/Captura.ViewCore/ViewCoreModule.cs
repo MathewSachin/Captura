@@ -14,6 +14,7 @@
             Binder.BindSingleton<ScreenShotViewModel>();
             Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<MainViewModel>();
+            Binder.BindSingleton<HotkeysViewModel>();
             Binder.BindSingleton<ViewConditionsModel>();
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
