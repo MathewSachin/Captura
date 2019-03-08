@@ -53,12 +53,7 @@ namespace Captura.ViewModels
         public T SelectedItem
         {
             get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedItem, value);
         }
     }
 }

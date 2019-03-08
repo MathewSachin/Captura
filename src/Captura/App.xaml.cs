@@ -30,21 +30,7 @@ namespace Captura
 
         void Application_Startup(object Sender, StartupEventArgs Args)
         {
-            AppDomain.CurrentDomain.UnhandledException += (S, E) =>
-            {
-                var dir = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
-
-                Directory.CreateDirectory(dir);
-
-                File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
-
-                if (E.ExceptionObject is Exception e)
-                {
-                    Current.Dispatcher.Invoke(() => new ExceptionWindow(e).ShowDialog());
-                }
-
-                Shutdown();
-            };
+            AppDomain.CurrentDomain.UnhandledException += OnCurrentDomainOnUnhandledException;
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new ViewCoreModule());
@@ -59,46 +45,77 @@ namespace Captura
 
             var settings = ServiceProvider.Get<Settings>();
 
-            if (!CmdOptions.Reset)
+            InitTheme(settings);
+
+            BindLanguageSetting(settings);
+
+            BindKeymapSetting(settings);
+        }
+
+        void OnCurrentDomainOnUnhandledException(object S, UnhandledExceptionEventArgs E)
+        {
+            var dir = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
+
+            Directory.CreateDirectory(dir);
+
+            File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
+
+            if (E.ExceptionObject is Exception e)
             {
-                settings.Load();
+                Current.Dispatcher.Invoke(() => new ExceptionWindow(e).ShowDialog());
             }
 
-            if (settings.UI.DarkTheme)
-            {
-                AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
-            }
+            Shutdown();
+        }
 
-            var accent = settings.UI.AccentColor;
-
-            if (!string.IsNullOrEmpty(accent))
-            {
-                AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
-            }
-
-            var loc = LanguageManager.Instance;
-
-            if (!string.IsNullOrWhiteSpace(settings.UI.Language))
-            {
-                var matchedCulture = loc.AvailableCultures.FirstOrDefault(M => M.Name == settings.UI.Language);
-
-                if (matchedCulture != null)
-                    loc.CurrentCulture = matchedCulture;
-            }
-
-            loc.LanguageChanged += L => settings.UI.Language = L.Name;
-
+        static void BindKeymapSetting(Settings Settings)
+        {
             var keymap = ServiceProvider.Get<KeymapViewModel>();
 
-            if (!string.IsNullOrWhiteSpace(settings.Keystrokes.KeymapName))
+            if (!string.IsNullOrWhiteSpace(Settings.Keystrokes.KeymapName))
             {
-                var matched = keymap.AvailableKeymaps.FirstOrDefault(M => M.Name == settings.Keystrokes.KeymapName);
+                var matched = keymap.AvailableKeymaps.FirstOrDefault(M => M.Name == Settings.Keystrokes.KeymapName);
 
                 if (matched != null)
                     keymap.SelectedKeymap = matched;
             }
 
-            keymap.PropertyChanged += (S, E) => settings.Keystrokes.KeymapName = keymap.SelectedKeymap.Name;
+            keymap.PropertyChanged += (S, E) => Settings.Keystrokes.KeymapName = keymap.SelectedKeymap.Name;
+        }
+
+        static void BindLanguageSetting(Settings Settings)
+        {
+            var loc = LanguageManager.Instance;
+
+            if (!string.IsNullOrWhiteSpace(Settings.UI.Language))
+            {
+                var matchedCulture = loc.AvailableCultures.FirstOrDefault(M => M.Name == Settings.UI.Language);
+
+                if (matchedCulture != null)
+                    loc.CurrentCulture = matchedCulture;
+            }
+
+            loc.LanguageChanged += L => Settings.UI.Language = L.Name;
+        }
+
+        static void InitTheme(Settings Settings)
+        {
+            if (!CmdOptions.Reset)
+            {
+                Settings.Load();
+            }
+
+            if (Settings.UI.DarkTheme)
+            {
+                AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
+            }
+
+            var accent = Settings.UI.AccentColor;
+
+            if (!string.IsNullOrEmpty(accent))
+            {
+                AppearanceManager.Current.AccentColor = WpfExtensions.ParseColor(accent);
+            }
         }
     }
 }

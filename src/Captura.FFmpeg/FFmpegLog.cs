@@ -49,12 +49,7 @@ namespace Captura.Models
         public FFmpegLogItem SelectedLogItem
         {
             get => _selectedLogItem;
-            set
-            {
-                _selectedLogItem = value; 
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedLogItem, value);
         }
     }
 }

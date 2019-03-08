@@ -29,12 +29,7 @@ namespace Captura.ViewModels
         public FileContentItem SelectedLicense
         {
             get => _selectedLicense;
-            set
-            {
-                _selectedLicense = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedLicense, value);
         }
     }
 }

@@ -79,12 +79,7 @@ namespace Captura
         public int Progress
         {
             get => _progress;
-            set
-            {
-                _progress = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _progress, value);
         }
 
         string _primaryText, _secondaryText;
@@ -92,23 +87,13 @@ namespace Captura
         public string PrimaryText
         {
             get => _primaryText;
-            private set
-            {
-                _primaryText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _primaryText, value);
         }
 
         public string SecondaryText
         {
             get => _secondaryText;
-            private set
-            {
-                _secondaryText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _secondaryText, value);
         }
 
         bool _finished;
@@ -116,12 +101,7 @@ namespace Captura
         public bool Finished
         {
             get => _finished;
-            set
-            {
-                _finished = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _finished, value);
         }
     }
 }

@@ -142,12 +142,7 @@ namespace Captura
         public TimeSpan End
         {
             get => _end;
-            set
-            {
-                _end = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _end, value);
         }
 
         string _fileName;
@@ -155,12 +150,7 @@ namespace Captura
         public string FileName
         {
             get => _fileName;
-            private set
-            {
-                _fileName = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _fileName, value);
         }
 
         string _filePath;
@@ -221,12 +211,7 @@ namespace Captura
         public bool IsPlaying
         {
             get => _isPlaying;
-            set
-            {
-                _isPlaying = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _isPlaying, value);
         }
 
         public TimeSpan PlaybackPosition

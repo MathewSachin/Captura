@@ -177,12 +177,7 @@ namespace Captura
         public BitmapSource OriginalBitmap
         {
             get => _originalBmp;
-            private set
-            {
-                _originalBmp = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _originalBmp, value);
         }
 
         WriteableBitmap _editedBmp;
@@ -190,12 +185,7 @@ namespace Captura
         public WriteableBitmap EditedBitmap
         {
             get => _editedBmp;
-            private set
-            {
-                _editedBmp = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _editedBmp, value);
         }
 
         TransformedBitmap _transformedBmp;
@@ -203,12 +193,7 @@ namespace Captura
         public TransformedBitmap TransformedBitmap
         {
             get => _transformedBmp;
-            set
-            {
-                _transformedBmp = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _transformedBmp, value);
         }
 
         ImageEffect _imageEffect = ImageEffect.None;
@@ -216,12 +201,7 @@ namespace Captura
         public ImageEffect CurrentImageEffect
         {
             get => _imageEffect;
-            private set
-            {
-                _imageEffect = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _imageEffect, value);
         }
 
         int _brightness;

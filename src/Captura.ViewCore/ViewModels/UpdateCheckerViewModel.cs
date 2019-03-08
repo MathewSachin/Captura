@@ -64,34 +64,19 @@ namespace Captura.ViewModels
         public bool Checking
         {
             get => _checking;
-            private set
-            {
-                _checking = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _checking, value);
         }
 
         public bool UpdateAvailable
         {
             get => _available;
-            private set
-            {
-                _available = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _available, value);
         }
 
         public bool CheckFailed
         {
             get => _checkFailed;
-            private set
-            {
-                _checkFailed = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _checkFailed, value);
         }
 
         string _newVersion;
@@ -99,11 +84,7 @@ namespace Captura.ViewModels
         public string NewVersion
         {
             get => _newVersion;
-            private set
-            {
-                _newVersion = value;
-                OnPropertyChanged();
-            }
+            private set => Set(ref _newVersion, value);
         }
 
         public ICommand CheckCommand { get; }

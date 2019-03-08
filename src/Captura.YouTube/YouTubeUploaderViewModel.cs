@@ -40,12 +40,7 @@ namespace Captura.ViewModels
         public string FileName
         {
             get => _fileName;
-            private set
-            {
-                _fileName = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _fileName, value);
         }
 
         public string Link
@@ -133,23 +128,13 @@ namespace Captura.ViewModels
         public string Description
         {
             get => _description;
-            set
-            {
-                _description = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _description, value);
         }
 
         public YouTubePrivacyStatus PrivacyStatus
         {
             get => _privacyStatus;
-            set
-            {
-                _privacyStatus = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _privacyStatus, value);
         }
 
         public IEnumerable<YouTubePrivacyStatus> PrivacyStatuses { get; } = new[]
@@ -183,23 +168,13 @@ namespace Captura.ViewModels
         public int Progress
         {
             get => _progress;
-            private set
-            {
-                _progress = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _progress, value);
         }
 
         public bool BeganUploading
         {
             get => _beganUploading;
-            private set
-            {
-                _beganUploading = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _beganUploading, value);
         }
 
         public DelegateCommand UploadCommand { get; }
@@ -213,23 +188,13 @@ namespace Captura.ViewModels
         public string UploadBtnText
         {
             get => _uploadBtnText;
-            private set
-            {
-                _uploadBtnText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _uploadBtnText, value);
         }
 
         public string CancelBtnText
         {
             get => _cancelBtnText;
-            private set
-            {
-                _cancelBtnText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _cancelBtnText, value);
         }
     }
 }

@@ -90,15 +90,7 @@ namespace Captura.ViewModels
         public RecorderState RecorderState
         {
             get => _recorderState;
-            private set
-            {
-                if (_recorderState == value)
-                    return;
-
-                _recorderState = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _recorderState, value);
         }
 
         public async void OnRecordExecute()

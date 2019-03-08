@@ -23,12 +23,7 @@ namespace Captura
         public string Message
         {
             get => _message;
-            set
-            {
-                _message = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _message, value);
         }
 
         public void Init(Exception Exception, string Msg)
@@ -53,12 +48,7 @@ namespace Captura
         public Exception SelectedException
         {
             get => _selectedException;
-            set
-            {
-                _selectedException = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedException, value);
         }
 
         public ICommand CopyToClipboardCommand { get; }

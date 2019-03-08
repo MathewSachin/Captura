@@ -166,12 +166,7 @@ namespace Captura.Models
         public bool IsSaving
         {
             get => _saving;
-            private set
-            {
-                _saving = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _saving, value);
         }
 
         public void Saved()

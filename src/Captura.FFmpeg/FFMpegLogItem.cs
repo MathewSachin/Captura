@@ -53,23 +53,13 @@ namespace Captura.Models
         public string Frame
         {
             get => _frame;
-            private set
-            {
-                _frame = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _frame, value);
         }
 
         public string Content
         {
             get => _content;
-            private set
-            {
-                _content = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _content, value);
         }
 
         public ICommand CopyToClipboardCommand { get; }

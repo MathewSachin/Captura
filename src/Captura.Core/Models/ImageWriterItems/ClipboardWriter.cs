@@ -36,12 +36,7 @@ namespace Captura.Models
         public bool Active
         {
             get => _active;
-            set
-            {
-                _active = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _active, value);
         }
 
         public override string ToString() => Display;

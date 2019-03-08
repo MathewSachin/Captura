@@ -54,12 +54,7 @@ namespace Captura.ViewModels
         public FileContentItem SelectedCrashLog
         {
             get => _selectedCrashLog;
-            set
-            {
-                _selectedCrashLog = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedCrashLog, value);
         }
 
         public ICommand CopyToClipboardCommand { get; }

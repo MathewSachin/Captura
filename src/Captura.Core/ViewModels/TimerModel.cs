@@ -17,15 +17,7 @@ namespace Captura.ViewModels
         public TimeSpan TimeSpan
         {
             get => _ts;
-            private set
-            {
-                if (_ts == value)
-                    return;
-
-                _ts = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _ts, value);
         }
 
         int _countdown;
@@ -33,12 +25,7 @@ namespace Captura.ViewModels
         public int Countdown
         {
             get => _countdown;
-            set
-            {
-                _countdown = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _countdown, value);
         }
 
         bool _waiting;
@@ -46,12 +33,7 @@ namespace Captura.ViewModels
         public bool Waiting
         {
             get => _waiting;
-            set
-            {
-                _waiting = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _waiting, value);
         }
 
         public TimerModel(Settings Settings)

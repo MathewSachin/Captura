@@ -77,12 +77,7 @@ namespace Captura.Models
         public IVideoItem Source
         {
             get => _source;
-            private set
-            {
-                _source = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _source, value);
         }
 
         public string Name => "Desktop Duplication";

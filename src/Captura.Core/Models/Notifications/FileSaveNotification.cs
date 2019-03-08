@@ -79,12 +79,7 @@ namespace Captura
         public string PrimaryText
         {
             get => _primaryText;
-            private set
-            {
-                _primaryText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _primaryText, value);
         }
 
         public string SecondaryText { get; }
@@ -94,12 +89,7 @@ namespace Captura
         public bool Finished
         {
             get => _finished;
-            private set
-            {
-                _finished = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _finished, value);
         }
     }
 }

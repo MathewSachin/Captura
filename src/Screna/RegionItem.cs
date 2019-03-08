@@ -33,12 +33,7 @@ namespace Captura.Models
         public string Name
         {
             get => _name;
-            set
-            {
-                _name = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _name, value);
         }
 
         public override string ToString() => Name;

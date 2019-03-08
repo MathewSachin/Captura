@@ -25,12 +25,7 @@ namespace Captura.ViewModels
         public bool IsDownloading
         {
             get => _isDownloading;
-            set
-            {
-                _isDownloading = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _isDownloading, value);
         }
 
         readonly IDialogService _dialogService;
@@ -188,12 +183,7 @@ namespace Captura.ViewModels
         public string ActionDescription
         {
             get => _actionDescription;
-            private set
-            {
-                _actionDescription = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _actionDescription, value);
         }
 
         int _progress;
@@ -201,12 +191,7 @@ namespace Captura.ViewModels
         public int Progress
         {
             get => _progress;
-            private set
-            {
-                _progress = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _progress, value);
         }
 
         string _status = "Ready";
@@ -214,12 +199,7 @@ namespace Captura.ViewModels
         public string Status
         {
             get => _status;
-            private set
-            {
-                _status = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _status, value);
         }
     }
 }
