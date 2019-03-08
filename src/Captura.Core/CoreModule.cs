@@ -9,7 +9,7 @@ namespace Captura
     {
         public void OnLoad(IBinder Binder)
         {
-            Binder.Bind(() => WaveItem.Instance);
+            Binder.Bind<IAudioWriterItem, WaveItem>();
 
             FFmpegModule.Load(Binder);
 
@@ -33,7 +33,6 @@ namespace Captura
 
             Binder.BindSingleton<HotKeyManager>();
 
-            Binder.Bind(() => LanguageManager.Instance);
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
 
             WindowsModule.Load(Binder);

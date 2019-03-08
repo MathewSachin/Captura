@@ -110,7 +110,7 @@
                         </Setter.Value>
                     </Setter>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
+                        <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard Name="RedStoryboard">
                                     <Storyboard>
@@ -155,7 +155,7 @@
 
         <Grid Grid.Row="0"
               Grid.Column="0"
-              IsEnabled="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}">
+              IsEnabled="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}">
             <Thumb VerticalAlignment="Bottom"
                    Height="2"
                    Cursor="SizeNS"
@@ -285,7 +285,7 @@
 
                     <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                                        IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
 
@@ -301,7 +301,7 @@
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>

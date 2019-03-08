@@ -32,7 +32,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             
-            <Grid Visibility="{Binding CanHost, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Visibility="{Binding CanHost.Value, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -62,13 +62,13 @@
             </Grid>
 
             <CheckBox IsChecked="{Binding ProxySettings.Authenticate}"
-                      Visibility="{Binding CanAuth, Converter={StaticResource BoolToVisibilityConverter}}"
+                      Visibility="{Binding CanAuth.Value, Converter={StaticResource BoolToVisibilityConverter}}"
                       Margin="0,10,0,5">
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding UseProxyAuth, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
-            <Grid Visibility="{Binding CanAuthCred, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Visibility="{Binding CanAuthCred.Value, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>

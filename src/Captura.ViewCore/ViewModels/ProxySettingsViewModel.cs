@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Reactive.Linq;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura.ViewModels
 {
@@ -8,16 +11,32 @@ namespace Captura.ViewModels
         public ProxySettingsViewModel(Settings Settings, ILocalizationProvider Loc)
             : base(Settings, Loc)
         {
-            Settings.Proxy.PropertyChanged += (S, E) => RaiseAllChanged();
+            CanAuth = ProxySettings
+                .ObserveProperty(M => M.Type)
+                .Select(M => M != ProxyType.None)
+                .ToReadOnlyReactivePropertySlim();
+
+            CanAuthCred = new[]
+                {
+                    CanAuth,
+                    ProxySettings.ObserveProperty(M => M.Authenticate)
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReadOnlyReactivePropertySlim();
+
+            CanHost = ProxySettings
+                .ObserveProperty(M => M.Type)
+                .Select(M => M == ProxyType.Manual)
+                .ToReadOnlyReactivePropertySlim();
         }
 
         public ProxySettings ProxySettings => Settings.Proxy;
 
-        public bool CanAuth => ProxySettings.Type != ProxyType.None;
+        public IReadOnlyReactiveProperty<bool> CanAuth { get; }
 
-        public bool CanAuthCred => CanAuth && ProxySettings.Authenticate;
+        public IReadOnlyReactiveProperty<bool> CanAuthCred { get; }
 
-        public bool CanHost => ProxySettings.Type == ProxyType.Manual;
+        public IReadOnlyReactiveProperty<bool> CanHost { get; }
 
         public IEnumerable<ProxyType> ProxyTypes { get; } = new[] { ProxyType.None, ProxyType.System, ProxyType.Manual };
     }

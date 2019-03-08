@@ -21,7 +21,7 @@
                       CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Overlay="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTaskbarOverlayConverter}}"
+        <TaskbarItemInfo Overlay="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTaskbarOverlayConverter}}"
                          Description="Captura">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
@@ -43,7 +43,7 @@
 
         <!-- NotifyIcon -->
         <tb:TaskbarIcon x:Name="SystemTray"
-                        IconSource="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTrayIconSourceConverter}}"
+                        IconSource="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToTrayIconSourceConverter}}"
                         ToolTipText="Captura"
                         MenuActivation="RightClick"
                         LeftClickCommand="{Binding TrayLeftClickCommand}"
@@ -75,7 +75,7 @@
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
+                                            <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
                                                 <Setter Property="LayoutTransform">
                                                     <Setter.Value>
                                                         <RotateTransform Angle="90"/>
@@ -222,7 +222,7 @@
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
-                                        IconData="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                                        IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
                     <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
                                         Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
                                         IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
@@ -234,7 +234,7 @@
                         <local:ModernButton.Style>
                             <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}}" Value="Paused">
+                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>

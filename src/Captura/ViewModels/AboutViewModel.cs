@@ -19,7 +19,7 @@ namespace Captura
             Version = ServiceProvider.AppVersion;
         }
 
-        public AboutViewModel(Settings Settings, LanguageManager LanguageManager) : base(Settings, LanguageManager)
+        public AboutViewModel(Settings Settings, ILocalizationProvider Loc) : base(Settings, Loc)
         {
             AppVersion = "v" + Version.ToString(3);
 

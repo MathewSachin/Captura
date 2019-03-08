@@ -9,8 +9,6 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class RecordingViewModel : NotifyPropertyChanged
     {
-        readonly RecordingModel _recordingModel;
-
         public ICommand RecordCommand { get; }
         public ICommand PauseCommand { get; }
 
@@ -20,8 +18,6 @@ namespace Captura.ViewModels
             WebcamModel WebcamModel,
             VideoSourcesViewModel VideoSourcesViewModel)
         {
-            _recordingModel = RecordingModel;
-
             RecordCommand = new[]
                 {
                     Settings.Audio
@@ -60,25 +56,17 @@ namespace Captura.ViewModels
                         .ObserveProperty(M => M.Waiting),
                     RecordingModel
                         .ObserveProperty(M => M.RecorderState)
-                        .Select(M => M != RecorderState.NotRecording)
+                        .Select(M => M != Models.RecorderState.NotRecording)
                 }
                 .CombineLatest(M => !M[0] && M[1])
                 .ToReactiveCommand()
                 .WithSubscribe(RecordingModel.OnPauseExecute);
 
-            RecordingModel.PropertyChanged += (S, E) =>
-            {
-                switch (E.PropertyName)
-                {
-                    case "":
-                    case null:
-                    case nameof(RecorderState):
-                        RaisePropertyChanged(nameof(RecorderState));
-                        break;
-                }
-            };
+            RecorderState = RecordingModel
+                .ObserveProperty(M => M.RecorderState)
+                .ToReadOnlyReactivePropertySlim();
         }
 
-        public RecorderState RecorderState => _recordingModel.RecorderState;
+        public IReadOnlyReactiveProperty<RecorderState> RecorderState { get; }
     }
 }

@@ -392,7 +392,7 @@ namespace Captura.ViewModels
 
         void SeparateFileForEveryAudioSource()
         {
-            var audioWriter = WaveItem.Instance;
+            var audioWriter = new WaveItem();
 
             IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
             {
