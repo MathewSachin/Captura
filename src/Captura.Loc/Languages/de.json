@@ -70,7 +70,7 @@
   "Left": "Links",
   "LoopbackSource": "Audio Ausgabequelle",
   "MaxRecent": "Maximale Anzahl Einträge",
-  "MaxTextLength": "Maximale Textlänge",
+  "MaxTextLength": "Max. Textlänge",
   "MicSource": "Audio Eingabequelle",
   "Minimize": "Minimieren",
   "MinToTrayOnCaptureStart": "Bei Aufnahmestart in den System Tray minimieren",
