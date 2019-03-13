@@ -52,7 +52,7 @@
   "Host": "Host",
   "Hotkeys": "Hotkeys",
   "ImageEditor": "Fotoeditor",
-  "ImgEmpty": "Das Bild wurde nicht gespeichert, da es leer war.",
+  "ImgEmpty": "Das Bild wurde nicht gespeichert. Kein Inhalt",
   "ImgFormat": "Bildformat",
   "ImgSavedClipboard": "Bild in die Zwischenablage gespeichert",
   "ImageUploadFailed": "Das Hochladen des Fotos ist fehlgeschlagen",
