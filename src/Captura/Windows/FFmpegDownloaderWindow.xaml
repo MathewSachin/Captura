@@ -38,20 +38,11 @@
                          Height="10"/>
         </DockPanel>
 
-        <Label Content="{Binding Status}"
+        <Label Content="{Binding Status.Value}"
                DockPanel.Dock="Top"
                Margin="0,10"
                HorizontalAlignment="Center"
                ContentStringFormat="{}Status: {0}"/>
-
-        <TextBlock DockPanel.Dock="Top"
-                   Margin="0,5"
-                   TextAlignment="Center"
-                   Style="{StaticResource TextColor}">
-            FFmpeg adds support for more output formats to Captura.<LineBreak/>
-            Latest build of FFmpeg is downloaded. This can also be used to update FFmpeg.<LineBreak/>
-            The Download size is nearly 30 MB.
-        </TextBlock>
 
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
@@ -83,13 +74,32 @@
                          Text="{Binding FFmpegSettings.FolderPath, Mode=OneWay}"/>
             </Border>
         </DockPanel>
+
+        <TextBlock DockPanel.Dock="Bottom"
+                   Margin="0,5"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource TextColor}"
+                   Opacity="0.9">
+            FFmpeg adds support for more output formats to Captura.<LineBreak/>
+            Latest build of FFmpeg is downloaded. This can also be used to update FFmpeg.<LineBreak/>
+            The Download size is nearly 70 MB.
+        </TextBlock>
+
+        <Grid HorizontalAlignment="Center"
+              Margin="0,10"
+              DockPanel.Dock="Top">
+            <Button Content="Start Download"
+                    Command="{Binding StartCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Button Content="Cancel Download"
+                    Command="{Binding CancelCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Button Content="Finish"
+                    IsEnabled="{Binding IsDone.Value}"
+                    Click="CloseButton_Click"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </Grid>
         
-        <Button Content="{Binding ActionDescription}"
-                Command="{Binding StartCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,10"
-                DockPanel.Dock="Top"/>
-        
-        <mui:ModernProgressRing IsActive="{Binding IsDownloading}"/>
+        <mui:ModernProgressRing IsActive="{Binding InProgress.Value}"/>
     </DockPanel>
 </Window>

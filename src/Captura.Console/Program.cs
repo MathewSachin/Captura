@@ -1,7 +1,7 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Captura.FFmpeg;
 using Captura.Native;
 using CommandLine;
 using static System.Console;
@@ -88,13 +88,22 @@ namespace Captura
                     return;
                 }
 
-                var ffmpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
+                var ffmpegDownload = ServiceProvider.Get<FFmpegDownloadModel>();
 
                 ServiceProvider.Get<FFmpegSettings>().FolderPath = downloadFolder;
 
-                await ffmpegDownload.Start();
-                
-                WriteLine(ffmpegDownload.Status);
+                await ffmpegDownload.Start(M => { });
+
+                switch (ffmpegDownload.State)
+                {
+                    case FFmpegDownloaderState.Error:
+                        WriteLine(ffmpegDownload.Error);
+                        break;
+
+                    default:
+                        WriteLine(ffmpegDownload.State);
+                        break;
+                }
             }
         }
     }

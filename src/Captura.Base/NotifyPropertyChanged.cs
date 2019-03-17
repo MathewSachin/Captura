@@ -23,14 +23,16 @@ namespace Captura
             RaisePropertyChanged("");
         }
 
-        protected void Set<T>(ref T Field, T Value, [CallerMemberName] string PropertyName = null)
+        protected bool Set<T>(ref T Field, T Value, [CallerMemberName] string PropertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(Field, Value))
-                return;
+                return false;
 
             Field = Value;
 
             RaisePropertyChanged(PropertyName);
+
+            return true;
         }
     }
 }
