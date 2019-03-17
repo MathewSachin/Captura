@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Captura.Models;
 using Google.Apis.Upload;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura.ViewModels
 {
@@ -22,6 +26,8 @@ namespace Captura.ViewModels
         bool _beganUploading;
         YouTubeUploadRequest _uploadRequest;
 
+        readonly IReactiveProperty<bool> _canUpload = new ReactiveProperty<bool>(true);
+
         public YouTubeUploaderViewModel(YouTubeUploader Uploader,
             IMessageProvider MessageProvider,
             IClipboardService ClipboardService)
@@ -30,33 +36,27 @@ namespace Captura.ViewModels
             _messageProvider = MessageProvider;
             _cancellationTokenSource = new CancellationTokenSource();
 
-            UploadCommand = new DelegateCommand(() => _uploadTask = OnUpload(), false);
+            OpenVideoCommand = this
+                .ObserveProperty(M => M.Link)
+                .Select(M => !string.IsNullOrWhiteSpace(M))
+                .ToReactiveCommand()
+                .WithSubscribe(() => Process.Start(Link));
 
-            OpenVideoCommand = new DelegateCommand(() => Process.Start(Link), false);
+            CopyLinkCommand = this
+                .ObserveProperty(M => M.Link)
+                .Select(M => !string.IsNullOrWhiteSpace(M))
+                .ToReactiveCommand()
+                .WithSubscribe(() => ClipboardService.SetText(Link));
 
-            CopyLinkCommand = new DelegateCommand(() => ClipboardService.SetText(Link), false);
-        }
-
-        public string FileName
-        {
-            get => _fileName;
-            private set => Set(ref _fileName, value);
-        }
-
-        public string Link
-        {
-            get => _link;
-            private set
-            {
-                _link = value;
-
-                var canExecute = !string.IsNullOrWhiteSpace(value);
-
-                OpenVideoCommand.RaiseCanExecuteChanged(canExecute);
-                CopyLinkCommand.RaiseCanExecuteChanged(canExecute);
-
-                OnPropertyChanged();
-            }
+            UploadCommand = new[]
+                {
+                    _canUpload,
+                    this.ObserveProperty(M => Title)
+                        .Select(M => !string.IsNullOrWhiteSpace(M))
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReactiveCommand()
+                .WithSubscribe(() => _uploadTask = OnUpload());
         }
 
         public async Task Init(string FilePath)
@@ -83,7 +83,7 @@ namespace Captura.ViewModels
 
         async Task OnUpload()
         {
-            UploadCommand.RaiseCanExecuteChanged(false);
+            _canUpload.Value = false;
 
             var token = _cancellationTokenSource.Token;
 
@@ -101,7 +101,7 @@ namespace Captura.ViewModels
                 {
                     _messageProvider.ShowException(result.Exception, "Error Occured while Uploading");
 
-                    UploadCommand.RaiseCanExecuteChanged(true);
+                    _canUpload.Value = true;
 
                     UploadBtnText = "Retry";
                 }
@@ -111,38 +111,6 @@ namespace Captura.ViewModels
                 // Cancelled by user
             }
         }
-
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                _title = value;
-
-                UploadCommand.RaiseCanExecuteChanged(!string.IsNullOrWhiteSpace(value));
-
-                OnPropertyChanged();
-            }
-        }
-
-        public string Description
-        {
-            get => _description;
-            set => Set(ref _description, value);
-        }
-
-        public YouTubePrivacyStatus PrivacyStatus
-        {
-            get => _privacyStatus;
-            set => Set(ref _privacyStatus, value);
-        }
-
-        public IEnumerable<YouTubePrivacyStatus> PrivacyStatuses { get; } = new[]
-        {
-            YouTubePrivacyStatus.Public,
-            YouTubePrivacyStatus.Unlisted,
-            YouTubePrivacyStatus.Private
-        };
 
         public async Task<bool> Cancel()
         {
@@ -165,6 +133,43 @@ namespace Captura.ViewModels
             return true;
         }
 
+        public string FileName
+        {
+            get => _fileName;
+            private set => Set(ref _fileName, value);
+        }
+
+        public string Link
+        {
+            get => _link;
+            private set => Set(ref _link, value);
+        }
+
+        public string Title
+        {
+            get => _title;
+            set => Set(ref _title, value);
+        }
+
+        public string Description
+        {
+            get => _description;
+            set => Set(ref _description, value);
+        }
+
+        public YouTubePrivacyStatus PrivacyStatus
+        {
+            get => _privacyStatus;
+            set => Set(ref _privacyStatus, value);
+        }
+
+        public IEnumerable<YouTubePrivacyStatus> PrivacyStatuses { get; } = new[]
+        {
+            YouTubePrivacyStatus.Public,
+            YouTubePrivacyStatus.Unlisted,
+            YouTubePrivacyStatus.Private
+        };
+
         public int Progress
         {
             get => _progress;
@@ -177,11 +182,9 @@ namespace Captura.ViewModels
             private set => Set(ref _beganUploading, value);
         }
 
-        public DelegateCommand UploadCommand { get; }
-
-        public DelegateCommand OpenVideoCommand { get; }
-
-        public DelegateCommand CopyLinkCommand { get; }
+        public ICommand UploadCommand { get; }
+        public ICommand OpenVideoCommand { get; }
+        public ICommand CopyLinkCommand { get; }
 
         string _uploadBtnText = "Upload", _cancelBtnText = "Cancel";
 
