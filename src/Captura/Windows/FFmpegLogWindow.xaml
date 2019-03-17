@@ -36,13 +36,14 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <DockPanel DataContext="{Binding SelectedLogItem}"
-                   Visibility="{Binding Converter={StaticResource NotNullConverter}}"
+        <DockPanel Visibility="{Binding SelectedLogItem, Converter={StaticResource NotNullConverter}}"
                    Margin="5">
             <DockPanel.InputBindings>
                 <KeyBinding Key="C"
                             Modifiers="Control"
                             Command="{Binding CopyToClipboardCommand}"/>
+                <KeyBinding Key="Delete"
+                            Command="{Binding RemoveCommand}"/>
             </DockPanel.InputBindings>
             <DockPanel DockPanel.Dock="Top">
                 <local:ModernButton IconData="{Binding Icons.Delete, Source={StaticResource ServiceLocator}}"
@@ -66,7 +67,7 @@
                 </Button>
             </DockPanel>
 
-            <Label Content="{Binding Frame}"
+            <Label Content="{Binding SelectedLogItem.Frame}"
                    DockPanel.Dock="Bottom"/>
 
             <StackPanel DockPanel.Dock="Top">
@@ -74,7 +75,7 @@
                        FontWeight="Bold"/>
                 <ScrollViewer Margin="0,0,0,10"
                               HorizontalScrollBarVisibility="Auto">
-                    <Label Content="{Binding Args}"
+                    <Label Content="{Binding SelectedLogItem.Args}"
                            Margin="0,0,0,10"/>
                 </ScrollViewer>
 
@@ -83,7 +84,7 @@
             </StackPanel>
 
             <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding Content, Mode=OneWay}"
+                <TextBlock Text="{Binding SelectedLogItem.Content, Mode=OneWay}"
                            Style="{StaticResource TextColor}"/>
             </ScrollViewer>
         </DockPanel>

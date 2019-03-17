@@ -1,20 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegLog : NotifyPropertyChanged
     {
-        readonly SynchronizationContext _syncContext;
-
-        readonly IClipboardService _clipboardService;
-
-        public FFmpegLog(IClipboardService ClipboardService)
+        public FFmpegLog()
         {
-            _clipboardService = ClipboardService;
-            _syncContext = SynchronizationContext.Current;
-
             LogItems = new ReadOnlyObservableCollection<FFmpegLogItem>(_logItems);
         }
 
@@ -24,32 +16,16 @@ namespace Captura.Models
 
         public FFmpegLogItem CreateNew(string Name, string Args)
         {
-            var item = new FFmpegLogItem(Name, Args, _clipboardService);
+            var item = new FFmpegLogItem(Name, Args);
 
-            item.RemoveRequested += () => _logItems.Remove(item);
-
-            void Insert()
-            {
-                _logItems.Insert(0, item);
-            }
-
-            if (_syncContext != null)
-            {
-                _syncContext.Post(S => Insert(), null);
-            }
-            else Insert();
-
-            SelectedLogItem = item;
+            _logItems.Insert(0, item);
 
             return item;
         }
 
-        FFmpegLogItem _selectedLogItem;
-
-        public FFmpegLogItem SelectedLogItem
+        public void Remove(FFmpegLogItem Item)
         {
-            get => _selectedLogItem;
-            set => Set(ref _selectedLogItem, value);
+            _logItems.Remove(Item);
         }
     }
 }

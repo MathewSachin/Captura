@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Windows.Input;
 
 namespace Captura.Models
 {
@@ -10,9 +9,7 @@ namespace Captura.Models
 
         public string Args { get; }
 
-        public FFmpegLogItem(string Name,
-            string Args,
-            IClipboardService ClipboardService)
+        public FFmpegLogItem(string Name, string Args)
         {
             this.Name = Name;
             this.Args = Args;
@@ -23,13 +20,6 @@ namespace Captura.Models
             _complete.AppendLine();
             _complete.AppendLine("OUTPUT:");
             _complete.AppendLine("-------------");
-
-            CopyToClipboardCommand = new DelegateCommand(() =>
-            {
-                ClipboardService.SetText(_complete.ToString());
-            });
-
-            RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
         }
 
         string _content = "", _frame = "";
@@ -62,10 +52,6 @@ namespace Captura.Models
             private set => Set(ref _content, value);
         }
 
-        public ICommand CopyToClipboardCommand { get; }
-
-        public ICommand RemoveCommand { get; }
-
-        public event Action RemoveRequested;
+        public string GetCompleteLog() => _complete.ToString();
     }
 }

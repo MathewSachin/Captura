@@ -15,6 +15,7 @@
             Binder.BindSingleton<RecordingViewModel>();
             Binder.BindSingleton<MainViewModel>();
             Binder.BindSingleton<HotkeysViewModel>();
+            Binder.BindSingleton<FFmpegLogViewModel>();
             Binder.BindSingleton<ViewConditionsModel>();
 
             Binder.BindSingleton<CustomOverlaysViewModel>();

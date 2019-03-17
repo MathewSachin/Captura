@@ -26,7 +26,7 @@ namespace Captura
 
         public FFmpegDownloadViewModel FFmpegDownloadViewModel => ServiceProvider.Get<FFmpegDownloadViewModel>();
 
-        public FFmpegLog FFmpegLog => ServiceProvider.Get<FFmpegLog>();
+        public FFmpegLogViewModel FFmpegLog => ServiceProvider.Get<FFmpegLogViewModel>();
 
         public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
 
