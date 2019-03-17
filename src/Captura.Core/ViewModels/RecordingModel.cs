@@ -26,10 +26,8 @@ namespace Captura.ViewModels
 
         readonly ISystemTray _systemTray;
         readonly WebcamOverlay _webcamOverlay;
-        readonly IMainWindow _mainWindow;
         readonly IPreviewWindow _previewWindow;
         readonly WebcamModel _webcamModel;
-        readonly IAudioPlayer _audioPlayer;
         readonly TimerModel _timerModel;
         readonly IMessageProvider _messageProvider;
         readonly IFFmpegViewsProvider _ffmpegViewsProvider;
@@ -46,14 +44,12 @@ namespace Captura.ViewModels
             ILocalizationProvider Loc,
             ISystemTray SystemTray,
             WebcamOverlay WebcamOverlay,
-            IMainWindow MainWindow,
             IPreviewWindow PreviewWindow,
             VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
             AudioSource AudioSource,
             WebcamModel WebcamModel,
             KeymapViewModel Keymap,
-            IAudioPlayer AudioPlayer,
             IRecentList RecentList,
             TimerModel TimerModel,
             IMessageProvider MessageProvider,
@@ -61,14 +57,12 @@ namespace Captura.ViewModels
         {
             _systemTray = SystemTray;
             _webcamOverlay = WebcamOverlay;
-            _mainWindow = MainWindow;
             _previewWindow = PreviewWindow;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoWritersViewModel = VideoWritersViewModel;
             _audioSource = AudioSource;
             _webcamModel = WebcamModel;
             _keymap = Keymap;
-            _audioPlayer = AudioPlayer;
             _recentList = RecentList;
             _timerModel = TimerModel;
             _messageProvider = MessageProvider;
@@ -93,22 +87,6 @@ namespace Captura.ViewModels
             private set => Set(ref _recorderState, value);
         }
 
-        public async void OnRecordExecute()
-        {
-            if (RecorderState == RecorderState.NotRecording)
-            {
-                _audioPlayer.Play(SoundKind.Start);
-
-                StartRecording();
-            }
-            else
-            {
-                _audioPlayer.Play(SoundKind.Stop);
-
-                await StopRecording();
-            }
-        }
-
         void SystemEvents_PowerModeChanged(object Sender, PowerModeChangedEventArgs E)
         {
             if (E.Mode == PowerModes.Suspend && RecorderState == RecorderState.Recording)
@@ -126,8 +104,6 @@ namespace Captura.ViewModels
 
         public void OnPauseExecute()
         {
-            _audioPlayer.Play(SoundKind.Pause);
-
             // Resume
             if (RecorderState == RecorderState.Paused)
             {
@@ -301,11 +277,6 @@ namespace Captura.ViewModels
                     return false;
                 }
             }
-
-            _systemTray.HideNotification();
-
-            if (Settings.Tray.MinToTrayOnCaptureStart)
-                _mainWindow.IsVisible = false;
 
             RecorderState = RecorderState.Recording;
 

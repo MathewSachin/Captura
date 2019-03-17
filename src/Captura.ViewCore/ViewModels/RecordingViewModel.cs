@@ -7,8 +7,13 @@ using Reactive.Bindings.Extensions;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class RecordingViewModel : NotifyPropertyChanged
+    public class RecordingViewModel : ViewModelBase
     {
+        readonly RecordingModel _recordingModel;
+        readonly ISystemTray _systemTray;
+        readonly IMainWindow _mainWindow;
+        readonly IAudioPlayer _audioPlayer;
+
         public ICommand RecordCommand { get; }
         public ICommand PauseCommand { get; }
 
@@ -16,8 +21,17 @@ namespace Captura.ViewModels
             Settings Settings,
             TimerModel TimerModel,
             WebcamModel WebcamModel,
-            VideoSourcesViewModel VideoSourcesViewModel)
+            VideoSourcesViewModel VideoSourcesViewModel,
+            ISystemTray SystemTray,
+            IMainWindow MainWindow,
+            ILocalizationProvider Loc,
+            IAudioPlayer AudioPlayer) : base(Settings, Loc)
         {
+            _recordingModel = RecordingModel;
+            _systemTray = SystemTray;
+            _mainWindow = MainWindow;
+            _audioPlayer = AudioPlayer;
+
             RecordCommand = new[]
                 {
                     Settings.Audio
@@ -48,7 +62,7 @@ namespace Captura.ViewModels
                     return true;
                 })
                 .ToReactiveCommand()
-                .WithSubscribe(RecordingModel.OnRecordExecute);
+                .WithSubscribe(OnRecordExecute);
 
             PauseCommand = new[]
                 {
@@ -60,11 +74,39 @@ namespace Captura.ViewModels
                 }
                 .CombineLatest(M => !M[0] && M[1])
                 .ToReactiveCommand()
-                .WithSubscribe(RecordingModel.OnPauseExecute);
+                .WithSubscribe(() =>
+                {
+                    _audioPlayer.Play(SoundKind.Pause);
+
+                    RecordingModel.OnPauseExecute();
+                });
 
             RecorderState = RecordingModel
                 .ObserveProperty(M => M.RecorderState)
                 .ToReadOnlyReactivePropertySlim();
+        }
+
+        async void OnRecordExecute()
+        {
+            if (RecorderState.Value == Models.RecorderState.NotRecording)
+            {
+                _systemTray.HideNotification();
+
+                if (_recordingModel.StartRecording())
+                {
+                    if (Settings.Tray.MinToTrayOnCaptureStart)
+                        _mainWindow.IsVisible = false;
+
+                    _audioPlayer.Play(SoundKind.Start);
+                }
+                else _audioPlayer.Play(SoundKind.Error);
+            }
+            else
+            {
+                _audioPlayer.Play(SoundKind.Stop);
+
+                await _recordingModel.StopRecording();
+            }
         }
 
         public IReadOnlyReactiveProperty<RecorderState> RecorderState { get; }

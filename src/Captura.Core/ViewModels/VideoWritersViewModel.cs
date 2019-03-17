@@ -22,7 +22,7 @@ namespace Captura.ViewModels
                 SelectedVideoWriterKind = VideoWriterProviders[0];
         }
 
-        public void RefreshCodecs()
+        void RefreshCodecs()
         {
             // Remember selected codec
             var lastVideoCodecName = SelectedVideoWriter?.ToString();
