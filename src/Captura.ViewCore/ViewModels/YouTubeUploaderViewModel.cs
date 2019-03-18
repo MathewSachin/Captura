@@ -26,7 +26,7 @@ namespace Captura.ViewModels
         bool _beganUploading;
         YouTubeUploadRequest _uploadRequest;
 
-        readonly IReactiveProperty<bool> _canUpload = new ReactiveProperty<bool>(true);
+        readonly IReactiveProperty<bool> _canUpload = new ReactivePropertySlim<bool>(true);
 
         public YouTubeUploaderViewModel(YouTubeUploader Uploader,
             IMessageProvider MessageProvider,

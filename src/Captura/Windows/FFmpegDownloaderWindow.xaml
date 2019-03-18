@@ -34,7 +34,7 @@
             <Label Margin="0,0,10,0"
                    Content="Download Progress"
                    ContentStringFormat="{}{0}:"/>
-            <ProgressBar Value="{Binding Progress, Mode=OneWay}"
+            <ProgressBar Value="{Binding Progress.Value, Mode=OneWay}"
                          Height="10"/>
         </DockPanel>
 

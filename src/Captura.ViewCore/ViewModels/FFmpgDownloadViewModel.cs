@@ -4,9 +4,7 @@ using System.IO;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Captura.FFmpeg;
-using Captura.Models;
 using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace Captura.ViewModels
 {
@@ -19,11 +17,16 @@ namespace Captura.ViewModels
         public ICommand SelectFolderCommand { get; }
         public ICommand OpenFolderCommand { get; }
 
+        public IReadOnlyReactiveProperty<int> Progress { get; }
         public IReadOnlyReactiveProperty<string> Status { get; }
         public IReadOnlyReactiveProperty<bool> InProgress { get; }
         public IReadOnlyReactiveProperty<bool> IsDone { get; }
 
         public FFmpegSettings FFmpegSettings { get; }
+
+        readonly IReactiveProperty<FFmpegDownloaderProgress> _downloaderProgress
+            = new ReactivePropertySlim<FFmpegDownloaderProgress>(
+                new FFmpegDownloaderProgress(FFmpegDownloaderState.Ready));
 
         public FFmpegDownloadViewModel(FFmpegSettings FFmpegSettings,
             FFmpegDownloadModel DownloadModel,
@@ -31,19 +34,21 @@ namespace Captura.ViewModels
         {
             this.FFmpegSettings = FFmpegSettings;
 
-            StartCommand = DownloadModel
-                .ObserveProperty(M => M.State)
+            StartCommand = _downloaderProgress
+                .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Ready)
                 .ToReactiveCommand()
                 .WithSubscribe(async () =>
                 {
-                    var result = await DownloadModel.Start(M => Progress = M);
+                    var progress = new Progress<FFmpegDownloaderProgress>(M => _downloaderProgress.Value = M);
+
+                    var result = await DownloadModel.Start(progress);
 
                     AfterDownload?.Invoke(result);
                 });
 
-            CancelCommand = DownloadModel
-                .ObserveProperty(M => M.State)
+            CancelCommand = _downloaderProgress
+                .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Downloading)
                 .ToReactiveCommand()
                 .WithSubscribe(() =>
@@ -53,8 +58,8 @@ namespace Captura.ViewModels
                     CloseWindowAction?.Invoke();
                 });
 
-            SelectFolderCommand = DownloadModel
-                .ObserveProperty(M => M.State)
+            SelectFolderCommand = _downloaderProgress
+                .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Ready)
                 .ToReactiveCommand()
                 .WithSubscribe(FFmpegViewsProvider.PickFolder);
@@ -69,39 +74,37 @@ namespace Captura.ViewModels
                 }
             });
 
-            Status = new[]
+            Status = _downloaderProgress
+                .Select(M =>
                 {
-                    DownloadModel.ObserveProperty(M => M.State),
-                    DownloadModel.ObserveProperty(M => M.Error)
-                        .Select(M => FFmpegDownloaderState.Ready), // Dummy
-                    this.ObserveProperty(M => M.Progress)
-                        .Select(M => FFmpegDownloaderState.Ready) // Dummy
-                }
-                .CombineLatest(M =>
-                {
-                    var state = M[0];
-
-                    switch (state)
+                    switch (M.State)
                     {
-                        case FFmpegDownloaderState.Downloading:
-                            return $"{FFmpegDownloaderState.Downloading} ({Progress}%)";
-
                         case FFmpegDownloaderState.Error:
-                            return DownloadModel.Error;
+                            return M.ErrorMessage;
+
+                        case FFmpegDownloaderState.Downloading:
+                            return $"{FFmpegDownloaderState.Downloading} ({M.DownloadProgress}%)";
 
                         default:
-                            return state.ToString();
+                            return M.State.ToString();
                     }
                 })
                 .ToReadOnlyReactivePropertySlim();
 
-            InProgress = DownloadModel
-                .ObserveProperty(M => M.State)
+            Progress = _downloaderProgress
+                .Where(M => M.State == FFmpegDownloaderState.Downloading)
+                .Select(M => M.DownloadProgress)
+                .ToReadOnlyReactivePropertySlim();
+
+            Progress.Subscribe(M => ProgressChanged?.Invoke(M));
+
+            InProgress = _downloaderProgress
+                .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Downloading || M == FFmpegDownloaderState.Extracting)
                 .ToReadOnlyReactivePropertySlim();
 
-            IsDone = DownloadModel
-                .ObserveProperty(M => M.State)
+            IsDone = _downloaderProgress
+                .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Done || M == FFmpegDownloaderState.Cancelled || M == FFmpegDownloaderState.Error)
                 .ToReadOnlyReactivePropertySlim();
         }
@@ -109,19 +112,5 @@ namespace Captura.ViewModels
         public Action CloseWindowAction;
         public event Action<int> ProgressChanged;
         public event Action<bool> AfterDownload;
-
-        int _progress;
-
-        public int Progress
-        {
-            get => _progress;
-            private set
-            {
-                if (!Set(ref _progress, value))
-                    return;
-
-                ProgressChanged?.Invoke(value);
-            }
-        }
     }
 }

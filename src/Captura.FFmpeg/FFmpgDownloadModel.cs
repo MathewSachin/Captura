@@ -12,14 +12,6 @@ namespace Captura.FFmpeg
     {
         readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        FFmpegDownloaderState _downloaderState = FFmpegDownloaderState.Ready;
-
-        public FFmpegDownloaderState State
-        {
-            get => _downloaderState;
-            set => Set(ref _downloaderState, value);
-        }
-
         readonly ProxySettings _proxySettings;
         readonly FFmpegSettings FFmpegSettings;
 
@@ -49,32 +41,40 @@ namespace Captura.FFmpeg
             _cancellationTokenSource.Cancel();
         }
         
-        public async Task<bool> Start(Action<int> Progress)
+        public async Task<bool> Start(IProgress<FFmpegDownloaderProgress> Progress)
         {
-            State = FFmpegDownloaderState.Downloading;
-
             try
             {
+                var lastProgress = -1;
+
                 await DownloadFFmpeg.DownloadArchive(P =>
                 {
-                    Progress?.Invoke(P);
+                    if (lastProgress == P)
+                        return;
+
+                    // Report only if changed
+                    Progress.Report(new FFmpegDownloaderProgress(P));
+
+                    lastProgress = P;
                 }, _proxySettings.GetWebProxy(), _cancellationTokenSource.Token);
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
-                State = FFmpegDownloaderState.Cancelled;
+                Progress.Report(new FFmpegDownloaderProgress(FFmpegDownloaderState.Cancelled));
                 return false;
             }
             catch (Exception e)
             {
-                State = FFmpegDownloaderState.Error;
-                Error = $"Failed - {e.Message}";
+                Progress.Report(new FFmpegDownloaderProgress($"Failed - {e.Message}"));
                 return false;
             }
 
             _cancellationTokenSource.Dispose();
 
-            State = FFmpegDownloaderState.Extracting;
+            // Download complete
+            Progress.Report(new FFmpegDownloaderProgress(100));
+
+            Progress.Report(new FFmpegDownloaderProgress(FFmpegDownloaderState.Extracting));
 
             try
             {
@@ -82,28 +82,18 @@ namespace Captura.FFmpeg
             }
             catch (UnauthorizedAccessException)
             {
-                State = FFmpegDownloaderState.Error;
-                Error = "Can't extract to specified directory";
+                Progress.Report(new FFmpegDownloaderProgress("Can't extract to specified directory"));
                 return false;
             }
             catch
             {
-                State = FFmpegDownloaderState.Error;
-                Error = "Extraction failed";
+                Progress.Report(new FFmpegDownloaderProgress("Extraction Failed"));
                 return false;
             }
 
-            State = FFmpegDownloaderState.Done;
+            Progress.Report(new FFmpegDownloaderProgress(FFmpegDownloaderState.Done));
 
             return true;
-        }
-
-        string _error = "";
-
-        public string Error
-        {
-            get => _error;
-            private set => Set(ref _error, value);
         }
     }
 }
