@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.FFmpeg;
+using Captura.Models;
 using Reactive.Bindings;
 
 namespace Captura.ViewModels
@@ -12,7 +14,6 @@ namespace Captura.ViewModels
     public class FFmpegDownloadViewModel : NotifyPropertyChanged
     {
         public ICommand StartCommand { get; }
-        public ICommand CancelCommand { get; }
 
         public ICommand SelectFolderCommand { get; }
         public ICommand OpenFolderCommand { get; }
@@ -21,6 +22,7 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<string> Status { get; }
         public IReadOnlyReactiveProperty<bool> InProgress { get; }
         public IReadOnlyReactiveProperty<bool> IsDone { get; }
+        public IReadOnlyReactiveProperty<bool> CanCancel { get; }
 
         public FFmpegSettings FFmpegSettings { get; }
 
@@ -28,11 +30,19 @@ namespace Captura.ViewModels
             = new ReactivePropertySlim<FFmpegDownloaderProgress>(
                 new FFmpegDownloaderProgress(FFmpegDownloaderState.Ready));
 
+        readonly FFmpegDownloadModel _downloadModel;
+        readonly IMessageProvider _messageProvider;
+
+        Task<bool> _downloadTask;
+
         public FFmpegDownloadViewModel(FFmpegSettings FFmpegSettings,
             FFmpegDownloadModel DownloadModel,
-            IFFmpegViewsProvider FFmpegViewsProvider)
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            IMessageProvider MessageProvider)
         {
             this.FFmpegSettings = FFmpegSettings;
+            _downloadModel = DownloadModel;
+            _messageProvider = MessageProvider;
 
             StartCommand = _downloaderProgress
                 .Select(M => M.State)
@@ -42,21 +52,17 @@ namespace Captura.ViewModels
                 {
                     var progress = new Progress<FFmpegDownloaderProgress>(M => _downloaderProgress.Value = M);
 
-                    var result = await DownloadModel.Start(progress);
+                    _downloadTask = DownloadModel.Start(progress);
+
+                    var result = await _downloadTask;
 
                     AfterDownload?.Invoke(result);
                 });
 
-            CancelCommand = _downloaderProgress
+            CanCancel = _downloaderProgress
                 .Select(M => M.State)
                 .Select(M => M == FFmpegDownloaderState.Downloading)
-                .ToReactiveCommand()
-                .WithSubscribe(() =>
-                {
-                    DownloadModel.Cancel();
-
-                    CloseWindowAction?.Invoke();
-                });
+                .ToReadOnlyReactivePropertySlim();
 
             SelectFolderCommand = _downloaderProgress
                 .Select(M => M.State)
@@ -109,8 +115,29 @@ namespace Captura.ViewModels
                 .ToReadOnlyReactivePropertySlim();
         }
 
-        public Action CloseWindowAction;
         public event Action<int> ProgressChanged;
         public event Action<bool> AfterDownload;
+
+        public async Task<bool> Cancel()
+        {
+            if (CanCancel.Value)
+            {
+                if (!_messageProvider.ShowYesNo("Are you sure you want to cancel download?", "Cancel Download"))
+                    return false;
+            }
+            else if (InProgress.Value)
+            {
+                return false;
+            }
+
+            _downloadModel.Cancel();
+
+            if (_downloadTask != null)
+            {
+                await _downloadTask;
+            }
+
+            return true;
+        }
     }
 }

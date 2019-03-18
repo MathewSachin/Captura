@@ -92,8 +92,9 @@
                     Command="{Binding StartCommand}"
                     Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Button Content="Cancel Download"
-                    Command="{Binding CancelCommand}"
-                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    IsEnabled="{Binding CanCancel.Value}"
+                    Click="CloseButton_Click"
+                    Visibility="{Binding InProgress.Value, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Button Content="Finish"
                     IsEnabled="{Binding IsDone.Value}"
                     Click="CloseButton_Click"

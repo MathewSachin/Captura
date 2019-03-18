@@ -13,7 +13,13 @@ namespace Captura.Views
 
             if (DataContext is FFmpegDownloadViewModel vm)
             {
-                vm.CloseWindowAction += Close;
+                Closing += async (S, E) =>
+                {
+                    if (!await vm.Cancel())
+                    {
+                        E.Cancel = true;
+                    }
+                };
 
                 vm.ProgressChanged += P =>
                 {
