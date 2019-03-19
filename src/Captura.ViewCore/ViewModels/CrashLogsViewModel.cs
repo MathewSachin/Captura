@@ -1,8 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Screna;
 
 namespace Captura.ViewModels
@@ -10,16 +13,25 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class CrashLogsViewModel : NotifyPropertyChanged
     {
+        public ICommand CopyToClipboardCommand { get; }
+        public ICommand RemoveCommand { get; }
+
+        readonly ObservableCollection<FileContentItem> _crashLogs;
+
+        public ReadOnlyObservableCollection<FileContentItem> CrashLogs { get; }
+
         public CrashLogsViewModel()
         {
             var folder = Path.Combine(ServiceProvider.SettingsDir, "Crashes");
 
             if (Directory.Exists(folder))
             {
-                CrashLogs = new ObservableCollection<FileContentItem>(Directory
+                _crashLogs = new ObservableCollection<FileContentItem>(Directory
                     .EnumerateFiles(folder)
                     .Select(FileName => new FileContentItem(FileName))
                     .Reverse());
+
+                CrashLogs = new ReadOnlyObservableCollection<FileContentItem>(_crashLogs);
 
                 if (CrashLogs.Count > 0)
                 {
@@ -27,27 +39,33 @@ namespace Captura.ViewModels
                 }
             }
 
-            CopyToClipboardCommand = new DelegateCommand(() => SelectedCrashLog?.Content.WriteToClipboard());
+            CopyToClipboardCommand = this
+                .ObserveProperty(M => M.SelectedCrashLog)
+                .Select(M => M != null)
+                .ToReactiveCommand()
+                .WithSubscribe(() => SelectedCrashLog.Content.WriteToClipboard());
 
-            RemoveCommand = new DelegateCommand(OnRemoveExecute);
+            RemoveCommand = this
+                .ObserveProperty(M => M.SelectedCrashLog)
+                .Select(M => M != null)
+                .ToReactiveCommand()
+                .WithSubscribe(OnRemoveExecute);
         }
 
         void OnRemoveExecute()
         {
-            if (SelectedCrashLog != null)
+            if (SelectedCrashLog == null)
+                return;
+
+            if (File.Exists(SelectedCrashLog.FileName))
             {
-                if (File.Exists(SelectedCrashLog.FileName))
-                {
-                    File.Delete(SelectedCrashLog.FileName);
-                }
-
-                CrashLogs.Remove(SelectedCrashLog);
-
-                SelectedCrashLog = CrashLogs.Count > 0 ? CrashLogs[0] : null;
+                File.Delete(SelectedCrashLog.FileName);
             }
-        }
 
-        public ObservableCollection<FileContentItem> CrashLogs { get; }
+            _crashLogs.Remove(SelectedCrashLog);
+
+            SelectedCrashLog = CrashLogs.Count > 0 ? CrashLogs[0] : null;
+        }
 
         FileContentItem _selectedCrashLog;
 
@@ -56,9 +74,5 @@ namespace Captura.ViewModels
             get => _selectedCrashLog;
             set => Set(ref _selectedCrashLog, value);
         }
-
-        public ICommand CopyToClipboardCommand { get; }
-
-        public ICommand RemoveCommand { get; }
     }
 }

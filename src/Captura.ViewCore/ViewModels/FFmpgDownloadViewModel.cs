@@ -70,15 +70,16 @@ namespace Captura.ViewModels
                 .ToReactiveCommand()
                 .WithSubscribe(FFmpegViewsProvider.PickFolder);
 
-            OpenFolderCommand = new DelegateCommand(() =>
-            {
-                var path = FFmpegSettings.GetFolderPath();
-
-                if (Directory.Exists(path))
+            OpenFolderCommand = new ReactiveCommand()
+                .WithSubscribe(() =>
                 {
-                    Process.Start(path);
-                }
-            });
+                    var path = FFmpegSettings.GetFolderPath();
+
+                    if (Directory.Exists(path))
+                    {
+                        Process.Start(path);
+                    }
+                });
 
             Status = _downloaderProgress
                 .Select(M =>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -13,17 +14,20 @@ namespace Captura.ViewModels
         {
             Hotkeys = HotKeyManager.Hotkeys;
 
-            ResetCommand = new DelegateCommand(HotKeyManager.Reset);
+            ResetCommand = new ReactiveCommand()
+                .WithSubscribe(HotKeyManager.Reset);
 
-            AddCommand = new DelegateCommand(HotKeyManager.Add);
+            AddCommand = new ReactiveCommand()
+                .WithSubscribe(HotKeyManager.Add);
 
-            RemoveCommand = new DelegateCommand(M =>
-            {
-                if (M is Hotkey hotkey)
+            RemoveCommand = new ReactiveCommand()
+                .WithSubscribe(M =>
                 {
-                    HotKeyManager.Remove(hotkey);
-                }
-            });
+                    if (M is Hotkey hotkey)
+                    {
+                        HotKeyManager.Remove(hotkey);
+                    }
+                });
         }
 
         public ICommand ResetCommand { get; }

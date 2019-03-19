@@ -34,8 +34,11 @@ namespace Captura.ViewModels
         {
             _dialogService = DialogService;
 
-            ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
-            SelectFFmpegFolderCommand = new DelegateCommand(FFmpegViewsProvider.PickFolder);
+            ShowPreviewCommand = new ReactiveCommand()
+                .WithSubscribe(PreviewWindow.Show);
+
+            SelectFFmpegFolderCommand = new ReactiveCommand()
+                .WithSubscribe(FFmpegViewsProvider.PickFolder);
 
             #region Commands
             RefreshCommand = RecordingModel
@@ -52,13 +55,17 @@ namespace Captura.ViewModels
                     Refreshed?.Invoke();
                 });
 
-            OpenOutputFolderCommand = new DelegateCommand(OpenOutputFolder);
+            OpenOutputFolderCommand = new ReactiveCommand()
+                .WithSubscribe(OpenOutputFolder);
 
-            SelectOutputFolderCommand = new DelegateCommand(SelectOutputFolder);
+            SelectOutputFolderCommand = new ReactiveCommand()
+                .WithSubscribe(SelectOutputFolder);
 
-            ResetFFmpegFolderCommand = new DelegateCommand(() => Settings.FFmpeg.FolderPath = "");
+            ResetFFmpegFolderCommand = new ReactiveCommand()
+                .WithSubscribe(() => Settings.FFmpeg.FolderPath = "");
 
-            TrayLeftClickCommand = new DelegateCommand(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
+            TrayLeftClickCommand = new ReactiveCommand()
+                .WithSubscribe(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
             #endregion
         }
 

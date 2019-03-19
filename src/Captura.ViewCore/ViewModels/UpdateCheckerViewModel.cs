@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -17,9 +18,11 @@ namespace Captura.ViewModels
 
             Check();
 
-            CheckCommand = new DelegateCommand(Check);
+            CheckCommand = new ReactiveCommand()
+                .WithSubscribe(Check);
 
-            GoToDownload = new DelegateCommand(UpdateChecker.GoToDownloadsPage);
+            GoToDownload = new ReactiveCommand()
+                .WithSubscribe(UpdateChecker.GoToDownloadsPage);
         }
 
         public string BuildName { get; }

@@ -50,7 +50,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public ObservableCollection<CustomFFmpegCodec> CustomCodecs { get; } = new ObservableCollection<CustomFFmpegCodec>();
+        public ObservableCollection<FFmpegCodecSettings> CustomCodecs { get; } = new ObservableCollection<FFmpegCodecSettings>();
 
         public string CustomStreamingUrl
         {

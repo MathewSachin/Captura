@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -13,23 +14,21 @@ namespace Captura.ViewModels
         {
             _dialogService = DialogService;
 
-            ChangeCommand = new DelegateCommand(Change);
+            ChangeCommand = new ReactiveCommand<CustomImageOverlaySettings>()
+                .WithSubscribe(Change);
         }
 
         public ICommand ChangeCommand { get; }
 
-        void Change(object M)
+        void Change(CustomImageOverlaySettings M)
         {
-            if (M is CustomImageOverlaySettings settings)
-            {
-                var fileName = _dialogService.PickFile(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-                    "Select Image");
+            var fileName = _dialogService.PickFile(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                "Select Image");
 
-                if (fileName != null)
-                {
-                    settings.Source = fileName;
-                }
+            if (fileName != null)
+            {
+                M.Source = fileName;
             }
         }
     }

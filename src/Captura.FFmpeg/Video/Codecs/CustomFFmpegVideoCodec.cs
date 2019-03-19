@@ -5,25 +5,25 @@ namespace Captura.FFmpeg
 {
     class CustomFFmpegVideoCodec : FFmpegVideoCodec
     {
-        readonly CustomFFmpegCodec _customCodec;
+        readonly FFmpegCodecSettings _codecSettings;
 
-        public CustomFFmpegVideoCodec(CustomFFmpegCodec CustomCodec)
+        public CustomFFmpegVideoCodec(FFmpegCodecSettings CodecSettings)
             : base("", "", "Custom Codec")
         {
-            _customCodec = CustomCodec;
+            _codecSettings = CodecSettings;
         }
 
-        public override string Name => _customCodec.Name;
+        public override string Name => _codecSettings.Name;
 
-        public override string Extension => _customCodec.Extension;
+        public override string Extension => _codecSettings.Extension;
 
         public override FFmpegAudioArgsProvider AudioArgsProvider => FFmpegAudioItem.Items
-                                                                         .FirstOrDefault(M => M.Name == _customCodec.AudioFormat)
+                                                                         .FirstOrDefault(M => M.Name == _codecSettings.AudioFormat)
                                                                          ?.AudioArgsProvider ?? FFmpegAudioItem.Mp3;
 
         public override void Apply(FFmpegSettings Settings, VideoWriterArgs WriterArgs, FFmpegOutputArgs OutputArgs)
         {
-            OutputArgs.AddArg(_customCodec.Args);
+            OutputArgs.AddArg(_codecSettings.Args);
         }
     }
 }

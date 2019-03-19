@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -11,9 +12,11 @@ namespace Captura.ViewModels
 
             this.Collection = new ReadOnlyObservableCollection<T>(_collection);
 
-            AddCommand = new DelegateCommand(OnAddExecute);
+            AddCommand = new ReactiveCommand()
+                .WithSubscribe(OnAddExecute);
 
-            RemoveCommand = new DelegateCommand(OnRemoveExecute);
+            RemoveCommand = new ReactiveCommand()
+                .WithSubscribe(OnRemoveExecute);
 
             if (Collection.Count > 0)
             {

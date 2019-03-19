@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -14,15 +15,11 @@ namespace Captura.ViewModels
         {
             this.Settings = Settings;
 
-            AddCustomCodecCommand = new DelegateCommand(() => Settings.CustomCodecs.Add(new CustomFFmpegCodec()));
+            AddCustomCodecCommand = new ReactiveCommand()
+                .WithSubscribe(() => Settings.CustomCodecs.Add(new FFmpegCodecSettings()));
 
-            RemoveCustomCodecCommand = new DelegateCommand(M =>
-            {
-                if (M is CustomFFmpegCodec codec)
-                {
-                    Settings.CustomCodecs.Remove(codec);
-                }
-            });
+            RemoveCustomCodecCommand = new ReactiveCommand<FFmpegCodecSettings>()
+                .WithSubscribe(M => Settings.CustomCodecs.Remove(M));
         }
 
         public ICommand AddCustomCodecCommand { get; }

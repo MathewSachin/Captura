@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -13,15 +14,17 @@ namespace Captura.ViewModels
             this.SoundKind = SoundKind;
             _settings = Settings;
 
-            ResetCommand = new DelegateCommand(() => FileName = null);
+            ResetCommand = new ReactiveCommand()
+                .WithSubscribe(() => FileName = null);
 
-            SetCommand = new DelegateCommand(() =>
-            {
-                var folder = DialogService.PickFile(Path.GetDirectoryName(FileName), "");
+            SetCommand = new ReactiveCommand()
+                .WithSubscribe(() =>
+                {
+                    var folder = DialogService.PickFile(Path.GetDirectoryName(FileName), "");
 
-                if (folder != null)
-                    FileName = folder;
-            });
+                    if (folder != null)
+                        FileName = folder;
+                });
         }
 
         public string FileName

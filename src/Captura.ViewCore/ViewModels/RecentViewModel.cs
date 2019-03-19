@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -18,7 +19,8 @@ namespace Captura.ViewModels
         {
             Items = Recent.Items;
 
-            ClearCommand = new DelegateCommand(Recent.Clear);
+            ClearCommand = new ReactiveCommand()
+                .WithSubscribe(Recent.Clear);
         }
     }
 }

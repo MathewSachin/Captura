@@ -3,9 +3,9 @@ using Captura.Audio;
 
 namespace Captura.Models
 {
-    class FFmpegAudioItem : IAudioWriterItem
+    public class FFmpegAudioItem : IAudioWriterItem
     {
-        public FFmpegAudioArgsProvider AudioArgsProvider { get; }
+        internal FFmpegAudioArgsProvider AudioArgsProvider { get; }
 
         const string Experimental = "-strict -2";
 
@@ -30,7 +30,7 @@ namespace Captura.Models
             return new FFmpegAudioWriter(FileName, AudioQuality, AudioArgsProvider, Wf.SampleRate, Wf.Channels);
         }
 
-        public static FFmpegAudioArgsProvider Aac { get; } = (Quality, OutputArgs) =>
+        internal static FFmpegAudioArgsProvider Aac { get; } = (Quality, OutputArgs) =>
         {
             // bitrate: 32k to 512k (steps of 32k)
             var b = 32 * (1 + (15 * (Quality - 1)) / 99);
@@ -40,7 +40,7 @@ namespace Captura.Models
                 .AddArg($"-b:a {b}k");
         };
 
-        public static FFmpegAudioArgsProvider Mp3 { get; } = (Quality, OutputArgs) =>
+        internal static FFmpegAudioArgsProvider Mp3 { get; } = (Quality, OutputArgs) =>
         {
             // quality: 9 (lowest) to 0 (highest)
             var qscale = (100 - Quality) / 11;
@@ -49,7 +49,7 @@ namespace Captura.Models
                 .AddArg($"-qscale:a {qscale}");
         };
 
-        public static FFmpegAudioArgsProvider Vorbis { get; } = (Quality, OutputArgs) =>
+        internal static FFmpegAudioArgsProvider Vorbis { get; } = (Quality, OutputArgs) =>
         {
             // quality: 0 (lowest) to 10 (highest)
             var qscale = (10 * (Quality - 1)) / 99;
@@ -58,7 +58,7 @@ namespace Captura.Models
                 .AddArg($"-qscale:a {qscale}");
         };
 
-        public static FFmpegAudioArgsProvider Opus { get; } = (Quality, OutputArgs) =>
+        internal static FFmpegAudioArgsProvider Opus { get; } = (Quality, OutputArgs) =>
         {
             // quality: 0 (lowest) to 10 (highest)
             var qscale = (10 * (Quality - 1)) / 99;

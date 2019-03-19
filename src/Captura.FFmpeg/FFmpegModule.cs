@@ -1,5 +1,4 @@
 ﻿using Captura.Models;
-using Captura.ViewModels;
 
 namespace Captura
 {
@@ -8,7 +7,6 @@ namespace Captura
         public static void Load(IBinder Binder)
         {
             Binder.BindSingleton<FFmpegSettings>();
-            Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<FFmpegLog>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>();
