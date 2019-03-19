@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Captura.Models;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
@@ -226,6 +227,22 @@ namespace Captura
             _player.Source = null;
         }
 
+        string GetArgs(string OutputFileName)
+        {
+            var argsBuilder = new FFmpegArgsBuilder();
+
+            var inputArgs = argsBuilder.AddInputFile(FilePath)
+                .AddArg($"-ss {From}")
+                .AddArg($"-to {To}");
+
+            if (_player.HasAudio)
+                inputArgs.SetAudioCodec("copy");
+
+            argsBuilder.AddOutputFile(OutputFileName);
+
+            return argsBuilder.GetArgs();
+        }
+
         async void Trim()
         {
             if (!FFmpegService.FFmpegExists)
@@ -247,48 +264,46 @@ namespace Captura
                 CheckPathExists = true
             };
 
-            if (sfd.ShowDialog().GetValueOrDefault())
+            if (!sfd.ShowDialog().GetValueOrDefault())
+                return;
+
+            _player.Close();
+
+            var process = new Process
             {
-                _player.Close();
-
-                var command = $"-i \"{FilePath}\" -ss {From} -to {To} {(_player.HasAudio ? "-acodec copy" : "")} \"{sfd.FileName}\"";
-
-                var process = new Process
+                StartInfo =
                 {
-                    StartInfo =
-                    {
-                        FileName = FFmpegService.FFmpegExePath,
-                        Arguments = command,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        RedirectStandardError = true
-                    },
-                    EnableRaisingEvents = true
-                };
+                    FileName = FFmpegService.FFmpegExePath,
+                    Arguments = GetArgs(sfd.FileName),
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardError = true
+                },
+                EnableRaisingEvents = true
+            };
 
-                var output = "";
+            var output = "";
 
-                process.ErrorDataReceived += (Sender, Args) => output += "\n" + Args.Data;
+            process.ErrorDataReceived += (Sender, Args) => output += "\n" + Args.Data;
 
-                OpenCommand.RaiseCanExecuteChanged(false);
-                PlayCommand.RaiseCanExecuteChanged(false);
-                TrimCommand.RaiseCanExecuteChanged(false);
+            OpenCommand.RaiseCanExecuteChanged(false);
+            PlayCommand.RaiseCanExecuteChanged(false);
+            TrimCommand.RaiseCanExecuteChanged(false);
                 
-                process.Start();
+            process.Start();
 
-                process.BeginErrorReadLine();
+            process.BeginErrorReadLine();
                 
-                await Task.Run(() => process.WaitForExit());
+            await Task.Run(() => process.WaitForExit());
 
-                if (process.ExitCode != 0)
-                {
-                    ModernDialog.ShowMessage($"FFmpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
-                }
-
-                OpenCommand.RaiseCanExecuteChanged(true);
-                PlayCommand.RaiseCanExecuteChanged(true);
-                TrimCommand.RaiseCanExecuteChanged(true);
+            if (process.ExitCode != 0)
+            {
+                ModernDialog.ShowMessage($"FFmpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
             }
+
+            OpenCommand.RaiseCanExecuteChanged(true);
+            PlayCommand.RaiseCanExecuteChanged(true);
+            TrimCommand.RaiseCanExecuteChanged(true);
         }
     }
 }

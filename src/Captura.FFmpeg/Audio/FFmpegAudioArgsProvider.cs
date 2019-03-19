@@ -3,5 +3,5 @@
     /// <summary>
     /// Provides FFmpeg Audio encoding Command-line args.
     /// </summary>
-    delegate void FFmpegAudioArgsProvider(int AudioQuality, FFmpegOutputArgs OutputArgs);
+    public delegate void FFmpegAudioArgsProvider(int AudioQuality, FFmpegOutputArgs OutputArgs);
 }

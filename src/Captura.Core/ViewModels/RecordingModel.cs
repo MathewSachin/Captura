@@ -136,8 +136,7 @@ namespace Captura.ViewModels
             var isFFmpegAudioItem =
                 _videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
                 && noVideoSourceProvider.Source is NoVideoItem noVideoItem
-                // HACK: Assuming non Wave writer is FFmpeg
-                && !(noVideoItem.AudioWriterItem is WaveItem);
+                && noVideoItem.AudioWriterItem is FFmpegAudioItem;
 
             if (isFFmpegVideoItem || isFFmpegAudioItem)
             {
