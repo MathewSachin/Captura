@@ -32,8 +32,6 @@ namespace Captura.Models
         {
             try
             {
-                _settings.EnsureOutPath();
-
                 var extension = Format.ToString().ToLower();
 
                 var fileName = _settings.GetFileName(extension, FileName);

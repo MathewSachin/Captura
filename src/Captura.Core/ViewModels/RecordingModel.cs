@@ -242,8 +242,6 @@ namespace Captura.ViewModels
 
         public bool StartRecording(string FileName = null)
         {
-            Settings.EnsureOutPath();
-
             _isVideo = !(_videoSourcesViewModel.SelectedVideoSourceKind is NoVideoSourceProvider);
 
             var extension = _videoWritersViewModel.SelectedVideoWriter.Extension;

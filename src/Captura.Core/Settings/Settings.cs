@@ -69,14 +69,6 @@ namespace Captura
             }
         }
 
-        public void EnsureOutPath()
-        {
-            var outPath = GetOutputPath();
-
-            if (!Directory.Exists(outPath))
-                Directory.CreateDirectory(outPath);
-        }
-
         public ProxySettings Proxy { get; } = new ProxySettings();
 
         public ImgurSettings Imgur { get; } = new ImgurSettings();
@@ -144,10 +136,13 @@ namespace Captura
         {
             var path = OutPath;
 
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                path = path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
-            }
+            // If Output Dircetory is not set. Set it to Documents\Captura\
+            path = string.IsNullOrWhiteSpace(path)
+                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura))
+                : path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+            
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
 
             return path;
         }

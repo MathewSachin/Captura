@@ -78,8 +78,6 @@ namespace Captura.ViewModels
 
         void OpenOutputFolder()
         {
-            Settings.EnsureOutPath();
-
             Process.Start(Settings.GetOutputPath());
         }
 

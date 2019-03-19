@@ -27,7 +27,6 @@ namespace Captura
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
-            MainModel MainModel,
             ScreenShotModel ScreenShotModel,
             VideoSourcesViewModel VideoSourcesViewModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,

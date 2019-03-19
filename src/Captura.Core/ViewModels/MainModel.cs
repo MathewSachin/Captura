@@ -22,13 +22,6 @@ namespace Captura.ViewModels
             _settings = Settings;
             _rememberByName = RememberByName;
             _webcamModel = WebcamModel;
-
-            // If Output Dircetory is not set. Set it to Documents\Captura\
-            if (string.IsNullOrWhiteSpace(Settings.GetOutputPath()))
-                Settings.OutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura));
-
-            // Create the Output Directory if it does not exist
-            Settings.EnsureOutPath();
         }
 
         public void Init(bool Persist, bool Remembered)
