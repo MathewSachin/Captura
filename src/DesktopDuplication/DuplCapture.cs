@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -13,6 +12,8 @@ namespace DesktopDuplication
         readonly Output1 _output;
         Device _device;
         OutputDuplication _deskDupl;
+        FrameGrabber _frameGrabber;
+        Texture2D _bkpTexture;
 
         readonly object _syncLock = new object();
 
@@ -29,10 +30,11 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
-            try { _acquireTask?.Wait(); }
-            catch { }
+            _frameGrabber?.Dispose();
 
             _deskDupl?.Dispose();
+
+            _bkpTexture?.Dispose();
 
             _device.Dispose();
             _device = null;
@@ -42,18 +44,14 @@ namespace DesktopDuplication
         {
             lock (_syncLock)
             {
-                try
-                {
-                    _acquireTask?.Wait();
-                }
-                catch { }
-
-                _acquireTask = null;
+                _frameGrabber?.Dispose();
                 _deskDupl?.Dispose();
 
                 try
                 {
                     _deskDupl = _output.DuplicateOutput(_device);
+
+                    _frameGrabber = new FrameGrabber(_deskDupl);
                 }
                 catch (SharpDXException e) when (e.Descriptor == ResultCode.NotCurrentlyAvailable)
                 {
@@ -70,45 +68,24 @@ namespace DesktopDuplication
             }
         }
 
-        Task<AcquireResult> _acquireTask;
-
-        void BeginAcquireFrame()
-        {
-            const int timeout = 5000;
-
-            _acquireTask = Task.Run(() =>
-            {
-                try
-                {
-                    var result = _deskDupl.TryAcquireNextFrame(timeout, out var frameInfo, out var desktopResource);
-
-                    return new AcquireResult(result, frameInfo, desktopResource);
-                }
-                catch
-                {
-                    return new AcquireResult(Result.Fail);
-                }
-            });
-        }
-
         public bool Get(Texture2D Texture, DxMousePointer DxMousePointer)
         {
             lock (_syncLock)
             {
-                if (_acquireTask == null)
+                if (_bkpTexture == null)
                 {
-                    BeginAcquireFrame();
-
-                    return false;
+                    // _device is being used by Desktop Duplication
+                    _bkpTexture = new Texture2D(Texture.Device, Texture.Description);
                 }
 
-                var acquireResult = _acquireTask.Result;
+                var acquireResult = _frameGrabber.Grab();
 
-                if (acquireResult.Result == ResultCode.WaitTimeout)
+                if (acquireResult == null)
                 {
-                    BeginAcquireFrame();
+                    // _device is being used by Desktop Duplication
+                    Texture.Device.ImmediateContext.CopyResource(_bkpTexture, Texture);
 
-                    return false;
+                    return true;
                 }
 
                 if (acquireResult.Result.Failure)
@@ -122,11 +99,10 @@ namespace DesktopDuplication
                     DxMousePointer?.Update(tempTexture, acquireResult.FrameInfo, _deskDupl);
 
                     _device.ImmediateContext.CopyResource(tempTexture, Texture);
+                    _device.ImmediateContext.CopyResource(tempTexture, _bkpTexture);
                 }
 
-                _deskDupl.ReleaseFrame();
-
-                BeginAcquireFrame();
+                _frameGrabber.Release();
 
                 return true;
             }
