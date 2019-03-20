@@ -7,6 +7,7 @@
 - .Net Core 2.1 or greater
 - Cake tool  
   Install: `dotnet tool install -g Cake.Tool --version 0.30.0`
+- Some features have other specific requirements, see [here](https://mathewsachin.github.io/Captura/sys-req).
 
 ### Steps
 1. Clone  
