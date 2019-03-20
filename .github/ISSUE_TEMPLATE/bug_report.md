@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - RAM: [e.g. 4GB]
  - CPU: [e.g. i5 2GHz]
  - Graphic Card:
- - Version: [e.g. v8.0.0]
+ - Captura Version: [e.g. v8.0.0]
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here like FFmpeg Log or error messages.
