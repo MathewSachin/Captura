@@ -19,7 +19,7 @@ namespace Captura
 
         public int FontSize
         {
-            get => Get(20);
+            get => Get(50);
             set => Set(value);
         }
 

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -11,6 +13,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Screna;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -133,30 +137,47 @@ namespace Captura
             return control;
         }
 
+        void Bind(FrameworkElement Control, DependencyProperty DependencyProperty, IReactiveProperty Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.TwoWay
+                });
+        }
+
+        void Bind<T>(FrameworkElement Control, DependencyProperty DependencyProperty, ReadOnlyReactivePropertySlim<T> Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.OneWay
+                });
+        }
+
         LayerFrame Image(ImageOverlaySettings Settings, string Text)
         {
             var control = Generate(Settings, Text, Colors.Brown);
 
-            control.Width = Settings.ResizeWidth;
-            control.Height = Settings.ResizeHeight;
+            var widthProp = Settings
+                .ToReactivePropertyAsSynchronized(M => M.ResizeWidth,
+                    M => (double) M, M => (int) M);
 
-            control.Opacity = Settings.Opacity / 100.0;
+            var heightProp = Settings
+                .ToReactivePropertyAsSynchronized(M => M.ResizeHeight,
+                    M => (double)M, M => (int)M);
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    control.Width = Settings.ResizeWidth;
-                    control.Height = Settings.ResizeHeight;
-                    control.Opacity = Settings.Opacity / 100.0;
-                });
-            };
+            Bind(control, WidthProperty, widthProp);
+            Bind(control, HeightProperty, heightProp);
 
-            control.PositionUpdated += Rect =>
-            {
-                Settings.ResizeWidth = (int)Rect.Width;
-                Settings.ResizeHeight = (int)Rect.Height;
-            };
+            var opacityProp = Settings
+                .ObserveProperty(M => M.Opacity)
+                .Select(M => M / 100.0)
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control, OpacityProperty, opacityProp);
 
             return control;
         }
@@ -169,62 +190,73 @@ namespace Captura
         LayerFrame Text(TextOverlaySettings Settings, string Text)
         {
             var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
-            
-            control.Label.FontFamily = new FontFamily(Settings.FontFamily);
-            control.Label.FontSize = Settings.FontSize;
 
-            control.Border.Padding = new Thickness(Settings.HorizontalPadding,
-                Settings.VerticalPadding,
-                Settings.HorizontalPadding,
-                Settings.VerticalPadding);
+            var fontFamilyProp = Settings
+                .ObserveProperty(M => M.FontFamily)
+                .Select(M => new FontFamily(M))
+                .ToReadOnlyReactivePropertySlim();
 
-            control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-            control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
-            control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+            Bind(control.Label, FontFamilyProperty, fontFamilyProp);
 
-            control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
+            var fontSizeProp = Settings
+                .ObserveProperty(M => M.FontSize)
+                .ToReadOnlyReactivePropertySlim();
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                switch (E.PropertyName)
+            Bind(control.Label, FontSizeProperty, fontSizeProp);
+
+            var paddingProp = new[]
                 {
-                    case nameof(Settings.BackgroundColor):
-                        control.Border.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
-                        break;
-
-                    case nameof(Settings.FontColor):
-                        control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-                        break;
-
-                    case nameof(Settings.BorderThickness):
-                        control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
-                        break;
-
-                    case nameof(Settings.BorderColor):
-                        control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
-                        break;
-
-                    case nameof(Settings.FontFamily):
-                        control.Label.FontFamily = new FontFamily(Settings.FontFamily);
-                        break;
-
-                    case nameof(Settings.FontSize):
-                        control.Label.FontSize = Settings.FontSize;
-                        break;
-
-                    case nameof(Settings.HorizontalPadding):
-                    case nameof(Settings.VerticalPadding):
-                        control.Border.Padding = new Thickness(Settings.HorizontalPadding,
-                            Settings.VerticalPadding,
-                            Settings.HorizontalPadding,
-                            Settings.VerticalPadding);
-                        break;
-
-                    case nameof(Settings.CornerRadius):
-                        control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
-                        break;
+                    Settings
+                        .ObserveProperty(M => M.HorizontalPadding),
+                    Settings
+                        .ObserveProperty(M => M.VerticalPadding)
                 }
-            };
+                .CombineLatest(M =>
+                {
+                    var w = M[0];
+                    var h = M[1];
+
+                    return new Thickness(w, h, w, h);
+                })
+                .ToReadOnlyReactivePropertySlim();
+
+            // Border.PaddingProperty is different from PaddingProperty
+            Bind(control.Border, Border.PaddingProperty, paddingProp);
+
+            var foregroundProp = Settings
+                .ObserveProperty(M => M.FontColor)
+                .Select(M => new SolidColorBrush(ConvertColor(M)))
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control.Label, ForegroundProperty, foregroundProp);
+
+            var backgroundProp = Settings
+                .ObserveProperty(M => M.BackgroundColor)
+                .Select(M => new SolidColorBrush(ConvertColor(M)))
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control.Border, BackgroundProperty, backgroundProp);
+
+            var borderThicknessProp = Settings
+                .ObserveProperty(M => M.BorderThickness)
+                .Select(M => new Thickness(M))
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control.Border, BorderThicknessProperty, borderThicknessProp);
+
+            var borderBrushProp = Settings
+                .ObserveProperty(M => M.BorderColor)
+                .Select(M => new SolidColorBrush(ConvertColor(M)))
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control.Border, BorderBrushProperty, borderBrushProp);
+
+            var cornerRadiusProp = Settings
+                .ObserveProperty(M => M.CornerRadius)
+                .Select(M => new CornerRadius(M))
+                .ToReadOnlyReactivePropertySlim();
+
+            Bind(control.Border, Border.CornerRadiusProperty, cornerRadiusProp);
 
             return control;
         }
@@ -233,23 +265,16 @@ namespace Captura
         {
             var control = Generate(Settings, "Censored", Colors.Black);
 
-            control.Width = Settings.Width;
-            control.Height = Settings.Height;
+            var widthProp = Settings
+                .ToReactivePropertyAsSynchronized(M => M.Width,
+                    M => (double)M, M => (int)M);
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    control.Width = Settings.Width;
-                    control.Height = Settings.Height;
-                });
-            };
+            var heightProp = Settings
+                .ToReactivePropertyAsSynchronized(M => M.Height,
+                    M => (double)M, M => (int)M);
 
-            control.PositionUpdated += Rect =>
-            {
-                Settings.Width = (int)Rect.Width;
-                Settings.Height = (int)Rect.Height;
-            };
+            Bind(control, WidthProperty, widthProp);
+            Bind(control, HeightProperty, heightProp);
 
             return control;
         }
@@ -263,22 +288,12 @@ namespace Captura
         {
             var control = Text(Settings, "Keystrokes");
 
-            void SetVisibility()
-            {
-                control.Visibility = Settings.SeparateTextFile ? Visibility.Collapsed : Visibility;
-            }
+            var visibilityProp = Settings
+                .ObserveProperty(M => M.SeparateTextFile)
+                .Select(M => M ? Visibility.Collapsed : Visibility.Visible)
+                .ToReadOnlyReactivePropertySlim();
 
-            SetVisibility();
-
-            Settings.PropertyChanged += (S, E) =>
-            {
-                switch (E.PropertyName)
-                {
-                    case nameof(Settings.SeparateTextFile):
-                        SetVisibility();
-                        break;
-                }
-            };
+            Bind(control, VisibilityProperty, visibilityProp);
 
             return control;
         }
@@ -299,17 +314,13 @@ namespace Captura
             foreach (var setting in Settings)
             {
                 var control = Censor(setting);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
 
-                setting.PropertyChanged += (S, E) =>
-                {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
-                };
+                var visibilityProp = setting
+                    .ObserveProperty(M => M.Display)
+                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
+                    .ToReadOnlyReactivePropertySlim();
+
+                Bind(control, VisibilityProperty, visibilityProp);
 
                 _censorOverlays.Add(control);
             }
@@ -334,21 +345,19 @@ namespace Captura
             foreach (var setting in Settings)
             {
                 var control = Text(setting, setting.Text);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
 
-                setting.PropertyChanged += (S, E) =>
-                {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Text):
-                            control.Label.Content = setting.Text;
-                            break;
+                var visibilityProp = setting
+                    .ObserveProperty(M => M.Display)
+                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
+                    .ToReadOnlyReactivePropertySlim();
 
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
-                };
+                Bind(control, VisibilityProperty, visibilityProp);
+
+                var textProp = setting
+                    .ObserveProperty(M => M.Text)
+                    .ToReadOnlyReactivePropertySlim();
+
+                Bind(control.Label, ContentProperty, textProp);
 
                 _textOverlays.Add(control);
             }
@@ -373,21 +382,19 @@ namespace Captura
             foreach (var setting in Settings)
             {
                 var control = Image(setting, setting.Source);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
 
-                setting.PropertyChanged += (S, E) =>
-                {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Source):
-                            control.Label.Content = setting.Source;
-                            break;
+                var visibilityProp = setting
+                    .ObserveProperty(M => M.Display)
+                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
+                    .ToReadOnlyReactivePropertySlim();
 
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
-                };
+                Bind(control, VisibilityProperty, visibilityProp);
+
+                var srcProp = setting
+                    .ObserveProperty(M => M.Source)
+                    .ToReadOnlyReactivePropertySlim();
+
+                Bind(control.Label, ContentProperty, srcProp);
 
                 _imageOverlays.Add(control);
             }
