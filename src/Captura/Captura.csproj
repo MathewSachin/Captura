@@ -61,6 +61,9 @@
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FontSelector.xaml.cs">
+      <DependentUpon>FontSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
     <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
@@ -296,6 +299,9 @@
     </Page>
     <Page Include="Controls\ModernPasswordBox.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FontSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
