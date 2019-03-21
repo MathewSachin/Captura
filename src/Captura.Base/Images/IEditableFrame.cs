@@ -21,9 +21,11 @@ namespace Captura
 
         void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle);
 
-        SizeF MeasureString(string Text, int FontSize);
+        IFont GetFont(string FontFamily, int Size);
 
-        void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle);
+        SizeF MeasureString(string Text, IFont Font);
+
+        void DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle);
 
         IBitmapFrame GenerateFrame();
     }

@@ -66,9 +66,9 @@ namespace Captura.Models
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            var fontSize = _overlaySettings.FontSize;
+            var font = Editor.GetFont(_overlaySettings.FontFamily, _overlaySettings.FontSize);
 
-            var size = Editor.MeasureString(text, fontSize);
+            var size = Editor.MeasureString(text, font);
 
             int paddingX = _overlaySettings.HorizontalPadding, paddingY = _overlaySettings.VerticalPadding;
 
@@ -82,7 +82,7 @@ namespace Captura.Models
                 _overlaySettings.CornerRadius);
 
             Editor.DrawString(text,
-                fontSize,
+                font,
                 _overlaySettings.FontColor,
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
