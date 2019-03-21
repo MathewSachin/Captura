@@ -1,7 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Interop;
 using Captura.ViewModels;
+using Reactive.Bindings.Extensions;
 using Screna;
 
 namespace Captura
@@ -61,13 +64,12 @@ namespace Captura
 
             WebCameraControl.SizeChanged += (S, E) => OnSizeChange();
 
-            _webcamModel.PropertyChanged += (S, E) =>
-            {
-                if (E.PropertyName == nameof(WebcamModel.SelectedCam) && _webcamModel.WebcamCapture != null)
-                {
-                    SwitchWebcamPreview();
-                }
-            };
+            _webcamModel
+                .ObserveProperty(M => M.SelectedCam)
+                .Where(M => _webcamModel.WebcamCapture != null)
+                .Subscribe(M => SwitchWebcamPreview());
+
+            SwitchWebcamPreview();
         }
 
         Rectangle GetPreviewWindowRect()

@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using System.Linq;
+using Captura.Models;
 using Captura.ViewModels;
 
 namespace Captura
@@ -8,12 +9,15 @@ namespace Captura
     {
         readonly HotkeyActionRegisterer _hotkeyActionRegisterer;
         readonly HotKeyManager _hotKeyManager;
+        readonly IMessageProvider _messageProvider;
 
         public HotkeySetup(HotkeyActionRegisterer HotkeyActionRegisterer,
-            HotKeyManager HotKeyManager)
+            HotKeyManager HotKeyManager,
+            IMessageProvider MessageProvider)
         {
             _hotkeyActionRegisterer = HotkeyActionRegisterer;
             _hotKeyManager = HotKeyManager;
+            _messageProvider = MessageProvider;
         }
 
         public void Setup()
@@ -43,7 +47,22 @@ namespace Captura
 
         public void ShowUnregistered()
         {
-            _hotKeyManager.ShowNotRegisteredOnStartup();
+            var notRegisteredOnStartup = _hotKeyManager
+                .Hotkeys
+                .Where(M => M.IsActive && !M.IsRegistered)
+                .ToArray();
+
+            if (notRegisteredOnStartup.Length <= 0)
+                return;
+
+            var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
+
+            foreach (var hotkey in notRegisteredOnStartup)
+            {
+                message += $"{hotkey.Service.Description} - {hotkey}\n\n";
+            }
+
+            _messageProvider.ShowError(message, "Failed to Register Hotkeys");
         }
     }
 }

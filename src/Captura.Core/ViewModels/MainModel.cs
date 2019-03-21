@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using Captura.Models;
 
 namespace Captura.ViewModels
@@ -9,19 +7,15 @@ namespace Captura.ViewModels
     public class MainModel : NotifyPropertyChanged, IDisposable
     {
         readonly Settings _settings;
-        bool _persist, _remembered;
+        bool _persist;
 
         readonly RememberByName _rememberByName;
 
-        readonly WebcamModel _webcamModel;
-
         public MainModel(Settings Settings,
-            RememberByName RememberByName,
-            WebcamModel WebcamModel)
+            RememberByName RememberByName)
         {
             _settings = Settings;
             _rememberByName = RememberByName;
-            _webcamModel = WebcamModel;
         }
 
         public void Init(bool Persist, bool Remembered)
@@ -30,38 +24,19 @@ namespace Captura.ViewModels
 
             if (Remembered)
             {
-                _remembered = true;
-
                 _rememberByName.RestoreRemembered();
-            }
-        }
-
-        public void ViewLoaded()
-        {
-            if (_remembered)
-            {
-                // Restore Webcam
-                if (!string.IsNullOrEmpty(_settings.Video.Webcam))
-                {
-                    var webcam = _webcamModel.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
-
-                    if (webcam != null)
-                    {
-                        _webcamModel.SelectedCam = webcam;
-                    }
-                }
             }
         }
 
         public void Dispose()
         {
             // Remember things if not console.
-            if (_persist)
-            {
-                _rememberByName.Remember();
+            if (!_persist)
+                return;
 
-                _settings.Save();
-            }
+            _rememberByName.Remember();
+
+            _settings.Save();
         }
     }
 }

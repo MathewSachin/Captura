@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Newtonsoft.Json;
 
 namespace Captura
@@ -13,17 +12,14 @@ namespace Captura
     // ReSharper disable once ClassNeverInstantiated.Global
     public class HotKeyManager : IDisposable
     {
-        readonly IMessageProvider _messageProvider;
         readonly ObservableCollection<Hotkey> _hotkeys = new ObservableCollection<Hotkey>();
 
         public ReadOnlyObservableCollection<Hotkey> Hotkeys { get; }
 
         static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
 
-        public HotKeyManager(IMessageProvider MessageProvider)
+        public HotKeyManager()
         {
-            _messageProvider = MessageProvider;
-
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
         }
 
@@ -80,29 +76,7 @@ namespace Captura
             {
                 var hotkey = new Hotkey(model);
 
-                if (hotkey.IsActive && !hotkey.IsRegistered)
-                    _notRegisteredOnStartup.Add(hotkey);
-
                 _hotkeys.Add(hotkey);
-            }
-        }
-
-        readonly List<Hotkey> _notRegisteredOnStartup = new List<Hotkey>();
-
-        public void ShowNotRegisteredOnStartup()
-        {
-            if (_notRegisteredOnStartup.Count > 0)
-            {
-                var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
-
-                foreach (var hotkey in _notRegisteredOnStartup)
-                {
-                    message += $"{hotkey.Service.Description} - {hotkey}\n\n";
-                }
-
-                _messageProvider.ShowError(message, "Failed to Register Hotkeys");
-
-                _notRegisteredOnStartup.Clear();
             }
         }
 
