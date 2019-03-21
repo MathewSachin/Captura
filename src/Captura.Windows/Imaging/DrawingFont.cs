@@ -10,15 +10,13 @@ namespace Screna
             this.FontFamily = FontFamily;
             this.Size = Size;
 
-            var emSize = Size * 72 / 96f;
-
             try
             {
-                Font = new Font(new FontFamily(FontFamily), emSize);
+                Font = new Font(new FontFamily(FontFamily), Size, GraphicsUnit.Pixel);
             }
             catch
             {
-                Font = new Font(System.Drawing.FontFamily.GenericMonospace, emSize);
+                Font = new Font(System.Drawing.FontFamily.GenericMonospace, Size, GraphicsUnit.Pixel);
             }
         }
 

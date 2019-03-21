@@ -101,7 +101,7 @@ namespace Screna
         {
             if (Font is DrawingFont font)
             {
-                return _graphics.MeasureString(Text, font.Font);
+                return _graphics.MeasureString(Text, font.Font, PointF.Empty, StringFormat.GenericTypographic);
             }
 
             return SizeF.Empty;
@@ -111,7 +111,7 @@ namespace Screna
         {
             if (Font is DrawingFont font)
             {
-                _graphics.DrawString(Text, font.Font, new SolidBrush(Color), LayoutRectangle);
+                _graphics.DrawString(Text, font.Font, new SolidBrush(Color), LayoutRectangle, StringFormat.GenericTypographic);
             }
         }
 

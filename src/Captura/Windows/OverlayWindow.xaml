@@ -61,7 +61,7 @@
         
         <DockPanel Grid.Column="2">
             <Label DockPanel.Dock="Top"
-                   Content="Preview (Font Size - Not to Scale)"
+                   Content="{Binding Preview, Source={StaticResource Loc}}"
                    Padding="5"/>
 
             <Grid Background="Transparent"
