@@ -130,7 +130,8 @@ namespace Screna
                         var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
                         var diff = requiredFrames - frameCount;
 
-                        for (var i = 0; i < diff; ++i)
+                        // Write atmost 1 duplicate frame
+                        if (diff >= 1)
                         {
                             if (!AddFrame(RepeatFrame.Instance))
                                 return;

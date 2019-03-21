@@ -31,7 +31,7 @@ cache:
   - temp\bassmix.zip
 
 install:
-  - dotnet tool install -g Cake.Tool --version 0.30.0
+  - dotnet tool install -g Cake.Tool --version 0.32.1
 
 # Build using Cake
 build_script:

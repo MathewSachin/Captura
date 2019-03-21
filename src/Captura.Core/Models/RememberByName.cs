@@ -135,6 +135,17 @@ namespace Captura.Models
                     _screenShotModel.AvailableImageWriters[0].Active = true;
                 }
             }
+
+            // Restore Webcam
+            if (!string.IsNullOrEmpty(_settings.Video.Webcam))
+            {
+                var webcam = _webcamModel.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
+
+                if (webcam != null)
+                {
+                    _webcamModel.SelectedCam = webcam;
+                }
+            }
         }
     }
 }

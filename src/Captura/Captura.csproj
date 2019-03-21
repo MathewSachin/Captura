@@ -70,6 +70,7 @@
     <Compile Include="Controls\ModernPasswordBox.xaml.cs">
       <DependentUpon>ModernPasswordBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\HotkeySetup.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -130,7 +131,6 @@
     </Compile>
     <Compile Include="Models\RegionSelectorProvider.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />
-    <Compile Include="Models\HotkeySetup.cs" />
     <Compile Include="Windows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>

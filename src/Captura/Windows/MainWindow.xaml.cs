@@ -33,8 +33,6 @@ namespace Captura
                 WebCamWindow.Instance.SetupWebcamPreview();
 
                 hotkeySetup.ShowUnregistered();
-
-                mainModel.ViewLoaded();
             };
 
             if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
