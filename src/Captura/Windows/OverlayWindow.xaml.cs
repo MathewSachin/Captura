@@ -170,6 +170,7 @@ namespace Captura
         {
             var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
             
+            control.Label.FontFamily = new FontFamily(Settings.FontFamily);
             control.Label.FontSize = Settings.FontSize;
 
             control.Border.Padding = new Thickness(Settings.HorizontalPadding,
@@ -201,6 +202,10 @@ namespace Captura
 
                     case nameof(Settings.BorderColor):
                         control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                        break;
+
+                    case nameof(Settings.FontFamily):
+                        control.Label.FontFamily = new FontFamily(Settings.FontFamily);
                         break;
 
                     case nameof(Settings.FontSize):
