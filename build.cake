@@ -1,5 +1,5 @@
-#tool "nuget:?package=xunit.runner.console"
-#tool "nuget:?package=gitreleasemanager"
+#tool nuget:?package=xunit.runner.console&version=2.4.1
+#tool nuget:?package=gitreleasemanager&version=0.8.0
 #l "scripts/backup.cake"
 #l "scripts/constants.cake"
 #l "scripts/bass.cake"
@@ -50,6 +50,26 @@ void PopulateOutput()
         CopyDirectory(consoleBinFolder + Directory("lib"), distFolder + Directory("lib"));
         CopyDirectory(uiBinFolder + Directory("lib"), distFolder + Directory("lib"));
     }
+}
+
+void PackPortable()
+{
+    // Portable build directories
+    var settingsDir = distFolder + Directory("Settings");
+    var codecsDir = distFolder + Directory("Codecs");
+
+    CreateDirectory(settingsDir);
+    CreateDirectory(codecsDir);
+
+    Zip(distFolder, PortablePath);
+
+    var dirDeleteSettings = new DeleteDirectorySettings {
+        Recursive = true,
+        Force = true
+    };
+
+    DeleteDirectory(settingsDir, dirDeleteSettings);
+    DeleteDirectory(codecsDir, dirDeleteSettings);
 }
 #endregion
 
@@ -125,7 +145,7 @@ var populateOutputTask = Task("Populate-Output")
 
 var packPortableTask = Task("Pack-Portable")
     .IsDependentOn(populateOutputTask)
-    .Does(() => Zip(distFolder, PortablePath));
+    .Does(() => PackPortable());
 
 var packSetupTask = Task("Pack-Setup")
     .WithCriteria(configuration == Release)
