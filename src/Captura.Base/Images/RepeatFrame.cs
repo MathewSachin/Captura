@@ -66,12 +66,17 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        SizeF IEditableFrame.MeasureString(string Text, int FontSize)
+        IFont IEditableFrame.GetFont(string FontFamily, int Size)
         {
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
+        SizeF IEditableFrame.MeasureString(string Text, IFont Font)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IEditableFrame.DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle)
         {
             throw new NotImplementedException();
         }

@@ -144,9 +144,9 @@ namespace DesktopDuplication
             _editorSession.RenderTarget.DrawEllipse(ToEllipse(Rectangle), Convert(Color), StrokeWidth);
         }
 
-        TextFormat GetTextFormat(int FontSize)
+        public IFont GetFont(string FontFamily, int Size)
         {
-            return new TextFormat(_editorSession.WriteFactory, "Arial", FontSize);
+            return new Direct2DFont(FontFamily, Size, _editorSession.WriteFactory);
         }
 
         TextLayout GetTextLayout(string Text, TextFormat Format)
@@ -154,24 +154,30 @@ namespace DesktopDuplication
             return new TextLayout(_editorSession.WriteFactory, Text, Format, Width, Height);
         }
 
-        public SizeF MeasureString(string Text, int FontSize)
+        public SizeF MeasureString(string Text, IFont Font)
         {
-            using (var format = GetTextFormat(FontSize))
-            using (var layout = GetTextLayout(Text, format))
+            if (Font is Direct2DFont font)
             {
-                return new SizeF(layout.Metrics.Width, layout.Metrics.Height);
+                using (var layout = GetTextLayout(Text, font.TextFormat))
+                {
+                    return new SizeF(layout.Metrics.Width, layout.Metrics.Height);
+                }
             }
+
+            return SizeF.Empty;
         }
 
-        public void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle)
+        public void DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle)
         {
-            using (var format = GetTextFormat(FontSize))
-            using (var layout = GetTextLayout(Text, format))
+            if (Font is Direct2DFont font)
             {
-                _editorSession.RenderTarget.DrawTextLayout(
-                    new RawVector2(LayoutRectangle.X, LayoutRectangle.Y),
-                    layout,
-                    Convert(Color));
+                using (var layout = GetTextLayout(Text, font.TextFormat))
+                {
+                    _editorSession.RenderTarget.DrawTextLayout(
+                        new RawVector2(LayoutRectangle.X, LayoutRectangle.Y),
+                        layout,
+                        Convert(Color));
+                }
             }
         }
 
