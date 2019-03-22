@@ -12,7 +12,7 @@ namespace Captura.FFmpeg
         readonly long _frameCount;
         long _currentFrame = -1;
 
-        const int NoOfFiles = 3;
+        const int NoOfFiles = 2;
         int _currentFile = -1;
 
         static readonly TempFileVideoCodec TempVideoCodec = new TempFileVideoCodec();
