@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class FFmpegLog : NotifyPropertyChanged
+    public class FFmpegLog : NotifyPropertyChanged, IFFmpegLogRepository
     {
         public FFmpegLog()
         {
@@ -26,6 +28,20 @@ namespace Captura.Models
         public void Remove(FFmpegLogItem Item)
         {
             _logItems.Remove(Item);
+        }
+
+        public IEnumerator<IFFmpegLogEntry> GetEnumerator() => _logItems.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        IFFmpegLogEntry IFFmpegLogRepository.CreateNew(string Name, string Args) => CreateNew(Name, Args);
+
+        void IFFmpegLogRepository.Remove(IFFmpegLogEntry Entry)
+        {
+            if (Entry is FFmpegLogItem logItem)
+            {
+                Remove(logItem);
+            }
         }
     }
 }

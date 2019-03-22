@@ -15,6 +15,7 @@ namespace Captura
             Binder.Bind<IVideoSourcePicker>(() => FakeVideoSourcePicker.Instance);
             Binder.Bind<IAudioPlayer, FakeAudioPlayer>();
             Binder.Bind<IFFmpegViewsProvider, FakeFFmpegViewsProvider>();
+            Binder.Bind<IFFmpegLogRepository, FakeFFmpegLogRepository>();
         }
 
         public void Dispose() { }
