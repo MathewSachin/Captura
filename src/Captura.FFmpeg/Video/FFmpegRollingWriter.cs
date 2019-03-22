@@ -60,11 +60,17 @@ namespace Captura.FFmpeg
 
                 argsBuilder.AddInputFile(currentFile);
 
-                const string filter = "[0:v] [1:v] concat=n=2:v=1:a=0 [v]";
+                var hasAudio = _videoWriterArgs.AudioProvider != null;
 
-                argsBuilder.AddOutputFile(_videoWriterArgs.FileName)
-                    .AddArg($"-filter_complex \"{filter}\"")
-                    .AddArg($"-map \"[v]\"");
+                const string filter = "[0:v] [1:v] concat=n=2:v=1:a=0 [v]";
+                const string filterWithAudio = "[0:v] [0:a] [1:v] [1:a] concat=n=2:v=1:a=1 [v] [a]";
+
+                var output = argsBuilder.AddOutputFile(_videoWriterArgs.FileName)
+                    .AddArg($"-filter_complex \"{(hasAudio ? filterWithAudio : filter)}\"")
+                    .AddArg("-map \"[v]\"");
+
+                if (hasAudio)
+                    output.AddArg("-map \"[a]\"");
 
                 var args = argsBuilder.GetArgs();
 
@@ -114,7 +120,9 @@ namespace Captura.FFmpeg
                     FileName = GetFileName(_currentFile),
                     VideoQuality = _videoWriterArgs.VideoQuality,
                     FrameRate = _videoWriterArgs.FrameRate,
-                    ImageProvider = _videoWriterArgs.ImageProvider
+                    ImageProvider = _videoWriterArgs.ImageProvider,
+                    AudioProvider = _videoWriterArgs.AudioProvider,
+                    AudioQuality = _videoWriterArgs.AudioQuality
                 });
             }
 
@@ -135,8 +143,18 @@ namespace Captura.FFmpeg
             writer.WriteFrame(Image);
         }
 
-        public bool SupportsAudio => false;
+        public bool SupportsAudio => true;
 
-        public void WriteAudio(byte[] Buffer, int Length) { }
+        public void WriteAudio(byte[] Buffer, int Length)
+        {
+            IVideoFileWriter writer;
+
+            lock (_syncLock)
+            {
+                writer = _currentWriter;
+            }
+
+            writer.WriteAudio(Buffer, Length);
+        }
     }
 }
