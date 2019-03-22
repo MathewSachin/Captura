@@ -133,6 +133,10 @@
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\RegionSelectorProvider.cs" />
+    <Compile Include="ViewModels\Overlays\CensorOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\ImageOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\PositionOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\TextOverlayReactor.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />
     <Compile Include="Windows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>

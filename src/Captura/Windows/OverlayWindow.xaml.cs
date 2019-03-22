@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,52 +82,11 @@ namespace Captura
                 }
             };
 
-            void Update()
-            {
-                int left = 0, top = 0, right = 0, bottom = 0;
+            var vm = new PositionOverlayReactor(Settings);
 
-                switch (Settings.HorizontalAlignment)
-                {
-                    case Alignment.Start:
-                        control.HorizontalAlignment = HorizontalAlignment.Left;
-                        left = Settings.X;
-                        break;
-
-                    case Alignment.Center:
-                        control.HorizontalAlignment = HorizontalAlignment.Center;
-                        left = Settings.X;
-                        break;
-
-                    case Alignment.End:
-                        control.HorizontalAlignment = HorizontalAlignment.Right;
-                        right = Settings.X;
-                        break;
-                }
-
-                switch (Settings.VerticalAlignment)
-                {
-                    case Alignment.Start:
-                        control.VerticalAlignment = VerticalAlignment.Top;
-                        top = Settings.Y;
-                        break;
-
-                    case Alignment.Center:
-                        control.VerticalAlignment = VerticalAlignment.Center;
-                        top = Settings.Y;
-                        break;
-
-                    case Alignment.End:
-                        control.VerticalAlignment = VerticalAlignment.Bottom;
-                        bottom = Settings.Y;
-                        break;
-                }
-
-                Dispatcher.Invoke(() => control.Margin = new Thickness(left, top, right, bottom));
-            }
-
-            Settings.PropertyChanged += (S, E) => Update();
-
-            Update();
+            BindOne(control, HorizontalAlignmentProperty, vm.HAlignment);
+            BindOne(control, VerticalAlignmentProperty, vm.VAlignment);
+            BindOne(control, MarginProperty, vm.Margin);
 
             control.PositionUpdated += Rect =>
             {
@@ -147,7 +107,7 @@ namespace Captura
                 });
         }
 
-        void Bind<T>(FrameworkElement Control, DependencyProperty DependencyProperty, ReadOnlyReactivePropertySlim<T> Property)
+        void BindOne<T>(FrameworkElement Control, DependencyProperty DependencyProperty, IReadOnlyReactiveProperty<T> Property)
         {
             Control.SetBinding(DependencyProperty,
                 new Binding(nameof(Property.Value))
@@ -161,23 +121,12 @@ namespace Captura
         {
             var control = Generate(Settings, Text, Colors.Brown);
 
-            var widthProp = Settings
-                .ToReactivePropertyAsSynchronized(M => M.ResizeWidth,
-                    M => (double) M, M => (int) M);
+            var vm = new ImageOverlayReactor(Settings);
 
-            var heightProp = Settings
-                .ToReactivePropertyAsSynchronized(M => M.ResizeHeight,
-                    M => (double)M, M => (int)M);
+            Bind(control, WidthProperty, vm.Width);
+            Bind(control, HeightProperty, vm.Height);
 
-            Bind(control, WidthProperty, widthProp);
-            Bind(control, HeightProperty, heightProp);
-
-            var opacityProp = Settings
-                .ObserveProperty(M => M.Opacity)
-                .Select(M => M / 100.0)
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control, OpacityProperty, opacityProp);
+            BindOne(control, OpacityProperty, vm.Opacity);
 
             return control;
         }
@@ -189,74 +138,22 @@ namespace Captura
 
         LayerFrame Text(TextOverlaySettings Settings, string Text)
         {
-            var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
+            var control = Generate(Settings, Text, Settings.BackgroundColor.ToWpfColor());
 
-            var fontFamilyProp = Settings
-                .ObserveProperty(M => M.FontFamily)
-                .Select(M => new FontFamily(M))
-                .ToReadOnlyReactivePropertySlim();
+            var vm = new TextOverlayReactor(Settings);
 
-            Bind(control.Label, FontFamilyProperty, fontFamilyProp);
-
-            var fontSizeProp = Settings
-                .ObserveProperty(M => M.FontSize)
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control.Label, FontSizeProperty, fontSizeProp);
-
-            var paddingProp = new[]
-                {
-                    Settings
-                        .ObserveProperty(M => M.HorizontalPadding),
-                    Settings
-                        .ObserveProperty(M => M.VerticalPadding)
-                }
-                .CombineLatest(M =>
-                {
-                    var w = M[0];
-                    var h = M[1];
-
-                    return new Thickness(w, h, w, h);
-                })
-                .ToReadOnlyReactivePropertySlim();
+            BindOne(control.Label, FontFamilyProperty, vm.FontFamily);
+            BindOne(control.Label, FontSizeProperty, vm.FontSize);
 
             // Border.PaddingProperty is different from PaddingProperty
-            Bind(control.Border, Border.PaddingProperty, paddingProp);
+            BindOne(control.Border, Border.PaddingProperty, vm.Padding);
 
-            var foregroundProp = Settings
-                .ObserveProperty(M => M.FontColor)
-                .Select(M => new SolidColorBrush(ConvertColor(M)))
-                .ToReadOnlyReactivePropertySlim();
+            BindOne(control.Label, ForegroundProperty, vm.Foreground);
+            BindOne(control.Border, BackgroundProperty, vm.Background);
 
-            Bind(control.Label, ForegroundProperty, foregroundProp);
-
-            var backgroundProp = Settings
-                .ObserveProperty(M => M.BackgroundColor)
-                .Select(M => new SolidColorBrush(ConvertColor(M)))
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control.Border, BackgroundProperty, backgroundProp);
-
-            var borderThicknessProp = Settings
-                .ObserveProperty(M => M.BorderThickness)
-                .Select(M => new Thickness(M))
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control.Border, BorderThicknessProperty, borderThicknessProp);
-
-            var borderBrushProp = Settings
-                .ObserveProperty(M => M.BorderColor)
-                .Select(M => new SolidColorBrush(ConvertColor(M)))
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control.Border, BorderBrushProperty, borderBrushProp);
-
-            var cornerRadiusProp = Settings
-                .ObserveProperty(M => M.CornerRadius)
-                .Select(M => new CornerRadius(M))
-                .ToReadOnlyReactivePropertySlim();
-
-            Bind(control.Border, Border.CornerRadiusProperty, cornerRadiusProp);
+            BindOne(control.Border, BorderThicknessProperty, vm.BorderThickness);
+            BindOne(control.Border, BorderBrushProperty, vm.BorderBrush);
+            BindOne(control.Border, Border.CornerRadiusProperty, vm.CornerRadius);
 
             return control;
         }
@@ -265,23 +162,14 @@ namespace Captura
         {
             var control = Generate(Settings, "Censored", Colors.Black);
 
-            var widthProp = Settings
-                .ToReactivePropertyAsSynchronized(M => M.Width,
-                    M => (double)M, M => (int)M);
+            var vm = new CensorOverlayReactor(Settings);
 
-            var heightProp = Settings
-                .ToReactivePropertyAsSynchronized(M => M.Height,
-                    M => (double)M, M => (int)M);
+            Bind(control, WidthProperty, vm.Width);
+            Bind(control, HeightProperty, vm.Height);
 
-            Bind(control, WidthProperty, widthProp);
-            Bind(control, HeightProperty, heightProp);
+            BindOne(control, VisibilityProperty, vm.Visible);
 
             return control;
-        }
-
-        static Color ConvertColor(System.Drawing.Color C)
-        {
-            return Color.FromArgb(C.A, C.R, C.G, C.B);
         }
 
         LayerFrame Keystrokes(KeystrokesSettings Settings)
@@ -293,7 +181,7 @@ namespace Captura
                 .Select(M => M ? Visibility.Collapsed : Visibility.Visible)
                 .ToReadOnlyReactivePropertySlim();
 
-            Bind(control, VisibilityProperty, visibilityProp);
+            BindOne(control, VisibilityProperty, visibilityProp);
 
             return control;
         }
@@ -302,109 +190,78 @@ namespace Captura
         readonly List<LayerFrame> _imageOverlays = new List<LayerFrame>();
         readonly List<LayerFrame> _censorOverlays = new List<LayerFrame>();
 
+        void UpdateOverlays<TSettings>(IEnumerable<TSettings> Settings,
+            List<LayerFrame> LayerFrames,
+            Func<TSettings, LayerFrame> LayerFrameGenerator,
+            bool CanResize,
+            int ZIndex)
+        {
+            foreach (var layerFrame in LayerFrames)
+            {
+                Grid.Children.Remove(layerFrame);
+            }
+
+            LayerFrames.Clear();
+
+            LayerFrames.AddRange(Settings.Select(LayerFrameGenerator));
+
+            foreach (var layerFrame in LayerFrames)
+            {
+                AddToGrid(layerFrame, CanResize);
+
+                Panel.SetZIndex(layerFrame, ZIndex);
+            }
+        }
+
         void UpdateCensorOverlays(IEnumerable<CensorOverlaySettings> Settings)
         {
-            foreach (var overlay in _censorOverlays)
-            {
-                Grid.Children.Remove(overlay);
-            }
-
-            _censorOverlays.Clear();
-
-            foreach (var setting in Settings)
-            {
-                var control = Censor(setting);
-
-                var visibilityProp = setting
-                    .ObserveProperty(M => M.Display)
-                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
-                    .ToReadOnlyReactivePropertySlim();
-
-                Bind(control, VisibilityProperty, visibilityProp);
-
-                _censorOverlays.Add(control);
-            }
-
-            foreach (var overlay in _censorOverlays)
-            {
-                AddToGrid(overlay, true);
-
-                Panel.SetZIndex(overlay, -1);
-            }
+            UpdateOverlays(Settings, _censorOverlays, Censor, true, -1);
         }
 
         void UpdateTextOverlays(IEnumerable<CustomOverlaySettings> Settings)
         {
-            foreach (var overlay in _textOverlays)
+            UpdateOverlays(Settings, _textOverlays, Setting =>
             {
-                Grid.Children.Remove(overlay);
-            }
+                var control = Text(Setting, Setting.Text);
 
-            _textOverlays.Clear();
-
-            foreach (var setting in Settings)
-            {
-                var control = Text(setting, setting.Text);
-
-                var visibilityProp = setting
+                var visibilityProp = Setting
                     .ObserveProperty(M => M.Display)
                     .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
                     .ToReadOnlyReactivePropertySlim();
 
-                Bind(control, VisibilityProperty, visibilityProp);
+                BindOne(control, VisibilityProperty, visibilityProp);
 
-                var textProp = setting
+                var textProp = Setting
                     .ObserveProperty(M => M.Text)
                     .ToReadOnlyReactivePropertySlim();
 
-                Bind(control.Label, ContentProperty, textProp);
+                BindOne(control.Label, ContentProperty, textProp);
 
-                _textOverlays.Add(control);
-            }
-
-            foreach (var overlay in _textOverlays)
-            {
-                AddToGrid(overlay, false);
-
-                Panel.SetZIndex(overlay, 1);
-            }
+                return control;
+            }, false, 1);
         }
 
         void UpdateImageOverlays(IEnumerable<CustomImageOverlaySettings> Settings)
         {
-            foreach (var overlay in _imageOverlays)
+            UpdateOverlays(Settings, _imageOverlays, Setting =>
             {
-                Grid.Children.Remove(overlay);
-            }
+                var control = Image(Setting, Setting.Source);
 
-            _imageOverlays.Clear();
-
-            foreach (var setting in Settings)
-            {
-                var control = Image(setting, setting.Source);
-
-                var visibilityProp = setting
+                var visibilityProp = Setting
                     .ObserveProperty(M => M.Display)
                     .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
                     .ToReadOnlyReactivePropertySlim();
 
-                Bind(control, VisibilityProperty, visibilityProp);
+                BindOne(control, VisibilityProperty, visibilityProp);
 
-                var srcProp = setting
+                var srcProp = Setting
                     .ObserveProperty(M => M.Source)
                     .ToReadOnlyReactivePropertySlim();
 
-                Bind(control.Label, ContentProperty, srcProp);
+                BindOne(control.Label, ContentProperty, srcProp);
 
-                _imageOverlays.Add(control);
-            }
-
-            foreach (var overlay in _imageOverlays)
-            {
-                AddToGrid(overlay, true);
-
-                Panel.SetZIndex(overlay, 2);
-            }
+                return control;
+            }, true, 2);
         }
         
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
@@ -494,7 +351,7 @@ namespace Captura
 
                 MouseClick.Width = MouseClick.Height = d;
                 MouseClick.StrokeThickness = Settings.BorderThickness;
-                MouseClick.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                MouseClick.Stroke = new SolidColorBrush(Settings.BorderColor.ToWpfColor());
             }
 
             Update();
@@ -510,8 +367,8 @@ namespace Captura
 
                 MousePointer.Width = MousePointer.Height = d;
                 MousePointer.StrokeThickness = Settings.BorderThickness;
-                MousePointer.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
-                MousePointer.Fill = new SolidColorBrush(ConvertColor(Settings.Color));
+                MousePointer.Stroke = new SolidColorBrush(Settings.BorderColor.ToWpfColor());
+                MousePointer.Fill = new SolidColorBrush(Settings.Color.ToWpfColor());
             }
 
             Update();
@@ -536,13 +393,13 @@ namespace Captura
             switch (Button)
             {
                 case MouseButton.Middle:
-                    return ConvertColor(settings.Clicks.MiddleClickColor);
+                    return settings.Clicks.MiddleClickColor.ToWpfColor();
 
                 case MouseButton.Right:
-                    return ConvertColor(settings.Clicks.RightClickColor);
+                    return settings.Clicks.RightClickColor.ToWpfColor();
                     
                 default:
-                    return ConvertColor(settings.Clicks.Color);
+                    return settings.Clicks.Color.ToWpfColor();
             }
         }
 
