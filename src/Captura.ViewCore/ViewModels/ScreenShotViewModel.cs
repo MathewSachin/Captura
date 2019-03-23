@@ -55,7 +55,12 @@ namespace Captura.ViewModels
                     return !noVideo;
                 })
                 .ToReactiveCommand()
-                .WithSubscribe(M => ScreenShotModel.CaptureScreenShot());
+                .WithSubscribe(async M =>
+                {
+                    var bmp = await ScreenShotModel.GetScreenShot(VideoSourcesViewModel.SelectedVideoSourceKind);
+
+                    await ScreenShotModel.SaveScreenShot(bmp);
+                });
 
             async Task ScreenShotWindow(IWindow Window)
             {

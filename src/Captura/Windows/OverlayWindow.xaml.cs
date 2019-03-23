@@ -283,7 +283,7 @@ namespace Captura
 
                 default:
                     var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
-                    bmp = await screenShotModel.GetScreenShot(true);
+                    bmp = await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
                     break;
             }
 

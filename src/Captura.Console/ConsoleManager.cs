@@ -170,7 +170,9 @@ namespace Captura
             {
                 HandleVideoSource(ShotOptions);
 
-                _screenShotModel.CaptureScreenShot(ShotOptions.FileName);
+                var bmp = _screenShotModel.GetScreenShot(_videoSourcesViewModel.SelectedVideoSourceKind).Result;
+
+                _screenShotModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
             }
         }
 

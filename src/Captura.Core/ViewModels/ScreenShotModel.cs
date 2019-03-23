@@ -9,7 +9,6 @@ namespace Captura.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScreenShotModel : NotifyPropertyChanged
     {
-        readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly ISystemTray _systemTray;
         readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
@@ -22,8 +21,7 @@ namespace Captura.ViewModels
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
-        public ScreenShotModel(VideoSourcesViewModel VideoSourcesViewModel,
-            ISystemTray SystemTray,
+        public ScreenShotModel(ISystemTray SystemTray,
             IRegionProvider RegionProvider,
             IMainWindow MainWindow,
             IVideoSourcePicker SourcePicker,
@@ -34,7 +32,6 @@ namespace Captura.ViewModels
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel)
         {
-            _videoSourcesViewModel = VideoSourcesViewModel;
             _systemTray = SystemTray;
             _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
@@ -127,23 +124,16 @@ namespace Captura.ViewModels
             }
         }
 
-        public async void CaptureScreenShot(string FileName = null)
+        public async Task<IBitmapImage> GetScreenShot(IVideoSourceProvider VideoSourceKind, bool SuppressHide = false)
         {
             _systemTray.HideNotification();
 
-            var bmp = await GetScreenShot();
-
-            await SaveScreenShot(bmp, FileName);
-        }
-
-        public async Task<IBitmapImage> GetScreenShot(bool SuppressHide = false)
-        {
             IBitmapImage bmp = null;
 
-            var selectedVideoSource = _videoSourcesViewModel.SelectedVideoSourceKind?.Source;
+            var selectedVideoSource = VideoSourceKind?.Source;
             var includeCursor = _settings.IncludeCursor;
 
-            switch (_videoSourcesViewModel.SelectedVideoSourceKind)
+            switch (VideoSourceKind)
             {
                 case WindowSourceProvider _:
                     var hWnd = _platformServices.DesktopWindow;
