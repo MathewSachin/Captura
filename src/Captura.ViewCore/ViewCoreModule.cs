@@ -19,8 +19,11 @@ namespace Captura.ViewModels
             Binder.BindSingleton<HotkeysViewModel>();
             Binder.BindSingleton<FFmpegLogViewModel>();
             Binder.BindSingleton<FFmpegCodecsViewModel>();
-            Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<ViewConditionsModel>();
+
+            Binder.BindSingleton<VideoSourcesViewModel>();
+            Binder.BindSingleton<VideoWritersViewModel>();
+            Binder.Bind<IRefreshable>(Binder.Get<VideoWritersViewModel>);
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();

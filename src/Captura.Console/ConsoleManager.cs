@@ -21,7 +21,6 @@ namespace Captura
         readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
         readonly WebcamModel _webcamModel;
-        readonly VideoWritersViewModel _videoWritersViewModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
 
@@ -29,7 +28,6 @@ namespace Captura
             RecordingModel RecordingModel,
             ScreenShotModel ScreenShotModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
-            VideoWritersViewModel VideoWritersViewModel,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
             IMessageProvider MessageProvider)
@@ -38,7 +36,6 @@ namespace Captura
             _recordingModel = RecordingModel;
             _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
-            _videoWritersViewModel = VideoWritersViewModel;
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
             _messageProvider = MessageProvider;
@@ -103,7 +100,7 @@ namespace Captura
 
             var videoSourceKind = HandleVideoSource(StartOptions);
 
-            HandleVideoEncoder(StartOptions);
+            var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
             HandleAudioSource(StartOptions);
 
@@ -124,8 +121,8 @@ namespace Captura
             if (!_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = videoSourceKind,
-                VideoWriterKind = _videoWritersViewModel.SelectedVideoWriterKind,
-                VideoWriter = _videoWritersViewModel.SelectedVideoWriter
+                VideoWriterKind = videoWriterKind,
+                VideoWriter = videoWriter
             }, StartOptions.FileName))
                 return;
 
@@ -197,22 +194,25 @@ namespace Captura
             }
         }
 
-        void HandleVideoEncoder(StartCmdOptions StartOptions)
+        IVideoWriterItem HandleVideoEncoder(StartCmdOptions StartOptions, out IVideoWriterProvider VideoWriterKind)
         {
-            if (StartOptions.Encoder == null)
-                return;
-
             var ffmpegExists = FFmpegService.FFmpegExists;
+            var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
 
             // FFmpeg
             if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
-                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+                var ffmpegWriterProvider = ServiceProvider.Get<FFmpegWriterProvider>();
+                var writers = ffmpegWriterProvider.ToArray();
 
-                if (index < _videoWritersViewModel.AvailableVideoWriters.Count)
-                    _videoWritersViewModel.SelectedVideoWriter = _videoWritersViewModel.AvailableVideoWriters[index];
+                if (index < writers.Length)
+                {
+                    VideoWriterKind = ffmpegWriterProvider;
+
+                    return writers[index];
+                }
             }
 
             // SharpAvi
@@ -220,10 +220,14 @@ namespace Captura
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(9));
 
-                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
+                var writers = sharpAviWriterProvider.ToArray();
 
-                if (index < _videoWritersViewModel.AvailableVideoWriters.Count)
-                    _videoWritersViewModel.SelectedVideoWriter = _videoWritersViewModel.AvailableVideoWriters[index];
+                if (index < writers.Length)
+                {
+                    VideoWriterKind = sharpAviWriterProvider;
+
+                    return writers[index];
+                }
             }
 
             // Stream
@@ -232,9 +236,9 @@ namespace Captura
                 var url = StartOptions.Encoder.Substring(7);
                 _settings.FFmpeg.CustomStreamingUrl = url;
 
-                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
+                VideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
 
-                _videoWritersViewModel.SelectedVideoWriter = StreamingWriterProvider.GetCustomStreamingCodec();
+                return StreamingWriterProvider.GetCustomStreamingCodec();
             }
 
             // Rolling
@@ -242,10 +246,13 @@ namespace Captura
             {
                 var duration = int.Parse(StartOptions.Encoder.Substring(5));
 
-                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+                VideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
-                _videoWritersViewModel.SelectedVideoWriter = new FFmpegRollingWriterItem(duration);
+                return new FFmpegRollingWriterItem(duration);
             }
+
+            VideoWriterKind = sharpAviWriterProvider;
+            return sharpAviWriterProvider.First();
         }
 
         void HandleWebcam(StartCmdOptions StartOptions)

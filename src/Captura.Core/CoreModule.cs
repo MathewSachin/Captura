@@ -53,11 +53,9 @@ namespace Captura
             Binder.BindSingleton<ScreenShotModel>();
             Binder.BindSingleton<RecordingModel>();
             Binder.BindSingleton<WebcamModel>();
-            Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
 
             Binder.Bind<IRefreshable>(Binder.Get<WebcamModel>);
-            Binder.Bind<IRefreshable>(Binder.Get<VideoWritersViewModel>);
         }
 
         static void BindUpdateChecker(IBinder Binder)
