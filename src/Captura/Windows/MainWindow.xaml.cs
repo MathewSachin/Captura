@@ -89,9 +89,9 @@ namespace Captura
 
         bool TryExit()
         {
-            var recordingModel = ServiceProvider.Get<RecordingModel>();
+            var recordingVm = ServiceProvider.Get<RecordingViewModel>();
 
-            if (!recordingModel.CanExit())
+            if (!recordingVm.CanExit())
                 return false;
 
             ServiceProvider.Dispose();

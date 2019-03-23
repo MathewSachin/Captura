@@ -124,7 +124,12 @@ namespace Captura
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
-            if (!_recordingModel.StartRecording(StartOptions.FileName))
+            if (!_recordingModel.StartRecording(new RecordingModelParams
+            {
+                VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
+                VideoWriterKind = _videoWritersViewModel.SelectedVideoWriterKind,
+                VideoWriter = _videoWritersViewModel.SelectedVideoWriter
+            }, StartOptions.FileName))
                 return;
 
             Task.Factory.StartNew(() =>
