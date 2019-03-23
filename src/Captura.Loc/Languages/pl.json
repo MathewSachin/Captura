@@ -1,6 +1,6 @@
 {
   "About": "O programie",
-  "AccentColor": "Kolor akcentujący",
+  "AccentColor": "Kolor interfejsu",
   "Add": "Dodaj",
   "AlwaysOnTop": "Zawsze na wierzchu",
   "Audio": "Dźwięk",
@@ -18,8 +18,8 @@
   "Clipboard": "Schowek",
   "Close": "Zamknij",
   "Color": "Kolor",
-  "ConfigCodecs": "Konfiguruj kodeki",
-  "Configure": "Konfiguruj",
+  "ConfigCodecs": "Konfiguracja kodeków",
+  "Configure": "Konfiguracja",
   "CopyOutPathClipboard": "Kopiuj do schowka ścieżkę pliku wyjściowego",
   "CopyPath": "Kopiuj ścieżkę",
   "CopyToClipboard": "Kopiuj do schowka",
