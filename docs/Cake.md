@@ -3,7 +3,9 @@
 ### Installing Cake
 .NET Core 2.1 is required.
 
-`dotnet tool install -g Cake.Tool --version 0.32.1`
+```
+dotnet tool install -g Cake.Tool --version 0.32.1
+```
 
 ### Running the build script
 ```

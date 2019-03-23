@@ -30,10 +30,44 @@ captura-cli start --length 10 --cursor --keys --speaker=0
 
 ## Using the Encoder argument
 
-You can use `captura-cli list` to check encoder indices.
+By default, SharpAvi Motion JPEG encoder is used.
 
 ### SharpAvi
 Use `sharpavi:<index>` as argument. `index` is a zero-based index identifying the encoder.
 
+You can use `captura-cli list` to check encoder indices.
+
+e.g.
+
+```
+captura-cli start --encoder sharpavi:0
+```
+
 ### FFmpeg
 Use `ffmpeg:<index>` as argument. `index` is a zero-based index identifying the encoder.
+
+You can use `captura-cli list` to check encoder indices.
+
+e.g.
+
+```
+captura-cli start --encoder ffmpeg:0
+```
+
+### Stream
+Use `stream:<url>` as argument. `url` is the rtmp url of the streaming service.
+
+e.g. Stream to Twitch
+
+```
+captura-cli start --encoder stream:rtmp://live.twitch.tv/app/TWITCH_KEY
+```
+
+### Rolling Recording (Capture last N seconds)
+Use `roll:<duration>` as argument. `duration` is specified in seconds.
+
+e.g. Capture last 30 seconds.
+
+```
+captura-cli start --encoder roll:30
+```

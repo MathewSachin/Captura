@@ -38,8 +38,11 @@ captura --tray
 ### Implemented Verbs
 
 - [list](Verb-List.md)
+  List available Screens, Windows, Audio Sources, Webcams, etc.
 - [start](Verb-Start.md)
+  Start a Recording
 - [shot](Verb-Shot.md)
+  Take a ScreenShot
 - [ffmpeg](Verb-FFmpeg.md)  
   Allows installation of ffmpeg from command-line.
 - help  

@@ -42,6 +42,11 @@ Available only with `captura-cli start`.
 
 Can be used for audio only recording.
 
+e.g. Record only the speaker output.
+
+```
+captura-cli start --source none --speaker 0
+```
 
 ## Window
 Use `win:<hWnd>` as the argument. `hWnd` is handle of the window.
@@ -56,3 +61,9 @@ Can only work with `captura-cli start`.
 
 Use the `--webcam` argument to set the webcam.
 You can use `captura-cli list` to check available webcams.
+
+e.g.
+
+```
+captura-cli start --source webcam --webcam 0
+```
