@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Captura.Models
 {
-    public class FFmpegLogItem : NotifyPropertyChanged
+    public class FFmpegLogItem : NotifyPropertyChanged, IFFmpegLogEntry
     {
         public string Name { get; }
 

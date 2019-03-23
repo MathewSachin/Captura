@@ -1,4 +1,6 @@
-﻿namespace Captura.ViewModels
+﻿using Captura.Models;
+
+namespace Captura.ViewModels
 {
     public class ViewCoreModule : IModule
     {
@@ -22,6 +24,8 @@
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
             Binder.BindSingleton<CensorOverlaysViewModel>();
+
+            Binder.Bind<IFFmpegLogRepository, FFmpegLog>();
         }
 
         public void Dispose() { }

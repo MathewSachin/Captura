@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Captura.FFmpeg;
 using Captura.Models;
 using Captura.ViewModels;
 using static System.Console;
@@ -203,8 +204,10 @@ namespace Captura
             if (StartOptions.Encoder == null)
                 return;
 
+            var ffmpegExists = FFmpegService.FFmpegExists;
+
             // FFmpeg
-            if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
+            if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
             {
                 var index = int.Parse(StartOptions.Encoder.Substring(7));
 
@@ -226,7 +229,7 @@ namespace Captura
             }
 
             // Stream
-            else if (FFmpegService.FFmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
+            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
             {
                 var url = StartOptions.Encoder.Substring(7);
                 _settings.FFmpeg.CustomStreamingUrl = url;
@@ -234,6 +237,16 @@ namespace Captura
                 _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
 
                 _videoWritersViewModel.SelectedVideoWriter = StreamingWriterProvider.GetCustomStreamingCodec();
+            }
+
+            // Rolling
+            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^roll:\d+$"))
+            {
+                var duration = int.Parse(StartOptions.Encoder.Substring(5));
+
+                _videoWritersViewModel.SelectedVideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
+
+                _videoWritersViewModel.SelectedVideoWriter = new FFmpegRollingWriterItem(duration);
             }
         }
 

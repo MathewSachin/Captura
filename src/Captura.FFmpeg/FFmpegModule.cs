@@ -7,7 +7,6 @@ namespace Captura
         public static void Load(IBinder Binder)
         {
             Binder.BindSingleton<FFmpegSettings>();
-            Binder.BindSingleton<FFmpegLog>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>();
 
