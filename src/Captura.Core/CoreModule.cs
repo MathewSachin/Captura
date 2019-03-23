@@ -50,7 +50,6 @@ namespace Captura
         static void BindViewModels(IBinder Binder)
         {
             Binder.BindSingleton<TimerModel>();
-            Binder.BindSingleton<MainModel>();
             Binder.BindSingleton<ScreenShotModel>();
             Binder.BindSingleton<RecordingModel>();
             Binder.BindSingleton<WebcamModel>();

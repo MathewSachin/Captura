@@ -17,9 +17,9 @@ namespace Captura
             
             InitializeComponent();
 
-            var mainModel = ServiceProvider.Get<MainModel>();
+            var mainVm = ServiceProvider.Get<MainViewModel>();
 
-            mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
+            mainVm.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
 
             var hotkeySetup = ServiceProvider.Get<HotkeySetup>();
             hotkeySetup.Setup();

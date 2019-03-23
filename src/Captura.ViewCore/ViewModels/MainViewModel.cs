@@ -11,8 +11,11 @@ using Reactive.Bindings.Extensions;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
+        bool _persist;
+
+        readonly RememberByName _rememberByName;
         readonly IDialogService _dialogService;
 
         public ICommand ShowPreviewCommand { get; }
@@ -30,9 +33,11 @@ namespace Captura.ViewModels
             IDialogService DialogService,
             RecordingModel RecordingModel,
             IEnumerable<IRefreshable> Refreshables,
-            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            RememberByName RememberByName) : base(Settings, Loc)
         {
             _dialogService = DialogService;
+            _rememberByName = RememberByName;
 
             ShowPreviewCommand = new ReactiveCommand()
                 .WithSubscribe(PreviewWindow.Show);
@@ -69,6 +74,16 @@ namespace Captura.ViewModels
             #endregion
         }
 
+        public void Init(bool Persist, bool Remembered)
+        {
+            _persist = Persist;
+
+            if (Remembered)
+            {
+                _rememberByName.RestoreRemembered();
+            }
+        }
+
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Left)),
@@ -97,5 +112,16 @@ namespace Captura.ViewModels
         }
 
         public event Action Refreshed;
+
+        public void Dispose()
+        {
+            // Remember things if not console.
+            if (!_persist)
+                return;
+
+            _rememberByName.Remember();
+
+            Settings.Save();
+        }
     }
 }
