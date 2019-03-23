@@ -19,7 +19,6 @@ namespace Captura
         readonly Settings _settings;
         readonly RecordingModel _recordingModel;
         readonly ScreenShotModel _screenShotModel;
-        readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
         readonly WebcamModel _webcamModel;
         readonly VideoWritersViewModel _videoWritersViewModel;
@@ -29,7 +28,6 @@ namespace Captura
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
             ScreenShotModel ScreenShotModel,
-            VideoSourcesViewModel VideoSourcesViewModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             VideoWritersViewModel VideoWritersViewModel,
             IPlatformServices PlatformServices,
@@ -39,7 +37,6 @@ namespace Captura
             _settings = Settings;
             _recordingModel = RecordingModel;
             _screenShotModel = ScreenShotModel;
-            _videoSourcesViewModel = VideoSourcesViewModel;
             _videoSourceProviders = VideoSourceProviders;
             _videoWritersViewModel = VideoWritersViewModel;
             _platformServices = PlatformServices;
@@ -104,7 +101,7 @@ namespace Captura
                 File.Delete(StartOptions.FileName);
             }
 
-            HandleVideoSource(StartOptions);
+            var videoSourceKind = HandleVideoSource(StartOptions);
 
             HandleVideoEncoder(StartOptions);
 
@@ -126,7 +123,7 @@ namespace Captura
 
             if (!_recordingModel.StartRecording(new RecordingModelParams
             {
-                VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
+                VideoSourceKind = videoSourceKind,
                 VideoWriterKind = _videoWritersViewModel.SelectedVideoWriterKind,
                 VideoWriter = _videoWritersViewModel.SelectedVideoWriter
             }, StartOptions.FileName))
@@ -168,25 +165,19 @@ namespace Captura
             }
             else
             {
-                HandleVideoSource(ShotOptions);
+                var videoSourceKind = HandleVideoSource(ShotOptions);
 
-                var bmp = _screenShotModel.GetScreenShot(_videoSourcesViewModel.SelectedVideoSourceKind).Result;
+                var bmp = _screenShotModel.GetScreenShot(videoSourceKind).Result;
 
                 _screenShotModel.SaveScreenShot(bmp, ShotOptions.FileName).Wait();
             }
         }
 
-        void HandleVideoSource(CommonCmdOptions CommonOptions)
+        IVideoSourceProvider HandleVideoSource(CommonCmdOptions CommonOptions)
         {
-            if (CommonOptions.Source == null)
-                return;
-
             var provider = _videoSourceProviders.FirstOrDefault(M => M.ParseCli(CommonOptions.Source));
 
-            if (provider != null)
-            {
-                _videoSourcesViewModel.RestoreSourceKind(provider);
-            }
+            return provider;
         }
 
         void HandleAudioSource(StartCmdOptions StartOptions)

@@ -53,7 +53,6 @@ namespace Captura
             Binder.BindSingleton<ScreenShotModel>();
             Binder.BindSingleton<RecordingModel>();
             Binder.BindSingleton<WebcamModel>();
-            Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
             Binder.BindSingleton<KeymapViewModel>();
 

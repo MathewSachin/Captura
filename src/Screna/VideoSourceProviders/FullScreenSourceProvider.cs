@@ -25,7 +25,7 @@ namespace Captura.Models
 
         public override bool ParseCli(string Arg)
         {
-            return Arg == "desktop";
+            return string.IsNullOrWhiteSpace(Arg) || Arg == "desktop";
         }
     }
 }
