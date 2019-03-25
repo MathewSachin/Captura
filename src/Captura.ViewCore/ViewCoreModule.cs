@@ -29,7 +29,8 @@ namespace Captura.ViewModels
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
             Binder.BindSingleton<CensorOverlaysViewModel>();
 
-            Binder.Bind<IFFmpegLogRepository, FFmpegLog>();
+            Binder.BindSingleton<FFmpegLog>();
+            Binder.Bind<IFFmpegLogRepository>(ServiceProvider.Get<FFmpegLog>);
         }
 
         public void Dispose() { }
