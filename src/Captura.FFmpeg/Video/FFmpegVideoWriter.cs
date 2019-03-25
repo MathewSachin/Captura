@@ -116,7 +116,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occurred with FFmpeg");
+                throw new FFmpegException( _ffmpegProcess.ExitCode);
             }
 
             if (_firstAudio)

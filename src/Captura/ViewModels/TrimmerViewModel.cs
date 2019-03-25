@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
-using Captura.Models;
-using FirstFloor.ModernUI.Windows.Controls;
+using Captura.FFmpeg;
 using Microsoft.Win32;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura
 {
     public class TrimmerViewModel : NotifyPropertyChanged, IDisposable
     {
         MediaElement _player;
-        Window _window;
         readonly DispatcherTimer _timer;
 
         public bool IsDragging { get; set; }
 
-        public void AssignPlayer(MediaElement Player, Window Window)
+        readonly IReactiveProperty<bool> _isOpened = new ReactivePropertySlim<bool>();
+        readonly IReactiveProperty<bool> _isTrimming = new ReactivePropertySlim<bool>();
+
+        public void AssignPlayer(MediaElement Player)
         {
             _player = Player;
-            _window = Window;
 
             _player.MediaOpened += (S, E) =>
             {
@@ -36,8 +38,7 @@ namespace Captura
 
                 PlaybackPosition = From;
 
-                PlayCommand.RaiseCanExecuteChanged(true);
-                TrimCommand.RaiseCanExecuteChanged(true);
+                _isOpened.Value = true;
             };
 
             _timer.Start();
@@ -63,11 +64,30 @@ namespace Captura
                 }
             };
 
-            OpenCommand = new DelegateCommand(Open);
+            OpenCommand = _isTrimming
+                .Select(M => !M)
+                .ToReactiveCommand()
+                .WithSubscribe(Open);
 
-            PlayCommand = new DelegateCommand(Play, false);
+            PlayCommand = new[]
+                {
+                    _isOpened,
+                    _isTrimming
+                        .Select(M => !M)
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReactiveCommand()
+                .WithSubscribe(Play);
 
-            TrimCommand = new DelegateCommand(Trim, false);
+            TrimCommand = new[]
+                {
+                    _isOpened,
+                    _isTrimming
+                        .Select(M => !M)
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReactiveCommand()
+                .WithSubscribe(Trim);
         }
 
         TimeSpan _from, _to, _end;
@@ -169,11 +189,11 @@ namespace Captura
             }
         }
 
-        public DelegateCommand OpenCommand { get; }
+        public ICommand OpenCommand { get; }
 
-        public DelegateCommand PlayCommand { get; }
+        public ICommand PlayCommand { get; }
 
-        public DelegateCommand TrimCommand { get; }
+        public ICommand TrimCommand { get; }
 
         void Open()
         {
@@ -191,8 +211,7 @@ namespace Captura
 
         public void Open(string Path)
         {
-            PlayCommand.RaiseCanExecuteChanged(false);
-            TrimCommand.RaiseCanExecuteChanged(false);
+            _isOpened.Value = false;
 
             _player.Source = new Uri(Path);
 
@@ -227,27 +246,11 @@ namespace Captura
             _player.Source = null;
         }
 
-        string GetArgs(string OutputFileName)
-        {
-            var argsBuilder = new FFmpegArgsBuilder();
-
-            var inputArgs = argsBuilder.AddInputFile(FilePath)
-                .AddArg($"-ss {From}")
-                .AddArg($"-to {To}");
-
-            if (_player.HasAudio)
-                inputArgs.SetAudioCodec("copy");
-
-            argsBuilder.AddOutputFile(OutputFileName);
-
-            return argsBuilder.GetArgs();
-        }
-
         async void Trim()
         {
             if (!FFmpegService.FFmpegExists)
             {
-                ModernDialog.ShowMessage("FFmpeg not Found", "FFmpeg not Found", MessageBoxButton.OK, _window);
+                ServiceProvider.Get<IFFmpegViewsProvider>().ShowUnavailable();
 
                 return;
             }
@@ -267,43 +270,28 @@ namespace Captura
             if (!sfd.ShowDialog().GetValueOrDefault())
                 return;
 
+            var hasAudio = _player.HasAudio;
+
             _player.Close();
 
-            var process = new Process
+            _isTrimming.Value = true;
+
+            var trimmer = new FFmpegTrimmer();
+
+            try
             {
-                StartInfo =
-                {
-                    FileName = FFmpegService.FFmpegExePath,
-                    Arguments = GetArgs(sfd.FileName),
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardError = true
-                },
-                EnableRaisingEvents = true
-            };
-
-            var output = "";
-
-            process.ErrorDataReceived += (Sender, Args) => output += "\n" + Args.Data;
-
-            OpenCommand.RaiseCanExecuteChanged(false);
-            PlayCommand.RaiseCanExecuteChanged(false);
-            TrimCommand.RaiseCanExecuteChanged(false);
-                
-            process.Start();
-
-            process.BeginErrorReadLine();
-                
-            await Task.Run(() => process.WaitForExit());
-
-            if (process.ExitCode != 0)
+                await trimmer.Run(FilePath,
+                    From,
+                    To,
+                    sfd.FileName,
+                    hasAudio);
+            }
+            finally
             {
-                ModernDialog.ShowMessage($"FFmpeg Output:\n{output}", "An Error Occurred", MessageBoxButton.OK, _window);
+                _isTrimming.Value = false;
             }
 
-            OpenCommand.RaiseCanExecuteChanged(true);
-            PlayCommand.RaiseCanExecuteChanged(true);
-            TrimCommand.RaiseCanExecuteChanged(true);
+            MessageBox.Show("Done");
         }
     }
 }
