@@ -1,7 +1,7 @@
 ﻿using Captura.Audio;
-using System;
 using System.Diagnostics;
 using System.IO;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
@@ -21,8 +21,9 @@ namespace Captura.Models
                 .SetAudioChannels(Channels)
                 .DisableVideo();
 
-            argsBuilder.AddOutputFile(FileName)
-                .AddArg(AudioArgsProvider(AudioQuality));
+            var output = argsBuilder.AddOutputFile(FileName);
+
+            AudioArgsProvider(AudioQuality, output);
 
             _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName);
             
@@ -46,7 +47,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occurred with FFmpeg");
+                throw new FFmpegException(_ffmpegProcess.ExitCode);
             }
 
             _ffmpegIn.Write(Data, Offset, Count);

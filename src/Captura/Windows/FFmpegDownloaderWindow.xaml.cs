@@ -7,13 +7,19 @@ namespace Captura.Views
 {
     public partial class FFmpegDownloaderWindow
     {
-        public FFmpegDownloaderWindow()
+        FFmpegDownloaderWindow()
         {
             InitializeComponent();
 
             if (DataContext is FFmpegDownloadViewModel vm)
             {
-                vm.CloseWindowAction += Close;
+                Closing += async (S, E) =>
+                {
+                    if (!await vm.Cancel())
+                    {
+                        E.Cancel = true;
+                    }
+                };
 
                 vm.ProgressChanged += P =>
                 {
@@ -43,6 +49,19 @@ namespace Captura.Views
             {
                 vm.SelectFolderCommand.ExecuteIfCan();
             }
+        }
+
+        static FFmpegDownloaderWindow _downloader;
+
+        public static void ShowInstance()
+        {
+            if (_downloader == null)
+            {
+                _downloader = new FFmpegDownloaderWindow();
+                _downloader.Closed += (Sender, Args) => _downloader = null;
+            }
+
+            _downloader.ShowAndFocus();
         }
     }
 }

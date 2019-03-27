@@ -22,9 +22,11 @@ namespace Captura
 
         public AboutViewModel AboutViewModel => ServiceProvider.Get<AboutViewModel>();
 
+        public RegionSelectorViewModel RegionSelectorViewModel => ServiceProvider.Get<RegionSelectorViewModel>();
+
         public FFmpegDownloadViewModel FFmpegDownloadViewModel => ServiceProvider.Get<FFmpegDownloadViewModel>();
 
-        public FFmpegLog FFmpegLog => ServiceProvider.Get<FFmpegLog>();
+        public FFmpegLogViewModel FFmpegLog => ServiceProvider.Get<FFmpegLogViewModel>();
 
         public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
 
@@ -44,7 +46,7 @@ namespace Captura
 
         public EditorWriter EditorWriter => ServiceProvider.Get<EditorWriter>();
 
-        public HotKeyManager HotKeyManager => ServiceProvider.Get<HotKeyManager>();
+        public HotkeysViewModel HotkeysViewModel => ServiceProvider.Get<HotkeysViewModel>();
 
         public IIconSet Icons => ServiceProvider.Get<IIconSet>();
 
@@ -62,7 +64,7 @@ namespace Captura
 
         public AudioSource AudioSource => ServiceProvider.Get<AudioSource>();
 
-        public IWebCamProvider WebCamProvider => ServiceProvider.Get<IWebCamProvider>();
+        public WebcamModel WebcamModel => ServiceProvider.Get<WebcamModel>();
 
         public VideoWritersViewModel VideoWritersViewModel => ServiceProvider.Get<VideoWritersViewModel>();
 

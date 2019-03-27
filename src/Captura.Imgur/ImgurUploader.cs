@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -26,7 +24,7 @@ namespace Captura.Models
             _apiKeys = ApiKeys;
         }
 
-        public async Task<UploadResult> Upload(Bitmap Image, ImageFormat Format, Action<int> Progress)
+        public async Task<UploadResult> Upload(IBitmapImage Image, ImageFormats Format, Action<int> Progress)
         {
             using (var w = new WebClient { Proxy = _proxySettings.GetWebProxy() })
             {

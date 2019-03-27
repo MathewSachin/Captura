@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 
 namespace Captura.Models
@@ -7,7 +6,7 @@ namespace Captura.Models
     /// <summary>
     /// Items to show in Video Source List.
     /// </summary>
-    public interface IVideoItem : INotifyPropertyChanged
+    public interface IVideoItem
     {
         string Name { get; }
 

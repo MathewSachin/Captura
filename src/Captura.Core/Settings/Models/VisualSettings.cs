@@ -38,12 +38,6 @@
             set => Set(value);
         }
 
-        public bool MinimizeOnStart
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
         public bool HideOnFullScreenShot
         {
             get => Get(true);

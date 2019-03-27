@@ -17,10 +17,12 @@ namespace Captura.Models
 
         public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
-            var img = GetImage(Editor, out var targetSize);
+            var img = GetImage(Editor);
 
             if (img == null)
                 return;
+
+            var targetSize = new Size(img.Width, img.Height);
 
             try
             {
@@ -40,7 +42,7 @@ namespace Captura.Models
             }
         }
 
-        protected abstract IDisposable GetImage(IEditableFrame Editor, out Size Size);
+        protected abstract IBitmapImage GetImage(IEditableFrame Editor);
 
         Point GetPosition(Size Bounds, Size ImageSize)
         {

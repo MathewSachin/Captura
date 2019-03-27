@@ -22,7 +22,7 @@ namespace Captura.Models
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
 
             var icons = ServiceProvider.Get<IIconSet>();
-            var loc = ServiceProvider.Get<LanguageManager>();
+            var loc = ServiceProvider.Get<ILocalizationProvider>();
 
             Display = this.Link = Link;
             Icon = icons.Link;

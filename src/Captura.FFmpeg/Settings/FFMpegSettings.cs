@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Captura
 {
@@ -8,6 +10,32 @@ namespace Captura
         {
             get => Get<string>();
             set => Set(value);
+        }
+
+        public string GetFolderPath()
+        {
+            var path = FolderPath;
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return path.Replace(ServiceProvider.CapturaPathConstant,
+                    ServiceProvider.AppDir);
+            }
+
+            var localCodecs = Path.Combine(ServiceProvider.AppDir, "Codecs");
+
+            if (Directory.Exists(localCodecs))
+            {
+                path = localCodecs;
+            }
+            else
+            {
+                var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+                path = Path.Combine(localAppDataPath, nameof(Captura));
+            }
+
+            return path;
         }
 
         public string TwitchKey
@@ -22,7 +50,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public ObservableCollection<CustomFFmpegCodec> CustomCodecs { get; } = new ObservableCollection<CustomFFmpegCodec>();
+        public ObservableCollection<FFmpegCodecSettings> CustomCodecs { get; } = new ObservableCollection<FFmpegCodecSettings>();
 
         public string CustomStreamingUrl
         {

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 using Newtonsoft.Json.Linq;
 
 namespace Captura
@@ -18,13 +16,13 @@ namespace Captura
 
         LanguageManager()
         {
-            var entryLocation = Assembly.GetEntryAssembly()?.Location;
+            var appDir = ServiceProvider.AppDir;
 
             var cultures = new List<CultureInfo>();
 
-            if (entryLocation != null)
+            if (appDir != null)
             {
-                _langDir = Path.Combine(Path.GetDirectoryName(entryLocation), "Languages");
+                _langDir = Path.Combine(appDir, "Languages");
                 
                 if (Directory.Exists(_langDir))
                 {
@@ -73,7 +71,7 @@ namespace Captura
             {
                 _currentCulture = value;
 
-                Thread.CurrentThread.CurrentUICulture = value;
+                CultureInfo.CurrentUICulture = value;
 
                 _currentLanguage = LoadLang(value.Name);
 
@@ -83,7 +81,7 @@ namespace Captura
             }
         }
 
-        public event Action<CultureInfo> LanguageChanged;
+        public override event Action<CultureInfo> LanguageChanged;
 
         JObject LoadLang(string LanguageId)
         {

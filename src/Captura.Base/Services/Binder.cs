@@ -41,6 +41,8 @@ namespace Captura
             _module.OnLoad(this);
         }
 
+        public T Get<T>() => ServiceProvider.Get<T>();
+
         public override string Name => $"Module{_index}";
     }
 }

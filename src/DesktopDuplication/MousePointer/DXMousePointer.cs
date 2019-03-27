@@ -91,7 +91,7 @@ namespace DesktopDuplication
                 (int) bmp.Size.Width,
                 (int) bmp.Size.Height);
 
-            Editor.DrawImage(bmp, rect);
+            Editor.DrawImage(new Direct2DImage(bmp), rect);
         }
 
         public void Dispose()

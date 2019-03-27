@@ -155,6 +155,10 @@ namespace Captura
 
         string VideoFile { get; }
 
+        string Visibility { get; }
+
+        string VisibilityHide { get; }
+
         string Web { get; }
 
         string Webcam { get; }

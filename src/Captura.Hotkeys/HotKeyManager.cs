@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Newtonsoft.Json;
 
 namespace Captura
@@ -19,34 +18,19 @@ namespace Captura
 
         static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
 
-        public ICommand ResetCommand { get; }
-
-        public ICommand AddCommand { get; }
-
-        public ICommand RemoveCommand { get; }
-
         public HotKeyManager()
         {
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
-
-            ResetCommand = new DelegateCommand(Reset);
-
-            AddCommand = new DelegateCommand(Add);
-
-            RemoveCommand = new DelegateCommand(Remove);
         }
 
-        void Remove(object O)
+        public void Remove(Hotkey Hotkey)
         {
-            if (O is Hotkey hotkey)
-            {
-                hotkey.Unregister();
+            Hotkey.Unregister();
 
-                _hotkeys.Remove(hotkey);
-            }
+            _hotkeys.Remove(Hotkey);
         }
 
-        void Add()
+        public void Add()
         {
             var hotkey = new Hotkey(new HotkeyModel(ServiceName.None, Keys.None, Modifiers.None, false));
 
@@ -92,29 +76,7 @@ namespace Captura
             {
                 var hotkey = new Hotkey(model);
 
-                if (hotkey.IsActive && !hotkey.IsRegistered)
-                    _notRegisteredOnStartup.Add(hotkey);
-
                 _hotkeys.Add(hotkey);
-            }
-        }
-
-        readonly List<Hotkey> _notRegisteredOnStartup = new List<Hotkey>();
-
-        public void ShowNotRegisteredOnStartup()
-        {
-            if (_notRegisteredOnStartup.Count > 0)
-            {
-                var message = "The following Hotkeys could not be registered:\nOther programs might be using them.\nTry changing them.\n\n";
-
-                foreach (var hotkey in _notRegisteredOnStartup)
-                {
-                    message += $"{hotkey.Service.Description} - {hotkey}\n\n";
-                }
-
-                ServiceProvider.MessageProvider.ShowError(message, "Failed to Register Hotkeys");
-
-                _notRegisteredOnStartup.Clear();
             }
         }
 

@@ -12,12 +12,7 @@ namespace Captura.Models
         public Service Service
         {
             get => _service;
-            set
-            {
-                _service = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _service, value);
         }
 
         public Hotkey(HotkeyModel Model)

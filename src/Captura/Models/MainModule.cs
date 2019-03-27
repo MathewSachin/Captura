@@ -1,4 +1,5 @@
 ﻿using System;
+using Captura.FFmpeg;
 using Captura.Models;
 using Hardcodet.Wpf.TaskbarNotification;
 
@@ -15,13 +16,13 @@ namespace Captura
             Binder.Bind<IPreviewWindow, PreviewWindowService>();
             Binder.Bind<IVideoSourcePicker, VideoSourcePicker>();
             Binder.Bind<IAudioPlayer, AudioPlayer>();
+            Binder.Bind<IFFmpegViewsProvider, FFmpegViewsProvider>();
 
             Binder.BindSingleton<EditorWriter>();
             Binder.Bind<IImageWriterItem>(ServiceProvider.Get<EditorWriter>);
-
-            Binder.Bind<IWebCamProvider, WebCamProvider>();
             
             Binder.BindSingleton<AboutViewModel>();
+            Binder.BindSingleton<RegionSelectorViewModel>();
 
             // Bind as a Function to ensure the UI objects are referenced only after they have been created.
             Binder.Bind<Func<TaskbarIcon>>(() => () => MainWindow.Instance.SystemTray);

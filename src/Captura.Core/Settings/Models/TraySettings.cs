@@ -25,5 +25,11 @@
             get => Get(false);
             set => Set(value);
         }
+
+        public bool MinToTrayOnCaptureStart
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
     }
 }

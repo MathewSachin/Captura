@@ -1,5 +1,5 @@
 ﻿using System;
-using Captura.Native;
+using Captura;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D9;
 
@@ -12,7 +12,7 @@ namespace DesktopDuplication
         readonly Direct3DEx _direct3D;
         readonly DeviceEx _device;
 
-        public D3D9PreviewAssister()
+        public D3D9PreviewAssister(IPlatformServices PlatformServices)
         {
             _direct3D = new Direct3DEx();
 
@@ -20,7 +20,7 @@ namespace DesktopDuplication
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
-                DeviceWindowHandle = User32.GetDesktopWindow(),
+                DeviceWindowHandle = PlatformServices.DesktopWindow.Handle,
                 PresentationInterval = PresentInterval.Default
             };
 

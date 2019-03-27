@@ -14,7 +14,6 @@
     <ApplicationIcon>..\Captura\Images\Captura.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -28,9 +27,7 @@
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
     <ProjectReference Include="..\Captura.MouseKeyHook\Captura.MouseKeyHook.csproj" />
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj" />
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj" />
-    <ProjectReference Include="..\Captura.Webcam\Captura.Webcam.csproj" />
     <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />
     <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>

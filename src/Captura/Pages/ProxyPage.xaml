@@ -2,6 +2,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding ProxySettingsViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5,0">
         <StackPanel>
@@ -31,7 +32,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             
-            <Grid Visibility="{Binding CanHost, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Visibility="{Binding CanHost.Value, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -61,13 +62,13 @@
             </Grid>
 
             <CheckBox IsChecked="{Binding ProxySettings.Authenticate}"
-                      Visibility="{Binding CanAuth, Converter={StaticResource BoolToVisibilityConverter}}"
+                      Visibility="{Binding CanAuth.Value, Converter={StaticResource BoolToVisibilityConverter}}"
                       Margin="0,10,0,5">
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding UseProxyAuth, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
-            <Grid Visibility="{Binding CanAuthCred, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Visibility="{Binding CanAuthCred.Value, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
@@ -90,10 +91,10 @@
                        Margin="0,5,5,5"
                        Grid.Row="1"/>
 
-                <TextBox Text="{Binding ProxySettings.Password}"
-                         Grid.Row="1"
-                         Grid.Column="1"
-                         Margin="0,5"/>
+                <captura:ModernPasswordBox Password="{Binding ProxySettings.Password, Mode=TwoWay}"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           Margin="0,5"/>
             </Grid>
         </StackPanel>
     </Grid>

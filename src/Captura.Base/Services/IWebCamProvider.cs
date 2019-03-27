@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 
 namespace Captura.Models
 {
-    public interface IWebCamProvider : INotifyPropertyChanged
+    public interface IWebCamProvider
     {
-        ReadOnlyObservableCollection<IWebcamItem> AvailableCams { get; }
-
-        IWebcamItem SelectedCam { get; set; }
-
-        void Refresh();
-
-        IDisposable Capture(IBitmapLoader BitmapLoader);
-
-        int Width { get; }
-
-        int Height { get; }
+        IEnumerable<IWebcamItem> GetSources();
     }
 }

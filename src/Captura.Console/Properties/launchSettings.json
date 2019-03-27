@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Captura.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "start --encoder roll:20 --speaker 0"
+    }
+  }
+}

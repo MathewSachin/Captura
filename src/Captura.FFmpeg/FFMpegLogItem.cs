@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Text;
-using System.Windows.Input;
 
 namespace Captura.Models
 {
-    public class FFmpegLogItem : NotifyPropertyChanged
+    public class FFmpegLogItem : NotifyPropertyChanged, IFFmpegLogEntry
     {
         public string Name { get; }
 
-        public FFmpegLogItem(string Name, IClipboardService ClipboardService)
+        public string Args { get; }
+
+        public FFmpegLogItem(string Name, string Args)
         {
             this.Name = Name;
+            this.Args = Args;
 
-            CopyToClipboardCommand = new DelegateCommand(() =>
-            {
-                ClipboardService.SetText(_complete.ToString());
-            });
-
-            RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
+            _complete.AppendLine("ARGS:");
+            _complete.AppendLine("-------------");
+            _complete.AppendLine(Args);
+            _complete.AppendLine();
+            _complete.AppendLine("OUTPUT:");
+            _complete.AppendLine("-------------");
         }
 
         string _content = "", _frame = "";
@@ -41,29 +43,15 @@ namespace Captura.Models
         public string Frame
         {
             get => _frame;
-            private set
-            {
-                _frame = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _frame, value);
         }
 
         public string Content
         {
             get => _content;
-            private set
-            {
-                _content = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _content, value);
         }
 
-        public ICommand CopyToClipboardCommand { get; }
-
-        public ICommand RemoveCommand { get; }
-
-        public event Action RemoveRequested;
+        public string GetCompleteLog() => _complete.ToString();
     }
 }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -17,9 +18,11 @@ namespace Captura.ViewModels
 
             Check();
 
-            CheckCommand = new DelegateCommand(Check);
+            CheckCommand = new ReactiveCommand()
+                .WithSubscribe(Check);
 
-            GoToDownload = new DelegateCommand(UpdateChecker.GoToDownloadsPage);
+            GoToDownload = new ReactiveCommand()
+                .WithSubscribe(UpdateChecker.GoToDownloadsPage);
         }
 
         public string BuildName { get; }
@@ -64,34 +67,19 @@ namespace Captura.ViewModels
         public bool Checking
         {
             get => _checking;
-            private set
-            {
-                _checking = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _checking, value);
         }
 
         public bool UpdateAvailable
         {
             get => _available;
-            private set
-            {
-                _available = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _available, value);
         }
 
         public bool CheckFailed
         {
             get => _checkFailed;
-            private set
-            {
-                _checkFailed = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _checkFailed, value);
         }
 
         string _newVersion;
@@ -99,11 +87,7 @@ namespace Captura.ViewModels
         public string NewVersion
         {
             get => _newVersion;
-            private set
-            {
-                _newVersion = value;
-                OnPropertyChanged();
-            }
+            private set => Set(ref _newVersion, value);
         }
 
         public ICommand CheckCommand { get; }

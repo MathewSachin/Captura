@@ -15,7 +15,7 @@ namespace Captura.Tests.Views
         {
             App = Application.Launch(new ProcessStartInfo(TestManagerFixture.GetUiPath(), "--no-persist"));
 
-            MainWindow = App.GetWindow("Captura");
+            MainWindow = App.GetWindow(nameof(Captura));
         }
 
         public void Dispose()

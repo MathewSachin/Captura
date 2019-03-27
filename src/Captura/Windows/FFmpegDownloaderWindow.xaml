@@ -34,24 +34,15 @@
             <Label Margin="0,0,10,0"
                    Content="Download Progress"
                    ContentStringFormat="{}{0}:"/>
-            <ProgressBar Value="{Binding Progress, Mode=OneWay}"
+            <ProgressBar Value="{Binding Progress.Value, Mode=OneWay}"
                          Height="10"/>
         </DockPanel>
 
-        <Label Content="{Binding Status}"
+        <Label Content="{Binding Status.Value}"
                DockPanel.Dock="Top"
                Margin="0,10"
                HorizontalAlignment="Center"
                ContentStringFormat="{}Status: {0}"/>
-
-        <TextBlock DockPanel.Dock="Top"
-                   Margin="0,5"
-                   TextAlignment="Center"
-                   Style="{StaticResource TextColor}">
-            FFmpeg adds support for more output formats to Captura.<LineBreak/>
-            Latest build of FFmpeg is downloaded. This can also be used to update FFmpeg.<LineBreak/>
-            The Download size is nearly 30 MB.
-        </TextBlock>
 
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
@@ -76,20 +67,40 @@
                       Width="16"
                       Data="{Binding Icons.More, Source={StaticResource ServiceLocator}}"/>
             </Button>
-            <Border ToolTip="{Binding TargetFolder, Mode=OneWay}"
+            <Border ToolTip="{Binding FFmpegSettings.FolderPath, Mode=OneWay}"
                     MouseUp="SelectTargetFolder">
                 <TextBox IsReadOnly="True"
                          IsEnabled="False"
-                         Text="{Binding TargetFolder, Mode=OneWay}"/>
+                         Text="{Binding FFmpegSettings.FolderPath, Mode=OneWay}"/>
             </Border>
         </DockPanel>
+
+        <TextBlock DockPanel.Dock="Bottom"
+                   Margin="0,5"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource TextColor}"
+                   Opacity="0.9">
+            FFmpeg adds support for more output formats to Captura.<LineBreak/>
+            Latest build of FFmpeg is downloaded. This can also be used to update FFmpeg.<LineBreak/>
+            The Download size is nearly 70 MB.
+        </TextBlock>
+
+        <Grid HorizontalAlignment="Center"
+              Margin="0,10"
+              DockPanel.Dock="Top">
+            <Button Content="Start Download"
+                    Command="{Binding StartCommand}"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Button Content="Cancel Download"
+                    IsEnabled="{Binding CanCancel.Value}"
+                    Click="CloseButton_Click"
+                    Visibility="{Binding InProgress.Value, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Button Content="Finish"
+                    IsEnabled="{Binding IsDone.Value}"
+                    Click="CloseButton_Click"
+                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </Grid>
         
-        <Button Content="{Binding ActionDescription}"
-                Command="{Binding StartCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,10"
-                DockPanel.Dock="Top"/>
-        
-        <mui:ModernProgressRing IsActive="{Binding IsDownloading}"/>
+        <mui:ModernProgressRing IsActive="{Binding InProgress.Value}"/>
     </DockPanel>
 </Window>

@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using System.IO.Pipes;
 using System.Threading.Tasks;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
     /// <summary>
     /// Encode Video using FFmpeg.exe
     /// </summary>
-    public class FFmpegWriter : IVideoFileWriter
+    class FFmpegWriter : IVideoFileWriter
     {
         readonly NamedPipeServerStream _audioPipe;
 
@@ -41,8 +42,9 @@ namespace Captura.Models
                 .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
-                .AddArg(Args.VideoArgsProvider(Args.VideoQuality))
                 .SetFrameRate(Args.FrameRate);
+
+            Args.VideoCodec.Apply(settings, Args, output);
             
             if (settings.Resize)
             {
@@ -69,7 +71,7 @@ namespace Captura.Models
                     .SetAudioFrequency(Args.Frequency)
                     .SetAudioChannels(Args.Channels);
 
-                output.AddArg(Args.AudioArgsProvider(Args.AudioQuality));
+                Args.VideoCodec.AudioArgsProvider(Args.AudioQuality, output);
 
                 // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
                 var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);
@@ -78,8 +80,6 @@ namespace Captura.Models
             }
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
-
-            output.AddArg(Args.OutputArgs);
 
             _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName);
         }
@@ -116,7 +116,7 @@ namespace Captura.Models
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occurred with FFmpeg");
+                throw new FFmpegException( _ffmpegProcess.ExitCode);
             }
 
             if (_firstAudio)
@@ -146,7 +146,7 @@ namespace Captura.Models
             if (_ffmpegProcess.HasExited)
             {
                 Frame.Dispose();
-                throw new Exception($"An Error Occurred with FFmpeg, Exit Code: {_ffmpegProcess.ExitCode}");
+                throw new FFmpegException(_ffmpegProcess.ExitCode);
             }
             
             if (_firstFrame)
@@ -169,7 +169,14 @@ namespace Captura.Models
                 }
             }
 
-            _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+            try
+            {
+                _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+            }
+            catch (Exception e) when (_ffmpegProcess.HasExited)
+            {
+                throw new FFmpegException(_ffmpegProcess.ExitCode, e);
+            }
         }
     }
 }

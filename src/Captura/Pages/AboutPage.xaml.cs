@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using Captura.Views;
 using Microsoft.Win32;
 
@@ -53,9 +52,12 @@ namespace Captura
 
             if (ofd.ShowDialog().GetValueOrDefault())
             {
-                var img = (Bitmap)Image.FromFile(ofd.FileName);
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                await img.UploadImage();
+                using (var img = imgSystem.LoadBitmap(ofd.FileName))
+                {
+                    await img.UploadImage();
+                }
             }
         }
     }

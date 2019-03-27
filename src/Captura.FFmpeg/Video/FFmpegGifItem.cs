@@ -1,12 +1,8 @@
 ﻿namespace Captura.Models
 {
     // ReSharper disable once InconsistentNaming
-    public class FFmpegGifItem : IVideoWriterItem
+    class FFmpegGifItem : IVideoWriterItem
     {
-        FFmpegGifItem() { }
-
-        public static FFmpegGifItem Instance { get; } = new FFmpegGifItem();
-
         public string Extension { get; } = "gif";
 
         public IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)

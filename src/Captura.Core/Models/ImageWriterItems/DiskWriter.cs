@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Screna;
 
@@ -12,13 +10,13 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IRecentList _recentList;
 
         public DiskWriter(ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             IRecentList RecentList)
         {
             _systemTray = SystemTray;
@@ -30,15 +28,11 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             try
             {
-                _settings.EnsureOutPath();
-
-                var extension = Format.Equals(ImageFormat.Icon) ? "ico"
-                    : Format.Equals(ImageFormat.Jpeg) ? "jpg"
-                    : Format.ToString().ToLower();
+                var extension = Format.ToString().ToLower();
 
                 var fileName = _settings.GetFileName(extension, FileName);
 
@@ -67,12 +61,7 @@ namespace Captura.Models
         public bool Active
         {
             get => _active;
-            set
-            {
-                _active = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _active, value);
         }
 
         public override string ToString() => Display;

@@ -5,9 +5,9 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     class FakeSystemTray : ISystemTray
     {
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
-        public FakeSystemTray(LanguageManager Loc)
+        public FakeSystemTray(ILocalizationProvider Loc)
         {
             _loc = Loc;
         }

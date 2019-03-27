@@ -24,8 +24,8 @@
                         Padding="10,0"
                         Margin="3,0"/>
 
-                <ComboBox ItemsSource="{Binding WebCamProvider.AvailableCams, Source={StaticResource ServiceLocator}}"
-                          SelectedItem="{Binding WebCamProvider.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                <ComboBox ItemsSource="{Binding WebcamModel.AvailableCams, Source={StaticResource ServiceLocator}}"
+                          SelectedItem="{Binding WebcamModel.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                           IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
                           DisplayMemberPath="Name"
                           Name="WebcamComboBox"/>
@@ -34,6 +34,7 @@
             <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
                       Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
                       IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                      Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                       Margin="0,5"/>
         </StackPanel>
     </Grid>

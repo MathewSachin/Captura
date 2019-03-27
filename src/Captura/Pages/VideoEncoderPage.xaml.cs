@@ -1,4 +1,5 @@
-﻿using Captura.ViewModels;
+﻿using System.Windows;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -12,6 +13,11 @@ namespace Captura
             {
                 vm.Refreshed += () => VideoWriterComboBox.Shake();
             }
+        }
+
+        void OpenFFmpegLog(object Sender, RoutedEventArgs E)
+        {
+            FFmpegLogWindow.ShowInstance();
         }
     }
 }

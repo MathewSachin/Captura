@@ -11,10 +11,12 @@ namespace Captura.Models
     public class MessageProvider : IMessageProvider
     {
         readonly IAudioPlayer _audioPlayer;
+        readonly ILocalizationProvider _loc;
 
-        public MessageProvider(IAudioPlayer AudioPlayer)
+        public MessageProvider(IAudioPlayer AudioPlayer, ILocalizationProvider Loc)
         {
             _audioPlayer = AudioPlayer;
+            _loc = Loc;
         }
 
         public void ShowError(string Message, string Header = null)
@@ -23,7 +25,7 @@ namespace Captura.Models
             {
                 var dialog = new ModernDialog
                 {
-                    Title = LanguageManager.Instance.ErrorOccurred,
+                    Title = _loc.ErrorOccurred,
                     Content = new StackPanel
                     {
                         Children =
@@ -45,7 +47,7 @@ namespace Captura.Models
                     }
                 };
 
-                dialog.OkButton.Content = LanguageManager.Instance.Ok;
+                dialog.OkButton.Content = _loc.Ok;
                 dialog.Buttons = new[] { dialog.OkButton };
 
                 dialog.BackgroundContent = new Grid
@@ -61,39 +63,11 @@ namespace Captura.Models
             });
         }
 
-        public void ShowFFmpegUnavailable()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var dialog = new ModernDialog
-                {
-                    Title = "FFmpeg Unavailable",
-                    Content = "FFmpeg was not found on your system.\n\nSelect FFmpeg Folder if you alrady have FFmpeg on your system, else Download FFmpeg."
-                };
-
-                // Yes -> Select FFmpeg Folder
-                dialog.YesButton.Content = LanguageManager.Instance.SelectFFmpegFolder;
-                dialog.YesButton.Click += (S, E) => FFmpegService.SelectFFmpegFolder();
-
-                // No -> Download FFmpeg
-                dialog.NoButton.Content = "Download FFmpeg";
-                dialog.NoButton.Click += (S, E) => FFmpegService.FFmpegDownloader?.Invoke();
-
-                dialog.CancelButton.Content = "Cancel";
-
-                dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton, dialog.CancelButton };
-
-                _audioPlayer.Play(SoundKind.Error);
-
-                dialog.ShowDialog();
-            });
-        }
-
         public void ShowException(Exception Exception, string Message, bool Blocking = false)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var win = new ExceptionWindow(Exception, Message);
+                var win = new ErrorWindow(Exception, Message);
 
                 _audioPlayer.Play(SoundKind.Error);
 
@@ -122,10 +96,10 @@ namespace Captura.Models
 
                 var result = false;
 
-                dialog.YesButton.Content = LanguageManager.Instance.Yes;
+                dialog.YesButton.Content = _loc.Yes;
                 dialog.YesButton.Click += (S, E) => result = true;
 
-                dialog.NoButton.Content = LanguageManager.Instance.No;
+                dialog.NoButton.Content = _loc.No;
 
                 dialog.Buttons = new[] { dialog.YesButton, dialog.NoButton };
 

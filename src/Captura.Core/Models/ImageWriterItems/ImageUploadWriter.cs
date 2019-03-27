@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Screna;
 
@@ -13,7 +11,7 @@ namespace Captura.Models
         readonly ISystemTray _systemTray;
         readonly IMessageProvider _messageProvider;
         readonly Settings _settings;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IRecentList _recentList;
 
         readonly IImageUploader _imgUploader;
@@ -22,7 +20,7 @@ namespace Captura.Models
             ISystemTray SystemTray,
             IMessageProvider MessageProvider,
             Settings Settings,
-            LanguageManager LanguageManager,
+            ILocalizationProvider Loc,
             IRecentList RecentList,
             IImageUploader ImgUploader)
         {
@@ -32,13 +30,13 @@ namespace Captura.Models
             _systemTray = SystemTray;
             _messageProvider = MessageProvider;
             _settings = Settings;
-            _loc = LanguageManager;
+            _loc = Loc;
             _recentList = RecentList;
 
-            LanguageManager.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
+            Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public async Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public async Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             var response = await Save(Image, Format);
 
@@ -68,7 +66,7 @@ namespace Captura.Models
         }
 
         // Returns UploadResult on success, Exception on failure
-        public async Task<object> Save(Bitmap Image, ImageFormat Format)
+        public async Task<object> Save(IBitmapImage Image, ImageFormats Format)
         {
             var progressItem = new ImageUploadNotification();
             _systemTray.ShowNotification(progressItem);
@@ -100,12 +98,7 @@ namespace Captura.Models
         public bool Active
         {
             get => _active;
-            set
-            {
-                _active = value;
-
-                OnPropertyChanged();
-            }
+            set => Set(ref _active, value);
         }
 
         public override string ToString() => Display;

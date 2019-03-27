@@ -28,6 +28,11 @@ namespace Captura
             };
         }
 
+        public Settings(FFmpegSettings FFmpeg)
+        {
+            this.FFmpeg = FFmpeg;
+        }
+
         static string GetPath() => Path.Combine(ServiceProvider.SettingsDir, "Captura.json");
 
         public bool Load()
@@ -64,12 +69,6 @@ namespace Captura
             }
         }
 
-        public void EnsureOutPath()
-        {
-            if (!Directory.Exists(OutPath))
-                Directory.CreateDirectory(OutPath);
-        }
-
         public ProxySettings Proxy { get; } = new ProxySettings();
 
         public ImgurSettings Imgur { get; } = new ImgurSettings();
@@ -97,9 +96,7 @@ namespace Captura
 
         public AudioSettings Audio { get; } = new AudioSettings();
 
-        public FFmpegSettings FFmpeg { get; } = new FFmpegSettings();
-
-        public GifSettings Gif { get; } = new GifSettings();
+        public FFmpegSettings FFmpeg { get; }
 
         public ObservableCollection<CustomOverlaySettings> TextOverlays { get; } = new ObservableCollection<CustomOverlaySettings>();
 
@@ -135,6 +132,21 @@ namespace Captura
             set => Set(value);
         }
 
+        public string GetOutputPath()
+        {
+            var path = OutPath;
+
+            // If Output Dircetory is not set. Set it to Documents\Captura\
+            path = string.IsNullOrWhiteSpace(path)
+                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura))
+                : path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
+            
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            return path;
+        }
+
         public string FilenameFormat
         {
             get => Get("%yyyy%-%MM%-%dd%-%HH%-%mm%-%ss%");
@@ -149,8 +161,10 @@ namespace Captura
             if (!Extension.StartsWith("."))
                 Extension = $".{Extension}";
 
+            var outPath = GetOutputPath();
+
             if (string.IsNullOrWhiteSpace(FilenameFormat))
-                return Path.Combine(OutPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
+                return Path.Combine(outPath, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}{Extension}");
 
             var now = DateTime.Now;
 
@@ -174,7 +188,7 @@ namespace Captura
                 .Replace("%tt%", now.ToString("tt"))
                 .Replace("%zzz%", now.ToString("zzz"));
             
-            var path = Path.Combine(OutPath, $"{filename}{Extension}");
+            var path = Path.Combine(outPath, $"{filename}{Extension}");
 
             if (!File.Exists(path))
                 return path;
@@ -183,7 +197,7 @@ namespace Captura
 
             do
             {
-                path = Path.Combine(OutPath, $"{filename} ({i++}){Extension}");
+                path = Path.Combine(outPath, $"{filename} ({i++}){Extension}");
             }
             while (File.Exists(path));
 

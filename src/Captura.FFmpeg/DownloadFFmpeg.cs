@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Captura.ViewModels
+namespace Captura.Models
 {
     public static class DownloadFFmpeg
     {

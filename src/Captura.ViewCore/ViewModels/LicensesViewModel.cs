@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Reflection;
 using Captura.Models;
 
 namespace Captura.ViewModels
@@ -10,9 +9,7 @@ namespace Captura.ViewModels
     {
         public LicensesViewModel()
         {
-            var selfPath = Assembly.GetEntryAssembly().Location;
-
-            var folder = Path.Combine(Path.GetDirectoryName(selfPath), "licenses");
+            var folder = Path.Combine(ServiceProvider.AppDir, "licenses");
 
             if (Directory.Exists(folder))
             {
@@ -32,12 +29,7 @@ namespace Captura.ViewModels
         public FileContentItem SelectedLicense
         {
             get => _selectedLicense;
-            set
-            {
-                _selectedLicense = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedLicense, value);
         }
     }
 }

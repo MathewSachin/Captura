@@ -68,12 +68,6 @@
                                         ToolTip="No of seconds after which recording is stopped automatically. 0 = don't stop automatically"/>
                 </Grid>
 
-                <CheckBox IsChecked="{Binding Settings.UI.MinimizeOnStart}"
-                          Margin="0,2">
-                    <TextBlock TextWrapping="Wrap"
-                               Text="{Binding MinCapture, Source={StaticResource Loc}, Mode=OneWay}"/>
-                </CheckBox>
-
                 <CheckBox IsChecked="{Binding Settings.CopyOutPathToClipboard}"
                           Margin="0,2">
                     <TextBlock TextWrapping="Wrap"

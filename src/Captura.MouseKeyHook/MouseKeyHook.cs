@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Screna;
 
 namespace Captura.Models
 {
@@ -249,14 +248,17 @@ namespace Captura.Models
 
                 if ((DateTime.Now - keyRecord.TimeStamp).TotalSeconds > _records.Size * _keystrokesSettings.Timeout)
                     continue;
-                
-                DrawKeys(_keystrokesSettings, Editor, keyRecord.Display, Math.Max(1, fontSize), opacity, offsetY);
 
-                var height = Editor.MeasureString("A", fontSize).Height;
+                using (var font = Editor.GetFont(_keystrokesSettings.FontFamily, Math.Max(1, fontSize)))
+                {
+                    DrawKeys(_keystrokesSettings, Editor, keyRecord.Display, font, opacity, offsetY);
 
-                offsetY += height + _keystrokesSettings.HistorySpacing;
+                    var height = Editor.MeasureString("A", font).Height;
 
-                offsetY += _keystrokesSettings.VerticalPadding * 2 + _keystrokesSettings.BorderThickness * 2;
+                    offsetY += height + _keystrokesSettings.HistorySpacing;
+
+                    offsetY += _keystrokesSettings.VerticalPadding * 2 + _keystrokesSettings.BorderThickness * 2;
+                }
 
                 if (index == 1)
                 {
@@ -266,9 +268,9 @@ namespace Captura.Models
             }
         }
 
-        static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, int FontSize, byte Opacity, float OffsetY)
+        static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, IFont Font, byte Opacity, float OffsetY)
         {
-            var size = Editor.MeasureString(Text, FontSize);
+            var size = Editor.MeasureString(Text, Font);
 
             int paddingX = KeystrokesSettings.HorizontalPadding, paddingY = KeystrokesSettings.VerticalPadding;
 
@@ -282,7 +284,7 @@ namespace Captura.Models
                 KeystrokesSettings.CornerRadius);
             
             Editor.DrawString(Text,
-                FontSize,
+                Font,
                 Color.FromArgb(Opacity, KeystrokesSettings.FontColor),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
@@ -355,7 +357,9 @@ namespace Captura.Models
             {
                 var clickRadius = _mouseClickSettings.Radius * _currentMouseRatio;
 
-                var curPos = MouseCursor.CursorPosition;
+                var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                var curPos = platformServices.CursorPosition;
 
                 if (Transform != null)
                     curPos = Transform(curPos);

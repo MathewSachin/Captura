@@ -4,35 +4,46 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Captura.FFmpeg;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
+        bool _persist;
+
+        readonly RememberByName _rememberByName;
         readonly IDialogService _dialogService;
 
         public ICommand ShowPreviewCommand { get; }
         public ICommand RefreshCommand { get; }
         public ICommand OpenOutputFolderCommand { get; }
         public ICommand SelectOutputFolderCommand { get; }
-        public ICommand SelectFFmpegFolderCommand { get; } = new DelegateCommand(FFmpegService.SelectFFmpegFolder);
+        public ICommand SelectFFmpegFolderCommand { get; }
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
         public MainViewModel(Settings Settings,
-            LanguageManager LanguageManager,
+            ILocalizationProvider Loc,
             HotKeyManager HotKeyManager,
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
             RecordingModel RecordingModel,
-            MainModel MainModel) : base(Settings, LanguageManager)
+            IEnumerable<IRefreshable> Refreshables,
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            RememberByName RememberByName) : base(Settings, Loc)
         {
             _dialogService = DialogService;
+            _rememberByName = RememberByName;
 
-            ShowPreviewCommand = new DelegateCommand(PreviewWindow.Show);
+            ShowPreviewCommand = new ReactiveCommand()
+                .WithSubscribe(PreviewWindow.Show);
+
+            SelectFFmpegFolderCommand = new ReactiveCommand()
+                .WithSubscribe(FFmpegViewsProvider.PickFolder);
 
             #region Commands
             RefreshCommand = RecordingModel
@@ -41,50 +52,76 @@ namespace Captura.ViewModels
                 .ToReactiveCommand()
                 .WithSubscribe(() =>
                 {
-                    MainModel.Refresh();
+                    foreach (var refreshable in Refreshables)
+                    {
+                        refreshable.Refresh();
+                    }
 
                     Refreshed?.Invoke();
                 });
 
-            OpenOutputFolderCommand = new DelegateCommand(OpenOutputFolder);
+            OpenOutputFolderCommand = new ReactiveCommand()
+                .WithSubscribe(OpenOutputFolder);
 
-            SelectOutputFolderCommand = new DelegateCommand(SelectOutputFolder);
+            SelectOutputFolderCommand = new ReactiveCommand()
+                .WithSubscribe(SelectOutputFolder);
 
-            ResetFFmpegFolderCommand = new DelegateCommand(() => Settings.FFmpeg.FolderPath = "");
+            ResetFFmpegFolderCommand = new ReactiveCommand()
+                .WithSubscribe(() => Settings.FFmpeg.FolderPath = "");
 
-            TrayLeftClickCommand = new DelegateCommand(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
+            TrayLeftClickCommand = new ReactiveCommand()
+                .WithSubscribe(() => HotKeyManager.FakeHotkey(Settings.Tray.LeftClickAction));
             #endregion
+        }
+
+        public void Init(bool Persist, bool Remembered)
+        {
+            _persist = Persist;
+
+            if (Remembered)
+            {
+                _rememberByName.RestoreRemembered();
+            }
         }
 
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Left)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Right))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Left)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Right))
         };
 
         public static IEnumerable<ObjectLocalizer<Alignment>> YAlignments { get; } = new[]
         {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(LanguageManager.Top)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(LanguageManager.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(LanguageManager.Bottom))
+            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Top)),
+            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
+            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Bottom))
         };
 
         void OpenOutputFolder()
         {
-            Settings.EnsureOutPath();
-
-            Process.Start(Settings.OutPath);
+            Process.Start(Settings.GetOutputPath());
         }
 
         void SelectOutputFolder()
         {
-            var folder = _dialogService.PickFolder(Settings.OutPath, Loc.SelectOutFolder);
+            var folder = _dialogService.PickFolder(Settings.GetOutputPath(), Loc.SelectOutFolder);
 
             if (folder != null)
                 Settings.OutPath = folder;
         }
 
         public event Action Refreshed;
+
+        public void Dispose()
+        {
+            // Remember things if not console.
+            if (!_persist)
+                return;
+
+            _rememberByName.Remember();
+
+            Settings.Save();
+        }
     }
 }

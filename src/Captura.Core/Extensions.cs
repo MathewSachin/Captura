@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
-using Captura.ViewModels;
 using Screna;
 
 namespace Captura
@@ -16,18 +14,18 @@ namespace Captura
                 Command.Execute(null);
         }
 
-        public static async Task UploadImage(this Bitmap Bitmap)
+        public static async Task UploadImage(this IBitmapImage Bitmap)
         {
             var uploadWriter = ServiceProvider.Get<ImageUploadWriter>();
 
-            var shotVm = ServiceProvider.Get<ScreenShotModel>();
+            var settings = ServiceProvider.Get<Settings>();
 
-            var response = await uploadWriter.Save(Bitmap, shotVm.SelectedScreenShotImageFormat);
+            var response = await uploadWriter.Save(Bitmap, settings.ScreenShots.ImageFormat);
 
             switch (response)
             {
                 case Exception ex:
-                    var loc = ServiceProvider.Get<LanguageManager>();
+                    var loc = ServiceProvider.Get<ILocalizationProvider>();
                     ServiceProvider.MessageProvider.ShowException(ex, loc.ImageUploadFailed);
                     break;
 

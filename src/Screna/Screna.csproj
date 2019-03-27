@@ -1,17 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
     <ProjectReference Include="..\Captura.Loc\Captura.Loc.csproj" />
-    <ProjectReference Include="..\Captura.Native\Captura.Native.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Ookii.Dialogs.WindowsForms" Version="1.0.0" />
   </ItemGroup>
 </Project>

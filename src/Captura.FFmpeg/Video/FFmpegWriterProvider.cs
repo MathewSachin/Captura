@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
@@ -17,26 +18,25 @@ namespace Captura.Models
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            foreach (var codec in FFmpegItem.Encoders)
-            {
-                yield return codec;
-            }
+            yield return new X264VideoCodec();
+            yield return new XvidVideoCodec();
 
-            yield return FFmpegGifItem.Instance;
+            // Gif
+            yield return new FFmpegGifItem();
 
-            foreach (var codec in FFmpegItem.HardwareEncoders)
-            {
-                yield return codec;
-            }
+            // Hardware
+            yield return new QsvHevcVideoCodec();
+            yield return NvencVideoCodec.CreateH264();
+            yield return NvencVideoCodec.CreateHevc();
 
-            foreach (var codec in FFmpegPostProcessingItem.Items)
-            {
-                yield return codec;
-            }
+            // Post-processing
+            yield return new Vp8VideoCodec();
+            yield return new Vp9VideoCodec();
 
+            // Custom
             foreach (var item in _settings.CustomCodecs)
             {
-                yield return new FFmpegItem(item);
+                yield return new CustomFFmpegVideoCodec(item);
             }
         }
 

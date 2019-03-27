@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
@@ -10,8 +11,12 @@ namespace Captura.Models
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
-            return StreamingItem.StreamingItems.GetEnumerator();
+            yield return new TwitchVideoCodec();
+            yield return new YouTubeLiveVideoCodec();
+            yield return new CustomStreamingVideoCodec();
         }
+
+        public static IVideoWriterItem GetCustomStreamingCodec() => new CustomStreamingVideoCodec();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

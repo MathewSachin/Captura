@@ -3,12 +3,11 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FullScreenSourceProvider : VideoSourceProviderBase
     {
-        public FullScreenSourceProvider(LanguageManager Loc,
+        public FullScreenSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
-            // ReSharper disable once SuggestBaseTypeForParameter
-            FullScreenItem FullScreenItem) : base(Loc)
+            IPlatformServices PlatformServices) : base(Loc)
         {
-            Source = FullScreenItem;
+            Source = new FullScreenItem(PlatformServices);
             Icon = Icons.MultipleMonitor;
         }
 
@@ -26,7 +25,7 @@ namespace Captura.Models
 
         public override bool ParseCli(string Arg)
         {
-            return Arg == "desktop";
+            return string.IsNullOrWhiteSpace(Arg) || Arg == "desktop";
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Captura.Models
 
         bool IsVisible { get; }
 
+        bool IsMaximized { get; }
+
         IntPtr Handle { get; }
 
         string Title { get; }

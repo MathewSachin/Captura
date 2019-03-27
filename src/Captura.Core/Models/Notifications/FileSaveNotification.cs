@@ -4,21 +4,20 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using Captura.Models;
-using Captura.Native;
 
 namespace Captura
 {
     public class FileSaveNotification : NotifyPropertyChanged, INotification
     {
         readonly FileRecentItem _recentItem;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
         readonly IIconSet _icons;
 
         public FileSaveNotification(FileRecentItem RecentItem)
         {
             _recentItem = RecentItem;
 
-            _loc = ServiceProvider.Get<LanguageManager>();
+            _loc = ServiceProvider.Get<ILocalizationProvider>();
             _icons = ServiceProvider.Get<IIconSet>();
 
             PrimaryText = $"Saving {_recentItem.FileType} ...";
@@ -38,7 +37,9 @@ namespace Captura
             {
                 if (File.Exists(_recentItem.FileName))
                 {
-                    if (Shell32.FileOperation(_recentItem.FileName, FileOperationType.Delete, 0) != 0)
+                    var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                    if (!platformServices.DeleteFile(_recentItem.FileName))
                         return;
                 }
 
@@ -78,12 +79,7 @@ namespace Captura
         public string PrimaryText
         {
             get => _primaryText;
-            private set
-            {
-                _primaryText = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _primaryText, value);
         }
 
         public string SecondaryText { get; }
@@ -93,12 +89,7 @@ namespace Captura
         public bool Finished
         {
             get => _finished;
-            private set
-            {
-                _finished = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _finished, value);
         }
     }
 }

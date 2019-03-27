@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Captura.Models
@@ -5,19 +6,23 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NoVideoSourceProvider : VideoSourceProviderBase
     {
-        public NoVideoSourceProvider(LanguageManager Loc,
-            IIconSet Icons) : base(Loc)
+        public NoVideoSourceProvider(ILocalizationProvider Loc,
+            IIconSet Icons,
+            IEnumerable<IAudioWriterItem> AudioWriterItems) : base(Loc)
         {
-            Sources = new IVideoItem[] {WaveItem.Instance}
-                .Concat(FFmpegAudioItem.Items)
-                .ToArray();
+            Sources = AudioWriterItems
+                .Select(M => new NoVideoItem(M))
+                .ToArray<IVideoItem>();
 
             Icon = Icons.NoVideo;
+
+            if (Sources.Length > 0)
+                SelectedSource = Sources[0];
         }
 
         public IVideoItem[] Sources { get; }
 
-        IVideoItem _selectedSource = WaveItem.Instance;
+        IVideoItem _selectedSource;
 
         public IVideoItem SelectedSource
         {

@@ -29,26 +29,14 @@ namespace Captura.ViewModels
                 .Select(M => M > 1)
                 .ToReadOnlyReactivePropertySlim();
 
-            IsGifMode = VideoWritersViewModel
+            IsFFmpeg = VideoWritersViewModel
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
-                .Select(M => M is GifWriterProvider)
-                .ToReadOnlyReactivePropertySlim();
-
-            CanSelectFrameRate = new[]
-                {
-                    VideoWritersViewModel
-                        .ObserveProperty(M => M.SelectedVideoWriterKind)
-                        .Select(M => M is GifWriterProvider),
-                    Settings.Gif
-                        .ObserveProperty(M => M.VariableFrameRate)
-                }
-                .CombineLatestValuesAreAllTrue()
-                .Select(M => !M)
+                .Select(M => M is FFmpegWriterProvider || M is StreamingWriterProvider)
                 .ToReadOnlyReactivePropertySlim();
 
             IsVideoQuality = VideoWritersViewModel
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
-                .Select(M => !(M is GifWriterProvider || M is DiscardWriterProvider))
+                .Select(M => !(M is DiscardWriterProvider))
                 .ToReadOnlyReactivePropertySlim();
 
             CanChangeWebcam = new[]
@@ -57,9 +45,24 @@ namespace Captura.ViewModels
                         .ObserveProperty(M => M.RecorderState)
                         .Select(M => M == RecorderState.NotRecording),
                     Settings.WebcamOverlay
-                        .ObserveProperty(M => M.SeparateFile)
+                        .ObserveProperty(M => M.SeparateFile),
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is WebcamSourceProvider)
                 }
-                .CombineLatest(M => !M[1] || M[0]) // Not SeparateFile or NotRecording
+                .CombineLatest(M =>
+                {
+                    var notRecording = M[0];
+                    var separateFile = M[1];
+                    var webcamMode = M[2];
+
+                    if (webcamMode)
+                    {
+                        return notRecording;
+                    }
+
+                    return !separateFile || notRecording;
+                })
                 .ToReadOnlyReactivePropertySlim();
 
             CanChangeAudioSources = new[]
@@ -71,13 +74,25 @@ namespace Captura.ViewModels
                         .ObserveProperty(M => M.SeparateFilePerSource)
                 }
                 .CombineLatest(M =>
-                    AudioSource.CanChangeSourcesDuringRecording ||
-                    !M[1] || M[0]) // Not SeparateFilePerSource or NotRecording
+                {
+                    var notRecording = M[0];
+                    var separateFilePerSource = M[1];
+
+                    if (notRecording)
+                        return true;
+
+                    return !separateFilePerSource && AudioSource.CanChangeSourcesDuringRecording;
+                })
                 .ToReadOnlyReactivePropertySlim();
 
             IsEnabled = RecordingModel
                 .ObserveProperty(M => M.RecorderState)
                 .Select(M => M == RecorderState.NotRecording)
+                .ToReadOnlyReactivePropertySlim();
+
+            CanWebcamSeparateFile = VideoSourcesViewModel
+                .ObserveProperty(M => M.SelectedVideoSourceKind)
+                .Select(M => !(M is WebcamSourceProvider))
                 .ToReadOnlyReactivePropertySlim();
         }
 
@@ -87,9 +102,7 @@ namespace Captura.ViewModels
 
         public IReadOnlyReactiveProperty<bool> MultipleVideoWriters { get; }
 
-        public IReadOnlyReactiveProperty<bool> IsGifMode { get; }
-
-        public IReadOnlyReactiveProperty<bool> CanSelectFrameRate { get; }
+        public IReadOnlyReactiveProperty<bool> IsFFmpeg { get; }
 
         public IReadOnlyReactiveProperty<bool> IsVideoQuality { get; }
 
@@ -98,5 +111,7 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> CanChangeAudioSources { get; }
 
         public IReadOnlyReactiveProperty<bool> IsEnabled { get; }
+
+        public IReadOnlyReactiveProperty<bool> CanWebcamSeparateFile { get; }
     }
 }

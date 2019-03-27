@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using Captura.Audio;
 using Moq;
-using Screna;
 
 namespace Captura.Tests
 {
@@ -19,7 +17,11 @@ namespace Captura.Tests
 
             mock.Setup(M => M.Height).Returns(Height);
 
-            mock.Setup(M => M.Capture()).Returns(new GraphicsEditor(new Bitmap(Width, Height)));
+            var editorMock = new Mock<IEditableFrame>();
+            editorMock.Setup(M => M.Width).Returns(Width);
+            editorMock.Setup(M => M.Height).Returns(Height);
+
+            mock.Setup(M => M.Capture()).Returns(editorMock.Object);
 
             return mock;
         }
@@ -54,5 +56,7 @@ namespace Captura.Tests
         {
             return new Mock<IOverlay>();
         }
+
+        public T GetService<T>() => ServiceProvider.Get<T>();
     }
 }

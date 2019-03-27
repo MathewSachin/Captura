@@ -4,12 +4,13 @@ namespace Captura.Models
 {
     public class Service : NotifyPropertyChanged
     {
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
         public Service(ServiceName ServiceName)
         {
             this.ServiceName = ServiceName;
-            _loc = LanguageManager.Instance;
+
+            _loc = ServiceProvider.Get<ILocalizationProvider>();
 
             _loc.LanguageChanged += L => RaisePropertyChanged(nameof(Description));
         }

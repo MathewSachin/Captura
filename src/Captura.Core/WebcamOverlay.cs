@@ -1,27 +1,24 @@
-﻿using System;
-using System.Drawing;
+﻿using Captura.ViewModels;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamOverlay : ImageOverlay<WebcamOverlaySettings>
     {
-        readonly IWebCamProvider _webCamProvider;
+        readonly WebcamModel _webcamModel;
 
-        public WebcamOverlay(IWebCamProvider WebCamProvider, Settings Settings) : base(Settings.WebcamOverlay, true)
+        public WebcamOverlay(WebcamModel WebcamModel, Settings Settings) : base(Settings.WebcamOverlay, true)
         {
-            _webCamProvider = WebCamProvider;
+            _webcamModel = WebcamModel;
         }
 
-        protected override IDisposable GetImage(IEditableFrame Editor, out Size Size)
+        protected override IBitmapImage GetImage(IEditableFrame Editor)
         {
-            Size = new Size(_webCamProvider.Width, _webCamProvider.Height);
-
             // No Webcam
-            if (_webCamProvider.AvailableCams.Count < 1 || _webCamProvider.SelectedCam == _webCamProvider.AvailableCams[0])
+            if (_webcamModel.AvailableCams.Count < 1 || _webcamModel.SelectedCam is NoWebcamItem)
                 return null;
 
-            return _webCamProvider.Capture(Editor);
+            return _webcamModel.WebcamCapture?.Capture(Editor);
         }
     }
 }

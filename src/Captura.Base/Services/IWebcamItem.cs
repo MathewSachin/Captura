@@ -1,9 +1,11 @@
-using System.ComponentModel;
+using System;
 
 namespace Captura.Models
 {
-    public interface IWebcamItem : INotifyPropertyChanged
+    public interface IWebcamItem
     {
         string Name { get; }
+
+        IWebcamCapture BeginCapture(Action OnClick);
     }
 }

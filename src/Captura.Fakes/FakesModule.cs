@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using Captura.FFmpeg;
+using Captura.Models;
 
 namespace Captura
 {
@@ -6,9 +7,6 @@ namespace Captura
     {
         public void OnLoad(IBinder Binder)
         {
-            // Webcam Provider
-            Binder.Bind<IWebCamProvider, CoreWebCamProvider>();
-
             Binder.Bind<IMessageProvider, FakeMessageProvider>();
             Binder.Bind<IRegionProvider>(() => FakeRegionProvider.Instance);
             Binder.Bind<ISystemTray, FakeSystemTray>();
@@ -16,6 +14,8 @@ namespace Captura
             Binder.Bind<IPreviewWindow, FakePreviewWindow>();
             Binder.Bind<IVideoSourcePicker>(() => FakeVideoSourcePicker.Instance);
             Binder.Bind<IAudioPlayer, FakeAudioPlayer>();
+            Binder.Bind<IFFmpegViewsProvider, FakeFFmpegViewsProvider>();
+            Binder.Bind<IFFmpegLogRepository, FakeFFmpegLogRepository>();
         }
 
         public void Dispose() { }

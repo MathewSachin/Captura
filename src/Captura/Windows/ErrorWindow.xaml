@@ -1,0 +1,76 @@
+﻿<Window x:Class="Captura.Views.ErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:captura="clr-namespace:Captura"
+        mc:Ignorable="d"
+        Title="{Binding ErrorOccurred, Source={StaticResource Loc}, Mode=OneWay}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <captura:ExceptionViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="C"
+                    Modifiers="Control"
+                    Command="{Binding CopyToClipboardCommand}"/>
+    </Window.InputBindings>
+    <DockPanel Background="{DynamicResource WindowBackground}"
+               MinWidth="400">
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="5,15,5,5">
+            <Button Click="OpenFFmpegLog">
+                <DockPanel>
+                    <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"/>
+                </DockPanel>
+            </Button>
+
+            <Button Margin="5,0"
+                    Command="{Binding CopyToClipboardCommand}">
+                <DockPanel>
+                    <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
+                          Width="15"
+                          Height="15"
+                          Margin="0,0,10,0"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+
+                    <TextBlock Text="{Binding CopyToClipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
+                </DockPanel>
+            </Button>
+
+            <Button Content="View Details"
+                    Click="ViewDetails_OnClick"/>
+        </StackPanel>
+
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="10">
+            <Path Data="{Binding Icons.Error, Source={StaticResource ServiceLocator}}"
+                  Width="15"
+                  Height="15"
+                  Margin="0,0,10,0"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Fill="LightPink"/>
+
+            <Label>
+                <TextBlock Text="{Binding Message}"
+                           TextWrapping="Wrap"/>
+            </Label>
+        </DockPanel>
+    </DockPanel>
+</Window>

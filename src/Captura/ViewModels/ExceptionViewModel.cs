@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Windows.Input;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Screna;
 
 namespace Captura
@@ -9,13 +12,11 @@ namespace Captura
     {
         public ExceptionViewModel()
         {
-            CopyToClipboardCommand = new DelegateCommand(() =>
-            {
-                if (Exceptions.Count > 0)
-                {
-                    Exceptions[0].ToString().WriteToClipboard();
-                }
-            });
+            CopyToClipboardCommand = Exceptions
+                .ObserveProperty(M => M.Count)
+                .Select(M => M > 0)
+                .ToReactiveCommand()
+                .WithSubscribe(() => Exceptions[0].ToString().WriteToClipboard());
         }
 
         string _message = "An unhandled exception occurred. Here are the details.";
@@ -23,12 +24,7 @@ namespace Captura
         public string Message
         {
             get => _message;
-            set
-            {
-                _message = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _message, value);
         }
 
         public void Init(Exception Exception, string Msg)
@@ -53,12 +49,7 @@ namespace Captura
         public Exception SelectedException
         {
             get => _selectedException;
-            set
-            {
-                _selectedException = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _selectedException, value);
         }
 
         public ICommand CopyToClipboardCommand { get; }

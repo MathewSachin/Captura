@@ -8,13 +8,15 @@ namespace Captura.Models
     public class RegionSourceProvider : VideoSourceProviderBase
     {
         readonly IRegionProvider _regionProvider;
-        static readonly RectangleConverter RectangleConverter = new RectangleConverter();
+        readonly IPlatformServices _platformServices;
 
-        public RegionSourceProvider(LanguageManager Loc,
+        public RegionSourceProvider(ILocalizationProvider Loc,
             IRegionProvider RegionProvider,
-            IIconSet Icons) : base(Loc)
+            IIconSet Icons,
+            IPlatformServices PlatformServices) : base(Loc)
         {
             _regionProvider = RegionProvider;
+            _platformServices = PlatformServices;
 
             Source = RegionProvider.VideoSource;
             Icon = Icons.Region;
@@ -34,6 +36,15 @@ namespace Captura.Models
         {
             _regionProvider.SelectorVisible = true;
 
+            var selectedRegion = _regionProvider.SelectedRegion;
+            var fullScreen = _platformServices.DesktopRectangle;
+
+            // Fully outside all screens, reset location
+            if (Rectangle.Intersect(selectedRegion, fullScreen) == Rectangle.Empty)
+            {
+                _regionProvider.SelectedRegion = new Rectangle(50, 50, 500, 500);
+            }
+
             return true;
         }
 
@@ -45,12 +56,12 @@ namespace Captura.Models
         public override string Serialize()
         {
             var rect = _regionProvider.SelectedRegion;
-            return RectangleConverter.ConvertToInvariantString(rect);
+            return rect.ConvertToString();
         }
 
         public override bool Deserialize(string Serialized)
         {
-            if (!(RectangleConverter.ConvertFromInvariantString(Serialized) is Rectangle rect))
+            if (!(Serialized.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect;
@@ -65,9 +76,7 @@ namespace Captura.Models
             if (!Regex.IsMatch(Arg, @"^\d+,\d+,\d+,\d+$"))
                 return false;
 
-            var rectConverter = new RectangleConverter();
-
-            if (!(rectConverter.ConvertFromInvariantString(Arg) is Rectangle rect))
+            if (!(Arg.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect.Even();

@@ -2,14 +2,14 @@ namespace Captura.ViewModels
 {
     public abstract class ViewModelBase : NotifyPropertyChanged
     {
-        protected ViewModelBase(Settings Settings, LanguageManager LanguageManager)
+        protected ViewModelBase(Settings Settings, ILocalizationProvider Loc)
         {
             this.Settings = Settings;
-            Loc = LanguageManager;
+            this.Loc = Loc;
         }
 
         public Settings Settings { get; }
 
-        public LanguageManager Loc { get; }
+        public ILocalizationProvider Loc { get; }
     }
 }

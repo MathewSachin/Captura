@@ -18,6 +18,12 @@
                            Text="{Binding MinTrayClose, Source={StaticResource Loc}, Mode=OneWay}"/>
             </CheckBox>
 
+            <CheckBox IsChecked="{Binding Settings.Tray.MinToTrayOnCaptureStart}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="{Binding MinToTrayOnCaptureStart, Source={StaticResource Loc}, Mode=OneWay}"/>
+            </CheckBox>
+
             <CheckBox IsChecked="{Binding Settings.Tray.ShowNotifications}"
                       Margin="0,2">
                 <TextBlock TextWrapping="Wrap"

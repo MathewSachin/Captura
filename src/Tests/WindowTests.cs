@@ -1,5 +1,4 @@
 ﻿using System;
-using Screna;
 using Xunit;
 
 namespace Captura.Tests
@@ -10,13 +9,17 @@ namespace Captura.Tests
         [Fact]
         public void ZeroPointerWindow()
         {
-            Assert.Throws<ArgumentException>(() => new Window(IntPtr.Zero));
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            Assert.Throws<ArgumentException>(() => platformServices.GetWindow(IntPtr.Zero));
         }
 
         [Fact]
         public void DesktopWindowNotZero()
         {
-            Assert.NotEqual(IntPtr.Zero, Window.DesktopWindow.Handle);
+            var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            Assert.NotEqual(IntPtr.Zero, platformServices.DesktopWindow.Handle);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Captura.Models;
 using Captura.ViewModels;
-using Captura.Views;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -13,60 +11,29 @@ namespace Captura
     {
         public static MainWindow Instance { get; private set; }
 
-        FFmpegDownloaderWindow _downloader;
-
         public MainWindow()
         {
             Instance = this;
             
-            FFmpegService.FFmpegDownloader += () =>
-            {
-                if (_downloader == null)
-                {
-                    _downloader = new FFmpegDownloaderWindow();
-                    _downloader.Closed += (Sender, Args) => _downloader = null;
-                }
-
-                _downloader.ShowAndFocus();
-            };
-            
             InitializeComponent();
 
-            if (DataContext is MainViewModel vm)
+            var mainVm = ServiceProvider.Get<MainViewModel>();
+
+            mainVm.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
+
+            var hotkeySetup = ServiceProvider.Get<HotkeySetup>();
+            hotkeySetup.Setup();
+
+            ServiceProvider.Get<TimerModel>().Init();
+
+            Loaded += (Sender, Args) =>
             {
-                var mainModel = ServiceProvider.Get<MainModel>();
+                RepositionWindowIfOutside();
 
-                mainModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset, !App.CmdOptions.NoHotkeys);
-                ServiceProvider.Get<HotkeyActionRegisterer>().Register();
-                ServiceProvider.Get<TimerModel>().Init();
+                WebCamWindow.Instance.SetupWebcamPreview();
 
-                var listener = new HotkeyListener();
-
-                var hotkeyManager = ServiceProvider.Get<HotKeyManager>();
-
-                listener.HotkeyReceived += Id => hotkeyManager.ProcessHotkey(Id);
-
-                ServiceProvider.Get<HotKeyManager>().HotkeyPressed += Service =>
-                {
-                    switch (Service)
-                    {
-                        case ServiceName.OpenImageEditor:
-                            new ImageEditorWindow().ShowAndFocus();
-                            break;
-
-                        case ServiceName.ShowMainWindow:
-                            this.ShowAndFocus();
-                            break;
-                    }
-                };
-
-                Loaded += (Sender, Args) =>
-                {
-                    RepositionWindowIfOutside();
-
-                    mainModel.ViewLoaded();
-                };
-            }
+                hotkeySetup.ShowUnregistered();
+            };
 
             if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
                 Hide();
@@ -81,10 +48,10 @@ namespace Captura
         void RepositionWindowIfOutside()
         {
             // Window dimensions taking care of DPI
-            var rect = new Rectangle((int)(Left * Dpi.X),
-                (int)(Top * Dpi.Y),
-                (int)(ActualWidth * Dpi.X),
-                (int)(ActualHeight * Dpi.Y));
+            var rect = new RectangleF((float) Left,
+                (float) Top,
+                (float) ActualWidth,
+                (float) ActualHeight).ApplyDpi();
             
             if (!Screen.AllScreens.Any(M => M.Bounds.Contains(rect)))
             {
@@ -117,26 +84,17 @@ namespace Captura
             {
                 Hide();
             }
-            else
-            {
-                Show();
-
-                WindowState = WindowState.Normal;
-
-                Activate();
-            }
+            else this.ShowAndFocus();
         }
 
         bool TryExit()
         {
-            var recordingModel = ServiceProvider.Get<RecordingModel>();
+            var recordingVm = ServiceProvider.Get<RecordingViewModel>();
 
-            if (!recordingModel.CanExit())
+            if (!recordingVm.CanExit())
                 return false;
 
             ServiceProvider.Dispose();
-
-            SystemTray.Dispose();
 
             return true;
         }
@@ -145,9 +103,6 @@ namespace Captura
 
         void HideButton_Click(object Sender, RoutedEventArgs Args) => Hide();
 
-        void ShowMainWindow(object Sender, RoutedEventArgs E)
-        {
-            this.ShowAndFocus();
-        }
+        void ShowMainWindow(object Sender, RoutedEventArgs E) => this.ShowAndFocus();
     }
 }

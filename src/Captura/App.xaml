@@ -30,7 +30,7 @@
 
             <DrawingImage x:Key="RecordStopImageSource">
                 <DrawingImage.Drawing>
-                    <GeometryDrawing Geometry="{Binding RecordingViewModel.RecorderState, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
+                    <GeometryDrawing Geometry="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                      Brush="#b71c1c"/>
                 </DrawingImage.Drawing>
             </DrawingImage>

@@ -7,14 +7,14 @@ namespace Captura.Models
     {
         readonly DesktopDuplicator _dupl;
 
-        public DeskDuplImageProvider(Output1 Output, bool IncludeCursor)
+        public DeskDuplImageProvider(Output1 Output, bool IncludeCursor, IPreviewWindow PreviewWindow)
         {
             var bounds = Output.Description.DesktopBounds;
 
             Width = bounds.Right - bounds.Left;
             Height = bounds.Bottom - bounds.Top;
 
-            _dupl = new DesktopDuplicator(IncludeCursor, Output);
+            _dupl = new DesktopDuplicator(IncludeCursor, Output, PreviewWindow);
         }
 
         public int Height { get; }

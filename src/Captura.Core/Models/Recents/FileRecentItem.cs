@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Input;
-using Captura.Native;
 using Screna;
 
 namespace Captura.Models
@@ -27,7 +25,7 @@ namespace Captura.Models
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
 
             var icons = ServiceProvider.Get<IIconSet>();
-            var loc = ServiceProvider.Get<LanguageManager>();
+            var loc = ServiceProvider.Get<ILocalizationProvider>();
             var windowService = ServiceProvider.Get<IMainWindow>();
 
             Icon = GetIcon(FileType, icons);
@@ -76,9 +74,12 @@ namespace Captura.Models
                 return;
             }
 
-            var img = (Bitmap)Image.FromFile(FileName);
+            var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-            await img.UploadImage();
+            using (var img = imgSystem.LoadBitmap(FileName))
+            {
+                await img.UploadImage();
+            }
         }
 
         void OnCopyToClipboardExecute()
@@ -94,9 +95,12 @@ namespace Captura.Models
             {
                 var clipboard = ServiceProvider.Get<IClipboardService>();
 
-                var img = (Bitmap)Image.FromFile(FileName);
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                clipboard.SetImage(img);
+                using (var img = imgSystem.LoadBitmap(FileName))
+                {
+                    clipboard.SetImage(img);
+                }
             }
             catch (Exception e)
             {
@@ -108,7 +112,9 @@ namespace Captura.Models
         {
             if (File.Exists(FileName))
             {
-                if (Shell32.FileOperation(FileName, FileOperationType.Delete, 0) != 0)
+                var platformServices = ServiceProvider.Get<IPlatformServices>();
+
+                if (!platformServices.DeleteFile(FileName))
                     return;
             }
 
@@ -160,12 +166,7 @@ namespace Captura.Models
         public bool IsSaving
         {
             get => _saving;
-            private set
-            {
-                _saving = value;
-
-                OnPropertyChanged();
-            }
+            private set => Set(ref _saving, value);
         }
 
         public void Saved()

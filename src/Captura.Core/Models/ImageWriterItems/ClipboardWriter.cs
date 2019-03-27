@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Captura.Models
 {
@@ -9,10 +7,10 @@ namespace Captura.Models
     {
         readonly ISystemTray _systemTray;
         readonly IClipboardService _clipboard;
-        readonly LanguageManager _loc;
+        readonly ILocalizationProvider _loc;
 
         public ClipboardWriter(ISystemTray SystemTray,
-            LanguageManager Loc,
+            ILocalizationProvider Loc,
             IClipboardService Clipboard)
         {
             _systemTray = SystemTray;
@@ -22,7 +20,7 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Display));
         }
 
-        public Task Save(Bitmap Image, ImageFormat Format, string FileName)
+        public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
             _clipboard.SetImage(Image);
 
@@ -38,12 +36,7 @@ namespace Captura.Models
         public bool Active
         {
             get => _active;
-            set
-            {
-                _active = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _active, value);
         }
 
         public override string ToString() => Display;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Captura
@@ -20,6 +21,18 @@ namespace Captura
         protected void RaiseAllChanged()
         {
             RaisePropertyChanged("");
+        }
+
+        protected bool Set<T>(ref T Field, T Value, [CallerMemberName] string PropertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(Field, Value))
+                return false;
+
+            Field = Value;
+
+            RaisePropertyChanged(PropertyName);
+
+            return true;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.IO;
+using Captura.FFmpeg;
 
 namespace Captura.Models
 {
     // ReSharper disable once InconsistentNaming
-    public class FFmpegGifWriter : IVideoFileWriter
+    class FFmpegGifWriter : IVideoFileWriter
     {
         readonly IVideoFileWriter _ffMpegWriter;
         readonly string _tempFileName;
@@ -14,13 +15,13 @@ namespace Captura.Models
             _args = Args;
             _tempFileName = Path.GetTempFileName();
 
-            _ffMpegWriter = FFmpegItem.x264.GetVideoFileWriter(new VideoWriterArgs
+            _ffMpegWriter = new TempFileVideoCodec().GetVideoFileWriter(new VideoWriterArgs
             {
                 FileName = _tempFileName,
                 FrameRate = Args.FrameRate,
                 ImageProvider = Args.ImageProvider,
                 VideoQuality = Args.VideoQuality
-            }, "-f mp4 -y");
+            });
         }
 
         string GeneratePalette()

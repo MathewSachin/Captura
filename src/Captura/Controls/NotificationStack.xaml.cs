@@ -47,7 +47,7 @@ namespace Captura
 
             if (!unfinished)
             {
-                Hide();
+                OnClose();
             }
         }
 

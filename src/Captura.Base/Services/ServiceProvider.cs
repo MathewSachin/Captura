@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Ninject;
 
@@ -11,6 +12,8 @@ namespace Captura
 {
     public static class ServiceProvider
     {
+        public const string CapturaPathConstant = "%CAPTURA_PATH%";
+
         static string _settingsDir;
 
         public static string SettingsDir
@@ -18,7 +21,20 @@ namespace Captura
             get
             {
                 if (_settingsDir == null)
-                    _settingsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Captura");
+                {
+                    var localSettings = Path.Combine(AppDir, "Settings");
+
+                    if (Directory.Exists(localSettings))
+                    {
+                        _settingsDir = localSettings;
+                    }
+                    else
+                    {
+                        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+                        _settingsDir = Path.Combine(appDataPath, nameof(Captura));
+                    }
+                }
 
                 if (!Directory.Exists(_settingsDir))
                     Directory.CreateDirectory(_settingsDir);
@@ -27,6 +43,11 @@ namespace Captura
             }
             set
             {
+                if (string.IsNullOrWhiteSpace(value))
+                    return;
+
+                value = value.Replace(CapturaPathConstant, AppDir);
+
                 _settingsDir = value;
 
                 if (!Directory.Exists(_settingsDir))
@@ -72,10 +93,37 @@ namespace Captura
         }
 
         public static IMessageProvider MessageProvider => Get<IMessageProvider>();
-        
+
+        public static Version AppVersion => Assembly.GetEntryAssembly()?.GetName().Version;
+
+        public static string AppDir
+        {
+            get
+            {
+                var location = Assembly.GetEntryAssembly()?.Location;
+
+                return location == null ? "" : Path.GetDirectoryName(location);
+            }
+        }
+
+        public static string LibDir => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static bool FileExists(string FileName)
         {
-            return File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileName));
+            return new[] { LibDir, AppDir }
+                       .Where(M => M != null)
+                       .Any(M => File.Exists(Path.Combine(M, FileName))) || File.Exists(FileName);
+        }
+
+        /// <summary>
+        /// Binds both as Inteface as Class
+        /// </summary>
+        public static void BindAsInterfaceAndClass<TInterface, TClass>(this IBinder Binder) where TClass : TInterface
+        {
+            Binder.BindSingleton<TClass>();
+
+            // ReSharper disable once ConvertClosureToMethodGroup
+            Binder.Bind<TInterface>(() => Get<TClass>());
         }
     }
 }

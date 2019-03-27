@@ -1,8 +1,6 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Captura.Native;
 using CommandLine;
 using static System.Console;
@@ -16,8 +14,7 @@ namespace Captura
         {
             if (Args.Length == 0)
             {
-                var uiPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    "captura.exe");
+                var uiPath = Path.Combine(ServiceProvider.AppDir, "captura.exe");
 
                 if (File.Exists(uiPath))
                 {
@@ -65,39 +62,20 @@ namespace Captura
                 {
                     Banner();
 
-                    FFmpeg(Options);
+                    var ffmpegManager = ServiceProvider.Get<FFmpegConsoleManager>();
+
+                    // Need to Wait instead of await otherwise the process will exit
+                    ffmpegManager.Run(Options).Wait();
                 });
         }
 
         static void Banner()
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            var version = ServiceProvider.AppVersion.ToString(3);
 
             WriteLine($@"Captura v{version}
 (c) {DateTime.Now.Year} Mathew Sachin
 ");
-        }
-
-        static async void FFmpeg(FFmpegCmdOptions FFmpegOptions)
-        {
-            if (FFmpegOptions.Install != null)
-            {
-                var downloadFolder = FFmpegOptions.Install;
-
-                if (!Directory.Exists(downloadFolder))
-                {
-                    WriteLine("Directory doesn't exist");
-                    return;
-                }
-
-                var ffMpegDownload = ServiceProvider.Get<FFmpegDownloadViewModel>();
-
-                ffMpegDownload.TargetFolder = FFmpegOptions.Install;
-
-                await ffMpegDownload.Start();
-                
-                WriteLine(ffMpegDownload.Status);
-            }
         }
     }
 }

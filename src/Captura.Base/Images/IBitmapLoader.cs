@@ -5,8 +5,8 @@ namespace Captura
 {
     public interface IBitmapLoader : IDisposable
     {
-        IDisposable CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride);
+        IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride);
 
-        IDisposable LoadBitmap(string FileName, out Size Size);
+        IBitmapImage LoadBitmap(string FileName);
     }
 }

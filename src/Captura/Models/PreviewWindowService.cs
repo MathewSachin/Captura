@@ -16,13 +16,13 @@ namespace Captura.Models
         IntPtr _backBufferPtr;
         Texture _texture;
 
-        bool _visible;
+        public bool IsVisible { get; private set; }
 
         public PreviewWindowService()
         {
-            _previewWindow.IsVisibleChanged += (S, E) => _visible = _previewWindow.IsVisible;
+            _previewWindow.IsVisibleChanged += (S, E) => IsVisible = _previewWindow.IsVisible;
 
-            _visible = _previewWindow.IsVisible;
+            IsVisible = _previewWindow.IsVisible;
 
             // Prevent Closing by User
             _previewWindow.Closing += (S, E) =>
@@ -33,8 +33,6 @@ namespace Captura.Models
             };
         }
 
-        public void Init(int Width, int Height) { }
-
         IBitmapFrame _lastFrame;
 
         public void Display(IBitmapFrame Frame)
@@ -42,7 +40,7 @@ namespace Captura.Models
             if (Frame is RepeatFrame)
                 return;
 
-            if (!_visible)
+            if (!IsVisible)
             {
                 Frame.Dispose();
                 return;
@@ -68,7 +66,7 @@ namespace Captura.Models
                             _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
                             if (_d3D9PreviewAssister == null)
                             {
-                                _d3D9PreviewAssister = new D3D9PreviewAssister();
+                                _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
                                 _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
 
                                 using (var surface = _texture.GetSurfaceLevel(0))
@@ -91,7 +89,7 @@ namespace Captura.Models
 
             if (BackBufferPtr != IntPtr.Zero)
                 _previewWindow.D3DImage.AddDirtyRect(new Int32Rect(0, 0, Width, Height));
-            
+
             _previewWindow.D3DImage.Unlock();
         }
 

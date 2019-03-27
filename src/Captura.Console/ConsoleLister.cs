@@ -1,5 +1,5 @@
 ﻿using Captura.Models;
-using Screna;
+using Captura.ViewModels;
 using static System.Console;
 
 namespace Captura
@@ -9,14 +9,23 @@ namespace Captura
     {
         static readonly string Underline = $"\n{new string('-', 30)}";
 
-        readonly IWebCamProvider _webcam;
+        readonly WebcamModel _webcam;
         readonly AudioSource _audioSource;
+        readonly IPlatformServices _platformServices;
+        readonly FFmpegWriterProvider _ffmpegWriterProvider;
+        readonly SharpAviWriterProvider _sharpAviWriterProvider;
 
-        public ConsoleLister(IWebCamProvider Webcam,
-            AudioSource AudioSource)
+        public ConsoleLister(WebcamModel Webcam,
+            AudioSource AudioSource,
+            IPlatformServices PlatformServices,
+            FFmpegWriterProvider FfmpegWriterProvider,
+            SharpAviWriterProvider SharpAviWriterProvider)
         {
             _webcam = Webcam;
             _audioSource = AudioSource;
+            _platformServices = PlatformServices;
+            _ffmpegWriterProvider = FfmpegWriterProvider;
+            _sharpAviWriterProvider = SharpAviWriterProvider;
         }
 
         public void List()
@@ -55,8 +64,7 @@ namespace Captura
 
             WriteLine();
 
-            #region Microphones
-
+            // Microphones
             if (_audioSource.AvailableRecordingSources.Count > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + Underline);
@@ -69,10 +77,7 @@ namespace Captura
                 WriteLine();
             }
 
-            #endregion
-
-            #region Speaker
-
+            // Speakers
             if (_audioSource.AvailableLoopbackSources.Count > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + Underline);
@@ -84,20 +89,18 @@ namespace Captura
 
                 WriteLine();
             }
-
-            #endregion
         }
 
-        static void Screens()
+        void Screens()
         {
             WriteLine("AVAILABLE SCREENS" + Underline);
 
             var j = 0;
 
             // First is Full Screen, Second is Screen Picker
-            foreach (var screen in ScreenItem.Enumerate())
+            foreach (var screen in _platformServices.EnumerateScreens())
             {
-                WriteLine($"{j.ToString().PadRight(2)}: {screen.Name}");
+                WriteLine($"{j.ToString().PadRight(2)}: {screen.DeviceName}");
 
                 ++j;
             }
@@ -105,12 +108,12 @@ namespace Captura
             WriteLine();
         }
 
-        static void Windows()
+        void Windows()
         {
             WriteLine("AVAILABLE WINDOWS" + Underline);
 
             // Window Picker is skipped automatically
-            foreach (var source in Window.EnumerateVisible())
+            foreach (var source in _platformServices.EnumerateWindows())
             {
                 WriteLine($"{source.Handle.ToString().PadRight(10)}: {source.Title}");
             }
@@ -118,7 +121,7 @@ namespace Captura
             WriteLine();
         }
 
-        static void SharpAvi()
+        void SharpAvi()
         {
             var sharpAviExists = ServiceProvider.FileExists("SharpAvi.dll");
 
@@ -126,25 +129,23 @@ namespace Captura
 
             WriteLine();
 
-            if (sharpAviExists)
+            if (!sharpAviExists)
+                return;
+
+            WriteLine("SharpAvi ENCODERS" + Underline);
+
+            var i = 0;
+
+            foreach (var codec in _sharpAviWriterProvider)
             {
-                WriteLine("SharpAvi ENCODERS" + Underline);
-
-                var writerProvider = ServiceProvider.Get<SharpAviWriterProvider>();
-
-                var i = 0;
-
-                foreach (var codec in writerProvider)
-                {
-                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
-                    ++i;
-                }
-
-                WriteLine();
+                WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                ++i;
             }
+
+            WriteLine();
         }
 
-        static void FFmpeg()
+        void FFmpeg()
         {
             var ffmpegExists = FFmpegService.FFmpegExists;
 
@@ -152,22 +153,20 @@ namespace Captura
 
             WriteLine();
 
-            if (ffmpegExists)
+            if (!ffmpegExists)
+                return;
+
+            WriteLine("FFmpeg ENCODERS" + Underline);
+
+            var i = 0;
+
+            foreach (var codec in _ffmpegWriterProvider)
             {
-                WriteLine("FFmpeg ENCODERS" + Underline);
-
-                var writerProvider = ServiceProvider.Get<FFmpegWriterProvider>();
-
-                var i = 0;
-
-                foreach (var codec in writerProvider)
-                {
-                    WriteLine($"{i.ToString().PadRight(2)}: {codec}");
-                    ++i;
-                }
-
-                WriteLine();
+                WriteLine($"{i.ToString().PadRight(2)}: {codec}");
+                ++i;
             }
+
+            WriteLine();
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Captura.Models;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Reflection;
+using System.Linq;
 
 namespace Captura
 {
@@ -17,25 +16,18 @@ namespace Captura
         {
             get
             {
-                var settings = GetSettings();
+                var folderPath = GetSettings().GetFolderPath();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
+                if (!string.IsNullOrWhiteSpace(folderPath))
                 {
-                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(folderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return true;
                 }
 
-                // application directory
-                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
-
-                if (File.Exists(cpath))
-                    return true;
-
-                // Current working directory
-                if (File.Exists(FFmpegExeName))
+                if (ServiceProvider.FileExists(FFmpegExeName))
                     return true;
 
                 // PATH
@@ -59,39 +51,25 @@ namespace Captura
         {
             get
             {
-                var settings = GetSettings();
+                var folderPath = GetSettings().GetFolderPath();
 
                 // FFmpeg folder
-                if (!string.IsNullOrWhiteSpace(settings.FolderPath))
+                if (!string.IsNullOrWhiteSpace(folderPath))
                 {
-                    var path = Path.Combine(settings.FolderPath, FFmpegExeName);
+                    var path = Path.Combine(folderPath, FFmpegExeName);
 
                     if (File.Exists(path))
                         return path;
                 }
 
-                // application directory
-                var cpath = Path.Combine(Assembly.GetEntryAssembly().Location, FFmpegExeName);
-
-                return File.Exists(cpath) ? cpath : FFmpegExeName;
+                return new[] { ServiceProvider.AppDir, ServiceProvider.LibDir }
+                           .Where(M => M != null)
+                           .FirstOrDefault(M => File.Exists(Path.Combine(M, FFmpegExeName)))
+                       ?? FFmpegExeName;
             }
         }
 
-        public static void SelectFFmpegFolder()
-        {
-            var settings = GetSettings();
-
-            var dialogService = ServiceProvider.Get<IDialogService>();
-
-            var folder = dialogService.PickFolder(settings.FolderPath, LanguageManager.Instance.SelectFFmpegFolder);
-            
-            if (!string.IsNullOrWhiteSpace(folder))
-                settings.FolderPath = folder;
-        }
-
-        public static Action FFmpegDownloader { get; set; }
-
-        public static Process StartFFmpeg(string Arguments, string OutputFileName)
+        public static Process StartFFmpeg(string Arguments, string FileName)
         {
             var process = new Process
             {
@@ -106,8 +84,10 @@ namespace Captura
                 },
                 EnableRaisingEvents = true
             };
+            
+            var log = ServiceProvider.Get<IFFmpegLogRepository>();
 
-            var logItem = ServiceProvider.Get<FFmpegLog>().CreateNew(Path.GetFileName(OutputFileName));
+            var logItem = log.CreateNew(Path.GetFileName(FileName), Arguments);
                         
             process.ErrorDataReceived += (S, E) => logItem.Write(E.Data);
 

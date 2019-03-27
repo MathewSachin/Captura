@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
+using Reactive.Bindings;
 
 namespace Captura
 {
@@ -20,7 +21,13 @@ namespace Captura
         byte[] _data;
         public Window Window { get; set; }
 
-        public bool UnsavedChanges { get; private set; }
+        readonly IReactiveProperty<bool> _unsavedChanges = new ReactiveProperty<bool>();
+
+        public bool UnsavedChanges
+        {
+            get => _unsavedChanges.Value;
+            private set => _unsavedChanges.Value = value;
+        }
 
         int _editingOperationCount;
 
@@ -30,127 +37,153 @@ namespace Captura
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
-        public DelegateCommand DiscardChangesCommand { get; }
+        readonly IReactiveProperty<bool> _isOpened = new ReactiveProperty<bool>();
+
+        public ICommand DiscardChangesCommand { get; }
         public DelegateCommand UndoCommand { get; }
         public DelegateCommand RedoCommand { get; }
-        public DelegateCommand SaveCommand { get; }
-        public DelegateCommand SaveToClipboardCommand { get; }
-        public DelegateCommand UploadToImgurCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand SaveToClipboardCommand { get; }
+        public ICommand UploadToImgurCommand { get; }
 
-        public DelegateCommand SetEffectCommand { get; }
-        public DelegateCommand SetBrightnessCommand { get; }
-        public DelegateCommand SetContrastCommand { get; }
+        public ICommand SetEffectCommand { get; }
+        public ICommand SetBrightnessCommand { get; }
+        public ICommand SetContrastCommand { get; }
 
-        public DelegateCommand RotateRightCommand { get; }
-        public DelegateCommand RotateLeftCommand { get; }
-        public DelegateCommand FlipXCommand { get; }
-        public DelegateCommand FlipYCommand { get; }
+        public ICommand RotateRightCommand { get; }
+        public ICommand RotateLeftCommand { get; }
+        public ICommand FlipXCommand { get; }
+        public ICommand FlipYCommand { get; }
 
         public ImageEditorViewModel()
         {
             UndoCommand = new DelegateCommand(Undo, false);
             RedoCommand = new DelegateCommand(Redo, false);
-            SaveCommand = new DelegateCommand(() => SaveToFile(), false);
-            SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
-            UploadToImgurCommand = new DelegateCommand(UploadToImgur, false);
 
-            DiscardChangesCommand = new DelegateCommand(async () =>
-            {
-                Reset();
+            SaveCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(() => SaveToFile());
 
-                await Update();
-            }, false);
+            SaveToClipboardCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(SaveToClipboard);
 
-            SetEffectCommand = new DelegateCommand(async M =>
-            {
-                if (M is ImageEffect effect)
+            UploadToImgurCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(UploadToImgur);
+
+            DiscardChangesCommand = _unsavedChanges
+                .ToReactiveCommand()
+                .WithSubscribe(async () =>
                 {
-                    UpdateHistory();
-
-                    CurrentImageEffect = effect;
+                    Reset();
 
                     await Update();
-                }
-            }, false);
 
-            SetBrightnessCommand = new DelegateCommand(async M =>
-            {
-                if (M is int i || M is string s && int.TryParse(s, out i))
+                    UnsavedChanges = false;
+                });
+
+            SetEffectCommand = _isOpened
+                .ToReactiveCommand<ImageEffect>()
+                .WithSubscribe(async M =>
                 {
                     UpdateHistory();
 
-                    if (i == 0)
-                        _brightness = 0;
-                    else if (i > 0)
-                        _brightness += BrightnessStep;
-                    else _brightness -= BrightnessStep;
+                    CurrentImageEffect = M;
 
                     await Update();
-                }
-            }, false);
+                });
 
-            SetContrastCommand = new DelegateCommand(async M =>
-            {
-                if (M is int i || M is string s && int.TryParse(s, out i))
+            SetBrightnessCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
                 {
-                    UpdateHistory();
-
-                    if (i == 0)
-                        _contrastThreshold = 0;
-                    else if (i > 0)
+                    if (M is int i || M is string s && int.TryParse(s, out i))
                     {
-                        if (_contrastThreshold == 100)
-                            return;
+                        UpdateHistory();
 
-                        _contrastThreshold += ContrastStep;
+                        if (i == 0)
+                            _brightness = 0;
+                        else if (i > 0)
+                            _brightness += BrightnessStep;
+                        else _brightness -= BrightnessStep;
+
+                        await Update();
                     }
-                    else
+                });
+
+            SetContrastCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
+                {
+                    if (M is int i || M is string s && int.TryParse(s, out i))
                     {
-                        if (_contrastThreshold == -100)
-                            return;
+                        UpdateHistory();
 
-                        _contrastThreshold -= ContrastStep;
+                        if (i == 0)
+                            _contrastThreshold = 0;
+                        else if (i > 0)
+                        {
+                            if (_contrastThreshold == 100)
+                                return;
+
+                            _contrastThreshold += ContrastStep;
+                        }
+                        else
+                        {
+                            if (_contrastThreshold == -100)
+                                return;
+
+                            _contrastThreshold -= ContrastStep;
+                        }
+
+                        await Update();
                     }
+                });
+
+            RotateRightCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
+                {
+                    UpdateHistory();
+
+                    Rotation += 90;
 
                     await Update();
-                }
-            }, false);
+                });
 
-            RotateRightCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
+            RotateLeftCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
+                {
+                    UpdateHistory();
 
-                Rotation += 90;
+                    Rotation -= 90;
 
-                await Update();
-            }, false);
+                    await Update();
+                });
 
-            RotateLeftCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
+            FlipXCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
+                {
+                    UpdateHistory();
 
-                Rotation -= 90;
+                    FlipX = !FlipX;
 
-                await Update();
-            }, false);
+                    await Update();
+                });
 
-            FlipXCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
+            FlipYCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(async M =>
+                {
+                    UpdateHistory();
 
-                FlipX = !FlipX;
+                    FlipY = !FlipY;
 
-                await Update();
-            }, false);
-
-            FlipYCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
-
-                FlipY = !FlipY;
-
-                await Update();
-            }, false);
+                    await Update();
+                });
         }
 
         async void UploadToImgur()
@@ -164,7 +197,9 @@ namespace Captura
 
                 encoder.Save(ms);
 
-                using (var bitmap = new Bitmap(ms))
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
+
+                using (var bitmap = imgSystem.LoadBitmap(ms))
                 {
                     await bitmap.UploadImage();
                 }
@@ -176,12 +211,7 @@ namespace Captura
         public BitmapSource OriginalBitmap
         {
             get => _originalBmp;
-            private set
-            {
-                _originalBmp = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _originalBmp, value);
         }
 
         WriteableBitmap _editedBmp;
@@ -189,12 +219,7 @@ namespace Captura
         public WriteableBitmap EditedBitmap
         {
             get => _editedBmp;
-            private set
-            {
-                _editedBmp = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _editedBmp, value);
         }
 
         TransformedBitmap _transformedBmp;
@@ -202,12 +227,7 @@ namespace Captura
         public TransformedBitmap TransformedBitmap
         {
             get => _transformedBmp;
-            set
-            {
-                _transformedBmp = value;
-                
-                OnPropertyChanged();
-            }
+            set => Set(ref _transformedBmp, value);
         }
 
         ImageEffect _imageEffect = ImageEffect.None;
@@ -215,12 +235,7 @@ namespace Captura
         public ImageEffect CurrentImageEffect
         {
             get => _imageEffect;
-            private set
-            {
-                _imageEffect = value;
-                
-                OnPropertyChanged();
-            }
+            private set => Set(ref _imageEffect, value);
         }
 
         int _brightness;
@@ -427,19 +442,7 @@ namespace Captura
 
             UpdateTransformBitmap();
 
-            SaveCommand.RaiseCanExecuteChanged(true);
-            SaveToClipboardCommand.RaiseCanExecuteChanged(true);
-            UploadToImgurCommand.RaiseCanExecuteChanged(true);
-            DiscardChangesCommand.RaiseCanExecuteChanged(true);
-
-            SetEffectCommand.RaiseCanExecuteChanged(true);
-            SetBrightnessCommand.RaiseCanExecuteChanged(true);
-            SetContrastCommand.RaiseCanExecuteChanged(true);
-
-            RotateRightCommand.RaiseCanExecuteChanged(true);
-            RotateLeftCommand.RaiseCanExecuteChanged(true);
-            FlipXCommand.RaiseCanExecuteChanged(true);
-            FlipYCommand.RaiseCanExecuteChanged(true);
+            _isOpened.Value = true;
         }
 
         public InkCanvas InkCanvas { get; set; }
@@ -698,12 +701,19 @@ namespace Captura
             {
                 drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
 
-                InkCanvas.Strokes.Draw(drawingContext);
+                var strokesCopy = InkCanvas.Strokes.Clone();
+
+                var matrix = Matrix.Identity;
+                matrix.Scale(96 / copy.DpiX, 96 / copy.DpiY);
+
+                strokesCopy.Transform(matrix, true);
+
+                strokesCopy.Draw(drawingContext);
 
                 drawingContext.Close();
 
-                var bitmap = new RenderTargetBitmap((int)copy.Width,
-                    (int)copy.Height,
+                var bitmap = new RenderTargetBitmap(copy.PixelWidth,
+                    copy.PixelHeight,
                     copy.DpiX,
                     copy.DpiY,
                     PixelFormats.Pbgra32);

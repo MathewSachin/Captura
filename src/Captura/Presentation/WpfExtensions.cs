@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using Color = System.Windows.Media.Color;
+using ColorConverter = System.Windows.Media.ColorConverter;
 using DColor = System.Drawing.Color;
 
 namespace Captura
@@ -21,6 +24,14 @@ namespace Captura
             W.Show();
 
             W.Activate();
+        }
+
+        public static Rectangle ApplyDpi(this RectangleF Rectangle)
+        {
+            return new Rectangle((int)(Rectangle.Left * Dpi.X),
+                (int)(Rectangle.Top * Dpi.Y),
+                (int)(Rectangle.Width * Dpi.X),
+                (int)(Rectangle.Height * Dpi.Y));
         }
 
         public static DColor ToDrawingColor(this Color C)

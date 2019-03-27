@@ -2,9 +2,9 @@
 {
     public class ScreenShotSettings : PropertyStore
     {
-        public string ImageFormat
+        public ImageFormats ImageFormat
         {
-            get => Get("Png");
+            get => Get(ImageFormats.Png);
             set => Set(value);
         }
 
