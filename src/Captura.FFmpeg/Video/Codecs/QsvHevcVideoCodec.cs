@@ -12,10 +12,10 @@ namespace Captura.FFmpeg
 
         public override void Apply(FFmpegSettings Settings, VideoWriterArgs WriterArgs, FFmpegOutputArgs OutputArgs)
         {
-            OutputArgs.AddArg("-vcodec hevc_qsv")
-                .AddArg("-load_plugin hevc_hw")
-                .AddArg("-q 2")
-                .AddArg("-preset:v veryfast");
+            OutputArgs.AddArg("vcodec", "hevc_qsv")
+                .AddArg("load_plugin", "hevc_hw")
+                .AddArg("q", 2)
+                .AddArg("preset:v", "veryfast");
         }
     }
 }

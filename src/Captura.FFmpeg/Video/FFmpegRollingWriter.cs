@@ -56,7 +56,7 @@ namespace Captura.FFmpeg
                 var argsBuilder = new FFmpegArgsBuilder();
 
                 argsBuilder.AddInputFile(prevFile)
-                    .AddArg($"-ss {TimeSpan.FromMilliseconds(currentDuration):g}");
+                    .AddArg("ss", $"{TimeSpan.FromMilliseconds(currentDuration):g}");
 
                 argsBuilder.AddInputFile(currentFile);
 

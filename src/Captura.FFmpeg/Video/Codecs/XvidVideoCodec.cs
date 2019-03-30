@@ -15,8 +15,8 @@ namespace Captura.FFmpeg
             // quality: 31 (lowest) to 1 (highest)
             var qscale = 31 - ((WriterArgs.VideoQuality - 1) * 30) / 99;
 
-            OutputArgs.AddArg("-vcodec libxvid")
-                .AddArg($"-qscale:v {qscale}");
+            OutputArgs.AddArg("vcodec", "libxvid")
+                .AddArg("qscale:v", qscale);
         }
     }
 }

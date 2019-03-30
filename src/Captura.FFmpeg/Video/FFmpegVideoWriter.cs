@@ -35,10 +35,10 @@ namespace Captura.Models
             var argsBuilder = new FFmpegArgsBuilder();
 
             argsBuilder.AddInputPipe(videoPipeName)
-                .AddArg("-thread_queue_size 512")
-                .AddArg($"-framerate {Args.FrameRate}")
+                .AddArg("thread_queue_size", 512)
+                .AddArg("framerate", Args.FrameRate)
                 .SetFormat("rawvideo")
-                .AddArg("-pix_fmt rgb32")
+                .AddArg("pix_fmt", "rgb32")
                 .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
@@ -57,7 +57,7 @@ namespace Captura.Models
                 if (height % 2 == 1)
                     ++height;
 
-                output.AddArg($"-vf scale={width}:{height}");
+                output.AddArg("vf", $"scale={width}:{height}");
             }
 
             if (Args.AudioProvider != null)
@@ -65,7 +65,7 @@ namespace Captura.Models
                 var audioPipeName = GetPipeName();
 
                 argsBuilder.AddInputPipe(audioPipeName)
-                    .AddArg("-thread_queue_size 512")
+                    .AddArg("-thread_queue_size", 512)
                     .SetFormat("s16le")
                     .SetAudioCodec("pcm_s16le")
                     .SetAudioFrequency(Args.Frequency)

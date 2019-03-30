@@ -13,9 +13,9 @@
             // quality: 63 (lowest) to 0 (highest)
             var crf = (63 * (100 - WriterArgs.VideoQuality)) / 99;
 
-            OutputArgs.AddArg("-vcodec libvpx-vp9")
-                .AddArg($"-crf {crf}")
-                .AddArg("-b:v 0");
+            OutputArgs.AddArg("vcodec", "libvpx-vp9")
+                .AddArg("crf", crf)
+                .AddArg("b:v", 0);
         }
     }
 }

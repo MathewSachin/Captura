@@ -8,7 +8,7 @@ namespace Captura.FFmpeg
         {
             base.Apply(Settings, WriterArgs, OutputArgs);
 
-            OutputArgs.AddArg("-f mp4")
+            OutputArgs.AddArg("f", "mp4")
                 .AddArg("-y");
         }
     }

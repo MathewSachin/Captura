@@ -15,8 +15,8 @@ namespace Captura.FFmpeg
             var argsBuilder = new FFmpegArgsBuilder();
 
             var inputArgs = argsBuilder.AddInputFile(SourceFile)
-                .AddArg($"-ss {From}")
-                .AddArg($"-to {To}");
+                .AddArg("ss", From)
+                .AddArg("to", To);
 
             if (HasAudio)
                 inputArgs.SetAudioCodec("copy");
