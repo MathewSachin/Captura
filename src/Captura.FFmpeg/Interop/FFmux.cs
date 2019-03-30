@@ -76,14 +76,15 @@ namespace Captura.FFmpeg.Interop
 
         void SetVideoCodecOptions(AVCodecContext* CodecContext)
         {
-            CodecContext->bit_rate = 4_000_000;
             CodecContext->gop_size = 12;
             CodecContext->max_b_frames = 1;
 
             if (CodecContext->codec->id == AVCodecID.AV_CODEC_ID_H264)
             {
                 ffmpeg.av_opt_set(CodecContext->priv_data, "preset", "ultrafast", 0);
+                ffmpeg.av_opt_set(CodecContext->priv_data, "crf", "30", 0);
             }
+            else CodecContext->bit_rate = 4_000_000;
         }
 
         void SetAudioCodecOptions(AVCodecContext* CodecContext)
