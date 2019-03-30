@@ -75,7 +75,7 @@ namespace Captura.FFmpeg.Interop
         {
             fixed (byte** src = Frame.data.ToArray())
             {
-                var srcSampleCount = Frame.nb_samples;//Frame.linesize[0];
+                var srcSampleCount = Frame.nb_samples; //Frame.linesize[0];
 
                 Convert(src, srcSampleCount, out var dest, out var destSampleCount);
 

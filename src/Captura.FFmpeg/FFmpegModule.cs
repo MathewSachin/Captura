@@ -11,7 +11,6 @@ namespace Captura
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, StreamingWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, FFmpegInteropWriterProvider>();
 
-
             foreach (var audioItem in FFmpegAudioItem.Items)
             {
                 Binder.Bind<IAudioWriterItem>(() => audioItem);

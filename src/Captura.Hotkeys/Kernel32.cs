@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Captura.Native
 {
@@ -12,8 +11,5 @@ namespace Captura.Native
 
         [DllImport(DllName)]
         public static extern ushort GlobalDeleteAtom(ushort Atom);
-
-        [DllImport(DllName)]
-        public static extern void CopyMemory(IntPtr Dest, IntPtr Src, uint Count);
     }
 }
