@@ -19,7 +19,8 @@ namespace Captura.FFmpeg.Interop
         public FFmpegVideoStream(AVFormatContext* FormatContext,
             FFmpegVideoCodecInfo CodecInfo,
             int Fps,
-            Size FrameSize) : base(FormatContext, CodecInfo)
+            Size FrameSize,
+            int Quality) : base(FormatContext, CodecInfo)
         {
             _formatContext = FormatContext;
             _frameSize = FrameSize;
@@ -44,6 +45,10 @@ namespace Captura.FFmpeg.Interop
             CodecContext->pix_fmt = CodecInfo.PixelFormat;
             CodecContext->time_base.num = 1;
             CodecContext->time_base.den = Fps;
+
+            CodecInfo.SetOptions(this, Quality);
+
+            OpenCodec();
         }
 
         void InitFrame()

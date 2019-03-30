@@ -2,18 +2,20 @@
 
 namespace Captura.FFmpeg.Interop
 {
-    public class FFmpegAudioCodecInfo : FFmpegCodecInfo
+    public abstract class FFmpegAudioCodecInfo : FFmpegCodecInfo
     {
-        public FFmpegAudioCodecInfo(AVCodecID Id, AVSampleFormat SampleFormat) : base(Id)
+        protected FFmpegAudioCodecInfo(AVCodecID Id, AVSampleFormat SampleFormat) : base(Id)
         {
             this.SampleFormat = SampleFormat;
         }
 
-        public FFmpegAudioCodecInfo(string Name, AVSampleFormat SampleFormat) : base(Name)
+        protected FFmpegAudioCodecInfo(string Name, AVSampleFormat SampleFormat) : base(Name)
         {
             this.SampleFormat = SampleFormat;
         }
 
         public AVSampleFormat SampleFormat { get; }
+
+        public abstract void SetOptions(FFmpegAudioStream AudioStream, int Quality);
     }
 }

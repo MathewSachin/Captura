@@ -2,18 +2,24 @@
 
 namespace Captura.FFmpeg.Interop
 {
-    public class FFmpegVideoCodecInfo : FFmpegCodecInfo
+    public abstract class FFmpegVideoCodecInfo : FFmpegCodecInfo
     {
-        public FFmpegVideoCodecInfo(AVCodecID Id, AVPixelFormat PixelFormat) : base(Id)
+        protected FFmpegVideoCodecInfo(AVCodecID Id, AVPixelFormat PixelFormat) : base(Id)
         {
             this.PixelFormat = PixelFormat;
         }
 
-        public FFmpegVideoCodecInfo(string Name, AVPixelFormat PixelFormat) : base(Name)
+        protected FFmpegVideoCodecInfo(string Name, AVPixelFormat PixelFormat) : base(Name)
         {
             this.PixelFormat = PixelFormat;
         }
 
-        public AVPixelFormat PixelFormat { get; }
+        public virtual string Format { get; }
+
+        public virtual AVPixelFormat PixelFormat { get; }
+
+        public virtual FFmpegAudioCodecInfo AudioCodec { get; }
+
+        public abstract void SetOptions(FFmpegVideoStream VideoStream, int Quality);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Captura.Audio;
+using Captura.Models;
 using FFmpeg.AutoGen;
 
 namespace Captura.FFmpeg.Interop
@@ -40,57 +40,28 @@ namespace Captura.FFmpeg.Interop
             ffmpeg.av_log_set_callback(LogCallback);
         }
 
-        public FFmux(string FileName, Size FrameSize, int Fps, IAudioProvider AudioProvider)
+        public FFmux(VideoWriterArgs Args, FFmpegVideoCodecInfo VideoCodec)
         {
-            _formatContext = new FFmpegFormatContext(FileName, null);
+            _formatContext = new FFmpegFormatContext(Args.FileName, VideoCodec.Format);
 
-            var fmt = _formatContext.FormatContext->oformat;
+            var size = new Size(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
-            if (fmt->video_codec != AVCodecID.AV_CODEC_ID_NONE)
+            _videoStream = new FFmpegVideoStream(_formatContext.FormatContext,
+                VideoCodec,
+                Args.FrameRate,
+                size,
+                Args.VideoQuality);
+
+            if (Args.AudioProvider != null && VideoCodec.AudioCodec != null)
             {
-                // Worked!: var codecInfo = new FFmpegVideoCodecInfo("h264_qsv", AVPixelFormat.AV_PIX_FMT_NV12);
-                var codecInfo = new FFmpegVideoCodecInfo(fmt->video_codec, AVPixelFormat.AV_PIX_FMT_YUV420P);
-
-                _videoStream = new FFmpegVideoStream(_formatContext.FormatContext, codecInfo, Fps, FrameSize);
-
-                SetVideoCodecOptions(_videoStream.CodecContext);
-
-                _videoStream.OpenCodec();
-            }
-
-            if (AudioProvider != null && fmt->audio_codec != AVCodecID.AV_CODEC_ID_NONE)
-            {
-                var codecInfo = new FFmpegAudioCodecInfo(fmt->audio_codec, AVSampleFormat.AV_SAMPLE_FMT_FLTP);
-
-                _audioStream = new FFmpegAudioStream(_formatContext.FormatContext, codecInfo);
-
-                SetAudioCodecOptions(_audioStream.CodecContext);
-
-                _audioStream.OpenCodec();
+                _audioStream = new FFmpegAudioStream(_formatContext.FormatContext,
+                    VideoCodec.AudioCodec,
+                    Args.AudioQuality);
 
                 SupportsAudio = true;
             }
 
             _formatContext.BeginWriting();
-        }
-
-        void SetVideoCodecOptions(AVCodecContext* CodecContext)
-        {
-            CodecContext->gop_size = 12;
-            CodecContext->max_b_frames = 1;
-
-            if (CodecContext->codec->id == AVCodecID.AV_CODEC_ID_H264)
-            {
-                ffmpeg.av_opt_set(CodecContext->priv_data, "preset", "ultrafast", 0);
-                ffmpeg.av_opt_set(CodecContext->priv_data, "crf", "30", 0);
-            }
-            else CodecContext->bit_rate = 4_000_000;
-        }
-
-        void SetAudioCodecOptions(AVCodecContext* CodecContext)
-        {
-            CodecContext->bit_rate = 64_000;
-            CodecContext->strict_std_compliance = -2;
         }
 
         public void Dispose()

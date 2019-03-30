@@ -5,13 +5,13 @@ namespace Captura.FFmpeg.Interop
 {
     public unsafe class FFmpegStream : IDisposable
     {
-        public AVCodec* Codec { get; }
+        AVCodec* Codec { get; }
 
         public AVCodecContext* CodecContext { get; }
 
-        public AVStream* Stream { get; }
+        protected AVStream* Stream { get; }
 
-        public FFmpegStream(AVFormatContext* FormatContext, FFmpegCodecInfo CodecInfo)
+        protected FFmpegStream(AVFormatContext* FormatContext, FFmpegCodecInfo CodecInfo)
         {
             Codec = CodecInfo.Codec;
 
@@ -37,7 +37,7 @@ namespace Captura.FFmpeg.Interop
             }
         }
 
-        public void OpenCodec()
+        protected void OpenCodec()
         {
             ffmpeg.avcodec_open2(CodecContext, Codec, null).ThrowExceptionIfError();
         }

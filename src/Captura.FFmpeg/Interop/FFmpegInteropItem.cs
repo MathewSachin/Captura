@@ -1,8 +1,8 @@
-﻿using System.Drawing;
-using Captura.FFmpeg.Interop;
+﻿using Captura.FFmpeg.Interop;
 
 namespace Captura.Models
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class FFmpegInteropItem : IVideoWriterItem
     {
         public string Description => "Interop H.264";
@@ -14,9 +14,10 @@ namespace Captura.Models
 
         public virtual IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            var size = new Size(Args.ImageProvider.Width, Args.ImageProvider.Height);
+            // Worked!: var codecInfo = new FFmpegVideoCodecInfo("h264_qsv", AVPixelFormat.AV_PIX_FMT_NV12);
+            var videoCodec = new X264CodecInfo();
 
-            return new FFmux(Args.FileName, size, Args.FrameRate, Args.AudioProvider);
+            return new FFmux(Args, videoCodec);
         }
     }
 }

@@ -18,7 +18,8 @@ namespace Captura.FFmpeg.Interop
         const int SrcBytesPerSample = 2;
 
         public FFmpegAudioStream(AVFormatContext* FormatContext,
-            FFmpegAudioCodecInfo CodecInfo) : base(FormatContext, CodecInfo)
+            FFmpegAudioCodecInfo CodecInfo,
+            int Quality) : base(FormatContext, CodecInfo)
         {
             _formatContext = FormatContext;
 
@@ -33,6 +34,10 @@ namespace Captura.FFmpeg.Interop
                     SampleRate = _sourceParams.SampleRate,
                     SampleFormat = CodecInfo.SampleFormat
                 });
+
+            CodecInfo.SetOptions(this, Quality);
+
+            OpenCodec();
         }
 
         public void Write(byte[] Buffer, int Length)
