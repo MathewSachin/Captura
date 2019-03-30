@@ -35,6 +35,10 @@
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.WebcamOverlay}">
                     <local:ImageOverlaySettingsControl/>
+
+                    <Label Margin="0,10"
+                           Opacity="0.8"
+                           Content="Size of Preview considers Resize to be active"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Elapsed"
