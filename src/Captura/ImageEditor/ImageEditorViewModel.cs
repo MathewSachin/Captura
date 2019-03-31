@@ -18,11 +18,36 @@ namespace Captura
 {
     public class ImageEditorViewModel : NotifyPropertyChanged
     {
+        #region Fields
+        const int BrightnessStep = 10;
+        const int ContrastStep = 10;
+
         int _stride;
         byte[] _data;
-        public Window Window { get; set; }
+        int _editingOperationCount;
+        string _fileName;
+        bool _trackChanges = true;
+
+        BitmapSource _originalBmp;
+        WriteableBitmap _editedBmp;
+        TransformedBitmap _transformedBmp;
+
+        readonly HistoryStack _undoStack = new HistoryStack();
+        readonly HistoryStack _redoStack = new HistoryStack();
 
         readonly IReactiveProperty<bool> _unsavedChanges = new ReactivePropertySlim<bool>();
+        readonly IReactiveProperty<bool> _isOpened = new ReactivePropertySlim<bool>();
+        readonly IReactiveProperty<ImageEffect> _currentImageEffect = new ReactivePropertySlim<ImageEffect>();
+        readonly IReactiveProperty<int> _brightness = new ReactivePropertySlim<int>();
+        readonly IReactiveProperty<int> _contrastThreshold = new ReactivePropertySlim<int>();
+        readonly IReadOnlyReactiveProperty<double> _contrastLevel;
+
+        public IReactiveProperty<int> Rotation { get; } = new ReactivePropertySlim<int>();
+        public IReactiveProperty<bool> FlipX { get; } = new ReactivePropertySlim<bool>();
+        public IReactiveProperty<bool> FlipY { get; } = new ReactivePropertySlim<bool>();
+
+        public Window Window { get; set; }
+        public InkCanvas InkCanvas { get; set; }
 
         public bool UnsavedChanges
         {
@@ -30,16 +55,26 @@ namespace Captura
             private set => _unsavedChanges.Value = value;
         }
 
-        int _editingOperationCount;
+        public BitmapSource OriginalBitmap
+        {
+            get => _originalBmp;
+            private set => Set(ref _originalBmp, value);
+        }
 
-        readonly HistoryStack _undoStack = new HistoryStack();
-        readonly HistoryStack _redoStack = new HistoryStack();
+        public WriteableBitmap EditedBitmap
+        {
+            get => _editedBmp;
+            private set => Set(ref _editedBmp, value);
+        }
 
-        const int BrightnessStep = 10;
-        const int ContrastStep = 10;
+        public TransformedBitmap TransformedBitmap
+        {
+            get => _transformedBmp;
+            set => Set(ref _transformedBmp, value);
+        }
+        #endregion
 
-        readonly IReactiveProperty<bool> _isOpened = new ReactivePropertySlim<bool>();
-
+        #region Commands
         public ICommand DiscardChangesCommand { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
@@ -55,6 +90,7 @@ namespace Captura
         public ICommand RotateLeftCommand { get; }
         public ICommand FlipXCommand { get; }
         public ICommand FlipYCommand { get; }
+        #endregion
 
         public ImageEditorViewModel()
         {
@@ -84,12 +120,7 @@ namespace Captura
 
             DiscardChangesCommand = _unsavedChanges
                 .ToReactiveCommand()
-                .WithSubscribe(() =>
-                {
-                    Reset();
-
-                    UnsavedChanges = false;
-                });
+                .WithSubscribe(Reset);
 
             SetEffectCommand = _isOpened
                 .ToReactiveCommand<ImageEffect>()
@@ -198,54 +229,6 @@ namespace Captura
                 .Subscribe(async M => await Update());
         }
 
-        async void UploadToImgur()
-        {
-            using (var ms = new MemoryStream())
-            {
-                var bmp = GetBmp();
-
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-                encoder.Save(ms);
-
-                var imgSystem = ServiceProvider.Get<IImagingSystem>();
-
-                using (var bitmap = imgSystem.LoadBitmap(ms))
-                {
-                    await bitmap.UploadImage();
-                }
-            }
-        }
-
-        BitmapSource _originalBmp;
-
-        public BitmapSource OriginalBitmap
-        {
-            get => _originalBmp;
-            private set => Set(ref _originalBmp, value);
-        }
-
-        WriteableBitmap _editedBmp;
-
-        public WriteableBitmap EditedBitmap
-        {
-            get => _editedBmp;
-            private set => Set(ref _editedBmp, value);
-        }
-
-        TransformedBitmap _transformedBmp;
-
-        public TransformedBitmap TransformedBitmap
-        {
-            get => _transformedBmp;
-            set => Set(ref _transformedBmp, value);
-        }
-
-        readonly IReactiveProperty<ImageEffect> _currentImageEffect = new ReactivePropertySlim<ImageEffect>();
-
-        readonly IReactiveProperty<int> _brightness = new ReactivePropertySlim<int>();
-
         void Brightness(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
@@ -264,9 +247,6 @@ namespace Captura
             Apply(ref Blue);
         }
 
-        readonly IReactiveProperty<int> _contrastThreshold = new ReactivePropertySlim<int>();
-        readonly IReadOnlyReactiveProperty<double> _contrastLevel;
-
         void Contrast(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
@@ -283,28 +263,6 @@ namespace Captura
             Apply(ref Red);
             Apply(ref Green);
             Apply(ref Blue);
-        }
-
-        HistoryState GetHistoryState()
-        {
-            return new HistoryState
-            {
-                Brightness = _brightness.Value,
-                Contrast = _contrastThreshold.Value,
-                Effect = _currentImageEffect.Value,
-                Rotation = Rotation.Value,
-                FlipX = FlipX.Value,
-                FlipY = FlipY.Value
-            };
-        }
-
-        void UpdateHistory()
-        {
-            UnsavedChanges = true;
-
-            _undoStack.Push(GetHistoryState());
-
-            _redoStack.Clear();
         }
 
         async Task Update()
@@ -332,11 +290,6 @@ namespace Captura
             UpdateTransformBitmap();
         }
 
-        public IReactiveProperty<int> Rotation { get; } = new ReactivePropertySlim<int>();
-
-        public IReactiveProperty<bool> FlipX { get; } = new ReactivePropertySlim<bool>();
-        public IReactiveProperty<bool> FlipY { get; } = new ReactivePropertySlim<bool>();
-
         void UpdateTransformBitmap()
         {
             var rotate = new RotateTransform(Rotation.Value, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
@@ -354,8 +307,6 @@ namespace Captura
 
         void Reset()
         {
-            UnsavedChanges = false;
-
             _brightness.Value = _contrastThreshold.Value = 0;
             _currentImageEffect.Value = ImageEffect.None;
 
@@ -366,10 +317,11 @@ namespace Captura
 
             _undoStack.Clear();
             _redoStack.Clear();
+
+            UnsavedChanges = false;
         }
 
-        string _fileName;
-
+        #region New / Open
         public void Open()
         {
             var ofd = new OpenFileDialog
@@ -442,8 +394,30 @@ namespace Captura
 
             _isOpened.Value = true;
         }
+        #endregion
 
-        public InkCanvas InkCanvas { get; set; }
+        #region History
+        HistoryState GetHistoryState()
+        {
+            return new HistoryState
+            {
+                Brightness = _brightness.Value,
+                Contrast = _contrastThreshold.Value,
+                Effect = _currentImageEffect.Value,
+                Rotation = Rotation.Value,
+                FlipX = FlipX.Value,
+                FlipY = FlipY.Value
+            };
+        }
+
+        void UpdateHistory()
+        {
+            UnsavedChanges = true;
+
+            _undoStack.Push(GetHistoryState());
+
+            _redoStack.Clear();
+        }
 
         public void AddInkHistory(StrokeHistory HistoryItem)
         {
@@ -526,8 +500,6 @@ namespace Captura
 
             _redoStack.Clear();
         }
-
-        bool _trackChanges = true;
 
         public void RemoveLastHistory()
         {
@@ -638,12 +610,9 @@ namespace Captura
             FlipX.Value = State.FlipX;
             FlipY.Value = State.FlipY;
         }
-        
-        public void IncrementEditingOperationCount()
-        {
-            ++_editingOperationCount;
-        }
+        #endregion
 
+        #region Save
         public bool SaveToFile()
         {
             var bmp = GetBmp();
@@ -661,6 +630,26 @@ namespace Captura
             var bmp = GetBmp();
 
             Clipboard.SetImage(bmp);
+        }
+
+        async void UploadToImgur()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bmp = GetBmp();
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+                encoder.Save(ms);
+
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
+
+                using (var bitmap = imgSystem.LoadBitmap(ms))
+                {
+                    await bitmap.UploadImage();
+                }
+            }
         }
 
         BitmapSource GetBmp()
@@ -697,6 +686,12 @@ namespace Captura
 
                 return transformedRendered;
             }
+        }
+        #endregion
+
+        public void IncrementEditingOperationCount()
+        {
+            ++_editingOperationCount;
         }
 
         static Matrix GetTransformFromRectToRect(Rect Source, Rect Destination)
