@@ -92,8 +92,12 @@ namespace Captura
         public ICommand FlipYCommand { get; }
         #endregion
 
+        public InkCanvasViewModel InkCanvasViewModel { get; }
+
         public ImageEditorViewModel()
         {
+            InkCanvasViewModel = ServiceProvider.Get<InkCanvasViewModel>();
+
             UndoCommand = _undoStack
                 .ObserveProperty(M => M.Count)
                 .Select(M => M > 0)

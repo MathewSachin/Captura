@@ -401,11 +401,10 @@
                 Visibility="{Binding OriginalBitmap, Converter={StaticResource NotNullConverter}}">
             <DockPanel LastChildFill="False">
                 <ListBox ItemsSource="{x:Static local:ExtendedInkTool.Tools}"
-                         Name="ModesBox"
+                         SelectedValue="{Binding InkCanvasViewModel.SelectedTool.Value, Mode=TwoWay}"
                          Padding="1"
                          DockPanel.Dock="Top"
-                         HorizontalAlignment="Center"
-                         SelectionChanged="ModesBox_OnSelectionChanged">
+                         HorizontalAlignment="Center">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Path Data="{Binding ToolName, Converter={StaticResource InkToolToIconConverter}}"
@@ -425,8 +424,7 @@
                                   Width="40"
                                   BorderThickness="2"
                                   DockPanel.Dock="Bottom"
-                                  Name="ColorPicker"
-                                  SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
+                                  SelectedColor="{Binding InkCanvasViewModel.SelectedColor.Value, Mode=TwoWay}"
                                   VerticalContentAlignment="Stretch"
                                   ColorMode="ColorCanvas"
                                   ShowAdvancedButton="True"
@@ -434,11 +432,10 @@
                                   StandardButtonHeader="Pallette"
                                   ShowRecentColors="True"/>
 
-                <xctk:IntegerUpDown Name="SizeBox"
-                                    Minimum="1"
+                <xctk:IntegerUpDown Minimum="1"
                                     Maximum="100"
                                     DockPanel.Dock="Bottom"
-                                    ValueChanged="SizeBox_OnValueChanged"
+                                    Value="{Binding InkCanvasViewModel.BrushSize.Value, Mode=TwoWay}"
                                     Margin="2"/>
             </DockPanel>
         </Border>

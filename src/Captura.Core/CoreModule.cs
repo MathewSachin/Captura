@@ -105,6 +105,7 @@ namespace Captura
         static void BindSettings(IBinder Binder)
         {
             Binder.BindSingleton<Settings>();
+            Binder.Bind(() => Binder.Get<Settings>().ImageEditor);
             Binder.Bind(() => Binder.Get<Settings>().Audio);
             Binder.Bind(() => Binder.Get<Settings>().Proxy);
             Binder.Bind(() => Binder.Get<Settings>().Sounds);

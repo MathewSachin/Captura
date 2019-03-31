@@ -6,26 +6,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
+using Reactive.Bindings.Extensions;
 
 namespace Captura
 {
     public partial class ImageEditorWindow
     {
-        readonly ImageEditorSettings _settings;
-
         public ImageEditorWindow()
         {
             InitializeComponent();
 
             if (DataContext is ImageEditorViewModel vm)
             {
-                vm.PropertyChanged += (S, E) =>
-                {
-                    if (E.PropertyName == nameof(vm.TransformedBitmap))
-                        UpdateInkCanvas();
-                };
+                vm.ObserveProperty(M => M.TransformedBitmap)
+                    .Subscribe(M => UpdateInkCanvas());
 
                 vm.InkCanvas = InkCanvas;
+                vm.Window = this;
 
                 InkCanvas.Strokes.StrokesChanged += (S, E) =>
                 {
@@ -50,17 +47,22 @@ namespace Captura
                 InkCanvas.SelectionMoving += SelectionMovingOrResizing;
                 InkCanvas.SelectionResizing += SelectionMovingOrResizing;
 
-                vm.Window = this;
+                var inkCanvasVm = vm.InkCanvasViewModel;
+
+                inkCanvasVm
+                    .SelectedColor
+                    .Subscribe(M => InkCanvas.DefaultDrawingAttributes.Color = M);
+
+                inkCanvasVm
+                    .BrushSize
+                    .Subscribe(M => InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = M);
+
+                inkCanvasVm
+                    .SelectedTool
+                    .Subscribe(M => InkCanvas.SetInkTool(M));
             }
 
             Image.SizeChanged += (S, E) => UpdateInkCanvas();
-
-            ModesBox.SelectedIndex = 0;
-
-            _settings = ServiceProvider.Get<Settings>().ImageEditor;
-
-            ColorPicker.SelectedColor = _settings.BrushColor.ToWpfColor();
-            SizeBox.Value = _settings.BrushSize;
 
             InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
@@ -81,40 +83,7 @@ namespace Captura
             }
         }
 
-        void Exit(object Sender, RoutedEventArgs E)
-        {
-            Close();
-        }
-
-        void SizeBox_OnValueChanged(object Sender, RoutedPropertyChangedEventArgs<object> E)
-        {
-            if (InkCanvas != null && E.NewValue is int i)
-            {
-                InkCanvas.DefaultDrawingAttributes.Height = InkCanvas.DefaultDrawingAttributes.Width = i;
-
-                _settings.BrushSize = i;
-            }
-        }
-
-        void ModesBox_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
-        {
-            if (ModesBox.SelectedValue is ExtendedInkTool tool)
-            {
-                InkCanvas.SetInkTool(tool);
-            }
-        }
-
-        void ColorPicker_OnSelectedColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
-        {
-            if (E.NewValue != null && InkCanvas != null)
-            {
-                var color = E.NewValue.Value;
-
-                InkCanvas.DefaultDrawingAttributes.Color = color;
-
-                _settings.BrushColor = color.ToDrawingColor();
-            }
-        }
+        void Exit(object Sender, RoutedEventArgs E) => Close();
 
         void UpdateInkCanvas()
         {
@@ -177,10 +146,7 @@ namespace Captura
             }
         }
 
-        void NewWindow(object Sender, RoutedEventArgs E)
-        {
-            new ImageEditorWindow().ShowAndFocus();
-        }
+        void NewWindow(object Sender, RoutedEventArgs E) => new ImageEditorWindow().ShowAndFocus();
 
         // Return false to cancel
         bool ConfirmSaveBeforeNew(ImageEditorViewModel ViewModel)

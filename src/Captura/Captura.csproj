@@ -67,6 +67,7 @@
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
     <Compile Include="ImageEditor\HistoryStack.cs" />
+    <Compile Include="ImageEditor\InkCanvasViewModel.cs" />
     <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
     <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\FFmpegViewsProvider.cs" />
