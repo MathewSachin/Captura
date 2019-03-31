@@ -125,13 +125,15 @@ namespace Captura
                 InkCanvas.Width = vm.OriginalBitmap.PixelWidth;
                 InkCanvas.Height = vm.OriginalBitmap.PixelHeight;
 
-                var rotate = new RotateTransform(vm.Rotation, vm.OriginalBitmap.PixelWidth / 2.0, vm.OriginalBitmap.PixelHeight / 2.0);
+                var rotate = new RotateTransform(vm.Rotation.Value,
+                    vm.OriginalBitmap.PixelWidth / 2.0,
+                    vm.OriginalBitmap.PixelHeight / 2.0);
 
-                var tilted = Math.Abs(vm.Rotation / 90) % 2 == 1;
+                var tilted = Math.Abs(vm.Rotation.Value / 90) % 2 == 1;
                 
                 var scale = new ScaleTransform(
-                    ((tilted ? Image.ActualHeight : Image.ActualWidth) / InkCanvas.Width) * (vm.FlipX ? -1 : 1),
-                    ((tilted ? Image.ActualWidth : Image.ActualHeight) / InkCanvas.Height) * (vm.FlipY ? -1 : 1)
+                    ((tilted ? Image.ActualHeight : Image.ActualWidth) / InkCanvas.Width) * (vm.FlipX.Value ? -1 : 1),
+                    ((tilted ? Image.ActualWidth : Image.ActualHeight) / InkCanvas.Height) * (vm.FlipY.Value ? -1 : 1)
                 );
 
                 InkCanvas.LayoutTransform = new TransformGroup

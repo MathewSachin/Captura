@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -23,7 +22,7 @@ namespace Captura
         byte[] _data;
         public Window Window { get; set; }
 
-        readonly IReactiveProperty<bool> _unsavedChanges = new ReactiveProperty<bool>();
+        readonly IReactiveProperty<bool> _unsavedChanges = new ReactivePropertySlim<bool>();
 
         public bool UnsavedChanges
         {
@@ -39,7 +38,7 @@ namespace Captura
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
-        readonly IReactiveProperty<bool> _isOpened = new ReactiveProperty<bool>();
+        readonly IReactiveProperty<bool> _isOpened = new ReactivePropertySlim<bool>();
 
         public ICommand DiscardChangesCommand { get; }
         public ICommand UndoCommand { get; }
@@ -85,116 +84,118 @@ namespace Captura
 
             DiscardChangesCommand = _unsavedChanges
                 .ToReactiveCommand()
-                .WithSubscribe(async () =>
+                .WithSubscribe(() =>
                 {
                     Reset();
-
-                    await Update();
 
                     UnsavedChanges = false;
                 });
 
             SetEffectCommand = _isOpened
                 .ToReactiveCommand<ImageEffect>()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     UpdateHistory();
 
-                    CurrentImageEffect = M;
-
-                    await Update();
+                    _currentImageEffect.Value = M;
                 });
 
             SetBrightnessCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     if (M is int i || M is string s && int.TryParse(s, out i))
                     {
                         UpdateHistory();
 
                         if (i == 0)
-                            _brightness = 0;
+                            _brightness.Value = 0;
                         else if (i > 0)
-                            _brightness += BrightnessStep;
-                        else _brightness -= BrightnessStep;
-
-                        await Update();
+                            _brightness.Value += BrightnessStep;
+                        else _brightness.Value -= BrightnessStep;
                     }
                 });
 
             SetContrastCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     if (M is int i || M is string s && int.TryParse(s, out i))
                     {
                         UpdateHistory();
 
                         if (i == 0)
-                            _contrastThreshold = 0;
+                            _contrastThreshold.Value = 0;
                         else if (i > 0)
                         {
-                            if (_contrastThreshold == 100)
+                            if (_contrastThreshold.Value == 100)
                                 return;
 
-                            _contrastThreshold += ContrastStep;
+                            _contrastThreshold.Value += ContrastStep;
                         }
                         else
                         {
-                            if (_contrastThreshold == -100)
+                            if (_contrastThreshold.Value == -100)
                                 return;
 
-                            _contrastThreshold -= ContrastStep;
+                            _contrastThreshold.Value -= ContrastStep;
                         }
-
-                        await Update();
                     }
                 });
 
             RotateRightCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     UpdateHistory();
 
-                    Rotation += 90;
-
-                    await Update();
+                    Rotation.Value += 90;
                 });
 
             RotateLeftCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     UpdateHistory();
 
-                    Rotation -= 90;
-
-                    await Update();
+                    Rotation.Value -= 90;
                 });
 
             FlipXCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     UpdateHistory();
 
-                    FlipX = !FlipX;
-
-                    await Update();
+                    FlipX.Value = !FlipX.Value;
                 });
 
             FlipYCommand = _isOpened
                 .ToReactiveCommand()
-                .WithSubscribe(async M =>
+                .WithSubscribe(M =>
                 {
                     UpdateHistory();
 
-                    FlipY = !FlipY;
-
-                    await Update();
+                    FlipY.Value = !FlipY.Value;
                 });
+
+            _contrastLevel = _contrastThreshold
+                .Select(M => Math.Pow((100.0 + M) / 100.0, 2))
+                .ToReadOnlyReactivePropertySlim();
+
+            this.ObserveProperty(M => M.OriginalBitmap)
+                .CombineLatest(
+                    _brightness,
+                    _contrastThreshold,
+                    Rotation,
+                    FlipX,
+                    FlipY,
+                    _currentImageEffect,
+                    (Bmp, B, C, R, Fx, Fy, E) => Bmp)
+                .Throttle(TimeSpan.FromMilliseconds(100))
+                .Where(M => M != null)
+                .ObserveOnUIDispatcher()
+                .Subscribe(async M => await Update());
         }
 
         async void UploadToImgur()
@@ -241,21 +242,15 @@ namespace Captura
             set => Set(ref _transformedBmp, value);
         }
 
-        ImageEffect _imageEffect = ImageEffect.None;
+        readonly IReactiveProperty<ImageEffect> _currentImageEffect = new ReactivePropertySlim<ImageEffect>();
 
-        public ImageEffect CurrentImageEffect
-        {
-            get => _imageEffect;
-            private set => Set(ref _imageEffect, value);
-        }
-
-        int _brightness;
+        readonly IReactiveProperty<int> _brightness = new ReactivePropertySlim<int>();
 
         void Brightness(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
             {
-                var val = Byte + _brightness;
+                var val = Byte + _brightness.Value;
 
                 if (val > 255)
                     Byte = 255;
@@ -269,14 +264,14 @@ namespace Captura
             Apply(ref Blue);
         }
 
-        int _contrastThreshold;
-        double _contrastLevel;
+        readonly IReactiveProperty<int> _contrastThreshold = new ReactivePropertySlim<int>();
+        readonly IReadOnlyReactiveProperty<double> _contrastLevel;
 
         void Contrast(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
             {
-                var val = ((Byte / 255.0 - 0.5) * _contrastLevel + 0.5) * 255.0;
+                var val = ((Byte / 255.0 - 0.5) * _contrastLevel.Value + 0.5) * 255.0;
 
                 if (val > 255)
                     Byte = 255;
@@ -294,12 +289,12 @@ namespace Captura
         {
             return new HistoryState
             {
-                Brightness = _brightness,
-                Contrast = _contrastThreshold,
-                Effect = _imageEffect,
-                Rotation = Rotation,
-                FlipX = FlipX,
-                FlipY = FlipY
+                Brightness = _brightness.Value,
+                Contrast = _contrastThreshold.Value,
+                Effect = _currentImageEffect.Value,
+                Rotation = Rotation.Value,
+                FlipX = FlipX.Value,
+                FlipY = FlipY.Value
             };
         }
 
@@ -316,9 +311,7 @@ namespace Captura
         {
             OriginalBitmap.CopyPixels(_data, _stride, 0);
 
-            var effectFunction = PixelFunctionFactory.GetEffectFunction(CurrentImageEffect);
-
-            _contrastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
+            var effectFunction = PixelFunctionFactory.GetEffectFunction(_currentImageEffect.Value);
 
             await Task.Run(() =>
             {
@@ -339,15 +332,15 @@ namespace Captura
             UpdateTransformBitmap();
         }
 
-        public int Rotation { get; private set; }
+        public IReactiveProperty<int> Rotation { get; } = new ReactivePropertySlim<int>();
 
-        public bool FlipX { get; private set; }
-        public bool FlipY { get; private set; }
+        public IReactiveProperty<bool> FlipX { get; } = new ReactivePropertySlim<bool>();
+        public IReactiveProperty<bool> FlipY { get; } = new ReactivePropertySlim<bool>();
 
         void UpdateTransformBitmap()
         {
-            var rotate = new RotateTransform(Rotation, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
-            var scale = new ScaleTransform(FlipX ? -1 : 1, FlipY ? -1 : 1);
+            var rotate = new RotateTransform(Rotation.Value, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
+            var scale = new ScaleTransform(FlipX.Value ? -1 : 1, FlipY.Value ? -1 : 1);
 
             TransformedBitmap = new TransformedBitmap(EditedBitmap, new TransformGroup
             {
@@ -363,11 +356,11 @@ namespace Captura
         {
             UnsavedChanges = false;
 
-            _brightness = _contrastThreshold = 0;
-            _imageEffect = ImageEffect.None;
+            _brightness.Value = _contrastThreshold.Value = 0;
+            _currentImageEffect.Value = ImageEffect.None;
 
-            Rotation = 0;
-            FlipX = FlipY = false;
+            Rotation.Value = 0;
+            FlipX.Value = FlipY.Value = false;
 
             InkCanvas.Strokes.Clear();
 
@@ -548,7 +541,7 @@ namespace Captura
             _trackChanges = true;
         }
 
-        async void Undo()
+        void Undo()
         {
             _trackChanges = false;
 
@@ -589,12 +582,10 @@ namespace Captura
                     break;
             }
 
-            await Update();
-
             _trackChanges = true;
         }
 
-        async void Redo()
+        void Redo()
         {
             _trackChanges = false;
 
@@ -635,19 +626,17 @@ namespace Captura
                     break;
             }
 
-            await Update();
-
             _trackChanges = true;
         }
 
         void ApplyHistoryState(HistoryState State)
         {
-            _imageEffect = State.Effect;
-            _brightness = State.Brightness;
-            _contrastThreshold = State.Contrast;
-            Rotation = State.Rotation;
-            FlipX = State.FlipX;
-            FlipY = State.FlipY;
+            _currentImageEffect.Value = State.Effect;
+            _brightness.Value = State.Brightness;
+            _contrastThreshold.Value = State.Contrast;
+            Rotation.Value = State.Rotation;
+            FlipX.Value = State.FlipX;
+            FlipY.Value = State.FlipY;
         }
         
         public void IncrementEditingOperationCount()
