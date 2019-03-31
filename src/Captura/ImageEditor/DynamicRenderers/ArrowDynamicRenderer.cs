@@ -63,7 +63,7 @@ namespace Captura
 
             _isManipulating = false;
 
-            Draw(DrawingContext, _firstPoint, StylusPoints.First().ToPoint(), new Pen(FillBrush, 2));
+            Draw(DrawingContext, _firstPoint, StylusPoints.First().ToPoint(), new Pen(FillBrush, DrawingAttributes.Width));
         }
 
         protected override void OnStylusUp(RawStylusInput RawStylusInput)

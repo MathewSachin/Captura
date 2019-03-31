@@ -507,22 +507,18 @@ namespace Captura
 
         public void RemoveLastHistory()
         {
-            _trackChanges = false;
-
             if (_undoStack.Count == 0)
                 return;
 
             _undoStack.Pop();
-
-            _trackChanges = true;
         }
 
         void Undo()
         {
-            _trackChanges = false;
-
             if (_undoStack.Count == 0)
                 return;
+
+            _trackChanges = false;
 
             var current = GetHistoryState();
 
@@ -563,10 +559,10 @@ namespace Captura
 
         void Redo()
         {
-            _trackChanges = false;
-
             if (_redoStack.Count == 0)
                 return;
+
+            _trackChanges = false;
 
             var current = GetHistoryState();
 
