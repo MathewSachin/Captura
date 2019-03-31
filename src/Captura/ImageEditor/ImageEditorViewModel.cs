@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura
 {
@@ -31,8 +33,8 @@ namespace Captura
 
         int _editingOperationCount;
 
-        readonly Stack<IHistoryItem> _undoStack = new Stack<IHistoryItem>();
-        readonly Stack<IHistoryItem> _redoStack = new Stack<IHistoryItem>();
+        readonly HistoryStack _undoStack = new HistoryStack();
+        readonly HistoryStack _redoStack = new HistoryStack();
 
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
@@ -40,8 +42,8 @@ namespace Captura
         readonly IReactiveProperty<bool> _isOpened = new ReactiveProperty<bool>();
 
         public ICommand DiscardChangesCommand { get; }
-        public DelegateCommand UndoCommand { get; }
-        public DelegateCommand RedoCommand { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand SaveToClipboardCommand { get; }
         public ICommand UploadToImgurCommand { get; }
@@ -57,8 +59,17 @@ namespace Captura
 
         public ImageEditorViewModel()
         {
-            UndoCommand = new DelegateCommand(Undo, false);
-            RedoCommand = new DelegateCommand(Redo, false);
+            UndoCommand = _undoStack
+                .ObserveProperty(M => M.Count)
+                .Select(M => M > 0)
+                .ToReactiveCommand()
+                .WithSubscribe(Undo);
+
+            RedoCommand = _redoStack
+                .ObserveProperty(M => M.Count)
+                .Select(M => M > 0)
+                .ToReactiveCommand()
+                .WithSubscribe(Redo);
 
             SaveCommand = _isOpened
                 .ToReactiveCommand()
@@ -298,11 +309,7 @@ namespace Captura
 
             _undoStack.Push(GetHistoryState());
 
-            UndoCommand.RaiseCanExecuteChanged(true);
-
             _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         async Task Update()
@@ -366,8 +373,6 @@ namespace Captura
 
             _undoStack.Clear();
             _redoStack.Clear();
-            UndoCommand.RaiseCanExecuteChanged(false);
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         string _fileName;
@@ -491,13 +496,9 @@ namespace Captura
             if (!merged)
             {
                 _undoStack.Push(HistoryItem);
-
-                UndoCommand.RaiseCanExecuteChanged(true);
             }
 
             _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         public void AddSelectHistory(SelectHistory HistoryItem)
@@ -528,13 +529,9 @@ namespace Captura
             if (!merged)
             {
                 _undoStack.Push(HistoryItem);
-
-                UndoCommand.RaiseCanExecuteChanged(true);
             }
 
             _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         bool _trackChanges = true;
@@ -547,9 +544,6 @@ namespace Captura
                 return;
 
             _undoStack.Pop();
-
-            if (_undoStack.Count == 0)
-                UndoCommand.RaiseCanExecuteChanged(false);
 
             _trackChanges = true;
         }
@@ -594,13 +588,8 @@ namespace Captura
                     _redoStack.Push(select);
                     break;
             }
-            
-            RedoCommand.RaiseCanExecuteChanged(true);
 
             await Update();
-
-            if (_undoStack.Count == 0)
-                UndoCommand.RaiseCanExecuteChanged(false);
 
             _trackChanges = true;
         }
@@ -646,12 +635,7 @@ namespace Captura
                     break;
             }
 
-            UndoCommand.RaiseCanExecuteChanged(true);
-
             await Update();
-
-            if (_redoStack.Count == 0)
-                RedoCommand.RaiseCanExecuteChanged(false);
 
             _trackChanges = true;
         }
