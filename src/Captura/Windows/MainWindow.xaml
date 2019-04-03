@@ -215,49 +215,12 @@
                   IsExpanded="{Binding Settings.UI.Expanded}">
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
-                    <local:ModernButton ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.9"/>
+                    <local:ScreenShotButton/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
-                    <local:ModernButton ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}" 
-                                        Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.9"
-                                        RenderTransformOrigin="0.5,0.5">
-                        <local:ModernButton.RenderTransform>
-                            <RotateTransform/>
-                        </local:ModernButton.RenderTransform>
-                        <local:ModernButton.Style>
-                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="90"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="0"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </local:ModernButton.Style>
-                    </local:ModernButton>
+                    <local:PauseButton/>
                     <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
                                         Click="CloseButton_Click"
                                         Foreground="#77ef5350"

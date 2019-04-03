@@ -135,6 +135,12 @@
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\RegionSelectorProvider.cs" />
+    <Compile Include="Controls\ScreenShotButton.xaml.cs">
+      <DependentUpon>ScreenShotButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PauseButton.xaml.cs">
+      <DependentUpon>PauseButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Overlays\CensorOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\ImageOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\PositionOverlayReactor.cs" />
@@ -354,6 +360,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PauseButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Themes\VirtualizingItemsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -363,6 +373,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenShotButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

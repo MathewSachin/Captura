@@ -253,19 +253,17 @@
                     Background="{DynamicResource WindowBackground}">
                 <DockPanel>
                     <DockPanel.Resources>
+                        <ScaleTransform x:Key="ButtonScale"
+                                        ScaleX="0.85"
+                                        ScaleY="0.85"/>
                         <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
-                            <Setter Property="LayoutTransform">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="LayoutTransform" Value="{StaticResource ButtonScale}"/>
                         </Style>
                     </DockPanel.Resources>
 
                     <local:ModernButton IconData="{Binding Icons.SnapToWindow, Source={StaticResource ServiceLocator}}"
                                         Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Click="Snapper_OnClick"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                     <local:ModernButton Click="CloseButton_Click"
@@ -273,58 +271,16 @@
                                         Foreground="#77ef5350"
                                         IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
                                         DockPanel.Dock="Right"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
-                                        DockPanel.Dock="Right"
-                                        Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    <local:ScreenShotButton DockPanel.Dock="Right"/>
 
                     <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
-                                        RenderTransformOrigin="0.5,0.5">
-                        <local:ModernButton.RenderTransform>
-                            <RotateTransform/>
-                        </local:ModernButton.RenderTransform>
-                        <local:ModernButton.Style>
-                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="90"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="0"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </local:ModernButton.Style>
-                    </local:ModernButton>
+                    <local:PauseButton LayoutTransform="{StaticResource ButtonScale}"/>
 
                     <StackPanel Orientation="Horizontal"
                                 Margin="10,-1"
