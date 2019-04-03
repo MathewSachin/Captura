@@ -435,7 +435,7 @@ namespace Captura.ViewModels
                 ? new MouseClickSettings { Display = false }
                 : Settings.Clicks;
 
-            yield return new MouseKeyHook(clickSettings,
+            yield return new MouseKeyOverlay(clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 CurrentFileName,
