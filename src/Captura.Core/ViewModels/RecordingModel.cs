@@ -132,13 +132,13 @@ namespace Captura.ViewModels
             return true;
         }
 
-        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
+        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
             IImageProvider imgProvider;
 
             try
             {
-                imgProvider = GetImageProvider(RecordingParams);
+                imgProvider = GetImageProvider(RecordingParams, MouseKeyHook);
             }
             catch (NotSupportedException e) when (RecordingParams.VideoSourceKind is DeskDuplSourceProvider)
             {
@@ -174,7 +174,14 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
+            if (Settings.RecordChanges)
+            {
+                // Audio is not supported with record changes
+                AudioProvider?.Dispose();
+
+                _recorder = new StepsRecorder(MouseKeyHook, videoEncoder, imgProvider);
+            }
+            else _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
 
             var webcamMode = RecordingParams.VideoSourceKind is WebcamSourceProvider;
 
@@ -236,8 +243,12 @@ namespace Captura.ViewModels
 
             if (IsVideo)
             {
-                if (!SetupVideoRecorder(audioProvider, RecordingParams))
+                var mouseKeyHook = new MouseKeyHook();
+
+                if (!SetupVideoRecorder(audioProvider, RecordingParams, mouseKeyHook))
                 {
+                    mouseKeyHook.Dispose();
+
                     audioProvider?.Dispose();
 
                     return false;
@@ -414,7 +425,7 @@ namespace Captura.ViewModels
             });
         }
 
-        IEnumerable<IOverlay> GetOverlays(RecordingModelParams RecordingParams)
+        IEnumerable<IOverlay> GetOverlays(RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
             // No mouse and webcam overlays in webcam mode
             var webcamMode = RecordingParams.VideoSourceKind is WebcamSourceProvider;
@@ -435,7 +446,8 @@ namespace Captura.ViewModels
                 ? new MouseClickSettings { Display = false }
                 : Settings.Clicks;
 
-            yield return new MouseKeyOverlay(clickSettings,
+            yield return new MouseKeyOverlay(MouseKeyHook,
+                clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 CurrentFileName,
@@ -468,7 +480,7 @@ namespace Captura.ViewModels
             }
         }
 
-        IImageProvider GetImageProvider(RecordingModelParams RecordingParams)
+        IImageProvider GetImageProvider(RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
             Func<Point, Point> transform = P => P;
 
@@ -479,7 +491,7 @@ namespace Captura.ViewModels
 
             return imageProvider == null
                 ? null
-                : new OverlayedImageProvider(imageProvider, transform, GetOverlays(RecordingParams).ToArray());
+                : new OverlayedImageProvider(imageProvider, transform, GetOverlays(RecordingParams, MouseKeyHook).ToArray());
         }
 
         public string CurrentFileName { get; private set; }

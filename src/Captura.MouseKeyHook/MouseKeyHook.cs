@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    class MouseKeyHook : IMouseKeyHook
+    public class MouseKeyHook : IMouseKeyHook
     {
         readonly IKeyboardMouseEvents _hook;
 

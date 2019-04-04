@@ -209,5 +209,11 @@ namespace Captura
             get => Get(true);
             set => Set(value);
         }
+
+        public bool RecordChanges
+        {
+            get => Get(false);
+            set => Set(value);
+        }
     }
 }

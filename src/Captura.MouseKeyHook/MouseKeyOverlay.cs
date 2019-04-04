@@ -22,7 +22,8 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MouseKeyHook"/>.
         /// </summary>
-        public MouseKeyOverlay(MouseClickSettings MouseClickSettings,
+        public MouseKeyOverlay(IMouseKeyHook Hook,
+            MouseClickSettings MouseClickSettings,
             KeystrokesSettings KeystrokesSettings,
             KeymapViewModel Keymap,
             string FileName,
@@ -31,7 +32,7 @@ namespace Captura.Models
             _keystrokesSettings = KeystrokesSettings;
             _keymap = Keymap;
 
-            _hook = new MouseKeyHook();
+            _hook = Hook;
             _mouseClickOverlay = new MouseClickOverlay(_hook, MouseClickSettings);
 
             if (KeystrokesSettings.SeparateTextFile)

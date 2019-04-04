@@ -106,6 +106,14 @@ namespace Captura
 
             HandleWebcam(StartOptions);
 
+            if (StartOptions.Changes)
+            {
+                _settings.RecordChanges = true;
+
+                // Set default FPS to 1, can be overriden below
+                _settings.Video.FrameRate = 1;
+            }
+
             if (StartOptions.FrameRate is int frameRate)
                 _settings.Video.FrameRate = frameRate;
 
