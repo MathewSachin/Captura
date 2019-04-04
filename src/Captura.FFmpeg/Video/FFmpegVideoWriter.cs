@@ -65,7 +65,7 @@ namespace Captura.Models
                 var audioPipeName = GetPipeName();
 
                 argsBuilder.AddInputPipe(audioPipeName)
-                    .AddArg("-thread_queue_size", 512)
+                    .AddArg("thread_queue_size", 512)
                     .SetFormat("s16le")
                     .SetAudioCodec("pcm_s16le")
                     .SetAudioFrequency(Args.Frequency)
