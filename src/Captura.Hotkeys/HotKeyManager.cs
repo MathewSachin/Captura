@@ -18,9 +18,11 @@ namespace Captura
 
         static string GetFilePath() => Path.Combine(ServiceProvider.SettingsDir, "Hotkeys.json");
 
-        public HotKeyManager()
+        public HotKeyManager(IHotkeyListener HotkeyListener)
         {
             Hotkeys = new ReadOnlyObservableCollection<Hotkey>(_hotkeys);
+
+            HotkeyListener.HotkeyReceived += ProcessHotkey;
         }
 
         public void Remove(Hotkey Hotkey)
@@ -92,7 +94,7 @@ namespace Captura
             };
         }
         
-        public void ProcessHotkey(int Id)
+        void ProcessHotkey(int Id)
         {
             var hotkey = Hotkeys.SingleOrDefault(H => H.Id == Id);
 

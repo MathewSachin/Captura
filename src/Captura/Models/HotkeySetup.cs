@@ -26,10 +26,6 @@ namespace Captura
 
             _hotkeyActionRegisterer.Register();
 
-            var listener = new HotkeyListener();
-
-            listener.HotkeyReceived += Id => _hotKeyManager.ProcessHotkey(Id);
-
             _hotKeyManager.HotkeyPressed += Service =>
             {
                 switch (Service)
