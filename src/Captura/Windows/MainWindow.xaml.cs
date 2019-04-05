@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Captura.ViewModels;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -11,20 +10,21 @@ namespace Captura
     {
         public static MainWindow Instance { get; private set; }
 
+        readonly MainWindowHelper _helper;
+
         public MainWindow()
         {
             Instance = this;
             
             InitializeComponent();
 
-            var mainVm = ServiceProvider.Get<MainViewModel>();
+            _helper = ServiceProvider.Get<MainWindowHelper>();
 
-            mainVm.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
+            _helper.MainViewModel.Init(!App.CmdOptions.NoPersist, !App.CmdOptions.Reset);
 
-            var hotkeySetup = ServiceProvider.Get<HotkeySetup>();
-            hotkeySetup.Setup();
+            _helper.HotkeySetup.Setup();
 
-            ServiceProvider.Get<TimerModel>().Init();
+            _helper.TimerModel.Init();
 
             Loaded += (Sender, Args) =>
             {
@@ -32,10 +32,10 @@ namespace Captura
 
                 WebCamWindow.Instance.SetupWebcamPreview();
 
-                hotkeySetup.ShowUnregistered();
+                _helper.HotkeySetup.ShowUnregistered();
             };
 
-            if (App.CmdOptions.Tray || ServiceProvider.Get<Settings>().Tray.MinToTrayOnStartup)
+            if (App.CmdOptions.Tray || _helper.Settings.Tray.MinToTrayOnStartup)
                 Hide();
 
             Closing += (Sender, Args) =>
@@ -71,7 +71,7 @@ namespace Captura
 
         void CloseButton_Click(object Sender, RoutedEventArgs Args)
         {
-            if (ServiceProvider.Get<Settings>().Tray.MinToTrayOnClose)
+            if (_helper.Settings.Tray.MinToTrayOnClose)
             {
                 Hide();
             }
@@ -89,9 +89,7 @@ namespace Captura
 
         bool TryExit()
         {
-            var recordingVm = ServiceProvider.Get<RecordingViewModel>();
-
-            if (!recordingVm.CanExit())
+            if (!_helper.RecordingViewModel.CanExit())
                 return false;
 
             ServiceProvider.Dispose();
