@@ -31,6 +31,8 @@ namespace Captura.ViewModels
 
             Binder.BindSingleton<FFmpegLog>();
             Binder.Bind<IFFmpegLogRepository>(ServiceProvider.Get<FFmpegLog>);
+
+            Binder.Bind<IHotkeyActor, HotkeyActor>();
         }
 
         public void Dispose() { }

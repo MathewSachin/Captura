@@ -1,21 +1,17 @@
 ﻿using System.Linq;
 using Captura.Models;
-using Captura.ViewModels;
 
 namespace Captura
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class HotkeySetup
     {
-        readonly HotkeyActionRegisterer _hotkeyActionRegisterer;
         readonly HotKeyManager _hotKeyManager;
         readonly IMessageProvider _messageProvider;
 
-        public HotkeySetup(HotkeyActionRegisterer HotkeyActionRegisterer,
-            HotKeyManager HotKeyManager,
+        public HotkeySetup(HotKeyManager HotKeyManager,
             IMessageProvider MessageProvider)
         {
-            _hotkeyActionRegisterer = HotkeyActionRegisterer;
             _hotKeyManager = HotKeyManager;
             _messageProvider = MessageProvider;
         }
@@ -23,22 +19,6 @@ namespace Captura
         public void Setup()
         {
             _hotKeyManager.RegisterAll();
-
-            _hotkeyActionRegisterer.Register();
-
-            _hotKeyManager.HotkeyPressed += Service =>
-            {
-                switch (Service)
-                {
-                    case ServiceName.OpenImageEditor:
-                        new ImageEditorWindow().ShowAndFocus();
-                        break;
-
-                    case ServiceName.ShowMainWindow:
-                        MainWindow.Instance.ShowAndFocus();
-                        break;
-                }
-            };
         }
 
         public void ShowUnregistered()

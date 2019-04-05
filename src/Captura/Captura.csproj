@@ -76,6 +76,7 @@
       <DependentUpon>ModernPasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\HotkeySetup.cs" />
+    <Compile Include="Models\HotkeyViewActor.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
