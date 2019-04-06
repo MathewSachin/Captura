@@ -39,18 +39,6 @@ namespace Captura.Tests
         }
 
         [Fact]
-        public void OverlaysTransformNull()
-        {
-            var imageProvider = _moq.GetImageProviderMock().Object;
-            var overlay = _moq.GetOverlayMock().Object;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                using (new OverlayedImageProvider(imageProvider, null, overlay)) { }
-            });
-        }
-
-        [Fact]
         public void WindowProviderNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
