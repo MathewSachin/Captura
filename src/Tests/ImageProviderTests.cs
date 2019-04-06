@@ -23,7 +23,7 @@ namespace Captura.Tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                using (new OverlayedImageProvider(null, P => P, overlay)) { }
+                using (new OverlayedImageProvider(null, overlay)) { }
             });
         }
 
@@ -34,7 +34,7 @@ namespace Captura.Tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                using (new OverlayedImageProvider(imageProvider, P => P, null)) { }
+                using (new OverlayedImageProvider(imageProvider, null)) { }
             });
         }
 
@@ -57,7 +57,7 @@ namespace Captura.Tests
             {
                 var platformServices = _moq.GetService<IPlatformServices>();
 
-                using (platformServices.GetWindowProvider(null, false, out _)) { }
+                using (platformServices.GetWindowProvider(null, false)) { }
             });
         }
 
@@ -110,7 +110,7 @@ namespace Captura.Tests
             var imgProvider = _moq.GetImageProviderMock().Object;
             var overlay = _moq.GetOverlayMock().Object;
 
-            using (var provider = new OverlayedImageProvider(imgProvider, P => P, overlay))
+            using (var provider = new OverlayedImageProvider(imgProvider, overlay))
             {
                 Assert.Equal(provider.Width, imgProvider.Width);
                 Assert.Equal(provider.Height, imgProvider.Height);
@@ -129,7 +129,7 @@ namespace Captura.Tests
             var imgProviderMock = _moq.GetImageProviderMock();
             var overlayMock = _moq.GetOverlayMock();
 
-            using (var provider = new OverlayedImageProvider(imgProviderMock.Object, P => P, overlayMock.Object))
+            using (var provider = new OverlayedImageProvider(imgProviderMock.Object, overlayMock.Object))
             {
                 using (provider.Capture())
                 {

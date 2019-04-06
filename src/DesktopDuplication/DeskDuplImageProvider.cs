@@ -1,5 +1,7 @@
 ﻿using DesktopDuplication;
 using SharpDX.DXGI;
+using System;
+using System.Drawing;
 
 namespace Captura.Models
 {
@@ -14,12 +16,16 @@ namespace Captura.Models
             Width = bounds.Right - bounds.Left;
             Height = bounds.Bottom - bounds.Top;
 
+            PointTransform = P => new Point(P.X - bounds.Left, P.Y - bounds.Top);
+
             _dupl = new DesktopDuplicator(IncludeCursor, Output, PreviewWindow);
         }
 
         public int Height { get; }
 
         public int Width { get; }
+
+        public Func<Point, Point> PointTransform { get; }
         
         public IEditableFrame Capture()
         {

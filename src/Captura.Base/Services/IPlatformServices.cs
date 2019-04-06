@@ -31,6 +31,6 @@ namespace Captura
             bool IncludeCursor,
             Func<Point> LocationFunction = null);
 
-        IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> TransformerFunction);
+        IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor);
     }
 }

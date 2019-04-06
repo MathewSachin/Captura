@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     /// <summary>
     /// Holds codecs for audio-alone capture.
@@ -17,10 +14,8 @@ namespace Captura.Models
 
         public string Name => AudioWriterItem.Name;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            Transform = null;
-
             return null;
         }
 

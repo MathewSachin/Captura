@@ -60,9 +60,9 @@ namespace Captura
             return new RegionProvider(Region, IncludeCursor, LocationFunction);
         }
 
-        public IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> TransformerFunction)
+        public IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor)
         {
-            return new WindowProvider(Window, IncludeCursor, out TransformerFunction);
+            return new WindowProvider(Window, IncludeCursor);
         }
     }
 }
