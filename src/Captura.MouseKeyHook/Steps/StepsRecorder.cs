@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -15,40 +14,34 @@ namespace Captura.Models
         IImageProvider _imageProvider;
         readonly Task _recordTask;
         volatile bool _recording;
+        readonly MouseClickSettings _mouseClickSettings;
+        readonly KeystrokesSettings _keystrokesSettings;
 
-        IObservable<Unit> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken)
+        IObservable<IOverlay> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken)
         {
-            var subject = new Subject<Unit>();
+            var subject = new Subject<IOverlay>();
 
-            void Callback<T>(object S, T Args) => subject.OnNext(Unit.Default);
+            Hook.MouseClick += (S, E) => subject.OnNext(new MouseClickStep(_mouseClickSettings, E));
+            Hook.MouseDoubleClick += (S, E) => subject.OnNext(new MouseClickStep(_mouseClickSettings, E));
 
-            Hook.KeyUp += Callback;
-            Hook.KeyDown += Callback;
-            Hook.MouseUp += Callback;
-            Hook.MouseDown += Callback;
+            CancellationToken.Register(() => subject.OnCompleted());
 
-            CancellationToken.Register(() =>
-            {
-                Hook.KeyUp -= Callback;
-                Hook.KeyDown -= Callback;
-                Hook.MouseUp -= Callback;
-                Hook.MouseDown -= Callback;
-
-                subject.OnCompleted();
-            });
-
+            // TODO: Define interface with Merge support for merging related Steps
             return subject
-                .Where(M => _recording)
-                .Throttle(TimeSpan.FromMilliseconds(70));
+                .Where(M => _recording);
         }
 
         public StepsRecorder(IMouseKeyHook Hook,
             IVideoFileWriter VideoWriter,
-            IImageProvider ImageProvider)
+            IImageProvider ImageProvider,
+            MouseClickSettings MouseClickSettings,
+            KeystrokesSettings KeystrokesSettings)
         {
             _hook = Hook;
             _videoWriter = VideoWriter;
             _imageProvider = ImageProvider;
+            _mouseClickSettings = MouseClickSettings;
+            _keystrokesSettings = KeystrokesSettings;
 
             _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
         }
@@ -57,9 +50,11 @@ namespace Captura.Models
         {
             var observer = Observe(_hook, _cancellationTokenSource.Token);
 
-            foreach (var _ in observer.ToEnumerable())
+            foreach (var overlay in observer.ToEnumerable())
             {
                 var editableFrame = _imageProvider.Capture();
+
+                overlay.Draw(editableFrame, _imageProvider.PointTransform);
 
                 var frame = editableFrame.GenerateFrame();
 

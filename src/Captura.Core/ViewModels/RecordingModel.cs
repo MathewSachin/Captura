@@ -178,7 +178,11 @@ namespace Captura.ViewModels
                 // Audio is not supported with record changes
                 AudioProvider?.Dispose();
 
-                _recorder = new StepsRecorder(MouseKeyHook, videoEncoder, imgProvider);
+                _recorder = new StepsRecorder(MouseKeyHook,
+                    videoEncoder,
+                    imgProvider,
+                    Settings.Clicks,
+                    Settings.Keystrokes);
             }
             else _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
 
