@@ -9,7 +9,6 @@ namespace Screna
         Rectangle _region;
         readonly Func<Point> _locationFunc;
         readonly bool _includeCursor;
-        readonly Func<Point, Point> _transform;
 
         readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
 
@@ -29,7 +28,7 @@ namespace Screna
             if (Height % 2 == 1)
                 ++Height;
 
-            _transform = P => new Point(P.X - _region.X, P.Y - _region.Y);
+            PointTransform = P => new Point(P.X - _region.X, P.Y - _region.Y);
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
@@ -58,10 +57,12 @@ namespace Screna
             var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
             if (_includeCursor)
-                MouseCursor.Draw(img, _transform);
+                MouseCursor.Draw(img, PointTransform);
 
             return img;
         }
+
+        public Func<Point, Point> PointTransform { get; }
 
         public int Height { get; }
         public int Width { get; }

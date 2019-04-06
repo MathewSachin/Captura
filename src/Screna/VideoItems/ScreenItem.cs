@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {
@@ -19,10 +16,8 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            Transform = P => new Point(P.X - Screen.Rectangle.X, P.Y - Screen.Rectangle.Y);
-
             return _platformServices.GetRegionProvider(Screen.Rectangle, IncludeCursor);
         }
     }

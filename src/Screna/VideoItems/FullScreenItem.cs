@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class FullScreenItem : NotifyPropertyChanged, IVideoItem
@@ -17,11 +14,9 @@ namespace Captura.Models
 
         public string Name => null;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
 			var region = _platformServices.DesktopRectangle;
-
-			Transform = P => new Point(P.X - region.X, P.Y - region.Y);
 
             return _platformServices.GetRegionProvider(region, IncludeCursor);
 		}

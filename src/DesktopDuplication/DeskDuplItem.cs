@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 using SharpDX.DXGI;
 
@@ -29,12 +28,8 @@ namespace Captura.Models
             }
         }
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            var rect = Rectangle;
-
-            Transform = P => new Point(P.X - rect.Left, P.Y - rect.Top);
-
             return new DeskDuplImageProvider(_output, IncludeCursor, _previewWindow);
         }
     }

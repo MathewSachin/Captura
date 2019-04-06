@@ -11,7 +11,6 @@ namespace Screna
     class WindowProvider : IImageProvider
     {
         readonly IWindow _window;
-        readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
 
         readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
@@ -33,7 +32,7 @@ namespace Screna
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        public WindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> Transform)
+        public WindowProvider(IWindow Window, bool IncludeCursor)
         {
             _window = Window ?? throw new ArgumentNullException(nameof(Window));
             _includeCursor = IncludeCursor;
@@ -42,7 +41,7 @@ namespace Screna
             Width = size.Width;
             Height = size.Height;
 
-            Transform = _transform = GetTransformer(Window);
+            PointTransform = GetTransformer(Window);
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
@@ -51,6 +50,8 @@ namespace Screna
 
             Gdi32.SelectObject(_hdcDest, _hBitmap);
         }
+
+        public Func<Point, Point> PointTransform { get; }
 
         void OnCapture()
         {
@@ -103,7 +104,7 @@ namespace Screna
                 var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
                 if (_includeCursor)
-                    MouseCursor.Draw(img, _transform);
+                    MouseCursor.Draw(img, PointTransform);
 
                 return img;
             }

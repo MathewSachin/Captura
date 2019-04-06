@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Captura
 {
@@ -22,5 +23,7 @@ namespace Captura
         /// Width of Captured image.
         /// </summary>
         int Width { get; }
+
+        Func<Point, Point> PointTransform { get; }
     }
 }

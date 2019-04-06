@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Captura.ViewModels;
 using Screna;
 
@@ -35,5 +36,7 @@ namespace Captura.Webcam
         public int Height => _webcamModel.WebcamCapture?.Height ?? 0;
 
         public int Width => _webcamModel.WebcamCapture?.Width ?? 0;
+
+        public Func<Point, Point> PointTransform { get; } = P => P;
     }
 }

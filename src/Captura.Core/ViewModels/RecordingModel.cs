@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -470,16 +469,14 @@ namespace Captura.ViewModels
 
         IImageProvider GetImageProvider(RecordingModelParams RecordingParams)
         {
-            Func<Point, Point> transform = P => P;
-
             var imageProvider = RecordingParams
                 .VideoSourceKind
                 ?.Source
-                ?.GetImageProvider(Settings.IncludeCursor, out transform);
+                ?.GetImageProvider(Settings.IncludeCursor);
 
             return imageProvider == null
                 ? null
-                : new OverlayedImageProvider(imageProvider, transform, GetOverlays(RecordingParams).ToArray());
+                : new OverlayedImageProvider(imageProvider, GetOverlays(RecordingParams).ToArray());
         }
 
         public string CurrentFileName { get; private set; }

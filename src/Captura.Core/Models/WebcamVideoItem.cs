@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using Captura.ViewModels;
+﻿using Captura.ViewModels;
 using Captura.Webcam;
 
 namespace Captura.Models
@@ -18,10 +16,8 @@ namespace Captura.Models
 
         public string Name => _webcamModel.SelectedCam?.Name;
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            Transform = P => P;
-
             return new WebcamImageProvider(_webcamModel);
         }
     }
