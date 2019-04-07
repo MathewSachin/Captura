@@ -10,6 +10,7 @@ namespace Captura.Models
 
         readonly KeymapViewModel _keymap;
         readonly KeystrokesSettings _settings;
+        readonly bool _mergeable;
         int _repeat;
 
         public KeyStep(KeystrokesSettings Settings,
@@ -20,6 +21,8 @@ namespace Captura.Models
             _keymap = Keymap;
 
             Text = $"{GetModifierString(Args)}{Args.KeyCode}";
+
+            _mergeable = Text.Length == 1;
         }
 
         string GetModifierString(KeyEventArgs Args)
@@ -54,14 +57,42 @@ namespace Captura.Models
 
                 var size = Editor.MeasureString(text, font);
 
-                var rect = new RectangleF(10, 10, size.Width, size.Height);
+                int paddingX = _settings.HorizontalPadding,
+                    paddingY = _settings.VerticalPadding;
 
-                Editor.DrawString(text, font, _settings.FontColor, rect);
+                var rect = new RectangleF(KeyOverlay.GetLeft(_settings, Editor.Width, size.Width),
+                    KeyOverlay.GetTop(_settings, Editor.Height, size.Height),
+                    size.Width + 2 * paddingX,
+                    size.Height + 2 * paddingY);
+
+                Editor.FillRectangle(_settings.BackgroundColor,
+                    rect,
+                    _settings.CornerRadius);
+
+                Editor.DrawString(text,
+                    font,
+                    _settings.FontColor,
+                    new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
+
+                var border = _settings.BorderThickness;
+
+                if (border > 0)
+                {
+                    rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
+
+                    Editor.DrawRectangle(_settings.BorderColor,
+                        border,
+                        rect,
+                        _settings.CornerRadius);
+                }
             }
         }
 
         public bool Merge(IRecordStep NextStep)
         {
+            if (!_mergeable)
+                return false;
+
             if (NextStep is KeyStep nextStep)
             {
                 if (_repeat == 0 && nextStep.Text.Length == 1)
