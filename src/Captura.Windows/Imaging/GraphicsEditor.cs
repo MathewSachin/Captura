@@ -38,6 +38,11 @@ namespace Screna
             return GraphicsBitmapLoader.Instance.LoadBitmap(FileName);
         }
 
+        public void DrawLine(Point Start, Point End, Color Color, float Width)
+        {
+            _graphics.DrawLine(new Pen(new SolidBrush(Color), Width), Start, End);
+        }
+
         public void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100)
         {
             if (!(Image is DrawingImage drawingImage))
