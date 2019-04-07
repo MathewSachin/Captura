@@ -104,6 +104,11 @@ namespace DesktopDuplication
             };
         }
 
+        RawVector2 Convert(Point P)
+        {
+            return new RawVector2(P.X, P.Y);
+        }
+
         Ellipse ToEllipse(RectangleF Rectangle)
         {
             var center = new RawVector2(Rectangle.Left + Rectangle.Width / 2f,
@@ -112,6 +117,11 @@ namespace DesktopDuplication
             return new Ellipse(center,
                 Rectangle.Width / 2f,
                 Rectangle.Height / 2f);
+        }
+
+        public void DrawLine(Point Start, Point End, Color Color, float Width)
+        {
+            _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width);
         }
 
         public void FillRectangle(Color Color, RectangleF Rectangle)

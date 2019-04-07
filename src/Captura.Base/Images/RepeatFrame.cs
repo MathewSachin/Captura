@@ -31,6 +31,11 @@ namespace Captura
 
         void IDisposable.Dispose() { }
 
+        void IEditableFrame.DrawLine(Point Start, Point End, Color Color, float Width)
+        {
+            throw new NotImplementedException();
+        }
+
         void IEditableFrame.DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity)
         {
             throw new NotImplementedException();
