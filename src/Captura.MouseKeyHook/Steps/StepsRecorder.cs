@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -17,16 +18,41 @@ namespace Captura.Models
         readonly MouseClickSettings _mouseClickSettings;
         readonly KeystrokesSettings _keystrokesSettings;
 
-        IObservable<IOverlay> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken)
+        IRecordStep _lastStep;
+
+        IObservable<IRecordStep> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken, out IObservable<Unit> ShotObservable)
         {
-            var subject = new Subject<IOverlay>();
+            var subject = new Subject<IRecordStep>();
+            var shotSubject = new Subject<Unit>();
+            ShotObservable = shotSubject;
 
-            Hook.MouseClick += (S, E) => subject.OnNext(new MouseClickStep(_mouseClickSettings, E));
-            Hook.MouseDoubleClick += (S, E) => subject.OnNext(new MouseClickStep(_mouseClickSettings, E));
+            void OnNext(IRecordStep NextStep)
+            {
+                if (_lastStep != null)
+                {
+                    if (_lastStep.Merge(NextStep))
+                        return;
 
-            CancellationToken.Register(() => subject.OnCompleted());
+                    subject.OnNext(_lastStep);
+                }
 
-            // TODO: Define interface with Merge support for merging related Steps
+                shotSubject.OnNext(Unit.Default);
+
+                _lastStep = NextStep;
+            }
+
+            Hook.MouseClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
+            Hook.MouseDoubleClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
+
+            CancellationToken.Register(() =>
+            {
+                shotSubject.OnCompleted();
+
+                subject.OnNext(_lastStep);
+
+                subject.OnCompleted();
+            });
+
             return subject
                 .Where(M => _recording);
         }
@@ -48,16 +74,18 @@ namespace Captura.Models
 
         void DoRecord()
         {
-            var observer = Observe(_hook, _cancellationTokenSource.Token);
+            var observer = Observe(_hook, _cancellationTokenSource.Token, out var shot);
 
-            foreach (var overlay in observer.ToEnumerable())
+            var frames = shot.Select(M => _imageProvider.Capture())
+                .Zip(observer, (Frame, Step) =>
+                {
+                    Step.Draw(Frame, _imageProvider.PointTransform);
+
+                    return Frame.GenerateFrame();
+                });
+
+            foreach (var frame in frames.ToEnumerable())
             {
-                var editableFrame = _imageProvider.Capture();
-
-                overlay.Draw(editableFrame, _imageProvider.PointTransform);
-
-                var frame = editableFrame.GenerateFrame();
-
                 try
                 {
                     _videoWriter.WriteFrame(frame);

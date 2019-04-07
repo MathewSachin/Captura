@@ -4,23 +4,45 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    public class MouseClickStep : IOverlay
+    class MouseClickStep : IRecordStep
     {
         readonly MouseClickSettings _settings;
-        readonly MouseEventArgs _args;
+        public MouseEventArgs Args { get; private set; }
+
+        public DateTime Timestamp { get; }
+
+        // Default Double-click time on Windows is 500ms
+        const int DoubleClickDelta = 500;
 
         public MouseClickStep(MouseClickSettings Settings,
             MouseEventArgs Args)
         {
             _settings = Settings;
-            _args = Args;
+            this.Args = Args;
+
+            Timestamp = DateTime.Now;
         }
 
-        public void Dispose() { }
+        public bool Merge(IRecordStep NextStep)
+        {
+            if (Args.Clicks == 1 && NextStep is MouseClickStep nextStep)
+            {
+                var delta = (nextStep.Timestamp - Timestamp).TotalMilliseconds;
+
+                if (nextStep.Args.Clicks == 2 && delta < DoubleClickDelta)
+                {
+                    Args = nextStep.Args;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
-            var curPos = _args.Location;
+            var curPos = Args.Location;
 
             if (PointTransform != null)
                 curPos = PointTransform(curPos);
@@ -49,21 +71,21 @@ namespace Captura.Models
                 Editor.DrawEllipse(borderColor, border, new RectangleF(x, y, d, d));
             }
 
-            if (_args.Clicks > 1)
+            if (Args.Clicks > 1)
             {
                 var font = Editor.GetFont("Arial", 15);
-                Editor.DrawString(_args.Clicks.ToString(), font, Color.Black, new RectangleF(x + 10, y + 10, d, d));
+                Editor.DrawString(Args.Clicks.ToString(), font, Color.Black, new RectangleF(x + 10, y + 10, d, d));
             }
         }
 
         Color GetClickCircleColor()
         {
-            if (_args.Button.HasFlag(MouseButtons.Right))
+            if (Args.Button.HasFlag(MouseButtons.Right))
             {
                 return _settings.RightClickColor;
             }
 
-            if (_args.Button.HasFlag(MouseButtons.Middle))
+            if (Args.Button.HasFlag(MouseButtons.Middle))
             {
                 return _settings.MiddleClickColor;
             }
