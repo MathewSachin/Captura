@@ -182,7 +182,8 @@ namespace Captura.ViewModels
                     videoEncoder,
                     imgProvider,
                     Settings.Clicks,
-                    Settings.Keystrokes);
+                    Settings.Keystrokes,
+                    _keymap);
             }
             else _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
 

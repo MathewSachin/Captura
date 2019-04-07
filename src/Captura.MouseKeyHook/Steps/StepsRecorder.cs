@@ -18,6 +18,7 @@ namespace Captura.Models
         volatile bool _recording;
         readonly MouseClickSettings _mouseClickSettings;
         readonly KeystrokesSettings _keystrokesSettings;
+        readonly KeymapViewModel _keymap;
 
         IRecordStep _lastStep;
         Point _dragStartPoint;
@@ -48,6 +49,8 @@ namespace Captura.Models
             Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
             Hook.MouseDragFinished += (S, E) => OnNext(new MouseDragStep(_dragStartPoint, E.Location, _mouseClickSettings));
 
+            Hook.KeyDown += (S, E) => OnNext(new KeyStep(_keystrokesSettings, E, _keymap));
+
             CancellationToken.Register(() =>
             {
                 shotSubject.OnCompleted();
@@ -65,13 +68,15 @@ namespace Captura.Models
             IVideoFileWriter VideoWriter,
             IImageProvider ImageProvider,
             MouseClickSettings MouseClickSettings,
-            KeystrokesSettings KeystrokesSettings)
+            KeystrokesSettings KeystrokesSettings,
+            KeymapViewModel KeymapViewModel)
         {
             _hook = Hook;
             _videoWriter = VideoWriter;
             _imageProvider = ImageProvider;
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;
+            _keymap = KeymapViewModel;
 
             _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
         }
