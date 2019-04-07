@@ -8,7 +8,6 @@ namespace Captura.Models
     {
         public string Text { get; private set; }
 
-        readonly KeymapViewModel _keymap;
         readonly KeystrokesSettings _settings;
         readonly bool _mergeable;
         int _repeat;
@@ -18,33 +17,13 @@ namespace Captura.Models
             KeymapViewModel Keymap)
         {
             _settings = Settings;
-            _keymap = Keymap;
 
-            Text = $"{GetModifierString(Args)}{Args.KeyCode}";
+            var record = new KeyRecord(Args, Keymap);
+
+            // TODO: Handle Modifiers keys on KeyUp like in KeyOverlay
+            Text = record.Display;
 
             _mergeable = Text.Length == 1;
-        }
-
-        string GetModifierString(KeyEventArgs Args)
-        {
-            var result = "";
-
-            if (Args.Control)
-            {
-                result += $"{_keymap.Control} + ";
-            }
-
-            if (Args.Shift)
-            {
-                result += $"{_keymap.Shift} + ";
-            }
-
-            if (Args.Alt)
-            {
-                result += $"{_keymap.Alt} + ";
-            }
-
-            return result;
         }
 
         public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
