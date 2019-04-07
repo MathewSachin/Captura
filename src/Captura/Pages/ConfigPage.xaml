@@ -78,6 +78,10 @@
                           IsChecked="{Binding Settings.UI.MainWindowTopmost}"
                           Margin="0,2"/>
 
+                <CheckBox Content="Steps Recorder"
+                          IsChecked="{Binding Settings.RecordChanges}"
+                          Margin="0,2"/>
+
                 <Button Click="OpenOverlayManager"
                         VerticalAlignment="Top"
                         Margin="0,10,0,3"
