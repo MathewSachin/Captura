@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -19,6 +20,7 @@ namespace Captura.Models
         readonly KeystrokesSettings _keystrokesSettings;
 
         IRecordStep _lastStep;
+        Point _dragStartPoint;
 
         IObservable<IRecordStep> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken, out IObservable<Unit> ShotObservable)
         {
@@ -43,6 +45,8 @@ namespace Captura.Models
 
             Hook.MouseClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
             Hook.MouseDoubleClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
+            Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
+            Hook.MouseDragFinished += (S, E) => OnNext(new MouseDragStep(_dragStartPoint, E.Location, _mouseClickSettings));
 
             CancellationToken.Register(() =>
             {
