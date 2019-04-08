@@ -49,6 +49,9 @@ namespace Captura.Models
             Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
             Hook.MouseDragFinished += (S, E) => OnNext(new MouseDragStep(_dragStartPoint, E.Location, _mouseClickSettings));
 
+            // TODO: Event is not firing on my laptop
+            Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E));
+
             Hook.KeyDown += (S, E) => OnNext(new KeyStep(_keystrokesSettings, E, _keymap));
 
             CancellationToken.Register(() =>
