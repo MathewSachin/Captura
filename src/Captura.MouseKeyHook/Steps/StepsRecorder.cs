@@ -21,7 +21,7 @@ namespace Captura.Models
         readonly KeymapViewModel _keymap;
 
         IRecordStep _lastStep;
-        Point _dragStartPoint;
+        Point? _dragStartPoint;
 
         IObservable<IRecordStep> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken, out IObservable<Unit> ShotObservable)
         {
@@ -44,10 +44,23 @@ namespace Captura.Models
                 _lastStep = NextStep;
             }
 
-            Hook.MouseClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
+            Hook.MouseClick += (S, E) =>
+            {
+                // HACK: Prevent Mouse click generated due to dragging
+                if (_dragStartPoint != null)
+                    return;
+
+                OnNext(new MouseClickStep(_mouseClickSettings, E));
+            };
+
             Hook.MouseDoubleClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
             Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
-            Hook.MouseDragFinished += (S, E) => OnNext(new MouseDragStep(_dragStartPoint, E.Location, _mouseClickSettings));
+            Hook.MouseDragFinished += (S, E) =>
+            {
+                OnNext(new MouseDragStep(_dragStartPoint.Value, E.Location, _mouseClickSettings));
+
+                _dragStartPoint = null;
+            };
 
             // TODO: Event is not firing on my laptop
             Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E));
