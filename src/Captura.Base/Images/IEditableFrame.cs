@@ -11,6 +11,8 @@ namespace Captura
 
         void DrawLine(Point Start, Point End, Color Color, float Width);
 
+        void DrawArrow(Point Start, Point End, Color Color, float Width);
+
         void FillRectangle(Color Color, RectangleF Rectangle);
 
         void FillRectangle(Color Color, RectangleF Rectangle, int CornerRadius);

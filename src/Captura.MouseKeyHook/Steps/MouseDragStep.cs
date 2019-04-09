@@ -26,7 +26,7 @@ namespace Captura.Models
                 end = PointTransform(end);
             }
 
-            Editor.DrawArrow(start, end, _settings.Color);
+            Editor.DrawArrow(start, end, _settings.Color, _settings.Radius);
         }
 
         public bool Merge(IRecordStep NextStep) => false;
