@@ -62,8 +62,8 @@ namespace Captura.Models
                 _dragStartPoint = null;
             };
 
-            // TODO: Event is not firing on my laptop
-            Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E));
+            // TODO: Event is not firing for touchpad scroll
+            Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E, _mouseClickSettings));
 
             Hook.KeyDown += (S, E) => OnNext(new KeyStep(_keystrokesSettings, E, _keymap));
 
