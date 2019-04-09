@@ -209,5 +209,17 @@ namespace Captura
             get => Get(true);
             set => Set(value);
         }
+
+        public int AroundMouseWidth
+        {
+            get => Get(600);
+            set => Set(value);
+        }
+
+        public int AroundMouseHeight
+        {
+            get => Get(400);
+            set => Set(value);
+        }
     }
 }
