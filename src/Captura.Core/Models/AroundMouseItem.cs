@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    class AroundMouseItem : IVideoItem
+    public class AroundMouseItem : IVideoItem
     {
         readonly Settings _settings;
         readonly IPlatformServices _platformServices;

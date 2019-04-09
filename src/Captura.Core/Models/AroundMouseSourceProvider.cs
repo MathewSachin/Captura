@@ -2,7 +2,7 @@
 
 namespace Captura.Models
 {
-    class AroundMouseSourceProvider : IVideoSourceProvider
+    public class AroundMouseSourceProvider : IVideoSourceProvider
     {
         public AroundMouseSourceProvider(IIconSet Icons,
             AroundMouseItem AroundMouseItem)
