@@ -9,8 +9,7 @@ namespace Screna
         readonly IPlatformServices _platformServices;
         readonly IImageProvider _regionProvider;
         Rectangle _regionAroundMouse;
-
-        const int Offset = 20;
+        readonly int _offsetX, _offsetY;
 
         public AroundMouseImageProvider(int Width,
             int Height,
@@ -21,6 +20,9 @@ namespace Screna
 
             this.Width = Width;
             this.Height = Height;
+
+            _offsetX = Width / 4;
+            _offsetY = Height / 4;
 
             _regionAroundMouse = new Rectangle(0, 0, Width, Height);
 
@@ -37,38 +39,65 @@ namespace Screna
 
         public Func<Point, Point> PointTransform { get; }
 
+        void ShiftRegion(Point CursorPos, Rectangle OffsetRegion)
+        {
+            if (CursorPos.X < OffsetRegion.X)
+            {
+                _regionAroundMouse.X = CursorPos.X - _offsetX;
+            }
+
+            if (CursorPos.Y < OffsetRegion.Y)
+            {
+                _regionAroundMouse.Y = CursorPos.Y - _offsetY;
+            }
+
+            if (CursorPos.X > OffsetRegion.Right)
+            {
+                _regionAroundMouse.X = CursorPos.X - OffsetRegion.Width - _offsetX;
+            }
+
+            if (CursorPos.Y > OffsetRegion.Bottom)
+            {
+                _regionAroundMouse.Y = CursorPos.Y - OffsetRegion.Height - _offsetY;
+            }
+        }
+
+        void CheckBounds(Rectangle ScreenBounds)
+        {
+            if (_regionAroundMouse.Right > ScreenBounds.Right)
+            {
+                _regionAroundMouse.X = ScreenBounds.Right - Width;
+            }
+
+            if (_regionAroundMouse.Bottom > ScreenBounds.Bottom)
+            {
+                _regionAroundMouse.Y = ScreenBounds.Bottom - Height;
+            }
+
+            if (_regionAroundMouse.X < ScreenBounds.X)
+            {
+                _regionAroundMouse.X = ScreenBounds.X;
+            }
+
+            if (_regionAroundMouse.Y < ScreenBounds.Y)
+            {
+                _regionAroundMouse.Y = ScreenBounds.Y;
+            }
+        }
+
         public IEditableFrame Capture()
         {
-            var screenBounds = _platformServices.DesktopRectangle;
             var cursorPos = _platformServices.CursorPosition;
 
-            var region = new Rectangle(_regionAroundMouse.Location, new Size(Width, Height));
-            region.Inflate(-Offset, -Offset);
+            var offsetRegion = new Rectangle(_regionAroundMouse.Location, _regionAroundMouse.Size);
+            offsetRegion.Inflate(-_offsetX, -_offsetY);
 
-            if (!region.Contains(cursorPos))
+            if (!offsetRegion.Contains(cursorPos))
             {
-                // Shift Region
-                _regionAroundMouse = new Rectangle(cursorPos.X - Width / 2, cursorPos.Y - Height / 2, Width, Height);
+                ShiftRegion(cursorPos, offsetRegion);
 
-                if (_regionAroundMouse.Right > screenBounds.Right)
-                {
-                    _regionAroundMouse.X = screenBounds.Right - Width;
-                }
-
-                if (_regionAroundMouse.Bottom > screenBounds.Bottom)
-                {
-                    _regionAroundMouse.Y = screenBounds.Bottom - Height;
-                }
-
-                if (_regionAroundMouse.X < screenBounds.X)
-                {
-                    _regionAroundMouse.X = screenBounds.X;
-                }
-
-                if (_regionAroundMouse.Y < screenBounds.Y)
-                {
-                    _regionAroundMouse.Y = screenBounds.Y;
-                }
+                var screenBounds = _platformServices.DesktopRectangle;
+                CheckBounds(screenBounds);
             }
 
             return _regionProvider.Capture();
