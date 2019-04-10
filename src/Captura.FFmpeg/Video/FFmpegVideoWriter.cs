@@ -114,6 +114,10 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
+            // Might happen when writing Gif
+            if (_audioPipe == null)
+                return;
+
             if (_ffmpegProcess.HasExited)
             {
                 throw new FFmpegException( _ffmpegProcess.ExitCode);
