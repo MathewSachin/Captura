@@ -105,7 +105,18 @@ namespace Captura.ViewModels
 
         void SelectOutputFolder()
         {
-            var folder = _dialogService.PickFolder(Settings.GetOutputPath(), Loc.SelectOutFolder);
+            string currentFolder = null;
+
+            try
+            {
+                currentFolder = Settings.GetOutputPath();
+            }
+            catch
+            {
+                // Error can happen if current folder is inaccessible
+            }
+
+            var folder = _dialogService.PickFolder(currentFolder, Loc.SelectOutFolder);
 
             if (folder != null)
                 Settings.OutPath = folder;
