@@ -151,7 +151,7 @@ namespace Captura
             _settings.IncludeCursor = ShotOptions.Cursor;
 
             // Screenshot Window with Transparency
-            if (ShotOptions.Source != null && Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
+            if (Regex.IsMatch(ShotOptions.Source, @"win:\d+"))
             {
                 var ptr = int.Parse(ShotOptions.Source.Substring(4));
 
