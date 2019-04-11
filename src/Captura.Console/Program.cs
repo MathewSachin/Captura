@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Captura.Models;
 using Captura.Native;
 using CommandLine;
@@ -17,8 +19,14 @@ namespace Captura
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());
+            ServiceProvider.LoadModule(new VerbsModule());
 
-            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions, UploadCmdOptions>(Args)
+            var verbTypes = ServiceProvider
+                .Get<IEnumerable<ICmdlineVerb>>()
+                .Select(M => M.GetType())
+                .ToArray();
+
+            Parser.Default.ParseArguments(Args, verbTypes)
                 .WithParsed((ICmdlineVerb Verb) =>
                 {
                     // Always display Banner
