@@ -241,6 +241,9 @@ namespace Screna
                 }
                 catch { }
 
+                _imageProvider?.Dispose();
+                _imageProvider = null;
+
                 _videoWriter.Dispose();
                 _videoWriter = null;
 
@@ -251,9 +254,6 @@ namespace Screna
                 _audioWriter.Dispose();
                 _audioWriter = null;
             }
-
-            _imageProvider?.Dispose();
-            _imageProvider = null;
         }
 
         /// <summary>

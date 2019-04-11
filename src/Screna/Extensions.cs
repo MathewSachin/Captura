@@ -21,9 +21,11 @@ namespace Screna
             return Rect;
         }
 
+        const string RectRegex = @"-?\d+,-?\d+,\d+,\d+";
+
         public static Rectangle? ConvertToRectangle(this string Value)
         {
-            if (Regex.IsMatch(Value, @"\d+,\d+,\d+,\d+"))
+            if (Regex.IsMatch(Value, RectRegex))
             {
                 var x = Value.Split(',')
                     .Select(int.Parse)

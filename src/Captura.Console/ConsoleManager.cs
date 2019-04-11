@@ -100,6 +100,13 @@ namespace Captura
 
             var videoSourceKind = HandleVideoSource(StartOptions);
 
+            if (videoSourceKind == null)
+            {
+                WriteLine("Video source not set or invalid");
+
+                return;
+            }
+
             var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
             HandleAudioSource(StartOptions);
@@ -198,6 +205,9 @@ namespace Captura
         {
             var ffmpegExists = FFmpegService.FFmpegExists;
             var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
+
+            if (StartOptions.Encoder == null)
+                StartOptions.Encoder = "sharpavi:0";
 
             // FFmpeg
             if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
