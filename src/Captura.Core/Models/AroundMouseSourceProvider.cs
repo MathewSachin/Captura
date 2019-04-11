@@ -1,6 +1,7 @@
 ﻿using Screna;
 using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Captura.Models
 {
@@ -63,7 +64,9 @@ namespace Captura.Models
             return ScreenShot.Capture(region, IncludeCursor);
         }
 
-        public bool Deserialize(string Serialized) => false;
+        const string Key = "aroundmouse";
+
+        public bool Deserialize(string Serialized) => Serialized == Key;
 
         public bool OnSelect() => true;
 
@@ -71,8 +74,22 @@ namespace Captura.Models
         {
         }
 
-        public bool ParseCli(string Arg) => false;
+        public bool ParseCli(string Arg)
+        {
+            var regex = new Regex($@"^{Key}:(\d+),(\d+)$");
+            var match = regex.Match(Arg);
 
-        public string Serialize() => "";
+            if (match.Success)
+            {
+                _settings.AroundMouseWidth = int.Parse(match.Groups[1].Value);
+                _settings.AroundMouseHeight = int.Parse(match.Groups[2].Value);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public string Serialize() => Key;
     }
 }
