@@ -2,6 +2,7 @@
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -35,10 +36,15 @@ namespace Captura
 
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
 
+            MfManager.Startup();
+
             WindowsModule.Load(Binder);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            MfManager.Shutdown();
+        }
 
         static void BindImageWriters(IBinder Binder)
         {
@@ -98,6 +104,7 @@ namespace Captura
 
         static void BindVideoWriterProviders(IBinder Binder)
         {
+            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>();
         }
