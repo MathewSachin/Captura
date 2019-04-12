@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Captura;
 using Captura.Audio;
@@ -18,7 +17,6 @@ namespace DesktopDuplication
         readonly Guid _encodingFormat = VideoFormatGuids.H264;
         readonly Guid _inputFormat = VideoFormatGuids.NV12;
         readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
-        readonly Stopwatch _stopwatch = new Stopwatch();
         readonly long _frameDuration;
         readonly SinkWriter _writer;
 
@@ -30,6 +28,11 @@ namespace DesktopDuplication
         const int BitsPerSample = 16;
         const int Bitrate = 16_000;
         const int TenPower7 = 10_000_000;
+
+        long _frameNumber = -1;
+
+        // Keep this separate. First frame might be a RepeatFrame.
+        bool _first = true;
 
         static long PackLong(int Left, int Right)
         {
@@ -109,7 +112,6 @@ namespace DesktopDuplication
             }
 
             _writer.BeginWriting();
-            _stopwatch.Start();
 
             _copyTexture = new Texture2D(Device, new Texture2DDescription
             {
@@ -137,8 +139,6 @@ namespace DesktopDuplication
             _sample.AddBuffer(_mediaBuffer);
         }
 
-        bool _first = true;
-
         readonly object _syncLock = new object();
 
         public void Write(Sample Sample)
@@ -148,8 +148,7 @@ namespace DesktopDuplication
                 if (_disposed)
                     return;
 
-                // TODO: This might fail when recording is paused.
-                Sample.SampleTime = _stopwatch.Elapsed.Ticks;
+                Sample.SampleTime = _frameNumber * _frameDuration;
                 Sample.SampleDuration = _frameDuration;
                 
                 if (_first)
@@ -182,7 +181,6 @@ namespace DesktopDuplication
                 _disposed = true;
                 _writer.Finalize();
                 _writer.Dispose();
-                _stopwatch.Stop();
 
                 _copyTexture.Dispose();
                 _copyTexture = null;
@@ -197,13 +195,18 @@ namespace DesktopDuplication
 
         public void WriteFrame(IBitmapFrame Image)
         {
-            if (Image is Texture2DFrame frame)
+            ++_frameNumber;
+
+            using (Image)
             {
-                Write(frame.Texture);
-            }
-            else if (Image is MultiDisposeFrame wrapper && wrapper.Frame is Texture2DFrame textureFrame)
-            {
-                Write(textureFrame.Texture);
+                if (Image is Texture2DFrame frame)
+                {
+                    Write(frame.Texture);
+                }
+                else if (Image is MultiDisposeFrame wrapper && wrapper.Frame is Texture2DFrame textureFrame)
+                {
+                    Write(textureFrame.Texture);
+                }
             }
         }
 
