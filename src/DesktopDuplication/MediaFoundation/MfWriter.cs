@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Captura;
+using Captura.Audio;
 using Screna;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -15,10 +17,19 @@ namespace DesktopDuplication
         const int BitRate = 8_000_000;
         readonly Guid _encodingFormat = VideoFormatGuids.H264;
         readonly Guid _inputFormat = VideoFormatGuids.NV12;
+        readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
         readonly Stopwatch _stopwatch = new Stopwatch();
         readonly long _frameDuration;
         readonly SinkWriter _writer;
-        readonly int _streamIndex;
+
+        const int VideoStreamIndex = 0;
+        const int AudioStreamIndex = 1;
+
+        const int NoOfChannels = 2;
+        const int SampleRate = 44100;
+        const int BitsPerSample = 16;
+        const int Bitrate = 16_000;
+        const int TenPower7 = 10_000_000;
 
         static long PackLong(int Left, int Right)
         {
@@ -29,11 +40,11 @@ namespace DesktopDuplication
             }.Long;
         }
 
-        public MfWriter(int Fps, int Width, int Height, string FileName, Device Device)
+        public MfWriter(int Fps, int Width, int Height, string FileName, Device Device, IAudioProvider AudioProvider)
         {
             _device = Device;
 
-            _frameDuration = 10_000_000 / Fps;
+            _frameDuration = TenPower7 / Fps;
 
             var attr = new MediaAttributes(6);
 
@@ -58,7 +69,7 @@ namespace DesktopDuplication
                 mediaTypeOut.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
                 mediaTypeOut.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
                 mediaTypeOut.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
-                _writer.AddStream(mediaTypeOut, out _streamIndex);
+                _writer.AddStream(mediaTypeOut, out _);
             }
 
             using (var mediaTypeIn = new MediaType())
@@ -69,7 +80,32 @@ namespace DesktopDuplication
                 mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
                 mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
                 mediaTypeIn.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
-                _writer.SetInputMediaType(_streamIndex, mediaTypeIn, null);
+                mediaTypeIn.Set(MediaTypeAttributeKeys.AllSamplesIndependent, 1);
+                _writer.SetInputMediaType(VideoStreamIndex, mediaTypeIn, null);
+            }
+
+            if (AudioProvider != null)
+            {
+                using (var audioTypeOut = new MediaType())
+                {
+                    audioTypeOut.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Audio);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.Subtype, _encodedAudioFormat);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioNumChannels, NoOfChannels);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioBitsPerSample, BitsPerSample);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, SampleRate);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioAvgBytesPerSecond, Bitrate);
+                    _writer.AddStream(audioTypeOut, out _);
+                }
+
+                using (var audioTypeIn = new MediaType())
+                {
+                    audioTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Audio);
+                    audioTypeIn.Set(MediaTypeAttributeKeys.Subtype, AudioFormatGuids.Pcm);
+                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioNumChannels, NoOfChannels);
+                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioBitsPerSample, BitsPerSample);
+                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, SampleRate);
+                    _writer.SetInputMediaType(AudioStreamIndex, audioTypeIn, null);
+                }
             }
 
             _writer.BeginWriting();
@@ -112,16 +148,17 @@ namespace DesktopDuplication
                 if (_disposed)
                     return;
 
+                // TODO: This might fail when recording is paused.
                 Sample.SampleTime = _stopwatch.Elapsed.Ticks;
                 Sample.SampleDuration = _frameDuration;
                 
                 if (_first)
                 {
-                    _writer.SendStreamTick(_streamIndex, Sample.SampleTime);
+                    _writer.SendStreamTick(VideoStreamIndex, Sample.SampleTime);
                     Sample.Set(SampleAttributeKeys.Discontinuity, true);
                     _first = false;
                 }
-                _writer.WriteSample(_streamIndex, Sample);
+                _writer.WriteSample(VideoStreamIndex, Sample);
             }
         }
 
@@ -170,10 +207,35 @@ namespace DesktopDuplication
             }
         }
 
-        public bool SupportsAudio => false;
+        public bool SupportsAudio => true;
+
+        long _audioWritten = 0;
 
         public void WriteAudio(byte[] Buffer, int Length)
         {
+            using (var buffer = MediaFactory.CreateMemoryBuffer(Length))
+            {
+                var data = buffer.Lock(out _, out _);
+
+                Marshal.Copy(Buffer, 0, data, Length);
+
+                buffer.CurrentLength = Length;
+
+                buffer.Unlock();
+
+                using (var sample = MediaFactory.CreateVideoSampleFromSurface(null))
+                {
+                    sample.AddBuffer(buffer);
+
+                    var bytesPerSecond = SampleRate * NoOfChannels * BitsPerSample / 8;
+                    sample.SampleTime = _audioWritten * TenPower7 / bytesPerSecond;
+                    sample.SampleDuration = Length * TenPower7 / bytesPerSecond;
+
+                    _writer.WriteSample(AudioStreamIndex, sample);
+                }
+            }
+
+            _audioWritten += Length;
         }
     }
 }

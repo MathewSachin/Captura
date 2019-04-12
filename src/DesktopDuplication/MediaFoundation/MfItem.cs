@@ -25,7 +25,8 @@ namespace Captura.Models
                 Args.ImageProvider.Width,
                 Args.ImageProvider.Height,
                 Args.FileName,
-                _device);
+                _device,
+                Args.AudioProvider);
         }
     }
 }
