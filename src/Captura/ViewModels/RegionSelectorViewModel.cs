@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Input;
+using Captura.Models;
 using Reactive.Bindings;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -20,8 +21,12 @@ namespace Captura
             BorderSize = 3,
             KeyMoveDelta = 10;
 
-        public RegionSelectorViewModel()
+        readonly IVideoSourcePicker _videoSourcePicker;
+
+        public RegionSelectorViewModel(IVideoSourcePicker VideoSourcePicker)
         {
+            _videoSourcePicker = VideoSourcePicker;
+
             MoveLeftCommand = new ReactiveCommand()
                 .WithSubscribe(() => Left -= KeyMoveDelta);
             MoveRightCommand = new ReactiveCommand()
@@ -39,6 +44,19 @@ namespace Captura
                 .WithSubscribe(() => Height += KeyMoveDelta);
             DecreaseHeightCommand = new ReactiveCommand()
                 .WithSubscribe(() => Height -= KeyMoveDelta);
+
+            SnapToRegionCommand = new ReactiveCommand()
+                .WithSubscribe(SnapToRegion);
+        }
+
+        void SnapToRegion()
+        {
+            var region = _videoSourcePicker.PickRegion();
+
+            if (region is Rectangle rect)
+            {
+                SelectedRegion = rect;
+            }
         }
 
         public int Left
@@ -182,5 +200,7 @@ namespace Captura
         public ICommand DecreaseWidthCommand { get; }
         public ICommand IncreaseHeightCommand { get; }
         public ICommand DecreaseHeightCommand { get; }
+
+        public ICommand SnapToRegionCommand { get; }
     }
 }

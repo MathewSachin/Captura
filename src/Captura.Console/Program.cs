@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using Captura.Models;
 using Captura.Native;
 using CommandLine;
 using static System.Console;
