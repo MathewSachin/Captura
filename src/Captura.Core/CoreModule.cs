@@ -12,6 +12,9 @@ namespace Captura
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
 
+            MfManager.Startup();
+            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+
             FFmpegModule.Load(Binder);
 
             BindViewModels(Binder);
@@ -35,8 +38,6 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
-
-            MfManager.Startup();
 
             WindowsModule.Load(Binder);
         }
@@ -104,7 +105,6 @@ namespace Captura
 
         static void BindVideoWriterProviders(IBinder Binder)
         {
-            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, SharpAviWriterProvider>();
             Binder.BindAsInterfaceAndClass<IVideoWriterProvider, DiscardWriterProvider>();
         }
