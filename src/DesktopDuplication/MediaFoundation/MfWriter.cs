@@ -47,6 +47,23 @@ namespace DesktopDuplication
             }.Long;
         }
 
+        MediaAttributes GetSinkWriterAttributes(Device Device)
+        {
+            var attr = new MediaAttributes(6);
+
+            attr.Set(SinkWriterAttributeKeys.ReadwriteEnableHardwareTransforms, 1);
+            attr.Set(SinkWriterAttributeKeys.ReadwriteDisableConverters, 0);
+            attr.Set(TranscodeAttributeKeys.TranscodeContainertype, TranscodeContainerTypeGuids.Mpeg4);
+            attr.Set(SinkWriterAttributeKeys.LowLatency, true);
+            attr.Set(SinkWriterAttributeKeys.DisableThrottling, 1);
+
+            var devMan = new DXGIDeviceManager();
+            devMan.ResetDevice(Device);
+            attr.Set(SinkWriterAttributeKeys.D3DManager, devMan);
+
+            return attr;
+        }
+
         public MfWriter(VideoWriterArgs Args, Device Device)
         {
             if (Args.ImageProvider is DeskDuplImageProvider
@@ -61,17 +78,7 @@ namespace DesktopDuplication
 
             _frameDuration = TenPower7 / Args.FrameRate;
 
-            var attr = new MediaAttributes(6);
-
-            attr.Set(SinkWriterAttributeKeys.ReadwriteEnableHardwareTransforms, 1);
-            attr.Set(SinkWriterAttributeKeys.ReadwriteDisableConverters, 0);
-            attr.Set(TranscodeAttributeKeys.TranscodeContainertype, TranscodeContainerTypeGuids.Mpeg4);
-            attr.Set(SinkWriterAttributeKeys.LowLatency, true);
-            attr.Set(SinkWriterAttributeKeys.DisableThrottling, 1);
-
-            var devMan = new DXGIDeviceManager();
-            devMan.ResetDevice(Device);
-            attr.Set(SinkWriterAttributeKeys.D3DManager, devMan);
+            var attr = GetSinkWriterAttributes(Device);
 
             _writer = MediaFactory.CreateSinkWriterFromURL(Args.FileName, null, attr);
 

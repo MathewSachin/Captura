@@ -12,8 +12,11 @@ namespace Captura
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
 
-            MfManager.Startup();
-            Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+            if (Windows8OrAbove)
+            {
+                MfManager.Startup();
+                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+            }
 
             FFmpegModule.Load(Binder);
 
@@ -44,7 +47,10 @@ namespace Captura
 
         public void Dispose()
         {
-            MfManager.Shutdown();
+            if (Windows8OrAbove)
+            {
+                MfManager.Shutdown();
+            }
         }
 
         static void BindImageWriters(IBinder Binder)
