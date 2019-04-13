@@ -19,6 +19,7 @@ namespace DesktopDuplication
         readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
         readonly long _frameDuration;
         readonly SinkWriter _writer;
+        byte[] _videoBuffer;
 
         static readonly MediaAttributeKey<RateControlMode> RateControlModeKey = new MediaAttributeKey<RateControlMode>("1c0608e9-370c-4710-8a58-cb6181c42423");
         static readonly MediaAttributeKey<int> QualityKey = new MediaAttributeKey<int>("fcbf57a3-7ea5-4b0c-9644-69b40c39c391");
@@ -48,6 +49,14 @@ namespace DesktopDuplication
 
         public MfWriter(VideoWriterArgs Args, Device Device)
         {
+            if (Args.ImageProvider is DeskDuplImageProvider
+                || Args.ImageProvider is OverlayedImageProvider overlayImgPr
+                && overlayImgPr.ImageProvider is DeskDuplImageProvider)
+            {
+                _inputFormat = VideoFormatGuids.NV12;
+            }
+            else _inputFormat = VideoFormatGuids.Rgb32;
+
             _device = Device;
 
             _frameDuration = TenPower7 / Args.FrameRate;
@@ -68,6 +77,8 @@ namespace DesktopDuplication
 
             var w = Args.ImageProvider.Width;
             var h = Args.ImageProvider.Height;
+
+            _videoBuffer = new byte[w * h * 4];
 
             using (var mediaTypeOut = new MediaType())
             {
@@ -200,6 +211,8 @@ namespace DesktopDuplication
 
                 _mediaBuffer.Dispose();
                 _mediaBuffer = null;
+
+                _videoBuffer = null;
             }
         }
 
@@ -216,6 +229,28 @@ namespace DesktopDuplication
                 else if (Image is MultiDisposeFrame wrapper && wrapper.Frame is Texture2DFrame textureFrame)
                 {
                     Write(textureFrame.Texture);
+                }
+                else if (!(Image is RepeatFrame))
+                {
+                    using (var buffer = MediaFactory.CreateMemoryBuffer(_videoBuffer.Length))
+                    {
+                        var data = buffer.Lock(out _, out _);
+
+                        Image.CopyTo(_videoBuffer, _videoBuffer.Length);
+
+                        Marshal.Copy(_videoBuffer, 0, data, _videoBuffer.Length);
+
+                        buffer.CurrentLength = _videoBuffer.Length;
+
+                        buffer.Unlock();
+
+                        using (var sample = MediaFactory.CreateVideoSampleFromSurface(null))
+                        {
+                            sample.AddBuffer(buffer);
+
+                            Write(sample);
+                        }
+                    }
                 }
             }
         }
