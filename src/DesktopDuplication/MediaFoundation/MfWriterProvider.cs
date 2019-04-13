@@ -15,7 +15,7 @@ namespace Captura.Models
             _device = new Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport);
         }
 
-        public string Name => "mf";
+        public string Name => "MF";
 
         public IEnumerator<IVideoWriterItem> GetEnumerator()
         {
@@ -26,6 +26,6 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
-        public string Description => @"mf";
+        public string Description => "Encode to Mp4: H.264 with AAC audio using Media Foundation Hardware encoder";
     }
 }

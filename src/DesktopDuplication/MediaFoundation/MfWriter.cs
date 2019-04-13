@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Captura;
-using Captura.Audio;
+using Captura.Models;
 using Screna;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -19,6 +19,9 @@ namespace DesktopDuplication
         readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
         readonly long _frameDuration;
         readonly SinkWriter _writer;
+
+        static readonly MediaAttributeKey<RateControlMode> RateControlModeKey = new MediaAttributeKey<RateControlMode>("1c0608e9-370c-4710-8a58-cb6181c42423");
+        static readonly MediaAttributeKey<int> QualityKey = new MediaAttributeKey<int>("fcbf57a3-7ea5-4b0c-9644-69b40c39c391");
 
         const int VideoStreamIndex = 0;
         const int AudioStreamIndex = 1;
@@ -43,11 +46,11 @@ namespace DesktopDuplication
             }.Long;
         }
 
-        public MfWriter(int Fps, int Width, int Height, string FileName, Device Device, IAudioProvider AudioProvider)
+        public MfWriter(VideoWriterArgs Args, Device Device)
         {
             _device = Device;
 
-            _frameDuration = TenPower7 / Fps;
+            _frameDuration = TenPower7 / Args.FrameRate;
 
             var attr = new MediaAttributes(6);
 
@@ -61,7 +64,10 @@ namespace DesktopDuplication
             devMan.ResetDevice(Device);
             attr.Set(SinkWriterAttributeKeys.D3DManager, devMan);
 
-            _writer = MediaFactory.CreateSinkWriterFromURL(FileName, null, attr);
+            _writer = MediaFactory.CreateSinkWriterFromURL(Args.FileName, null, attr);
+
+            var w = Args.ImageProvider.Width;
+            var h = Args.ImageProvider.Height;
 
             using (var mediaTypeOut = new MediaType())
             {
@@ -69,8 +75,8 @@ namespace DesktopDuplication
                 mediaTypeOut.Set(MediaTypeAttributeKeys.Subtype, _encodingFormat);
                 mediaTypeOut.Set(MediaTypeAttributeKeys.AvgBitrate, BitRate);
                 mediaTypeOut.Set(MediaTypeAttributeKeys.InterlaceMode, (int)VideoInterlaceMode.Progressive);
-                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
-                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
+                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameSize, PackLong(w, h));
+                mediaTypeOut.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Args.FrameRate, 1));
                 mediaTypeOut.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
                 _writer.AddStream(mediaTypeOut, out _);
             }
@@ -80,14 +86,18 @@ namespace DesktopDuplication
                 mediaTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Video);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.Subtype, _inputFormat);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.InterlaceMode, (int)VideoInterlaceMode.Progressive);
-                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, PackLong(Width, Height));
-                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Fps, 1));
+                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, PackLong(w, h));
+                mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Args.FrameRate, 1));
                 mediaTypeIn.Set(MediaTypeAttributeKeys.PixelAspectRatio, PackLong(1, 1));
                 mediaTypeIn.Set(MediaTypeAttributeKeys.AllSamplesIndependent, 1);
-                _writer.SetInputMediaType(VideoStreamIndex, mediaTypeIn, null);
+
+                var encoderParams = new MediaAttributes(2);
+                encoderParams.Set(RateControlModeKey, RateControlMode.Quality);
+                encoderParams.Set(QualityKey, Args.VideoQuality);
+                _writer.SetInputMediaType(VideoStreamIndex, mediaTypeIn, encoderParams);
             }
 
-            if (AudioProvider != null)
+            if (Args.AudioProvider != null)
             {
                 using (var audioTypeOut = new MediaType())
                 {
@@ -118,8 +128,8 @@ namespace DesktopDuplication
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = Width,
-                Height = Height,
+                Width = w,
+                Height = h,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,

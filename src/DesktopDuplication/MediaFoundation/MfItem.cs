@@ -8,9 +8,9 @@ namespace Captura.Models
         readonly Device _device;
 
         public string Extension => ".mp4";
-        public string Description { get; } = "mp4";
+        public string Description { get; } = "Encode to Mp4: H.264 with AAC audio using Media Foundation Hardware encoder";
 
-        readonly string _name = "mf";
+        readonly string _name = "MF";
 
         public MfItem(Device Device)
         {
@@ -21,12 +21,7 @@ namespace Captura.Models
 
         public virtual IVideoFileWriter GetVideoFileWriter(VideoWriterArgs Args)
         {
-            return new MfWriter(Args.FrameRate,
-                Args.ImageProvider.Width,
-                Args.ImageProvider.Height,
-                Args.FileName,
-                _device,
-                Args.AudioProvider);
+            return new MfWriter(Args, _device);
         }
     }
 }
