@@ -29,7 +29,7 @@
 
             <Border BorderThickness="0.5"
                     BorderBrush="{DynamicResource ModernButtonBorder}"
-                    Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"
+                    Visibility="{Binding ViewConditions.ShowSourceNameBox.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="5,2"
                     Margin="0,2">
                 <StackPanel Orientation="Horizontal">
@@ -98,6 +98,35 @@
                           SelectedValue="{Binding VideoSourcesViewModel.NoVideoSourceProvider.SelectedSource, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                           IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </DockPanel>
+
+            <Grid Visibility="{Binding ViewConditions.IsAroundMouseMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                  Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Around Mouse: "
+                       FontWeight="DemiBold"
+                       Margin="5,-1,5,0"/>
+
+                <Label Content="Width:"
+                       Margin="5,0,3,0"
+                       Grid.Column="1"/>
+                <xctk:IntegerUpDown Grid.Column="2"
+                                    Value="{Binding MainViewModel.Settings.AroundMouseWidth, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="Height:"
+                       Grid.Column="3"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="4"
+                                    Value="{Binding MainViewModel.Settings.AroundMouseHeight, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+            </Grid>
 
             <Frame Source="VideoEncoderPage.xaml"/>
 
