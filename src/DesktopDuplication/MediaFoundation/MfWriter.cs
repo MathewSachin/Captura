@@ -28,7 +28,6 @@ namespace DesktopDuplication
         const int NoOfChannels = 2;
         const int SampleRate = 44100;
         const int BitsPerSample = 16;
-        const int Bitrate = 16_000;
         const int TenPower7 = 10_000_000;
         readonly int _bufferSize;
 
@@ -120,7 +119,7 @@ namespace DesktopDuplication
                     audioTypeOut.Set(MediaTypeAttributeKeys.AudioNumChannels, NoOfChannels);
                     audioTypeOut.Set(MediaTypeAttributeKeys.AudioBitsPerSample, BitsPerSample);
                     audioTypeOut.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, SampleRate);
-                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioAvgBytesPerSecond, Bitrate);
+                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioAvgBytesPerSecond, GetAacBitrate(Args.AudioQuality));
                     _writer.AddStream(audioTypeOut, out _);
                 }
 
@@ -161,6 +160,19 @@ namespace DesktopDuplication
 
             // Attach the created buffer to the sample
             _sample.AddBuffer(_mediaBuffer);
+        }
+
+        int GetAacBitrate(int AudioQuality)
+        {
+            var i = (AudioQuality - 1) / 25;
+
+            return new[]
+            {
+                12_000,
+                16_000,
+                20_000,
+                24_000
+            }[i];
         }
 
         readonly object _syncLock = new object();
