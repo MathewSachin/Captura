@@ -231,7 +231,7 @@ namespace DesktopDuplication
                 {
                     Write(frame.Texture);
                 }
-                else if (Image is MultiDisposeFrame wrapper && wrapper.Frame is Texture2DFrame textureFrame)
+                else if (Image is IFrameWrapper wrapper && wrapper.Frame is Texture2DFrame textureFrame)
                 {
                     Write(textureFrame.Texture);
                 }

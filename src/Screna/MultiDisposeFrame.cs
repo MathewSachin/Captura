@@ -1,9 +1,10 @@
 ﻿using System;
 using Captura;
+using Captura.Models;
 
 namespace Screna
 {
-    public class MultiDisposeFrame : IBitmapFrame
+    public class MultiDisposeFrame : IBitmapFrame, IFrameWrapper
     {
         int _count;
 
