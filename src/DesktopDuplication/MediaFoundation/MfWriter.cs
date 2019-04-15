@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using Captura;
 using Captura.Models;
-using Screna;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
@@ -19,7 +18,6 @@ namespace DesktopDuplication
         readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
         readonly long _frameDuration;
         readonly SinkWriter _writer;
-        byte[] _videoBuffer;
 
         static readonly MediaAttributeKey<RateControlMode> RateControlModeKey = new MediaAttributeKey<RateControlMode>("1c0608e9-370c-4710-8a58-cb6181c42423");
         static readonly MediaAttributeKey<int> QualityKey = new MediaAttributeKey<int>("fcbf57a3-7ea5-4b0c-9644-69b40c39c391");
@@ -32,6 +30,7 @@ namespace DesktopDuplication
         const int BitsPerSample = 16;
         const int Bitrate = 16_000;
         const int TenPower7 = 10_000_000;
+        readonly int _bufferSize;
 
         long _frameNumber = -1;
 
@@ -82,8 +81,7 @@ namespace DesktopDuplication
 
             var w = Args.ImageProvider.Width;
             var h = Args.ImageProvider.Height;
-
-            _videoBuffer = new byte[w * h * 4];
+            _bufferSize = w * h * 4;
 
             using (var mediaTypeOut = new MediaType())
             {
@@ -216,8 +214,6 @@ namespace DesktopDuplication
 
                 _mediaBuffer.Dispose();
                 _mediaBuffer = null;
-
-                _videoBuffer = null;
             }
         }
 
@@ -237,15 +233,13 @@ namespace DesktopDuplication
                 }
                 else if (!(Image is RepeatFrame))
                 {
-                    using (var buffer = MediaFactory.CreateMemoryBuffer(_videoBuffer.Length))
+                    using (var buffer = MediaFactory.CreateMemoryBuffer(_bufferSize))
                     {
                         var data = buffer.Lock(out _, out _);
 
-                        Image.CopyTo(_videoBuffer, _videoBuffer.Length);
+                        Image.CopyTo(data, _bufferSize);
 
-                        Marshal.Copy(_videoBuffer, 0, data, _videoBuffer.Length);
-
-                        buffer.CurrentLength = _videoBuffer.Length;
+                        buffer.CurrentLength = _bufferSize;
 
                         buffer.Unlock();
 

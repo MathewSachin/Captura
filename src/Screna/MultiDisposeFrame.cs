@@ -48,5 +48,10 @@ namespace Screna
         {
             Frame.CopyTo(Buffer, Length);
         }
+
+        public void CopyTo(IntPtr Buffer, int Length)
+        {
+            Frame.CopyTo(Buffer, Length);
+        }
     }
 }
