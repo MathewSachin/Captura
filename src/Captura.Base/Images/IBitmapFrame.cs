@@ -9,5 +9,7 @@ namespace Captura
         int Height { get; }
 
         void CopyTo(byte[] Buffer, int Length);
+
+        void CopyTo(IntPtr Buffer, int Length);
     }
 }

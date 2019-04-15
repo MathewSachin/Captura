@@ -2,6 +2,7 @@
 using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -10,6 +11,12 @@ namespace Captura
         public void OnLoad(IBinder Binder)
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
+
+            if (Windows8OrAbove)
+            {
+                MfManager.Startup();
+                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+            }
 
             FFmpegModule.Load(Binder);
 
@@ -38,7 +45,13 @@ namespace Captura
             WindowsModule.Load(Binder);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            if (Windows8OrAbove)
+            {
+                MfManager.Shutdown();
+            }
+        }
 
         static void BindImageWriters(IBinder Binder)
         {

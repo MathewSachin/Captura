@@ -4,10 +4,12 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <ProjectReference Include="..\Captura.Windows\Captura.Windows.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0" />
     <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
+    <PackageReference Include="SharpDX.MediaFoundation" Version="4.2.0" />
   </ItemGroup>
 </Project>

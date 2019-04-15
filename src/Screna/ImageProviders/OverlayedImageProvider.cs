@@ -37,9 +37,12 @@ namespace Screna
             {
                 return bmp;
             }
-            
-            foreach (var overlay in _overlays)
-                overlay?.Draw(bmp, _imageProvider.PointTransform);
+
+            if (_overlays != null)
+            {
+                foreach (var overlay in _overlays)
+                    overlay?.Draw(bmp, _imageProvider.PointTransform);
+            }
             
             return bmp;
         }
@@ -63,5 +66,7 @@ namespace Screna
             _imageProvider = null;
             _overlays = null;
         }
+
+        public Type EditorType => _imageProvider.EditorType;
     }
 }

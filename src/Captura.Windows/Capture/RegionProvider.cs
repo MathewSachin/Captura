@@ -66,5 +66,7 @@ namespace Screna
 
         public int Height { get; }
         public int Width { get; }
+
+        public Type EditorType { get; } = typeof(GraphicsEditor);
     }
 }
