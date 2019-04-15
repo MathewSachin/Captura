@@ -67,6 +67,6 @@ namespace Screna
             _overlays = null;
         }
 
-        public Type FrameType => _imageProvider.FrameType;
+        public Type EditorType => _imageProvider.EditorType;
     }
 }

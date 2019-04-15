@@ -39,6 +39,6 @@ namespace Captura.Webcam
 
         public Func<Point, Point> PointTransform { get; } = P => P;
 
-        public Type FrameType { get; } = typeof(GraphicsEditor);
+        public Type EditorType { get; } = typeof(GraphicsEditor);
     }
 }

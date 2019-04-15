@@ -131,6 +131,6 @@ namespace Screna
             Gdi32.DeleteObject(_hBitmap);
         }
 
-        public Type FrameType { get; } = typeof(GraphicsEditor);
+        public Type EditorType { get; } = typeof(GraphicsEditor);
     }
 }
