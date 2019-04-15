@@ -10,7 +10,7 @@ namespace Screna
     public class OverlayedImageProvider : IImageProvider
     {
         IOverlay[] _overlays;
-        public IImageProvider ImageProvider { get; private set; }
+        IImageProvider _imageProvider;
         
         /// <summary>
         /// Creates a new instance of <see cref="OverlayedImageProvider"/>.
@@ -20,7 +20,7 @@ namespace Screna
         /// <param name="Transform">Point Transform Function.</param>
         public OverlayedImageProvider(IImageProvider ImageProvider, params IOverlay[] Overlays)
         {
-            this.ImageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
+            _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
             _overlays = Overlays ?? throw new ArgumentNullException(nameof(Overlays));
 
             Width = ImageProvider.Width;
@@ -30,7 +30,7 @@ namespace Screna
         /// <inheritdoc />
         public IEditableFrame Capture()
         {
-            var bmp = ImageProvider.Capture();
+            var bmp = _imageProvider.Capture();
             
             // Overlays should have already been drawn on previous frame
             if (bmp is RepeatFrame)
@@ -41,7 +41,7 @@ namespace Screna
             if (_overlays != null)
             {
                 foreach (var overlay in _overlays)
-                    overlay?.Draw(bmp, ImageProvider.PointTransform);
+                    overlay?.Draw(bmp, _imageProvider.PointTransform);
             }
             
             return bmp;
@@ -58,13 +58,15 @@ namespace Screna
         /// <inheritdoc />
         public void Dispose()
         {
-            ImageProvider.Dispose();
+            _imageProvider.Dispose();
 
             foreach (var overlay in _overlays)
                 overlay?.Dispose();
 
-            ImageProvider = null;
+            _imageProvider = null;
             _overlays = null;
         }
+
+        public Type FrameType => _imageProvider.FrameType;
     }
 }

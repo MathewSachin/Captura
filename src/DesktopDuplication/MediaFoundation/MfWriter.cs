@@ -66,9 +66,7 @@ namespace DesktopDuplication
 
         public MfWriter(VideoWriterArgs Args, Device Device)
         {
-            if (Args.ImageProvider is DeskDuplImageProvider
-                || Args.ImageProvider is OverlayedImageProvider overlayImgPr
-                && overlayImgPr.ImageProvider is DeskDuplImageProvider)
+            if (Args.ImageProvider.FrameType == typeof(Texture2DFrame))
             {
                 _inputFormat = VideoFormatGuids.NV12;
             }

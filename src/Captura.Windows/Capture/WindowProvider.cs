@@ -130,5 +130,7 @@ namespace Screna
             User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
             Gdi32.DeleteObject(_hBitmap);
         }
+
+        public Type FrameType { get; } = typeof(GraphicsEditor);
     }
 }
