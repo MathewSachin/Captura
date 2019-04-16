@@ -3,7 +3,7 @@ using Captura.Models;
 
 namespace DesktopDuplication
 {
-    class MfWebcamProvider : IWebCamProvider
+    public class MfWebcamProvider : IWebCamProvider
     {
         public IEnumerable<IWebcamItem> GetSources()
         {

@@ -16,7 +16,10 @@ namespace Captura
             {
                 MfManager.Startup();
                 Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+
+                Binder.BindAsInterfaceAndClass<IWebCamProvider, MfWebcamProvider>();
             }
+            else Binder.Bind<IWebCamProvider, WebcamProvider>();
 
             FFmpegModule.Load(Binder);
 

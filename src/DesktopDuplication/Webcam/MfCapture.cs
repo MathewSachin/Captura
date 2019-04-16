@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Captura;
 using Captura.Models;
 using SharpDX.MediaFoundation;
@@ -78,7 +77,6 @@ namespace DesktopDuplication
         public void UpdatePreview(IWindow Window, Rectangle Location)
         {
             // TODO: Implement this
-            throw new NotImplementedException();
         }
     }
 }
