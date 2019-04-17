@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Screna;
+using System;
 
 namespace Captura
 {
@@ -11,6 +12,18 @@ namespace Captura
             Binder.Bind<IDialogService, DialogService>();
             Binder.Bind<IClipboardService, ClipboardService>();
             Binder.Bind<IImagingSystem, DrawingImagingSystem>();
+        }
+
+        public static bool Windows8OrAbove
+        {
+            get
+            {
+                // All versions above Windows 8 give the same version number
+                var version = new Version(6, 2, 9200, 0);
+
+                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                       Environment.OSVersion.Version >= version;
+            }
         }
     }
 }
