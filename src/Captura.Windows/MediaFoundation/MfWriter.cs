@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Captura;
+using Captura.Audio;
 using Captura.Models;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -25,11 +26,9 @@ namespace DesktopDuplication
         const int VideoStreamIndex = 0;
         const int AudioStreamIndex = 1;
 
-        const int NoOfChannels = 2;
-        const int SampleRate = 44100;
-        const int BitsPerSample = 16;
         const int TenPower7 = 10_000_000;
         readonly int _bufferSize;
+        readonly long _audioInBytesPerSecond;
 
         long _frameNumber = -1;
 
@@ -112,24 +111,19 @@ namespace DesktopDuplication
 
             if (Args.AudioProvider != null)
             {
-                using (var audioTypeOut = new MediaType())
+                var wf = Args.AudioProvider.WaveFormat;
+                _audioInBytesPerSecond = wf.SampleRate * wf.Channels * wf.BitsPerSample / 8;
+
+                using (var audioTypeOut = GetMediaType(wf))
                 {
-                    audioTypeOut.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Audio);
                     audioTypeOut.Set(MediaTypeAttributeKeys.Subtype, _encodedAudioFormat);
-                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioNumChannels, NoOfChannels);
-                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioBitsPerSample, BitsPerSample);
-                    audioTypeOut.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, SampleRate);
                     audioTypeOut.Set(MediaTypeAttributeKeys.AudioAvgBytesPerSecond, GetAacBitrate(Args.AudioQuality));
                     _writer.AddStream(audioTypeOut, out _);
                 }
 
-                using (var audioTypeIn = new MediaType())
+                using (var audioTypeIn = GetMediaType(wf))
                 {
-                    audioTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Audio);
                     audioTypeIn.Set(MediaTypeAttributeKeys.Subtype, AudioFormatGuids.Pcm);
-                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioNumChannels, NoOfChannels);
-                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioBitsPerSample, BitsPerSample);
-                    audioTypeIn.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, SampleRate);
                     _writer.SetInputMediaType(AudioStreamIndex, audioTypeIn, null);
                 }
             }
@@ -162,7 +156,19 @@ namespace DesktopDuplication
             _sample.AddBuffer(_mediaBuffer);
         }
 
-        int GetAacBitrate(int AudioQuality)
+        public static MediaType GetMediaType(WaveFormat Wf)
+        {
+            var mediaType = new MediaType();
+            
+            mediaType.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Audio);
+            mediaType.Set(MediaTypeAttributeKeys.AudioNumChannels, Wf.Channels);
+            mediaType.Set(MediaTypeAttributeKeys.AudioBitsPerSample, Wf.BitsPerSample);
+            mediaType.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, Wf.SampleRate);
+
+            return mediaType;
+        }
+
+        public static int GetAacBitrate(int AudioQuality)
         {
             var i = (AudioQuality - 1) / 25;
 
@@ -286,9 +292,8 @@ namespace DesktopDuplication
                 {
                     sample.AddBuffer(buffer);
 
-                    var bytesPerSecond = SampleRate * NoOfChannels * BitsPerSample / 8;
-                    sample.SampleTime = _audioWritten * TenPower7 / bytesPerSecond;
-                    sample.SampleDuration = Length * TenPower7 / bytesPerSecond;
+                    sample.SampleTime = _audioWritten * TenPower7 / _audioInBytesPerSecond;
+                    sample.SampleDuration = Length * TenPower7 / _audioInBytesPerSecond;
 
                     _writer.WriteSample(AudioStreamIndex, sample);
                 }

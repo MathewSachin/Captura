@@ -1,5 +1,4 @@
-﻿using System;
-using Captura.Models;
+﻿using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
 using DesktopDuplication;
