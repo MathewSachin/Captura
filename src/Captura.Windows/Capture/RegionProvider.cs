@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
+using Captura.Models;
 
 namespace Screna
 {
@@ -10,9 +11,13 @@ namespace Screna
         readonly Func<Point> _locationFunc;
         readonly bool _includeCursor;
 
-        readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
+        readonly IntPtr _hdcSrc;
+        readonly ITargetDeviceContext _dcTarget;
 
-        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc = null)
+        public RegionProvider(Rectangle Region,
+            IPreviewWindow PreviewWindow,
+            bool IncludeCursor,
+            Func<Point> LocationFunc = null)
         {
             _region = Region;
             _includeCursor = IncludeCursor;
@@ -32,17 +37,18 @@ namespace Screna
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-            _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
-            _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
-
-            Gdi32.SelectObject(_hdcDest, _hBitmap);
+            if (WindowsModule.Windows8OrAbove)
+            {
+                _dcTarget = new DxgiTargetDeviceContext(PreviewWindow, Width, Height);
+            }
+            else _dcTarget = new GdiTargetDeviceContext(_hdcSrc, Width, Height);
         }
 
         public void Dispose()
         {
-            Gdi32.DeleteDC(_hdcDest);
-            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
-            Gdi32.DeleteObject(_hBitmap);
+            _dcTarget.Dispose();
+
+            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);            
         }
 
         public IEditableFrame Capture()
@@ -50,14 +56,16 @@ namespace Screna
             // Update Location
             _region.Location = _locationFunc();
 
-            Gdi32.BitBlt(_hdcDest, 0, 0, _region.Width, _region.Height,
+            var hdcDest = _dcTarget.GetDC();
+
+            Gdi32.BitBlt(hdcDest, 0, 0, _region.Width, _region.Height,
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);
 
-            var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
-
             if (_includeCursor)
-                MouseCursor.Draw(img, PointTransform);
+                MouseCursor.Draw(hdcDest, PointTransform);
+
+            var img = _dcTarget.GetEditableFrame();
 
             return img;
         }
@@ -67,6 +75,6 @@ namespace Screna
         public int Height { get; }
         public int Width { get; }
 
-        public Type EditorType { get; } = typeof(GraphicsEditor);
+        public Type EditorType => _dcTarget.EditorType;
     }
 }
