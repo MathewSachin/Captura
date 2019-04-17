@@ -44,7 +44,11 @@ namespace Screna
 
             try
             {
-                User32.DrawIcon(DeviceContext, location.X, location.Y, hIcon);
+                User32.DrawIconEx(DeviceContext,
+                    location.X, location.Y,
+                    hIcon,
+                    0, 0, 0, IntPtr.Zero,
+                    DrawIconExFlags.Normal);
             }
             finally
             {
