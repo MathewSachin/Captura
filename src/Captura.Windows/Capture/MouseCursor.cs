@@ -19,48 +19,43 @@ namespace Screna
         /// <param name="Transform">Point Transform Function.</param>
         public static void Draw(Graphics G, Func<Point, Point> Transform = null)
         {
-            var iconPtr = GetIcon(Transform, out var location, out var disposer);
+            var hIcon = GetIcon(Transform, out var location);
 
-            if (iconPtr == IntPtr.Zero)
+            if (hIcon == IntPtr.Zero)
                 return;
 
-            var bmp = Icon.FromHandle(iconPtr).ToBitmap();
+            var bmp = Icon.FromHandle(hIcon).ToBitmap();
+            User32.DestroyIcon(hIcon);
 
             try
             {
-                G.DrawImage(bmp, new Rectangle(location, bmp.Size));
+                using (bmp)
+                    G.DrawImage(bmp, new Rectangle(location, bmp.Size));
             }
             catch (ArgumentException) { }
-            finally
-            {
-                disposer?.Invoke();
-            }
         }
 
         public static void Draw(IntPtr DeviceContext, Func<Point, Point> Transform = null)
         {
-            var iconPtr = GetIcon(Transform, out var location, out var disposer);
+            var hIcon = GetIcon(Transform, out var location);
 
-            if (iconPtr == IntPtr.Zero)
+            if (hIcon == IntPtr.Zero)
                 return;
 
             try
             {
-                User32.DrawIcon(DeviceContext, location.X, location.Y, iconPtr);
+                User32.DrawIcon(DeviceContext, location.X, location.Y, hIcon);
             }
             finally
             {
-                disposer?.Invoke();
+                User32.DestroyIcon(hIcon);
             }
         }
 
-        static IntPtr GetIcon(Func<Point, Point> Transform, out Point Location, out Action Disposer)
+        static IntPtr GetIcon(Func<Point, Point> Transform, out Point Location)
         {
             Location = Point.Empty;
-            Disposer = () => { };
 
-            // ReSharper disable once RedundantAssignment
-            // ReSharper disable once InlineOutVariableDeclaration
             var cursorInfo = new CursorInfo {cbSize = Marshal.SizeOf<CursorInfo>()};
 
             if (!User32.GetCursorInfo(ref cursorInfo))
@@ -87,8 +82,6 @@ namespace Screna
 
             Gdi32.DeleteObject(icInfo.hbmColor);
             Gdi32.DeleteObject(icInfo.hbmMask);
-
-            Disposer = () => User32.DestroyIcon(hIcon);
 
             return hIcon;
         }
