@@ -101,6 +101,24 @@ namespace DesktopDuplication
             }
         }
 
+        public Texture2D CreateGdiTexture(int Width, int Height)
+        {
+            var desc = new Texture2DDescription
+            {
+                Width = Width,
+                Height = Height,
+                ArraySize = 1,
+                Format = Format.B8G8R8A8_UNorm,
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
+                MipLevels = 1,
+                SampleDescription = { Count = 1 },
+                OptionFlags = ResourceOptionFlags.GdiCompatible
+            };
+
+            return new Texture2D(Device, desc);
+        }
+
         public void BeginDraw()
         {
             RenderTarget.BeginDraw();

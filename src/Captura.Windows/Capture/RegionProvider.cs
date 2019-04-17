@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
+using Captura.Models;
+using DesktopDuplication;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 
 namespace Screna
 {
@@ -10,9 +14,17 @@ namespace Screna
         readonly Func<Point> _locationFunc;
         readonly bool _includeCursor;
 
-        readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
+        readonly IntPtr _hdcSrc, _hBitmap;
+        readonly Direct2DEditorSession _editorSession;
+        readonly Texture2D _gdiCompatibleTexture;
+        readonly Surface1 _dxgiSurface;
 
-        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc = null)
+        IntPtr _hdcDest;
+
+        public RegionProvider(Rectangle Region,
+            IPreviewWindow PreviewWindow,
+            bool IncludeCursor,
+            Func<Point> LocationFunc = null)
         {
             _region = Region;
             _includeCursor = IncludeCursor;
@@ -32,17 +44,41 @@ namespace Screna
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-            _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
-            _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
+            if (WindowsModule.Windows8OrAbove)
+            {
+                _editorSession = new Direct2DEditorSession(Width, Height, PreviewWindow);
+                _gdiCompatibleTexture = _editorSession.CreateGdiTexture(Width, Height);
 
-            Gdi32.SelectObject(_hdcDest, _hBitmap);
+                _dxgiSurface = _gdiCompatibleTexture.QueryInterface<Surface1>();
+
+                EditorType = typeof(Direct2DEditor);
+            }
+            else
+            {
+                _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
+                _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
+
+                Gdi32.SelectObject(_hdcDest, _hBitmap);
+
+                EditorType = typeof(GraphicsEditor);
+            }
         }
 
         public void Dispose()
         {
-            Gdi32.DeleteDC(_hdcDest);
-            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
-            Gdi32.DeleteObject(_hBitmap);
+            if (_dxgiSurface != null)
+            {
+                _dxgiSurface.Dispose();
+                _gdiCompatibleTexture.Dispose();
+                _editorSession.Dispose();
+            }
+            else
+            {
+                Gdi32.DeleteDC(_hdcDest);
+                Gdi32.DeleteObject(_hBitmap);
+            }
+
+            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);            
         }
 
         public IEditableFrame Capture()
@@ -50,11 +86,27 @@ namespace Screna
             // Update Location
             _region.Location = _locationFunc();
 
+            if (_dxgiSurface != null)
+            {
+                _hdcDest = _dxgiSurface.GetDC(true);
+            }
+
             Gdi32.BitBlt(_hdcDest, 0, 0, _region.Width, _region.Height,
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);
 
-            var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
+            IEditableFrame img;
+
+            if (_dxgiSurface != null)
+            {
+                _dxgiSurface.ReleaseDC();
+
+                _editorSession.Device.ImmediateContext.CopyResource(_gdiCompatibleTexture, _editorSession.DesktopTexture);
+                _editorSession.Device.ImmediateContext.Flush();
+
+                img = new Direct2DEditor(_editorSession);
+            }
+            else img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
 
             if (_includeCursor)
                 MouseCursor.Draw(img, PointTransform);
@@ -67,6 +119,6 @@ namespace Screna
         public int Height { get; }
         public int Width { get; }
 
-        public Type EditorType { get; } = typeof(GraphicsEditor);
+        public Type EditorType { get; }
     }
 }

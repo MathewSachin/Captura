@@ -12,7 +12,7 @@ namespace Captura
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
 
-            if (Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove)
             {
                 MfManager.Startup();
                 Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
@@ -47,7 +47,7 @@ namespace Captura
 
         public void Dispose()
         {
-            if (Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove)
             {
                 MfManager.Shutdown();
             }
@@ -104,7 +104,7 @@ namespace Captura
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>();
 
-            if (Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove)
             {
                 Binder.BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>();
             }
@@ -124,18 +124,6 @@ namespace Captura
             Binder.Bind(() => Binder.Get<Settings>().Proxy);
             Binder.Bind(() => Binder.Get<Settings>().Sounds);
             Binder.Bind(() => Binder.Get<Settings>().Imgur);
-        }
-
-        static bool Windows8OrAbove
-        {
-            get
-            {
-                // All versions above Windows 8 give the same version number
-                var version = new Version(6, 2, 9200, 0);
-
-                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
-                       Environment.OSVersion.Version >= version;
-            }
         }
     }
 }

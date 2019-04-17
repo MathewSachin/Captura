@@ -10,6 +10,13 @@ namespace Captura
     // ReSharper disable once ClassNeverInstantiated.Global
     class WindowsPlatformServices : IPlatformServices
     {
+        readonly IPreviewWindow _previewWindow;
+
+        public WindowsPlatformServices(IPreviewWindow PreviewWindow)
+        {
+            _previewWindow = PreviewWindow;
+        }
+
         public IEnumerable<IScreen> EnumerateScreens()
         {
             return ScreenWrapper.Enumerate();
@@ -57,7 +64,7 @@ namespace Captura
 
         public IImageProvider GetRegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunction = null)
         {
-            return new RegionProvider(Region, IncludeCursor, LocationFunction);
+            return new RegionProvider(Region, _previewWindow, IncludeCursor, LocationFunction);
         }
 
         public IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor)
