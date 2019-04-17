@@ -15,6 +15,9 @@ namespace Captura
         public static extern bool GetCursorPos(ref Point lpPoint);
 
         [DllImport(DllName)]
+        public static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
+
+        [DllImport(DllName)]
         public static extern WindowStyles GetWindowLong(IntPtr hWnd, GetWindowLongValue nIndex);
 
         [DllImport(DllName)]

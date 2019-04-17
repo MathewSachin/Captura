@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Captura;
@@ -12,9 +11,6 @@ namespace Screna
     static class MouseCursor
     {
         const int CursorShowing = 1;
-
-        // hCursor -> (Icon, Hotspot)
-        static readonly Dictionary<IntPtr, (Bitmap Icon, Point Hotspot)> Cursors = new Dictionary<IntPtr, (Bitmap Icon, Point Hotspot)>();
         
         /// <summary>
         /// Draws this overlay.
@@ -23,82 +19,78 @@ namespace Screna
         /// <param name="Transform">Point Transform Function.</param>
         public static void Draw(Graphics G, Func<Point, Point> Transform = null)
         {
-            GetIcon(Transform, out var icon, out var location);
+            var iconPtr = GetIcon(Transform, out var location, out var disposer);
 
-            if (icon == null)
+            if (iconPtr == IntPtr.Zero)
+                return;
+
+            var bmp = Icon.FromHandle(iconPtr).ToBitmap();
+
+            try
+            {
+                G.DrawImage(bmp, new Rectangle(location, bmp.Size));
+            }
+            catch (ArgumentException) { }
+            finally
+            {
+                disposer?.Invoke();
+            }
+        }
+
+        public static void Draw(IntPtr DeviceContext, Func<Point, Point> Transform = null)
+        {
+            var iconPtr = GetIcon(Transform, out var location, out var disposer);
+
+            if (iconPtr == IntPtr.Zero)
                 return;
 
             try
             {
-                G.DrawImage(icon, new Rectangle(location, icon.Size));
+                User32.DrawIcon(DeviceContext, location.X, location.Y, iconPtr);
             }
-            catch (ArgumentException) { }
-        }
-
-        public static void Draw(IEditableFrame G, Func<Point, Point> Transform = null)
-        {
-            GetIcon(Transform, out var icon, out var location);
-
-            if (icon == null)
-                return;
-
-            try
+            finally
             {
-                G.DrawImage(new DrawingImage(icon), new Rectangle(location, icon.Size));
+                disposer?.Invoke();
             }
-            catch (ArgumentException) { }
         }
 
-        static void GetIcon(Func<Point, Point> Transform, out Bitmap Icon, out Point Location)
+        static IntPtr GetIcon(Func<Point, Point> Transform, out Point Location, out Action Disposer)
         {
-            Icon = null;
             Location = Point.Empty;
+            Disposer = () => { };
 
             // ReSharper disable once RedundantAssignment
             // ReSharper disable once InlineOutVariableDeclaration
             var cursorInfo = new CursorInfo {cbSize = Marshal.SizeOf<CursorInfo>()};
 
             if (!User32.GetCursorInfo(ref cursorInfo))
-                return;
+                return IntPtr.Zero;
 
             if (cursorInfo.flags != CursorShowing)
-                return;
+                return IntPtr.Zero;
 
-            Point hotspot;
+            var hIcon = User32.CopyIcon(cursorInfo.hCursor);
 
-            if (Cursors.ContainsKey(cursorInfo.hCursor))
-            {
-                var tuple = Cursors[cursorInfo.hCursor];
+            if (hIcon == IntPtr.Zero)
+                return IntPtr.Zero;
 
-                Icon = tuple.Icon;
-                hotspot = tuple.Hotspot;
-            }
-            else
-            {
-                var hIcon = User32.CopyIcon(cursorInfo.hCursor);
+            if (!User32.GetIconInfo(hIcon, out var icInfo))
+                return IntPtr.Zero;
 
-                if (hIcon == IntPtr.Zero)
-                    return;
-
-                if (!User32.GetIconInfo(hIcon, out var icInfo))
-                    return;
-
-                Icon = System.Drawing.Icon.FromHandle(hIcon).ToBitmap();
-                hotspot = new Point(icInfo.xHotspot, icInfo.yHotspot);
-
-                Cursors.Add(cursorInfo.hCursor, (Icon, hotspot));
-
-                User32.DestroyIcon(hIcon);
-
-                Gdi32.DeleteObject(icInfo.hbmColor);
-                Gdi32.DeleteObject(icInfo.hbmMask);
-            }
+            var hotspot = new Point(icInfo.xHotspot, icInfo.yHotspot);
 
             Location = new Point(cursorInfo.ptScreenPos.X - hotspot.X,
                 cursorInfo.ptScreenPos.Y - hotspot.Y);
 
             if (Transform != null)
                 Location = Transform(Location);
+
+            Gdi32.DeleteObject(icInfo.hbmColor);
+            Gdi32.DeleteObject(icInfo.hbmMask);
+
+            Disposer = () => User32.DestroyIcon(hIcon);
+
+            return hIcon;
         }
     }
 }

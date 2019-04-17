@@ -97,6 +97,9 @@ namespace Screna
             Gdi32.StretchBlt(hdcDest, 0, 0, resizeWidth, resizeHeight,
                 _hdcSrc, rect.X, rect.Y, rect.Width, rect.Height,
                 (int) CopyPixelOperation.SourceCopy);
+
+            if (_includeCursor)
+                MouseCursor.Draw(hdcDest, PointTransform);
         }
 
         public IEditableFrame Capture()
@@ -106,9 +109,6 @@ namespace Screna
                 OnCapture();
 
                 var img = _dcTarget.GetEditableFrame();
-
-                if (_includeCursor)
-                    MouseCursor.Draw(img, PointTransform);
 
                 return img;
             }

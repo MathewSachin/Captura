@@ -62,10 +62,10 @@ namespace Screna
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);
 
-            var img = _dcTarget.GetEditableFrame();
-
             if (_includeCursor)
-                MouseCursor.Draw(img, PointTransform);
+                MouseCursor.Draw(hdcDest, PointTransform);
+
+            var img = _dcTarget.GetEditableFrame();
 
             return img;
         }
