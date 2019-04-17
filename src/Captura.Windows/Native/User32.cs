@@ -60,7 +60,7 @@ namespace Captura
         public static extern IntPtr CopyIcon(IntPtr hIcon);
 
         [DllImport(DllName)]
-        public static extern bool GetCursorInfo(out CursorInfo pci);
+        public static extern bool GetCursorInfo(ref CursorInfo pci);
 
         [DllImport(DllName)]
         public static extern bool GetIconInfo(IntPtr hIcon, out IconInfo piconinfo);

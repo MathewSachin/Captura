@@ -14,7 +14,7 @@ namespace Screna
         const int CursorShowing = 1;
 
         // hCursor -> (Icon, Hotspot)
-        static readonly Dictionary<IntPtr, Tuple<Bitmap, Point>> Cursors = new Dictionary<IntPtr, Tuple<Bitmap, Point>>();
+        static readonly Dictionary<IntPtr, (Bitmap Icon, Point Hotspot)> Cursors = new Dictionary<IntPtr, (Bitmap Icon, Point Hotspot)>();
         
         /// <summary>
         /// Draws this overlay.
@@ -58,7 +58,7 @@ namespace Screna
             // ReSharper disable once InlineOutVariableDeclaration
             var cursorInfo = new CursorInfo {cbSize = Marshal.SizeOf<CursorInfo>()};
 
-            if (!User32.GetCursorInfo(out cursorInfo))
+            if (!User32.GetCursorInfo(ref cursorInfo))
                 return;
 
             if (cursorInfo.flags != CursorShowing)
@@ -70,8 +70,8 @@ namespace Screna
             {
                 var tuple = Cursors[cursorInfo.hCursor];
 
-                Icon = tuple.Item1;
-                hotspot = tuple.Item2;
+                Icon = tuple.Icon;
+                hotspot = tuple.Hotspot;
             }
             else
             {
@@ -86,7 +86,7 @@ namespace Screna
                 Icon = System.Drawing.Icon.FromHandle(hIcon).ToBitmap();
                 hotspot = new Point(icInfo.xHotspot, icInfo.yHotspot);
 
-                Cursors.Add(cursorInfo.hCursor, Tuple.Create(Icon, hotspot));
+                Cursors.Add(cursorInfo.hCursor, (Icon, hotspot));
 
                 User32.DestroyIcon(hIcon);
 
