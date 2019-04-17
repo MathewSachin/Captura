@@ -620,10 +620,6 @@
       <Project>{224e699e-2b95-4194-be79-4931815d8f21}</Project>
       <Name>Captura.YouTube</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
-      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
-      <Name>DesktopDuplication</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>
       <Name>Screna</Name>
