@@ -69,7 +69,7 @@ namespace Captura
 
         public IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor)
         {
-            return new WindowProvider(Window, IncludeCursor);
+            return new WindowProvider(Window, _previewWindow, IncludeCursor);
         }
     }
 }
