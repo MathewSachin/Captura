@@ -191,38 +191,11 @@
                                                 IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                                 IsChecked="{Binding ClipboardWriter.Active}"/>
 
-                    <Border VerticalAlignment="Center"
-                            CornerRadius="12"
-                            BorderThickness="1"
-                            Margin="5,0">
-                        <ToggleButton ToolTip="Imgur"
-                                      Content="Imgur"
-                                      IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
-                                      BorderThickness="0"
-                                      Background="Transparent"
-                                      Cursor="Hand">
-                            <ToggleButton.Style>
-                                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
-
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{DynamicResource ItemBorder}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
+                    <CheckBox Content="Imgur"
+                              ToolTip="Imgur"
+                              Margin="5,0"
+                              IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
+                              Style="{StaticResource ModernTogglePill}"/>
 
                     <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
                                                 IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
