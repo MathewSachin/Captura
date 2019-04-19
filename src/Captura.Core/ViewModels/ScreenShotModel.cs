@@ -184,6 +184,10 @@ namespace Captura.ViewModels
                 case WebcamSourceProvider _:
                     bmp = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
                     break;
+
+                case AroundMouseSourceProvider aroundMouseSourceProvider:
+                    bmp = aroundMouseSourceProvider.Capture(includeCursor);
+                    break;
             }
 
             return bmp;

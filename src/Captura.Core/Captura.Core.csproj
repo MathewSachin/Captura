@@ -14,7 +14,6 @@
     <ProjectReference Include="..\Captura.SharpAvi\Captura.SharpAvi.csproj" />
     <ProjectReference Include="..\Captura.Windows\Captura.Windows.csproj" />
     <ProjectReference Include="..\Captura.YouTube\Captura.YouTube.csproj" />
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj" />
     <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
   <ItemGroup>

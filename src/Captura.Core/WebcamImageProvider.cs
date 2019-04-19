@@ -38,5 +38,7 @@ namespace Captura.Webcam
         public int Width => _webcamModel.WebcamCapture?.Width ?? 0;
 
         public Func<Point, Point> PointTransform { get; } = P => P;
+
+        public Type EditorType { get; } = typeof(GraphicsEditor);
     }
 }

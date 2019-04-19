@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using Captura;
 using SharpDX.Direct3D11;
 using Device = SharpDX.Direct3D11.Device;
@@ -37,6 +38,20 @@ namespace DesktopDuplication
             try
             {
                 Marshal.Copy(mapSource.DataPointer, Buffer, 0, Length);
+            }
+            finally
+            {
+                Device.ImmediateContext.UnmapSubresource(Texture, 0);
+            }
+        }
+
+        public void CopyTo(IntPtr Buffer, int Length)
+        {
+            var mapSource = Device.ImmediateContext.MapSubresource(Texture, 0, MapMode.Read, MapFlags.None);
+
+            try
+            {
+                Kernel32.CopyMemory(Buffer, mapSource.DataPointer, (uint)Length);
             }
             finally
             {

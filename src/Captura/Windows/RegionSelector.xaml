@@ -266,6 +266,12 @@
                                         Click="Snapper_OnClick"
                                         ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
 
+                    <local:ModernButton IconData="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
+                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Command="{Binding RegionSelectorViewModel.SnapToRegionCommand, Source={StaticResource ServiceLocator}}"
+                                        ToolTip="Snap to Region"
+                                        Margin="-5,0"/>
+
                     <local:ModernButton Click="CloseButton_Click"
                                         Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                                         Foreground="#77ef5350"
@@ -273,14 +279,16 @@
                                         DockPanel.Dock="Right"
                                         ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:ScreenShotButton DockPanel.Dock="Right"/>
+                    <local:ScreenShotButton DockPanel.Dock="Right"
+                                            Margin="-5,0"/>
 
                     <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
                                         Foreground="#b71c1c"
                                         IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
                                         ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                    <local:PauseButton LayoutTransform="{StaticResource ButtonScale}"/>
+                    <local:PauseButton LayoutTransform="{StaticResource ButtonScale}"
+                                       Margin="-5,0"/>
 
                     <StackPanel Orientation="Horizontal"
                                 Margin="10,-1"

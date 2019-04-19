@@ -95,5 +95,10 @@ namespace Captura
         {
             throw new NotImplementedException();
         }
+
+        void IBitmapFrame.CopyTo(IntPtr Buffer, int Length)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

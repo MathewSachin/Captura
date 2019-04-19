@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Captura;
@@ -28,6 +29,20 @@ namespace Screna
             try
             {
                 Marshal.Copy(bits.Scan0, Buffer, 0, Length);
+            }
+            finally
+            {
+                Bitmap.UnlockBits(bits);
+            }
+        }
+
+        public void CopyTo(IntPtr Buffer, int Length)
+        {
+            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            try
+            {
+                Kernel32.CopyMemory(Buffer, bits.Scan0, (uint)Length);
             }
             finally
             {

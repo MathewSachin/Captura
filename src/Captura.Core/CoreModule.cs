@@ -1,7 +1,7 @@
-﻿using System;
-using Captura.Models;
+﻿using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -10,6 +10,12 @@ namespace Captura
         public void OnLoad(IBinder Binder)
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
+
+            if (WindowsModule.Windows8OrAbove)
+            {
+                MfManager.Startup();
+                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+            }
 
             FFmpegModule.Load(Binder);
 
@@ -38,7 +44,13 @@ namespace Captura
             WindowsModule.Load(Binder);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            if (WindowsModule.Windows8OrAbove)
+            {
+                MfManager.Shutdown();
+            }
+        }
 
         static void BindImageWriters(IBinder Binder)
         {
@@ -84,13 +96,14 @@ namespace Captura
         static void BindVideoSourceProviders(IBinder Binder)
         {
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, NoVideoSourceProvider>();
+            Binder.BindAsInterfaceAndClass<IVideoSourceProvider, AroundMouseSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WebcamSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, FullScreenSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>();
 
-            if (Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove)
             {
                 Binder.BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>();
             }
@@ -110,18 +123,6 @@ namespace Captura
             Binder.Bind(() => Binder.Get<Settings>().Proxy);
             Binder.Bind(() => Binder.Get<Settings>().Sounds);
             Binder.Bind(() => Binder.Get<Settings>().Imgur);
-        }
-
-        static bool Windows8OrAbove
-        {
-            get
-            {
-                // All versions above Windows 8 give the same version number
-                var version = new Version(6, 2, 9200, 0);
-
-                return Environment.OSVersion.Platform == PlatformID.Win32NT &&
-                       Environment.OSVersion.Version >= version;
-            }
         }
     }
 }

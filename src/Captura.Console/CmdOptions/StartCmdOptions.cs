@@ -10,7 +10,7 @@ namespace Captura
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     [Verb("start", HelpText = "Start Recording")]
-    class StartCmdOptions : CommonCmdOptions
+    class StartCmdOptions : CommonCmdOptions, ICmdlineVerb
     {
         [Option("delay", HelpText = "Milliseconds to wait before starting recording.")]
         public int Delay { get; set; }
@@ -74,6 +74,16 @@ namespace Captura
                     Encoder = "sharpavi:0",
                     FileName = "out.avi"
                 });
+            }
+        }
+
+        public void Run()
+        {
+            using (var manager = ServiceProvider.Get<ConsoleManager>())
+            {
+                manager.CopySettings();
+
+                manager.Start(this);
             }
         }
     }

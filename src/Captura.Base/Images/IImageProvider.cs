@@ -25,5 +25,7 @@ namespace Captura
         int Width { get; }
 
         Func<Point, Point> PointTransform { get; }
+
+        Type EditorType { get; }
     }
 }

@@ -36,7 +36,8 @@ namespace Captura.ViewModels
 
             IsVideoQuality = VideoWritersViewModel
                 .ObserveProperty(M => M.SelectedVideoWriterKind)
-                .Select(M => !(M is DiscardWriterProvider))
+                .Select(M => M is DiscardWriterProvider)
+                .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
 
             CanChangeWebcam = new[]
@@ -92,7 +93,19 @@ namespace Captura.ViewModels
 
             CanWebcamSeparateFile = VideoSourcesViewModel
                 .ObserveProperty(M => M.SelectedVideoSourceKind)
-                .Select(M => !(M is WebcamSourceProvider))
+                .Select(M => M is WebcamSourceProvider)
+                .Select(M => !M)
+                .ToReadOnlyReactivePropertySlim();
+
+            IsAroundMouseMode = VideoSourcesViewModel
+                .ObserveProperty(M => M.SelectedVideoSourceKind)
+                .Select(M => M is AroundMouseSourceProvider)
+                .ToReadOnlyReactivePropertySlim();
+
+            ShowSourceNameBox = VideoSourcesViewModel
+                .ObserveProperty(M => M.SelectedVideoSourceKind)
+                .Select(M => M is RegionSourceProvider || M is AroundMouseSourceProvider)
+                .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
         }
 
@@ -113,5 +126,9 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> IsEnabled { get; }
 
         public IReadOnlyReactiveProperty<bool> CanWebcamSeparateFile { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsAroundMouseMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> ShowSourceNameBox { get; }
     }
 }
