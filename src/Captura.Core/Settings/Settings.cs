@@ -210,7 +210,7 @@ namespace Captura
             set => Set(value);
         }
 
-        public bool RecordChanges
+        public bool RecordSteps
         {
             get => Get(false);
             set => Set(value);

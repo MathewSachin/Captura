@@ -94,15 +94,15 @@ namespace Captura.Models
             _keystrokesSettings = KeystrokesSettings;
             _keymap = KeymapViewModel;
 
-            _recordTask = Task.Factory.StartNew(DoRecord, TaskCreationOptions.LongRunning);
+            var stepsObservable = Observe(_hook, _cancellationTokenSource.Token, out var shotObservable);
+
+            _recordTask = Task.Factory.StartNew(() => DoRecord(stepsObservable, shotObservable), TaskCreationOptions.LongRunning);
         }
 
-        void DoRecord()
+        void DoRecord(IObservable<IRecordStep> StepsObservable, IObservable<Unit> ShotObservable)
         {
-            var observer = Observe(_hook, _cancellationTokenSource.Token, out var shot);
-
-            var frames = shot.Select(M => _imageProvider.Capture())
-                .Zip(observer, (Frame, Step) =>
+            var frames = ShotObservable.Select(M => _imageProvider.Capture())
+                .Zip(StepsObservable, (Frame, Step) =>
                 {
                     Step.Draw(Frame, _imageProvider.PointTransform);
 

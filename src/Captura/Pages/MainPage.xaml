@@ -64,7 +64,7 @@
                 </local:ModernToggleButton>
             </StackPanel>
             <CheckBox Content="Steps"
-                      IsChecked="{Binding Settings.RecordChanges}"
+                      IsChecked="{Binding Settings.RecordSteps}"
                       Margin="0,2"
                       Style="{StaticResource ModernTogglePill}"
                       HorizontalAlignment="Center"

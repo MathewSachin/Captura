@@ -53,7 +53,7 @@ namespace Screna
         /// <inheritdoc />
         public int Width { get; }
 
-        public Func<Point, Point> PointTransform { get; } = P => P;
+        public Func<Point, Point> PointTransform => _imageProvider.PointTransform;
 
         /// <inheritdoc />
         public void Dispose()

@@ -24,6 +24,23 @@ namespace Captura.ViewModels
                 .Select(M => M is NoVideoSourceProvider)
                 .ToReadOnlyReactivePropertySlim();
 
+            ShowVideoEncoders = new[]
+                {
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is NoVideoSourceProvider),
+                    Settings
+                        .ObserveProperty(M => M.RecordSteps)
+                }
+                .CombineLatest(M =>
+                {
+                    var audioMode = M[0];
+                    var stepsMode = M[1];
+
+                    return !audioMode && !stepsMode;
+                })
+                .ToReadOnlyReactivePropertySlim();
+
             MultipleVideoWriters = VideoWritersViewModel.AvailableVideoWriters
                 .ObserveProperty(M => M.Count)
                 .Select(M => M > 1)
@@ -108,6 +125,8 @@ namespace Captura.ViewModels
                 .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
         }
+
+        public IReadOnlyReactiveProperty<bool> ShowVideoEncoders { get; }
 
         public IReadOnlyReactiveProperty<bool> IsRegionMode { get; }
 
