@@ -65,7 +65,7 @@
                 </local:ModernToggleButton>
             </StackPanel>
             <CheckBox Content="Steps"
-                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                      IsEnabled="{Binding ViewConditions.StepsBtnEnabled.Value, Source={StaticResource ServiceLocator}}"
                       IsChecked="{Binding Settings.RecordSteps}"
                       Margin="0,2"
                       Style="{StaticResource ModernTogglePill}"

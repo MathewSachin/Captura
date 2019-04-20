@@ -128,7 +128,19 @@ namespace Captura.ViewModels
                 .Select(M => M is RegionSourceProvider || M is AroundMouseSourceProvider)
                 .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
+
+            StepsBtnEnabled = new[]
+                {
+                    IsEnabled,
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M.SupportsStepsMode)
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReadOnlyReactivePropertySlim();
         }
+
+        public IReadOnlyReactiveProperty<bool> StepsBtnEnabled { get; }
 
         public IReadOnlyReactiveProperty<bool> IsNotAudioOrStepsMode { get; }
 

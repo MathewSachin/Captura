@@ -26,6 +26,8 @@ namespace Captura.Models
 
         public IVideoItem Source { get; }
 
+        public bool SupportsStepsMode => false;
+
         public bool OnSelect() => true;
 
         public void OnUnselect()

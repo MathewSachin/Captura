@@ -23,6 +23,8 @@ namespace Captura.Models
             Icon = Icons.Game;
         }
 
+        public bool SupportsStepsMode => false;
+
         bool PickScreen()
         {
             var screen = _videoSourcePicker.PickScreen();

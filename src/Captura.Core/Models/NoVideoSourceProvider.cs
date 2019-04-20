@@ -20,6 +20,8 @@ namespace Captura.Models
                 SelectedSource = Sources[0];
         }
 
+        public override bool SupportsStepsMode => false;
+
         public IVideoItem[] Sources { get; }
 
         IVideoItem _selectedSource;
