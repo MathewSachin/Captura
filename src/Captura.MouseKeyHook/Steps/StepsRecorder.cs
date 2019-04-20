@@ -111,14 +111,7 @@ namespace Captura.Models
 
             foreach (var frame in frames.ToEnumerable())
             {
-                try
-                {
-                    _videoWriter.WriteFrame(frame);
-                }
-                catch (InvalidOperationException)
-                {
-                    break;
-                }
+                _videoWriter.WriteFrame(frame);
             }
         }
 

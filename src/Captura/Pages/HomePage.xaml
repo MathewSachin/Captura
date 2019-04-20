@@ -130,6 +130,28 @@
 
             <Frame Source="VideoEncoderPage.xaml"/>
 
+            <StackPanel Visibility="{Binding ViewConditions.IsStepsMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <GridSplitter IsEnabled="False"
+                              Height="1"
+                              Margin="0,10"/>
+
+                <Label Content="Output type"
+                       FontWeight="Bold"/>
+
+                <ListView BorderThickness="0.4"
+                          SelectionMode="Single"
+                          Margin="0,5">
+                    <ListViewItem>Video</ListViewItem>
+                    <ListViewItem>Images</ListViewItem>
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </StackPanel>
+
             <Frame Source="AudioPage.xaml"
                    Margin="0,10,0,0"
                    Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>

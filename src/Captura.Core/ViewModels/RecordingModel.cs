@@ -133,13 +133,15 @@ namespace Captura.ViewModels
             return true;
         }
 
-        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
+        bool GetImageProviderSafe(Func<IImageProvider> Getter, RecordingModelParams RecordingParams, out IImageProvider ImageProvider)
         {
-            IImageProvider imgProvider;
+            ImageProvider = null;
 
             try
             {
-                imgProvider = GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
+                ImageProvider = Getter();
+
+                return true;
             }
             catch (NotSupportedException e) when (RecordingParams.VideoSourceKind is DeskDuplSourceProvider)
             {
@@ -159,6 +161,14 @@ namespace Captura.ViewModels
 
                 return false;
             }
+        }
+
+        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
+        {
+            IImageProvider imgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
+
+            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+                return false;
 
             IVideoFileWriter videoEncoder;
 
@@ -220,30 +230,10 @@ namespace Captura.ViewModels
 
         bool SetupStepsRecorder(RecordingModelParams RecordingParams)
         {
-            IImageProvider imgProvider;
+            IImageProvider imgProviderGetter() => GetImageProvider(RecordingParams);
 
-            try
-            {
-                imgProvider = GetImageProvider(RecordingParams);
-            }
-            catch (NotSupportedException e) when (RecordingParams.VideoSourceKind is DeskDuplSourceProvider)
-            {
-                _messageProvider.ShowError(e.Message, Loc.ErrorOccurred);
-
+            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
                 return false;
-            }
-            catch (WindowClosedException e)
-            {
-                _messageProvider.ShowException(e, "Window Closed");
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                _messageProvider.ShowException(e, e.Message);
-
-                return false;
-            }
 
             IVideoFileWriter videoEncoder;
 
