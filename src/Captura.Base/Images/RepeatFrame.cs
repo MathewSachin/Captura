@@ -86,12 +86,12 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IBitmapFrame.CopyTo(byte[] Buffer, int Length)
+        void IBitmapFrame.CopyTo(byte[] Buffer)
         {
             throw new NotImplementedException();
         }
 
-        void IBitmapFrame.CopyTo(IntPtr Buffer, int Length)
+        void IBitmapFrame.CopyTo(IntPtr Buffer)
         {
             throw new NotImplementedException();
         }

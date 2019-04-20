@@ -8,6 +8,6 @@ namespace Captura
         const string DllName = "Kernel32";
 
         [DllImport(DllName)]
-        public static extern void CopyMemory(IntPtr Dest, IntPtr Src, uint Count);
+        public static extern void CopyMemory(IntPtr Dest, IntPtr Src, int Count);
     }
 }
