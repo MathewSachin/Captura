@@ -63,6 +63,12 @@
                     </local:ModernToggleButton.ToolTip>
                 </local:ModernToggleButton>
             </StackPanel>
+            <CheckBox Content="Steps"
+                      IsChecked="{Binding Settings.RecordChanges}"
+                      Margin="0,2"
+                      Style="{StaticResource ModernTogglePill}"
+                      HorizontalAlignment="Center"
+                      ToolTip="Toggle Steps Recorder mode"/>
         </DockPanel>
 
         <TabControl Background="Transparent"
