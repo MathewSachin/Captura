@@ -7,7 +7,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal"
-                                DockPanel.Dock="Right">
+                        DockPanel.Dock="Right">
                 <local:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding RefreshCommand}"
                                     IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"/>
@@ -23,7 +23,8 @@
                                     IconData="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        Margin="10,0,0,0">
+                        Margin="10,0,0,0"
+                        IsEnabled="{Binding ViewConditions.IsStepsMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
                 <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
                                           IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                                           IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
@@ -70,8 +71,9 @@
                       Style="{StaticResource ModernTogglePill}"
                       HorizontalAlignment="Center">
                 <CheckBox.ToolTip>
-                    <TextBlock MinWidth="200">
-                        Toggle Steps Recorder mode.<LineBreak/>
+                    <TextBlock Width="200"
+                               TextWrapping="Wrap">
+                        Toggle Steps Recorder mode.<LineBreak/><LineBreak/>
                         Not supported with Only Audio, Webcam or Desktop Duplication sources.<LineBreak/>
                     </TextBlock>
                 </CheckBox.ToolTip>

@@ -66,7 +66,12 @@ namespace Captura.ViewModels
                         .Select(M => M is WebcamSourceProvider),
                     WebcamModel
                         .ObserveProperty(M => M.SelectedCam)
-                        .Select(M => M is NoWebcamItem)
+                        .Select(M => M is NoWebcamItem),
+                    Settings
+                        .ObserveProperty(M => M.RecordSteps),
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is DeskDuplSourceProvider),
                 }
                 .CombineLatest(M =>
                 {
@@ -74,6 +79,13 @@ namespace Captura.ViewModels
                     var audioOnlyMode = M[1];
                     var webcamMode = M[2];
                     var noWebcam = M[3];
+                    var stepsMode = M[4];
+                    var deskDuplSource = M[5];
+
+                    if (stepsMode)
+                    {
+                        return !(audioOnlyMode || webcamMode || deskDuplSource);
+                    }
 
                     if (audioOnlyMode)
                         return audioEnabled;
