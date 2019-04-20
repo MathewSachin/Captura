@@ -64,11 +64,18 @@
                 </local:ModernToggleButton>
             </StackPanel>
             <CheckBox Content="Steps"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                       IsChecked="{Binding Settings.RecordSteps}"
                       Margin="0,2"
                       Style="{StaticResource ModernTogglePill}"
-                      HorizontalAlignment="Center"
-                      ToolTip="Toggle Steps Recorder mode"/>
+                      HorizontalAlignment="Center">
+                <CheckBox.ToolTip>
+                    <TextBlock MinWidth="200">
+                        Toggle Steps Recorder mode.<LineBreak/>
+                        Not supported with Only Audio, Webcam or Desktop Duplication sources.<LineBreak/>
+                    </TextBlock>
+                </CheckBox.ToolTip>
+            </CheckBox>
         </DockPanel>
 
         <TabControl Background="Transparent"

@@ -134,7 +134,7 @@
                    Margin="0,10,0,0"
                    Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-            <DockPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
+            <DockPanel Visibility="{Binding ViewConditions.IsNotAudioOrStepsMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <GridSplitter IsEnabled="False"
                               DockPanel.Dock="Top"
                               Height="1"
