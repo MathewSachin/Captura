@@ -273,6 +273,8 @@ namespace Captura.ViewModels
 
                 RecordingParams.VideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
                 RecordingParams.VideoWriter = RecordingParams.VideoWriterKind.First();
+                //RecordingParams.VideoWriterKind = new ImageFolderWriterProvider();
+                //RecordingParams.VideoWriter = new ImageFolderWriterItem();
             }            
 
             var extension = RecordingParams.VideoWriter.Extension;
