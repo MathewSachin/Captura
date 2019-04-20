@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Captura;
 using SharpDX.Direct3D11;
 using Device = SharpDX.Direct3D11.Device;
@@ -31,13 +32,22 @@ namespace DesktopDuplication
         public int Width { get; }
         public int Height { get; }
 
-        public void CopyTo(byte[] Buffer, int Length)
+        public void CopyTo(byte[] Buffer)
         {
             var mapSource = Device.ImmediateContext.MapSubresource(Texture, 0, MapMode.Read, MapFlags.None);
 
+            var destStride = Width * 4;
+
             try
             {
-                Marshal.Copy(mapSource.DataPointer, Buffer, 0, Length);
+                // Do not copy directly, strides may be different
+                Parallel.For(0, Height, Y =>
+                {
+                    Marshal.Copy(mapSource.DataPointer + Y * mapSource.RowPitch,
+                        Buffer,
+                        Y * destStride,
+                        destStride);
+                });
             }
             finally
             {
@@ -45,13 +55,21 @@ namespace DesktopDuplication
             }
         }
 
-        public void CopyTo(IntPtr Buffer, int Length)
+        public void CopyTo(IntPtr Buffer)
         {
             var mapSource = Device.ImmediateContext.MapSubresource(Texture, 0, MapMode.Read, MapFlags.None);
 
+            var destStride = Width * 4;
+
             try
             {
-                Kernel32.CopyMemory(Buffer, mapSource.DataPointer, (uint)Length);
+                // Do not copy directly, strides may be different
+                Parallel.For(0, Height, Y =>
+                {
+                    Kernel32.CopyMemory(Buffer + Y * destStride,
+                        mapSource.DataPointer + Y * mapSource.RowPitch,
+                        destStride);
+                });
             }
             finally
             {

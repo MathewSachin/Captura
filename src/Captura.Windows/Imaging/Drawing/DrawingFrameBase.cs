@@ -22,13 +22,13 @@ namespace Screna
         public int Width { get; }
         public int Height { get; }
 
-        public void CopyTo(byte[] Buffer, int Length)
+        public void CopyTo(byte[] Buffer)
         {
             var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
-                Marshal.Copy(bits.Scan0, Buffer, 0, Length);
+                Marshal.Copy(bits.Scan0, Buffer, 0, Width * Height * 4);
             }
             finally
             {
@@ -36,13 +36,13 @@ namespace Screna
             }
         }
 
-        public void CopyTo(IntPtr Buffer, int Length)
+        public void CopyTo(IntPtr Buffer)
         {
             var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
-                Kernel32.CopyMemory(Buffer, bits.Scan0, (uint)Length);
+                Kernel32.CopyMemory(Buffer, bits.Scan0, Width * Height * 4);
             }
             finally
             {

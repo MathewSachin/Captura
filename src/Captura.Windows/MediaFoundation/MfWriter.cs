@@ -255,7 +255,7 @@ namespace DesktopDuplication
                     {
                         var data = buffer.Lock(out _, out _);
 
-                        Image.CopyTo(data, _bufferSize);
+                        Image.CopyTo(data);
 
                         buffer.CurrentLength = _bufferSize;
 
