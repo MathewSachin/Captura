@@ -9,8 +9,8 @@
             return new ImageFolderWriter(Args.FileName);
         }
 
-        public override string ToString() => "Preview";
+        public override string ToString() => "Images";
 
-        public string Description => "For testing purposes.";
+        public string Description => "Writes images to a folder.";
     }
 }

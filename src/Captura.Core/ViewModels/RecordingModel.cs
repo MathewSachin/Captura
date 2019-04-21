@@ -266,17 +266,6 @@ namespace Captura.ViewModels
         {
             IsVideo = !(RecordingParams.VideoSourceKind is NoVideoSourceProvider);
 
-            if (Settings.RecordSteps)
-            {
-                if (!IsVideo)
-                    return false;
-
-                RecordingParams.VideoWriterKind = ServiceProvider.Get<SharpAviWriterProvider>();
-                RecordingParams.VideoWriter = RecordingParams.VideoWriterKind.First();
-                //RecordingParams.VideoWriterKind = new ImageFolderWriterProvider();
-                //RecordingParams.VideoWriter = new ImageFolderWriterItem();
-            }            
-
             var extension = RecordingParams.VideoWriter.Extension;
 
             if (RecordingParams.VideoSourceKind?.Source is NoVideoItem x)
@@ -474,7 +463,7 @@ namespace Captura.ViewModels
             return RecordingParams.VideoWriter.GetVideoFileWriter(new VideoWriterArgs
             {
                 FileName = FileName ?? CurrentFileName,
-                FrameRate = Settings.RecordSteps ? StepsRecorderFrameRate : Settings.Video.FrameRate,
+                FrameRate = Settings.Video.FrameRate,
                 VideoQuality = Settings.Video.Quality,
                 ImageProvider = ImgProvider,
                 AudioQuality = Settings.Audio.Quality,

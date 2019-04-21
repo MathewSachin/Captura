@@ -12,7 +12,8 @@ namespace Captura.ViewModels
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
         public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
 
-        public VideoWritersViewModel(IEnumerable<IVideoWriterProvider> WriterProviders)
+        public VideoWritersViewModel(IEnumerable<IVideoWriterProvider> WriterProviders,
+            SharpAviWriterProvider SharpAviWriterProvider)
         {
             VideoWriterProviders = WriterProviders.ToList();
 
@@ -20,6 +21,14 @@ namespace Captura.ViewModels
 
             if (VideoWriterProviders.Count > 0)
                 SelectedVideoWriterKind = VideoWriterProviders[0];
+
+            AvailableStepWriters = new IVideoWriterItem[]
+            {
+                new StepsVideoWriterItem(SharpAviWriterProvider.First()),
+                new ImageFolderWriterItem()
+            };
+
+            SelectedStepsWriter = AvailableStepWriters[0];
         }
 
         void RefreshCodecs()
@@ -75,6 +84,21 @@ namespace Captura.ViewModels
             set
             {
                 _writer = value ?? (AvailableVideoWriters.Count == 0 ? null : AvailableVideoWriters[0]);
+
+                OnPropertyChanged();
+            }
+        }
+
+        public IReadOnlyList<IVideoWriterItem> AvailableStepWriters { get; }
+
+        IVideoWriterItem _stepsWriter;
+
+        public IVideoWriterItem SelectedStepsWriter
+        {
+            get => _stepsWriter;
+            set
+            {
+                _stepsWriter = value ?? AvailableStepWriters[0];
 
                 OnPropertyChanged();
             }

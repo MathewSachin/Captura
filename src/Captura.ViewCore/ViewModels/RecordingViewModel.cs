@@ -233,8 +233,8 @@ namespace Captura.ViewModels
             if (_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
-                VideoWriterKind = _videoWritersViewModel.SelectedVideoWriterKind,
-                VideoWriter = _videoWritersViewModel.SelectedVideoWriter
+                VideoWriterKind = Settings.RecordSteps ? null : _videoWritersViewModel.SelectedVideoWriterKind,
+                VideoWriter = Settings.RecordSteps ? _videoWritersViewModel.SelectedStepsWriter : _videoWritersViewModel.SelectedVideoWriter
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)

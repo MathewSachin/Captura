@@ -139,16 +139,24 @@
                        FontWeight="Bold"/>
 
                 <ListView BorderThickness="0.4"
-                          SelectionMode="Single"
-                          Margin="0,5">
-                    <ListViewItem>Video</ListViewItem>
-                    <ListViewItem>Images</ListViewItem>
-
+                          SelectionMode="Single"                          
+                          Margin="0,5"
+                          ItemsSource="{Binding VideoWritersViewModel.AvailableStepWriters, Source={StaticResource ServiceLocator}}"
+                          SelectedValue="{Binding VideoWritersViewModel.SelectedStepsWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="1"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="#01000000">
+                                <TextBlock Text="{Binding}"
+                                           HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
 
