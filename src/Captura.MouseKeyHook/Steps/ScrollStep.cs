@@ -4,20 +4,23 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    class ScrollStep : IRecordStep
+    class ScrollStep : KeyModifiedStep
     {
         public MouseEventArgs Args { get; }
 
         readonly MouseClickSettings _settings;
 
-        public ScrollStep(MouseEventArgs Args, MouseClickSettings Settings)
+        public ScrollStep(MouseEventArgs Args,
+            MouseClickSettings Settings,
+            KeystrokesSettings KeystrokesSettings,
+            KeymapViewModel Keymap) : base(KeystrokesSettings, Keymap)
         {
             this.Args = Args;
 
             _settings = Settings;
         }
 
-        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
+        public override void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
         {
             var p = Args.Location;
 
@@ -35,9 +38,11 @@ namespace Captura.Models
             }
 
             Editor.DrawArrow(above, below, _settings.BorderColor, r / 2);
+
+            base.Draw(Editor, PointTransform);
         }
 
-        public bool Merge(IRecordStep NextStep)
+        public override bool Merge(IRecordStep NextStep)
         {
             if (NextStep is ScrollStep nextStep)
             {
@@ -48,7 +53,7 @@ namespace Captura.Models
                 }
             }
 
-            return false;
+            return base.Merge(NextStep);
         }
     }
 }

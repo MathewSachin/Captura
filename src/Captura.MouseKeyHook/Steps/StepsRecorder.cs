@@ -51,24 +51,46 @@ namespace Captura.Models
                 if (_dragStartPoint != null)
                     return;
 
-                OnNext(new MouseClickStep(_mouseClickSettings, _keystrokesSettings, E, _keymap));
+                var step = new MouseClickStep(_mouseClickSettings,
+                    _keystrokesSettings, E,
+                    _keymap);
+
+                OnNext(step);
             };
 
             Hook.MouseDoubleClick += (S, E) =>
             {
-                OnNext(new MouseClickStep(_mouseClickSettings, _keystrokesSettings, E, _keymap));
+                var step = new MouseClickStep(_mouseClickSettings,
+                    _keystrokesSettings, E,
+                    _keymap);
+
+                OnNext(step);
             };
 
             Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
             Hook.MouseDragFinished += (S, E) =>
             {
-                OnNext(new MouseDragStep(_dragStartPoint.Value, E.Location, _mouseClickSettings));
+                var step = new MouseDragStep(_dragStartPoint.Value,
+                    E.Location,
+                    _mouseClickSettings,
+                    _keystrokesSettings,
+                    _keymap);
+
+                OnNext(step);
 
                 _dragStartPoint = null;
             };
 
             // TODO: Event is not firing for touchpad scroll
-            Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E, _mouseClickSettings));
+            Hook.MouseWheel += (S, E) =>
+            {
+                var step = new ScrollStep(E,
+                    _mouseClickSettings,
+                    _keystrokesSettings,
+                    _keymap);
+
+                OnNext(step);
+            };
 
             Hook.KeyDown += (S, E) =>
             {

@@ -3,19 +3,23 @@ using System.Drawing;
 
 namespace Captura.Models
 {
-    class MouseDragStep : IRecordStep
+    class MouseDragStep : KeyModifiedStep
     {
         readonly Point _start, _end;
         readonly MouseClickSettings _settings;
 
-        public MouseDragStep(Point StartPoint, Point EndPoint, MouseClickSettings Settings)
+        public MouseDragStep(Point StartPoint,
+            Point EndPoint,
+            MouseClickSettings Settings,
+            KeystrokesSettings KeystrokesSettings,
+            KeymapViewModel Keymap) : base(KeystrokesSettings, Keymap)
         {
             _start = StartPoint;
             _end = EndPoint;
             _settings = Settings;
         }
 
-        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
+        public override void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
         {
             var start = _start;
             var end = _end;
@@ -27,8 +31,8 @@ namespace Captura.Models
             }
 
             Editor.DrawArrow(start, end, _settings.Color, _settings.Radius);
-        }
 
-        public bool Merge(IRecordStep NextStep) => false;
+            base.Draw(Editor, PointTransform);
+        }
     }
 }
