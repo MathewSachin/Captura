@@ -13,68 +13,70 @@ namespace Captura.Models
         int _repeat;
 
         public KeyStep(KeystrokesSettings Settings,
-            KeyEventArgs Args,
-            KeymapViewModel Keymap)
+            KeyRecord KeyRecord)
         {
             _settings = Settings;
 
-            var record = new KeyRecord(Args, Keymap);
-
             // TODO: Handle Modifiers keys on KeyUp like in KeyOverlay
-            Text = record.Display;
+            Text = KeyRecord.Display;
 
             _mergeable = Text.Length == 1;
         }
 
-        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
+        public static void DrawString(IEditableFrame Editor, string Text, KeystrokesSettings Settings)
         {
-            var repeat = (_repeat == 0 ? "" : $"x {_repeat + 1}");
+            if (string.IsNullOrWhiteSpace(Text))
+                return;
 
-            using (var font = Editor.GetFont(_settings.FontFamily, _settings.FontSize))
+            using (var font = Editor.GetFont(Settings.FontFamily, Settings.FontSize))
             {
-                var text = $"{Text}{repeat}";
+                var size = Editor.MeasureString(Text, font);
 
-                var size = Editor.MeasureString(text, font);
+                int paddingX = Settings.HorizontalPadding,
+                    paddingY = Settings.VerticalPadding;
 
-                int paddingX = _settings.HorizontalPadding,
-                    paddingY = _settings.VerticalPadding;
-
-                var rect = new RectangleF(KeyOverlay.GetLeft(_settings, Editor.Width, size.Width),
-                    KeyOverlay.GetTop(_settings, Editor.Height, size.Height),
+                var rect = new RectangleF(KeyOverlay.GetLeft(Settings, Editor.Width, size.Width),
+                    KeyOverlay.GetTop(Settings, Editor.Height, size.Height),
                     size.Width + 2 * paddingX,
                     size.Height + 2 * paddingY);
 
-                Editor.FillRectangle(_settings.BackgroundColor,
+                Editor.FillRectangle(Settings.BackgroundColor,
                     rect,
-                    _settings.CornerRadius);
+                    Settings.CornerRadius);
 
-                Editor.DrawString(text,
+                Editor.DrawString(Text,
                     font,
-                    _settings.FontColor,
+                    Settings.FontColor,
                     new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
-                var border = _settings.BorderThickness;
+                var border = Settings.BorderThickness;
 
                 if (border > 0)
                 {
                     rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                    Editor.DrawRectangle(_settings.BorderColor,
+                    Editor.DrawRectangle(Settings.BorderColor,
                         border,
                         rect,
-                        _settings.CornerRadius);
+                        Settings.CornerRadius);
                 }
             }
         }
 
+        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform)
+        {
+            var repeat = (_repeat == 0 ? "" : $" x {_repeat + 1}");
+
+            var text = $"{Text}{repeat}";
+
+            DrawString(Editor, text, _settings);
+        }
+
         public bool Merge(IRecordStep NextStep)
         {
-            if (!_mergeable)
-                return false;
-
             if (NextStep is KeyStep nextStep)
             {
-                if (_repeat == 0 && nextStep.Text.Length == 1)
+                if (_repeat == 0 && _mergeable && nextStep.Text.Length == 1)
                 {
                     Text += nextStep.Text;
                     return true;

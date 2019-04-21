@@ -19,6 +19,7 @@ namespace Captura.Models
         readonly MouseClickSettings _mouseClickSettings;
         readonly KeystrokesSettings _keystrokesSettings;
         readonly KeymapViewModel _keymap;
+        bool _modifierSingleDown;
 
         IRecordStep _lastStep;
         Point? _dragStartPoint;
@@ -50,10 +51,14 @@ namespace Captura.Models
                 if (_dragStartPoint != null)
                     return;
 
-                OnNext(new MouseClickStep(_mouseClickSettings, E));
+                OnNext(new MouseClickStep(_mouseClickSettings, _keystrokesSettings, E, _keymap));
             };
 
-            Hook.MouseDoubleClick += (S, E) => OnNext(new MouseClickStep(_mouseClickSettings, E));
+            Hook.MouseDoubleClick += (S, E) =>
+            {
+                OnNext(new MouseClickStep(_mouseClickSettings, _keystrokesSettings, E, _keymap));
+            };
+
             Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
             Hook.MouseDragFinished += (S, E) =>
             {
@@ -65,7 +70,39 @@ namespace Captura.Models
             // TODO: Event is not firing for touchpad scroll
             Hook.MouseWheel += (S, E) => OnNext(new ScrollStep(E, _mouseClickSettings));
 
-            Hook.KeyDown += (S, E) => OnNext(new KeyStep(_keystrokesSettings, E, _keymap));
+            Hook.KeyDown += (S, E) =>
+            {
+                _modifierSingleDown = false;
+
+                var record = new KeyRecord(E, _keymap);
+
+                var display = record.Display;
+
+                if (display == _keymap.Control
+                    || display == _keymap.Alt
+                    || display == _keymap.Shift)
+                {
+                    _modifierSingleDown = true;
+                }
+                else OnNext(new KeyStep(_keystrokesSettings, record));
+            };
+
+            Hook.KeyUp += (S, E) =>
+            {
+                var record = new KeyRecord(E, _keymap);
+
+                var display = record.Display;
+
+                if (display == _keymap.Control
+                    || display == _keymap.Alt
+                    || display == _keymap.Shift)
+                {
+                    if (_modifierSingleDown)
+                    {
+                        OnNext(new KeyStep(_keystrokesSettings, record));
+                    }
+                }
+            };
 
             CancellationToken.Register(() =>
             {

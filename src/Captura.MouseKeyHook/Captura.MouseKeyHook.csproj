@@ -3,6 +3,7 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>

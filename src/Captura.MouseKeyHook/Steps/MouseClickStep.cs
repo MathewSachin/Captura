@@ -7,6 +7,9 @@ namespace Captura.Models
     class MouseClickStep : IRecordStep
     {
         readonly MouseClickSettings _settings;
+        readonly KeystrokesSettings _keystrokesSettings;
+        readonly ModifierStates _modifierStates;
+        readonly KeymapViewModel _keymap;
         public MouseEventArgs Args { get; private set; }
 
         public DateTime Timestamp { get; }
@@ -15,9 +18,14 @@ namespace Captura.Models
         const int DoubleClickDelta = 500;
 
         public MouseClickStep(MouseClickSettings Settings,
-            MouseEventArgs Args)
+            KeystrokesSettings KeystrokesSettings,
+            MouseEventArgs Args,
+            KeymapViewModel Keymap)
         {
+            _keymap = Keymap;
             _settings = Settings;
+            _keystrokesSettings = KeystrokesSettings;
+            _modifierStates = ModifierStates.GetCurrent();
             this.Args = Args;
 
             Timestamp = DateTime.Now;
@@ -25,16 +33,29 @@ namespace Captura.Models
 
         public bool Merge(IRecordStep NextStep)
         {
-            if (Args.Clicks == 1 && NextStep is MouseClickStep nextStep)
+            switch (NextStep)
             {
-                var delta = (nextStep.Timestamp - Timestamp).TotalMilliseconds;
+                case MouseClickStep mouseClickStep when Args.Clicks == 1:
+                    var delta = (mouseClickStep.Timestamp - Timestamp).TotalMilliseconds;
 
-                if (nextStep.Args.Clicks == 2 && delta < DoubleClickDelta)
-                {
-                    Args = nextStep.Args;
+                    if (mouseClickStep.Args.Clicks == 2 && delta < DoubleClickDelta)
+                    {
+                        Args = mouseClickStep.Args;
 
-                    return true;
-                }
+                        return true;
+                    }
+                    break;
+
+                case KeyStep keyStep:
+                    if (_modifierStates.Control && keyStep.Text == _keymap.Control)
+                        return true;
+
+                    if (_modifierStates.Shift && keyStep.Text == _keymap.Shift)
+                        return true;
+
+                    if (_modifierStates.Alt && keyStep.Text == _keymap.Alt)
+                        return true;
+                    break;
             }
 
             return false;
@@ -76,6 +97,8 @@ namespace Captura.Models
                 var font = Editor.GetFont("Arial", 15);
                 Editor.DrawString(Args.Clicks.ToString(), font, Color.Black, new RectangleF(x + 10, y + 10, d, d));
             }
+
+            KeyStep.DrawString(Editor, _modifierStates.ToString(_keymap), _keystrokesSettings);
         }
 
         Color GetClickCircleColor()
