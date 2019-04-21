@@ -16,6 +16,7 @@ namespace Captura.Models
         IImageProvider _imageProvider;
         readonly Task _recordTask;
         volatile bool _recording;
+        readonly StepsSettings _stepsSettings;
         readonly MouseClickSettings _mouseClickSettings;
         readonly KeystrokesSettings _keystrokesSettings;
         readonly KeymapViewModel _keymap;
@@ -81,16 +82,19 @@ namespace Captura.Models
                 _dragStartPoint = null;
             };
 
-            // TODO: Event is not firing for touchpad scroll
-            Hook.MouseWheel += (S, E) =>
+            if (_stepsSettings.IncludeScrolls)
             {
-                var step = new ScrollStep(E,
-                    _mouseClickSettings,
-                    _keystrokesSettings,
-                    _keymap);
+                // TODO: Event is not firing for touchpad scroll
+                Hook.MouseWheel += (S, E) =>
+                {
+                    var step = new ScrollStep(E,
+                        _mouseClickSettings,
+                        _keystrokesSettings,
+                        _keymap);
 
-                OnNext(step);
-            };
+                    OnNext(step);
+                };
+            }
 
             Hook.KeyDown += (S, E) =>
             {
@@ -144,11 +148,13 @@ namespace Captura.Models
             IImageProvider ImageProvider,
             MouseClickSettings MouseClickSettings,
             KeystrokesSettings KeystrokesSettings,
+            StepsSettings StepsSettings,
             KeymapViewModel KeymapViewModel)
         {
             _hook = Hook;
             _videoWriter = VideoWriter;
             _imageProvider = ImageProvider;
+            _stepsSettings = StepsSettings;
             _mouseClickSettings = MouseClickSettings;
             _keystrokesSettings = KeystrokesSettings;
             _keymap = KeymapViewModel;

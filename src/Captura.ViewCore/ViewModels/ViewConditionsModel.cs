@@ -25,7 +25,8 @@ namespace Captura.ViewModels
                 .ToReadOnlyReactivePropertySlim();
 
             IsStepsMode = Settings
-                .ObserveProperty(M => M.RecordSteps)
+                .Steps
+                .ObserveProperty(M => M.Enabled)
                 .ToReadOnlyReactivePropertySlim();
 
             IsNotAudioOrStepsMode = new[]
@@ -33,8 +34,7 @@ namespace Captura.ViewModels
                     VideoSourcesViewModel
                         .ObserveProperty(M => M.SelectedVideoSourceKind)
                         .Select(M => M is NoVideoSourceProvider),
-                    Settings
-                        .ObserveProperty(M => M.RecordSteps)
+                    IsStepsMode
                 }
                 .CombineLatest(M =>
                 {

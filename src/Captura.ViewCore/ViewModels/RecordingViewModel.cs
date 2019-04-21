@@ -68,7 +68,8 @@ namespace Captura.ViewModels
                         .ObserveProperty(M => M.SelectedCam)
                         .Select(M => M is NoWebcamItem),
                     Settings
-                        .ObserveProperty(M => M.RecordSteps),
+                        .Steps
+                        .ObserveProperty(M => M.Enabled),
                     VideoSourcesViewModel
                         .ObserveProperty(M => M.SelectedVideoSourceKind)
                         .Select(M => M.SupportsStepsMode),
@@ -233,8 +234,8 @@ namespace Captura.ViewModels
             if (_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
-                VideoWriterKind = Settings.RecordSteps ? null : _videoWritersViewModel.SelectedVideoWriterKind,
-                VideoWriter = Settings.RecordSteps ? _videoWritersViewModel.SelectedStepsWriter : _videoWritersViewModel.SelectedVideoWriter
+                VideoWriterKind = Settings.Steps.Enabled ? null : _videoWritersViewModel.SelectedVideoWriterKind,
+                VideoWriter = Settings.Steps.Enabled ? _videoWritersViewModel.SelectedStepsWriter : _videoWritersViewModel.SelectedVideoWriter
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)

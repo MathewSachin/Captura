@@ -78,7 +78,7 @@ namespace Captura.Models
                 .Name;
 
             // Remember Steps writer
-            _settings.Video.StepsWriter = _videoWritersViewModel
+            _settings.Steps.Writer = _videoWritersViewModel
                 .SelectedStepsWriter
                 ?.ToString();
         }
@@ -184,11 +184,11 @@ namespace Captura.Models
             }
 
             // Restore Steps writer
-            if (!string.IsNullOrEmpty(_settings.Video.StepsWriter))
+            if (!string.IsNullOrEmpty(_settings.Steps.Writer))
             {
                 var stepsWriter = _videoWritersViewModel
                     .AvailableStepWriters
-                    .FirstOrDefault(M => M.ToString() == _settings.Video.StepsWriter);
+                    .FirstOrDefault(M => M.ToString() == _settings.Steps.Writer);
 
                 if (stepsWriter != null)
                 {

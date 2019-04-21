@@ -41,7 +41,7 @@ namespace Captura.ViewModels
                     return;
 
                 // Doesn't support Steps mode
-                if (_settings.RecordSteps && !NewSourceProvider.SupportsStepsMode)
+                if (_settings.Steps.Enabled && !NewSourceProvider.SupportsStepsMode)
                     return;
 
                 if (CallOnSelect && !NewSourceProvider.OnSelect())

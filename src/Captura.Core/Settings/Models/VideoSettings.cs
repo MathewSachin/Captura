@@ -13,12 +13,6 @@
             get => Get<string>();
             set => Set(value);
         }
-
-        public string StepsWriter
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
         
         public string SourceKind
         {

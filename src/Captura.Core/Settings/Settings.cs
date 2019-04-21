@@ -108,6 +108,8 @@ namespace Captura
 
         public TraySettings Tray { get; } = new TraySettings();
 
+        public StepsSettings Steps { get; } = new StepsSettings();
+
         public int PreStartCountdown
         {
             get => Get(0);
@@ -207,12 +209,6 @@ namespace Captura
         public bool IncludeCursor
         {
             get => Get(true);
-            set => Set(value);
-        }
-
-        public bool RecordSteps
-        {
-            get => Get(false);
             set => Set(value);
         }
 

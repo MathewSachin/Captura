@@ -115,10 +115,7 @@ namespace Captura
 
             if (StartOptions.Changes)
             {
-                _settings.RecordSteps = true;
-
-                // Set default FPS to 1, can be overriden below
-                _settings.Video.FrameRate = 1;
+                _settings.Steps.Enabled = true;
             }
 
             if (StartOptions.FrameRate is int frameRate)

@@ -257,6 +257,7 @@ namespace Captura.ViewModels
                 imgProvider,
                 Settings.Clicks,
                 Settings.Keystrokes,
+                Settings.Steps,
                 _keymap);
             
             return true;
@@ -273,7 +274,7 @@ namespace Captura.ViewModels
 
             CurrentFileName = Settings.GetFileName(extension, FileName);
 
-            if (Settings.RecordSteps)
+            if (Settings.Steps.Enabled)
             {
                 if (!SetupStepsRecorder(RecordingParams))
                     return false;

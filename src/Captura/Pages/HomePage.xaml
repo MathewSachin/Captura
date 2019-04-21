@@ -158,6 +158,10 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
+                <CheckBox Content="Include Scrolls"
+                          IsChecked="{Binding Settings.Steps.IncludeScrolls}"
+                          Margin="0,5"/>
             </StackPanel>
 
             <Frame Source="AudioPage.xaml"
