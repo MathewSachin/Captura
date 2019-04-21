@@ -35,32 +35,52 @@ namespace Captura.Models
         public void Remember()
         {
             // Remember Video Source
-            _settings.Video.SourceKind = _videoSourcesViewModel.SelectedVideoSourceKind.Name;
-            _settings.Video.Source = _videoSourcesViewModel.SelectedVideoSourceKind.Serialize();
+            _settings.Video.SourceKind = _videoSourcesViewModel
+                .SelectedVideoSourceKind
+                .Name;
+
+            _settings.Video.Source = _videoSourcesViewModel
+                .SelectedVideoSourceKind
+                .Serialize();
 
             // Remember Video Codec
-            _settings.Video.WriterKind = _videoWritersViewModel.SelectedVideoWriterKind.Name;
-            _settings.Video.Writer = _videoWritersViewModel.SelectedVideoWriter.ToString();
+            _settings.Video.WriterKind = _videoWritersViewModel
+                .SelectedVideoWriterKind
+                .Name;
+
+            _settings.Video.Writer = _videoWritersViewModel
+                .SelectedVideoWriter
+                .ToString();
 
             // Remember Audio Sources
-            _settings.Audio.Microphones = _audioSource.AvailableRecordingSources
+            _settings.Audio.Microphones = _audioSource
+                .AvailableRecordingSources
                 .Where(M => M.Active)
                 .Select(M => M.Name)
                 .ToArray();
 
-            _settings.Audio.Speakers = _audioSource.AvailableLoopbackSources
+            _settings.Audio.Speakers = _audioSource
+                .AvailableLoopbackSources
                 .Where(M => M.Active)
                 .Select(M => M.Name)
                 .ToArray();
 
             // Remember ScreenShot Target
-            _settings.ScreenShots.SaveTargets = _screenShotModel.AvailableImageWriters
+            _settings.ScreenShots.SaveTargets = _screenShotModel
+                .AvailableImageWriters
                 .Where(M => M.Active)
                 .Select(M => M.Display)
                 .ToArray();
 
             // Remember Webcam
-            _settings.Video.Webcam = _webcamModel.SelectedCam.Name;
+            _settings.Video.Webcam = _webcamModel
+                .SelectedCam
+                .Name;
+
+            // Remember Steps writer
+            _settings.Video.StepsWriter = _videoWritersViewModel
+                .SelectedStepsWriter
+                ?.ToString();
         }
 
         void RestoreVideoSource()
@@ -68,7 +88,8 @@ namespace Captura.Models
             if (string.IsNullOrEmpty(_settings.Video.SourceKind))
                 return;
 
-            var provider = _videoSourceProviders.FirstOrDefault(M => M.Name == _settings.Video.SourceKind);
+            var provider = _videoSourceProviders
+                .FirstOrDefault(M => M.Name == _settings.Video.SourceKind);
 
             if (provider == null)
                 return;
@@ -84,14 +105,18 @@ namespace Captura.Models
             if (string.IsNullOrEmpty(_settings.Video.WriterKind))
                 return;
 
-            var kind = _videoWritersViewModel.VideoWriterProviders.FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
+            var kind = _videoWritersViewModel
+                .VideoWriterProviders
+                .FirstOrDefault(W => W.Name == _settings.Video.WriterKind);
 
             if (kind == null)
                 return;
 
             _videoWritersViewModel.SelectedVideoWriterKind = kind;
 
-            var codec = _videoWritersViewModel.AvailableVideoWriters.FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
+            var codec = _videoWritersViewModel
+                .AvailableVideoWriters
+                .FirstOrDefault(C => C.ToString() == _settings.Video.Writer);
 
             if (codec != null)
                 _videoWritersViewModel.SelectedVideoWriter = codec;
@@ -108,7 +133,10 @@ namespace Captura.Models
             {
                 foreach (var source in _audioSource.AvailableRecordingSources)
                 {
-                    source.Active = _settings.Audio.Microphones.Contains(source.Name);
+                    source.Active = _settings
+                        .Audio
+                        .Microphones
+                        .Contains(source.Name);
                 }
             }
 
@@ -117,7 +145,10 @@ namespace Captura.Models
             {
                 foreach (var source in _audioSource.AvailableLoopbackSources)
                 {
-                    source.Active = _settings.Audio.Speakers.Contains(source.Name);
+                    source.Active = _settings
+                        .Audio
+                        .Speakers
+                        .Contains(source.Name);
                 }
             }
 
@@ -126,7 +157,10 @@ namespace Captura.Models
             {
                 foreach (var imageWriter in _screenShotModel.AvailableImageWriters)
                 {
-                    imageWriter.Active = _settings.ScreenShots.SaveTargets.Contains(imageWriter.Display);
+                    imageWriter.Active = _settings
+                        .ScreenShots
+                        .SaveTargets
+                        .Contains(imageWriter.Display);
                 }
 
                 // Activate First if none
@@ -139,11 +173,26 @@ namespace Captura.Models
             // Restore Webcam
             if (!string.IsNullOrEmpty(_settings.Video.Webcam))
             {
-                var webcam = _webcamModel.AvailableCams.FirstOrDefault(C => C.Name == _settings.Video.Webcam);
+                var webcam = _webcamModel
+                    .AvailableCams
+                    .FirstOrDefault(C => C.Name == _settings.Video.Webcam);
 
                 if (webcam != null)
                 {
                     _webcamModel.SelectedCam = webcam;
+                }
+            }
+
+            // Restore Steps writer
+            if (!string.IsNullOrEmpty(_settings.Video.StepsWriter))
+            {
+                var stepsWriter = _videoWritersViewModel
+                    .AvailableStepWriters
+                    .FirstOrDefault(M => M.ToString() == _settings.Video.StepsWriter);
+
+                if (stepsWriter != null)
+                {
+                    _videoWritersViewModel.SelectedStepsWriter = stepsWriter;
                 }
             }
         }
