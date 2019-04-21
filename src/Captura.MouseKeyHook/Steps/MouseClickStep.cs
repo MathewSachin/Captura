@@ -4,12 +4,9 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    class MouseClickStep : IRecordStep
+    class MouseClickStep : KeyModifiedStep
     {
         readonly MouseClickSettings _settings;
-        readonly KeystrokesSettings _keystrokesSettings;
-        readonly ModifierStates _modifierStates;
-        readonly KeymapViewModel _keymap;
         public MouseEventArgs Args { get; private set; }
 
         public DateTime Timestamp { get; }
@@ -20,18 +17,15 @@ namespace Captura.Models
         public MouseClickStep(MouseClickSettings Settings,
             KeystrokesSettings KeystrokesSettings,
             MouseEventArgs Args,
-            KeymapViewModel Keymap)
+            KeymapViewModel Keymap) : base(KeystrokesSettings, Keymap)
         {
-            _keymap = Keymap;
             _settings = Settings;
-            _keystrokesSettings = KeystrokesSettings;
-            _modifierStates = ModifierStates.GetCurrent();
             this.Args = Args;
 
             Timestamp = DateTime.Now;
         }
 
-        public bool Merge(IRecordStep NextStep)
+        public override bool Merge(IRecordStep NextStep)
         {
             switch (NextStep)
             {
@@ -45,23 +39,12 @@ namespace Captura.Models
                         return true;
                     }
                     break;
-
-                case KeyStep keyStep:
-                    if (_modifierStates.Control && keyStep.Text == _keymap.Control)
-                        return true;
-
-                    if (_modifierStates.Shift && keyStep.Text == _keymap.Shift)
-                        return true;
-
-                    if (_modifierStates.Alt && keyStep.Text == _keymap.Alt)
-                        return true;
-                    break;
             }
 
-            return false;
+            return base.Merge(NextStep);
         }
 
-        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
+        public override void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
         {
             var curPos = Args.Location;
 
@@ -98,7 +81,7 @@ namespace Captura.Models
                 Editor.DrawString(Args.Clicks.ToString(), font, Color.Black, new RectangleF(x + 10, y + 10, d, d));
             }
 
-            KeyStep.DrawString(Editor, _modifierStates.ToString(_keymap), _keystrokesSettings);
+            base.Draw(Editor, PointTransform);
         }
 
         Color GetClickCircleColor()
