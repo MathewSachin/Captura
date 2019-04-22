@@ -30,7 +30,7 @@
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding SupportsStepsMode}" Value="False"/>
-                            <Condition Binding="{Binding AboutViewModel.Settings.RecordSteps, Source={StaticResource ServiceLocator}}" Value="True"/>
+                            <Condition Binding="{Binding ViewConditions.IsStepsMode.Value, Source={StaticResource ServiceLocator}}" Value="True"/>
                         </MultiDataTrigger.Conditions>
                         <Setter Property="IsEnabled" Value="False"/>
                     </MultiDataTrigger>
