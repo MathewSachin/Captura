@@ -48,9 +48,6 @@ namespace Captura
         [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
         public int Webcam { get; set; }
 
-        [Option("changes", HelpText = "Run captura in record changes mode")]
-        public bool Changes { get; set; }
-
         [Usage]
         public static IEnumerable<Example> Examples
         {

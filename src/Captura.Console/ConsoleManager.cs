@@ -113,11 +113,6 @@ namespace Captura
 
             HandleWebcam(StartOptions);
 
-            if (StartOptions.Changes)
-            {
-                _settings.Steps.Enabled = true;
-            }
-
             if (StartOptions.FrameRate is int frameRate)
                 _settings.Video.FrameRate = frameRate;
 
@@ -264,6 +259,24 @@ namespace Captura
                 VideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
 
                 return new FFmpegRollingWriterItem(duration);
+            }
+
+            // Steps in video
+            else if (StartOptions.Encoder == "steps:video")
+            {
+                _settings.Steps.Enabled = true;
+
+                VideoWriterKind = null;
+                return new StepsVideoWriterItem(sharpAviWriterProvider.First());
+            }
+
+            // Steps in set of images
+            else if (StartOptions.Encoder == "steps:images")
+            {
+                _settings.Steps.Enabled = true;
+
+                VideoWriterKind = null;
+                return new ImageFolderWriterItem();
             }
 
             VideoWriterKind = sharpAviWriterProvider;
