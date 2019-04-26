@@ -23,6 +23,7 @@ namespace Captura
         readonly WebcamModel _webcamModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
+        readonly AudioSource _audioSource;
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
@@ -30,7 +31,8 @@ namespace Captura
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
-            IMessageProvider MessageProvider)
+            IMessageProvider MessageProvider,
+            AudioSource AudioSource)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -39,6 +41,7 @@ namespace Captura
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
             _messageProvider = MessageProvider;
+            _audioSource = AudioSource;
 
             // Hide on Full Screen Screenshot doesn't work on Console
             Settings.UI.HideOnFullScreenShot = false;
@@ -186,18 +189,26 @@ namespace Captura
 
         void HandleAudioSource(StartCmdOptions StartOptions)
         {
-            var audioSource = ServiceProvider.Get<AudioSource>();
+            var mics = _audioSource
+                .AvailableRecordingSources
+                .Where(M => !M.IsLoopback)
+                .ToArray();
 
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < audioSource.AvailableRecordingSources.Count)
+            var speakers = _audioSource
+                .AvailableRecordingSources
+                .Where(M => M.IsLoopback)
+                .ToArray();
+
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
                 _settings.Audio.Enabled = true;
-                audioSource.AvailableRecordingSources[StartOptions.Microphone].Active = true;
+                mics[StartOptions.Microphone].Active = true;
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < audioSource.AvailableLoopbackSources.Count)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
                 _settings.Audio.Enabled = true;
-                audioSource.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
+                speakers[StartOptions.Speaker].Active = true;
             }
         }
 

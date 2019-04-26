@@ -29,36 +29,26 @@
                                 <CheckBox Margin="0,5"
                                           IsChecked="{Binding Active, Mode=TwoWay}">
                                     <DockPanel>
-                                        <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
-                                              Width="15"
+                                        <Path Width="15"
                                               Height="15"
                                               Margin="5,0"
                                               Stretch="Uniform"
                                               HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              ToolTip="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+                                              VerticalAlignment="Center">
+                                            <Path.Style>
+                                                <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                                                    <Setter Property="Data" Value="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
 
-                                        <TextBlock Text="{Binding Name, Mode=OneWay}"/>
-                                    </DockPanel>
-                                </CheckBox>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableLoopbackSources, Source={StaticResource ServiceLocator}}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Margin="0,5,0,5"
-                                          IsChecked="{Binding Active, Mode=TwoWay}">
-                                    <DockPanel>
-                                        <Path Data="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
-                                              Width="15"
-                                              Height="15"
-                                              Margin="5,0"
-                                              Stretch="Uniform"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              ToolTip="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLoopback}" Value="True">
+                                                            <Setter Property="Data" Value="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
+                                                            <Setter Property="ToolTip" Value="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
 
                                         <TextBlock Text="{Binding Name, Mode=OneWay}"/>
                                     </DockPanel>

@@ -32,15 +32,12 @@ namespace Captura.Models
 
         public override IAudioProvider GetMixedAudioProvider()
         {
-            return new MixedAudioProvider(AvailableRecordingSources
-                .Concat(AvailableLoopbackSources)
-                .Cast<BassItem>());
+            return new MixedAudioProvider(AvailableRecordingSources.Cast<BassItem>());
         }
 
         public override IAudioProvider[] GetMultipleAudioProviders()
         {
             return AvailableRecordingSources.Where(M => M.Active)
-                .Concat(AvailableLoopbackSources.Where(M => M.Active))
                 .Cast<BassItem>()
                 .Select(M => new BassAudioProvider(M))
                 .ToArray<IAudioProvider>();
@@ -50,9 +47,7 @@ namespace Captura.Models
         {
             for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
-                if (info.IsLoopback)
-                    LoopbackSources.Add(new BassItem(i, info.Name));
-                else RecordingSources.Add(new BassItem(i, info.Name));
+                RecordingSources.Add(new BassItem(i, info.Name, info.IsLoopback));
             }
         }
 

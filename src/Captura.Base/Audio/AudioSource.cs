@@ -8,15 +8,12 @@ namespace Captura.Models
     public abstract class AudioSource : NotifyPropertyChanged, IDisposable, IRefreshable
     {
         protected readonly ObservableCollection<IAudioItem> RecordingSources = new ObservableCollection<IAudioItem>();
-        protected readonly ObservableCollection<IAudioItem> LoopbackSources = new ObservableCollection<IAudioItem>();
 
         public ReadOnlyObservableCollection<IAudioItem> AvailableRecordingSources { get; }
-        public ReadOnlyObservableCollection<IAudioItem> AvailableLoopbackSources { get; }
 
         protected AudioSource()
         {
             AvailableRecordingSources = new ReadOnlyObservableCollection<IAudioItem>(RecordingSources);
-            AvailableLoopbackSources = new ReadOnlyObservableCollection<IAudioItem>(LoopbackSources);
         }
 
         public virtual void Dispose() { }
@@ -26,25 +23,26 @@ namespace Captura.Models
             // Retain previously active sources
             var lastMicNames = RecordingSources
                 .Where(M => M.Active)
+                .Where(M => !M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
-            var lastSpeakerNames = LoopbackSources
+            var lastSpeakerNames = RecordingSources
                 .Where(M => M.Active)
+                .Where(M => M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
             RecordingSources.Clear();
-            LoopbackSources.Clear();
 
             OnRefresh();
 
-            foreach (var source in RecordingSources)
+            foreach (var source in RecordingSources.Where(M => !M.IsLoopback))
             {
                 source.Active = lastMicNames.Contains(source.Name);
             }
 
-            foreach (var source in LoopbackSources)
+            foreach (var source in RecordingSources.Where(M => M.IsLoopback))
             {
                 source.Active = lastSpeakerNames.Contains(source.Name);
             }

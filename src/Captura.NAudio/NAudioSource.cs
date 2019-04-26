@@ -29,25 +29,29 @@ namespace Captura.NAudio
 
             foreach (var loopback in loopbackDevs)
             {
-                LoopbackSources.Add(new NAudioItem(loopback));
+                RecordingSources.Add(new NAudioItem(loopback, true));
             }
 
             var recordingDevs = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
             foreach (var recording in recordingDevs)
             {
-                RecordingSources.Add(new NAudioItem(recording));
+                RecordingSources.Add(new NAudioItem(recording, false));
             }
         }
 
         public override IAudioProvider GetMixedAudioProvider()
         {
-            var rec = AvailableRecordingSources.Where(M => M.Active)
+            var rec = AvailableRecordingSources
+                .Where(M => M.Active)
+                .Where(M => !M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiCaptureProvider(M.Device))
                 .Cast<NAudioProvider>();
 
-            var loop = AvailableLoopbackSources.Where(M => M.Active)
+            var loop = AvailableRecordingSources
+                .Where(M => M.Active)
+                .Where(M => M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiLoopbackCaptureProvider(M.Device))
                 .Cast<NAudioProvider>();
@@ -57,12 +61,16 @@ namespace Captura.NAudio
 
         public override IAudioProvider[] GetMultipleAudioProviders()
         {
-            var rec = AvailableRecordingSources.Where(M => M.Active)
+            var rec = AvailableRecordingSources
+                .Where(M => M.Active)
+                .Where(M => !M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiCaptureProvider(M.Device))
                 .Cast<IAudioProvider>();
 
-            var loop = AvailableLoopbackSources.Where(M => M.Active)
+            var loop = AvailableRecordingSources
+                .Where(M => M.Active)
+                .Where(M => M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiLoopbackCaptureProvider(M.Device))
                 .Cast<IAudioProvider>();
