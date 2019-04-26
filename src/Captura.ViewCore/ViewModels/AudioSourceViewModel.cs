@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Captura.Models
 {
-    public class AudioSource : IRefreshable
+    public class AudioSourceViewModel : IRefreshable
     {
         readonly IAudioSource _audioSource;
 
@@ -12,7 +12,7 @@ namespace Captura.Models
 
         public ReadOnlyObservableCollection<IIsActive<IAudioItem>> AvailableRecordingSources { get; }
 
-        public AudioSource(IAudioSource AudioSource)
+        public AudioSourceViewModel(IAudioSource AudioSource)
         {
             _audioSource = AudioSource;
 

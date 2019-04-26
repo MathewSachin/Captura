@@ -23,7 +23,7 @@ namespace Captura
         readonly WebcamModel _webcamModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
-        readonly AudioSource _audioSource;
+        readonly IAudioSource _audioSource;
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
@@ -32,7 +32,7 @@ namespace Captura
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
             IMessageProvider MessageProvider,
-            AudioSource AudioSource)
+            IAudioSource AudioSource)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -112,7 +112,7 @@ namespace Captura
 
             var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
-            HandleAudioSource(StartOptions);
+            var audioSources = HandleAudioSource(StartOptions);
 
             HandleWebcam(StartOptions);
 
@@ -132,7 +132,8 @@ namespace Captura
             {
                 VideoSourceKind = videoSourceKind,
                 VideoWriterKind = videoWriterKind,
-                VideoWriter = videoWriter
+                VideoWriter = videoWriter,
+                AudioItems = audioSources.Select(M => M.ToIsActive(true))
             }, StartOptions.FileName))
                 return;
 
@@ -187,28 +188,28 @@ namespace Captura
             return provider;
         }
 
-        void HandleAudioSource(StartCmdOptions StartOptions)
+        IEnumerable<IAudioItem> HandleAudioSource(StartCmdOptions StartOptions)
         {
-            var mics = _audioSource
-                .AvailableRecordingSources
-                .Where(M => !M.Item.IsLoopback)
+            var sources = _audioSource.GetSources();
+
+            var mics = sources
+                .Where(M => !M.IsLoopback)
                 .ToArray();
 
-            var speakers = _audioSource
-                .AvailableRecordingSources
-                .Where(M => M.Item.IsLoopback)
+            var speakers = sources
+                .Where(M => M.IsLoopback)
                 .ToArray();
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
                 _settings.Audio.Enabled = true;
-                mics[StartOptions.Microphone].IsActive = true;
+                yield return mics[StartOptions.Microphone];
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
                 _settings.Audio.Enabled = true;
-                speakers[StartOptions.Speaker].IsActive = true;
+                yield return speakers[StartOptions.Speaker];
             }
         }
 

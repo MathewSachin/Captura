@@ -31,7 +31,10 @@ namespace Captura.Models
 
         public IAudioProvider GetMixedAudioProvider(IEnumerable<IIsActive<IAudioItem>> AudioItems)
         {
-            return new MixedAudioProvider(AudioItems.Cast<IIsActive<BassItem>>());
+            var bassItems = AudioItems
+                .Select(M => (M.Item as BassItem).ToIsActive(M.IsActive));
+
+            return new MixedAudioProvider(bassItems);
         }
 
         public IAudioProvider GetAudioProvider(IAudioItem AudioItem)

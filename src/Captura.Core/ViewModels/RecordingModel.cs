@@ -29,7 +29,7 @@ namespace Captura.ViewModels
         readonly IFFmpegViewsProvider _ffmpegViewsProvider;
 
         readonly KeymapViewModel _keymap;
-        readonly AudioSource _audioSource;
+        readonly IAudioSource _audioSource;
         #endregion
 
         public RecordingModel(Settings Settings,
@@ -37,7 +37,7 @@ namespace Captura.ViewModels
             ISystemTray SystemTray,
             WebcamOverlay WebcamOverlay,
             IPreviewWindow PreviewWindow,
-            AudioSource AudioSource,
+            IAudioSource AudioSource,
             WebcamModel WebcamModel,
             KeymapViewModel Keymap,
             TimerModel TimerModel,
@@ -189,13 +189,13 @@ namespace Captura.ViewModels
             if (Settings.Audio.Enabled
                 && Settings.Audio.SeparateFilePerSource)
             {
-                SeparateFileForEveryAudioSource();
+                SeparateFileForEveryAudioSource(RecordingParams);
             }
 
             return true;
         }
 
-        bool SetupAudioProvider(out IAudioProvider AudioProvider)
+        bool SetupAudioProvider(RecordingModelParams RecordingParams, out IAudioProvider AudioProvider)
         {
             AudioProvider = null;
 
@@ -203,7 +203,7 @@ namespace Captura.ViewModels
             {
                 if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
                 {
-                    AudioProvider = _audioSource.GetMixedAudioProvider();
+                    AudioProvider = _audioSource.GetMixedAudioProvider(RecordingParams.AudioItems);
                 }
             }
             catch (Exception e)
@@ -230,7 +230,7 @@ namespace Captura.ViewModels
             if (!CheckFFmpeg(RecordingParams))
                 return false;
 
-            if (!SetupAudioProvider(out var audioProvider))
+            if (!SetupAudioProvider(RecordingParams, out var audioProvider))
                 return false;
 
             if (IsVideo)
@@ -244,7 +244,7 @@ namespace Captura.ViewModels
             }
             else if (RecordingParams.VideoSourceKind?.Source is NoVideoItem audioWriter)
             {
-                if (!InitAudioRecorder(audioWriter, audioProvider))
+                if (!InitAudioRecorder(audioWriter, audioProvider, RecordingParams))
                 {
                     audioProvider?.Dispose();
 
@@ -282,7 +282,7 @@ namespace Captura.ViewModels
                 $".{Index}{Path.GetExtension(CurrentFileName)}");
         }
 
-        bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider)
+        bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
         {
             if (!Settings.Audio.SeparateFilePerSource)
             {
@@ -290,7 +290,12 @@ namespace Captura.ViewModels
             }
             else
             {
-                var audioProviders = _audioSource.GetMultipleAudioProviders();
+                var audioProviders = RecordingParams
+                    .AudioItems
+                    .Where(M => M.IsActive)
+                    .Select(M => M.Item)
+                    .Select(M => _audioSource.GetAudioProvider(M))
+                    .ToArray();
 
                 if (audioProviders.Length > 0)
                 {
@@ -327,7 +332,7 @@ namespace Captura.ViewModels
             _recorder = new MultiRecorder(_recorder, webcamRecorder);
         }
 
-        void SeparateFileForEveryAudioSource()
+        void SeparateFileForEveryAudioSource(RecordingModelParams RecordingParams)
         {
             var audioWriter = new WaveItem();
 
@@ -343,7 +348,12 @@ namespace Captura.ViewModels
                 return Path.ChangeExtension(CurrentFileName, $".{Index}.wav");
             }
 
-            var audioProviders = _audioSource.GetMultipleAudioProviders();
+            var audioProviders = RecordingParams
+                    .AudioItems
+                    .Where(M => M.IsActive)
+                    .Select(M => M.Item)
+                    .Select(M => _audioSource.GetAudioProvider(M))
+                    .ToArray();
 
             if (audioProviders.Length > 0)
             {

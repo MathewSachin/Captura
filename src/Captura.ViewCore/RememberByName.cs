@@ -10,7 +10,7 @@ namespace Captura.Models
         readonly Settings _settings;
         readonly VideoSourcesViewModel _videoSourcesViewModel;
         readonly VideoWritersViewModel _videoWritersViewModel;
-        readonly AudioSource _audioSource;
+        readonly AudioSourceViewModel _audioSourceViewModel;
         readonly WebcamModel _webcamModel;
         readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
@@ -18,7 +18,7 @@ namespace Captura.Models
         public RememberByName(Settings Settings,
             VideoSourcesViewModel VideoSourcesViewModel,
             VideoWritersViewModel VideoWritersViewModel,
-            AudioSource AudioSource,
+            AudioSourceViewModel AudioSourceViewModel,
             ScreenShotModel ScreenShotModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             WebcamModel WebcamModel)
@@ -26,7 +26,7 @@ namespace Captura.Models
             _settings = Settings;
             _videoSourcesViewModel = VideoSourcesViewModel;
             _videoWritersViewModel = VideoWritersViewModel;
-            _audioSource = AudioSource;
+            _audioSourceViewModel = AudioSourceViewModel;
             _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
             _webcamModel = WebcamModel;
@@ -43,14 +43,14 @@ namespace Captura.Models
             _settings.Video.Writer = _videoWritersViewModel.SelectedVideoWriter.ToString();
 
             // Remember Audio Sources
-            _settings.Audio.Microphones = _audioSource.AvailableRecordingSources
+            _settings.Audio.Microphones = _audioSourceViewModel.AvailableRecordingSources
                 .Where(M => M.IsActive)
                 .Select(M => M.Item)
                 .Where(M => !M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
-            _settings.Audio.Speakers = _audioSource.AvailableRecordingSources
+            _settings.Audio.Speakers = _audioSourceViewModel.AvailableRecordingSources
                 .Where(M => M.IsActive)
                 .Select(M => M.Item)
                 .Where(M => M.IsLoopback)
@@ -110,7 +110,7 @@ namespace Captura.Models
             // Restore Microphones
             if (_settings.Audio.Microphones != null)
             {
-                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => !M.Item.IsLoopback))
+                foreach (var source in _audioSourceViewModel.AvailableRecordingSources.Where(M => !M.Item.IsLoopback))
                 {
                     source.IsActive = _settings.Audio.Microphones.Contains(source.Item.Name);
                 }
@@ -119,7 +119,7 @@ namespace Captura.Models
             // Restore Loopback Speakers
             if (_settings.Audio.Speakers != null)
             {
-                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => M.Item.IsLoopback))
+                foreach (var source in _audioSourceViewModel.AvailableRecordingSources.Where(M => M.Item.IsLoopback))
                 {
                     source.IsActive = _settings.Audio.Speakers.Contains(source.Item.Name);
                 }

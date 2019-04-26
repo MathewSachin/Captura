@@ -11,13 +11,13 @@ namespace Captura
         static readonly string Underline = $"\n{new string('-', 30)}";
 
         readonly WebcamModel _webcam;
-        readonly AudioSource _audioSource;
+        readonly IAudioSource _audioSource;
         readonly IPlatformServices _platformServices;
         readonly FFmpegWriterProvider _ffmpegWriterProvider;
         readonly SharpAviWriterProvider _sharpAviWriterProvider;
 
         public ConsoleLister(WebcamModel Webcam,
-            AudioSource AudioSource,
+            IAudioSource AudioSource,
             IPlatformServices PlatformServices,
             FFmpegWriterProvider FfmpegWriterProvider,
             SharpAviWriterProvider SharpAviWriterProvider)
@@ -65,15 +65,13 @@ namespace Captura
 
             WriteLine();
 
-            var mics = _audioSource
-                .AvailableRecordingSources
-                .Select(M => M.Item)
+            var sources = _audioSource.GetSources();
+
+            var mics = sources
                 .Where(M => !M.IsLoopback)
                 .ToArray();
 
-            var speakers = _audioSource
-                .AvailableRecordingSources
-                .Select(M => M.Item)
+            var speakers = sources
                 .Where(M => M.IsLoopback)
                 .ToArray();
 

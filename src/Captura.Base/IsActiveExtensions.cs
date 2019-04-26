@@ -4,9 +4,11 @@
     {
         class IsActiveWrapper<T> : NotifyPropertyChanged, IIsActive<T>
         {
-            public IsActiveWrapper(T Item)
+            public IsActiveWrapper(T Item, bool IsActive)
             {
                 this.Item = Item;
+
+                this.IsActive = IsActive;
             }
 
             public T Item { get; }
@@ -20,6 +22,6 @@
             }
         }
 
-        public static IIsActive<T> ToIsActive<T>(this T Item) => new IsActiveWrapper<T>(Item);
+        public static IIsActive<T> ToIsActive<T>(this T Item, bool IsActive = false) => new IsActiveWrapper<T>(Item, IsActive);
     }
 }

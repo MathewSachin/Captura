@@ -12,7 +12,7 @@ namespace Captura.ViewModels
             VideoWritersViewModel VideoWritersViewModel,
             Settings Settings,
             RecordingModel RecordingModel,
-            AudioSource AudioSource)
+            AudioSourceViewModel AudioSourceViewModel)
         {
             IsRegionMode = VideoSourcesViewModel
                 .ObserveProperty(M => M.SelectedVideoSourceKind)
@@ -82,7 +82,7 @@ namespace Captura.ViewModels
                     if (notRecording)
                         return true;
 
-                    return !separateFilePerSource && AudioSource.CanChangeSourcesDuringRecording;
+                    return !separateFilePerSource && AudioSourceViewModel.CanChangeSourcesDuringRecording;
                 })
                 .ToReadOnlyReactivePropertySlim();
 

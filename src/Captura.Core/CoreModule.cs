@@ -83,16 +83,12 @@ namespace Captura
 
         static void BindAudioSource(IBinder Binder)
         {
-            Binder.BindSingleton<AudioSource>();
-
             // Check if Bass is available
             if (BassAudioSource.Available)
             {
                 Binder.Bind<IAudioSource, BassAudioSource>();
             }
             else Binder.Bind<IAudioSource, NAudioSource>();
-
-            Binder.Bind<IRefreshable>(Binder.Get<AudioSource>);
         }
 
         static void BindVideoSourceProviders(IBinder Binder)
