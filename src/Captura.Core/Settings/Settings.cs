@@ -108,6 +108,8 @@ namespace Captura
 
         public TraySettings Tray { get; } = new TraySettings();
 
+        public AroundMouseSettings AroundMouse { get; } = new AroundMouseSettings();
+
         public int PreStartCountdown
         {
             get => Get(0);
@@ -207,18 +209,6 @@ namespace Captura
         public bool IncludeCursor
         {
             get => Get(true);
-            set => Set(value);
-        }
-
-        public int AroundMouseWidth
-        {
-            get => Get(600);
-            set => Set(value);
-        }
-
-        public int AroundMouseHeight
-        {
-            get => Get(400);
             set => Set(value);
         }
     }

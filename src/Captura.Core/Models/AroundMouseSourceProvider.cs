@@ -36,8 +36,8 @@ namespace Captura.Models
         {
             var cursorPos = _platformServices.CursorPosition;
             var screenBounds = _platformServices.DesktopRectangle;
-            var w = _settings.AroundMouseWidth;
-            var h = _settings.AroundMouseHeight;
+            var w = _settings.AroundMouse.Width;
+            var h = _settings.AroundMouse.Height;
 
             var region = new Rectangle(cursorPos.X - w / 2, cursorPos.Y - h / 2, w, h);
 
@@ -81,8 +81,8 @@ namespace Captura.Models
 
             if (match.Success)
             {
-                _settings.AroundMouseWidth = int.Parse(match.Groups[1].Value);
-                _settings.AroundMouseHeight = int.Parse(match.Groups[2].Value);
+                _settings.AroundMouse.Width = int.Parse(match.Groups[1].Value);
+                _settings.AroundMouse.Height = int.Parse(match.Groups[2].Value);
 
                 return true;
             }
