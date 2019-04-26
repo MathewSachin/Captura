@@ -131,7 +131,6 @@ namespace Captura
             if (!_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = videoSourceKind,
-                VideoWriterKind = videoWriterKind,
                 VideoWriter = videoWriter,
                 AudioItems = audioSources.Select(M => M.ToIsActive(true))
             }, StartOptions.FileName))

@@ -226,7 +226,6 @@ namespace Captura.ViewModels
             if (_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
-                VideoWriterKind = _videoWritersViewModel.SelectedVideoWriterKind,
                 VideoWriter = _videoWritersViewModel.SelectedVideoWriter,
                 AudioItems = _audioSourceViewModel.AvailableRecordingSources
             }))

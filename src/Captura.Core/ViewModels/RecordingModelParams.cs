@@ -7,8 +7,6 @@ namespace Captura.ViewModels
     {
         public IVideoSourceProvider VideoSourceKind { get; set; }
 
-        public IVideoWriterProvider VideoWriterKind { get; set; }
-
         public IVideoWriterItem VideoWriter { get; set; }
 
         public IEnumerable<IIsActive<IAudioItem>> AudioItems { get; set; }

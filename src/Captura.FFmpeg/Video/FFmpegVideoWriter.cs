@@ -24,6 +24,11 @@ namespace Captura.Models
         /// </summary>
         public FFmpegWriter(FFmpegVideoWriterArgs Args)
         {
+            if (!FFmpegService.FFmpegExists)
+            {
+                throw new FFmpegNotFoundException();
+            }
+
             var settings = ServiceProvider.Get<FFmpegSettings>();
 
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];

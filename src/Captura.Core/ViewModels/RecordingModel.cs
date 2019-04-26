@@ -108,29 +108,6 @@ namespace Captura.ViewModels
             }
         }
 
-        bool CheckFFmpeg(RecordingModelParams RecordingParams)
-        {
-            var isFFmpegVideoItem = RecordingParams.VideoWriterKind is FFmpegWriterProvider ||
-                                    RecordingParams.VideoWriterKind is StreamingWriterProvider;
-
-            var isFFmpegAudioItem =
-                RecordingParams.VideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
-                && noVideoSourceProvider.Source is NoVideoItem noVideoItem
-                && noVideoItem.AudioWriterItem is FFmpegAudioItem;
-
-            if (isFFmpegVideoItem || isFFmpegAudioItem)
-            {
-                if (!FFmpegService.FFmpegExists)
-                {
-                    _ffmpegViewsProvider.ShowUnavailable();
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
         {
             IImageProvider imgProvider;
@@ -163,6 +140,14 @@ namespace Captura.ViewModels
             try
             {
                 videoEncoder = GetVideoFileWriterWithPreview(imgProvider, AudioProvider, RecordingParams);
+            }
+            catch (FFmpegNotFoundException)
+            {
+                _ffmpegViewsProvider.ShowUnavailable();
+
+                imgProvider?.Dispose();
+
+                return false;
             }
             catch (Exception e)
             {
@@ -227,9 +212,6 @@ namespace Captura.ViewModels
 
             CurrentFileName = Settings.GetFileName(extension, FileName);
 
-            if (!CheckFFmpeg(RecordingParams))
-                return false;
-
             if (!SetupAudioProvider(RecordingParams, out var audioProvider))
                 return false;
 
@@ -284,36 +266,45 @@ namespace Captura.ViewModels
 
         bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
         {
-            if (!Settings.Audio.SeparateFilePerSource)
+            try
             {
-                _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
-            }
-            else
-            {
-                var audioProviders = RecordingParams
-                    .AudioItems
-                    .Where(M => M.IsActive)
-                    .Select(M => M.Item)
-                    .Select(M => _audioSource.GetAudioProvider(M))
-                    .ToArray();
-
-                if (audioProviders.Length > 0)
+                if (!Settings.Audio.SeparateFilePerSource)
                 {
-                    var recorders = audioProviders
-                        .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
-                        .ToArray();
-
-                    _recorder = new MultiRecorder(recorders);
-
-                    // Set to first file
-                    CurrentFileName = GetAudioFileName(0);
+                    _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
                 }
                 else
                 {
-                    _messageProvider.ShowError("No Audio Sources selected");
+                    var audioProviders = RecordingParams
+                        .AudioItems
+                        .Where(M => M.IsActive)
+                        .Select(M => M.Item)
+                        .Select(M => _audioSource.GetAudioProvider(M))
+                        .ToArray();
 
-                    return false;
+                    if (audioProviders.Length > 0)
+                    {
+                        var recorders = audioProviders
+                            .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
+                            .ToArray();
+
+                        _recorder = new MultiRecorder(recorders);
+
+                        // Set to first file
+                        CurrentFileName = GetAudioFileName(0);
+                    }
+                    else
+                    {
+                        _messageProvider.ShowError("No Audio Sources selected");
+
+                        return false;
+                    }
                 }
+            }
+            catch (FFmpegNotFoundException)
+            {
+                _ffmpegViewsProvider.ShowUnavailable();
+
+                return false;
             }
 
             return true;
