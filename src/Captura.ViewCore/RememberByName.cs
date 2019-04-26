@@ -44,13 +44,15 @@ namespace Captura.Models
 
             // Remember Audio Sources
             _settings.Audio.Microphones = _audioSource.AvailableRecordingSources
-                .Where(M => M.Active)
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
                 .Where(M => !M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
             _settings.Audio.Speakers = _audioSource.AvailableRecordingSources
-                .Where(M => M.Active)
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
                 .Where(M => M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
@@ -108,18 +110,18 @@ namespace Captura.Models
             // Restore Microphones
             if (_settings.Audio.Microphones != null)
             {
-                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => !M.IsLoopback))
+                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => !M.Item.IsLoopback))
                 {
-                    source.Active = _settings.Audio.Microphones.Contains(source.Name);
+                    source.IsActive = _settings.Audio.Microphones.Contains(source.Item.Name);
                 }
             }
 
             // Restore Loopback Speakers
             if (_settings.Audio.Speakers != null)
             {
-                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => M.IsLoopback))
+                foreach (var source in _audioSource.AvailableRecordingSources.Where(M => M.Item.IsLoopback))
                 {
-                    source.Active = _settings.Audio.Speakers.Contains(source.Name);
+                    source.IsActive = _settings.Audio.Speakers.Contains(source.Item.Name);
                 }
             }
 

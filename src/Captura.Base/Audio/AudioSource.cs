@@ -1,61 +1,72 @@
 ﻿using Captura.Audio;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Captura.Models
 {
-    public abstract class AudioSource : NotifyPropertyChanged, IDisposable, IRefreshable
+    public class AudioSource : IRefreshable
     {
-        protected readonly ObservableCollection<IAudioItem> RecordingSources = new ObservableCollection<IAudioItem>();
+        readonly IAudioSource _audioSource;
 
-        public ReadOnlyObservableCollection<IAudioItem> AvailableRecordingSources { get; }
+        readonly ObservableCollection<IIsActive<IAudioItem>> RecordingSources = new ObservableCollection<IIsActive<IAudioItem>>();
 
-        protected AudioSource()
+        public ReadOnlyObservableCollection<IIsActive<IAudioItem>> AvailableRecordingSources { get; }
+
+        public AudioSource(IAudioSource AudioSource)
         {
-            AvailableRecordingSources = new ReadOnlyObservableCollection<IAudioItem>(RecordingSources);
-        }
+            _audioSource = AudioSource;
 
-        public virtual void Dispose() { }
+            AvailableRecordingSources = new ReadOnlyObservableCollection<IIsActive<IAudioItem>>(RecordingSources);
+
+            Refresh();
+        }
 
         public void Refresh()
         {
             // Retain previously active sources
             var lastMicNames = RecordingSources
-                .Where(M => M.Active)
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
                 .Where(M => !M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
             var lastSpeakerNames = RecordingSources
-                .Where(M => M.Active)
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
                 .Where(M => M.IsLoopback)
                 .Select(M => M.Name)
                 .ToArray();
 
             RecordingSources.Clear();
 
-            OnRefresh();
+            var sources = _audioSource.GetSources();
 
-            foreach (var source in RecordingSources.Where(M => !M.IsLoopback))
+            foreach (var source in sources.Select(M => M.ToIsActive()))
             {
-                source.Active = lastMicNames.Contains(source.Name);
-            }
+                RecordingSources.Add(source);
 
-            foreach (var source in RecordingSources.Where(M => M.IsLoopback))
-            {
-                source.Active = lastSpeakerNames.Contains(source.Name);
+                source.IsActive = source.Item.IsLoopback
+                    ? lastSpeakerNames.Contains(source.Item.Name)
+                    : lastMicNames.Contains(source.Item.Name);
             }
         }
 
-        protected abstract void OnRefresh();
+        public IAudioProvider GetMixedAudioProvider()
+        {
+            return _audioSource.GetMixedAudioProvider(RecordingSources);
+        }
 
-        public abstract IAudioProvider GetMixedAudioProvider();
+        public IAudioProvider[] GetMultipleAudioProviders()
+        {
+            return RecordingSources
+                .Where(M => M.IsActive)
+                .Select(M => _audioSource.GetAudioProvider(M.Item))
+                .ToArray();
+        }
 
-        public abstract IAudioProvider[] GetMultipleAudioProviders();
+        public string Name => _audioSource.Name;
 
-        public abstract string Name { get; }
-
-        public virtual bool CanChangeSourcesDuringRecording => false;
+        public bool CanChangeSourcesDuringRecording { get; }
     }
 }

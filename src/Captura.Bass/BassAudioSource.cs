@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Captura.Audio;
 using ManagedBass;
 
@@ -9,7 +10,7 @@ namespace Captura.Models
     /// Use <see cref="Available"/> to check if all dependencies are present.
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class BassAudioSource : AudioSource
+    public class BassAudioSource : IAudioSource
     {
         public BassAudioSource()
         {
@@ -18,8 +19,6 @@ namespace Captura.Models
 
             // Enable Loopback Recording.
             Bass.Configure(Configuration.LoopbackRecording, true);
-
-            Refresh();
         }
 
         static bool AllExist(params string[] Paths)
@@ -30,31 +29,31 @@ namespace Captura.Models
         // Check if all BASS dependencies are present
         public static bool Available { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
-        public override IAudioProvider GetMixedAudioProvider()
+        public IAudioProvider GetMixedAudioProvider(IEnumerable<IIsActive<IAudioItem>> AudioItems)
         {
-            return new MixedAudioProvider(AvailableRecordingSources.Cast<BassItem>());
+            return new MixedAudioProvider(AudioItems.Cast<IIsActive<BassItem>>());
         }
 
-        public override IAudioProvider[] GetMultipleAudioProviders()
+        public IAudioProvider GetAudioProvider(IAudioItem AudioItem)
         {
-            return AvailableRecordingSources.Where(M => M.Active)
-                .Cast<BassItem>()
-                .Select(M => new BassAudioProvider(M))
-                .ToArray<IAudioProvider>();
+            if (AudioItem is BassItem item)
+                return new BassAudioProvider(item);
+
+            return null;
         }
 
-        protected override void OnRefresh()
+        public IEnumerable<IAudioItem> GetSources()
         {
             for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
-                RecordingSources.Add(new BassItem(i, info.Name, info.IsLoopback));
+                yield return new BassItem(i, info.Name, info.IsLoopback);
             }
         }
 
         /// <summary>
         /// Frees all BASS devices.
         /// </summary>
-        public override void Dispose()
+        public void Dispose()
         {
             for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
             {
@@ -75,8 +74,8 @@ namespace Captura.Models
             }
         }
 
-        public override string Name { get; } = "BASS";
+        public string Name { get; } = "BASS";
 
-        public override bool CanChangeSourcesDuringRecording => true;
+        public bool CanChangeSourcesDuringRecording => true;
     }
 }

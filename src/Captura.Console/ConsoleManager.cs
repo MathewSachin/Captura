@@ -191,24 +191,24 @@ namespace Captura
         {
             var mics = _audioSource
                 .AvailableRecordingSources
-                .Where(M => !M.IsLoopback)
+                .Where(M => !M.Item.IsLoopback)
                 .ToArray();
 
             var speakers = _audioSource
                 .AvailableRecordingSources
-                .Where(M => M.IsLoopback)
+                .Where(M => M.Item.IsLoopback)
                 .ToArray();
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
                 _settings.Audio.Enabled = true;
-                mics[StartOptions.Microphone].Active = true;
+                mics[StartOptions.Microphone].IsActive = true;
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
                 _settings.Audio.Enabled = true;
-                speakers[StartOptions.Speaker].Active = true;
+                speakers[StartOptions.Speaker].IsActive = true;
             }
         }
 

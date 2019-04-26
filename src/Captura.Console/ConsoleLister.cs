@@ -61,17 +61,19 @@ namespace Captura
 
         void Audio()
         {
-            WriteLine($"ManagedBass Available: {(_audioSource is BassAudioSource ? "YES" : "NO")}");
+            WriteLine($"Audio Source: {_audioSource.Name}");
 
             WriteLine();
 
             var mics = _audioSource
                 .AvailableRecordingSources
+                .Select(M => M.Item)
                 .Where(M => !M.IsLoopback)
                 .ToArray();
 
             var speakers = _audioSource
                 .AvailableRecordingSources
+                .Select(M => M.Item)
                 .Where(M => M.IsLoopback)
                 .ToArray();
 

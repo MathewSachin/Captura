@@ -7,7 +7,5 @@ namespace Captura.Models
         string Name { get; }
 
         bool IsLoopback { get; }
-
-        bool Active { get; set; }
     }
 }

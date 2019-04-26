@@ -27,7 +27,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Margin="0,5"
-                                          IsChecked="{Binding Active, Mode=TwoWay}">
+                                          IsChecked="{Binding IsActive, Mode=TwoWay}">
                                     <DockPanel>
                                         <Path Width="15"
                                               Height="15"
@@ -41,7 +41,7 @@
                                                     <Setter Property="ToolTip" Value="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
 
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsLoopback}" Value="True">
+                                                        <DataTrigger Binding="{Binding Item.IsLoopback}" Value="True">
                                                             <Setter Property="Data" Value="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
                                                             <Setter Property="ToolTip" Value="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
                                                         </DataTrigger>
@@ -50,7 +50,7 @@
                                             </Path.Style>
                                         </Path>
 
-                                        <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                                        <TextBlock Text="{Binding Item.Name, Mode=OneWay}"/>
                                     </DockPanel>
                                 </CheckBox>
                             </DataTemplate>
