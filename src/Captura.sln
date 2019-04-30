@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.YouTube", "Captura.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Windows", "Captura.Windows\Captura.Windows.csproj", "{5B10DDF4-246B-47D0-82BF-95BF3256946E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.View", "Captura.View\Captura.View.csproj", "{34200A6E-E7AD-4524-90A9-947C6032EE71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34200A6E-E7AD-4524-90A9-947C6032EE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34200A6E-E7AD-4524-90A9-947C6032EE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34200A6E-E7AD-4524-90A9-947C6032EE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34200A6E-E7AD-4524-90A9-947C6032EE71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
