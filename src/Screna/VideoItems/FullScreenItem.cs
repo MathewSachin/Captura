@@ -4,10 +4,12 @@
     class FullScreenItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IPlatformServices _platformServices;
+        readonly StepsSettings _stepsSettings;
 
-        public FullScreenItem(IPlatformServices PlatformServices)
+        public FullScreenItem(IPlatformServices PlatformServices, StepsSettings StepsSettings)
         {
             _platformServices = PlatformServices;
+            _stepsSettings = StepsSettings;
         }
 
         public override string ToString() => Name;
@@ -16,7 +18,7 @@
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            return _platformServices.GetAllScreensProvider(IncludeCursor);
+            return _platformServices.GetAllScreensProvider(IncludeCursor, _stepsSettings.Enabled);
 		}
     }
 }
