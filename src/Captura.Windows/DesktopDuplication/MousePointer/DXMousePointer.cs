@@ -77,7 +77,7 @@ namespace DesktopDuplication
             _pointerShape?.Update(DesktopTexture, _pointerPosition);
         }
 
-        public void Draw(Direct2DEditor Editor, Point Location = default)
+        public void Draw(Direct2DEditor Editor, Point Location = default(Point))
         {
             if (!_pointerPosition.Visible)
                 return;
