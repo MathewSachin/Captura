@@ -25,6 +25,7 @@ namespace Captura.ViewModels
         readonly IAudioPlayer _audioPlayer;
         readonly IRecentList _recentList;
         readonly IMessageProvider _messageProvider;
+        readonly AudioSourceViewModel _audioSourceViewModel;
 
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
@@ -42,7 +43,8 @@ namespace Captura.ViewModels
             ILocalizationProvider Loc,
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
-            IMessageProvider MessageProvider) : base(Settings, Loc)
+            IMessageProvider MessageProvider,
+            AudioSourceViewModel AudioSourceViewModel) : base(Settings, Loc)
         {
             _recordingModel = RecordingModel;
             _timerModel = TimerModel;
@@ -53,6 +55,7 @@ namespace Captura.ViewModels
             _audioPlayer = AudioPlayer;
             _recentList = RecentList;
             _messageProvider = MessageProvider;
+            _audioSourceViewModel = AudioSourceViewModel;
 
             RecordCommand = new[]
                 {
@@ -234,8 +237,8 @@ namespace Captura.ViewModels
             if (_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
-                VideoWriterKind = Settings.Steps.Enabled ? null : _videoWritersViewModel.SelectedVideoWriterKind,
-                VideoWriter = Settings.Steps.Enabled ? _videoWritersViewModel.SelectedStepsWriter : _videoWritersViewModel.SelectedVideoWriter
+                VideoWriter = Settings.Steps.Enabled ? _videoWritersViewModel.SelectedStepsWriter : _videoWritersViewModel.SelectedVideoWriter,
+                AudioItems = _audioSourceViewModel.AvailableRecordingSources
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)

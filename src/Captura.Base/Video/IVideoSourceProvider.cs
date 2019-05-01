@@ -14,6 +14,8 @@ namespace Captura.Models
 
         bool SupportsStepsMode { get; }
 
+        IBitmapImage Capture(bool IncludeCursor);
+
         bool OnSelect();
 
         void OnUnselect();

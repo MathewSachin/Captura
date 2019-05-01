@@ -103,28 +103,31 @@
                   Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Around Mouse: "
-                       FontWeight="DemiBold"
-                       Margin="5,-1,5,0"/>
-
                 <Label Content="Width:"
-                       Margin="5,0,3,0"
-                       Grid.Column="1"/>
-                <xctk:IntegerUpDown Grid.Column="2"
-                                    Value="{Binding MainViewModel.Settings.AroundMouseWidth, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="1"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
 
                 <Label Content="Height:"
-                       Grid.Column="3"
+                       Grid.Column="2"
                        Margin="5,0,3,0"/>
-                <xctk:IntegerUpDown Grid.Column="4"
-                                    Value="{Binding MainViewModel.Settings.AroundMouseHeight, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                <xctk:IntegerUpDown Grid.Column="3"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="Margin:"
+                       Grid.Column="4"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="5"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Margin, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 

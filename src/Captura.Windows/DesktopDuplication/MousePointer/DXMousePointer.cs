@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Rectangle = System.Drawing.Rectangle;
@@ -76,7 +77,7 @@ namespace DesktopDuplication
             _pointerShape?.Update(DesktopTexture, _pointerPosition);
         }
 
-        public void Draw(Direct2DEditor Editor)
+        public void Draw(Direct2DEditor Editor, Point Location = default)
         {
             if (!_pointerPosition.Visible)
                 return;
@@ -86,8 +87,8 @@ namespace DesktopDuplication
             if (bmp == null)
                 return;
 
-            var rect = new Rectangle(_pointerPosition.Position.X,
-                _pointerPosition.Position.Y,
+            var rect = new Rectangle(_pointerPosition.Position.X + Location.X,
+                _pointerPosition.Position.Y + Location.Y,
                 (int) bmp.Size.Width,
                 (int) bmp.Size.Height);
 

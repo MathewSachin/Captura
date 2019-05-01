@@ -1,3 +1,4 @@
+using Screna;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -90,6 +91,16 @@ namespace Captura.Models
             Set(screens[index]);
 
             return true;
+        }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            if (Source is ScreenItem screenItem)
+            {
+                return ScreenShot.Capture(screenItem.Screen.Rectangle, IncludeCursor);
+            }
+
+            return null;
         }
     }
 }

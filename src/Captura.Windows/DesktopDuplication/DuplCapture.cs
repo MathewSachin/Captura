@@ -14,6 +14,7 @@ namespace DesktopDuplication
         OutputDuplication _deskDupl;
         FrameGrabber _frameGrabber;
         Texture2D _bkpTexture;
+        readonly int _width, _height;
 
         readonly object _syncLock = new object();
 
@@ -24,6 +25,10 @@ namespace DesktopDuplication
                 _device = new Device(adapter);
 
             _output = Output;
+
+            var bound = Output.Description.DesktopBounds;
+            _width = bound.Right - bound.Left;
+            _height = bound.Bottom - bound.Top;
 
             Init();
         }
@@ -68,14 +73,18 @@ namespace DesktopDuplication
             }
         }
 
-        public bool Get(Texture2D Texture, DxMousePointer DxMousePointer)
+        public bool Get(Texture2D Texture, DxMousePointer DxMousePointer, Point TargetPosition = default)
         {
             lock (_syncLock)
             {
                 if (_bkpTexture == null)
                 {
+                    var desc = Texture.Description;
+                    desc.Width = _width;
+                    desc.Height = _height;
+
                     // _device is being used by Desktop Duplication
-                    _bkpTexture = new Texture2D(Texture.Device, Texture.Description);
+                    _bkpTexture = new Texture2D(Texture.Device, desc);
                 }
 
                 var acquireResult = _frameGrabber.Grab();
@@ -83,7 +92,12 @@ namespace DesktopDuplication
                 if (acquireResult == null)
                 {
                     // _device is being used by Desktop Duplication
-                    Texture.Device.ImmediateContext.CopyResource(_bkpTexture, Texture);
+                    Texture.Device.ImmediateContext.CopySubresourceRegion(_bkpTexture,
+                        0,
+                        new ResourceRegion(0, 0, 0, _width, _height, 1),
+                        Texture,
+                        0,
+                        TargetPosition.X, TargetPosition.Y);
 
                     return true;
                 }
@@ -98,7 +112,13 @@ namespace DesktopDuplication
                 {
                     DxMousePointer?.Update(tempTexture, acquireResult.FrameInfo, _deskDupl);
 
-                    _device.ImmediateContext.CopyResource(tempTexture, Texture);
+                    Texture.Device.ImmediateContext.CopySubresourceRegion(tempTexture,
+                        0,
+                        new ResourceRegion(0, 0, 0, _width, _height, 1),
+                        Texture,
+                        0,
+                        TargetPosition.X, TargetPosition.Y);
+
                     _device.ImmediateContext.CopyResource(tempTexture, _bkpTexture);
                 }
 
