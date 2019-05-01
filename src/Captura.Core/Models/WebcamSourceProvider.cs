@@ -1,5 +1,6 @@
 ﻿using System;
 using Captura.ViewModels;
+using Screna;
 
 namespace Captura.Models
 {
@@ -7,12 +8,14 @@ namespace Captura.Models
     public class WebcamSourceProvider : NotifyPropertyChanged, IVideoSourceProvider
     {
         readonly ILocalizationProvider _loc;
+        readonly WebcamModel _webcamModel;
 
         public WebcamSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
             WebcamModel WebcamModel)
         {
             _loc = Loc;
+            _webcamModel = WebcamModel;
             Icon = Icons.Webcam;
             Source = new WebcamVideoItem(WebcamModel);
 
@@ -25,6 +28,11 @@ namespace Captura.Models
         public string Icon { get; }
 
         public IVideoItem Source { get; }
+
+        public IBitmapImage Capture(bool IncludeCursor)
+        {
+            return _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
+        }
 
         public bool OnSelect() => true;
 

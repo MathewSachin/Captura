@@ -12,6 +12,8 @@ namespace Captura.Models
 
         IVideoItem Source { get; }
 
+        IBitmapImage Capture(bool IncludeCursor);
+
         bool OnSelect();
 
         void OnUnselect();

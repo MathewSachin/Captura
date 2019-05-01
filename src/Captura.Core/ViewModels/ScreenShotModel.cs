@@ -64,7 +64,7 @@ namespace Captura.ViewModels
 
             if (window != null)
             {
-                var img = ScreenShot.Capture(window.Rectangle);
+                var img = ScreenShotWindow(window);
 
                 await SaveScreenShot(img);
             }
@@ -128,24 +128,17 @@ namespace Captura.ViewModels
         {
             _systemTray.HideNotification();
 
-            IBitmapImage bmp = null;
+            // Wait for notifications to hide
+            await Task.Delay(100);
 
-            var selectedVideoSource = VideoSourceKind?.Source;
             var includeCursor = _settings.IncludeCursor;
+
+            IBitmapImage bmp;
 
             switch (VideoSourceKind)
             {
-                case WindowSourceProvider _:
-                    var hWnd = _platformServices.DesktopWindow;
-
-                    switch (selectedVideoSource)
-                    {
-                        case WindowItem windowItem:
-                            hWnd = windowItem.Window;
-                            break;
-                    }
-
-                    bmp = ScreenShotWindow(hWnd);
+                case WindowSourceProvider winProvider when winProvider.Source is WindowItem windowItem:
+                    bmp = ScreenShotWindow(windowItem.Window);
                     break;
 
                 case FullScreenSourceProvider _:
@@ -159,27 +152,14 @@ namespace Captura.ViewModels
                         await Task.Delay(300);
                     }
 
-                    bmp = ScreenShot.Capture(includeCursor);
+                    bmp = VideoSourceKind.Capture(includeCursor);
 
                     if (hide)
                         _mainWindow.IsVisible = true;
                     break;
 
-                case ScreenSourceProvider _:
-                    if (selectedVideoSource is ScreenItem screen)
-                        bmp = ScreenShot.Capture(screen.Screen.Rectangle, includeCursor);
-                    break;
-
-                case RegionSourceProvider _:
-                    bmp = ScreenShot.Capture(_regionProvider.SelectedRegion, includeCursor);
-                    break;
-
-                case WebcamSourceProvider _:
-                    bmp = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
-                    break;
-
-                case AroundMouseSourceProvider aroundMouseSourceProvider:
-                    bmp = aroundMouseSourceProvider.Capture(includeCursor);
+                default:
+                    bmp = VideoSourceKind.Capture(includeCursor);
                     break;
             }
 

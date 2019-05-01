@@ -79,5 +79,10 @@ namespace Captura.Models
 
             return true;
         }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            return ScreenShot.Capture(_regionProvider.SelectedRegion, IncludeCursor);
+        }
     }
 }
