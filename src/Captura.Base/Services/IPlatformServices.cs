@@ -32,5 +32,9 @@ namespace Captura
             Func<Point> LocationFunction = null);
 
         IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor);
+
+        IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor);
+
+        IImageProvider GetAllScreensProvider(bool IncludeCursor);
     }
 }

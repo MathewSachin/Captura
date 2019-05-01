@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Captura.Models;
 using Screna;
+using SharpDX.DXGI;
 
 namespace Captura
 {
@@ -70,6 +72,51 @@ namespace Captura
         public IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor)
         {
             return new WindowProvider(Window, _previewWindow, IncludeCursor);
+        }
+
+        public IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor)
+        {
+            if (WindowsModule.Windows8OrAbove)
+            {
+                var output = FindOutput(Screen);
+
+                if (output != null)
+                {
+                    return new DeskDuplImageProvider(output, IncludeCursor, _previewWindow);
+                }
+            }
+
+            return GetRegionProvider(Screen.Rectangle, IncludeCursor);
+        }
+
+        static Output1 FindOutput(IScreen Screen)
+        {
+            var outputs = new Factory1()
+                .Adapters1
+                .SelectMany(M => M.Outputs);
+
+            var match = outputs.FirstOrDefault(M =>
+            {
+                var r1 = M.Description.DesktopBounds;
+                var r2 = Screen.Rectangle;
+
+                return r1.Left == r2.Left
+                       && r1.Right == r2.Right
+                       && r1.Top == r2.Top
+                       && r1.Bottom == r2.Bottom;
+            });
+
+            return match.QueryInterface<Output1>();
+        }
+
+        public IImageProvider GetAllScreensProvider(bool IncludeCursor)
+        {
+            if (WindowsModule.Windows8OrAbove)
+            {
+                return new DeskDuplFullScreenImageProvider(IncludeCursor, _previewWindow, this);
+            }
+
+            return GetRegionProvider(DesktopRectangle, IncludeCursor);
         }
     }
 }

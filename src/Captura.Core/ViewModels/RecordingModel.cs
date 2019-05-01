@@ -116,12 +116,6 @@ namespace Captura.ViewModels
             {
                 imgProvider = GetImageProvider(RecordingParams);
             }
-            catch (NotSupportedException e) when (RecordingParams.VideoSourceKind is DeskDuplSourceProvider)
-            {
-                _messageProvider.ShowError(e.Message, Loc.ErrorOccurred);
-
-                return false;
-            }
             catch (WindowClosedException e)
             {
                 _messageProvider.ShowException(e, "Window Closed");
@@ -130,7 +124,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                _messageProvider.ShowException(e, e.Message);
+                _messageProvider.ShowException(e, Loc.ErrorOccurred);
 
                 return false;
             }

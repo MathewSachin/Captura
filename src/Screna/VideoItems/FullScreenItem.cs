@@ -16,9 +16,7 @@
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-			var region = _platformServices.DesktopRectangle;
-
-            return _platformServices.GetRegionProvider(region, IncludeCursor);
+            return _platformServices.GetAllScreensProvider(IncludeCursor);
 		}
     }
 }

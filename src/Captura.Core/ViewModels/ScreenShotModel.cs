@@ -148,13 +148,6 @@ namespace Captura.ViewModels
                     bmp = ScreenShotWindow(hWnd);
                     break;
 
-                case DeskDuplSourceProvider _:
-                    if (selectedVideoSource is DeskDuplItem deskDuplItem)
-                    {
-                        bmp = ScreenShot.Capture(deskDuplItem.Rectangle, includeCursor);
-                    }
-                    break;
-
                 case FullScreenSourceProvider _:
                     var hide = !SuppressHide && _mainWindow.IsVisible && _settings.UI.HideOnFullScreenShot;
 

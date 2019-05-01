@@ -18,7 +18,7 @@
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            return _platformServices.GetRegionProvider(Screen.Rectangle, IncludeCursor);
+            return _platformServices.GetScreenProvider(Screen, IncludeCursor);
         }
     }
 }

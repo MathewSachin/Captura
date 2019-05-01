@@ -100,11 +100,6 @@ namespace Captura
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>();
-
-            if (WindowsModule.Windows8OrAbove)
-            {
-                Binder.BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>();
-            }
         }
 
         static void BindVideoWriterProviders(IBinder Binder)
