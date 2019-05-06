@@ -7,7 +7,7 @@
 `Captura.Loc` contains the localization code.
 
 ## Screna, Core
-`Screna` and `Captura.Core` projects contain the bulk of the code are depended on by both UI and Console projects.
+`Screna` and `Captura.Core` projects contain the bulk of the code and are depended on by both UI and Console projects.
 
 ## Windows
 `Captura.Windows` conatins code that is completely specific to the Windows OS.
