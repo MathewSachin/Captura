@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -28,15 +29,33 @@ namespace Captura
         {
             InitializeComponent();
 
-            Loaded += OnLoaded;
+            Loaded += async (S, E) => 
+            {
+                var bmp = await GetScreenShot();
+
+                _fullWidth = bmp.Width * Dpi.X;
+                _fullHeight = bmp.Height * Dpi.Y;
+
+                UpdateBackground(bmp);
+
+                // Wait for image to be loaded
+                await Task.Delay(1);
+
+                UpdateScale();
+
+                PlaceOverlays();
+
+                Grid.Width = _fullWidth;
+                Grid.Height = _fullHeight;
+            };
 
             Closing += (S, E) =>
             {
                 ServiceProvider.Get<Settings>().Save();
             };
-
-            UpdateBackground();
         }
+
+        double _fullWidth, _fullHeight;
 
         static OverlayWindow _instance;
 
@@ -79,7 +98,9 @@ namespace Captura
                 {
                     Content = Text,
                     Foreground = new SolidColorBrush(Colors.White)
-                }
+                },
+                MaxWidth = _fullWidth,
+                MaxHeight = _fullHeight
             };
 
             var vm = new PositionOverlayReactor(Settings);
@@ -121,7 +142,7 @@ namespace Captura
         {
             var control = Generate(Settings, Text, Colors.Brown);
 
-            var vm = new ImageOverlayReactor(Settings);
+            var vm = new ImageOverlayReactor(Settings, _fullWidth, _fullHeight);
 
             Bind(control, WidthProperty, vm.Width);
             Bind(control, HeightProperty, vm.Height);
@@ -270,34 +291,28 @@ namespace Captura
                 return control;
             }, true, 2);
         }
-        
-        void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
-        {
-            PlaceOverlays();
-        }
 
-        async void UpdateBackground()
+        async Task<IBitmapImage> GetScreenShot()
         {
             var vm = ServiceProvider.Get<VideoSourcesViewModel>();
-
-            IBitmapImage bmp;
 
             switch (vm.SelectedVideoSourceKind?.Source)
             {
                 case NoVideoItem _:
-                    bmp = ScreenShot.Capture();
-                    break;
+                    return ScreenShot.Capture();
 
                 default:
                     var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
-                    bmp = await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
-                    break;
+                    return await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
             }
+        }
 
-            using (bmp)
+        void UpdateBackground(IBitmapImage Bmp)
+        {
+            using (Bmp)
             {
                 var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormats.Png);
+                Bmp.Save(stream, ImageFormats.Png);
 
                 stream.Seek(0, SeekOrigin.Begin);
 
@@ -308,14 +323,11 @@ namespace Captura
 
         void UpdateScale()
         {
-            if (Img.Source == null)
+            if (double.IsNaN(Img.ActualWidth) || _fullWidth == 0)
                 return;
 
-            var scaleX = Img.ActualWidth / Img.Source.Width;
-            var scaleY = Img.ActualHeight / Img.Source.Height;
-
-            Scale.ScaleX = scaleX / Dpi.X;
-            Scale.ScaleY = scaleY / Dpi.Y;
+            Scale.ScaleX = Img.ActualWidth / _fullWidth;
+            Scale.ScaleY = Img.ActualHeight / _fullHeight;
         }
 
         void PlaceOverlays()
@@ -384,11 +396,6 @@ namespace Captura
         }
 
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
-        {
-            UpdateScale();
-        }
-
-        void Img_OnLoaded(object Sender, RoutedEventArgs E)
         {
             UpdateScale();
         }

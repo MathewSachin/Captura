@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Drawing;
+using System.Reactive.Linq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -6,13 +7,17 @@ namespace Captura.ViewModels
 {
     public class ImageOverlayReactor
     {
-        public ImageOverlayReactor(ImageOverlaySettings Settings)
+        public ImageOverlayReactor(ImageOverlaySettings Settings, double FullWidth, double FullHeight)
         {
             Width = Settings
-                .ToReactivePropertyAsSynchronized(M => M.ResizeWidth);
+                .ToReactivePropertyAsSynchronized(M => M.Width,
+                    M => Settings.GetWidth(FullWidth),
+                    M => Settings.SetWidth(FullWidth, M));
 
             Height = Settings
-                .ToReactivePropertyAsSynchronized(M => M.ResizeHeight);
+                .ToReactivePropertyAsSynchronized(M => M.Height,
+                    M => Settings.GetHeight(FullHeight),
+                    M => Settings.SetHeight(FullHeight, M));
 
             Opacity = Settings
                 .ObserveProperty(M => M.Opacity)
@@ -20,8 +25,8 @@ namespace Captura.ViewModels
                 .ToReadOnlyReactivePropertySlim();
         }
 
-        public IReactiveProperty<int> Width { get; }
-        public IReactiveProperty<int> Height { get; }
+        public IReactiveProperty<double> Width { get; }
+        public IReactiveProperty<double> Height { get; }
 
         public IReadOnlyReactiveProperty<double> Opacity { get; }
     }

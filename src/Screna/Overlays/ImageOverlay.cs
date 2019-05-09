@@ -22,12 +22,9 @@ namespace Captura.Models
             if (img == null)
                 return;
 
-            var targetSize = new Size(img.Width, img.Height);
-
             try
             {
-                if (Settings.Resize)
-                    targetSize = new Size(Settings.ResizeWidth, Settings.ResizeHeight);
+                var targetSize =new Size((int)Settings.GetWidth(Editor.Width), (int)Settings.GetHeight(Editor.Height));
 
                 var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
                 var destRect = new Rectangle(point, targetSize);

@@ -19,23 +19,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <CheckBox Content="{Binding Resize, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsChecked="{Binding Resize, Mode=TwoWay}"
-                      Margin="0,0,5,0"/>
-
-            <xctk:IntegerUpDown Value="{Binding ResizeWidth, Mode=TwoWay}"
-                                Grid.Column="1"
-                                Minimum="1"
-                                IsEnabled="{Binding Resize}"/>
+            <Slider Value="{Binding Width, Mode=TwoWay}"
+                    Grid.Column="1"
+                    Minimum="1"
+                    Maximum="100"/>
 
             <Label Content="x"
                    Grid.Column="2"
                    Margin="5,0"/>
 
-            <xctk:IntegerUpDown Value="{Binding ResizeHeight, Mode=TwoWay}"
-                                Grid.Column="3"
-                                Minimum="1"
-                                IsEnabled="{Binding Resize}"/>
+            <Slider Value="{Binding Height, Mode=TwoWay}"
+                    Grid.Column="3"
+                    Minimum="1"
+                    Maximum="100"/>
         </Grid>
 
         <Grid Margin="0,15,0,5">
