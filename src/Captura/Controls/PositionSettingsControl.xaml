@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
-             xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.ViewCore"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance base:PositionedOverlaySettings}">
     <StackPanel>
@@ -16,36 +15,27 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Label Content="X: "
                    Margin="0,3"/>
-            <ComboBox ItemsSource="{x:Static viewModels:MainViewModel.XAlignments}"
-                      SelectedValue="{Binding HorizontalAlignment, Mode=TwoWay}"
-                      SelectedValuePath="Source"
-                      DisplayMemberPath="Display"
-                      Grid.Column="1"
-                      Margin="3"/>
-            <xctk:IntegerUpDown Value="{Binding X, Mode=TwoWay}"
-                                Grid.Column="2"
-                                Margin="0,3"/>
+            <Slider Value="{Binding Left, Mode=TwoWay}"
+                    Grid.Column="2"
+                    Margin="0,3"
+                    Minimum="0"
+                    Maximum="100"/>
 
             <Label Content="Y: "
                    Grid.Row="1"
                    Margin="0,3"/>
-            <ComboBox ItemsSource="{x:Static viewModels:MainViewModel.YAlignments}"
-                      SelectedValue="{Binding VerticalAlignment, Mode=TwoWay}"
-                      SelectedValuePath="Source"
-                      DisplayMemberPath="Display"
-                      Grid.Column="1"
-                      Grid.Row="1"
-                      Margin="3"/>
-            <xctk:IntegerUpDown Value="{Binding Y, Mode=TwoWay}"
-                                Grid.Column="2"
-                                Grid.Row="1"
-                                Margin="0,3"/>
+            <Slider Value="{Binding Top, Mode=TwoWay}"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Margin="0,3"
+                    Minimum="0"
+                    Maximum="100"/>
         </Grid>
     </StackPanel>
 </UserControl>

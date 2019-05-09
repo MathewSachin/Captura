@@ -12,12 +12,12 @@ namespace Captura.ViewModels
             Width = Settings
                 .ToReactivePropertyAsSynchronized(M => M.Width,
                     M => Settings.GetWidth(FullWidth),
-                    M => Settings.SetWidth(FullWidth, M));
+                    M => Settings.ToSetWidth(FullWidth, M));
 
             Height = Settings
                 .ToReactivePropertyAsSynchronized(M => M.Height,
                     M => Settings.GetHeight(FullHeight),
-                    M => Settings.SetHeight(FullHeight, M));
+                    M => Settings.ToSetHeight(FullHeight, M));
 
             Opacity = Settings
                 .ObserveProperty(M => M.Opacity)

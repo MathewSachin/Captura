@@ -103,17 +103,9 @@ namespace Captura
                 MaxHeight = _fullHeight
             };
 
-            var vm = new PositionOverlayReactor(Settings);
+            var vm = new PositionOverlayReactor(Settings, _fullWidth, _fullHeight, control);
 
-            BindOne(control, HorizontalAlignmentProperty, vm.HAlignment);
-            BindOne(control, VerticalAlignmentProperty, vm.VAlignment);
-            BindOne(control, MarginProperty, vm.Margin);
-
-            control.PositionUpdated += Rect =>
-            {
-                Settings.X = (int)Rect.X;
-                Settings.Y = (int)Rect.Y;
-            };
+            Bind(control, MarginProperty, vm.Margin);
 
             return control;
         }

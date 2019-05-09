@@ -1,30 +1,40 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+using System;
+
 namespace Captura
 {
     public class PositionedOverlaySettings : PropertyStore
     {
-        public Alignment HorizontalAlignment
+        public int Left
         {
-            get => Get(Alignment.Start);
+            get => Get(10);
             set => Set(value);
         }
 
-        public Alignment VerticalAlignment
+        public int Top
         {
-            get => Get(Alignment.End);
+            get => Get(90);
             set => Set(value);
         }
 
-        public int X
+        public virtual double GetX(double FullWidth, double ItemWidth)
         {
-            get => Get(80);
-            set => Set(value);
+            return ((FullWidth - ItemWidth) * Left / 100).Clip(0, FullWidth);
         }
 
-        public int Y
+        public virtual double GetY(double FullHeight, double ItemHeight)
         {
-            get => Get(100);
-            set => Set(value);
+            return ((FullHeight - ItemHeight) * Top / 100).Clip(0, FullHeight);
+        }
+
+        public virtual int ToSetX(double FullWidth, double ItemWidth, double Value)
+        {
+            return (int)Math.Round(Value / (FullWidth - ItemWidth) * 100).Clip(0, 100);
+        }
+
+        public virtual int ToSetY(double FullHeight, double ItemHeight, double Value)
+        {
+            return (int)Math.Round(Value / (FullHeight - ItemHeight) * 100).Clip(0, 100);
         }
     }
 }

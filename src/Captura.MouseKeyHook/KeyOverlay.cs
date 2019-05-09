@@ -100,44 +100,21 @@ namespace Captura.Models
 
         static float GetLeft(TextOverlaySettings KeystrokesSettings, float FullWidth, float TextWidth)
         {
-            var x = KeystrokesSettings.X;
-            var padding = KeystrokesSettings.HorizontalPadding;
-
-            switch (KeystrokesSettings.HorizontalAlignment)
-            {
-                case Alignment.Start:
-                    return x;
-
-                case Alignment.End:
-                    return FullWidth - x - TextWidth - 2 * padding;
-
-                case Alignment.Center:
-                    return FullWidth / 2 + x - TextWidth / 2 - padding;
-
-                default:
-                    return 0;
-            }
+            return (float) KeystrokesSettings.GetX(FullWidth, TextWidth);
         }
 
-        static float GetTop(TextOverlaySettings KeystrokesSettings, float FullHeight, float TextHeight, float Offset = 0)
+        static float GetTop(TextOverlaySettings KeystrokesSettings, float FullHeight, float TextHeight, float OffsetY = 0)
         {
-            var y = KeystrokesSettings.Y;
-            var padding = KeystrokesSettings.VerticalPadding;
+            var y = (float)KeystrokesSettings.GetY(FullHeight, TextHeight);
 
-            switch (KeystrokesSettings.VerticalAlignment)
+            // Show above
+            if (y > 50)
             {
-                case Alignment.Start:
-                    return y + Offset;
-
-                case Alignment.End:
-                    return FullHeight - y - TextHeight - 2 * padding - Offset;
-
-                case Alignment.Center:
-                    return FullHeight / 2 + y - TextHeight / 2 - padding + Offset;
-
-                default:
-                    return 0;
+                y -= OffsetY;
             }
+            else y += OffsetY; // Show below
+
+            return y;
         }
 
         void OnKeyUp(object Sender, KeyEventArgs Args)

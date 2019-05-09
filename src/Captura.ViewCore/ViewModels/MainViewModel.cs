@@ -84,20 +84,6 @@ namespace Captura.ViewModels
             }
         }
 
-        public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
-        {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Left)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Right))
-        };
-
-        public static IEnumerable<ObjectLocalizer<Alignment>> YAlignments { get; } = new[]
-        {
-            new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Top)),
-            new ObjectLocalizer<Alignment>(Alignment.Center, nameof(ILocalizationProvider.Center)),
-            new ObjectLocalizer<Alignment>(Alignment.End, nameof(ILocalizationProvider.Bottom))
-        };
-
         void OpenOutputFolder()
         {
             Process.Start(Settings.GetOutputPath());

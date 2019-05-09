@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Captura
@@ -63,6 +64,26 @@ namespace Captura
         {
             get => Get(Color.FromArgb(158, 158, 158));
             set => Set(value);
+        }
+
+        public override double GetX(double FullWidth, double TextWidth)
+        {
+            return base.GetX(FullWidth, TextWidth + 2 * HorizontalPadding);
+        }
+
+        public override double GetY(double FullHeight, double TextHeight)
+        {
+            return base.GetY(FullHeight, TextHeight + 2 * VerticalPadding);
+        }
+
+        public override int ToSetX(double FullWidth, double TextWidth, double Value)
+        {
+            return base.ToSetX(FullWidth, TextWidth + 2 * HorizontalPadding, Value);
+        }
+
+        public override int ToSetY(double FullHeight, double TextHeight, double Value)
+        {
+            return base.ToSetY(FullHeight, TextHeight + 2 * VerticalPadding, Value);
         }
     }
 }

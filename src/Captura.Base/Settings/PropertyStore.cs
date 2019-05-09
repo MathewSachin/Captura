@@ -26,6 +26,9 @@ namespace Captura
             {
                 if (_dictionary.ContainsKey(PropertyName))
                 {
+                    if (EqualityComparer<T>.Default.Equals(Value, (T)_dictionary[PropertyName]))
+                        return;
+
                     _dictionary[PropertyName] = Value;
                 }
                 else _dictionary.Add(PropertyName, Value);

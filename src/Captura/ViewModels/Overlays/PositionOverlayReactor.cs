@@ -1,5 +1,7 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -7,96 +9,35 @@ namespace Captura.ViewModels
 {
     public class PositionOverlayReactor
     {
-        public PositionOverlayReactor(PositionedOverlaySettings Settings)
+        public PositionOverlayReactor(PositionedOverlaySettings Settings, double FullWidth, double FullHeight, Control Control)
         {
-            HAlignment = Settings
-                .ObserveProperty(M => M.HorizontalAlignment)
-                .Select(M =>
-                {
-                    switch (M)
-                    {
-                        case Alignment.Start:
-                            return HorizontalAlignment.Left;
-
-                        case Alignment.Center:
-                            return HorizontalAlignment.Center;
-
-                        case Alignment.End:
-                            return HorizontalAlignment.Right;
-
-                        default:
-                            return HorizontalAlignment.Stretch;
-                    }
-                })
-                .ToReadOnlyReactivePropertySlim();
-
-            VAlignment = Settings
-                .ObserveProperty(M => M.VerticalAlignment)
-                .Select(M =>
-                {
-                    switch (M)
-                    {
-                        case Alignment.Start:
-                            return VerticalAlignment.Top;
-
-                        case Alignment.Center:
-                            return VerticalAlignment.Center;
-
-                        case Alignment.End:
-                            return VerticalAlignment.Bottom;
-
-                        default:
-                            return VerticalAlignment.Stretch;
-                    }
-                })
-                .ToReadOnlyReactivePropertySlim();
-
             Margin = Settings
-                .ObserveProperty(M => M.HorizontalAlignment)
+                .ObserveProperty(M => M.Left)
                 .CombineLatest(
                     Settings
-                        .ObserveProperty(M => M.VerticalAlignment),
-                    Settings
-                        .ObserveProperty(M => M.X),
-                    Settings
-                        .ObserveProperty(M => M.Y),
-                    MarginPropSelector)
-                .ToReadOnlyReactivePropertySlim();
+                        .ObserveProperty(M => M.Top),
+                    (L, T) =>
+                    {
+                        if (double.IsNaN(Control.ActualWidth) || double.IsNaN(Control.ActualHeight))
+                            return new Thickness();
+
+                        var x = Settings.GetX(FullWidth, Control.ActualWidth);
+                        var y = Settings.GetY(FullHeight, Control.ActualHeight);
+
+                        return new Thickness(x, y, 0, 0);
+                    })
+                .ToReactiveProperty();
+
+            Margin.Subscribe(M =>
+            {
+                if (double.IsNaN(Control.ActualWidth) || double.IsNaN(Control.ActualHeight))
+                    return;
+
+                Settings.Left = Settings.ToSetX(FullWidth, Control.ActualWidth, M.Left);
+                Settings.Top = Settings.ToSetX(FullHeight, Control.ActualHeight, M.Top);
+            });
         }
 
-        static Thickness MarginPropSelector(Alignment HAlign, Alignment VAlign, int X, int Y)
-        {
-            int left = 0, top = 0, right = 0, bottom = 0;
-
-            switch (HAlign)
-            {
-                case Alignment.Start:
-                case Alignment.Center:
-                    left = X;
-                    break;
-
-                case Alignment.End:
-                    right = X;
-                    break;
-            }
-
-            switch (VAlign)
-            {
-                case Alignment.Start:
-                case Alignment.Center:
-                    top = Y;
-                    break;
-
-                case Alignment.End:
-                    bottom = Y;
-                    break;
-            }
-
-            return new Thickness(left, top, right, bottom);
-        }
-
-        public IReadOnlyReactiveProperty<VerticalAlignment> VAlignment { get; }
-        public IReadOnlyReactiveProperty<HorizontalAlignment> HAlignment { get; }
-        public IReadOnlyReactiveProperty<Thickness> Margin { get; }
+        public IReactiveProperty<Thickness> Margin { get; }
     }
 }
