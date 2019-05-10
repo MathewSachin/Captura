@@ -148,7 +148,8 @@
             <Button Style="{StaticResource MaterialDesignToolButton}"
                     DockPanel.Dock="Right"
                     Margin="5"
-                    ToolTip="Open Settings">
+                    ToolTip="Open Settings"
+                    Click="Settings_Click">
                 <md:PackIcon Kind="Settings"
                              Width="22"
                              Height="22" />

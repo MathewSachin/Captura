@@ -1,0 +1,51 @@
+﻿<Window x:Class="Captura.View.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Name="This"
+        Title="Settings" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBox HorizontalAlignment="Center"
+                 Width="300"
+                 Margin="10"
+                 md:HintAssist.Hint="Find a setting"/>
+
+        <ItemsControl ItemsSource="{Binding SettingsTabs, ElementName=This}"
+                      Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Height="Auto"
+                            Style="{StaticResource MaterialDesignToolButton}">
+                        <StackPanel>
+                            <md:PackIcon Kind="{Binding Icon}"
+                                         Foreground="{DynamicResource SecondaryAccentBrush}"
+                                         Height="60"
+                                         Width="60"
+                                         HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Title}"
+                                       HorizontalAlignment="Center"/>
+
+                            <TextBlock Text="{Binding Description}"
+                                       FontWeight="UltraLight"
+                                       FontSize="10"
+                                       Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

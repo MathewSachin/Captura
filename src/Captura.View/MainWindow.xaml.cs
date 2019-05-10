@@ -19,5 +19,10 @@ namespace Captura.View
         {
             Close();
         }
+
+        void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow().ShowDialog();
+        }
     }
 }
