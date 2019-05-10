@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Captura"
-        Height="230"
-        Width="415"
+        Height="200"
+        Width="340"
         ResizeMode="CanMinimize"
         Topmost="True"
         ShowInTaskbar="False">
@@ -27,79 +27,53 @@
             <Button Style="{StaticResource MaterialDesignToolButton}"
                     Click="Close_Click"
                     DockPanel.Dock="Right"
-                    Margin="5,0,5,-5">
+                    Margin="0,0,2,0">
                 <md:PackIcon Kind="Close"/>
             </Button>
             <Button Style="{StaticResource MaterialDesignToolButton}"
-                    DockPanel.Dock="Right"
-                    Margin="5,0,5,-5">
+                    DockPanel.Dock="Right">
                 <md:PackIcon Kind="WindowMinimize"/>
             </Button>
 
             <Label PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"/>
         </DockPanel>
 
-        <DockPanel Grid.Row="1"
+        <DockPanel Grid.Row="0"
+                   Grid.RowSpan="2"
                    Margin="5">
-            <md:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                         PlacementMode="BottomAndAlignCentres"
-                         PopupMode="MouseOver"
-                         DockPanel.Dock="Right"
-                         Width="40"
-                         Height="40"
-                         Margin="0,-15,0,0"
-                         ToggleCheckedContentCommand="{x:Null}">
-                <md:PopupBox.ToggleContent>
-                    <md:PackIcon Kind="Camera"
-                                 Width="24"
-                                 Height="24"/>
-                </md:PopupBox.ToggleContent>
-                <md:PopupBox.ToggleCheckedContent>
-                    <md:PackIcon Kind="VideoImage"
-                                 Width="26"
-                                 Height="26"/>
-                </md:PopupBox.ToggleCheckedContent>
-                <StackPanel>
-                    <Button>
-                        <md:PackIcon Kind="SelectDrag"
-                                     Width="24"
-                                     Height="24"/>
-                    </Button>
-                    <Button>
-                        <md:PackIcon Kind="Monitor"
-                                     Width="24"
-                                     Height="24"/>
-                    </Button>
-                </StackPanel>
-            </md:PopupBox>
+            <Button DockPanel.Dock="Right"
+                    Style="{StaticResource MaterialDesignToolButton}">
+                <md:PackIcon Kind="Camera"
+                             Width="24"
+                             Height="24"/>
+            </Button>
             
             <Border CornerRadius="50"
                     VerticalAlignment="Center"
                     BorderThickness="5"
                     BorderBrush="#FF8888"
-                    Margin="10,-25,10,0"
+                    Margin="10,0,10,0"
                     DockPanel.Dock="Right">
                 <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}"
-                              Height="80"
+                              Height="60"
                               Cursor="Hand"
-                              Width="80"
+                              Width="60"
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
-                              FontSize="25"
+                              FontSize="20"
                               FontWeight="Thin"
                               Content="REC"
                               md:RippleAssist.Feedback="#FF8888"/>
             </Border>
 
             <Button DockPanel.Dock="Right"
-                    Style="{StaticResource MaterialDesignToolButton}"
-                    Margin="0,-15,0,0">
+                    Style="{StaticResource MaterialDesignToolButton}">
                 <md:PackIcon Kind="Pause"
                              Width="24"
                              Height="24"/>
             </Button>
 
-            <StackPanel Margin="10,0,0,0"
+            <StackPanel Margin="10,10,0,0"
                         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
                         Background="Transparent"
                         VerticalAlignment="Stretch">
@@ -120,40 +94,57 @@
             All Screens
         </TextBlock>
 
-        <DockPanel Grid.Row="3"
-                   Background="#B0DDFF">
-            <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}"
-                     Background="Transparent"
-                     SelectedIndex="1">
-                <ListBoxItem>
-                    <md:PackIcon Kind="Monitor" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="MonitorMultiple" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="WindowMaximize" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="CropFree" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="CursorDefaultOutline" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="Camcorder" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="Music" />
-                </ListBoxItem>
-                <ListBoxItem>
-                    <md:PackIcon Kind="GoogleController" />
-                </ListBoxItem>
-            </ListBox>
-        </DockPanel>
+        <md:Transitioner SelectedIndex="0"
+                         Grid.Row="3"
+                         AutoApplyTransitionOrigins="True"
+                         Background="#B0DDFF">
+            <md:TransitionerSlide OpeningEffect="{md:TransitionEffect SlideInFromBottom, Duration=0:0:0.1}">
+                <DockPanel>
+                    <UniformGrid Rows="1">
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="Monitor" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="MonitorMultiple" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="WindowMaximize" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="CropFree" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="CursorDefaultOutline" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="Camcorder" />
+                        </Button>
+                        <Button Command="{x:Static md:Transitioner.MoveNextCommand}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <md:PackIcon Kind="Music" />
+                        </Button>
+                    </UniformGrid>
+                </DockPanel>
+            </md:TransitionerSlide>
 
-        <DockPanel Grid.Row="4"
-                   Margin="5">
+            <md:TransitionerSlide OpeningEffect="{md:TransitionEffect SlideInFromRight, Duration=0:0:0.2}">
+                <DockPanel>
+                    <Button Command="{x:Static md:Transitioner.MovePreviousCommand}"
+                        Style="{StaticResource MaterialDesignToolButton}">
+                        <md:PackIcon Kind="Backburger"/>
+                    </Button>
+                </DockPanel>
+            </md:TransitionerSlide>
+        </md:Transitioner>
+
+        <DockPanel Margin="5"
+                   Grid.Row="4">
             <Button Style="{StaticResource MaterialDesignToolButton}"
                     DockPanel.Dock="Right"
                     Margin="5"
@@ -180,13 +171,6 @@
             <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}"
                           Margin="0,0,5,0">
                 <md:PackIcon Kind="Microphone"
-                             Width="20"
-                             Height="20" />
-            </ToggleButton>
-
-            <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}"
-                          Margin="0,0,5,0">
-                <md:PackIcon Kind="VolumeHigh"
                              Width="20"
                              Height="20" />
             </ToggleButton>
