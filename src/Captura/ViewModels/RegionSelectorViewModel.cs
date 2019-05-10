@@ -44,12 +44,9 @@ namespace Captura
                 .WithSubscribe(() => Height += KeyMoveDelta);
             DecreaseHeightCommand = new ReactiveCommand()
                 .WithSubscribe(() => Height -= KeyMoveDelta);
-
-            SnapToRegionCommand = new ReactiveCommand()
-                .WithSubscribe(SnapToRegion);
         }
 
-        void SnapToRegion()
+        public void SnapToRegion()
         {
             var region = _videoSourcePicker.PickRegion();
 
@@ -200,7 +197,5 @@ namespace Captura
         public ICommand DecreaseWidthCommand { get; }
         public ICommand IncreaseHeightCommand { get; }
         public ICommand DecreaseHeightCommand { get; }
-
-        public ICommand SnapToRegionCommand { get; }
     }
 }

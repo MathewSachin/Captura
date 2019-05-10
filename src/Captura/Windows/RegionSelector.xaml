@@ -261,14 +261,9 @@
                         </Style>
                     </DockPanel.Resources>
 
-                    <local:ModernButton IconData="{Binding Icons.SnapToWindow, Source={StaticResource ServiceLocator}}"
-                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        Click="Snapper_OnClick"
-                                        ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
-
                     <local:ModernButton IconData="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
                                         Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        Command="{Binding RegionSelectorViewModel.SnapToRegionCommand, Source={StaticResource ServiceLocator}}"
+                                        Click="Snap_Click"
                                         ToolTip="Snap to Region"
                                         Margin="-5,0"/>
 

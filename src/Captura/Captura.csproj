@@ -139,7 +139,7 @@
     <Compile Include="Controls\ScreenShotButton.xaml.cs">
       <DependentUpon>ScreenShotButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PauseButton.xaml.cs">
+    <Compile Include="Controls\PauseButton.xaml.cs">
       <DependentUpon>PauseButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Overlays\CensorOverlayReactor.cs" />
@@ -362,7 +362,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PauseButton.xaml">
+    <Page Include="Controls\PauseButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

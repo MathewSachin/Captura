@@ -1,10 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Captura.Models;
 using Screna;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Point = System.Windows.Point;
@@ -13,6 +14,11 @@ namespace Captura
 {
     public partial class RegionPickerWindow
     {
+        readonly IWindow[] _windows;
+        readonly IPlatformServices _platformServices;
+
+        Predicate<IWindow> Predicate { get; set; }
+
         RegionPickerWindow()
         {
             InitializeComponent();
@@ -23,6 +29,10 @@ namespace Captura
             Height = SystemParameters.VirtualScreenHeight;
 
             UpdateBackground();
+
+            _platformServices = ServiceProvider.Get<IPlatformServices>();
+
+            _windows = _platformServices.EnumerateWindows().ToArray();
         }
 
         void UpdateBackground()
@@ -76,75 +86,72 @@ namespace Captura
 
                 if (r == null)
                 {
-                    Border.Visibility = Visibility.Collapsed;
+                    Unhighlight();
                     return;
                 }
 
-                var rect = r.Value;
-
-                Border.Margin = new Thickness(rect.Left, rect.Top, 0, 0);
-
-                Border.Width = rect.Width;
-                Border.Height = rect.Height;
-
-                Border.Visibility = Visibility.Visible;
+                HighlightRegion(r.Value);
             }
+            else
+            {
+                var point = _platformServices.CursorPosition;
+
+                _selectedWindow = _windows
+                        .Where(M => Predicate?.Invoke(M) ?? true)
+                        .FirstOrDefault(M => M.Rectangle.Contains(point));
+
+                if (_selectedWindow == null)
+                {
+                    Unhighlight();
+                }
+                else
+                {
+                    var rect = GetSelectedWindowRectangle().Value;
+
+                    HighlightRegion(rect);
+                }
+            }
+        }
+
+        Rect? GetSelectedWindowRectangle()
+        {
+            if (_selectedWindow == null)
+                return null;
+
+            var rect = _selectedWindow.Rectangle;
+
+            return new Rect(rect.X / Dpi.X,
+                rect.Y / Dpi.Y,
+                rect.Width / Dpi.X,
+                rect.Height / Dpi.Y);
         }
 
         bool _isDragging;
         Point? _start, _end;
-        CroppingAdorner _croppingAdorner;
+        IWindow _selectedWindow;
 
         void WindowMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             _isDragging = true;
             _start = E.GetPosition(Grid);
             _end = null;
-
-            if (_croppingAdorner != null)
-            {
-                var layer = AdornerLayer.GetAdornerLayer(Grid);
-
-                layer.Remove(_croppingAdorner);
-
-                _croppingAdorner = null;
-            }
         }
 
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
-            _isDragging = false;
-            _end = E.GetPosition(Grid);
-            Border.Visibility = Visibility.Collapsed;
+            var current = E.GetPosition(Grid);
 
-            var layer = AdornerLayer.GetAdornerLayer(Grid);
-
-            var rect = GetRegion();
-
-            UpdateSizeDisplay(rect);
-
-            if (rect == null)
-                return;
-
-            _croppingAdorner = new CroppingAdorner(Grid, rect.Value);
-
-            var clr = Colors.Black;
-            clr.A = 110;
-            _croppingAdorner.Fill = new SolidColorBrush(clr);
-
-            layer.Add(_croppingAdorner);
-
-            _croppingAdorner.CropChanged += (S, Args) => UpdateSizeDisplay(_croppingAdorner.SelectedRegion);
-
-            _croppingAdorner.Checked += () =>
+            if (current != _start)
             {
-                var r = _croppingAdorner.SelectedRegion;
+                _end = E.GetPosition(Grid);
+            }
+            else if (GetSelectedWindowRectangle() is Rect rect)
+            {
+                _start = rect.Location;
+                _end = new Point(rect.Right, rect.Bottom);
+            }
 
-                _start = r.Location;
-                _end = r.BottomRight;
-
-                Close();
-            };
+            Close();
         }
 
         Rect? GetRegion()
@@ -206,6 +213,46 @@ namespace Captura
             picker.ShowDialog();
 
             return picker.GetRegionScaled();
+        }
+
+        void Unhighlight()
+        {
+            Border.Visibility
+                = BorderTop.Visibility
+                = BorderBottom.Visibility
+                = BorderLeft.Visibility
+                = BorderRight.Visibility
+                = Visibility.Collapsed;
+        }
+
+        void HighlightRegion(Rect Region)
+        {
+            Border.Margin = new Thickness(Region.X, Region.Y, 0, 0);
+            Border.Width = Region.Width;
+            Border.Height = Region.Height;
+
+            BorderTop.Margin = new Thickness();
+            BorderTop.Width = Width;
+            BorderTop.Height = Region.Top.Clip(0, Height);
+
+            BorderBottom.Margin = new Thickness(0, Region.Bottom, 0, 0);
+            BorderBottom.Width = Width;
+            BorderBottom.Height = (Height - Region.Bottom).Clip(0, Height);
+
+            BorderLeft.Margin = new Thickness(0, Region.Top, 0, 0);
+            BorderLeft.Width = Region.Left.Clip(0, Width);
+            BorderLeft.Height = Region.Height;
+
+            BorderRight.Margin = new Thickness(Region.Right, Region.Top, 0, 0);
+            BorderRight.Width = (Width - Region.Right).Clip(0, Width);
+            BorderRight.Height = Region.Height;
+
+            Border.Visibility
+                = BorderTop.Visibility
+                = BorderBottom.Visibility
+                = BorderLeft.Visibility
+                = BorderRight.Visibility
+                = Visibility.Visible;
         }
     }
 }

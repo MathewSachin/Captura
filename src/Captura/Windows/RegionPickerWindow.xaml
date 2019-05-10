@@ -29,6 +29,8 @@
           Name="Grid">
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
+
+            <SolidColorBrush Color="#77000000" x:Key="SurroundColor"/>
         </Grid.Resources>
 
         <xctk:MagnifierManager.Magnifier>
@@ -58,13 +60,36 @@
         <Image Name="BgImg"/>
 
         <Border Visibility="Collapsed"
-                Background="#57FFFFFF"
                 BorderBrush = "#333333"
-                BorderThickness="0.5"
+                BorderThickness="3"
                 Name="Border"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"/>
 
+        <Border Visibility="Collapsed"
+                Background="{StaticResource SurroundColor}"
+                Name="BorderTop"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
+
+        <Border Visibility="Collapsed"
+                Background="{StaticResource SurroundColor}"
+                Name="BorderBottom"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
+
+        <Border Visibility="Collapsed"
+                Background="{StaticResource SurroundColor}"
+                Name="BorderLeft"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
+
+        <Border Visibility="Collapsed"
+                Background="{StaticResource SurroundColor}"
+                Name="BorderRight"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
+        
         <TextBlock Visibility="Collapsed"
                    Padding="5,2"
                    FontSize="14"
