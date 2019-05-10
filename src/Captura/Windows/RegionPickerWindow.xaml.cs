@@ -120,8 +120,8 @@ namespace Captura
 
             var rect = _selectedWindow.Rectangle;
 
-            return new Rect(rect.X / Dpi.X,
-                rect.Y / Dpi.Y,
+            return new Rect(-Left + rect.X / Dpi.X,
+                -Top + rect.Y / Dpi.Y,
                 rect.Width / Dpi.X,
                 rect.Height / Dpi.Y);
         }
