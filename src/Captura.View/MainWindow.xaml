@@ -136,9 +136,11 @@
             <md:TransitionerSlide OpeningEffect="{md:TransitionEffect SlideInFromRight, Duration=0:0:0.2}">
                 <DockPanel>
                     <Button Command="{x:Static md:Transitioner.MovePreviousCommand}"
-                        Style="{StaticResource MaterialDesignToolButton}">
-                        <md:PackIcon Kind="Backburger"/>
+                            Style="{StaticResource MaterialDesignToolButton}">
+                         <md:PackIcon Kind="KeyboardBackspace"/>
                     </Button>
+
+                    <Grid></Grid>
                 </DockPanel>
             </md:TransitionerSlide>
         </md:Transitioner>

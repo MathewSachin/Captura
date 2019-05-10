@@ -13,10 +13,40 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBox HorizontalAlignment="Center"
-                 Width="300"
-                 Margin="10"
-                 md:HintAssist.Hint="Find a setting"/>
+        <md:ColorZone Mode="Standard"
+                      Padding="8,4"
+                      CornerRadius="2"
+                      Margin="10"
+                      Width="300"
+                      HorizontalAlignment="Center"
+                      BorderThickness="0.5"
+                      BorderBrush="{DynamicResource SecondaryAccentBrush}"
+                      md:ShadowAssist.ShadowDepth="Depth1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Style="{DynamicResource MaterialDesignToolButton}">
+                    <md:PackIcon Kind="Magnify"
+                                 Opacity=".56" />
+                </Button>
+                <TextBox Grid.Column="1"
+                         Margin="8,0,0,0"
+                         md:HintAssist.Hint="Find a setting"
+                         md:TextFieldAssist.DecorationVisibility="Hidden"
+                         BorderThickness="0"
+                         MinWidth="200"
+                         VerticalAlignment="Center" />
+                <Button Style="{DynamicResource MaterialDesignToolButton}"
+                        Grid.Column="2">
+                    <md:PackIcon Kind="Microphone"
+                                 Opacity=".56"
+                                 Margin="8,0,0,0" />
+                </Button>
+            </Grid>
+        </md:ColorZone>
 
         <ItemsControl ItemsSource="{Binding SettingsTabs, ElementName=This}"
                       Grid.Row="1">
