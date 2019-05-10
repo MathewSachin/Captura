@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -25,8 +24,8 @@ namespace Captura.ViewModels
                 .ToReadOnlyReactivePropertySlim();
         }
 
-        public IReactiveProperty<double> Width { get; }
-        public IReactiveProperty<double> Height { get; }
+        public IReadOnlyReactiveProperty<double> Width { get; }
+        public IReadOnlyReactiveProperty<double> Height { get; }
 
         public IReadOnlyReactiveProperty<double> Opacity { get; }
     }

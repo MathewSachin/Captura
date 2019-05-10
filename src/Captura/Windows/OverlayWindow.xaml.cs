@@ -78,7 +78,7 @@ namespace Captura
             Panel.SetZIndex(Frame, 0);
 
             var layer = AdornerLayer.GetAdornerLayer(Frame);
-            var adorner = new OverlayPositionAdorner(Frame, CanResize);
+            var adorner = new OverlayPositionAdorner(Frame, false);
             layer.Add(adorner);
 
             adorner.PositionUpdated += Frame.RaisePositionChanged;
@@ -105,7 +105,13 @@ namespace Captura
 
             var vm = new PositionOverlayReactor(Settings, _fullWidth, _fullHeight, control);
 
-            Bind(control, MarginProperty, vm.Margin);
+            BindOne(control, MarginProperty, vm.Margin);
+
+            control.PositionUpdated += Rect =>
+            {
+                Settings.Left = Settings.ToSetX(_fullWidth, control.ActualWidth, Rect.Left);
+                Settings.Top = Settings.ToSetY(_fullHeight, control.ActualHeight, Rect.Top);
+            };
 
             return control;
         }
@@ -136,8 +142,8 @@ namespace Captura
 
             var vm = new ImageOverlayReactor(Settings, _fullWidth, _fullHeight);
 
-            Bind(control, WidthProperty, vm.Width);
-            Bind(control, HeightProperty, vm.Height);
+            BindOne(control, WidthProperty, vm.Width);
+            BindOne(control, HeightProperty, vm.Height);
 
             BindOne(control, OpacityProperty, vm.Opacity);
 

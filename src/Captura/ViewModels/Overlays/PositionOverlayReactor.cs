@@ -11,33 +11,26 @@ namespace Captura.ViewModels
     {
         public PositionOverlayReactor(PositionedOverlaySettings Settings, double FullWidth, double FullHeight, Control Control)
         {
-            Margin = Settings
-                .ObserveProperty(M => M.Left)
-                .CombineLatest(
-                    Settings
-                        .ObserveProperty(M => M.Top),
-                    (L, T) =>
-                    {
-                        if (double.IsNaN(Control.ActualWidth) || double.IsNaN(Control.ActualHeight))
-                            return new Thickness();
-
-                        var x = Settings.GetX(FullWidth, Control.ActualWidth);
-                        var y = Settings.GetY(FullHeight, Control.ActualHeight);
-
-                        return new Thickness(x, y, 0, 0);
-                    })
-                .ToReactiveProperty();
-
-            Margin.Subscribe(M =>
+            bool CheckNaN()
             {
-                if (double.IsNaN(Control.ActualWidth) || double.IsNaN(Control.ActualHeight))
-                    return;
+                return double.IsNaN(Control.ActualWidth) || double.IsNaN(Control.ActualHeight);
+            }
 
-                Settings.Left = Settings.ToSetX(FullWidth, Control.ActualWidth, M.Left);
-                Settings.Top = Settings.ToSetX(FullHeight, Control.ActualHeight, M.Top);
-            });
+            Margin = Settings
+                .PropertyChangedAsObservable()
+                .ToUnit()
+                .Merge(Observable.Timer(TimeSpan.FromMilliseconds(100)).ToUnit())
+                .Where(M => !CheckNaN())
+                .Select(_ =>
+                {
+                    var x = Settings.GetX(FullWidth, Control.ActualWidth);
+                    var y = Settings.GetY(FullHeight, Control.ActualHeight);
+
+                    return new Thickness(x, y, 0, 0);
+                })
+                .ToReadOnlyReactivePropertySlim();
         }
 
-        public IReactiveProperty<Thickness> Margin { get; }
+        public IReadOnlyReactiveProperty<Thickness> Margin { get; }
     }
 }

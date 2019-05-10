@@ -75,11 +75,8 @@ namespace Captura
             var offsetX = (int) Args.HorizontalChange;
             var offsetY = (int) Args.VerticalChange;
 
-            var har = fel.HorizontalAlignment == HorizontalAlignment.Right;
-            var vab = fel.VerticalAlignment == VerticalAlignment.Bottom;
-
-            var newX = (int)(har ? fel.Margin.Right : fel.Margin.Left);
-            var newY = (int)(vab ? fel.Margin.Bottom : fel.Margin.Top);
+            var newX = (int) fel.Margin.Left;
+            var newY = (int) fel.Margin.Top;
             var newWidth = (int) fel.ActualWidth;
             var newHeight = (int) fel.ActualHeight;
 
@@ -114,126 +111,51 @@ namespace Captura
             switch (MouseHitType)
             {
                 case HitType.Body:
-                    ModifyX(!har);
-                    ModifyY(!vab);
+                    ModifyX(true);
+                    ModifyY(true);
                     break;
 
-                case HitType.UpperLeft:
-                    if (har)
-                    {
-                        ModifyWidth(false);
-                    }
-                    else
-                    {
-                        ModifyX(true);
-                        ModifyWidth(false);
-                    }
-
-                    if (vab)
-                    {
-                        ModifyHeight(false);
-                    }
-                    else
-                    {
-                        ModifyY(true);
-                        ModifyHeight(false);
-                    }
+                case HitType.UpperLeft:                    
+                    ModifyX(true);
+                    ModifyWidth(false);
+                    ModifyY(true);
+                    ModifyHeight(false);
                     break;
 
                 case HitType.UpperRight:
-                    if (har)
-                    {
-                        ModifyX(false);
-                        ModifyWidth(true);
-                    }
-                    else ModifyWidth(true);
-
-                    if (vab)
-                    {
-                        ModifyHeight(false);
-                    }
-                    else
-                    {
-                        ModifyY(true);
-                        ModifyHeight(false);
-                    }
+                    ModifyWidth(true);
+                    ModifyY(true);
+                    ModifyHeight(false);
                     break;
 
                 case HitType.LowerRight:
-                    if (har)
-                    {
-                        ModifyX(false);
-                        ModifyWidth(true);
-                    }
-                    else ModifyWidth(true);
-
-                    if (vab)
-                    {
-                        ModifyY(false);
-                        ModifyHeight(true);
-                    }
-                    else ModifyHeight(true);
+                    ModifyWidth(true);
+                    ModifyHeight(true);
                     break;
 
                 case HitType.LowerLeft:
-                    if (har)
-                    {
-                        ModifyWidth(false);
-                    }
-                    else
-                    {
-                        ModifyX(true);
-                        ModifyWidth(false);
-                    }
-
-                    if (vab)
-                    {
-                        ModifyY(false);
-                        ModifyHeight(true);
-                    }
-                    else ModifyHeight(true);
+                    ModifyX(true);
+                    ModifyWidth(false);
+                    ModifyHeight(true);
                     break;
 
                 case HitType.Left:
-                    if (har)
-                    {
-                        ModifyWidth(false);
-                    }
-                    else
-                    {
-                        ModifyX(true);
-                        ModifyWidth(false);
-                    }
+                    ModifyX(true);
+                    ModifyWidth(false);
                     break;
 
                 case HitType.Right:
-                    if (har)
-                    {
-                        ModifyX(false);
-                        ModifyWidth(true);
-                    }
-                    else ModifyWidth(true);
+                    ModifyWidth(true);
                     break;
 
                 case HitType.Bottom:
-                    if (vab)
-                    {
-                        ModifyY(false);
-                        ModifyHeight(true);
-                    }
-                    else ModifyHeight(true);
+                    ModifyHeight(true);
                     break;
 
                 case HitType.Top:
-                    if (vab)
-                    {
-                        ModifyHeight(false);
-                    }
-                    else
-                    {
-                        ModifyY(true);
-                        ModifyHeight(false);
-                    }
+                    ModifyHeight(false);
+                    ModifyY(true);
+                    ModifyHeight(false);
                     break;
             }
 
@@ -249,30 +171,25 @@ namespace Captura
                     newY = 0;
                 }
 
-                double left = 0, top = 0, right = 0, bottom = 0;
+                var left = newX;
+                var top = newY;
 
-                if (har)
-                    right = newX;
-                else left = newX;
-
-                if (vab)
-                    bottom = newY;
-                else top = newY;
-
-                fel.Margin = new Thickness(left, top, right, bottom);
-
-                PositionUpdated?.Invoke(new Rect(newX, newY, newWidth, newHeight));
+                fel.Margin = new Thickness(left, top, 0, 0);
 
                 if (MouseHitType != HitType.Body)
                 {
                     fel.Width = newWidth;
                     fel.Height = newHeight;
                 }
+
+                fel.Margin = new Thickness(left, top, 0, 0);
+
+                PositionUpdated?.Invoke(new Rect(newX, newY, newWidth, newHeight));
             }
         }
 
         public event Action<Rect> PositionUpdated;
-        
+
         void BuildAdornerThumb(ref Thumb CornerThumb, Cursor CustomizedCursors)
         {
             if (CornerThumb != null)

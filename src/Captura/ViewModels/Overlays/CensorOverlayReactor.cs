@@ -7,6 +7,7 @@ namespace Captura.ViewModels
 {
     public class CensorOverlayReactor
     {
+        // TODO: Derive from ImageOverlayReactor
         public CensorOverlayReactor(CensorOverlaySettings Settings)
         {
             Width = Settings
