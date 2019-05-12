@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura
 {
@@ -29,6 +30,6 @@ namespace Captura
 
         void DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle);
 
-        IBitmapFrame GenerateFrame();
+        IBitmapFrame GenerateFrame(TimeSpan Timestamp);
     }
 }

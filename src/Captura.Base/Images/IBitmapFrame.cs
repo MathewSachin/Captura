@@ -11,5 +11,7 @@ namespace Captura
         void CopyTo(byte[] Buffer);
 
         void CopyTo(IntPtr Buffer);
+
+        TimeSpan Timestamp { get; }
     }
 }
