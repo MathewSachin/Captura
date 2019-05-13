@@ -31,7 +31,7 @@ namespace Captura.Models
 
             var settings = ServiceProvider.Get<FFmpegSettings>();
 
-            _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
+            _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 12 / 8];
 
             Console.WriteLine($"Video Buffer Allocated: {_videoBuffer.Length}");
 
@@ -43,7 +43,7 @@ namespace Captura.Models
                 .AddArg("thread_queue_size", 512)
                 .AddArg("framerate", Args.FrameRate)
                 .SetFormat("rawvideo")
-                .AddArg("pix_fmt", "rgb32")
+                .AddArg("pix_fmt", "nv12")
                 .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
@@ -174,7 +174,15 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    Frame.CopyTo(_videoBuffer);
+#pragma warning disable CS0728 // Possibly incorrect assignment to local which is the argument to a using or lock statement
+                    Frame = Frame.Unwrap();
+#pragma warning restore CS0728 // Possibly incorrect assignment to local which is the argument to a using or lock statement
+
+                    if (Frame is INV12Frame nv12Frame)
+                    {
+                        nv12Frame.CopyNV12To(_videoBuffer);
+                    }
+                    else Frame.CopyTo(_videoBuffer);
                 }
             }
 

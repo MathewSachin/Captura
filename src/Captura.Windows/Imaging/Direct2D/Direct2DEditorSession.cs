@@ -1,4 +1,5 @@
 ﻿using System;
+using Captura;
 using Captura.Models;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -34,6 +35,8 @@ namespace DesktopDuplication
 
         public ImagingFactory ImagingFactory => _imagingFactory ?? (_imagingFactory = new ImagingFactory());
 
+        public Lazy<MfColorConverter> ColorConverter { get; }
+
         public SolidColorBrush GetSolidColorBrush(RawColor4 Color)
         {
             if (_solidColorBrush == null)
@@ -49,16 +52,8 @@ namespace DesktopDuplication
         {
             _previewWindow = PreviewWindow;
 
-            try
-            {
-                Device = new Device(DriverType.Hardware,
-                    DeviceCreationFlags.BgraSupport);
-            }
-            catch (SharpDXException)
-            {
-                Device = new Device(DriverType.Warp,
-                    DeviceCreationFlags.BgraSupport);
-            }
+            Device = new Device(DriverType.Hardware,
+                DeviceCreationFlags.BgraSupport | DeviceCreationFlags.VideoSupport);
 
             StagingTexture = new Texture2D(Device, new Texture2DDescription
             {
@@ -103,6 +98,8 @@ namespace DesktopDuplication
             {
                 RenderTarget = new RenderTarget(_factory, surface, renderTargetProps);
             }
+
+            ColorConverter = new Lazy<MfColorConverter>(() => new MfColorConverter(Width, Height, Device));
         }
 
         public Texture2D CreateGdiTexture(int Width, int Height)
@@ -144,6 +141,11 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
+            if (ColorConverter.IsValueCreated)
+            {
+                ColorConverter.Value.Dispose();
+            }
+
             _solidColorBrush?.Dispose();
             _solidColorBrush = null;
 
