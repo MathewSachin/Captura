@@ -2,7 +2,6 @@
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
-using SharpDX.Multimedia;
 using System;
 using System.Runtime.InteropServices;
 using Device = SharpDX.Direct3D11.Device;
@@ -12,17 +11,18 @@ namespace Captura
     public class MfColorConverter : IDisposable
     {
         Transform _colorConverter;
+        DXGIDeviceManager _deviceMan;
 
         public MfColorConverter(int Width, int Height, Device Device)
         {
             var transforms = MediaFactory.FindTransform(TransformCategoryGuids.VideoProcessor, TransformEnumFlag.All);
             _colorConverter = transforms[0].ActivateObject<Transform>();
 
-            var deviceMan = new DXGIDeviceManager();
-            deviceMan.ResetDevice(Device);
+            _deviceMan = new DXGIDeviceManager();
+            _deviceMan.ResetDevice(Device);
 
             // TODO: Works without this line.
-            //_colorConverter.ProcessMessage(TMessageType.SetD3DManager, deviceMan.NativePointer);
+            //_colorConverter.ProcessMessage(TMessageType.SetD3DManager, _deviceMan.NativePointer);
 
             using (var mediaTypeIn = new MediaType())
             {
@@ -76,13 +76,28 @@ namespace Captura
             // Attach the created buffer to the sample
             _inputSample.AddBuffer(inputBuffer);
 
-            _outputSample = MediaFactory.CreateSample();
+            _outputTexture = new Texture2D(Device, new Texture2DDescription
+            {
+                CpuAccessFlags = CpuAccessFlags.Read,
+                BindFlags = BindFlags.None,
+                Format = Format.NV12,
+                Width = Width,
+                Height = Height,
+                OptionFlags = ResourceOptionFlags.None,
+                MipLevels = 1,
+                ArraySize = 1,
+                SampleDescription = { Count = 1, Quality = 0 },
+                Usage = ResourceUsage.Staging
+            });
+
+            _outputSample = MediaFactory.CreateVideoSampleFromSurface(null);
 
             _outputSample.SampleDuration = 1;
 
-            var nv12fourCC = new FourCC("NV12");
+            MediaFactory.CreateDXGISurfaceBuffer(typeof(Texture2D).GUID, _outputTexture, 0, false, out _outBuffer);
 
-            MediaFactory.Create2DMediaBuffer(Width, Height, nv12fourCC, false, out _outBuffer);
+            using (var buffer2D = _outBuffer.QueryInterface<Buffer2D>())
+                _outBuffer.CurrentLength = buffer2D.ContiguousLength;
 
             _outputSample.AddBuffer(_outBuffer);
 
@@ -93,7 +108,7 @@ namespace Captura
 
         int _frameNumber;
 
-        Texture2D _copyTexture;
+        Texture2D _copyTexture, _outputTexture;
         Sample _inputSample, _outputSample;
         MediaBuffer _outBuffer;
         TOutputDataBuffer[] _outDataBuffer;
@@ -120,11 +135,20 @@ namespace Captura
             _outBuffer.Unlock();
         }
 
-
         public void Dispose()
         {
+            _inputSample.Dispose();
+            _outputSample.Dispose();
+
+            _outBuffer.Dispose();
+
+            _copyTexture.Dispose();
+            _outputTexture.Dispose();
+
             _colorConverter.Dispose();
             _colorConverter = null;
+
+            _deviceMan.Dispose();
         }
     }
 }
