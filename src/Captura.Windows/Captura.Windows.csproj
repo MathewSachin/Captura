@@ -10,6 +10,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MediaFoundation" Version="3.1.0" />
     <PackageReference Include="Ookii.Dialogs.WindowsForms" Version="1.0.0" />
     <PackageReference Include="DirectShowLib" Version="1.0.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
