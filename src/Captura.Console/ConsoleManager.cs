@@ -64,6 +64,9 @@ namespace Captura
             _settings.Keystrokes = dummySettings.Keystrokes;
             _settings.Elapsed = dummySettings.Elapsed;
 
+            // Output Folder
+            _settings.OutPath = dummySettings.OutPath;
+
             // FFmpeg Path
             _settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
 
