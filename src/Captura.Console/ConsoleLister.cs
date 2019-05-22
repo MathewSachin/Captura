@@ -1,5 +1,6 @@
 ﻿using Captura.Models;
 using Captura.ViewModels;
+using System.Linq;
 using static System.Console;
 
 namespace Captura
@@ -10,13 +11,13 @@ namespace Captura
         static readonly string Underline = $"\n{new string('-', 30)}";
 
         readonly WebcamModel _webcam;
-        readonly AudioSource _audioSource;
+        readonly IAudioSource _audioSource;
         readonly IPlatformServices _platformServices;
         readonly FFmpegWriterProvider _ffmpegWriterProvider;
         readonly SharpAviWriterProvider _sharpAviWriterProvider;
 
         public ConsoleLister(WebcamModel Webcam,
-            AudioSource AudioSource,
+            IAudioSource AudioSource,
             IPlatformServices PlatformServices,
             FFmpegWriterProvider FfmpegWriterProvider,
             SharpAviWriterProvider SharpAviWriterProvider)
@@ -60,31 +61,41 @@ namespace Captura
 
         void Audio()
         {
-            WriteLine($"ManagedBass Available: {(_audioSource is BassAudioSource ? "YES" : "NO")}");
+            WriteLine($"Audio Source: {_audioSource.Name}");
 
             WriteLine();
 
+            var sources = _audioSource.GetSources();
+
+            var mics = sources
+                .Where(M => !M.IsLoopback)
+                .ToArray();
+
+            var speakers = sources
+                .Where(M => M.IsLoopback)
+                .ToArray();
+
             // Microphones
-            if (_audioSource.AvailableRecordingSources.Count > 0)
+            if (mics.Length > 0)
             {
                 WriteLine("AVAILABLE MICROPHONES" + Underline);
 
-                for (var i = 0; i < _audioSource.AvailableRecordingSources.Count; ++i)
+                for (var i = 0; i < mics.Length; ++i)
                 {
-                    WriteLine($"{i.ToString().PadRight(2)}: {_audioSource.AvailableRecordingSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {mics[i]}");
                 }
 
                 WriteLine();
             }
 
             // Speakers
-            if (_audioSource.AvailableLoopbackSources.Count > 0)
+            if (speakers.Length > 0)
             {
                 WriteLine("AVAILABLE SPEAKER SOURCES" + Underline);
 
-                for (var i = 0; i < _audioSource.AvailableLoopbackSources.Count; ++i)
+                for (var i = 0; i < speakers.Length; ++i)
                 {
-                    WriteLine($"{i.ToString().PadRight(2)}: {_audioSource.AvailableLoopbackSources[i]}");
+                    WriteLine($"{i.ToString().PadRight(2)}: {speakers[i]}");
                 }
 
                 WriteLine();

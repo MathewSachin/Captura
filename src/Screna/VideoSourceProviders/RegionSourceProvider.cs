@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Text.RegularExpressions;
 using Screna;
 
 namespace Captura.Models
@@ -73,15 +72,17 @@ namespace Captura.Models
 
         public override bool ParseCli(string Arg)
         {
-            if (!Regex.IsMatch(Arg, @"^\d+,\d+,\d+,\d+$"))
-                return false;
-
             if (!(Arg.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect.Even();
 
             return true;
+        }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            return ScreenShot.Capture(_regionProvider.SelectedRegion, IncludeCursor);
         }
     }
 }

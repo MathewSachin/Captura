@@ -11,9 +11,15 @@ namespace Captura
             set => Set(value);
         }
 
+        public string FontFamily
+        {
+            get => Get("Arial");
+            set => Set(value);
+        }
+
         public int FontSize
         {
-            get => Get(20);
+            get => Get(50);
             set => Set(value);
         }
 

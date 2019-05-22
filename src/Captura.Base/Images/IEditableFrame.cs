@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura
 {
@@ -8,6 +9,8 @@ namespace Captura
         float Height { get; }
 
         void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100);
+
+        void DrawLine(Point Start, Point End, Color Color, float Width);
 
         void FillRectangle(Color Color, RectangleF Rectangle);
 
@@ -21,10 +24,12 @@ namespace Captura
 
         void DrawEllipse(Color Color, float StrokeWidth, RectangleF Rectangle);
 
-        SizeF MeasureString(string Text, int FontSize);
+        IFont GetFont(string FontFamily, int Size);
 
-        void DrawString(string Text, int FontSize, Color Color, RectangleF LayoutRectangle);
+        SizeF MeasureString(string Text, IFont Font);
 
-        IBitmapFrame GenerateFrame();
+        void DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle);
+
+        IBitmapFrame GenerateFrame(TimeSpan Timestamp);
     }
 }

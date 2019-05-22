@@ -84,8 +84,8 @@ namespace Captura
                 },
                 EnableRaisingEvents = true
             };
-
-            var log = ServiceProvider.Get<FFmpegLog>();
+            
+            var log = ServiceProvider.Get<IFFmpegLogRepository>();
 
             var logItem = log.CreateNew(Path.GetFileName(FileName), Arguments);
                         

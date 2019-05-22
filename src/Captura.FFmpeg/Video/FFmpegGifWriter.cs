@@ -35,7 +35,7 @@ namespace Captura.Models
             File.Move(tempFile, paletteFile);
 
             argsBuilder.AddOutputFile(paletteFile)
-                .AddArg("-vf palettegen")
+                .AddArg("vf", "palettegen")
                 .SetFrameRate(_args.FrameRate)
                 .AddArg("-y");
 
@@ -55,7 +55,7 @@ namespace Captura.Models
             argsBuilder.AddInputFile(PaletteFile);
 
             argsBuilder.AddOutputFile(_args.FileName)
-                .AddArg("-lavfi paletteuse")
+                .AddArg("lavfi", "paletteuse")
                 .SetFrameRate(_args.FrameRate);
 
             var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName);

@@ -1,3 +1,5 @@
+using Screna;
+
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -25,7 +27,12 @@ namespace Captura.Models
 
         public override bool ParseCli(string Arg)
         {
-            return Arg == "desktop";
+            return string.IsNullOrWhiteSpace(Arg) || Arg == "desktop";
+        }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            return ScreenShot.Capture(IncludeCursor);
         }
     }
 }

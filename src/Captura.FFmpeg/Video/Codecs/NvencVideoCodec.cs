@@ -18,9 +18,9 @@ namespace Captura.FFmpeg
 
         public override void Apply(FFmpegSettings Settings, VideoWriterArgs WriterArgs, FFmpegOutputArgs OutputArgs)
         {
-            OutputArgs.AddArg($"-c:v {_fFmpegCodecName}")
-                .AddArg("-pixel_format yuv444p")
-                .AddArg(" -preset fast");
+            OutputArgs.AddArg("c:v", _fFmpegCodecName)
+                .AddArg("pixel_format", "yuv444p")
+                .AddArg("preset", "fast");
         }
 
         public static NvencVideoCodec CreateH264()

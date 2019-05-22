@@ -61,8 +61,13 @@
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FontSelector.xaml.cs">
+      <DependentUpon>FontSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
+    <Compile Include="ImageEditor\HistoryStack.cs" />
+    <Compile Include="ImageEditor\InkCanvasViewModel.cs" />
     <Compile Include="ImageEditor\Strokes\ArrowStroke.cs" />
     <Compile Include="Models\AudioPlayer.cs" />
     <Compile Include="Models\FFmpegViewsProvider.cs" />
@@ -71,6 +76,7 @@
       <DependentUpon>ModernPasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\HotkeySetup.cs" />
+    <Compile Include="Models\HotkeyViewActor.cs" />
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
@@ -130,10 +136,21 @@
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\RegionSelectorProvider.cs" />
+    <Compile Include="Controls\ScreenShotButton.xaml.cs">
+      <DependentUpon>ScreenShotButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PauseButton.xaml.cs">
+      <DependentUpon>PauseButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Overlays\CensorOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\ImageOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\PositionOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\TextOverlayReactor.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />
     <Compile Include="Windows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\MainWindowHelper.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -298,6 +315,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\FontSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -342,6 +362,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PauseButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Themes\ModernTogglePill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Themes\VirtualizingItemsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -351,6 +379,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScreenShotButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -591,10 +623,6 @@
     <ProjectReference Include="..\Captura.YouTube\Captura.YouTube.csproj">
       <Project>{224e699e-2b95-4194-be79-4931815d8f21}</Project>
       <Name>Captura.YouTube</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DesktopDuplication\DesktopDuplication.csproj">
-      <Project>{222c215b-663f-4bd6-9b3e-8fa99c867b22}</Project>
-      <Name>DesktopDuplication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Screna\Screna.csproj">
       <Project>{23cb9adb-ba9f-4618-bd0c-589a00a532e5}</Project>

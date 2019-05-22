@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Reactive.Bindings;
 
 namespace Captura
 {
@@ -23,20 +24,8 @@ namespace Captura
         {
             AppVersion = "v" + Version.ToString(3);
 
-            HyperlinkCommand = new DelegateCommand(Link =>
-            {
-                if (Link is string s)
-                {
-                    try
-                    {
-                        Process.Start(s);
-                    }
-                    catch
-                    {
-                        // Suppress Errors
-                    }
-                }
-            });
+            HyperlinkCommand = new ReactiveCommand<string>()
+                .WithSubscribe(M => Process.Start(M));
         }
     }
 }

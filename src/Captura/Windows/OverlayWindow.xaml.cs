@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -11,6 +14,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Screna;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -77,52 +82,11 @@ namespace Captura
                 }
             };
 
-            void Update()
-            {
-                int left = 0, top = 0, right = 0, bottom = 0;
+            var vm = new PositionOverlayReactor(Settings);
 
-                switch (Settings.HorizontalAlignment)
-                {
-                    case Alignment.Start:
-                        control.HorizontalAlignment = HorizontalAlignment.Left;
-                        left = Settings.X;
-                        break;
-
-                    case Alignment.Center:
-                        control.HorizontalAlignment = HorizontalAlignment.Center;
-                        left = Settings.X;
-                        break;
-
-                    case Alignment.End:
-                        control.HorizontalAlignment = HorizontalAlignment.Right;
-                        right = Settings.X;
-                        break;
-                }
-
-                switch (Settings.VerticalAlignment)
-                {
-                    case Alignment.Start:
-                        control.VerticalAlignment = VerticalAlignment.Top;
-                        top = Settings.Y;
-                        break;
-
-                    case Alignment.Center:
-                        control.VerticalAlignment = VerticalAlignment.Center;
-                        top = Settings.Y;
-                        break;
-
-                    case Alignment.End:
-                        control.VerticalAlignment = VerticalAlignment.Bottom;
-                        bottom = Settings.Y;
-                        break;
-                }
-
-                Dispatcher.Invoke(() => control.Margin = new Thickness(left, top, right, bottom));
-            }
-
-            Settings.PropertyChanged += (S, E) => Update();
-
-            Update();
+            BindOne(control, HorizontalAlignmentProperty, vm.HAlignment);
+            BindOne(control, VerticalAlignmentProperty, vm.VAlignment);
+            BindOne(control, MarginProperty, vm.Margin);
 
             control.PositionUpdated += Rect =>
             {
@@ -133,30 +97,36 @@ namespace Captura
             return control;
         }
 
+        void Bind(FrameworkElement Control, DependencyProperty DependencyProperty, IReactiveProperty Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.TwoWay
+                });
+        }
+
+        void BindOne<T>(FrameworkElement Control, DependencyProperty DependencyProperty, IReadOnlyReactiveProperty<T> Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.OneWay
+                });
+        }
+
         LayerFrame Image(ImageOverlaySettings Settings, string Text)
         {
             var control = Generate(Settings, Text, Colors.Brown);
 
-            control.Width = Settings.ResizeWidth;
-            control.Height = Settings.ResizeHeight;
+            var vm = new ImageOverlayReactor(Settings);
 
-            control.Opacity = Settings.Opacity / 100.0;
+            Bind(control, WidthProperty, vm.Width);
+            Bind(control, HeightProperty, vm.Height);
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    control.Width = Settings.ResizeWidth;
-                    control.Height = Settings.ResizeHeight;
-                    control.Opacity = Settings.Opacity / 100.0;
-                });
-            };
-
-            control.PositionUpdated += Rect =>
-            {
-                Settings.ResizeWidth = (int)Rect.Width;
-                Settings.ResizeHeight = (int)Rect.Height;
-            };
+            BindOne(control, OpacityProperty, vm.Opacity);
 
             return control;
         }
@@ -168,58 +138,22 @@ namespace Captura
 
         LayerFrame Text(TextOverlaySettings Settings, string Text)
         {
-            var control = Generate(Settings, Text, ConvertColor(Settings.BackgroundColor));
-            
-            control.Label.FontSize = Settings.FontSize;
+            var control = Generate(Settings, Text, Settings.BackgroundColor.ToWpfColor());
 
-            control.Border.Padding = new Thickness(Settings.HorizontalPadding,
-                Settings.VerticalPadding,
-                Settings.HorizontalPadding,
-                Settings.VerticalPadding);
+            var vm = new TextOverlayReactor(Settings);
 
-            control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-            control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
-            control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+            BindOne(control.Label, FontFamilyProperty, vm.FontFamily);
+            BindOne(control.Label, FontSizeProperty, vm.FontSize);
 
-            control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
+            // Border.PaddingProperty is different from PaddingProperty
+            BindOne(control.Border, Border.PaddingProperty, vm.Padding);
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                switch (E.PropertyName)
-                {
-                    case nameof(Settings.BackgroundColor):
-                        control.Border.Background = new SolidColorBrush(ConvertColor(Settings.BackgroundColor));
-                        break;
+            BindOne(control.Label, ForegroundProperty, vm.Foreground);
+            BindOne(control.Border, BackgroundProperty, vm.Background);
 
-                    case nameof(Settings.FontColor):
-                        control.Label.Foreground = new SolidColorBrush(ConvertColor(Settings.FontColor));
-                        break;
-
-                    case nameof(Settings.BorderThickness):
-                        control.Border.BorderThickness = new Thickness(Settings.BorderThickness);
-                        break;
-
-                    case nameof(Settings.BorderColor):
-                        control.Border.BorderBrush = new SolidColorBrush(ConvertColor(Settings.BorderColor));
-                        break;
-
-                    case nameof(Settings.FontSize):
-                        control.Label.FontSize = Settings.FontSize;
-                        break;
-
-                    case nameof(Settings.HorizontalPadding):
-                    case nameof(Settings.VerticalPadding):
-                        control.Border.Padding = new Thickness(Settings.HorizontalPadding,
-                            Settings.VerticalPadding,
-                            Settings.HorizontalPadding,
-                            Settings.VerticalPadding);
-                        break;
-
-                    case nameof(Settings.CornerRadius):
-                        control.Border.CornerRadius = new CornerRadius(Settings.CornerRadius);
-                        break;
-                }
-            };
+            BindOne(control.Border, BorderThicknessProperty, vm.BorderThickness);
+            BindOne(control.Border, BorderBrushProperty, vm.BorderBrush);
+            BindOne(control.Border, Border.CornerRadiusProperty, vm.CornerRadius);
 
             return control;
         }
@@ -228,52 +162,26 @@ namespace Captura
         {
             var control = Generate(Settings, "Censored", Colors.Black);
 
-            control.Width = Settings.Width;
-            control.Height = Settings.Height;
+            var vm = new CensorOverlayReactor(Settings);
 
-            Settings.PropertyChanged += (S, E) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    control.Width = Settings.Width;
-                    control.Height = Settings.Height;
-                });
-            };
+            Bind(control, WidthProperty, vm.Width);
+            Bind(control, HeightProperty, vm.Height);
 
-            control.PositionUpdated += Rect =>
-            {
-                Settings.Width = (int)Rect.Width;
-                Settings.Height = (int)Rect.Height;
-            };
+            BindOne(control, VisibilityProperty, vm.Visible);
 
             return control;
-        }
-
-        static Color ConvertColor(System.Drawing.Color C)
-        {
-            return Color.FromArgb(C.A, C.R, C.G, C.B);
         }
 
         LayerFrame Keystrokes(KeystrokesSettings Settings)
         {
             var control = Text(Settings, "Keystrokes");
 
-            void SetVisibility()
-            {
-                control.Visibility = Settings.SeparateTextFile ? Visibility.Collapsed : Visibility;
-            }
+            var visibilityProp = Settings
+                .ObserveProperty(M => M.SeparateTextFile)
+                .Select(M => M ? Visibility.Collapsed : Visibility.Visible)
+                .ToReadOnlyReactivePropertySlim();
 
-            SetVisibility();
-
-            Settings.PropertyChanged += (S, E) =>
-            {
-                switch (E.PropertyName)
-                {
-                    case nameof(Settings.SeparateTextFile):
-                        SetVisibility();
-                        break;
-                }
-            };
+            BindOne(control, VisibilityProperty, visibilityProp);
 
             return control;
         }
@@ -282,117 +190,85 @@ namespace Captura
         readonly List<LayerFrame> _imageOverlays = new List<LayerFrame>();
         readonly List<LayerFrame> _censorOverlays = new List<LayerFrame>();
 
+        void UpdateOverlays<TSettings>(IEnumerable<TSettings> Settings,
+            List<LayerFrame> LayerFrames,
+            Func<TSettings, LayerFrame> LayerFrameGenerator,
+            bool CanResize,
+            int ZIndex)
+        {
+            foreach (var layerFrame in LayerFrames)
+            {
+                Grid.Children.Remove(layerFrame);
+            }
+
+            LayerFrames.Clear();
+
+            LayerFrames.AddRange(Settings.Select(LayerFrameGenerator));
+
+            foreach (var layerFrame in LayerFrames)
+            {
+                AddToGrid(layerFrame, CanResize);
+
+                Panel.SetZIndex(layerFrame, ZIndex);
+            }
+        }
+
         void UpdateCensorOverlays(IEnumerable<CensorOverlaySettings> Settings)
         {
-            foreach (var overlay in _censorOverlays)
-            {
-                Grid.Children.Remove(overlay);
-            }
-
-            _censorOverlays.Clear();
-
-            foreach (var setting in Settings)
-            {
-                var control = Censor(setting);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-
-                setting.PropertyChanged += (S, E) =>
-                {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
-                };
-
-                _censorOverlays.Add(control);
-            }
-
-            foreach (var overlay in _censorOverlays)
-            {
-                AddToGrid(overlay, true);
-
-                Panel.SetZIndex(overlay, -1);
-            }
+            UpdateOverlays(Settings, _censorOverlays, Censor, true, -1);
         }
 
         void UpdateTextOverlays(IEnumerable<CustomOverlaySettings> Settings)
         {
-            foreach (var overlay in _textOverlays)
+            UpdateOverlays(Settings, _textOverlays, Setting =>
             {
-                Grid.Children.Remove(overlay);
-            }
+                var control = Text(Setting, Setting.Text);
 
-            _textOverlays.Clear();
+                var visibilityProp = Setting
+                    .ObserveProperty(M => M.Display)
+                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
+                    .ToReadOnlyReactivePropertySlim();
 
-            foreach (var setting in Settings)
-            {
-                var control = Text(setting, setting.Text);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
+                BindOne(control, VisibilityProperty, visibilityProp);
 
-                setting.PropertyChanged += (S, E) =>
-                {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Text):
-                            control.Label.Content = setting.Text;
-                            break;
+                var textProp = Setting
+                    .ObserveProperty(M => M.Text)
+                    .ToReadOnlyReactivePropertySlim();
 
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
-                };
+                BindOne(control.Label, ContentProperty, textProp);
 
-                _textOverlays.Add(control);
-            }
-
-            foreach (var overlay in _textOverlays)
-            {
-                AddToGrid(overlay, false);
-
-                Panel.SetZIndex(overlay, 1);
-            }
+                return control;
+            }, false, 1);
         }
 
         void UpdateImageOverlays(IEnumerable<CustomImageOverlaySettings> Settings)
         {
-            foreach (var overlay in _imageOverlays)
+            UpdateOverlays(Settings, _imageOverlays, Setting =>
             {
-                Grid.Children.Remove(overlay);
-            }
+                var control = Image(Setting, Setting.Source);
 
-            _imageOverlays.Clear();
-
-            foreach (var setting in Settings)
-            {
-                var control = Image(setting, setting.Source);
-                control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-
-                setting.PropertyChanged += (S, E) =>
+                var img = new Image
                 {
-                    switch (E.PropertyName)
-                    {
-                        case nameof(setting.Source):
-                            control.Label.Content = setting.Source;
-                            break;
-
-                        case nameof(setting.Display):
-                            control.Visibility = setting.Display ? Visibility.Visible : Visibility.Collapsed;
-                            break;
-                    }
+                    Stretch = Stretch.Fill
                 };
 
-                _imageOverlays.Add(control);
-            }
+                control.Label.Content = img;
 
-            foreach (var overlay in _imageOverlays)
-            {
-                AddToGrid(overlay, true);
+                var visibilityProp = Setting
+                    .ObserveProperty(M => M.Display)
+                    .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
+                    .ToReadOnlyReactivePropertySlim();
 
-                Panel.SetZIndex(overlay, 2);
-            }
+                BindOne(control, VisibilityProperty, visibilityProp);
+
+                var srcProp = Setting
+                    .ObserveProperty(M => M.Source)
+                    .ToReadOnlyReactivePropertySlim();
+
+                BindOne(img, System.Windows.Controls.Image.SourceProperty, srcProp);
+
+                return control;
+            }, true, 2);
         }
         
         void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
@@ -414,7 +290,7 @@ namespace Captura
 
                 default:
                     var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
-                    bmp = await screenShotModel.GetScreenShot(true);
+                    bmp = await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
                     break;
             }
 
@@ -482,7 +358,7 @@ namespace Captura
 
                 MouseClick.Width = MouseClick.Height = d;
                 MouseClick.StrokeThickness = Settings.BorderThickness;
-                MouseClick.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
+                MouseClick.Stroke = new SolidColorBrush(Settings.BorderColor.ToWpfColor());
             }
 
             Update();
@@ -498,8 +374,8 @@ namespace Captura
 
                 MousePointer.Width = MousePointer.Height = d;
                 MousePointer.StrokeThickness = Settings.BorderThickness;
-                MousePointer.Stroke = new SolidColorBrush(ConvertColor(Settings.BorderColor));
-                MousePointer.Fill = new SolidColorBrush(ConvertColor(Settings.Color));
+                MousePointer.Stroke = new SolidColorBrush(Settings.BorderColor.ToWpfColor());
+                MousePointer.Fill = new SolidColorBrush(Settings.Color.ToWpfColor());
             }
 
             Update();
@@ -524,13 +400,13 @@ namespace Captura
             switch (Button)
             {
                 case MouseButton.Middle:
-                    return ConvertColor(settings.Clicks.MiddleClickColor);
+                    return settings.Clicks.MiddleClickColor.ToWpfColor();
 
                 case MouseButton.Right:
-                    return ConvertColor(settings.Clicks.RightClickColor);
+                    return settings.Clicks.RightClickColor.ToWpfColor();
                     
                 default:
-                    return ConvertColor(settings.Clicks.Color);
+                    return settings.Clicks.Color.ToWpfColor();
             }
         }
 

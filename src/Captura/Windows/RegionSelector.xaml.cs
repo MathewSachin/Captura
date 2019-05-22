@@ -1,6 +1,7 @@
 ﻿using Captura.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -13,12 +14,10 @@ namespace Captura
 {
     public partial class RegionSelector
     {
-        readonly IVideoSourcePicker _videoSourcePicker;
         readonly RegionSelectorViewModel _viewModel;
 
-        public RegionSelector(IVideoSourcePicker VideoSourcePicker, RegionSelectorViewModel ViewModel)
+        public RegionSelector(RegionSelectorViewModel ViewModel)
         {
-            _videoSourcePicker = VideoSourcePicker;
             _viewModel = ViewModel;
 
             InitializeComponent();
@@ -99,33 +98,6 @@ namespace Captura
 
         public IntPtr Handle => new WindowInteropHelper(this).Handle;
 
-        void Snapper_OnClick(object Sender, RoutedEventArgs E)
-        {
-            var win = _videoSourcePicker.PickWindow(M => M.Handle != Handle && !M.IsMaximized);
-
-            if (win == null)
-                return;
-
-            _viewModel.SelectedRegion = win.Rectangle;
-
-            // Prevent going outside
-            if (Left < 0)
-            {
-                // Decrease Width
-                try { Width += Left; }
-                catch { }
-                finally { Left = 0; }
-            }
-
-            if (Top < 0)
-            {
-                // Decrease Height
-                try { Height += Top; }
-                catch { }
-                finally { Top = 0; }
-            }
-        }
-
         void UIElement_OnPreviewMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             DragMove();
@@ -190,6 +162,18 @@ namespace Captura
                         break;
                 }
             }
+        }
+
+        async void Snap_Click(object sender, RoutedEventArgs e)
+        {
+            Visibility = Visibility.Collapsed;
+
+            // Ensure region selector hides
+            await Task.Delay(1);
+
+            _viewModel.SnapToRegion();
+
+            Visibility = Visibility.Visible;
         }
     }
 }

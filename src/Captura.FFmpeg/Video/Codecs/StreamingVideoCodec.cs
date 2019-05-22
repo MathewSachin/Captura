@@ -12,9 +12,9 @@ namespace Captura.FFmpeg
 
             x264.Apply(Settings, WriterArgs, OutputArgs);
 
-            OutputArgs.AddArg($"-g {WriterArgs.FrameRate * 2}")
-                .AddArg($"-r {WriterArgs.FrameRate}")
-                .AddArg("-f flv");
+            OutputArgs.AddArg("g", WriterArgs.FrameRate * 2)
+                .AddArg("r", WriterArgs.FrameRate)
+                .AddArg("f", "flv");
 
             var link = GetLink(Settings);
 

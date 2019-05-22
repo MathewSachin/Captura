@@ -17,12 +17,13 @@
                       SelectionMode="Single">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Rows="1"/>
+                        <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="#01000000">
+                        <Grid Background="#01000000"
+                              MinWidth="60">
                             <Grid.ToolTip>
                                 <StackPanel MinWidth="200">
                                     <TextBlock Text="{Binding Name, Mode=OneWay}"

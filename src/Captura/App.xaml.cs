@@ -25,7 +25,7 @@ namespace Captura
 
             Args.Handled = true;
 
-            new ExceptionWindow(Args.Exception).ShowDialog();
+            new ErrorWindow(Args.Exception, Args.Exception.Message).ShowDialog();
         }
 
         void Application_Startup(object Sender, StartupEventArgs Args)
@@ -62,7 +62,7 @@ namespace Captura
 
             if (E.ExceptionObject is Exception e)
             {
-                Current.Dispatcher.Invoke(() => new ExceptionWindow(e).ShowDialog());
+                Current.Dispatcher.Invoke(() => new ErrorWindow(e, e.Message).ShowDialog());
             }
 
             Shutdown();

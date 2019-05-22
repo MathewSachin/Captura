@@ -26,14 +26,24 @@
             return this;
         }
 
+        public FFmpegOutputArgs AddArg<T>(string Key, T Value)
+        {
+            return AddArg($"-{Key} {Value}");
+        }
+
         public FFmpegOutputArgs SetVideoSize(int Width, int Height)
         {
-            return AddArg($"-video_size {Width}x{Height}");
+            return AddArg("video_size", $"{Width}x{Height}");
         }
 
         public FFmpegOutputArgs SetFrameRate(int FrameRate)
         {
-            return AddArg($"-r {FrameRate}");
+            return AddArg("r", FrameRate);
+        }
+
+        public FFmpegOutputArgs SetAudioCodec(string Codec)
+        {
+            return AddArg("c:a", Codec);
         }
     }
 }

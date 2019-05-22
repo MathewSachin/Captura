@@ -35,6 +35,10 @@
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.WebcamOverlay}">
                     <local:ImageOverlaySettingsControl/>
+
+                    <Label Margin="0,10"
+                           Opacity="0.8"
+                           Content="Size of Preview considers Resize to be active"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Elapsed"
@@ -61,7 +65,7 @@
         
         <DockPanel Grid.Column="2">
             <Label DockPanel.Dock="Top"
-                   Content="Preview (Font Size - Not to Scale)"
+                   Content="{Binding Preview, Source={StaticResource Loc}}"
                    Padding="5"/>
 
             <Grid Background="Transparent"

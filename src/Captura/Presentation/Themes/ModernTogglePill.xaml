@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ModernTogglePill" TargetType="CheckBox">
+        <Setter Property="Padding" Value="16,3,16,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Border VerticalAlignment="Center"
+                            CornerRadius="12"
+                            BorderThickness="1"
+                            Margin="{TemplateBinding Margin}"
+                            Name="border"
+                            BorderBrush="{DynamicResource ItemBorder}">
+                        <Label ToolTip="{TemplateBinding ToolTip}"
+                               Content="{TemplateBinding Content}"
+                               BorderThickness="0"
+                               Cursor="Hand"
+                               Name="label"
+                               Padding="{TemplateBinding Padding}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground"
+                                    TargetName="label"
+                                    Value="{DynamicResource Accent}"/>
+                            <Setter Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource Accent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

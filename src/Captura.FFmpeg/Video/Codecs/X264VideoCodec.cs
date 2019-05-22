@@ -15,10 +15,10 @@ namespace Captura.FFmpeg
             // quality: 51 (lowest) to 0 (highest)
             var crf = (51 * (100 - WriterArgs.VideoQuality)) / 99;
 
-            OutputArgs.AddArg("-vcodec libx264")
-                .AddArg($"-crf {crf}")
-                .AddArg($"-pix_fmt {Settings.X264.PixelFormat}")
-                .AddArg($"-preset {Settings.X264.Preset}");
+            OutputArgs.AddArg("vcodec", "libx264")
+                .AddArg("crf", crf)
+                .AddArg("pix_fmt", Settings.X264.PixelFormat)
+                .AddArg("preset", Settings.X264.Preset);
         }
     }
 }

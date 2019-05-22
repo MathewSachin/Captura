@@ -11,8 +11,11 @@ using Reactive.Bindings.Extensions;
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
+        bool _persist;
+
+        readonly RememberByName _rememberByName;
         readonly IDialogService _dialogService;
 
         public ICommand ShowPreviewCommand { get; }
@@ -23,6 +26,8 @@ namespace Captura.ViewModels
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
+        public IReadOnlyReactiveProperty<string> OutFolderDisplay { get; }
+
         public MainViewModel(Settings Settings,
             ILocalizationProvider Loc,
             HotKeyManager HotKeyManager,
@@ -30,9 +35,16 @@ namespace Captura.ViewModels
             IDialogService DialogService,
             RecordingModel RecordingModel,
             IEnumerable<IRefreshable> Refreshables,
-            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            RememberByName RememberByName) : base(Settings, Loc)
         {
             _dialogService = DialogService;
+            _rememberByName = RememberByName;
+
+            OutFolderDisplay = Settings
+                .ObserveProperty(M => M.OutPath)
+                .Select(M => Settings.GetOutputPath())
+                .ToReadOnlyReactivePropertySlim();
 
             ShowPreviewCommand = new ReactiveCommand()
                 .WithSubscribe(PreviewWindow.Show);
@@ -69,6 +81,16 @@ namespace Captura.ViewModels
             #endregion
         }
 
+        public void Init(bool Persist, bool Remembered)
+        {
+            _persist = Persist;
+
+            if (Remembered)
+            {
+                _rememberByName.RestoreRemembered();
+            }
+        }
+
         public static IEnumerable<ObjectLocalizer<Alignment>> XAlignments { get; } = new[]
         {
             new ObjectLocalizer<Alignment>(Alignment.Start, nameof(ILocalizationProvider.Left)),
@@ -90,12 +112,34 @@ namespace Captura.ViewModels
 
         void SelectOutputFolder()
         {
-            var folder = _dialogService.PickFolder(Settings.GetOutputPath(), Loc.SelectOutFolder);
+            string currentFolder = null;
+
+            try
+            {
+                currentFolder = Settings.GetOutputPath();
+            }
+            catch
+            {
+                // Error can happen if current folder is inaccessible
+            }
+
+            var folder = _dialogService.PickFolder(currentFolder, Loc.SelectOutFolder);
 
             if (folder != null)
                 Settings.OutPath = folder;
         }
 
         public event Action Refreshed;
+
+        public void Dispose()
+        {
+            // Remember things if not console.
+            if (!_persist)
+                return;
+
+            _rememberByName.Remember();
+
+            Settings.Save();
+        }
     }
 }

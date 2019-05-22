@@ -3,7 +3,7 @@ using System.Windows.Interop;
 
 namespace Captura.Models
 {
-    public class HotkeyListener
+    public class HotkeyListener : IHotkeyListener
     {
         const int WindowsMessageHotkey = 786;
 

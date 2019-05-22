@@ -35,9 +35,9 @@ namespace Captura.Models
             // bitrate: 32k to 512k (steps of 32k)
             var b = 32 * (1 + (15 * (Quality - 1)) / 99);
 
-            OutputArgs.AddArg("-c:a aac")
+            OutputArgs.SetAudioCodec("aac")
                 .AddArg(Experimental)
-                .AddArg($"-b:a {b}k");
+                .AddArg("b:a", $"{b}k");
         };
 
         public static FFmpegAudioArgsProvider Mp3 { get; } = (Quality, OutputArgs) =>
@@ -45,8 +45,8 @@ namespace Captura.Models
             // quality: 9 (lowest) to 0 (highest)
             var qscale = (100 - Quality) / 11;
 
-            OutputArgs.AddArg("-c:a libmp3lame")
-                .AddArg($"-qscale:a {qscale}");
+            OutputArgs.SetAudioCodec("libmp3lame")
+                .AddArg("qscale:a", qscale);
         };
 
         public static FFmpegAudioArgsProvider Vorbis { get; } = (Quality, OutputArgs) =>
@@ -54,8 +54,8 @@ namespace Captura.Models
             // quality: 0 (lowest) to 10 (highest)
             var qscale = (10 * (Quality - 1)) / 99;
 
-            OutputArgs.AddArg("-c:a libvorbis")
-                .AddArg($"-qscale:a {qscale}");
+            OutputArgs.SetAudioCodec("libvorbis")
+                .AddArg("qscale:a", qscale);
         };
 
         public static FFmpegAudioArgsProvider Opus { get; } = (Quality, OutputArgs) =>
@@ -63,8 +63,8 @@ namespace Captura.Models
             // quality: 0 (lowest) to 10 (highest)
             var qscale = (10 * (Quality - 1)) / 99;
 
-            OutputArgs.AddArg("-c:a libopus")
-                .AddArg($"-compression_level {qscale}");
+            OutputArgs.SetAudioCodec("libopus")
+                .AddArg("compression_level", qscale);
         };
 
         public static IEnumerable<FFmpegAudioItem> Items { get; } = new[]

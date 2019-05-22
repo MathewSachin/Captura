@@ -1,178 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura
 {
     public class ImageEditorViewModel : NotifyPropertyChanged
     {
-        int _stride;
-        byte[] _data;
-        public Window Window { get; set; }
-
-        public bool UnsavedChanges { get; private set; }
-
-        int _editingOperationCount;
-
-        readonly Stack<IHistoryItem> _undoStack = new Stack<IHistoryItem>();
-        readonly Stack<IHistoryItem> _redoStack = new Stack<IHistoryItem>();
-
+        #region Fields
         const int BrightnessStep = 10;
         const int ContrastStep = 10;
 
-        public DelegateCommand DiscardChangesCommand { get; }
-        public DelegateCommand UndoCommand { get; }
-        public DelegateCommand RedoCommand { get; }
-        public DelegateCommand SaveCommand { get; }
-        public DelegateCommand SaveToClipboardCommand { get; }
-        public DelegateCommand UploadToImgurCommand { get; }
-
-        public DelegateCommand SetEffectCommand { get; }
-        public DelegateCommand SetBrightnessCommand { get; }
-        public DelegateCommand SetContrastCommand { get; }
-
-        public DelegateCommand RotateRightCommand { get; }
-        public DelegateCommand RotateLeftCommand { get; }
-        public DelegateCommand FlipXCommand { get; }
-        public DelegateCommand FlipYCommand { get; }
-
-        public ImageEditorViewModel()
-        {
-            UndoCommand = new DelegateCommand(Undo, false);
-            RedoCommand = new DelegateCommand(Redo, false);
-            SaveCommand = new DelegateCommand(() => SaveToFile(), false);
-            SaveToClipboardCommand = new DelegateCommand(SaveToClipboard, false);
-            UploadToImgurCommand = new DelegateCommand(UploadToImgur, false);
-
-            DiscardChangesCommand = new DelegateCommand(async () =>
-            {
-                Reset();
-
-                await Update();
-            }, false);
-
-            SetEffectCommand = new DelegateCommand(async M =>
-            {
-                if (M is ImageEffect effect)
-                {
-                    UpdateHistory();
-
-                    CurrentImageEffect = effect;
-
-                    await Update();
-                }
-            }, false);
-
-            SetBrightnessCommand = new DelegateCommand(async M =>
-            {
-                if (M is int i || M is string s && int.TryParse(s, out i))
-                {
-                    UpdateHistory();
-
-                    if (i == 0)
-                        _brightness = 0;
-                    else if (i > 0)
-                        _brightness += BrightnessStep;
-                    else _brightness -= BrightnessStep;
-
-                    await Update();
-                }
-            }, false);
-
-            SetContrastCommand = new DelegateCommand(async M =>
-            {
-                if (M is int i || M is string s && int.TryParse(s, out i))
-                {
-                    UpdateHistory();
-
-                    if (i == 0)
-                        _contrastThreshold = 0;
-                    else if (i > 0)
-                    {
-                        if (_contrastThreshold == 100)
-                            return;
-
-                        _contrastThreshold += ContrastStep;
-                    }
-                    else
-                    {
-                        if (_contrastThreshold == -100)
-                            return;
-
-                        _contrastThreshold -= ContrastStep;
-                    }
-
-                    await Update();
-                }
-            }, false);
-
-            RotateRightCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
-
-                Rotation += 90;
-
-                await Update();
-            }, false);
-
-            RotateLeftCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
-
-                Rotation -= 90;
-
-                await Update();
-            }, false);
-
-            FlipXCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
-
-                FlipX = !FlipX;
-
-                await Update();
-            }, false);
-
-            FlipYCommand = new DelegateCommand(async M =>
-            {
-                UpdateHistory();
-
-                FlipY = !FlipY;
-
-                await Update();
-            }, false);
-        }
-
-        async void UploadToImgur()
-        {
-            using (var ms = new MemoryStream())
-            {
-                var bmp = GetBmp();
-
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-                encoder.Save(ms);
-
-                var imgSystem = ServiceProvider.Get<IImagingSystem>();
-
-                using (var bitmap = imgSystem.LoadBitmap(ms))
-                {
-                    await bitmap.UploadImage();
-                }
-            }
-        }
+        int _stride;
+        byte[] _data;
+        int _editingOperationCount;
+        string _fileName;
+        bool _trackChanges = true;
 
         BitmapSource _originalBmp;
+        WriteableBitmap _editedBmp;
+        TransformedBitmap _transformedBmp;
+
+        readonly HistoryStack _undoStack = new HistoryStack();
+        readonly HistoryStack _redoStack = new HistoryStack();
+
+        readonly IReactiveProperty<bool> _unsavedChanges = new ReactivePropertySlim<bool>();
+        readonly IReactiveProperty<bool> _isOpened = new ReactivePropertySlim<bool>();
+        readonly IReactiveProperty<ImageEffect> _currentImageEffect = new ReactivePropertySlim<ImageEffect>();
+        readonly IReactiveProperty<int> _brightness = new ReactivePropertySlim<int>();
+        readonly IReactiveProperty<int> _contrastThreshold = new ReactivePropertySlim<int>();
+        readonly IReadOnlyReactiveProperty<double> _contrastLevel;
+
+        public IReactiveProperty<int> Rotation { get; } = new ReactivePropertySlim<int>();
+        public IReactiveProperty<bool> FlipX { get; } = new ReactivePropertySlim<bool>();
+        public IReactiveProperty<bool> FlipY { get; } = new ReactivePropertySlim<bool>();
+
+        public Window Window { get; set; }
+        public InkCanvas InkCanvas { get; set; }
+
+        public bool UnsavedChanges
+        {
+            get => _unsavedChanges.Value;
+            private set => _unsavedChanges.Value = value;
+        }
 
         public BitmapSource OriginalBitmap
         {
@@ -180,37 +61,183 @@ namespace Captura
             private set => Set(ref _originalBmp, value);
         }
 
-        WriteableBitmap _editedBmp;
-
         public WriteableBitmap EditedBitmap
         {
             get => _editedBmp;
             private set => Set(ref _editedBmp, value);
         }
 
-        TransformedBitmap _transformedBmp;
-
         public TransformedBitmap TransformedBitmap
         {
             get => _transformedBmp;
             set => Set(ref _transformedBmp, value);
         }
+        #endregion
 
-        ImageEffect _imageEffect = ImageEffect.None;
+        #region Commands
+        public ICommand DiscardChangesCommand { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand SaveToClipboardCommand { get; }
+        public ICommand UploadToImgurCommand { get; }
 
-        public ImageEffect CurrentImageEffect
+        public ICommand SetEffectCommand { get; }
+        public ICommand SetBrightnessCommand { get; }
+        public ICommand SetContrastCommand { get; }
+
+        public ICommand RotateRightCommand { get; }
+        public ICommand RotateLeftCommand { get; }
+        public ICommand FlipXCommand { get; }
+        public ICommand FlipYCommand { get; }
+        #endregion
+
+        public InkCanvasViewModel InkCanvasViewModel { get; }
+
+        public ImageEditorViewModel()
         {
-            get => _imageEffect;
-            private set => Set(ref _imageEffect, value);
-        }
+            InkCanvasViewModel = ServiceProvider.Get<InkCanvasViewModel>();
 
-        int _brightness;
+            UndoCommand = _undoStack
+                .ObserveProperty(M => M.Count)
+                .Select(M => M > 0)
+                .ToReactiveCommand()
+                .WithSubscribe(Undo);
+
+            RedoCommand = _redoStack
+                .ObserveProperty(M => M.Count)
+                .Select(M => M > 0)
+                .ToReactiveCommand()
+                .WithSubscribe(Redo);
+
+            SaveCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(() => SaveToFile());
+
+            SaveToClipboardCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(SaveToClipboard);
+
+            UploadToImgurCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(UploadToImgur);
+
+            DiscardChangesCommand = _unsavedChanges
+                .ToReactiveCommand()
+                .WithSubscribe(Reset);
+
+            SetEffectCommand = _isOpened
+                .ToReactiveCommand<ImageEffect>()
+                .WithSubscribe(M =>
+                {
+                    UpdateHistory();
+
+                    _currentImageEffect.Value = M;
+                });
+
+            SetBrightnessCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    if (M is int i || M is string s && int.TryParse(s, out i))
+                    {
+                        UpdateHistory();
+
+                        if (i == 0)
+                            _brightness.Value = 0;
+                        else if (i > 0)
+                            _brightness.Value += BrightnessStep;
+                        else _brightness.Value -= BrightnessStep;
+                    }
+                });
+
+            SetContrastCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    if (M is int i || M is string s && int.TryParse(s, out i))
+                    {
+                        UpdateHistory();
+
+                        if (i == 0)
+                            _contrastThreshold.Value = 0;
+                        else if (i > 0)
+                        {
+                            if (_contrastThreshold.Value == 100)
+                                return;
+
+                            _contrastThreshold.Value += ContrastStep;
+                        }
+                        else
+                        {
+                            if (_contrastThreshold.Value == -100)
+                                return;
+
+                            _contrastThreshold.Value -= ContrastStep;
+                        }
+                    }
+                });
+
+            RotateRightCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    UpdateHistory();
+
+                    Rotation.Value += 90;
+                });
+
+            RotateLeftCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    UpdateHistory();
+
+                    Rotation.Value -= 90;
+                });
+
+            FlipXCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    UpdateHistory();
+
+                    FlipX.Value = !FlipX.Value;
+                });
+
+            FlipYCommand = _isOpened
+                .ToReactiveCommand()
+                .WithSubscribe(M =>
+                {
+                    UpdateHistory();
+
+                    FlipY.Value = !FlipY.Value;
+                });
+
+            _contrastLevel = _contrastThreshold
+                .Select(M => Math.Pow((100.0 + M) / 100.0, 2))
+                .ToReadOnlyReactivePropertySlim();
+
+            this.ObserveProperty(M => M.OriginalBitmap)
+                .CombineLatest(
+                    _brightness,
+                    _contrastThreshold,
+                    Rotation,
+                    FlipX,
+                    FlipY,
+                    _currentImageEffect,
+                    (Bmp, B, C, R, Fx, Fy, E) => Bmp)
+                .Throttle(TimeSpan.FromMilliseconds(100))
+                .Where(M => M != null)
+                .ObserveOnUIDispatcher()
+                .Subscribe(async M => await Update());
+        }
 
         void Brightness(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
             {
-                var val = Byte + _brightness;
+                var val = Byte + _brightness.Value;
 
                 if (val > 255)
                     Byte = 255;
@@ -224,14 +251,11 @@ namespace Captura
             Apply(ref Blue);
         }
 
-        int _contrastThreshold;
-        double _contrastLevel;
-
         void Contrast(ref byte Red, ref byte Green, ref byte Blue)
         {
             void Apply(ref byte Byte)
             {
-                var val = ((Byte / 255.0 - 0.5) * _contrastLevel + 0.5) * 255.0;
+                var val = ((Byte / 255.0 - 0.5) * _contrastLevel.Value + 0.5) * 255.0;
 
                 if (val > 255)
                     Byte = 255;
@@ -245,39 +269,11 @@ namespace Captura
             Apply(ref Blue);
         }
 
-        HistoryState GetHistoryState()
-        {
-            return new HistoryState
-            {
-                Brightness = _brightness,
-                Contrast = _contrastThreshold,
-                Effect = _imageEffect,
-                Rotation = Rotation,
-                FlipX = FlipX,
-                FlipY = FlipY
-            };
-        }
-
-        void UpdateHistory()
-        {
-            UnsavedChanges = true;
-
-            _undoStack.Push(GetHistoryState());
-
-            UndoCommand.RaiseCanExecuteChanged(true);
-
-            _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
-        }
-
         async Task Update()
         {
             OriginalBitmap.CopyPixels(_data, _stride, 0);
 
-            var effectFunction = PixelFunctionFactory.GetEffectFunction(CurrentImageEffect);
-
-            _contrastLevel = Math.Pow((100.0 + _contrastThreshold) / 100.0, 2);
+            var effectFunction = PixelFunctionFactory.GetEffectFunction(_currentImageEffect.Value);
 
             await Task.Run(() =>
             {
@@ -298,15 +294,10 @@ namespace Captura
             UpdateTransformBitmap();
         }
 
-        public int Rotation { get; private set; }
-
-        public bool FlipX { get; private set; }
-        public bool FlipY { get; private set; }
-
         void UpdateTransformBitmap()
         {
-            var rotate = new RotateTransform(Rotation, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
-            var scale = new ScaleTransform(FlipX ? -1 : 1, FlipY ? -1 : 1);
+            var rotate = new RotateTransform(Rotation.Value, OriginalBitmap.PixelWidth / 2.0, OriginalBitmap.PixelHeight / 2.0);
+            var scale = new ScaleTransform(FlipX.Value ? -1 : 1, FlipY.Value ? -1 : 1);
 
             TransformedBitmap = new TransformedBitmap(EditedBitmap, new TransformGroup
             {
@@ -320,24 +311,21 @@ namespace Captura
 
         void Reset()
         {
-            UnsavedChanges = false;
+            _brightness.Value = _contrastThreshold.Value = 0;
+            _currentImageEffect.Value = ImageEffect.None;
 
-            _brightness = _contrastThreshold = 0;
-            _imageEffect = ImageEffect.None;
-
-            Rotation = 0;
-            FlipX = FlipY = false;
+            Rotation.Value = 0;
+            FlipX.Value = FlipY.Value = false;
 
             InkCanvas.Strokes.Clear();
 
             _undoStack.Clear();
             _redoStack.Clear();
-            UndoCommand.RaiseCanExecuteChanged(false);
-            RedoCommand.RaiseCanExecuteChanged(false);
+
+            UnsavedChanges = false;
         }
 
-        string _fileName;
-
+        #region New / Open
         public void Open()
         {
             var ofd = new OpenFileDialog
@@ -408,22 +396,32 @@ namespace Captura
 
             UpdateTransformBitmap();
 
-            SaveCommand.RaiseCanExecuteChanged(true);
-            SaveToClipboardCommand.RaiseCanExecuteChanged(true);
-            UploadToImgurCommand.RaiseCanExecuteChanged(true);
-            DiscardChangesCommand.RaiseCanExecuteChanged(true);
+            _isOpened.Value = true;
+        }
+        #endregion
 
-            SetEffectCommand.RaiseCanExecuteChanged(true);
-            SetBrightnessCommand.RaiseCanExecuteChanged(true);
-            SetContrastCommand.RaiseCanExecuteChanged(true);
-
-            RotateRightCommand.RaiseCanExecuteChanged(true);
-            RotateLeftCommand.RaiseCanExecuteChanged(true);
-            FlipXCommand.RaiseCanExecuteChanged(true);
-            FlipYCommand.RaiseCanExecuteChanged(true);
+        #region History
+        HistoryState GetHistoryState()
+        {
+            return new HistoryState
+            {
+                Brightness = _brightness.Value,
+                Contrast = _contrastThreshold.Value,
+                Effect = _currentImageEffect.Value,
+                Rotation = Rotation.Value,
+                FlipX = FlipX.Value,
+                FlipY = FlipY.Value
+            };
         }
 
-        public InkCanvas InkCanvas { get; set; }
+        void UpdateHistory()
+        {
+            UnsavedChanges = true;
+
+            _undoStack.Push(GetHistoryState());
+
+            _redoStack.Clear();
+        }
 
         public void AddInkHistory(StrokeHistory HistoryItem)
         {
@@ -469,13 +467,9 @@ namespace Captura
             if (!merged)
             {
                 _undoStack.Push(HistoryItem);
-
-                UndoCommand.RaiseCanExecuteChanged(true);
             }
 
             _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
 
         public void AddSelectHistory(SelectHistory HistoryItem)
@@ -506,38 +500,25 @@ namespace Captura
             if (!merged)
             {
                 _undoStack.Push(HistoryItem);
-
-                UndoCommand.RaiseCanExecuteChanged(true);
             }
 
             _redoStack.Clear();
-
-            RedoCommand.RaiseCanExecuteChanged(false);
         }
-
-        bool _trackChanges = true;
 
         public void RemoveLastHistory()
         {
-            _trackChanges = false;
-
             if (_undoStack.Count == 0)
                 return;
 
             _undoStack.Pop();
-
-            if (_undoStack.Count == 0)
-                UndoCommand.RaiseCanExecuteChanged(false);
-
-            _trackChanges = true;
         }
 
-        async void Undo()
+        void Undo()
         {
-            _trackChanges = false;
-
             if (_undoStack.Count == 0)
                 return;
+
+            _trackChanges = false;
 
             var current = GetHistoryState();
 
@@ -572,23 +553,16 @@ namespace Captura
                     _redoStack.Push(select);
                     break;
             }
-            
-            RedoCommand.RaiseCanExecuteChanged(true);
-
-            await Update();
-
-            if (_undoStack.Count == 0)
-                UndoCommand.RaiseCanExecuteChanged(false);
 
             _trackChanges = true;
         }
 
-        async void Redo()
+        void Redo()
         {
-            _trackChanges = false;
-
             if (_redoStack.Count == 0)
                 return;
+
+            _trackChanges = false;
 
             var current = GetHistoryState();
 
@@ -624,31 +598,21 @@ namespace Captura
                     break;
             }
 
-            UndoCommand.RaiseCanExecuteChanged(true);
-
-            await Update();
-
-            if (_redoStack.Count == 0)
-                RedoCommand.RaiseCanExecuteChanged(false);
-
             _trackChanges = true;
         }
 
         void ApplyHistoryState(HistoryState State)
         {
-            _imageEffect = State.Effect;
-            _brightness = State.Brightness;
-            _contrastThreshold = State.Contrast;
-            Rotation = State.Rotation;
-            FlipX = State.FlipX;
-            FlipY = State.FlipY;
+            _currentImageEffect.Value = State.Effect;
+            _brightness.Value = State.Brightness;
+            _contrastThreshold.Value = State.Contrast;
+            Rotation.Value = State.Rotation;
+            FlipX.Value = State.FlipX;
+            FlipY.Value = State.FlipY;
         }
-        
-        public void IncrementEditingOperationCount()
-        {
-            ++_editingOperationCount;
-        }
+        #endregion
 
+        #region Save
         public bool SaveToFile()
         {
             var bmp = GetBmp();
@@ -666,6 +630,26 @@ namespace Captura
             var bmp = GetBmp();
 
             Clipboard.SetImage(bmp);
+        }
+
+        async void UploadToImgur()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bmp = GetBmp();
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+                encoder.Save(ms);
+
+                var imgSystem = ServiceProvider.Get<IImagingSystem>();
+
+                using (var bitmap = imgSystem.LoadBitmap(ms))
+                {
+                    await bitmap.UploadImage();
+                }
+            }
         }
 
         BitmapSource GetBmp()
@@ -702,6 +686,12 @@ namespace Captura
 
                 return transformedRendered;
             }
+        }
+        #endregion
+
+        public void IncrementEditingOperationCount()
+        {
+            ++_editingOperationCount;
         }
 
         static Matrix GetTransformFromRectToRect(Rect Source, Rect Destination)

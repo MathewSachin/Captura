@@ -13,7 +13,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             
             <Path Data="{Binding Icons.Font, Source={StaticResource ServiceLocator}}"
@@ -24,14 +25,18 @@
                   VerticalAlignment="Center"
                   ToolTip="Font"/>
 
+            <local:FontSelector Grid.Column="1"
+                                Margin="10,5,5,5"
+                                SelectedFont="{Binding FontFamily, Mode=TwoWay}"/>
+
             <xctk:IntegerUpDown Minimum="1"
                                 Value="{Binding FontSize, Mode=TwoWay}"
-                                Grid.Column="1"
-                                Margin="10,5,5,5"
+                                Grid.Column="2"
+                                Margin="0,5"
                                 ToolTip="{Binding FontSize, Source={StaticResource Loc}, Mode=OneWay}"/>
 
             <xctk:ColorPicker SelectedColor="{Binding FontColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
-                              Grid.Column="2"
+                              Grid.Column="3"
                               Margin="0,5"
                               ToolTip="{Binding Color, Source={StaticResource Loc}, Mode=OneWay}"/>
         </Grid>

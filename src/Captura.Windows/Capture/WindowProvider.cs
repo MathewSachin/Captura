@@ -11,10 +11,10 @@ namespace Screna
     class WindowProvider : IImageProvider
     {
         readonly IWindow _window;
-        readonly Func<Point, Point> _transform;
         readonly bool _includeCursor;
 
-        readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
+        readonly IntPtr _hdcSrc;
+        readonly ITargetDeviceContext _dcTarget;
 
         static Func<Point, Point> GetTransformer(IWindow Window)
         {
@@ -33,7 +33,7 @@ namespace Screna
         /// <summary>
         /// Creates a new instance of <see cref="WindowProvider"/>.
         /// </summary>
-        public WindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> Transform)
+        public WindowProvider(IWindow Window, IPreviewWindow PreviewWindow, bool IncludeCursor)
         {
             _window = Window ?? throw new ArgumentNullException(nameof(Window));
             _includeCursor = IncludeCursor;
@@ -42,15 +42,18 @@ namespace Screna
             Width = size.Width;
             Height = size.Height;
 
-            Transform = _transform = GetTransformer(Window);
+            PointTransform = GetTransformer(Window);
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-            _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
-            _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
-
-            Gdi32.SelectObject(_hdcDest, _hBitmap);
+            if (WindowsModule.Windows8OrAbove)
+            {
+                _dcTarget = new DxgiTargetDeviceContext(PreviewWindow, Width, Height);
+            }
+            else _dcTarget = new GdiTargetDeviceContext(_hdcSrc, Width, Height);
         }
+
+        public Func<Point, Point> PointTransform { get; }
 
         void OnCapture()
         {
@@ -65,9 +68,11 @@ namespace Screna
             var resizeWidth = (int) (rect.Width * ratio);
             var resizeHeight = (int) (rect.Height * ratio);
 
+            var hdcDest = _dcTarget.GetDC();
+
             void ClearRect(RECT Rect)
             {
-                User32.FillRect(_hdcDest, ref Rect, IntPtr.Zero);
+                User32.FillRect(hdcDest, ref Rect, IntPtr.Zero);
             }
 
             if (Width != resizeWidth)
@@ -89,9 +94,12 @@ namespace Screna
                 });
             }
 
-            Gdi32.StretchBlt(_hdcDest, 0, 0, resizeWidth, resizeHeight,
+            Gdi32.StretchBlt(hdcDest, 0, 0, resizeWidth, resizeHeight,
                 _hdcSrc, rect.X, rect.Y, rect.Width, rect.Height,
                 (int) CopyPixelOperation.SourceCopy);
+
+            if (_includeCursor)
+                MouseCursor.Draw(hdcDest, PointTransform);
         }
 
         public IEditableFrame Capture()
@@ -100,10 +108,7 @@ namespace Screna
             {
                 OnCapture();
 
-                var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
-
-                if (_includeCursor)
-                    MouseCursor.Draw(img, _transform);
+                var img = _dcTarget.GetEditableFrame();
 
                 return img;
             }
@@ -125,9 +130,11 @@ namespace Screna
 
         public void Dispose()
         {
-            Gdi32.DeleteDC(_hdcDest);
+            _dcTarget.Dispose();
+
             User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
-            Gdi32.DeleteObject(_hBitmap);
         }
+
+        public Type EditorType => _dcTarget.EditorType;
     }
 }

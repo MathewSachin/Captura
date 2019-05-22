@@ -81,7 +81,7 @@ namespace Captura
             Draw(DrawingContext,
                 _firstPoint,
                 StylusPoints.First().ToPoint(),
-                new Pen(FillBrush, 2));
+                new Pen(FillBrush, DrawingAttributes.Width));
         }
 
         protected override void OnStylusUp(RawStylusInput RawStylusInput)

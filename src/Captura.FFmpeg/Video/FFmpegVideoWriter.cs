@@ -24,6 +24,11 @@ namespace Captura.Models
         /// </summary>
         public FFmpegWriter(FFmpegVideoWriterArgs Args)
         {
+            if (!FFmpegService.FFmpegExists)
+            {
+                throw new FFmpegNotFoundException();
+            }
+
             var settings = ServiceProvider.Get<FFmpegSettings>();
 
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
@@ -35,10 +40,10 @@ namespace Captura.Models
             var argsBuilder = new FFmpegArgsBuilder();
 
             argsBuilder.AddInputPipe(videoPipeName)
-                .AddArg("-thread_queue_size 512")
-                .AddArg($"-framerate {Args.FrameRate}")
+                .AddArg("thread_queue_size", 512)
+                .AddArg("framerate", Args.FrameRate)
                 .SetFormat("rawvideo")
-                .AddArg("-pix_fmt rgb32")
+                .AddArg("pix_fmt", "rgb32")
                 .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
@@ -57,7 +62,7 @@ namespace Captura.Models
                 if (height % 2 == 1)
                     ++height;
 
-                output.AddArg($"-vf scale={width}:{height}");
+                output.AddArg("vf", $"scale={width}:{height}");
             }
 
             if (Args.AudioProvider != null)
@@ -65,7 +70,7 @@ namespace Captura.Models
                 var audioPipeName = GetPipeName();
 
                 argsBuilder.AddInputPipe(audioPipeName)
-                    .AddArg("-thread_queue_size 512")
+                    .AddArg("thread_queue_size", 512)
                     .SetFormat("s16le")
                     .SetAudioCodec("pcm_s16le")
                     .SetAudioFrequency(Args.Frequency)
@@ -114,9 +119,13 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
+            // Might happen when writing Gif
+            if (_audioPipe == null)
+                return;
+
             if (_ffmpegProcess.HasExited)
             {
-                throw new Exception("An Error Occurred with FFmpeg");
+                throw new FFmpegException( _ffmpegProcess.ExitCode);
             }
 
             if (_firstAudio)
@@ -165,7 +174,7 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
+                    Frame.CopyTo(_videoBuffer);
                 }
             }
 

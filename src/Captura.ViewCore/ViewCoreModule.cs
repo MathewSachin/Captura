@@ -1,4 +1,6 @@
-﻿namespace Captura.ViewModels
+﻿using Captura.Models;
+
+namespace Captura.ViewModels
 {
     public class ViewCoreModule : IModule
     {
@@ -19,9 +21,21 @@
             Binder.BindSingleton<FFmpegCodecsViewModel>();
             Binder.BindSingleton<ViewConditionsModel>();
 
+            Binder.BindSingleton<VideoSourcesViewModel>();
+            Binder.BindSingleton<VideoWritersViewModel>();
+            Binder.Bind<IRefreshable>(Binder.Get<VideoWritersViewModel>);
+
+            Binder.BindSingleton<AudioSourceViewModel>();
+            Binder.Bind<IRefreshable>(Binder.Get<AudioSourceViewModel>);
+
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();
             Binder.BindSingleton<CensorOverlaysViewModel>();
+
+            Binder.BindSingleton<FFmpegLog>();
+            Binder.Bind<IFFmpegLogRepository>(ServiceProvider.Get<FFmpegLog>);
+
+            Binder.Bind<IHotkeyActor, HotkeyActor>();
         }
 
         public void Dispose() { }

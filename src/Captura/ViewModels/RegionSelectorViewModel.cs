@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Input;
+using Captura.Models;
+using Reactive.Bindings;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -19,17 +21,39 @@ namespace Captura
             BorderSize = 3,
             KeyMoveDelta = 10;
 
-        public RegionSelectorViewModel()
-        {
-            MoveLeftCommand = new DelegateCommand(() => Left -= KeyMoveDelta);
-            MoveRightCommand = new DelegateCommand(() => Left += KeyMoveDelta);
-            MoveUpCommand = new DelegateCommand(() => Top -= KeyMoveDelta);
-            MoveDownCommand = new DelegateCommand(() => Top += KeyMoveDelta);
+        readonly IVideoSourcePicker _videoSourcePicker;
 
-            IncreaseWidthCommand = new DelegateCommand(() => Width += KeyMoveDelta);
-            DecreaseWidthCommand = new DelegateCommand(() => Width -= KeyMoveDelta);
-            IncreaseHeightCommand = new DelegateCommand(() => Height += KeyMoveDelta);
-            DecreaseHeightCommand = new DelegateCommand(() => Height -= KeyMoveDelta);
+        public RegionSelectorViewModel(IVideoSourcePicker VideoSourcePicker)
+        {
+            _videoSourcePicker = VideoSourcePicker;
+
+            MoveLeftCommand = new ReactiveCommand()
+                .WithSubscribe(() => Left -= KeyMoveDelta);
+            MoveRightCommand = new ReactiveCommand()
+                .WithSubscribe(() => Left += KeyMoveDelta);
+            MoveUpCommand = new ReactiveCommand()
+                .WithSubscribe(() => Top -= KeyMoveDelta);
+            MoveDownCommand = new ReactiveCommand()
+                .WithSubscribe(() => Top += KeyMoveDelta);
+
+            IncreaseWidthCommand = new ReactiveCommand()
+                .WithSubscribe(() => Width += KeyMoveDelta);
+            DecreaseWidthCommand = new ReactiveCommand()
+                .WithSubscribe(() => Width -= KeyMoveDelta);
+            IncreaseHeightCommand = new ReactiveCommand()
+                .WithSubscribe(() => Height += KeyMoveDelta);
+            DecreaseHeightCommand = new ReactiveCommand()
+                .WithSubscribe(() => Height -= KeyMoveDelta);
+        }
+
+        public void SnapToRegion()
+        {
+            var region = _videoSourcePicker.PickRegion();
+
+            if (region is Rectangle rect)
+            {
+                SelectedRegion = rect;
+            }
         }
 
         public int Left
@@ -37,9 +61,7 @@ namespace Captura
             get => _left;
             set
             {
-                _left = value;
-
-                OnPropertyChanged();
+                Set(ref _left, value);
                 RaisePropertyChanged(nameof(LeftDip));
             }
         }
@@ -55,9 +77,7 @@ namespace Captura
             get => _top;
             set
             {
-                _top = value;
-
-                OnPropertyChanged();
+                Set(ref _top, value);
                 RaisePropertyChanged(nameof(TopDip));
             }
         }
@@ -73,9 +93,7 @@ namespace Captura
             get => _width;
             set
             {
-                _width = Math.Max(value, MinWidth);
-
-                OnPropertyChanged();
+                Set(ref _width, Math.Max(value, MinWidth));
                 RaisePropertyChanged(nameof(WidthDip));
             }
         }
@@ -91,9 +109,7 @@ namespace Captura
             get => _height;
             set
             {
-                _height = Math.Max(value, MinHeight);
-
-                OnPropertyChanged();
+                Set(ref _height, Math.Max(value, MinHeight));
                 RaisePropertyChanged(nameof(HeightDip));
             }
         }
