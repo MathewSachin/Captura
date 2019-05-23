@@ -38,12 +38,12 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - [System Requirements](#system-requirements)
 - [FFmpeg](#ffmpeg)
 - Other Links
-  - [Changelog](https://mathewsachin.github.io/Captura/changelog)
-  - [Continuous Integration](https://mathewsachin.github.io/Captura/ci)
+  - [Changelog](docs/Changelogs/README.md)
+  - [Continuous Integration](docs/CI.md)
   - [Contributing](https://mathewsachin.github.io/Captura/contributing)
     - [Translation](https://mathewsachin.github.io/Captura/translation)
-  - [Code of Conduct](https://mathewsachin.github.io/Captura/code_of_conduct)
-  - [Command-line](https://mathewsachin.github.io/Captura/cmdline)
+  - [Code of Conduct](CODE_OF_CONDUCT.md)
+  - [Command-line](docs/Cmdline/README.md)
   - [FAQ](https://mathewsachin.github.io/Captura/faq)
   - [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
   - [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
@@ -65,21 +65,11 @@ choco install captura -y
 
 ### Dev Builds
 
-Dev builds can be unstable and should be used for testing purposes only.
-
-1. Go to [AppVeyor project](https://ci.appveyor.com/project/MathewSachin/Captura/branch/master) page.
-
-2. Select Build Configuration: **Debug** or **Release**.
-
-3. Open **Artifacts** tab.
-
-4. Download **Zip package**.
+See the [Continuous Integration page](docs/CI.md).
 
 ## Build Notes
 
-- [Visual Studio 2017](https://visualstudio.com) or greater is required.
-- .Net Framework v4.7.2 is required.
-- For detailed information, see [Building](https://mathewsachin.github.io/Captura/build).
+See the [Build Notes](docs/Build.md).
 
 ## System Requirements
 
