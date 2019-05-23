@@ -29,25 +29,6 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - Available in [multiple languages](https://mathewsachin.github.io/Captura/translation)
 - Configurable [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
 
-## Table of Contents
-
-- [Installation](#installation)
-  - [Chocolatey](#chocolatey)
-  - [Dev Builds](#dev-builds)
-- [Build Notes](#build-notes)
-- [System Requirements](#system-requirements)
-- [FFmpeg](#ffmpeg)
-- Other Links
-  - [Contributing](CONTRIBUTING.md)
-  - [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
-  - [Command-line](docs/Cmdline/README.md)
-  - [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
-  - [FAQ](https://mathewsachin.github.io/Captura/faq)
-  - [Code of Conduct](CODE_OF_CONDUCT.md)
-  - [Changelog](docs/Changelogs/README.md)
-  - [Continuous Integration](docs/CI.md)
-- [License](#license)
-
 ## Installation
 
 [latest]: https://github.com/MathewSachin/Captura/releases/latest
@@ -66,20 +47,25 @@ choco install captura -y
 
 See the [Continuous Integration page](docs/CI.md).
 
-## Build Notes
+## [Build Notes](docs/Build.md)
 
-See the [Build Notes](docs/Build.md).
+## [System Requirements](docs/System-Requirements.md)
 
-## System Requirements
+## [Contributing](CONTRIBUTING.md)
 
-- Verified on **Windows 10**. Atleast Windows 7 is required.
-- If you are on Windows 7 or earlier, make sure Aero is enabled.
-- **Desktop Duplication API** is only available on **Windows 8** and above.
-- 2 GHz CPU (Recommended).
-- 4 GB RAM (Recommended).
-- **.Net Framework v4.7.2** is required. You will be prompted to install if it is not already present on your system.
-- Using the **FFmpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
-- For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
+## [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
+
+## [Command-line](docs/Cmdline/README.md)
+
+## [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
+
+## [FAQ](https://mathewsachin.github.io/Captura/faq)
+
+## [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## [Changelog](docs/Changelogs/README.md)
+
+## [Continuous Integration](docs/CI.md)
 
 ## FFmpeg
 
