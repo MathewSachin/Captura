@@ -102,11 +102,15 @@ namespace Captura
 
                 if (_selectedWindow == null)
                 {
+                    UpdateSizeDisplay(null);
+
                     Unhighlight();
                 }
                 else
                 {
                     var rect = GetSelectedWindowRectangle().Value;
+
+                    UpdateSizeDisplay(rect);
 
                     HighlightRegion(rect);
                 }
@@ -139,6 +143,9 @@ namespace Captura
 
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
+            if (!_isDragging)
+                return;
+
             var current = E.GetPosition(Grid);
 
             if (current != _start)
