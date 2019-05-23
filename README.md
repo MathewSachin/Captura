@@ -14,7 +14,7 @@
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" align="right" style="max-width: 350px"></a>
+<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" style="max-width: 350px"></a>
 
 ## Features
 
@@ -38,15 +38,14 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 - [System Requirements](#system-requirements)
 - [FFmpeg](#ffmpeg)
 - Other Links
+  - [Contributing](CONTRIBUTING.md)
+  - [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
+  - [Command-line](docs/Cmdline/README.md)
+  - [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
+  - [FAQ](https://mathewsachin.github.io/Captura/faq)
+  - [Code of Conduct](CODE_OF_CONDUCT.md)
   - [Changelog](docs/Changelogs/README.md)
   - [Continuous Integration](docs/CI.md)
-  - [Contributing](https://mathewsachin.github.io/Captura/contributing)
-    - [Translation](https://mathewsachin.github.io/Captura/translation)
-  - [Code of Conduct](CODE_OF_CONDUCT.md)
-  - [Command-line](docs/Cmdline/README.md)
-  - [FAQ](https://mathewsachin.github.io/Captura/faq)
-  - [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
-  - [ScreenShots](https://mathewsachin.github.io/Captura/screenshots)
 - [License](#license)
 
 ## Installation
