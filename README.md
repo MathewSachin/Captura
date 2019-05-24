@@ -1,4 +1,4 @@
-# Captura
+![Captura](https://mathewsachin.github.io/Captura/assets/Banner.png)
 
 [![Master Build Status](https://img.shields.io/appveyor/ci/MathewSachin/Captura/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/Captura)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
@@ -14,7 +14,7 @@
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" style="max-width: 350px"></a>
+<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" style="max-width: 200px"></a>
 
 ## Features
 
