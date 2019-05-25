@@ -169,6 +169,9 @@
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
       <DependentUpon>RegionPickerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ScreenPickerWindow.xaml.cs">
+      <DependentUpon>ScreenPickerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
     </Compile>
@@ -418,6 +421,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\ScreenPickerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\VideoSourcePickerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -655,9 +662,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="Delete unused libs" AfterTargets="Build">
     <ItemGroup>
-      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll"/>
+      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll" />
     </ItemGroup>
-    
     <Delete Files="@(AvalonDockLibs)" />
     <Delete Files="$(OutputPath)Xceed.Wpf.DataGrid.dll" />
   </Target>

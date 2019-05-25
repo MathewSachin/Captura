@@ -13,7 +13,7 @@ namespace Captura.Models
 
         public IScreen PickScreen()
         {
-            return VideoSourcePickerWindow.PickScreen();
+            return ScreenPickerWindow.PickScreen();
         }
 
         public Rectangle? PickRegion()
