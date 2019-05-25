@@ -11,6 +11,7 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
+        Name="This"
         Background="{DynamicResource WindowBackground}">
     <Window.InputBindings>
         <KeyBinding Command="Close"
@@ -20,6 +21,38 @@
         <CommandBinding Command="Close"
                         Executed="CloseClick"/>
     </Window.CommandBindings>
-    <Canvas Name="Container"
-            Margin="10"/>
+    <Grid>
+        <ItemsControl ItemsSource="{Binding ScreenPickerViewModels, ElementName=This}"
+                      Margin="10"
+                      Name="ScreenContainer">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Canvas.Left="{Binding Left}"
+                            Canvas.Top="{Binding Top}"
+                            Width="{Binding Width}"
+                            Height="{Binding Height}"
+                            BorderThickness="2"
+                            BorderBrush="Chocolate">
+                        <Button Background="{Binding Image}"
+                                Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Padding="0"
+                                Command="{Binding SelectScreenCommand, ElementName=This}"
+                                CommandParameter="{Binding Screen}">
+                            <Label Background="#B7000000"
+                                   Foreground="White"
+                                   Content="{Binding Screen.DeviceName}"
+                                   HorizontalContentAlignment="Center"
+                                   Margin="0,0,0,10"/>
+                        </Button>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
 </Window>
