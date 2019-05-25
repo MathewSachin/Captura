@@ -32,7 +32,9 @@ namespace Captura
 
             _platformServices = ServiceProvider.Get<IPlatformServices>();
 
-            _windows = _platformServices.EnumerateWindows().ToArray();
+            _windows = _platformServices
+                .EnumerateAllWindows()
+                .ToArray();
         }
 
         void UpdateBackground()

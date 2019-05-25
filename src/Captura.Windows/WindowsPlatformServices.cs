@@ -29,6 +29,31 @@ namespace Captura
             return Window.EnumerateVisible();
         }
 
+        public IEnumerable<IWindow> EnumerateAllWindows()
+        {
+            return Window
+                .Enumerate()
+                .Where(M => M.IsVisible)
+                .SelectMany(M => GetAllChildren(M));
+        }
+
+        IEnumerable<Window> GetAllChildren(Window Window)
+        {
+            var children = Window
+                .EnumerateChildren()
+                .Where(M => M.IsVisible);
+
+            foreach (var child in children)
+            {
+                foreach (var grandchild in GetAllChildren(child))
+                {
+                    yield return grandchild;
+                }
+            }
+
+            yield return Window;
+        }
+
         public IWindow GetWindow(IntPtr Handle)
         {
             return new Window(Handle);

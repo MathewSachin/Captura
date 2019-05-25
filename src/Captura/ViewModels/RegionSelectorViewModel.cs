@@ -16,9 +16,9 @@ namespace Captura
             _width = 500,
             _height = 500;
 
-        const int MinWidth = 50,
-            MinHeight = 50,
-            KeyMoveDelta = 10;
+        const int MinWidth = 10,
+            MinHeight = 10,
+            KeyMoveDelta = 1;
 
         public const int BorderSize = 3;
 
