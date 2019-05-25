@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Captura"
         mc:Ignorable="d"
         Title="Region Picker"
         d:DesignHeight="600"
@@ -59,12 +60,10 @@
 
         <Image Name="BgImg"/>
 
-        <Border Visibility="Collapsed"
-                BorderBrush = "#333333"
-                BorderThickness="3"
-                Name="Border"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
+        <local:StripedBorder Visibility="Collapsed"
+                             x:Name="Border"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
 
         <Border Visibility="Collapsed"
                 Background="{StaticResource SurroundColor}"

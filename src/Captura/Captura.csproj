@@ -64,6 +64,9 @@
     <Compile Include="Controls\FontSelector.xaml.cs">
       <DependentUpon>FontSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StripedBorder.xaml.cs">
+      <DependentUpon>StripedBorder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
     <Compile Include="ImageEditor\HistoryStack.cs" />
@@ -317,6 +320,10 @@
     </Page>
     <Page Include="Controls\FontSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StripedBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>
@@ -655,9 +662,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="Delete unused libs" AfterTargets="Build">
     <ItemGroup>
-      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll"/>
+      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll" />
     </ItemGroup>
-    
     <Delete Files="@(AvalonDockLibs)" />
     <Delete Files="$(OutputPath)Xceed.Wpf.DataGrid.dll" />
   </Target>

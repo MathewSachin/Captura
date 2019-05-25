@@ -234,9 +234,11 @@ namespace Captura
 
         void HighlightRegion(Rect Region)
         {
-            Border.Margin = new Thickness(Region.X, Region.Y, 0, 0);
-            Border.Width = Region.Width;
-            Border.Height = Region.Height;
+            var border = RegionSelectorViewModel.BorderSize;
+
+            Border.Margin = new Thickness(Region.X - border, Region.Y - border, 0, 0);
+            Border.Width = Region.Width + 2 * border;
+            Border.Height = Region.Height + 2 * border;
 
             BorderTop.Margin = new Thickness();
             BorderTop.Width = Width;
