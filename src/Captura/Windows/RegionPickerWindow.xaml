@@ -65,29 +65,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"/>
 
-        <Border Visibility="Collapsed"
-                Background="{StaticResource SurroundColor}"
-                Name="BorderTop"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
-
-        <Border Visibility="Collapsed"
-                Background="{StaticResource SurroundColor}"
-                Name="BorderBottom"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
-
-        <Border Visibility="Collapsed"
-                Background="{StaticResource SurroundColor}"
-                Name="BorderLeft"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
-
-        <Border Visibility="Collapsed"
-                Background="{StaticResource SurroundColor}"
-                Name="BorderRight"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
+        <local:PuncturedRegion x:Name="PunctRegion"/>
         
         <TextBlock Visibility="Collapsed"
                    Padding="5,2"

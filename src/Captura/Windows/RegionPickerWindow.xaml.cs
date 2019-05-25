@@ -224,44 +224,26 @@ namespace Captura
 
         void Unhighlight()
         {
-            Border.Visibility
-                = BorderTop.Visibility
-                = BorderBottom.Visibility
-                = BorderLeft.Visibility
-                = BorderRight.Visibility
-                = Visibility.Collapsed;
+            Border.Visibility = Visibility.Collapsed;
+            PunctRegion.Region = null;
         }
 
         void HighlightRegion(Rect Region)
         {
             var border = RegionSelectorViewModel.BorderSize;
 
-            Border.Margin = new Thickness(Region.X - border, Region.Y - border, 0, 0);
-            Border.Width = Region.Width + 2 * border;
-            Border.Height = Region.Height + 2 * border;
+            var regionWithBorder = new Rect(Region.X - border,
+                Region.Y - border,
+                Region.Width + 2 * border,
+                Region.Height + 2 * border);
 
-            BorderTop.Margin = new Thickness();
-            BorderTop.Width = Width;
-            BorderTop.Height = Region.Top.Clip(0, Height);
+            Border.Margin = new Thickness(regionWithBorder.X, regionWithBorder.Y, 0, 0);
+            Border.Width = regionWithBorder.Width;
+            Border.Height = regionWithBorder.Height;
 
-            BorderBottom.Margin = new Thickness(0, Region.Bottom, 0, 0);
-            BorderBottom.Width = Width;
-            BorderBottom.Height = (Height - Region.Bottom).Clip(0, Height);
+            PunctRegion.Region = regionWithBorder;
 
-            BorderLeft.Margin = new Thickness(0, Region.Top, 0, 0);
-            BorderLeft.Width = Region.Left.Clip(0, Width);
-            BorderLeft.Height = Region.Height;
-
-            BorderRight.Margin = new Thickness(Region.Right, Region.Top, 0, 0);
-            BorderRight.Width = (Width - Region.Right).Clip(0, Width);
-            BorderRight.Height = Region.Height;
-
-            Border.Visibility
-                = BorderTop.Visibility
-                = BorderBottom.Visibility
-                = BorderLeft.Visibility
-                = BorderRight.Visibility
-                = Visibility.Visible;
+            Border.Visibility = Visibility.Visible;
         }
     }
 }
