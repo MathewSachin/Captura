@@ -20,6 +20,7 @@ namespace DesktopDuplication
             var attribs = new MediaAttributes(1);
             //attribs.Set(SourceReaderAttributeKeys.EnableVideoProcessing, 1);
             attribs.Set(SourceReaderAttributeKeys.EnableAdvancedVideoProcessing, true);
+            attribs.Set(SourceReaderAttributeKeys.DisconnectMediasourceOnShutdown, 1);
 
             _mediaSource = Device.GetSource();
             _sourceReader = new SourceReader(_mediaSource, attribs);
@@ -42,7 +43,7 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
-            _mediaSource.Shutdown();
+            _sourceReader.Dispose();
             _mediaSource.Dispose();
         }
 
