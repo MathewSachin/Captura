@@ -63,5 +63,7 @@ Make sure Audio sources are enabled.";
         {
             return Arg == "none";
         }
+
+        public override IBitmapImage Capture(bool IncludeCursor) => null;
     }
 }

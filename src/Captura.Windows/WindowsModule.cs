@@ -12,6 +12,11 @@ namespace Captura
             Binder.Bind<IDialogService, DialogService>();
             Binder.Bind<IClipboardService, ClipboardService>();
             Binder.Bind<IImagingSystem, DrawingImagingSystem>();
+
+            foreach (var audioItem in MfAudioItem.Items)
+            {
+                Binder.Bind<IAudioWriterItem>(() => audioItem);
+            }
         }
 
         public static bool Windows8OrAbove

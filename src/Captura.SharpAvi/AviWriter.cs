@@ -60,7 +60,7 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
+                    Frame.CopyTo(_videoBuffer);
                 }
             }
 

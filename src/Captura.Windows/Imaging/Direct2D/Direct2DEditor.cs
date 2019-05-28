@@ -192,11 +192,14 @@ namespace DesktopDuplication
             }
         }
 
-        public IBitmapFrame GenerateFrame()
+        public IBitmapFrame GenerateFrame(TimeSpan Timestamp)
         {
             _editorSession.EndDraw();
 
-            return new Texture2DFrame(_editorSession.StagingTexture, _editorSession.Device, _editorSession.PreviewTexture);
+            return new Texture2DFrame(_editorSession.StagingTexture,
+                _editorSession.Device,
+                _editorSession.PreviewTexture,
+                Timestamp);
         }
     }
 }

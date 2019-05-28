@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Captura.Audio;
 using Captura.Models;
 using NAudio.CoreAudioApi;
@@ -14,14 +15,9 @@ namespace Captura.NAudio
     /// Recording to separate audio files is working.
     /// Audio mixing works but changing sources during recording is not supported.
     /// </remarks>
-    public class NAudioSource : AudioSource
+    public class NAudioSource : IAudioSource
     {
-        public NAudioSource()
-        {
-            Refresh();
-        }
-
-        protected override void OnRefresh()
+        public IEnumerable<IAudioItem> GetSources()
         {
             var enumerator = new MMDeviceEnumerator();
 
@@ -29,25 +25,31 @@ namespace Captura.NAudio
 
             foreach (var loopback in loopbackDevs)
             {
-                LoopbackSources.Add(new NAudioItem(loopback));
+                yield return new NAudioItem(loopback, true);
             }
 
             var recordingDevs = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
             foreach (var recording in recordingDevs)
             {
-                RecordingSources.Add(new NAudioItem(recording));
+                yield return new NAudioItem(recording, false);
             }
         }
 
-        public override IAudioProvider GetMixedAudioProvider()
+        public IAudioProvider GetMixedAudioProvider(IEnumerable<IIsActive<IAudioItem>> AudioItems)
         {
-            var rec = AvailableRecordingSources.Where(M => M.Active)
+            var rec = AudioItems
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
+                .Where(M => !M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiCaptureProvider(M.Device))
                 .Cast<NAudioProvider>();
 
-            var loop = AvailableLoopbackSources.Where(M => M.Active)
+            var loop = AudioItems
+                .Where(M => M.IsActive)
+                .Select(M => M.Item)
+                .Where(M => M.IsLoopback)
                 .Cast<NAudioItem>()
                 .Select(M => new WasapiLoopbackCaptureProvider(M.Device))
                 .Cast<NAudioProvider>();
@@ -55,21 +57,23 @@ namespace Captura.NAudio
             return new MixedAudioProvider(rec.Concat(loop));
         }
 
-        public override IAudioProvider[] GetMultipleAudioProviders()
+        public IAudioProvider GetAudioProvider(IAudioItem AudioItem)
         {
-            var rec = AvailableRecordingSources.Where(M => M.Active)
-                .Cast<NAudioItem>()
-                .Select(M => new WasapiCaptureProvider(M.Device))
-                .Cast<IAudioProvider>();
+            if (AudioItem is NAudioItem item)
+            {
+                if (item.IsLoopback)
+                    return new WasapiLoopbackCaptureProvider(item.Device);
 
-            var loop = AvailableLoopbackSources.Where(M => M.Active)
-                .Cast<NAudioItem>()
-                .Select(M => new WasapiLoopbackCaptureProvider(M.Device))
-                .Cast<IAudioProvider>();
+                return new WasapiCaptureProvider(item.Device);
+            }
 
-            return rec.Concat(loop).ToArray();
+            return null;
         }
 
-        public override string Name { get; } = "NAudio";
+        public string Name { get; } = "NAudio";
+
+        public bool CanChangeSourcesDuringRecording => false;
+
+        public void Dispose() { }
     }
 }

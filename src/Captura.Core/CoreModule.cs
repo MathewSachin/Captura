@@ -1,5 +1,4 @@
-﻿using System;
-using Captura.Models;
+﻿using Captura.Models;
 using Captura.NAudio;
 using Captura.ViewModels;
 using DesktopDuplication;
@@ -90,11 +89,9 @@ namespace Captura
             // Check if Bass is available
             if (BassAudioSource.Available)
             {
-                Binder.Bind<AudioSource, BassAudioSource>();
+                Binder.Bind<IAudioSource, BassAudioSource>();
             }
-            else Binder.Bind<AudioSource, NAudioSource>();
-
-            Binder.Bind<IRefreshable>(Binder.Get<AudioSource>);
+            else Binder.Bind<IAudioSource, NAudioSource>();
         }
 
         static void BindVideoSourceProviders(IBinder Binder)
@@ -106,11 +103,6 @@ namespace Captura
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, ScreenSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, WindowSourceProvider>();
             Binder.BindAsInterfaceAndClass<IVideoSourceProvider, RegionSourceProvider>();
-
-            if (WindowsModule.Windows8OrAbove)
-            {
-                Binder.BindAsInterfaceAndClass<IVideoSourceProvider, DeskDuplSourceProvider>();
-            }
         }
 
         static void BindVideoWriterProviders(IBinder Binder)

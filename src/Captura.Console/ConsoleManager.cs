@@ -23,6 +23,7 @@ namespace Captura
         readonly WebcamModel _webcamModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
+        readonly IAudioSource _audioSource;
 
         public ConsoleManager(Settings Settings,
             RecordingModel RecordingModel,
@@ -30,7 +31,8 @@ namespace Captura
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
-            IMessageProvider MessageProvider)
+            IMessageProvider MessageProvider,
+            IAudioSource AudioSource)
         {
             _settings = Settings;
             _recordingModel = RecordingModel;
@@ -39,6 +41,7 @@ namespace Captura
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
             _messageProvider = MessageProvider;
+            _audioSource = AudioSource;
 
             // Hide on Full Screen Screenshot doesn't work on Console
             Settings.UI.HideOnFullScreenShot = false;
@@ -60,6 +63,9 @@ namespace Captura
             _settings.Clicks = dummySettings.Clicks;
             _settings.Keystrokes = dummySettings.Keystrokes;
             _settings.Elapsed = dummySettings.Elapsed;
+
+            // Output Folder
+            _settings.OutPath = dummySettings.OutPath;
 
             // FFmpeg Path
             _settings.FFmpeg.FolderPath = dummySettings.FFmpeg.FolderPath;
@@ -109,7 +115,7 @@ namespace Captura
 
             var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
-            HandleAudioSource(StartOptions);
+            var audioSources = HandleAudioSource(StartOptions);
 
             HandleWebcam(StartOptions);
 
@@ -128,8 +134,8 @@ namespace Captura
             if (!_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = videoSourceKind,
-                VideoWriterKind = videoWriterKind,
-                VideoWriter = videoWriter
+                VideoWriter = videoWriter,
+                AudioItems = audioSources.Select(M => M.ToIsActive(true))
             }, StartOptions.FileName))
                 return;
 
@@ -184,20 +190,28 @@ namespace Captura
             return provider;
         }
 
-        void HandleAudioSource(StartCmdOptions StartOptions)
+        IEnumerable<IAudioItem> HandleAudioSource(StartCmdOptions StartOptions)
         {
-            var audioSource = ServiceProvider.Get<AudioSource>();
+            var sources = _audioSource.GetSources();
 
-            if (StartOptions.Microphone != -1 && StartOptions.Microphone < audioSource.AvailableRecordingSources.Count)
+            var mics = sources
+                .Where(M => !M.IsLoopback)
+                .ToArray();
+
+            var speakers = sources
+                .Where(M => M.IsLoopback)
+                .ToArray();
+
+            if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
                 _settings.Audio.Enabled = true;
-                audioSource.AvailableRecordingSources[StartOptions.Microphone].Active = true;
+                yield return mics[StartOptions.Microphone];
             }
 
-            if (StartOptions.Speaker != -1 && StartOptions.Speaker < audioSource.AvailableLoopbackSources.Count)
+            if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
                 _settings.Audio.Enabled = true;
-                audioSource.AvailableLoopbackSources[StartOptions.Speaker].Active = true;
+                yield return speakers[StartOptions.Speaker];
             }
         }
 

@@ -100,15 +100,6 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="{Binding ScreenShotActiveWindow, Source={StaticResource Loc}, Mode=OneWay}"
-                              Command="{Binding ScreenShotViewModel.ScreenShotActiveCommand, Source={StaticResource ServiceLocator}}">
-                        <MenuItem.Icon>
-                            <Image Source="{StaticResource ScreenShotImageSource}"
-                                   Width="13"
-                                   Margin="5"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-
                     <MenuItem Header="{Binding ScreenShotDesktop, Source={StaticResource Loc}, Mode=OneWay}"
                               Command="{Binding ScreenShotViewModel.ScreenShotDesktopCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>

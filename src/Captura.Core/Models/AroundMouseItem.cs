@@ -17,8 +17,9 @@ namespace Captura.Models
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            return new AroundMouseImageProvider(_settings.AroundMouseWidth,
-                _settings.AroundMouseHeight,
+            return new AroundMouseImageProvider(_settings.AroundMouse.Width,
+                _settings.AroundMouse.Height,
+                _settings.AroundMouse.Margin,
                 _platformServices,
                 IncludeCursor);
         }

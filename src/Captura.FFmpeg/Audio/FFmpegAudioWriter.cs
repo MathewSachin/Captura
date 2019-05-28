@@ -12,6 +12,11 @@ namespace Captura.Models
         
         public FFmpegAudioWriter(string FileName, int AudioQuality, FFmpegAudioArgsProvider AudioArgsProvider, int Frequency = 44100, int Channels = 2)
         {
+            if (!FFmpegService.FFmpegExists)
+            {
+                throw new FFmpegNotFoundException();
+            }
+
             var argsBuilder  = new FFmpegArgsBuilder();
 
             argsBuilder.AddStdIn()

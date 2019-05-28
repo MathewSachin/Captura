@@ -1,5 +1,6 @@
 ﻿using System;
 using Captura.Models;
+using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -10,7 +11,6 @@ using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Device = SharpDX.Direct3D11.Device;
 using Factory = SharpDX.DirectWrite.Factory;
 using Factory1 = SharpDX.Direct2D1.Factory1;
-using FeatureLevel = SharpDX.Direct3D.FeatureLevel;
 using PixelFormat = SharpDX.Direct2D1.PixelFormat;
 
 namespace DesktopDuplication
@@ -49,9 +49,16 @@ namespace DesktopDuplication
         {
             _previewWindow = PreviewWindow;
 
-            Device = new Device(DriverType.Hardware,
-                DeviceCreationFlags.BgraSupport,
-                FeatureLevel.Level_11_1);
+            try
+            {
+                Device = new Device(DriverType.Hardware,
+                    DeviceCreationFlags.BgraSupport);
+            }
+            catch (SharpDXException)
+            {
+                Device = new Device(DriverType.Warp,
+                    DeviceCreationFlags.BgraSupport);
+            }
 
             StagingTexture = new Texture2D(Device, new Texture2DDescription
             {
@@ -90,10 +97,7 @@ namespace DesktopDuplication
 
             var pixelFormat = new PixelFormat(Format.Unknown, AlphaMode.Ignore);
 
-            var renderTargetProps = new RenderTargetProperties(pixelFormat)
-            {
-                Type = RenderTargetType.Hardware
-            };
+            var renderTargetProps = new RenderTargetProperties(pixelFormat);
 
             using (var surface = DesktopTexture.QueryInterface<Surface>())
             {

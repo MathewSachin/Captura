@@ -9,20 +9,19 @@ namespace Screna
         readonly IPlatformServices _platformServices;
         readonly IImageProvider _regionProvider;
         Rectangle _regionAroundMouse;
-        readonly int _offsetX, _offsetY;
+        readonly int _margin;
 
         public AroundMouseImageProvider(int Width,
             int Height,
+            int Margin,
             IPlatformServices PlatformServices,
             bool IncludeCursor)
         {
             _platformServices = PlatformServices;
+            _margin = Margin;
 
             this.Width = Width;
             this.Height = Height;
-
-            _offsetX = Width / 4;
-            _offsetY = Height / 4;
 
             _regionAroundMouse = new Rectangle(0, 0, Width, Height);
 
@@ -43,22 +42,22 @@ namespace Screna
         {
             if (CursorPos.X < OffsetRegion.X)
             {
-                _regionAroundMouse.X = CursorPos.X - _offsetX;
+                _regionAroundMouse.X = CursorPos.X - _margin;
             }
 
             if (CursorPos.Y < OffsetRegion.Y)
             {
-                _regionAroundMouse.Y = CursorPos.Y - _offsetY;
+                _regionAroundMouse.Y = CursorPos.Y - _margin;
             }
 
             if (CursorPos.X > OffsetRegion.Right)
             {
-                _regionAroundMouse.X = CursorPos.X - OffsetRegion.Width - _offsetX;
+                _regionAroundMouse.X = CursorPos.X - OffsetRegion.Width - _margin;
             }
 
             if (CursorPos.Y > OffsetRegion.Bottom)
             {
-                _regionAroundMouse.Y = CursorPos.Y - OffsetRegion.Height - _offsetY;
+                _regionAroundMouse.Y = CursorPos.Y - OffsetRegion.Height - _margin;
             }
         }
 
@@ -90,7 +89,7 @@ namespace Screna
             var cursorPos = _platformServices.CursorPosition;
 
             var offsetRegion = new Rectangle(_regionAroundMouse.Location, _regionAroundMouse.Size);
-            offsetRegion.Inflate(-_offsetX, -_offsetY);
+            offsetRegion.Inflate(-_margin, -_margin);
 
             if (!offsetRegion.Contains(cursorPos))
             {
