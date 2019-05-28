@@ -20,6 +20,7 @@ namespace Captura
         readonly RecordingModel _recordingModel;
         readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
+        readonly IEnumerable<IVideoWriterProvider> _videoWriterProviders;
         readonly WebcamModel _webcamModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
@@ -29,6 +30,7 @@ namespace Captura
             RecordingModel RecordingModel,
             ScreenShotModel ScreenShotModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
+            IEnumerable<IVideoWriterProvider> VideoWriterProviders,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
             IMessageProvider MessageProvider,
@@ -38,6 +40,7 @@ namespace Captura
             _recordingModel = RecordingModel;
             _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
+            _videoWriterProviders = VideoWriterProviders;
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
             _messageProvider = MessageProvider;
@@ -217,56 +220,26 @@ namespace Captura
 
         IVideoWriterItem HandleVideoEncoder(StartCmdOptions StartOptions, out IVideoWriterProvider VideoWriterKind)
         {
+            var selected = _videoWriterProviders
+                .Select(M => new
+                {
+                    kind = M,
+                    writer = M.ParseCli(StartOptions.Encoder)
+                })
+                .FirstOrDefault(M => M.writer != null);
+
+            if (selected != null)
+            {
+                VideoWriterKind = selected.kind;
+
+                return selected.writer;
+            }
+
             var ffmpegExists = FFmpegService.FFmpegExists;
             var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
 
-            if (StartOptions.Encoder == null)
-                StartOptions.Encoder = "sharpavi:0";
-
-            // FFmpeg
-            if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
-            {
-                var index = int.Parse(StartOptions.Encoder.Substring(7));
-
-                var ffmpegWriterProvider = ServiceProvider.Get<FFmpegWriterProvider>();
-                var writers = ffmpegWriterProvider.ToArray();
-
-                if (index < writers.Length)
-                {
-                    VideoWriterKind = ffmpegWriterProvider;
-
-                    return writers[index];
-                }
-            }
-
-            // SharpAvi
-            else if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(StartOptions.Encoder, @"^sharpavi:\d+$"))
-            {
-                var index = int.Parse(StartOptions.Encoder.Substring(9));
-
-                var writers = sharpAviWriterProvider.ToArray();
-
-                if (index < writers.Length)
-                {
-                    VideoWriterKind = sharpAviWriterProvider;
-
-                    return writers[index];
-                }
-            }
-
-            // Stream
-            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
-            {
-                var url = StartOptions.Encoder.Substring(7);
-                _settings.FFmpeg.CustomStreamingUrl = url;
-
-                VideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
-
-                return StreamingWriterProvider.GetCustomStreamingCodec();
-            }
-
             // Rolling
-            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^roll:\d+$"))
+            if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^roll:\d+$"))
             {
                 var duration = int.Parse(StartOptions.Encoder.Substring(5));
 

@@ -1,6 +1,8 @@
 ﻿using SharpAvi.Codecs;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Captura.Models
 {
@@ -22,6 +24,23 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public IVideoWriterItem ParseCli(string Cli)
+        {
+            if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(Cli, @"^sharpavi:\d+$"))
+            {
+                var index = int.Parse(Cli.Substring(9));
+
+                var writers = this.ToArray();
+
+                if (index < writers.Length)
+                {
+                    return writers[index];
+                }
+            }
+
+            return null;
+        }
 
         public string Description => "Encode Avi videos using SharpAvi.";
     }

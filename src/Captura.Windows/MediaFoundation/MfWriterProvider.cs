@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
@@ -25,6 +26,11 @@ namespace Captura.Models
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString() => Name;
+
+        public IVideoWriterItem ParseCli(string Cli)
+        {
+            return Cli == "mf" ? this.First() : null;
+        }
 
         public string Description => "Encode to Mp4: H.264 with AAC audio using Media Foundation Hardware encoder";
     }
