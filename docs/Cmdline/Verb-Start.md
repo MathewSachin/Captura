@@ -45,6 +45,15 @@ e.g.
 captura-cli start --encoder sharpavi:0
 ```
 
+## Media Foundation
+Use `mf` as argument.
+
+e.g.
+
+```
+captura-cli start --encoder mf
+```
+
 ### FFmpeg
 Use `ffmpeg:<index>` as argument. `index` is a zero-based index identifying the encoder.
 
