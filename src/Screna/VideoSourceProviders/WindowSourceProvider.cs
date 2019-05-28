@@ -75,7 +75,7 @@ The video is of the initial size of the window.";
 
         public override bool ParseCli(string Arg)
         {
-            if (!Regex.IsMatch(Arg, @"^win:\d+$"))
+            if (!Regex.IsMatch(Arg, @"^win:-?\d+$"))
                 return false;
 
             var handle = new IntPtr(int.Parse(Arg.Substring(4)));
