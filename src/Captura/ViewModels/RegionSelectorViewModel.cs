@@ -16,10 +16,11 @@ namespace Captura
             _width = 500,
             _height = 500;
 
-        const int MinWidth = 300,
-            MinHeight = 300,
-            BorderSize = 3,
-            KeyMoveDelta = 10;
+        const int MinWidth = 10,
+            MinHeight = 10,
+            KeyMoveDelta = 1;
+
+        public const int BorderSize = 3;
 
         readonly IVideoSourcePicker _videoSourcePicker;
 

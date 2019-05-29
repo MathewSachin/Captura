@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Captura</RootNamespace>
     <AssemblyName>captura-cli</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

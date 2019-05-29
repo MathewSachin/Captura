@@ -32,7 +32,9 @@ namespace Captura
 
             _platformServices = ServiceProvider.Get<IPlatformServices>();
 
-            _windows = _platformServices.EnumerateWindows().ToArray();
+            _windows = _platformServices
+                .EnumerateAllWindows()
+                .ToArray();
         }
 
         void UpdateBackground()
@@ -102,11 +104,15 @@ namespace Captura
 
                 if (_selectedWindow == null)
                 {
+                    UpdateSizeDisplay(null);
+
                     Unhighlight();
                 }
                 else
                 {
                     var rect = GetSelectedWindowRectangle().Value;
+
+                    UpdateSizeDisplay(rect);
 
                     HighlightRegion(rect);
                 }
@@ -139,6 +145,9 @@ namespace Captura
 
         void WindowMouseLeftButtonUp(object Sender, MouseButtonEventArgs E)
         {
+            if (!_isDragging)
+                return;
+
             var current = E.GetPosition(Grid);
 
             if (current != _start)
@@ -217,42 +226,26 @@ namespace Captura
 
         void Unhighlight()
         {
-            Border.Visibility
-                = BorderTop.Visibility
-                = BorderBottom.Visibility
-                = BorderLeft.Visibility
-                = BorderRight.Visibility
-                = Visibility.Collapsed;
+            Border.Visibility = Visibility.Collapsed;
+            PunctRegion.Region = null;
         }
 
         void HighlightRegion(Rect Region)
         {
-            Border.Margin = new Thickness(Region.X, Region.Y, 0, 0);
-            Border.Width = Region.Width;
-            Border.Height = Region.Height;
+            var border = RegionSelectorViewModel.BorderSize;
 
-            BorderTop.Margin = new Thickness();
-            BorderTop.Width = Width;
-            BorderTop.Height = Region.Top.Clip(0, Height);
+            var regionWithBorder = new Rect(Region.X - border,
+                Region.Y - border,
+                Region.Width + 2 * border,
+                Region.Height + 2 * border);
 
-            BorderBottom.Margin = new Thickness(0, Region.Bottom, 0, 0);
-            BorderBottom.Width = Width;
-            BorderBottom.Height = (Height - Region.Bottom).Clip(0, Height);
+            Border.Margin = new Thickness(regionWithBorder.X, regionWithBorder.Y, 0, 0);
+            Border.Width = regionWithBorder.Width;
+            Border.Height = regionWithBorder.Height;
 
-            BorderLeft.Margin = new Thickness(0, Region.Top, 0, 0);
-            BorderLeft.Width = Region.Left.Clip(0, Width);
-            BorderLeft.Height = Region.Height;
+            PunctRegion.Region = regionWithBorder;
 
-            BorderRight.Margin = new Thickness(Region.Right, Region.Top, 0, 0);
-            BorderRight.Width = (Width - Region.Right).Clip(0, Width);
-            BorderRight.Height = Region.Height;
-
-            Border.Visibility
-                = BorderTop.Visibility
-                = BorderBottom.Visibility
-                = BorderLeft.Visibility
-                = BorderRight.Visibility
-                = Visibility.Visible;
+            Border.Visibility = Visibility.Visible;
         }
     }
 }
