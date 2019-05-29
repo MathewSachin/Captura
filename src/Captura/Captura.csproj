@@ -58,11 +58,17 @@
     <Compile Include="Controls\OutputFolderControl.xaml.cs">
       <DependentUpon>OutputFolderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PuncturedRegion.xaml.cs">
+      <DependentUpon>PuncturedRegion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FontSelector.xaml.cs">
       <DependentUpon>FontSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StripedBorder.xaml.cs">
+      <DependentUpon>StripedBorder.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
@@ -311,6 +317,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PuncturedRegion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\VideoSourceKindList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -321,6 +331,10 @@
     </Page>
     <Page Include="Controls\FontSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StripedBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>

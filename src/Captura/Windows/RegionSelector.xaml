@@ -5,7 +5,6 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Background="Transparent"
@@ -69,84 +68,15 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <DockPanel Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                   Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                   Name="Region">
-            <DockPanel.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="BorderBrush">
-                        <Setter.Value>
-                            <DrawingBrush TileMode="Tile"
-                                          Viewport="0,0,20,20"
-                                          ViewportUnits="Absolute">
-                                <DrawingBrush.Drawing>
-                                    <DrawingGroup>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <GeometryGroup>
-                                                    <RectangleGeometry Rect="0,0,10,10" />
-                                                    <RectangleGeometry Rect="10,10,10,10" />
-                                                </GeometryGroup>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <SolidColorBrush Color="{DynamicResource AccentColor}"/>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <GeometryGroup>
-                                                    <RectangleGeometry Rect="10,0,10,10" />
-                                                    <RectangleGeometry Rect="0,10,10,10" />
-                                                </GeometryGroup>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                    </DrawingGroup>
-                                </DrawingBrush.Drawing>
-                            </DrawingBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard Name="RedStoryboard">
-                                    <Storyboard>
-                                        <ColorAnimation To="#ef5350"
-                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
-                                                        Duration="00:00:00.5"/>
-
-                                        <ColorAnimation To="White"
-                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
-                                                        Duration="00:00:00.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <StopStoryboard BeginStoryboardName="RedStoryboard"/>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DockPanel.Resources>
-
-            <Border BorderThickness="1,0"/>
-
-            <Border BorderThickness="1,0"
-                    DockPanel.Dock="Right"/>
-
-            <Border BorderThickness="0,1"
-                    DockPanel.Dock="Bottom"/>
-
-            <Border BorderThickness="0,1"
-                    DockPanel.Dock="Top"/>
+        <Grid Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+              Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+              Name="Region">
+            <local:StripedBorder/>
 
             <InkCanvas Background="Transparent"
                        Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                        Name="InkCanvas"/>
-        </DockPanel>
+        </Grid>
 
         <Thumb VerticalAlignment="Top"
                Height="2"
