@@ -44,6 +44,9 @@ namespace Captura
         public static extern bool EnumWindows(EnumWindowsProc proc, IntPtr lParam);
 
         [DllImport(DllName)]
+        public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowsProc proc, IntPtr lParam);
+
+        [DllImport(DllName)]
         public static extern int GetWindowText(IntPtr hWnd, [Out] StringBuilder lpString, int nMaxCount);
 
         [DllImport(DllName)]

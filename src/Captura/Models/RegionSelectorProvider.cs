@@ -12,15 +12,14 @@ namespace Captura
         readonly RegionItem _regionItem;
         readonly RegionSelectorViewModel _viewModel;
 
-        public RegionSelectorProvider(IVideoSourcePicker VideoSourcePicker,
-            RegionSelectorViewModel ViewModel,
+        public RegionSelectorProvider(RegionSelectorViewModel ViewModel,
             IPlatformServices PlatformServices)
         {
             _viewModel = ViewModel;
 
             _regionSelector = new Lazy<RegionSelector>(() =>
             {
-                var reg = new RegionSelector(VideoSourcePicker, ViewModel);
+                var reg = new RegionSelector(ViewModel);
 
                 reg.SelectorHidden += () => SelectorHidden?.Invoke();
 

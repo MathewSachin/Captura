@@ -16,10 +16,11 @@ namespace Captura
             _width = 500,
             _height = 500;
 
-        const int MinWidth = 300,
-            MinHeight = 300,
-            BorderSize = 3,
-            KeyMoveDelta = 10;
+        const int MinWidth = 10,
+            MinHeight = 10,
+            KeyMoveDelta = 1;
+
+        public const int BorderSize = 3;
 
         readonly IVideoSourcePicker _videoSourcePicker;
 
@@ -44,12 +45,9 @@ namespace Captura
                 .WithSubscribe(() => Height += KeyMoveDelta);
             DecreaseHeightCommand = new ReactiveCommand()
                 .WithSubscribe(() => Height -= KeyMoveDelta);
-
-            SnapToRegionCommand = new ReactiveCommand()
-                .WithSubscribe(SnapToRegion);
         }
 
-        void SnapToRegion()
+        public void SnapToRegion()
         {
             var region = _videoSourcePicker.PickRegion();
 
@@ -200,7 +198,5 @@ namespace Captura
         public ICommand DecreaseWidthCommand { get; }
         public ICommand IncreaseHeightCommand { get; }
         public ICommand DecreaseHeightCommand { get; }
-
-        public ICommand SnapToRegionCommand { get; }
     }
 }
