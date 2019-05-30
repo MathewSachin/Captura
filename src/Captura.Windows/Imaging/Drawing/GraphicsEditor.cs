@@ -21,11 +21,11 @@ namespace Screna
             _graphics.SmoothingMode = SmoothingMode.AntiAlias;
         }
 
-        public IBitmapFrame GenerateFrame()
+        public IBitmapFrame GenerateFrame(TimeSpan Timestamp)
         {
             Dispose();
 
-            return new OneTimeFrame(_image);
+            return new OneTimeFrame(_image, Timestamp);
         }
 
         public IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)

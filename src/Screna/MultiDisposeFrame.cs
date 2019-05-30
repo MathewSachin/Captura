@@ -44,6 +44,8 @@ namespace Screna
         public int Width => Frame.Width;
         public int Height => Frame.Height;
 
+        public TimeSpan Timestamp => Frame.Timestamp;
+
         public void CopyTo(byte[] Buffer)
         {
             Frame.CopyTo(Buffer);

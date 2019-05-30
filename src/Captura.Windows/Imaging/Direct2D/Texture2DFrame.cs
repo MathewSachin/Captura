@@ -15,8 +15,14 @@ namespace DesktopDuplication
 
         public Device Device { get; }
 
-        public Texture2DFrame(Texture2D Texture, Device Device, Texture2D PreviewTexture)
+        public TimeSpan Timestamp { get; }
+
+        public Texture2DFrame(Texture2D Texture,
+            Device Device,
+            Texture2D PreviewTexture,
+            TimeSpan Timestamp)
         {
+            this.Timestamp = Timestamp;
             this.Texture = Texture;
             this.Device = Device;
             this.PreviewTexture = PreviewTexture;

@@ -53,31 +53,30 @@ namespace Captura.Models
                 _lastFrame?.Dispose();
                 _lastFrame = Frame;
 
-                if (Frame is MultiDisposeFrame frameWrapper)
+                Frame = Frame.Unwrap();
+
+                switch (Frame)
                 {
-                    switch (frameWrapper.Frame)
-                    {
-                        case DrawingFrameBase drawingFrame:
-                            _previewWindow.WinFormsHost.Visibility = Visibility.Visible;
-                            _previewWindow.DisplayImage.Image = drawingFrame.Bitmap;
-                            break;
+                    case DrawingFrameBase drawingFrame:
+                        _previewWindow.WinFormsHost.Visibility = Visibility.Visible;
+                        _previewWindow.DisplayImage.Image = drawingFrame.Bitmap;
+                        break;
 
-                        case Texture2DFrame texture2DFrame:
-                            _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
-                            if (_d3D9PreviewAssister == null)
+                    case Texture2DFrame texture2DFrame:
+                        _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
+                        if (_d3D9PreviewAssister == null)
+                        {
+                            _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
+                            _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
+
+                            using (var surface = _texture.GetSurfaceLevel(0))
                             {
-                                _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
-                                _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
-
-                                using (var surface = _texture.GetSurfaceLevel(0))
-                                {
-                                    _backBufferPtr = surface.NativePointer;
-                                }
+                                _backBufferPtr = surface.NativePointer;
                             }
+                        }
 
-                            Invalidate(_backBufferPtr, texture2DFrame.Width, texture2DFrame.Height);
-                            break;
-                    }
+                        Invalidate(_backBufferPtr, texture2DFrame.Width, texture2DFrame.Height);
+                        break;
                 }
             });
         }

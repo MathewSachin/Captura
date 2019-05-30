@@ -35,7 +35,7 @@ namespace DesktopDuplication
         // Keep this separate. First frame might be a RepeatFrame.
         bool _first = true;
 
-        static long PackLong(int Left, int Right)
+        public static long PackLong(int Left, int Right)
         {
             return new PackedLong
             {
@@ -239,17 +239,18 @@ namespace DesktopDuplication
         {
             ++_frameNumber;
 
+            if (Image is RepeatFrame)
+                return;
+
+            Image = Image.Unwrap();
+
             using (Image)
             {
                 if (Image is Texture2DFrame frame)
                 {
                     Write(frame.Texture);
                 }
-                else if (Image is IFrameWrapper wrapper && wrapper.Frame is Texture2DFrame textureFrame)
-                {
-                    Write(textureFrame.Texture);
-                }
-                else if (!(Image is RepeatFrame))
+                else
                 {
                     using (var buffer = MediaFactory.CreateMemoryBuffer(_bufferSize))
                     {

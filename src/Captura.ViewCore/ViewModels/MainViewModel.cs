@@ -26,6 +26,8 @@ namespace Captura.ViewModels
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
+        public IReadOnlyReactiveProperty<string> OutFolderDisplay { get; }
+
         public MainViewModel(Settings Settings,
             ILocalizationProvider Loc,
             HotKeyManager HotKeyManager,
@@ -38,6 +40,11 @@ namespace Captura.ViewModels
         {
             _dialogService = DialogService;
             _rememberByName = RememberByName;
+
+            OutFolderDisplay = Settings
+                .ObserveProperty(M => M.OutPath)
+                .Select(M => Settings.GetOutputPath())
+                .ToReadOnlyReactivePropertySlim();
 
             ShowPreviewCommand = new ReactiveCommand()
                 .WithSubscribe(PreviewWindow.Show);

@@ -11,6 +11,8 @@ namespace Captura
 
         IEnumerable<IWindow> EnumerateWindows();
 
+        IEnumerable<IWindow> EnumerateAllWindows();
+
         IWindow GetWindow(IntPtr Handle);
 
         IWindow DesktopWindow { get; }

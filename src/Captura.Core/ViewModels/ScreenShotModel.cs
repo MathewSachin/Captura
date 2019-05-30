@@ -10,37 +10,31 @@ namespace Captura.ViewModels
     public class ScreenShotModel : NotifyPropertyChanged
     {
         readonly ISystemTray _systemTray;
-        readonly IRegionProvider _regionProvider;
         readonly IMainWindow _mainWindow;
         readonly IVideoSourcePicker _sourcePicker;
         readonly IAudioPlayer _audioPlayer;
         readonly Settings _settings;
         readonly ILocalizationProvider _loc;
         readonly IPlatformServices _platformServices;
-        readonly WebcamModel _webcamModel;
 
         public IReadOnlyList<IImageWriterItem> AvailableImageWriters { get; }
 
         public ScreenShotModel(ISystemTray SystemTray,
-            IRegionProvider RegionProvider,
             IMainWindow MainWindow,
             IVideoSourcePicker SourcePicker,
             IAudioPlayer AudioPlayer,
             IEnumerable<IImageWriterItem> ImageWriters,
             Settings Settings,
             ILocalizationProvider Loc,
-            IPlatformServices PlatformServices,
-            WebcamModel WebcamModel)
+            IPlatformServices PlatformServices)
         {
             _systemTray = SystemTray;
-            _regionProvider = RegionProvider;
             _mainWindow = MainWindow;
             _sourcePicker = SourcePicker;
             _audioPlayer = AudioPlayer;
             _settings = Settings;
             _loc = Loc;
             _platformServices = PlatformServices;
-            _webcamModel = WebcamModel;
 
             AvailableImageWriters = ImageWriters.ToList();
 

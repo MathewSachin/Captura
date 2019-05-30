@@ -10,8 +10,11 @@ namespace Screna
     {
         public Bitmap Bitmap { get; }
 
-        protected DrawingFrameBase(Bitmap Bitmap)
+        public TimeSpan Timestamp { get; }
+
+        protected DrawingFrameBase(Bitmap Bitmap, TimeSpan Timestamp)
         {
+            this.Timestamp = Timestamp;
             this.Bitmap = Bitmap;
             Width = Bitmap.Width;
             Height = Bitmap.Height;

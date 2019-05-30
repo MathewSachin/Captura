@@ -48,6 +48,9 @@ namespace Captura
         [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
         public int Webcam { get; set; }
 
+        [Option("settings", HelpText = "Settings file to use for overlay settings, ffmpeg path and output path")]
+        public string Settings { get; set; }
+
         [Usage]
         public static IEnumerable<Example> Examples
         {
@@ -76,6 +79,12 @@ namespace Captura
 
         public void Run()
         {
+            // Override settings dir
+            if (Settings != null)
+            {
+                ServiceProvider.SettingsDir = Settings;
+            }
+
             using (var manager = ServiceProvider.Get<ConsoleManager>())
             {
                 manager.CopySettings();
