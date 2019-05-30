@@ -227,7 +227,8 @@ namespace Captura.ViewModels
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
                 VideoWriter = _videoWritersViewModel.SelectedVideoWriter,
-                AudioItems = _audioSourceViewModel.AvailableRecordingSources
+                AudioItems = _audioSourceViewModel.AvailableRecordingSources,
+                PostWriter = Settings.Video.PostConvert ? _videoWritersViewModel.SelectedPostWriter : null
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)
