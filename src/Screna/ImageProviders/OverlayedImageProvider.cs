@@ -11,7 +11,6 @@ namespace Screna
     {
         IOverlay[] _overlays;
         IImageProvider _imageProvider;
-        readonly Func<Point, Point> _transform;
         
         /// <summary>
         /// Creates a new instance of <see cref="OverlayedImageProvider"/>.
@@ -19,11 +18,10 @@ namespace Screna
         /// <param name="ImageProvider">The <see cref="IImageProvider"/> to apply the Overlays on.</param>
         /// <param name="Overlays">Array of <see cref="IOverlay"/>(s) to apply.</param>
         /// <param name="Transform">Point Transform Function.</param>
-        public OverlayedImageProvider(IImageProvider ImageProvider, Func<Point, Point> Transform, params IOverlay[] Overlays)
+        public OverlayedImageProvider(IImageProvider ImageProvider, params IOverlay[] Overlays)
         {
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
             _overlays = Overlays ?? throw new ArgumentNullException(nameof(Overlays));
-            _transform = Transform ?? throw new ArgumentNullException(nameof(Transform));
 
             Width = ImageProvider.Width;
             Height = ImageProvider.Height;
@@ -39,9 +37,12 @@ namespace Screna
             {
                 return bmp;
             }
-            
-            foreach (var overlay in _overlays)
-                overlay?.Draw(bmp, _transform);
+
+            if (_overlays != null)
+            {
+                foreach (var overlay in _overlays)
+                    overlay?.Draw(bmp, _imageProvider.PointTransform);
+            }
             
             return bmp;
         }
@@ -51,6 +52,8 @@ namespace Screna
 
         /// <inheritdoc />
         public int Width { get; }
+
+        public Func<Point, Point> PointTransform { get; } = P => P;
 
         /// <inheritdoc />
         public void Dispose()
@@ -63,5 +66,7 @@ namespace Screna
             _imageProvider = null;
             _overlays = null;
         }
+
+        public Type EditorType => _imageProvider.EditorType;
     }
 }

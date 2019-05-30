@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using Captura.Native;
 using CommandLine;
 using static System.Console;
@@ -12,60 +12,24 @@ namespace Captura
     {
         static void Main(string[] Args)
         {
-            if (Args.Length == 0)
-            {
-                var uiPath = Path.Combine(ServiceProvider.AppDir, "captura.exe");
-
-                if (File.Exists(uiPath))
-                {
-                    Process.Start(uiPath);
-
-                    return;
-                }
-            }
-
             User32.SetProcessDPIAware();
 
             ServiceProvider.LoadModule(new CoreModule());
             ServiceProvider.LoadModule(new FakesModule());
+            ServiceProvider.LoadModule(new VerbsModule());
 
-            Parser.Default.ParseArguments<StartCmdOptions, ShotCmdOptions, FFmpegCmdOptions, ListCmdOptions>(Args)
-                .WithParsed((ListCmdOptions Options) =>
+            var verbTypes = ServiceProvider
+                .Get<IEnumerable<ICmdlineVerb>>()
+                .Select(M => M.GetType())
+                .ToArray();
+
+            Parser.Default.ParseArguments(Args, verbTypes)
+                .WithParsed((ICmdlineVerb Verb) =>
                 {
+                    // Always display Banner
                     Banner();
 
-                    var lister = ServiceProvider.Get<ConsoleLister>();
-
-                    lister.List();
-                })
-                .WithParsed((StartCmdOptions Options) =>
-                {
-                    Banner();
-
-                    using (var manager = ServiceProvider.Get<ConsoleManager>())
-                    {
-                        manager.CopySettings();
-
-                        manager.Start(Options);
-                    }
-                })
-                .WithParsed((ShotCmdOptions Options) =>
-                {
-                    Banner();
-
-                    using (var manager = ServiceProvider.Get<ConsoleManager>())
-                    {
-                        manager.Shot(Options);
-                    }
-                })
-                .WithParsed((FFmpegCmdOptions Options) =>
-                {
-                    Banner();
-
-                    var ffmpegManager = ServiceProvider.Get<FFmpegConsoleManager>();
-
-                    // Need to Wait instead of await otherwise the process will exit
-                    ffmpegManager.Run(Options).Wait();
+                    Verb.Run();
                 });
         }
 

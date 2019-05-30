@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Captura.FFmpeg;
 
@@ -35,7 +36,17 @@ namespace Captura
 
                 Console.Write(nameof(FFmpegDownloaderState.Ready));
 
-                await _downloadModel.Start(progress);
+                var cts = new CancellationTokenSource();
+
+                Console.CancelKeyPress += (S, E) =>
+                {
+                    cts.Cancel();
+
+                    // Prevent abrupt exit
+                    E.Cancel = true;
+                };
+
+                await _downloadModel.Start(progress, cts.Token);
             }
         }
 

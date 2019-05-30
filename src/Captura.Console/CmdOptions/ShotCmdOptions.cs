@@ -5,7 +5,7 @@ using CommandLine.Text;
 namespace Captura
 {
     [Verb("shot", HelpText = "Take Screenshots")]
-    class ShotCmdOptions : CommonCmdOptions
+    class ShotCmdOptions : CommonCmdOptions, ICmdlineVerb
     {
         [Usage]
         public static IEnumerable<Example> Examples
@@ -26,6 +26,14 @@ namespace Captura
                 {
                     Source = "screen:1"
                 });
+            }
+        }
+
+        public void Run()
+        {
+            using (var manager = ServiceProvider.Get<ConsoleManager>())
+            {
+                manager.Shot(this);
             }
         }
     }

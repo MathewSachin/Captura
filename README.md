@@ -78,7 +78,7 @@ Dev builds can be unstable and should be used for testing purposes only.
 ## Build Notes
 
 - [Visual Studio 2017](https://visualstudio.com) or greater is required.
-- .Net Framework v4.6.1 is required.
+- .Net Framework v4.7.2 is required.
 - For detailed information, see [Building](https://mathewsachin.github.io/Captura/build).
 
 ## System Requirements
@@ -88,7 +88,7 @@ Dev builds can be unstable and should be used for testing purposes only.
 - **Desktop Duplication API** is only available on **Windows 8** and above.
 - 2 GHz CPU (Recommended).
 - 4 GB RAM (Recommended).
-- **.Net Framework v4.6.1** is required. You will be prompted to install if it is not already present on your system.
+- **.Net Framework v4.7.2** is required. You will be prompted to install if it is not already present on your system.
 - Using the **FFmpeg Intel QSV HEVC** encoder requires the processor to be **Skylake (6th generation)** or later.
 - For using `SharpAvi | Lagarith` codec, the Lagarith codec should be installed on your system and configured to use RGB mode with Null Frames disabled.
 

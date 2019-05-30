@@ -62,7 +62,7 @@ namespace Captura
 
         public TimerModel TimerModel => ServiceProvider.Get<TimerModel>();
 
-        public AudioSource AudioSource => ServiceProvider.Get<AudioSource>();
+        public AudioSourceViewModel AudioSource => ServiceProvider.Get<AudioSourceViewModel>();
 
         public WebcamModel WebcamModel => ServiceProvider.Get<WebcamModel>();
 

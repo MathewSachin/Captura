@@ -1,9 +1,10 @@
 ﻿using System;
 using Captura;
+using Captura.Models;
 
 namespace Screna
 {
-    public class MultiDisposeFrame : IBitmapFrame
+    public class MultiDisposeFrame : IBitmapFrame, IFrameWrapper
     {
         int _count;
 
@@ -43,9 +44,16 @@ namespace Screna
         public int Width => Frame.Width;
         public int Height => Frame.Height;
 
-        public void CopyTo(byte[] Buffer, int Length)
+        public TimeSpan Timestamp => Frame.Timestamp;
+
+        public void CopyTo(byte[] Buffer)
         {
-            Frame.CopyTo(Buffer, Length);
+            Frame.CopyTo(Buffer);
+        }
+
+        public void CopyTo(IntPtr Buffer)
+        {
+            Frame.CopyTo(Buffer);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -12,5 +12,9 @@
   <ItemGroup>
     <PackageReference Include="Ookii.Dialogs.WindowsForms" Version="1.0.0" />
     <PackageReference Include="DirectShowLib" Version="1.0.0" />
+    <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
+    <PackageReference Include="SharpDX.MediaFoundation" Version="4.2.0" />
   </ItemGroup>
 </Project>

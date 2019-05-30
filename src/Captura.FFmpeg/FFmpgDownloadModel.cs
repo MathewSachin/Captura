@@ -10,10 +10,8 @@ namespace Captura.FFmpeg
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegDownloadModel : NotifyPropertyChanged
     {
-        readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
         readonly ProxySettings _proxySettings;
-        readonly FFmpegSettings FFmpegSettings;
+        readonly FFmpegSettings _ffmpegSettings;
 
         public FFmpegDownloadModel(ProxySettings ProxySettings,
             ILocalizationProvider Loc,
@@ -21,28 +19,14 @@ namespace Captura.FFmpeg
         {
             _proxySettings = ProxySettings;
 
-            this.FFmpegSettings = FFmpegSettings;
-
-            EnsureDir();
+            _ffmpegSettings = FFmpegSettings;
         }
 
-        void EnsureDir()
+        public async Task<bool> Start(IProgress<FFmpegDownloaderProgress> Progress, CancellationToken CancellationToken)
         {
-            var path = FFmpegSettings.GetFolderPath();
+            // First progress report takes some time
+            Progress.Report(new FFmpegDownloaderProgress(0));
 
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-        }
-
-        public void Cancel()
-        {
-            _cancellationTokenSource.Cancel();
-        }
-        
-        public async Task<bool> Start(IProgress<FFmpegDownloaderProgress> Progress)
-        {
             try
             {
                 var lastProgress = -1;
@@ -56,7 +40,7 @@ namespace Captura.FFmpeg
                     Progress.Report(new FFmpegDownloaderProgress(P));
 
                     lastProgress = P;
-                }, _proxySettings.GetWebProxy(), _cancellationTokenSource.Token);
+                }, _proxySettings.GetWebProxy(), CancellationToken);
             }
             catch (WebException webException) when(webException.Status == WebExceptionStatus.RequestCanceled)
             {
@@ -69,8 +53,6 @@ namespace Captura.FFmpeg
                 return false;
             }
 
-            _cancellationTokenSource.Dispose();
-
             // Download complete
             Progress.Report(new FFmpegDownloaderProgress(100));
 
@@ -78,7 +60,14 @@ namespace Captura.FFmpeg
 
             try
             {
-                await DownloadFFmpeg.ExtractTo(FFmpegSettings.GetFolderPath());
+                var ffmpegFolder = _ffmpegSettings.GetFolderPath();
+
+                if (!Directory.Exists(ffmpegFolder))
+                {
+                    Directory.CreateDirectory(ffmpegFolder);
+                }
+
+                await DownloadFFmpeg.ExtractTo(ffmpegFolder);
             }
             catch (UnauthorizedAccessException)
             {

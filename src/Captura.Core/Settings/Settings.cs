@@ -108,6 +108,8 @@ namespace Captura
 
         public TraySettings Tray { get; } = new TraySettings();
 
+        public AroundMouseSettings AroundMouse { get; } = new AroundMouseSettings();
+
         public int PreStartCountdown
         {
             get => Get(0);

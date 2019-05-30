@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura
 {
@@ -8,6 +9,8 @@ namespace Captura
         float Height { get; }
 
         void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100);
+
+        void DrawLine(Point Start, Point End, Color Color, float Width);
 
         void FillRectangle(Color Color, RectangleF Rectangle);
 
@@ -27,6 +30,6 @@ namespace Captura
 
         void DrawString(string Text, IFont Font, Color Color, RectangleF LayoutRectangle);
 
-        IBitmapFrame GenerateFrame();
+        IBitmapFrame GenerateFrame(TimeSpan Timestamp);
     }
 }

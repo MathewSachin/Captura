@@ -30,12 +30,13 @@
                   Width="16"
                   Data="{Binding Icons.More, Source={StaticResource ServiceLocator}}"/>
         </Button>
-        <Border ToolTip="{Binding Settings.OutPath}"
+        <Border ToolTip="{Binding MainViewModel.OutFolderDisplay.Value, Source={StaticResource ServiceLocator}}"
+                IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
                 MouseUp="SelectTargetFolder"
                 Cursor="Hand">
             <TextBox IsReadOnly="True"
                      IsEnabled="False"
-                     Text="{Binding Settings.OutPath}"/>
+                     Text="{Binding MainViewModel.OutFolderDisplay.Value, Source={StaticResource ServiceLocator}, Mode=OneWay}"/>
         </Border>
     </DockPanel>
 </UserControl>

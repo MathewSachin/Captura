@@ -24,6 +24,11 @@ namespace Captura.Models
         /// </summary>
         public FFmpegWriter(FFmpegVideoWriterArgs Args)
         {
+            if (!FFmpegService.FFmpegExists)
+            {
+                throw new FFmpegNotFoundException();
+            }
+
             var settings = ServiceProvider.Get<FFmpegSettings>();
 
             _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
@@ -65,7 +70,7 @@ namespace Captura.Models
                 var audioPipeName = GetPipeName();
 
                 argsBuilder.AddInputPipe(audioPipeName)
-                    .AddArg("-thread_queue_size", 512)
+                    .AddArg("thread_queue_size", 512)
                     .SetFormat("s16le")
                     .SetAudioCodec("pcm_s16le")
                     .SetAudioFrequency(Args.Frequency)
@@ -81,7 +86,7 @@ namespace Captura.Models
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
 
-            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName);
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out _);
         }
 
         /// <summary>
@@ -114,6 +119,10 @@ namespace Captura.Models
         /// <param name="Length">Length of audio data in bytes.</param>
         public void WriteAudio(byte[] Buffer, int Length)
         {
+            // Might happen when writing Gif
+            if (_audioPipe == null)
+                return;
+
             if (_ffmpegProcess.HasExited)
             {
                 throw new FFmpegException( _ffmpegProcess.ExitCode);
@@ -165,7 +174,7 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    Frame.CopyTo(_videoBuffer, _videoBuffer.Length);
+                    Frame.CopyTo(_videoBuffer);
                 }
             }
 

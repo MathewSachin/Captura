@@ -11,6 +11,8 @@ namespace Captura
 
         IEnumerable<IWindow> EnumerateWindows();
 
+        IEnumerable<IWindow> EnumerateAllWindows();
+
         IWindow GetWindow(IntPtr Handle);
 
         IWindow DesktopWindow { get; }
@@ -31,6 +33,10 @@ namespace Captura
             bool IncludeCursor,
             Func<Point> LocationFunction = null);
 
-        IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor, out Func<Point, Point> TransformerFunction);
+        IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor);
+
+        IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor);
+
+        IImageProvider GetAllScreensProvider(bool IncludeCursor);
     }
 }

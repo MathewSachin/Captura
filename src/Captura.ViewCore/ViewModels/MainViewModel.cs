@@ -26,6 +26,8 @@ namespace Captura.ViewModels
         public ICommand ResetFFmpegFolderCommand { get; }
         public ICommand TrayLeftClickCommand { get; }
 
+        public IReadOnlyReactiveProperty<string> OutFolderDisplay { get; }
+
         public MainViewModel(Settings Settings,
             ILocalizationProvider Loc,
             HotKeyManager HotKeyManager,
@@ -38,6 +40,11 @@ namespace Captura.ViewModels
         {
             _dialogService = DialogService;
             _rememberByName = RememberByName;
+
+            OutFolderDisplay = Settings
+                .ObserveProperty(M => M.OutPath)
+                .Select(M => Settings.GetOutputPath())
+                .ToReadOnlyReactivePropertySlim();
 
             ShowPreviewCommand = new ReactiveCommand()
                 .WithSubscribe(PreviewWindow.Show);
@@ -105,7 +112,18 @@ namespace Captura.ViewModels
 
         void SelectOutputFolder()
         {
-            var folder = _dialogService.PickFolder(Settings.GetOutputPath(), Loc.SelectOutFolder);
+            string currentFolder = null;
+
+            try
+            {
+                currentFolder = Settings.GetOutputPath();
+            }
+            catch
+            {
+                // Error can happen if current folder is inaccessible
+            }
+
+            var folder = _dialogService.PickFolder(currentFolder, Loc.SelectOutFolder);
 
             if (folder != null)
                 Settings.OutPath = folder;
