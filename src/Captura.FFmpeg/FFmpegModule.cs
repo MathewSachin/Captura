@@ -14,6 +14,9 @@ namespace Captura
             {
                 Binder.Bind<IAudioWriterItem>(() => audioItem);
             }
+
+            Binder.Bind<IVideoConverter>(() => new FFmpegVideoConverter(new Vp8VideoCodec()));
+            Binder.Bind<IVideoConverter>(() => new FFmpegVideoConverter(new Vp9VideoCodec()));
         }
     }
 }
