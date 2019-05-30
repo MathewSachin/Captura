@@ -171,7 +171,7 @@ namespace Captura.Models
                 {
                     Step.Draw(Frame, _imageProvider.PointTransform);
 
-                    return Frame.GenerateFrame();
+                    return Frame.GenerateFrame(TimeSpan.Zero);
                 });
 
             foreach (var frame in frames.ToEnumerable())
