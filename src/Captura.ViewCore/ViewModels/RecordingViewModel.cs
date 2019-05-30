@@ -151,6 +151,8 @@ namespace Captura.ViewModels
             var fileName = _recordingModel.CurrentFileName;
             var isVideo = _recordingModel.IsVideo;
 
+            IVideoConverter postWriter = null;
+
             // Assume saving to file only when extension is present
             if (!_timerModel.Waiting && !string.IsNullOrWhiteSpace(_videoWritersViewModel.SelectedVideoWriter.Extension))
             {
@@ -162,6 +164,9 @@ namespace Captura.ViewModels
                 notification.OnDelete += () => savingRecentItem.RemoveCommand.ExecuteIfCan();
 
                 _systemTray.ShowNotification(notification);
+
+                if (isVideo && Settings.Video.PostConvert)
+                    postWriter = _videoWritersViewModel.SelectedPostWriter;
             }
 
             var task = _recordingModel.StopRecording();
@@ -178,6 +183,25 @@ namespace Captura.ViewModels
             {
                 // Ensure saved
                 await task;
+
+                if (postWriter != null)
+                {
+                    var progress = new Progress<int>();
+
+                    progress.ProgressChanged += (S, E) => notification.Progress = E;
+
+                    var outFileName = Path.Combine(
+                        Path.GetDirectoryName(fileName),
+                        $"{Path.GetFileNameWithoutExtension(fileName)}.converted{postWriter.Extension}");
+
+                    await postWriter.StartAsync(new VideoConverterArgs
+                    {
+                        AudioQuality = Settings.Audio.Quality,
+                        VideoQuality = Settings.Video.Quality,
+                        InputFile = fileName,
+                        FileName = outFileName
+                    }, progress);
+                }
 
                 lock (_stopRecTaskLock)
                 {
@@ -227,8 +251,7 @@ namespace Captura.ViewModels
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
                 VideoWriter = _videoWritersViewModel.SelectedVideoWriter,
-                AudioItems = _audioSourceViewModel.AvailableRecordingSources,
-                PostWriter = Settings.Video.PostConvert ? _videoWritersViewModel.SelectedPostWriter : null
+                AudioItems = _audioSourceViewModel.AvailableRecordingSources
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)

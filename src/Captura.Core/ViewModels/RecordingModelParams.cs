@@ -10,7 +10,5 @@ namespace Captura.ViewModels
         public IVideoWriterItem VideoWriter { get; set; }
 
         public IEnumerable<IIsActive<IAudioItem>> AudioItems { get; set; }
-
-        public IVideoConverter PostWriter { get; set; }
     }
 }

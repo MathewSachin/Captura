@@ -29,7 +29,7 @@ namespace Captura.Models
 
             _videoCodec.Apply(ServiceProvider.Get<FFmpegSettings>(), Args, output);
 
-            if (Args.AudioProvider != null)
+            //if (Args.AudioProvider != null)
             {
                 _videoCodec.AudioArgsProvider(Args.AudioQuality, output);
             }

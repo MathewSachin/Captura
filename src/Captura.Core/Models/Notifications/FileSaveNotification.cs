@@ -72,7 +72,13 @@ namespace Captura
 
         public IEnumerable<NotificationAction> Actions => _notificationActions;
 
-        int INotification.Progress => 0;
+        int _progress;
+
+        public int Progress
+        {
+            get => _progress;
+            set => Set(ref _progress, value);
+        }
 
         string _primaryText;
 
