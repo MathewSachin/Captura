@@ -22,6 +22,9 @@
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>
+            <TabItem Header="Video">
+                <Frame Source="VideoEncoderPage.xaml"/>
+            </TabItem>
             <TabItem Header="FFmpeg">
                 <Frame Source="FFmpegPage.xaml"/>
             </TabItem>
