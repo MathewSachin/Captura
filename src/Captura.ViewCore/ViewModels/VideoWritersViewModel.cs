@@ -12,11 +12,17 @@ namespace Captura.ViewModels
         readonly ObservableCollection<IVideoWriterItem> _videoWriters = new ObservableCollection<IVideoWriterItem>();
         public ReadOnlyObservableCollection<IVideoWriterItem> AvailableVideoWriters { get; }
 
-        public VideoWritersViewModel(IEnumerable<IVideoWriterProvider> WriterProviders)
+        public IEnumerable<IVideoConverter> AvailablePostWriters { get; }
+
+        public VideoWritersViewModel(IEnumerable<IVideoWriterProvider> WriterProviders,
+            IEnumerable<IVideoConverter> PostWriters)
         {
             VideoWriterProviders = WriterProviders.ToList();
 
             AvailableVideoWriters = new ReadOnlyObservableCollection<IVideoWriterItem>(_videoWriters);
+
+            AvailablePostWriters = PostWriters;
+            SelectedPostWriter = PostWriters.FirstOrDefault();
 
             if (VideoWriterProviders.Count > 0)
                 SelectedVideoWriterKind = VideoWriterProviders[0];
@@ -72,12 +78,15 @@ namespace Captura.ViewModels
         public IVideoWriterItem SelectedVideoWriter
         {
             get => _writer;
-            set
-            {
-                _writer = value ?? (AvailableVideoWriters.Count == 0 ? null : AvailableVideoWriters[0]);
+            set => Set(ref _writer, value ?? AvailableVideoWriters.FirstOrDefault());
+        }
 
-                OnPropertyChanged();
-            }
+        IVideoConverter _postWriter;
+
+        public IVideoConverter SelectedPostWriter
+        {
+            get => _postWriter;
+            set => Set(ref _postWriter, value ?? AvailablePostWriters.FirstOrDefault());
         }
     }
 }

@@ -13,6 +13,18 @@
             get => Get<string>();
             set => Set(value);
         }
+
+        public bool PostConvert
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        public string PostWriter
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
         
         public string SourceKind
         {

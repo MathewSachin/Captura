@@ -42,6 +42,9 @@ namespace Captura.Models
             _settings.Video.WriterKind = _videoWritersViewModel.SelectedVideoWriterKind.Name;
             _settings.Video.Writer = _videoWritersViewModel.SelectedVideoWriter.ToString();
 
+            // Remember Post Writer
+            _settings.Video.PostWriter = _videoWritersViewModel.SelectedPostWriter.ToString();
+
             // Remember Audio Sources
             _settings.Audio.Microphones = _audioSourceViewModel.AvailableRecordingSources
                 .Where(M => M.IsActive)
@@ -106,6 +109,12 @@ namespace Captura.Models
             RestoreVideoSource();
 
             RestoreVideoCodec();
+
+            // Restore Post Writer
+            var codec = _videoWritersViewModel.AvailablePostWriters.FirstOrDefault(C => C.ToString() == _settings.Video.PostWriter);
+
+            if (codec != null)
+                _videoWritersViewModel.SelectedPostWriter = codec;
 
             // Restore Microphones
             if (_settings.Audio.Microphones != null)
