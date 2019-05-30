@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Captura.Models
 {
@@ -26,6 +27,14 @@ namespace Captura.Models
 
         readonly StringBuilder _complete = new StringBuilder();
 
+        public event Action<int> ProgressChanged;
+
+        TimeSpan? _duration;
+        int _lastReportedProgress;
+
+        readonly Regex _durationRegex = new Regex(@"Duration: (\d{2}:\d{2}:\d{2})");
+        readonly Regex _timeRegex = new Regex(@"time=(\d{2}:\d{2}:\d{2})");
+
         public void Write(string Text)
         {
             if (Text == null)
@@ -33,9 +42,37 @@ namespace Captura.Models
 
             _complete.AppendLine(Text);
 
+            if (_duration == null)
+            {
+                var match = _durationRegex.Match(Text);
+
+                if (match.Success)
+                {
+                    _duration = TimeSpan.Parse(match.Groups[1].Value);
+                }
+            }
+
             if (Text.StartsWith("frame=") || Text.StartsWith("size="))
             {
                 Frame = Text;
+
+                if (_duration != null)
+                {
+                    var match = _timeRegex.Match(Text);
+
+                    if (match.Success)
+                    {
+                        var time = TimeSpan.Parse(match.Groups[1].Value);
+
+                        var progress = (int)(time.TotalSeconds * 100 / _duration.Value.TotalSeconds);
+
+                        if (progress > _lastReportedProgress)
+                        {
+                            _lastReportedProgress = progress;
+                            ProgressChanged?.Invoke(progress);
+                        }
+                    }
+                }
             }
             else Content += Text + Environment.NewLine;
         }

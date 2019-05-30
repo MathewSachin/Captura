@@ -25,7 +25,7 @@ namespace Captura.FFmpeg
 
             var args = argsBuilder.GetArgs();
 
-            var process = FFmpegService.StartFFmpeg(args, DestFile);
+            var process = FFmpegService.StartFFmpeg(args, DestFile, out _);
 
             await Task.Factory.StartNew(process.WaitForExit);
 

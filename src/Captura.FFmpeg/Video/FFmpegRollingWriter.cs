@@ -74,7 +74,7 @@ namespace Captura.FFmpeg
 
                 var args = argsBuilder.GetArgs();
 
-                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName);
+                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName, out _);
 
                 process.WaitForExit();
             }

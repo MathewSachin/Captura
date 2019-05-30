@@ -39,7 +39,7 @@ namespace Captura.Models
                 .SetFrameRate(_args.FrameRate)
                 .AddArg("-y");
 
-            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), paletteFile);
+            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), paletteFile, out _);
 
             process.WaitForExit();
 
@@ -58,7 +58,7 @@ namespace Captura.Models
                 .AddArg("lavfi", "paletteuse")
                 .SetFrameRate(_args.FrameRate);
 
-            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName);
+            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), _args.FileName, out _);
 
             process.WaitForExit();
         }
