@@ -14,7 +14,7 @@ namespace Captura.Models
             _videoCodec = VideoCodec;
         }
 
-        public string Name => _videoCodec.Name;
+        public string Name => $"{_videoCodec.Name} (FFmpeg)";
 
         public string Extension => _videoCodec.Extension;
 
@@ -39,6 +39,8 @@ namespace Captura.Models
             log.ProgressChanged += M => Progress.Report(M);
 
             await Task.Run(() => process.WaitForExit());
+
+            Progress.Report(100);
         }
     }
 }

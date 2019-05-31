@@ -23,9 +23,6 @@ namespace Captura.Models
             yield return new X264VideoCodec();
             yield return new XvidVideoCodec();
 
-            // Gif
-            yield return new FFmpegGifItem();
-
             // Hardware
             yield return new QsvHevcVideoCodec();
             yield return NvencVideoCodec.CreateH264();
