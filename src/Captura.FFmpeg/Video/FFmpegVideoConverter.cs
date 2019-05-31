@@ -20,6 +20,11 @@ namespace Captura.Models
 
         public async Task StartAsync(VideoConverterArgs Args, IProgress<int> Progress)
         {
+            if (!FFmpegService.FFmpegExists)
+            {
+                throw new FFmpegNotFoundException();
+            }
+
             var argsBuilder = new FFmpegArgsBuilder();
 
             argsBuilder.AddInputFile(Args.InputFile);
