@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Captura.FFmpeg;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -27,6 +28,9 @@ namespace Captura.Models
             log.ProgressChanged += M => Progress.Report(M);
 
             await Task.Run(() => process.WaitForExit());
+
+            if (process.ExitCode != 0)
+                throw new FFmpegException(process.ExitCode);
 
             Progress.Report(100);
         }

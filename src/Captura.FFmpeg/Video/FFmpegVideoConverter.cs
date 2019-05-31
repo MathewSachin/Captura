@@ -40,6 +40,9 @@ namespace Captura.Models
 
             await Task.Run(() => process.WaitForExit());
 
+            if (process.ExitCode != 0)
+                throw new FFmpegException(process.ExitCode);
+
             Progress.Report(100);
         }
     }
