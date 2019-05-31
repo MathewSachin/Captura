@@ -186,6 +186,8 @@ namespace Captura.ViewModels
 
                 if (postWriter != null)
                 {
+                    notification.Converting();
+
                     var progress = new Progress<int>();
 
                     progress.ProgressChanged += (S, E) => notification.Progress = E;
@@ -201,6 +203,9 @@ namespace Captura.ViewModels
                         InputFile = fileName,
                         FileName = outFileName
                     }, progress);
+
+                    savingRecentItem.Converted(outFileName);
+                    notification.Converted(outFileName);
                 }
 
                 lock (_stopRecTaskLock)
