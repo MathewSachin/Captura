@@ -196,16 +196,33 @@ namespace Captura.ViewModels
                         Path.GetDirectoryName(fileName),
                         $"{Path.GetFileNameWithoutExtension(fileName)}.converted{postWriter.Extension}");
 
-                    await postWriter.StartAsync(new VideoConverterArgs
+                    try
                     {
-                        AudioQuality = Settings.Audio.Quality,
-                        VideoQuality = Settings.Video.Quality,
-                        InputFile = fileName,
-                        FileName = outFileName
-                    }, progress);
+                        await postWriter.StartAsync(new VideoConverterArgs
+                        {
+                            AudioQuality = Settings.Audio.Quality,
+                            VideoQuality = Settings.Video.Quality,
+                            InputFile = fileName,
+                            FileName = outFileName
+                        }, progress);
+                    }
+                    catch (Exception e)
+                    {
+                        _messageProvider.ShowException(e, "Conversion Failed");
 
-                    savingRecentItem.Converted(outFileName);
-                    notification.Converted(outFileName);
+                        return;
+                    }
+
+                    File.Delete(fileName);
+
+                    var targetFileName = Path.Combine(
+                        Path.GetDirectoryName(fileName),
+                        $"{Path.GetFileNameWithoutExtension(fileName)}{postWriter.Extension}");
+
+                    File.Move(outFileName, targetFileName);
+
+                    savingRecentItem.Converted(targetFileName);
+                    notification.Converted(targetFileName);
                 }
 
                 lock (_stopRecTaskLock)
