@@ -4,7 +4,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5">
-        <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
+        <StackPanel>
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>
