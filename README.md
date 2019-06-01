@@ -53,7 +53,7 @@ See the [Continuous Integration page](docs/CI.md).
 |------|------|------|
 [Build Notes](docs/Build.md) | [System Requirements](docs/System-Requirements.md) | [Contributing](CONTRIBUTING.md)
 [ScreenShots](https://mathewsachin.github.io/Captura/screenshots) | [Command-line](docs/Cmdline/README.md) | [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
-[FAQ](https://mathewsachin.github.io/Captura/faq) | [Code of Conduct](CODE_OF_CONDUCT.md) | [Changelog](docs/Changelogs/README.md)
+[FAQ](docs/FAQ.md) | [Code of Conduct](CODE_OF_CONDUCT.md) | [Changelog](docs/Changelogs/README.md)
 [Continuous Integration](docs/CI.md) | [FFmpeg](docs/FFmpeg.md)
 
 ## License
