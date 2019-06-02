@@ -73,16 +73,36 @@ namespace Captura.ViewModels
                 .WithSubscribe(async () => await ScreenShotWindow(PlatformServices.ForegroundWindow));
 
             ScreenShotDesktopCommand = new ReactiveCommand()
-                .WithSubscribe(async () => await ScreenShotWindow(PlatformServices.DesktopWindow));
+                .WithSubscribe(async () =>
+                {
+                    await Task.Delay(300);
+
+                    await ScreenShotWindow(PlatformServices.DesktopWindow);
+                });
 
             ScreenshotRegionCommand = new ReactiveCommand()
-                .WithSubscribe(async () => await ScreenShotModel.ScreenshotRegion());
+                .WithSubscribe(async () =>
+                {
+                    await Task.Delay(300);
+
+                    await ScreenShotModel.ScreenshotRegion();
+                });
 
             ScreenshotWindowCommand = new ReactiveCommand()
-                .WithSubscribe(async () => await ScreenShotModel.ScreenshotWindow());
+                .WithSubscribe(async () =>
+                {
+                    await Task.Delay(300);
+
+                    await ScreenShotModel.ScreenshotWindow();
+                });
 
             ScreenshotScreenCommand = new ReactiveCommand()
-                .WithSubscribe(async () => await ScreenShotModel.ScreenshotScreen());
+                .WithSubscribe(async () =>
+                {
+                    await Task.Delay(300);
+
+                    await ScreenShotModel.ScreenshotScreen();
+                });
         }
 
         public ICommand ScreenShotCommand { get; }

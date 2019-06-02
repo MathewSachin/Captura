@@ -56,7 +56,7 @@ namespace Captura.FFmpeg
                 var argsBuilder = new FFmpegArgsBuilder();
 
                 argsBuilder.AddInputFile(prevFile)
-                    .AddArg($"-ss {TimeSpan.FromMilliseconds(currentDuration):g}");
+                    .AddArg("ss", $"{TimeSpan.FromMilliseconds(currentDuration):g}");
 
                 argsBuilder.AddInputFile(currentFile);
 
@@ -74,7 +74,7 @@ namespace Captura.FFmpeg
 
                 var args = argsBuilder.GetArgs();
 
-                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName);
+                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName, out _);
 
                 process.WaitForExit();
             }

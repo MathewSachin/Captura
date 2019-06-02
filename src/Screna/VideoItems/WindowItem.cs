@@ -1,6 +1,4 @@
-﻿using System;
-using Screna;
-using System.Drawing;
+﻿using Screna;
 
 namespace Captura.Models
 {
@@ -21,14 +19,14 @@ namespace Captura.Models
 
         public string Name { get; }
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
             if (!Window.IsAlive)
             {
                 throw new WindowClosedException();
             }
 
-            return _platformServices.GetWindowProvider(Window, IncludeCursor, out Transform);
+            return _platformServices.GetWindowProvider(Window, IncludeCursor);
         }
     }
 }

@@ -9,7 +9,19 @@ namespace Captura.Models
 {
     public class FileRecentItem : NotifyPropertyChanged, IRecentItem
     {
-        public string FileName { get; }
+        string _fileName;
+
+        public string FileName
+        {
+            get => _fileName;
+            private set
+            {
+                Set(ref _fileName, value);
+
+                Display = Path.GetFileName(value);
+            }
+        }
+
         public RecentFileType FileType { get; }
 
         public FileRecentItem(string FileName, RecentFileType FileType, bool IsSaving = false)
@@ -18,9 +30,7 @@ namespace Captura.Models
             this.FileType = FileType;
             this.IsSaving = IsSaving;
 
-            Display = Path.GetFileName(FileName);
-
-            ClickCommand = new DelegateCommand(() => ServiceProvider.LaunchFile(new ProcessStartInfo(FileName)));
+            ClickCommand = new DelegateCommand(() => ServiceProvider.LaunchFile(new ProcessStartInfo(this.FileName)));
 
             RemoveCommand = new DelegateCommand(() => RemoveRequested?.Invoke());
 
@@ -38,7 +48,7 @@ namespace Captura.Models
 
             void AddTrimMedia()
             {
-                list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(FileName)));
+                list.Add(new RecentAction(loc.Trim, icons.Trim, () => windowService.TrimMedia(this.FileName)));
             }
 
             switch (FileType)
@@ -46,8 +56,8 @@ namespace Captura.Models
                 case RecentFileType.Image:
                     list.Add(new RecentAction(loc.CopyToClipboard, icons.Clipboard, OnCopyToClipboardExecute));
                     list.Add(new RecentAction(loc.UploadToImgur, icons.Upload, OnUploadToImgurExecute));
-                    list.Add(new RecentAction(loc.Edit, icons.Pencil, () => windowService.EditImage(FileName)));
-                    list.Add(new RecentAction(loc.Crop, icons.Crop, () => windowService.CropImage(FileName)));
+                    list.Add(new RecentAction(loc.Edit, icons.Pencil, () => windowService.EditImage(this.FileName)));
+                    list.Add(new RecentAction(loc.Crop, icons.Crop, () => windowService.CropImage(this.FileName)));
                     break;
 
                 case RecentFileType.Audio:
@@ -56,7 +66,7 @@ namespace Captura.Models
 
                 case RecentFileType.Video:
                     AddTrimMedia();
-                    list.Add(new RecentAction("Upload to YouTube", icons.YouTube, () => windowService.UploadToYouTube(FileName)));
+                    list.Add(new RecentAction("Upload to YouTube", icons.YouTube, () => windowService.UploadToYouTube(this.FileName)));
                     break;
             }
 
@@ -156,7 +166,13 @@ namespace Captura.Models
             return null;
         }
 
-        public string Display { get; }
+        string _display;
+
+        public string Display
+        {
+            get => _display;
+            private set => Set(ref _display, value);
+        }
 
         public string Icon { get; }
         public string IconColor { get; }
@@ -172,6 +188,11 @@ namespace Captura.Models
         public void Saved()
         {
             IsSaving = false;
+        }
+
+        public void Converted(string NewFileName)
+        {
+            FileName = NewFileName;
         }
 
         public event Action RemoveRequested;

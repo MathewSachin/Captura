@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="ValueConverters/ValueConverters.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/RegionPickerMagnifier.xaml"/>
                 <ResourceDictionary Source="Presentation/Themes/Expander.xaml"/>
+                <ResourceDictionary Source="Presentation/Themes/ModernTogglePill.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <x:Static x:Key="Loc"

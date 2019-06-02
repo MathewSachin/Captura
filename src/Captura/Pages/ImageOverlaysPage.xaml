@@ -5,6 +5,11 @@
       Title="Image Overlays">
     <Grid>
         <DockPanel DataContext="{Binding CustomImageOverlays, Source={StaticResource ServiceLocator}}">
+            <Label DockPanel.Dock="Top"
+                   Margin="5,3"
+                   Content="Size of Preview considers Resize to be active"
+                   Opacity="0.8"/>
+
             <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="Add"
                                       Command="{Binding AddCommand}"

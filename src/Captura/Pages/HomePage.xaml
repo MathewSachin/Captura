@@ -29,7 +29,7 @@
 
             <Border BorderThickness="0.5"
                     BorderBrush="{DynamicResource ModernButtonBorder}"
-                    Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"
+                    Visibility="{Binding ViewConditions.ShowSourceNameBox.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="5,2"
                     Margin="0,2">
                 <StackPanel Orientation="Horizontal">
@@ -99,7 +99,37 @@
                           IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </DockPanel>
 
-            <Frame Source="VideoEncoderPage.xaml"/>
+            <Grid Visibility="{Binding ViewConditions.IsAroundMouseMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                  Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Width:"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="1"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="Height:"
+                       Grid.Column="2"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="3"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+
+                <Label Content="Margin:"
+                       Grid.Column="4"
+                       Margin="5,0,3,0"/>
+                <xctk:IntegerUpDown Grid.Column="5"
+                                    Value="{Binding MainViewModel.Settings.AroundMouse.Margin, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+            </Grid>
 
             <Frame Source="AudioPage.xaml"
                    Margin="0,10,0,0"
@@ -162,38 +192,11 @@
                                                 IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
                                                 IsChecked="{Binding ClipboardWriter.Active}"/>
 
-                    <Border VerticalAlignment="Center"
-                            CornerRadius="12"
-                            BorderThickness="1"
-                            Margin="5,0">
-                        <ToggleButton ToolTip="Imgur"
-                                      Content="Imgur"
-                                      IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
-                                      BorderThickness="0"
-                                      Background="Transparent"
-                                      Cursor="Hand">
-                            <ToggleButton.Style>
-                                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
-
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{DynamicResource ItemBorder}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ImgurWriter.Active}" Value="True">
-                                        <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
+                    <CheckBox Content="Imgur"
+                              ToolTip="Imgur"
+                              Margin="5,0"
+                              IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
+                              Style="{StaticResource ModernTogglePill}"/>
 
                     <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
                                                 IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"

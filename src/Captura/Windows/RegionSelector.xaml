@@ -5,7 +5,6 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:Captura.Models;assembly=Captura.Core"
         mc:Ignorable="d"
         Title="{Binding RegionSelector, Source={StaticResource Loc}, Mode=OneWay}"
         Background="Transparent"
@@ -69,84 +68,15 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <DockPanel Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                   Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                   Name="Region">
-            <DockPanel.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="BorderBrush">
-                        <Setter.Value>
-                            <DrawingBrush TileMode="Tile"
-                                          Viewport="0,0,20,20"
-                                          ViewportUnits="Absolute">
-                                <DrawingBrush.Drawing>
-                                    <DrawingGroup>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <GeometryGroup>
-                                                    <RectangleGeometry Rect="0,0,10,10" />
-                                                    <RectangleGeometry Rect="10,10,10,10" />
-                                                </GeometryGroup>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <SolidColorBrush Color="{DynamicResource AccentColor}"/>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <GeometryGroup>
-                                                    <RectangleGeometry Rect="10,0,10,10" />
-                                                    <RectangleGeometry Rect="0,10,10,10" />
-                                                </GeometryGroup>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                    </DrawingGroup>
-                                </DrawingBrush.Drawing>
-                            </DrawingBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="{x:Static models:RecorderState.Recording}">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard Name="RedStoryboard">
-                                    <Storyboard>
-                                        <ColorAnimation To="#ef5350"
-                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
-                                                        Duration="00:00:00.5"/>
-
-                                        <ColorAnimation To="White"
-                                                        Storyboard.TargetProperty="BorderBrush.(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Brush).(SolidColorBrush.Color)"
-                                                        Duration="00:00:00.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <StopStoryboard BeginStoryboardName="RedStoryboard"/>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DockPanel.Resources>
-
-            <Border BorderThickness="1,0"/>
-
-            <Border BorderThickness="1,0"
-                    DockPanel.Dock="Right"/>
-
-            <Border BorderThickness="0,1"
-                    DockPanel.Dock="Bottom"/>
-
-            <Border BorderThickness="0,1"
-                    DockPanel.Dock="Top"/>
+        <Grid Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+              Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+              Name="Region">
+            <local:StripedBorder/>
 
             <InkCanvas Background="Transparent"
                        Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                        Name="InkCanvas"/>
-        </DockPanel>
+        </Grid>
 
         <Thumb VerticalAlignment="Top"
                Height="2"
@@ -194,157 +124,6 @@
                    Style="{StaticResource CornerThumb}"
                    Cursor="SizeNWSE"
                    Tag="BottomRight"/>
-        </Grid>
-
-        <Grid Grid.Row="1"
-              Grid.Column="0"
-              Margin="0,10,0,0">
-            <Border BorderThickness="1"
-                    Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                    BorderBrush="{DynamicResource Accent}"
-                    VerticalAlignment="Top">
-                <Grid HorizontalAlignment="Right"
-                      Background="{DynamicResource WindowBackground}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <xctk:IntegerUpDown Width="60"
-                                        Margin="3"
-                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                        Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
-
-                    <Label Content="x"
-                           Margin="7,3"
-                           Grid.Column="1"/>
-
-                    <xctk:IntegerUpDown Width="60"
-                                        Margin="3"
-                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                        Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                                        Grid.Column="2"/>
-
-                    <Grid.LayoutTransform>
-                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
-                    </Grid.LayoutTransform>
-                </Grid>
-
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Width, ElementName=Region, Converter={StaticResource IsLessThanConverter}, ConverterParameter=400}" Value="True">
-                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                <Setter Property="Margin" Value="0,40,0,0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-            </Border>
-
-            <Border BorderThickness="1"
-                    BorderBrush="{DynamicResource Accent}"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    CornerRadius="15"
-                    Padding="5,0"
-                    Background="{DynamicResource WindowBackground}">
-                <DockPanel>
-                    <DockPanel.Resources>
-                        <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
-                            <Setter Property="LayoutTransform">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DockPanel.Resources>
-
-                    <local:ModernButton IconData="{Binding Icons.SnapToWindow, Source={StaticResource ServiceLocator}}"
-                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        Click="Snapper_OnClick"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding SnapToWindow, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                    <local:ModernButton Click="CloseButton_Click"
-                                        Visibility="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        Foreground="#77ef5350"
-                                        IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
-                                        DockPanel.Dock="Right"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                    <local:ModernButton Command="{Binding ScreenShotViewModel.ScreenShotCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
-                                        DockPanel.Dock="Right"
-                                        Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                    <local:ModernButton Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
-                                        Foreground="#b71c1c"
-                                        IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"/>
-
-                    <local:ModernButton Command="{Binding RecordingViewModel.PauseCommand, Source={StaticResource ServiceLocator}}"
-                                        IconData="{Binding Icons.Pause, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.9"
-                                        WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="{Binding PauseResume, Source={StaticResource Loc}, Mode=OneWay}"
-                                        RenderTransformOrigin="0.5,0.5">
-                        <local:ModernButton.RenderTransform>
-                            <RotateTransform/>
-                        </local:ModernButton.RenderTransform>
-                        <local:ModernButton.Style>
-                            <Style TargetType="local:ModernButton" BasedOn="{StaticResource {x:Type local:ModernButton}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}}" Value="Paused">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="90"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                                                     To="0"
-                                                                     Duration="0:0:0.15"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </local:ModernButton.Style>
-                    </local:ModernButton>
-
-                    <StackPanel Orientation="Horizontal"
-                                Margin="10,-1"
-                                PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
-                                Visibility="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
-                                Name="DurationLabel">
-                        <Label Content="{Binding TimerModel.TimeSpan, Source={StaticResource ServiceLocator}}"/>
-
-                        <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
-                               ContentStringFormat="{} / {0}"
-                               Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
-                    </StackPanel>
-
-                    <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
-                           Content="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}}"
-                           Margin="10,-1"
-                           PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"
-                           Style="{StaticResource CountdownLabel}"/>
-                </DockPanel>
-            </Border>
         </Grid>
 
         <Border Grid.Row="0"

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-namespace Captura.Models
+﻿namespace Captura.Models
 {
     public class RegionItem : NotifyPropertyChanged, IVideoItem
     {
@@ -14,15 +11,8 @@ namespace Captura.Models
             _platformServices = PlatformServices;
         }
 
-        public IImageProvider GetImageProvider(bool IncludeCursor, out Func<Point, Point> Transform)
+        public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            Transform = P =>
-            {
-                var region = _selector.SelectedRegion.Location;
-
-                return new Point(P.X - region.X, P.Y - region.Y);
-            };
-
             return _platformServices.GetRegionProvider(_selector.SelectedRegion,
                 IncludeCursor,
                 () => _selector.SelectedRegion.Location);

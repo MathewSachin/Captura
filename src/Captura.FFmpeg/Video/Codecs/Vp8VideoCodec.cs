@@ -1,6 +1,8 @@
-﻿namespace Captura.Models
+﻿using Captura.Models;
+
+namespace Captura.FFmpeg
 {
-    class Vp8VideoCodec : FFmpegPostProcessingCodec
+    class Vp8VideoCodec : FFmpegVideoCodec
     {
         const string Descr = "Encode to WebM: Vp8 with Opus audio";
 
@@ -13,9 +15,9 @@
             // quality: 63 (lowest) to 4 (highest)
             var crf = 63 - ((WriterArgs.VideoQuality - 1) * 59) / 99;
 
-            OutputArgs.AddArg("-vcodec libvpx")
-                .AddArg($"-crf {crf}")
-                .AddArg("-b:v 1M");
+            OutputArgs.AddArg("vcodec", "libvpx")
+                .AddArg("crf", crf)
+                .AddArg("b:v", "1M");
         }
     }
 }

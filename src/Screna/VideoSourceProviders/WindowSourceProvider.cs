@@ -1,3 +1,4 @@
+using Screna;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -74,7 +75,7 @@ The video is of the initial size of the window.";
 
         public override bool ParseCli(string Arg)
         {
-            if (!Regex.IsMatch(Arg, @"^win:\d+$"))
+            if (!Regex.IsMatch(Arg, @"^win:-?\d+$"))
                 return false;
 
             var handle = new IntPtr(int.Parse(Arg.Substring(4)));
@@ -82,6 +83,16 @@ The video is of the initial size of the window.";
             Set(_platformServices.GetWindow(handle));
 
             return true;
+        }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            if (Source is WindowItem windowItem)
+            {
+                return ScreenShot.Capture(windowItem.Window.Rectangle, IncludeCursor);
+            }
+
+            return null;
         }
     }
 }

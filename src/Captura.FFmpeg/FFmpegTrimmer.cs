@@ -15,8 +15,8 @@ namespace Captura.FFmpeg
             var argsBuilder = new FFmpegArgsBuilder();
 
             var inputArgs = argsBuilder.AddInputFile(SourceFile)
-                .AddArg($"-ss {From}")
-                .AddArg($"-to {To}");
+                .AddArg("ss", From)
+                .AddArg("to", To);
 
             if (HasAudio)
                 inputArgs.SetAudioCodec("copy");
@@ -25,7 +25,7 @@ namespace Captura.FFmpeg
 
             var args = argsBuilder.GetArgs();
 
-            var process = FFmpegService.StartFFmpeg(args, DestFile);
+            var process = FFmpegService.StartFFmpeg(args, DestFile, out _);
 
             await Task.Factory.StartNew(process.WaitForExit);
 

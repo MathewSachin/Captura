@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.FFmpeg;
@@ -32,6 +33,7 @@ namespace Captura.ViewModels
 
         readonly FFmpegDownloadModel _downloadModel;
         readonly IMessageProvider _messageProvider;
+        readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         Task<bool> _downloadTask;
 
@@ -52,7 +54,7 @@ namespace Captura.ViewModels
                 {
                     var progress = new Progress<FFmpegDownloaderProgress>(M => _downloaderProgress.Value = M);
 
-                    _downloadTask = DownloadModel.Start(progress);
+                    _downloadTask = DownloadModel.Start(progress, _cancellationTokenSource.Token);
 
                     var result = await _downloadTask;
 
@@ -125,13 +127,15 @@ namespace Captura.ViewModels
             {
                 if (!_messageProvider.ShowYesNo("Are you sure you want to cancel download?", "Cancel Download"))
                     return false;
+
+                _cancellationTokenSource.Cancel();
             }
             else if (InProgress.Value)
             {
                 return false;
             }
 
-            _downloadModel.Cancel();
+            _cancellationTokenSource.Dispose();
 
             if (_downloadTask != null)
             {

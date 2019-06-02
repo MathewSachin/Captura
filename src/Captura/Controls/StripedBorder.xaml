@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Captura.StripedBorder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <DrawingBrush TileMode="Tile"
+                                      Viewport="0,0,20,20"
+                                      ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Brush>
+                                            <SolidColorBrush Color="{DynamicResource WindowBackgroundColor}"/>
+                                        </GeometryDrawing.Brush>
+                                        <GeometryDrawing.Geometry>
+                                            <GeometryGroup>
+                                                <RectangleGeometry Rect="0,0,10,10" />
+                                                <RectangleGeometry Rect="10,10,10,10" />
+                                            </GeometryGroup>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Brush>
+                                            <SolidColorBrush Color="{DynamicResource AccentColor}"/>
+                                        </GeometryDrawing.Brush>
+                                        <GeometryDrawing.Geometry>
+                                            <GeometryGroup>
+                                                <RectangleGeometry Rect="10,0,10,10" />
+                                                <RectangleGeometry Rect="0,10,10,10" />
+                                            </GeometryGroup>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </DockPanel.Resources>
+
+        <Border BorderThickness="1,0"/>
+
+        <Border BorderThickness="1,0"
+                DockPanel.Dock="Right"/>
+
+        <Border BorderThickness="0,1"
+                DockPanel.Dock="Bottom"/>
+
+        <Border BorderThickness="0,1"
+                DockPanel.Dock="Top"/>
+    </DockPanel>
+</UserControl>

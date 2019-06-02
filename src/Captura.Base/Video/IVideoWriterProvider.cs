@@ -7,5 +7,7 @@ namespace Captura.Models
         string Name { get; }
 
         string Description { get; }
+
+        IVideoWriterItem ParseCli(string Cli);
     }
 }

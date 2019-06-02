@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Captura;
+using Captura.Models;
 
 namespace Screna
 {
@@ -9,11 +10,14 @@ namespace Screna
         Rectangle _region;
         readonly Func<Point> _locationFunc;
         readonly bool _includeCursor;
-        readonly Func<Point, Point> _transform;
 
-        readonly IntPtr _hdcSrc, _hdcDest, _hBitmap;
+        readonly IntPtr _hdcSrc;
+        readonly ITargetDeviceContext _dcTarget;
 
-        public RegionProvider(Rectangle Region, bool IncludeCursor, Func<Point> LocationFunc = null)
+        public RegionProvider(Rectangle Region,
+            IPreviewWindow PreviewWindow,
+            bool IncludeCursor,
+            Func<Point> LocationFunc = null)
         {
             _region = Region;
             _includeCursor = IncludeCursor;
@@ -29,21 +33,22 @@ namespace Screna
             if (Height % 2 == 1)
                 ++Height;
 
-            _transform = P => new Point(P.X - _region.X, P.Y - _region.Y);
+            PointTransform = P => new Point(P.X - _region.X, P.Y - _region.Y);
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-            _hdcDest = Gdi32.CreateCompatibleDC(_hdcSrc);
-            _hBitmap = Gdi32.CreateCompatibleBitmap(_hdcSrc, Width, Height);
-
-            Gdi32.SelectObject(_hdcDest, _hBitmap);
+            if (WindowsModule.Windows8OrAbove)
+            {
+                _dcTarget = new DxgiTargetDeviceContext(PreviewWindow, Width, Height);
+            }
+            else _dcTarget = new GdiTargetDeviceContext(_hdcSrc, Width, Height);
         }
 
         public void Dispose()
         {
-            Gdi32.DeleteDC(_hdcDest);
-            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
-            Gdi32.DeleteObject(_hBitmap);
+            _dcTarget.Dispose();
+
+            User32.ReleaseDC(IntPtr.Zero, _hdcSrc);            
         }
 
         public IEditableFrame Capture()
@@ -51,19 +56,25 @@ namespace Screna
             // Update Location
             _region.Location = _locationFunc();
 
-            Gdi32.BitBlt(_hdcDest, 0, 0, _region.Width, _region.Height,
+            var hdcDest = _dcTarget.GetDC();
+
+            Gdi32.BitBlt(hdcDest, 0, 0, _region.Width, _region.Height,
                 _hdcSrc, _region.X, _region.Y,
                 (int) CopyPixelOperation.SourceCopy);
 
-            var img = new GraphicsEditor(Image.FromHbitmap(_hBitmap));
-
             if (_includeCursor)
-                MouseCursor.Draw(img, _transform);
+                MouseCursor.Draw(hdcDest, PointTransform);
+
+            var img = _dcTarget.GetEditableFrame();
 
             return img;
         }
 
+        public Func<Point, Point> PointTransform { get; }
+
         public int Height { get; }
         public int Width { get; }
+
+        public IBitmapFrame DummyFrame => _dcTarget.DummyFrame;
     }
 }

@@ -21,6 +21,8 @@ namespace Captura.Models
 
         public abstract string Icon { get; }
 
+        public abstract IBitmapImage Capture(bool IncludeCursor);
+
         public virtual bool OnSelect() => true;
 
         public virtual void OnUnselect() { }

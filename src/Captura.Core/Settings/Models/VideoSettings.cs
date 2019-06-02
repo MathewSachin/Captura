@@ -4,11 +4,23 @@
     {
         public string WriterKind
         {
-            get => Get("FFmpeg");
+            get => Get("");
             set => Set(value);
         }
         
         public string Writer
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        public bool PostConvert
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        public string PostWriter
         {
             get => Get<string>();
             set => Set(value);

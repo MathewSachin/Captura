@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Text.RegularExpressions;
 using Screna;
 
 namespace Captura.Models
@@ -8,15 +7,15 @@ namespace Captura.Models
     public class RegionSourceProvider : VideoSourceProviderBase
     {
         readonly IRegionProvider _regionProvider;
-        readonly IPlatformServices _platformServices;
+        readonly IVideoSourcePicker _videoSourcePicker;
 
         public RegionSourceProvider(ILocalizationProvider Loc,
             IRegionProvider RegionProvider,
-            IIconSet Icons,
-            IPlatformServices PlatformServices) : base(Loc)
+            IVideoSourcePicker VideoSourcePicker,
+            IIconSet Icons) : base(Loc)
         {
+            _videoSourcePicker = VideoSourcePicker;
             _regionProvider = RegionProvider;
-            _platformServices = PlatformServices;
 
             Source = RegionProvider.VideoSource;
             Icon = Icons.Region;
@@ -34,16 +33,20 @@ namespace Captura.Models
 
         public override bool OnSelect()
         {
+            var wasVisible = _regionProvider.SelectorVisible;
+            _regionProvider.SelectorVisible = false;
+
+            var region = _videoSourcePicker.PickRegion();
+
+            // Show again if was already visible
+            _regionProvider.SelectorVisible = wasVisible;
+
+            if (region == null)
+                return false;
+
             _regionProvider.SelectorVisible = true;
 
-            var selectedRegion = _regionProvider.SelectedRegion;
-            var fullScreen = _platformServices.DesktopRectangle;
-
-            // Fully outside all screens, reset location
-            if (Rectangle.Intersect(selectedRegion, fullScreen) == Rectangle.Empty)
-            {
-                _regionProvider.SelectedRegion = new Rectangle(50, 50, 500, 500);
-            }
+            _regionProvider.SelectedRegion = region.Value;
 
             return true;
         }
@@ -66,22 +69,24 @@ namespace Captura.Models
 
             _regionProvider.SelectedRegion = rect;
 
-            OnSelect();
+            _regionProvider.SelectorVisible = true;
 
             return true;
         }
 
         public override bool ParseCli(string Arg)
         {
-            if (!Regex.IsMatch(Arg, @"^\d+,\d+,\d+,\d+$"))
-                return false;
-
             if (!(Arg.ConvertToRectangle() is Rectangle rect))
                 return false;
 
             _regionProvider.SelectedRegion = rect.Even();
 
             return true;
+        }
+
+        public override IBitmapImage Capture(bool IncludeCursor)
+        {
+            return ScreenShot.Capture(_regionProvider.SelectedRegion, IncludeCursor);
         }
     }
 }

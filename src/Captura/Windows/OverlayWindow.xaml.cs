@@ -247,6 +247,13 @@ namespace Captura
             {
                 var control = Image(Setting, Setting.Source);
 
+                var img = new Image
+                {
+                    Stretch = Stretch.Fill
+                };
+
+                control.Label.Content = img;
+
                 var visibilityProp = Setting
                     .ObserveProperty(M => M.Display)
                     .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
@@ -258,7 +265,7 @@ namespace Captura
                     .ObserveProperty(M => M.Source)
                     .ToReadOnlyReactivePropertySlim();
 
-                BindOne(control.Label, ContentProperty, srcProp);
+                BindOne(img, System.Windows.Controls.Image.SourceProperty, srcProp);
 
                 return control;
             }, true, 2);

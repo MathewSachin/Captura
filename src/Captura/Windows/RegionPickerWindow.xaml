@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Captura"
         mc:Ignorable="d"
         Title="Region Picker"
         d:DesignHeight="600"
@@ -29,6 +30,8 @@
           Name="Grid">
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource Title}"/>
+
+            <SolidColorBrush Color="#77000000" x:Key="SurroundColor"/>
         </Grid.Resources>
 
         <xctk:MagnifierManager.Magnifier>
@@ -57,14 +60,13 @@
 
         <Image Name="BgImg"/>
 
-        <Border Visibility="Collapsed"
-                Background="#57FFFFFF"
-                BorderBrush = "#333333"
-                BorderThickness="0.5"
-                Name="Border"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
+        <local:StripedBorder Visibility="Collapsed"
+                             x:Name="Border"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"/>
 
+        <local:PuncturedRegion x:Name="PunctRegion"/>
+        
         <TextBlock Visibility="Collapsed"
                    Padding="5,2"
                    FontSize="14"

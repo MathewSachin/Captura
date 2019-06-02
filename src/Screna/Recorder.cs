@@ -119,7 +119,7 @@ namespace Screna
 
                 while (CanContinue() && !_cancellationToken.IsCancellationRequested)
                 {
-                    var timestamp = DateTime.Now;
+                    var timestamp = _sw.Elapsed;
 
                     if (_task != null)
                     {
@@ -145,7 +145,7 @@ namespace Screna
                         if (_cancellationToken.IsCancellationRequested)
                             return false;
 
-                        var frame = editableFrame.GenerateFrame();
+                        var frame = editableFrame.GenerateFrame(timestamp);
 
                         if (_cancellationToken.IsCancellationRequested)
                             return false;
@@ -153,7 +153,7 @@ namespace Screna
                         return AddFrame(frame);
                     });
 
-                    var timeTillNextFrame = timestamp + frameInterval - DateTime.Now;
+                    var timeTillNextFrame = timestamp + frameInterval - _sw.Elapsed;
 
                     if (timeTillNextFrame > TimeSpan.Zero)
                         Thread.Sleep(timeTillNextFrame);
@@ -241,6 +241,9 @@ namespace Screna
                 }
                 catch { }
 
+                _imageProvider?.Dispose();
+                _imageProvider = null;
+
                 _videoWriter.Dispose();
                 _videoWriter = null;
 
@@ -251,9 +254,6 @@ namespace Screna
                 _audioWriter.Dispose();
                 _audioWriter = null;
             }
-
-            _imageProvider?.Dispose();
-            _imageProvider = null;
         }
 
         /// <summary>

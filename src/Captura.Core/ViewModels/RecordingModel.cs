@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -30,7 +29,7 @@ namespace Captura.ViewModels
         readonly IFFmpegViewsProvider _ffmpegViewsProvider;
 
         readonly KeymapViewModel _keymap;
-        readonly AudioSource _audioSource;
+        readonly IAudioSource _audioSource;
         #endregion
 
         public RecordingModel(Settings Settings,
@@ -38,7 +37,7 @@ namespace Captura.ViewModels
             ISystemTray SystemTray,
             WebcamOverlay WebcamOverlay,
             IPreviewWindow PreviewWindow,
-            AudioSource AudioSource,
+            IAudioSource AudioSource,
             WebcamModel WebcamModel,
             KeymapViewModel Keymap,
             TimerModel TimerModel,
@@ -109,29 +108,6 @@ namespace Captura.ViewModels
             }
         }
 
-        bool CheckFFmpeg(RecordingModelParams RecordingParams)
-        {
-            var isFFmpegVideoItem = RecordingParams.VideoWriterKind is FFmpegWriterProvider ||
-                                    RecordingParams.VideoWriterKind is StreamingWriterProvider;
-
-            var isFFmpegAudioItem =
-                RecordingParams.VideoSourceKind is NoVideoSourceProvider noVideoSourceProvider
-                && noVideoSourceProvider.Source is NoVideoItem noVideoItem
-                && noVideoItem.AudioWriterItem is FFmpegAudioItem;
-
-            if (isFFmpegVideoItem || isFFmpegAudioItem)
-            {
-                if (!FFmpegService.FFmpegExists)
-                {
-                    _ffmpegViewsProvider.ShowUnavailable();
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
         {
             IImageProvider imgProvider;
@@ -139,12 +115,6 @@ namespace Captura.ViewModels
             try
             {
                 imgProvider = GetImageProvider(RecordingParams);
-            }
-            catch (NotSupportedException e) when (RecordingParams.VideoSourceKind is DeskDuplSourceProvider)
-            {
-                _messageProvider.ShowError(e.Message, Loc.ErrorOccurred);
-
-                return false;
             }
             catch (WindowClosedException e)
             {
@@ -154,7 +124,7 @@ namespace Captura.ViewModels
             }
             catch (Exception e)
             {
-                _messageProvider.ShowException(e, e.Message);
+                _messageProvider.ShowException(e, Loc.ErrorOccurred);
 
                 return false;
             }
@@ -164,6 +134,14 @@ namespace Captura.ViewModels
             try
             {
                 videoEncoder = GetVideoFileWriterWithPreview(imgProvider, AudioProvider, RecordingParams);
+            }
+            catch (FFmpegNotFoundException)
+            {
+                _ffmpegViewsProvider.ShowUnavailable();
+
+                imgProvider?.Dispose();
+
+                return false;
             }
             catch (Exception e)
             {
@@ -190,13 +168,13 @@ namespace Captura.ViewModels
             if (Settings.Audio.Enabled
                 && Settings.Audio.SeparateFilePerSource)
             {
-                SeparateFileForEveryAudioSource();
+                SeparateFileForEveryAudioSource(RecordingParams);
             }
 
             return true;
         }
 
-        bool SetupAudioProvider(out IAudioProvider AudioProvider)
+        bool SetupAudioProvider(RecordingModelParams RecordingParams, out IAudioProvider AudioProvider)
         {
             AudioProvider = null;
 
@@ -204,7 +182,7 @@ namespace Captura.ViewModels
             {
                 if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
                 {
-                    AudioProvider = _audioSource.GetMixedAudioProvider();
+                    AudioProvider = _audioSource.GetMixedAudioProvider(RecordingParams.AudioItems);
                 }
             }
             catch (Exception e)
@@ -228,10 +206,7 @@ namespace Captura.ViewModels
 
             CurrentFileName = Settings.GetFileName(extension, FileName);
 
-            if (!CheckFFmpeg(RecordingParams))
-                return false;
-
-            if (!SetupAudioProvider(out var audioProvider))
+            if (!SetupAudioProvider(RecordingParams, out var audioProvider))
                 return false;
 
             if (IsVideo)
@@ -245,7 +220,7 @@ namespace Captura.ViewModels
             }
             else if (RecordingParams.VideoSourceKind?.Source is NoVideoItem audioWriter)
             {
-                if (!InitAudioRecorder(audioWriter, audioProvider))
+                if (!InitAudioRecorder(audioWriter, audioProvider, RecordingParams))
                 {
                     audioProvider?.Dispose();
 
@@ -283,33 +258,47 @@ namespace Captura.ViewModels
                 $".{Index}{Path.GetExtension(CurrentFileName)}");
         }
 
-        bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider)
+        bool InitAudioRecorder(NoVideoItem AudioWriter, IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
         {
-            if (!Settings.Audio.SeparateFilePerSource)
+            try
             {
-                _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
-            }
-            else
-            {
-                var audioProviders = _audioSource.GetMultipleAudioProviders();
-
-                if (audioProviders.Length > 0)
+                if (!Settings.Audio.SeparateFilePerSource)
                 {
-                    var recorders = audioProviders
-                        .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
-                        .ToArray();
-
-                    _recorder = new MultiRecorder(recorders);
-
-                    // Set to first file
-                    CurrentFileName = GetAudioFileName(0);
+                    _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
                 }
                 else
                 {
-                    _messageProvider.ShowError("No Audio Sources selected");
+                    var audioProviders = RecordingParams
+                        .AudioItems
+                        .Where(M => M.IsActive)
+                        .Select(M => M.Item)
+                        .Select(M => _audioSource.GetAudioProvider(M))
+                        .ToArray();
 
-                    return false;
+                    if (audioProviders.Length > 0)
+                    {
+                        var recorders = audioProviders
+                            .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
+                            .ToArray();
+
+                        _recorder = new MultiRecorder(recorders);
+
+                        // Set to first file
+                        CurrentFileName = GetAudioFileName(0);
+                    }
+                    else
+                    {
+                        _messageProvider.ShowError("No Audio Sources selected");
+
+                        return false;
+                    }
                 }
+            }
+            catch (FFmpegNotFoundException)
+            {
+                _ffmpegViewsProvider.ShowUnavailable();
+
+                return false;
             }
 
             return true;
@@ -328,7 +317,7 @@ namespace Captura.ViewModels
             _recorder = new MultiRecorder(_recorder, webcamRecorder);
         }
 
-        void SeparateFileForEveryAudioSource()
+        void SeparateFileForEveryAudioSource(RecordingModelParams RecordingParams)
         {
             var audioWriter = new WaveItem();
 
@@ -344,7 +333,12 @@ namespace Captura.ViewModels
                 return Path.ChangeExtension(CurrentFileName, $".{Index}.wav");
             }
 
-            var audioProviders = _audioSource.GetMultipleAudioProviders();
+            var audioProviders = RecordingParams
+                    .AudioItems
+                    .Where(M => M.IsActive)
+                    .Select(M => M.Item)
+                    .Select(M => _audioSource.GetAudioProvider(M))
+                    .ToArray();
 
             if (audioProviders.Length > 0)
             {
@@ -435,7 +429,7 @@ namespace Captura.ViewModels
                 ? new MouseClickSettings { Display = false }
                 : Settings.Clicks;
 
-            yield return new MouseKeyHook(clickSettings,
+            yield return new MouseKeyOverlay(clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 CurrentFileName,
@@ -470,16 +464,14 @@ namespace Captura.ViewModels
 
         IImageProvider GetImageProvider(RecordingModelParams RecordingParams)
         {
-            Func<Point, Point> transform = P => P;
-
             var imageProvider = RecordingParams
                 .VideoSourceKind
                 ?.Source
-                ?.GetImageProvider(Settings.IncludeCursor, out transform);
+                ?.GetImageProvider(Settings.IncludeCursor);
 
             return imageProvider == null
                 ? null
-                : new OverlayedImageProvider(imageProvider, transform, GetOverlays(RecordingParams).ToArray());
+                : new OverlayedImageProvider(imageProvider, GetOverlays(RecordingParams).ToArray());
         }
 
         public string CurrentFileName { get; private set; }
