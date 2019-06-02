@@ -36,7 +36,7 @@ namespace Captura.Models
             var w = Args.ImageProvider.Width;
             var h = Args.ImageProvider.Height;
 
-            _videoBuffer = new byte[w * h * (nv12 ? (12 / 8) : 4)];
+            _videoBuffer = new byte[(int)(w * h * (nv12 ? 1.5 : 4))];
 
             Console.WriteLine($"Video Buffer Allocated: {_videoBuffer.Length}");
 
