@@ -8,7 +8,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
-    public class Texture2DFrame : IBitmapFrame
+    public class Texture2DFrame : IBitmapFrame, INV12Frame
     {
         public Texture2D Texture { get; }
         public Texture2D PreviewTexture { get; }
@@ -17,11 +17,15 @@ namespace DesktopDuplication
 
         public TimeSpan Timestamp { get; }
 
+        Lazy<MfColorConverter> _colorConverter;
+
         public Texture2DFrame(Texture2D Texture,
             Device Device,
             Texture2D PreviewTexture,
-            TimeSpan Timestamp)
+            TimeSpan Timestamp,
+            Lazy<MfColorConverter> ColorConverter)
         {
+            _colorConverter = ColorConverter;
             this.Timestamp = Timestamp;
             this.Texture = Texture;
             this.Device = Device;
@@ -32,6 +36,10 @@ namespace DesktopDuplication
             Width = desc.Width;
             Height = desc.Height;
         }
+
+        Texture2DFrame() { }
+
+        public static IBitmapFrame DummyFrame { get; } = new Texture2DFrame();
 
         public void Dispose() { }
 
@@ -81,6 +89,11 @@ namespace DesktopDuplication
             {
                 Device.ImmediateContext.UnmapSubresource(Texture, 0);
             }
+        }
+
+        public void CopyNV12To(byte[] Buffer)
+        {
+            _colorConverter.Value.Convert(Texture, Buffer);
         }
     }
 }
