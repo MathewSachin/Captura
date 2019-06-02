@@ -118,6 +118,12 @@ namespace Captura
 
             var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
+            if (StartOptions.Roll is int rollDuration && rollDuration > 0)
+            {
+                var internalWriter = videoWriter;
+                videoWriter = new FFmpegRollingWriterItem(rollDuration, M => internalWriter.GetVideoFileWriter(M));
+            }
+
             var audioSources = HandleAudioSource(StartOptions);
 
             HandleWebcam(StartOptions);
@@ -235,18 +241,7 @@ namespace Captura
                 return selected.writer;
             }
 
-            var ffmpegExists = FFmpegService.FFmpegExists;
             var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
-
-            // Rolling
-            if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^roll:\d+$"))
-            {
-                var duration = int.Parse(StartOptions.Encoder.Substring(5));
-
-                VideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
-
-                return new FFmpegRollingWriterItem(duration);
-            }
 
             VideoWriterKind = sharpAviWriterProvider;
             return sharpAviWriterProvider.First();

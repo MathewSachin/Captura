@@ -2,7 +2,7 @@
   "profiles": {
     "Captura.Console": {
       "commandName": "Project",
-      "commandLineArgs": "start --encoder roll:20 --speaker 0"
+      "commandLineArgs": "start --encoder mf --roll 20 --speaker 0"
     }
   }
 }

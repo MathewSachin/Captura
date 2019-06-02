@@ -36,7 +36,7 @@ namespace Captura
         [Option('r', "framerate", HelpText = "Recording frame rate.")]
         public int? FrameRate { get; set; }
 
-        [Option("encoder", HelpText = "Video encoder to use.")]
+        [Option("encoder", Default = "", HelpText = "Video encoder to use.")]
         public string Encoder { get; set; }
 
         [Option("vq", HelpText = "Video Quality")]
@@ -47,6 +47,9 @@ namespace Captura
 
         [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
         public int Webcam { get; set; }
+
+        [Option("roll", HelpText = "Capture last n seconds.")]
+        public int? Roll { get; set; }
 
         [Option("settings", HelpText = "Settings file to use for overlay settings, ffmpeg path and output path")]
         public string Settings { get; set; }
