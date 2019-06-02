@@ -131,8 +131,6 @@
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 
-            <Frame Source="VideoEncoderPage.xaml"/>
-
             <Frame Source="AudioPage.xaml"
                    Margin="0,10,0,0"
                    Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>

@@ -1,6 +1,8 @@
-﻿namespace Captura.Models
+﻿using Captura.Models;
+
+namespace Captura.FFmpeg
 {
-    class Vp9VideoCodec : FFmpegPostProcessingCodec
+    class Vp9VideoCodec : FFmpegVideoCodec
     {
         const string Descr = "Encode to WebM: Vp9 with Opus audio";
 

@@ -32,8 +32,8 @@ namespace Captura.Models
         TimeSpan? _duration;
         int _lastReportedProgress;
 
-        readonly Regex _durationRegex = new Regex(@"Duration: (\d{2}:\d{2}:\d{2})");
-        readonly Regex _timeRegex = new Regex(@"time=(\d{2}:\d{2}:\d{2})");
+        readonly Regex _durationRegex = new Regex(@"Duration: (\d{2}:\d{2}:\d{2}.\d{2})");
+        readonly Regex _timeRegex = new Regex(@"time=(\d{2}:\d{2}:\d{2}.\d{2})");
 
         public void Write(string Text)
         {
@@ -64,7 +64,7 @@ namespace Captura.Models
                     {
                         var time = TimeSpan.Parse(match.Groups[1].Value);
 
-                        var progress = (int)(time.TotalSeconds * 100 / _duration.Value.TotalSeconds);
+                        var progress = (int)(time.TotalMilliseconds * 100 / _duration.Value.TotalMilliseconds);
 
                         if (progress > _lastReportedProgress)
                         {

@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Captura.FFmpeg;
 using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -26,6 +27,7 @@ namespace Captura.ViewModels
         readonly IRecentList _recentList;
         readonly IMessageProvider _messageProvider;
         readonly AudioSourceViewModel _audioSourceViewModel;
+        readonly IFFmpegViewsProvider _ffmpegViewsProvider;
 
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
@@ -44,7 +46,8 @@ namespace Captura.ViewModels
             IAudioPlayer AudioPlayer,
             IRecentList RecentList,
             IMessageProvider MessageProvider,
-            AudioSourceViewModel AudioSourceViewModel) : base(Settings, Loc)
+            AudioSourceViewModel AudioSourceViewModel,
+            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
         {
             _recordingModel = RecordingModel;
             _timerModel = TimerModel;
@@ -56,6 +59,7 @@ namespace Captura.ViewModels
             _recentList = RecentList;
             _messageProvider = MessageProvider;
             _audioSourceViewModel = AudioSourceViewModel;
+            _ffmpegViewsProvider = FFmpegViewsProvider;
 
             RecordCommand = new[]
                 {
@@ -151,6 +155,8 @@ namespace Captura.ViewModels
             var fileName = _recordingModel.CurrentFileName;
             var isVideo = _recordingModel.IsVideo;
 
+            IVideoConverter postWriter = null;
+
             // Assume saving to file only when extension is present
             if (!_timerModel.Waiting && !string.IsNullOrWhiteSpace(_videoWritersViewModel.SelectedVideoWriter.Extension))
             {
@@ -162,6 +168,9 @@ namespace Captura.ViewModels
                 notification.OnDelete += () => savingRecentItem.RemoveCommand.ExecuteIfCan();
 
                 _systemTray.ShowNotification(notification);
+
+                if (isVideo && Settings.Video.PostConvert)
+                    postWriter = _videoWritersViewModel.SelectedPostWriter;
             }
 
             var task = _recordingModel.StopRecording();
@@ -178,6 +187,57 @@ namespace Captura.ViewModels
             {
                 // Ensure saved
                 await task;
+
+                if (postWriter != null)
+                {
+                    notification.Converting();
+
+                    var progress = new Progress<int>();
+
+                    progress.ProgressChanged += (S, E) => notification.Progress = E;
+
+                    var outFileName = Path.Combine(
+                        Path.GetDirectoryName(fileName),
+                        $"{Path.GetFileNameWithoutExtension(fileName)}.converted{postWriter.Extension}");
+
+                    try
+                    {
+                        await postWriter.StartAsync(new VideoConverterArgs
+                        {
+                            AudioQuality = Settings.Audio.Quality,
+                            VideoQuality = Settings.Video.Quality,
+                            InputFile = fileName,
+                            FileName = outFileName
+                        }, progress);
+
+                        File.Delete(fileName);
+
+                        var targetFileName = Path.Combine(
+                            Path.GetDirectoryName(fileName),
+                            $"{Path.GetFileNameWithoutExtension(fileName)}{postWriter.Extension}");
+
+                        File.Move(outFileName, targetFileName);
+
+                        savingRecentItem.Converted(targetFileName);
+                        notification.Converted(targetFileName);
+                    }
+                    catch (FFmpegNotFoundException e)
+                    {
+                        try
+                        {
+                            _ffmpegViewsProvider.ShowUnavailable();
+                        }
+                        catch
+                        {
+                            // Show simpler message for cases the above fails
+                            _messageProvider.ShowException(e, e.Message);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _messageProvider.ShowException(e, "Conversion Failed");
+                    }                    
+                }
 
                 lock (_stopRecTaskLock)
                 {
