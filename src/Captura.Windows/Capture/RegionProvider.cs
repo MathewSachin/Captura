@@ -75,6 +75,6 @@ namespace Screna
         public int Height { get; }
         public int Width { get; }
 
-        public Type EditorType => _dcTarget.EditorType;
+        public IBitmapFrame DummyFrame => _dcTarget.DummyFrame;
     }
 }

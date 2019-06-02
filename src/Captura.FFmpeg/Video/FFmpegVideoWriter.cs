@@ -174,11 +174,7 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-#pragma warning disable CS0728 // Possibly incorrect assignment to local which is the argument to a using or lock statement
-                    Frame = Frame.Unwrap();
-#pragma warning restore CS0728 // Possibly incorrect assignment to local which is the argument to a using or lock statement
-
-                    if (Frame is INV12Frame nv12Frame)
+                    if (Frame.Unwrap() is INV12Frame nv12Frame)
                     {
                         nv12Frame.CopyNV12To(_videoBuffer);
                     }

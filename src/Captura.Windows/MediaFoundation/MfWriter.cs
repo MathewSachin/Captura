@@ -63,7 +63,7 @@ namespace DesktopDuplication
 
         public MfWriter(VideoWriterArgs Args, Device Device)
         {
-            if (Args.ImageProvider.EditorType == typeof(Direct2DEditor))
+            if (Args.ImageProvider.DummyFrame is Texture2DFrame)
             {
                 _inputFormat = VideoFormatGuids.NV12;
             }

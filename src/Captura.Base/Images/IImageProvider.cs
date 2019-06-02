@@ -26,6 +26,6 @@ namespace Captura
 
         Func<Point, Point> PointTransform { get; }
 
-        Type EditorType { get; }
+        IBitmapFrame DummyFrame { get; }
     }
 }

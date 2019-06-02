@@ -37,6 +37,10 @@ namespace DesktopDuplication
             Height = desc.Height;
         }
 
+        Texture2DFrame() { }
+
+        public static IBitmapFrame DummyFrame { get; } = new Texture2DFrame();
+
         public void Dispose() { }
 
         public int Width { get; }
