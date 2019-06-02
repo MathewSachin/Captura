@@ -18,6 +18,8 @@ namespace Captura.Models
 
         public override string ToString() => Name;
 
+        public IVideoWriterItem ParseCli(string Cli) => null;
+
         public string Description => @"FF Interop";
     }
 }

@@ -83,7 +83,7 @@ namespace Captura.FFmpeg.Interop
             }
 
             using (Image)
-                Image.CopyTo(_videoStream.Buffer, _videoStream.Buffer.Length);
+                Image.CopyTo(_videoStream.Buffer);
 
             _videoStream.WriteFrame();
         }
