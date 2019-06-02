@@ -7,7 +7,7 @@ namespace Screna
     {
         IntPtr GetDC();
 
-        Type EditorType { get; }
+        IBitmapFrame DummyFrame { get; }
 
         IEditableFrame GetEditableFrame();
     }

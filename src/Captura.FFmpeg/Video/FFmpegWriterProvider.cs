@@ -23,17 +23,10 @@ namespace Captura.Models
             yield return new X264VideoCodec();
             yield return new XvidVideoCodec();
 
-            // Gif
-            yield return new FFmpegGifItem();
-
             // Hardware
             yield return new QsvHevcVideoCodec();
             yield return NvencVideoCodec.CreateH264();
             yield return NvencVideoCodec.CreateHevc();
-
-            // Post-processing
-            yield return new Vp8VideoCodec();
-            yield return new Vp9VideoCodec();
 
             // Custom
             foreach (var item in _settings.CustomCodecs)

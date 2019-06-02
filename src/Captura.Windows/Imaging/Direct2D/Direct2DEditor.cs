@@ -212,7 +212,8 @@ namespace DesktopDuplication
             return new Texture2DFrame(_editorSession.StagingTexture,
                 _editorSession.Device,
                 _editorSession.PreviewTexture,
-                Timestamp);
+                Timestamp,
+                _editorSession.ColorConverter);
         }
     }
 }

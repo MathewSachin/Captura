@@ -6,13 +6,13 @@ using Captura;
 
 namespace Screna
 {
-    public abstract class DrawingFrameBase : IBitmapFrame
+    public class DrawingFrame : IBitmapFrame
     {
         public Bitmap Bitmap { get; }
 
         public TimeSpan Timestamp { get; }
 
-        protected DrawingFrameBase(Bitmap Bitmap, TimeSpan Timestamp)
+        public DrawingFrame(Bitmap Bitmap, TimeSpan Timestamp)
         {
             this.Timestamp = Timestamp;
             this.Bitmap = Bitmap;
@@ -20,7 +20,11 @@ namespace Screna
             Height = Bitmap.Height;
         }
 
-        public abstract void Dispose();
+        DrawingFrame() { }
+
+        public static IBitmapFrame DummyFrame { get; } = new DrawingFrame();
+
+        public void Dispose() => Bitmap.Dispose();
 
         public int Width { get; }
         public int Height { get; }

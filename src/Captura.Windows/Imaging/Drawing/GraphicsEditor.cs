@@ -25,7 +25,7 @@ namespace Screna
         {
             Dispose();
 
-            return new OneTimeFrame(_image, Timestamp);
+            return new DrawingFrame(_image, Timestamp);
         }
 
         public IBitmapImage CreateBitmapBgr32(Size Size, IntPtr MemoryData, int Stride)

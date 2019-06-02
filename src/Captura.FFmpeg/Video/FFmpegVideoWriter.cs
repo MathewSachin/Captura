@@ -29,9 +29,14 @@ namespace Captura.Models
                 throw new FFmpegNotFoundException();
             }
 
+            var nv12 = Args.ImageProvider.DummyFrame is INV12Frame;
+
             var settings = ServiceProvider.Get<FFmpegSettings>();
 
-            _videoBuffer = new byte[Args.ImageProvider.Width * Args.ImageProvider.Height * 4];
+            var w = Args.ImageProvider.Width;
+            var h = Args.ImageProvider.Height;
+
+            _videoBuffer = new byte[(int)(w * h * (nv12 ? 1.5 : 4))];
 
             Console.WriteLine($"Video Buffer Allocated: {_videoBuffer.Length}");
 
@@ -43,8 +48,8 @@ namespace Captura.Models
                 .AddArg("thread_queue_size", 512)
                 .AddArg("framerate", Args.FrameRate)
                 .SetFormat("rawvideo")
-                .AddArg("pix_fmt", "rgb32")
-                .SetVideoSize(Args.ImageProvider.Width, Args.ImageProvider.Height);
+                .AddArg("pix_fmt", nv12 ? "nv12" : "rgb32")
+                .SetVideoSize(w, h);
 
             var output = argsBuilder.AddOutputFile(Args.FileName)
                 .SetFrameRate(Args.FrameRate);
@@ -174,7 +179,11 @@ namespace Captura.Models
             {
                 using (Frame)
                 {
-                    Frame.CopyTo(_videoBuffer);
+                    if (Frame.Unwrap() is INV12Frame nv12Frame)
+                    {
+                        nv12Frame.CopyNV12To(_videoBuffer);
+                    }
+                    else Frame.CopyTo(_videoBuffer);
                 }
             }
 

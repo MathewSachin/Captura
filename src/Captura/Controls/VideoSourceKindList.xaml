@@ -4,7 +4,7 @@
     <ListView Margin="0,5"
               IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
               ItemsSource="{Binding VideoSourcesViewModel.VideoSources, Source={StaticResource ServiceLocator}}"
-              SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+              SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay, Delay=10, Source={StaticResource ServiceLocator}}"
               BorderThickness="0.4"
               SelectionMode="Single">
         <ListView.ItemsPanel>

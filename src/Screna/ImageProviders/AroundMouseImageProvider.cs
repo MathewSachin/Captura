@@ -107,6 +107,6 @@ namespace Screna
             _regionProvider.Dispose();
         }
 
-        public Type EditorType => _regionProvider.EditorType;
+        public IBitmapFrame DummyFrame => _regionProvider.DummyFrame;
     }
 }

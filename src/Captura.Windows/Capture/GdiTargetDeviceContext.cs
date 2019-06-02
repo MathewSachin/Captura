@@ -16,7 +16,7 @@ namespace Screna
             Gdi32.SelectObject(_hdcDest, _hBitmap);
         }
 
-        public Type EditorType { get; } = typeof(GraphicsEditor);
+        public IBitmapFrame DummyFrame => DrawingFrame.DummyFrame;
 
         public void Dispose()
         {

@@ -131,8 +131,6 @@
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 
-            <Frame Source="VideoEncoderPage.xaml"/>
-
             <StackPanel Visibility="{Binding ViewConditions.IsStepsMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <GridSplitter IsEnabled="False"
                               Height="1"

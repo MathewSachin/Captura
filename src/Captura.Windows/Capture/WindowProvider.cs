@@ -135,6 +135,6 @@ namespace Screna
             User32.ReleaseDC(IntPtr.Zero, _hdcSrc);
         }
 
-        public Type EditorType => _dcTarget.EditorType;
+        public IBitmapFrame DummyFrame => _dcTarget.DummyFrame;
     }
 }
