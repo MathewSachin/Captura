@@ -13,6 +13,8 @@ namespace Captura
         readonly ILocalizationProvider _loc;
         readonly IIconSet _icons;
 
+        string _fileName;
+
         public FileSaveNotification(FileRecentItem RecentItem)
         {
             _recentItem = RecentItem;
@@ -20,8 +22,21 @@ namespace Captura
             _loc = ServiceProvider.Get<ILocalizationProvider>();
             _icons = ServiceProvider.Get<IIconSet>();
 
+            _fileName = RecentItem.FileName;
+
             PrimaryText = $"Saving {_recentItem.FileType} ...";
-            SecondaryText = Path.GetFileName(RecentItem.FileName);
+            SecondaryText = Path.GetFileName(_fileName);
+        }
+
+        public void Converting()
+        {
+            PrimaryText = $"Converting ...";
+        }
+
+        public void Converted(string NewFileName)
+        {
+            SecondaryText = Path.GetFileName(NewFileName);
+            _fileName = NewFileName;
         }
 
         public void Saved()
@@ -35,11 +50,11 @@ namespace Captura
 
             deleteAction.Click += () =>
             {
-                if (File.Exists(_recentItem.FileName))
+                if (File.Exists(_fileName))
                 {
                     var platformServices = ServiceProvider.Get<IPlatformServices>();
 
-                    if (!platformServices.DeleteFile(_recentItem.FileName))
+                    if (!platformServices.DeleteFile(_fileName))
                         return;
                 }
 
@@ -63,7 +78,7 @@ namespace Captura
             if (_recentItem.IsSaving)
                 return;
 
-            ServiceProvider.LaunchFile(new ProcessStartInfo(_recentItem.FileName));
+            ServiceProvider.LaunchFile(new ProcessStartInfo(_fileName));
         }
 
         public void Remove() => RemoveRequested?.Invoke();
@@ -72,7 +87,13 @@ namespace Captura
 
         public IEnumerable<NotificationAction> Actions => _notificationActions;
 
-        int INotification.Progress => 0;
+        int _progress;
+
+        public int Progress
+        {
+            get => _progress;
+            set => Set(ref _progress, value);
+        }
 
         string _primaryText;
 
@@ -82,7 +103,13 @@ namespace Captura
             private set => Set(ref _primaryText, value);
         }
 
-        public string SecondaryText { get; }
+        string _secondaryText;
+
+        public string SecondaryText
+        {
+            get => _secondaryText;
+            private set => Set(ref _secondaryText, value);
+        }
 
         bool _finished;
 

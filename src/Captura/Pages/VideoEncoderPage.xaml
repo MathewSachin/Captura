@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid>
-        <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
+    <Grid Margin="5">
+        <StackPanel>
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>
@@ -134,6 +134,18 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Video.Quality}"/>
             </DockPanel>
+
+            <CheckBox Margin="0,15,0,5"
+                      Content="Convert after encoding"
+                      IsChecked="{Binding Settings.Video.PostConvert}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+
+            <ComboBox ItemsSource="{Binding VideoWritersViewModel.AvailablePostWriters, Source={StaticResource ServiceLocator}}" 
+                      SelectedValue="{Binding VideoWritersViewModel.SelectedPostWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                      Visibility="{Binding Settings.Video.PostConvert, Converter={StaticResource BoolToVisibilityConverter}}"
+                      DisplayMemberPath="Name"
+                      Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -55,18 +55,8 @@ namespace Captura.ViewModels
             }
             finally
             {
-                // Important to send PropertyChanged event over SynchronizationContext for consistency in UI
-
-                void PropChange()
-                {
-                    RaisePropertyChanged(nameof(SelectedVideoSourceKind));
-                }
-
-                if (_syncContext != null)
-                {
-                    _syncContext.Post(S => PropChange(), null);
-                }
-                else PropChange();
+                // Delay parameter needs to be used with Binding for handling cancellation
+                RaisePropertyChanged(nameof(SelectedVideoSourceKind));
             }
         }
 

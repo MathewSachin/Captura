@@ -30,7 +30,7 @@ namespace Captura.Models
 
             AudioArgsProvider(AudioQuality, output);
 
-            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName);
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName, out _);
             
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
         }
