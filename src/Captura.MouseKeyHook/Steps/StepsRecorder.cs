@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -23,7 +22,6 @@ namespace Captura.Models
         bool _modifierSingleDown;
 
         IRecordStep _lastStep;
-        Point? _dragStartPoint;
 
         IObservable<IRecordStep> Observe(IMouseKeyHook Hook, CancellationToken CancellationToken, out IObservable<Unit> ShotObservable)
         {
@@ -48,10 +46,6 @@ namespace Captura.Models
 
             Hook.MouseClick += (S, E) =>
             {
-                // HACK: Prevent Mouse click generated due to dragging
-                if (_dragStartPoint != null)
-                    return;
-
                 var step = new MouseClickStep(_mouseClickSettings,
                     _keystrokesSettings, E,
                     _keymap);
@@ -68,18 +62,24 @@ namespace Captura.Models
                 OnNext(step);
             };
 
-            Hook.MouseDragStarted += (S, E) => _dragStartPoint = E.Location;
-            Hook.MouseDragFinished += (S, E) =>
+            Hook.MouseDragStarted += (S, E) => 
             {
-                var step = new MouseDragStep(_dragStartPoint.Value,
-                    E.Location,
+                var step = new MouseDragBeginStep(E.Location,
                     _mouseClickSettings,
                     _keystrokesSettings,
                     _keymap);
 
                 OnNext(step);
+            };
 
-                _dragStartPoint = null;
+            Hook.MouseDragFinished += (S, E) =>
+            {
+                var step = new MouseDragStep(E.Location,
+                    _mouseClickSettings,
+                    _keystrokesSettings,
+                    _keymap);
+
+                OnNext(step);
             };
 
             if (_stepsSettings.IncludeScrolls)
