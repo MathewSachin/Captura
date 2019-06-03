@@ -2,7 +2,7 @@
   "profiles": {
     "Captura.Console": {
       "commandName": "Project",
-      "commandLineArgs": "start --changes --encoder ffmpeg:0 --vq 40"
+      "commandLineArgs": "start --encoder mf --roll 20 --speaker 0"
     }
   }
 }

@@ -48,6 +48,9 @@ namespace Captura
         [Option("webcam", Default = -1, HelpText = "Webcam to use. Default = -1 (No Webcam)")]
         public int Webcam { get; set; }
 
+        [Option("roll", HelpText = "Capture last n seconds.")]
+        public int? Roll { get; set; }
+
         [Option("settings", HelpText = "Settings file to use for overlay settings, ffmpeg path and output path")]
         public string Settings { get; set; }
 

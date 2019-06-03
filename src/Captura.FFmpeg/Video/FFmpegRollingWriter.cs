@@ -15,7 +15,7 @@ namespace Captura.FFmpeg
         const int NoOfFiles = 2;
         int _currentFile = -1;
 
-        static readonly TempFileVideoCodec TempVideoCodec = new TempFileVideoCodec();
+        readonly Func<VideoWriterArgs, IVideoFileWriter> _writerGenerator;
 
         IVideoFileWriter _currentWriter;
 
@@ -24,10 +24,13 @@ namespace Captura.FFmpeg
             return $"{_videoWriterArgs.FileName}.{Index}.mp4";
         }
 
-        public FFmpegRollingWriter(VideoWriterArgs VideoWriterArgs, int Duration)
+        public FFmpegRollingWriter(VideoWriterArgs VideoWriterArgs,
+            int Duration,
+            Func<VideoWriterArgs, IVideoFileWriter> WriterGenerator)
         {
             _videoWriterArgs = VideoWriterArgs;
             _duration = Duration;
+            _writerGenerator = WriterGenerator;
             _frameCount = _videoWriterArgs.FrameRate * Duration;
         }
 
@@ -115,7 +118,7 @@ namespace Captura.FFmpeg
 
             if (_currentWriter == null)
             {
-                _currentWriter = TempVideoCodec.GetVideoFileWriter(new VideoWriterArgs
+                _currentWriter = _writerGenerator(new VideoWriterArgs
                 {
                     FileName = GetFileName(_currentFile),
                     VideoQuality = _videoWriterArgs.VideoQuality,
