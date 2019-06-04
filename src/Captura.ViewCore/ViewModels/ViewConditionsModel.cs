@@ -40,6 +40,12 @@ namespace Captura.ViewModels
                 .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
 
+            IsReplayMode = Settings
+                .Video
+                .ObserveProperty(M => M.RecorderMode)
+                .Select(M => M == RecorderMode.Replay)
+                .ToReadOnlyReactivePropertySlim();
+
             CanChangeWebcam = new[]
                 {
                     RecordingModel
@@ -128,6 +134,8 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> CanWebcamSeparateFile { get; }
 
         public IReadOnlyReactiveProperty<bool> IsAroundMouseMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsReplayMode { get; }
 
         public IReadOnlyReactiveProperty<bool> ShowSourceNameBox { get; }
     }

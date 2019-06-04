@@ -5,6 +5,34 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5">
         <StackPanel>
+            <Label Content="Recorder Mode"
+                   FontWeight="Bold"
+                   Margin="0,5"/>
+
+            <ListView Margin="0,5"
+                      ItemsSource="{Binding VideoWritersViewModel.AvailableRecorderModes, Source={StaticResource ServiceLocator}}"
+                      SelectedValue="{Binding Settings.Video.RecorderMode, Mode=TwoWay}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                      BorderThickness="0.4"
+                      SelectionMode="Single">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+
+            <DockPanel Margin="0,5"
+                       IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                       Visibility="{Binding ViewConditions.IsReplayMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label Content="Replay Duration"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,2,10,2"/>
+
+                <xctk:IntegerUpDown Value="{Binding Settings.Video.ReplayDuration, Mode=TwoWay}"
+                                    Margin="0,2"/>
+            </DockPanel>
+
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>

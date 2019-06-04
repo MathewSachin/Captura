@@ -397,7 +397,7 @@ namespace Captura.ViewModels
             if (RecordingParams.VideoSourceKind is NoVideoSourceProvider)
                 return null;
 
-            return RecordingParams.VideoWriter.GetVideoFileWriter(new VideoWriterArgs
+            var args = new VideoWriterArgs
             {
                 FileName = FileName ?? CurrentFileName,
                 FrameRate = Settings.Video.FrameRate,
@@ -405,7 +405,15 @@ namespace Captura.ViewModels
                 ImageProvider = ImgProvider,
                 AudioQuality = Settings.Audio.Quality,
                 AudioProvider = AudioProvider
-            });
+            };
+
+            if (Settings.Video.RecorderMode == RecorderMode.Replay)
+            {
+                return new FFmpegReplayWriter(args,
+                    Settings.Video.ReplayDuration,
+                    M => RecordingParams.VideoWriter.GetVideoFileWriter(M));
+            }
+            else return RecordingParams.VideoWriter.GetVideoFileWriter(args);
         }
 
         IEnumerable<IOverlay> GetOverlays(RecordingModelParams RecordingParams)

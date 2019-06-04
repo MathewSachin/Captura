@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System;
 
 namespace Captura.ViewModels
 {
@@ -88,5 +89,9 @@ namespace Captura.ViewModels
             get => _postWriter;
             set => Set(ref _postWriter, value ?? AvailablePostWriters.FirstOrDefault());
         }
+
+        public IEnumerable<RecorderMode> AvailableRecorderModes { get; } = Enum
+            .GetValues(typeof(RecorderMode))
+            .Cast<RecorderMode>();
     }
 }
