@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Captura.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System;
 
 namespace Captura.ViewModels
 {
@@ -107,5 +108,9 @@ namespace Captura.ViewModels
             get => _stepsWriter;
             set => Set(ref _stepsWriter, value ?? AvailableStepWriters[0]);
         }
+
+        public IEnumerable<RecorderMode> AvailableRecorderModes { get; } = Enum
+            .GetValues(typeof(RecorderMode))
+            .Cast<RecorderMode>();
     }
 }

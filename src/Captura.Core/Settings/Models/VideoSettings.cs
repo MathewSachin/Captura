@@ -69,5 +69,17 @@
                 }
             }
         }
+
+        public RecorderMode RecorderMode
+        {
+            get => Get(RecorderMode.Recording);
+            set => Set(value);
+        }
+
+        public int ReplayDuration
+        {
+            get => Get(20);
+            set => Set(value);
+        }
     }
 }

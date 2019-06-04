@@ -116,14 +116,6 @@ namespace Captura
                 return;
             }
 
-            var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
-
-            if (StartOptions.Roll is int rollDuration && rollDuration > 0)
-            {
-                var internalWriter = videoWriter;
-                videoWriter = new FFmpegRollingWriterItem(rollDuration, M => internalWriter.GetVideoFileWriter(M));
-            }
-
             var audioSources = HandleAudioSource(StartOptions);
 
             HandleWebcam(StartOptions);
@@ -136,6 +128,14 @@ namespace Captura
 
             if (StartOptions.VideoQuality is int vq)
                 _settings.Video.Quality = vq;
+
+            if (StartOptions.Replay is int replayDuration && replayDuration > 0)
+            {
+                _settings.Video.RecorderMode = RecorderMode.Replay;
+                _settings.Video.ReplayDuration = replayDuration;
+            }
+
+            var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
 
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);

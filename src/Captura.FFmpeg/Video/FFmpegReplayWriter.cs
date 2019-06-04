@@ -5,7 +5,7 @@ using Captura.Models;
 
 namespace Captura.FFmpeg
 {
-    public class FFmpegRollingWriter : IVideoFileWriter
+    public class FFmpegReplayWriter : IVideoFileWriter
     {
         readonly VideoWriterArgs _videoWriterArgs;
         readonly int _duration;
@@ -24,7 +24,7 @@ namespace Captura.FFmpeg
             return $"{_videoWriterArgs.FileName}.{Index}.mp4";
         }
 
-        public FFmpegRollingWriter(VideoWriterArgs VideoWriterArgs,
+        public FFmpegReplayWriter(VideoWriterArgs VideoWriterArgs,
             int Duration,
             Func<VideoWriterArgs, IVideoFileWriter> WriterGenerator)
         {
@@ -157,7 +157,7 @@ namespace Captura.FFmpeg
                 writer = _currentWriter;
             }
 
-            writer.WriteAudio(Buffer, Length);
+            writer?.WriteAudio(Buffer, Length);
         }
     }
 }
