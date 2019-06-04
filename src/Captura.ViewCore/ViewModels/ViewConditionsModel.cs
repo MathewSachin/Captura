@@ -25,8 +25,9 @@ namespace Captura.ViewModels
                 .ToReadOnlyReactivePropertySlim();
 
             IsStepsMode = Settings
-                .Steps
-                .ObserveProperty(M => M.Enabled)
+                .Video
+                .ObserveProperty(M => M.RecorderMode)
+                .Select(M => M == RecorderMode.Steps)
                 .ToReadOnlyReactivePropertySlim();
 
             IsNotAudioOrStepsMode = new[]

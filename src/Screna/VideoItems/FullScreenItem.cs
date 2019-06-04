@@ -4,12 +4,12 @@
     class FullScreenItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IPlatformServices _platformServices;
-        readonly StepsSettings _stepsSettings;
+        readonly VideoSettings _videoSettings;
 
-        public FullScreenItem(IPlatformServices PlatformServices, StepsSettings StepsSettings)
+        public FullScreenItem(IPlatformServices PlatformServices, VideoSettings VideoSettings)
         {
             _platformServices = PlatformServices;
-            _stepsSettings = StepsSettings;
+            _videoSettings = VideoSettings;
         }
 
         public override string ToString() => Name;
@@ -18,7 +18,8 @@
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            return _platformServices.GetAllScreensProvider(IncludeCursor, _stepsSettings.Enabled);
+            return _platformServices.GetAllScreensProvider(IncludeCursor,
+                _videoSettings.RecorderMode == RecorderMode.Steps);
 		}
     }
 }

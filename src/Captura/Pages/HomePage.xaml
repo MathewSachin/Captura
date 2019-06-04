@@ -150,14 +150,11 @@
                             <UniformGrid Rows="1"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Background="#01000000">
-                                <TextBlock Text="{Binding}"
-                                           HorizontalAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
 
                 <CheckBox Content="Include Scrolls"

@@ -9,17 +9,17 @@ namespace Captura.Models
     {
         readonly IVideoSourcePicker _videoSourcePicker;
         readonly IPlatformServices _platformServices;
-        readonly StepsSettings _stepsSettings;
+        readonly VideoSettings _videoSettings;
 
         public ScreenSourceProvider(ILocalizationProvider Loc,
             IVideoSourcePicker VideoSourcePicker,
             IIconSet Icons,
             IPlatformServices PlatformServices,
-            StepsSettings StepsSettings) : base(Loc)
+            VideoSettings VideoSettings) : base(Loc)
         {
             _videoSourcePicker = VideoSourcePicker;
             _platformServices = PlatformServices;
-            _stepsSettings = StepsSettings;
+            _videoSettings = VideoSettings;
 
             Icon = Icons.Screen;
         }
@@ -31,14 +31,14 @@ namespace Captura.Models
             if (screen == null)
                 return false;
 
-            _source = new ScreenItem(screen, _platformServices, _stepsSettings);
+            _source = new ScreenItem(screen, _platformServices, _videoSettings);
             RaisePropertyChanged(nameof(Source));
             return true;
         }
 
         void Set(IScreen Screen)
         {
-            _source = new ScreenItem(Screen, _platformServices, _stepsSettings);
+            _source = new ScreenItem(Screen, _platformServices, _videoSettings);
             RaisePropertyChanged(nameof(Source));
         }
 

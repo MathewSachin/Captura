@@ -246,7 +246,7 @@ namespace Captura
             // Steps in video
             if (StartOptions.Encoder == "steps:video")
             {
-                _settings.Steps.Enabled = true;
+                _settings.Video.RecorderMode = RecorderMode.Steps;
 
                 VideoWriterKind = null;
                 return new StepsVideoWriterItem(sharpAviWriterProvider.First());
@@ -255,7 +255,7 @@ namespace Captura
             // Steps in set of images
             if (StartOptions.Encoder == "steps:images")
             {
-                _settings.Steps.Enabled = true;
+                _settings.Video.RecorderMode = RecorderMode.Steps;
 
                 VideoWriterKind = null;
                 return new ImageFolderWriterItem();

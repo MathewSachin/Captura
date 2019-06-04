@@ -3,17 +3,17 @@
     public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {
         readonly IPlatformServices _platformServices;
-        readonly StepsSettings _stepsSettings;
+        readonly VideoSettings _videoSettings;
 
         public IScreen Screen { get; }
 
         public ScreenItem(IScreen Screen,
             IPlatformServices PlatformServices,
-            StepsSettings StepsSettings)
+            VideoSettings VideoSettings)
         {
             this.Screen = Screen;
             _platformServices = PlatformServices;
-            _stepsSettings = StepsSettings;
+            _videoSettings = VideoSettings;
         }
 
         public string Name => Screen.DeviceName;
@@ -22,7 +22,7 @@
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {
-            return _platformServices.GetScreenProvider(Screen, IncludeCursor, _stepsSettings.Enabled);
+            return _platformServices.GetScreenProvider(Screen, IncludeCursor, _videoSettings.RecorderMode == RecorderMode.Steps);
         }
     }
 }

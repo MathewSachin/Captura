@@ -253,7 +253,7 @@ namespace Captura.ViewModels
 
             CurrentFileName = Settings.GetFileName(extension, FileName);
 
-            if (Settings.Steps.Enabled)
+            if (Settings.Video.RecorderMode == RecorderMode.Steps)
             {
                 if (!SetupStepsRecorder(RecordingParams))
                     return false;

@@ -117,6 +117,7 @@ namespace Captura
             Binder.Bind(() => Binder.Get<Settings>().Sounds);
             Binder.Bind(() => Binder.Get<Settings>().Imgur);
             Binder.Bind(() => Binder.Get<Settings>().Steps);
+            Binder.Bind(() => Binder.Get<Settings>().Video);
         }
     }
 }

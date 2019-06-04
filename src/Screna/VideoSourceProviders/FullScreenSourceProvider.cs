@@ -8,9 +8,9 @@ namespace Captura.Models
         public FullScreenSourceProvider(ILocalizationProvider Loc,
             IIconSet Icons,
             IPlatformServices PlatformServices,
-            StepsSettings StepsSettings) : base(Loc)
+            VideoSettings VideoSettings) : base(Loc)
         {
-            Source = new FullScreenItem(PlatformServices, StepsSettings);
+            Source = new FullScreenItem(PlatformServices, VideoSettings);
             Icon = Icons.MultipleMonitor;
         }
 
