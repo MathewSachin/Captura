@@ -1,11 +1,9 @@
 ﻿using System;
-using Captura.Audio;
 using NAudio.Wave;
-using WaveFormat = Captura.Audio.WaveFormat;
 using Wf = NAudio.Wave.WaveFormat;
-using WaveFormatEncoding = NAudio.Wave.WaveFormatEncoding;
+using WfEnc = NAudio.Wave.WaveFormatEncoding;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     abstract class NAudioProvider : IAudioProvider
     {
@@ -23,7 +21,7 @@ namespace Captura.NAudio
             var wf = WaveIn.WaveFormat;
             NAudioWaveFormat = wf;
 
-            WaveFormat = wf.Encoding == WaveFormatEncoding.IeeeFloat
+            WaveFormat = wf.Encoding == WfEnc.IeeeFloat
                 ? WaveFormat.CreateIeeeFloatWaveFormat(wf.SampleRate, wf.Channels)
                 : new WaveFormat(wf.SampleRate, wf.BitsPerSample, wf.Channels);
         }

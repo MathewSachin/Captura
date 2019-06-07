@@ -61,10 +61,20 @@ namespace Captura.ViewModels
             _audioSourceViewModel = AudioSourceViewModel;
             _ffmpegViewsProvider = FFmpegViewsProvider;
 
+            var hasAudio = new[]
+            {
+                Settings
+                    .Audio
+                    .ObserveProperty(M => M.RecordMicrophone),
+                Settings
+                    .Audio
+                    .ObserveProperty(M => M.RecordSpeaker)
+            }
+            .CombineLatest(M => M[0] || M[1]);            
+
             RecordCommand = new[]
                 {
-                    Settings.Audio
-                        .ObserveProperty(M => M.Enabled),
+                    hasAudio,
                     VideoSourcesViewModel
                         .ObserveProperty(M => M.SelectedVideoSourceKind)
                         .Select(M => M is NoVideoSourceProvider),
@@ -287,7 +297,8 @@ namespace Captura.ViewModels
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
                 VideoWriter = _videoWritersViewModel.SelectedVideoWriter,
-                AudioItems = _audioSourceViewModel.AvailableRecordingSources
+                Microphone = Settings.Audio.RecordMicrophone ? _audioSourceViewModel.SelectedMicrophone : null,
+                Speaker = Settings.Audio.RecordSpeaker ? _audioSourceViewModel.SelectedSpeaker : null
             }))
             {
                 if (Settings.Tray.MinToTrayOnCaptureStart)

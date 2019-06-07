@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Captura.Audio;
 using ManagedBass;
 
-namespace Captura.Models
+namespace Captura.Audio
 {
     /// <summary>
     /// ManagedBass Audio Source.
@@ -21,37 +19,13 @@ namespace Captura.Models
             Bass.Configure(Configuration.LoopbackRecording, true);
         }
 
-        static bool AllExist(params string[] Paths)
-        {
-            return Paths.All(ServiceProvider.FileExists);
-        }
+        //static bool AllExist(params string[] Paths)
+        //{
+        //    return Paths.All(ServiceProvider.FileExists);
+        //}
 
-        // Check if all BASS dependencies are present
-        public static bool Available { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
-
-        public IAudioProvider GetMixedAudioProvider(IEnumerable<IIsActive<IAudioItem>> AudioItems)
-        {
-            var bassItems = AudioItems
-                .Select(M => (M.Item as BassItem).ToIsActive(M.IsActive));
-
-            return new MixedAudioProvider(bassItems);
-        }
-
-        public IAudioProvider GetAudioProvider(IAudioItem AudioItem)
-        {
-            if (AudioItem is BassItem item)
-                return new BassAudioProvider(item);
-
-            return null;
-        }
-
-        public IEnumerable<IAudioItem> GetSources()
-        {
-            for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
-            {
-                yield return new BassItem(i, info.Name, info.IsLoopback);
-            }
-        }
+        //// Check if all BASS dependencies are present
+        //public static bool Available { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
         /// <summary>
         /// Frees all BASS devices.
@@ -77,8 +51,54 @@ namespace Captura.Models
             }
         }
 
+        public IAudioProvider GetAudioProvider(IAudioItem Microphone, IAudioItem Speaker)
+        {
+            if (Microphone == null && Speaker is BassItem speakerItem)
+            {
+                return new BassAudioProvider(speakerItem);
+            }
+
+            if (Microphone is BassItem micItem && Speaker == null)
+            {
+                return new BassAudioProvider(micItem);
+            }
+
+            if (Microphone is BassItem a && Speaker is BassItem b)
+            {
+                return new MixedAudioProvider(new[] { a, b });
+            }
+
+            return null;
+        }
+
         public string Name { get; } = "BASS";
 
-        public bool CanChangeSourcesDuringRecording => true;
+        public IEnumerable<IAudioItem> Microphones
+        {
+            get
+            {
+                for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
+                {
+                    if (!info.IsLoopback)
+                        yield return new BassItem(i, info.Name, info.IsLoopback);
+                }
+            }
+        }
+
+        public IAudioItem DefaultMicrophone => BassDefaultItem.DefaultMicrophone;
+
+        public IEnumerable<IAudioItem> Speakers
+        {
+            get
+            {
+                for (var i = 0; Bass.RecordGetDeviceInfo(i, out var info); ++i)
+                {
+                    if (info.IsLoopback)
+                        yield return new BassItem(i, info.Name, info.IsLoopback);
+                }
+            }
+        }
+
+        public IAudioItem DefaultSpeaker => BassDefaultItem.DefaultSpeaker;
     }
 }

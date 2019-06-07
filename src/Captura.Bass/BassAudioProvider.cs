@@ -2,9 +2,8 @@
 using ManagedBass;
 using System.Runtime.InteropServices;
 using Wf = Captura.Audio.WaveFormat;
-using Captura.Audio;
 
-namespace Captura.Models
+namespace Captura.Audio
 {
     class BassAudioProvider : IAudioProvider
     {

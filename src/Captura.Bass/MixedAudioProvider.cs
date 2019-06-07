@@ -5,9 +5,8 @@ using ManagedBass.Mix;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Wf = Captura.Audio.WaveFormat;
-using Captura.Audio;
 
-namespace Captura.Models
+namespace Captura.Audio
 {
     /// <summary>
     /// Provides mixed audio from Microphone input and Speaker Output (Wasapi Loopback).
@@ -32,7 +31,7 @@ namespace Captura.Models
         /// <summary>
         /// Creates a new instance of <see cref="MixedAudioProvider"/>.
         /// </summary>
-        public MixedAudioProvider(IEnumerable<IIsActive<BassItem>> Devices)
+        public MixedAudioProvider(IEnumerable<BassItem> Devices)
         {
             if (Devices == null)
                 throw new ArgumentNullException();
@@ -55,48 +54,14 @@ namespace Captura.Models
             Bass.ChannelSetDSP(_mixer, Procedure);
         }
         
-        void InitDevice(IIsActive<BassItem> Device)
+        void InitDevice(BassItem Device)
         {
-            _devices.Add(Device.Item.Id, new RecordingItem
+            _devices.Add(Device.Id, new RecordingItem
             {
-                DeviceId = Device.Item.Id
+                DeviceId = Device.Id
             });
 
-            Device.PropertyChanged += (S, E) =>
-            {
-                if (E.PropertyName == nameof(Device.IsActive))
-                {
-                    if (Device.IsActive)
-                        AddDevice(Device);
-                    else RemoveDevice(Device);
-                }
-            };
-
-            if (Device.IsActive)
-                AddDevice(Device);
-        }
-
-        void RemoveDevice(IIsActive<BassItem> Device)
-        {
-            lock (_syncLock)
-            {
-                var id = Device.Item.Id;
-
-                if (_devices[id].RecordingHandle == 0)
-                    return;
-
-                var handle = _devices[id].RecordingHandle;
-
-                BassMix.MixerRemoveChannel(handle);
-
-                Bass.StreamFree(handle);
-
-                _devices[id].RecordingHandle = 0;
-
-                Bass.StreamFree(_devices[id].SilenceHandle);
-
-                _devices[id].SilenceHandle = 0;
-            }
+            AddDevice(Device);
         }
 
         static int FindPlaybackDevice(DeviceInfo LoopbackDeviceInfo)
@@ -110,11 +75,11 @@ namespace Captura.Models
             return -1;
         }
 
-        void AddDevice(IIsActive<BassItem> Device)
+        void AddDevice(BassItem Device)
         {
             lock (_syncLock)
             {
-                var id = Device.Item.Id;
+                var id = Device.Id;
 
                 if (_devices[id].RecordingHandle != 0)
                     return;

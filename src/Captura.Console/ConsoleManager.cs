@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Captura.Audio;
 using Captura.FFmpeg;
 using Captura.Models;
 using Captura.ViewModels;
@@ -116,7 +117,7 @@ namespace Captura
                 return;
             }
 
-            var audioSources = HandleAudioSource(StartOptions);
+            HandleAudioSource(StartOptions, out var mic, out var speaker);
 
             HandleWebcam(StartOptions);
 
@@ -144,7 +145,8 @@ namespace Captura
             {
                 VideoSourceKind = videoSourceKind,
                 VideoWriter = videoWriter,
-                AudioItems = audioSources.Select(M => M.ToIsActive(true))
+                Microphone = mic,
+                Speaker = speaker
             }, StartOptions.FileName))
                 return;
 
@@ -199,28 +201,28 @@ namespace Captura
             return provider;
         }
 
-        IEnumerable<IAudioItem> HandleAudioSource(StartCmdOptions StartOptions)
+        void HandleAudioSource(StartCmdOptions StartOptions, out IAudioItem Microphone, out IAudioItem Speaker)
         {
-            var sources = _audioSource.GetSources();
+            Microphone = Speaker = null;
 
-            var mics = sources
-                .Where(M => !M.IsLoopback)
+            var mics = _audioSource
+                .Microphones
                 .ToArray();
 
-            var speakers = sources
-                .Where(M => M.IsLoopback)
+            var speakers = _audioSource
+                .Speakers
                 .ToArray();
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
-                _settings.Audio.Enabled = true;
-                yield return mics[StartOptions.Microphone];
+                _settings.Audio.RecordMicrophone = true;
+                Microphone = mics[StartOptions.Microphone];
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
-                _settings.Audio.Enabled = true;
-                yield return speakers[StartOptions.Speaker];
+                _settings.Audio.RecordSpeaker = true;
+                Speaker = speakers[StartOptions.Speaker];
             }
         }
 

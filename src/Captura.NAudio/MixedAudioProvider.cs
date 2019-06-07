@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Captura.Audio;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using WaveFormat = Captura.Audio.WaveFormat;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     class MixedAudioProvider : IAudioProvider
     {

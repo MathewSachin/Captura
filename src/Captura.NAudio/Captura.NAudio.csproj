@@ -3,9 +3,9 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
+    <PackageReference Include="NAudio" Version="1.8.5" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="1.8.5" />
+    <ProjectReference Include="..\Captura.Audio\Captura.Audio.csproj" />
   </ItemGroup>
 </Project>
