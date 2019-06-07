@@ -31,7 +31,7 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultMicrophone => throw new System.NotImplementedException();
+        public IAudioItem DefaultMicrophone => NAudioDefaultItem.DefaultMicrophone;
 
         public IEnumerable<IAudioItem> Speakers
         {
@@ -49,7 +49,7 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultSpeaker => throw new System.NotImplementedException();
+        public IAudioItem DefaultSpeaker => NAudioDefaultItem.DefaultSpeaker;
 
         public void Dispose() { }
 

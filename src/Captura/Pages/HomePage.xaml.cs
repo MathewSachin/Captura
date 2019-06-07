@@ -7,11 +7,6 @@ namespace Captura
         public HomePage()
         {
             InitializeComponent();
-
-            if (DataContext is MainViewModel vm)
-            {
-                vm.Refreshed += () => AudioDropdown.Shake();
-            }
         }
     }
 }

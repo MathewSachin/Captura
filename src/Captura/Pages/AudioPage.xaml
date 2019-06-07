@@ -4,7 +4,8 @@
       Title="Audio">
     <Grid>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
-                    Margin="5,0,0,0">
+                    Margin="5,0,0,0"
+                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
             <DockPanel Margin="0,0,0,5">
                 <TextBlock Text="{Binding AudioSource.Name, Source={StaticResource ServiceLocator}}"
                            FontSize="10"
@@ -12,55 +13,47 @@
                            VerticalAlignment="Center"
                            Foreground="{DynamicResource Accent}"/>
 
-                <CheckBox Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                          IsChecked="{Binding Settings.Audio.Enabled, Mode=TwoWay}"
-                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                          FontWeight="Bold"
-                          FontSize="15"/>
+                <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                       FontWeight="Bold"
+                       Margin="0,5"/>
             </DockPanel>
 
-            <ScrollViewer IsEnabled="{Binding Settings.Audio.Enabled}"
-                          MaxHeight="130">
-                <StackPanel IsEnabled="{Binding ViewConditions.CanChangeAudioSources.Value, Source={StaticResource ServiceLocator}}"
-                            Name="AudioSourcesPanel">
-                    <ItemsControl ItemsSource="{Binding AudioSource.AvailableRecordingSources, Source={StaticResource ServiceLocator}}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Margin="0,5"
-                                          IsChecked="{Binding IsActive, Mode=TwoWay}">
-                                    <DockPanel>
-                                        <Path Width="15"
-                                              Height="15"
-                                              Margin="5,0"
-                                              Stretch="Uniform"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center">
-                                            <Path.Style>
-                                                <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
-                                                    <Setter Property="Data" Value="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"/>
-                                                    <Setter Property="ToolTip" Value="{Binding MicSource, Source={StaticResource Loc}, Mode=OneWay}"/>
+            <CheckBox Content="Record Microphone"
+                      IsChecked="{Binding Settings.Audio.RecordMicrophone, Mode=TwoWay}"/>
 
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Item.IsLoopback}" Value="True">
-                                                            <Setter Property="Data" Value="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
-                                                            <Setter Property="ToolTip" Value="{Binding LoopbackSource, Source={StaticResource Loc}, Mode=OneWay}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Path.Style>
-                                        </Path>
+            <DockPanel Margin="10,5">
+                <Path Width="15"
+                      Height="15"
+                      Margin="5,0"
+                      Stretch="Uniform"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"/>
 
-                                        <TextBlock Text="{Binding Item.Name, Mode=OneWay}"/>
-                                    </DockPanel>
-                                </CheckBox>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
+                <ComboBox IsEnabled="{Binding Settings.Audio.RecordMicrophone}"
+                          ItemsSource="{Binding AudioSource.AvailableMicrophones, Source={StaticResource ServiceLocator}}"
+                          SelectedValue="{Binding AudioSource.SelectedMicrophone, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
+            </DockPanel>
 
-            <DockPanel Margin="0,5"
-                       IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+            <CheckBox Content="Record Speaker"
+                      Margin="0,10,0,0"
+                      IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
+
+            <DockPanel Margin="10,5">
+                <Path Width="15"
+                      Height="15"
+                      Margin="5,0"
+                      Stretch="Uniform"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Data="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
+
+                <ComboBox IsEnabled="{Binding Settings.Audio.RecordSpeaker}"
+                          ItemsSource="{Binding AudioSource.AvailableSpeakers, Source={StaticResource ServiceLocator}}"
+                          SelectedValue="{Binding AudioSource.SelectedSpeaker, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
+            </DockPanel>
+
+            <DockPanel Margin="0,10">
                 <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
                        ContentStringFormat="{}{0}:"/>
                 <Label Content="{Binding Settings.Audio.Quality}"
@@ -76,8 +69,7 @@
                         Value="{Binding Settings.Audio.Quality}"/>
             </DockPanel>
 
-            <StackPanel IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                        Margin="0,20,0,0">
+            <StackPanel Margin="0,20,0,0">
                 <CheckBox IsChecked="{Binding Settings.Audio.SeparateFilePerSource}"
                           Content="{Binding SeparateAudioFiles, Source={StaticResource Loc}, Mode=OneWay}"
                           Margin="0,5"/>
