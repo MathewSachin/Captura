@@ -24,7 +24,10 @@ namespace Captura.Audio
         {
             foreach (var provider in AudioProviders)
             {
-                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat);
+                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat)
+                {
+                    DiscardOnBufferOverflow = true
+                };
 
                 provider.DataAvailable += (S, E) =>
                 {
