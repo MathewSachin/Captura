@@ -96,26 +96,6 @@ Teardown(context =>
 #endregion
 
 #region Tasks
-var cleanTask = Task("Clean").Does(() =>
-{
-    MSBuild(slnPath, settings =>
-    {
-        settings.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Clean");
-    });
-});
-
-var nugetRestoreTask = Task("Nuget-Restore").Does(() =>
-{
-    MSBuild(slnPath, settings =>
-    {
-        settings.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Restore");
-    });
-});
-
 // Restores native dlls
 var nativeRestoreTask = Task("Native-Restore").Does(() => 
 {
@@ -124,7 +104,6 @@ var nativeRestoreTask = Task("Native-Restore").Does(() =>
 });
 
 var buildTask = Task("Build")
-    .IsDependentOn(nugetRestoreTask)
     .IsDependentOn(nativeRestoreTask)
     .Does(() =>
 {
@@ -132,7 +111,9 @@ var buildTask = Task("Build")
     {
         settings.SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Rebuild");
+            .WithTarget("Rebuild")
+            .WithRestore()
+            .UseToolVersion(MSBuildToolVersion.VS2019);
     });
 });
 
