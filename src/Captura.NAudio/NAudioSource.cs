@@ -54,17 +54,15 @@ namespace Captura.Audio
             switch ((Microphone, Speaker))
             {
                 case (null, NAudioItem speaker):
-                    return new WasapiLoopbackCaptureProvider(speaker.Device);
+                    return new MixedAudioProvider(new WasapiLoopbackCaptureProvider(speaker.Device));
 
                 case (NAudioItem mic, null):
-                    return new WasapiCaptureProvider(mic.Device);
+                    return new MixedAudioProvider(new WasapiCaptureProvider(mic.Device));
 
                 case (NAudioItem mic, NAudioItem speaker):
-                    return new MixedAudioProvider(new NAudioProvider[]
-                    {
-                        new WasapiCaptureProvider(mic.Device), 
-                        new WasapiLoopbackCaptureProvider(speaker.Device), 
-                    });
+                    return new MixedAudioProvider(
+                        new WasapiCaptureProvider(mic.Device),
+                        new WasapiLoopbackCaptureProvider(speaker.Device));
 
                 default:
                     return null;

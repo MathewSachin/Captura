@@ -164,7 +164,6 @@ namespace DesktopDuplication
             mediaType.Set(MediaTypeAttributeKeys.AudioNumChannels, Wf.Channels);
             mediaType.Set(MediaTypeAttributeKeys.AudioBitsPerSample, Wf.BitsPerSample);
             mediaType.Set(MediaTypeAttributeKeys.AudioSamplesPerSecond, Wf.SampleRate);
-            mediaType.Set(MediaTypeAttributeKeys.Subtype, Wf.Encoding == WaveFormatEncoding.Float ? AudioFormatGuids.Float : AudioFormatGuids.Pcm);
 
             return mediaType;
         }
