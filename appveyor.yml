@@ -5,7 +5,7 @@ branches:
     - l10n_master # Crowdin
     - gh-pages # Website
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 configuration:
 - Debug

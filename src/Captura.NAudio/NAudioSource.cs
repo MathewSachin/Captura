@@ -19,14 +19,12 @@ namespace Captura.Audio
         {
             get
             {
-                using (var enumerator = new MMDeviceEnumerator())
-                {
-                    var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+                using var enumerator = new MMDeviceEnumerator();
+                var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
-                    foreach (var device in devices)
-                    {
-                        yield return new NAudioItem(device, false);
-                    }
+                foreach (var device in devices)
+                {
+                    yield return new NAudioItem(device, false);
                 }
             }
         }
@@ -37,14 +35,12 @@ namespace Captura.Audio
         {
             get
             {
-                using (var enumerator = new MMDeviceEnumerator())
-                {
-                    var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+                using var enumerator = new MMDeviceEnumerator();
+                var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
 
-                    foreach (var device in devices)
-                    {
-                        yield return new NAudioItem(device, true);
-                    }
+                foreach (var device in devices)
+                {
+                    yield return new NAudioItem(device, true);
                 }
             }
         }
@@ -55,26 +51,24 @@ namespace Captura.Audio
 
         public IAudioProvider GetAudioProvider(IAudioItem Microphone, IAudioItem Speaker)
         {
-            if (Microphone == null && Speaker is NAudioItem speakerItem)
+            switch ((Microphone, Speaker))
             {
-                return new WasapiLoopbackCaptureProvider(speakerItem.Device);
-            }
+                case (null, NAudioItem speaker):
+                    return new WasapiLoopbackCaptureProvider(speaker.Device);
 
-            if (Microphone is NAudioItem micItem && Speaker == null)
-            {
-                return new WasapiCaptureProvider(micItem.Device);
-            }
+                case (NAudioItem mic, null):
+                    return new WasapiCaptureProvider(mic.Device);
 
-            if (Microphone is NAudioItem a && Speaker is NAudioItem b)
-            {
-                return new MixedAudioProvider(new NAudioProvider[]
-                {
-                    new WasapiCaptureProvider(a.Device),
-                    new WasapiLoopbackCaptureProvider(b.Device)
-                });
-            }
+                case (NAudioItem mic, NAudioItem speaker):
+                    return new MixedAudioProvider(new NAudioProvider[]
+                    {
+                        new WasapiCaptureProvider(mic.Device), 
+                        new WasapiLoopbackCaptureProvider(speaker.Device), 
+                    });
 
-            return null;
+                default:
+                    return null;
+            }
         }
     }
 }

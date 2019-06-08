@@ -5,7 +5,6 @@ namespace Captura.Audio
 {
     /// <summary>
     /// ManagedBass Audio Source.
-    /// Use <see cref="Available"/> to check if all dependencies are present.
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
     public class BassAudioSource : IAudioSource
@@ -18,14 +17,6 @@ namespace Captura.Audio
             // Enable Loopback Recording.
             Bass.Configure(Configuration.LoopbackRecording, true);
         }
-
-        //static bool AllExist(params string[] Paths)
-        //{
-        //    return Paths.All(ServiceProvider.FileExists);
-        //}
-
-        //// Check if all BASS dependencies are present
-        //public static bool Available { get; } = AllExist("ManagedBass.dll", "ManagedBass.Mix.dll", "bass.dll", "bassmix.dll");
 
         /// <summary>
         /// Frees all BASS devices.
@@ -53,22 +44,20 @@ namespace Captura.Audio
 
         public IAudioProvider GetAudioProvider(IAudioItem Microphone, IAudioItem Speaker)
         {
-            if (Microphone == null && Speaker is BassItem speakerItem)
+            switch ((Microphone, Speaker))
             {
-                return new BassAudioProvider(speakerItem);
-            }
+                case (null, BassItem speaker):
+                    return new BassAudioProvider(speaker);
 
-            if (Microphone is BassItem micItem && Speaker == null)
-            {
-                return new BassAudioProvider(micItem);
-            }
+                case (BassItem mic, null):
+                    return new BassAudioProvider(mic);
 
-            if (Microphone is BassItem a && Speaker is BassItem b)
-            {
-                return new MixedAudioProvider(new[] { a, b });
-            }
+                case (BassItem mic, BassItem speaker):
+                    return new MixedAudioProvider(new[] { mic, speaker });
 
-            return null;
+                default:
+                    return null;
+            }
         }
 
         public string Name { get; } = "BASS";
