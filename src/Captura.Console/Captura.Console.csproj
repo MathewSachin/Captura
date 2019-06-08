@@ -21,7 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
-    <ProjectReference Include="..\Captura.Bass\Captura.Bass.csproj" />
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
     <ProjectReference Include="..\Captura.Fakes\Captura.Fakes.csproj" />
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj" />

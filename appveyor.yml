@@ -24,12 +24,6 @@ environment:
   git_key:
     secure: uhvhrrZd7L8MK4CrDGkM1A==
 
-cache:
-  - temp\bass
-  - temp\bass.zip
-  - temp\bassmix
-  - temp\bassmix.zip
-
 install:
   - dotnet tool install -g Cake.Tool --version 0.32.1
 

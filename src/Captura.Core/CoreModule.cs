@@ -83,13 +83,6 @@ namespace Captura
 
         static void BindAudioSource(IBinder Binder)
         {
-            // TODO: Provide option to use BASS.
-            // Check if Bass is available
-            //if (BassAudioSource.Available)
-            //{
-            //    Binder.Bind<IAudioSource, BassAudioSource>();
-            //}
-
             Binder.Bind<IAudioSource, NAudioSource>();
         }
 

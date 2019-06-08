@@ -2,7 +2,6 @@
 #tool nuget:?package=gitreleasemanager&version=0.8.0
 #l "scripts/backup.cake"
 #l "scripts/constants.cake"
-#l "scripts/bass.cake"
 #l "scripts/choco.cake"
 #l "scripts/apikeys.cake"
 #l "scripts/version.cake"
@@ -96,15 +95,7 @@ Teardown(context =>
 #endregion
 
 #region Tasks
-// Restores native dlls
-var nativeRestoreTask = Task("Native-Restore").Does(() => 
-{
-    RestoreBass();
-    RestoreBassMix();
-});
-
 var buildTask = Task("Build")
-    .IsDependentOn(nativeRestoreTask)
     .Does(() =>
 {
     MSBuild(slnPath, settings =>

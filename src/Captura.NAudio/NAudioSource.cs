@@ -4,13 +4,6 @@ using NAudio.CoreAudioApi;
 namespace Captura.Audio
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    /// <summary>
-    /// Fallback to NAudio when BASS is not available.
-    /// </summary>
-    /// <remarks>
-    /// The audio device must support WASAPI Shared mode in 32-bit floating-point, 44100 Hz, Stereo.
-    /// Recording to separate audio files is working.
-    /// </remarks>
     public class NAudioSource : IAudioSource
     {
         public string Name { get; } = "NAudio";
