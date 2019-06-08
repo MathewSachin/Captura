@@ -1,6 +1,4 @@
-﻿using Captura.Audio;
-
-namespace Captura.Models
+﻿namespace Captura.Audio
 {
     public interface IAudioWriterItem
     {

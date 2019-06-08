@@ -2,7 +2,6 @@
 #tool nuget:?package=gitreleasemanager&version=0.8.0
 #l "scripts/backup.cake"
 #l "scripts/constants.cake"
-#l "scripts/bass.cake"
 #l "scripts/choco.cake"
 #l "scripts/apikeys.cake"
 #l "scripts/version.cake"
@@ -96,43 +95,16 @@ Teardown(context =>
 #endregion
 
 #region Tasks
-var cleanTask = Task("Clean").Does(() =>
-{
-    MSBuild(slnPath, settings =>
-    {
-        settings.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Clean");
-    });
-});
-
-var nugetRestoreTask = Task("Nuget-Restore").Does(() =>
-{
-    MSBuild(slnPath, settings =>
-    {
-        settings.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Restore");
-    });
-});
-
-// Restores native dlls
-var nativeRestoreTask = Task("Native-Restore").Does(() => 
-{
-    RestoreBass();
-    RestoreBassMix();
-});
-
 var buildTask = Task("Build")
-    .IsDependentOn(nugetRestoreTask)
-    .IsDependentOn(nativeRestoreTask)
     .Does(() =>
 {
     MSBuild(slnPath, settings =>
     {
         settings.SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("Rebuild");
+            .WithTarget("Rebuild")
+            .WithRestore()
+            .UseToolVersion(MSBuildToolVersion.VS2019);
     });
 });
 

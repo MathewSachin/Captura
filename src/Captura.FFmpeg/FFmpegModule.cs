@@ -1,4 +1,5 @@
-﻿using Captura.FFmpeg;
+﻿using Captura.Audio;
+using Captura.FFmpeg;
 using Captura.Models;
 
 namespace Captura

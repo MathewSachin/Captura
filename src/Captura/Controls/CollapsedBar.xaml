@@ -27,27 +27,6 @@
             </Style>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top">
-            <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                                 DockPanel.Dock="Right"
-                                 Margin="0,5,5,5">
-                <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}">
-                    <Path.Style>
-                        <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
-                                    <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Path.Style>
-                </Path>
-
-                <xctk:DropDownButton.DropDownContent>
-                    <Frame Source="../Pages/AudioPage.xaml"
-                           Margin="10"/>
-                </xctk:DropDownButton.DropDownContent>
-            </xctk:DropDownButton>
-
             <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
                                  Padding="5"
                                  DockPanel.Dock="Right"
@@ -68,16 +47,13 @@
                                   DockPanel.Dock="Right"/>
 
             <StackPanel Orientation="Horizontal">
-                <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                            IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.IncludeCursor}"/>
-                <captura:ModernToggleButton ToolTip="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}"/>
-                <captura:ModernToggleButton ToolTip="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}"/>
+                <captura:ModernToggleButton ToolTip="Microphone"
+                                            IconData="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.Audio.RecordMicrophone, Mode=TwoWay}"/>
+
+                <captura:ModernToggleButton ToolTip="Speaker"
+                                            IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
             </StackPanel>
 
             <captura:VideoSourceKindList/>

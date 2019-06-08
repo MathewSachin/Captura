@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Captura
+namespace Captura.Audio
 {
     /// <summary>
     /// Data Available Event Args.

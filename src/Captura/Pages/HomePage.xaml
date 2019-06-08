@@ -131,47 +131,8 @@
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 
-            <Frame Source="AudioPage.xaml"
-                   Margin="0,10,0,0"
-                   Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-            <DockPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
-                <GridSplitter IsEnabled="False"
-                              DockPanel.Dock="Top"
-                              Height="1"
-                              Margin="0,10"/>
-
-                <StackPanel>
-                    <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                           FontWeight="Bold"
-                           Margin="0,5"/>
-
-                    <xctk:DropDownButton ToolTip="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                                         Padding="5"
-                                         HorizontalAlignment="Left"
-                                         Name="AudioDropdown">
-                        <Path Data="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}">
-                            <Path.Style>
-                                <Style TargetType="Path" BasedOn="{StaticResource VideoSourceIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Settings.Audio.Enabled}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource Accent}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-
-                        <xctk:DropDownButton.DropDownContent>
-                            <Frame Source="AudioPage.xaml"
-                                   Margin="10"/>
-                        </xctk:DropDownButton.DropDownContent>
-                    </xctk:DropDownButton>
-                </StackPanel>
-
-                <Frame Source="WebcamPage.xaml"
-                       Margin="15,0,0,0"/>
-            </DockPanel>
+            <Frame Source="WebcamPage.xaml"
+                   Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"/>
 
             <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
                 <GridSplitter IsEnabled="False"

@@ -5,7 +5,7 @@ branches:
     - l10n_master # Crowdin
     - gh-pages # Website
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 configuration:
 - Debug
@@ -23,12 +23,6 @@ environment:
     secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
   git_key:
     secure: uhvhrrZd7L8MK4CrDGkM1A==
-
-cache:
-  - temp\bass
-  - temp\bass.zip
-  - temp\bassmix
-  - temp\bassmix.zip
 
 install:
   - dotnet tool install -g Cake.Tool --version 0.32.1

@@ -165,8 +165,7 @@ namespace Captura.ViewModels
             }
 
             // Separate file for every audio source
-            if (Settings.Audio.Enabled
-                && Settings.Audio.SeparateFilePerSource)
+            if (Settings.Audio.SeparateFilePerSource)
             {
                 SeparateFileForEveryAudioSource(RecordingParams);
             }
@@ -180,9 +179,11 @@ namespace Captura.ViewModels
 
             try
             {
-                if (Settings.Audio.Enabled && !Settings.Audio.SeparateFilePerSource)
+                if (!Settings.Audio.SeparateFilePerSource)
                 {
-                    AudioProvider = _audioSource.GetMixedAudioProvider(RecordingParams.AudioItems);
+                    AudioProvider = _audioSource.GetAudioProvider(
+                        Settings.Audio.RecordMicrophone ? RecordingParams.Microphone : null,
+                        Settings.Audio.RecordSpeaker ? RecordingParams.Speaker : null);
                 }
             }
             catch (Exception e)
@@ -262,36 +263,29 @@ namespace Captura.ViewModels
         {
             try
             {
-                if (!Settings.Audio.SeparateFilePerSource)
+                // Not separate files or not multiple sources
+                if (!Settings.Audio.SeparateFilePerSource || !(Settings.Audio.RecordMicrophone && Settings.Audio.RecordSpeaker))
                 {
                     _recorder = GetAudioRecorder(AudioWriter, AudioProvider);
                 }
                 else
                 {
-                    var audioProviders = RecordingParams
-                        .AudioItems
-                        .Where(M => M.IsActive)
-                        .Select(M => M.Item)
-                        .Select(M => _audioSource.GetAudioProvider(M))
+                    var audioProviders = new[]
+                    {
+                        _audioSource.GetAudioProvider(RecordingParams.Microphone, null),
+                        _audioSource.GetAudioProvider(null, RecordingParams.Speaker)
+                    }
+                    .Where(M => M != null)
+                    .ToArray();
+
+                    var recorders = audioProviders
+                        .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
                         .ToArray();
 
-                    if (audioProviders.Length > 0)
-                    {
-                        var recorders = audioProviders
-                            .Select((M, Index) => GetAudioRecorder(AudioWriter, M, GetAudioFileName(Index)))
-                            .ToArray();
+                    _recorder = new MultiRecorder(recorders);
 
-                        _recorder = new MultiRecorder(recorders);
-
-                        // Set to first file
-                        CurrentFileName = GetAudioFileName(0);
-                    }
-                    else
-                    {
-                        _messageProvider.ShowError("No Audio Sources selected");
-
-                        return false;
-                    }
+                    // Set to first file
+                    CurrentFileName = GetAudioFileName(0);
                 }
             }
             catch (FFmpegNotFoundException)
@@ -333,12 +327,13 @@ namespace Captura.ViewModels
                 return Path.ChangeExtension(CurrentFileName, $".{Index}.wav");
             }
 
-            var audioProviders = RecordingParams
-                    .AudioItems
-                    .Where(M => M.IsActive)
-                    .Select(M => M.Item)
-                    .Select(M => _audioSource.GetAudioProvider(M))
-                    .ToArray();
+            var audioProviders = new[]
+            {
+                _audioSource.GetAudioProvider(RecordingParams.Microphone, null),
+                _audioSource.GetAudioProvider(null, RecordingParams.Speaker)
+            }
+            .Where(M => M != null)
+            .ToArray();
 
             if (audioProviders.Length > 0)
             {

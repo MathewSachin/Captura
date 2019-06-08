@@ -7,11 +7,6 @@ namespace Captura
         public AudioPage()
         {
             InitializeComponent();
-
-            ServiceProvider.Get<MainViewModel>().Refreshed += () =>
-            {
-                AudioSourcesPanel.Shake();
-            };
         }
     }
 }
