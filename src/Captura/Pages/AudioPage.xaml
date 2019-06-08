@@ -1,21 +1,25 @@
 ﻿<Page x:Class="Captura.AudioPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:captura="clr-namespace:Captura"
       Title="Audio">
     <Grid>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0"
                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
-            <DockPanel Margin="0,0,0,5">
+            <DockPanel Margin="0,0,0,10">
+                <captura:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
+                                      Command="{Binding AudioSource.RefreshCommand, Source={StaticResource ServiceLocator}}"
+                                      IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"
+                                      DockPanel.Dock="Right"/>
+
                 <TextBlock Text="{Binding AudioSource.Name, Source={StaticResource ServiceLocator}}"
                            FontSize="10"
-                           DockPanel.Dock="Right"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource Accent}"/>
+                           Foreground="{DynamicResource Accent}"
+                           DockPanel.Dock="Bottom"/>
 
                 <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"
-                       Margin="0,5"/>
+                       FontWeight="Bold"/>
             </DockPanel>
 
             <CheckBox Content="Record Microphone"

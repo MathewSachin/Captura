@@ -17,17 +17,6 @@
             </Style>
         </Grid.Resources>
         <StackPanel Margin="5,0,0,0">
-            <StackPanel Orientation="Horizontal"
-                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
-                <captura:ModernToggleButton ToolTip="Microphone"
-                                            IconData="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Audio.RecordMicrophone, Mode=TwoWay}"/>
-
-                <captura:ModernToggleButton ToolTip="Speaker"
-                                            IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
-            </StackPanel>
-
             <DockPanel Margin="0,0,0,5">
                 <Button Content="{Binding Preview, Source={StaticResource Loc}, Mode=OneWay}"
                         DockPanel.Dock="Right"

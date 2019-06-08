@@ -2,9 +2,52 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5">
         <StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,5">
+                <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
+                                            IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                                            IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.IncludeCursor}"/>
+                <captura:ModernToggleButton IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}">
+                    <captura:ModernToggleButton.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Text="Color, Opacity, Border can be configured at Settings / Overlays."
+                                       FontSize="10"/>
+                        </StackPanel>
+                    </captura:ModernToggleButton.ToolTip>
+                </captura:ModernToggleButton>
+                <captura:ModernToggleButton IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}">
+                    <captura:ModernToggleButton.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
+                                       FontSize="10"/>
+                        </StackPanel>
+                    </captura:ModernToggleButton.ToolTip>
+                </captura:ModernToggleButton>
+                <captura:ModernToggleButton IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                                            IconData="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"
+                                            IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
+                    <captura:ModernToggleButton.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Elapsed, Source={StaticResource Loc}, Mode=OneWay}"
+                                       Margin="0,0,0,2"/>
+                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
+                                       FontSize="10"/>
+                        </StackPanel>
+                    </captura:ModernToggleButton.ToolTip>
+                </captura:ModernToggleButton>
+            </StackPanel>
+
             <Label Content="Recorder Mode"
                    FontWeight="Bold"
                    Margin="0,5"/>

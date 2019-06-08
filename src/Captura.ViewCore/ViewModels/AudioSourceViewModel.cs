@@ -1,6 +1,7 @@
 ﻿using Captura.Audio;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Captura.Models
 {
@@ -23,6 +24,8 @@ namespace Captura.Models
             AvailableSpeakers = new ReadOnlyObservableCollection<IAudioItem>(_speakers);
 
             Refresh();
+
+            RefreshCommand = new DelegateCommand(Refresh);
         }
 
         void RefreshMics()
@@ -67,6 +70,8 @@ namespace Captura.Models
 
             RefreshSpeakers();
         }
+
+        public ICommand RefreshCommand { get; }
 
         public string Name => _audioSource.Name;
 
