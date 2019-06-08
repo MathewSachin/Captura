@@ -31,10 +31,8 @@ namespace Captura
 
         public void Run()
         {
-            using (var manager = ServiceProvider.Get<ConsoleManager>())
-            {
-                manager.Shot(this);
-            }
+            using var manager = ServiceProvider.Get<ConsoleManager>();
+            manager.Shot(this);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Captura
             return Window
                 .Enumerate()
                 .Where(M => M.IsVisible)
-                .SelectMany(M => GetAllChildren(M));
+                .SelectMany(GetAllChildren);
         }
 
         IEnumerable<Window> GetAllChildren(Window Window)

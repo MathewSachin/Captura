@@ -14,7 +14,7 @@
 
         protected override IBitmapImage GetImage(IEditableFrame Editor)
         {
-            return _bmp ?? (_bmp = Editor.LoadBitmap(Settings.Source));
+            return _bmp ??= Editor.LoadBitmap(Settings.Source);
         }
     }
 }

@@ -116,20 +116,15 @@ namespace Captura.FFmpeg
                 _currentFile %= NoOfFiles;
             }
 
-            if (_currentWriter == null)
+            return _currentWriter ??= _writerGenerator(new VideoWriterArgs
             {
-                _currentWriter = _writerGenerator(new VideoWriterArgs
-                {
-                    FileName = GetFileName(_currentFile),
-                    VideoQuality = _videoWriterArgs.VideoQuality,
-                    FrameRate = _videoWriterArgs.FrameRate,
-                    ImageProvider = _videoWriterArgs.ImageProvider,
-                    AudioProvider = _videoWriterArgs.AudioProvider,
-                    AudioQuality = _videoWriterArgs.AudioQuality
-                });
-            }
-
-            return _currentWriter;
+                FileName = GetFileName(_currentFile),
+                VideoQuality = _videoWriterArgs.VideoQuality,
+                FrameRate = _videoWriterArgs.FrameRate,
+                ImageProvider = _videoWriterArgs.ImageProvider,
+                AudioProvider = _videoWriterArgs.AudioProvider,
+                AudioQuality = _videoWriterArgs.AudioQuality
+            });
         }
 
         readonly object _syncLock = new object();

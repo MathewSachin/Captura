@@ -13,22 +13,20 @@ namespace Captura.ViewModels
         {
             this.Screen = Screen;
 
-            using (var bmp = ScreenShot.Capture(Screen.Rectangle))
-            {
-                var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormats.Png);
+            using var bmp = ScreenShot.Capture(Screen.Rectangle);
+            var stream = new MemoryStream();
+            bmp.Save(stream, ImageFormats.Png);
 
-                stream.Seek(0, SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
 
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                Image = new ImageBrush(decoder.Frames[0]);
+            var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            Image = new ImageBrush(decoder.Frames[0]);
 
-                Left = (Screen.Rectangle.Left / Dpi.X - SystemParameters.VirtualScreenLeft) * Scale;
-                Top = (Screen.Rectangle.Top / Dpi.Y - SystemParameters.VirtualScreenTop) * Scale;
+            Left = (Screen.Rectangle.Left / Dpi.X - SystemParameters.VirtualScreenLeft) * Scale;
+            Top = (Screen.Rectangle.Top / Dpi.Y - SystemParameters.VirtualScreenTop) * Scale;
 
-                Width = Screen.Rectangle.Width / Dpi.X * Scale;
-                Height = Screen.Rectangle.Height / Dpi.Y * Scale;
-            }
+            Width = Screen.Rectangle.Width / Dpi.X * Scale;
+            Height = Screen.Rectangle.Height / Dpi.Y * Scale;
         }
 
         public double Left { get; }

@@ -30,7 +30,7 @@ namespace Captura
 
         public void Converting()
         {
-            PrimaryText = $"Converting ...";
+            PrimaryText = "Converting ...";
         }
 
         public void Converted(string NewFileName)

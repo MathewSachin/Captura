@@ -39,16 +39,14 @@ namespace Captura
 
         void UpdateBackground()
         {
-            using (var bmp = ScreenShot.Capture())
-            {
-                var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormats.Png);
+            using var bmp = ScreenShot.Capture();
+            var stream = new MemoryStream();
+            bmp.Save(stream, ImageFormats.Png);
 
-                stream.Seek(0, SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
 
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                BgImg.Source = decoder.Frames[0];
-            }
+            var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            BgImg.Source = decoder.Frames[0];
         }
 
         void CloseClick(object Sender, RoutedEventArgs E)

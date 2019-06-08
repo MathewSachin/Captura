@@ -8,7 +8,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace DesktopDuplication
 {
-    public class Texture2DFrame : IBitmapFrame, INV12Frame
+    public class Texture2DFrame : INV12Frame
     {
         public Texture2D Texture { get; }
         public Texture2D PreviewTexture { get; }
@@ -17,7 +17,7 @@ namespace DesktopDuplication
 
         public TimeSpan Timestamp { get; }
 
-        Lazy<MfColorConverter> _colorConverter;
+        readonly Lazy<MfColorConverter> _colorConverter;
 
         public Texture2DFrame(Texture2D Texture,
             Device Device,

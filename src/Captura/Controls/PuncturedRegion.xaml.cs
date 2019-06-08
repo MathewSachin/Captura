@@ -6,8 +6,8 @@ namespace Captura
     {
         public Rect? Region
         {
-            get { return (Rect?)GetValue(RegionProperty); }
-            set { SetValue(RegionProperty, value); }
+            get => (Rect?)GetValue(RegionProperty);
+            set => SetValue(RegionProperty, value);
         }
 
         public static readonly DependencyProperty RegionProperty = DependencyProperty.Register(
@@ -50,7 +50,7 @@ namespace Captura
                         r.Visibility = Visibility.Visible;
                         break;
                 }
-            }
+             }
         }
 
         public PuncturedRegion()

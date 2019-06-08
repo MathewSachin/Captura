@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Captura.Audio;
-using Captura.FFmpeg;
 using Captura.Models;
 using Captura.ViewModels;
 using static System.Console;
@@ -136,7 +135,7 @@ namespace Captura
                 _settings.Video.ReplayDuration = replayDuration;
             }
 
-            var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
+            var videoWriter = HandleVideoEncoder(StartOptions, out _);
 
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);

@@ -1,6 +1,4 @@
-﻿using Captura.ViewModels;
-
-namespace Captura
+﻿namespace Captura
 {
     public partial class AudioPage
     {

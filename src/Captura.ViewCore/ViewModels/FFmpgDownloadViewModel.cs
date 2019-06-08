@@ -31,7 +31,6 @@ namespace Captura.ViewModels
             = new ReactivePropertySlim<FFmpegDownloaderProgress>(
                 new FFmpegDownloaderProgress(FFmpegDownloaderState.Ready));
 
-        readonly FFmpegDownloadModel _downloadModel;
         readonly IMessageProvider _messageProvider;
         readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
@@ -43,7 +42,6 @@ namespace Captura.ViewModels
             IMessageProvider MessageProvider)
         {
             this.FFmpegSettings = FFmpegSettings;
-            _downloadModel = DownloadModel;
             _messageProvider = MessageProvider;
 
             StartCommand = _downloaderProgress
