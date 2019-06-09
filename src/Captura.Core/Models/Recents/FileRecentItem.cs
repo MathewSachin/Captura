@@ -86,10 +86,8 @@ namespace Captura.Models
 
             var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-            using (var img = imgSystem.LoadBitmap(FileName))
-            {
-                await img.UploadImage();
-            }
+            using var img = imgSystem.LoadBitmap(FileName);
+            await img.UploadImage();
         }
 
         void OnCopyToClipboardExecute()
@@ -107,10 +105,8 @@ namespace Captura.Models
 
                 var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                using (var img = imgSystem.LoadBitmap(FileName))
-                {
-                    clipboard.SetImage(img);
-                }
+                using var img = imgSystem.LoadBitmap(FileName);
+                clipboard.SetImage(img);
             }
             catch (Exception e)
             {

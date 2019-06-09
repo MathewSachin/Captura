@@ -69,10 +69,8 @@ namespace Captura.Models
                             _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
                             _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
 
-                            using (var surface = _texture.GetSurfaceLevel(0))
-                            {
-                                _backBufferPtr = surface.NativePointer;
-                            }
+                            using var surface = _texture.GetSurfaceLevel(0);
+                            _backBufferPtr = surface.NativePointer;
                         }
 
                         Invalidate(_backBufferPtr, texture2DFrame.Width, texture2DFrame.Height);

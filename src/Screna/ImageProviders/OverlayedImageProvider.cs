@@ -17,7 +17,6 @@ namespace Screna
         /// </summary>
         /// <param name="ImageProvider">The <see cref="IImageProvider"/> to apply the Overlays on.</param>
         /// <param name="Overlays">Array of <see cref="IOverlay"/>(s) to apply.</param>
-        /// <param name="Transform">Point Transform Function.</param>
         public OverlayedImageProvider(IImageProvider ImageProvider, params IOverlay[] Overlays)
         {
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));

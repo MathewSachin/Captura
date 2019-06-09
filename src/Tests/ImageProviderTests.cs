@@ -56,17 +56,13 @@ namespace Captura.Tests
 
             var platformServices = _moq.GetService<IPlatformServices>();
 
-            using (var imgProvider = platformServices.GetRegionProvider(rect, false))
-            {
-                Assert.Equal(imgProvider.Width, rect.Width);
-                Assert.Equal(imgProvider.Height, rect.Height);
+            using var imgProvider = platformServices.GetRegionProvider(rect, false);
+            Assert.Equal(imgProvider.Width, rect.Width);
+            Assert.Equal(imgProvider.Height, rect.Height);
 
-                using (var img = imgProvider.Capture())
-                {
-                    Assert.Equal(img.Width, rect.Width);
-                    Assert.Equal(img.Height, rect.Height);
-                }
-            }
+            using var img = imgProvider.Capture();
+            Assert.Equal(img.Width, rect.Width);
+            Assert.Equal(img.Height, rect.Height);
         }
 
         [Fact]
@@ -76,20 +72,16 @@ namespace Captura.Tests
 
             var platformServices = _moq.GetService<IPlatformServices>();
 
-            using (var imgProvider = platformServices.GetRegionProvider(rect, false))
-            {
-                Assert.True(imgProvider.Width % 2 == 0);
-                Assert.True(imgProvider.Height % 2 == 0);
+            using var imgProvider = platformServices.GetRegionProvider(rect, false);
+            Assert.True(imgProvider.Width % 2 == 0);
+            Assert.True(imgProvider.Height % 2 == 0);
 
-                using (var img = imgProvider.Capture())
-                {
-                    Assert.Equal(img.Width, imgProvider.Width);
-                    Assert.Equal(img.Height, imgProvider.Height);
+            using var img = imgProvider.Capture();
+            Assert.Equal(img.Width, imgProvider.Width);
+            Assert.Equal(img.Height, imgProvider.Height);
 
-                    Assert.True(img.Width % 2 == 0);
-                    Assert.True(img.Height % 2 == 0);
-                }
-            }
+            Assert.True(img.Width % 2 == 0);
+            Assert.True(img.Height % 2 == 0);
         }
 
         [Fact]
@@ -98,17 +90,13 @@ namespace Captura.Tests
             var imgProvider = _moq.GetImageProviderMock().Object;
             var overlay = _moq.GetOverlayMock().Object;
 
-            using (var provider = new OverlayedImageProvider(imgProvider, overlay))
-            {
-                Assert.Equal(provider.Width, imgProvider.Width);
-                Assert.Equal(provider.Height, imgProvider.Height);
+            using var provider = new OverlayedImageProvider(imgProvider, overlay);
+            Assert.Equal(provider.Width, imgProvider.Width);
+            Assert.Equal(provider.Height, imgProvider.Height);
 
-                using (var img = provider.Capture())
-                {
-                    Assert.Equal(provider.Width, img.Width);
-                    Assert.Equal(provider.Height, img.Height);
-                }
-            }
+            using var img = provider.Capture();
+            Assert.Equal(provider.Width, img.Width);
+            Assert.Equal(provider.Height, img.Height);
         }
 
         [Fact]

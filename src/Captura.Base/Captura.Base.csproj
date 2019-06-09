@@ -6,4 +6,7 @@
     <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Captura.Audio\Captura.Audio.csproj" />
+  </ItemGroup>
 </Project>

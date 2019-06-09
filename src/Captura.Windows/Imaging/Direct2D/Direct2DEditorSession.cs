@@ -1,7 +1,6 @@
 ﻿using System;
 using Captura;
 using Captura.Models;
-using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -31,9 +30,9 @@ namespace DesktopDuplication
         Factory _writeFactory;
         ImagingFactory _imagingFactory;
 
-        public Factory WriteFactory => _writeFactory ?? (_writeFactory = new Factory());
+        public Factory WriteFactory => _writeFactory ??= new Factory();
 
-        public ImagingFactory ImagingFactory => _imagingFactory ?? (_imagingFactory = new ImagingFactory());
+        public ImagingFactory ImagingFactory => _imagingFactory ??= new ImagingFactory();
 
         public Lazy<MfColorConverter> ColorConverter { get; }
 

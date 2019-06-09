@@ -88,12 +88,10 @@ namespace Captura
                 ServiceProvider.SettingsDir = Settings;
             }
 
-            using (var manager = ServiceProvider.Get<ConsoleManager>())
-            {
-                manager.CopySettings();
+            using var manager = ServiceProvider.Get<ConsoleManager>();
+            manager.CopySettings();
 
-                manager.Start(this);
-            }
+            manager.Start(this);
         }
     }
 }

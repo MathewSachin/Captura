@@ -41,22 +41,20 @@ namespace DesktopDuplication
         // Texture format must be B8G8R8A8_UNorm
         static Texture GetSharedD3D9(DeviceEx Device, Texture2D RenderTarget)
         {
-            using (var resource = RenderTarget.QueryInterface<SharpDX.DXGI.Resource>())
-            {
-                var handle = resource.SharedHandle;
+            using var resource = RenderTarget.QueryInterface<SharpDX.DXGI.Resource>();
+            var handle = resource.SharedHandle;
 
-                if (handle == IntPtr.Zero)
-                    throw new ArgumentNullException(nameof(handle));
+            if (handle == IntPtr.Zero)
+                throw new ArgumentNullException(nameof(handle));
 
-                return new Texture(Device,
-                    RenderTarget.Description.Width,
-                    RenderTarget.Description.Height,
-                    1,
-                    Usage.RenderTarget,
-                    Format.A8R8G8B8,
-                    Pool.Default,
-                    ref handle);
-            }
+            return new Texture(Device,
+                RenderTarget.Description.Width,
+                RenderTarget.Description.Height,
+                1,
+                Usage.RenderTarget,
+                Format.A8R8G8B8,
+                Pool.Default,
+                ref handle);
         }
 
         public void Dispose()

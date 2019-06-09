@@ -73,7 +73,7 @@ namespace DesktopDuplication
             }
         }
 
-        public bool Get(Texture2D Texture, DxMousePointer DxMousePointer, Point TargetPosition = default(Point))
+        public bool Get(Texture2D Texture, DxMousePointer DxMousePointer, Point TargetPosition = default)
         {
             lock (_syncLock)
             {

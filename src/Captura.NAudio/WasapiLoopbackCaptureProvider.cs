@@ -2,7 +2,7 @@
 using NAudio.Wave;
 using Wf = NAudio.Wave.WaveFormat;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     class WasapiLoopbackCaptureProvider : NAudioProvider
     {

@@ -15,7 +15,6 @@ namespace DesktopDuplication
         readonly Device _device;
         const int BitRate = 8_000_000;
         readonly Guid _encodingFormat = VideoFormatGuids.H264;
-        readonly Guid _inputFormat = VideoFormatGuids.NV12;
         readonly Guid _encodedAudioFormat = AudioFormatGuids.Aac;
         readonly long _frameDuration;
         readonly SinkWriter _writer;
@@ -63,11 +62,9 @@ namespace DesktopDuplication
 
         public MfWriter(VideoWriterArgs Args, Device Device)
         {
-            if (Args.ImageProvider.DummyFrame is Texture2DFrame)
-            {
-                _inputFormat = VideoFormatGuids.NV12;
-            }
-            else _inputFormat = VideoFormatGuids.Rgb32;
+            var inputFormat = Args.ImageProvider.DummyFrame is Texture2DFrame
+                ? VideoFormatGuids.NV12
+                : VideoFormatGuids.Rgb32;
 
             _device = Device;
 
@@ -96,7 +93,7 @@ namespace DesktopDuplication
             using (var mediaTypeIn = new MediaType())
             {
                 mediaTypeIn.Set(MediaTypeAttributeKeys.MajorType, MediaTypeGuids.Video);
-                mediaTypeIn.Set(MediaTypeAttributeKeys.Subtype, _inputFormat);
+                mediaTypeIn.Set(MediaTypeAttributeKeys.Subtype, inputFormat);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.InterlaceMode, (int)VideoInterlaceMode.Progressive);
                 mediaTypeIn.Set(MediaTypeAttributeKeys.FrameSize, PackLong(w, h));
                 mediaTypeIn.Set(MediaTypeAttributeKeys.FrameRate, PackLong(Args.FrameRate, 1));
@@ -121,11 +118,9 @@ namespace DesktopDuplication
                     _writer.AddStream(audioTypeOut, out _);
                 }
 
-                using (var audioTypeIn = GetMediaType(wf))
-                {
-                    audioTypeIn.Set(MediaTypeAttributeKeys.Subtype, AudioFormatGuids.Pcm);
-                    _writer.SetInputMediaType(AudioStreamIndex, audioTypeIn, null);
-                }
+                using var audioTypeIn = GetMediaType(wf);
+                audioTypeIn.Set(MediaTypeAttributeKeys.Subtype, AudioFormatGuids.Pcm);
+                _writer.SetInputMediaType(AudioStreamIndex, audioTypeIn, null);
             }
 
             _writer.BeginWriting();
@@ -252,30 +247,26 @@ namespace DesktopDuplication
                 }
                 else
                 {
-                    using (var buffer = MediaFactory.CreateMemoryBuffer(_bufferSize))
-                    {
-                        var data = buffer.Lock(out _, out _);
+                    using var buffer = MediaFactory.CreateMemoryBuffer(_bufferSize);
+                    var data = buffer.Lock(out _, out _);
 
-                        Image.CopyTo(data);
+                    Image.CopyTo(data);
 
-                        buffer.CurrentLength = _bufferSize;
+                    buffer.CurrentLength = _bufferSize;
 
-                        buffer.Unlock();
+                    buffer.Unlock();
 
-                        using (var sample = MediaFactory.CreateVideoSampleFromSurface(null))
-                        {
-                            sample.AddBuffer(buffer);
+                    using var sample = MediaFactory.CreateVideoSampleFromSurface(null);
+                    sample.AddBuffer(buffer);
 
-                            Write(sample);
-                        }
-                    }
+                    Write(sample);
                 }
             }
         }
 
         public bool SupportsAudio => true;
 
-        long _audioWritten = 0;
+        long _audioWritten;
 
         public void WriteAudio(byte[] Buffer, int Length)
         {
@@ -289,15 +280,13 @@ namespace DesktopDuplication
 
                 buffer.Unlock();
 
-                using (var sample = MediaFactory.CreateVideoSampleFromSurface(null))
-                {
-                    sample.AddBuffer(buffer);
+                using var sample = MediaFactory.CreateVideoSampleFromSurface(null);
+                sample.AddBuffer(buffer);
 
-                    sample.SampleTime = _audioWritten * TenPower7 / _audioInBytesPerSecond;
-                    sample.SampleDuration = Length * TenPower7 / _audioInBytesPerSecond;
+                sample.SampleTime = _audioWritten * TenPower7 / _audioInBytesPerSecond;
+                sample.SampleDuration = Length * TenPower7 / _audioInBytesPerSecond;
 
-                    _writer.WriteSample(AudioStreamIndex, sample);
-                }
+                _writer.WriteSample(AudioStreamIndex, sample);
             }
 
             _audioWritten += Length;

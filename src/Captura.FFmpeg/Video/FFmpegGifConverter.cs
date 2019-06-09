@@ -29,7 +29,7 @@ namespace Captura.Models
                 .SetFrameRate(Args.FrameRate);
 
             var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out var log);
-            log.ProgressChanged += M => Progress.Report(M);
+            log.ProgressChanged += Progress.Report;
 
             await Task.Run(() => process.WaitForExit());
 

@@ -26,40 +26,38 @@ namespace Captura.Models
 
         public async Task<UploadResult> Upload(IBitmapImage Image, ImageFormats Format, Action<int> Progress)
         {
-            using (var w = new WebClient { Proxy = _proxySettings.GetWebProxy() })
+            using var w = new WebClient { Proxy = _proxySettings.GetWebProxy() };
+            if (Progress != null)
             {
-                if (Progress != null)
+                w.UploadProgressChanged += (S, E) => Progress(E.ProgressPercentage);
+            }
+
+            w.Headers.Add("Authorization", await GetAuthorizationHeader());
+
+            NameValueCollection values;
+
+            using (var ms = new MemoryStream())
+            {
+                Image.Save(ms, Format);
+
+                values = new NameValueCollection
                 {
-                    w.UploadProgressChanged += (S, E) => Progress(E.ProgressPercentage);
-                }
-
-                w.Headers.Add("Authorization", await GetAuthorizationHeader());
-
-                NameValueCollection values;
-
-                using (var ms = new MemoryStream())
-                {
-                    Image.Save(ms, Format);
-
-                    values = new NameValueCollection
-                    {
-                        { "image", Convert.ToBase64String(ms.ToArray()) }
-                    };
-                }
-
-                var uploadResponse = await UploadValuesAsync<ImgurUploadResponse>(w, "https://api.imgur.com/3/upload.json", values);
-
-                if (!uploadResponse.Success)
-                {
-                    throw new Exception("Response indicates Failure");
-                }
-
-                return new UploadResult
-                {
-                    Url = uploadResponse.Data.Link,
-                    DeleteLink = $"https://api.imgur.com/3/image/{uploadResponse.Data.DeleteHash}"
+                    { "image", Convert.ToBase64String(ms.ToArray()) }
                 };
             }
+
+            var uploadResponse = await UploadValuesAsync<ImgurUploadResponse>(w, "https://api.imgur.com/3/upload.json", values);
+
+            if (!uploadResponse.Success)
+            {
+                throw new Exception("Response indicates Failure");
+            }
+
+            return new UploadResult
+            {
+                Url = uploadResponse.Data.Link,
+                DeleteLink = $"https://api.imgur.com/3/image/{uploadResponse.Data.DeleteHash}"
+            };
         }
 
         async Task<string> GetAuthorizationHeader()
@@ -95,18 +93,16 @@ namespace Captura.Models
                 { "grant_type", "refresh_token" }
             };
 
-            using (var w = new WebClient { Proxy = _proxySettings.GetWebProxy() })
-            {
-                var token = await UploadValuesAsync<ImgurRefreshTokenResponse>(w, "https://api.imgur.com/oauth2/token.json", args);
+            using var w = new WebClient { Proxy = _proxySettings.GetWebProxy() };
+            var token = await UploadValuesAsync<ImgurRefreshTokenResponse>(w, "https://api.imgur.com/oauth2/token.json", args);
 
-                if (string.IsNullOrEmpty(token?.AccessToken))
-                    return false;
+            if (string.IsNullOrEmpty(token?.AccessToken))
+                return false;
 
-                _settings.AccessToken = token.AccessToken;
-                _settings.RefreshToken = token.RefreshToken;
-                _settings.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(token.ExpiresIn);
-                return true;
-            }
+            _settings.AccessToken = token.AccessToken;
+            _settings.RefreshToken = token.RefreshToken;
+            _settings.ExpiresAt = DateTime.UtcNow + TimeSpan.FromSeconds(token.ExpiresIn);
+            return true;
         }
 
         static async Task<T> UploadValuesAsync<T>(WebClient WebClient, string Url, NameValueCollection Values)

@@ -2,8 +2,6 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <RootDir>$(MSBuildThisFileDirectory)/..</RootDir>
-    <BassPath>$(RootDir)/temp/bass/bass.dll</BassPath>
-    <BassMixPath>$(RootDir)/temp/bassmix/bassmix.dll</BassMixPath>
     <DoMoveLibs>False</DoMoveLibs>
   </PropertyGroup>
 
@@ -13,22 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Copy BASS -->
-    <Content Include="$(BassPath)"
-             Condition="Exists('$(BassPath)')">
-      <Visible>False</Visible>
-      <Link>$(LibFolderName)bass.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <!-- Copy BASSmix -->
-    <Content Include="$(BassMixPath)"
-             Condition="Exists('$(BassMixPath)')">
-      <Visible>False</Visible>
-      <Link>$(LibFolderName)bassmix.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
     <!-- Copy License files -->
     <Content Include="$(RootDir)/licenses/*.txt">
       <Visible>False</Visible>

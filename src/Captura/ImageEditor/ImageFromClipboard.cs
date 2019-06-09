@@ -12,12 +12,10 @@ namespace Captura
         {
             if (Clipboard.ContainsImage() && Clipboard.GetImage() is Bitmap bitmap)
             {
-                using (var ms = new MemoryStream())
-                {
-                    bitmap.Save(ms, ImageFormat.Png);
+                using var ms = new MemoryStream();
+                bitmap.Save(ms, ImageFormat.Png);
 
-                    return BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad).Frames[0];
-                }
+                return BitmapDecoder.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad).Frames[0];
             }
 
             return null;

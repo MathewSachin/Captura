@@ -11,15 +11,13 @@ namespace Captura
     {
         static Dpi()
         {
-            using (var src = new HwndSource(new HwndSourceParameters()))
+            using var src = new HwndSource(new HwndSourceParameters());
+            if (src.CompositionTarget != null)
             {
-                if (src.CompositionTarget != null)
-                {
-                    var matrix = src.CompositionTarget.TransformToDevice;
+                var matrix = src.CompositionTarget.TransformToDevice;
 
-                    X = (float) matrix.M11;
-                    Y = (float) matrix.M22;
-                }
+                X = (float) matrix.M11;
+                Y = (float) matrix.M22;
             }
         }
 

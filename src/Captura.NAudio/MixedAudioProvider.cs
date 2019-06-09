@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Captura.Audio;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using WaveFormat = Captura.Audio.WaveFormat;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     class MixedAudioProvider : IAudioProvider
     {
@@ -21,11 +20,14 @@ namespace Captura.NAudio
         byte[] _buffer;
         const int ReadInterval = 200;
 
-        public MixedAudioProvider(IEnumerable<NAudioProvider> AudioProviders)
+        public MixedAudioProvider(params NAudioProvider[] AudioProviders)
         {
             foreach (var provider in AudioProviders)
             {
-                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat);
+                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat)
+                {
+                    DiscardOnBufferOverflow = true
+                };
 
                 provider.DataAvailable += (S, E) =>
                 {
@@ -49,10 +51,20 @@ namespace Captura.NAudio
                 _audioProviders.Add(provider, sampleProvider);
             }
 
-            var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
+            if (_audioProviders.Count == 1)
+            {
+                _mixingWaveProvider = _audioProviders
+                    .Values
+                    .First()
+                    .ToWaveProvider16();
+            }
+            else
+            {
+                var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
 
-            // Screna expects 44.1 kHz 16-bit Stereo
-            _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
+                // Screna expects 44.1 kHz 16-bit Stereo
+                _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
+            }
 
             var bufferSize = (int)
             (

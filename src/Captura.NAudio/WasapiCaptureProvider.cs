@@ -1,6 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     class WasapiCaptureProvider : NAudioProvider
     {

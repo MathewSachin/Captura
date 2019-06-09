@@ -1,4 +1,5 @@
-﻿using Captura.Models;
+﻿using Captura.Audio;
+using Captura.Models;
 using Captura.ViewModels;
 using System.Linq;
 using static System.Console;
@@ -65,14 +66,12 @@ namespace Captura
 
             WriteLine();
 
-            var sources = _audioSource.GetSources();
-
-            var mics = sources
-                .Where(M => !M.IsLoopback)
+            var mics = _audioSource
+                .Microphones
                 .ToArray();
 
-            var speakers = sources
-                .Where(M => M.IsLoopback)
+            var speakers = _audioSource
+                .Speakers
                 .ToArray();
 
             // Microphones

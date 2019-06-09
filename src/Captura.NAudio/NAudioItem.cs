@@ -1,22 +1,25 @@
-﻿using Captura.Models;
-using NAudio.CoreAudioApi;
+﻿using NAudio.CoreAudioApi;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
-    class NAudioItem : NotifyPropertyChanged, IAudioItem
+    class NAudioItem : IAudioItem
     {
-        public MMDevice Device { get; }
+        public virtual MMDevice Device { get; }
 
         public bool IsLoopback { get; }
 
         public string Name { get; }
 
         public NAudioItem(MMDevice Device, bool IsLoopback)
+            : this(Device.FriendlyName, IsLoopback)
         {
             this.Device = Device;
-            this.IsLoopback = IsLoopback;
+        }
 
-            Name = Device.FriendlyName;
+        protected NAudioItem(string Name, bool IsLoopback)
+        {
+            this.IsLoopback = IsLoopback;
+            this.Name = Name;
         }
 
         public override string ToString() => Name;

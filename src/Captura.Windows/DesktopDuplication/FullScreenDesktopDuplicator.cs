@@ -19,36 +19,34 @@ namespace DesktopDuplication
             IPreviewWindow PreviewWindow,
             IPlatformServices PlatformServices)
         {
-            using (var factory = new Factory1())
+            using var factory = new Factory1();
+            var outputs = factory
+                .Adapters1
+                .SelectMany(M => M.Outputs)
+                .ToArray();
+
+            var bounds = PlatformServices.DesktopRectangle;
+
+            Width = bounds.Width;
+            Height = bounds.Height;
+
+            PointTransform = P => new Point(P.X - bounds.Left, P.Y - bounds.Top);
+
+            _editorSession = new Direct2DEditorSession(Width, Height, PreviewWindow);
+
+            _outputs.AddRange(outputs.Select(M =>
             {
-                var outputs = factory
-                    .Adapters1
-                    .SelectMany(M => M.Outputs)
-                    .ToArray();
+                var output1 = M.QueryInterface<Output1>();
 
-                var bounds = PlatformServices.DesktopRectangle;
+                var rect = M.Description.DesktopBounds;
 
-                Width = bounds.Width;
-                Height = bounds.Height;
-
-                PointTransform = P => new Point(P.X - bounds.Left, P.Y - bounds.Top);
-
-                _editorSession = new Direct2DEditorSession(Width, Height, PreviewWindow);
-
-                _outputs.AddRange(outputs.Select(M =>
+                return new DeskDuplOutputEntry
                 {
-                    var output1 = M.QueryInterface<Output1>();
-
-                    var rect = M.Description.DesktopBounds;
-
-                    return new DeskDuplOutputEntry
-                    {
-                        DuplCapture = new DuplCapture(output1),
-                        Location = new SharpDX.Point(rect.Left - bounds.Left, rect.Top - bounds.Top),
-                        MousePointer = IncludeCursor ? new DxMousePointer(_editorSession) : null
-                    };
-                }));
-            }
+                    DuplCapture = new DuplCapture(output1),
+                    Location = new SharpDX.Point(rect.Left - bounds.Left, rect.Top - bounds.Top),
+                    MousePointer = IncludeCursor ? new DxMousePointer(_editorSession) : null
+                };
+            }));
         }
 
         public int Width { get; }

@@ -634,22 +634,18 @@ namespace Captura
 
         async void UploadToImgur()
         {
-            using (var ms = new MemoryStream())
-            {
-                var bmp = GetBmp();
+            using var ms = new MemoryStream();
+            var bmp = GetBmp();
 
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmp));
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-                encoder.Save(ms);
+            encoder.Save(ms);
 
-                var imgSystem = ServiceProvider.Get<IImagingSystem>();
+            var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                using (var bitmap = imgSystem.LoadBitmap(ms))
-                {
-                    await bitmap.UploadImage();
-                }
-            }
+            using var bitmap = imgSystem.LoadBitmap(ms);
+            await bitmap.UploadImage();
         }
 
         BitmapSource GetBmp()
@@ -659,33 +655,31 @@ namespace Captura
             var copy = EditedBitmap;
             var transform = TransformedBitmap.Transform;
 
-            using (var drawingContext = drawingVisual.RenderOpen())
-            {
-                drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
+            using var drawingContext = drawingVisual.RenderOpen();
+            drawingContext.DrawImage(copy, new Rect(0, 0, copy.Width, copy.Height));
 
-                var strokesCopy = InkCanvas.Strokes.Clone();
+            var strokesCopy = InkCanvas.Strokes.Clone();
 
-                var matrix = Matrix.Identity;
-                matrix.Scale(96 / copy.DpiX, 96 / copy.DpiY);
+            var matrix = Matrix.Identity;
+            matrix.Scale(96 / copy.DpiX, 96 / copy.DpiY);
 
-                strokesCopy.Transform(matrix, true);
+            strokesCopy.Transform(matrix, true);
 
-                strokesCopy.Draw(drawingContext);
+            strokesCopy.Draw(drawingContext);
 
-                drawingContext.Close();
+            drawingContext.Close();
 
-                var bitmap = new RenderTargetBitmap(copy.PixelWidth,
-                    copy.PixelHeight,
-                    copy.DpiX,
-                    copy.DpiY,
-                    PixelFormats.Pbgra32);
+            var bitmap = new RenderTargetBitmap(copy.PixelWidth,
+                copy.PixelHeight,
+                copy.DpiX,
+                copy.DpiY,
+                PixelFormats.Pbgra32);
 
-                bitmap.Render(drawingVisual);
+            bitmap.Render(drawingVisual);
 
-                var transformedRendered = new TransformedBitmap(bitmap, transform);
+            var transformedRendered = new TransformedBitmap(bitmap, transform);
 
-                return transformedRendered;
-            }
+            return transformedRendered;
         }
         #endregion
 

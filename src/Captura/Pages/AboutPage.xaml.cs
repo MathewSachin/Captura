@@ -54,10 +54,8 @@ namespace Captura
             {
                 var imgSystem = ServiceProvider.Get<IImagingSystem>();
 
-                using (var img = imgSystem.LoadBitmap(ofd.FileName))
-                {
-                    await img.UploadImage();
-                }
+                using var img = imgSystem.LoadBitmap(ofd.FileName);
+                await img.UploadImage();
             }
         }
     }

@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Base", "Captura.Bas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.SharpAvi", "Captura.SharpAvi\Captura.SharpAvi.csproj", "{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Bass", "Captura.Bass\Captura.Bass.csproj", "{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.MouseKeyHook", "Captura.MouseKeyHook\Captura.MouseKeyHook.csproj", "{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.FFmpeg", "Captura.FFmpeg\Captura.FFmpeg.csproj", "{4E1E8F5B-6A19-48CE-9C1F-B46A0622B32C}"
@@ -38,6 +36,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.YouTube", "Captura.YouTube\Captura.YouTube.csproj", "{224E699E-2B95-4194-BE79-4931815D8F21}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Windows", "Captura.Windows\Captura.Windows.csproj", "{5B10DDF4-246B-47D0-82BF-95BF3256946E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Audio", "Captura.Audio\Captura.Audio.csproj", "{D29DE716-EDDF-4CFB-8430-D07CCACB0921}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audio", "Audio", "{E645F466-C7D6-469A-B4CC-B0917703318C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +75,6 @@ Global
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB8FF9F8-EC60-4A4A-A3F0-D9FBFB585D86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27B996F1-B0F4-431A-B57C-B4B656EDE7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CC6E9C8-9A94-4FB0-8396-47E2ECBD8300}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -117,9 +115,17 @@ Global
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B10DDF4-246B-47D0-82BF-95BF3256946E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76BC6324-E205-41DB-B60A-128D9FD66624} = {E645F466-C7D6-469A-B4CC-B0917703318C}
+		{D29DE716-EDDF-4CFB-8430-D07CCACB0921} = {E645F466-C7D6-469A-B4CC-B0917703318C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7740D998-67E7-4F55-8FB1-72606E480904}

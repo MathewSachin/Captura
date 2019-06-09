@@ -1,4 +1,6 @@
-﻿namespace Captura.Models
+﻿using Captura.Audio;
+
+namespace Captura.Models
 {
     /// <summary>
     /// Holds codecs for audio-alone capture.

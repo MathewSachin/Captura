@@ -1,5 +1,4 @@
 ﻿using Captura.Audio;
-using Captura.Models;
 using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;

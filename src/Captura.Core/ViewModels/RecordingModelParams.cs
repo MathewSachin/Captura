@@ -1,5 +1,5 @@
-﻿using Captura.Models;
-using System.Collections.Generic;
+﻿using Captura.Audio;
+using Captura.Models;
 
 namespace Captura.ViewModels
 {
@@ -9,6 +9,8 @@ namespace Captura.ViewModels
 
         public IVideoWriterItem VideoWriter { get; set; }
 
-        public IEnumerable<IIsActive<IAudioItem>> AudioItems { get; set; }
+        public IAudioItem Speaker { get; set; }
+
+        public IAudioItem Microphone { get; set; }
     }
 }
