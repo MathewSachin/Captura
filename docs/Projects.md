@@ -6,6 +6,9 @@
 ## Localization
 `Captura.Loc` contains the localization code.
 
+## Audio
+`Captura.Audio` contains the audio interfaces which are implemented by specific libraries like `Captura.NAudio`.
+
 ## Screna, Core
 `Screna` and `Captura.Core` projects contain the bulk of the code and are depended on by both UI and Console projects.
 
@@ -22,4 +25,4 @@
 `Captura` is a WPF project containing the UI.
 
 ## Other
-The remaining projects add specific features like BASS, NAudio, SharpAvi, FFmpeg, etc.
+The remaining projects add specific features like Imgur, SharpAvi, FFmpeg, etc.

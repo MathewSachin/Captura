@@ -6,7 +6,6 @@ Displays the following information:
 - FFmpeg encoders
 - If SharpAvi is available
 - SharpAvi encoders
-- If ManagedBass is available
 - If MouseKeyHook is available
 - Visible Windows with hWnd
 - Screens if there are more than 1

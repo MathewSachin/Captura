@@ -35,8 +35,6 @@ Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
 Portable and Setup builds for the latest release can be downloaded from [here][latest].
 
->The settings are stored in `%APPDATA%/Captura` folder by default. You might want to customize this for the portable build using the `--settings` command-line argument.
-
 ### Chocolatey
 
 ```powershell
@@ -48,12 +46,12 @@ choco install captura -y
 See the [Continuous Integration page](docs/CI.md).
 
 ## Docs
-
-|:star:|:star:|:star:|
-|------|------|------|
 [Build Notes](docs/Build.md) | [System Requirements](docs/System-Requirements.md) | [Contributing](CONTRIBUTING.md)
+
 [ScreenShots](https://mathewsachin.github.io/Captura/screenshots) | [Command-line](docs/Cmdline/README.md) | [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
+
 [FAQ](docs/FAQ.md) | [Code of Conduct](CODE_OF_CONDUCT.md) | [Changelog](docs/Changelogs/README.md)
+
 [Continuous Integration](docs/CI.md) | [FFmpeg](docs/FFmpeg.md)
 
 ## License

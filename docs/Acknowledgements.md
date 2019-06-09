@@ -27,8 +27,6 @@ I can't thank GitHub enough for being an open platform for developers.
 
 ## Libraries
 
-### BASS
-
 ### CommandLineParser
 
 ### CroppingAdorner
