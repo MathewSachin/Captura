@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Captura.FFmpeg;
+using Captura.Audio;
 using Captura.Models;
 using Captura.ViewModels;
 using static System.Console;
@@ -20,6 +20,7 @@ namespace Captura
         readonly RecordingModel _recordingModel;
         readonly ScreenShotModel _screenShotModel;
         readonly IEnumerable<IVideoSourceProvider> _videoSourceProviders;
+        readonly IEnumerable<IVideoWriterProvider> _videoWriterProviders;
         readonly WebcamModel _webcamModel;
         readonly IPlatformServices _platformServices;
         readonly IMessageProvider _messageProvider;
@@ -29,6 +30,7 @@ namespace Captura
             RecordingModel RecordingModel,
             ScreenShotModel ScreenShotModel,
             IEnumerable<IVideoSourceProvider> VideoSourceProviders,
+            IEnumerable<IVideoWriterProvider> VideoWriterProviders,
             IPlatformServices PlatformServices,
             WebcamModel WebcamModel,
             IMessageProvider MessageProvider,
@@ -38,6 +40,7 @@ namespace Captura
             _recordingModel = RecordingModel;
             _screenShotModel = ScreenShotModel;
             _videoSourceProviders = VideoSourceProviders;
+            _videoWriterProviders = VideoWriterProviders;
             _platformServices = PlatformServices;
             _webcamModel = WebcamModel;
             _messageProvider = MessageProvider;
@@ -113,9 +116,7 @@ namespace Captura
                 return;
             }
 
-            var videoWriter = HandleVideoEncoder(StartOptions, out var videoWriterKind);
-
-            var audioSources = HandleAudioSource(StartOptions);
+            HandleAudioSource(StartOptions, out var mic, out var speaker);
 
             HandleWebcam(StartOptions);
 
@@ -128,6 +129,14 @@ namespace Captura
             if (StartOptions.VideoQuality is int vq)
                 _settings.Video.Quality = vq;
 
+            if (StartOptions.Replay is int replayDuration && replayDuration > 0)
+            {
+                _settings.Video.RecorderMode = RecorderMode.Replay;
+                _settings.Video.ReplayDuration = replayDuration;
+            }
+
+            var videoWriter = HandleVideoEncoder(StartOptions, out _);
+
             if (StartOptions.Delay > 0)
                 Thread.Sleep(StartOptions.Delay);
 
@@ -135,7 +144,8 @@ namespace Captura
             {
                 VideoSourceKind = videoSourceKind,
                 VideoWriter = videoWriter,
-                AudioItems = audioSources.Select(M => M.ToIsActive(true))
+                Microphone = mic,
+                Speaker = speaker
             }, StartOptions.FileName))
                 return;
 
@@ -190,90 +200,49 @@ namespace Captura
             return provider;
         }
 
-        IEnumerable<IAudioItem> HandleAudioSource(StartCmdOptions StartOptions)
+        void HandleAudioSource(StartCmdOptions StartOptions, out IAudioItem Microphone, out IAudioItem Speaker)
         {
-            var sources = _audioSource.GetSources();
+            Microphone = Speaker = null;
 
-            var mics = sources
-                .Where(M => !M.IsLoopback)
+            var mics = _audioSource
+                .Microphones
                 .ToArray();
 
-            var speakers = sources
-                .Where(M => M.IsLoopback)
+            var speakers = _audioSource
+                .Speakers
                 .ToArray();
 
             if (StartOptions.Microphone != -1 && StartOptions.Microphone < mics.Length)
             {
-                _settings.Audio.Enabled = true;
-                yield return mics[StartOptions.Microphone];
+                _settings.Audio.RecordMicrophone = true;
+                Microphone = mics[StartOptions.Microphone];
             }
 
             if (StartOptions.Speaker != -1 && StartOptions.Speaker < speakers.Length)
             {
-                _settings.Audio.Enabled = true;
-                yield return speakers[StartOptions.Speaker];
+                _settings.Audio.RecordSpeaker = true;
+                Speaker = speakers[StartOptions.Speaker];
             }
         }
 
         IVideoWriterItem HandleVideoEncoder(StartCmdOptions StartOptions, out IVideoWriterProvider VideoWriterKind)
         {
-            var ffmpegExists = FFmpegService.FFmpegExists;
+            var selected = _videoWriterProviders
+                .Select(M => new
+                {
+                    kind = M,
+                    writer = M.ParseCli(StartOptions.Encoder)
+                })
+                .FirstOrDefault(M => M.writer != null);
+
+            if (selected != null)
+            {
+                VideoWriterKind = selected.kind;
+
+                return selected.writer;
+            }
+
             var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
-
-            if (StartOptions.Encoder == null)
-                StartOptions.Encoder = "sharpavi:0";
-
-            // FFmpeg
-            if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^ffmpeg:\d+$"))
-            {
-                var index = int.Parse(StartOptions.Encoder.Substring(7));
-
-                var ffmpegWriterProvider = ServiceProvider.Get<FFmpegWriterProvider>();
-                var writers = ffmpegWriterProvider.ToArray();
-
-                if (index < writers.Length)
-                {
-                    VideoWriterKind = ffmpegWriterProvider;
-
-                    return writers[index];
-                }
-            }
-
-            // SharpAvi
-            else if (ServiceProvider.FileExists("SharpAvi.dll") && Regex.IsMatch(StartOptions.Encoder, @"^sharpavi:\d+$"))
-            {
-                var index = int.Parse(StartOptions.Encoder.Substring(9));
-
-                var writers = sharpAviWriterProvider.ToArray();
-
-                if (index < writers.Length)
-                {
-                    VideoWriterKind = sharpAviWriterProvider;
-
-                    return writers[index];
-                }
-            }
-
-            // Stream
-            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^stream:\S+$"))
-            {
-                var url = StartOptions.Encoder.Substring(7);
-                _settings.FFmpeg.CustomStreamingUrl = url;
-
-                VideoWriterKind = ServiceProvider.Get<StreamingWriterProvider>();
-
-                return StreamingWriterProvider.GetCustomStreamingCodec();
-            }
-
-            // Rolling
-            else if (ffmpegExists && Regex.IsMatch(StartOptions.Encoder, @"^roll:\d+$"))
-            {
-                var duration = int.Parse(StartOptions.Encoder.Substring(5));
-
-                VideoWriterKind = ServiceProvider.Get<FFmpegWriterProvider>();
-
-                return new FFmpegRollingWriterItem(duration);
-            }
 
             VideoWriterKind = sharpAviWriterProvider;
             return sharpAviWriterProvider.First();

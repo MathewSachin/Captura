@@ -21,7 +21,7 @@ namespace Captura.Models
         /// <summary>
         /// Removes the Pixels on Edges matching TrimColor(default is Transparent) from the Image
         /// </summary>
-        internal static unsafe Bitmap CropEmptyEdges(this Bitmap Image, Color TrimColor = default(Color))
+        internal static unsafe Bitmap CropEmptyEdges(this Bitmap Image, Color TrimColor = default)
         {
             if (Image == null)
                 return null;
@@ -223,18 +223,14 @@ namespace Captura.Models
 
         public static void DrawRoundedRectangle(this Graphics Graphics, Pen Pen, RectangleF Bounds, int CornerRadius)
         {
-            using (var path = RoundedRect(Bounds, CornerRadius))
-            {
-                Graphics.DrawPath(Pen, path);
-            }
+            using var path = RoundedRect(Bounds, CornerRadius);
+            Graphics.DrawPath(Pen, path);
         }
 
         public static void FillRoundedRectangle(this Graphics Graphics, Brush Brush, RectangleF Bounds, int CornerRadius)
         {
-            using (var path = RoundedRect(Bounds, CornerRadius))
-            {
-                Graphics.FillPath(Brush, path);
-            }
+            using var path = RoundedRect(Bounds, CornerRadius);
+            Graphics.FillPath(Brush, path);
         }
 
         public static ImageFormat ToDrawingImageFormat(this ImageFormats Format)

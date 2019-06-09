@@ -105,6 +105,22 @@ namespace Screna
             return list;
         }
 
+        public IEnumerable<Window> EnumerateChildren()
+        {
+            var list = new List<Window>();
+
+            User32.EnumChildWindows(Handle, (Handle, Param) =>
+            {
+                var wh = new Window(Handle);
+
+                list.Add(wh);
+
+                return true;
+            }, IntPtr.Zero);
+
+            return list;
+        }
+
         /// <summary>
         /// Enumerates all visible windows with a Title.
         /// </summary>

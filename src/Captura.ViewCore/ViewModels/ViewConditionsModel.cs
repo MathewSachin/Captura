@@ -40,6 +40,12 @@ namespace Captura.ViewModels
                 .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
 
+            IsReplayMode = Settings
+                .Video
+                .ObserveProperty(M => M.RecorderMode)
+                .Select(M => M == RecorderMode.Replay)
+                .ToReadOnlyReactivePropertySlim();
+
             CanChangeWebcam = new[]
                 {
                     RecordingModel
@@ -63,26 +69,6 @@ namespace Captura.ViewModels
                     }
 
                     return !separateFile || notRecording;
-                })
-                .ToReadOnlyReactivePropertySlim();
-
-            CanChangeAudioSources = new[]
-                {
-                    RecordingModel
-                        .ObserveProperty(M => M.RecorderState)
-                        .Select(M => M == RecorderState.NotRecording),
-                    Settings.Audio
-                        .ObserveProperty(M => M.SeparateFilePerSource)
-                }
-                .CombineLatest(M =>
-                {
-                    var notRecording = M[0];
-                    var separateFilePerSource = M[1];
-
-                    if (notRecording)
-                        return true;
-
-                    return !separateFilePerSource && AudioSourceViewModel.CanChangeSourcesDuringRecording;
                 })
                 .ToReadOnlyReactivePropertySlim();
 
@@ -121,13 +107,13 @@ namespace Captura.ViewModels
 
         public IReadOnlyReactiveProperty<bool> CanChangeWebcam { get; }
 
-        public IReadOnlyReactiveProperty<bool> CanChangeAudioSources { get; }
-
         public IReadOnlyReactiveProperty<bool> IsEnabled { get; }
 
         public IReadOnlyReactiveProperty<bool> CanWebcamSeparateFile { get; }
 
         public IReadOnlyReactiveProperty<bool> IsAroundMouseMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsReplayMode { get; }
 
         public IReadOnlyReactiveProperty<bool> ShowSourceNameBox { get; }
     }

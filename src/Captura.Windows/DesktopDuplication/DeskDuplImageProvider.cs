@@ -37,6 +37,6 @@ namespace Captura.Models
             _dupl?.Dispose();
         }
 
-        public Type EditorType { get; } = typeof(Direct2DEditor);
+        public IBitmapFrame DummyFrame => Texture2DFrame.DummyFrame;
     }
 }

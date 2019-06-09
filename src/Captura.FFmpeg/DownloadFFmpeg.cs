@@ -24,17 +24,15 @@ namespace Captura.Models
 
         public static async Task DownloadArchive(Action<int> Progress, IWebProxy Proxy, CancellationToken CancellationToken)
         {
-            using (var webClient = new WebClient { Proxy = Proxy })
-            {
-                CancellationToken.Register(() => webClient.CancelAsync());
+            using var webClient = new WebClient { Proxy = Proxy };
+            CancellationToken.Register(() => webClient.CancelAsync());
 
-                webClient.DownloadProgressChanged += (S, E) =>
-                {
-                    Progress?.Invoke(E.ProgressPercentage);
-                };
+            webClient.DownloadProgressChanged += (S, E) =>
+            {
+                Progress?.Invoke(E.ProgressPercentage);
+            };
                 
-                await webClient.DownloadFileTaskAsync(FFmpegUri, FFmpegArchivePath);
-            }
+            await webClient.DownloadFileTaskAsync(FFmpegUri, FFmpegArchivePath);
         }
 
         const string ExeName = "ffmpeg.exe";
@@ -43,12 +41,10 @@ namespace Captura.Models
         {
             await Task.Run(() =>
             {
-                using (var archive = ZipFile.OpenRead(FFmpegArchivePath))
-                {
-                    var ffmpegEntry = archive.Entries.First(M => M.Name == ExeName);
+                using var archive = ZipFile.OpenRead(FFmpegArchivePath);
+                var ffmpegEntry = archive.Entries.First(M => M.Name == ExeName);
 
-                    ffmpegEntry.ExtractToFile(Path.Combine(FolderPath, ExeName), true);
-                }
+                ffmpegEntry.ExtractToFile(Path.Combine(FolderPath, ExeName), true);
             });
         }
     }

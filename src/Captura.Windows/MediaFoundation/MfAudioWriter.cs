@@ -12,7 +12,7 @@ namespace Captura
         const int StreamIndex = 0;
         const int TenPower7 = 10_000_000;
         readonly long _audioInBytesPerSecond;
-        long _audioWritten = 0;
+        long _audioWritten;
 
         public MfAudioWriter(string FileName,
             Guid MediaSubtype,
@@ -67,15 +67,13 @@ namespace Captura
 
                 buffer.Unlock();
 
-                using (var sample = MediaFactory.CreateVideoSampleFromSurface(null))
-                {
-                    sample.AddBuffer(buffer);
+                using var sample = MediaFactory.CreateVideoSampleFromSurface(null);
+                sample.AddBuffer(buffer);
 
-                    sample.SampleTime = _audioWritten * TenPower7 / _audioInBytesPerSecond;
-                    sample.SampleDuration = Count * TenPower7 / _audioInBytesPerSecond;
+                sample.SampleTime = _audioWritten * TenPower7 / _audioInBytesPerSecond;
+                sample.SampleDuration = Count * TenPower7 / _audioInBytesPerSecond;
 
-                    _writer.WriteSample(StreamIndex, sample);
-                }
+                _writer.WriteSample(StreamIndex, sample);
             }
 
             _audioWritten += Count;

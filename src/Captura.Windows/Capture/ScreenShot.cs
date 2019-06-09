@@ -13,8 +13,6 @@ namespace Screna
         /// <summary>
         /// Capture transparent Screenshot of a Window.
         /// </summary>
-        /// <param name="Window">The <see cref="IWindow"/> to Capture.</param>
-        /// <param name="IncludeCursor">Whether to include Mouse Cursor.</param>
         public static IBitmapImage CaptureTransparent(IWindow Window, bool IncludeCursor, IPlatformServices PlatformServices)
         {
             if (Window == null)
@@ -27,30 +25,26 @@ namespace Screna
             var r = backdrop.Rectangle;
 
             // Capture screenshot with white background
-            using (var whiteShot = CaptureInternal(r))
+            using var whiteShot = CaptureInternal(r);
+            backdrop.ShowBlack();
+
+            // Capture screenshot with black background
+            using var blackShot = CaptureInternal(r);
+            backdrop.Dispose();
+
+            var transparentImage = GraphicsExtensions.DifferentiateAlpha(whiteShot, blackShot);
+
+            if (transparentImage == null)
+                return null;
+
+            // Include Cursor only if within window
+            if (IncludeCursor && r.Contains(PlatformServices.CursorPosition))
             {
-                backdrop.ShowBlack();
-
-                // Capture screenshot with black background
-                using (var blackShot = CaptureInternal(r))
-                {
-                    backdrop.Dispose();
-
-                    var transparentImage = GraphicsExtensions.DifferentiateAlpha(whiteShot, blackShot);
-
-                    if (transparentImage == null)
-                        return null;
-
-                    // Include Cursor only if within window
-                    if (IncludeCursor && r.Contains(PlatformServices.CursorPosition))
-                    {
-                        using (var g = Graphics.FromImage(transparentImage))
-                            MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
-                    }
-
-                    return new DrawingImage(transparentImage.CropEmptyEdges());
-                }
+                using var g = Graphics.FromImage(transparentImage);
+                MouseCursor.Draw(g, P => new Point(P.X - r.X, P.Y - r.Y));
             }
+
+            return new DrawingImage(transparentImage.CropEmptyEdges());
         }
 
         static Bitmap CaptureInternal(Rectangle Region, bool IncludeCursor = false)

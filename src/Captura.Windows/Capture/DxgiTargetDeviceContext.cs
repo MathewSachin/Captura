@@ -21,7 +21,7 @@ namespace Screna
             _dxgiSurface = _gdiCompatibleTexture.QueryInterface<Surface1>();
         }
 
-        public Type EditorType { get; } = typeof(Direct2DEditor);
+        public IBitmapFrame DummyFrame => Texture2DFrame.DummyFrame;
 
         public void Dispose()
         {

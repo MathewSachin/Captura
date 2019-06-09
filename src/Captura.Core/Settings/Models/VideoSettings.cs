@@ -13,6 +13,18 @@
             get => Get<string>();
             set => Set(value);
         }
+
+        public bool PostConvert
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
+
+        public string PostWriter
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
         
         public string SourceKind
         {
@@ -56,6 +68,18 @@
                     FrameRate = 30;
                 }
             }
+        }
+
+        public RecorderMode RecorderMode
+        {
+            get => Get(RecorderMode.Recording);
+            set => Set(value);
+        }
+
+        public int ReplayDuration
+        {
+            get => Get(20);
+            set => Set(value);
         }
     }
 }

@@ -8,21 +8,27 @@
             set => Set(value);
         }
 
-        public bool Enabled
+        public bool RecordMicrophone
         {
             get => Get(false);
             set => Set(value);
         }
 
-        public string[] Microphones
+        public string Microphone
         {
-            get => Get(new string[0]);
+            get => Get("");
             set => Set(value);
         }
 
-        public string[] Speakers
+        public bool RecordSpeaker
         {
-            get => Get(new string[0]);
+            get => Get(false);
+            set => Set(value);
+        }
+
+        public string Speaker
+        {
+            get => Get("");
             set => Set(value);
         }
 

@@ -28,5 +28,7 @@ namespace Captura.Models
         public string Description => "For testing purposes.";
 
         public override string ToString() => Name;
+
+        public IVideoWriterItem ParseCli(string Cli) => null;
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using Captura.Audio;
 using NAudio.Wave;
-using WaveFormat = Captura.Audio.WaveFormat;
 using Wf = NAudio.Wave.WaveFormat;
-using WaveFormatEncoding = NAudio.Wave.WaveFormatEncoding;
 
-namespace Captura.NAudio
+namespace Captura.Audio
 {
     abstract class NAudioProvider : IAudioProvider
     {
@@ -20,12 +17,8 @@ namespace Captura.NAudio
                 DataAvailable?.Invoke(this, new DataAvailableEventArgs(E.Buffer, E.BytesRecorded));
             };
 
-            var wf = WaveIn.WaveFormat;
-            NAudioWaveFormat = wf;
-
-            WaveFormat = wf.Encoding == WaveFormatEncoding.IeeeFloat
-                ? WaveFormat.CreateIeeeFloatWaveFormat(wf.SampleRate, wf.Channels)
-                : new WaveFormat(wf.SampleRate, wf.BitsPerSample, wf.Channels);
+            NAudioWaveFormat = WaveIn.WaveFormat;
+            WaveFormat = WaveIn.WaveFormat.ToCaptura();
         }
 
         public virtual void Dispose()

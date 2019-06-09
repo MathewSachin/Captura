@@ -1,3 +1,4 @@
+using Captura.Audio;
 using System.Collections.Generic;
 using System.Linq;
 

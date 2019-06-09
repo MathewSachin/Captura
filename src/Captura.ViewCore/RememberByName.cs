@@ -42,20 +42,13 @@ namespace Captura.Models
             _settings.Video.WriterKind = _videoWritersViewModel.SelectedVideoWriterKind.Name;
             _settings.Video.Writer = _videoWritersViewModel.SelectedVideoWriter.ToString();
 
-            // Remember Audio Sources
-            _settings.Audio.Microphones = _audioSourceViewModel.AvailableRecordingSources
-                .Where(M => M.IsActive)
-                .Select(M => M.Item)
-                .Where(M => !M.IsLoopback)
-                .Select(M => M.Name)
-                .ToArray();
+            // Remember Post Writer
+            _settings.Video.PostWriter = _videoWritersViewModel.SelectedPostWriter.ToString();
 
-            _settings.Audio.Speakers = _audioSourceViewModel.AvailableRecordingSources
-                .Where(M => M.IsActive)
-                .Select(M => M.Item)
-                .Where(M => M.IsLoopback)
-                .Select(M => M.Name)
-                .ToArray();
+            // Remember Audio Sources
+            _settings.Audio.Microphone = _audioSourceViewModel.SelectedMicrophone?.Name;
+
+            _settings.Audio.Speaker = _audioSourceViewModel.SelectedSpeaker?.Name;
 
             // Remember ScreenShot Target
             _settings.ScreenShots.SaveTargets = _screenShotModel.AvailableImageWriters
@@ -107,23 +100,23 @@ namespace Captura.Models
 
             RestoreVideoCodec();
 
-            // Restore Microphones
-            if (_settings.Audio.Microphones != null)
-            {
-                foreach (var source in _audioSourceViewModel.AvailableRecordingSources.Where(M => !M.Item.IsLoopback))
-                {
-                    source.IsActive = _settings.Audio.Microphones.Contains(source.Item.Name);
-                }
-            }
+            // Restore Post Writer
+            var codec = _videoWritersViewModel.AvailablePostWriters.FirstOrDefault(C => C.ToString() == _settings.Video.PostWriter);
 
-            // Restore Loopback Speakers
-            if (_settings.Audio.Speakers != null)
-            {
-                foreach (var source in _audioSourceViewModel.AvailableRecordingSources.Where(M => M.Item.IsLoopback))
-                {
-                    source.IsActive = _settings.Audio.Speakers.Contains(source.Item.Name);
-                }
-            }
+            if (codec != null)
+                _videoWritersViewModel.SelectedPostWriter = codec;
+
+            // Restore Microphone
+            var mic = _audioSourceViewModel.AvailableMicrophones.FirstOrDefault(M => M.Name == _settings.Audio.Microphone);
+
+            if (mic != null)
+                _audioSourceViewModel.SelectedMicrophone = mic;
+
+            // Restore Loopback Speaker
+            var speaker = _audioSourceViewModel.AvailableSpeakers.FirstOrDefault(M => M.Name == _settings.Audio.Speaker);
+
+            if (speaker != null)
+                _audioSourceViewModel.SelectedSpeaker = speaker;
 
             // Restore ScreenShot Target
             if (_settings.ScreenShots.SaveTargets != null)

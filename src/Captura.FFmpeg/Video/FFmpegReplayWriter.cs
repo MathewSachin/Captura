@@ -5,7 +5,7 @@ using Captura.Models;
 
 namespace Captura.FFmpeg
 {
-    public class FFmpegRollingWriter : IVideoFileWriter
+    public class FFmpegReplayWriter : IVideoFileWriter
     {
         readonly VideoWriterArgs _videoWriterArgs;
         readonly int _duration;
@@ -15,7 +15,7 @@ namespace Captura.FFmpeg
         const int NoOfFiles = 2;
         int _currentFile = -1;
 
-        static readonly TempFileVideoCodec TempVideoCodec = new TempFileVideoCodec();
+        readonly Func<VideoWriterArgs, IVideoFileWriter> _writerGenerator;
 
         IVideoFileWriter _currentWriter;
 
@@ -24,10 +24,13 @@ namespace Captura.FFmpeg
             return $"{_videoWriterArgs.FileName}.{Index}.mp4";
         }
 
-        public FFmpegRollingWriter(VideoWriterArgs VideoWriterArgs, int Duration)
+        public FFmpegReplayWriter(VideoWriterArgs VideoWriterArgs,
+            int Duration,
+            Func<VideoWriterArgs, IVideoFileWriter> WriterGenerator)
         {
             _videoWriterArgs = VideoWriterArgs;
             _duration = Duration;
+            _writerGenerator = WriterGenerator;
             _frameCount = _videoWriterArgs.FrameRate * Duration;
         }
 
@@ -74,7 +77,7 @@ namespace Captura.FFmpeg
 
                 var args = argsBuilder.GetArgs();
 
-                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName);
+                var process = FFmpegService.StartFFmpeg(args, _videoWriterArgs.FileName, out _);
 
                 process.WaitForExit();
             }
@@ -113,20 +116,15 @@ namespace Captura.FFmpeg
                 _currentFile %= NoOfFiles;
             }
 
-            if (_currentWriter == null)
+            return _currentWriter ??= _writerGenerator(new VideoWriterArgs
             {
-                _currentWriter = TempVideoCodec.GetVideoFileWriter(new VideoWriterArgs
-                {
-                    FileName = GetFileName(_currentFile),
-                    VideoQuality = _videoWriterArgs.VideoQuality,
-                    FrameRate = _videoWriterArgs.FrameRate,
-                    ImageProvider = _videoWriterArgs.ImageProvider,
-                    AudioProvider = _videoWriterArgs.AudioProvider,
-                    AudioQuality = _videoWriterArgs.AudioQuality
-                });
-            }
-
-            return _currentWriter;
+                FileName = GetFileName(_currentFile),
+                VideoQuality = _videoWriterArgs.VideoQuality,
+                FrameRate = _videoWriterArgs.FrameRate,
+                ImageProvider = _videoWriterArgs.ImageProvider,
+                AudioProvider = _videoWriterArgs.AudioProvider,
+                AudioQuality = _videoWriterArgs.AudioQuality
+            });
         }
 
         readonly object _syncLock = new object();
@@ -154,7 +152,7 @@ namespace Captura.FFmpeg
                 writer = _currentWriter;
             }
 
-            writer.WriteAudio(Buffer, Length);
+            writer?.WriteAudio(Buffer, Length);
         }
     }
 }

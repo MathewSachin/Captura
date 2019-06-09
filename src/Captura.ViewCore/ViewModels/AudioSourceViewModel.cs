@@ -1,72 +1,92 @@
 ﻿using Captura.Audio;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Captura.Models
 {
-    public class AudioSourceViewModel : IRefreshable
+    public class AudioSourceViewModel : NotifyPropertyChanged, IRefreshable
     {
         readonly IAudioSource _audioSource;
 
-        readonly ObservableCollection<IIsActive<IAudioItem>> RecordingSources = new ObservableCollection<IIsActive<IAudioItem>>();
+        readonly ObservableCollection<IAudioItem> _microphones = new ObservableCollection<IAudioItem>(),
+            _speakers = new ObservableCollection<IAudioItem>();
 
-        public ReadOnlyObservableCollection<IIsActive<IAudioItem>> AvailableRecordingSources { get; }
+        public ReadOnlyObservableCollection<IAudioItem> AvailableMicrophones { get; }
+
+        public ReadOnlyObservableCollection<IAudioItem> AvailableSpeakers { get; }
 
         public AudioSourceViewModel(IAudioSource AudioSource)
         {
             _audioSource = AudioSource;
 
-            AvailableRecordingSources = new ReadOnlyObservableCollection<IIsActive<IAudioItem>>(RecordingSources);
+            AvailableMicrophones = new ReadOnlyObservableCollection<IAudioItem>(_microphones);
+            AvailableSpeakers = new ReadOnlyObservableCollection<IAudioItem>(_speakers);
 
             Refresh();
+
+            RefreshCommand = new DelegateCommand(Refresh);
+        }
+
+        void RefreshMics()
+        {
+            var lastMicName = SelectedMicrophone?.Name;
+
+            _microphones.Clear();
+
+            _microphones.Add(_audioSource.DefaultMicrophone);
+
+            foreach (var mic in _audioSource.Microphones)
+            {
+                _microphones.Add(mic);
+            }
+
+            var matchMic = _microphones.FirstOrDefault(M => M.Name == lastMicName);
+
+            SelectedMicrophone = matchMic;
+        }
+
+        void RefreshSpeakers()
+        {
+            var lastSpeakerName = SelectedSpeaker?.Name;
+
+            _speakers.Clear();
+
+            _speakers.Add(_audioSource.DefaultSpeaker);
+
+            foreach (var speaker in _audioSource.Speakers)
+            {
+                _speakers.Add(speaker);
+            }
+
+            var matchSpeaker = _speakers.FirstOrDefault(M => M.Name == lastSpeakerName);
+
+            SelectedSpeaker = matchSpeaker;
         }
 
         public void Refresh()
         {
-            // Retain previously active sources
-            var lastMicNames = RecordingSources
-                .Where(M => M.IsActive)
-                .Select(M => M.Item)
-                .Where(M => !M.IsLoopback)
-                .Select(M => M.Name)
-                .ToArray();
+            RefreshMics();
 
-            var lastSpeakerNames = RecordingSources
-                .Where(M => M.IsActive)
-                .Select(M => M.Item)
-                .Where(M => M.IsLoopback)
-                .Select(M => M.Name)
-                .ToArray();
-
-            RecordingSources.Clear();
-
-            var sources = _audioSource.GetSources();
-
-            foreach (var source in sources.Select(M => M.ToIsActive()))
-            {
-                RecordingSources.Add(source);
-
-                source.IsActive = source.Item.IsLoopback
-                    ? lastSpeakerNames.Contains(source.Item.Name)
-                    : lastMicNames.Contains(source.Item.Name);
-            }
+            RefreshSpeakers();
         }
 
-        public IAudioProvider GetMixedAudioProvider()
-        {
-            return _audioSource.GetMixedAudioProvider(RecordingSources);
-        }
-
-        public IAudioProvider[] GetMultipleAudioProviders()
-        {
-            return RecordingSources
-                .Where(M => M.IsActive)
-                .Select(M => _audioSource.GetAudioProvider(M.Item))
-                .ToArray();
-        }
+        public ICommand RefreshCommand { get; }
 
         public string Name => _audioSource.Name;
 
-        public bool CanChangeSourcesDuringRecording { get; }
+        IAudioItem _selectedMicrophone, _selectedSpeaker;
+
+        public IAudioItem SelectedMicrophone
+        {
+            get => _selectedMicrophone;
+            set => Set(ref _selectedMicrophone, value ?? AvailableMicrophones.FirstOrDefault());
+        }
+
+        public IAudioItem SelectedSpeaker
+        {
+            get => _selectedSpeaker;
+            set => Set(ref _selectedSpeaker, value ?? AvailableSpeakers.FirstOrDefault());
+        }
     }
 }

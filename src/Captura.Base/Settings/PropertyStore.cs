@@ -7,7 +7,7 @@ namespace Captura
     {
         readonly Dictionary<string, object> _dictionary = new Dictionary<string, object>();
 
-        protected T Get<T>(T Default = default(T), [CallerMemberName] string PropertyName = "")
+        protected T Get<T>(T Default = default, [CallerMemberName] string PropertyName = "")
         {
             lock (_dictionary)
             {

@@ -24,44 +24,13 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Margin="10,0,0,0">
-                <local:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                          IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.IncludeCursor}"/>
-                <local:ModernToggleButton IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}">
-                    <local:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </local:ModernToggleButton.ToolTip>
-                </local:ModernToggleButton>
-                <local:ModernToggleButton IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}">
-                    <local:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </local:ModernToggleButton.ToolTip>
-                </local:ModernToggleButton>
-                <local:ModernToggleButton IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                          IconData="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
-                    <local:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Elapsed, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </local:ModernToggleButton.ToolTip>
-                </local:ModernToggleButton>
+                <local:ModernToggleButton ToolTip="Microphone"
+                                          IconData="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
+                                          IsChecked="{Binding Settings.Audio.RecordMicrophone, Mode=TwoWay}"/>
+
+                <local:ModernToggleButton ToolTip="Speaker"
+                                          IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
+                                          IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
             </StackPanel>
         </DockPanel>
 

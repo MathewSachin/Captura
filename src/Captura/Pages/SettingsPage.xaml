@@ -22,6 +22,12 @@
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ContentTemplate>
+            <TabItem Header="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="VideoEncoderPage.xaml"/>
+            </TabItem>
+            <TabItem Header="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="AudioPage.xaml"/>
+            </TabItem>
             <TabItem Header="FFmpeg">
                 <Frame Source="FFmpegPage.xaml"/>
             </TabItem>

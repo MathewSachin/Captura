@@ -1,5 +1,5 @@
 ﻿using Captura.Models;
-using Captura.NAudio;
+using Captura.Audio;
 using Captura.ViewModels;
 using DesktopDuplication;
 
@@ -83,12 +83,7 @@ namespace Captura
 
         static void BindAudioSource(IBinder Binder)
         {
-            // Check if Bass is available
-            if (BassAudioSource.Available)
-            {
-                Binder.Bind<IAudioSource, BassAudioSource>();
-            }
-            else Binder.Bind<IAudioSource, NAudioSource>();
+            Binder.Bind<IAudioSource, NAudioSource>();
         }
 
         static void BindVideoSourceProviders(IBinder Binder)

@@ -58,11 +58,17 @@
     <Compile Include="Controls\OutputFolderControl.xaml.cs">
       <DependentUpon>OutputFolderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PuncturedRegion.xaml.cs">
+      <DependentUpon>PuncturedRegion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\VideoSourceKindList.xaml.cs">
       <DependentUpon>VideoSourceKindList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FontSelector.xaml.cs">
       <DependentUpon>FontSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StripedBorder.xaml.cs">
+      <DependentUpon>StripedBorder.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageEditor\DynamicRenderers\ArrowDynamicRenderer.cs" />
     <Compile Include="ImageEditor\DynamicRenderers\IDynamicRenderer.cs" />
@@ -147,6 +153,7 @@
     <Compile Include="ViewModels\Overlays\PositionOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\TextOverlayReactor.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />
+    <Compile Include="ViewModels\ScreenPickerViewModel.cs" />
     <Compile Include="Windows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
@@ -168,6 +175,9 @@
     <Compile Include="ValueConverters\SecondsToTimeSpanConverter.cs" />
     <Compile Include="Windows\RegionPickerWindow.xaml.cs">
       <DependentUpon>RegionPickerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ScreenPickerWindow.xaml.cs">
+      <DependentUpon>ScreenPickerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\VideoSourcePickerWindow.xaml.cs">
       <DependentUpon>VideoSourcePickerWindow.xaml</DependentUpon>
@@ -307,6 +317,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PuncturedRegion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\VideoSourceKindList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,6 +331,10 @@
     </Page>
     <Page Include="Controls\FontSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StripedBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CensorOverlaysPage.xaml">
       <SubType>Designer</SubType>
@@ -415,6 +433,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\RegionPickerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\ScreenPickerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -655,9 +677,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="Delete unused libs" AfterTargets="Build">
     <ItemGroup>
-      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll"/>
+      <AvalonDockLibs Include="$(OutputPath)Xceed.Wpf.AvalonDock*.dll" />
     </ItemGroup>
-    
     <Delete Files="@(AvalonDockLibs)" />
     <Delete Files="$(OutputPath)Xceed.Wpf.DataGrid.dll" />
   </Target>
