@@ -23,24 +23,20 @@
                         Command="{Binding ShowPreviewCommand}"
                         Padding="10,0"/>
 
-                <Label Content="{Binding VideoSource, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
+                <Border BorderThickness="0.5"
+                        BorderBrush="{DynamicResource ModernButtonBorder}"
+                        Padding="5,2"
+                        Margin="0,0,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name, Source={StaticResource ServiceLocator}}"/>
+                        <Label Content="-"
+                               Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"
+                               Margin="5,0"/>
+                        <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
+                               Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"/>
+                    </StackPanel>
+                </Border>
             </DockPanel>
-
-            <Border BorderThickness="0.5"
-                    BorderBrush="{DynamicResource ModernButtonBorder}"
-                    Visibility="{Binding ViewConditions.ShowSourceNameBox.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="5,2"
-                    Margin="0,2">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name, Source={StaticResource ServiceLocator}}"/>
-                    <Label Content="-"
-                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"
-                           Margin="5,0"/>
-                    <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, TargetNullValue='No Source Selected', FallbackValue='No Source Selected'}"
-                           Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"/>
-                </StackPanel>
-            </Border>
 
             <captura:VideoSourceKindList/>
 
@@ -133,37 +129,6 @@
 
             <Frame Source="WebcamPage.xaml"
                    Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"/>
-
-            <StackPanel Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}">
-                <GridSplitter IsEnabled="False"
-                              Height="1"
-                              Margin="0,10"/>
-
-                <Label Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
-
-                <StackPanel Margin="0,5"
-                            DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
-                            Orientation="Horizontal">
-                    <captura:ModernToggleButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding DiskWriter.Active}"/>
-
-                    <captura:ModernToggleButton ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding ClipboardWriter.Active}"/>
-
-                    <CheckBox Content="Imgur"
-                              ToolTip="Imgur"
-                              Margin="5,0"
-                              IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
-                              Style="{StaticResource ModernTogglePill}"/>
-
-                    <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"/>
-                </StackPanel>
-            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

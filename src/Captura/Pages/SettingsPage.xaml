@@ -23,10 +23,19 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
             <TabItem Header="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="VideoEncoderPage.xaml"/>
+                <Frame Source="VideoPage.xaml"/>
             </TabItem>
             <TabItem Header="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="AudioPage.xaml"/>
+            </TabItem>
+            <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="ScreenShotsPage.xaml"/>
+            </TabItem>
+            <TabItem Header="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="RecentPage.xaml"/>
+            </TabItem>
+            <TabItem Header="UI">
+                <Frame Source="InterfacePage.xaml"/>
             </TabItem>
             <TabItem Header="FFmpeg">
                 <Frame Source="FFmpegPage.xaml"/>
@@ -46,8 +55,8 @@
             <TabItem Header="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="FileNameFormatPage.xaml"/>
             </TabItem>
-            <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="ScreenShotsPage.xaml"/>
+            <TabItem Header="{Binding About, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="AboutPage.xaml"/>
             </TabItem>
         </TabControl>
     </Grid>

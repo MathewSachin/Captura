@@ -86,8 +86,8 @@
     <Compile Include="Pages\CensorOverlaysPage.xaml.cs">
       <DependentUpon>CensorOverlaysPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\VideoEncoderPage.xaml.cs">
-      <DependentUpon>VideoEncoderPage.xaml</DependentUpon>
+    <Compile Include="Pages\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ImageOverlaysPage.xaml.cs">
       <DependentUpon>ImageOverlaysPage.xaml</DependentUpon>
@@ -260,8 +260,8 @@
     <Compile Include="Windows\FFmpegDownloaderWindow.xaml.cs">
       <DependentUpon>FFmpegDownloaderWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConfigPage.xaml.cs">
-      <DependentUpon>ConfigPage.xaml</DependentUpon>
+    <Compile Include="Pages\InterfacePage.xaml.cs">
+      <DependentUpon>InterfacePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FFmpegPage.xaml.cs">
       <DependentUpon>FFmpegPage.xaml</DependentUpon>
@@ -288,9 +288,6 @@
     </Compile>
     <Compile Include="Windows\RegionSelector.xaml.cs">
       <DependentUpon>RegionSelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ExtrasPage.xaml.cs">
-      <DependentUpon>ExtrasPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ProxyPage.xaml.cs">
       <DependentUpon>ProxyPage.xaml</DependentUpon>
@@ -340,7 +337,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\VideoEncoderPage.xaml">
+    <Page Include="Pages\VideoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -560,13 +557,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\ConfigPage.xaml">
+    <Page Include="Pages\InterfacePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ExtrasPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ProxyPage.xaml">
       <SubType>Designer</SubType>

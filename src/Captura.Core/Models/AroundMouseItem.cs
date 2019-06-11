@@ -13,7 +13,7 @@ namespace Captura.Models
             _platformServices = PlatformServices;
         }
 
-        public string Name => "Around Mouse";
+        public string Name => null;
 
         public IImageProvider GetImageProvider(bool IncludeCursor)
         {

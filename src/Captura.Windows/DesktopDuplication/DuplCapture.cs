@@ -35,14 +35,17 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
-            _frameGrabber?.Dispose();
+            lock (_syncLock)
+            {
+                _frameGrabber?.Dispose();
 
-            _deskDupl?.Dispose();
+                _deskDupl?.Dispose();
 
-            _bkpTexture?.Dispose();
+                _bkpTexture?.Dispose();
 
-            _device.Dispose();
-            _device = null;
+                _device.Dispose();
+                _device = null;
+            }
         }
 
         public void Init()
@@ -77,6 +80,10 @@ namespace DesktopDuplication
         {
             lock (_syncLock)
             {
+                // Disposed
+                if (_device == null)
+                    return false;
+
                 if (_bkpTexture == null)
                 {
                     var desc = Texture.Description;

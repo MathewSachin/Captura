@@ -34,6 +34,12 @@
                      DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.WebcamOverlay}">
+                    <CheckBox IsChecked="{Binding SeparateFile}"
+                              Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
+                              IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                              Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Margin="0,5"/>
+
                     <local:ImageOverlaySettingsControl/>
 
                     <Label Margin="0,10"

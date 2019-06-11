@@ -4,10 +4,6 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <StackPanel>
-            <Label Margin="0,3"
-                   Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"/>
-
             <DockPanel Margin="0,5">
                 <Path Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"
                       Width="15"
@@ -30,12 +26,6 @@
                           DisplayMemberPath="Name"
                           Name="WebcamComboBox"/>
             </DockPanel>
-
-            <CheckBox IsChecked="{Binding Settings.WebcamOverlay.SeparateFile}"
-                      Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
-                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                      Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                      Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Page>
