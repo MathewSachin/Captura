@@ -23,6 +23,7 @@ Argument              | Description
 `--aq`                | Audio Quality (1 to 100) (Default is 50).
 `-f` or `--file`      | Output file path.
 `-y`                  | Overwrite existing file.
+`--replay`            | Replay recording. Specify duration in seconds as parameter. e.g. `--replay 20`.
 
 e.g. Record 10 seconds with cursor and keystrokes and audio from first speaker output.
 
@@ -72,13 +73,4 @@ e.g. Stream to Twitch
 
 ```
 captura-cli start --encoder stream:rtmp://live.twitch.tv/app/TWITCH_KEY
-```
-
-### Rolling Recording (Capture last N seconds)
-Use `roll:<duration>` as argument. `duration` is specified in seconds.
-
-e.g. Capture last 30 seconds.
-
-```
-captura-cli start --encoder roll:30
 ```
