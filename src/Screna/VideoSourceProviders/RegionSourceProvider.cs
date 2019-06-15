@@ -19,8 +19,6 @@ namespace Captura.Models
 
             Source = RegionProvider.VideoSource;
             Icon = Icons.Region;
-
-            RegionProvider.SelectorHidden += RequestUnselect;
         }
 
         public override IVideoItem Source { get; }

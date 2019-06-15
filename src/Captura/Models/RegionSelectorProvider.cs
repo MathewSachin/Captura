@@ -17,14 +17,7 @@ namespace Captura
         {
             _viewModel = ViewModel;
 
-            _regionSelector = new Lazy<RegionSelector>(() =>
-            {
-                var reg = new RegionSelector(ViewModel);
-
-                reg.SelectorHidden += () => SelectorHidden?.Invoke();
-
-                return reg;
-            });
+            _regionSelector = new Lazy<RegionSelector>(() => new RegionSelector(ViewModel));
 
             _regionItem = new RegionItem(this, PlatformServices);
         }
@@ -47,8 +40,6 @@ namespace Captura
         }
 
         public IVideoItem VideoSource => _regionItem;
-
-        public event Action SelectorHidden;
 
         public IntPtr Handle => _regionSelector.Value.Handle;
     }

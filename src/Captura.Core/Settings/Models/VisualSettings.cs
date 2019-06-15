@@ -44,12 +44,6 @@
             set => Set(value);
         }
 
-        public bool RegionSelectorDrawingTools
-        {
-            get => Get(true);
-            set => Set(value);
-        }
-
         public string Language
         {
             get => Get("en");

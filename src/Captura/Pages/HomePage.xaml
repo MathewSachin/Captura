@@ -80,10 +80,52 @@
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
 
-            <CheckBox Margin="0,5"
-                      Content="Drawing Tools"
-                      IsChecked="{Binding Settings.UI.RegionSelectorDrawingTools, Mode=TwoWay}"
-                      Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <DockPanel Margin="0,5"
+                       VerticalAlignment="Top"
+                       Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label Content="Drawing Tools:"
+                       Margin="0,0,10,0"/>
+
+                <xctk:IntegerUpDown Minimum="1"
+                                    Maximum="99"
+                                    Value="{Binding RegionSelectorViewModel.BrushSize.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                    Width="100"
+                                    DockPanel.Dock="Right"/>
+
+                <ListBox SelectedValuePath="Key"
+                         HorizontalContentAlignment="Center"
+                         ItemsSource="{Binding RegionSelectorViewModel.Tools, Source={StaticResource ServiceLocator}}"
+                         SelectedValue="{Binding RegionSelectorViewModel.SelectedTool.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                                  Width="12"
+                                  Height="12"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{Binding Value}"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
+                                  Margin="5"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <xctk:ColorPicker BorderThickness="2"
+                                  Margin="10,0"
+                                  SelectedColor="{Binding RegionSelectorViewModel.BrushColor.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                  VerticalContentAlignment="Stretch"
+                                  ColorMode="ColorCanvas"
+                                  ShowAdvancedButton="True"
+                                  AdvancedButtonHeader="Color Canvas"
+                                  StandardButtonHeader="Pallette"
+                                  ShowRecentColors="True"/>
+            </DockPanel>
 
             <DockPanel Margin="0,5"
                        Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">

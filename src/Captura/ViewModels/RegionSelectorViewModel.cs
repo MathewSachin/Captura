@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
-using Captura.Models;
 using Reactive.Bindings;
+using Color = System.Windows.Media.Color;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -22,12 +25,8 @@ namespace Captura
 
         public const int BorderSize = 3;
 
-        readonly IVideoSourcePicker _videoSourcePicker;
-
-        public RegionSelectorViewModel(IVideoSourcePicker VideoSourcePicker)
+        public RegionSelectorViewModel()
         {
-            _videoSourcePicker = VideoSourcePicker;
-
             MoveLeftCommand = new ReactiveCommand()
                 .WithSubscribe(() => Left -= KeyMoveDelta);
             MoveRightCommand = new ReactiveCommand()
@@ -47,15 +46,19 @@ namespace Captura
                 .WithSubscribe(() => Height -= KeyMoveDelta);
         }
 
-        public void SnapToRegion()
+        public static Dictionary<InkCanvasEditingMode, string> Tools { get; } = new Dictionary<InkCanvasEditingMode, string>
         {
-            var region = _videoSourcePicker.PickRegion();
+            [InkCanvasEditingMode.None] = "Pointer",
+            [InkCanvasEditingMode.Ink] = "Pencil",
+            [InkCanvasEditingMode.EraseByPoint] = "Eraser",
+            [InkCanvasEditingMode.EraseByStroke] = "Stroke Eraser"
+        };
 
-            if (region is Rectangle rect)
-            {
-                SelectedRegion = rect;
-            }
-        }
+        public IReactiveProperty<InkCanvasEditingMode> SelectedTool { get; } = new ReactivePropertySlim<InkCanvasEditingMode>(Tools.Keys.First());
+
+        public IReactiveProperty<int> BrushSize { get; } = new ReactiveProperty<int>(10);
+
+        public IReactiveProperty<Color> BrushColor { get; } = new ReactiveProperty<Color>(Color.FromRgb(27, 27, 27));
 
         public int Left
         {

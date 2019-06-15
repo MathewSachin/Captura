@@ -59,14 +59,6 @@
                 <Setter Property="Width" Value="5"/>
             </Style>
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
 
         <Grid Height="{Binding RegionSelectorViewModel.HeightDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
               Width="{Binding RegionSelectorViewModel.WidthDip, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
@@ -74,7 +66,6 @@
             <local:StripedBorder/>
 
             <InkCanvas Background="Transparent"
-                       Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                        Name="InkCanvas"/>
         </Grid>
 
@@ -83,9 +74,7 @@
                Cursor="SizeAll"
                PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown"/>
 
-        <Grid Grid.Row="0"
-              Grid.Column="0"
-              IsEnabled="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}">
+        <Grid IsEnabled="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NotRecordingConverter}}">
             <Thumb VerticalAlignment="Bottom"
                    Height="2"
                    Cursor="SizeNS"
@@ -125,95 +114,5 @@
                    Cursor="SizeNWSE"
                    Tag="BottomRight"/>
         </Grid>
-
-        <Border Grid.Row="0"
-                Margin="10,0,0,0"
-                Grid.Column="1"
-                Grid.RowSpan="2"
-                BorderBrush="{DynamicResource Accent}"
-                BorderThickness="1"
-                VerticalAlignment="Top"
-                Visibility="{Binding AboutViewModel.Settings.UI.RegionSelectorDrawingTools, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
-            <DockPanel Background="{DynamicResource WindowBackground}"
-                       LastChildFill="False">
-                <ListBox Name="ModesBox"
-                         SelectedValuePath="Key"
-                         DockPanel.Dock="Top"
-                         Margin="0,0,0,10"
-                         HorizontalContentAlignment="Center"
-                         SelectionChanged="ModesBox_OnSelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
-                                  Width="12"
-                                  Height="12"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  ToolTip="{Binding Value}"
-                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
-                                  Margin="5"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <xctk:ColorPicker Margin="0,2"
-                                  BorderThickness="2"
-                                  Width="35"
-                                  DockPanel.Dock="Bottom"
-                                  Name="ColorPicker"
-                                  SelectedColorChanged="ColorPicker_OnSelectedColorChanged"
-                                  VerticalContentAlignment="Stretch"
-                                  ColorMode="ColorCanvas"
-                                  ShowAdvancedButton="True"
-                                  AdvancedButtonHeader="Color Canvas"
-                                  StandardButtonHeader="Pallette"
-                                  ShowRecentColors="True">
-                    <xctk:ColorPicker.LayoutTransform>
-                        <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
-                    </xctk:ColorPicker.LayoutTransform>
-                </xctk:ColorPicker>
-
-                <xctk:IntegerUpDown Name="SizeBox"
-                                    Minimum="1"
-                                    Maximum="99"
-                                    DockPanel.Dock="Bottom"
-                                    ValueChanged="SizeBox_OnValueChanged"
-                                    Margin="0,2"
-                                    Width="40">
-                    <xctk:IntegerUpDown.LayoutTransform>
-                        <ScaleTransform ScaleX="0.85" ScaleY="0.85"/>
-                    </xctk:IntegerUpDown.LayoutTransform>
-                </xctk:IntegerUpDown>
-            </DockPanel>
-
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Opacity" Value="0.2"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="1"
-                                                         Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="0.2"
-                                                         Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
     </Grid>
 </Window>

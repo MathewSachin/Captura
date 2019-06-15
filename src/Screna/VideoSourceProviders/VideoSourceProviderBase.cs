@@ -27,13 +27,6 @@ namespace Captura.Models
 
         public virtual void OnUnselect() { }
 
-        public event Action UnselectRequested;
-
-        protected void RequestUnselect()
-        {
-            UnselectRequested?.Invoke();
-        }
-
         public virtual string Serialize()
         {
             return Source.ToString();

@@ -42,16 +42,9 @@ namespace Captura.ViewModels
                     return;
                 }
 
-                if (_videoSourceKind != null)
-                {
-                    _videoSourceKind.OnUnselect();
-
-                    _videoSourceKind.UnselectRequested -= SetDefaultSource;
-                }
+                _videoSourceKind?.OnUnselect();
 
                 _videoSourceKind = NewSourceProvider;
-
-                _videoSourceKind.UnselectRequested += SetDefaultSource;
             }
             finally
             {
