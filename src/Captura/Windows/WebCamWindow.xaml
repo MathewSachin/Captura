@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Captura"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         Title="{Binding WebCamView, Source={StaticResource Loc}, Mode=OneWay}"
         Width="640"
         Height="480"
@@ -29,7 +30,9 @@
             <Label Content="{Binding WebCamView, Source={StaticResource Loc}, Mode=OneWay}"
                    Margin="10,0"/>
         </DockPanel>
-        
-        <local:WebcamControl x:Name="WebCameraControl"/>
+
+        <WindowsFormsHost>
+            <wf:Label x:Name="WebCameraControl"/>
+        </WindowsFormsHost>
     </DockPanel>
 </Window>

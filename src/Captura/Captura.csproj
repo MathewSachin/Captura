@@ -251,9 +251,6 @@
     <Compile Include="Controls\TextOverlaySettingsControl.xaml.cs">
       <DependentUpon>TextOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WebcamControl.xaml.cs">
-      <DependentUpon>WebcamControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ValueConverters\InkToolToIconConverter.cs" />
     <Compile Include="ValueConverters\NotNullConverter.cs" />
     <Compile Include="ValueConverters\OneWayConverter.cs" />
@@ -508,10 +505,6 @@
     <Page Include="Controls\TextOverlaySettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WebcamControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Presentation\Themes\Generic.xaml">
       <SubType>Designer</SubType>

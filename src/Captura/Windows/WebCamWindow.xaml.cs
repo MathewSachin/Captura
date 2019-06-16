@@ -53,7 +53,7 @@ namespace Captura
             // Open Preview Window
             _webcamModel.PreviewClicked += this.ShowAndFocus;
 
-            WebCameraControl.IsVisibleChanged += (S, E) => SwitchWebcamPreview();
+            IsVisibleChanged += (S, E) => SwitchWebcamPreview();
 
             void OnSizeChange()
             {
@@ -74,9 +74,7 @@ namespace Captura
 
         Rectangle GetPreviewWindowRect()
         {
-            var rect = new RectangleF(5, 40, (float)WebCameraControl.ActualWidth, (float)WebCameraControl.ActualHeight);
-
-            return rect.ApplyDpi();
+            return new Rectangle(0, 0, WebCameraControl.Width, WebCameraControl.Height);
         }
 
         void SwitchWebcamPreview()
@@ -84,16 +82,13 @@ namespace Captura
             if (_webcamModel.WebcamCapture == null)
                 return;
 
-            if (WebCameraControl.IsVisible)
+            if (IsVisible)
             {
-                if (PresentationSource.FromVisual(WebCameraControl) is HwndSource source)
-                {
-                    var win = _platformServices.GetWindow(source.Handle);
+                var win = _platformServices.GetWindow(WebCameraControl.Handle);
 
-                    var rect = GetPreviewWindowRect();
+                var rect = GetPreviewWindowRect();
 
-                    _webcamModel.WebcamCapture.UpdatePreview(win, rect);
-                }
+                _webcamModel.WebcamCapture.UpdatePreview(win, rect);
             }
             else if (PresentationSource.FromVisual(MainWindow.Instance) is HwndSource source)
             {
