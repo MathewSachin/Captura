@@ -8,12 +8,6 @@
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal"
                                 DockPanel.Dock="Right">
-                <local:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
-                                    Command="{Binding RefreshCommand}"
-                                    IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"/>
-                <local:ModernButton ToolTip="Open Canvas"
-                                    Click="OpenCanvas"
-                                    IconData="{Binding Icons.Brush, Source={StaticResource ServiceLocator}}"/>
                 <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"/>

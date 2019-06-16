@@ -293,9 +293,6 @@
     <Compile Include="Pages\RecentPage.xaml.cs">
       <DependentUpon>RecentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\WebCamWindow.xaml.cs">
-      <DependentUpon>WebCamWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -567,10 +564,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\RegionSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\WebCamWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

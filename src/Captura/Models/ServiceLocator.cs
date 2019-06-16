@@ -13,6 +13,8 @@ namespace Captura
         {
             ServiceProvider.LoadModule(new MainModule());
         }
+
+        public WebcamPage WebcamPage => ServiceProvider.Get<WebcamPage>();
         
         public MainViewModel MainViewModel => ServiceProvider.Get<MainViewModel>();
 

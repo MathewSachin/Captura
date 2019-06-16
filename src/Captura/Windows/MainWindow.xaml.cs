@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Captura.ViewModels;
 
 namespace Captura
 {
@@ -30,7 +31,7 @@ namespace Captura
             {
                 RepositionWindowIfOutside();
 
-                WebCamWindow.Instance.SetupWebcamPreview();
+                ServiceProvider.Get<WebcamPage>().SetupPreview();
 
                 _helper.HotkeySetup.ShowUnregistered();
             };
