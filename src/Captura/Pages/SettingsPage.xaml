@@ -25,6 +25,9 @@
             <TabItem Header="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="VideoPage.xaml"/>
             </TabItem>
+            <TabItem Header="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}">
+                <Frame Source="WebcamPage.xaml"/>
+            </TabItem>
             <TabItem Header="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}">
                 <Frame Source="AudioPage.xaml"/>
             </TabItem>

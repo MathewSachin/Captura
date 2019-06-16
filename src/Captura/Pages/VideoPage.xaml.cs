@@ -8,11 +8,6 @@ namespace Captura
         public VideoPage()
         {
             InitializeComponent();
-
-            if (DataContext is MainViewModel vm)
-            {
-                vm.Refreshed += () => VideoWriterComboBox.Shake();
-            }
         }
 
         void OpenFFmpegLog(object Sender, RoutedEventArgs E)

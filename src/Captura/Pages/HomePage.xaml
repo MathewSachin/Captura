@@ -168,9 +168,6 @@
                                     Value="{Binding MainViewModel.Settings.AroundMouse.Margin, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
             </Grid>
-
-            <Frame Source="WebcamPage.xaml"
-                   Visibility="{Binding ViewConditions.IsAudioMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource NegatingConverter}}"/>
         </StackPanel>
     </Grid>
 </Page>

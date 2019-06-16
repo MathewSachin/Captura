@@ -8,11 +8,6 @@ namespace Captura
         public WebcamPage()
         {
             InitializeComponent();
-
-            ServiceProvider.Get<MainViewModel>().Refreshed += () =>
-            {
-                WebcamComboBox.Shake();
-            };
         }
 
         void Preview_Click(object Sender, RoutedEventArgs E)

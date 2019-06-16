@@ -23,10 +23,8 @@ namespace Captura.ViewModels
 
             Binder.BindSingleton<VideoSourcesViewModel>();
             Binder.BindSingleton<VideoWritersViewModel>();
-            Binder.Bind<IRefreshable>(Binder.Get<VideoWritersViewModel>);
 
             Binder.BindSingleton<AudioSourceViewModel>();
-            Binder.Bind<IRefreshable>(Binder.Get<AudioSourceViewModel>);
 
             Binder.BindSingleton<CustomOverlaysViewModel>();
             Binder.BindSingleton<CustomImageOverlaysViewModel>();

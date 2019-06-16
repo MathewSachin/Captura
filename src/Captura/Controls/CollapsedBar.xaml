@@ -27,20 +27,6 @@
             </Style>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top">
-            <xctk:DropDownButton ToolTip="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                                 Padding="5"
-                                 DockPanel.Dock="Right"
-                                 Margin="0,5,5,5">
-                <Path Style="{StaticResource VideoSourceIcon}"
-                      Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"/>
-
-                <xctk:DropDownButton.DropDownContent>
-                    <Frame Source="../Pages/WebcamPage.xaml"
-                           Margin="10"
-                           MinWidth="250"/>
-                </xctk:DropDownButton.DropDownContent>
-            </xctk:DropDownButton>
-
             <captura:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                   Command="{Binding OpenOutputFolderCommand}"
                                   IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"
