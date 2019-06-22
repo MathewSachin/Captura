@@ -14,7 +14,7 @@
 
 Capture Screen, WebCam, Audio, Cursor, Mouse Clicks and Keystrokes.
 
-<a href="https://mathewsachin.github.io/Captura/screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" style="max-width: 200px"></a>
+<a href="docs/Screenshots"><img src="https://mathewsachin.github.io/Captura/assets/ScreenShots/Home.png" style="max-width: 200px"></a>
 
 ## Features
 
@@ -48,7 +48,7 @@ See the [Continuous Integration page](docs/CI.md).
 ## Docs
 [Build Notes](docs/Build.md) | [System Requirements](docs/System-Requirements.md) | [Contributing](CONTRIBUTING.md)
 
-[ScreenShots](https://mathewsachin.github.io/Captura/screenshots) | [Command-line](docs/Cmdline/README.md) | [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
+[ScreenShots](docs/Screenshots) | [Command-line](docs/Cmdline/README.md) | [Hotkeys](https://mathewsachin.github.io/Captura/hotkeys)
 
 [FAQ](docs/FAQ.md) | [Code of Conduct](CODE_OF_CONDUCT.md) | [Changelog](docs/Changelogs/README.md)
 
