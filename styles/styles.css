@@ -1,0 +1,22 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+h2 {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    margin-top: 30px;
+}
+
+li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

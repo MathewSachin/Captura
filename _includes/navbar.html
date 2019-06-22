@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ '/' | prepend:site.baseurl }}">{{site.title}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ '/download' | prepend:site.baseurl }}">Download</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ '/donate' | prepend:site.baseurl }}">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="{{site.github}}">Source</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,51 @@
+---
+layout: default
+title: Download | Captura
+---
+
+<br>
+
+<h1 class="display-4">Captura <span id="app-version"></span></h1>
+
+<div class="my-3 d-none" id="release-block">
+  <h2></h2>
+
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Setup</h5>
+          <p class="card-text text-muted">Installs Captura on your system.</p>
+          <a id="setup-link" download="Captura-Setup.exe" class="btn btn-primary">Download</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Portable</h5>
+          <p class="card-text text-muted">Portable version does not need to be installed. Just extract the zip file and you are good to go.</p>
+          <a id="portable-link" download="Captura-Portable.zip" class="btn btn-primary">Download</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a target="_blank" class="btn btn-info my-5" href="{{ '/releases' | prepend:site.github}}">
+  Get pre-releases and older releases
+</a>
+
+<script>
+  var repo = "MathewSachin/Captura";
+  var setup = "Captura-Setup.exe";
+  var portable = "Captura-Portable.zip";
+
+  $.getJSON("https://api.github.com/repos/" + repo + "/releases/latest", data => {
+    $("#app-version").text(data.tag_name);
+    $("#portable-link").attr('href', "{{site.github}}/releases/download/" + data.tag_name + "/Captura-Portable.zip");
+    $("#setup-link").attr('href', "{{site.github}}/releases/download/" + data.tag_name + "/Captura-Setup.exe");
+
+    $("#release-block").removeClass("d-none");
+  });
+</script>

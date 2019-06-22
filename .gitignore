@@ -1,0 +1,6 @@
+_drafts/
+_site/
+.DS_Store
+*.swp
+Gemfile.lock
+debug.log

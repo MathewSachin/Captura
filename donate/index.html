@@ -1,0 +1,25 @@
+---
+layout: default
+title: Donate | Captura
+---
+
+<br>
+
+<h1 class="display-4">Donation</h1>
+
+<div class="my-5">
+  <span class="border border-primary p-3 d-inline-block rounded shadow-sm">
+    <a href="{{site.paypal}}" target="_blank">
+      <img src="{{ '/assets/PayPal.svg' | prepend:site.baseurl }}" alt="Paypal">
+    </a>
+  </span>
+</div>
+
+<table class="table table-striped table-bordered shadow">
+  {% for donation in site.data.donations %}
+    <tr>
+      <td>{{ donation.name }}</td>
+      <td>{{ donation.amount }}</td>
+    </tr>
+  {% endfor %}
+</table>

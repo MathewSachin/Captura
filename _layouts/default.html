@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  {% include head.html %}
+  <body>
+    {% include navbar.html %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          {{ content }}
+
+          <br><br>
+          {% include adsense.html %}
+          <br><br>
+        </div>
+          <div class="col-md-2">
+            <div class="sticky-top" style="top: 10px">
+              {% include adsense.html %}
+            </div>
+        </div>
+      </div>
+    </div>
+
+    {% include analytics.html %}
+
+    {% include gitter.html %}
+
+    <br><br>
+  </body>
+</html>
