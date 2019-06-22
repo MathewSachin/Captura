@@ -116,8 +116,7 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
 
-                <xctk:ColorPicker BorderThickness="2"
-                                  Margin="10,0"
+                <xctk:ColorPicker Margin="10,0"
                                   SelectedColor="{Binding RegionSelectorViewModel.BrushColor.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                                   VerticalContentAlignment="Stretch"
                                   ColorMode="ColorCanvas"
