@@ -2,10 +2,12 @@
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using Reactive.Bindings;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using DColor = System.Drawing.Color;
@@ -135,6 +137,26 @@ namespace Captura
             }
 
             return true;
+        }
+
+        public static void Bind(this FrameworkElement Control, DependencyProperty DependencyProperty, IReactiveProperty Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.TwoWay
+                });
+        }
+
+        public static void BindOne<T>(this FrameworkElement Control, DependencyProperty DependencyProperty, IReadOnlyReactiveProperty<T> Property)
+        {
+            Control.SetBinding(DependencyProperty,
+                new Binding(nameof(Property.Value))
+                {
+                    Source = Property,
+                    Mode = BindingMode.OneWay
+                });
         }
     }
 }

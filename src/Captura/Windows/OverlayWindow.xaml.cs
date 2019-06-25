@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -84,9 +83,9 @@ namespace Captura
 
             var vm = new PositionOverlayReactor(Settings);
 
-            BindOne(control, HorizontalAlignmentProperty, vm.HAlignment);
-            BindOne(control, VerticalAlignmentProperty, vm.VAlignment);
-            BindOne(control, MarginProperty, vm.Margin);
+            control.BindOne(HorizontalAlignmentProperty, vm.HAlignment);
+            control.BindOne(VerticalAlignmentProperty, vm.VAlignment);
+            control.BindOne(MarginProperty, vm.Margin);
 
             control.PositionUpdated += Rect =>
             {
@@ -97,36 +96,16 @@ namespace Captura
             return control;
         }
 
-        void Bind(FrameworkElement Control, DependencyProperty DependencyProperty, IReactiveProperty Property)
-        {
-            Control.SetBinding(DependencyProperty,
-                new Binding(nameof(Property.Value))
-                {
-                    Source = Property,
-                    Mode = BindingMode.TwoWay
-                });
-        }
-
-        void BindOne<T>(FrameworkElement Control, DependencyProperty DependencyProperty, IReadOnlyReactiveProperty<T> Property)
-        {
-            Control.SetBinding(DependencyProperty,
-                new Binding(nameof(Property.Value))
-                {
-                    Source = Property,
-                    Mode = BindingMode.OneWay
-                });
-        }
-
         LayerFrame Image(ImageOverlaySettings Settings, string Text)
         {
             var control = Generate(Settings, Text, Colors.Brown);
 
             var vm = new ImageOverlayReactor(Settings);
 
-            Bind(control, WidthProperty, vm.Width);
-            Bind(control, HeightProperty, vm.Height);
+            control.Bind(WidthProperty, vm.Width);
+            control.Bind(HeightProperty, vm.Height);
 
-            BindOne(control, OpacityProperty, vm.Opacity);
+            control.BindOne(OpacityProperty, vm.Opacity);
 
             return control;
         }
@@ -142,18 +121,18 @@ namespace Captura
 
             var vm = new TextOverlayReactor(Settings);
 
-            BindOne(control.Label, FontFamilyProperty, vm.FontFamily);
-            BindOne(control.Label, FontSizeProperty, vm.FontSize);
+            control.Label.BindOne(FontFamilyProperty, vm.FontFamily);
+            control.Label.BindOne(FontSizeProperty, vm.FontSize);
 
             // Border.PaddingProperty is different from PaddingProperty
-            BindOne(control.Border, Border.PaddingProperty, vm.Padding);
+            control.Border.BindOne(Border.PaddingProperty, vm.Padding);
 
-            BindOne(control.Label, ForegroundProperty, vm.Foreground);
-            BindOne(control.Border, BackgroundProperty, vm.Background);
+            control.Label.BindOne(ForegroundProperty, vm.Foreground);
+            control.Border.BindOne(BackgroundProperty, vm.Background);
 
-            BindOne(control.Border, BorderThicknessProperty, vm.BorderThickness);
-            BindOne(control.Border, BorderBrushProperty, vm.BorderBrush);
-            BindOne(control.Border, Border.CornerRadiusProperty, vm.CornerRadius);
+            control.Border.BindOne(BorderThicknessProperty, vm.BorderThickness);
+            control.Border.BindOne(BorderBrushProperty, vm.BorderBrush);
+            control.Border.BindOne(Border.CornerRadiusProperty, vm.CornerRadius);
 
             return control;
         }
@@ -164,10 +143,10 @@ namespace Captura
 
             var vm = new CensorOverlayReactor(Settings);
 
-            Bind(control, WidthProperty, vm.Width);
-            Bind(control, HeightProperty, vm.Height);
+            control.Bind(WidthProperty, vm.Width);
+            control.Bind(HeightProperty, vm.Height);
 
-            BindOne(control, VisibilityProperty, vm.Visible);
+            control.BindOne(VisibilityProperty, vm.Visible);
 
             return control;
         }
@@ -181,7 +160,7 @@ namespace Captura
                 .Select(M => M ? Visibility.Collapsed : Visibility.Visible)
                 .ToReadOnlyReactivePropertySlim();
 
-            BindOne(control, VisibilityProperty, visibilityProp);
+            control.BindOne(VisibilityProperty, visibilityProp);
 
             return control;
         }
@@ -229,13 +208,13 @@ namespace Captura
                     .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
                     .ToReadOnlyReactivePropertySlim();
 
-                BindOne(control, VisibilityProperty, visibilityProp);
+                control.BindOne(VisibilityProperty, visibilityProp);
 
                 var textProp = Setting
                     .ObserveProperty(M => M.Text)
                     .ToReadOnlyReactivePropertySlim();
 
-                BindOne(control.Label, ContentProperty, textProp);
+                control.Label.BindOne(ContentProperty, textProp);
 
                 return control;
             }, false, 1);
@@ -259,13 +238,13 @@ namespace Captura
                     .Select(M => M ? Visibility.Visible : Visibility.Collapsed)
                     .ToReadOnlyReactivePropertySlim();
 
-                BindOne(control, VisibilityProperty, visibilityProp);
+                control.BindOne(VisibilityProperty, visibilityProp);
 
                 var srcProp = Setting
                     .ObserveProperty(M => M.Source)
                     .ToReadOnlyReactivePropertySlim();
 
-                BindOne(img, System.Windows.Controls.Image.SourceProperty, srcProp);
+                img.BindOne(System.Windows.Controls.Image.SourceProperty, srcProp);
 
                 return control;
             }, true, 2);
