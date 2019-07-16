@@ -38,7 +38,7 @@ namespace Captura
             throw new NotImplementedException();
         }
 
-        void IEditableFrame.DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity)
+        void IEditableFrame.DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity)
         {
             throw new NotImplementedException();
         }

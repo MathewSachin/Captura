@@ -2,7 +2,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:captura="clr-namespace:Captura"
-      xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5">
         <DockPanel>
@@ -36,11 +35,95 @@
                 <ComboBox ItemsSource="{Binding WebcamModel.AvailableCams, Source={StaticResource ServiceLocator}}"
                           SelectedItem="{Binding WebcamModel.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                           IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
-                          DisplayMemberPath="Name"
-                          Name="WebcamComboBox"/>
+                          DisplayMemberPath="Name"/>
             </DockPanel>
 
-            <Label Name="PreviewTarget"/>
+            
+            <StackPanel Margin="5"
+                        DataContext="{Binding Settings.WebcamOverlay}"
+                        DockPanel.Dock="Top">
+                <CheckBox IsChecked="{Binding SeparateFile}"
+                          Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                          Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Margin="0,5"/>
+
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="X: "/>
+                        <Slider Value="{Binding X, Mode=TwoWay}"
+                                Grid.Column="1"
+                                Minimum="1"
+                                Maximum="100"/>
+
+                        <Label Content="Y: "
+                               Grid.Column="2"/>
+                        <Slider Value="{Binding Y, Mode=TwoWay}"
+                                Grid.Column="3"
+                                Minimum="1"
+                                Maximum="100"/>
+
+                        <Label Content="W: "
+                               Grid.Column="4"/>
+                        <Slider Value="{Binding Width, Mode=TwoWay}"
+                                Grid.Column="5"
+                                Minimum="1"
+                                Maximum="100"/>
+
+                        <Label Content="H: "
+                               Grid.Column="6"/>
+                        <Slider Value="{Binding Height, Mode=TwoWay}"
+                                Grid.Column="7"
+                                Minimum="1"
+                                Maximum="100"/>
+                    </Grid>
+
+                    <Grid Margin="0,15,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Path Data="{Binding Icons.Opacity, Source={StaticResource ServiceLocator}}"
+                              Width="15"
+                              Height="15"
+                              Margin="0,0,10,0"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+
+                        <Label Content="{Binding Opacity, Source={StaticResource Loc}, Mode=OneWay}"
+                               ContentStringFormat="{}{0}: "
+                               Grid.Column="1"
+                               Margin="0,3"/>
+
+                        <Slider Grid.Column="2"
+                                Minimum="1"
+                                Maximum="100"
+                                Value="{Binding Opacity, Mode=TwoWay}"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+
+            <Grid Background="DimGray"
+                  Name="PreviewGrid">
+                <Label Name="PreviewTarget"
+                       Background="#B7000000"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"/>
+            </Grid>
         </DockPanel>
     </Grid>
 </Page>

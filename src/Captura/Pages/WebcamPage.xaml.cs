@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Media;
 using Captura.ViewModels;
 using Reactive.Bindings.Extensions;
 using Screna;
@@ -14,18 +13,38 @@ namespace Captura
     public partial class WebcamPage
     {
         readonly WebcamModel _webcamModel;
+        readonly WebcamOverlaySettings _webcamSettings;
         readonly ScreenShotModel _screenShotModel;
         readonly IPlatformServices _platformServices;
+        readonly WebcamOverlayReactor _reactor;
 
         public WebcamPage(WebcamModel WebcamModel,
             ScreenShotModel ScreenShotModel,
-            IPlatformServices PlatformServices)
+            IPlatformServices PlatformServices,
+            WebcamOverlaySettings WebcamSettings)
         {
             _webcamModel = WebcamModel;
             _screenShotModel = ScreenShotModel;
             _platformServices = PlatformServices;
+            _webcamSettings = WebcamSettings;
+
+            _reactor = new WebcamOverlayReactor(_webcamSettings);
+
+            Loaded += OnLoaded;
 
             InitializeComponent();
+        }
+
+        void OnLoaded(object Sender, RoutedEventArgs E)
+        {
+            var control = PreviewTarget;
+
+            control.BindOne(MarginProperty, _reactor.Margin);
+
+            control.BindOne(WidthProperty, _reactor.Width);
+            control.BindOne(HeightProperty, _reactor.Height);
+
+            control.BindOne(OpacityProperty, _reactor.Opacity);
         }
 
         public void SetupPreview()
@@ -35,14 +54,19 @@ namespace Captura
 
             IsVisibleChanged += (S, E) => SwitchWebcamPreview();
 
-            void OnSizeChange()
+            void OnRegionChange()
             {
+                if (!IsVisible)
+                    return;
+
+                _reactor.FrameSize.OnNext(new System.Windows.Size(PreviewGrid.ActualWidth, PreviewGrid.ActualHeight));
+
                 var rect = GetPreviewWindowRect();
 
                 _webcamModel.WebcamCapture?.UpdatePreview(null, rect);
             }
 
-            PreviewTarget.SizeChanged += (S, E) => OnSizeChange();
+            PreviewTarget.LayoutUpdated += (S, E) => OnRegionChange();
 
             _webcamModel
                 .ObserveProperty(M => M.SelectedCam)

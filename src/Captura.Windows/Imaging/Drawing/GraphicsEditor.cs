@@ -43,14 +43,16 @@ namespace Screna
             _graphics.DrawLine(new Pen(new SolidBrush(Color), Width), Start, End);
         }
 
-        public void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100)
+        public void DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity = 100)
         {
             if (!(Image is DrawingImage drawingImage))
                 return;
 
             var img = drawingImage.Image;
 
-            var region = Region ?? new Rectangle(Point.Empty, img.Size);
+            var region = Region is RectangleF r
+                ? new Rectangle((int)r.X, (int)r.Y, (int)r.Width, (int)r.Height)
+                : new Rectangle(Point.Empty, img.Size);
 
             if (Opacity < 100)
             {

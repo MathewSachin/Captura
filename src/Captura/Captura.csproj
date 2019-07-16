@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="ViewModels\Overlays\CensorOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\ImageOverlayReactor.cs" />
+    <Compile Include="ViewModels\Overlays\WebcamOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\PositionOverlayReactor.cs" />
     <Compile Include="ViewModels\Overlays\TextOverlayReactor.cs" />
     <Compile Include="ViewModels\RegionSelectorViewModel.cs" />

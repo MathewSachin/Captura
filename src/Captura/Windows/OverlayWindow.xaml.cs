@@ -110,11 +110,6 @@ namespace Captura
             return control;
         }
 
-        LayerFrame Webcam(WebcamOverlaySettings Settings)
-        {
-            return Image(Settings, "Webcam");
-        }
-
         LayerFrame Text(TextOverlaySettings Settings, string Text)
         {
             var control = Generate(Settings, Text, Settings.BackgroundColor.ToWpfColor());
@@ -308,9 +303,6 @@ namespace Captura
 
             PrepareMousePointer(settings.MousePointerOverlay);
             PrepareMouseClick(settings.Clicks);
-
-            var webcam = Webcam(settings.WebcamOverlay);
-            AddToGrid(webcam, true);
 
             var keystrokes = Keystrokes(settings.Keystrokes);
             AddToGrid(keystrokes, false);

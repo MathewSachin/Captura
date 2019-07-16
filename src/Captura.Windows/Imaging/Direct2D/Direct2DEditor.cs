@@ -62,7 +62,7 @@ namespace DesktopDuplication
             return new Direct2DImage(bmp);
         }
 
-        public void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100)
+        public void DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity = 100)
         {
             if (Image is Direct2DImage direct2DImage)
             {

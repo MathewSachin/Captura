@@ -30,23 +30,6 @@
             <TabItem Header="Mouse">
                 <Frame Source="../Pages/MouseOverlayPage.xaml"/>
             </TabItem>
-            <TabItem Header="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
-                <StackPanel Margin="5"
-                            DataContext="{Binding Settings.WebcamOverlay}">
-                    <CheckBox IsChecked="{Binding SeparateFile}"
-                              Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
-                              IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                              Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Margin="0,5"/>
-
-                    <local:ImageOverlaySettingsControl/>
-
-                    <Label Margin="0,10"
-                           Opacity="0.8"
-                           Content="Size of Preview considers Resize to be active"/>
-                </StackPanel>
-            </TabItem>
             <TabItem Header="Elapsed"
                      DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
                 <local:TextOverlaySettingsControl Margin="5"
