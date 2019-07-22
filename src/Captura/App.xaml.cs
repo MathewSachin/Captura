@@ -23,6 +23,9 @@ namespace Captura
 
             File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), Args.Exception.ToString());
 
+            var logger = ServiceProvider.Get<ILogger>();
+            logger.Fatal(Args.Exception, nameof(App_OnDispatcherUnhandledException));
+
             Args.Handled = true;
 
             new ErrorWindow(Args.Exception, Args.Exception.Message).ShowDialog();
@@ -59,6 +62,9 @@ namespace Captura
             Directory.CreateDirectory(dir);
 
             File.WriteAllText(Path.Combine(dir, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt"), E.ExceptionObject.ToString());
+
+            var logger = ServiceProvider.Get<ILogger>();
+            logger.Fatal(E.ExceptionObject as Exception, nameof(OnCurrentDomainOnUnhandledException));
 
             if (E.ExceptionObject is Exception e)
             {

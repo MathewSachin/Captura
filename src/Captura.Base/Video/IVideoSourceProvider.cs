@@ -1,5 +1,3 @@
-using System;
-
 namespace Captura.Models
 {
     public interface IVideoSourceProvider

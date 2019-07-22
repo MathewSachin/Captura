@@ -27,6 +27,8 @@ namespace Captura
             BindAudioSource(Binder);
             BindUpdateChecker(Binder);
 
+            Binder.Bind<ILogger, SentryLogger>();
+
             // Recent
             Binder.Bind<IRecentList, RecentListRepository>();
             Binder.Bind<IRecentItemSerializer, FileRecentSerializer>();
@@ -34,8 +36,7 @@ namespace Captura
 
             Binder.Bind<IImageUploader, ImgurUploader>();
             Binder.Bind<IIconSet, MaterialDesignIcons>();
-            Binder.Bind<IImgurApiKeys, ApiKeys>();
-            Binder.Bind<IYouTubeApiKeys, ApiKeys>();
+            BindApiKeys(Binder);
 
             Binder.BindSingleton<HotKeyManager>();
 
@@ -50,6 +51,13 @@ namespace Captura
             {
                 MfManager.Shutdown();
             }
+        }
+
+        public void BindApiKeys(IBinder Binder)
+        {
+            Binder.Bind<IImgurApiKeys, ApiKeys>();
+            Binder.Bind<IYouTubeApiKeys, ApiKeys>();
+            Binder.Bind<ISentryApiKeys, ApiKeys>();
         }
 
         static void BindImageWriters(IBinder Binder)

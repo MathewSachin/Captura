@@ -1,5 +1,4 @@
-﻿using System;
-using Captura.ViewModels;
+﻿using Captura.ViewModels;
 using Screna;
 
 namespace Captura.Models

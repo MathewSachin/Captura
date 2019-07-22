@@ -13,7 +13,6 @@ using BitmapInterpolationMode = SharpDX.Direct2D1.BitmapInterpolationMode;
 using Color = System.Drawing.Color;
 using PixelFormat = SharpDX.WIC.PixelFormat;
 using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 using RectangleF = System.Drawing.RectangleF;
 
 namespace DesktopDuplication
