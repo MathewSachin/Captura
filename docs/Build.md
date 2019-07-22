@@ -19,10 +19,13 @@
    imgur_client_id      | Imgur Client Id
    yt_client_id         | YouTube Client Id
    yt_client_secret     | YouTube Client Secret
+   sentry_dsn           | Sentry DSN
 
    Imgur credentials are only required if you want to upload to Imgur. See [here](https://apidocs.imgur.com/) for more info.
 
    YouTube credentials are only required if you want to upload to YouTube. See [here](https://developers.google.com/youtube/registering_an_application) for more info.
+
+   Sentry DSN is used for error reporting. Visit https://sentry.io/ for more information.
 
 3. Download FFmpeg from within the app or from https://ffmpeg.zeranoe.com/builds/ or use a custom build.
 4. Now, you're good to go. You can build using Visual Studio or the [cake script](Cake.md).
