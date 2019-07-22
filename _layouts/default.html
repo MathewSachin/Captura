@@ -5,23 +5,8 @@
     {% include navbar.html %}
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-10">
-          {{ content }}
-
-          <br><br>
-          {% include adsense.html %}
-          <br><br>
-        </div>
-          <div class="col-md-2">
-            <div class="sticky-top" style="top: 10px">
-              {% include adsense.html %}
-            </div>
-        </div>
-      </div>
+      {{ content }}      
     </div>
-
-    {% include analytics.html %}
 
     {% include gitter.html %}
 
