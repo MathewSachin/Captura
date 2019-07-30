@@ -64,14 +64,14 @@
                         <Label Content="X: "/>
                         <Slider Value="{Binding X, Mode=TwoWay}"
                                 Grid.Column="1"
-                                Minimum="1"
+                                Minimum="0"
                                 Maximum="100"/>
 
                         <Label Content="Y: "
                                Grid.Column="2"/>
                         <Slider Value="{Binding Y, Mode=TwoWay}"
                                 Grid.Column="3"
-                                Minimum="1"
+                                Minimum="0"
                                 Maximum="100"/>
 
                         <Label Content="W: "
