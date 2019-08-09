@@ -13,7 +13,6 @@ namespace Captura
     public partial class WebcamPage
     {
         readonly WebcamModel _webcamModel;
-        readonly WebcamOverlaySettings _webcamSettings;
         readonly ScreenShotModel _screenShotModel;
         readonly IPlatformServices _platformServices;
         readonly WebcamOverlayReactor _reactor;
@@ -26,9 +25,8 @@ namespace Captura
             _webcamModel = WebcamModel;
             _screenShotModel = ScreenShotModel;
             _platformServices = PlatformServices;
-            _webcamSettings = WebcamSettings;
 
-            _reactor = new WebcamOverlayReactor(_webcamSettings);
+            _reactor = new WebcamOverlayReactor(WebcamSettings);
 
             Loaded += OnLoaded;
 
@@ -49,7 +47,7 @@ namespace Captura
 
         public void SetupPreview()
         {
-            // Open Preview Window
+            // TODO: Open Webcam window on Preview click
             //_webcamModel.PreviewClicked += this.ShowAndFocus;
 
             IsVisibleChanged += (S, E) => SwitchWebcamPreview();
@@ -94,6 +92,31 @@ namespace Captura
             var relativePt = PreviewTarget.TranslatePoint(new System.Windows.Point(0, 0), parentWindow);
 
             var rect = new RectangleF((float) relativePt.X, (float) relativePt.Y, (float) PreviewTarget.ActualWidth, (float) PreviewTarget.ActualHeight);
+
+            // Maintain Aspect Ratio
+            if (_webcamModel.WebcamCapture != null)
+            {
+                float w = _webcamModel.WebcamCapture.Width;
+                float h = _webcamModel.WebcamCapture.Height;
+                var imgWbyH = w / h;
+
+                var frameWbyH = rect.Width / rect.Height;
+
+                if (imgWbyH > frameWbyH)
+                {
+                    var newH = rect.Width / imgWbyH;
+
+                    rect.Y += (rect.Height - newH) / 2;
+                    rect.Height = newH;
+                }
+                else
+                {
+                    var newW = rect.Height * imgWbyH;
+
+                    rect.X += (rect.Width - newW) / 2;
+                    rect.Width = newW;
+                }
+            }
 
             return rect.ApplyDpi();
         }

@@ -60,6 +60,5 @@ namespace Captura
 
             return new PointF(left, top);
         }
-
     }
 }
