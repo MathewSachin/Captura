@@ -1,7 +1,6 @@
 ﻿using Captura.Models;
 using Captura.Audio;
 using Captura.ViewModels;
-using DesktopDuplication;
 
 namespace Captura
 {
@@ -11,11 +10,7 @@ namespace Captura
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
 
-            if (WindowsModule.Windows8OrAbove)
-            {
-                MfManager.Startup();
-                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
-            }
+            WindowsModule.Load(Binder);
 
             FFmpegModule.Load(Binder);
 
@@ -40,16 +35,11 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
-
-            WindowsModule.Load(Binder);
         }
 
         public void Dispose()
         {
-            if (WindowsModule.Windows8OrAbove)
-            {
-                MfManager.Shutdown();
-            }
+            WindowsModule.Unload();
         }
 
         static void BindImageWriters(IBinder Binder)

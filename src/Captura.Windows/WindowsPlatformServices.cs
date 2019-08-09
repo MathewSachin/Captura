@@ -131,7 +131,7 @@ namespace Captura
                        && r1.Bottom == r2.Bottom;
             });
 
-            return match.QueryInterface<Output1>();
+            return match?.QueryInterface<Output1>();
         }
 
         public IImageProvider GetAllScreensProvider(bool IncludeCursor)

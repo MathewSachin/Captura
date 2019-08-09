@@ -2,6 +2,7 @@
 using Captura.Models;
 using Screna;
 using System;
+using DesktopDuplication;
 
 namespace Captura
 {
@@ -9,6 +10,12 @@ namespace Captura
     {
         public static void Load(IBinder Binder)
         {
+            if (Windows8OrAbove)
+            {
+                MfManager.Startup();
+                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
+            }
+
             Binder.Bind<IPlatformServices, WindowsPlatformServices>();
             Binder.Bind<IDialogService, DialogService>();
             Binder.Bind<IClipboardService, ClipboardService>();
@@ -18,6 +25,14 @@ namespace Captura
             foreach (var audioItem in MfAudioItem.Items)
             {
                 Binder.Bind<IAudioWriterItem>(() => audioItem);
+            }
+        }
+
+        public static void Unload()
+        {
+            if (Windows8OrAbove)
+            {
+                MfManager.Shutdown();
             }
         }
 
