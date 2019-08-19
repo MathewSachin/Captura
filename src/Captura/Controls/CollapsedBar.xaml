@@ -27,6 +27,12 @@
             </Style>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top">
+            <captura:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
+                                  Click="OpenSettings"
+                                  Foreground="{DynamicResource Accent}"
+                                  IconData="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"
+                                  DockPanel.Dock="Right"/>
+
             <captura:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                   Command="{Binding OpenOutputFolderCommand}"
                                   IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"

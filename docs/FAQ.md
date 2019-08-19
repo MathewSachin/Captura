@@ -8,7 +8,7 @@ Software written using .NET Framework can work on Linux and Mac using Mono but t
 Also, the recently released .Net Core only has support for console applications.
 
 ## Does Captura support DirectX Game Video Recording?
-See here.
+Some games can be recorded when running on Windows 8 and above. In Captura v8.0.0 there was a separate `Desktop Duplication` option which can also record games which support that. From v9.0.0, `Desktop Duplication` is the default mode.
 
 ## Why is maximum frame rate 30fps?
 Captura is not very fast on low-end systems. This limit on framerate is a protection against Captura consuming all of your CPU/Memory/Disk and causing your system to hang.
