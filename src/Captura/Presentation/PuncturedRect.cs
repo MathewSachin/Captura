@@ -11,7 +11,7 @@ namespace Captura
             DependencyProperty.Register(
                 nameof(RectInterior),
                 typeof(Rect),
-                typeof(FrameworkElement),
+                typeof(PuncturedRect),
                 new FrameworkPropertyMetadata(
                     new Rect(0, 0, 0, 0),
                     FrameworkPropertyMetadataOptions.AffectsRender,
@@ -48,7 +48,7 @@ namespace Captura
             DependencyProperty.Register(
                 nameof(RectExterior),
                 typeof(Rect),
-                typeof(FrameworkElement),
+                typeof(PuncturedRect),
                 new FrameworkPropertyMetadata(
                     new Rect(0, 0, double.MaxValue, double.MaxValue),
                     FrameworkPropertyMetadataOptions.AffectsMeasure |
