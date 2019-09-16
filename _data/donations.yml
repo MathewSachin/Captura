@@ -48,3 +48,5 @@
   amount: "$5 USD"
 - name: "Alan Gosh"
   amount: "$5 USD"
+- name: "David ROUMANET"
+  amount: "€5 EUR"
