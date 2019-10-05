@@ -50,3 +50,5 @@
   amount: "$5 USD"
 - name: "David ROUMANET"
   amount: "€5 EUR"
+- name: "Oleg Bezorudko-Chyrykalov"
+  amount: "$15 USD"
