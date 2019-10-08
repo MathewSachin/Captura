@@ -19,8 +19,6 @@ namespace Captura.Models
 
             Source = RegionProvider.VideoSource;
             Icon = Icons.Region;
-
-            RegionProvider.SelectorHidden += RequestUnselect;
         }
 
         public override IVideoItem Source { get; }
@@ -38,15 +36,17 @@ namespace Captura.Models
 
             var region = _videoSourcePicker.PickRegion();
 
-            // Show again if was already visible
-            _regionProvider.SelectorVisible = wasVisible;
-
             if (region == null)
-                return false;
+            {
+                // Show again if was already visible
+                _regionProvider.SelectorVisible = wasVisible;
 
-            _regionProvider.SelectorVisible = true;
+                return false;
+            }
 
             _regionProvider.SelectedRegion = region.Value;
+
+            _regionProvider.SelectorVisible = true;
 
             return true;
         }

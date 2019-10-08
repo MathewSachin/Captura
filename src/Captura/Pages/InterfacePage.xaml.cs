@@ -1,11 +1,11 @@
-﻿using FirstFloor.ModernUI.Presentation;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using Captura.ViewModels;
+using FirstFloor.ModernUI.Presentation;
 
 namespace Captura
 {
-    public partial class ExtrasPage
+    public partial class InterfacePage
     {
         void SelectedAccentColorChanged(object Sender, RoutedPropertyChangedEventArgs<Color?> E)
         {

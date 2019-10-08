@@ -20,8 +20,6 @@ namespace Captura.Models
 
         void OnUnselect();
 
-        event Action UnselectRequested;
-
         string Serialize();
 
         bool Deserialize(string Serialized);

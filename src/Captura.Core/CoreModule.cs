@@ -1,7 +1,6 @@
 ﻿using Captura.Models;
 using Captura.Audio;
 using Captura.ViewModels;
-using DesktopDuplication;
 
 namespace Captura
 {
@@ -11,11 +10,7 @@ namespace Captura
         {
             Binder.Bind<IAudioWriterItem, WaveItem>();
 
-            if (WindowsModule.Windows8OrAbove)
-            {
-                MfManager.Startup();
-                Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
-            }
+            WindowsModule.Load(Binder);
 
             FFmpegModule.Load(Binder);
 
@@ -40,16 +35,11 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
-
-            WindowsModule.Load(Binder);
         }
 
         public void Dispose()
         {
-            if (WindowsModule.Windows8OrAbove)
-            {
-                MfManager.Shutdown();
-            }
+            WindowsModule.Unload();
         }
 
         static void BindImageWriters(IBinder Binder)
@@ -66,8 +56,6 @@ namespace Captura
             Binder.BindSingleton<RecordingModel>();
             Binder.BindSingleton<WebcamModel>();
             Binder.BindSingleton<KeymapViewModel>();
-
-            Binder.Bind<IRefreshable>(Binder.Get<WebcamModel>);
         }
 
         static void BindUpdateChecker(IBinder Binder)
@@ -113,6 +101,7 @@ namespace Captura
             Binder.Bind(() => Binder.Get<Settings>().Imgur);
             Binder.Bind(() => Binder.Get<Settings>().Steps);
             Binder.Bind(() => Binder.Get<Settings>().Video);
+            Binder.Bind(() => Binder.Get<Settings>().WebcamOverlay);
         }
     }
 }

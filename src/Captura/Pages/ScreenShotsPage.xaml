@@ -1,6 +1,7 @@
 ﻿<Page x:Class="Captura.ScreenShotsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:captura="clr-namespace:Captura">
     <Grid>
         <StackPanel DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0">
@@ -25,6 +26,33 @@
                           ItemsSource="{Binding ScreenShotImageFormats}"
                           SelectedItem="{Binding Settings.ScreenShots.ImageFormat, Mode=TwoWay}"/>
             </DockPanel>
+
+            <StackPanel Margin="0,10">
+                <Label Content="Outputs"
+                       FontWeight="Bold"/>
+
+                <StackPanel Margin="0,5"
+                            DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
+                            Orientation="Horizontal">
+                    <captura:ModernToggleButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
+                                                IsChecked="{Binding DiskWriter.Active}"/>
+
+                    <captura:ModernToggleButton ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
+                                                IsChecked="{Binding ClipboardWriter.Active}"/>
+
+                    <CheckBox Content="Imgur"
+                              ToolTip="Imgur"
+                              Margin="5,0"
+                              IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
+                              Style="{StaticResource ModernTogglePill}"/>
+
+                    <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
+                                                IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
+                                                IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

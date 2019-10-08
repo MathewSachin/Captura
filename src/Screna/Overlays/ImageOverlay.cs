@@ -3,74 +3,37 @@ using System.Drawing;
 
 namespace Captura.Models
 {
-    public abstract class ImageOverlay<T> : IOverlay where T : ImageOverlaySettings
+    public abstract class ImageOverlay : IOverlay
     {
-        protected readonly T Settings;
         readonly bool _disposeImages;
 
-        protected ImageOverlay(T Settings, bool DisposeImages)
+        protected ImageOverlay(bool DisposeImages)
         {
             _disposeImages = DisposeImages;
-
-            this.Settings = Settings;
         }
 
-        public void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
-        {
-            var img = GetImage(Editor);
+        public abstract void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null);
 
-            if (img == null)
+        protected void Draw(IEditableFrame Editor, IBitmapImage Image, PointF Position, SizeF? Size, int Opacity)
+        {
+            if (Image == null)
                 return;
 
-            var targetSize = new Size(img.Width, img.Height);
+            var targetSize = Size ?? new Size(Image.Width, Image.Height);
 
             try
             {
-                if (Settings.Resize)
-                    targetSize = new Size(Settings.ResizeWidth, Settings.ResizeHeight);
+                //var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
+                var destRect = new RectangleF(Position, targetSize);
 
-                var point = GetPosition(new Size((int)Editor.Width, (int)Editor.Height), targetSize);
-                var destRect = new Rectangle(point, targetSize);
-
-                Editor.DrawImage(img, destRect, Settings.Opacity);
+                Editor.DrawImage(Image, destRect, Opacity);
             }
             catch { }
             finally
             {
                 if (_disposeImages)
-                    img.Dispose();
+                    Image.Dispose();
             }
-        }
-
-        protected abstract IBitmapImage GetImage(IEditableFrame Editor);
-
-        Point GetPosition(Size Bounds, Size ImageSize)
-        {
-            var point = new Point(Settings.X, Settings.Y);
-
-            switch (Settings.HorizontalAlignment)
-            {
-                case Alignment.Center:
-                    point.X = Bounds.Width / 2 - ImageSize.Width / 2 + point.X;
-                    break;
-
-                case Alignment.End:
-                    point.X = Bounds.Width - ImageSize.Width - point.X;
-                    break;
-            }
-
-            switch (Settings.VerticalAlignment)
-            {
-                case Alignment.Center:
-                    point.Y = Bounds.Height / 2 - ImageSize.Height / 2 + point.Y;
-                    break;
-
-                case Alignment.End:
-                    point.Y = Bounds.Height - ImageSize.Height - point.Y;
-                    break;
-            }
-
-            return point;
         }
 
         public virtual void Dispose() { }

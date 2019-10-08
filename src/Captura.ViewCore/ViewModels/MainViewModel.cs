@@ -19,7 +19,6 @@ namespace Captura.ViewModels
         readonly IDialogService _dialogService;
 
         public ICommand ShowPreviewCommand { get; }
-        public ICommand RefreshCommand { get; }
         public ICommand OpenOutputFolderCommand { get; }
         public ICommand SelectOutputFolderCommand { get; }
         public ICommand SelectFFmpegFolderCommand { get; }
@@ -34,7 +33,6 @@ namespace Captura.ViewModels
             IPreviewWindow PreviewWindow,
             IDialogService DialogService,
             RecordingModel RecordingModel,
-            IEnumerable<IRefreshable> Refreshables,
             IFFmpegViewsProvider FFmpegViewsProvider,
             RememberByName RememberByName) : base(Settings, Loc)
         {
@@ -53,20 +51,6 @@ namespace Captura.ViewModels
                 .WithSubscribe(FFmpegViewsProvider.PickFolder);
 
             #region Commands
-            RefreshCommand = RecordingModel
-                .ObserveProperty(M => M.RecorderState)
-                .Select(M => M == RecorderState.NotRecording)
-                .ToReactiveCommand()
-                .WithSubscribe(() =>
-                {
-                    foreach (var refreshable in Refreshables)
-                    {
-                        refreshable.Refresh();
-                    }
-
-                    Refreshed?.Invoke();
-                });
-
             OpenOutputFolderCommand = new ReactiveCommand()
                 .WithSubscribe(OpenOutputFolder);
 
@@ -128,8 +112,6 @@ namespace Captura.ViewModels
             if (folder != null)
                 Settings.OutPath = folder;
         }
-
-        public event Action Refreshed;
 
         public void Dispose()
         {

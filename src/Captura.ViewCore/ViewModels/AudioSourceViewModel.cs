@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Captura.Models
 {
-    public class AudioSourceViewModel : NotifyPropertyChanged, IRefreshable
+    public class AudioSourceViewModel : NotifyPropertyChanged
     {
         readonly IAudioSource _audioSource;
 
@@ -64,7 +64,7 @@ namespace Captura.Models
             SelectedSpeaker = matchSpeaker;
         }
 
-        public void Refresh()
+        void Refresh()
         {
             RefreshMics();
 

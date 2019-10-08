@@ -42,8 +42,6 @@ namespace Captura.Models
         {
         }
 
-        public event Action UnselectRequested;
-
         public string Serialize() => "";
 
         public bool Deserialize(string Serialized) => true;

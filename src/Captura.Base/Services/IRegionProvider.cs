@@ -11,8 +11,6 @@ namespace Captura.Models
 
         IVideoItem VideoSource { get; }
 
-        event Action SelectorHidden;
-
         IntPtr Handle { get; }
     }
 }

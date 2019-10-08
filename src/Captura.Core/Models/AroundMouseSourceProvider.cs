@@ -32,8 +32,6 @@ namespace Captura.Models
 
         public IVideoItem Source { get; }
 
-        public event Action UnselectRequested;
-
         public IBitmapImage Capture(bool IncludeCursor)
         {
             var cursorPos = _platformServices.CursorPosition;

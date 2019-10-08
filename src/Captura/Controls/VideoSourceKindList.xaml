@@ -1,12 +1,32 @@
 ﻿<UserControl x:Class="Captura.VideoSourceKindList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ListView Margin="0,5"
+    <ListView Margin="2,5"
               IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
               ItemsSource="{Binding VideoSourcesViewModel.VideoSources, Source={StaticResource ServiceLocator}}"
               SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay, Delay=10, Source={StaticResource ServiceLocator}}"
               BorderThickness="0.4"
               SelectionMode="Single">
+        <ListView.Template>
+            <ControlTemplate TargetType="ListView">
+                <Border CornerRadius="15"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}">
+                    <Border.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border SnapsToDevicePixels="True"
+                                        Background="Black"
+                                        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                                        Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                                        Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.OpacityMask>
+                    <ItemsPresenter></ItemsPresenter>
+                </Border>
+            </ControlTemplate>
+        </ListView.Template>
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <UniformGrid Rows="1"/>

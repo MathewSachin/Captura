@@ -8,7 +8,7 @@ namespace Captura
         float Width { get; }
         float Height { get; }
 
-        void DrawImage(IBitmapImage Image, Rectangle? Region, int Opacity = 100);
+        void DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity = 100);
 
         void DrawLine(Point Start, Point End, Color Color, float Width);
 

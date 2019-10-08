@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Captura.Models;
 
 namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class WebcamModel : NotifyPropertyChanged, IRefreshable
+    public class WebcamModel : NotifyPropertyChanged
     {
         readonly IWebCamProvider _webcamProvider;
 
@@ -15,6 +16,8 @@ namespace Captura.ViewModels
             _webcamProvider = WebcamProvider;
 
             AvailableCams = new ReadOnlyObservableCollection<IWebcamItem>(_cams);
+
+            RefreshCommand = new DelegateCommand(Refresh);
 
             Refresh();
         }
@@ -40,6 +43,8 @@ namespace Captura.ViewModels
         }
 
         IWebcamItem _selectedCam = NoWebcamItem.Instance;
+
+        public ICommand RefreshCommand { get; }
 
         public IWebcamItem SelectedCam
         {
