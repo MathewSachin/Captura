@@ -2,6 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+      xmlns:captura="clr-namespace:Captura"
       x:Class="Captura.AboutPage"
       DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
@@ -14,6 +15,10 @@
             <StackPanel MinWidth="150"
                         Margin="10">
                 <DockPanel>
+                    <captura:StatusBar DockPanel.Dock="Bottom"
+                                       Margin="7,3"
+                                       Opacity="0.9"/>
+
                     <mui:ModernButton Command="{Binding HyperlinkCommand}"
                                       CommandParameter="https://github.com/MathewSachin/Captura/"
                                       Margin="3"

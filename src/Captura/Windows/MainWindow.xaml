@@ -254,13 +254,6 @@
             </Expander.Header>
             <DockPanel Margin="-5,0,0,0"
                        Height="300">
-                <local:StatusBar DockPanel.Dock="Bottom"
-                                 Margin="7,3"
-                                 Opacity="0.9"/>
-
-                <local:OutputFolderControl DockPanel.Dock="Bottom"
-                                           Margin="5,0,0,0"/>
-
                 <Frame Source="../Pages/MainPage.xaml"/>
             </DockPanel>
         </Expander>
