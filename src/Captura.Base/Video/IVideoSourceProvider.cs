@@ -12,6 +12,8 @@ namespace Captura.Models
 
         IVideoItem Source { get; }
 
+        bool SupportsStepsMode { get; }
+
         IBitmapImage Capture(bool IncludeCursor);
 
         bool OnSelect();

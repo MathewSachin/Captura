@@ -7,7 +7,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal"
-                                DockPanel.Dock="Right">
+                        DockPanel.Dock="Right">
                 <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                     Command="{Binding OpenOutputFolderCommand}"
                                     IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"/>
@@ -26,6 +26,9 @@
                                           IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
                                           IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
             </StackPanel>
+            <Label Content="{Binding Settings.Video.RecorderMode}"
+                   Foreground="{DynamicResource Accent}"
+                   HorizontalAlignment="Center"/>
         </DockPanel>
 
         <Frame Source="HomePage.xaml"

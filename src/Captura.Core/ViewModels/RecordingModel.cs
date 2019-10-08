@@ -30,6 +30,8 @@ namespace Captura.ViewModels
 
         readonly KeymapViewModel _keymap;
         readonly IAudioSource _audioSource;
+
+        const int StepsRecorderFrameRate = 1;
         #endregion
 
         public RecordingModel(Settings Settings,
@@ -108,13 +110,15 @@ namespace Captura.ViewModels
             }
         }
 
-        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams)
+        bool GetImageProviderSafe(Func<IImageProvider> Getter, RecordingModelParams RecordingParams, out IImageProvider ImageProvider)
         {
-            IImageProvider imgProvider;
+            ImageProvider = null;
 
             try
             {
-                imgProvider = GetImageProvider(RecordingParams);
+                ImageProvider = Getter();
+
+                return true;
             }
             catch (WindowClosedException e)
             {
@@ -128,6 +132,14 @@ namespace Captura.ViewModels
 
                 return false;
             }
+        }
+
+        bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
+        {
+            IImageProvider imgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
+
+            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+                return false;
 
             IVideoFileWriter videoEncoder;
 
@@ -196,6 +208,41 @@ namespace Captura.ViewModels
             return true;
         }
 
+        bool SetupStepsRecorder(RecordingModelParams RecordingParams)
+        {
+            IImageProvider imgProviderGetter() => GetImageProvider(RecordingParams);
+
+            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+                return false;
+
+            IVideoFileWriter videoEncoder;
+
+            try
+            {
+                videoEncoder = GetVideoFileWriterWithPreview(imgProvider, null, RecordingParams);
+            }
+            catch (Exception e)
+            {
+                _messageProvider.ShowException(e, e.Message);
+
+                imgProvider?.Dispose();
+
+                return false;
+            }
+
+            var mouseKeyHook = new MouseKeyHook();
+
+            _recorder = new StepsRecorder(mouseKeyHook,
+                videoEncoder,
+                imgProvider,
+                Settings.Clicks,
+                Settings.Keystrokes,
+                Settings.Steps,
+                _keymap);
+            
+            return true;
+        }
+
         public bool StartRecording(RecordingModelParams RecordingParams, string FileName = null)
         {
             IsVideo = !(RecordingParams.VideoSourceKind is NoVideoSourceProvider);
@@ -207,27 +254,40 @@ namespace Captura.ViewModels
 
             CurrentFileName = Settings.GetFileName(extension, FileName);
 
-            if (!SetupAudioProvider(RecordingParams, out var audioProvider))
-                return false;
-
-            if (IsVideo)
+            if (Settings.Video.RecorderMode == RecorderMode.Steps)
             {
-                if (!SetupVideoRecorder(audioProvider, RecordingParams))
-                {
-                    audioProvider?.Dispose();
-
+                if (!SetupStepsRecorder(RecordingParams))
                     return false;
+            }
+            else
+            {
+                if (!SetupAudioProvider(RecordingParams, out var audioProvider))
+                    return false;
+
+                if (IsVideo)
+                {
+                    var mouseKeyHook = new MouseKeyHook();
+
+                    if (!SetupVideoRecorder(audioProvider, RecordingParams, mouseKeyHook))
+                    {
+                        mouseKeyHook.Dispose();
+
+                        audioProvider?.Dispose();
+
+                        return false;
+                    }
+                }
+                else if (RecordingParams.VideoSourceKind?.Source is NoVideoItem audioWriter)
+                {
+                    if (!InitAudioRecorder(audioWriter, audioProvider, RecordingParams))
+                    {
+                        audioProvider?.Dispose();
+
+                        return false;
+                    }
                 }
             }
-            else if (RecordingParams.VideoSourceKind?.Source is NoVideoItem audioWriter)
-            {
-                if (!InitAudioRecorder(audioWriter, audioProvider, RecordingParams))
-                {
-                    audioProvider?.Dispose();
 
-                    return false;
-                }
-            }
 
             RecorderState = RecorderState.Recording;
 
@@ -411,7 +471,7 @@ namespace Captura.ViewModels
             else return RecordingParams.VideoWriter.GetVideoFileWriter(args);
         }
 
-        IEnumerable<IOverlay> GetOverlays(RecordingModelParams RecordingParams)
+        IEnumerable<IOverlay> GetOverlays(RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
             // No mouse and webcam overlays in webcam mode
             var webcamMode = RecordingParams.VideoSourceKind is WebcamSourceProvider;
@@ -432,7 +492,8 @@ namespace Captura.ViewModels
                 ? new MouseClickSettings { Display = false }
                 : Settings.Clicks;
 
-            yield return new MouseKeyOverlay(clickSettings,
+            yield return new MouseKeyOverlay(MouseKeyHook,
+                clickSettings,
                 Settings.Keystrokes,
                 _keymap,
                 CurrentFileName,
@@ -465,16 +526,21 @@ namespace Captura.ViewModels
             }
         }
 
-        IImageProvider GetImageProvider(RecordingModelParams RecordingParams)
+        IImageProvider GetImageProviderWithOverlays(RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
-            var imageProvider = RecordingParams
-                .VideoSourceKind
-                ?.Source
-                ?.GetImageProvider(Settings.IncludeCursor);
+            var imageProvider = GetImageProvider(RecordingParams);
 
             return imageProvider == null
                 ? null
-                : new OverlayedImageProvider(imageProvider, GetOverlays(RecordingParams).ToArray());
+                : new OverlayedImageProvider(imageProvider, GetOverlays(RecordingParams, MouseKeyHook).ToArray());
+        }
+
+        IImageProvider GetImageProvider(RecordingModelParams RecordingParams)
+        {
+            return RecordingParams
+                .VideoSourceKind
+                ?.Source
+                ?.GetImageProvider(Settings.IncludeCursor);
         }
 
         public string CurrentFileName { get; private set; }

@@ -123,6 +123,19 @@ namespace DesktopDuplication
             _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width);
         }
 
+        public void DrawArrow(Point Start, Point End, Color Color, float Width)
+        {
+            // HACK: Not really an arrow
+            var props = new StrokeStyleProperties
+            {
+                EndCap = CapStyle.Triangle
+            };
+
+            var style = new StrokeStyle(_editorSession.RenderTarget.Factory, props);
+
+            _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width, style);
+        }
+
         public void FillRectangle(Color Color, RectangleF Rectangle)
         {
             _editorSession.RenderTarget.FillRectangle(Convert(Rectangle), Convert(Color));

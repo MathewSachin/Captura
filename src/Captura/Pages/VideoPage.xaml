@@ -100,6 +100,11 @@
                         <UniformGrid Rows="1"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
 
             <DockPanel Margin="0,5"
@@ -112,6 +117,33 @@
                 <xctk:IntegerUpDown Value="{Binding Settings.Video.ReplayDuration, Mode=TwoWay}"
                                     Margin="0,2"/>
             </DockPanel>
+
+            <StackPanel Visibility="{Binding ViewConditions.IsStepsMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label Content="Output type"
+                       FontWeight="Bold"/>
+
+                <ListView BorderThickness="0.4"
+                          SelectionMode="Single"                          
+                          Margin="0,5"
+                          ItemsSource="{Binding VideoWritersViewModel.AvailableStepWriters, Source={StaticResource ServiceLocator}}"
+                          SelectedValue="{Binding VideoWritersViewModel.SelectedStepsWriter, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+
+                <CheckBox Content="Include Scrolls"
+                          IsChecked="{Binding Settings.Steps.IncludeScrolls}"
+                          Margin="0,5"/>
+            </StackPanel>
 
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"

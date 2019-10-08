@@ -305,7 +305,7 @@ namespace Screna
         {
             ThrowIfDisposed();
 
-            _continueCapturing?.Reset();            
+            _continueCapturing?.Reset();
             _audioProvider?.Stop();
 
             _sw?.Stop();

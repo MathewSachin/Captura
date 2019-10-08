@@ -74,3 +74,18 @@ e.g. Stream to Twitch
 ```
 captura-cli start --encoder stream:rtmp://live.twitch.tv/app/TWITCH_KEY
 ```
+
+### Steps
+Use `steps:video` and `steps:images` as `encoder` for Steps recording mode.
+
+#### Record steps to video (avi)
+
+```
+captura-cli start --encoder steps:video
+```
+
+#### Record steps to a folder containing images (png)
+
+```
+captura-cli start --encoder steps:images
+```

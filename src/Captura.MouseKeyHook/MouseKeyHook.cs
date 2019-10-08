@@ -3,43 +3,80 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
-    class MouseKeyHook : IMouseKeyHook
+    public class MouseKeyHook : IMouseKeyHook
     {
         readonly IKeyboardMouseEvents _hook;
 
         public MouseKeyHook()
         {
             _hook = Hook.GlobalEvents();
-
-            _hook.KeyUp += (S, E) => KeyUp?.Invoke(this, E);
-            _hook.KeyDown += (S, E) => KeyDown?.Invoke(this, E);
-
-            _hook.MouseUp += (S, E) => MouseUp?.Invoke(this, E);
-            _hook.MouseDown += (S, E) => MouseDown?.Invoke(this, E);
-            _hook.MouseClick += (S, E) => MouseClick?.Invoke(this, E);
-            _hook.MouseDoubleClick += (S, E) => MouseDoubleClick?.Invoke(this, E);
-            _hook.MouseWheel += (S, E) => MouseWheel?.Invoke(this, E);
-            _hook.MouseMove += (S, E) => MouseMove?.Invoke(this, E);
-
-            _hook.MouseDragStarted += (S, E) => MouseDragStarted?.Invoke(this, E);
-            _hook.MouseDragFinished += (S, E) => MouseDragFinished?.Invoke(this, E);
-
-            _hook.KeyPress += (S, E) => KeyPress?.Invoke(this, E);
         }
 
-        public event MouseEventHandler MouseUp;
-        public event MouseEventHandler MouseDown;
-        public event MouseEventHandler MouseClick;
-        public event MouseEventHandler MouseDoubleClick;
-        public event MouseEventHandler MouseWheel;
-        public event MouseEventHandler MouseMove;
+        public event MouseEventHandler MouseUp
+        {
+            add => _hook.MouseUp += value;
+            remove => _hook.MouseUp -= value;
+        }
 
-        public event MouseEventHandler MouseDragStarted;
-        public event MouseEventHandler MouseDragFinished;
+        public event MouseEventHandler MouseDown
+        {
+            add => _hook.MouseDown += value;
+            remove => _hook.MouseDown -= value;
+        }
 
-        public event KeyEventHandler KeyUp;
-        public event KeyEventHandler KeyDown;
-        public event KeyPressEventHandler KeyPress;
+        public event MouseEventHandler MouseClick
+        {
+            add => _hook.MouseClick += value;
+            remove => _hook.MouseClick -= value;
+        }
+
+        public event MouseEventHandler MouseDoubleClick
+        {
+            add => _hook.MouseDoubleClick += value;
+            remove => _hook.MouseDoubleClick -= value;
+        }
+
+        public event MouseEventHandler MouseWheel
+        {
+            add => _hook.MouseWheel += value;
+            remove => _hook.MouseWheel -= value;
+        }
+
+        public event MouseEventHandler MouseMove
+        {
+            add => _hook.MouseMove += value;
+            remove => _hook.MouseMove -= value;
+        }
+
+        public event MouseEventHandler MouseDragStarted
+        {
+            add => _hook.MouseDragStarted += value;
+            remove => _hook.MouseDragStarted -= value;
+        }
+
+        public event MouseEventHandler MouseDragFinished
+        {
+            add => _hook.MouseDragFinished += value;
+            remove => _hook.MouseDragFinished -= value;
+        }
+
+        public event KeyEventHandler KeyUp
+        {
+            add => _hook.KeyUp += value;
+            remove => _hook.KeyUp -= value;
+        }
+
+        public event KeyEventHandler KeyDown
+        {
+            add => _hook.KeyDown += value;
+            remove => _hook.KeyDown -= value;
+        }
+
+        public event KeyPressEventHandler KeyPress
+        {
+            add => _hook.KeyPress += value;
+            remove => _hook.KeyPress -= value;
+        }
 
         public void Dispose()
         {

@@ -99,9 +99,9 @@ namespace Captura
             return new WindowProvider(Window, _previewWindow, IncludeCursor);
         }
 
-        public IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor)
+        public IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor, bool StepsMode)
         {
-            if (WindowsModule.Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove && !StepsMode)
             {
                 var output = FindOutput(Screen);
 
@@ -134,9 +134,9 @@ namespace Captura
             return match?.QueryInterface<Output1>();
         }
 
-        public IImageProvider GetAllScreensProvider(bool IncludeCursor)
+        public IImageProvider GetAllScreensProvider(bool IncludeCursor, bool StepsMode)
         {
-            if (WindowsModule.Windows8OrAbove)
+            if (WindowsModule.Windows8OrAbove && !StepsMode)
             {
                 return new DeskDuplFullScreenImageProvider(IncludeCursor, _previewWindow, this);
             }

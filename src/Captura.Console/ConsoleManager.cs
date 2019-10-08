@@ -244,6 +244,24 @@ namespace Captura
 
             var sharpAviWriterProvider = ServiceProvider.Get<SharpAviWriterProvider>();
 
+            // Steps in video
+            if (StartOptions.Encoder == "steps:video")
+            {
+                _settings.Video.RecorderMode = RecorderMode.Steps;
+
+                VideoWriterKind = null;
+                return new StepsVideoWriterItem(sharpAviWriterProvider.First());
+            }
+
+            // Steps in set of images
+            if (StartOptions.Encoder == "steps:images")
+            {
+                _settings.Video.RecorderMode = RecorderMode.Steps;
+
+                VideoWriterKind = null;
+                return new ImageFolderWriterItem();
+            }
+
             VideoWriterKind = sharpAviWriterProvider;
             return sharpAviWriterProvider.First();
         }

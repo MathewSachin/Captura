@@ -16,7 +16,8 @@ namespace Captura.ViewModels
         public IEnumerable<IVideoConverter> AvailablePostWriters { get; }
 
         public VideoWritersViewModel(IEnumerable<IVideoWriterProvider> WriterProviders,
-            IEnumerable<IVideoConverter> PostWriters)
+            IEnumerable<IVideoConverter> PostWriters,
+            SharpAviWriterProvider SharpAviWriterProvider)
         {
             VideoWriterProviders = WriterProviders.ToList();
 
@@ -27,6 +28,14 @@ namespace Captura.ViewModels
 
             if (VideoWriterProviders.Count > 0)
                 SelectedVideoWriterKind = VideoWriterProviders[0];
+
+            AvailableStepWriters = new IVideoWriterItem[]
+            {
+                new StepsVideoWriterItem(SharpAviWriterProvider.First()),
+                new ImageFolderWriterItem()
+            };
+
+            SelectedStepsWriter = AvailableStepWriters[0];
         }
 
         public void RefreshCodecs()
@@ -86,6 +95,16 @@ namespace Captura.ViewModels
         {
             get => _postWriter;
             set => Set(ref _postWriter, value ?? AvailablePostWriters.FirstOrDefault());
+        }
+
+        public IReadOnlyList<IVideoWriterItem> AvailableStepWriters { get; }
+
+        IVideoWriterItem _stepsWriter;
+
+        public IVideoWriterItem SelectedStepsWriter
+        {
+            get => _stepsWriter;
+            set => Set(ref _stepsWriter, value ?? AvailableStepWriters[0]);
         }
 
         public IEnumerable<RecorderMode> AvailableRecorderModes { get; } = Enum

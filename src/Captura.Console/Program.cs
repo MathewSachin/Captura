@@ -10,6 +10,7 @@ namespace Captura
 {
     static class Program
     {
+        [STAThread]
         static void Main(string[] Args)
         {
             User32.SetProcessDPIAware();

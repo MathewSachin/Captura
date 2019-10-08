@@ -28,6 +28,8 @@ namespace Captura.Models
 
         public string Icon { get; }
 
+        public bool SupportsStepsMode => true;
+
         public IVideoItem Source { get; }
 
         public IBitmapImage Capture(bool IncludeCursor)

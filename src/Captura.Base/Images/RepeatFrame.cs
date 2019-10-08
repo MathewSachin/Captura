@@ -38,6 +38,11 @@ namespace Captura
             throw new NotImplementedException();
         }
 
+        void IEditableFrame.DrawArrow(Point Start, Point End, Color Color, float Width)
+        {
+            throw new NotImplementedException();
+        }
+
         void IEditableFrame.DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity)
         {
             throw new NotImplementedException();

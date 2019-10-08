@@ -13,6 +13,8 @@ namespace Captura.Models
             Loc.LanguageChanged += L => RaisePropertyChanged(nameof(Name));
         }
 
+        public virtual bool SupportsStepsMode => true;
+
         public abstract IVideoItem Source { get; }
 
         public abstract string Name { get; }

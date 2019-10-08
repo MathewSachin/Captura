@@ -35,8 +35,8 @@ namespace Captura
 
         IImageProvider GetWindowProvider(IWindow Window, bool IncludeCursor);
 
-        IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor);
+        IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor, bool StepsMode);
 
-        IImageProvider GetAllScreensProvider(bool IncludeCursor);
+        IImageProvider GetAllScreensProvider(bool IncludeCursor, bool StepsMode);
     }
 }

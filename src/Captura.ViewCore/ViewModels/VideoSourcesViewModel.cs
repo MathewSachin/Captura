@@ -8,6 +8,7 @@ namespace Captura.ViewModels
     public class VideoSourcesViewModel : NotifyPropertyChanged
     {
         readonly FullScreenSourceProvider _fullScreenProvider;
+        readonly Settings _settings;
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
 
         readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
@@ -16,10 +17,12 @@ namespace Captura.ViewModels
 
         public VideoSourcesViewModel(FullScreenSourceProvider FullScreenProvider,
             NoVideoSourceProvider NoVideoSourceProvider,
-            IEnumerable<IVideoSourceProvider> SourceProviders)
+            IEnumerable<IVideoSourceProvider> SourceProviders,
+            Settings Settings)
         {
             this.NoVideoSourceProvider = NoVideoSourceProvider;
             _fullScreenProvider = FullScreenProvider;
+            _settings = Settings;
             VideoSources = SourceProviders;
 
             SetDefaultSource();
@@ -35,6 +38,10 @@ namespace Captura.ViewModels
             try
             {
                 if (NewSourceProvider == null || _videoSourceKind == NewSourceProvider)
+                    return;
+
+                // Doesn't support Steps mode
+                if (_settings.Video.RecorderMode == RecorderMode.Steps && !NewSourceProvider.SupportsStepsMode)
                     return;
 
                 if (CallOnSelect && !NewSourceProvider.OnSelect())

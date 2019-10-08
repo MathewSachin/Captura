@@ -83,7 +83,14 @@ namespace Captura.ViewModels
                         .Select(M => M is WebcamSourceProvider),
                     WebcamModel
                         .ObserveProperty(M => M.SelectedCam)
-                        .Select(M => M is NoWebcamItem)
+                        .Select(M => M is NoWebcamItem),
+                    Settings
+                        .Video
+                        .ObserveProperty(M => M.RecorderMode)
+                        .Select(M => M == RecorderMode.Steps),
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M.SupportsStepsMode),
                 }
                 .CombineLatest(M =>
                 {
@@ -91,6 +98,11 @@ namespace Captura.ViewModels
                     var audioOnlyMode = M[1];
                     var webcamMode = M[2];
                     var noWebcam = M[3];
+                    var stepsMode = M[4];
+                    var supportsStepsMode = M[5];
+
+                    if (stepsMode)
+                        return supportsStepsMode;
 
                     if (audioOnlyMode)
                         return audioEnabled;
@@ -296,7 +308,9 @@ namespace Captura.ViewModels
             if (_recordingModel.StartRecording(new RecordingModelParams
             {
                 VideoSourceKind = _videoSourcesViewModel.SelectedVideoSourceKind,
-                VideoWriter = _videoWritersViewModel.SelectedVideoWriter,
+                VideoWriter = Settings.Video.RecorderMode == RecorderMode.Steps
+                    ? _videoWritersViewModel.SelectedStepsWriter
+                    : _videoWritersViewModel.SelectedVideoWriter,
                 Microphone = Settings.Audio.RecordMicrophone ? _audioSourceViewModel.SelectedMicrophone : null,
                 Speaker = Settings.Audio.RecordSpeaker ? _audioSourceViewModel.SelectedSpeaker : null
             }))

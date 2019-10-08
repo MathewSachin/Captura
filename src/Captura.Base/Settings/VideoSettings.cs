@@ -72,7 +72,7 @@
 
         public RecorderMode RecorderMode
         {
-            get => Get(RecorderMode.Recording);
+            get => Get(RecorderMode.Video);
             set => Set(value);
         }
 

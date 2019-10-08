@@ -3,9 +3,9 @@
     public enum RecorderMode
     {
         //AudioOnly,
-        Recording,
+        Video,
         //Streaming,
-        //Steps,
+        Steps,
         Replay
     }
 }

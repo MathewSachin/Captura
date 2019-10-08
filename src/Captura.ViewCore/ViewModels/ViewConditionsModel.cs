@@ -24,6 +24,28 @@ namespace Captura.ViewModels
                 .Select(M => M is NoVideoSourceProvider)
                 .ToReadOnlyReactivePropertySlim();
 
+            IsStepsMode = Settings
+                .Video
+                .ObserveProperty(M => M.RecorderMode)
+                .Select(M => M == RecorderMode.Steps)
+                .ToReadOnlyReactivePropertySlim();
+
+            IsNotAudioOrStepsMode = new[]
+                {
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M is NoVideoSourceProvider),
+                    IsStepsMode
+                }
+                .CombineLatest(M =>
+                {
+                    var audioMode = M[0];
+                    var stepsMode = M[1];
+
+                    return !audioMode && !stepsMode;
+                })
+                .ToReadOnlyReactivePropertySlim();
+
             MultipleVideoWriters = VideoWritersViewModel.AvailableVideoWriters
                 .ObserveProperty(M => M.Count)
                 .Select(M => M > 1)
@@ -93,11 +115,27 @@ namespace Captura.ViewModels
                 .Select(M => M is RegionSourceProvider || M is AroundMouseSourceProvider)
                 .Select(M => !M)
                 .ToReadOnlyReactivePropertySlim();
+
+            StepsBtnEnabled = new[]
+                {
+                    IsEnabled,
+                    VideoSourcesViewModel
+                        .ObserveProperty(M => M.SelectedVideoSourceKind)
+                        .Select(M => M.SupportsStepsMode)
+                }
+                .CombineLatestValuesAreAllTrue()
+                .ToReadOnlyReactivePropertySlim();
         }
+
+        public IReadOnlyReactiveProperty<bool> StepsBtnEnabled { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsNotAudioOrStepsMode { get; }
 
         public IReadOnlyReactiveProperty<bool> IsRegionMode { get; }
 
         public IReadOnlyReactiveProperty<bool> IsAudioMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsStepsMode { get; }
 
         public IReadOnlyReactiveProperty<bool> MultipleVideoWriters { get; }
 

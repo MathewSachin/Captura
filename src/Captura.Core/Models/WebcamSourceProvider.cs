@@ -29,6 +29,8 @@ namespace Captura.Models
 
         public IVideoItem Source { get; }
 
+        public bool SupportsStepsMode => false;
+
         public IBitmapImage Capture(bool IncludeCursor)
         {
             return _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
