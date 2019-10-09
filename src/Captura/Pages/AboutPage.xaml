@@ -4,6 +4,7 @@
       xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       xmlns:captura="clr-namespace:Captura"
       x:Class="Captura.AboutPage"
+      Title="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"
       DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
     <Grid>
         <Grid.Resources>

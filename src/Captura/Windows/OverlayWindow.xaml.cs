@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -33,8 +34,6 @@ namespace Captura
             {
                 ServiceProvider.Get<Settings>().Save();
             };
-
-            UpdateBackground();
         }
 
         static OverlayWindow _instance;
@@ -245,12 +244,16 @@ namespace Captura
             }, true, 2);
         }
         
-        void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
+        async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
+            await UpdateBackground();
+
             PlaceOverlays();
+
+            UpdateScale();
         }
 
-        async void UpdateBackground()
+        async Task UpdateBackground()
         {
             var vm = ServiceProvider.Get<VideoSourcesViewModel>();
 
@@ -355,11 +358,6 @@ namespace Captura
         }
 
         void OverlayWindow_OnSizeChanged(object Sender, SizeChangedEventArgs E)
-        {
-            UpdateScale();
-        }
-
-        void Img_OnLoaded(object Sender, RoutedEventArgs E)
         {
             UpdateScale();
         }
