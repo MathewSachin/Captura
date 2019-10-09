@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Interop;
 using DesktopDuplication;
+using Reactive.Bindings.Extensions;
 using Screna;
 using SharpDX.Direct3D9;
 
@@ -10,27 +11,24 @@ namespace Captura.Models
     // ReSharper disable once ClassNeverInstantiated.Global
     public class PreviewWindowService : IPreviewWindow
     {
-        readonly PreviewWindow _previewWindow = new PreviewWindow();
-
         D3D9PreviewAssister _d3D9PreviewAssister;
         IntPtr _backBufferPtr;
         Texture _texture;
+        readonly VisualSettings _visualSettings;
+
+        public void Show()
+        {
+            _visualSettings.Expanded = true;
+        }
 
         public bool IsVisible { get; private set; }
 
-        public PreviewWindowService()
+        public PreviewWindowService(VisualSettings VisualSettings)
         {
-            _previewWindow.IsVisibleChanged += (S, E) => IsVisible = _previewWindow.IsVisible;
+            _visualSettings = VisualSettings;
 
-            IsVisible = _previewWindow.IsVisible;
-
-            // Prevent Closing by User
-            _previewWindow.Closing += (S, E) =>
-            {
-                E.Cancel = true;
-
-                _previewWindow.Hide();
-            };
+            VisualSettings.ObserveProperty(M => M.Expanded)
+                .Subscribe(M => IsVisible = M);
         }
 
         IBitmapFrame _lastFrame;
@@ -46,9 +44,11 @@ namespace Captura.Models
                 return;
             }
 
-            _previewWindow.Dispatcher.Invoke(() =>
+            var win = MainWindow.Instance;
+
+            win.Dispatcher.Invoke(() =>
             {
-                _previewWindow.DisplayImage.Image = null;
+                win.DisplayImage.Image = null;
 
                 _lastFrame?.Dispose();
                 _lastFrame = Frame;
@@ -58,12 +58,12 @@ namespace Captura.Models
                 switch (Frame)
                 {
                     case DrawingFrame drawingFrame:
-                        _previewWindow.WinFormsHost.Visibility = Visibility.Visible;
-                        _previewWindow.DisplayImage.Image = drawingFrame.Bitmap;
+                        win.WinFormsHost.Visibility = Visibility.Visible;
+                        win.DisplayImage.Image = drawingFrame.Bitmap;
                         break;
 
                     case Texture2DFrame texture2DFrame:
-                        _previewWindow.WinFormsHost.Visibility = Visibility.Collapsed;
+                        win.WinFormsHost.Visibility = Visibility.Collapsed;
                         if (_d3D9PreviewAssister == null)
                         {
                             _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
@@ -81,20 +81,25 @@ namespace Captura.Models
 
         void Invalidate(IntPtr BackBufferPtr, int Width, int Height)
         {
-            _previewWindow.D3DImage.Lock();
-            _previewWindow.D3DImage.SetBackBuffer(D3DResourceType.IDirect3DSurface9, BackBufferPtr);
+            var win = MainWindow.Instance;
+
+            win.D3DImage.Lock();
+            win.D3DImage.SetBackBuffer(D3DResourceType.IDirect3DSurface9, BackBufferPtr);
 
             if (BackBufferPtr != IntPtr.Zero)
-                _previewWindow.D3DImage.AddDirtyRect(new Int32Rect(0, 0, Width, Height));
+                win.D3DImage.AddDirtyRect(new Int32Rect(0, 0, Width, Height));
 
-            _previewWindow.D3DImage.Unlock();
+            win.D3DImage.Unlock();
         }
 
         public void Dispose()
         {
-            _previewWindow.Dispatcher.Invoke(() =>
+            var win = MainWindow.Instance;
+
+            win.Dispatcher.Invoke(() =>
             {
-                _previewWindow.DisplayImage.Image = null;
+                win.DisplayImage.Image = null;
+                win.WinFormsHost.Visibility = Visibility.Collapsed;
 
                 _lastFrame?.Dispose();
                 _lastFrame = null;
@@ -110,11 +115,6 @@ namespace Captura.Models
                     _d3D9PreviewAssister = null;
                 }
             });
-        }
-
-        public void Show()
-        {
-            _previewWindow.Dispatcher.Invoke(() => _previewWindow.ShowAndFocus());
         }
     }
 }

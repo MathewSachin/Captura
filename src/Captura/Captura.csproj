@@ -224,9 +224,6 @@
     <Compile Include="Windows\LicensesWindow.xaml.cs">
       <DependentUpon>LicensesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\PreviewWindow.xaml.cs">
-      <DependentUpon>PreviewWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ImageOverlaySettingsControl.xaml.cs">
       <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
     </Compile>
@@ -477,10 +474,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\LicensesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\PreviewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -101,6 +101,7 @@ namespace Captura
             Binder.Bind(() => Binder.Get<Settings>().Imgur);
             Binder.Bind(() => Binder.Get<Settings>().Steps);
             Binder.Bind(() => Binder.Get<Settings>().Video);
+            Binder.Bind(() => Binder.Get<Settings>().UI);
             Binder.Bind(() => Binder.Get<Settings>().WebcamOverlay);
         }
     }

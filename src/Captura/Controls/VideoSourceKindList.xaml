@@ -5,7 +5,7 @@
               IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
               ItemsSource="{Binding VideoSourcesViewModel.VideoSources, Source={StaticResource ServiceLocator}}"
               SelectedValue="{Binding VideoSourcesViewModel.SelectedVideoSourceKind, Mode=TwoWay, Delay=10, Source={StaticResource ServiceLocator}}"
-              BorderThickness="0.4"
+              BorderThickness="0.7"
               SelectionMode="Single">
         <ListView.Template>
             <ControlTemplate TargetType="ListView">

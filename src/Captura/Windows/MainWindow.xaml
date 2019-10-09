@@ -255,9 +255,28 @@
                     </Grid>
                 </DockPanel>
             </Expander.Header>
-            <DockPanel Margin="-5,0,0,0"
+            <DockPanel Margin="-5,0"
                        Height="300">
-                <Frame Source="../Pages/MainPage.xaml"/>
+                <Frame Source="../Pages/MainPage.xaml"
+                       DockPanel.Dock="Top"/>
+
+                <GridSplitter Height="1"
+                              Margin="0,2"
+                              DockPanel.Dock="Top"/>
+
+                <Grid xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+                      xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore">
+                    <WindowsFormsHost Name="WinFormsHost"
+                                      Visibility="Collapsed">
+                        <wf:PictureBox x:Name="DisplayImage"
+                                       SizeMode="Zoom"/>
+                    </WindowsFormsHost>
+                    <Image>
+                        <Image.Source>
+                            <interop:D3DImage x:Name="D3DImage"/>
+                        </Image.Source>
+                    </Image>
+                </Grid>
             </DockPanel>
         </Expander>
     </Grid>
