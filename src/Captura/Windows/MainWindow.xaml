@@ -206,6 +206,9 @@
                   IsExpanded="{Binding Settings.UI.Expanded}">
             <Expander.Header>
                 <DockPanel VerticalAlignment="Center">
+                    <local:CollapsedBar DockPanel.Dock="Bottom"
+                                        Margin="-30,0,0,0"/>
+
                     <local:ScreenShotButton/>
                     <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
                                         Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
@@ -257,11 +260,5 @@
                 <Frame Source="../Pages/MainPage.xaml"/>
             </DockPanel>
         </Expander>
-        
-        <Grid Grid.Row="1"
-              Margin="2,0,0,5"
-              Visibility="{Binding Settings.UI.Expanded, Converter={StaticResource NegatingConverter}}">
-            <local:CollapsedBar/>
-        </Grid>
     </Grid>
 </Window>

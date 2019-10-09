@@ -28,6 +28,9 @@
                         Padding="5,2"
                         Margin="0,0,5,0">
                     <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Settings.Video.RecorderMode}"
+                               Foreground="{DynamicResource Accent}"
+                               ContentStringFormat="{}{0}: "/>
                         <Label Content="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Name, Source={StaticResource ServiceLocator}}"/>
                         <Label Content="-"
                                Visibility="{Binding VideoSourcesViewModel.SelectedVideoSourceKind.Source.Name, Source={StaticResource ServiceLocator}, Converter={StaticResource NotNullConverter}}"
@@ -37,8 +40,6 @@
                     </StackPanel>
                 </Border>
             </DockPanel>
-
-            <captura:VideoSourceKindList/>
 
             <Grid Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>

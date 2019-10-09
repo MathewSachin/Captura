@@ -5,32 +5,6 @@
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
       x:Class="Captura.MainPage">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal"
-                        DockPanel.Dock="Right">
-                <local:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
-                                    Command="{Binding OpenOutputFolderCommand}"
-                                    IconData="{Binding Icons.Folder, Source={StaticResource ServiceLocator}}"/>
-                <local:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
-                                    Click="OpenSettings"
-                                    Foreground="{DynamicResource Accent}"
-                                    IconData="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Margin="10,0,0,0">
-                <local:ModernToggleButton ToolTip="Microphone"
-                                          IconData="{Binding Icons.Mic, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.Audio.RecordMicrophone, Mode=TwoWay}"/>
-
-                <local:ModernToggleButton ToolTip="Speaker"
-                                          IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
-                                          IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
-            </StackPanel>
-            <Label Content="{Binding Settings.Video.RecorderMode}"
-                   Foreground="{DynamicResource Accent}"
-                   HorizontalAlignment="Center"/>
-        </DockPanel>
-
         <Frame Source="HomePage.xaml"
                Margin="5"/>
     </DockPanel>
