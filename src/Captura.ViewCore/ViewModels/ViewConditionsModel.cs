@@ -110,6 +110,11 @@ namespace Captura.ViewModels
                 .Select(M => M is AroundMouseSourceProvider)
                 .ToReadOnlyReactivePropertySlim();
 
+            IsWebcamMode = VideoSourcesViewModel
+                .ObserveProperty(M => M.SelectedVideoSourceKind)
+                .Select(M => M is WebcamSourceProvider)
+                .ToReadOnlyReactivePropertySlim();
+
             ShowSourceNameBox = VideoSourcesViewModel
                 .ObserveProperty(M => M.SelectedVideoSourceKind)
                 .Select(M => M is RegionSourceProvider || M is AroundMouseSourceProvider)
@@ -136,6 +141,8 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> IsAudioMode { get; }
 
         public IReadOnlyReactiveProperty<bool> IsStepsMode { get; }
+
+        public IReadOnlyReactiveProperty<bool> IsWebcamMode { get; }
 
         public IReadOnlyReactiveProperty<bool> MultipleVideoWriters { get; }
 

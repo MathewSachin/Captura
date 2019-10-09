@@ -47,8 +47,7 @@ namespace Captura
 
         public void SetupPreview()
         {
-            // TODO: Open Webcam window on Preview click
-            //_webcamModel.PreviewClicked += this.ShowAndFocus;
+            _webcamModel.PreviewClicked += SettingsWindow.ShowWebcamPage;
 
             IsVisibleChanged += (S, E) => SwitchWebcamPreview();
 

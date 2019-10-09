@@ -18,6 +18,15 @@
         </Grid.Resources>
         <StackPanel Margin="5,0">
             <DockPanel Margin="0,-10,0,15">
+                <ComboBox ItemsSource="{Binding WebcamModel.AvailableCams, Source={StaticResource ServiceLocator}}"
+                          SelectedItem="{Binding WebcamModel.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                          IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
+                          DisplayMemberPath="Name"
+                          DockPanel.Dock="Right"
+                          Margin="5,0,0,0"
+                          Width="250"
+                          Visibility="{Binding ViewConditions.IsWebcamMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <Border BorderThickness="0.5"
                         BorderBrush="{DynamicResource ModernButtonBorder}"
                         Padding="5,2">

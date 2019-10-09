@@ -42,11 +42,20 @@ namespace Captura
             }
         }
 
-        public static void ShowFFmpegLogs()
+        static void ShowPage(string PageName)
         {
             ShowInstance();
 
-            _instance.NavFrame.Navigate(new Uri("/Pages/FFmpegLogsPage.xaml", UriKind.RelativeOrAbsolute));
+            _instance.NavFrame.Navigate(new Uri($"/Pages/{PageName}Page.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        public static void ShowFFmpegLogs() => ShowPage("FFmpegLogs");
+
+        public static void ShowWebcamPage()
+        {
+            ShowInstance();
+
+            _instance.NavFrame.Navigate(ServiceProvider.Get<WebcamPage>());
         }
     }
 }
