@@ -2,10 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
-        Height="600"
+        Height="630"
         Width="650"
         Background="{DynamicResource WindowBackground}">
     <Grid>
-        <Frame Source="../Pages/SettingsPage.xaml"/>
+        <Frame Source="../Pages/SettingsPage.xaml"
+               NavigationUIVisibility="Visible"
+               Padding="5">
+            <Frame.CommandBindings>
+                <CommandBinding Command="GoToPage"
+                                Executed="OnGoToPage"/>
+            </Frame.CommandBindings>
+        </Frame>
     </Grid>
 </Window>

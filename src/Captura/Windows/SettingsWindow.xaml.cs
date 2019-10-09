@@ -1,4 +1,8 @@
-﻿namespace Captura
+﻿using System;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace Captura
 {
     public partial class SettingsWindow
     {
@@ -19,6 +23,23 @@
             }
 
             _instance.ShowAndFocus();
+        }
+
+        void OnGoToPage(object Sender, ExecutedRoutedEventArgs E)
+        {
+            if (Sender is Frame frame)
+            {
+                switch (E.Parameter)
+                {
+                    case string s:
+                        frame.Navigate(new Uri(s, UriKind.RelativeOrAbsolute));
+                        break;
+
+                    case { } o:
+                        frame.Navigate(o);
+                        break;
+                }
+            }
         }
     }
 }

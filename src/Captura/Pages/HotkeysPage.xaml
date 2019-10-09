@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:Captura"
       xmlns:hotkeys="clr-namespace:Captura;assembly=Captura.Hotkeys"
-      DataContext="{Binding HotkeysViewModel, Source={StaticResource ServiceLocator}}">
+      DataContext="{Binding HotkeysViewModel, Source={StaticResource ServiceLocator}}"
+      Title="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
     <Grid>
         <DockPanel Margin="5">
             <Grid DockPanel.Dock="Top">

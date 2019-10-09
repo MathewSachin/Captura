@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:captura="clr-namespace:Captura"
-      DataContext="{Binding ProxySettingsViewModel, Source={StaticResource ServiceLocator}}">
+      DataContext="{Binding ProxySettingsViewModel, Source={StaticResource ServiceLocator}}"
+      Title="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
     <Grid Margin="5,0">
         <StackPanel>
             <Label Margin="0,0,0,5"

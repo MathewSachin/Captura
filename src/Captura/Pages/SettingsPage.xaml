@@ -1,66 +1,119 @@
 ﻿<Page x:Class="Captura.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-      mc:Ignorable="d" 
-      d:DesignHeight="450"
-      d:DesignWidth="800">
-    <Grid>
-        <TabControl Background="Transparent"
-                    TabStripPlacement="Left"
-                    BorderThickness="0"
-                    Margin="10,5">
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <GridSplitter Width="1"
-                                      Margin="5,0"
-                                      IsEnabled="False"/>
-                        <mui:TransitioningContentControl Content="{Binding}"/>
-                    </DockPanel>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-            <TabItem Header="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="VideoPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Content="{Binding WebcamPage, Source={StaticResource ServiceLocator}}"/>
-            </TabItem>
-            <TabItem Header="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="AudioPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="ScreenShotsPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="RecentPage.xaml"/>
-            </TabItem>
-            <TabItem Header="UI">
-                <Frame Source="InterfacePage.xaml"/>
-            </TabItem>
-            <TabItem Header="FFmpeg">
-                <Frame Source="FFmpegPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="HotkeysPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="ProxyPage.xaml"/>
-            </TabItem>
-            <TabItem Header="Sounds">
-                <Frame Source="SoundsPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="TrayIconPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="FileNameFormatPage.xaml"/>
-            </TabItem>
-            <TabItem Header="{Binding About, Source={StaticResource Loc}, Mode=OneWay}">
-                <Frame Source="AboutPage.xaml"/>
-            </TabItem>
-        </TabControl>
-    </Grid>
+      Title="Home">
+    <DockPanel>
+        <Label Margin="10"
+               DockPanel.Dock="Top">
+            <TextBlock Text="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
+                       Style="{StaticResource Title}"/>
+        </Label>
+
+        <Button Content="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"
+                CommandParameter="/Pages/AboutPage.xaml"
+                DockPanel.Dock="Bottom"
+                Command="GoToPage"
+                Margin="5"/>
+
+        <GridSplitter Height="1"
+                      Margin="0,2"
+                      DockPanel.Dock="Bottom"/>
+
+        <ScrollViewer>
+            <WrapPanel VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       MaxWidth="900">
+                <WrapPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Command" Value="GoToPage"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                    <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                        <Setter Property="Margin" Value="30,10"/>
+                        <Setter Property="Width" Value="50"/>
+                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Stretch" Value="Uniform"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource Title}">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style>
+                </WrapPanel.Resources>
+
+                <Button CommandParameter="/Pages/VideoPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Video, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="{Binding WebcamPage, Source={StaticResource ServiceLocator}}">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/AudioPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/ScreenShotsPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Region, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/RecentPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/InterfacePage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Window, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="UI"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/FFmpegPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.VideoFile, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="FFmpeg"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/HotkeysPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/ProxyPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/SoundsPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding Sounds, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/TrayIconPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+                <Button CommandParameter="/Pages/FileNameFormatPage.xaml">
+                    <StackPanel>
+                        <Path Data="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Page>

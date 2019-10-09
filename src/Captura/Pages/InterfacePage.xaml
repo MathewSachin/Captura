@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:loc="clr-namespace:Captura;assembly=Captura.Loc"
-      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
+      DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
+      Title="UI">
     <Grid>        
         <ScrollViewer>
             <StackPanel Margin="5">

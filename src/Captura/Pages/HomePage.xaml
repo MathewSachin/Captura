@@ -16,7 +16,7 @@
                 <Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"/>
             </Style>
         </Grid.Resources>
-        <StackPanel Margin="5,0,0,0">
+        <StackPanel Margin="5,0">
             <DockPanel Margin="0,-10,0,15">
                 <Border BorderThickness="0.5"
                         BorderBrush="{DynamicResource ModernButtonBorder}"
