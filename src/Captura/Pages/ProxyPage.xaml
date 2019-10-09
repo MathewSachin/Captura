@@ -7,11 +7,6 @@
       Title="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}">
     <Grid Margin="5,0">
         <StackPanel>
-            <Label Margin="0,0,0,5"
-                   Content="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"
-                   FontWeight="Bold"
-                   FontSize="15"/>
-
             <ListView ItemsSource="{Binding ProxyTypes}"
                       SelectedValue="{Binding ProxySettings.Type}"
                       Margin="0,0,0,10"

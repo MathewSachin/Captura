@@ -1,19 +1,45 @@
 ﻿<Window x:Class="Captura.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         Title="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
         Height="630"
         Width="650"
         Background="{DynamicResource WindowBackground}">
-    <Grid>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="5,10,0,0">
+            <mui:ModernButton IconData="{Binding Icons.Back, Source={StaticResource ServiceLocator}}"
+                              IsEnabled="{Binding CanGoBack, ElementName=NavFrame}"
+                              EllipseDiameter="40"
+                              IconWidth="35"
+                              IconHeight="25"
+                              Margin="5,0,2,0"
+                              Click="OnGoBack"/>
+
+            <mui:ModernButton IconData="{Binding Icons.Forward, Source={StaticResource ServiceLocator}}"
+                              IsEnabled="{Binding CanGoForward, ElementName=NavFrame}"
+                              Click="OnGoNext"/>
+
+            <Label>
+                <TextBlock Text="{Binding Content.Title, ElementName=NavFrame}"
+                           Style="{StaticResource Title}"
+                           Margin="10,0,0,0"/>
+            </Label>
+        </DockPanel>
+
+        <GridSplitter DockPanel.Dock="Top"
+                      Height="1"
+                      Margin="0,10"/>
+
         <Frame Source="../Pages/SettingsPage.xaml"
-               NavigationUIVisibility="Visible"
+               NavigationUIVisibility="Hidden"
                Name="NavFrame"
-               Padding="5">
+               Padding="5,0">
             <Frame.CommandBindings>
                 <CommandBinding Command="GoToPage"
                                 Executed="OnGoToPage"/>
             </Frame.CommandBindings>
         </Frame>
-    </Grid>
+    </DockPanel>
 </Window>

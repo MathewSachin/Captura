@@ -8,11 +8,6 @@
     <Grid>        
         <ScrollViewer>
             <StackPanel Margin="5">
-                <Label Margin="0,0,0,5"
-                       Content="UI"
-                       FontWeight="Bold"
-                       FontSize="15"/>
-                
                 <DockPanel Margin="5,5,0,5">
                     <Path Data="{Binding Icons.Translate, Source={StaticResource ServiceLocator}}"
                           Width="15"

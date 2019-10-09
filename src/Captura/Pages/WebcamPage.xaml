@@ -4,10 +4,9 @@
       xmlns:captura="clr-namespace:Captura"
       Title="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
-    <Grid Margin="5">
+    <Grid Margin="5,0">
         <DockPanel>
-            <DockPanel Margin="0,0,0,10"
-                       DockPanel.Dock="Top">
+            <DockPanel DockPanel.Dock="Top">
                 <captura:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
                                       Command="{Binding WebcamModel.RefreshCommand, Source={StaticResource ServiceLocator}}"
                                       IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"
@@ -18,12 +17,6 @@
                                       IconData="{Binding Icons.Camera, Source={StaticResource ServiceLocator}}"
                                       DockPanel.Dock="Right"/>
 
-                <Label Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
-            </DockPanel>
-
-            <DockPanel Margin="0,5"
-                       DockPanel.Dock="Top">
                 <Path Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"
                       Width="15"
                       Height="15"
@@ -36,9 +29,10 @@
                 <ComboBox ItemsSource="{Binding WebcamModel.AvailableCams, Source={StaticResource ServiceLocator}}"
                           SelectedItem="{Binding WebcamModel.SelectedCam, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
                           IsEnabled="{Binding ViewConditions.CanChangeWebcam.Value, Source={StaticResource ServiceLocator}}"
-                          DisplayMemberPath="Name"/>
+                          DisplayMemberPath="Name"
+                          VerticalAlignment="Center"
+                          Margin="0,0,7,0"/>
             </DockPanel>
-
             
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.WebcamOverlay}"

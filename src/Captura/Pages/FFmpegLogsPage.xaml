@@ -5,10 +5,6 @@
       Title="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"
       DataContext="{Binding FFmpegLog, Source={StaticResource ServiceLocator}}">
     <DockPanel Margin="5">
-        <Label Content="{Binding FFmpegLog, Source={StaticResource Loc}, Mode=OneWay}"
-               Margin="10,0"
-               DockPanel.Dock="Top"/>
-
         <ListView ItemsSource="{Binding LogItems}"
                   SelectedItem="{Binding SelectedLogItem, Mode=TwoWay}"
                   Width="200"

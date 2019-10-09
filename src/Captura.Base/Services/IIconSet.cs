@@ -7,6 +7,8 @@ namespace Captura
 
         string Arrow { get; }
 
+        string Back { get; }
+
         string Border { get; }
 
         string Brightness { get; }
@@ -54,6 +56,8 @@ namespace Captura
         string Folder { get; }
 
         string Font { get; }
+
+        string Forward { get; }
 
         string Game { get; }
 

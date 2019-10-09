@@ -14,12 +14,8 @@
                                       DockPanel.Dock="Right"/>
 
                 <TextBlock Text="{Binding AudioSource.Name, Source={StaticResource ServiceLocator}}"
-                           FontSize="10"
                            Foreground="{DynamicResource Accent}"
                            DockPanel.Dock="Bottom"/>
-
-                <Label Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
-                       FontWeight="Bold"/>
             </DockPanel>
 
             <CheckBox Content="Record Microphone"

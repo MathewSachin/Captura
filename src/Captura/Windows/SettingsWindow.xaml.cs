@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -56,6 +57,16 @@ namespace Captura
             ShowInstance();
 
             _instance.NavFrame.Navigate(ServiceProvider.Get<WebcamPage>());
+        }
+
+        void OnGoBack(object Sender, RoutedEventArgs E)
+        {
+            NavFrame.GoBack();
+        }
+
+        void OnGoNext(object Sender, RoutedEventArgs E)
+        {
+            NavFrame.GoForward();
         }
     }
 }
