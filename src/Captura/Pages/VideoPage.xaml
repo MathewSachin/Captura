@@ -188,7 +188,8 @@
                         Margin="5,0,0,0"
                         Visibility="{Binding ViewConditions.IsFFmpeg.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
                         Content="{Binding FFmpegLog, Source={StaticResource Loc}}"
-                        Click="OpenFFmpegLog"
+                        Command="GoToPage"
+                        CommandParameter="/Pages/FFmpegLogsPage.xaml"
                         Padding="10,0"/>
 
                 <ComboBox ItemsSource="{Binding VideoWritersViewModel.AvailableVideoWriters, Source={StaticResource ServiceLocator}}" 

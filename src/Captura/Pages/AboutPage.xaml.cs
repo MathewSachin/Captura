@@ -6,16 +6,6 @@ namespace Captura
 {
     public partial class AboutPage
     {
-        void ViewLicenses(object Sender, RoutedEventArgs E)
-        {
-            LicensesWindow.ShowInstance();
-        }
-
-        void ViewCrashLogs(object Sender, RoutedEventArgs E)
-        {
-            CrashLogsWindow.ShowInstance();
-        }
-
         void OpenImageEditor(object Sender, RoutedEventArgs E)
         {
             new ImageEditorWindow().ShowAndFocus();

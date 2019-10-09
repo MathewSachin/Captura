@@ -86,7 +86,8 @@
                     </DockPanel>
                 </Button>
 
-                <Button Click="ViewLicenses"
+                <Button Command="GoToPage"
+                        CommandParameter="/Pages/LicensesPage.xaml"
                         Content="{Binding ViewLicenses, Source={StaticResource Loc}, Mode=OneWay}"
                         Margin="3"/>
 
@@ -106,7 +107,8 @@
                     </DockPanel>
                 </Button>
 
-                <Button Click="ViewCrashLogs"
+                <Button Command="GoToPage"
+                        CommandParameter="/Pages/CrashLogsPage.xaml"
                         Margin="3">
                     <DockPanel>
                         <Path Data="{Binding Icons.Error, Source={StaticResource ServiceLocator}}"

@@ -41,5 +41,12 @@ namespace Captura
                 }
             }
         }
+
+        public static void ShowFFmpegLogs()
+        {
+            ShowInstance();
+
+            _instance.NavFrame.Navigate(new Uri("/Pages/FFmpegLogsPage.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }

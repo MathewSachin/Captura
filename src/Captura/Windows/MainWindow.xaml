@@ -266,6 +266,9 @@
 
                 <Grid xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                       xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore">
+                    <Label Content="Preview"
+                           HorizontalAlignment="Center"
+                           Opacity="0.7"/>
                     <WindowsFormsHost Name="WinFormsHost"
                                       Visibility="Collapsed">
                         <wf:PictureBox x:Name="DisplayImage"

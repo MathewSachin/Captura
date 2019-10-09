@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Captura.ViewModels;
 
 namespace Captura
 {
@@ -8,11 +7,6 @@ namespace Captura
         public VideoPage()
         {
             InitializeComponent();
-        }
-
-        void OpenFFmpegLog(object Sender, RoutedEventArgs E)
-        {
-            FFmpegLogWindow.ShowInstance();
         }
 
         void OpenOverlayManager(object Sender, RoutedEventArgs E)

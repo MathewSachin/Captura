@@ -8,6 +8,7 @@
     <Grid>
         <Frame Source="../Pages/SettingsPage.xaml"
                NavigationUIVisibility="Visible"
+               Name="NavFrame"
                Padding="5">
             <Frame.CommandBindings>
                 <CommandBinding Command="GoToPage"

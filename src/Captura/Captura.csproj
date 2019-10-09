@@ -199,8 +199,8 @@
     <Compile Include="Windows\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\CrashLogsWindow.xaml.cs">
-      <DependentUpon>CrashLogsWindow.xaml</DependentUpon>
+    <Compile Include="Pages\CrashLogsPage.xaml.cs">
+      <DependentUpon>CrashLogsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TrimmerWindow.xaml.cs">
       <DependentUpon>TrimmerWindow.xaml</DependentUpon>
@@ -221,8 +221,8 @@
     <Compile Include="Windows\OverlayWindow.xaml.cs">
       <DependentUpon>OverlayWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\LicensesWindow.xaml.cs">
-      <DependentUpon>LicensesWindow.xaml</DependentUpon>
+    <Compile Include="Pages\LicensesPage.xaml.cs">
+      <DependentUpon>LicensesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ImageOverlaySettingsControl.xaml.cs">
       <DependentUpon>ImageOverlaySettingsControl.xaml</DependentUpon>
@@ -261,8 +261,8 @@
     <Compile Include="Pages\FFmpegPage.xaml.cs">
       <DependentUpon>FFmpegPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\FFmpegLogWindow.xaml.cs">
-      <DependentUpon>FFmpegLogWindow.xaml</DependentUpon>
+    <Compile Include="Pages\FFmpegLogsPage.xaml.cs">
+      <DependentUpon>FFmpegLogsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -449,7 +449,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\CrashLogsWindow.xaml">
+    <Page Include="Pages\CrashLogsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -473,7 +473,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\LicensesWindow.xaml">
+    <Page Include="Pages\LicensesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -529,7 +529,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\FFmpegLogWindow.xaml">
+    <Page Include="Pages\FFmpegLogsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

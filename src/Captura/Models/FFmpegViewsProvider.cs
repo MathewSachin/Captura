@@ -26,7 +26,7 @@ namespace Captura.Models
 
         public void ShowLogs()
         {
-            FFmpegLogWindow.ShowInstance();
+            SettingsWindow.ShowFFmpegLogs();
         }
 
         public void ShowUnavailable()

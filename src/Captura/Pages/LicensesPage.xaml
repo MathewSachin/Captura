@@ -1,11 +1,9 @@
-﻿<Window x:Class="Captura.Views.LicensesWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Licenses"
-        Height="700"
-        Width="650"
-        DataContext="{Binding LicensesViewModel, Source={StaticResource ServiceLocator}}">
-    <DockPanel Background="{DynamicResource WindowBackground}">
+﻿<Page x:Class="Captura.Views.LicensesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Licenses"
+      DataContext="{Binding LicensesViewModel, Source={StaticResource ServiceLocator}}">
+    <DockPanel>
         <ListView ItemsSource="{Binding Licenses}"
                   SelectedItem="{Binding SelectedLicense, Mode=TwoWay}"
                   Width="200"
@@ -36,4 +34,4 @@
             </DockPanel>
         </Border>
     </DockPanel>
-</Window>
+</Page>
