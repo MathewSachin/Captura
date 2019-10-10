@@ -262,7 +262,8 @@
 
                 <GridSplitter Height="1"
                               Margin="0,2"
-                              DockPanel.Dock="Top"/>
+                              DockPanel.Dock="Top"
+                              IsEnabled="False"/>
 
                 <Grid xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                       xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore">

@@ -44,90 +44,104 @@
                 </Border>
             </DockPanel>
 
-            <Grid Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <DockPanel Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DockPanel DockPanel.Dock="Right">
+                    <ListBox SelectedValuePath="Key"
+                             HorizontalContentAlignment="Center"
+                             HorizontalAlignment="Right"
+                             ItemsSource="{Binding RegionSelectorViewModel.Tools, Source={StaticResource ServiceLocator}}"
+                             SelectedValue="{Binding RegionSelectorViewModel.SelectedTool.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                             DockPanel.Dock="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
+                                      Width="12"
+                                      Height="12"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      ToolTip="{Binding Value}"
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
+                                      Margin="5,3"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
 
-                <Label Content="X:"
-                       Margin="0,0,3,0"/>
-                <xctk:IntegerUpDown Grid.Column="1"
-                                    Minimum="{x:Null}"
-                                    Value="{Binding RegionSelectorViewModel.Left, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+                    <xctk:ColorPicker Margin="0,2,5,0"
+                                      SelectedColor="{Binding RegionSelectorViewModel.BrushColor.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                      VerticalAlignment="Center"
+                                      ColorMode="ColorCanvas"
+                                      ShowAdvancedButton="True"
+                                      AdvancedButtonHeader="Color Canvas"
+                                      StandardButtonHeader="Pallette"
+                                      Width="50"
+                                      ShowRecentColors="True"/>
 
-                <Label Content="Y:"
-                       Grid.Column="2"
-                       Margin="5,0,3,0"/>
-                <xctk:IntegerUpDown Grid.Column="3"
-                                    Minimum="{x:Null}"
-                                    Value="{Binding RegionSelectorViewModel.Top, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
+                    <xctk:IntegerUpDown Minimum="1"
+                                        Maximum="99"
+                                        Margin="0,2,0,0"
+                                        Value="{Binding RegionSelectorViewModel.BrushSize.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Right"/>
+                </DockPanel>
 
-                <Label Content="W:"
-                       Grid.Column="4"
-                       Margin="5,0,3,0"/>
-                <xctk:IntegerUpDown Grid.Column="5"
-                                    Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+                <GridSplitter Width="1"
+                              Margin="5,0"
+                              DockPanel.Dock="Right"
+                              IsEnabled="False"/>
 
-                <Label Content="H:"
-                       Grid.Column="6"
-                       Margin="5,0,3,0"/>
-                <xctk:IntegerUpDown Grid.Column="7"
-                                    Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                                    IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-            <DockPanel Margin="0,5"
-                       VerticalAlignment="Top"
-                       Visibility="{Binding ViewConditions.IsRegionMode.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Label Content="Drawing Tools:"
-                       Margin="0,0,10,0"/>
+                    <Label Content="X:"
+                           Margin="0,0,3,0"/>
+                    <xctk:IntegerUpDown Grid.Column="1"
+                                        Minimum="{x:Null}"
+                                        VerticalAlignment="Center"
+                                        Value="{Binding RegionSelectorViewModel.Left, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
 
-                <xctk:IntegerUpDown Minimum="1"
-                                    Maximum="99"
-                                    Value="{Binding RegionSelectorViewModel.BrushSize.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                                    Width="100"
-                                    DockPanel.Dock="Right"/>
+                    <Label Content="Y:"
+                           Grid.Column="2"
+                           Margin="5,0,3,0"/>
+                    <xctk:IntegerUpDown Grid.Column="3"
+                                        Minimum="{x:Null}"
+                                        VerticalAlignment="Center"
+                                        Value="{Binding RegionSelectorViewModel.Top, Mode=TwoWay, Source={StaticResource ServiceLocator}}"/>
 
-                <ListBox SelectedValuePath="Key"
-                         HorizontalContentAlignment="Center"
-                         ItemsSource="{Binding RegionSelectorViewModel.Tools, Source={StaticResource ServiceLocator}}"
-                         SelectedValue="{Binding RegionSelectorViewModel.SelectedTool.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Path Data="{Binding Key, Converter={StaticResource InkToolToIconConverter}}"
-                                  Width="12"
-                                  Height="12"
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  ToolTip="{Binding Value}"
-                                  Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}"
-                                  Margin="5"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
+                    <Label Content="W:"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="0,0,3,0"/>
+                    <xctk:IntegerUpDown Grid.Column="1"
+                                        Grid.Row="1"
+                                        VerticalAlignment="Center"
+                                        Value="{Binding RegionSelectorViewModel.Width, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
 
-                <xctk:ColorPicker Margin="10,0"
-                                  SelectedColor="{Binding RegionSelectorViewModel.BrushColor.Value, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
-                                  VerticalContentAlignment="Stretch"
-                                  ColorMode="ColorCanvas"
-                                  ShowAdvancedButton="True"
-                                  AdvancedButtonHeader="Color Canvas"
-                                  StandardButtonHeader="Pallette"
-                                  ShowRecentColors="True"/>
+                    <Label Content="H:"
+                           Grid.Column="2"
+                           Grid.Row="1"
+                           Margin="5,0,3,0"/>
+                    <xctk:IntegerUpDown Grid.Column="3"
+                                        Grid.Row="1"
+                                        VerticalAlignment="Center"
+                                        Value="{Binding RegionSelectorViewModel.Height, Mode=TwoWay, Source={StaticResource ServiceLocator}}"
+                                        IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"/>
+                </Grid>
             </DockPanel>
 
             <DockPanel Margin="0,5"

@@ -30,7 +30,8 @@
 
         <GridSplitter DockPanel.Dock="Top"
                       Height="1"
-                      Margin="0,10"/>
+                      Margin="0,10"
+                      IsEnabled="False"/>
 
         <Frame Source="../Pages/SettingsPage.xaml"
                NavigationUIVisibility="Hidden"

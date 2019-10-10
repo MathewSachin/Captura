@@ -11,7 +11,8 @@
 
         <GridSplitter Height="1"
                       Margin="0,2"
-                      DockPanel.Dock="Bottom"/>
+                      DockPanel.Dock="Bottom"
+                      IsEnabled="False"/>
 
         <ScrollViewer>
             <WrapPanel VerticalAlignment="Center"
