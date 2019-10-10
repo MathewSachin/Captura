@@ -24,9 +24,9 @@
                         <Setter Property="Padding" Value="10"/>
                     </Style>
                     <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
-                        <Setter Property="Margin" Value="30,10"/>
-                        <Setter Property="Width" Value="50"/>
-                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Margin" Value="40,20"/>
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Height" Value="30"/>
                         <Setter Property="Stretch" Value="Uniform"/>
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                     </Style>

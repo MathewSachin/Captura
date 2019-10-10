@@ -2,6 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 
 namespace Captura
 {
@@ -67,6 +70,27 @@ namespace Captura
         void OnGoNext(object Sender, RoutedEventArgs E)
         {
             NavFrame.GoForward();
+        }
+
+        void NavFrame_OnNavigated(object Sender, NavigationEventArgs E)
+        {
+            if (E.Content is Page page)
+            {
+                var transform = new TranslateTransform();
+
+                page.RenderTransform = transform;
+
+                var anim = new DoubleAnimation
+                {
+                    Duration = TimeSpan.FromSeconds(0.3),
+                    DecelerationRatio = 0.5,
+                    From = 100,
+                    To = 0
+                };
+
+                transform.BeginAnimation(TranslateTransform.XProperty, anim);
+            }
+            else Console.WriteLine(E.Content);
         }
     }
 }

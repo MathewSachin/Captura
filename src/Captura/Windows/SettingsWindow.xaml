@@ -35,7 +35,8 @@
         <Frame Source="../Pages/SettingsPage.xaml"
                NavigationUIVisibility="Hidden"
                Name="NavFrame"
-               Padding="5,0">
+               Padding="5,0"
+               Navigated="NavFrame_OnNavigated">
             <Frame.CommandBindings>
                 <CommandBinding Command="GoToPage"
                                 Executed="OnGoToPage"/>
