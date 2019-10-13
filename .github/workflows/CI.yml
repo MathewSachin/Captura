@@ -9,6 +9,11 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      imgur_client_id: ${{ secrets.imgur_client_id }}
+      yt_client_id: ${{ secrets.yt_client_id }}
+      yt_client_secret: ${{ secrets.yt_client_secret }}
+      choco_key: ${{ secrets.choco_key }}
     
     steps:
     - uses: actions/checkout@v1
@@ -16,8 +21,3 @@ jobs:
       run: dotnet tool install -g Cake.Tool --version 0.32.1
     - name: Run Cake script
       run: dotnet-cake
-      with:
-        imgur_client_id: ${{ secrets.imgur_client_id }}
-        yt_client_id: ${{ secrets.yt_client_id }}
-        yt_client_secret: ${{ secrets.yt_client_secret }}
-        choco_key: ${{ secrets.choco_key }}
