@@ -39,7 +39,7 @@ build_script:
 
         if ($tag -match "^build-number-")
         {
-          # Build number tag is skipped
+          Write-Error "Build number tag is skipped"
           Exit-AppveyorBuild
         }
         else 

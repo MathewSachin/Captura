@@ -29,12 +29,12 @@ jobs:
       run: choco install innosetup -y
 
     - name: Generate build number
-      if: startsWith(github.ref, 'refs/tags/') == False
+      if: (!startsWith(github.ref, 'refs/tags/'))
       uses: einaregilsson/build-number@v1 
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run Cake script (CI)
-      if: startsWith(github.ref, 'refs/tags/') == False
+      if: (!startsWith(github.ref, 'refs/tags/'))
       run: dotnet-cake --build_version=v0.0.%BUILD_NUMBER%
 
     - name: Extract Tag
