@@ -35,12 +35,16 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run Cake script (CI)
       if: (!startsWith(github.ref, 'refs/tags/'))
-      run: dotnet-cake --build_version=v0.0.%BUILD_NUMBER%
+      run: |
+        echo ::set-env name=CHOCO_VERSION::0.0.%BUILD_NUMBER%
+        dotnet-cake --build_version=v0.0.%BUILD_NUMBER%
 
     - name: Extract Tag
       if: startsWith(github.ref, 'refs/tags/')
       # remove /ref/tags/ to get tag name
-      run: echo ::set-env name=GIT_TAG::$(echo ${GITHUB_REF:10})
+      run: |
+        echo ::set-env name=GIT_TAG::$(echo ${GITHUB_REF:10})
+        echo ::set-env name=CHOCO_VERSION::$(echo ${GITHUB_REF:11})
     - name: Run Cake script (Release)
       if: startsWith(github.ref, 'refs/tags/')
       run: dotnet-cake --build_version=%GIT_TAG%
@@ -56,14 +60,11 @@ jobs:
         name: Setup
         path: temp/Captura-Setup.exe
 
-    - name: Chocolatey package path
-      run: echo ::set-env name=CHOCO_VERSION::$(echo ${GITHUB_REF:11})
-
     - name: Upload Chocolatey Package to artifacts
       uses: actions/upload-artifact@master
       with:
         name: Chocolatey
-        path: temp/captura.%CHOCO_VERSION%.nupkg
+        path: temp/captura.${{ env.CHOCO_VERSION }}.nupkg
 
   deploy-gh-releases:
     name: Deploy to GitHub Releases
