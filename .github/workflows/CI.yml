@@ -65,8 +65,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          temp/Captura-Setup.exe
-          temp/Captura-Portable.zip
+          Setup/Captura-Setup.exe
+          Portable/Captura-Portable.zip
         draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
