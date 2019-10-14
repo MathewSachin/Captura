@@ -22,12 +22,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    
     - name: Install Cake
       run: dotnet tool install -g Cake.Tool --version 0.32.1
     - name: Install Inno Setup
       run: choco install innosetup -y
-    - name: Run Cake script
-      run: dotnet-cake
+
+    - name: Generate build number
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: einaregilsson/build-number@v1 
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run Cake script (CI)
+      if: !startsWith(github.ref, 'refs/tags/')
+      run: dotnet-cake --build_version=0.0.%BUILD_NUMBER%
+
+    - name: Extract Tag
+      #if: startsWith(github.ref, 'refs/tags/')
+      # remove /ref/tags/ to get tag name
+      run: $env:GIT_TAG = $env:GITHUB_REF.Substring(10)
+      shell: pwsh
+    - name: Print Tag
+      #if: startsWith(github.ref, 'refs/tags/')
+      run: echo %GIT_TAG%
+    - name: Run Cake script (Release)
+      if: startsWith(github.ref, 'refs/tags/')
+      run: dotnet-cake --build_version=%GIT_TAG%
+   
     - name: Upload Portable build to artifacts
       uses: actions/upload-artifact@master
       with:
