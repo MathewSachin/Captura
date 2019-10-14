@@ -19,7 +19,7 @@ jobs:
       yt_client_id: ${{ secrets.yt_client_id }}
       yt_client_secret: ${{ secrets.yt_client_secret }}
       choco_key: ${{ secrets.choco_key }}
-    
+
     steps:
     - uses: actions/checkout@v1
     - name: Install Cake
@@ -68,7 +68,7 @@ jobs:
         draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
   # deploy-choco:
   #   name: Deploy to Choclatey
   #   needs: build
