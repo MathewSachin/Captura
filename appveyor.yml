@@ -37,7 +37,15 @@ build_script:
       {
         $env:prerelease = $tag.Contains("-")
 
-        dotnet-cake --target=CI --configuration=$env:CONFIGURATION --build_version=$tag
+        if ($tag -match "^build-number-")
+        {
+          # Build number tag is skipped
+          Exit-AppveyorBuild
+        }
+        else 
+        {
+          dotnet-cake --target=CI --configuration=$env:CONFIGURATION --build_version=$tag
+        }
       }
       else
       {
