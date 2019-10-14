@@ -56,11 +56,14 @@ jobs:
         name: Setup
         path: temp/Captura-Setup.exe
 
+    - name: Chocolatey package path
+      run: echo ::set-env name=CHOCO_VERSION::$(echo ${GIT_TAG:1})
+
     - name: Upload Chocolatey Package to artifacts
       uses: actions/upload-artifact@master
       with:
         name: Chocolatey
-        path: temp/captura.${{ GIT_TAG:1 }}.nupkg
+        path: temp/captura.${{ CHOCO_VERSION }}.nupkg
 
   deploy-gh-releases:
     name: Deploy to GitHub Releases
@@ -99,4 +102,4 @@ jobs:
       with:
         name: Chocolatey
     - name: Deploy to Chocolatey
-      run: choco push "Chocolatey/captura.${{ GIT_TAG:1 }}.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
+      run: choco push "Chocolatey/captura.${{ CHOCO_VERSION }}.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
