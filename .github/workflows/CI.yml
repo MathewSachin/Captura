@@ -63,7 +63,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: Chocolatey
-        path: temp/captura.${{ env.CHOCO_VERSION }}.nupkg
+        path: temp/captura.%CHOCO_VERSION%.nupkg
 
   deploy-gh-releases:
     name: Deploy to GitHub Releases
@@ -102,4 +102,4 @@ jobs:
       with:
         name: Chocolatey
     - name: Deploy to Chocolatey
-      run: choco push "Chocolatey/captura.${{ env.CHOCO_VERSION }}.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
+      run: choco push "Chocolatey/captura.%CHOCO_VERSION%.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
