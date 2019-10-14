@@ -35,7 +35,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run Cake script (CI)
       # if: !startsWith(github.ref, 'refs/tags/')
-      run: dotnet-cake --build_version=0.0.%BUILD_NUMBER%
+      run: dotnet-cake --build_version=v0.0.%BUILD_NUMBER%
 
     - name: Extract Tag
       #if: startsWith(github.ref, 'refs/tags/')
