@@ -57,7 +57,7 @@ jobs:
         path: temp/Captura-Setup.exe
 
     - name: Chocolatey package path
-      run: echo ::set-env name=CHOCO_VERSION::$(echo ${GIT_TAG:1})
+      run: echo ::set-env name=CHOCO_VERSION::$(echo ${GITHUB_REF:11})
 
     - name: Upload Chocolatey Package to artifacts
       uses: actions/upload-artifact@master
