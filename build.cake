@@ -114,7 +114,6 @@ var packPortableTask = Task("Pack-Portable")
     .Does(() => PackPortable());
 
 var packSetupTask = Task("Pack-Setup")
-    .WithCriteria(configuration == Release)
     .IsDependentOn(populateOutputTask)
     .Does(() =>
 {
@@ -133,7 +132,7 @@ var packChocoTask = Task("Pack-Choco")
 
 var testTask = Task("Test")
     .IsDependentOn(buildTask)
-    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/net461/Captura.Tests.dll")));
+    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/**/Captura.Tests.dll")));
 
 var defaultTask = Task("Default")
     .IsDependentOn(packPortableTask)
