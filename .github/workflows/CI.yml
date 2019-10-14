@@ -55,11 +55,12 @@ jobs:
       with:
         name: Setup
         path: temp/Captura-Setup.exe
-    # - name: Upload Chocolatey Package to artifacts
-    #   uses: actions/upload-artifact@master
-    #   with:
-    #     name: Chocolatey
-    #     path: temp/captura.*.nupkg
+
+    - name: Upload Chocolatey Package to artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: Chocolatey
+        path: temp/captura.${{ GIT_TAG:1 }}.nupkg
 
   deploy-gh-releases:
     name: Deploy to GitHub Releases
@@ -86,15 +87,16 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # deploy-choco:
-  #   name: Deploy to Choclatey
-  #   needs: build
-  #   runs-on: windows-latest
-  #   if: startsWith(github.ref, 'refs/tags/')
+  deploy-choco:
+    name: Deploy to Choclatey
+    needs: build
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/')
 
-  #   steps:
-  #   - name: Download Chocolatey Package
-  #     uses: actions/download-artifact@v1
-  #     with:
-  #       name: Chocolatey
-  #   - name: Deploy to Chocolatey
+    steps:
+    - name: Download Chocolatey Package
+      uses: actions/download-artifact@v1
+      with:
+        name: Chocolatey
+    - name: Deploy to Chocolatey
+      run: choco push "Chocolatey/captura.${{ GIT_TAG:1 }}.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
