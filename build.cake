@@ -182,7 +182,10 @@ var testTask = Task("Test")
     .IsDependentOn(buildTask)
     .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/net461/Captura.Tests.dll")));
 
-var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
+var defaultTask = Task("Default")
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(packSetupTask)
+    .IsDependentOn(packChocoTask);
 
 var installInnoTask = Task("Install-Inno")
     .WithCriteria(configuration == Release)
