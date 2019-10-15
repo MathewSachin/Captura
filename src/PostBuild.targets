@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
   <PropertyGroup>
     <RootDir>$(MSBuildThisFileDirectory)/..</RootDir>
     <DoMoveLibs>False</DoMoveLibs>
