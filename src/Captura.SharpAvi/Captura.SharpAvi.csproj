@@ -6,6 +6,6 @@
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SharpAvi" Version="2.1.1" />
+    <PackageReference Include="SharpAvi" Version="2.1.2" />
   </ItemGroup>
 </Project>
