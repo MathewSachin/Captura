@@ -103,4 +103,7 @@ jobs:
       with:
         name: Chocolatey
     - name: Deploy to Chocolatey
-      run: choco push "Chocolatey/captura.%CHOCO_VERSION%.nupkg" --source https://push.chocolatey.org/ -y --key %choco_key%
+      run: |
+        cd Chocolatey
+        choco push --source https://push.chocolatey.org/ -y --key %choco_key%
+        cd ..
