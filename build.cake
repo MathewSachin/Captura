@@ -18,13 +18,11 @@ var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 #region Functions
 void PopulateOutput()
 {
-    var targetFramework = "net472";
-
     // Copy License files
     CopyDirectory(licensesFolder, distFolder + Directory("licenses"));
 
     var consoleBinFolder = sourceFolder + Directory("Captura.Console/bin") + Directory(configuration);
-    var uiBinFolder = sourceFolder + Directory("Captura/bin") + Directory(configuration) + Directory(targetFramework);
+    var uiBinFolder = sourceFolder + Directory("Captura/bin") + Directory(configuration);
     
     // Copy Languages
     CopyDirectory(uiBinFolder + Directory("Languages"), distFolder + Directory("languages"));
