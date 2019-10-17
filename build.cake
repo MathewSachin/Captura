@@ -1,5 +1,4 @@
 #tool nuget:?package=xunit.runner.console&version=2.4.1
-#tool nuget:?package=gitreleasemanager&version=0.8.0
 #l "scripts/backup.cake"
 #l "scripts/constants.cake"
 #l "scripts/choco.cake"
@@ -10,9 +9,6 @@ using System.Collections.Generic;
 #region Fields
 readonly var target = Argument("target", "Default");
 readonly var configuration = Argument("configuration", Release);
-
-// Deploy on Release Tag builds
-var deploy = configuration == Release && !string.IsNullOrWhiteSpace(tag);
 #endregion
 
 #region Functions
@@ -78,8 +74,6 @@ Setup(context =>
     EnsureDirectoryExists(tempFolder);
     EnsureDirectoryExists(distFolder);
 
-    HandleTag();
-
     HandleVersion();
 
     if (configuration == Release)
@@ -120,7 +114,6 @@ var packPortableTask = Task("Pack-Portable")
     .Does(() => PackPortable());
 
 var packSetupTask = Task("Pack-Setup")
-    .WithCriteria(configuration == Release)
     .IsDependentOn(populateOutputTask)
     .Does(() =>
 {
@@ -133,87 +126,26 @@ var packSetupTask = Task("Pack-Setup")
     });
 });
 
-var deployGitHubTask = Task("Deploy-GitHub")
-    .WithCriteria(deploy)
-    .IsDependentOn(packPortableTask)
-    .IsDependentOn(packSetupTask)
-    .Does(() => 
-{
-    var releaseNotesPath = tempFolder + File("release_notes.md");
-    const string changelogUrl = "https://mathewsachin.github.io/Captura/changelog";
-
-    FileWrite(releaseNotesPath, $"[Changelog]({changelogUrl})");
-
-    const string RepoOwner = "MathewSachin";
-    const string RepoName = "Captura";
-
-    GitReleaseManagerCreate(RepoOwner,
-        EnvironmentVariable("git_key"),
-        RepoOwner,
-        RepoName,
-        new GitReleaseManagerCreateSettings
-        {
-            Name = $"Captura {tag}",
-            InputFilePath = releaseNotesPath,
-            Prerelease = prerelease,
-            Assets = $"{PortablePath},{SetupPath}"
-        });
-
-    GitReleaseManagerPublish(RepoOwner,
-        EnvironmentVariable("git_key"),
-        RepoOwner,
-        RepoName,
-        tag);
-});
-
 var packChocoTask = Task("Pack-Choco")
-    .WithCriteria(deploy)
     .IsDependentOn(packPortableTask)
-    .IsDependentOn(deployGitHubTask)
     .Does(() => PackChoco());
-
-var deployChocoTask = Task("Deploy-Choco")
-    .WithCriteria(deploy)
-    .IsDependentOn(packChocoTask)
-    .IsDependentOn(deployGitHubTask)
-    .Does(() => PushChoco());
 
 var testTask = Task("Test")
     .IsDependentOn(buildTask)
-    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/net461/Captura.Tests.dll")));
+    .Does(() => XUnit2(sourceFolder + File($"Tests/bin/{configuration}/**/Captura.Tests.dll")));
 
-var defaultTask = Task("Default").IsDependentOn(populateOutputTask);
-
-var installInnoTask = Task("Install-Inno")
-    .WithCriteria(configuration == Release)
-    .Does(() => ChocolateyInstall("innosetup", new ChocolateyInstallSettings
-    {
-        ArgumentCustomization = Args => Args.Append("--no-progress")
-    }));
+var defaultTask = Task("Default")
+    .IsDependentOn(packPortableTask)
+    .IsDependentOn(packSetupTask)
+    .IsDependentOn(packChocoTask);
 #endregion
-
-#region AppVeyor
-#l "scripts/appveyor.cake"
 
 Task("CI")
-    .WithCriteria(AppVeyor.IsRunningOnAppVeyor)
     .IsDependentOn(testTask)
     .IsDependentOn(packPortableTask)
-    .IsDependentOn(installInnoTask)
     .IsDependentOn(packSetupTask)
     .IsDependentOn(packChocoTask)
-    .IsDependentOn(deployGitHubTask)
-    .IsDependentOn(deployChocoTask)
-    .Does(() =>
-{
-    if (deploy)
-    {
-        AppVeyor.UpdateBuildVersion($"{version}.{buildNo}");
-    }
-
-    UploadArtifacts();
-});
-#endregion
+    .Does(() => { });
 
 // Start
 RunTarget(target);

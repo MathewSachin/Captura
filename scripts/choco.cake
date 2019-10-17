@@ -26,11 +26,3 @@ void PackChoco()
         ArgumentCustomization = Args => Args.Append($"--outputdirectory {tempFolder}")
     });
 }
-
-void PushChoco()
-{
-    ChocolateyPush(ChocoPkgPath, new ChocolateyPushSettings
-    {
-        ApiKey = EnvironmentVariable("choco_key")
-    });
-}

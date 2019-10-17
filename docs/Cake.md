@@ -16,10 +16,9 @@ dotnet-cake
 
 Option         | Description
 ---------------|--------------
--appversion    | Build version. AssemblyInfo.cs files are updated with this value during build.
+-build_version | Build version. Should be like v9.0.0 for stable and CI builds and like v9.0.0-beta3 for prerelease builds. AssemblyInfo.cs files are updated based on this value during build.
 -configuration | Configuration: Release or Debug
 -target        | The Task to run in the build script. See build.cake
--tag           | Used for tag builds by AppVeyor
 
 ```
 dotnet-cake --target=CI --configuration=Release

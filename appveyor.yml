@@ -26,17 +26,60 @@ environment:
 
 install:
   - dotnet tool install -g Cake.Tool --version 0.32.1
+  - choco install innosetup -y --no-progress
 
 # Build using Cake
 build_script:
   - ps: >-
-      if ($env:APPVEYOR_REPO_TAG_NAME -ne $null)
+      $tag = $env:APPVEYOR_REPO_TAG_NAME
+
+      if ($tag -ne $null)
       {
-        dotnet-cake --target=CI --configuration=$env:CONFIGURATION --tag=$env:APPVEYOR_REPO_TAG_NAME
+        $env:prerelease = $tag.Contains("-")
+
+        if ($tag -match "^build-number-")
+        {
+          Write-Host "Build number tag is skipped"
+          Exit-AppveyorBuild
+        }
+        else 
+        {
+          dotnet-cake --target=CI --configuration=$env:CONFIGURATION --build_version=$tag
+        }
       }
       else
       {
-        dotnet-cake --target=CI --configuration=$env:CONFIGURATION
+        $version = "v0.0." + $env:APPVEYOR_BUILD_NUMBER
+
+        dotnet-cake --target=CI --configuration=$env:CONFIGURATION --build_version=$version
       }
 
 test: off
+
+artifacts:
+  - path: temp/Captura-Portable.zip
+    name: Portable
+  - path: temp/Captura-Setup.exe
+    name: Setup
+  - path: temp/captura.*.nupkg
+    name: Chocolatey
+
+deploy:
+  - provider: GitHub
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    release: Captura $(APPVEYOR_REPO_TAG_NAME)
+    prerelease: $(prerelease)
+    description: "[Changelog](https://github.com/MathewSachin/Captura/tree/master/docs/Changelogs)"
+    auth_token: $(git_key)
+    artifact: Portable, Setup
+    on:
+      configuration: Release
+      appveyor_repo_tag: true
+
+  - provider: NuGet
+    server: https://chocolatey.org
+    api_key: $(choco_key)
+    artifact: Chocolatey
+    on:
+      configuration: Release
+      appveyor_repo_tag: true
