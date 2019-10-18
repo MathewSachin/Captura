@@ -313,6 +313,9 @@ namespace Captura
             var elapsed = Text(settings.Elapsed, "00:00:00");
             AddToGrid(elapsed, false);
 
+            var fps = Text(settings.FpsOverlay, "FPS");
+            AddToGrid(fps, false);
+
             var textOverlayVm = ServiceProvider.Get<CustomOverlaysViewModel>();
 
             UpdateTextOverlays(textOverlayVm.Collection);

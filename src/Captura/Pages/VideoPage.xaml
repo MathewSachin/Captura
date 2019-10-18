@@ -49,6 +49,12 @@
                 </captura:ModernToggleButton>
             </StackPanel>
 
+            <CheckBox IsChecked="{Binding Settings.FpsOverlay.Display}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap"
+                           Text="Show FPS Overlay"/>
+            </CheckBox>
+
             <Grid Margin="0,0,0,5"
                   IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
                 <Grid.ColumnDefinitions>

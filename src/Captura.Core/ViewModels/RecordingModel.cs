@@ -501,6 +501,8 @@ namespace Captura.ViewModels
 
             yield return new ElapsedOverlay(Settings.Elapsed, () => _timerModel.TimeSpan);
 
+            yield return new FpsOverlay(Settings.FpsOverlay);
+
             // Text Overlays
             foreach (var overlay in Settings.TextOverlays)
             {

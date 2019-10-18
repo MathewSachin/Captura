@@ -36,6 +36,12 @@
                                                   DataContext="{Binding Settings.Elapsed}"
                                                   DockPanel.Dock="Bottom"/>
             </TabItem>
+            <TabItem Header="Fps"
+                     DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
+                <local:TextOverlaySettingsControl Margin="5"
+                                                  DataContext="{Binding Settings.FpsOverlay}"
+                                                  DockPanel.Dock="Bottom"/>
+            </TabItem>
             <TabItem Header="Censor">
                 <Frame Source="../Pages/CensorOverlaysPage.xaml"/>
             </TabItem>
