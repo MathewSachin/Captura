@@ -54,8 +54,6 @@
         /// </summary>
         ScreenShotWindow,
 
-        OpenImageEditor,
-
         ShowMainWindow
     }
 }

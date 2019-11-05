@@ -14,32 +14,16 @@ namespace Captura
             switch (Value)
             {
                 case InkCanvasEditingMode.Ink:
-                case ExtendedInkTool.Pen:
                     return icons.Pencil;
 
                 case InkCanvasEditingMode.EraseByPoint:
-                case ExtendedInkTool.Eraser:
                     return icons.Eraser;
 
                 case InkCanvasEditingMode.EraseByStroke:
-                case ExtendedInkTool.StrokeEraser:
                     return icons.StrokeEraser;
 
                 case InkCanvasEditingMode.Select:
-                case ExtendedInkTool.Select:
                     return icons.Select;
-
-                case ExtendedInkTool.Line:
-                    return icons.Line;
-
-                case ExtendedInkTool.Rectangle:
-                    return icons.Rectangle;
-
-                case ExtendedInkTool.Ellipse:
-                    return icons.Ellipse;
-
-                case ExtendedInkTool.Arrow:
-                    return icons.Arrow;
             }
 
             return icons.Cursor;

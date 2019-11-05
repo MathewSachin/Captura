@@ -6,10 +6,6 @@
         {
             switch (Service)
             {
-                case ServiceName.OpenImageEditor:
-                    new ImageEditorWindow().ShowAndFocus();
-                    break;
-
                 case ServiceName.ShowMainWindow:
                     MainWindow.Instance.ShowAndFocus();
                     break;

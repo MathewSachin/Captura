@@ -57,7 +57,6 @@ namespace Captura.Models
                     list.Add(new RecentAction(loc.CopyToClipboard, icons.Clipboard, OnCopyToClipboardExecute));
                     list.Add(new RecentAction(loc.UploadToImgur, icons.Upload, OnUploadToImgurExecute));
                     list.Add(new RecentAction(loc.Edit, icons.Pencil, () => windowService.EditImage(this.FileName)));
-                    list.Add(new RecentAction(loc.Crop, icons.Crop, () => windowService.CropImage(this.FileName)));
                     break;
 
                 case RecentFileType.Audio:

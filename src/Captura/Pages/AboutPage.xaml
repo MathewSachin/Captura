@@ -129,35 +129,11 @@
                 </Label>
                 
                 <WrapPanel Margin="3">
-                    <Button ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
-                            Padding="5"
-                            Margin="0,0,10,10"
-                            Click="OpenImageEditor">
-                        <Path Data="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                    </Button>
-
                     <Button ToolTip="{Binding Trim, Source={StaticResource Loc}, Mode=OneWay}"
                             Padding="5"
                             Margin="0,0,10,10"
                             Click="OpenAudioVideoTrimmer">
                         <Path Data="{Binding Icons.Trim, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                    </Button>
-
-                    <Button ToolTip="{Binding Crop, Source={StaticResource Loc}, Mode=OneWay}"
-                            Padding="5"
-                            Margin="0,0,10,10"
-                            Click="OpenImageCropper">
-                        <Path Data="{Binding Icons.Crop, Source={StaticResource ServiceLocator}}"
                               Width="15"
                               Height="15"
                               Stretch="Uniform"

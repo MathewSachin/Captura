@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
 namespace Captura.Models
 {
@@ -9,18 +8,13 @@ namespace Captura.Models
     {
         public Task Save(IBitmapImage Image, ImageFormats Format, string FileName)
         {
-            using (var stream = new MemoryStream())
+            if (!File.Exists(FileName))
             {
-                Image.Save(stream, ImageFormats.Png);
-
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-
-                var win = new ImageEditorWindow();
-
-                win.Open(decoder.Frames[0]);
-
-                win.Show();
+                Image.Save(FileName, Format);
             }
+
+            var winserv = ServiceProvider.Get<IMainWindow>();
+            winserv.EditImage(FileName);
 
             return Task.CompletedTask;
         }
