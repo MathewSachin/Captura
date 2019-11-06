@@ -104,8 +104,6 @@ namespace Captura
 
         public SoundSettings Sounds { get; } = new SoundSettings();
 
-        public ImageEditorSettings ImageEditor { get; } = new ImageEditorSettings();
-
         public TraySettings Tray { get; } = new TraySettings();
 
         public StepsSettings Steps { get; } = new StepsSettings();

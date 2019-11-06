@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using Captura.Views;
 
@@ -32,16 +33,8 @@ namespace Captura.Models
 
         public void EditImage(string FileName)
         {
-            var win = new ImageEditorWindow();
-
-            win.Open(FileName);
-
-            win.ShowAndFocus();
-        }
-
-        public void CropImage(string FileName)
-        {
-            new CropWindow(FileName).ShowAndFocus();
+            var settings = ServiceProvider.Get<Settings>().ScreenShots;
+            Process.Start(settings.ExternalEditor, FileName);
         }
 
         public void TrimMedia(string FileName)

@@ -8,8 +8,6 @@
 
         void EditImage(string FileName);
 
-        void CropImage(string FileName);
-
         void TrimMedia(string FileName);
 
         void UploadToYouTube(string FileName);
