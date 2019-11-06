@@ -28,6 +28,15 @@
                           SelectedItem="{Binding Settings.ScreenShots.ImageFormat, Mode=TwoWay}"/>
             </DockPanel>
 
+            <DockPanel Margin="0,5">
+                <Label Content="External Editor"
+                       ContentStringFormat="{}{0}: "
+                       Margin="0,0,5,0"/>
+
+                <TextBox Text="{Binding Settings.ScreenShots.ExternalEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"/>
+            </DockPanel>
+
             <StackPanel Margin="0,10">
                 <Label Content="Outputs"
                        FontWeight="Bold"/>

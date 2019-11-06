@@ -19,5 +19,11 @@
             get => Get(true);
             set => Set(value);
         }
+
+        public string ExternalEditor
+        {
+            get => Get("mspaint");
+            set => Set(value);
+        }
     }
 }

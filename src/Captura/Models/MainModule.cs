@@ -20,9 +20,6 @@ namespace Captura
 
             Binder.Bind<IHotkeyListener, HotkeyListener>();
             Binder.Bind<IHotkeyActor, HotkeyViewActor>();
-
-            Binder.BindSingleton<EditorWriter>();
-            Binder.Bind<IImageWriterItem>(ServiceProvider.Get<EditorWriter>);
             
             Binder.BindSingleton<AboutViewModel>();
             Binder.BindSingleton<RegionSelectorViewModel>();
