@@ -49,6 +49,9 @@ namespace Captura.ViewModels
 
                 foreach (var invalidChar in invalidChars)
                 {
+                    if (invalidChar == '/' || invalidChar == '\\')
+                        continue;
+
                     value = value.Replace(invalidChar.ToString(), "");
                 }
 

@@ -10,8 +10,13 @@
                    ContentStringFormat="{}{0}:"
                    FontWeight="Bold"/>
 
-            <TextBox Margin="0,2,0,10"
+            <TextBox Margin="0,2"
                      Text="{Binding FilenameFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Content="Use '/' or '\' to specify folders"
+                   FontWeight="Thin"
+                   Margin="0,0,0,10"
+                   HorizontalAlignment="Right"/>
 
             <Label Content="File Name Preview"
                    ContentStringFormat="{}{0}:"

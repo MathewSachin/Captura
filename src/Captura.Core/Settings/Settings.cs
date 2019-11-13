@@ -192,6 +192,10 @@ namespace Captura
             
             var path = Path.Combine(outPath, $"{filename}{Extension}");
 
+            var baseDir = Path.GetDirectoryName(path);
+            if (baseDir != null) 
+                Directory.CreateDirectory(baseDir);
+
             if (!File.Exists(path))
                 return path;
 
