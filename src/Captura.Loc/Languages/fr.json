@@ -65,7 +65,7 @@
   "Keystrokes": "Entrées clavier",
   "KeystrokesHistoryCount": "",
   "KeystrokesHistorySpacing": "",
-  "KeystrokesSeparateFile": "",
+  "KeystrokesSeparateFile": "Enregistrer dans un fichier séparé",
   "Language": "Langue ",
   "Left": "Gauche",
   "LoopbackSource": "Source de sortie audio",
