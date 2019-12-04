@@ -48,7 +48,7 @@
   "FontSize": "Taille de la police",
   "FrameRate": "i/s ",
   "FullScreen": "Tous les écrans",
-  "HideOnFullScreenShot": "Cacher lors d'une capture de l'écran entier",
+  "HideOnFullScreenShot": "Cacher lors d'une capture de tous les écrans",
   "Host": "Hôte ",
   "Hotkeys": "Raccourcis",
   "ImageEditor": "Éditeur d'Image",
@@ -120,7 +120,7 @@
   "Screen": "Écran",
   "ScreenShot": "Capture d'écran",
   "ScreenShotActiveWindow": "Capture d'écran (fenêtre active)",
-  "ScreenShotDesktop": "Capture d'écran (espace de travail)",
+  "ScreenShotDesktop": "Capture d'écran (tous les écrans)",
   "ScreenShotSaved": "Capture d'écran enregistrée",
   "SelectFFmpegFolder": "Sélectionner le dossier FFmpeg",
   "SelectOutFolder": "Sélectionner le dossier de sortie",
@@ -155,6 +155,6 @@
   "WebCamView": "Aperçu de la webcam",
   "Website": "Site web",
   "Window": "Fenêtre",
-  "WindowScreenShotTransparency": "",
+  "WindowScreenShotTransparency": "Fenêtre de capture d'écran transparente",
   "Yes": "Oui"
 }
