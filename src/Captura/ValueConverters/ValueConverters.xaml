@@ -16,5 +16,6 @@
     <captura:GetTypeConverter x:Key="GetTypeConverter"/>
     <captura:StaticResourceConverter x:Key="StaticResourceConverter"/>
     <captura:IsLessThanConverter x:Key="IsLessThanConverter"/>
+    <captura:LanguageConverter x:Key="LanguageConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

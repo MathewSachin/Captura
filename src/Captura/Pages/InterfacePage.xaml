@@ -25,9 +25,7 @@
                               SelectedValue="{Binding CurrentCulture, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock>
-                                    <Run Text="{Binding DisplayName, Mode=OneWay}"/> (<Run Text="{Binding NativeName, Mode=OneWay}"/>)
-                                </TextBlock>
+                                <TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource LanguageConverter}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
