@@ -138,13 +138,23 @@ namespace Captura
         {
             var path = OutPath;
 
-            // If Output Dircetory is not set. Set it to Documents\Captura\
+            string DefaultOutDir() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura));
+
+            // If Output Dircetory is not set, fallback to default
             path = string.IsNullOrWhiteSpace(path)
-                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), nameof(Captura))
+                ? DefaultOutDir()
                 : path.Replace(ServiceProvider.CapturaPathConstant, ServiceProvider.AppDir);
-            
+
+            // If drive is not present, fallback to default
+            if (!Directory.Exists(Path.GetPathRoot(path)))
+            {
+                path = DefaultOutDir();
+            }
+
             if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
+            }
 
             return path;
         }
