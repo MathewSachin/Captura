@@ -1,0 +1,216 @@
+{
+  "$schema": "./schema.json",
+  "Name": "Deutsch (Deutschland)",
+  "Mappings": [
+    {
+      "On": [{ }],
+      "Keys": {
+        "Control": "Ctrl",
+        "ControlKey": "Ctrl",
+        "LControlKey": "Ctrl",
+        "RControlKey": "Ctrl",
+
+        "Alt": "Alt",
+        "Menu": "Alt",
+        "LMenu": "Alt",
+        "RMenu": "Alt",
+
+        "Shift": "Shift",
+        "ShiftKey": "Shift",
+        "LShiftKey": "Shift",
+        "RShiftKey": "Shift",
+
+        "LWin": "Win",
+        "RWin": "Win",
+
+        "D0": "0",
+        "D1": "1",
+        "D2": "2",
+        "D3": "3",
+        "D4": "4",
+        "D5": "5",
+        "D6": "6",
+        "D7": "7",
+        "D8": "8",
+        "D9": "9",
+
+        "NumPad0": "0",
+        "NumPad1": "1",
+        "NumPad2": "2",
+        "NumPad3": "3",
+        "NumPad4": "4",
+        "NumPad5": "5",
+        "NumPad6": "6",
+        "NumPad7": "7",
+        "NumPad8": "8",
+        "NumPad9": "9",
+
+        "Escape": "Esc",
+        "Back": "Backspace",
+
+        "PageUp": "Pg Up",
+        "PageDown": "Pg Dn",
+
+        "Left": "Left",
+        "Right": "Right",
+        "Up": "Up",
+        "Down": "Down",
+
+        "PrintScreen": "Prt Sc",
+        "Insert": "Ins",
+        "Delete": "Del",
+
+        "VolumeDown": "Vol -",
+        "VolumeUp": "Vol +",
+        "VolumeMute": "Mute",
+
+        "BrowserBack": "Browser Back",
+        "BrowserForward": "Browser Forward",
+        "BrowserRefresh": "Browser Refresh",
+        "BrowserStop": "Browser Stop",
+        "BrowserSearch": "Browser Search",
+        "BrowserFavorites": "Browser Favourites",
+        "BrowserHome": "Browser Home",
+
+        "MediaNextTrack": "Next Track",
+        "MediaPreviousTrack": "Prev Track",
+        "MediaStop": "Stop",
+        "MediaPlayPause": "Play / Pause",
+        "SelectMedia": "Select Media",
+
+        "LaunchMail": "Launch Mail",
+
+        "Multiply": "*",
+        "Add": "+",
+        "Subtract": "-",
+        "Divide": "/",
+        "Decimal": "."  ,
+        "NumLock": "NumLock",
+
+        "Oemtilde": "ö",
+        "OemMinus": "-",
+        "Oemplus": "+",
+        "OemCloseBrackets": "]",
+        "OemOpenBrackets": "ß",
+        "OemPipe": "^",
+        "OemPeriod": ".",
+        "Oemcomma": ",",
+        "Oem102": "<",
+        "Oem2": "#",
+        "Oem6": "´",
+        "Oem7": "ä",
+        "Oem1": "ü"
+      }
+    },
+    {
+      "On": [{ "Shift": true }],
+      "Keys": {
+        "OemOpenBrackets": "?",
+        "Oem6": "`",
+        "Oem2": "'",
+        "OemPipe": "°",
+        "D0": "=",
+        "D1": "!",
+        "D2": "\"",
+        "D3": "§",
+        "D4": "$",
+        "D5": "%",
+        "D6": "&",
+        "D7": "/",
+        "D8": "(",
+        "D9": ")",
+
+        "Oemtilde": "Ö",
+        "OemMinus": "_",
+        "OemQuotes": "\"",
+        "OemSemicolon": ":",
+        "OemPeriod": ":",
+        "Oemcomma": ";",
+        "Oem102": ">",
+        "Oemplus": "*",
+        "Oem7": "Ä",
+        "Oem1": "Ü"
+      }
+    },
+    {
+      "On": [{ "Control": true, "Alt": true }],
+      "Keys": {
+        "Oem102": "|",
+        "Oemplus": "~",
+        "D7": "{",
+        "D8": "[",
+        "D9": "]",
+        "D0": "}",
+        "Q": "@"
+      }
+    },
+    {
+      "On": [
+        { "Shift": true },
+        { "CapsLock": true }
+      ],
+      "Keys": {
+        "A": "A",
+        "B": "B",
+        "C": "C",
+        "D": "D",
+        "E": "E",
+        "F": "F",
+        "G": "G",
+        "H": "H",
+        "I": "I",
+        "J": "J",
+        "K": "K",
+        "L": "L",
+        "M": "M",
+        "N": "N",
+        "O": "O",
+        "P": "P",
+        "Q": "Q",
+        "R": "R",
+        "S": "S",
+        "T": "T",
+        "U": "U",
+        "V": "V",
+        "W": "W",
+        "X": "X",
+        "Y": "Y",
+        "Z": "Z"
+      }
+    },
+    {
+      "On": [
+        { },
+        { "CapsLock": true, "Shift": true }
+      ],
+      "Keys": {
+        "A": "a",
+        "B": "b",
+        "C": "c",
+        "D": "d",
+        "E": "e",
+        "F": "f",
+        "G": "g",
+        "H": "h",
+        "I": "i",
+        "J": "j",
+        "K": "k",
+        "L": "l",
+        "M": "m",
+        "N": "n",
+        "O": "o",
+        "P": "p",
+        "Q": "q",
+        "R": "r",
+        "S": "s",
+        "T": "t",
+        "U": "u",
+        "V": "v",
+        "W": "w",
+        "X": "x",
+        "Y": "y",
+        "Z": "z"
+      }
+    }
+  ]
+}
