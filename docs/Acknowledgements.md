@@ -8,7 +8,7 @@ Resharper makes development much intutive and easier. You should really check it
 If you become a regular contributor to Captura, you may request for the Resharper license.
 
 ### Crowdin
-Great thaks to [Crowdin](https://crowdin.com/) for providing open-source license.
+Great thanks to [Crowdin](https://crowdin.com/) for providing open-source license.
 The translation for Captura is done on Crowdin.
 Also, thanks to everyone who contributed the translations.
 
