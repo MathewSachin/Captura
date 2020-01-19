@@ -68,3 +68,7 @@
   amount: "€10 EUR"
 - name: "E TEK PRODUCTS"
   amount: "$10 USD"
+- name: "JULIO NOBRE"
+  amount: "€15 EUR"
+- name: "Louis Fitzgerald"
+  amount: "$25 CAD"
