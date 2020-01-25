@@ -39,7 +39,7 @@ namespace Captura.Models
                 _videoCodec.AudioArgsProvider(Args.AudioQuality, output);
             }
 
-            var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out var log);
+            using var process = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out var log);
 
             log.ProgressChanged += Progress.Report;
 

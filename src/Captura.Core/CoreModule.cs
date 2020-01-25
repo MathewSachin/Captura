@@ -14,6 +14,8 @@ namespace Captura
 
             FFmpegModule.Load(Binder);
 
+            GifskiModule.Load(Binder);
+
             BindViewModels(Binder);
             BindSettings(Binder);
             BindImageWriters(Binder);
