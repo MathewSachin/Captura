@@ -21,10 +21,7 @@ namespace Captura.Audio
         /// Stop Recording.
         /// </summary>
         void Stop();
-        
-        /// <summary>
-        /// Indicates recorded data is available.
-        /// </summary>
-        event EventHandler<DataAvailableEventArgs> DataAvailable;
+
+        int Read(byte[] Buffer, int Offset, int Length);
     }
 }

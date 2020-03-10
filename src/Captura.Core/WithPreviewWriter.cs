@@ -38,9 +38,9 @@ namespace Captura.Models
 
         public bool SupportsAudio => OriginalWriter.SupportsAudio;
 
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
-            OriginalWriter.WriteAudio(Buffer, Length);
+            OriginalWriter.WriteAudio(Buffer, Offset, Length);
         }
     }
 }

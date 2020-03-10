@@ -50,6 +50,6 @@ namespace Captura.Models
 
         public bool SupportsAudio => false;
 
-        public void WriteAudio(byte[] Buffer, int Length) { }
+        public void WriteAudio(byte[] Buffer, int Offset, int Length) { }
     }
 }

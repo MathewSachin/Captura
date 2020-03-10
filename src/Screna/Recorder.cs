@@ -18,7 +18,6 @@ namespace Screna
         #region Fields
         IAudioProvider _audioProvider;
         IVideoFileWriter _videoWriter;
-        IAudioFileWriter _audioWriter;
         IImageProvider _imageProvider;
 
         readonly int _frameRate;
@@ -58,7 +57,14 @@ namespace Screna
             _continueCapturing = new ManualResetEvent(false);
 
             if (VideoWriter.SupportsAudio && AudioProvider != null)
-                AudioProvider.DataAvailable += AudioProvider_DataAvailable;
+            {
+                var wf = AudioProvider.WaveFormat;
+
+                _audioBytesPerFrame = (int)((1.0 / FrameRate)
+                                              * wf.SampleRate
+                                              * wf.Channels
+                                              * (wf.BitsPerSample / 8.0));
+            }
             else _audioProvider = null;
 
             _sw = new Stopwatch();
@@ -66,27 +72,19 @@ namespace Screna
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="IRecorder"/> writing to <see cref="IAudioFileWriter"/>.
-        /// </summary>
-        /// <param name="AudioWriter">The <see cref="IAudioFileWriter"/> to write to.</param>
-        /// <param name="AudioProvider">The audio source.</param>
-        public Recorder(IAudioFileWriter AudioWriter, IAudioProvider AudioProvider)
-        {
-            _audioWriter = AudioWriter ?? throw new ArgumentNullException(nameof(AudioWriter));
-            _audioProvider = AudioProvider ?? throw new ArgumentNullException(nameof(AudioProvider));
-
-            _audioProvider.DataAvailable += AudioProvider_DataAvailable;
-        }
-
         Task<bool> _task;
+        int _frameCount;
+        int _audioBytesWritten;
+        readonly int _audioBytesPerFrame;
+        byte[] _audioBuffer, _silenceBuffer;
+        bool _alternateWriteAudio = true;
 
         async Task DoRecord()
         {
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
-                var frameCount = 0;
+                _frameCount = 0;
 
                 // Returns false when stopped
                 bool AddFrame(IBitmapFrame Frame)
@@ -95,7 +93,9 @@ namespace Screna
                     {
                         _videoWriter.WriteFrame(Frame);
 
-                        ++frameCount;
+                        ++_frameCount;
+
+                        WriteAudio();
 
                         return true;
                     }
@@ -128,7 +128,7 @@ namespace Screna
                             return;
 
                         var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                        var diff = requiredFrames - frameCount;
+                        var diff = requiredFrames - _frameCount;
 
                         // Write atmost 1 duplicate frame
                         if (diff >= 1)
@@ -173,39 +173,53 @@ namespace Screna
             }
         }
 
-        void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
+        void WriteAudio()
         {
-            if (_videoWriter == null)
+            if (_audioProvider == null)
             {
-                _audioWriter.Write(E.Buffer, 0, E.Length);
                 return;
             }
 
-            try
-            {
-                lock (_syncLock)
-                {
-                    if (_disposed)
-                        return;
-                }
+            _alternateWriteAudio = !_alternateWriteAudio;
 
-                _videoWriter.WriteAudio(E.Buffer, E.Length);
-            }
-            catch (Exception e)
+            if (!_alternateWriteAudio)
             {
-                if (_imageProvider == null)
-                {
-                    lock (_syncLock)
-                    {
-                        if (!_disposed)
-                        {
-                            ErrorOccurred?.Invoke(e);
-
-                            Dispose(true);
-                        }
-                    }
-                }
+                return;
             }
+
+            var shouldHaveWritten = (_frameCount - 1) * _audioBytesPerFrame;
+
+            if (_audioBytesWritten >= shouldHaveWritten)
+            {
+                return;
+            }
+
+            var toWrite = shouldHaveWritten - _audioBytesWritten;
+
+            if (_audioBuffer == null || _audioBuffer.Length < toWrite)
+            {
+                _audioBuffer = new byte[toWrite];
+            }
+
+            var read = _audioProvider.Read(_audioBuffer, 0, toWrite);
+
+            _videoWriter.WriteAudio(_audioBuffer, 0, read);
+            _audioBytesWritten += read;
+
+            var silenceToWrite = toWrite - read;
+
+            if (silenceToWrite <= 0)
+            {
+                return;
+            }
+            
+            if (_silenceBuffer == null || _silenceBuffer.Length < silenceToWrite)
+            {
+                _silenceBuffer = new byte[silenceToWrite];
+            }
+
+            _videoWriter.WriteAudio(_silenceBuffer, 0, silenceToWrite);
+            _audioBytesWritten += silenceToWrite;
         }
 
         #region Dispose
@@ -218,42 +232,35 @@ namespace Screna
 
             if (_audioProvider != null)
             {
-                _audioProvider.DataAvailable -= AudioProvider_DataAvailable;
                 _audioProvider.Stop();
                 _audioProvider.Dispose();
                 _audioProvider = null;
             }
 
-            if (_videoWriter != null)
+            _cancellationTokenSource.Cancel();
+
+            // Resume record loop if paused so it can exit
+            _continueCapturing.Set();
+
+            if (TerminateRecord)
+                _recordTask.Wait();
+
+            try
             {
-                _cancellationTokenSource.Cancel();
-
-                // Resume record loop if paused so it can exit
-                _continueCapturing.Set();
-
-                if (TerminateRecord)
-                    _recordTask.Wait();
-
-                try
-                {
-                    if (_task != null && !_task.IsCompleted)
-                        _task.GetAwaiter().GetResult();
-                }
-                catch { }
-
-                _imageProvider?.Dispose();
-                _imageProvider = null;
-
-                _videoWriter.Dispose();
-                _videoWriter = null;
-
-                _continueCapturing.Dispose();
+                if (_task != null && !_task.IsCompleted)
+                    _task.GetAwaiter().GetResult();
             }
-            else
-            {
-                _audioWriter.Dispose();
-                _audioWriter = null;
-            }
+            catch { }
+
+            _imageProvider?.Dispose();
+            _imageProvider = null;
+
+            _videoWriter.Dispose();
+            _videoWriter = null;
+
+            _audioBuffer = _silenceBuffer = null;
+
+            _continueCapturing.Dispose();
         }
 
         /// <summary>

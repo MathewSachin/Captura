@@ -1,21 +1,15 @@
-﻿using System;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using Wf = NAudio.Wave.WaveFormat;
 
 namespace Captura.Audio
 {
-    abstract class NAudioProvider : IAudioProvider
+    abstract class NAudioProvider
     {
-        readonly IWaveIn _waveIn;
+        public IWaveIn WaveIn { get; }
 
         protected NAudioProvider(IWaveIn WaveIn)
         {
-            _waveIn = WaveIn;
-
-            _waveIn.DataAvailable += (S, E) =>
-            {
-                DataAvailable?.Invoke(this, new DataAvailableEventArgs(E.Buffer, E.BytesRecorded));
-            };
+            this.WaveIn = WaveIn;
 
             NAudioWaveFormat = WaveIn.WaveFormat;
             WaveFormat = WaveIn.WaveFormat.ToCaptura();
@@ -23,7 +17,7 @@ namespace Captura.Audio
 
         public virtual void Dispose()
         {
-            _waveIn.Dispose();
+            WaveIn.Dispose();
         }
 
         public WaveFormat WaveFormat { get; }
@@ -32,14 +26,12 @@ namespace Captura.Audio
 
         public virtual void Start()
         {
-            _waveIn.StartRecording();
+            WaveIn.StartRecording();
         }
 
         public virtual void Stop()
         {
-            _waveIn.StopRecording();
+            WaveIn.StopRecording();
         }
-
-        public event EventHandler<DataAvailableEventArgs> DataAvailable;
     }
 }

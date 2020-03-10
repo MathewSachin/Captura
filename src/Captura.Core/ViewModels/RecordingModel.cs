@@ -310,7 +310,7 @@ namespace Captura.ViewModels
                 AudioProvider?.WaveFormat,
                 Settings.Audio.Quality);
 
-            return new Recorder(audioFileWriter, AudioProvider);
+            return new AudioRecorder(audioFileWriter, AudioProvider);
         }
 
         string GetAudioFileName(int Index)
@@ -377,7 +377,7 @@ namespace Captura.ViewModels
 
             IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
             {
-                return new Recorder(
+                return new AudioRecorder(
                     audioWriter.GetAudioFileWriter(AudioFileName ?? CurrentFileName, AudioProvider?.WaveFormat,
                         Settings.Audio.Quality), AudioProvider);
             }

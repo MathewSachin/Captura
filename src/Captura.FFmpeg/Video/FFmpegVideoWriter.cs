@@ -122,7 +122,7 @@ namespace Captura.Models
         /// </summary>
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
             // Might happen when writing Gif
             if (_audioPipe == null)
@@ -145,7 +145,7 @@ namespace Captura.Models
 
             _lastAudio?.Wait();
 
-            _lastAudio = _audioPipe.WriteAsync(Buffer, 0, Length);
+            _lastAudio = _audioPipe.WriteAsync(Buffer, Offset, Length);
         }
 
         bool _firstFrame = true;
