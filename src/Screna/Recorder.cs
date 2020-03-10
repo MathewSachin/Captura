@@ -95,8 +95,6 @@ namespace Screna
 
                         ++_frameCount;
 
-                        WriteAudio();
-
                         return true;
                     }
                     catch (InvalidOperationException)
@@ -150,7 +148,22 @@ namespace Screna
                         if (_cancellationToken.IsCancellationRequested)
                             return false;
 
-                        return AddFrame(frame);
+                        var success = AddFrame(frame);
+
+                        if (!success)
+                        {
+                            return false;
+                        }
+
+                        try
+                        {
+                            WriteAudio();
+                            return true;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            return false;
+                        }
                     });
 
                     var timeTillNextFrame = timestamp + frameInterval - _sw.Elapsed;
