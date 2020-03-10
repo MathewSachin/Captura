@@ -3,9 +3,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Captura</RootNamespace>
     <AssemblyName>captura</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ApplicationIcon>Images\Captura.ico</ApplicationIcon>
@@ -16,9 +17,6 @@
     <Resource Include="Images\record.ico" />
     <Resource Include="Images\Captura.ico" />
     <Resource Include="Images\pause.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />

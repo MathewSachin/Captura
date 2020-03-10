@@ -16,7 +16,8 @@ namespace Captura
 
         public MfColorConverter(int Width, int Height, Device Device)
         {
-            var transforms = MediaFactory.FindTransform(TransformCategoryGuids.VideoProcessor, TransformEnumFlag.All);
+            // TODO: This won't work
+            var transforms = new Activate[0];// MediaFactory.FindTransform(TransformCategoryGuids.VideoProcessor, TransformEnumFlag.All);
             _colorConverter = transforms[0].ActivateObject<Transform>();
 
             _deviceMan = new DXGIDeviceManager();

@@ -7,7 +7,7 @@
         ResizeMode="CanMinimize"
         Icon="../Images/Captura.ico"
         SizeToContent="Height"
-        MaxWidth="440"
+        Width="370"
         Title="Captura"
         Left="{Binding Settings.UI.MainWindowLeft, Mode=TwoWay}"
         Top="{Binding Settings.UI.MainWindowTop, Mode=TwoWay}"
