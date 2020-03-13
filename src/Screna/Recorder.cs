@@ -216,6 +216,11 @@ namespace Screna
 
             var read = _audioProvider.Read(_audioBuffer, 0, toWrite);
 
+            if (read == 0)
+            {
+                return;
+            }
+
             _videoWriter.WriteAudio(_audioBuffer, 0, read);
             _audioBytesWritten += read;
 
