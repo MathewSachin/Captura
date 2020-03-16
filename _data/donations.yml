@@ -76,3 +76,7 @@
   amount: "$30 USD"
 - name: "Rémi FOURDAIN"
   amount: "€20 EUR"
+- name: "Wang Zhi"
+  amount: "$6.66 HKD"
+- name: "Wenlong Feng"
+  amount: "$25 USD"
