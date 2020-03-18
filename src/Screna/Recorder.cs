@@ -64,6 +64,8 @@ namespace Screna
                                               * wf.SampleRate
                                               * wf.Channels
                                               * (wf.BitsPerSample / 8.0));
+
+                _audioChunkBytes = (int) (_audioBytesPerFrame * (FrameRate * AudioChunkLengthMs / 1000.0));
             }
             else _audioProvider = null;
 
@@ -72,12 +74,13 @@ namespace Screna
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
         }
 
-        Task<bool> _task;
+        Task<bool> _frameWriteTask;
+        Task _audioWriteTask;
         int _frameCount;
         int _audioBytesWritten;
-        readonly int _audioBytesPerFrame;
+        readonly int _audioBytesPerFrame, _audioChunkBytes;
+        const int AudioChunkLengthMs = 200;
         byte[] _audioBuffer, _silenceBuffer;
-        bool _alternateWriteAudio = true;
 
         async Task DoRecord()
         {
@@ -119,10 +122,10 @@ namespace Screna
                 {
                     var timestamp = _sw.Elapsed;
 
-                    if (_task != null)
+                    if (_frameWriteTask != null)
                     {
                         // If false, stop recording
-                        if (!await _task)
+                        if (!await _frameWriteTask)
                             return;
 
                         var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
@@ -136,7 +139,12 @@ namespace Screna
                         }
                     }
 
-                    _task = Task.Factory.StartNew(() =>
+                    if (_audioWriteTask != null)
+                    {
+                        await _audioWriteTask;
+                    }
+
+                    _frameWriteTask = Task.Run(() =>
                     {
                         var editableFrame = _imageProvider.Capture();
 
@@ -157,7 +165,8 @@ namespace Screna
 
                         try
                         {
-                            WriteAudio();
+                            _audioWriteTask = Task.Run(WriteAudio);
+
                             return true;
                         }
                         catch (InvalidOperationException)
@@ -193,12 +202,7 @@ namespace Screna
                 return;
             }
 
-            _alternateWriteAudio = !_alternateWriteAudio;
-
-            if (!_alternateWriteAudio)
-            {
-                return;
-            }
+            // TODO: Need to comment explanations here
 
             var shouldHaveWritten = (_frameCount - 1) * _audioBytesPerFrame;
 
@@ -208,6 +212,11 @@ namespace Screna
             }
 
             var toWrite = shouldHaveWritten - _audioBytesWritten;
+
+            if (toWrite < _audioChunkBytes)
+            {
+                return;
+            }
 
             if (_audioBuffer == null || _audioBuffer.Length < toWrite)
             {
@@ -226,7 +235,7 @@ namespace Screna
 
             var silenceToWrite = toWrite - read;
 
-            if (silenceToWrite <= 0)
+            if (silenceToWrite <= _audioChunkBytes * 1.5)
             {
                 return;
             }
@@ -241,19 +250,12 @@ namespace Screna
         }
 
         #region Dispose
-        void Dispose(bool TerminateRecord)
+        async void Dispose(bool TerminateRecord)
         {
             if (_disposed)
                 return;
 
             _disposed = true;
-
-            if (_audioProvider != null)
-            {
-                _audioProvider.Stop();
-                _audioProvider.Dispose();
-                _audioProvider = null;
-            }
 
             _cancellationTokenSource.Cancel();
 
@@ -265,10 +267,17 @@ namespace Screna
 
             try
             {
-                if (_task != null && !_task.IsCompleted)
-                    _task.GetAwaiter().GetResult();
+                if (_frameWriteTask != null)
+                    await _frameWriteTask;
             }
             catch { }
+
+            if (_audioProvider != null)
+            {
+                _audioProvider.Stop();
+                _audioProvider.Dispose();
+                _audioProvider = null;
+            }
 
             _imageProvider?.Dispose();
             _imageProvider = null;

@@ -17,7 +17,8 @@ namespace Captura.Audio
             {
                 var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat)
                 {
-                    DiscardOnBufferOverflow = true
+                    DiscardOnBufferOverflow = true,
+                    ReadFully = false
                 };
 
                 provider.WaveIn.DataAvailable += (S, E) =>
@@ -51,10 +52,14 @@ namespace Captura.Audio
             }
             else
             {
-                var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
+                var waveProviders = _audioProviders.Values.Select(M => M.ToWaveProvider());
+
+                var mixingSampleProvider = new MixingWaveProvider32(waveProviders);
 
                 // Screna expects 44.1 kHz 16-bit Stereo
-                _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
+                _mixingWaveProvider = mixingSampleProvider
+                    .ToSampleProvider()
+                    .ToWaveProvider16();
             }
         }
 

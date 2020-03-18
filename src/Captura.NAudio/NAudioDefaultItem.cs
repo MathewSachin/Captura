@@ -20,8 +20,8 @@ namespace Captura.Audio
 
         NAudioDefaultItem(bool IsLoopback) : base("Default", IsLoopback) { }
 
-        public static NAudioItem DefaultMicrophone = new NAudioDefaultItem(false);
+        public static NAudioItem DefaultMicrophone { get; } = new NAudioDefaultItem(false);
 
-        public static NAudioItem DefaultSpeaker = new NAudioDefaultItem(true);
+        public static NAudioItem DefaultSpeaker { get; } = new NAudioDefaultItem(true);
     }
 }
