@@ -143,9 +143,13 @@ namespace Captura.Models
                 _firstAudio = false;
             }
 
-            _lastAudio?.Wait();
+            //_lastAudio?.Wait();
+            if (_lastAudio == null)
+            {
+                _lastAudio = Task.CompletedTask;
+            }
 
-            _lastAudio = _audioPipe.WriteAsync(Buffer, Offset, Length);
+            _lastAudio = _lastAudio.ContinueWith(M => _audioPipe.WriteAsync(Buffer, Offset, Length));
         }
 
         bool _firstFrame = true;
@@ -173,7 +177,11 @@ namespace Captura.Models
                 _firstFrame = false;
             }
 
-            _lastFrameTask?.Wait();
+            //_lastFrameTask?.Wait();
+            if (_lastFrameTask == null)
+            {
+                _lastFrameTask = Task.CompletedTask;
+            }
 
             if (!(Frame is RepeatFrame))
             {
@@ -189,7 +197,7 @@ namespace Captura.Models
 
             try
             {
-                _lastFrameTask = _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+                _lastFrameTask = _lastFrameTask.ContinueWith(M => _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length));
             }
             catch (Exception e) when (_ffmpegProcess.HasExited)
             {
