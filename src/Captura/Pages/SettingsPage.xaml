@@ -9,134 +9,66 @@
                        HorizontalAlignment="Center"
                        MaxWidth="800">
                 <WrapPanel.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Style TargetType="captura:ModernButton" BasedOn="{StaticResource IconButton}">
                         <Setter Property="Command" Value="GoToPage"/>
-                        <Setter Property="Margin" Value="10"/>
-                        <Setter Property="Padding" Value="5,0"/>
-                        <Setter Property="MinWidth" Value="150"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                    </Style>
-                    <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
-                        <Setter Property="Margin" Value="10"/>
-                        <Setter Property="Width" Value="20"/>
-                        <Setter Property="Height" Value="20"/>
-                        <Setter Property="Stretch" Value="Uniform"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                    </Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource Title}">
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="FontSize" Value="13"/>
-                        <Setter Property="Margin" Value="5,0,0,0"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Orientation" Value="Horizontal"/>
-                    </Style>
-                    <Style TargetType="GridSplitter" BasedOn="{StaticResource {x:Type GridSplitter}}">
-                        <Setter Property="Width" Value="3"/>
-                        <Setter Property="IsEnabled" Value="False"/>
-                        <Setter Property="Margin" Value="5,0"/>
                     </Style>
                 </WrapPanel.Resources>
 
-                <Button CommandParameter="/Pages/VideoPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Video, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="{Binding WebcamPage, Source={StaticResource ServiceLocator}}">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/AudioPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/ScreenShotsPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Region, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/RecentPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/InterfacePage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Window, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="UI"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/FFmpegPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.VideoFile, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="FFmpeg"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/HotkeysPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/ProxyPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/SoundsPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Sounds, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/TrayIconPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/FileNameFormatPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="{x:Static captura:OverlayPage.Instance}">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Arrow, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
-                <Button CommandParameter="/Pages/AboutPage.xaml">
-                    <StackPanel>
-                        <Path Data="{Binding Icons.Help, Source={StaticResource ServiceLocator}}"/>
-                        <GridSplitter/>
-                        <TextBlock Text="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </StackPanel>
-                </Button>
+                <captura:ModernButton Content="{Binding Video, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Video, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/VideoPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Webcam, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="{Binding WebcamPage, Source={StaticResource ServiceLocator}}"/>
+
+                <captura:ModernButton Content="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Speaker, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/AudioPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Region, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/ScreenShotsPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding Recent, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/RecentPage.xaml"/>
+
+                <captura:ModernButton Content="UI"
+                                      IconData="{Binding Icons.Window, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/InterfacePage.xaml"/>
+
+                <captura:ModernButton Content="FFmpeg"
+                                      IconData="{Binding Icons.VideoFile, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/FFmpegPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/HotkeysPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding Proxy, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/ProxyPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding Sounds, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/SoundsPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/TrayIconPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/FileNameFormatPage.xaml"/>
+
+                <captura:ModernButton Content="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Arrow, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="{x:Static captura:OverlayPage.Instance}"/>
+
+                <captura:ModernButton Content="{Binding About, Source={StaticResource Loc}, Mode=OneWay}"
+                                      IconData="{Binding Icons.Help, Source={StaticResource ServiceLocator}}"
+                                      CommandParameter="/Pages/AboutPage.xaml"/>
             </WrapPanel>
         </ScrollViewer>
     </DockPanel>

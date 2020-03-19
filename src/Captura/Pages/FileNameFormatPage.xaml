@@ -4,7 +4,7 @@
       xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}"
       Title="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
-    <Grid Margin="5">
+    <ScrollViewer Margin="5">
         <StackPanel Margin="5">
             <Label Content="File Name Format"
                    ContentStringFormat="{}{0}:"
@@ -64,5 +64,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>
