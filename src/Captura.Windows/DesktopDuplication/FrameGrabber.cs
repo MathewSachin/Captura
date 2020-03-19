@@ -10,7 +10,8 @@ namespace DesktopDuplication
         readonly OutputDuplication _deskDupl;
 
         AcquireResult _acquireResult;
-        readonly object _acquireResultLock = new object();
+        readonly object _acquireResultLock = new object(),
+            _acquireTaskLock = new object();
 
         Task _acquireTask;
 
@@ -58,14 +59,17 @@ namespace DesktopDuplication
 
         AcquireResult GetAcquireResult()
         {
-            if (_acquireTask == null)
+            lock (_acquireTaskLock)
             {
-                BeginAcquireFrame();
+                if (_acquireTask == null)
+                {
+                    BeginAcquireFrame();
 
-                return null;
+                    return null;
+                }
+
+                _acquireTask.Wait();
             }
-
-            _acquireTask.Wait();
 
             lock (_acquireResultLock)
             {
@@ -84,15 +88,24 @@ namespace DesktopDuplication
 
         public void Release()
         {
-            _deskDupl.ReleaseFrame();
+            lock (_acquireTaskLock)
+            {
+                _deskDupl.ReleaseFrame();
 
-            BeginAcquireFrame();
+                BeginAcquireFrame();
+            }
         }
 
         public void Dispose()
         {
-            try { _acquireTask?.Wait(); }
-            catch { }
+            lock (_acquireTaskLock)
+            {
+                try
+                {
+                    _acquireTask?.Wait();
+                }
+                catch { }
+            }
         }
     }
 }
