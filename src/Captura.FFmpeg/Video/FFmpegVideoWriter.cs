@@ -18,8 +18,10 @@ namespace Captura.Models
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
 
-        SemaphoreSlim _spAudio = new SemaphoreSlim(2),
+        readonly SemaphoreSlim _spAudio = new SemaphoreSlim(2),
             _spVideo = new SemaphoreSlim(2);
+
+        readonly TimeSpan _spTimeout = TimeSpan.FromSeconds(5);
 
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
@@ -154,7 +156,10 @@ namespace Captura.Models
                 _lastAudio = Task.CompletedTask;
             }
 
-            _spAudio.Wait();
+            if (!_spAudio.Wait(_spTimeout))
+            {
+                throw new TimeoutException();
+            }
 
             _lastAudio = _lastAudio.ContinueWith(M =>
             {
@@ -194,7 +199,6 @@ namespace Captura.Models
                 _firstFrame = false;
             }
 
-            //_lastFrameTask?.Wait();
             if (_lastFrameTask == null)
             {
                 _lastFrameTask = Task.CompletedTask;
@@ -212,7 +216,10 @@ namespace Captura.Models
                 }
             }
 
-            _spVideo.Wait();
+            if (!_spVideo.Wait(_spTimeout))
+            {
+                throw new TimeoutException();
+            }
 
             try
             {
