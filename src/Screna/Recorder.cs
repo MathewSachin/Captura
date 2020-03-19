@@ -91,35 +91,8 @@ namespace Screna
                 _frameCount = 0;
 
                 // Returns false when stopped
-                bool AddFrame(IBitmapFrame Frame)
-                {
-                    try
-                    {
-                        _videoWriter.WriteFrame(Frame);
 
-                        ++_frameCount;
-
-                        return true;
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return false;
-                    }
-                }
-
-                bool CanContinue()
-                {
-                    try
-                    {
-                        return _continueCapturing.WaitOne();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        return false;
-                    }
-                }
-
-                while (CanContinue() && !_cancellationToken.IsCancellationRequested)
+                while (_continueCapturing.WaitOne() && !_cancellationToken.IsCancellationRequested)
                 {
                     var timestamp = _sw.Elapsed;
 
@@ -129,15 +102,8 @@ namespace Screna
                         if (!await _frameWriteTask)
                             return;
 
-                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                        var diff = requiredFrames - _frameCount;
-
-                        // Write atmost 1 duplicate frame
-                        if (diff >= 1)
-                        {
-                            if (!AddFrame(RepeatFrame.Instance))
-                                return;
-                        }
+                        if (!WriteDuplicateFrame())
+                            return;
                     }
 
                     if (_audioWriteTask != null)
@@ -145,36 +111,7 @@ namespace Screna
                         await _audioWriteTask;
                     }
 
-                    _frameWriteTask = Task.Run(() =>
-                    {
-                        var editableFrame = _imageProvider.Capture();
-
-                        if (_cancellationToken.IsCancellationRequested)
-                            return false;
-
-                        var frame = editableFrame.GenerateFrame(timestamp);
-
-                        if (_cancellationToken.IsCancellationRequested)
-                            return false;
-
-                        var success = AddFrame(frame);
-
-                        if (!success)
-                        {
-                            return false;
-                        }
-
-                        try
-                        {
-                            _audioWriteTask = Task.Run(WriteAudio);
-
-                            return true;
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            return false;
-                        }
-                    });
+                    _frameWriteTask = Task.Run(() => FrameWriter(timestamp));
 
                     var timeTillNextFrame = timestamp + frameInterval - _sw.Elapsed;
 
@@ -193,6 +130,62 @@ namespace Screna
                         Dispose(false);
                     }
                 }
+            }
+        }
+
+        bool FrameWriter(TimeSpan Timestamp)
+        {
+            var editableFrame = _imageProvider.Capture();
+
+            var frame = editableFrame.GenerateFrame(Timestamp);
+
+            var success = AddFrame(frame);
+
+            if (!success)
+            {
+                return false;
+            }
+
+            try
+            {
+                _audioWriteTask = Task.Run(WriteAudio);
+
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        bool WriteDuplicateFrame()
+        {
+            var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+            var diff = requiredFrames - _frameCount;
+
+            // Write atmost 1 duplicate frame
+            if (diff >= 1)
+            {
+                if (!AddFrame(RepeatFrame.Instance))
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool AddFrame(IBitmapFrame Frame)
+        {
+            try
+            {
+                _videoWriter.WriteFrame(Frame);
+
+                ++_frameCount;
+
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
             }
         }
 
