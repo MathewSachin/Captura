@@ -31,6 +31,14 @@ namespace Screna
         readonly Task _recordTask;
 
         readonly object _syncLock = new object();
+
+        Task<bool> _frameWriteTask;
+        Task _audioWriteTask;
+        int _frameCount;
+        int _audioBytesWritten;
+        readonly int _audioBytesPerFrame, _audioChunkBytes;
+        const int AudioChunkLengthMs = 200;
+        byte[] _audioBuffer, _silenceBuffer;
         #endregion
 
         /// <summary>
@@ -40,7 +48,8 @@ namespace Screna
         /// <param name="ImageProvider">The image source.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
         /// <param name="AudioProvider">The audio source. null = no audio.</param>
-        public Recorder(IVideoFileWriter VideoWriter, IImageProvider ImageProvider, int FrameRate, IAudioProvider AudioProvider = null)
+        public Recorder(IVideoFileWriter VideoWriter, IImageProvider ImageProvider, int FrameRate,
+            IAudioProvider AudioProvider = null)
         {
             _videoWriter = VideoWriter ?? throw new ArgumentNullException(nameof(VideoWriter));
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
@@ -60,10 +69,10 @@ namespace Screna
             {
                 var wf = AudioProvider.WaveFormat;
 
-                _audioBytesPerFrame = (int)((1.0 / FrameRate)
-                                              * wf.SampleRate
-                                              * wf.Channels
-                                              * (wf.BitsPerSample / 8.0));
+                _audioBytesPerFrame = (int) ((1.0 / FrameRate)
+                                             * wf.SampleRate
+                                             * wf.Channels
+                                             * (wf.BitsPerSample / 8.0));
 
                 _audioChunkBytes = (int) (_audioBytesPerFrame * (FrameRate * AudioChunkLengthMs / 1000.0));
             }
@@ -73,14 +82,6 @@ namespace Screna
 
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
         }
-
-        Task<bool> _frameWriteTask;
-        Task _audioWriteTask;
-        int _frameCount;
-        int _audioBytesWritten;
-        readonly int _audioBytesPerFrame, _audioChunkBytes;
-        const int AudioChunkLengthMs = 200;
-        byte[] _audioBuffer, _silenceBuffer;
 
         async Task DoRecord()
         {
@@ -202,10 +203,9 @@ namespace Screna
                 return;
             }
 
-            // TODO: Need to comment explanations here
-
             var shouldHaveWritten = (_frameCount - 1) * _audioBytesPerFrame;
 
+            // Already written more than enough, skip for now
             if (_audioBytesWritten >= shouldHaveWritten)
             {
                 return;
@@ -213,11 +213,14 @@ namespace Screna
 
             var toWrite = shouldHaveWritten - _audioBytesWritten;
 
+            // Only write if data to write is more than chunk size.
+            // This gives enough time for the audio provider to buffer data from the source.
             if (toWrite < _audioChunkBytes)
             {
                 return;
             }
 
+            // Reallocate buffer as needed
             if (_audioBuffer == null || _audioBuffer.Length < toWrite)
             {
                 _audioBuffer = new byte[toWrite];
@@ -225,6 +228,7 @@ namespace Screna
 
             var read = _audioProvider.Read(_audioBuffer, 0, toWrite);
 
+            // Nothing read
             if (read == 0)
             {
                 return;
@@ -233,13 +237,17 @@ namespace Screna
             _videoWriter.WriteAudio(_audioBuffer, 0, read);
             _audioBytesWritten += read;
 
+            // Fill with silence to maintain synchronization
             var silenceToWrite = toWrite - read;
 
+            // Write silence only when more than a threshold
+            // Threshold should ideally be a bit greater than chunk size
             if (silenceToWrite <= _audioChunkBytes * 1.5)
             {
                 return;
             }
             
+            // Reallocate silence buffer: An array of zeros.
             if (_silenceBuffer == null || _silenceBuffer.Length < silenceToWrite)
             {
                 _silenceBuffer = new byte[silenceToWrite];
@@ -262,6 +270,7 @@ namespace Screna
             // Resume record loop if paused so it can exit
             _continueCapturing.Set();
 
+            // Ensure all threads exit before disposing resources.
             if (TerminateRecord)
                 _recordTask.Wait();
 
@@ -269,6 +278,13 @@ namespace Screna
             {
                 if (_frameWriteTask != null)
                     await _frameWriteTask;
+            }
+            catch { }
+
+            try
+            {
+                if (_audioWriteTask != null)
+                    await _audioWriteTask;
             }
             catch { }
 

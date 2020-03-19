@@ -54,10 +54,10 @@ namespace Captura.Audio
             {
                 var waveProviders = _audioProviders.Values.Select(M => M.ToWaveProvider());
 
-                var mixingSampleProvider = new MixingWaveProvider32(waveProviders);
+                // MixingSampleProvider cannot be used here due to it removing inputs that don't return as many bytes as requested.
 
                 // Screna expects 44.1 kHz 16-bit Stereo
-                _mixingWaveProvider = mixingSampleProvider
+                _mixingWaveProvider = new MixingWaveProvider32(waveProviders)
                     .ToSampleProvider()
                     .ToWaveProvider16();
             }

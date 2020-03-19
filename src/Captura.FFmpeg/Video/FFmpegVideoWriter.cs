@@ -18,9 +18,11 @@ namespace Captura.Models
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
 
+        // These semaphores prevent FFmpeg audio/video pipes getting deadlocked.
         readonly SemaphoreSlim _spAudio = new SemaphoreSlim(2),
             _spVideo = new SemaphoreSlim(2);
 
+        // Timeout used with Semaphores, if elapsed would mean FFmpeg might be deadlocked.
         readonly TimeSpan _spTimeout = TimeSpan.FromSeconds(5);
 
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";

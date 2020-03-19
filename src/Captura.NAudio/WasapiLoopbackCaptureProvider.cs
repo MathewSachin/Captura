@@ -12,6 +12,7 @@ namespace Captura.Audio
         {
             _wasapiOut = new WasapiOut(Device, AudioClientShareMode.Shared, true, 50);
             
+            // Mix Format should be used in Shared mode
             using var audioClient = Device.AudioClient;
             _wasapiOut.Init(new SilenceProvider(audioClient.MixFormat));
         }
