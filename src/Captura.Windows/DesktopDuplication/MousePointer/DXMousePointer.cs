@@ -30,7 +30,10 @@ namespace DesktopDuplication
         {
             // No update
             if (FrameInfo.LastMouseUpdateTime == 0)
+            {
+                _pointerShape?.Update(DesktopTexture, _pointerPosition);
                 return;
+            }
 
             _pointerPosition = FrameInfo.PointerPosition;
 
