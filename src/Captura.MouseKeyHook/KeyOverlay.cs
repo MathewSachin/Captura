@@ -42,8 +42,6 @@ namespace Captura.Models
 
             foreach (var keyRecord in _records)
             {
-                ++index;
-
                 if ((DateTime.Now - keyRecord.TimeStamp).TotalSeconds > _records.Size * _settings.Timeout)
                     continue;
 
@@ -58,12 +56,19 @@ namespace Captura.Models
                     offsetY += _settings.VerticalPadding * 2 + _settings.BorderThickness * 2;
                 }
 
-                if (index == 1)
+                if (++index == 1)
                 {
-                    fontSize -= 5;
+                    fontSize = Math.Max(1, fontSize - 5);
                     opacity = 200;
                 }
             }
+        }
+
+        static Color ApplyOpacity(Color Color, int Opacity)
+        {
+            var alpha = (int)Math.Round((Opacity / 255.0) * (Color.A / 255.0) * 255);
+
+            return Color.FromArgb(alpha, Color);
         }
 
         static void DrawKeys(KeystrokesSettings KeystrokesSettings, IEditableFrame Editor, string Text, IFont Font, byte Opacity, float OffsetY)
@@ -77,13 +82,13 @@ namespace Captura.Models
                 size.Width + 2 * paddingX,
                 size.Height + 2 * paddingY);
 
-            Editor.FillRectangle(Color.FromArgb(Opacity, KeystrokesSettings.BackgroundColor),
+            Editor.FillRectangle(ApplyOpacity(KeystrokesSettings.BackgroundColor, Opacity),
                 rect,
                 KeystrokesSettings.CornerRadius);
 
             Editor.DrawString(Text,
                 Font,
-                Color.FromArgb(Opacity, KeystrokesSettings.FontColor),
+                ApplyOpacity(KeystrokesSettings.FontColor, Opacity),
                 new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
 
             var border = KeystrokesSettings.BorderThickness;
@@ -92,7 +97,7 @@ namespace Captura.Models
             {
                 rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                Editor.DrawRectangle(Color.FromArgb(Opacity, KeystrokesSettings.BorderColor), border,
+                Editor.DrawRectangle(ApplyOpacity(KeystrokesSettings.BorderColor, Opacity), border,
                     rect,
                     KeystrokesSettings.CornerRadius);
             }
