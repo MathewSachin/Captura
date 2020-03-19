@@ -210,6 +210,12 @@ namespace Captura.Models
 
             try
             {
+                // Check if last write failed.
+                if (_lastFrameTask != null && _lastFrameTask.IsFaulted)
+                {
+                    _lastFrameTask.Wait();
+                }
+
                 _lastFrameTask = _lastFrameTask.ContinueWith(async M =>
                 {
                     try
