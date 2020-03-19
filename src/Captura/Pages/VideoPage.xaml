@@ -288,11 +288,6 @@ This Limit option is to prevent system crashes due to using high FPS on full scr
                       Visibility="{Binding Settings.Video.PostConvert, Converter={StaticResource BoolToVisibilityConverter}}"
                       DisplayMemberPath="Name"
                       Margin="0,5"/>
-
-            <Button Click="OpenOverlayManager"
-                    VerticalAlignment="Top"
-                    Margin="0,10,0,3"
-                    Content="{Binding Overlays, Source={StaticResource Loc}, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -1,17 +1,10 @@
-﻿using System.Windows;
-
-namespace Captura
+﻿namespace Captura
 {
     public partial class VideoPage
     {
         public VideoPage()
         {
             InitializeComponent();
-        }
-
-        void OpenOverlayManager(object Sender, RoutedEventArgs E)
-        {
-            OverlayWindow.ShowInstance();
         }
     }
 }
