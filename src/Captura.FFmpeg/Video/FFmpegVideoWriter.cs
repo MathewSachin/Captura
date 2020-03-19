@@ -18,12 +18,11 @@ namespace Captura.Models
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
 
-        // These semaphores prevent FFmpeg audio/video pipes getting deadlocked.
-        readonly SemaphoreSlim _spAudio = new SemaphoreSlim(2),
-            _spVideo = new SemaphoreSlim(2);
+        // This semaphore helps prevent FFmpeg audio/video pipes getting deadlocked.
+        readonly SemaphoreSlim _spVideo = new SemaphoreSlim(5);
 
         // Timeout used with Semaphores, if elapsed would mean FFmpeg might be deadlocked.
-        readonly TimeSpan _spTimeout = TimeSpan.FromSeconds(5);
+        readonly TimeSpan _spTimeout = TimeSpan.FromMilliseconds(50);
 
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
@@ -107,7 +106,8 @@ namespace Captura.Models
         /// </summary>
         public void Dispose()
         {
-            Task.WaitAll(_lastFrameTask, _lastAudio);
+            _lastFrameTask?.Wait();
+            _lastAudio?.Wait();
 
             _ffmpegIn.Dispose();
 
@@ -153,27 +153,10 @@ namespace Captura.Models
                 _firstAudio = false;
             }
 
-            if (_lastAudio == null)
-            {
-                _lastAudio = Task.CompletedTask;
-            }
+            // We don't need semaphores for audio since audio frames arrive less often.
+            _lastAudio?.Wait();
 
-            if (!_spAudio.Wait(_spTimeout))
-            {
-                throw new TimeoutException();
-            }
-
-            _lastAudio = _lastAudio.ContinueWith(M =>
-            {
-                try
-                {
-                    return _audioPipe.WriteAsync(Buffer, Offset, Length);
-                }
-                finally
-                {
-                    _spAudio.Release();
-                }
-            });
+            _lastAudio = _audioPipe.WriteAsync(Buffer, Offset, Length);
         }
 
         bool _firstFrame = true;
@@ -218,18 +201,20 @@ namespace Captura.Models
                 }
             }
 
+            // Drop frames if semaphore cannot be acquired soon enough.
+            // Frames are dropped mostly in the beginning of recording till atleast one audio frame is received.
             if (!_spVideo.Wait(_spTimeout))
             {
-                throw new TimeoutException();
+                return;
             }
 
             try
             {
-                _lastFrameTask = _lastFrameTask.ContinueWith(M =>
+                _lastFrameTask = _lastFrameTask.ContinueWith(async M =>
                 {
                     try
                     {
-                        return _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+                        await _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
                     }
                     finally
                     {
