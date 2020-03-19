@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO.Pipes;
+using System.Threading;
 using System.Threading.Tasks;
 using Captura.FFmpeg;
 
@@ -16,6 +17,9 @@ namespace Captura.Models
         readonly Process _ffmpegProcess;
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
+
+        SemaphoreSlim _spAudio = new SemaphoreSlim(2),
+            _spVideo = new SemaphoreSlim(2);
 
         static string GetPipeName() => $"captura-{Guid.NewGuid()}";
 
@@ -99,6 +103,8 @@ namespace Captura.Models
         /// </summary>
         public void Dispose()
         {
+            Task.WaitAll(_lastFrameTask, _lastAudio);
+
             _ffmpegIn.Dispose();
 
             _audioPipe?.Dispose();
@@ -143,13 +149,24 @@ namespace Captura.Models
                 _firstAudio = false;
             }
 
-            //_lastAudio?.Wait();
             if (_lastAudio == null)
             {
                 _lastAudio = Task.CompletedTask;
             }
 
-            _lastAudio = _lastAudio.ContinueWith(M => _audioPipe.WriteAsync(Buffer, Offset, Length));
+            _spAudio.Wait();
+
+            _lastAudio = _lastAudio.ContinueWith(M =>
+            {
+                try
+                {
+                    return _audioPipe.WriteAsync(Buffer, Offset, Length);
+                }
+                finally
+                {
+                    _spAudio.Release();
+                }
+            });
         }
 
         bool _firstFrame = true;
@@ -195,9 +212,21 @@ namespace Captura.Models
                 }
             }
 
+            _spVideo.Wait();
+
             try
             {
-                _lastFrameTask = _lastFrameTask.ContinueWith(M => _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length));
+                _lastFrameTask = _lastFrameTask.ContinueWith(M =>
+                {
+                    try
+                    {
+                        return _ffmpegIn.WriteAsync(_videoBuffer, 0, _videoBuffer.Length);
+                    }
+                    finally
+                    {
+                        _spVideo.Release();
+                    }
+                });
             }
             catch (Exception e) when (_ffmpegProcess.HasExited)
             {
