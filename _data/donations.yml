@@ -80,3 +80,5 @@
   amount: "$6.66 HKD"
 - name: "Wenlong Feng"
   amount: "$25 USD"
+- name: "Thomas Liebezeit"
+  amount: "€15 EUR"
