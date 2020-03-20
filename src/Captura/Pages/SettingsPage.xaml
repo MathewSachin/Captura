@@ -50,14 +50,6 @@
                                       IconData="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"
                                       CommandParameter="/Pages/ProxyPage.xaml"/>
 
-                <captura:ModernButton Content="{Binding Sounds, Source={StaticResource Loc}, Mode=OneWay}"
-                                      IconData="{Binding Icons.Music, Source={StaticResource ServiceLocator}}"
-                                      CommandParameter="/Pages/SoundsPage.xaml"/>
-
-                <captura:ModernButton Content="{Binding TrayIcon, Source={StaticResource Loc}, Mode=OneWay}"
-                                      IconData="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"
-                                      CommandParameter="/Pages/TrayIconPage.xaml"/>
-
                 <captura:ModernButton Content="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}"
                                       IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
                                       CommandParameter="/Pages/FileNameFormatPage.xaml"/>

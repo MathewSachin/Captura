@@ -4,7 +4,7 @@
       xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}"
       Title="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
-    <ScrollViewer Margin="5">
+    <Grid>
         <StackPanel Margin="5">
             <Label Content="File Name Format"
                    ContentStringFormat="{}{0}:"
@@ -31,16 +31,21 @@
                           Margin="0,30"
                           Height="1"/>
 
-            <ItemsControl ItemsSource="{Binding FormatGroups}"
-                          Grid.IsSharedSizeScope="True">
+            <ItemsControl ItemsSource="{Binding FormatGroups}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Margin="10">
                             <Label Content="{Binding Name}"
                                    FontWeight="Bold"
                                    Margin="0,5,0,2"/>
 
-                            <ItemsControl ItemsSource="{Binding Formats}">
+                            <ItemsControl ItemsSource="{Binding Formats}"
+                                          Grid.IsSharedSizeScope="True">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -64,5 +69,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-    </ScrollViewer>
+    </Grid>
 </Page>
