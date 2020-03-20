@@ -1,7 +1,10 @@
-﻿using Captura.Audio;
+﻿using System;
+using Captura.Audio;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
+using Reactive.Bindings;
 
 namespace Captura.Models
 {
@@ -26,6 +29,14 @@ namespace Captura.Models
             Refresh();
 
             RefreshCommand = new DelegateCommand(Refresh);
+
+            SelectedMicPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .Select(M => SelectedMicrophone?.PeakLevel ?? 0)
+                .ToReadOnlyReactivePropertySlim();
+
+            SelectedSpeakerPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .Select(M => SelectedSpeaker?.PeakLevel ?? 0)
+                .ToReadOnlyReactivePropertySlim();
         }
 
         void RefreshMics()
@@ -88,5 +99,9 @@ namespace Captura.Models
             get => _selectedSpeaker;
             set => Set(ref _selectedSpeaker, value ?? AvailableSpeakers.FirstOrDefault());
         }
+
+        public IReadOnlyReactiveProperty<double> SelectedMicPeakLevel { get; }
+
+        public IReadOnlyReactiveProperty<double> SelectedSpeakerPeakLevel { get; }
     }
 }

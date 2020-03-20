@@ -22,7 +22,7 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultMicrophone => NAudioDefaultItem.DefaultMicrophone;
+        public IAudioItem DefaultMicrophone => NAudioItem.DefaultMicrophone;
 
         public IEnumerable<IAudioItem> Speakers
         {
@@ -38,7 +38,7 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultSpeaker => NAudioDefaultItem.DefaultSpeaker;
+        public IAudioItem DefaultSpeaker => NAudioItem.DefaultSpeaker;
 
         public void Dispose() { }
 

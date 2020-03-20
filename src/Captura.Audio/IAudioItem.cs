@@ -5,5 +5,7 @@
         string Name { get; }
 
         bool IsLoopback { get; }
+
+        double PeakLevel { get; }
     }
 }
