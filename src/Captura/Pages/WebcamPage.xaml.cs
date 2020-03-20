@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Captura.ViewModels;
@@ -35,8 +36,10 @@ namespace Captura
 
         bool _loaded;
 
-        void OnLoaded(object Sender, RoutedEventArgs E)
+        async void OnLoaded(object Sender, RoutedEventArgs E)
         {
+            await UpdateBackground();
+
             if (_loaded)
                 return;
 
@@ -50,6 +53,11 @@ namespace Captura
             control.BindOne(HeightProperty, _reactor.Height);
 
             control.BindOne(OpacityProperty, _reactor.Opacity);
+        }
+
+        async Task UpdateBackground()
+        {
+            Img.Source = await WpfExtensions.GetBackground();
         }
 
         public void SetupPreview()

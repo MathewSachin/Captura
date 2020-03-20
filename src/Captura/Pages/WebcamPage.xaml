@@ -5,8 +5,13 @@
       Title="{Binding WebCam, Source={StaticResource Loc}, Mode=OneWay}"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}">
     <Grid Margin="5,0">
-        <DockPanel>
-            <DockPanel DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel DataContext="{Binding Settings.WebcamOverlay}">
+            <DockPanel>
                 <captura:ModernButton ToolTip="{Binding Refresh, Source={StaticResource Loc}, Mode=OneWay}"
                                       Command="{Binding WebcamModel.RefreshCommand, Source={StaticResource ServiceLocator}}"
                                       IconData="{Binding Icons.Refresh, Source={StaticResource ServiceLocator}}"
@@ -33,91 +38,105 @@
                           VerticalAlignment="Center"
                           Margin="0,0,7,0"/>
             </DockPanel>
-            
+
+            <CheckBox IsChecked="{Binding SeparateFile}"
+                      Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                      Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
+                      Margin="0,5"/>
+
+            <Grid Margin="0,15,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Path Data="{Binding Icons.Opacity, Source={StaticResource ServiceLocator}}"
+                      Width="15"
+                      Height="15"
+                      Margin="0,0,10,0"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+
+                <Label Content="{Binding Opacity, Source={StaticResource Loc}, Mode=OneWay}"
+                       ContentStringFormat="{}{0}: "
+                       Grid.Column="1"
+                       Margin="0,3"/>
+
+                <Slider Grid.Column="2"
+                        Minimum="1"
+                        Maximum="100"
+                        Value="{Binding Opacity, Mode=TwoWay}"/>
+            </Grid>
+        </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="5,0"/>
+        <DockPanel Grid.Column="2">
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.WebcamOverlay}"
                         DockPanel.Dock="Top">
-                <CheckBox IsChecked="{Binding SeparateFile}"
-                          Content="{Binding WebCamSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
-                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                          Visibility="{Binding ViewConditions.CanWebcamSeparateFile.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibilityConverter}}"
-                          Margin="0,5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <Label Content="X: "/>
+                    <Slider Value="{Binding X, Mode=TwoWay}"
+                            Grid.Column="1"
+                            Minimum="0"
+                            Maximum="100"/>
 
-                        <Label Content="X: "/>
-                        <Slider Value="{Binding X, Mode=TwoWay}"
-                                Grid.Column="1"
-                                Minimum="0"
-                                Maximum="100"/>
+                    <Label Content="Y: "
+                           Grid.Column="2"/>
+                    <Slider Value="{Binding Y, Mode=TwoWay}"
+                            Grid.Column="3"
+                            Minimum="0"
+                            Maximum="100"/>
 
-                        <Label Content="Y: "
-                               Grid.Column="2"/>
-                        <Slider Value="{Binding Y, Mode=TwoWay}"
-                                Grid.Column="3"
-                                Minimum="0"
-                                Maximum="100"/>
+                    <Label Content="W: "
+                           Grid.Column="4"/>
+                    <Slider Value="{Binding Width, Mode=TwoWay}"
+                            Grid.Column="5"
+                            Minimum="1"
+                            Maximum="100"/>
 
-                        <Label Content="W: "
-                               Grid.Column="4"/>
-                        <Slider Value="{Binding Width, Mode=TwoWay}"
-                                Grid.Column="5"
-                                Minimum="1"
-                                Maximum="100"/>
-
-                        <Label Content="H: "
-                               Grid.Column="6"/>
-                        <Slider Value="{Binding Height, Mode=TwoWay}"
-                                Grid.Column="7"
-                                Minimum="1"
-                                Maximum="100"/>
-                    </Grid>
-
-                    <Grid Margin="0,15,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Path Data="{Binding Icons.Opacity, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-
-                        <Label Content="{Binding Opacity, Source={StaticResource Loc}, Mode=OneWay}"
-                               ContentStringFormat="{}{0}: "
-                               Grid.Column="1"
-                               Margin="0,3"/>
-
-                        <Slider Grid.Column="2"
-                                Minimum="1"
-                                Maximum="100"
-                                Value="{Binding Opacity, Mode=TwoWay}"/>
-                    </Grid>
-                </StackPanel>
+                    <Label Content="H: "
+                           Grid.Column="6"/>
+                    <Slider Value="{Binding Height, Mode=TwoWay}"
+                            Grid.Column="7"
+                            Minimum="1"
+                            Maximum="100"/>
+                </Grid>
             </StackPanel>
 
             <Grid Background="DimGray"
-                  Name="PreviewGrid">
+                  Name="PreviewGrid"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Margin="0,0,0,10">
+                <Image Name="Img"
+                       Stretch="Uniform"/>
+
                 <Label Name="PreviewTarget"
-                       Background="#B7000000"
+                       Background="#F0111111"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Top"/>
+                       VerticalAlignment="Top"
+                       BorderBrush="#EEEEEE"
+                       BorderThickness="0.5"
+                       Content="Webcam"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       Foreground="White"/>
             </Grid>
         </DockPanel>
     </Grid>

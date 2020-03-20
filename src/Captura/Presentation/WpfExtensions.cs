@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using Captura.Models;
+using Captura.ViewModels;
 using Microsoft.Win32;
 using Reactive.Bindings;
+using Screna;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using DColor = System.Drawing.Color;
@@ -157,6 +161,36 @@ namespace Captura
                     Source = Property,
                     Mode = BindingMode.OneWay
                 });
+        }
+
+        public static async Task<ImageSource> GetBackground()
+        {
+            var vm = ServiceProvider.Get<VideoSourcesViewModel>();
+
+            IBitmapImage bmp;
+
+            switch (vm.SelectedVideoSourceKind?.Source)
+            {
+                case NoVideoItem _:
+                    bmp = ScreenShot.Capture();
+                    break;
+
+                default:
+                    var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
+                    bmp = await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
+                    break;
+            }
+
+            using (bmp)
+            {
+                var stream = new MemoryStream();
+                bmp.Save(stream, ImageFormats.Png);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+                return decoder.Frames[0];
+            }
         }
     }
 }
