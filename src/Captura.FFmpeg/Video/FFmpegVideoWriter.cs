@@ -90,6 +90,13 @@ namespace Captura.Models
 
                 Args.VideoCodec.AudioArgsProvider(Args.AudioQuality, output);
 
+                var wf = Args.AudioProvider.WaveFormat;
+
+                _audioBytesPerFrame = (int)((1.0 / Args.FrameRate)
+                                            * wf.SampleRate
+                                            * wf.Channels
+                                            * (wf.BitsPerSample / 8.0));
+
                 // UpdatePeriod * Frequency * (Bytes per Second) * Channels * 2
                 var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);
 
@@ -156,10 +163,38 @@ namespace Captura.Models
             // We don't need semaphores for audio since audio frames arrive less often.
             _lastAudio?.Wait();
 
+            // Drop audio bytes to sync with video once we've reached stability from frame side.
+            if (_initialStability)
+            {
+                var audioBytesToDrop = _skippedFrames * _audioBytesPerFrame - _audioBytesDropped;
+
+                // Drop whole buffer
+                if (audioBytesToDrop >= Length)
+                {
+                    _audioBytesDropped += Length;
+                    return;
+                }
+
+                // Drop part of buffer
+                if (audioBytesToDrop > 0)
+                {
+                    Offset += audioBytesToDrop;
+                    Length -= audioBytesToDrop;
+                    _audioBytesDropped += audioBytesToDrop;
+                }
+            }
+
             _lastAudio = _audioPipe.WriteAsync(Buffer, Offset, Length);
         }
 
         bool _firstFrame = true;
+
+        bool _initialStability;
+        int _frameStreak;
+        const int FrameStreakThreshold = 50;
+        int _skippedFrames;
+        readonly int _audioBytesPerFrame;
+        int _audioBytesDropped;
 
         Task _lastFrameTask;
 
@@ -205,7 +240,19 @@ namespace Captura.Models
             // Frames are dropped mostly in the beginning of recording till atleast one audio frame is received.
             if (!_spVideo.Wait(_spTimeout))
             {
+                ++_skippedFrames;
+                _frameStreak = 0;
                 return;
+            }
+            
+            // Most of the drops happen in beginning of video, once that stops, sync can be done.
+            if (!_initialStability)
+            {
+                ++_frameStreak;
+                if (_frameStreak > FrameStreakThreshold)
+                {
+                    _initialStability = true;
+                }
             }
 
             try
