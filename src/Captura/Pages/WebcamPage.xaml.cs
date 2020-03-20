@@ -33,8 +33,15 @@ namespace Captura
             InitializeComponent();
         }
 
+        bool _loaded;
+
         void OnLoaded(object Sender, RoutedEventArgs E)
         {
+            if (_loaded)
+                return;
+
+            _loaded = true;
+
             var control = PreviewTarget;
 
             control.BindOne(MarginProperty, _reactor.Margin);

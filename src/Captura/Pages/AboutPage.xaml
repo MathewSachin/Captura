@@ -11,6 +11,7 @@
             <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
                 <Setter Property="Command" Value="{Binding HyperlinkCommand}"/>
             </Style>
+            <Style TargetType="captura:ModernButton" BasedOn="{StaticResource IconButton}"/>
         </Grid.Resources>
         <ScrollViewer>
             <StackPanel MinWidth="150"
@@ -20,17 +21,6 @@
                                        Margin="7,3"
                                        Opacity="0.9"/>
 
-                    <mui:ModernButton Command="{Binding HyperlinkCommand}"
-                                      CommandParameter="https://github.com/MathewSachin/Captura/"
-                                      Margin="3"
-                                      DockPanel.Dock="Right"
-                                      IconData="{Binding Icons.GitHub, Source={StaticResource ServiceLocator}}"
-                                      IconHeight="25"
-                                      IconWidth="25"
-                                      EllipseDiameter="35"
-                                      EllipseStrokeThickness="0"
-                                      ToolTip="{Binding ViewOnGitHub, Source={StaticResource Loc}, Mode=OneWay}"/>
-
                     <TextBlock TextWrapping="Wrap"
                                LineHeight="30"
                                Style="{StaticResource TextColor}">
@@ -39,90 +29,50 @@
                     </TextBlock>
                 </DockPanel>
 
-                <Button Command="{Binding HyperlinkCommand}"
-                        CommandParameter="https://www.paypal.me/MathewSachin"
-                        Margin="3">
-                    <DockPanel>
-                        <Path Data="{Binding Icons.PayPal, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              Margin="0,0,10,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                <WrapPanel HorizontalAlignment="Center">
+                    <captura:ModernButton Content="GitHub"
+                                          IconData="{Binding Icons.GitHub, Source={StaticResource ServiceLocator}}"
+                                          Command="{Binding HyperlinkCommand}"
+                                          CommandParameter="https://github.com/MathewSachin/Captura/"/>
 
-                        <TextBlock Text="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
+                    <captura:ModernButton Content="{Binding Donate, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.PayPal, Source={StaticResource ServiceLocator}}"
+                                          Command="{Binding HyperlinkCommand}"
+                                          CommandParameter="https://www.paypal.me/MathewSachin"/>
 
-                <Button Command="{Binding HyperlinkCommand}"
-                        CommandParameter="https://MathewSachin.github.io/Captura"
-                        Margin="3">
-                    <DockPanel>
-                        <Path Data="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              Margin="0,0,10,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                    <captura:ModernButton Content="{Binding Website, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"
+                                          Command="{Binding HyperlinkCommand}"
+                                          CommandParameter="https://MathewSachin.github.io/Captura"/>
+                </WrapPanel>
 
-                        <TextBlock Text="{Binding Website, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
+                <GridSplitter Height="3"
+                              IsEnabled="False"
+                              Margin="0,10"/>
 
-                <Button Margin="3,15"
-                        Command="{Binding HyperlinkCommand}"
-                        CommandParameter="https://mathewsachin.github.io/Captura/translation">
-                    <DockPanel>
-                        <Path Data="{Binding Icons.Translate, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              Margin="0,0,10,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                <WrapPanel HorizontalAlignment="Center">
+                    <captura:ModernButton Content="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.Translate, Source={StaticResource ServiceLocator}}"
+                                          Command="{Binding HyperlinkCommand}"
+                                          CommandParameter="https://mathewsachin.github.io/Captura/translation"/>
 
-                        <TextBlock Text="{Binding WantToTranslate, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
+                    <captura:ModernButton Content="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
+                                          Command="{Binding HyperlinkCommand}"
+                                          CommandParameter="https://mathewsachin.github.io/Captura/changelog"/>
+                </WrapPanel>
 
-                <Button Command="GoToPage"
-                        CommandParameter="/Pages/LicensesPage.xaml"
-                        Content="{Binding ViewLicenses, Source={StaticResource Loc}, Mode=OneWay}"
-                        Margin="3"/>
+                <WrapPanel HorizontalAlignment="Center">
+                    <captura:ModernButton Content="{Binding ViewLicenses, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
+                                          Command="GoToPage"
+                                          CommandParameter="/Pages/LicensesPage.xaml"/>
 
-                <Button Command="{Binding HyperlinkCommand}"
-                        CommandParameter="https://mathewsachin.github.io/Captura/changelog"
-                        Margin="3">
-                    <DockPanel>
-                        <Path Data="{Binding Icons.History, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Stretch="Uniform"
-                              Margin="0,0,10,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-
-                        <TextBlock Text="{Binding Changelog, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
-
-                <Button Command="GoToPage"
-                        CommandParameter="/Pages/CrashLogsPage.xaml"
-                        Margin="3">
-                    <DockPanel>
-                        <Path Data="{Binding Icons.Error, Source={StaticResource ServiceLocator}}"
-                              Width="15"
-                              Height="15"
-                              Margin="0,0,10,0"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-
-                        <TextBlock Text="{Binding ViewCrashLogs, Source={StaticResource Loc}, Mode=OneWay}"/>
-                    </DockPanel>
-                </Button>
+                    <captura:ModernButton Content="{Binding ViewCrashLogs, Source={StaticResource Loc}, Mode=OneWay}"
+                                          IconData="{Binding Icons.Error, Source={StaticResource ServiceLocator}}"
+                                          Command="GoToPage"
+                                          CommandParameter="/Pages/CrashLogsPage.xaml"/>
+                </WrapPanel>
 
                 <Label Margin="0,15,0,5">
                     <TextBlock Text="{Binding Tools, Source={StaticResource Loc}, Mode=OneWay}"/>

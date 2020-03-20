@@ -3,7 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:captura="clr-namespace:Captura"
       Title="{Binding Audio, Source={StaticResource Loc}, Mode=OneWay}">
-    <Grid>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <StackPanel DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
                     Margin="5,0,0,0"
                     IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
@@ -35,6 +40,10 @@
                           SelectedValue="{Binding AudioSource.SelectedMicrophone, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
             </DockPanel>
 
+            <ProgressBar Maximum="1"
+                         Height="1"
+                         Value="{Binding AudioSource.SelectedMicPeakLevel.Value, Source={StaticResource ServiceLocator}, Mode=OneWay}"/>
+
             <CheckBox Content="Record Speaker"
                       Margin="0,10,0,0"
                       IsChecked="{Binding Settings.Audio.RecordSpeaker, Mode=TwoWay}"/>
@@ -52,6 +61,10 @@
                           ItemsSource="{Binding AudioSource.AvailableSpeakers, Source={StaticResource ServiceLocator}}"
                           SelectedValue="{Binding AudioSource.SelectedSpeaker, Source={StaticResource ServiceLocator}, Mode=TwoWay}"/>
             </DockPanel>
+
+            <ProgressBar Maximum="1"
+                         Height="1"
+                         Value="{Binding AudioSource.SelectedSpeakerPeakLevel.Value, Source={StaticResource ServiceLocator}, Mode=OneWay}"/>
 
             <DockPanel Margin="0,10">
                 <Label Content="{Binding Quality, Source={StaticResource Loc}, Mode=OneWay}"
@@ -75,5 +88,19 @@
                           Margin="0,5"/>
             </StackPanel>
         </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <DockPanel Grid.Column="2">
+            <Label Margin="0,10"
+                   Content="{Binding Sounds, Source={StaticResource Loc}, Mode=OneWay}"
+                   FontWeight="Bold"
+                   FontSize="15"
+                   DockPanel.Dock="Top"/>
+
+            <ScrollViewer>
+                <Frame Source="SoundsPage.xaml"/>
+            </ScrollViewer>
+        </DockPanel>
     </Grid>
 </Page>

@@ -22,33 +22,20 @@ using Point = System.Windows.Point;
 
 namespace Captura
 {
-    public partial class OverlayWindow
+    public partial class OverlayPage
     {
-        OverlayWindow()
+        OverlayPage()
         {
             InitializeComponent();
 
             Loaded += OnLoaded;
 
-            Closing += (S, E) =>
-            {
-                ServiceProvider.Get<Settings>().Save();
-            };
+            Unloaded += (S, E) => Grid.Children.Clear();
         }
 
-        static OverlayWindow _instance;
+        static readonly Lazy<OverlayPage> LazyInstance = new Lazy<OverlayPage>(() => new OverlayPage());
 
-        public static void ShowInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new OverlayWindow();
-
-                _instance.Closed += (S, E) => _instance = null;
-            }
-
-            _instance.ShowAndFocus();
-        }
+        public static OverlayPage Instance => LazyInstance.Value;
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
         {
@@ -124,8 +111,8 @@ namespace Captura
             control.Label.BindOne(ForegroundProperty, vm.Foreground);
             control.Border.BindOne(BackgroundProperty, vm.Background);
 
-            control.Border.BindOne(BorderThicknessProperty, vm.BorderThickness);
-            control.Border.BindOne(BorderBrushProperty, vm.BorderBrush);
+            control.Border.BindOne(Border.BorderThicknessProperty, vm.BorderThickness);
+            control.Border.BindOne(Border.BorderBrushProperty, vm.BorderBrush);
             control.Border.BindOne(Border.CornerRadiusProperty, vm.CornerRadius);
 
             return control;
@@ -243,7 +230,7 @@ namespace Captura
                 return control;
             }, true, 2);
         }
-        
+
         async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             await UpdateBackground();
