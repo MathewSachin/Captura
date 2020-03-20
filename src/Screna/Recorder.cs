@@ -35,7 +35,7 @@ namespace Screna
         Task<bool> _frameWriteTask;
         Task _audioWriteTask;
         int _frameCount;
-        int _audioBytesWritten;
+        long _audioBytesWritten;
         readonly int _audioBytesPerFrame, _audioChunkBytes;
         const int AudioChunkLengthMs = 200;
         byte[] _audioBuffer, _silenceBuffer;
@@ -196,7 +196,8 @@ namespace Screna
                 return;
             }
 
-            var shouldHaveWritten = (_frameCount - 1) * _audioBytesPerFrame;
+            // These values need to be long otherwise can get out of range in a few hours
+            var shouldHaveWritten = (_frameCount - 1L) * _audioBytesPerFrame;
 
             // Already written more than enough, skip for now
             if (_audioBytesWritten >= shouldHaveWritten)
@@ -204,7 +205,7 @@ namespace Screna
                 return;
             }
 
-            var toWrite = shouldHaveWritten - _audioBytesWritten;
+            var toWrite = (int)(shouldHaveWritten - _audioBytesWritten);
 
             // Only write if data to write is more than chunk size.
             // This gives enough time for the audio provider to buffer data from the source.
