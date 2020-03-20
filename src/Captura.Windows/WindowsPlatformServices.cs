@@ -101,7 +101,7 @@ namespace Captura
 
         public IImageProvider GetScreenProvider(IScreen Screen, bool IncludeCursor, bool StepsMode)
         {
-            if (WindowsModule.Windows8OrAbove && !StepsMode)
+            if (!WindowsModule.ShouldUseGdi && !StepsMode)
             {
                 var output = FindOutput(Screen);
 
@@ -136,7 +136,7 @@ namespace Captura
 
         public IImageProvider GetAllScreensProvider(bool IncludeCursor, bool StepsMode)
         {
-            if (WindowsModule.Windows8OrAbove && !StepsMode)
+            if (!WindowsModule.ShouldUseGdi && !StepsMode)
             {
                 return new DeskDuplFullScreenImageProvider(IncludeCursor, _previewWindow, this);
             }

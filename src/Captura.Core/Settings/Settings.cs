@@ -28,9 +28,10 @@ namespace Captura
             };
         }
 
-        public Settings(FFmpegSettings FFmpeg)
+        public Settings(FFmpegSettings FFmpeg, WindowsSettings WindowsSettings)
         {
             this.FFmpeg = FFmpeg;
+            this.WindowsSettings = WindowsSettings;
         }
 
         static string GetPath() => Path.Combine(ServiceProvider.SettingsDir, "Captura.json");
@@ -109,6 +110,8 @@ namespace Captura
         public StepsSettings Steps { get; } = new StepsSettings();
 
         public AroundMouseSettings AroundMouse { get; } = new AroundMouseSettings();
+
+        public WindowsSettings WindowsSettings { get; }
 
         public int PreStartCountdown
         {

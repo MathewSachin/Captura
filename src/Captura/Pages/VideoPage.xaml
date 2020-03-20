@@ -202,6 +202,20 @@
                           IsChecked="{Binding Settings.Steps.IncludeScrolls}"
                           Margin="0,5"/>
             </StackPanel>
+
+            <GridSplitter IsEnabled="False"
+                          Height="1"
+                          Margin="0,10"/>
+
+            <CheckBox IsChecked="{Binding Settings.WindowsSettings.UseGdi}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap">
+                    Use GDI instead of DesktopDuplication <LineBreak/>
+                    <Run Text="(Requires App Restart)"
+                         FontSize="10"
+                         FontWeight="Light"/>
+                </TextBlock>
+            </CheckBox>
         </StackPanel>
         <GridSplitter Grid.Column="1"
                       Width="1"

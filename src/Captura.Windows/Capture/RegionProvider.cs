@@ -37,11 +37,11 @@ namespace Screna
 
             _hdcSrc = User32.GetDC(IntPtr.Zero);
 
-            if (WindowsModule.Windows8OrAbove)
+            if (WindowsModule.ShouldUseGdi)
             {
-                _dcTarget = new DxgiTargetDeviceContext(PreviewWindow, Width, Height);
+                _dcTarget = new GdiTargetDeviceContext(_hdcSrc, Width, Height);
             }
-            else _dcTarget = new GdiTargetDeviceContext(_hdcSrc, Width, Height);
+            else _dcTarget = new DxgiTargetDeviceContext(PreviewWindow, Width, Height);
         }
 
         public void Dispose()
