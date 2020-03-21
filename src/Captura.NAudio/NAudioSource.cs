@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
 
 namespace Captura.Audio
@@ -34,7 +35,23 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultMicrophone => NAudioItem.DefaultMicrophone;
+        const int DeviceNotFound = unchecked((int)0x80070490);
+
+        public IAudioItem DefaultMicrophone
+        {
+            get
+            {
+                try
+                {
+                    return NAudioItem.DefaultMicrophone;
+                }
+                // Default mic does not exist
+                catch (COMException e) when (e.HResult == DeviceNotFound)
+                {
+                    return null;
+                }
+            }
+        }
 
         public IEnumerable<IAudioItem> Speakers
         {
@@ -49,7 +66,21 @@ namespace Captura.Audio
             }
         }
 
-        public IAudioItem DefaultSpeaker => NAudioItem.DefaultSpeaker;
+        public IAudioItem DefaultSpeaker
+        {
+            get
+            {
+                try
+                {
+                    return NAudioItem.DefaultSpeaker;
+                }
+                // Default speaker does not exist
+                catch (COMException e) when (e.HResult == DeviceNotFound)
+                {
+                    return null;
+                }
+            }
+        }
 
         public void Dispose()
         {

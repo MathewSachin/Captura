@@ -67,7 +67,10 @@ namespace Captura.Models
 
             _microphones.Clear();
 
-            _microphones.Add(_audioSource.DefaultMicrophone);
+            if (_audioSource.DefaultMicrophone is { } defaultMicrophone)
+            {
+                _microphones.Add(defaultMicrophone);
+            }
 
             foreach (var mic in _audioSource.Microphones)
             {
@@ -89,8 +92,11 @@ namespace Captura.Models
             }
 
             _speakers.Clear();
-
-            _speakers.Add(_audioSource.DefaultSpeaker);
+            
+            if (_audioSource.DefaultSpeaker is { } defaultSpeaker)
+            {
+                _speakers.Add(defaultSpeaker);
+            }
 
             foreach (var speaker in _audioSource.Speakers)
             {
