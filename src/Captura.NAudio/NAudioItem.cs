@@ -53,19 +53,7 @@ namespace Captura.Audio
             DefaultDeviceName,
             true);
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
-
-        public double PeakLevel
-        {
-            get
-            {
-                var val = 0.0;
-
-                _syncContext.Send(M => val = Device.AudioMeterInformation.MasterPeakValue, null);
-
-                return val;
-            }
-        }
+        public double PeakLevel => Device.AudioMeterInformation.MasterPeakValue;
 
         public override string ToString() => Name;
         

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 
 namespace Captura.Audio
@@ -7,6 +8,16 @@ namespace Captura.Audio
     public class NAudioSource : IAudioSource
     {
         MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+        NAudioNotificationClient _notificationClient = new NAudioNotificationClient();
+
+        public event Action DevicesUpdated;
+
+        public NAudioSource()
+        {
+            _notificationClient.DevicesUpdated += () => DevicesUpdated?.Invoke();
+
+            _deviceEnumerator.RegisterEndpointNotificationCallback(_notificationClient);
+        }
 
         public string Name { get; } = "NAudio";
 
@@ -42,6 +53,9 @@ namespace Captura.Audio
 
         public void Dispose()
         {
+            _deviceEnumerator.UnregisterEndpointNotificationCallback(_notificationClient);
+            _notificationClient = null;
+
             _deviceEnumerator.Dispose();
             _deviceEnumerator = null;
         }
