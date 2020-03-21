@@ -61,7 +61,7 @@
   "IncludeClicks": "顯示滑鼠點選",
   "IncludeCursor": "顯示滑鼠指標",
   "IncludeKeys": "顯示鍵盤輸入",
-  "Keymap": "",
+  "Keymap": "鍵盤配置",
   "Keystrokes": "按鍵",
   "KeystrokesHistoryCount": "",
   "KeystrokesHistorySpacing": "",
