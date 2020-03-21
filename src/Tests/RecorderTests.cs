@@ -44,7 +44,7 @@ namespace Captura.Tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                using (new Recorder(null, audioProvider)) { }
+                using (new AudioRecorder(null, audioProvider)) { }
             });
         }
 
@@ -55,7 +55,7 @@ namespace Captura.Tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                using (new Recorder(audioWriter, null)) { }
+                using (new AudioRecorder(audioWriter, null)) { }
             });
         }
 
@@ -105,7 +105,7 @@ namespace Captura.Tests
             var audioWriterMock = _moq.GetAudioFileWriterMock();
             var audioProviderMock = _moq.GetAudioProviderMock();
 
-            using (new Recorder(audioWriterMock.Object, audioProviderMock.Object))
+            using (new AudioRecorder(audioWriterMock.Object, audioProviderMock.Object))
             {
             }
             

@@ -2,7 +2,9 @@
 using Captura.Audio;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Windows.Input;
 using Reactive.Bindings;
 
@@ -19,6 +21,11 @@ namespace Captura.Models
 
         public ReadOnlyObservableCollection<IAudioItem> AvailableSpeakers { get; }
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        readonly IObservable<Unit> _refreshObservable;
+
+        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+
         public AudioSourceViewModel(IAudioSource AudioSource)
         {
             _audioSource = AudioSource;
@@ -31,17 +38,32 @@ namespace Captura.Models
             RefreshCommand = new DelegateCommand(Refresh);
 
             SelectedMicPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .ObserveOn(_syncContext)
                 .Select(M => SelectedMicrophone?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
 
             SelectedSpeakerPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .ObserveOn(_syncContext)
                 .Select(M => SelectedSpeaker?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
+
+            _refreshObservable = Observable.FromEvent(M => AudioSource.DevicesUpdated += M,
+                M => AudioSource.DevicesUpdated -= M)
+                .Throttle(TimeSpan.FromSeconds(0.5));
+
+            _refreshObservable
+                .ObserveOn(_syncContext)
+                .Subscribe(M => Refresh());
         }
 
         void RefreshMics()
         {
             var lastMicName = SelectedMicrophone?.Name;
+
+            foreach (var microphone in _microphones)
+            {
+                microphone.Dispose();
+            }
 
             _microphones.Clear();
 
@@ -60,6 +82,11 @@ namespace Captura.Models
         void RefreshSpeakers()
         {
             var lastSpeakerName = SelectedSpeaker?.Name;
+
+            foreach (var speaker in _speakers)
+            {
+                speaker.Dispose();
+            }
 
             _speakers.Clear();
 

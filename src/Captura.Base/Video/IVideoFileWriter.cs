@@ -23,6 +23,6 @@ namespace Captura
         /// </summary>
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
-        void WriteAudio(byte[] Buffer, int Length);
+        void WriteAudio(byte[] Buffer, int Offset, int Length);
     }
 }

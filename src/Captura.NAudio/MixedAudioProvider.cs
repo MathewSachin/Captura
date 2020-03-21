@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -14,24 +11,19 @@ namespace Captura.Audio
 
         readonly IWaveProvider _mixingWaveProvider;
 
-        readonly ManualResetEvent _continueEvent = new ManualResetEvent(false),
-            _stopEvent = new ManualResetEvent(false);
-
-        byte[] _buffer;
-        const int ReadInterval = 200;
-
         public MixedAudioProvider(params NAudioProvider[] AudioProviders)
         {
             foreach (var provider in AudioProviders)
             {
                 var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat)
                 {
-                    DiscardOnBufferOverflow = true
+                    DiscardOnBufferOverflow = true,
+                    ReadFully = false
                 };
 
-                provider.DataAvailable += (S, E) =>
+                provider.WaveIn.DataAvailable += (S, E) =>
                 {
-                    bufferedProvider.AddSamples(E.Buffer, 0, E.Length);
+                    bufferedProvider.AddSamples(E.Buffer, 0, E.BytesRecorded);
                 };
 
                 var sampleProvider = bufferedProvider.ToSampleProvider();
@@ -60,36 +52,23 @@ namespace Captura.Audio
             }
             else
             {
-                var mixingSampleProvider = new MixingSampleProvider(_audioProviders.Values);
+                var waveProviders = _audioProviders.Values.Select(M => M.ToWaveProvider());
+
+                // MixingSampleProvider cannot be used here due to it removing inputs that don't return as many bytes as requested.
 
                 // Screna expects 44.1 kHz 16-bit Stereo
-                _mixingWaveProvider = mixingSampleProvider.ToWaveProvider16();
+                _mixingWaveProvider = new MixingWaveProvider32(waveProviders)
+                    .ToSampleProvider()
+                    .ToWaveProvider16();
             }
-
-            var bufferSize = (int)
-            (
-                (ReadInterval / 1000.0)
-                * WaveFormat.SampleRate
-                * WaveFormat.Channels
-                * (WaveFormat.BitsPerSample / 8.0)
-            );
-
-            _buffer = new byte[bufferSize];
-
-            Task.Factory.StartNew(Loop, TaskCreationOptions.LongRunning);
         }
 
         public void Dispose()
         {
-            _continueEvent.Set();
-            _stopEvent.Set();
-
             foreach (var provider in _audioProviders.Keys)
             {
                 provider.Dispose();
             }
-
-            _buffer = null;
         }
 
         public WaveFormat WaveFormat { get; } = new WaveFormat();
@@ -100,44 +79,19 @@ namespace Captura.Audio
             {
                 provider.Start();
             }
-
-            _continueEvent.Set();
         }
 
         public void Stop()
         {
-            _continueEvent.Reset();
-
             foreach (var provider in _audioProviders.Keys)
             {
                 provider.Stop();
             }
         }
 
-        void Loop()
+        public int Read(byte[] Buffer, int Offset, int Length)
         {
-            bool CanContinue()
-            {
-                try
-                {
-                    return _continueEvent.WaitOne() && !_stopEvent.WaitOne(0);
-                }
-                catch (ObjectDisposedException)
-                {
-                    return false;
-                }
-            }
-
-            while (CanContinue())
-            {
-                _mixingWaveProvider.Read(_buffer, 0, _buffer.Length);
-
-                DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, _buffer.Length));
-             
-                Thread.Sleep(ReadInterval);
-            }
+            return _mixingWaveProvider.Read(Buffer, Offset, Length);
         }
-
-        public event EventHandler<DataAvailableEventArgs> DataAvailable;
     }
 }

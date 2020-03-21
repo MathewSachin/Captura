@@ -143,7 +143,7 @@ namespace Captura.FFmpeg
 
         public bool SupportsAudio => true;
 
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
             IVideoFileWriter writer;
 
@@ -152,7 +152,7 @@ namespace Captura.FFmpeg
                 writer = _currentWriter;
             }
 
-            writer?.WriteAudio(Buffer, Length);
+            writer?.WriteAudio(Buffer, Offset, Length);
         }
     }
 }

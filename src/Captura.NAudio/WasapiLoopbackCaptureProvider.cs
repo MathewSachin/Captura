@@ -1,6 +1,5 @@
 ﻿using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using Wf = NAudio.Wave.WaveFormat;
 
 namespace Captura.Audio
 {
@@ -11,9 +10,11 @@ namespace Captura.Audio
         public WasapiLoopbackCaptureProvider(MMDevice Device)
             : base(new WasapiLoopbackCapture(Device))
         {
-            _wasapiOut = new WasapiOut(Device, AudioClientShareMode.Shared, true, 200);
-
-            _wasapiOut.Init(new SilenceProvider(Wf.CreateIeeeFloatWaveFormat(44100, 2)));
+            _wasapiOut = new WasapiOut(Device, AudioClientShareMode.Shared, true, 50);
+            
+            // Mix Format should be used in Shared mode
+            using var audioClient = Device.AudioClient;
+            _wasapiOut.Init(new SilenceProvider(audioClient.MixFormat));
         }
 
         public override void Start()
@@ -27,7 +28,7 @@ namespace Captura.Audio
         {
             base.Stop();
 
-            _wasapiOut.Stop();
+            _wasapiOut.Pause();
         }
 
         public override void Dispose()

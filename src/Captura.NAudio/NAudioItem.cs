@@ -18,9 +18,7 @@ namespace Captura.Audio
         {
         }
 
-        // Hold a reference to AudioClient
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        readonly AudioClient _audioClient;
+        AudioClient _audioClient;
 
         NAudioItem(MMDevice Device, string Name, bool IsLoopback)
         {
@@ -55,20 +53,20 @@ namespace Captura.Audio
             DefaultDeviceName,
             true);
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
-
-        public double PeakLevel
-        {
-            get
-            {
-                var val = 0.0;
-
-                _syncContext.Send(M => val = Device.AudioMeterInformation.MasterPeakValue, null);
-
-                return val;
-            }
-        }
+        public double PeakLevel => Device.AudioMeterInformation.MasterPeakValue;
 
         public override string ToString() => Name;
+        
+        public void Dispose()
+        {
+            if (_audioClient == null)
+                return;
+
+            _audioClient.Stop();
+            _audioClient.Dispose();
+            _audioClient = null;
+
+            // Not disposing the device as it may be in use in a recording.
+        }
     }
 }

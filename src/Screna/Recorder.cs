@@ -18,7 +18,6 @@ namespace Screna
         #region Fields
         IAudioProvider _audioProvider;
         IVideoFileWriter _videoWriter;
-        IAudioFileWriter _audioWriter;
         IImageProvider _imageProvider;
 
         readonly int _frameRate;
@@ -32,6 +31,14 @@ namespace Screna
         readonly Task _recordTask;
 
         readonly object _syncLock = new object();
+
+        Task<bool> _frameWriteTask;
+        Task _audioWriteTask;
+        int _frameCount;
+        long _audioBytesWritten;
+        readonly int _audioBytesPerFrame, _audioChunkBytes;
+        const int AudioChunkLengthMs = 200;
+        byte[] _audioBuffer, _silenceBuffer;
         #endregion
 
         /// <summary>
@@ -41,7 +48,8 @@ namespace Screna
         /// <param name="ImageProvider">The image source.</param>
         /// <param name="FrameRate">Video Frame Rate.</param>
         /// <param name="AudioProvider">The audio source. null = no audio.</param>
-        public Recorder(IVideoFileWriter VideoWriter, IImageProvider ImageProvider, int FrameRate, IAudioProvider AudioProvider = null)
+        public Recorder(IVideoFileWriter VideoWriter, IImageProvider ImageProvider, int FrameRate,
+            IAudioProvider AudioProvider = null)
         {
             _videoWriter = VideoWriter ?? throw new ArgumentNullException(nameof(VideoWriter));
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
@@ -58,7 +66,16 @@ namespace Screna
             _continueCapturing = new ManualResetEvent(false);
 
             if (VideoWriter.SupportsAudio && AudioProvider != null)
-                AudioProvider.DataAvailable += AudioProvider_DataAvailable;
+            {
+                var wf = AudioProvider.WaveFormat;
+
+                _audioBytesPerFrame = (int) ((1.0 / FrameRate)
+                                             * wf.SampleRate
+                                             * wf.Channels
+                                             * (wf.BitsPerSample / 8.0));
+
+                _audioChunkBytes = (int) (_audioBytesPerFrame * (FrameRate * AudioChunkLengthMs / 1000.0));
+            }
             else _audioProvider = null;
 
             _sw = new Stopwatch();
@@ -66,92 +83,35 @@ namespace Screna
             _recordTask = Task.Factory.StartNew(async () => await DoRecord(), TaskCreationOptions.LongRunning);
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="IRecorder"/> writing to <see cref="IAudioFileWriter"/>.
-        /// </summary>
-        /// <param name="AudioWriter">The <see cref="IAudioFileWriter"/> to write to.</param>
-        /// <param name="AudioProvider">The audio source.</param>
-        public Recorder(IAudioFileWriter AudioWriter, IAudioProvider AudioProvider)
-        {
-            _audioWriter = AudioWriter ?? throw new ArgumentNullException(nameof(AudioWriter));
-            _audioProvider = AudioProvider ?? throw new ArgumentNullException(nameof(AudioProvider));
-
-            _audioProvider.DataAvailable += AudioProvider_DataAvailable;
-        }
-
-        Task<bool> _task;
-
         async Task DoRecord()
         {
             try
             {
                 var frameInterval = TimeSpan.FromSeconds(1.0 / _frameRate);
-                var frameCount = 0;
+                _frameCount = 0;
 
                 // Returns false when stopped
-                bool AddFrame(IBitmapFrame Frame)
-                {
-                    try
-                    {
-                        _videoWriter.WriteFrame(Frame);
 
-                        ++frameCount;
-
-                        return true;
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return false;
-                    }
-                }
-
-                bool CanContinue()
-                {
-                    try
-                    {
-                        return _continueCapturing.WaitOne();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        return false;
-                    }
-                }
-
-                while (CanContinue() && !_cancellationToken.IsCancellationRequested)
+                while (_continueCapturing.WaitOne() && !_cancellationToken.IsCancellationRequested)
                 {
                     var timestamp = _sw.Elapsed;
 
-                    if (_task != null)
+                    if (_frameWriteTask != null)
                     {
                         // If false, stop recording
-                        if (!await _task)
+                        if (!await _frameWriteTask)
                             return;
 
-                        var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
-                        var diff = requiredFrames - frameCount;
-
-                        // Write atmost 1 duplicate frame
-                        if (diff >= 1)
-                        {
-                            if (!AddFrame(RepeatFrame.Instance))
-                                return;
-                        }
+                        if (!WriteDuplicateFrame())
+                            return;
                     }
 
-                    _task = Task.Factory.StartNew(() =>
+                    if (_audioWriteTask != null)
                     {
-                        var editableFrame = _imageProvider.Capture();
+                        await _audioWriteTask;
+                    }
 
-                        if (_cancellationToken.IsCancellationRequested)
-                            return false;
-
-                        var frame = editableFrame.GenerateFrame(timestamp);
-
-                        if (_cancellationToken.IsCancellationRequested)
-                            return false;
-
-                        return AddFrame(frame);
-                    });
+                    _frameWriteTask = Task.Run(() => FrameWriter(timestamp));
 
                     var timeTillNextFrame = timestamp + frameInterval - _sw.Elapsed;
 
@@ -173,87 +133,171 @@ namespace Screna
             }
         }
 
-        void AudioProvider_DataAvailable(object Sender, DataAvailableEventArgs E)
+        bool FrameWriter(TimeSpan Timestamp)
         {
-            if (_videoWriter == null)
+            var editableFrame = _imageProvider.Capture();
+
+            var frame = editableFrame.GenerateFrame(Timestamp);
+
+            var success = AddFrame(frame);
+
+            if (!success)
             {
-                _audioWriter.Write(E.Buffer, 0, E.Length);
-                return;
+                return false;
             }
 
             try
             {
-                lock (_syncLock)
-                {
-                    if (_disposed)
-                        return;
-                }
+                _audioWriteTask = Task.Run(WriteAudio);
 
-                _videoWriter.WriteAudio(E.Buffer, E.Length);
+                return true;
             }
-            catch (Exception e)
+            catch (InvalidOperationException)
             {
-                if (_imageProvider == null)
-                {
-                    lock (_syncLock)
-                    {
-                        if (!_disposed)
-                        {
-                            ErrorOccurred?.Invoke(e);
-
-                            Dispose(true);
-                        }
-                    }
-                }
+                return false;
             }
         }
 
+        bool WriteDuplicateFrame()
+        {
+            var requiredFrames = _sw.Elapsed.TotalSeconds * _frameRate;
+            var diff = requiredFrames - _frameCount;
+
+            // Write atmost 1 duplicate frame
+            if (diff >= 1)
+            {
+                if (!AddFrame(RepeatFrame.Instance))
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool AddFrame(IBitmapFrame Frame)
+        {
+            try
+            {
+                _videoWriter.WriteFrame(Frame);
+
+                ++_frameCount;
+
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        void WriteAudio()
+        {
+            if (_audioProvider == null)
+            {
+                return;
+            }
+
+            // These values need to be long otherwise can get out of range in a few hours
+            var shouldHaveWritten = (_frameCount - 1L) * _audioBytesPerFrame;
+
+            // Already written more than enough, skip for now
+            if (_audioBytesWritten >= shouldHaveWritten)
+            {
+                return;
+            }
+
+            var toWrite = (int)(shouldHaveWritten - _audioBytesWritten);
+
+            // Only write if data to write is more than chunk size.
+            // This gives enough time for the audio provider to buffer data from the source.
+            if (toWrite < _audioChunkBytes)
+            {
+                return;
+            }
+
+            // Reallocate buffer as needed
+            if (_audioBuffer == null || _audioBuffer.Length < toWrite)
+            {
+                _audioBuffer = new byte[toWrite];
+            }
+
+            var read = _audioProvider.Read(_audioBuffer, 0, toWrite);
+
+            // Nothing read
+            if (read == 0)
+            {
+                return;
+            }
+
+            _videoWriter.WriteAudio(_audioBuffer, 0, read);
+            _audioBytesWritten += read;
+
+            // Fill with silence to maintain synchronization
+            var silenceToWrite = toWrite - read;
+
+            // Write silence only when more than a threshold
+            // Threshold should ideally be a bit greater than chunk size
+            if (silenceToWrite <= _audioChunkBytes * 1.5)
+            {
+                return;
+            }
+            
+            // Reallocate silence buffer: An array of zeros.
+            if (_silenceBuffer == null || _silenceBuffer.Length < silenceToWrite)
+            {
+                _silenceBuffer = new byte[silenceToWrite];
+            }
+
+            _videoWriter.WriteAudio(_silenceBuffer, 0, silenceToWrite);
+            _audioBytesWritten += silenceToWrite;
+        }
+
         #region Dispose
-        void Dispose(bool TerminateRecord)
+        async void Dispose(bool TerminateRecord)
         {
             if (_disposed)
                 return;
 
             _disposed = true;
 
+            _cancellationTokenSource.Cancel();
+
+            // Resume record loop if paused so it can exit
+            _continueCapturing.Set();
+
+            // Ensure all threads exit before disposing resources.
+            if (TerminateRecord)
+                _recordTask.Wait();
+
+            try
+            {
+                if (_frameWriteTask != null)
+                    await _frameWriteTask;
+            }
+            catch { }
+
+            try
+            {
+                if (_audioWriteTask != null)
+                    await _audioWriteTask;
+            }
+            catch { }
+
             if (_audioProvider != null)
             {
-                _audioProvider.DataAvailable -= AudioProvider_DataAvailable;
                 _audioProvider.Stop();
                 _audioProvider.Dispose();
                 _audioProvider = null;
             }
 
-            if (_videoWriter != null)
-            {
-                _cancellationTokenSource.Cancel();
+            _imageProvider?.Dispose();
+            _imageProvider = null;
 
-                // Resume record loop if paused so it can exit
-                _continueCapturing.Set();
+            _videoWriter.Dispose();
+            _videoWriter = null;
 
-                if (TerminateRecord)
-                    _recordTask.Wait();
+            _audioBuffer = _silenceBuffer = null;
 
-                try
-                {
-                    if (_task != null && !_task.IsCompleted)
-                        _task.GetAwaiter().GetResult();
-                }
-                catch { }
-
-                _imageProvider?.Dispose();
-                _imageProvider = null;
-
-                _videoWriter.Dispose();
-                _videoWriter = null;
-
-                _continueCapturing.Dispose();
-            }
-            else
-            {
-                _audioWriter.Dispose();
-                _audioWriter = null;
-            }
+            _continueCapturing.Dispose();
         }
 
         /// <summary>

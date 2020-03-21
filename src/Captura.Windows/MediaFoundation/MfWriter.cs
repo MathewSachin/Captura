@@ -268,13 +268,13 @@ namespace DesktopDuplication
 
         long _audioWritten;
 
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
             using (var buffer = MediaFactory.CreateMemoryBuffer(Length))
             {
                 var data = buffer.Lock(out _, out _);
 
-                Marshal.Copy(Buffer, 0, data, Length);
+                Marshal.Copy(Buffer, Offset, data, Length);
 
                 buffer.CurrentLength = Length;
 
