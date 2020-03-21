@@ -43,6 +43,11 @@ namespace Captura.Models
         {
             var lastMicName = SelectedMicrophone?.Name;
 
+            foreach (var microphone in _microphones)
+            {
+                microphone.Dispose();
+            }
+
             _microphones.Clear();
 
             _microphones.Add(_audioSource.DefaultMicrophone);
@@ -60,6 +65,11 @@ namespace Captura.Models
         void RefreshSpeakers()
         {
             var lastSpeakerName = SelectedSpeaker?.Name;
+
+            foreach (var speaker in _speakers)
+            {
+                speaker.Dispose();
+            }
 
             _speakers.Clear();
 

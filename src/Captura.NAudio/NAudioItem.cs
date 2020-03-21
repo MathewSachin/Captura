@@ -18,9 +18,7 @@ namespace Captura.Audio
         {
         }
 
-        // Hold a reference to AudioClient
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        readonly AudioClient _audioClient;
+        AudioClient _audioClient;
 
         NAudioItem(MMDevice Device, string Name, bool IsLoopback)
         {
@@ -70,5 +68,17 @@ namespace Captura.Audio
         }
 
         public override string ToString() => Name;
+        
+        public void Dispose()
+        {
+            if (_audioClient == null)
+                return;
+
+            _audioClient.Stop();
+            _audioClient.Dispose();
+            _audioClient = null;
+
+            // Not disposing the device as it may be in use in a recording.
+        }
     }
 }
