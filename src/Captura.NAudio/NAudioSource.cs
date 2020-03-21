@@ -6,14 +6,15 @@ namespace Captura.Audio
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NAudioSource : IAudioSource
     {
+        MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+
         public string Name { get; } = "NAudio";
 
         public IEnumerable<IAudioItem> Microphones
         {
             get
             {
-                using var enumerator = new MMDeviceEnumerator();
-                var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+                var devices = _deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
                 foreach (var device in devices)
                 {
@@ -28,8 +29,7 @@ namespace Captura.Audio
         {
             get
             {
-                using var enumerator = new MMDeviceEnumerator();
-                var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+                var devices = _deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
 
                 foreach (var device in devices)
                 {
@@ -40,7 +40,11 @@ namespace Captura.Audio
 
         public IAudioItem DefaultSpeaker => NAudioItem.DefaultSpeaker;
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _deviceEnumerator.Dispose();
+            _deviceEnumerator = null;
+        }
 
         public IAudioProvider GetAudioProvider(IAudioItem Microphone, IAudioItem Speaker)
         {
