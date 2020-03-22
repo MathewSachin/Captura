@@ -8,6 +8,10 @@ namespace Captura.Audio
 
         bool IsLoopback { get; }
 
+        void StartListeningForPeakLevel();
+
+        void StopListeningForPeakLevel();
+
         double PeakLevel { get; }
     }
 }
