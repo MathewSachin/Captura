@@ -18,6 +18,7 @@
     <Resource Include="Images\pause.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Management" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
