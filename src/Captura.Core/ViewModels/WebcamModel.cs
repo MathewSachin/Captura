@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Captura.Models;
+using Reactive.Bindings;
 
 namespace Captura.ViewModels
 {
@@ -10,6 +11,8 @@ namespace Captura.ViewModels
     public class WebcamModel : NotifyPropertyChanged
     {
         readonly IWebCamProvider _webcamProvider;
+
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         public WebcamModel(IWebCamProvider WebcamProvider)
         {
@@ -54,18 +57,59 @@ namespace Captura.ViewModels
                 if (_selectedCam == value)
                     return;
 
-                WebcamCapture?.Dispose();
+                ReleaseCaptureInternal();
 
                 _selectedCam = value;
 
-                WebcamCapture = _selectedCam?.BeginCapture(() => PreviewClicked?.Invoke());
+                if (_acquireCount.Value > 0)
+                {
+                    InitCaptureInternal();
+                }
 
                 OnPropertyChanged();
             }
         }
 
-        public event Action PreviewClicked;
+        readonly ReactivePropertySlim<IWebcamCapture> _webcamCapture = new ReactivePropertySlim<IWebcamCapture>();
 
-        public IWebcamCapture WebcamCapture { get; private set; }
+        readonly IReactiveProperty<int> _acquireCount = new ReactivePropertySlim<int>();
+
+        public IReadOnlyReactiveProperty<IWebcamCapture> InitCapture()
+        {
+            ++_acquireCount.Value;
+
+            if (_acquireCount.Value == 1)
+            {
+                InitCaptureInternal();
+            }
+
+            return _webcamCapture;
+        }
+
+        void InitCaptureInternal()
+        {
+            _syncContext.Run(() => _webcamCapture.Value = SelectedCam?.BeginCapture(() => PreviewClicked?.Invoke()));
+        }
+
+        void ReleaseCaptureInternal()
+        {
+            _syncContext.Run(() =>
+            {
+                _webcamCapture.Value?.Dispose();
+                _webcamCapture.Value = null;
+            });
+        }
+
+        public void ReleaseCapture()
+        {
+            --_acquireCount.Value;
+
+            if (_acquireCount.Value == 0)
+            {
+                ReleaseCaptureInternal();
+            }
+        }
+
+        public event Action PreviewClicked;
     }
 }

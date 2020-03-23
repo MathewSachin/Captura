@@ -181,6 +181,11 @@ namespace Captura
                     break;
             }
 
+            if (bmp == null)
+            {
+                bmp = ScreenShot.Capture();
+            }
+
             using (bmp)
             {
                 var stream = new MemoryStream();

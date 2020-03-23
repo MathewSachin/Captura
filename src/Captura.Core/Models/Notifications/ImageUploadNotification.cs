@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
+using Captura.Models;
 using Screna;
 
 namespace Captura
@@ -59,17 +60,13 @@ namespace Captura
 
         public IEnumerable<NotificationAction> Actions => _actions;
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         NotificationAction AddAction()
         {
             var action = new NotificationAction();
 
-            if (_syncContext != null)
-            {
-                _syncContext.Post(S => _actions.Add(action), null);
-            }
-            else _actions.Add(action);
+            _syncContext.Run(() => _actions.Add(action));
 
             return action;
         }

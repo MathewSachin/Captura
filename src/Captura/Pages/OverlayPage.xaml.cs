@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -11,12 +10,10 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Screna;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 

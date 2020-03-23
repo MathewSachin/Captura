@@ -10,7 +10,7 @@ namespace Captura.Models
         readonly Filter _filter;
         readonly Action _onClick;
         CaptureWebcam _captureWebcam;
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         public WebcamCapture(Filter Filter, Action OnClick)
         {
@@ -36,7 +36,7 @@ namespace Captura.Models
 
             IBitmapImage image = null;
 
-            _syncContext.Send(S => image = _captureWebcam.GetFrame(BitmapLoader), null);
+            _syncContext.Run(() => image = _captureWebcam.GetFrame(BitmapLoader));
 
             return image;
         }
@@ -44,15 +44,19 @@ namespace Captura.Models
         public int Width => _captureWebcam.Size.Width;
         public int Height => _captureWebcam.Size.Height;
 
+        IntPtr _lastWin;
+
         public void UpdatePreview(IWindow Window, Rectangle Location)
         {
-            if (Window != null)
+            if (Window != null && _lastWin != Window.Handle)
             {
                 Dispose();
 
                 _captureWebcam = new CaptureWebcam(_filter, _onClick, Window.Handle);
 
                 _captureWebcam.StartPreview();
+
+                _lastWin = Window.Handle;
             }
 
             _captureWebcam.OnPreviewWindowResize(Location.X, Location.Y, Location.Width, Location.Height);

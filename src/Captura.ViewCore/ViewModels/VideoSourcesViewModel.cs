@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading;
 using Captura.Models;
 
 namespace Captura.ViewModels
@@ -10,8 +9,6 @@ namespace Captura.ViewModels
         readonly FullScreenSourceProvider _fullScreenProvider;
         readonly Settings _settings;
         public NoVideoSourceProvider NoVideoSourceProvider { get; }
-
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
         public IEnumerable<IVideoSourceProvider> VideoSources { get; }
 

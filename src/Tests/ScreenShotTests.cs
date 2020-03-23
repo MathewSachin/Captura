@@ -1,5 +1,4 @@
 ﻿using System;
-using TestStack.White.UIItems.TabItems;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Drawing;
 using Captura.ViewModels;
+using Reactive.Bindings;
 
 namespace Captura.Models
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamOverlay : ImageOverlay
     {
-        readonly WebcamModel _webcamModel;
+        WebcamModel _webcamModel;
+        IReadOnlyReactiveProperty<IWebcamCapture> _webcamCapture;
         readonly WebcamOverlaySettings _settings;
 
         public WebcamOverlay(WebcamModel WebcamModel, Settings Settings) : base(true)
         {
             _webcamModel = WebcamModel;
             _settings = Settings.WebcamOverlay;
+
+            _webcamCapture = WebcamModel.InitCapture();
         }
 
         public override void Draw(IEditableFrame Editor, Func<Point, Point> PointTransform = null)
@@ -22,7 +26,7 @@ namespace Captura.Models
             if (_webcamModel.AvailableCams.Count < 1 || _webcamModel.SelectedCam is NoWebcamItem)
                 return;
 
-            var cap = _webcamModel.WebcamCapture;
+            var cap = _webcamCapture.Value;
 
             if (cap == null)
                 return;
@@ -55,7 +59,16 @@ namespace Captura.Models
 
         IBitmapImage GetImage(IEditableFrame Editor)
         {
-            return _webcamModel.WebcamCapture?.Capture(Editor);
+            return _webcamCapture.Value?.Capture(Editor);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            _webcamModel?.ReleaseCapture();
+            _webcamModel = null;
+            _webcamCapture = null;
         }
     }
 }

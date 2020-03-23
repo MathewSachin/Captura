@@ -1,26 +1,35 @@
 ﻿using System;
 using System.Drawing;
+using Captura.Models;
 using Captura.ViewModels;
+using Reactive.Bindings;
 using Screna;
 
 namespace Captura.Webcam
 {
     public class WebcamImageProvider : IImageProvider
     {
-        readonly WebcamModel _webcamModel;
+        WebcamModel _webcamModel;
+        IReadOnlyReactiveProperty<IWebcamCapture> _webcamCapture;
 
         public WebcamImageProvider(WebcamModel WebcamModel)
         {
             _webcamModel = WebcamModel;
+            _webcamCapture = WebcamModel.InitCapture();
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _webcamModel?.ReleaseCapture();
+            _webcamModel = null;
+            _webcamCapture = null;
+        }
 
         public IEditableFrame Capture()
         {
             try
             {
-                var img = _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
+                var img = _webcamCapture.Value?.Capture(GraphicsBitmapLoader.Instance);
 
                 if (img is DrawingImage drawingImage && drawingImage.Image is Bitmap bmp)
                     return new GraphicsEditor(bmp);
@@ -35,9 +44,9 @@ namespace Captura.Webcam
 
         public IBitmapFrame DummyFrame => DrawingFrame.DummyFrame;
 
-        public int Height => _webcamModel.WebcamCapture?.Height ?? 0;
+        public int Height => _webcamCapture.Value?.Height ?? 0;
 
-        public int Width => _webcamModel.WebcamCapture?.Width ?? 0;
+        public int Width => _webcamCapture.Value?.Width ?? 0;
 
         public Func<Point, Point> PointTransform { get; } = P => P;
     }

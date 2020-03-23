@@ -18,10 +18,9 @@ namespace Captura.ViewModels
     {
         #region Fields
         IRecorder _recorder;
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         readonly ISystemTray _systemTray;
-        readonly WebcamOverlay _webcamOverlay;
         readonly IPreviewWindow _previewWindow;
         readonly WebcamModel _webcamModel;
         readonly TimerModel _timerModel;
@@ -37,7 +36,6 @@ namespace Captura.ViewModels
         public RecordingModel(Settings Settings,
             ILocalizationProvider Loc,
             ISystemTray SystemTray,
-            WebcamOverlay WebcamOverlay,
             IPreviewWindow PreviewWindow,
             IAudioSource AudioSource,
             WebcamModel WebcamModel,
@@ -47,7 +45,6 @@ namespace Captura.ViewModels
             IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
         {
             _systemTray = SystemTray;
-            _webcamOverlay = WebcamOverlay;
             _previewWindow = PreviewWindow;
             _audioSource = AudioSource;
             _webcamModel = WebcamModel;
@@ -136,9 +133,9 @@ namespace Captura.ViewModels
 
         bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
-            IImageProvider imgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
+            IImageProvider ImgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
 
-            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+            if (!GetImageProviderSafe(ImgProviderGetter, RecordingParams, out var imgProvider))
                 return false;
 
             IVideoFileWriter videoEncoder;
@@ -413,7 +410,7 @@ namespace Captura.ViewModels
 
         void OnErrorOccured(Exception E)
         {
-            void Do()
+            _syncContext.Run(() =>
             {
                 var cancelled = E is WindowClosedException;
 
@@ -421,11 +418,7 @@ namespace Captura.ViewModels
 
                 if (!cancelled)
                     _messageProvider.ShowException(E, E.Message);
-            }
-
-            if (_syncContext != null)
-                _syncContext.Post(S => Do(), null);
-            else Do();
+            });
         }
 
         void AfterRecording()
@@ -480,7 +473,7 @@ namespace Captura.ViewModels
 
             if (!webcamMode && !Settings.WebcamOverlay.SeparateFile)
             {
-                yield return _webcamOverlay;
+                yield return new WebcamOverlay(_webcamModel, Settings);
             }
 
             if (!webcamMode)

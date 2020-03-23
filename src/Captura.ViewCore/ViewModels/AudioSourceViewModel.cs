@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Captura.Models
 {
@@ -24,8 +25,6 @@ namespace Captura.Models
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         readonly IObservable<Unit> _refreshObservable;
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
-
         public AudioSourceViewModel(IAudioSource AudioSource)
         {
             _audioSource = AudioSource;
@@ -39,13 +38,13 @@ namespace Captura.Models
 
             SelectedMicPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
                 .Where(M => ListeningPeakLevel)
-                .ObserveOn(_syncContext)
+                .ObserveOnUIDispatcher()
                 .Select(M => SelectedMicrophone?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
 
             SelectedSpeakerPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
                 .Where(M => ListeningPeakLevel)
-                .ObserveOn(_syncContext)
+                .ObserveOnUIDispatcher()
                 .Select(M => SelectedSpeaker?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
 
@@ -54,7 +53,7 @@ namespace Captura.Models
                 .Throttle(TimeSpan.FromSeconds(0.5));
 
             _refreshObservable
-                .ObserveOn(_syncContext)
+                .ObserveOnUIDispatcher()
                 .Subscribe(M => Refresh());
         }
 
