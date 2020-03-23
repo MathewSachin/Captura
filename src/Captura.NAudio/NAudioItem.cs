@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
@@ -11,6 +10,40 @@ namespace Captura.Audio
 
         public bool IsLoopback { get; }
 
+        AudioClient _audioClient;
+
+        public void StartListeningForPeakLevel()
+        {
+            if (_audioClient != null)
+                return;
+
+            // Peak Level is available for recording devices only when they are active
+            if (IsLoopback)
+                return;
+
+            _audioClient = Device.AudioClient;
+            _audioClient.Initialize(AudioClientShareMode.Shared,
+                AudioClientStreamFlags.None,
+                100,
+                100,
+                _audioClient.MixFormat,
+                Guid.Empty);
+
+            _audioClient.Start();
+        }
+
+        public void StopListeningForPeakLevel()
+        {
+            if (_audioClient == null)
+                return;
+
+            _audioClient.Stop();
+            _audioClient.Dispose();
+            _audioClient = null;
+
+            _audioClient = null;
+        }
+
         public string Name { get; }
 
         public NAudioItem(MMDevice Device, bool IsLoopback)
@@ -18,27 +51,11 @@ namespace Captura.Audio
         {
         }
 
-        AudioClient _audioClient;
-
         NAudioItem(MMDevice Device, string Name, bool IsLoopback)
         {
             this.Device = Device;
             this.IsLoopback = IsLoopback;
             this.Name = Name;
-
-            // Peak Level is available for recording devices only when they are active
-            if (!IsLoopback)
-            {
-                _audioClient = Device.AudioClient;
-                _audioClient.Initialize(AudioClientShareMode.Shared,
-                    AudioClientStreamFlags.None,
-                    100,
-                    100,
-                    _audioClient.MixFormat,
-                    Guid.Empty);
-
-                _audioClient.Start();
-            }
         }
 
         const string DefaultDeviceName = "Default";
@@ -59,12 +76,7 @@ namespace Captura.Audio
         
         public void Dispose()
         {
-            if (_audioClient == null)
-                return;
-
-            _audioClient.Stop();
-            _audioClient.Dispose();
-            _audioClient = null;
+            StopListeningForPeakLevel();
 
             // Not disposing the device as it may be in use in a recording.
         }

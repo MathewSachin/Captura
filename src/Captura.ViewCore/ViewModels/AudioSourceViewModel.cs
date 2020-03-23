@@ -38,11 +38,13 @@ namespace Captura.Models
             RefreshCommand = new DelegateCommand(Refresh);
 
             SelectedMicPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .Where(M => ListeningPeakLevel)
                 .ObserveOn(_syncContext)
                 .Select(M => SelectedMicrophone?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
 
             SelectedSpeakerPeakLevel = Observable.Interval(TimeSpan.FromMilliseconds(50))
+                .Where(M => ListeningPeakLevel)
                 .ObserveOn(_syncContext)
                 .Select(M => SelectedSpeaker?.PeakLevel ?? 0)
                 .ToReadOnlyReactivePropertySlim();
@@ -117,6 +119,30 @@ namespace Captura.Models
 
         public ICommand RefreshCommand { get; }
 
+        bool _listenPeakLvl;
+
+        public bool ListeningPeakLevel
+        {
+            get => _listenPeakLvl;
+            set
+            {
+                if (_listenPeakLvl && !value)
+                {
+                    _listenPeakLvl = false;
+
+                    SelectedMicrophone?.StopListeningForPeakLevel();
+                    SelectedSpeaker?.StopListeningForPeakLevel();
+                }
+                else if (!_listenPeakLvl && value)
+                {
+                    _listenPeakLvl = true;
+
+                    SelectedMicrophone?.StartListeningForPeakLevel();
+                    SelectedSpeaker?.StartListeningForPeakLevel();
+                }
+            }
+        }
+
         public string Name => _audioSource.Name;
 
         IAudioItem _selectedMicrophone, _selectedSpeaker;
@@ -124,13 +150,39 @@ namespace Captura.Models
         public IAudioItem SelectedMicrophone
         {
             get => _selectedMicrophone;
-            set => Set(ref _selectedMicrophone, value ?? AvailableMicrophones.FirstOrDefault());
+            set
+            {
+                var old = SelectedMicrophone;
+
+                if (Set(ref _selectedMicrophone, value ?? AvailableMicrophones.FirstOrDefault()))
+                {
+                    old?.StopListeningForPeakLevel();
+
+                    if (ListeningPeakLevel)
+                    {
+                        _selectedMicrophone?.StartListeningForPeakLevel();
+                    }
+                }
+            }
         }
 
         public IAudioItem SelectedSpeaker
         {
             get => _selectedSpeaker;
-            set => Set(ref _selectedSpeaker, value ?? AvailableSpeakers.FirstOrDefault());
+            set
+            {
+                var old = SelectedSpeaker;
+
+                if (Set(ref _selectedSpeaker, value ?? AvailableSpeakers.FirstOrDefault()))
+                {
+                    old?.StopListeningForPeakLevel();
+
+                    if (ListeningPeakLevel)
+                    {
+                        _selectedSpeaker?.StartListeningForPeakLevel();
+                    }
+                }
+            }
         }
 
         public IReadOnlyReactiveProperty<double> SelectedMicPeakLevel { get; }
