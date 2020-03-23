@@ -35,7 +35,7 @@ namespace Captura.Models
             var w = _settings.GetWidth(Editor.Width);
             var h = _settings.GetHeight(Editor.Height);
 
-            var imgWbyH = cap.Width / cap.Height;
+            var imgWbyH = cap.Width / (float)cap.Height;
 
             var frameWbyH = w / h;
 
