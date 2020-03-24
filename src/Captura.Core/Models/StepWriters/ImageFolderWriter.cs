@@ -26,23 +26,21 @@ namespace Captura.Models
             using (Image)
             {
                 // TODO: Make independent of System.Drawing
-                using (var bmp = new Bitmap(Image.Width, Image.Height))
+                using var bmp = new Bitmap(Image.Width, Image.Height);
+                var data = bmp.LockBits(new Rectangle(Point.Empty, new Size(Image.Width, Image.Height)), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+                try
                 {
-                    var data = bmp.LockBits(new Rectangle(Point.Empty, new Size(Image.Width, Image.Height)), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-                    try
-                    {
-                        Image.CopyTo(data.Scan0);
-                    }
-                    finally
-                    {
-                        bmp.UnlockBits(data);
-                    }
-
-                    var filePath = Path.Combine(_folderPath, $"{_index:D3}.png");
-
-                    bmp.Save(filePath, ImageFormat.Png);
+                    Image.CopyTo(data.Scan0);
                 }
+                finally
+                {
+                    bmp.UnlockBits(data);
+                }
+
+                var filePath = Path.Combine(_folderPath, $"{_index:D3}.png");
+
+                bmp.Save(filePath, ImageFormat.Png);
             }
 
             ++_index;

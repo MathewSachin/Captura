@@ -45,12 +45,12 @@ namespace Screna
 
         public void DrawArrow(Point Start, Point End, Color Color, float Width)
         {
-            using (var pen = new Pen(new SolidBrush(Color), Width))
+            using var pen = new Pen(new SolidBrush(Color), Width)
             {
-                pen.EndCap = LineCap.ArrowAnchor;
+                EndCap = LineCap.ArrowAnchor
+            };
 
-                _graphics.DrawLine(pen, Start, End);
-            }
+            _graphics.DrawLine(pen, Start, End);
         }
 
         public void DrawImage(IBitmapImage Image, RectangleF? Region, int Opacity = 100)

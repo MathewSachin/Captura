@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using Captura.Webcam;
 
 namespace Captura.Models

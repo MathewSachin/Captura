@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:captura="clr-namespace:Captura"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
              mc:Ignorable="d">
     <DockPanel>

@@ -27,38 +27,36 @@ namespace Captura.Models
             if (string.IsNullOrWhiteSpace(Text))
                 return;
 
-            using (var font = Editor.GetFont(Settings.FontFamily, Settings.FontSize))
+            using var font = Editor.GetFont(Settings.FontFamily, Settings.FontSize);
+            var size = Editor.MeasureString(Text, font);
+
+            int paddingX = Settings.HorizontalPadding,
+                paddingY = Settings.VerticalPadding;
+
+            var rect = new RectangleF(KeyOverlay.GetLeft(Settings, Editor.Width, size.Width),
+                KeyOverlay.GetTop(Settings, Editor.Height, size.Height),
+                size.Width + 2 * paddingX,
+                size.Height + 2 * paddingY);
+
+            Editor.FillRectangle(Settings.BackgroundColor,
+                rect,
+                Settings.CornerRadius);
+
+            Editor.DrawString(Text,
+                font,
+                Settings.FontColor,
+                new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
+
+            var border = Settings.BorderThickness;
+
+            if (border > 0)
             {
-                var size = Editor.MeasureString(Text, font);
+                rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
 
-                int paddingX = Settings.HorizontalPadding,
-                    paddingY = Settings.VerticalPadding;
-
-                var rect = new RectangleF(KeyOverlay.GetLeft(Settings, Editor.Width, size.Width),
-                    KeyOverlay.GetTop(Settings, Editor.Height, size.Height),
-                    size.Width + 2 * paddingX,
-                    size.Height + 2 * paddingY);
-
-                Editor.FillRectangle(Settings.BackgroundColor,
+                Editor.DrawRectangle(Settings.BorderColor,
+                    border,
                     rect,
                     Settings.CornerRadius);
-
-                Editor.DrawString(Text,
-                    font,
-                    Settings.FontColor,
-                    new RectangleF(rect.Left + paddingX, rect.Top + paddingY, size.Width, size.Height));
-
-                var border = Settings.BorderThickness;
-
-                if (border > 0)
-                {
-                    rect = new RectangleF(rect.Left - border / 2f, rect.Top - border / 2f, rect.Width + border, rect.Height + border);
-
-                    Editor.DrawRectangle(Settings.BorderColor,
-                        border,
-                        rect,
-                        Settings.CornerRadius);
-                }
             }
         }
 

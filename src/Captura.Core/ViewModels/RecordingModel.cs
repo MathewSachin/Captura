@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Captura.Audio;
 using Captura.FFmpeg;
@@ -207,9 +206,9 @@ namespace Captura.ViewModels
 
         bool SetupStepsRecorder(RecordingModelParams RecordingParams)
         {
-            IImageProvider imgProviderGetter() => GetImageProvider(RecordingParams);
+            IImageProvider ImgProviderGetter() => GetImageProvider(RecordingParams);
 
-            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+            if (!GetImageProviderSafe(ImgProviderGetter, RecordingParams, out var imgProvider))
                 return false;
 
             IVideoFileWriter videoEncoder;
