@@ -17,6 +17,7 @@ namespace Captura
         {
             SingleInstanceManager.SingleInstanceCheck();
 
+            // Splash Screen should be created manually and after single-instance is checked
             ShowSplashScreen();
         }
 

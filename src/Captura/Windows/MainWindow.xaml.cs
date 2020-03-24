@@ -45,6 +45,7 @@ namespace Captura
                     Args.Cancel = true;
             };
 
+            // Register to bring this instance to foreground when other instances are launched.
             SingleInstanceManager.StartListening(WakeApp);
         }
 
