@@ -51,7 +51,6 @@ namespace DesktopDuplication
             attr.Set(SinkWriterAttributeKeys.ReadwriteDisableConverters, 0);
             attr.Set(TranscodeAttributeKeys.TranscodeContainertype, TranscodeContainerTypeGuids.Mpeg4);
             attr.Set(SinkWriterAttributeKeys.LowLatency, true);
-            attr.Set(SinkWriterAttributeKeys.DisableThrottling, 1);
 
             var devMan = new DXGIDeviceManager();
             devMan.ResetDevice(Device);
