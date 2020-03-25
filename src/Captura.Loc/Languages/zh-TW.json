@@ -155,6 +155,6 @@
   "WebCamView": "視訊影像",
   "Website": "網站",
   "Window": "視窗",
-  "WindowScreenShotTransparency": "",
+  "WindowScreenShotTransparency": "視窗模式下的截圖應該是透明的",
   "Yes": "是"
 }
