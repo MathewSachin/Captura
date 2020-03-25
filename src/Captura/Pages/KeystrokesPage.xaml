@@ -7,6 +7,10 @@
         <ScrollViewer DataContext="{Binding AboutViewModel, Source={StaticResource ServiceLocator}}">
             <StackPanel Margin="5"
                         DataContext="{Binding Settings.Keystrokes}">
+                <CheckBox Content="Display"
+                          IsChecked="{Binding Display, Mode=TwoWay}"
+                          Margin="0,5"/>
+
                 <CheckBox Content="{Binding KeystrokesSeparateFile, Source={StaticResource Loc}, Mode=OneWay}"
                           IsChecked="{Binding SeparateTextFile, Mode=TwoWay}"
                           Margin="0,3"

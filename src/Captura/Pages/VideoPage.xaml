@@ -12,47 +12,60 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Margin="0,5">
-                <captura:ModernToggleButton ToolTip="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"
-                                            IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                            IconData="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.IncludeCursor}"/>
-                <captura:ModernToggleButton IconData="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Clicks.Display, Mode=TwoWay}">
-                    <captura:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </captura:ModernToggleButton.ToolTip>
-                </captura:ModernToggleButton>
-                <captura:ModernToggleButton IconData="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Keystrokes.Display, Mode=TwoWay}">
-                    <captura:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </captura:ModernToggleButton.ToolTip>
-                </captura:ModernToggleButton>
-                <captura:ModernToggleButton IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
-                                            IconData="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"
-                                            IsChecked="{Binding Settings.Elapsed.Display, Mode=TwoWay}">
-                    <captura:ModernToggleButton.ToolTip>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Elapsed, Source={StaticResource Loc}, Mode=OneWay}"
-                                       Margin="0,0,0,2"/>
-                            <TextBlock Text="Color, Opacity, Border and more can be configured at Settings / Overlays."
-                                       FontSize="10"/>
-                        </StackPanel>
-                    </captura:ModernToggleButton.ToolTip>
-                </captura:ModernToggleButton>
+            <StackPanel Margin="0,5">
+                <StackPanel.Resources>
+                    <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="0,0,5,0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Margin" Value="0,2"/>
+                    </Style>
+                </StackPanel.Resources>
+                <CheckBox IsChecked="{Binding Settings.IncludeCursor}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{Binding Icons.Cursor, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding IncludeCursor, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </CheckBox>
+
+                <CheckBox IsChecked="{Binding Settings.Clicks.Display}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                          ToolTip="Color, Opacity, Border can be configured at Settings / Overlays.">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{Binding Icons.Hand, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding IncludeClicks, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </CheckBox>
+
+                <CheckBox IsChecked="{Binding Settings.Keystrokes.Display}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                          ToolTip="Color, Opacity, Border can be configured at Settings / Overlays.">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{Binding Icons.Keyboard, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="{Binding IncludeKeys, Source={StaticResource Loc}, Mode=OneWay}"/>
+                    </StackPanel>
+                </CheckBox>
+
+                <CheckBox IsChecked="{Binding Settings.Elapsed.Display}"
+                          IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}"
+                          ToolTip="Color, Opacity, Border can be configured at Settings / Overlays.">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{Binding Icons.Timer, Source={StaticResource ServiceLocator}}"/>
+                        <TextBlock Text="Show Elapsed time Overlay"/>
+                    </StackPanel>
+                </CheckBox>
             </StackPanel>
+
+            <GridSplitter IsEnabled="False"
+                          Height="1"
+                          Margin="0,10"/>
 
             <Grid Margin="0,5"
                   IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
@@ -75,8 +88,8 @@
 
                 <Slider Minimum="1"
                         Maximum="30"
-                        SelectionStart="8"
-                        SelectionEnd="12"
+                        SelectionStart="18"
+                        SelectionEnd="22"
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Video.FrameRate}"
                         Interval="1"
@@ -143,6 +156,20 @@
                           Height="1"
                           Margin="0,10"/>
 
+            <CheckBox IsChecked="{Binding Settings.WindowsSettings.UseGdi}"
+                      Margin="0,2">
+                <TextBlock TextWrapping="Wrap">
+                    Use GDI instead of DesktopDuplication <LineBreak/>
+                    <Run Text="(Requires App Restart)"
+                         FontSize="10"
+                         FontWeight="Light"/>
+                </TextBlock>
+            </CheckBox>
+        </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <StackPanel Grid.Column="2">
             <Label Content="Recorder Mode"
                    FontWeight="Bold"
                    Margin="0,5"/>
@@ -207,20 +234,6 @@
                           Height="1"
                           Margin="0,10"/>
 
-            <CheckBox IsChecked="{Binding Settings.WindowsSettings.UseGdi}"
-                      Margin="0,2">
-                <TextBlock TextWrapping="Wrap">
-                    Use GDI instead of DesktopDuplication <LineBreak/>
-                    <Run Text="(Requires App Restart)"
-                         FontSize="10"
-                         FontWeight="Light"/>
-                </TextBlock>
-            </CheckBox>
-        </StackPanel>
-        <GridSplitter Grid.Column="1"
-                      Width="1"
-                      Margin="7,0"/>
-        <StackPanel Grid.Column="2">
             <Label Content="{Binding VideoEncoder, Source={StaticResource Loc}, Mode=OneWay}"
                    FontWeight="Bold"
                    Margin="0,5"/>

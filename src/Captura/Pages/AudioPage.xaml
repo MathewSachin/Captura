@@ -76,8 +76,8 @@
                        HorizontalContentAlignment="Right"/>
                 <Slider Minimum="1" 
                         Maximum="100"
-                        SelectionStart="40"
-                        SelectionEnd="60"
+                        SelectionStart="70"
+                        SelectionEnd="90"
                         IsSelectionRangeEnabled="True"
                         Value="{Binding Settings.Audio.Quality}"/>
             </DockPanel>
