@@ -35,6 +35,8 @@ namespace Captura
             Binder.BindSingleton<HotKeyManager>();
 
             Binder.Bind<ILocalizationProvider>(() => LanguageManager.Instance);
+
+            Binder.Bind<IFpsManager, FpsManager>();
         }
 
         public void Dispose()

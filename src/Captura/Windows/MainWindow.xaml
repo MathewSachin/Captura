@@ -265,6 +265,19 @@
                               DockPanel.Dock="Top"
                               IsEnabled="False"/>
 
+                <Label DockPanel.Dock="Bottom"
+                       Margin="5,0"
+                       Visibility="{Binding ViewConditions.FpsVisibility.Value, Source={StaticResource ServiceLocator}}">
+                    <TextBlock>
+                        FPS: <Run Text="{Binding FpsManager.Fps, Source={StaticResource ServiceLocator}, Mode=OneWay}"/>
+                    </TextBlock>
+                </Label>
+
+                <GridSplitter Height="1"
+                              Margin="0,2"
+                              DockPanel.Dock="Bottom"
+                              IsEnabled="False"/>
+
                 <Grid xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                       xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore">
                     <Label Content="Preview"

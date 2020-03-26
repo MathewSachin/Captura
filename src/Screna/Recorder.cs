@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Captura;
 using Captura.Audio;
+using Captura.Models;
 
 // ReSharper disable MethodSupportsCancellation
 
@@ -39,6 +40,8 @@ namespace Screna
         readonly int _audioBytesPerFrame, _audioChunkBytes;
         const int AudioChunkLengthMs = 200;
         byte[] _audioBuffer, _silenceBuffer;
+
+        readonly IFpsManager _fpsManager;
         #endregion
 
         /// <summary>
@@ -49,11 +52,13 @@ namespace Screna
         /// <param name="FrameRate">Video Frame Rate.</param>
         /// <param name="AudioProvider">The audio source. null = no audio.</param>
         public Recorder(IVideoFileWriter VideoWriter, IImageProvider ImageProvider, int FrameRate,
-            IAudioProvider AudioProvider = null)
+            IAudioProvider AudioProvider = null,
+            IFpsManager FpsManager = null)
         {
             _videoWriter = VideoWriter ?? throw new ArgumentNullException(nameof(VideoWriter));
             _imageProvider = ImageProvider ?? throw new ArgumentNullException(nameof(ImageProvider));
             _audioProvider = AudioProvider;
+            _fpsManager = FpsManager;
 
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
@@ -145,6 +150,8 @@ namespace Screna
             {
                 return false;
             }
+
+            _fpsManager?.OnFrame();
 
             try
             {

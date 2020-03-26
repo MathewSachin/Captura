@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using System.Windows;
 using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -130,6 +131,12 @@ namespace Captura.ViewModels
                 }
                 .CombineLatestValuesAreAllTrue()
                 .ToReadOnlyReactivePropertySlim();
+
+            FpsVisibility = RecordingModel
+                .ObserveProperty(M => M.RecorderState)
+                .Select(M => M == RecorderState.Recording)
+                .Select(M => M ? Visibility.Visible : Visibility.Hidden)
+                .ToReadOnlyReactivePropertySlim();
         }
 
         public IReadOnlyReactiveProperty<bool> StepsBtnEnabled { get; }
@@ -161,5 +168,7 @@ namespace Captura.ViewModels
         public IReadOnlyReactiveProperty<bool> IsReplayMode { get; }
 
         public IReadOnlyReactiveProperty<bool> ShowSourceNameBox { get; }
+
+        public IReadOnlyReactiveProperty<Visibility> FpsVisibility { get; }
     }
 }

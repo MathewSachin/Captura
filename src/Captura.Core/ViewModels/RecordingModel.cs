@@ -28,6 +28,7 @@ namespace Captura.ViewModels
 
         readonly KeymapViewModel _keymap;
         readonly IAudioSource _audioSource;
+        readonly IFpsManager _fpsManager;
 
         const int StepsRecorderFrameRate = 1;
         #endregion
@@ -41,7 +42,8 @@ namespace Captura.ViewModels
             KeymapViewModel Keymap,
             TimerModel TimerModel,
             IMessageProvider MessageProvider,
-            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            IFpsManager FpsManager) : base(Settings, Loc)
         {
             _systemTray = SystemTray;
             _previewWindow = PreviewWindow;
@@ -51,6 +53,7 @@ namespace Captura.ViewModels
             _timerModel = TimerModel;
             _messageProvider = MessageProvider;
             _ffmpegViewsProvider = FFmpegViewsProvider;
+            _fpsManager = FpsManager;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -160,7 +163,7 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
+            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider, _fpsManager);
 
             var webcamMode = RecordingParams.VideoSourceKind is WebcamSourceProvider;
 
