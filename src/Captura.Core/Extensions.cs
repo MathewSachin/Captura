@@ -1,4 +1,6 @@
 ﻿using System;
+using DSize = System.Drawing.Size;
+using WSize = System.Windows.Size;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
@@ -33,6 +35,16 @@ namespace Captura
                     uploadResult.Url.WriteToClipboard();
                     break;
             }
+        }
+
+        public static DSize ToDrawingSize(this WSize Size)
+        {
+            return new DSize((int)Math.Round(Size.Width), (int)Math.Round(Size.Height));
+        }
+
+        public static WSize ToWpfSize(this DSize Size)
+        {
+            return new WSize(Size.Width, Size.Height);
         }
     }
 }

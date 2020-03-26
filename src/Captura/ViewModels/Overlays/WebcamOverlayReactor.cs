@@ -3,6 +3,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using Point = System.Drawing.Point;
 
 namespace Captura.ViewModels
 {
@@ -10,28 +11,20 @@ namespace Captura.ViewModels
     {
         public WebcamOverlayReactor(WebcamOverlaySettings Settings)
         {
-            Margin = Settings
-                .ObserveProperty(M => M.X)
+            Location = Settings.ObserveProperty(M => M.XLoc)
                 .CombineLatest(
-                    Settings
-                        .ObserveProperty(M => M.Y),
+                    Settings.ObserveProperty(M => M.YLoc),
                     FrameSize,
-                    (X, Y, FrameSize) =>
-                    {
-                        var pos = Settings.GetPosition((float)FrameSize.Width, (float)FrameSize.Height);
-
-                        return new Thickness(pos.X, pos.Y, 0, 0);
-                    })
+                    WebcamSize,
+                    Settings.ObserveProperty(M => M.Scale),
+                    (X, Y, FrameSize, WebcamSize, Scale) => Settings.GetPosition(FrameSize.ToDrawingSize(), WebcamSize.ToDrawingSize()))
                 .ToReadOnlyReactivePropertySlim();
 
-            Width = Settings
-                .ObserveProperty(M => M.Width)
-                .CombineLatest(FrameSize, (Width, FrameSize) => Settings.GetWidth((float)FrameSize.Width))
-                .ToReadOnlyReactivePropertySlim();
-
-            Height = Settings
-                .ObserveProperty(M => M.Height)
-                .CombineLatest(FrameSize, (Height, FrameSize) => Settings.GetHeight((float)FrameSize.Height))
+            Size = Settings.ObserveProperty(M => M.Scale)
+                .CombineLatest(
+                    FrameSize,
+                    WebcamSize,
+                    (Scale, FrameSize, WebcamSize) => Settings.GetSize(FrameSize.ToDrawingSize(), WebcamSize.ToDrawingSize()).ToWpfSize())
                 .ToReadOnlyReactivePropertySlim();
 
             Opacity = Settings
@@ -42,11 +35,12 @@ namespace Captura.ViewModels
 
         public Subject<Size> FrameSize { get; } = new Subject<Size>();
 
-        public IReadOnlyReactiveProperty<float> Width { get; }
-        public IReadOnlyReactiveProperty<float> Height { get; }
+        public Subject<Size> WebcamSize { get; } = new Subject<Size>();
+
+        public IReadOnlyReactiveProperty<Size> Size { get; }
 
         public IReadOnlyReactiveProperty<double> Opacity { get; }
 
-        public IReadOnlyReactiveProperty<Thickness> Margin { get; }
+        public IReadOnlyReactiveProperty<Point> Location { get; }
     }
 }

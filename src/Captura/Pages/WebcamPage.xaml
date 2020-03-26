@@ -86,36 +86,30 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Content="X: "/>
-                    <Slider Value="{Binding X, Mode=TwoWay}"
+                    <Slider Value="{Binding XLoc, Mode=TwoWay}"
                             Grid.Column="1"
                             Minimum="0"
-                            Maximum="100"/>
+                            Maximum="1"
+                            Margin="0,0,5,0"/>
 
                     <Label Content="Y: "
                            Grid.Column="2"/>
-                    <Slider Value="{Binding Y, Mode=TwoWay}"
+                    <Slider Value="{Binding YLoc, Mode=TwoWay}"
                             Grid.Column="3"
                             Minimum="0"
-                            Maximum="100"/>
+                            Maximum="1"
+                            Margin="0,0,5,0"/>
 
-                    <Label Content="W: "
+                    <Label Content="Scale: "
                            Grid.Column="4"/>
-                    <Slider Value="{Binding Width, Mode=TwoWay}"
+                    <Slider Value="{Binding Scale, Mode=TwoWay}"
                             Grid.Column="5"
-                            Minimum="1"
-                            Maximum="100"/>
-
-                    <Label Content="H: "
-                           Grid.Column="6"/>
-                    <Slider Value="{Binding Height, Mode=TwoWay}"
-                            Grid.Column="7"
-                            Minimum="1"
-                            Maximum="100"/>
+                            Minimum="0"
+                            Maximum="1"
+                            Margin="0,0,5,0"/>
                 </Grid>
             </StackPanel>
 
@@ -127,16 +121,13 @@
                 <Image Name="Img"
                        Stretch="Uniform"/>
 
+                <!-- Invisible but still required to prevent render errors -->
                 <Label Name="PreviewTarget"
-                       Background="#F0111111"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       BorderBrush="#EEEEEE"
-                       BorderThickness="0.5"
-                       Content="Webcam"
-                       HorizontalContentAlignment="Center"
-                       VerticalContentAlignment="Center"
-                       Foreground="White"/>
+                       Background="#00FFFFFF"
+                       MaxWidth="{Binding ActualWidth, ElementName=Img}"
+                       MaxHeight="{Binding ActualHeight, ElementName=Img}"/>
             </Grid>
         </DockPanel>
     </Grid>

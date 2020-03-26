@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Reactive.Linq;
+using WSize = System.Windows.Size;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -48,10 +50,13 @@ namespace Captura
 
             var control = PreviewTarget;
 
-            control.BindOne(MarginProperty, _reactor.Margin);
+            control.BindOne(MarginProperty,
+                _reactor.Location.Select(M => new Thickness(M.X, M.Y, 0, 0)).ToReadOnlyReactivePropertySlim());
 
-            control.BindOne(WidthProperty, _reactor.Width);
-            control.BindOne(HeightProperty, _reactor.Height);
+            control.BindOne(WidthProperty,
+                _reactor.Size.Select(M => M.Width).ToReadOnlyReactivePropertySlim());
+            control.BindOne(HeightProperty,
+                _reactor.Size.Select(M => M.Height).ToReadOnlyReactivePropertySlim());
 
             control.BindOne(OpacityProperty, _reactor.Opacity);
         }
@@ -73,7 +78,9 @@ namespace Captura
                 {
                     _webcamCapture = _webcamModel.InitCapture();
 
-                    SwitchWebcamPreview();
+                    _reactor.WebcamSize.OnNext(new WSize(_webcamCapture.Value.Width, _webcamCapture.Value.Height));
+
+                    UpdateWebcamPreview();
                 }
                 else if (!IsVisible && _webcamCapture != null)
                 {
@@ -87,18 +94,24 @@ namespace Captura
                 if (!IsVisible)
                     return;
 
-                _reactor.FrameSize.OnNext(new System.Windows.Size(PreviewGrid.ActualWidth, PreviewGrid.ActualHeight));
-
-                SwitchWebcamPreview();
+                _reactor.FrameSize.OnNext(new WSize(Img.ActualWidth, Img.ActualHeight));
             }
 
-            PreviewTarget.LayoutUpdated += (S, E) => OnRegionChange();
+            PreviewGrid.LayoutUpdated += (S, E) => OnRegionChange();
 
             _webcamModel
                 .ObserveProperty(M => M.SelectedCam)
-                .Subscribe(M => SwitchWebcamPreview());
+                .Subscribe(M => UpdateWebcamPreview());
 
-            SwitchWebcamPreview();
+            _reactor.Location
+                .CombineLatest(_reactor.Size, (M, N) =>
+                {
+                    UpdateWebcamPreview();
+                    return 0;
+                })
+                .Subscribe();
+
+            UpdateWebcamPreview();
         }
 
         async void CaptureImage_OnClick(object Sender, RoutedEventArgs E)
@@ -116,39 +129,20 @@ namespace Captura
         {
             var parentWindow = VisualTreeHelperEx.FindAncestorByType<Window>(this);
 
-            var relativePt = PreviewTarget.TranslatePoint(new System.Windows.Point(0, 0), parentWindow);
+            var relativePt = PreviewGrid.TranslatePoint(new System.Windows.Point(0, 0), parentWindow);
 
-            var rect = new RectangleF((float) relativePt.X, (float) relativePt.Y, (float) PreviewTarget.ActualWidth, (float) PreviewTarget.ActualHeight);
+            var position = _reactor.Location.Value;
+            var size = _reactor.Size.Value;
 
-            // Maintain Aspect Ratio
-            if (_webcamCapture?.Value is { } webcamCapture)
-            {
-                float w = webcamCapture.Width;
-                float h = webcamCapture.Height;
-                var imgWbyH = w / h;
-
-                var frameWbyH = rect.Width / rect.Height;
-
-                if (imgWbyH > frameWbyH)
-                {
-                    var newH = rect.Width / imgWbyH;
-
-                    rect.Y += (rect.Height - newH) / 2;
-                    rect.Height = newH;
-                }
-                else
-                {
-                    var newW = rect.Height * imgWbyH;
-
-                    rect.X += (rect.Width - newW) / 2;
-                    rect.Width = newW;
-                }
-            }
+            var rect = new RectangleF((float)(relativePt.X + position.X),
+                (float)(relativePt.Y + position.Y),
+                (float)(size.Width),
+                (float)(size.Height));
 
             return rect.ApplyDpi();
         }
 
-        void SwitchWebcamPreview()
+        void UpdateWebcamPreview()
         {
             if (PresentationSource.FromVisual(this) is HwndSource source)
             {

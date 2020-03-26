@@ -31,30 +31,13 @@ namespace Captura.Models
             if (cap == null)
                 return;
 
-            var pos = _settings.GetPosition(Editor.Width, Editor.Height);
-            var w = _settings.GetWidth(Editor.Width);
-            var h = _settings.GetHeight(Editor.Height);
+            var frameSize = new Size((int) Editor.Width, (int) Editor.Height);
+            var webcamSize = new Size(cap.Width, cap.Height);
 
-            var imgWbyH = cap.Width / (float)cap.Height;
+            var pos = _settings.GetPosition(frameSize, webcamSize);
+            var size = _settings.GetSize(frameSize, webcamSize);
 
-            var frameWbyH = w / h;
-
-            if (imgWbyH > frameWbyH)
-            {
-                var newH = w / imgWbyH;
-
-                pos.Y += (h - newH) / 2;
-                h = newH;
-            }
-            else
-            {
-                var newW = h * imgWbyH;
-
-                pos.X += (w - newW) / 2;
-                w = newW;
-            }
-
-            Draw(Editor, GetImage(Editor), pos, new SizeF(w, h), _settings.Opacity);
+            Draw(Editor, GetImage(Editor), pos, size, _settings.Opacity);
         }
 
         IBitmapImage GetImage(IEditableFrame Editor)
