@@ -74,61 +74,55 @@
         <GridSplitter Grid.Column="1"
                       Width="1"
                       Margin="5,0"/>
-        <DockPanel Grid.Column="2">
-            <StackPanel Margin="5"
-                        DataContext="{Binding Settings.WebcamOverlay}"
-                        DockPanel.Dock="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="2"
+                   DataContext="{Binding Settings.WebcamOverlay}">
+            <DockPanel Margin="5"
+                       DockPanel.Dock="Top">
+                <Label Content="Scale: "/>
+                <Slider Value="{Binding Scale, Mode=TwoWay}"
+                        TickPlacement="BottomRight"
+                        TickFrequency="0.1"
+                        Minimum="0"
+                        Maximum="1"/>
+            </DockPanel>
 
-                    <Label Content="X: "/>
+            <DockPanel VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,10">
+                <DockPanel DockPanel.Dock="Bottom"
+                           Margin="5,5,40,5">
+                    <Label Content="X"
+                           Margin="0,0,5,0"/>
                     <Slider Value="{Binding XLoc, Mode=TwoWay}"
-                            Grid.Column="1"
                             Minimum="0"
-                            Maximum="1"
-                            Margin="0,0,5,0"/>
-
-                    <Label Content="Y: "
-                           Grid.Column="2"/>
+                            Maximum="1"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Right"
+                           Margin="5">
+                    <Label Content="Y"
+                           HorizontalContentAlignment="Center"
+                           Margin="0,0,0,5"
+                           DockPanel.Dock="Top"/>
                     <Slider Value="{Binding YLoc, Mode=TwoWay}"
-                            Grid.Column="3"
+                            Orientation="Vertical"
+                            IsDirectionReversed="True"
                             Minimum="0"
-                            Maximum="1"
-                            Margin="0,0,5,0"/>
+                            Maximum="1"/>
+                </DockPanel>
+                <Grid Name="PreviewGrid"
+                      Background="DimGray">
+                    <Image Name="Img"
+                           Stretch="Uniform"/>
 
-                    <Label Content="Scale: "
-                           Grid.Column="4"/>
-                    <Slider Value="{Binding Scale, Mode=TwoWay}"
-                            Grid.Column="5"
-                            Minimum="0"
-                            Maximum="1"
-                            Margin="0,0,5,0"/>
+                    <!-- Invisible but still required to prevent render errors -->
+                    <Label Name="PreviewTarget"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Background="#00FFFFFF"
+                           MaxWidth="{Binding ActualWidth, ElementName=Img}"
+                           MaxHeight="{Binding ActualHeight, ElementName=Img}"/>
                 </Grid>
-            </StackPanel>
-
-            <Grid Background="DimGray"
-                  Name="PreviewGrid"
-                  VerticalAlignment="Center"
-                  HorizontalAlignment="Center"
-                  Margin="0,0,0,10">
-                <Image Name="Img"
-                       Stretch="Uniform"/>
-
-                <!-- Invisible but still required to prevent render errors -->
-                <Label Name="PreviewTarget"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Background="#00FFFFFF"
-                       MaxWidth="{Binding ActualWidth, ElementName=Img}"
-                       MaxHeight="{Binding ActualHeight, ElementName=Img}"/>
-            </Grid>
+            </DockPanel>
         </DockPanel>
     </Grid>
 </Page>
