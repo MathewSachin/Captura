@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Captura.Models;
 
 namespace Captura
 {
@@ -43,6 +44,22 @@ namespace Captura
                 if (!TryExit())
                     Args.Cancel = true;
             };
+
+            // Register to bring this instance to foreground when other instances are launched.
+            SingleInstanceManager.StartListening(WakeApp);
+        }
+
+        void WakeApp()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (WindowState == WindowState.Minimized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+
+                Activate();
+            });
         }
 
         void RepositionWindowIfOutside()

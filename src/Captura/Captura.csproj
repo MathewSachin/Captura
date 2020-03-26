@@ -12,7 +12,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <SplashScreen Include="Images\Logo.png" />
+    <Resource Include="Images\Logo.png" />
     <Resource Include="Images\record.ico" />
     <Resource Include="Images\Captura.ico" />
     <Resource Include="Images\pause.ico" />
