@@ -37,7 +37,12 @@ namespace Captura.ViewModels
                 new FileNameFormatItem("%dd%", "Date (22)"),
                 new FileNameFormatItem("%ddd%", "Day (Tue)"),
                 new FileNameFormatItem("%dddd%", "Day (Tuesday)")
-            })
+            }),
+            new FileNameFormatGroup("Other", new []
+            {
+                new FileNameFormatItem("%computer%", "Company Name"), 
+                new FileNameFormatItem("%user%", "User Name")
+            }), 
         };
 
         public string FilenameFormat

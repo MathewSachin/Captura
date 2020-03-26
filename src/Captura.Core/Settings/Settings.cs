@@ -184,6 +184,9 @@ namespace Captura
             var now = DateTime.Now;
 
             var filename = FilenameFormat
+                .Replace("%computer%", Environment.MachineName)
+                .Replace("%user%", Environment.UserName)
+
                 .Replace("%yyyy%", now.ToString("yyyy"))
                 .Replace("%yy%", now.ToString("yy"))
                 

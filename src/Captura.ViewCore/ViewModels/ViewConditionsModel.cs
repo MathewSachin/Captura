@@ -132,9 +132,9 @@ namespace Captura.ViewModels
                 .CombineLatestValuesAreAllTrue()
                 .ToReadOnlyReactivePropertySlim();
 
-            FpsVisibility = RecordingModel
-                .ObserveProperty(M => M.RecorderState)
-                .Select(M => M == RecorderState.Recording)
+            FpsVisibility = RecordingModel.ObserveProperty(M => M.RecorderState)
+                .CombineLatest(IsNotAudioOrStepsMode,
+                    (RecorderState, IsNotAudioOrStepsMode) => RecorderState == RecorderState.Recording && IsNotAudioOrStepsMode)
                 .Select(M => M ? Visibility.Visible : Visibility.Hidden)
                 .ToReadOnlyReactivePropertySlim();
         }
