@@ -54,6 +54,8 @@
         /// </summary>
         ScreenShotWindow,
 
-        ShowMainWindow
+        ShowMainWindow,
+
+        ToggleRegionPicker
     }
 }

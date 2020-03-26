@@ -8,14 +8,20 @@ namespace Captura.ViewModels
         readonly ScreenShotViewModel _screenShotViewModel;
         readonly RecordingViewModel _recordingViewModel;
         readonly Settings _settings;
+        readonly VideoSourcesViewModel _videoSourcesViewModel;
+        readonly RegionSourceProvider _regionSourceProvider;
 
         public HotkeyActor(ScreenShotViewModel ScreenShotViewModel,
             RecordingViewModel RecordingViewModel,
-            Settings Settings)
+            Settings Settings,
+            VideoSourcesViewModel VideoSourcesViewModel,
+            RegionSourceProvider RegionSourceProvider)
         {
             _screenShotViewModel = ScreenShotViewModel;
             _recordingViewModel = RecordingViewModel;
             _settings = Settings;
+            _videoSourcesViewModel = VideoSourcesViewModel;
+            _regionSourceProvider = RegionSourceProvider;
         }
 
         public void Act(ServiceName Service)
@@ -60,6 +66,14 @@ namespace Captura.ViewModels
 
                 case ServiceName.ScreenShotWindow:
                     _screenShotViewModel.ScreenshotWindowCommand.ExecuteIfCan();
+                    break;
+
+                case ServiceName.ToggleRegionPicker:
+                    if (_videoSourcesViewModel.SelectedVideoSourceKind != _regionSourceProvider)
+                    {
+                        _videoSourcesViewModel.SelectedVideoSourceKind = _regionSourceProvider;
+                    }
+                    else _videoSourcesViewModel.SetDefaultSource();
                     break;
             }
         }
