@@ -78,9 +78,12 @@ namespace Captura
                 {
                     _webcamCapture = _webcamModel.InitCapture();
 
-                    _reactor.WebcamSize.OnNext(new WSize(_webcamCapture.Value.Width, _webcamCapture.Value.Height));
+                    if (_webcamCapture.Value is { } capture)
+                    {
+                        _reactor.WebcamSize.OnNext(new WSize(capture.Width, capture.Height));
 
-                    UpdateWebcamPreview();
+                        UpdateWebcamPreview();
+                    }
                 }
                 else if (!IsVisible && _webcamCapture != null)
                 {
