@@ -231,5 +231,11 @@ namespace Captura
             get => Get(true);
             set => Set(value);
         }
+
+        public bool RegionPickerHotkeyAutoStartRecording
+        {
+            get => Get(true);
+            set => Set(value);
+        }
     }
 }
