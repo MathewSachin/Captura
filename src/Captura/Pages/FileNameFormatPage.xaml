@@ -5,6 +5,11 @@
       DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}"
       Title="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
         <StackPanel Margin="5">
             <Label Content="File Name Format"
                    ContentStringFormat="{}{0}:"
@@ -26,20 +31,15 @@
                    Content="{Binding FilenamePreview}"/>
 
             <captura:OutputFolderControl/>
-
-            <GridSplitter IsEnabled="False"
-                          Margin="0,30"
-                          Height="1"/>
-
+        </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <ScrollViewer Grid.Column="2">
             <ItemsControl ItemsSource="{Binding FormatGroups}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="10">
+                        <StackPanel Margin="5">
                             <Label Content="{Binding Name}"
                                    FontWeight="Bold"
                                    Margin="0,5,0,2"/>
@@ -68,6 +68,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
