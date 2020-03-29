@@ -82,3 +82,5 @@
   amount: "$25 USD"
 - name: "Thomas Liebezeit"
   amount: "€15 EUR"
+- name: "Stefan Hunn"
+  amount: "$10 USD"
