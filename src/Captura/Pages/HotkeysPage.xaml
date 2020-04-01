@@ -6,6 +6,11 @@
       DataContext="{Binding HotkeysViewModel, Source={StaticResource ServiceLocator}}"
       Title="{Binding Hotkeys, Source={StaticResource Loc}, Mode=OneWay}">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
         <DockPanel Margin="5">
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
@@ -87,5 +92,17 @@
                 </ItemsControl>
             </ScrollViewer>
         </DockPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <StackPanel Margin="5"
+                    Grid.Column="2">
+            <Label Content="Toggle Region Picker"
+                   FontWeight="Bold"
+                   Margin="0,5"/>
+
+            <CheckBox IsChecked="{Binding AboutViewModel.Settings.RegionPickerHotkeyAutoStartRecording, Source={StaticResource ServiceLocator}}"
+                      Content="Automatically start recording"/>
+        </StackPanel>
     </Grid>
 </Page>

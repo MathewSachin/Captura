@@ -69,9 +69,20 @@ namespace Captura.ViewModels
                     break;
 
                 case ServiceName.ToggleRegionPicker:
+                    // Stop any recording in progress
+                    if (_recordingViewModel.RecorderState.Value != RecorderState.NotRecording)
+                    {
+                        _recordingViewModel.RecordCommand.Execute(null);
+                    }
+
                     if (_videoSourcesViewModel.SelectedVideoSourceKind != _regionSourceProvider)
                     {
                         _videoSourcesViewModel.SelectedVideoSourceKind = _regionSourceProvider;
+
+                        if (_settings.RegionPickerHotkeyAutoStartRecording)
+                        {
+                            _recordingViewModel.RecordCommand.Execute(null);
+                        }
                     }
                     else _videoSourcesViewModel.SetDefaultSource();
                     break;
