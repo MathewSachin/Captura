@@ -3,9 +3,7 @@
   "Name": "Türkçe-Q (Turkey)",
   "Mappings": [
     {
-      "On": [
-        {}
-      ],
+      "On": [{ }],
       "Keys": {
         "Control": "Ctrl",
         "ControlKey": "Ctrl",
@@ -83,9 +81,9 @@
     },
     {
       "On": [
-        {},
-        {"CapsLock": true}
-        ],
+        { },
+        { "CapsLock": true }
+      ],
       "Keys": {
         "Return": "ENTER",
         "Space": "Boşluk",
@@ -104,7 +102,7 @@
       }
     },
     {
-      "On": [{"Shift": true}],
+      "On": [{ "Shift": true }],
       "Keys": {
         "D0": "=",
         "D1": "!",
@@ -133,8 +131,8 @@
     },
     {
       "On": [
-        {"Shift": true},
-        {"CapsLock": true}
+        { "Shift": true },
+        { "CapsLock": true }
       ],
       "Keys": {
         "A": "A",
@@ -189,8 +187,8 @@
     },
     {
       "On": [
-        {},
-        {"CapsLock": true,"Shift": true}
+        { },
+        { "CapsLock": true, "Shift": true }
       ],
       "Keys": {
         "A": "a",
@@ -245,8 +243,8 @@
     },
     {
       "On": [
-        {"Control": true,"Alt": true},
-        {"CapsLock": true, "Control": true,"Alt": true,}
+        { "Control": true, "Alt": true },
+        { "CapsLock": true, "Control": true, "Alt": true }
       ],
       "Keys": {
         "E": "€",
@@ -273,9 +271,9 @@
       }
     },
     {
-        "On": [
-        {"Control": true,"Alt": true},
-        {"CapsLock": true, "Control": true, "Alt": true, "Shift": true,  }
+      "On": [
+        { "Control": true, "Alt": true },
+        { "CapsLock": true, "Control": true, "Alt": true, "Shift": true }
       ],
       "Keys": {
         "I": "i",
@@ -284,8 +282,8 @@
     },
     {
       "On": [
-        {"Control": true,"Alt": true, "Shift": true},
-        {"CapsLock": true, "Control": true, "Alt": true,  }
+        { "Control": true, "Alt": true, "Shift": true },
+        { "CapsLock": true, "Control": true, "Alt": true }
       ],
       "Keys": {
         "I": "İ",

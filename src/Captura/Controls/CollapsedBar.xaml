@@ -6,8 +6,8 @@
              xmlns:captura="clr-namespace:Captura"
              DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
              mc:Ignorable="d">
-    <DockPanel>
-        <DockPanel.Resources>
+    <Grid>
+        <Grid.Resources>
             <Style TargetType="Path" x:Key="VideoSourceIcon" BasedOn="{StaticResource {x:Type Path}}">
                 <Setter Property="Width" Value="12"/>
                 <Setter Property="Height" Value="12"/>
@@ -24,13 +24,50 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-        </DockPanel.Resources>
-        <DockPanel DockPanel.Dock="Top">
+        </Grid.Resources>
+        <Border CornerRadius="15,15,25,25"
+                BorderThickness="0"
+                Margin="0,2,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Width="70"
+                Height="33"
+                Background="{DynamicResource ButtonBackgroundHover}"/>
+        <DockPanel>
             <captura:ModernButton ToolTip="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
                                   Click="OpenSettings"
                                   Foreground="{DynamicResource Accent}"
                                   IconData="{Binding Icons.Settings, Source={StaticResource ServiceLocator}}"
-                                  DockPanel.Dock="Right"/>
+                                  DockPanel.Dock="Right"
+                                  RenderTransformOrigin="0.5,0.5">
+                <captura:ModernButton.RenderTransform>
+                    <RotateTransform/>
+                </captura:ModernButton.RenderTransform>
+                <captura:ModernButton.Triggers>
+                    <EventTrigger RoutedEvent="captura:ModernButton.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                     To="110"
+                                                     Duration="0:0:0.15"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="captura:ModernButton.MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                     To="0"
+                                                     Duration="0:0:0.15"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </captura:ModernButton.Triggers>
+            </captura:ModernButton>
 
             <captura:ModernButton ToolTip="{Binding OpenOutFolder, Source={StaticResource Loc}, Mode=OneWay}"
                                   Command="{Binding OpenOutputFolderCommand}"
@@ -49,5 +86,5 @@
 
             <captura:VideoSourceKindList/>
         </DockPanel>
-    </DockPanel>
+    </Grid>
 </UserControl>

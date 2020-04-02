@@ -205,55 +205,71 @@
                   Grid.Row="0"
                   IsExpanded="{Binding Settings.UI.Expanded}">
             <Expander.Header>
-                <DockPanel VerticalAlignment="Center">
-                    <local:CollapsedBar DockPanel.Dock="Bottom"
-                                        Margin="-30,0,0,0"/>
+                <Grid>
+                    <Border CornerRadius="15,15,25,25"
+                            BorderThickness="0"
+                            Margin="0,2,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="70"
+                            Height="33"
+                            Background="{DynamicResource ButtonBackgroundHover}"/>
+                    <DockPanel VerticalAlignment="Center">
+                        <local:CollapsedBar DockPanel.Dock="Bottom"
+                                            Margin="-30,0,0,0"/>
 
-                    <local:ScreenShotButton/>
-                    <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
-                                        Foreground="#b71c1c"
-                                        IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
-                    <local:PauseButton/>
-                    <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Click="CloseButton_Click"
-                                        Foreground="#77ef5350"
-                                        IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
-                                        DockPanel.Dock="Right"/>
-                    <local:ModernButton ToolTip="{Binding MinTray, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Click="HideButton_Click"
-                                        IconData="{Binding Icons.DoubleDown, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.7"
-                                        DockPanel.Dock="Right"/>
-                    <local:ModernButton ToolTip="{Binding Minimize, Source={StaticResource Loc}, Mode=OneWay}"
-                                        Click="MinButton_Click"
-                                        IconData="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"
-                                        Opacity="0.7"
-                                        DockPanel.Dock="Right"/>
-                    <Grid Margin="0,-2"
-                          PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown"
-                          Background="#01000000">
-                        <StackPanel Margin="10,-1"
-                                    Visibility="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
-                                    Name="DurationLabel"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <Label Content="{Binding TimerModel.TimeSpan, Source={StaticResource ServiceLocator}}"/>
+                        <local:ScreenShotButton/>
+                        <local:ModernButton ToolTip="{Binding RecordStop, Source={StaticResource Loc}, Mode=OneWay}"
+                                            Command="{Binding RecordingViewModel.RecordCommand, Source={StaticResource ServiceLocator}}"
+                                            Foreground="#ee2c2c"
+                                            IconData="{Binding RecordingViewModel.RecorderState.Value, Source={StaticResource ServiceLocator}, Converter={StaticResource StateToRecordButtonGeometryConverter}}"/>
+                        <local:PauseButton/>
+                        <local:ModernButton ToolTip="{Binding Close, Source={StaticResource Loc}, Mode=OneWay}"
+                                            Click="CloseButton_Click"
+                                            Foreground="#77ef5350"
+                                            IconData="{Binding Icons.Close, Source={StaticResource ServiceLocator}}"
+                                            DockPanel.Dock="Right"/>
+                        <local:ModernButton ToolTip="{Binding MinTray, Source={StaticResource Loc}, Mode=OneWay}"
+                                            Click="HideButton_Click"
+                                            IconData="{Binding Icons.DoubleDown, Source={StaticResource ServiceLocator}}"
+                                            Opacity="0.7"
+                                            DockPanel.Dock="Right"/>
+                        <local:ModernButton ToolTip="{Binding Minimize, Source={StaticResource Loc}, Mode=OneWay}"
+                                            Click="MinButton_Click"
+                                            IconData="{Binding Icons.Minimize, Source={StaticResource ServiceLocator}}"
+                                            Opacity="0.7"
+                                            DockPanel.Dock="Right"/>
 
-                            <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
-                                   ContentStringFormat="{}{0}"
+                        <Grid Margin="0,-2"
+                              PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown"
+                              Background="#01000000">
+                            <Border CornerRadius="15"
+                                    BorderThickness="0"
+                                    Margin="30,5"
+                                    Background="{DynamicResource ButtonBackgroundHover}"/>
+
+                            <StackPanel Margin="10,-1"
+                                        Visibility="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}, Converter={StaticResource IsLessThanConverter}, ConverterParameter=1}"
+                                        Name="DurationLabel"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <Label Content="{Binding TimerModel.TimeSpan, Source={StaticResource ServiceLocator}}"/>
+
+                                <Label Content="{Binding Settings.Duration, Converter={StaticResource SecondsToTimeSpanConverter}}"
+                                       ContentStringFormat="{}{0}"
+                                       HorizontalAlignment="Center"
+                                       FontSize="8"
+                                       Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
+                            </StackPanel>
+
+                            <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
+                                   Margin="0,-1"
+                                   Style="{StaticResource CountdownLabel}"
                                    HorizontalAlignment="Center"
-                                   FontSize="8"
-                                   Visibility="{Binding Settings.Duration, Converter={StaticResource NotNullConverter}}"/>
-                        </StackPanel>
-
-                        <Label Visibility="{Binding Visibility, ElementName=DurationLabel, Converter={StaticResource NegatingConverter}}"
-                               Margin="0,-1"
-                               Style="{StaticResource CountdownLabel}"
-                               HorizontalAlignment="Center"
-                               Content="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}}"/>
-                    </Grid>
-                </DockPanel>
+                                   Content="{Binding TimerModel.Countdown, Source={StaticResource ServiceLocator}}"/>
+                        </Grid>
+                    </DockPanel>
+                </Grid>
             </Expander.Header>
             <DockPanel Margin="-5,0"
                        Height="300">
