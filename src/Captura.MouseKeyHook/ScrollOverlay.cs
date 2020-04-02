@@ -27,15 +27,12 @@ namespace Captura.Models
             if (_lastArgs is { } args)
             {
                 var p = args.Location;
-
                 var r = _settings.Radius;
-                var d = 2 * r;
-
-                Editor.FillEllipse(_settings.Color, new RectangleF(p.X - r, p.Y - r, d, d));
 
                 var above = new Point(p.X, p.Y + r / 2);
                 var below = new Point(p.X, p.Y - r / 2);
 
+                // Scroll down
                 if (args.Delta < 0)
                 {
                     (above, below) = (below, above);
