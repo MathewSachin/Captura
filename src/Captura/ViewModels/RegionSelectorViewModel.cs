@@ -201,5 +201,7 @@ namespace Captura
         public ICommand DecreaseWidthCommand { get; }
         public ICommand IncreaseHeightCommand { get; }
         public ICommand DecreaseHeightCommand { get; }
+
+        public ReactiveCommand ClearAllDrawingsCommand { get; } = new ReactiveCommand();
     }
 }
