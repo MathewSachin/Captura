@@ -82,8 +82,13 @@
 
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.Clicks}">
-                    <CheckBox Content="Display"
+                    <CheckBox Content="Display Clicks"
                               IsChecked="{Binding Display, Mode=TwoWay}"
+                              Margin="0,5"/>
+
+                    <CheckBox Content="Display Scroll"
+                              IsChecked="{Binding DisplayScroll, Mode=TwoWay}"
+                              IsEnabled="{Binding Display}"
                               Margin="0,5"/>
 
                     <Grid>

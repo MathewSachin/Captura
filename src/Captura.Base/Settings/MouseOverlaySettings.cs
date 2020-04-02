@@ -10,6 +10,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public bool DisplayScroll
+        {
+            get => Get(true);
+            set => Set(value);
+        }
+
         public int Radius
         {
             get => Get(25);
