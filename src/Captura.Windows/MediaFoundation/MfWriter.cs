@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Captura;
 using Captura.Audio;
 using Captura.Models;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
@@ -215,7 +216,16 @@ namespace DesktopDuplication
             lock (_syncLock)
             {
                 _disposed = true;
-                _writer.Finalize();
+                
+                const int noSamplesProcessedHResult = unchecked((int) 0xC00D4A44);
+
+                try
+                {
+                    _writer.Finalize();
+                }
+                // This error happens if recording is stopped before any samples are written
+                catch (SharpDXException e) when (e.HResult == noSamplesProcessedHResult) { }
+
                 _writer.Dispose();
 
                 _copyTexture.Dispose();
