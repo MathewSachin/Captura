@@ -82,6 +82,11 @@
                                         Grid.Column="1"
                                         Margin="0,5"/>
                 </Grid>
+
+                <CheckBox Content="Show Repeat Counter"
+                          IsChecked="{Binding ShowRepeatCounter, Mode=TwoWay}"
+                          Margin="0,3"
+                          Visibility="{Binding SeparateTextFile, Converter={StaticResource NegatingConverter}}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
