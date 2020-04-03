@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     // TODO: Shows horizontal scroll incorrectly as vertical.
     // The MouseKeyHook library doesn't provide an option
