@@ -111,10 +111,10 @@ namespace Captura.Models
         /// </summary>
         /// <param name="Buffer">Buffer containing audio data.</param>
         /// <param name="Length">Length of audio data in bytes.</param>
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
             lock (_syncLock)
-                _audioStream?.WriteBlock(Buffer, 0, Length);
+                _audioStream?.WriteBlock(Buffer, Offset, Length);
         }
 
         /// <summary>

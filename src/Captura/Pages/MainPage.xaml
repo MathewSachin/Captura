@@ -1,7 +1,5 @@
 ﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:local="clr-namespace:Captura"
-      xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       DataContext="{Binding MainViewModel, Source={StaticResource ServiceLocator}}"
       x:Class="Captura.MainPage">
     <DockPanel>

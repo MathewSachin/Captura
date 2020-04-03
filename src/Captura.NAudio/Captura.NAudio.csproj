@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="1.9.0" />
+    <PackageReference Include="NAudio" Version="1.10.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Audio\Captura.Audio.csproj" />

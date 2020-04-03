@@ -35,6 +35,10 @@ namespace Captura
                 .SelectedTool
                 .Subscribe(OnToolChange);
 
+            ViewModel
+                .ClearAllDrawingsCommand
+                .Subscribe(() => InkCanvas.Strokes.Clear());
+
             InkCanvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 

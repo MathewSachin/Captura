@@ -4,9 +4,12 @@ namespace Captura.Models
 {
     class RepeatKeyRecord : IKeyRecord
     {
-        public RepeatKeyRecord(KeyRecord Repeated)
+        readonly KeystrokesSettings _settings;
+
+        public RepeatKeyRecord(KeyRecord Repeated, KeystrokesSettings Settings)
         {
             this.Repeated = Repeated;
+            _settings = Settings;
 
             Increment();
         }
@@ -28,6 +31,8 @@ namespace Captura.Models
             TimeStamp = DateTime.Now;
         }
 
-        public string Display => $"{Repeated} x {Repeat}";
+        public string Display => _settings.ShowRepeatCounter
+            ? $"{Repeated} x {Repeat}"
+            : Repeated.ToString();
     }
 }

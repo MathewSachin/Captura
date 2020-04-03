@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.FFmpeg;
@@ -29,7 +28,7 @@ namespace Captura.ViewModels
         readonly AudioSourceViewModel _audioSourceViewModel;
         readonly IFFmpegViewsProvider _ffmpegViewsProvider;
 
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         public ICommand RecordCommand { get; }
         public ICommand PauseCommand { get; }
@@ -136,11 +135,9 @@ namespace Captura.ViewModels
                 .ObserveProperty(M => M.RecorderState)
                 .ToReadOnlyReactivePropertySlim();
             
-            TimerModel.DurationElapsed += async () =>
+            TimerModel.DurationElapsed += () =>
             {
-                if (_syncContext != null)
-                    _syncContext.Post(async State => await StopRecording(), null);
-                else await StopRecording();
+                _syncContext.Run(async () => await StopRecording(), true);
             };
         }
 

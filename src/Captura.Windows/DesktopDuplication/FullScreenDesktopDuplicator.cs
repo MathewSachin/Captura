@@ -89,13 +89,14 @@ namespace DesktopDuplication
         {
             foreach (var entry in _outputs)
             {
-                try { entry.MousePointer?.Dispose(); }
-                catch { }
-                finally { entry.MousePointer = null; }
-
                 try { entry.DuplCapture.Dispose(); }
                 catch { }
                 finally { entry.DuplCapture = null; }
+
+                // Mouse Pointer disposed later to prevent errors.
+                try { entry.MousePointer?.Dispose(); }
+                catch { }
+                finally { entry.MousePointer = null; }
             }
 
             try { _editorSession.Dispose(); }

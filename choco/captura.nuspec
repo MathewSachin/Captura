@@ -7,8 +7,8 @@
     <authors>Mathew Sachin</authors>
     <projectUrl>https://MathewSachin.github.io/Captura</projectUrl>
     <projectSourceUrl>https://github.com/MathewSachin/Captura</projectSourceUrl>
-    <iconUrl>https://raw.githubusercontent.com/MathewSachin/Captura/master/src/Captura/Logo.png</iconUrl>
-    <licenseUrl>https://MathewSachin.github.io/Captura/license</licenseUrl>
+    <iconUrl>https://raw.githubusercontent.com/MathewSachin/Captura/master/src/Captura/Images/Logo.png</iconUrl>
+    <licenseUrl>https://github.com/MathewSachin/Captura/blob/master/LICENSE.md</licenseUrl>
     <packageSourceUrl>https://github.com/MathewSachin/Captura/tree/master/choco</packageSourceUrl>
     <bugTrackerUrl>https://github.com/MathewSachin/Captura/issues</bugTrackerUrl>
     <docsUrl>https://MathewSachin.github.io/Captura</docsUrl>

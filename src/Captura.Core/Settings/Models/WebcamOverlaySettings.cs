@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Captura
 {
@@ -16,49 +17,63 @@ namespace Captura
             set => Set(value);
         }
 
-        public int Width
+        public double Scale
         {
-            get => Get(30);
+            get => Get(0.3);
             set => Set(value);
         }
 
-        public int Height
+        public double XLoc
         {
-            get => Get(20);
+            get => Get(1.0);
             set => Set(value);
         }
 
-        public int X
+        public double YLoc
         {
-            get => Get(80);
+            get => Get(1.0);
             set => Set(value);
         }
 
-        public int Y
+        public Size GetSize(Size FrameSize, Size WebcamSize)
         {
-            get => Get(80);
-            set => Set(value);
+            if (WebcamSize.Width == 0 || WebcamSize.Height == 0)
+            {
+                return Size.Empty;
+            }
+
+            var wByW = FrameSize.Width / (double)WebcamSize.Width;
+            var hByH = FrameSize.Height / (double)WebcamSize.Height;
+
+            if (wByW < hByH)
+            {
+                var w = (int)Math.Round(FrameSize.Width * Scale);
+                var scale = w / (double)WebcamSize.Width;
+                var h = (int)Math.Round(WebcamSize.Height * scale);
+
+                return new Size(w, h);
+            }
+            else
+            {
+                var h = (int)Math.Round(FrameSize.Height * Scale);
+                var scale = h / (double)WebcamSize.Height;
+                var w = (int)Math.Round(WebcamSize.Width * scale);
+
+                return new Size(w, h);
+            }
         }
 
-        public float GetWidth(float FrameWidth)
+        public Point GetPosition(Size FrameSize, Size WebcamSize)
         {
-            return FrameWidth * Width / 100;
-        }
+            var size = GetSize(FrameSize, WebcamSize);
 
-        public float GetHeight(float FrameHeight)
-        {
-            return FrameHeight * Height / 100;
-        }
+            var xLeft = FrameSize.Width - size.Width;
+            var yLeft = FrameSize.Height - size.Height;
 
-        public PointF GetPosition(float FrameWidth, float FrameHeight)
-        {
-            var xLeft = FrameWidth - GetWidth(FrameWidth);
-            var yLeft = FrameHeight - GetHeight(FrameHeight);
+            var left = (int)Math.Round(xLeft * XLoc);
+            var top = (int)Math.Round(yLeft * YLoc);
 
-            var left = xLeft * X / 100;
-            var top = yLeft * Y / 100;
-
-            return new PointF(left, top);
+            return new Point(left, top);
         }
     }
 }

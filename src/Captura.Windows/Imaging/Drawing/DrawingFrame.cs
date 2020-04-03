@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Captura;
 
 namespace Screna
@@ -29,13 +30,18 @@ namespace Screna
         public int Width { get; }
         public int Height { get; }
 
-        public void CopyTo(byte[] Buffer)
+        void Copy(Action<(IntPtr SrcPtr, int DestOffset, int Length)> Copier)
         {
             var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
-                Marshal.Copy(bits.Scan0, Buffer, 0, Width * Height * 4);
+                var rowSize = Math.Abs(bits.Stride);
+
+                Parallel.For(0, Height, Y =>
+                {
+                    Copier((IntPtr.Add(bits.Scan0, Y * bits.Stride), Y * rowSize, rowSize));
+                });
             }
             finally
             {
@@ -43,18 +49,24 @@ namespace Screna
             }
         }
 
+        public void CopyTo(byte[] Buffer)
+        {
+            Copy(Param =>
+            {
+                var (srcPtr, destOffset, length) = Param;
+
+                Marshal.Copy(srcPtr, Buffer, destOffset, length);
+            });
+        }
+
         public void CopyTo(IntPtr Buffer)
         {
-            var bits = Bitmap.LockBits(new Rectangle(Point.Empty, Bitmap.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Copy(Param =>
+            {
+                var (srcPtr, destOffset, length) = Param;
 
-            try
-            {
-                Kernel32.CopyMemory(Buffer, bits.Scan0, Width * Height * 4);
-            }
-            finally
-            {
-                Bitmap.UnlockBits(bits);
-            }
+                Kernel32.CopyMemory(IntPtr.Add(Buffer, destOffset), srcPtr, length);
+            });
         }
     }
 }

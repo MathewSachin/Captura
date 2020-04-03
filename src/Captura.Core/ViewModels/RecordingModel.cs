@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Captura.Audio;
 using Captura.FFmpeg;
@@ -18,10 +17,9 @@ namespace Captura.ViewModels
     {
         #region Fields
         IRecorder _recorder;
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         readonly ISystemTray _systemTray;
-        readonly WebcamOverlay _webcamOverlay;
         readonly IPreviewWindow _previewWindow;
         readonly WebcamModel _webcamModel;
         readonly TimerModel _timerModel;
@@ -30,6 +28,7 @@ namespace Captura.ViewModels
 
         readonly KeymapViewModel _keymap;
         readonly IAudioSource _audioSource;
+        readonly IFpsManager _fpsManager;
 
         const int StepsRecorderFrameRate = 1;
         #endregion
@@ -37,17 +36,16 @@ namespace Captura.ViewModels
         public RecordingModel(Settings Settings,
             ILocalizationProvider Loc,
             ISystemTray SystemTray,
-            WebcamOverlay WebcamOverlay,
             IPreviewWindow PreviewWindow,
             IAudioSource AudioSource,
             WebcamModel WebcamModel,
             KeymapViewModel Keymap,
             TimerModel TimerModel,
             IMessageProvider MessageProvider,
-            IFFmpegViewsProvider FFmpegViewsProvider) : base(Settings, Loc)
+            IFFmpegViewsProvider FFmpegViewsProvider,
+            IFpsManager FpsManager) : base(Settings, Loc)
         {
             _systemTray = SystemTray;
-            _webcamOverlay = WebcamOverlay;
             _previewWindow = PreviewWindow;
             _audioSource = AudioSource;
             _webcamModel = WebcamModel;
@@ -55,6 +53,7 @@ namespace Captura.ViewModels
             _timerModel = TimerModel;
             _messageProvider = MessageProvider;
             _ffmpegViewsProvider = FFmpegViewsProvider;
+            _fpsManager = FpsManager;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -136,9 +135,9 @@ namespace Captura.ViewModels
 
         bool SetupVideoRecorder(IAudioProvider AudioProvider, RecordingModelParams RecordingParams, IMouseKeyHook MouseKeyHook)
         {
-            IImageProvider imgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
+            IImageProvider ImgProviderGetter() => GetImageProviderWithOverlays(RecordingParams, MouseKeyHook);
 
-            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+            if (!GetImageProviderSafe(ImgProviderGetter, RecordingParams, out var imgProvider))
                 return false;
 
             IVideoFileWriter videoEncoder;
@@ -164,7 +163,7 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider);
+            _recorder = new Recorder(videoEncoder, imgProvider, Settings.Video.FrameRate, AudioProvider, _fpsManager);
 
             var webcamMode = RecordingParams.VideoSourceKind is WebcamSourceProvider;
 
@@ -210,9 +209,9 @@ namespace Captura.ViewModels
 
         bool SetupStepsRecorder(RecordingModelParams RecordingParams)
         {
-            IImageProvider imgProviderGetter() => GetImageProvider(RecordingParams);
+            IImageProvider ImgProviderGetter() => GetImageProvider(RecordingParams);
 
-            if (!GetImageProviderSafe(imgProviderGetter, RecordingParams, out var imgProvider))
+            if (!GetImageProviderSafe(ImgProviderGetter, RecordingParams, out var imgProvider))
                 return false;
 
             IVideoFileWriter videoEncoder;
@@ -310,7 +309,7 @@ namespace Captura.ViewModels
                 AudioProvider?.WaveFormat,
                 Settings.Audio.Quality);
 
-            return new Recorder(audioFileWriter, AudioProvider);
+            return new AudioRecorder(audioFileWriter, AudioProvider);
         }
 
         string GetAudioFileName(int Index)
@@ -377,7 +376,7 @@ namespace Captura.ViewModels
 
             IRecorder GetAudioRecorder(IAudioProvider AudioProvider, string AudioFileName = null)
             {
-                return new Recorder(
+                return new AudioRecorder(
                     audioWriter.GetAudioFileWriter(AudioFileName ?? CurrentFileName, AudioProvider?.WaveFormat,
                         Settings.Audio.Quality), AudioProvider);
             }
@@ -413,7 +412,7 @@ namespace Captura.ViewModels
 
         void OnErrorOccured(Exception E)
         {
-            void Do()
+            _syncContext.Run(() =>
             {
                 var cancelled = E is WindowClosedException;
 
@@ -421,11 +420,7 @@ namespace Captura.ViewModels
 
                 if (!cancelled)
                     _messageProvider.ShowException(E, E.Message);
-            }
-
-            if (_syncContext != null)
-                _syncContext.Post(S => Do(), null);
-            else Do();
+            });
         }
 
         void AfterRecording()
@@ -480,7 +475,7 @@ namespace Captura.ViewModels
 
             if (!webcamMode && !Settings.WebcamOverlay.SeparateFile)
             {
-                yield return _webcamOverlay;
+                yield return new WebcamOverlay(_webcamModel, Settings);
             }
 
             if (!webcamMode)

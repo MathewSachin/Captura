@@ -75,4 +75,35 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="controls:ModernButton" x:Key="IconButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:ModernButton">
+                    <Button HorizontalContentAlignment="Left"
+                            Margin="10"
+                            Padding="0"
+                            MinWidth="150"
+                            Command="{TemplateBinding Command}"
+                            CommandParameter="{TemplateBinding CommandParameter}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{TemplateBinding IconData}"
+                                  Margin="10"
+                                  Width="20"
+                                  Height="20"
+                                  Stretch="Uniform"
+                                  HorizontalAlignment="Center"/>
+                            <GridSplitter Width="3"
+                                          IsEnabled="False"
+                                          Margin="5,0"/>
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       VerticalAlignment="Center"
+                                       Margin="5,0"
+                                       FontSize="13"/>
+                        </StackPanel>
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

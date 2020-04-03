@@ -21,10 +21,14 @@ namespace Captura.Audio
         /// Stop Recording.
         /// </summary>
         void Stop();
-        
+
         /// <summary>
-        /// Indicates recorded data is available.
+        /// Read data into a buffer.
         /// </summary>
-        event EventHandler<DataAvailableEventArgs> DataAvailable;
+        /// <param name="Buffer">Buffer to read data into.</param>
+        /// <param name="Offset">Offset from which data should be written to the buffer.</param>
+        /// <param name="Length">Number of bytes to write to the buffer.</param>
+        /// <returns>Number of bytes read.</returns>
+        int Read(byte[] Buffer, int Offset, int Length);
     }
 }

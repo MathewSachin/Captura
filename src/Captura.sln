@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura", "Captura\Captura.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura", "Captura\Captura.csproj", "{0B496E01-F328-4969-832C-C75977B4F4E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screna", "Screna\Screna.csproj", "{23CB9ADB-BA9F-4618-BD0C-589A00A532E5}"
 EndProject

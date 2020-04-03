@@ -34,7 +34,7 @@
 
         public int Quality
         {
-            get => Get(50);
+            get => Get(80);
             set => Set(value);
         }
     }

@@ -16,6 +16,7 @@ namespace Captura
                 Binder.BindAsInterfaceAndClass<IVideoWriterProvider, MfWriterProvider>();
             }
 
+            Binder.BindSingleton<WindowsSettings>();
             Binder.Bind<IPlatformServices, WindowsPlatformServices>();
             Binder.Bind<IDialogService, DialogService>();
             Binder.Bind<IClipboardService, ClipboardService>();
@@ -45,6 +46,16 @@ namespace Captura
 
                 return Environment.OSVersion.Platform == PlatformID.Win32NT &&
                        Environment.OSVersion.Version >= version;
+            }
+        }
+
+        public static bool ShouldUseGdi
+        {
+            get
+            {
+                var settings = ServiceProvider.Get<WindowsSettings>();
+
+                return !Windows8OrAbove || settings.UseGdi;
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Input;
+using Captura.Models;
 
 namespace Captura
 {
@@ -8,7 +8,7 @@ namespace Captura
     {
         readonly Action<object> _execute;
         bool _canExecute;
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
         
         public DelegateCommand(Action<object> OnExecute, bool CanExecute = true)
         {
@@ -30,16 +30,7 @@ namespace Captura
         {
             _canExecute = CanExecute;
 
-            void Do()
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            if (_syncContext != null)
-            {
-                _syncContext.Post(S => Do(), null);
-            }
-            else Do();
+            _syncContext.Run(() => CanExecuteChanged?.Invoke(this, EventArgs.Empty));
         }
 
         public event EventHandler CanExecuteChanged;

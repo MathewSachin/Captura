@@ -28,9 +28,10 @@ namespace Captura
             };
         }
 
-        public Settings(FFmpegSettings FFmpeg)
+        public Settings(FFmpegSettings FFmpeg, WindowsSettings WindowsSettings)
         {
             this.FFmpeg = FFmpeg;
+            this.WindowsSettings = WindowsSettings;
         }
 
         static string GetPath() => Path.Combine(ServiceProvider.SettingsDir, "Captura.json");
@@ -110,6 +111,8 @@ namespace Captura
 
         public AroundMouseSettings AroundMouse { get; } = new AroundMouseSettings();
 
+        public WindowsSettings WindowsSettings { get; }
+
         public int PreStartCountdown
         {
             get => Get(0);
@@ -161,7 +164,7 @@ namespace Captura
 
         public string FilenameFormat
         {
-            get => Get("%yyyy%-%MM%-%dd%-%HH%-%mm%-%ss%");
+            get => Get("%yyyy%-%MM%-%dd%/%HH%-%mm%-%ss%");
             set => Set(value);
         }
 
@@ -181,6 +184,9 @@ namespace Captura
             var now = DateTime.Now;
 
             var filename = FilenameFormat
+                .Replace("%computer%", Environment.MachineName)
+                .Replace("%user%", Environment.UserName)
+
                 .Replace("%yyyy%", now.ToString("yyyy"))
                 .Replace("%yy%", now.ToString("yy"))
                 
@@ -221,6 +227,12 @@ namespace Captura
         }
 
         public bool IncludeCursor
+        {
+            get => Get(true);
+            set => Set(value);
+        }
+
+        public bool RegionPickerHotkeyAutoStartRecording
         {
             get => Get(true);
             set => Set(value);

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Text;
 using System.Windows.Input;
+using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Screna;
@@ -16,7 +18,19 @@ namespace Captura
                 .ObserveProperty(M => M.Count)
                 .Select(M => M > 0)
                 .ToReactiveCommand()
-                .WithSubscribe(() => Exceptions[0].ToString().WriteToClipboard());
+                .WithSubscribe(OnCopyToClipboard);
+        }
+
+        void OnCopyToClipboard()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(SystemInfo.GetInfo());
+
+            sb.AppendLine();
+            sb.Append(Exceptions[0]);
+
+            sb.ToString().WriteToClipboard();
         }
 
         string _message = "An unhandled exception occurred. Here are the details.";

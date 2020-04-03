@@ -1,5 +1,4 @@
 ﻿using System;
-using TestStack.White.UIItems.TabItems;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
@@ -45,7 +44,7 @@ namespace Captura.Tests.Views
         [Fact(Skip = "This is failing randomly on AppVeyor")]
         public void ScreenShotTabs()
         {
-            Shot($"shot.png", _appRunner.App.Process.MainWindowHandle);
+            Shot("shot.png", _appRunner.App.Process.MainWindowHandle);
         }
     }
 }

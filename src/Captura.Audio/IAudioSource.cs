@@ -16,5 +16,7 @@ namespace Captura.Audio
         IAudioItem DefaultSpeaker { get; }
 
         IAudioProvider GetAudioProvider(IAudioItem Microphone, IAudioItem Speaker);
+
+        event Action DevicesUpdated;
     }
 }

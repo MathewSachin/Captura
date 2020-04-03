@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Captura;
 using Captura.Audio;
 using Captura.Models;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
@@ -51,7 +52,6 @@ namespace DesktopDuplication
             attr.Set(SinkWriterAttributeKeys.ReadwriteDisableConverters, 0);
             attr.Set(TranscodeAttributeKeys.TranscodeContainertype, TranscodeContainerTypeGuids.Mpeg4);
             attr.Set(SinkWriterAttributeKeys.LowLatency, true);
-            attr.Set(SinkWriterAttributeKeys.DisableThrottling, 1);
 
             var devMan = new DXGIDeviceManager();
             devMan.ResetDevice(Device);
@@ -216,7 +216,16 @@ namespace DesktopDuplication
             lock (_syncLock)
             {
                 _disposed = true;
-                _writer.Finalize();
+                
+                const int noSamplesProcessedHResult = unchecked((int) 0xC00D4A44);
+
+                try
+                {
+                    _writer.Finalize();
+                }
+                // This error happens if recording is stopped before any samples are written
+                catch (SharpDXException e) when (e.HResult == noSamplesProcessedHResult) { }
+
                 _writer.Dispose();
 
                 _copyTexture.Dispose();
@@ -268,13 +277,13 @@ namespace DesktopDuplication
 
         long _audioWritten;
 
-        public void WriteAudio(byte[] Buffer, int Length)
+        public void WriteAudio(byte[] Buffer, int Offset, int Length)
         {
             using (var buffer = MediaFactory.CreateMemoryBuffer(Length))
             {
                 var data = buffer.Lock(out _, out _);
 
-                Marshal.Copy(Buffer, 0, data, Length);
+                Marshal.Copy(Buffer, Offset, data, Length);
 
                 buffer.CurrentLength = Length;
 

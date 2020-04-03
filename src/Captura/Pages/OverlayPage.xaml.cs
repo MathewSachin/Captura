@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -11,44 +10,29 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 using Captura.Models;
 using Captura.ViewModels;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Screna;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
 
 namespace Captura
 {
-    public partial class OverlayWindow
+    public partial class OverlayPage
     {
-        OverlayWindow()
+        OverlayPage()
         {
             InitializeComponent();
 
             Loaded += OnLoaded;
 
-            Closing += (S, E) =>
-            {
-                ServiceProvider.Get<Settings>().Save();
-            };
+            Unloaded += (S, E) => Grid.Children.Clear();
         }
 
-        static OverlayWindow _instance;
+        static readonly Lazy<OverlayPage> LazyInstance = new Lazy<OverlayPage>(() => new OverlayPage());
 
-        public static void ShowInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new OverlayWindow();
-
-                _instance.Closed += (S, E) => _instance = null;
-            }
-
-            _instance.ShowAndFocus();
-        }
+        public static OverlayPage Instance => LazyInstance.Value;
 
         void AddToGrid(LayerFrame Frame, bool CanResize)
         {
@@ -124,8 +108,8 @@ namespace Captura
             control.Label.BindOne(ForegroundProperty, vm.Foreground);
             control.Border.BindOne(BackgroundProperty, vm.Background);
 
-            control.Border.BindOne(BorderThicknessProperty, vm.BorderThickness);
-            control.Border.BindOne(BorderBrushProperty, vm.BorderBrush);
+            control.Border.BindOne(Border.BorderThicknessProperty, vm.BorderThickness);
+            control.Border.BindOne(Border.BorderBrushProperty, vm.BorderBrush);
             control.Border.BindOne(Border.CornerRadiusProperty, vm.CornerRadius);
 
             return control;
@@ -243,7 +227,7 @@ namespace Captura
                 return control;
             }, true, 2);
         }
-        
+
         async void OnLoaded(object Sender, RoutedEventArgs RoutedEventArgs)
         {
             await UpdateBackground();
@@ -255,32 +239,7 @@ namespace Captura
 
         async Task UpdateBackground()
         {
-            var vm = ServiceProvider.Get<VideoSourcesViewModel>();
-
-            IBitmapImage bmp;
-
-            switch (vm.SelectedVideoSourceKind?.Source)
-            {
-                case NoVideoItem _:
-                    bmp = ScreenShot.Capture();
-                    break;
-
-                default:
-                    var screenShotModel = ServiceProvider.Get<ScreenShotModel>();
-                    bmp = await screenShotModel.GetScreenShot(vm.SelectedVideoSourceKind, true);
-                    break;
-            }
-
-            using (bmp)
-            {
-                var stream = new MemoryStream();
-                bmp.Save(stream, ImageFormats.Png);
-
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                Img.Source = decoder.Frames[0];
-            }
+            Img.Source = await WpfExtensions.GetBackground();
         }
 
         void UpdateScale()

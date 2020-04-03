@@ -28,6 +28,12 @@ namespace Captura
             set => Set(value);
         }
 
+        public bool ShowRepeatCounter
+        {
+            get => Get(true);
+            set => Set(value);
+        }
+
         public string KeymapName
         {
             get => Get(KeymapViewModel.DefaultKeymapFileName);

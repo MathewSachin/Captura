@@ -22,7 +22,7 @@ environment:
   choco_key:
     secure: h5jOVeiDmjLnF3EotkOhBFJharX/9TWx6OWykiXn30pWSIfVjSvAaCJM1Y48zjXr
   git_key:
-    secure: uhvhrrZd7L8MK4CrDGkM1A==
+    secure: eRA1NCG/iXaLTQaBbe2X5Tpje+2Hvk3WOPEP3ZLPFMqW7ZS0ZMTb4UXpw7w59pbc
 
 install:
   - dotnet tool install -g Cake.Tool --version 0.32.1

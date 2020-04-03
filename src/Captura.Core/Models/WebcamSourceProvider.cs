@@ -1,5 +1,4 @@
-﻿using System;
-using Captura.ViewModels;
+﻿using Captura.ViewModels;
 using Screna;
 
 namespace Captura.Models
@@ -33,7 +32,16 @@ namespace Captura.Models
 
         public IBitmapImage Capture(bool IncludeCursor)
         {
-            return _webcamModel.WebcamCapture?.Capture(GraphicsBitmapLoader.Instance);
+            var webcamCapture = _webcamModel.InitCapture();
+
+            try
+            {
+                return webcamCapture.Value?.Capture(GraphicsBitmapLoader.Instance);
+            }
+            finally
+            {
+                _webcamModel.ReleaseCapture();
+            }
         }
 
         public bool OnSelect() => true;

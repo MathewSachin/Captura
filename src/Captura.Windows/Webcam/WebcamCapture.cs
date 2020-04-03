@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using Captura.Webcam;
 
 namespace Captura.Models
@@ -10,7 +9,7 @@ namespace Captura.Models
         readonly Filter _filter;
         readonly Action _onClick;
         CaptureWebcam _captureWebcam;
-        readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
+        readonly SyncContextManager _syncContext = new SyncContextManager();
 
         public WebcamCapture(Filter Filter, Action OnClick)
         {
@@ -23,39 +22,40 @@ namespace Captura.Models
 
         public void Dispose()
         {
-            _captureWebcam.StopPreview();
-            _captureWebcam.Dispose();
+            _syncContext.Run(() =>
+            {
+                _captureWebcam.StopPreview();
+                _captureWebcam.Dispose();
+            });
         }
 
         public IBitmapImage Capture(IBitmapLoader BitmapLoader)
         {
-            if (_syncContext == null)
-            {
-                return _captureWebcam.GetFrame(BitmapLoader);
-            }
-
-            IBitmapImage image = null;
-
-            _syncContext.Send(S => image = _captureWebcam.GetFrame(BitmapLoader), null);
-
-            return image;
+            return _syncContext.Run(() => _captureWebcam.GetFrame(BitmapLoader));
         }
 
         public int Width => _captureWebcam.Size.Width;
         public int Height => _captureWebcam.Size.Height;
 
+        IntPtr _lastWin;
+
         public void UpdatePreview(IWindow Window, Rectangle Location)
         {
-            if (Window != null)
+            _syncContext.Run(() =>
             {
-                Dispose();
+                if (Window != null && _lastWin != Window.Handle)
+                {
+                    Dispose();
 
-                _captureWebcam = new CaptureWebcam(_filter, _onClick, Window.Handle);
+                    _captureWebcam = new CaptureWebcam(_filter, _onClick, Window.Handle);
 
-                _captureWebcam.StartPreview();
-            }
+                    _captureWebcam.StartPreview();
 
-            _captureWebcam.OnPreviewWindowResize(Location.X, Location.Y, Location.Width, Location.Height);
+                    _lastWin = Window.Handle;
+                }
+
+                _captureWebcam.OnPreviewWindowResize(Location.X, Location.Y, Location.Width, Location.Height);
+            });
         }
     }
 }

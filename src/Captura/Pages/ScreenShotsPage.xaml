@@ -1,11 +1,14 @@
 ﻿<Page x:Class="Captura.ScreenShotsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:captura="clr-namespace:Captura"
       Title="{Binding ScreenShot, Source={StaticResource Loc}, Mode=OneWay}">
-    <Grid>
-        <StackPanel DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
-                    Margin="5,0,0,0">
+    <Grid DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="5,0,0,0">
             <CheckBox IsChecked="{Binding Settings.UI.HideOnFullScreenShot}"
                       Margin="0,5">
                 <TextBlock TextWrapping="Wrap"
@@ -36,33 +39,61 @@
                 <TextBox Text="{Binding Settings.ScreenShots.ExternalEditor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="5"/>
             </DockPanel>
+        </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <StackPanel Grid.Column="2">
+            <StackPanel.Resources>
+                <Style TargetType="Path" BasedOn="{StaticResource {x:Type Path}}">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Margin" Value="0,0,5,0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                    <Setter Property="Margin" Value="0,4"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <Label Content="Outputs"
+                   FontWeight="Bold"
+                   Margin="0,0,0,10"/>
 
-            <StackPanel Margin="0,10">
-                <Label Content="Outputs"
-                       FontWeight="Bold"/>
-
-                <StackPanel Margin="0,5"
-                            DataContext="{Binding ScreenShotViewModel, Source={StaticResource ServiceLocator}}"
-                            Orientation="Horizontal">
-                    <captura:ModernToggleButton ToolTip="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding DiskWriter.Active}"/>
-
-                    <captura:ModernToggleButton ToolTip="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding ClipboardWriter.Active}"/>
-
-                    <CheckBox Content="Imgur"
-                              ToolTip="Imgur"
-                              Margin="5,0"
-                              IsChecked="{Binding ImgurWriter.Active, Mode=TwoWay}"
-                              Style="{StaticResource ModernTogglePill}"/>
-
-                    <captura:ModernToggleButton ToolTip="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"
-                                                IconData="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"
-                                                IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"/>
+            <CheckBox IsChecked="{Binding DiskWriter.Active}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="{Binding Icons.NewFile, Source={StaticResource ServiceLocator}}"/>
+                    <TextBlock Text="{Binding Disk, Source={StaticResource Loc}, Mode=OneWay}"/>
                 </StackPanel>
-            </StackPanel>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding ClipboardWriter.Active}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="{Binding Icons.Clipboard, Source={StaticResource ServiceLocator}}"/>
+                    <TextBlock Text="{Binding Clipboard, Source={StaticResource Loc}, Mode=OneWay}"/>
+                </StackPanel>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding ImgurWriter.Active}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="{Binding Icons.Web, Source={StaticResource ServiceLocator}}"/>
+                    <TextBlock Text="Imgur"/>
+                </StackPanel>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding EditorWriter.Active, Source={StaticResource ServiceLocator}}"
+                      IsEnabled="{Binding ViewConditions.IsEnabled.Value, Source={StaticResource ServiceLocator}}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="{Binding Icons.Pencil, Source={StaticResource ServiceLocator}}"/>
+                    <TextBlock Text="{Binding ImageEditor, Source={StaticResource Loc}, Mode=OneWay}"/>
+                </StackPanel>
+            </CheckBox>
         </StackPanel>
     </Grid>
 </Page>

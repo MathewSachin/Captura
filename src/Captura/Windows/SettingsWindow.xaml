@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         Title="{Binding Configure, Source={StaticResource Loc}, Mode=OneWay}"
-        Height="630"
-        Width="650"
+        Height="550"
+        Width="750"
         Background="{DynamicResource WindowBackground}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top"

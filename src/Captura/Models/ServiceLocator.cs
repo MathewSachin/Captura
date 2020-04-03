@@ -30,6 +30,8 @@ namespace Captura
 
         public FFmpegLogViewModel FFmpegLog => ServiceProvider.Get<FFmpegLogViewModel>();
 
+        public IFpsManager FpsManager => ServiceProvider.Get<IFpsManager>();
+
         public FFmpegCodecsViewModel FFmpegCodecsViewModel => ServiceProvider.Get<FFmpegCodecsViewModel>();
 
         public ProxySettingsViewModel ProxySettingsViewModel => ServiceProvider.Get<ProxySettingsViewModel>();

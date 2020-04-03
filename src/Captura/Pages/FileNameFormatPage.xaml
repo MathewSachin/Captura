@@ -4,7 +4,12 @@
       xmlns:captura="clr-namespace:Captura"
       DataContext="{Binding FileNameFormatViewModel, Source={StaticResource ServiceLocator}}"
       Title="{Binding FileNaming, Source={StaticResource Loc}, Mode=OneWay}">
-    <Grid Margin="5">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
         <StackPanel Margin="5">
             <Label Content="File Name Format"
                    ContentStringFormat="{}{0}:"
@@ -26,21 +31,21 @@
                    Content="{Binding FilenamePreview}"/>
 
             <captura:OutputFolderControl/>
-
-            <GridSplitter IsEnabled="False"
-                          Margin="0,30"
-                          Height="1"/>
-
-            <ItemsControl ItemsSource="{Binding FormatGroups}"
-                          Grid.IsSharedSizeScope="True">
+        </StackPanel>
+        <GridSplitter Grid.Column="1"
+                      Width="1"
+                      Margin="7,0"/>
+        <ScrollViewer Grid.Column="2">
+            <ItemsControl ItemsSource="{Binding FormatGroups}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Margin="5">
                             <Label Content="{Binding Name}"
                                    FontWeight="Bold"
                                    Margin="0,5,0,2"/>
 
-                            <ItemsControl ItemsSource="{Binding Formats}">
+                            <ItemsControl ItemsSource="{Binding Formats}"
+                                          Grid.IsSharedSizeScope="True">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -63,6 +68,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

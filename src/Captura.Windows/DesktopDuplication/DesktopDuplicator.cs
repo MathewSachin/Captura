@@ -54,13 +54,14 @@ namespace DesktopDuplication
 
         public void Dispose()
         {
-            try { _mousePointer?.Dispose(); }
-            catch { }
-            finally { _mousePointer = null; }
-
             try { _duplCapture.Dispose(); }
             catch { }
             finally { _duplCapture = null; }
+
+            // Mouse Pointer disposed later to prevent errors.
+            try { _mousePointer?.Dispose(); }
+            catch { }
+            finally { _mousePointer = null; }
 
             try { _editorSession.Dispose(); }
             catch { }
