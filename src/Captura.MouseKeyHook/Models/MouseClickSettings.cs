@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Captura
+namespace Captura.MouseKeyHook
 {
     public class MouseClickSettings : MouseOverlaySettings
     {

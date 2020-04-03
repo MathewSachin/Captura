@@ -5,7 +5,7 @@ using System.Windows.Input;
 using Captura.Models;
 using Reactive.Bindings;
 
-namespace Captura.ViewModels
+namespace Captura.Webcam
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamModel : NotifyPropertyChanged

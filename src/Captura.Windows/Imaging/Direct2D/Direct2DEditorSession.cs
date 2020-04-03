@@ -1,6 +1,6 @@
 ﻿using System;
-using Captura;
-using Captura.Models;
+using Captura.Windows.MediaFoundation;
+using Captura.Video;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -13,7 +13,7 @@ using Factory = SharpDX.DirectWrite.Factory;
 using Factory1 = SharpDX.Direct2D1.Factory1;
 using PixelFormat = SharpDX.Direct2D1.PixelFormat;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DirectX
 {
     public class Direct2DEditorSession : IDisposable
     {

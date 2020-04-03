@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Captura
+namespace Captura.Native
 {
     static class Shell32
     {

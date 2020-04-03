@@ -1,7 +1,8 @@
-﻿using Captura.ViewModels;
-using Screna;
+﻿using Captura.Loc;
+using Captura.Video;
+using Captura.Windows.Gdi;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamSourceProvider : NotifyPropertyChanged, IVideoSourceProvider

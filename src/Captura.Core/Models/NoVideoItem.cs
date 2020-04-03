@@ -1,6 +1,6 @@
 ﻿using Captura.Audio;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     /// <summary>
     /// Holds codecs for audio-alone capture.

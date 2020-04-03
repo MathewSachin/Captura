@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Captura.Fakes;
+using Captura.Video;
 
 namespace Captura.Tests
 {

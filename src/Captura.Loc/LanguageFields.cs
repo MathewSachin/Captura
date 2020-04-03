@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
-namespace Captura
+namespace Captura.Loc
 {
     public class LanguageFields : NotifyPropertyChanged, ILocalizationProvider
     {

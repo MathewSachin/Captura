@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     public interface IVideoSourcePicker
     {

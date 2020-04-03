@@ -4,9 +4,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Captura.Models;
 using Newtonsoft.Json;
 
-namespace Captura.Models
+namespace Captura.Imgur
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ImgurUploader : IImageUploader

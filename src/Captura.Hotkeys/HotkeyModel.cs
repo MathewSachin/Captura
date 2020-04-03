@@ -2,7 +2,7 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace Captura.Models
+namespace Captura.Hotkeys
 {
     public class HotkeyModel
     {

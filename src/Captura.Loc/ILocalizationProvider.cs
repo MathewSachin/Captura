@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Captura
+namespace Captura.Loc
 {
     public interface ILocalizationProvider : INotifyPropertyChanged
     {

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Captura.Video;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
-namespace Captura.Models
+namespace Captura.Windows.MediaFoundation
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MfWriterProvider : IVideoWriterProvider

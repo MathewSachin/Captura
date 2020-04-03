@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using Captura;
 
-namespace Screna
+namespace Captura.Video
 {
     public class AroundMouseImageProvider : IImageProvider
     {

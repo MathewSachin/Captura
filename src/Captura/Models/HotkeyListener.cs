@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Interop;
 
-namespace Captura.Models
+namespace Captura.Hotkeys
 {
     public class HotkeyListener : IHotkeyListener
     {

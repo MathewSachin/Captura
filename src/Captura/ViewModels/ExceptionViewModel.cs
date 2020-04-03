@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Captura.Models;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Screna;
 
 namespace Captura
 {

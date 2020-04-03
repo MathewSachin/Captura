@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook.Steps
 {
     class ScrollStep : KeyModifiedStep
     {

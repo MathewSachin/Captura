@@ -1,7 +1,6 @@
 ﻿using System;
-using Captura;
 
-namespace Screna
+namespace Captura.Video
 {
     interface ITargetDeviceContext : IDisposable
     {

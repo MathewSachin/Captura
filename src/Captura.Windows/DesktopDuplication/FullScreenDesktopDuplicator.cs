@@ -4,11 +4,11 @@ using SharpDX.DXGI;
 using System;
 using System.Drawing;
 using System.Linq;
-using Captura;
-using Captura.Models;
 using System.Collections.Generic;
+using Captura.Video;
+using Captura.Windows.DirectX;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class FullScreenDesktopDuplicator : IDisposable
     {

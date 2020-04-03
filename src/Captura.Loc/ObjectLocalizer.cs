@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.Loc
 {
     public class ObjectLocalizer<T> : TextLocalizer
     {

@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     public class ImageFolderWriter : IVideoFileWriter
     {

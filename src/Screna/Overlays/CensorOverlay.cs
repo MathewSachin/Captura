@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Captura
+namespace Captura.Video
 {
     public class CensorOverlay : IOverlay
     {

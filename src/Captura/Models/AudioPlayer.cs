@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Media;
 
-namespace Captura.Models
+namespace Captura.Audio
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class AudioPlayer : IAudioPlayer

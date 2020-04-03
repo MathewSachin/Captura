@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Captura.Windows.DirectX;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class DxMousePointer : IDisposable
     {

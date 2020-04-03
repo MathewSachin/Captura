@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Captura;
-using Captura.Audio;
 
-namespace Screna
+namespace Captura.Audio
 {
     public class AudioRecorder : IRecorder
     {

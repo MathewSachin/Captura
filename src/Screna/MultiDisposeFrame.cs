@@ -1,8 +1,7 @@
 ﻿using System;
-using Captura;
 using Captura.Models;
 
-namespace Screna
+namespace Captura.Video
 {
     public class MultiDisposeFrame : IBitmapFrame, IFrameWrapper
     {

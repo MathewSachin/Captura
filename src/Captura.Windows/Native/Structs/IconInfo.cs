@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-namespace Captura
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Sequential)]
     struct IconInfo

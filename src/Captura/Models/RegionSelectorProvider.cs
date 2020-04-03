@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows;
-using Captura.Models;
+using Captura.ViewModels;
 
-namespace Captura
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class RegionSelectorProvider : IRegionProvider

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     class KeyRecords : IEnumerable<IKeyRecord>
     {

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 // ReSharper disable InconsistentNaming
 
-namespace Captura
+namespace Captura.Native
 {
     static class Gdi32
     {

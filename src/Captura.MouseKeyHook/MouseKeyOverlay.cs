@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     /// <summary>
     /// Draws Mouse Clicks and/or Keystrokes on an Image.

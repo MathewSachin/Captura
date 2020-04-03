@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace Captura
+namespace Captura.Video
 {
     public class TextOverlaySettings : PositionedOverlaySettings
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reactive.Linq;
+using Captura.Loc;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

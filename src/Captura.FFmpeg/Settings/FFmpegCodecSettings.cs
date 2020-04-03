@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.FFmpeg
 {
     public class FFmpegCodecSettings : PropertyStore
     {

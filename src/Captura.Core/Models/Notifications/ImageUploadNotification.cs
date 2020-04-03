@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Captura.Loc;
 using Captura.Models;
-using Screna;
 
 namespace Captura
 {

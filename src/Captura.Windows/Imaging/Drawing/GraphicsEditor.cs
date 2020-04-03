@@ -2,10 +2,8 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using Captura;
-using Captura.Models;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     public class GraphicsEditor : IEditableFrame
     {

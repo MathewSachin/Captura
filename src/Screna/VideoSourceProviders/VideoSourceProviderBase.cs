@@ -1,4 +1,6 @@
-namespace Captura.Models
+using Captura.Loc;
+
+namespace Captura.Video
 {
     public abstract class VideoSourceProviderBase : NotifyPropertyChanged, IVideoSourceProvider
     {

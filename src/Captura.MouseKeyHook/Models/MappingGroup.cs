@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MappingGroup

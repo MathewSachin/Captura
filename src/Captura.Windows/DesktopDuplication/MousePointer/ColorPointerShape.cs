@@ -5,7 +5,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class ColorPointerShape : IPointerShape
     {

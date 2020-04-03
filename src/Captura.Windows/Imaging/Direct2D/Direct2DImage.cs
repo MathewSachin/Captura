@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using Captura;
 using SharpDX.Direct2D1;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DirectX
 {
     public class Direct2DImage : IBitmapImage
     {

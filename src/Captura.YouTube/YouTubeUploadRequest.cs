@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Upload;
 using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
+using VideoYT = Google.Apis.YouTube.v3.Data.Video;
 
-namespace Captura
+namespace Captura.YouTube
 {
     public class YouTubeUploadRequest : IDisposable
     {
@@ -15,7 +15,7 @@ namespace Captura
 
         internal YouTubeUploadRequest(string FileName,
             YouTubeService YouTubeService,
-            Video Video)
+            VideoYT Video)
         {
             _dataStream = new FileStream(FileName, FileMode.Open);
             _videoInsertRequest = YouTubeService.Videos.Insert(Video, "snippet,status", _dataStream, "video/*");
@@ -29,7 +29,7 @@ namespace Captura
             BytesSent?.Invoke(Progress.BytesSent);
         }
 
-        void VideosInsertRequest_ResponseReceived(Video Video)
+        void VideosInsertRequest_ResponseReceived(VideoYT Video)
         {
             Uploaded?.Invoke($"https://youtube.com/watch?v={Video.Id}");
         }

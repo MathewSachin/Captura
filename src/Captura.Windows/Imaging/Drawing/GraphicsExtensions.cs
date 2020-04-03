@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Captura.Native;
 
-namespace Captura.Models
+namespace Captura.Windows.Gdi
 {
     static class GraphicsExtensions
     {

@@ -2,6 +2,8 @@
 using System.Management;
 using System.Text;
 using Captura.Audio;
+using Captura.ViewModels;
+using Captura.Webcam;
 
 namespace Captura.Models
 {

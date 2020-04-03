@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using Captura;
-using Captura.Models;
+using Captura.Native;
+using Captura.Windows;
+using Captura.Windows.Gdi;
 
-namespace Screna
+namespace Captura.Video
 {
     class RegionProvider : IImageProvider
     {

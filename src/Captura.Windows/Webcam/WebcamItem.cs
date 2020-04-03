@@ -1,7 +1,6 @@
 ﻿using System;
-using Captura.Webcam;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     class WebcamItem : IWebcamItem
     {

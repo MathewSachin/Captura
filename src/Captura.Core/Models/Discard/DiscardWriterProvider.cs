@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DiscardWriterProvider : IVideoWriterProvider

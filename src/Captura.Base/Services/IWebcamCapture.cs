@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     public interface IWebcamCapture : IDisposable
     {

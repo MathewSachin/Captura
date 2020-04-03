@@ -1,5 +1,5 @@
 ﻿using Captura.Audio;
-using Captura.Models;
+using Captura.Video;
 
 namespace Captura.ViewModels
 {

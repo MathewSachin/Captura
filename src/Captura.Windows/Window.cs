@@ -4,12 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Captura;
-using Captura.Models;
 using Captura.Native;
-using User32 = Captura.User32;
 
-namespace Screna
+namespace Captura.Video
 {
     /// <summary>
     /// Minimal representation of a Window.

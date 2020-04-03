@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-namespace Captura
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Sequential)]
     struct CursorInfo

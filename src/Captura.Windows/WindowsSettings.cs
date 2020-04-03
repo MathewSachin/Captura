@@ -1,4 +1,4 @@
-﻿namespace Captura.Models
+﻿namespace Captura.Windows
 {
     public class WindowsSettings : PropertyStore
     {

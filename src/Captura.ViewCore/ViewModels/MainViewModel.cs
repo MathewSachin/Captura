@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Captura.FFmpeg;
+using Captura.Hotkeys;
+using Captura.Loc;
+using Captura.Video;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

@@ -1,10 +1,9 @@
 ﻿using Captura.Audio;
-using DesktopDuplication;
 using SharpDX.MediaFoundation;
 using System;
 using System.Runtime.InteropServices;
 
-namespace Captura
+namespace Captura.Windows.MediaFoundation
 {
     class MfAudioWriter : IAudioFileWriter
     {

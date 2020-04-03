@@ -2,10 +2,10 @@
 
 using SharpDX.DXGI;
 using System;
-using Captura;
-using Captura.Models;
+using Captura.Video;
+using Captura.Windows.DirectX;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class DesktopDuplicator : IDisposable
     {

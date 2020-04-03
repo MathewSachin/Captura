@@ -1,7 +1,7 @@
-﻿using DesktopDuplication;
+﻿using Captura.Video;
 using SharpDX.Direct3D11;
 
-namespace Captura.Models
+namespace Captura.Windows.MediaFoundation
 {
     public class MfItem : IVideoWriterItem
     {

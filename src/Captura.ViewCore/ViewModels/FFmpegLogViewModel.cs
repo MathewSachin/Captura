@@ -1,7 +1,7 @@
-﻿using Captura.Models;
-using System;
+﻿using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Captura.FFmpeg;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

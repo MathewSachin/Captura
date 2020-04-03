@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using Captura.Video;
 using Moq;
-using Screna;
 using Xunit;
 
 namespace Captura.Tests

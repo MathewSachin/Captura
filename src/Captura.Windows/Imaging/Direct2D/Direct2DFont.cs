@@ -1,7 +1,6 @@
-﻿using Captura;
-using SharpDX.DirectWrite;
+﻿using SharpDX.DirectWrite;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DirectX
 {
     public class Direct2DFont : IFont
     {

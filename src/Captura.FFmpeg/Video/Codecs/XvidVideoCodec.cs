@@ -1,4 +1,4 @@
-﻿using Captura.Models;
+﻿using Captura.Video;
 
 namespace Captura.FFmpeg
 {

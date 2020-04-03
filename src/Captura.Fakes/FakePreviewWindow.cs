@@ -1,4 +1,6 @@
-﻿namespace Captura.Models
+﻿using Captura.Video;
+
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FakePreviewWindow : IPreviewWindow

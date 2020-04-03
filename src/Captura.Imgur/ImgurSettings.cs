@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Captura
+namespace Captura.Imgur
 {
     public class ImgurSettings : PropertyStore
     {

@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.Audio
 {
     public class AudioSettings : PropertyStore
     {

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Screna;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     public class WithPreviewWriter : IVideoFileWriter
     {

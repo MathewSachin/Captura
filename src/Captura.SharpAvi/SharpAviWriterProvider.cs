@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.SharpAvi
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class SharpAviWriterProvider : IVideoWriterProvider

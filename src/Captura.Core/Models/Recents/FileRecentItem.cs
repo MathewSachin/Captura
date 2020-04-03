@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
-using Screna;
+using Captura.Loc;
 
 namespace Captura.Models
 {

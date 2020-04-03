@@ -1,6 +1,6 @@
 using System;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     interface IKeyRecord
     {

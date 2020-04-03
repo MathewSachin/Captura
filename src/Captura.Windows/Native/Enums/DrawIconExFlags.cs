@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
-namespace Captura
+namespace Captura.Native
 {
     enum DrawIconExFlags
     {

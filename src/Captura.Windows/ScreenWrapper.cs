@@ -2,9 +2,8 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Captura.Models;
 
-namespace Captura
+namespace Captura.Video
 {
     class ScreenWrapper : IScreen
     {

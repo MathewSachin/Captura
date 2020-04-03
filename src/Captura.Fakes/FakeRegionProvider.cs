@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using System;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     public class FakeRegionProvider : IRegionProvider
     {

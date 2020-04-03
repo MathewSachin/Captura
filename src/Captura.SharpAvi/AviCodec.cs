@@ -1,6 +1,6 @@
 ﻿using SharpAvi;
 
-namespace Captura.Models
+namespace Captura.SharpAvi
 {
     /// <summary>
     /// Represents an Avi Codec.

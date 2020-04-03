@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Captura.Native;
 
-namespace Captura.Models
+namespace Captura.Hotkeys
 {
     public class Hotkey : NotifyPropertyChanged
     {

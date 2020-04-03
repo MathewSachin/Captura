@@ -1,8 +1,8 @@
-using Screna;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Captura.Loc;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScreenSourceProvider : VideoSourceProviderBase

@@ -1,6 +1,7 @@
 ﻿using System;
+using Captura.Audio;
+using Captura.Video;
 using Moq;
-using Screna;
 using Xunit;
 
 namespace Captura.Tests

@@ -1,6 +1,6 @@
-﻿using Captura.FFmpeg;
+﻿using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     class FFmpegVideoWriterArgs : VideoWriterArgs
     {

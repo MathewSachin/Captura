@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
-using Captura;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     class DrawingImagingSystem : IImagingSystem
     {

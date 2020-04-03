@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using Captura.Webcam;
+using Captura.Models;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     class WebcamCapture : IWebcamCapture
     {

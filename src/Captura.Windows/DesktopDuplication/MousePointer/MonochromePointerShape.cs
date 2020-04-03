@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Captura.Windows.DirectX;
 using SharpDX.DXGI;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class MonochromePointerShape : MaskedPointerShape
     {

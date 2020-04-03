@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Captura;
+using Captura.Native;
 
-namespace Screna
+namespace Captura.Video
 {
     /// <summary>
     /// Draws the MouseCursor on an Image

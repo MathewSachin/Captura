@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Captura
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Sequential)]
     struct PixelData { public byte Blue, Green, Red, Alpha; }

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Captura.Models;
 
-namespace Captura
+namespace Captura.Hotkeys
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class HotkeySetup
