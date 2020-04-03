@@ -19,9 +19,6 @@
     <Resource Include="Images\pause.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Management" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Captura.Base\Captura.Base.csproj" />
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
     <ProjectReference Include="..\Captura.FFmpeg\Captura.FFmpeg.csproj" />
@@ -40,6 +37,7 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
     <PackageReference Include="ModernUI.WPF" Version="1.0.9" />
     <PackageReference Include="SamOatesGames.ModernUI.Xceed.Toolkit" Version="1.0.0" />
+    <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>
   <Target Name="Delete unused libs" AfterTargets="Build">
     <ItemGroup>
