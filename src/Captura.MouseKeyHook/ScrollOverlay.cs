@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Captura.Models
 {
+    // TODO: Shows horizontal scroll incorrectly as vertical.
+    // The MouseKeyHook library doesn't provide an option
+    // to distinguish between horizontal and vertical scrolls.
     public class ScrollOverlay : IOverlay
     {
         readonly MouseClickSettings _settings;
