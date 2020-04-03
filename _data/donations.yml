@@ -86,3 +86,5 @@
   amount: "$10 USD"
 - name: "Adam Oliver"
   amount: "£20 GBP"
+- name: "Matthias Bölz"
+  amount: "€5 EUR"
