@@ -30,7 +30,7 @@ namespace Captura.Models
                 var r = _settings.Radius;
                 var d = 2 * r;
 
-                Editor.FillEllipse(_settings.Color, new RectangleF(p.X - r, p.Y - r, d, d));
+                Editor.FillEllipse(_settings.ScrollCircleColor, new RectangleF(p.X - r, p.Y - r, d, d));
 
                 var above = new Point(p.X, p.Y + r / 2);
                 var below = new Point(p.X, p.Y - r / 2);
@@ -41,7 +41,7 @@ namespace Captura.Models
                     (above, below) = (below, above);
                 }
 
-                Editor.DrawArrow(above, below, _settings.BorderColor, r / 4f);
+                Editor.DrawArrow(above, below, _settings.ScrollArrowColor, r / 4f);
 
                 _lastArgs = null;
             }
