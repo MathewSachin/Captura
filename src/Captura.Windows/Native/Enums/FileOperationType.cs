@@ -1,5 +1,5 @@
 ﻿// ReSharper disable UnusedMember.Global
-namespace Captura
+namespace Captura.Native
 {
     enum FileOperationType
     {

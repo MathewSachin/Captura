@@ -1,7 +1,7 @@
 ﻿using System;
 using Captura.FFmpeg;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class FakeFFmpegViewsProvider : IFFmpegViewsProvider

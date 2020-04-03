@@ -1,4 +1,4 @@
-﻿namespace Captura.Models
+﻿namespace Captura.FFmpeg
 {
     public class FFmpegOutputArgs : FFmpegArgs
     {

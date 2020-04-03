@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Captura;
-using Captura.Models;
+using Captura.Native;
 
-namespace Screna
+namespace Captura.Video
 {
     class WindowScreenShotBackdrop : IDisposable
     {

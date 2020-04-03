@@ -1,4 +1,4 @@
-﻿namespace Captura.Models
+﻿namespace Captura.Video
 {
     public class ScreenItem : NotifyPropertyChanged, IVideoItem
     {

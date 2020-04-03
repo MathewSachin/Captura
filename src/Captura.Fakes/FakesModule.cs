@@ -1,7 +1,9 @@
-﻿using Captura.FFmpeg;
+﻿using Captura.Audio;
+using Captura.FFmpeg;
 using Captura.Models;
+using Captura.Video;
 
-namespace Captura
+namespace Captura.Fakes
 {
     public class FakesModule : IModule
     {

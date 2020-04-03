@@ -1,4 +1,6 @@
-﻿namespace Captura.Models
+﻿using Captura.Models;
+
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class FakeWindowProvider : IMainWindow

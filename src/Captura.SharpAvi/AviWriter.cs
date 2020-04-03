@@ -1,10 +1,11 @@
 ﻿using System;
 using Captura.Audio;
+using Captura.Video;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
 
-namespace Captura.Models
+namespace Captura.SharpAvi
 {
     /// <summary>
     /// Writes an AVI file.

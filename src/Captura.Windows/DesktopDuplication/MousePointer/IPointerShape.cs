@@ -3,7 +3,7 @@ using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public interface IPointerShape : IDisposable
     {

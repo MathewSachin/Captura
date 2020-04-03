@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Captura
+namespace Captura.Video
 {
     /// <summary>
     /// Draws over a Capured image.

@@ -1,7 +1,7 @@
 ﻿using SharpDX;
 using SharpDX.DXGI;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class AcquireResult
     {

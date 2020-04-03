@@ -4,8 +4,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook.Steps
 {
     public class StepsRecorder : IRecorder
     {

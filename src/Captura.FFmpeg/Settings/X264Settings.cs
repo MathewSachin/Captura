@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Captura
+namespace Captura.FFmpeg
 {
     public class X264Settings : PropertyStore
     {

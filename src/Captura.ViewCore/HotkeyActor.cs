@@ -1,4 +1,6 @@
-﻿using Captura.Models;
+﻿using Captura.Hotkeys;
+using Captura.Models;
+using Captura.Video;
 
 namespace Captura.ViewModels
 {

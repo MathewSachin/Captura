@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.Imgur
 {
     public interface IImgurApiKeys
     {

@@ -1,10 +1,12 @@
 ﻿using Captura.Audio;
 using Captura.Models;
-using Screna;
 using System;
-using DesktopDuplication;
+using Captura.Video;
+using Captura.Webcam;
+using Captura.Windows.Gdi;
+using Captura.Windows.MediaFoundation;
 
-namespace Captura
+namespace Captura.Windows
 {
     public static class WindowsModule
     {

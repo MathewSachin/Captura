@@ -1,6 +1,7 @@
 ﻿using System;
+using Captura.Models;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class FakeMessageProvider : IMessageProvider

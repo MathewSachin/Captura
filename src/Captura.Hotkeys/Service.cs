@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using Captura.Loc;
 
-namespace Captura.Models
+namespace Captura.Hotkeys
 {
     public class Service : NotifyPropertyChanged
     {

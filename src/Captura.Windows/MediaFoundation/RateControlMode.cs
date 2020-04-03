@@ -1,4 +1,4 @@
-﻿namespace DesktopDuplication
+﻿namespace Captura.Windows.MediaFoundation
 {
     enum RateControlMode
     {

@@ -1,5 +1,4 @@
-﻿using DesktopDuplication;
-using MediaFoundation.Transform;
+﻿using MediaFoundation.Transform;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
@@ -7,7 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace Captura
+namespace Captura.Windows.MediaFoundation
 {
     public class MfColorConverter : IDisposable
     {

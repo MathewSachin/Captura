@@ -1,4 +1,4 @@
-﻿namespace Captura.Models
+﻿namespace Captura.Audio
 {
     public interface IAudioPlayer
     {

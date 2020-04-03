@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Captura.FFmpeg;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FakeFFmpegLogRepository : IFFmpegLogRepository

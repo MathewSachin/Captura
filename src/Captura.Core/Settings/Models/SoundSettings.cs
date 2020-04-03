@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Captura.Models
+namespace Captura.Audio
 {
     public class SoundSettings : PropertyStore
     {

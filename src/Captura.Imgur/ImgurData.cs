@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Captura.Models
+namespace Captura.Imgur
 {
     class ImgurData
     {

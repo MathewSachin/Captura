@@ -4,10 +4,10 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:base="clr-namespace:Captura;assembly=Captura.Base"
              xmlns:viewModels="clr-namespace:Captura.ViewModels;assembly=Captura.ViewCore"
+             xmlns:video="clr-namespace:Captura.Video;assembly=Captura.Base"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance base:PositionedOverlaySettings}">
+             d:DataContext="{d:DesignInstance video:PositionedOverlaySettings}">
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>

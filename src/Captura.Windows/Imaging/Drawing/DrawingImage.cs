@@ -1,9 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
-using Captura;
-using Captura.Models;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     public class DrawingImage : IBitmapImage
     {

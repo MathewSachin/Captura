@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using Captura;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     public class DrawingFont : IFont
     {

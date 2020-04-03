@@ -1,6 +1,8 @@
 ﻿using System;
+using Captura.Loc;
+using Captura.Models;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class FakeSystemTray : ISystemTray

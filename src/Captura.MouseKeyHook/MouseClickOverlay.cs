@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     public class MouseClickOverlay : IOverlay
     {

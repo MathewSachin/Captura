@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     public class FFmpegLogItem : NotifyPropertyChanged, IFFmpegLogEntry
     {

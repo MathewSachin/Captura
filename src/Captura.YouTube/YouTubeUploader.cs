@@ -6,7 +6,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 
-namespace Captura
+namespace Captura.YouTube
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class YouTubeUploader
@@ -37,7 +37,7 @@ namespace Captura
             if (_youtubeService == null)
                 await Init();
 
-            var video = new Video
+            var video = new Google.Apis.YouTube.v3.Data.Video
             {
                 Snippet = new VideoSnippet
                 {

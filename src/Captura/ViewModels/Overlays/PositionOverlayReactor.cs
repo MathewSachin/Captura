@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Linq;
 using System.Windows;
+using Captura.Video;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

@@ -1,7 +1,6 @@
-﻿using Captura.ViewModels;
-using Captura.Webcam;
+﻿using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     public class WebcamVideoItem : NotifyPropertyChanged, IVideoItem
     {

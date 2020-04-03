@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Screna
+namespace Captura.Models
 {
     public class Timing
     {

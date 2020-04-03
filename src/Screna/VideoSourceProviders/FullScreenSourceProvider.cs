@@ -1,6 +1,6 @@
-using Screna;
+using Captura.Loc;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FullScreenSourceProvider : VideoSourceProviderBase

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Interop;
-using DesktopDuplication;
+using Captura.Windows.DirectX;
+using Captura.Windows.Gdi;
 using Reactive.Bindings.Extensions;
-using Screna;
 using SharpDX.Direct3D9;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class PreviewWindowService : IPreviewWindow

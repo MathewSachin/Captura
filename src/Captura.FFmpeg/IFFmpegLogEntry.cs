@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     public interface IFFmpegLogEntry
     {

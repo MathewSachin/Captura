@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Captura
+namespace Captura.Video
 {
     /// <summary>
     /// Creates a video from individual frames and writes them to a file.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Captura.Fakes;
 using Captura.Native;
 using CommandLine;
 using static System.Console;

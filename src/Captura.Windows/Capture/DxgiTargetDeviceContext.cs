@@ -1,11 +1,9 @@
 ﻿using System;
-using Captura;
-using Captura.Models;
-using DesktopDuplication;
+using Captura.Windows.DirectX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
-namespace Screna
+namespace Captura.Video
 {
     class DxgiTargetDeviceContext : ITargetDeviceContext
     {

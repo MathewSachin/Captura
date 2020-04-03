@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Captura.Models;
+using Captura.YouTube;
 using Google.Apis.Upload;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

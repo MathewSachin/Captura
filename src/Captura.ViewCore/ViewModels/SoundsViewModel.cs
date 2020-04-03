@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Captura.Audio;
 using Captura.Models;
 
 namespace Captura.ViewModels

@@ -1,7 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using System.Windows.Forms;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     public class MouseKeyHook : IMouseKeyHook
     {

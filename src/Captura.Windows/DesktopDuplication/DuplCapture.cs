@@ -5,7 +5,7 @@ using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
 using ResultCode = SharpDX.DXGI.ResultCode;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     public class DuplCapture : IDisposable
     {

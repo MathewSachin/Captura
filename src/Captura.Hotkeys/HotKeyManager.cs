@@ -1,5 +1,4 @@
 using System;
-using Captura.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-namespace Captura
+namespace Captura.Hotkeys
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class HotKeyManager : IDisposable

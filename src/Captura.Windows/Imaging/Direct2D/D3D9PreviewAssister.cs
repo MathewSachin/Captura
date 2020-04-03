@@ -1,11 +1,10 @@
 ﻿using System;
-using Captura;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D9;
 
 // Adapted from https://github.com/Marlamin/SharpDX.WPF
 
-namespace DesktopDuplication
+namespace Captura.Windows.DirectX
 {
     public class D3D9PreviewAssister : IDisposable
     {

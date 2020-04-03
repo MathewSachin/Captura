@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Captura;
 
-namespace Screna
+namespace Captura
 {
     /// <summary>
     /// Collection of utility methods.

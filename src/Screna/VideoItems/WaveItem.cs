@@ -1,7 +1,4 @@
-﻿using Captura.Audio;
-using Screna.Audio;
-
-namespace Captura.Models
+﻿namespace Captura.Audio
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WaveItem : IAudioWriterItem

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Captura.Models;
+using Captura.Video;
 using Captura.ViewModels;
 using Reactive.Bindings;
 

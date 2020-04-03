@@ -5,7 +5,7 @@ using System.Text;
 
 // ReSharper disable InconsistentNaming
 
-namespace Captura
+namespace Captura.Native
 {
     static class User32
     {

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Captura.Models;
-using Screna;
+using Captura.Video;
+using Captura.ViewModels;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Point = System.Windows.Point;
 

@@ -1,4 +1,4 @@
-﻿namespace Captura.Models
+﻿namespace Captura.Video
 {
     public class CustomOverlay : TextOverlay
     {

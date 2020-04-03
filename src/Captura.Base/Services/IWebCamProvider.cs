@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     public interface IWebCamProvider
     {

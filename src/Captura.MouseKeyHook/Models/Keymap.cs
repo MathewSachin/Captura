@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class Keymap

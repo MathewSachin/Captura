@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
-using Captura;
-using Captura.Models;
 
-namespace Screna
+namespace Captura.Video
 {
     /// <summary>
     /// Contains methods for taking ScreenShots

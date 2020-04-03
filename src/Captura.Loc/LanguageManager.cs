@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Captura
+namespace Captura.Loc
 {
     public class LanguageManager : LanguageFields
     {

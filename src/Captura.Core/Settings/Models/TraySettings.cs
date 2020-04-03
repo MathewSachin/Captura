@@ -1,4 +1,6 @@
-﻿namespace Captura
+﻿using Captura.Hotkeys;
+
+namespace Captura
 {
     public class TraySettings : PropertyStore
     {

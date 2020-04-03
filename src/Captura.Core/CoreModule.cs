@@ -1,6 +1,16 @@
 ﻿using Captura.Models;
 using Captura.Audio;
+using Captura.FFmpeg;
+using Captura.Hotkeys;
+using Captura.Imgur;
+using Captura.Loc;
+using Captura.MouseKeyHook;
+using Captura.SharpAvi;
+using Captura.Video;
 using Captura.ViewModels;
+using Captura.Webcam;
+using Captura.Windows;
+using Captura.YouTube;
 
 namespace Captura
 {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DesktopDuplication
+namespace Captura.Native
 {
     [StructLayout(LayoutKind.Explicit)]
     public class PackedLong

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Captura;
 using Captura.Audio;
-using Captura.Models;
+using Captura.Native;
+using Captura.Video;
+using Captura.Windows.DirectX;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.MediaFoundation;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace DesktopDuplication
+namespace Captura.Windows.MediaFoundation
 {
     public class MfWriter : IVideoFileWriter
     {

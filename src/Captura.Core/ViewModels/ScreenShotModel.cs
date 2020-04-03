@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Captura.Audio;
+using Captura.Loc;
 using Captura.Models;
-using Screna;
+using Captura.Video;
 
 namespace Captura.ViewModels
 {

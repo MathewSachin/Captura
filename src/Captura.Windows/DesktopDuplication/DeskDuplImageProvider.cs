@@ -1,9 +1,10 @@
-﻿using DesktopDuplication;
-using SharpDX.DXGI;
+﻿using SharpDX.DXGI;
 using System;
 using System.Drawing;
+using Captura.Video;
+using Captura.Windows.DirectX;
 
-namespace Captura.Models
+namespace Captura.Windows.DesktopDuplication
 {
     class DeskDuplImageProvider : IImageProvider
     {

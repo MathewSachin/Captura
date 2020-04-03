@@ -1,10 +1,9 @@
-﻿using Captura.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 
-namespace Captura
+namespace Captura.FFmpeg
 {
     public static class FFmpegService
     {

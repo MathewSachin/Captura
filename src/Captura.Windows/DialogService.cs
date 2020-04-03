@@ -1,7 +1,8 @@
 ﻿using System.Windows.Forms;
+using Captura.Models;
 using Ookii.Dialogs;
 
-namespace Captura.Models
+namespace Captura.Windows
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class DialogService : IDialogService

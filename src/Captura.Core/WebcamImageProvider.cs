@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using Captura.Models;
-using Captura.ViewModels;
+using Captura.Windows.Gdi;
 using Reactive.Bindings;
-using Screna;
 
 namespace Captura.Webcam
 {

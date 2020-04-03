@@ -1,8 +1,9 @@
-﻿using DesktopDuplication;
-using System;
+﻿using System;
 using System.Drawing;
+using Captura.Video;
+using Captura.Windows.DirectX;
 
-namespace Captura.Models
+namespace Captura.Windows.DesktopDuplication
 {
     class DeskDuplFullScreenImageProvider : IImageProvider
     {

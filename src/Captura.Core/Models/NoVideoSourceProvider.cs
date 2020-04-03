@@ -1,8 +1,9 @@
 using Captura.Audio;
 using System.Collections.Generic;
 using System.Linq;
+using Captura.Loc;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class NoVideoSourceProvider : VideoSourceProviderBase

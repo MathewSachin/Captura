@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using Captura;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
@@ -15,7 +14,7 @@ using PixelFormat = SharpDX.WIC.PixelFormat;
 using Point = System.Drawing.Point;
 using RectangleF = System.Drawing.RectangleF;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DirectX
 {
     public class Direct2DEditor : IEditableFrame
     {

@@ -1,4 +1,6 @@
-﻿namespace Captura.Models
+﻿using Captura.Video;
+
+namespace Captura.SharpAvi
 {
     class SharpAviItem : IVideoWriterItem
     {

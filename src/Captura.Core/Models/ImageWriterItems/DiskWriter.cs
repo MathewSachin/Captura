@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Screna;
+using Captura.Loc;
 
 namespace Captura.Models
 {

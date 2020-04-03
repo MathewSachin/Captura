@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace DesktopDuplication
+namespace Captura.Windows.DesktopDuplication
 {
     class DeskDuplOutputEntry
     {

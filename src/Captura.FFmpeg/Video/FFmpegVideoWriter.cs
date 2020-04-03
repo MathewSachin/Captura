@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
-using Captura.FFmpeg;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     /// <summary>
     /// Encode Video using FFmpeg.exe

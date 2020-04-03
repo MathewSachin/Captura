@@ -1,6 +1,6 @@
 ﻿using SharpDX.MediaFoundation;
 
-namespace DesktopDuplication
+namespace Captura.Windows.MediaFoundation
 {
     public static class MfManager
     {

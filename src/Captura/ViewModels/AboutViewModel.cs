@@ -1,10 +1,10 @@
-﻿using Captura.ViewModels;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Captura.Loc;
 using Reactive.Bindings;
 
-namespace Captura
+namespace Captura.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class AboutViewModel : ViewModelBase

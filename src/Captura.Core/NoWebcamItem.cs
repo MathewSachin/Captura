@@ -1,6 +1,7 @@
 using System;
+using Captura.Loc;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     public class NoWebcamItem : NotifyPropertyChanged, IWebcamItem
     {

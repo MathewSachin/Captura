@@ -3,7 +3,7 @@ using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;
 
-namespace Captura
+namespace Captura.Windows.MediaFoundation
 {
     class MfAudioItem : IAudioWriterItem
     {

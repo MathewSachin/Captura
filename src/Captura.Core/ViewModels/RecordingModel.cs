@@ -5,10 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Captura.Audio;
 using Captura.FFmpeg;
+using Captura.Loc;
 using Captura.Models;
+using Captura.MouseKeyHook;
+using Captura.MouseKeyHook.Steps;
+using Captura.Video;
 using Captura.Webcam;
 using Microsoft.Win32;
-using Screna;
 
 namespace Captura.ViewModels
 {
@@ -229,7 +232,7 @@ namespace Captura.ViewModels
                 return false;
             }
 
-            var mouseKeyHook = new MouseKeyHook();
+            var mouseKeyHook = new MouseKeyHook.MouseKeyHook();
 
             _recorder = new StepsRecorder(mouseKeyHook,
                 videoEncoder,
@@ -265,7 +268,7 @@ namespace Captura.ViewModels
 
                 if (IsVideo)
                 {
-                    var mouseKeyHook = new MouseKeyHook();
+                    var mouseKeyHook = new MouseKeyHook.MouseKeyHook();
 
                     if (!SetupVideoRecorder(audioProvider, RecordingParams, mouseKeyHook))
                     {

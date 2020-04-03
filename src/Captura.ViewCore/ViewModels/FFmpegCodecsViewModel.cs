@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using Captura.Models;
+using Captura.FFmpeg;
 using Reactive.Bindings;
 
 namespace Captura.ViewModels

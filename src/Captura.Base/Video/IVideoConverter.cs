@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Captura.Models
+namespace Captura.Video
 {
     public interface IVideoConverter
     {

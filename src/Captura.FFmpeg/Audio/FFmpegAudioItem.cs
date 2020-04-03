@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Captura.Audio;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     public class FFmpegAudioItem : IAudioWriterItem
     {

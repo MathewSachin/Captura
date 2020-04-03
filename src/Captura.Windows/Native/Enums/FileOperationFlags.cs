@@ -1,7 +1,7 @@
 ﻿using System;
 // ReSharper disable UnusedMember.Global
 
-namespace Captura
+namespace Captura.Native
 {
     [Flags]
     enum FileOperationFlags

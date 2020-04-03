@@ -1,9 +1,11 @@
 ﻿using System.Windows;
-using Captura.FFmpeg;
+using Captura.Audio;
+using Captura.Loc;
+using Captura.Models;
 using Captura.Views;
 using FirstFloor.ModernUI.Windows.Controls;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FFmpegViewsProvider : IFFmpegViewsProvider

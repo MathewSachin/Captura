@@ -5,9 +5,9 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:screna="clr-namespace:Captura;assembly=Screna"
+             xmlns:video="clr-namespace:Captura.Video;assembly=Screna"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance screna:ImageOverlaySettings}">
+             d:DataContext="{d:DesignInstance video:ImageOverlaySettings}">
     <StackPanel>
         <local:PositionSettingsControl/>
 

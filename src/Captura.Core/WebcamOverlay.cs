@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using Captura.ViewModels;
+using Captura.Video;
 using Reactive.Bindings;
 
-namespace Captura.Models
+namespace Captura.Webcam
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class WebcamOverlay : ImageOverlay

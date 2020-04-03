@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.Fakes
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FakeVideoSourcePicker : IVideoSourcePicker

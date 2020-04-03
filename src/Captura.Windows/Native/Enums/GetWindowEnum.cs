@@ -1,4 +1,4 @@
-﻿namespace Captura
+﻿namespace Captura.Native
 {
     enum GetWindowEnum
     {

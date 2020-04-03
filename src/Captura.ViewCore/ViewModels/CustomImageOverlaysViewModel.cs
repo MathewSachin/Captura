@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using Captura.Models;
+using Captura.Video;
 using Reactive.Bindings;
 
 namespace Captura.ViewModels

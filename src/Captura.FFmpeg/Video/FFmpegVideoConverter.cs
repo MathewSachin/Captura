@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Captura.FFmpeg;
+using Captura.Video;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     // ReSharper disable once InconsistentNaming
     class FFmpegVideoConverter : IVideoConverter

@@ -3,9 +3,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Screna;
+using Captura.Models;
+using Captura.Windows.Gdi;
 
-namespace Captura.Models
+namespace Captura.Windows
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class ClipboardService : IClipboardService

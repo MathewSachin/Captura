@@ -1,9 +1,8 @@
 ﻿using Captura.Audio;
 using System.Diagnostics;
 using System.IO;
-using Captura.FFmpeg;
 
-namespace Captura.Models
+namespace Captura.FFmpeg
 {
     class FFmpegAudioWriter : IAudioFileWriter
     {

@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Captura;
+using Captura.Native;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     public class DrawingFrame : IBitmapFrame
     {

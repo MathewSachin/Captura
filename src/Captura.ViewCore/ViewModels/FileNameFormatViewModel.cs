@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Captura.Loc;
 using Captura.Models;
 
 namespace Captura.ViewModels

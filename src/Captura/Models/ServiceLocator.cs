@@ -1,5 +1,8 @@
 ﻿using Captura.Models;
+using Captura.MouseKeyHook;
 using Captura.ViewModels;
+using Captura.Webcam;
+
 // ReSharper disable MemberCanBeMadeStatic.Global
 
 namespace Captura

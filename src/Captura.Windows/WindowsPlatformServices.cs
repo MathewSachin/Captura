@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Captura.Models;
-using Screna;
+using Captura.Native;
+using Captura.Video;
+using Captura.Windows.DesktopDuplication;
 using SharpDX.DXGI;
 
-namespace Captura
+namespace Captura.Windows
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class WindowsPlatformServices : IPlatformServices

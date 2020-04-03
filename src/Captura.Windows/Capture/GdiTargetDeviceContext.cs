@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using Captura;
+using Captura.Native;
+using Captura.Video;
 
-namespace Screna
+namespace Captura.Windows.Gdi
 {
     class GdiTargetDeviceContext : ITargetDeviceContext
     {

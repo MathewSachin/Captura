@@ -1,8 +1,7 @@
 ﻿using Captura.Audio;
-using Captura.FFmpeg;
-using Captura.Models;
+using Captura.Video;
 
-namespace Captura
+namespace Captura.FFmpeg
 {
     public static class FFmpegModule
     {

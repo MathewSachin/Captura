@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Captura.Models
+namespace Captura.MouseKeyHook
 {
     public interface IMouseKeyHook : IDisposable
     {
