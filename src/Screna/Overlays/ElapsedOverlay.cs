@@ -11,6 +11,12 @@ namespace Captura.Video
             _elapsed = Elapsed;
         }
 
-        protected override string GetText() => _elapsed().ToString();
+        protected override string GetText() //=> _elapsed().ToString();
+        {
+            DateTime dateTime = DateTime.Now;
+            string currentTime = String.Format("{0:00}'{1:00}.{2:000}''",
+            dateTime.Minute, dateTime.Second, dateTime.Millisecond);
+            return currentTime;
+        }
     }
 }
