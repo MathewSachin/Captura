@@ -34,7 +34,7 @@ namespace Captura.Models
         public void EditImage(string FileName)
         {
             var settings = ServiceProvider.Get<Settings>().ScreenShots;
-            Process.Start(settings.ExternalEditor, FileName);
+            Process.Start(settings.ExternalEditor, $"\"{FileName}\"");
         }
 
         public void TrimMedia(string FileName)
