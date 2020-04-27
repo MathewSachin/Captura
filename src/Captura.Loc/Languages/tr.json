@@ -155,6 +155,6 @@
   "WebCamView": "Web Kamerası Görüntüsü",
   "Website": "Web sitesi",
   "Window": "Pencere",
-  "WindowScreenShotTransparency": "",
+  "WindowScreenShotTransparency": "Ekran görüntüleri pencere modunda şeffaf olmalı",
   "Yes": "Evet"
 }
