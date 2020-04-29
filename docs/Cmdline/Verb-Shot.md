@@ -1,4 +1,5 @@
 # Verb: shot
+
 Takes a screenshot
 
 Argument         | Description
@@ -9,6 +10,6 @@ Argument         | Description
 
 e.g. Take a screenshot containing cursor.
 
-```
+```dotnet
 captura-cli shot --cursor
 ```

@@ -1,4 +1,5 @@
 # Verb: list
+
 Displays the following information:
 
 - Version
@@ -12,6 +13,6 @@ Displays the following information:
 - Available Microphones
 - Available Speaker output sources
 
-```
+```powershell
 captura list
 ```
