@@ -37,7 +37,7 @@ namespace Captura.MouseKeyHook.Steps
                 (above, below) = (below, above);
             }
 
-            Editor.DrawArrow(above, below, _settings.BorderColor, r / 2);
+            Editor.DrawArrow(above, below, _settings.BorderColor, r / 4f);
 
             base.Draw(Editor, PointTransform);
         }

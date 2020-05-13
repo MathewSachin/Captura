@@ -13,8 +13,9 @@ namespace Captura.MouseKeyHook
         #region Fields
         readonly IMouseKeyHook _hook;
         readonly KeystrokesSettings _keystrokesSettings;
-        readonly IOverlay _mouseClickOverlay;
-        readonly IOverlay _keyOverlay;
+        readonly IOverlay _mouseClickOverlay,
+            _keyOverlay,
+            _scrollOverlay;
 
         readonly KeymapViewModel _keymap;
         readonly TextWriter _textWriter;
@@ -35,6 +36,7 @@ namespace Captura.MouseKeyHook
 
             _hook = Hook;
             _mouseClickOverlay = new MouseClickOverlay(_hook, MouseClickSettings);
+            _scrollOverlay = new ScrollOverlay(_hook, MouseClickSettings);
 
             if (KeystrokesSettings.SeparateTextFile)
             {
@@ -76,6 +78,7 @@ namespace Captura.MouseKeyHook
         public void Draw(IEditableFrame Editor, Func<Point, Point> Transform = null)
         {
             _mouseClickOverlay?.Draw(Editor, Transform);
+            _scrollOverlay?.Draw(Editor, Transform);
 
             _keyOverlay?.Draw(Editor, Transform);
         }
@@ -88,6 +91,7 @@ namespace Captura.MouseKeyHook
             _hook?.Dispose();
 
             _mouseClickOverlay?.Dispose();
+            _scrollOverlay?.Dispose();
             _keyOverlay?.Dispose();
 
             _textWriter?.Dispose();

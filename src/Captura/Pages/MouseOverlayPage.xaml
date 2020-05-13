@@ -82,7 +82,7 @@
 
                 <StackPanel Margin="5"
                             DataContext="{Binding Settings.Clicks}">
-                    <CheckBox Content="Display"
+                    <CheckBox Content="Display Clicks"
                               IsChecked="{Binding Display, Mode=TwoWay}"
                               Margin="0,5"/>
 
@@ -161,6 +161,51 @@
 
                         <xctk:ColorPicker SelectedColor="{Binding BorderColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
                                           Grid.Column="3"
+                                          Margin="0,5"/>
+                    </Grid>
+                </StackPanel>
+
+                <Label Content="Mouse Scroll"
+                       FontWeight="DemiBold"
+                       Margin="5,10,5,0"/>
+                <Label Content="Horizontal scrolls aren't displayed correctly"
+                       FontWeight="Light"
+                       FontSize="9"
+                       Margin="5,0"/>
+
+                <StackPanel Margin="5"
+                            DataContext="{Binding Settings.Clicks}"
+                            IsEnabled="{Binding Display}">
+                    <CheckBox Content="Display Scroll"
+                              IsChecked="{Binding DisplayScroll, Mode=TwoWay}"
+                              Margin="0,5"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Circle Color"
+                               ContentStringFormat="{}{0}: "
+                               Margin="0,5,5,5"/>
+                        <xctk:ColorPicker SelectedColor="{Binding ScrollCircleColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                          Grid.Row="0"
+                                          Grid.Column="1"
+                                          Margin="0,5"/>
+
+                        <Label Content="Arrow Color"
+                               ContentStringFormat="{}{0}: "
+                               Margin="0,5,5,5"
+                               Grid.Row="1"
+                               Grid.Column="0"/>
+                        <xctk:ColorPicker SelectedColor="{Binding ScrollArrowColor, Converter={StaticResource WpfColorConverter}, Mode=TwoWay}"
+                                          Grid.Row="1"
+                                          Grid.Column="1"
                                           Margin="0,5"/>
                     </Grid>
                 </StackPanel>

@@ -123,14 +123,31 @@ namespace Captura.Windows.DirectX
 
         public void DrawArrow(Point Start, Point End, Color Color, float Width)
         {
-            // HACK: Not really an arrow
             var props = new StrokeStyleProperties
             {
-                EndCap = CapStyle.Triangle
+                EndCap = CapStyle.Round,
+                LineJoin = LineJoin.Round
             };
 
             var style = new StrokeStyle(_editorSession.RenderTarget.Factory, props);
 
+            _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width, style);
+
+            var direction = new Vector2(End.X - Start.X, End.Y - Start.Y);
+            var theta = Math.Atan2(direction.Y, direction.X);
+
+            const double rotateBy = 3 * Math.PI / 4;
+            var sideLen = Width * 2;
+
+            // Start drawing from ending point
+            Start = End;
+
+            var ltheta = theta - rotateBy;
+            End = new Point((int)(Start.X + sideLen * Math.Cos(ltheta)), (int)(Start.Y + sideLen * Math.Sin(ltheta)));
+            _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width, style);
+
+            var rtheta = theta + rotateBy;
+            End = new Point((int)(Start.X + sideLen * Math.Cos(rtheta)), (int)(Start.Y + sideLen * Math.Sin(rtheta)));
             _editorSession.RenderTarget.DrawLine(Convert(Start), Convert(End), Convert(Color), Width, style);
         }
 
