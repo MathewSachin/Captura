@@ -47,7 +47,7 @@
   "FileNaming": "Dateiname",
   "FontSize": "Schriftgröße",
   "FrameRate": "FPS",
-  "FullScreen": "Vollbildschirm",
+  "FullScreen": "Alle Bildschirme",
   "HideOnFullScreenShot": "Anwendung bei Screenshot des gesamten Bildschirms verstecken",
   "Host": "Host",
   "Hotkeys": "Hotkeys",
@@ -155,6 +155,6 @@
   "WebCamView": "WebCam-Ansicht",
   "Website": "Webseite",
   "Window": "Fenster",
-  "WindowScreenShotTransparency": "Fenster-Screenshot-Transparenz",
+  "WindowScreenShotTransparency": "Transparenz bei Fenster-Screenshots beibehalten",
   "Yes": "Ja"
 }
