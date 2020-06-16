@@ -67,12 +67,24 @@ namespace Captura.FFmpeg
                 .AddArg("compression_level", qscale);
         };
 
+        public static FFmpegAudioArgsProvider Pcm { get; } = (Quality, OutputArgs) =>
+        {
+            OutputArgs.SetAudioCodec("copy");
+        };
+
+        public static FFmpegAudioArgsProvider Flac { get; } = (Quality, OutputArgs) =>
+        {
+            OutputArgs.SetAudioCodec("flac");
+        };
+
         public static IEnumerable<FFmpegAudioItem> Items { get; } = new[]
         {
             new FFmpegAudioItem("AAC", ".aac", Aac),
             new FFmpegAudioItem("Mp3", ".mp3", Mp3),
             new FFmpegAudioItem("Vorbis", ".ogg", Vorbis),
-            new FFmpegAudioItem("Opus", ".opus", Opus)
+            new FFmpegAudioItem("Opus", ".opus", Opus),
+            new FFmpegAudioItem("PCM", ".wav", Pcm),
+            new FFmpegAudioItem("FLAC", ".flac", Flac)
         };
     }
 }
