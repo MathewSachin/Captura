@@ -1,6 +1,7 @@
 ﻿using System;
 using Captura.Audio;
 using Captura.Video;
+using Captura.Windows.Native;
 using SharpAvi.Codecs;
 using SharpAvi.Output;
 using AviInternalWriter = SharpAvi.Output.AviWriter;
@@ -17,6 +18,9 @@ namespace Captura.SharpAvi
         IAviVideoStream _videoStream;
         IAviAudioStream _audioStream;
         byte[] _videoBuffer;
+        byte[] _prevVideoBuffer;
+        readonly byte[] _zeroBuffer;
+        bool _hasOneGoodFrame = false;
         readonly AviCodec _codec;
         readonly object _syncLock = new object();
         
@@ -39,6 +43,12 @@ namespace Captura.SharpAvi
             _codec = Codec;
 
             _videoBuffer = new byte[ImageProvider.Width * ImageProvider.Height * 4];
+            _prevVideoBuffer = new byte[_videoBuffer.Length];
+            _zeroBuffer = new byte[_videoBuffer.Length];
+            for (int i = 0; i < _zeroBuffer.Length; i++)
+            {
+                _zeroBuffer[i] = 0;
+            }
 
             _writer = new AviInternalWriter(FileName)
             {
@@ -66,7 +76,71 @@ namespace Captura.SharpAvi
             }
 
             lock (_syncLock)
+            {
+                if (IsTransparentOrTruncatedFrame(_videoBuffer))
+                {
+                    // To avoid dropped frames, just repeat the previous one
+
+                    if (_hasOneGoodFrame)
+                    {
+                        // Use previous frame instead
+
+                        _videoStream.WriteFrame(true, _prevVideoBuffer, 0, _prevVideoBuffer.Length);
+                    }
+                    else
+                    {
+                        // Just need to make do with what we have
+
+                        _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
+                    }
+
+                    return;
+                }
+
+                if (!_hasOneGoodFrame)
+                {
+                    _hasOneGoodFrame = true;
+                }
+
                 _videoStream.WriteFrame(true, _videoBuffer, 0, _videoBuffer.Length);
+
+                // Save frame in case we need it as stand-in for next one
+
+                Buffer.BlockCopy(_videoBuffer, 0, _prevVideoBuffer, 0, _videoBuffer.Length);
+            }
+        }
+
+        bool IsTransparentOrTruncatedFrame(byte[] buffer)
+        {
+            if (_videoBuffer.Length != _zeroBuffer.Length)
+            {
+                return true;
+            }
+
+            // First check first 100 bytes - assuming that in most cases they will not be transparent
+            // and therefore this will avoid having to check the entire frame
+            if (IsStartTransparent(buffer, 100))
+            {
+                // If start is transparent compare the whole frame using P/invoke for performance
+                // We don't check the length as we already know that it is equal
+                return Msvcrt.memcmp(buffer, _zeroBuffer, buffer.Length) == 0;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        bool IsStartTransparent(byte[] buffer, int bytesToCheck)
+        {
+            for (int i = 0; i < bytesToCheck; i++)
+            {
+                if (buffer[i] != _zeroBuffer[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         void CreateVideoStream(int Width, int Height)
