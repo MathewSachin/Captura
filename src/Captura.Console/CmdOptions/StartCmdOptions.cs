@@ -54,6 +54,9 @@ namespace Captura
         [Option("settings", HelpText = "Settings file to use for overlay settings, ffmpeg path and output path")]
         public string Settings { get; set; }
 
+        [Option("stop", HelpText = "Token, such as a GUID, to use to stop recording. Can be used with or without length")]
+        public string StopToken { get; set; }
+
         [Usage]
         public static IEnumerable<Example> Examples
         {
