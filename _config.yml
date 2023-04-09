@@ -16,3 +16,4 @@ exclude: ["Gemfile", "Gemfile.lock", "README.md"]
 plugins:
   - jekyll-seo-tag  # Search Engine Optimization
   - jekyll-sitemap # Site Map
+  - jekyll-redirect-from
