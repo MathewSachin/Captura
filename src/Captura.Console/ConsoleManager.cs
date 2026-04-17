@@ -284,6 +284,22 @@ namespace Captura
 
         void Loop(StartCmdOptions StartOptions)
         {
+            if (!string.IsNullOrEmpty(StartOptions.StopToken))
+            {
+                var waitForSignal = new EventWaitHandle(
+                    false, EventResetMode.ManualReset, StartOptions.StopToken);
+
+                if (StartOptions.Length > 0)
+                {
+                    waitForSignal.WaitOne(StartOptions.Length * 1000);
+                }
+                else
+                {
+                    waitForSignal.WaitOne();
+                }
+                return;
+            }
+
             if (StartOptions.Length > 0)
             {
                 var elapsed = 0;
