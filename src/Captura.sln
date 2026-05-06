@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Captura.Audio", "Captura.Au
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audio", "Audio", "{E645F466-C7D6-469A-B4CC-B0917703318C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Captura.Gifski", "Captura.Gifski\Captura.Gifski.csproj", "{A0800A73-EF97-4FB4-BC1B-CF119857E900}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29DE716-EDDF-4CFB-8430-D07CCACB0921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0800A73-EF97-4FB4-BC1B-CF119857E900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0800A73-EF97-4FB4-BC1B-CF119857E900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0800A73-EF97-4FB4-BC1B-CF119857E900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0800A73-EF97-4FB4-BC1B-CF119857E900}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
