@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-ui-e2e:
     runs-on: windows-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
