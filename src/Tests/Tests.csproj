@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>Captura.Tests</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net481</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -13,10 +13,9 @@
     <ProjectReference Include="..\Screna\Screna.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.8.3" />
-    <PackageReference Include="TestStack.White" Version="0.13.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 </Project>

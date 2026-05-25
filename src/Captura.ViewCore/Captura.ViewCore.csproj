@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net481</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Captura.Core\Captura.Core.csproj" />
