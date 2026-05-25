@@ -1,0 +1,29 @@
+name: .NET CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  build-and-ui-e2e:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore src/Captura.sln
+
+      - name: Build
+        run: dotnet build src/Captura.sln -c Release --no-restore
+
+      - name: Run UI startup E2E test
+        run: dotnet test src/Tests/Tests.csproj -c Release --no-build --filter "FullyQualifiedName~UiStartupTests"
