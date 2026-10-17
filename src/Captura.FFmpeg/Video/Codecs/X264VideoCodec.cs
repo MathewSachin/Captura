@@ -1,4 +1,5 @@
-﻿using Captura.Video;
+﻿using System;
+using Captura.Video;
 
 namespace Captura.FFmpeg
 {
@@ -12,8 +13,9 @@ namespace Captura.FFmpeg
 
         public override void Apply(FFmpegSettings Settings, VideoWriterArgs WriterArgs, FFmpegOutputArgs OutputArgs)
         {
-            // quality: 51 (lowest) to 0 (highest)
-            var crf = (51 * (100 - WriterArgs.VideoQuality)) / 99;
+            // quality: 51 (lowest) to 1 (highest)
+            // CRF 0 is lossless in High 4:4:4 Predictive, unsupported by Windows' built-in decoder
+            var crf = Math.Max(1, (51 * (100 - WriterArgs.VideoQuality)) / 99);
 
             OutputArgs.AddArg("vcodec", "libx264")
                 .AddArg("crf", crf)
