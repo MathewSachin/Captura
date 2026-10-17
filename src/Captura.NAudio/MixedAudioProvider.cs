@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -15,18 +16,13 @@ namespace Captura.Audio
         {
             foreach (var provider in AudioProviders)
             {
-                var bufferedProvider = new BufferedWaveProvider(provider.NAudioWaveFormat)
+                var input = new BufferedWaveProvider(provider.NAudioWaveFormat)
                 {
                     DiscardOnBufferOverflow = true,
                     ReadFully = false
                 };
 
-                provider.WaveIn.DataAvailable += (S, E) =>
-                {
-                    bufferedProvider.AddSamples(E.Buffer, 0, E.BytesRecorded);
-                };
-
-                var sampleProvider = bufferedProvider.ToSampleProvider();
+                var sampleProvider = input.ToSampleProvider();
 
                 var providerWf = provider.WaveFormat;
 
@@ -35,12 +31,54 @@ namespace Captura.Audio
                     sampleProvider = sampleProvider.ToStereo();
 
                 // Resample
-                if (providerWf.SampleRate != WaveFormat.SampleRate)
+                var resample = providerWf.SampleRate != WaveFormat.SampleRate;
+
+                if (resample)
                 {
                     sampleProvider = new WdlResamplingSampleProvider(sampleProvider, WaveFormat.SampleRate);
                 }
 
-                _audioProviders.Add(provider, sampleProvider);
+                var channels = sampleProvider.WaveFormat.Channels;
+
+                var output = new BufferedWaveProvider(NAudio.Wave.WaveFormat.CreateIeeeFloatWaveFormat(WaveFormat.SampleRate, channels))
+                {
+                    DiscardOnBufferOverflow = true,
+                    ReadFully = false
+                };
+
+                var ratio = (double)providerWf.SampleRate / WaveFormat.SampleRate;
+                var chunkFrames = WaveFormat.SampleRate / 10;
+                var samples = new float[chunkFrames * channels];
+                var bytes = new byte[chunkFrames * channels * 4];
+
+                provider.WaveIn.DataAvailable += (S, E) =>
+                {
+                    input.AddSamples(E.Buffer, 0, E.BytesRecorded);
+
+                    while (true)
+                    {
+                        var available = input.BufferedBytes / input.WaveFormat.BlockAlign;
+
+                        // WdlResamplingSampleProvider flushes if its source returns fewer samples than asked,
+                        // causing clicks and lost samples when upsampling, so ask only for what is buffered.
+                        var frames = resample
+                            ? Math.Min((int)((available - 4) / ratio), chunkFrames)
+                            : Math.Min(available, chunkFrames);
+
+                        if (frames <= 0)
+                            break;
+
+                        frames = sampleProvider.Read(samples, 0, frames * channels) / channels;
+
+                        if (frames == 0)
+                            break;
+
+                        Buffer.BlockCopy(samples, 0, bytes, 0, frames * channels * 4);
+                        output.AddSamples(bytes, 0, frames * channels * 4);
+                    }
+                };
+
+                _audioProviders.Add(provider, output.ToSampleProvider());
             }
 
             if (_audioProviders.Count == 1)
