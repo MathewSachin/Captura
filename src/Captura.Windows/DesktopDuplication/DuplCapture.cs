@@ -13,8 +13,16 @@ namespace Captura.Windows.DesktopDuplication
         Device _device;
         OutputDuplication _deskDupl;
         FrameGrabber _frameGrabber;
-        Texture2D _bkpTexture;
         readonly int _width, _height;
+
+        // Resources can only be used with the device that created them.
+        // Frames come from the duplication device, so they reach the capture device through a shared texture.
+        Texture2D _sharedTexture, _targetTexture;
+        KeyedMutex _sharedMutex, _targetMutex;
+        IntPtr _targetDevicePointer;
+        bool _hasFrame;
+
+        const int MutexTimeout = 1000;
 
         readonly object _syncLock = new object();
 
@@ -41,7 +49,7 @@ namespace Captura.Windows.DesktopDuplication
 
                 _deskDupl?.Dispose();
 
-                _bkpTexture?.Dispose();
+                DisposeSharedTexture();
 
                 _device.Dispose();
                 _device = null;
@@ -76,6 +84,56 @@ namespace Captura.Windows.DesktopDuplication
             }
         }
 
+        void CreateSharedTexture(Device TargetDevice)
+        {
+            DisposeSharedTexture();
+
+            _sharedTexture = new Texture2D(_device, new Texture2DDescription
+            {
+                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = _width,
+                Height = _height,
+                OptionFlags = ResourceOptionFlags.SharedKeyedmutex,
+                MipLevels = 1,
+                ArraySize = 1,
+                SampleDescription = { Count = 1, Quality = 0 },
+                Usage = ResourceUsage.Default
+            });
+
+            _sharedMutex = _sharedTexture.QueryInterface<KeyedMutex>();
+
+            using (var resource = _sharedTexture.QueryInterface<SharpDX.DXGI.Resource>())
+                _targetTexture = TargetDevice.OpenSharedResource<Texture2D>(resource.SharedHandle);
+
+            _targetMutex = _targetTexture.QueryInterface<KeyedMutex>();
+            _targetDevicePointer = TargetDevice.NativePointer;
+        }
+
+        void DisposeSharedTexture()
+        {
+            _targetMutex?.Dispose();
+            _targetTexture?.Dispose();
+            _sharedMutex?.Dispose();
+            _sharedTexture?.Dispose();
+
+            _targetMutex = _sharedMutex = null;
+            _targetTexture = _sharedTexture = null;
+            _hasFrame = false;
+        }
+
+        bool Acquire(KeyedMutex Mutex)
+        {
+            if (Mutex.Acquire(0, MutexTimeout) == Result.Ok)
+                return true;
+
+            // An abandoned keyed mutex can't be reused, so start over with a new shared texture
+            DisposeSharedTexture();
+
+            return false;
+        }
+
         public bool Get(Texture2D Texture, DxMousePointer DxMousePointer, Point TargetPosition = default)
         {
             lock (_syncLock)
@@ -84,54 +142,71 @@ namespace Captura.Windows.DesktopDuplication
                 if (_device == null)
                     return false;
 
-                if (_bkpTexture == null)
-                {
-                    var desc = Texture.Description;
-                    desc.Width = _width;
-                    desc.Height = _height;
+                var targetDevice = Texture.Device;
 
-                    // _device is being used by Desktop Duplication
-                    _bkpTexture = new Texture2D(Texture.Device, desc);
-                }
+                if (_targetTexture == null || _targetDevicePointer != targetDevice.NativePointer)
+                    CreateSharedTexture(targetDevice);
 
                 var acquireResult = _frameGrabber.Grab();
 
-                if (acquireResult == null)
-                {
-                    // _device is being used by Desktop Duplication
-                    Texture.Device.ImmediateContext.CopySubresourceRegion(_bkpTexture,
-                        0,
-                        new ResourceRegion(0, 0, 0, _width, _height, 1),
-                        Texture,
-                        0,
-                        TargetPosition.X, TargetPosition.Y);
-
-                    return true;
-                }
-
-                if (acquireResult.Result.Failure)
+                if (acquireResult != null && acquireResult.Result.Failure)
                 {
                     throw new Exception($"Failed to acquire next frame: {acquireResult.Result.Code}");
                 }
 
-                using (acquireResult.DesktopResource)
-                using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
+                if (acquireResult == null && !_hasFrame)
+                    return false;
+
+                try
                 {
-                    DxMousePointer?.Update(tempTexture, acquireResult.FrameInfo, _deskDupl);
+                    if (acquireResult != null)
+                    {
+                        using (acquireResult.DesktopResource)
+                        using (var tempTexture = acquireResult.DesktopResource.QueryInterface<Texture2D>())
+                        {
+                            if (!Acquire(_sharedMutex))
+                                return false;
 
-                    Texture.Device.ImmediateContext.CopySubresourceRegion(tempTexture,
-                        0,
-                        new ResourceRegion(0, 0, 0, _width, _height, 1),
-                        Texture,
-                        0,
-                        TargetPosition.X, TargetPosition.Y);
+                            try
+                            {
+                                _device.ImmediateContext.CopyResource(tempTexture, _sharedTexture);
+                                _hasFrame = true;
+                            }
+                            finally
+                            {
+                                _sharedMutex.Release(0);
+                            }
+                        }
+                    }
 
-                    _device.ImmediateContext.CopyResource(tempTexture, _bkpTexture);
+                    if (!Acquire(_targetMutex))
+                        return false;
+
+                    try
+                    {
+                        if (acquireResult != null)
+                            DxMousePointer?.Update(_targetTexture, acquireResult.FrameInfo, _deskDupl);
+
+                        targetDevice.ImmediateContext.CopySubresourceRegion(_targetTexture,
+                            0,
+                            new ResourceRegion(0, 0, 0, _width, _height, 1),
+                            Texture,
+                            0,
+                            TargetPosition.X, TargetPosition.Y);
+                    }
+                    finally
+                    {
+                        _targetMutex.Release(0);
+                    }
+
+                    return true;
                 }
-
-                _frameGrabber.Release();
-
-                return true;
+                finally
+                {
+                    // After the pointer update: the pointer shape can only be read while the frame is held
+                    if (acquireResult != null)
+                        _frameGrabber.Release();
+                }
             }
         }
     }
