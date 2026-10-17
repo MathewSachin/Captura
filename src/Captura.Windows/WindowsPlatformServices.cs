@@ -121,16 +121,8 @@ namespace Captura.Windows
                 .Adapters1
                 .SelectMany(M => M.Outputs);
 
-            var match = outputs.FirstOrDefault(M =>
-            {
-                var r1 = M.Description.DesktopBounds;
-                var r2 = Screen.Rectangle;
-
-                return r1.Left == r2.Left
-                       && r1.Right == r2.Right
-                       && r1.Top == r2.Top
-                       && r1.Bottom == r2.Bottom;
-            });
+            // Mixed DPI scaling can make screen bounds miss DXGI bounds; device names don't depend on DPI
+            var match = outputs.FirstOrDefault(M => M.Description.DeviceName == Screen.DeviceName);
 
             return match?.QueryInterface<Output1>();
         }
