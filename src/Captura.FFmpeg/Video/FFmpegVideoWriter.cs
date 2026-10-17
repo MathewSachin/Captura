@@ -18,8 +18,10 @@ namespace Captura.FFmpeg
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
 
+        const int MaxPendingFrames = 5;
+
         // This semaphore helps prevent FFmpeg audio/video pipes getting deadlocked.
-        readonly SemaphoreSlim _spVideo = new SemaphoreSlim(5);
+        readonly SemaphoreSlim _spVideo = new SemaphoreSlim(MaxPendingFrames);
 
         // Timeout used with Semaphores, if elapsed would mean FFmpeg might be deadlocked.
         readonly TimeSpan _spTimeout = TimeSpan.FromMilliseconds(50);
@@ -101,6 +103,9 @@ namespace Captura.FFmpeg
                 var audioBufferSize = (int)((1000.0 / Args.FrameRate) * 44.1 * 2 * 2 * 2);
 
                 _audioPipe = new NamedPipeServerStream(audioPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, audioBufferSize);
+
+                // Up to 10 seconds of s16le audio
+                _audioWriter = new AudioPipeWriter(_audioPipe, Args.Frequency * Args.Channels * 2 * 10);
             }
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
@@ -113,16 +118,38 @@ namespace Captura.FFmpeg
         /// </summary>
         public void Dispose()
         {
-            _lastFrameTask?.Wait();
-            _lastAudio?.Wait();
+            // FFmpeg can pause either input until the other advances or ends, so both pipes drain and close concurrently.
+            var video = Task.Run(() =>
+            {
+                // Each frame write releases its permit when it finishes.
+                for (var i = 0; i < MaxPendingFrames; ++i)
+                    _spVideo.Wait();
 
-            _ffmpegIn.Dispose();
+                _ffmpegIn.Dispose();
+            });
 
-            _audioPipe?.Dispose();
+            var audio = Task.Run(() =>
+            {
+                try
+                {
+                    _audioWriter?.Wait();
+                }
+                finally
+                {
+                    _audioPipe?.Dispose();
+                }
+            });
 
-            _ffmpegProcess.WaitForExit();
+            try
+            {
+                Task.WaitAll(video, audio);
+            }
+            finally
+            {
+                _ffmpegProcess.WaitForExit();
 
-            _videoBuffer = null;
+                _videoBuffer = null;
+            }
         }
 
         /// <summary>
@@ -132,7 +159,7 @@ namespace Captura.FFmpeg
 
         bool _firstAudio = true;
 
-        Task _lastAudio;
+        readonly AudioPipeWriter _audioWriter;
 
         /// <summary>
         /// Write audio block to Audio Stream.
@@ -160,9 +187,6 @@ namespace Captura.FFmpeg
                 _firstAudio = false;
             }
 
-            // We don't need semaphores for audio since audio frames arrive less often.
-            _lastAudio?.Wait();
-
             // Drop audio bytes to sync with video once we've reached stability from frame side.
             if (_initialStability)
             {
@@ -184,7 +208,8 @@ namespace Captura.FFmpeg
                 }
             }
 
-            _lastAudio = _audioPipe.WriteAsync(Buffer, Offset, Length);
+            // Never block video on audio: FFmpeg can pause one input until the other catches up.
+            _audioWriter.Write(Buffer, Offset, Length);
         }
 
         bool _firstFrame = true;
