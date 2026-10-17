@@ -10,20 +10,19 @@ namespace Captura.FFmpeg
 {
     public static class DownloadFFmpeg
     {
-        static readonly Uri FFmpegUri;
+        static readonly Uri FFmpegUri = new Uri("https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip");
         static readonly string FFmpegArchivePath;
 
         static DownloadFFmpeg()
         {
-            var bits = Environment.Is64BitOperatingSystem ? 64 : 32;
-
-            FFmpegUri = new Uri($"https://ffmpeg.zeranoe.com/builds/win{bits}/static/ffmpeg-latest-win{bits}-static.zip");
-
             FFmpegArchivePath = Path.Combine(Path.GetTempPath(), "ffmpeg.zip");
         }
 
         public static async Task DownloadArchive(Action<int> Progress, IWebProxy Proxy, CancellationToken CancellationToken)
         {
+            if (!Environment.Is64BitOperatingSystem)
+                throw new PlatformNotSupportedException("The FFmpeg download only provides 64-bit builds. Download a 32-bit build manually and set its folder in Captura.");
+
             using var webClient = new WebClient { Proxy = Proxy };
             CancellationToken.Register(() => webClient.CancelAsync());
 
