@@ -28,6 +28,9 @@ namespace Captura.FFmpeg
             yield return NvencVideoCodec.CreateH264();
             yield return NvencVideoCodec.CreateHevc();
 
+            // After NVenc so that existing ffmpeg:N indices in captura-cli don't shift
+            yield return new QsvH264VideoCodec();
+
             // Custom
             foreach (var item in _settings.CustomCodecs)
             {
