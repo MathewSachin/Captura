@@ -14,6 +14,7 @@ namespace Captura.Video
         D3D9PreviewAssister _d3D9PreviewAssister;
         IntPtr _backBufferPtr;
         Texture _texture;
+        bool _d3D9Failed;
         readonly VisualSettings _visualSettings;
 
         public void Show()
@@ -75,13 +76,36 @@ namespace Captura.Video
 
                     case Texture2DFrame texture2DFrame:
                         win.WinFormsHost.Visibility = Visibility.Collapsed;
+                        if (_d3D9Failed)
+                            break;
+
                         if (_d3D9PreviewAssister == null)
                         {
-                            _d3D9PreviewAssister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
-                            _texture = _d3D9PreviewAssister.GetSharedTexture(texture2DFrame.PreviewTexture);
+                            // All-or-nothing: a half-built setup is skipped by every later frame
+                            // and breaks Dispose. On failure, no preview until this recording ends.
+                            D3D9PreviewAssister assister = null;
+                            Texture texture = null;
+                            IntPtr backBufferPtr;
 
-                            using var surface = _texture.GetSurfaceLevel(0);
-                            _backBufferPtr = surface.NativePointer;
+                            try
+                            {
+                                assister = new D3D9PreviewAssister(ServiceProvider.Get<IPlatformServices>());
+                                texture = assister.GetSharedTexture(texture2DFrame.PreviewTexture);
+
+                                using var surface = texture.GetSurfaceLevel(0);
+                                backBufferPtr = surface.NativePointer;
+                            }
+                            catch
+                            {
+                                texture?.Dispose();
+                                assister?.Dispose();
+                                _d3D9Failed = true;
+                                break;
+                            }
+
+                            _d3D9PreviewAssister = assister;
+                            _texture = texture;
+                            _backBufferPtr = backBufferPtr;
                         }
 
                         Invalidate(_backBufferPtr, texture2DFrame.Width, texture2DFrame.Height);
@@ -116,15 +140,16 @@ namespace Captura.Video
                 _lastFrame = null;
 
                 if (_d3D9PreviewAssister != null)
-                {
                     Invalidate(IntPtr.Zero, 0, 0);
 
-                    _texture.Dispose();
+                _texture?.Dispose();
+                _texture = null;
 
-                    _d3D9PreviewAssister.Dispose();
+                _d3D9PreviewAssister?.Dispose();
+                _d3D9PreviewAssister = null;
 
-                    _d3D9PreviewAssister = null;
-                }
+                _backBufferPtr = IntPtr.Zero;
+                _d3D9Failed = false;
             });
         }
     }
