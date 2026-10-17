@@ -18,6 +18,9 @@ namespace Captura.FFmpeg
         readonly NamedPipeServerStream _ffmpegIn;
         byte[] _videoBuffer;
 
+        // HasExited can turn true before FFmpeg's last stderr lines reach this log, WaitForExit() waits for them.
+        readonly IFFmpegLogEntry _ffmpegLog;
+
         // This semaphore helps prevent FFmpeg audio/video pipes getting deadlocked.
         readonly SemaphoreSlim _spVideo = new SemaphoreSlim(5);
 
@@ -105,7 +108,7 @@ namespace Captura.FFmpeg
 
             _ffmpegIn = new NamedPipeServerStream(videoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, _videoBuffer.Length);
 
-            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out _);
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), Args.FileName, out _ffmpegLog);
         }
 
         /// <summary>
@@ -147,7 +150,8 @@ namespace Captura.FFmpeg
 
             if (_ffmpegProcess.HasExited)
             {
-                throw new FFmpegException( _ffmpegProcess.ExitCode);
+                _ffmpegProcess.WaitForExit();
+                throw new FFmpegException(_ffmpegProcess.ExitCode, _ffmpegLog);
             }
 
             if (_firstAudio)
@@ -206,7 +210,8 @@ namespace Captura.FFmpeg
             if (_ffmpegProcess.HasExited)
             {
                 Frame.Dispose();
-                throw new FFmpegException(_ffmpegProcess.ExitCode);
+                _ffmpegProcess.WaitForExit();
+                throw new FFmpegException(_ffmpegProcess.ExitCode, _ffmpegLog);
             }
             
             if (_firstFrame)
@@ -277,7 +282,8 @@ namespace Captura.FFmpeg
             }
             catch (Exception e) when (_ffmpegProcess.HasExited)
             {
-                throw new FFmpegException(_ffmpegProcess.ExitCode, e);
+                _ffmpegProcess.WaitForExit();
+                throw new FFmpegException(_ffmpegProcess.ExitCode, _ffmpegLog, e);
             }
         }
     }

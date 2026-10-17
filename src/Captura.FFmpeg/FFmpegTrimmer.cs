@@ -24,13 +24,13 @@ namespace Captura.FFmpeg
 
             var args = argsBuilder.GetArgs();
 
-            var process = FFmpegService.StartFFmpeg(args, DestFile, out _);
+            var process = FFmpegService.StartFFmpeg(args, DestFile, out var log);
 
             await Task.Factory.StartNew(process.WaitForExit);
 
             if (process.ExitCode != 0)
             {
-                throw new FFmpegException(process.ExitCode);
+                throw new FFmpegException(process.ExitCode, log);
             }
         }
     }

@@ -8,6 +8,9 @@ namespace Captura.FFmpeg
     {
         readonly Process _ffmpegProcess;
         readonly Stream _ffmpegIn;
+
+        // HasExited can turn true before FFmpeg's last stderr lines reach this log, WaitForExit() waits for them.
+        readonly IFFmpegLogEntry _ffmpegLog;
         
         public FFmpegAudioWriter(string FileName, int AudioQuality, FFmpegAudioArgsProvider AudioArgsProvider, int Frequency = 44100, int Channels = 2)
         {
@@ -29,7 +32,7 @@ namespace Captura.FFmpeg
 
             AudioArgsProvider(AudioQuality, output);
 
-            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName, out _);
+            _ffmpegProcess = FFmpegService.StartFFmpeg(argsBuilder.GetArgs(), FileName, out _ffmpegLog);
             
             _ffmpegIn = _ffmpegProcess.StandardInput.BaseStream;
         }
@@ -51,7 +54,8 @@ namespace Captura.FFmpeg
         {
             if (_ffmpegProcess.HasExited)
             {
-                throw new FFmpegException(_ffmpegProcess.ExitCode);
+                _ffmpegProcess.WaitForExit();
+                throw new FFmpegException(_ffmpegProcess.ExitCode, _ffmpegLog);
             }
 
             _ffmpegIn.Write(Data, Offset, Count);

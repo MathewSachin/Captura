@@ -34,7 +34,7 @@ namespace Captura.FFmpeg
             await Task.Run(() => process.WaitForExit());
 
             if (process.ExitCode != 0)
-                throw new FFmpegException(process.ExitCode);
+                throw new FFmpegException(process.ExitCode, log);
 
             Progress.Report(100);
         }
